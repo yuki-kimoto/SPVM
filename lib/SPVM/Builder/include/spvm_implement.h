@@ -2668,39 +2668,39 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
 #define SPVM_IMPLEMENT_SET_STACK_REF(stack, stack_index, in) (*(void**)&stack[stack_index] = in)
 #define SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, stack_index) (*(void**)&stack[stack_index] = NULL)
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_index, int32_t stack_length, int8_t* in) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(int8_t*)&stack[stack_index + field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, int8_t* in) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(int8_t*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_index, int32_t stack_length, int16_t* in) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(int16_t*)&stack[stack_index + field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, int16_t* in) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(int16_t*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_index, int32_t stack_length, int32_t* in) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(int32_t*)&stack[stack_index + field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, int32_t* in) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(int32_t*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_index, int32_t stack_length, int64_t* in) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(int64_t*)&stack[stack_index + field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, int64_t* in) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(int64_t*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_index, int32_t stack_length, float* in) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(float*)&stack[stack_index + field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, float* in) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(float*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_index, int32_t stack_length, double* in) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(double*)&stack[stack_index + field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, double* in) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(double*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
@@ -2717,39 +2717,39 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OBJECT(SPVM_ENV* env, void** out, SP
 
 #define SPVM_IMPLEMENT_GET_STACK_REF(out, stack, stack_index) (out = *(void**)&stack[stack_index])
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_index, int32_t type_stack_length) {
-  for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-    *(out + field_index) = *(int8_t*)&stack[(stack_index) + field_index];
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(out + stack_index) = *(int8_t*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(SPVM_ENV* env, int16_t* out, SPVM_VALUE* stack, int32_t stack_index, int32_t type_stack_length) {
-  for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-    *(out + field_index) = *(int16_t*)&stack[(stack_index) + field_index];
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(SPVM_ENV* env, int16_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(out + stack_index) = *(int16_t*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(SPVM_ENV* env, int32_t* out, SPVM_VALUE* stack, int32_t stack_index, int32_t type_stack_length) {
-  for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-    *(out + field_index) = *(int32_t*)&stack[(stack_index) + field_index];
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(SPVM_ENV* env, int32_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(out + stack_index) = *(int32_t*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(SPVM_ENV* env, int64_t* out, SPVM_VALUE* stack, int32_t stack_index, int32_t type_stack_length) {
-  for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-    *(out + field_index) = *(int64_t*)&stack[(stack_index) + field_index];
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(SPVM_ENV* env, int64_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(out + stack_index) = *(int64_t*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(SPVM_ENV* env, float* out, SPVM_VALUE* stack, int32_t stack_index, int32_t type_stack_length) {
-  for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-    *(out + field_index) = *(float*)&stack[(stack_index) + field_index];
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(SPVM_ENV* env, float* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(out + stack_index) = *(float*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, double* out, SPVM_VALUE* stack, int32_t stack_index, int32_t type_stack_length) {
-  for (int32_t field_index = 0; field_index < type_stack_length; field_index++) {
-    *(out + field_index) = *(double*)&stack[(stack_index) + field_index];
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, double* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(out + stack_index) = *(double*)&stack[(stack_base) + stack_index];
   }
 }
 
@@ -2839,39 +2839,39 @@ static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack
 
 #define SPVM_IMPLEMENT_RETURN_UNDEF(stack) (*(void**)&stack[0] = NULL)
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* in, int32_t stack_length) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(int8_t*)&stack[field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* in, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(int8_t*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* in, int32_t stack_length) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(int16_t*)&stack[field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* in, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(int16_t*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* in, int32_t stack_length) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(int32_t*)&stack[field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* in, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(int32_t*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* in, int32_t stack_length) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(int64_t*)&stack[field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* in, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(int64_t*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* in, int32_t stack_length) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(float*)&stack[field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* in, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(float*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* in, int32_t stack_length) {
-  for (int32_t field_index = 0; field_index < stack_length; field_index++) {
-    *(double*)&stack[field_index] = *(in + field_index);
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* in, int32_t items) {
+  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+    *(double*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
