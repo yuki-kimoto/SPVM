@@ -3001,6 +3001,12 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               op_cur = op_constant;
             }
             
+            if (call_method->method->is_class_method) {
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, call_method->method->current_basic_type->name, strlen(call_method->method->current_basic_type->name));
+            }
+            
+            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, call_method->method->name, strlen(call_method->method->name));
+            
             break;
           }
           case SPVM_OP_C_ID_ARRAY_ACCESS: {
