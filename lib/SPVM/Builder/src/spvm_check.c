@@ -3156,6 +3156,10 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               }
             }
             
+            
+            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->unmerged_field->current_basic_type->name, strlen(field_access->unmerged_field->current_basic_type->name));
+            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->unmerged_field->name, strlen(field_access->unmerged_field->name));
+            
             break;
           }
           case SPVM_OP_C_ID_CAN: {
