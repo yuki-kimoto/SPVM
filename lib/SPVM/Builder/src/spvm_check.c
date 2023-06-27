@@ -412,6 +412,11 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
         return;
       }
     }
+    
+    for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field->name, strlen(field->name));
+    }
   }
 }
 
