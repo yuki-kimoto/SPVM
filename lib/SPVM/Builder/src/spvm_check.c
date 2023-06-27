@@ -110,43 +110,37 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
     
-    // Edit INIT block
-    // The INIT mehtods that is the parent basic type and used basic types in the order.
-    SPVM_METHOD* init_method = basic_type->init_method;
-    if (init_method) {
-      SPVM_OP* op_block = init_method->op_block;
-      SPVM_OP* op_list_statement = op_block->first;
+    // Check class var
+    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
+      SPVM_TYPE* class_var_type = SPVM_CHECK_get_type(compiler, class_var->op_class_var);
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
       
-      SPVM_LIST* use_basic_type_names = basic_type->use_basic_type_names;
-      
-      for (int32_t i = use_basic_type_names->length - 1; i >= 0; i--) {
-        const char* use_basic_type_name = SPVM_LIST_get(use_basic_type_names, i);
-        
-        SPVM_BASIC_TYPE* use_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
-        if (use_basic_type) {
-          if (use_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-            SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
-            SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_basic_type_name, op_block->file, op_block->line);
-            SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
-            SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
-            SPVM_OP* op_type_invocant = SPVM_OP_build_basic_type(compiler, op_name_invocant);
-            SPVM_OP_build_call_method(compiler, op_call_method, op_type_invocant, op_name_method, op_operators);
-            SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
-          }
-        }
-      }
-      
-      const char* parent_basic_type_name = basic_type->parent_name;
-      if (parent_basic_type_name) {
-        SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
-        SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_basic_type_name, op_block->file, op_block->line);
-        SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
-        SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
-        SPVM_OP* op_type_invocant = SPVM_OP_build_basic_type(compiler, op_name_invocant);
-        SPVM_OP_build_call_method(compiler, op_call_method, op_type_invocant, op_name_method, op_operators);
-        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
+      // valut_t cannnot become class variable
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
+        return;
       }
     }
+    
+    // Class variable
+    for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
+      
+      // Set class_var id
+      class_var->address_id = compiler->class_vars->length;
+      
+      class_var->index = i;
+      
+      // Add the class_var to the compiler
+      SPVM_LIST_push(compiler->class_vars, class_var);
+    }
+  }
+  
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    int32_t compile_error = 0;
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    const char* basic_type_name = basic_type->name;
     
     // Multi-numeric type limitation
     if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
@@ -199,6 +193,184 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       if (!found_pos_ptr) {
         SPVM_COMPILER_error(compiler, "The type name for the %s multi-numeric with the field length of %d must end with \"%s\".\n  at %s line %d", first_field_type->basic_type->name, basic_type->unmerged_fields->length, tail_name, basic_type->op_module->file, basic_type->op_module->line);
         return;
+      }
+    }
+    
+    // Check fields
+    for (int32_t field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, field_index);
+      SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, field->op_field);
+
+      // valut_t cannnot become field
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the field.\n  at %s line %d", field->op_field->file, field->op_field->line);
+        return;
+      }
+    }
+    
+    // Resolve inheritance
+    SPVM_LIST* basic_type_merge_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+    SPVM_LIST_push(basic_type_merge_stack, basic_type);
+    
+    SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+    SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+    
+    SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
+    while (1) {
+      if (parent_basic_type) {
+        if (strcmp(parent_basic_type->name, basic_type->name) == 0) {
+          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", basic_type->name, basic_type->op_extends->file, basic_type->op_extends->line);
+          compile_error = 1;
+          break;
+        }
+        
+        // Inherit destructor
+        if (!basic_type->destructor_method) {
+          if (parent_basic_type->destructor_method) {
+            basic_type->destructor_method = parent_basic_type->destructor_method;
+          }
+        }
+        
+        SPVM_LIST_push(basic_type_merge_stack, parent_basic_type);
+        parent_basic_type = parent_basic_type->parent;
+      }
+      else {
+        break;
+      }
+    }
+    
+    SPVM_BASIC_TYPE* cur_basic_type = basic_type;
+    int32_t merged_fields_index = 0;
+    for (int32_t basic_type_id = basic_type_merge_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_merge_stack, basic_type_id);
+      
+      SPVM_LIST* fields = basic_type->unmerged_fields;
+      int32_t field_index = 0;
+      int32_t fields_length = fields->length;
+      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
+
+        SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
+        if (found_field_in_super_class) {
+          SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class of the \"%s\" basic type.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
+          compile_error = 1;
+          break;
+        }
+        
+        SPVM_FIELD* new_field;
+        if (strcmp(field->current_basic_type->name, cur_basic_type->name) == 0) {
+          new_field = field;
+        }
+        // Clone field
+        else {
+          new_field = SPVM_FIELD_new(compiler);
+          new_field->name = field->name;
+          new_field->current_basic_type = cur_basic_type;
+          new_field->type = field->type;
+          new_field->access_control_type = field->access_control_type;
+        }
+        SPVM_LIST_push(merged_fields, new_field);
+        merged_fields_index++;
+      }
+      if (compile_error) {
+        break;
+      }
+      
+      // All interfaces
+      SPVM_LIST* interfaces = basic_type->interfaces;
+      for (int32_t interface_index = 0; interface_index < interfaces->length; interface_index++) {
+        SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(interfaces, interface_index);
+        SPVM_LIST_push(merged_interfaces, interface_basic_type);
+      }
+    }
+    
+    if (!(merged_fields->length <= 65535)) {
+      SPVM_COMPILER_error(compiler, "The length of the merged fields in the \"%s\" class must be lower than 65535.\n  at %s line %d", basic_type->op_module->file, basic_type->op_module->line);
+      return;
+    }
+    
+    for (int32_t field_index = 0; field_index < merged_fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(merged_fields, field_index);
+      field->index = field_index;
+      SPVM_HASH_set(basic_type->field_symtable, field->name, strlen(field->name), field);
+    }
+    
+    basic_type->fields = merged_fields;
+    
+    
+    // Resolve fields
+    for (int32_t i = 0; i < basic_type->fields->length; i++) {
+      // Field
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
+      
+      // Create field id
+      field->address_id = compiler->fields->length;
+      
+      // Add field to compiler
+      SPVM_LIST_push(compiler->fields, field);
+    }
+    
+    // Resove field offset
+    SPVM_CHECK_resolve_field_offset(compiler, basic_type);
+    
+    // Add parent interfaces
+    basic_type->interfaces = merged_interfaces;
+    for (int32_t i = 0; i < merged_interfaces->length; i++) {
+      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(merged_interfaces, i);
+      SPVM_BASIC_TYPE* found_interface_basic_type = SPVM_HASH_get(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name));
+      if (!found_interface_basic_type) {
+        SPVM_LIST_push(basic_type->interfaces, interface_basic_type);
+        SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
+      }
+    }
+    
+    SPVM_LIST_free(basic_type_merge_stack);
+    if (compile_error) {
+      return;
+    }
+  }
+  
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    int32_t compile_error = 0;
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    const char* basic_type_name = basic_type->name;
+    
+    // Edit INIT block
+    // The INIT mehtods that is the parent basic type and used basic types in the order.
+    SPVM_METHOD* init_method = basic_type->init_method;
+    if (init_method) {
+      SPVM_OP* op_block = init_method->op_block;
+      SPVM_OP* op_list_statement = op_block->first;
+      
+      SPVM_LIST* use_basic_type_names = basic_type->use_basic_type_names;
+      
+      for (int32_t i = use_basic_type_names->length - 1; i >= 0; i--) {
+        const char* use_basic_type_name = SPVM_LIST_get(use_basic_type_names, i);
+        
+        SPVM_BASIC_TYPE* use_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, use_basic_type_name, strlen(use_basic_type_name));
+        if (use_basic_type) {
+          if (use_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+            SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
+            SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, use_basic_type_name, op_block->file, op_block->line);
+            SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
+            SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
+            SPVM_OP* op_type_invocant = SPVM_OP_build_basic_type(compiler, op_name_invocant);
+            SPVM_OP_build_call_method(compiler, op_call_method, op_type_invocant, op_name_method, op_operators);
+            SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
+          }
+        }
+      }
+      
+      const char* parent_basic_type_name = basic_type->parent_name;
+      if (parent_basic_type_name) {
+        SPVM_OP* op_call_method = SPVM_OP_new_op_call_method(compiler, op_block->file, op_block->line);
+        SPVM_OP* op_name_invocant = SPVM_OP_new_op_name(compiler, parent_basic_type_name, op_block->file, op_block->line);
+        SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, "INIT", op_block->file, op_block->line);
+        SPVM_OP* op_operators = SPVM_OP_new_op_list(compiler, op_block->file, op_block->line);
+        SPVM_OP* op_type_invocant = SPVM_OP_build_basic_type(compiler, op_name_invocant);
+        SPVM_OP_build_call_method(compiler, op_call_method, op_type_invocant, op_name_method, op_operators);
+        SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->first, op_call_method);
       }
     }
     
@@ -298,32 +470,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_LIST_push(compiler->anon_basic_types, anon_basic_type);
     }
     
-    // Check class var
-    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
-      SPVM_TYPE* class_var_type = SPVM_CHECK_get_type(compiler, class_var->op_class_var);
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
-      
-      // valut_t cannnot become class variable
-      if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
-        return;
-      }
-    }
-    
-    // Check fields
-    for (int32_t field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, field_index);
-      SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, field->op_field);
-
-      // valut_t cannnot become field
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
-      if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the field.\n  at %s line %d", field->op_field->file, field->op_field->line);
-        return;
-      }
-    }
-    
     SPVM_LIST* methods = basic_type->methods;
     
     // Sort methods by name
@@ -369,124 +515,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         arg->arg_id = compiler->args->length;
         SPVM_LIST_push(compiler->args, arg);
       }
-    }
-    
-    // Class variable
-    for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
-      
-      // Set class_var id
-      class_var->address_id = compiler->class_vars->length;
-      
-      class_var->index = i;
-      
-      // Add the class_var to the compiler
-      SPVM_LIST_push(compiler->class_vars, class_var);
-    }
-    
-    // Resolve inheritance
-    SPVM_LIST* basic_type_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-    SPVM_LIST_push(basic_type_stack, basic_type);
-    
-    SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-    SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-    
-    SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
-    while (1) {
-      if (parent_basic_type) {
-        if (strcmp(parent_basic_type->name, basic_type->name) == 0) {
-          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", basic_type->name, basic_type->op_extends->file, basic_type->op_extends->line);
-          compile_error = 1;
-          break;
-        }
-        
-        // Inherit destructor
-        if (!basic_type->destructor_method) {
-          if (parent_basic_type->destructor_method) {
-            basic_type->destructor_method = parent_basic_type->destructor_method;
-          }
-        }
-        
-        SPVM_LIST_push(basic_type_stack, parent_basic_type);
-        parent_basic_type = parent_basic_type->parent;
-      }
-      else {
-        break;
-      }
-    }
-    
-    SPVM_BASIC_TYPE* cur_basic_type = basic_type;
-    int32_t merged_fields_index = 0;
-    for (int32_t basic_type_id = basic_type_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_stack, basic_type_id);
-      
-      SPVM_LIST* fields = basic_type->unmerged_fields;
-      int32_t field_index = 0;
-      int32_t fields_length = fields->length;
-      for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
-
-        SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
-        if (found_field_in_super_class) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class of the \"%s\" basic type.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
-          compile_error = 1;
-          break;
-        }
-        
-        SPVM_FIELD* new_field;
-        if (strcmp(field->current_basic_type->name, cur_basic_type->name) == 0) {
-          new_field = field;
-        }
-        // Clone field
-        else {
-          new_field = SPVM_FIELD_new(compiler);
-          new_field->name = field->name;
-          new_field->current_basic_type = cur_basic_type;
-          new_field->type = field->type;
-          new_field->access_control_type = field->access_control_type;
-        }
-        SPVM_LIST_push(merged_fields, new_field);
-        merged_fields_index++;
-      }
-      if (compile_error) {
-        break;
-      }
-      
-      // All interfaces
-      SPVM_LIST* interfaces = basic_type->interfaces;
-      for (int32_t interface_index = 0; interface_index < interfaces->length; interface_index++) {
-        SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(interfaces, interface_index);
-        SPVM_LIST_push(merged_interfaces, interface_basic_type);
-      }
-    }
-    
-    if (!(merged_fields->length <= 65535)) {
-      SPVM_COMPILER_error(compiler, "The length of the merged fields in the \"%s\" class must be lower than 65535.\n  at %s line %d", basic_type->op_module->file, basic_type->op_module->line);
-      return;
-    }
-    
-    for (int32_t field_index = 0; field_index < merged_fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(merged_fields, field_index);
-      field->index = field_index;
-      SPVM_HASH_set(basic_type->field_symtable, field->name, strlen(field->name), field);
-    }
-    
-    basic_type->fields = merged_fields;
-    
-    // Add parent interfaces
-    basic_type->interfaces = merged_interfaces;
-    for (int32_t i = 0; i < merged_interfaces->length; i++) {
-      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(merged_interfaces, i);
-      SPVM_BASIC_TYPE* found_interface_basic_type = SPVM_HASH_get(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name));
-      if (!found_interface_basic_type) {
-        SPVM_LIST_push(basic_type->interfaces, interface_basic_type);
-        SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
-      }
-    }
-    
-    SPVM_LIST_free(basic_type_stack);
-    if (compile_error) {
-      return;
     }
     
     // Check required method
@@ -607,21 +635,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         }
       }
     }
-    
-    // Resolve fields
-    for (int32_t i = 0; i < basic_type->fields->length; i++) {
-      // Field
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
-      
-      // Create field id
-      field->address_id = compiler->fields->length;
-      
-      // Add field to compiler
-      SPVM_LIST_push(compiler->fields, field);
-    }
-    
-    // Resove field offset
-    SPVM_CHECK_resolve_field_offset(compiler, basic_type);
   }
   
   // Check syntax and generate operations in basic types
