@@ -1784,8 +1784,8 @@ _xs_call_method(...)
   int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, method_return_basic_type_id);
   
   // Call method
-  int32_t args_native_stack_length = stack_index;
-  int32_t error_id = env->call_method_raw(env, stack, method, args_native_stack_length);
+  int32_t call_method_items = stack_index;
+  int32_t error_id = env->call_method_raw(env, stack, method, call_method_items);
   
   if (error_id) {
     if (SvOK(sv_error_ret)) {
@@ -3339,32 +3339,32 @@ _xs_new_mulnum_array_from_bin(...)
   
   int32_t fields_length = basic_type_fields_length;
   
-  int32_t field_native_stack_length;
+  int32_t field_size;
   void* mulnum_field = env->api->runtime->get_field(runtime, basic_type_id, 0);
   int32_t mulnum_field_basic_type_id = env->api->runtime->get_field_basic_type_id(env->runtime, mulnum_field);
   switch (mulnum_field_basic_type_id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-      field_native_stack_length = 1;
+      field_size = 1;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-      field_native_stack_length = 2;
+      field_size = 2;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-      field_native_stack_length = 4;
+      field_size = 4;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-      field_native_stack_length = 8;
+      field_size = 8;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-      field_native_stack_length = 4;
+      field_size = 4;
       break;
     }
     case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-      field_native_stack_length = 8;
+      field_size = 8;
       break;
     }
     default: {
@@ -3372,17 +3372,17 @@ _xs_new_mulnum_array_from_bin(...)
     }
   }
   
-  if (binary_length % (field_native_stack_length * fields_length) != 0) {
-    croak("The length of the $binary must be divisible by %d * %d\n    %s at %s line %d", field_native_stack_length, fields_length, __func__, FILE_NAME, __LINE__);
+  if (binary_length % (field_size * fields_length) != 0) {
+    croak("The length of the $binary must be divisible by %d * %d\n    %s at %s line %d", field_size, fields_length, __func__, FILE_NAME, __LINE__);
   }
   
-  int32_t array_length = binary_length / fields_length / field_native_stack_length;
+  int32_t array_length = binary_length / fields_length / field_size;
 
   void* spvm_array = env->new_mulnum_array(env, stack, basic_type_id, array_length);
 
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
-  int32_t copy_length = fields_length * array_length * field_native_stack_length;
+  int32_t copy_length = fields_length * array_length * field_size;
   switch (mulnum_field_basic_type_id) {
     case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
       int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
