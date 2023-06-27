@@ -225,13 +225,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
           break;
         }
         
-        // Inherit destructor
-        if (!basic_type->destructor_method) {
-          if (parent_basic_type->destructor_method) {
-            basic_type->destructor_method = parent_basic_type->destructor_method;
-          }
-        }
-        
         SPVM_LIST_push(basic_type_merge_stack, parent_basic_type);
         parent_basic_type = parent_basic_type->parent;
       }
