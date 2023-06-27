@@ -99,11 +99,31 @@ void SPVM_CHECK_resolve_basic_types_relation(SPVM_COMPILER* compiler) {
       SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
     }
   }
+  
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
+    while (1) {
+      if (parent_basic_type) {
+        if (strcmp(parent_basic_type->name, basic_type->name) == 0) {
+          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", basic_type->name, basic_type->op_extends->file, basic_type->op_extends->line);
+          return;
+        }
+        parent_basic_type = parent_basic_type->parent;
+      }
+      else {
+        break;
+      }
+    }
+  }
 }
 
 void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
   
   SPVM_CHECK_resolve_basic_types_relation(compiler);
+  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+    return;
+  }
   
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     int32_t compile_error = 0;
@@ -219,12 +239,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
     while (1) {
       if (parent_basic_type) {
-        if (strcmp(parent_basic_type->name, basic_type->name) == 0) {
-          SPVM_COMPILER_error(compiler, "Recursive inheritance. Found the current class \"%s\" in a super class.\n  at %s line %d", basic_type->name, basic_type->op_extends->file, basic_type->op_extends->line);
-          compile_error = 1;
-          break;
-        }
-        
         SPVM_LIST_push(basic_type_merge_stack, parent_basic_type);
         parent_basic_type = parent_basic_type->parent;
       }
