@@ -281,8 +281,8 @@ struct spvm_env {
   void* reserved181;
   const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
   void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
-  int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void (*reserved185)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
+  void* reserved184;
+  void* reserved185;
   const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
   void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);

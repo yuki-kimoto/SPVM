@@ -200,7 +200,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->reserved181 != &env_array[181]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->strerror != &env_array[182]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_string_array != &env_array[183]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_args_stack_length != &env_array[184]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved184 != &env_array[184]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved185 != &env_array[185]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dumpc != &env_array[186]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_pointer_object_raw != &env_array[187]) { stack[0].ival = 0; return 0; }
@@ -2612,30 +2612,30 @@ int32_t SPVM__TestCase__NativeAPI__new_string_array_value(SPVM_ENV* env, SPVM_VA
 }
 
 
-int32_t SPVM__TestCase__NativeAPI__get_args_stack_length_0(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__reserved184_0(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  stack[0].ival = env->get_args_stack_length(env, stack);
-  
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__get_args_stack_length_1(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].ival = env->get_args_stack_length(env, stack);
+  stack[0].ival = env->reserved184(env, stack);
   
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__get_args_stack_length_2(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__reserved184_1(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  stack[0].ival = env->get_args_stack_length(env, stack);
+  stack[0].ival = env->reserved184(env, stack);
   
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__get_args_stack_length_4(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__reserved184_2(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  stack[0].ival = env->get_args_stack_length(env, stack);
+  stack[0].ival = env->reserved184(env, stack);
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__reserved184_4(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = env->reserved184(env, stack);
   
   return 0;
 }

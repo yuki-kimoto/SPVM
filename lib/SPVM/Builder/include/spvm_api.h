@@ -74,7 +74,6 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* sta
 int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t items, int32_t mortal);
 int32_t SPVM_API_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t items);
 int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t items);
-int32_t SPVM_API_get_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_API_items(SPVM_ENV* env, SPVM_VALUE* stack);
 
 // Call Method by name

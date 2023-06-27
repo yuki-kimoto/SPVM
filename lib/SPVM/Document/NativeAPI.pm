@@ -198,7 +198,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   181 reserved181
   182 strerror
   183 new_string_array
-  184 get_args_stack_length
+  184 reserved184
   185 reserved185
   186 dumpc
   187 new_pointer_object_raw
@@ -1824,12 +1824,6 @@ Creates a new string array. This is alias for the following code using L</"new_o
 
   void* obj_string_array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
 
-=head2 get_args_stack_length
-
-  int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
-
-Gets the stack length of the arguments specified by the caller.
-
 =head2 dumpc
 
   const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -1924,7 +1918,7 @@ Examples:
 
   int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-The alias for the L</"get_args_stack_length">.
+Gets the stack length of the arguments specified by the caller.
 
 Examples:
 
