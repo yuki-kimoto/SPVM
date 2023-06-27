@@ -496,8 +496,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       if (class_var) {
         assert(basic_type_id >= 0);
         
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var);
-        const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
+        const char* class_var_name = SPVM_API_RUNTIME_get_class_var_name(runtime, class_var);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
         int32_t found = SPVM_PRECOMPILE_contains_class_var(precompile, string_buffer->value + string_buffer_begin_offset, basic_type_name, class_var_name);
@@ -2512,8 +2511,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_current_basic_type_id, class_var_index);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, class_var_current_basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var);
-        const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
+        const char* class_var_name = SPVM_API_RUNTIME_get_class_var_name(runtime, class_var);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
@@ -2592,8 +2590,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, class_var_current_basic_type_id, class_var_index);
         int32_t basic_type_name_id = SPVM_API_RUNTIME_get_basic_type_name_id(runtime, class_var_current_basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_id);
-        int32_t class_var_name_id = SPVM_API_RUNTIME_get_class_var_name_id(runtime, class_var);
-        const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var_name_id);
+        const char* class_var_name = SPVM_API_RUNTIME_get_class_var_name(runtime, class_var);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
