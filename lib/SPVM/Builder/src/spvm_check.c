@@ -293,21 +293,12 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       }
       basic_type->parent = parent_basic_type;
     }
-  }
-  
-  // Add anon methods
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    
+
     // Add the anon basic type
     for (int32_t anon_basic_types_index = 0; anon_basic_types_index < basic_type->anon_basic_types->length; anon_basic_types_index++) {
       SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_types_index);
       SPVM_LIST_push(compiler->anon_basic_types, anon_basic_type);
     }
-  }
-
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     // Add interfaces
     for (int32_t i = 0; i < basic_type->interface_decls->length; i++) {
@@ -323,7 +314,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
     }
   }
-
+  
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
