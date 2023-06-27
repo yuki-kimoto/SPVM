@@ -313,11 +313,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_LIST_push(basic_type->interfaces, interface_basic_type);
       SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
     }
-  }
-  
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    
+
     SPVM_LIST* methods = basic_type->methods;
     
     // Sort methods by name
