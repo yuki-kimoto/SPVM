@@ -43,8 +43,6 @@ struct spvm_runtime {
   
   SPVM_RUNTIME_ARG* args;
   
-  int32_t args_length;
-  
   // Anon nethod ids
   int32_t* anon_basic_type_ids;
   
