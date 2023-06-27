@@ -59,8 +59,7 @@ void SPVM_CHECK_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
-  
+void SPVM_CHECK_resolve_basic_types_relation(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
@@ -100,6 +99,11 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
     }
   }
+}
+
+void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
+  
+  SPVM_CHECK_resolve_basic_types_relation(compiler);
   
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     int32_t compile_error = 0;
