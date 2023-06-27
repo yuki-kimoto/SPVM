@@ -238,7 +238,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t items = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t entity_method_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t return_value = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* string = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* string1 = NULL;\n");
