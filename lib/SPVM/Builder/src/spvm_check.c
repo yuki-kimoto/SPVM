@@ -158,32 +158,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       }
     }
 
-    // Check class var
-    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
-      SPVM_TYPE* class_var_type = SPVM_CHECK_get_type(compiler, class_var->op_class_var);
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
-      
-      // valut_t cannnot become class variable
-      if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
-        return;
-      }
-    }
-    
-    // Check fields
-    for (int32_t field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
-      SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, field_index);
-      SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, field->op_field);
-
-      // valut_t cannnot become field
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
-      if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the field.\n  at %s line %d", field->op_field->file, field->op_field->line);
-        return;
-      }
-    }
-    
     // Check methods
     for (int32_t i = 0; i < basic_type->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
@@ -313,12 +287,37 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_LIST_push(basic_type->interfaces, interface_basic_type);
       SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
     }
-
   }
   
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     int32_t compile_error = 0;
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    
+    // Check class var
+    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
+      SPVM_TYPE* class_var_type = SPVM_CHECK_get_type(compiler, class_var->op_class_var);
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
+      
+      // valut_t cannnot become class variable
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
+        return;
+      }
+    }
+    
+    // Check fields
+    for (int32_t field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, field_index);
+      SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, field->op_field);
+
+      // valut_t cannnot become field
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the field.\n  at %s line %d", field->op_field->file, field->op_field->line);
+        return;
+      }
+    }
     
     SPVM_LIST* methods = basic_type->methods;
     
