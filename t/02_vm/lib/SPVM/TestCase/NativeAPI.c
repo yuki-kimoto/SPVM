@@ -2255,7 +2255,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_runtime_codes != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_runtime_codes_length != &env_array[5]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved6 != &env_array[6]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_constant_string_id != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved7 != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_constant_string_value != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_name != &env_array[9]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_type_id_by_name != &env_array[10]) { stack[0].ival = 0; return 0; }

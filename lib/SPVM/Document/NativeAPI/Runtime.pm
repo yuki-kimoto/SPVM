@@ -28,7 +28,7 @@ Runtime native APIs have its IDs.
   4  get_runtime_codes
   5  get_runtime_codes_length
   6  reserved6
-  7  get_constant_string_id
+  7  reserved7
   8  get_constant_string_value
   9  get_name
   10 get_basic_type_id_by_name
@@ -157,10 +157,6 @@ Runtime native APIs have its IDs.
 =head2 get_runtime_codes_length
 
   int32_t (*get_runtime_codes_length)(void* runtime);
-
-=head2 get_constant_string_id
-
-  int32_t (*get_constant_string_id)(void* runtime, const char* string);
 
 =head2 get_constant_string_value
 
