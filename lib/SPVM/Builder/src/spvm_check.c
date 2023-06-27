@@ -66,15 +66,36 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
     return;
   }
   
-  SPVM_CHECK_check_basic_types_class_var(compiler);
-  if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-    return;
-  }
-  
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     int32_t compile_error = 0;
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
+    
+    // Check class var
+    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
+      SPVM_TYPE* class_var_type = SPVM_CHECK_get_type(compiler, class_var->op_class_var);
+      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
+      
+      // valut_t cannnot become class variable
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
+        return;
+      }
+    }
+    
+    // Class variable
+    for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
+      
+      // Set class_var id
+      class_var->address_id = compiler->class_vars->length;
+      
+      class_var->index = i;
+      
+      // Add the class_var to the compiler
+      SPVM_LIST_push(compiler->class_vars, class_var);
+    }
     
     // Multi-numeric type limitation
     if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
@@ -650,40 +671,6 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
       else {
         break;
       }
-    }
-  }
-}
-
-void SPVM_CHECK_check_basic_types_class_var(SPVM_COMPILER* compiler) {
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    int32_t compile_error = 0;
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    const char* basic_type_name = basic_type->name;
-    
-    // Check class var
-    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
-      SPVM_TYPE* class_var_type = SPVM_CHECK_get_type(compiler, class_var->op_class_var);
-      int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
-      
-      // valut_t cannnot become class variable
-      if (is_mulnum_t) {
-        SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot used in the definition of the class variable.\n  at %s line %d", class_var->op_class_var->file, class_var->op_class_var->line);
-        return;
-      }
-    }
-    
-    // Class variable
-    for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
-      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
-      
-      // Set class_var id
-      class_var->address_id = compiler->class_vars->length;
-      
-      class_var->index = i;
-      
-      // Add the class_var to the compiler
-      SPVM_LIST_push(compiler->class_vars, class_var);
     }
   }
 }
