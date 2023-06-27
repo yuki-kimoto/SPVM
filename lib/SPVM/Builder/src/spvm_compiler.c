@@ -918,10 +918,13 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   // anon_basic_type_ids
   int32_t* anon_basic_type_32bit_ptr = runtime_codes_ptr;
-  for (int32_t anon_basic_type_id = 0; anon_basic_type_id < compiler->anon_basic_types->length; anon_basic_type_id++) {
-    SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(compiler->anon_basic_types, anon_basic_type_id);
-    *anon_basic_type_32bit_ptr = anon_basic_type->id;
-    anon_basic_type_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type->anon_basic_types->length; anon_basic_type_index++) {
+      SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_type_index);
+      *anon_basic_type_32bit_ptr = anon_basic_type->id;
+      anon_basic_type_32bit_ptr += sizeof(int32_t) / sizeof(int32_t);
+    }
   }
   runtime_codes_ptr += anon_basic_type_32bit_length;
   
