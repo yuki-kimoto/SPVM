@@ -34,7 +34,6 @@ struct spvm_method {
   int32_t call_stack_object_vars_length;
   int32_t call_stack_ref_vars_length;
   int32_t mortal_stack_length;
-  int32_t anon_method_id;
   int32_t tmp_vars_length;
   int8_t is_class_method;
   int8_t is_init;
