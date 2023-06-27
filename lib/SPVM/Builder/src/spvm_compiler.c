@@ -410,14 +410,14 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
       }
       case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
         SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
-        array_field_access->unmerged_field = NULL;
+        array_field_access->field = NULL;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, array_field_access);
         break;
       }
       case SPVM_OP_C_ID_FIELD_ACCESS: {
         SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
         field_access->op_name = NULL;
-        field_access->unmerged_field = NULL;
+        field_access->field = NULL;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, field_access);
         break;
       }
