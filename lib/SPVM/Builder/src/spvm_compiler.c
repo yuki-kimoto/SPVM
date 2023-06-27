@@ -748,21 +748,24 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   // class_vars
   int32_t* class_var_32bit_ptr = runtime_codes_ptr;
-  for (int32_t class_var_id = 0; class_var_id < compiler->class_vars->length; class_var_id++) {
-    SPVM_CLASS_VAR* class_var = SPVM_LIST_get(compiler->class_vars, class_var_id);
-    SPVM_RUNTIME_CLASS_VAR* runtime_class_var = (SPVM_RUNTIME_CLASS_VAR*)class_var_32bit_ptr;
-    
-    runtime_class_var->address_id = class_var->address_id;
-    runtime_class_var->index = class_var->index;
-    runtime_class_var->basic_type_id = class_var->type->basic_type->id;
-    runtime_class_var->type_dimension = class_var->type->dimension;
-    runtime_class_var->type_flag = class_var->type->flag;
-    runtime_class_var->current_basic_type_id = class_var->current_basic_type->id;
-    
-    SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
-    runtime_class_var->name_id = class_var_name_string->id;
-    
-    class_var_32bit_ptr += sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t);
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
+      SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
+      SPVM_RUNTIME_CLASS_VAR* runtime_class_var = (SPVM_RUNTIME_CLASS_VAR*)class_var_32bit_ptr;
+      
+      runtime_class_var->address_id = class_var->address_id;
+      runtime_class_var->index = class_var->index;
+      runtime_class_var->basic_type_id = class_var->type->basic_type->id;
+      runtime_class_var->type_dimension = class_var->type->dimension;
+      runtime_class_var->type_flag = class_var->type->flag;
+      runtime_class_var->current_basic_type_id = class_var->current_basic_type->id;
+      
+      SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
+      runtime_class_var->name_id = class_var_name_string->id;
+      
+      class_var_32bit_ptr += sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t);
+    }
   }
   runtime_codes_ptr += class_vars_32bit_length;
   
