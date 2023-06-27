@@ -17,13 +17,13 @@ struct spvm_runtime_basic_type {
   int32_t destructor_method_index;
   int32_t required_method_index;
   int32_t type_id;
-  int32_t methods_base_address_id;
+  int32_t methods_base;
   int32_t methods_length;
-  int32_t anon_basic_types_base_address_id;
+  int32_t anon_basic_types_base;
   int32_t anon_basic_types_length;
-  int32_t fields_base_address_id;
+  int32_t fields_base;
   int32_t fields_length;
-  int32_t class_vars_base_address_id;
+  int32_t class_vars_base;
   int32_t class_vars_length;
   int32_t fields_size;
   int32_t parent_id;

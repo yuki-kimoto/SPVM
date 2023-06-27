@@ -711,28 +711,28 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->methods_length = basic_type->methods->length;
     if (basic_type->methods->length > 0) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, 0);
-      runtime_basic_type->methods_base_address_id = method->address_id;
+      runtime_basic_type->methods_base = method->address_id;
     }
     else {
-      runtime_basic_type->methods_base_address_id = -1;
+      runtime_basic_type->methods_base = -1;
     }
     
     runtime_basic_type->fields_length = basic_type->fields->length;
     if (basic_type->fields->length > 0) {
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, 0);
-      runtime_basic_type->fields_base_address_id = field->address_id;
+      runtime_basic_type->fields_base = field->address_id;
     }
     else {
-      runtime_basic_type->fields_base_address_id = -1;
+      runtime_basic_type->fields_base = -1;
     }
     
     runtime_basic_type->class_vars_length = basic_type->class_vars->length;
     if (basic_type->class_vars->length > 0) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, 0);
-      runtime_basic_type->class_vars_base_address_id = class_var->address_id;
+      runtime_basic_type->class_vars_base = class_var->address_id;
     }
     else {
-      runtime_basic_type->class_vars_base_address_id = -1;
+      runtime_basic_type->class_vars_base = -1;
     }
     
     basic_type_32bit_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
@@ -826,7 +826,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
     SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)method_32bit_ptr;
     
-    runtime_method->opcodes_base_address_id = method->opcodes_base_id;
+    runtime_method->opcodes_base = method->opcodes_base_id;
     runtime_method->opcodes_length = method->opcodes_length;
     runtime_method->address_id = method->address_id;
     runtime_method->index = method->index;
@@ -858,10 +858,10 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_method->args_length = method->args_length;
     if (method->args_length > 0) {
       SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, 0);
-      runtime_method->args_base_address_id = arg->arg_id;
+      runtime_method->args_base = arg->arg_id;
     }
     else {
-      runtime_method->args_base_address_id = -1;
+      runtime_method->args_base = -1;
     }
     runtime_method->required_args_length = method->required_args_length;
     

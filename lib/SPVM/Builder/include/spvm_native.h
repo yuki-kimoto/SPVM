@@ -378,9 +378,9 @@ struct spvm_env_runtime {
   int32_t (*get_method_call_stack_object_vars_length)(void* runtime, void* method);
   int32_t (*get_method_call_stack_ref_vars_length)(void* runtime, void* method);
   int32_t (*get_method_mortal_stack_length)(void* runtime, void* method);
-  int32_t (*get_method_opcodes_base_address_id)(void* runtime, void* method);
+  int32_t (*get_method_opcodes_base)(void* runtime, void* method);
   int32_t (*get_method_opcodes_length)(void* runtime, void* method);
-  int32_t (*get_method_args_base_address_id)(void* runtime, void* method);
+  int32_t (*get_method_args_base)(void* runtime, void* method);
   int32_t (*get_method_args_length)(void* runtime, void* method);
   void* reserved63;
   void* reserved64;
@@ -409,11 +409,11 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_fields_base_address_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_fields_base)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_methods_base_address_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_methods_base)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_methods_length)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_class_vars_base_address_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_class_vars_base)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_class_vars_length)(void* runtime, int32_t basic_type_id);
   void* reserved96;
   void* reserved97;
