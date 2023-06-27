@@ -66,6 +66,46 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     
     const char* basic_type_name = basic_type->name;
     
+    const char* parent_basic_type_name = basic_type->parent_name;
+    if (parent_basic_type_name) {
+      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_basic_type_name, strlen(parent_basic_type_name));
+
+      if (!SPVM_BASIC_TYPE_is_class_type(compiler, parent_basic_type->id)) {
+        SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", basic_type->op_extends->file, basic_type->op_extends->line);
+        return;
+      }
+      if (!SPVM_BASIC_TYPE_is_class_type(compiler, basic_type->id)) {
+        SPVM_COMPILER_error(compiler, "The current class must be a class type when the class becomes a child class.\n  at %s line %d", basic_type->op_extends->file, basic_type->op_extends->line);
+        return;
+      }
+      
+      if (strcmp(basic_type->name, parent_basic_type->name) == 0) {
+        SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", basic_type->op_extends->file, basic_type->op_extends->line);
+        return;
+      }
+      basic_type->parent = parent_basic_type;
+    }
+    
+    // Add interfaces
+    for (int32_t i = 0; i < basic_type->interface_decls->length; i++) {
+      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(basic_type->interface_decls, i);
+      SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->op_type->uv.type->unresolved_basic_type_name, strlen(interface_decl->op_type->uv.type->unresolved_basic_type_name));
+      
+      if (!SPVM_BASIC_TYPE_is_interface_type(compiler, interface_basic_type->id)) {
+        SPVM_COMPILER_error(compiler, "The interface specified by the interface statement must be an interface type.\n  at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
+        return;
+      }
+      
+      SPVM_LIST_push(basic_type->interfaces, interface_basic_type);
+      SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
+    }
+  }
+  
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    int32_t compile_error = 0;
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    const char* basic_type_name = basic_type->name;
+    
     // Edit INIT block
     // The INIT mehtods that is the parent basic type and used basic types in the order.
     SPVM_METHOD* init_method = basic_type->init_method;
@@ -157,7 +197,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         return;
       }
     }
-
+    
     // Check methods
     for (int32_t i = 0; i < basic_type->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
@@ -248,50 +288,11 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       }
     }
     
-    const char* parent_basic_type_name = basic_type->parent_name;
-    if (parent_basic_type_name) {
-      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_basic_type_name, strlen(parent_basic_type_name));
-
-      if (!SPVM_BASIC_TYPE_is_class_type(compiler, parent_basic_type->id)) {
-        SPVM_COMPILER_error(compiler, "The parant class must be a class type.\n  at %s line %d", basic_type->op_extends->file, basic_type->op_extends->line);
-        return;
-      }
-      if (!SPVM_BASIC_TYPE_is_class_type(compiler, basic_type->id)) {
-        SPVM_COMPILER_error(compiler, "The current class must be a class type when the class becomes a child class.\n  at %s line %d", basic_type->op_extends->file, basic_type->op_extends->line);
-        return;
-      }
-      
-      if (strcmp(basic_type->name, parent_basic_type->name) == 0) {
-        SPVM_COMPILER_error(compiler, "The name of the parant class must be different from the name of the class.\n  at %s line %d", basic_type->op_extends->file, basic_type->op_extends->line);
-        return;
-      }
-      basic_type->parent = parent_basic_type;
-    }
-
     // Add the anon basic type
     for (int32_t anon_basic_types_index = 0; anon_basic_types_index < basic_type->anon_basic_types->length; anon_basic_types_index++) {
       SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_types_index);
       SPVM_LIST_push(compiler->anon_basic_types, anon_basic_type);
     }
-    
-    // Add interfaces
-    for (int32_t i = 0; i < basic_type->interface_decls->length; i++) {
-      SPVM_INTERFACE* interface_decl = SPVM_LIST_get(basic_type->interface_decls, i);
-      SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->op_type->uv.type->unresolved_basic_type_name, strlen(interface_decl->op_type->uv.type->unresolved_basic_type_name));
-      
-      if (!SPVM_BASIC_TYPE_is_interface_type(compiler, interface_basic_type->id)) {
-        SPVM_COMPILER_error(compiler, "The interface specified by the interface statement must be an interface type.\n  at %s line %d", interface_decl->op_interface->file, interface_decl->op_interface->line);
-        return;
-      }
-      
-      SPVM_LIST_push(basic_type->interfaces, interface_basic_type);
-      SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
-    }
-  }
-  
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    int32_t compile_error = 0;
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     // Check class var
     for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
