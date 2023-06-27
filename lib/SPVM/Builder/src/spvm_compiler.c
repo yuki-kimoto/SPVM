@@ -820,50 +820,55 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   // methods
   int32_t* method_32bit_ptr = runtime_codes_ptr;
-  for (int32_t method_id = 0; method_id < compiler->methods->length; method_id++) {
-    SPVM_METHOD* method = SPVM_LIST_get(compiler->methods, method_id);
-    SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)method_32bit_ptr;
-    
-    runtime_method->opcodes_base = method->opcodes_base_id;
-    runtime_method->opcodes_length = method->opcodes_length;
-    runtime_method->address_id = method->address_id;
-    runtime_method->index = method->index;
-    runtime_method->current_basic_type_id = method->current_basic_type->id;
-    runtime_method->is_class_method = method->is_class_method;
-    runtime_method->is_init = method->is_init;
-    runtime_method->is_anon = method->is_anon;
-    runtime_method->call_stack_byte_vars_length  = method->call_stack_byte_vars_length;
-    runtime_method->call_stack_short_vars_length  = method->call_stack_short_vars_length;
-    runtime_method->call_stack_int_vars_length  = method->call_stack_int_vars_length;
-    runtime_method->call_stack_long_vars_length  = method->call_stack_long_vars_length;
-    runtime_method->call_stack_float_vars_length  = method->call_stack_float_vars_length;
-    runtime_method->call_stack_double_vars_length  = method->call_stack_double_vars_length;
-    runtime_method->call_stack_object_vars_length = method->call_stack_object_vars_length;
-    runtime_method->call_stack_ref_vars_length = method->call_stack_ref_vars_length;
-    runtime_method->mortal_stack_length  = method->mortal_stack_length;
-    runtime_method->return_basic_type_id = method->return_type->basic_type->id;
-    runtime_method->return_type_dimension = method->return_type->dimension;
-    runtime_method->return_type_flag = method->return_type->flag;
-    runtime_method->is_native = method->is_native;
-    runtime_method->is_precompile = method->is_precompile;
-    runtime_method->is_destructor = method->is_destructor;
-    runtime_method->is_required = method->is_required;
-    runtime_method->is_enum = method->is_enum;
-    
-    SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(compiler->constant_string_symtable, method->name, strlen(method->name));
-    runtime_method->name_id = method_name_string->id;
-    
-    runtime_method->args_length = method->args_length;
-    if (method->args_length > 0) {
-      SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, 0);
-      runtime_method->args_base = arg->arg_id;
+  
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
+      
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)method_32bit_ptr;
+      
+      runtime_method->opcodes_base = method->opcodes_base_id;
+      runtime_method->opcodes_length = method->opcodes_length;
+      runtime_method->address_id = method->address_id;
+      runtime_method->index = method->index;
+      runtime_method->current_basic_type_id = method->current_basic_type->id;
+      runtime_method->is_class_method = method->is_class_method;
+      runtime_method->is_init = method->is_init;
+      runtime_method->is_anon = method->is_anon;
+      runtime_method->call_stack_byte_vars_length  = method->call_stack_byte_vars_length;
+      runtime_method->call_stack_short_vars_length  = method->call_stack_short_vars_length;
+      runtime_method->call_stack_int_vars_length  = method->call_stack_int_vars_length;
+      runtime_method->call_stack_long_vars_length  = method->call_stack_long_vars_length;
+      runtime_method->call_stack_float_vars_length  = method->call_stack_float_vars_length;
+      runtime_method->call_stack_double_vars_length  = method->call_stack_double_vars_length;
+      runtime_method->call_stack_object_vars_length = method->call_stack_object_vars_length;
+      runtime_method->call_stack_ref_vars_length = method->call_stack_ref_vars_length;
+      runtime_method->mortal_stack_length  = method->mortal_stack_length;
+      runtime_method->return_basic_type_id = method->return_type->basic_type->id;
+      runtime_method->return_type_dimension = method->return_type->dimension;
+      runtime_method->return_type_flag = method->return_type->flag;
+      runtime_method->is_native = method->is_native;
+      runtime_method->is_precompile = method->is_precompile;
+      runtime_method->is_destructor = method->is_destructor;
+      runtime_method->is_required = method->is_required;
+      runtime_method->is_enum = method->is_enum;
+      
+      SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(compiler->constant_string_symtable, method->name, strlen(method->name));
+      runtime_method->name_id = method_name_string->id;
+      
+      runtime_method->args_length = method->args_length;
+      if (method->args_length > 0) {
+        SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, 0);
+        runtime_method->args_base = arg->arg_id;
+      }
+      else {
+        runtime_method->args_base = -1;
+      }
+      runtime_method->required_args_length = method->required_args_length;
+      
+      method_32bit_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
     }
-    else {
-      runtime_method->args_base = -1;
-    }
-    runtime_method->required_args_length = method->required_args_length;
-    
-    method_32bit_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
   }
   runtime_codes_ptr += methods_32bit_length;
   
