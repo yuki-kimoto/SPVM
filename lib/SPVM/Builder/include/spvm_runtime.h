@@ -66,12 +66,6 @@ struct spvm_runtime {
   // The length of operation codes
   int32_t opcodes_length;
   
-  // Native method addresses
-  void** method_native_addresses;
-  
-  // Precompile method addresses
-  void** method_precompile_addresses;
-  
   // String symtable
   SPVM_HASH* constant_string_symtable;
   
