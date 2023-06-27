@@ -267,11 +267,6 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->new_object_array_raw);
 }
 
-# reserved184
-{
-  ok(SPVM::TestCase::NativeAPI->reserved184);
-}
-
 # items
 {
   ok(SPVM::TestCase::NativeAPI->items);

@@ -2612,34 +2612,6 @@ int32_t SPVM__TestCase__NativeAPI__new_string_array_value(SPVM_ENV* env, SPVM_VA
 }
 
 
-int32_t SPVM__TestCase__NativeAPI__reserved184_0(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].ival = env->reserved184(env, stack);
-  
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__reserved184_1(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].ival = env->reserved184(env, stack);
-  
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__reserved184_2(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].ival = env->reserved184(env, stack);
-  
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__reserved184_4(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].ival = env->reserved184(env, stack);
-  
-  return 0;
-}
-
 int32_t SPVM__TestCase__NativeAPI__items_0(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = env->items(env, stack);
