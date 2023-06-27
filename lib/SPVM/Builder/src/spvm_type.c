@@ -917,23 +917,23 @@ SPVM_TYPE* SPVM_TYPE_new_element_type(SPVM_COMPILER* compiler) {
   return type;
 }
 
-int32_t SPVM_TYPE_get_stack_length(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_get_items(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag);
   
-  int32_t stack_length;
+  int32_t items;
   if (is_mulnum_type) {
     
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     assert(basic_type);
     
-    stack_length = basic_type->unmerged_fields->length;
+    items = basic_type->unmerged_fields->length;
   }
   else {
-    stack_length = 1;
+    items = 1;
   }
   
-  return stack_length;
+  return items;
 }
 
 int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {

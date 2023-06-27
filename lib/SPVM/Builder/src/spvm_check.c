@@ -3963,14 +3963,14 @@ int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_st
   
   SPVM_TYPE* my_type = var_decl->type;
 
-  int32_t stack_length = SPVM_TYPE_get_stack_length(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+  int32_t items = SPVM_TYPE_get_items(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
   
   // Search free memory
   int32_t found = 0;
   for (int32_t call_stack_id = 0; call_stack_id < call_stack->length; call_stack_id++) {
-    if (call_stack_id + stack_length <= call_stack->length) {
+    if (call_stack_id + items <= call_stack->length) {
       int32_t is_used = 0;
-      for (int32_t i = 0; i < stack_length; i++) {
+      for (int32_t i = 0; i < items; i++) {
         int32_t my_id = (intptr_t)SPVM_LIST_get(call_stack, call_stack_id + i);
         if (my_id >= 0) {
           is_used = 1;
@@ -3980,7 +3980,7 @@ int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_st
       if (!is_used) {
         found = 1;
         found_call_stack_id = call_stack_id;
-        for (int32_t i = 0; i < stack_length; i++) {
+        for (int32_t i = 0; i < items; i++) {
           call_stack->values[call_stack_id + i] = (void*)(intptr_t)var_decl->id;
         }
         break;
@@ -3995,7 +3995,7 @@ int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_st
   // Add stack
   if (!found) {
     found_call_stack_id = call_stack->length;
-    for (int32_t i = 0; i < stack_length; i++) {
+    for (int32_t i = 0; i < items; i++) {
       SPVM_LIST_push(call_stack, (void*)(intptr_t)var_decl->id);
     }
   }

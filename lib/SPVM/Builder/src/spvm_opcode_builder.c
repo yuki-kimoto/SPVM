@@ -72,7 +72,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
         
         SPVM_OPCODE opcode = {0};
         
-        int32_t items = SPVM_TYPE_get_stack_length(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        int32_t items = SPVM_TYPE_get_items(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
 
         if (arg_type_dimension == 0) {
           if (arg_type_is_ref) {
@@ -797,7 +797,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                     
-                    int32_t method_return_items = SPVM_TYPE_get_stack_length(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag);
+                    int32_t method_return_items = SPVM_TYPE_get_items(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag);
 
                     opcode.operand0 = call_stack_id_in;
                     opcode.operand2 = method_return_items;
@@ -1123,7 +1123,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           // Argument type
                           SPVM_TYPE* arg_type = arg_var_decl->type;
-                          int32_t arg_items = SPVM_TYPE_get_stack_length(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+                          int32_t arg_items = SPVM_TYPE_get_items(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
                           
                           // Term argment type
                           op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
@@ -1342,7 +1342,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
                           assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                           
-                          int32_t call_method_return_items = SPVM_TYPE_get_stack_length(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
+                          int32_t call_method_return_items = SPVM_TYPE_get_items(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
                           assert(call_method_return_items < 0xFFFF);
                           opcode_return.operand3 = call_method_return_items << 8 | 0;
 
