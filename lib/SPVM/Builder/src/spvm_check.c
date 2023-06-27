@@ -314,6 +314,12 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
     }
 
+  }
+  
+  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    int32_t compile_error = 0;
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    
     SPVM_LIST* methods = basic_type->methods;
     
     // Sort methods by name
@@ -361,6 +367,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       }
     }
     
+    // Class variable
     for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
       
@@ -372,11 +379,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       // Add the class_var to the compiler
       SPVM_LIST_push(compiler->class_vars, class_var);
     }
-  }
-  
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    int32_t compile_error = 0;
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     // Resolve inheritance
     SPVM_LIST* basic_type_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
