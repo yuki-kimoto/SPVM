@@ -4,6 +4,14 @@
     
       void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
       int32_t (*get_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+  [Incompatibe Changes]
+    * The following Native APIs were removed.
+    
+      void* class_vars_heap
+
+class_vars_heap
+
     
 0.989014 2023-06-26
   [Bug Fix]

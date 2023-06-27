@@ -14,7 +14,7 @@ The native APIs is used when L<native methods|SPVM::Document::NativeClass> are i
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
-    0 class_vars_heap
+    0 reserved0
     1 reserved1
     2 reserved2
     3 reserved3
@@ -233,12 +233,6 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   216 new_mulnum_array_by_name
   217 has_interface_by_name
   
-=head2 class_vars_heap
-
-  void* class_vars_heap;
-
-The pointer to the storage area of the class variables. This is used internally.
-
 =head2 api
 
   void* api;

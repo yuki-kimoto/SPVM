@@ -16,7 +16,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   
   void** env_array = (void**)env;
   
-  if ((void*)&env->class_vars_heap != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved0 != &env_array[0]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved1 != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved2 != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved3 != &env_array[3]) { stack[0].ival = 0; return 0; }

@@ -97,7 +97,7 @@ union spvm_value {
 
 
 struct spvm_env {
-  void* class_vars_heap;
+  void* reserved0;
   void* reserved1;
   void* reserved2;
   void* reserved3;

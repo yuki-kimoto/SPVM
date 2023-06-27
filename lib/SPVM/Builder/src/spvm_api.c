@@ -97,7 +97,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
 
   // The impelements of Native APIs
   void* env_init[]  = {
-    NULL, // class_vars_heap
+    NULL, // reserved0
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_size
     (void*)(intptr_t)offsetof(SPVM_OBJECT, weaken_backref_head), // weaken_backref_head
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
@@ -343,14 +343,6 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
 int32_t SPVM_API_init_env(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
-
-  // Initialize Class Variables
-  void* class_vars_heap = SPVM_API_new_memory_env(env, sizeof(SPVM_VALUE) * ((int64_t)runtime->class_vars_length + 1));
-  if (class_vars_heap == NULL) {
-    return 2;
-  }
-  
-  env->class_vars_heap = class_vars_heap;
   
   // Initialize class initialized flags
   void* init_flags = SPVM_API_new_memory_env(env, sizeof(int32_t) * ((int64_t)runtime->basic_types_length + 1));
@@ -1594,12 +1586,6 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
 
 void SPVM_API_free_env_raw(SPVM_ENV* env) {
 
-  // Free class variables heap
-  if (env->class_vars_heap != NULL) {
-    free(env->class_vars_heap);
-    env->class_vars_heap = NULL;
-  }
-  
   // Free class initialized flags
   if (env->init_flags != NULL) {
     free(env->init_flags);
