@@ -236,7 +236,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_field_name_id
 
-  int32_t (*get_field_name_id)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_name_id)(void* runtime, void* field);
 
 =head2 get_method_name_id
 
@@ -382,27 +382,27 @@ Internally used.
 
 =head2 get_field_basic_type_id
 
-  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_basic_type_id)(void* runtime, void* field);
 
 =head2 get_field_type_dimension
 
-  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_type_dimension)(void* runtime, void* field);
 
 =head2 get_field_type_flag
 
-  int32_t (*get_field_type_flag)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_type_flag)(void* runtime, void* field);
 
 =head2 get_field_basic_type_id
 
-  int32_t (*get_field_basic_type_id)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_basic_type_id)(void* runtime, void* field);
 
 =head2 get_field_type_dimension
 
-  int32_t (*get_field_type_dimension)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_type_dimension)(void* runtime, void* field);
 
 =head2 get_field_type_flag
 
-  int32_t (*get_field_type_flag)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_type_flag)(void* runtime, void* field);
 
 =head2 get_method_return_basic_type_id
 
@@ -434,11 +434,11 @@ Internally used.
 
 =head2 get_field_current_basic_type_id
 
-  int32_t (*get_field_current_basic_type_id)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_current_basic_type_id)(void* runtime, void* field);
 
 =head2 get_field_current_basic_type_id
 
-  int32_t (*get_field_current_basic_type_id)(void* runtime, int32_t field_address_id);
+  int32_t (*get_field_current_basic_type_id)(void* runtime, void* field);
 
 =head2 get_basic_type_parent_id
 
