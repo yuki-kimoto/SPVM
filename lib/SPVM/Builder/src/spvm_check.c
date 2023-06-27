@@ -904,7 +904,7 @@ void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_ac
   
   while (1) {
     found_field = SPVM_HASH_get(
-      parent_basic_type->unmerged_field_symtable,
+      parent_basic_type->field_symtable,
       field_name,
       strlen(field_name)
     );
