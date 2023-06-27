@@ -736,6 +736,11 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         }
       }
     }
+    
+    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->name, strlen(method->name));
+    }
   }
 }
 
