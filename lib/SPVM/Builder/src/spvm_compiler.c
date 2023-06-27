@@ -488,9 +488,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   int32_t length = 0;
   
-  // constant_string_pool length
-  length++;
-  
   // constant_string_pool 32bit length
   length++;
   
@@ -565,10 +562,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   // Total length
   *runtime_codes_ptr = runtime_codes_length;
-  runtime_codes_ptr++;
-  
-  // constant_string_pool length
-  *runtime_codes_ptr = compiler->constant_string_pool->length;
   runtime_codes_ptr++;
   
   // constant_string_pool 32bit length

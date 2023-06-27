@@ -69,10 +69,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
-  // constant_string_pool length
-  runtime->constant_string_pool_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
   // constant_string_pool runtime codes length
   int32_t constant_string_pool_runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
