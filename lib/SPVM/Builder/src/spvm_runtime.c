@@ -113,10 +113,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->class_vars = (SPVM_RUNTIME_CLASS_VAR*)runtime_codes_ptr;
   runtime_codes_ptr += class_vars_runtime_codes_length;
   
-  // fields length
-  runtime->fields_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
   // fields runtime codes length
   int32_t fields_runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;

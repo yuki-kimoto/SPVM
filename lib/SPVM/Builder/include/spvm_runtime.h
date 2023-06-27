@@ -38,9 +38,6 @@ struct spvm_runtime {
   // Fields
   SPVM_RUNTIME_FIELD* fields;
   
-  // The length of the fields
-  int32_t fields_length;
-  
   // Methods
   SPVM_RUNTIME_METHOD* methods;
   
