@@ -777,22 +777,25 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   // fields
   int32_t* field_32bit_ptr = runtime_codes_ptr;
-  for (int32_t field_address_id = 0; field_address_id < compiler->fields->length; field_address_id++) {
-    SPVM_FIELD* field = SPVM_LIST_get(compiler->fields, field_address_id);
-    SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
-    
-    runtime_field->address_id = field->address_id;
-    runtime_field->index = field->index;
-    runtime_field->offset = field->offset;
-    runtime_field->basic_type_id = field->type->basic_type->id;
-    runtime_field->type_dimension = field->type->dimension;
-    runtime_field->type_flag = field->type->flag;
-    runtime_field->current_basic_type_id = field->current_basic_type->id;
-    
-    SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
-    runtime_field->name_id = field_name_string->id;
-    
-    field_32bit_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+      SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
+      
+      runtime_field->address_id = field->address_id;
+      runtime_field->index = field->index;
+      runtime_field->offset = field->offset;
+      runtime_field->basic_type_id = field->type->basic_type->id;
+      runtime_field->type_dimension = field->type->dimension;
+      runtime_field->type_flag = field->type->flag;
+      runtime_field->current_basic_type_id = field->current_basic_type->id;
+      
+      SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
+      runtime_field->name_id = field_name_string->id;
+      
+      field_32bit_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
+    }
   }
   runtime_codes_ptr += fields_32bit_length;
   
