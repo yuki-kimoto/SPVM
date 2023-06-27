@@ -1,3 +1,9 @@
+0.989015 2023-06-27
+  [Incompatibe Changes]
+    * The following native APIs were removed.
+    
+      void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
+    
 0.989014 2023-06-26
   [Bug Fix]
     * The bug that the get_field_static Native API didn't work well was fixed.

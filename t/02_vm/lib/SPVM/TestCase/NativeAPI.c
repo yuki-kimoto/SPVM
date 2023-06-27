@@ -201,7 +201,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->strerror != &env_array[182]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_string_array != &env_array[183]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_args_stack_length != &env_array[184]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_args_stack_length != &env_array[185]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved185 != &env_array[185]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dumpc != &env_array[186]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_pointer_object_raw != &env_array[187]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_pointer_object != &env_array[188]) { stack[0].ival = 0; return 0; }

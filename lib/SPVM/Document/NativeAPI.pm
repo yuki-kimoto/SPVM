@@ -199,7 +199,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   182 strerror
   183 new_string_array
   184 get_args_stack_length
-  185 set_args_stack_length
+  185 reserved185
   186 dumpc
   187 new_pointer_object_raw
   188 new_pointer_object
@@ -1830,9 +1830,9 @@ Creates a new string array. This is alias for the following code using L</"new_o
 
 Gets the stack length of the arguments specified by the caller.
 
-=head2 set_args_stack_length
+=head2 reserved185
 
-  void (*set_args_stack_length)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
+  void (*reserved185)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
 
 Sets the stack length of the arguments for a method call.
 

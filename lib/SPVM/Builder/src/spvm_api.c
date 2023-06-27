@@ -282,7 +282,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_strerror,
     SPVM_API_new_string_array,
     SPVM_API_get_args_stack_length,
-    SPVM_API_set_args_stack_length,
+    NULL, // reserved185
     SPVM_API_dumpc,
     SPVM_API_new_pointer_object_raw,
     SPVM_API_new_pointer_object,
@@ -4238,12 +4238,6 @@ int32_t SPVM_API_get_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM_API_items(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_API_get_args_stack_length(env, stack);
-}
-
-void SPVM_API_set_args_stack_length(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length) {
-  (void)env;
-  
-  stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = args_length;
 }
 
 int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t items) {
