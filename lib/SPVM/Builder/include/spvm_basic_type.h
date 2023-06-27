@@ -21,6 +21,9 @@ struct spvm_basic_type {
   const char* module_dir;
   const char* module_rel_file;
   const char* version_string;
+  SPVM_LIST* constant_strings;
+  SPVM_HASH* constant_string_symtable;
+  SPVM_STRING_BUFFER* constant_strings_buffer;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;
   SPVM_LIST* unmerged_fields;
