@@ -539,9 +539,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // args
   length += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (compiler->args->length + 1);
   
-  // opcodes length
-  length++;
-  
   // opcodes 32bit length
   length++;
   
@@ -776,10 +773,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
   }
   runtime_codes_ptr += fields_runtime_codes_length;
-  
-  // opcodes length
-  *runtime_codes_ptr = compiler->opcode_array->length;
-  runtime_codes_ptr++;
   
   // opcodes 32bit length
   int32_t opcodes_runtime_codes_length = (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);

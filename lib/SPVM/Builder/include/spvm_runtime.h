@@ -49,9 +49,6 @@ struct spvm_runtime {
   // Operation codes
   SPVM_OPCODE* opcodes;
   
-  // The length of operation codes
-  int32_t opcodes_length;
-  
   // String symtable
   SPVM_HASH* constant_string_symtable;
   

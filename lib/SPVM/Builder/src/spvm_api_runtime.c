@@ -100,7 +100,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_new_object,
     SPVM_API_RUNTIME_free_object,
     SPVM_API_RUNTIME_get_opcodes,
-    SPVM_API_RUNTIME_get_opcodes_length,
+    NULL, // reserved3
     SPVM_API_RUNTIME_get_runtime_codes,
     SPVM_API_RUNTIME_get_runtime_codes_length,
     NULL, // reserved6
@@ -254,11 +254,6 @@ void SPVM_API_RUNTIME_free_object(SPVM_RUNTIME* runtime) {
 SPVM_OPCODE* SPVM_API_RUNTIME_get_opcodes(SPVM_RUNTIME* runtime) {
 
   return runtime->opcodes;
-}
-
-int32_t SPVM_API_RUNTIME_get_opcodes_length(SPVM_RUNTIME* runtime) {
-  
-  return runtime->opcodes_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime) {

@@ -24,7 +24,7 @@ Runtime native APIs have its IDs.
   0  new_object
   1  free_object
   2  get_opcodes
-  3  get_opcodes_length
+  3  reserved3
   4  get_runtime_codes
   5  get_runtime_codes_length
   6  reserved6
@@ -149,10 +149,6 @@ Runtime native APIs have its IDs.
 =head2 get_opcodes
 
   int32_t* (*get_opcodes)(void* runtime);
-
-=head2 get_opcodes_length
-
-  int32_t (*get_opcodes_length)(void* runtime);
 
 =head2 get_runtime_codes
 

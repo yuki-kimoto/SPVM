@@ -116,7 +116,6 @@ int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_A
 
 // Opcode
 SPVM_OPCODE* SPVM_API_RUNTIME_get_opcodes(SPVM_RUNTIME* runtime);
-int32_t SPVM_API_RUNTIME_get_opcodes_length(SPVM_RUNTIME* runtime);
 
 // Anon basic type
 int32_t SPVM_API_RUNTIME_get_anon_basic_type_id(SPVM_RUNTIME* runtime, int32_t anon_basic_type_address_id);
