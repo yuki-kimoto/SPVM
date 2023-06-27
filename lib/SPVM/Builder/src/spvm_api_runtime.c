@@ -938,28 +938,24 @@ int32_t SPVM_API_RUNTIME_get_anon_basic_type_id(SPVM_RUNTIME* runtime, int32_t a
   return anon_basic_type_id;
 }
 
-void SPVM_API_RUNTIME_set_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
-  
-  runtime->method_native_addresses[method->address_id] = address;
-}
-
-void SPVM_API_RUNTIME_set_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
-
-  runtime->method_precompile_addresses[method->address_id] = address;
-}
-
 void* SPVM_API_RUNTIME_get_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
 
-  void* native_method_address = runtime->method_native_addresses[method->address_id];
+  return method->native_address;
+}
+
+void SPVM_API_RUNTIME_set_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
   
-  return native_method_address;
+  method->native_address = address;
 }
 
 void* SPVM_API_RUNTIME_get_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
 
-  void* precompile_method_address = runtime->method_precompile_addresses[method->address_id];
-  
-  return precompile_method_address;
+  return method->precompile_address;
+}
+
+void SPVM_API_RUNTIME_set_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
+
+  method->precompile_address = address;
 }
 
 int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t interface_basic_type_id) {

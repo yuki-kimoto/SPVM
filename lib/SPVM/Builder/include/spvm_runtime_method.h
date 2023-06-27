@@ -9,7 +9,7 @@
 // Runtime method information
 struct spvm_runtime_method {
   int32_t address_id; // Will be removed.
-  int32_t index; // Will be used.
+  int32_t index;
   int32_t name_id;
   int32_t args_base;
   int32_t args_length;
@@ -37,6 +37,8 @@ struct spvm_runtime_method {
   int8_t is_destructor;
   int8_t is_required;
   int8_t is_enum;
+  void* native_address;
+  void* precompile_address;
 };
 
 #endif
