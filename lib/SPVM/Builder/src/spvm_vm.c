@@ -2068,33 +2068,33 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_BYTE: {
-        int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(env, &byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        int32_t items = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(env, &byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_SHORT: {
-        int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(env, &short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        int32_t items = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(env, &short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_INT: {
-        int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(env, &int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        int32_t items = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(env, &int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_LONG: {
-        int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(env, &long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        int32_t items = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(env, &long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_FLOAT: {
-        int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(env, &float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        int32_t items = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(env, &float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_DOUBLE: {
-        int32_t type_stack_length = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(env, &double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, type_stack_length);
+        int32_t items = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(env, &double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE: {
