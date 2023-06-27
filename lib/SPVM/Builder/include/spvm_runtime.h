@@ -41,9 +41,6 @@ struct spvm_runtime {
   // Methods
   SPVM_RUNTIME_METHOD* methods;
   
-  // The length of methods
-  int32_t methods_length;
-  
   SPVM_RUNTIME_ARG* args;
   
   int32_t args_length;

@@ -133,10 +133,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->opcodes = (SPVM_OPCODE*)runtime_codes_ptr;
   runtime_codes_ptr += opcodes_runtime_codes_length;
   
-  // methods length
-  runtime->methods_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
   // methods runtime codes length
   int32_t methods_runtime_codes_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
