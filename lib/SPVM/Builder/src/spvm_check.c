@@ -1174,6 +1174,8 @@ void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYP
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
+              
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, op_type->uv.type->basic_type->name, strlen(op_type->uv.type->basic_type->name));
             }
             break;
           }
