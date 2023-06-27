@@ -474,7 +474,7 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
     
     if (match) {
-      const char* method_name = env->api->runtime->get_name(runtime, env->api->runtime->get_method_name_id(runtime, method));
+      const char* method_name = env->api->runtime->get_method_name(runtime, method);
       void* obj_method_name = env->new_string_nolen(env, stack, method_name);
       env->set_elem_object(env, stack, obj_method_names, match_method_index, obj_method_name);
       match_method_index++;
