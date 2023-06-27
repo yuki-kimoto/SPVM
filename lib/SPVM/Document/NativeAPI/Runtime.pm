@@ -106,7 +106,7 @@ Runtime native APIs have its IDs.
   82 reserved82
   83 is_object_type
   84 reserved84
-  85 init_flags
+  85 reserved85
   86 can_assign
   87 get_basic_type_module_rel_file_id
   88 get_basic_type_module_dir_id
@@ -371,10 +371,6 @@ Runtime native APIs have its IDs.
   int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
 
 Gets the ID of the constant string of the version number.
-
-=head2 init_flags
-
-Internally used.
 
 =head2 can_assign
 

@@ -307,7 +307,7 @@ struct spvm_env {
   const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
   double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
   int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
-  void* init_flags;
+  void* reserved210;
   const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*isa_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);
   int32_t (*is_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);
@@ -404,7 +404,7 @@ struct spvm_env_runtime {
   void* reserved82;
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
   void* reserved84;
-  void* init_flags;
+  void* reserved85;
   int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
   int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);

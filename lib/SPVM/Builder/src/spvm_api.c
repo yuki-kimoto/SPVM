@@ -307,7 +307,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_version_string,
     SPVM_API_get_version_number,
     SPVM_API_call_method,
-    NULL, // init_flags
+    NULL, // reserved210
     SPVM_API_get_object_basic_type_name,
     SPVM_API_isa_by_name,
     SPVM_API_is_type_by_name,
@@ -343,14 +343,6 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
 int32_t SPVM_API_init_env(SPVM_ENV* env) {
   
   SPVM_RUNTIME* runtime = env->runtime;
-  
-  // Initialize class initialized flags
-  void* init_flags = SPVM_API_new_memory_env(env, sizeof(int32_t) * ((int64_t)runtime->basic_types_length + 1));
-  if (init_flags == NULL) {
-    return 2;
-  }
-  
-  env->init_flags = init_flags;
   
   // Adjust alignment SPVM_VALUE
   int32_t object_header_size = sizeof(SPVM_OBJECT);
@@ -1586,12 +1578,6 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
 
 void SPVM_API_free_env_raw(SPVM_ENV* env) {
 
-  // Free class initialized flags
-  if (env->init_flags != NULL) {
-    free(env->init_flags);
-    env->init_flags = NULL;
-  }
-  
   // Free env api
   free(env->api->allocator);
   free(env->api->string_buffer);
@@ -1688,14 +1674,12 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type_id, method_return_type_dimension, method_return_type_flag);
     int32_t no_need_call = 0;
     if (method->is_init) {
-      int32_t* init_flags = (int32_t*)env->init_flags;
-      int32_t basic_type_id = method->current_basic_type_id;
-      int32_t init_flag = init_flags[basic_type_id];
-      if (init_flag) {
+      
+      if (current_basic_type->initialized) {
         no_need_call = 1;
       }
       else {
-        init_flags[basic_type_id]++;
+        current_basic_type->initialized = 1;
       }
     }
     

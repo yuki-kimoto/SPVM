@@ -9,8 +9,11 @@
     * The following Native APIs were removed.
     
       void* class_vars_heap
+      void* init_flags;
 
-class_vars_heap
+    * The following Native Runtime APIs were removed.
+    
+      void* init_flags;
 
     
 0.989014 2023-06-26
