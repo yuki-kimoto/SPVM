@@ -1830,12 +1830,6 @@ Creates a new string array. This is alias for the following code using L</"new_o
 
 Gets the stack length of the arguments specified by the caller.
 
-=head2 reserved185
-
-  void (*reserved185)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t args_length);
-
-Sets the stack length of the arguments for a method call.
-
 =head2 dumpc
 
   const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
