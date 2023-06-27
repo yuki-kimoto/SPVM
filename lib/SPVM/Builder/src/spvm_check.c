@@ -374,14 +374,14 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Resolve inheritance
-  int32_t compile_error = 0;
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    int32_t compile_error = 0;
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
+    // Resolve inheritance
     SPVM_LIST* basic_type_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
     SPVM_LIST_push(basic_type_stack, basic_type);
-
+    
     SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
     
@@ -482,10 +482,6 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     if (compile_error) {
       return;
     }
-  }
-  
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     // Check required method
     for (int32_t interface_index = 0; interface_index < basic_type->interfaces->length; interface_index++) {
