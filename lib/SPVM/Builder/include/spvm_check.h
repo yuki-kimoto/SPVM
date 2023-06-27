@@ -26,6 +26,8 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler);
 
 void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler);
 
+void SPVM_CHECK_check_basic_types_class_var(SPVM_COMPILER* compiler);
+
 void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
 void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
