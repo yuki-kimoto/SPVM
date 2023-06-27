@@ -785,7 +785,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
       SPVM_RUNTIME_FIELD* runtime_field = (SPVM_RUNTIME_FIELD*)field_32bit_ptr;
       
-      runtime_field->address_id = field->address_id;
       runtime_field->index = field->index;
       runtime_field->offset = field->offset;
       runtime_field->basic_type_id = field->type->basic_type->id;
