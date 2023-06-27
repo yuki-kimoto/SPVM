@@ -40,13 +40,13 @@
 
 void SPVM_CHECK_check(SPVM_COMPILER* compiler) {
   // Resolve type ops
-  SPVM_CHECK_resolve_op_types(compiler);
+  SPVM_CHECK_check_op_types(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
   
   // Resolve basic types
-  SPVM_CHECK_resolve_basic_types(compiler);
+  SPVM_CHECK_check_basic_types(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
@@ -59,7 +59,7 @@ void SPVM_CHECK_check(SPVM_COMPILER* compiler) {
 #endif
 }
 
-void SPVM_CHECK_resolve_basic_types_relation(SPVM_COMPILER* compiler) {
+void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
@@ -118,9 +118,9 @@ void SPVM_CHECK_resolve_basic_types_relation(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
+void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
   
-  SPVM_CHECK_resolve_basic_types_relation(compiler);
+  SPVM_CHECK_check_basic_types_relation(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
@@ -319,7 +319,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
     }
     
     // Resove field offset
-    SPVM_CHECK_resolve_field_offset(compiler, basic_type);
+    SPVM_CHECK_check_field_offset(compiler, basic_type);
     
     // Add parent interfaces
     basic_type->interfaces = merged_interfaces;
@@ -665,7 +665,7 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
       
       // AST traversals
       if (method->op_block) {
-        SPVM_CHECK_check_ast_resolve_op_types(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_check_op_types(compiler, basic_type, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
@@ -685,14 +685,14 @@ void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler) {
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Resolve call stack ids of variable declarations
-        SPVM_CHECK_check_ast_resolve_call_stack_ids(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_check_call_stack_ids(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }
     }
   }
 }
 
-void SPVM_CHECK_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
+void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   
   SPVM_TYPE* type = op_type->uv.type;
   
@@ -739,7 +739,7 @@ void SPVM_CHECK_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
 
 }
 
-void SPVM_CHECK_resolve_op_types(SPVM_COMPILER* compiler) {
+void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
   
   SPVM_LIST* op_types = compiler->op_types;
   
@@ -748,12 +748,12 @@ void SPVM_CHECK_resolve_op_types(SPVM_COMPILER* compiler) {
     SPVM_OP* op_type = SPVM_LIST_get(op_types, i);
     
     if (!op_type->uv.type->resolved_in_ast) {
-      SPVM_CHECK_resolve_op_type(compiler, op_type);
+      SPVM_CHECK_check_op_type(compiler, op_type);
     }
   }
 }
 
-void SPVM_CHECK_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name) {
+void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name) {
   
   if (op_class_var_access->uv.class_var_access->class_var) {
     return;
@@ -795,7 +795,7 @@ void SPVM_CHECK_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_cl
   }
 }
 
-void SPVM_CHECK_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
+void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access) {
 
   SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
 
@@ -838,7 +838,7 @@ void SPVM_CHECK_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_
   }
 }
 
-void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type) {
+void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type) {
   if (basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
     return;
   }
@@ -907,7 +907,7 @@ void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* b
   basic_type->fields_size = offset;
 }
 
-void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name) {
+void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
@@ -1031,7 +1031,7 @@ void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_me
   }
 }
 
-void SPVM_CHECK_check_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   // Run OPs
   SPVM_OP* op_root = method->op_block;
@@ -1082,7 +1082,7 @@ void SPVM_CHECK_check_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_T
                 op_type->uv.type->basic_type = SPVM_LIST_get(compiler->basic_types, 0);
               }
               
-              SPVM_CHECK_resolve_op_type(compiler, op_type);
+              SPVM_CHECK_check_op_type(compiler, op_type);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
@@ -2785,13 +2785,13 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               
               op_class_var_access->is_dist = op_cur->is_dist;
               
-              SPVM_CHECK_resolve_class_var_access(compiler, op_class_var_access, basic_type->name);
+              SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, basic_type->name);
               if (op_class_var_access->uv.class_var_access->class_var) {
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
                 // Check field name
-                SPVM_CHECK_resolve_class_var_access(compiler, op_class_var_access, basic_type->name);
+                SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, basic_type->name);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
@@ -2829,7 +2829,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 
             
             // Resolve method
-            SPVM_CHECK_resolve_call_method(compiler, op_cur, basic_type->name);
+            SPVM_CHECK_check_call_method(compiler, op_cur, basic_type->name);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }
@@ -2986,7 +2986,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             }
             
             // Check field name
-            SPVM_CHECK_resolve_field_access(compiler, op_cur);
+            SPVM_CHECK_check_field_access(compiler, op_cur);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }
@@ -3449,7 +3449,7 @@ void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compile
   SPVM_LIST_free(op_block_stack);
 }
 
-void SPVM_CHECK_check_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_check_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 

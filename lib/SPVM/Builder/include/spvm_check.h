@@ -8,21 +8,21 @@
 
 void SPVM_CHECK_check(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_resolve_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type);
+void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type);
 
-void SPVM_CHECK_resolve_op_types(SPVM_COMPILER* compiler);
+void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name);
+void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name);
 
-void SPVM_CHECK_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access);
+void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access);
 
-void SPVM_CHECK_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type);
+void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type);
 
-void SPVM_CHECK_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name);
+void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name);
 
-void SPVM_CHECK_resolve_basic_types(SPVM_COMPILER* compiler);
+void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_check_ast_resolve_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
 void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
@@ -30,7 +30,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
 
 void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
-void SPVM_CHECK_check_ast_resolve_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_check_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
 int SPVM_CHECK_method_name_compare_cb(const void* method1_ptr, const void* method2_ptr);
 
