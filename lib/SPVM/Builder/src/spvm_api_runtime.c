@@ -508,7 +508,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name(SPVM_RUNTIME* run
   if (basic_type->class_vars_length > 0) {
     for (int32_t class_var_index = 0; class_var_index <  basic_type->class_vars_length; class_var_index++) {
       SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, basic_type_id, class_var_index);
-      const char* class_var_name_current = SPVM_API_RUNTIME_get_name(runtime, class_var->name_id);
+      const char* class_var_name_current = SPVM_API_RUNTIME_get_class_var_name(runtime, class_var);
       if (strcmp(class_var_name_current, class_var_name) == 0) {
         found_class_var = class_var;
         break;
