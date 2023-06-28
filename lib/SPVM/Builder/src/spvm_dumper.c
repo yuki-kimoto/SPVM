@@ -78,7 +78,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (id == SPVM_OP_C_ID_CLASS_VAR) {
       SPVM_CLASS_VAR* class_var = op_cur->uv.class_var;
       fprintf(stderr, " \"%s\"", class_var->name);
-      fprintf(stderr, " (id :%d)", class_var->address_id);
+      fprintf(stderr, " (index :%d)", class_var->index);
     }
     else if (id == SPVM_OP_C_ID_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
@@ -93,7 +93,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
     else if (id == SPVM_OP_C_ID_CLASS_VAR_ACCESS) {
       SPVM_CLASS_VAR_ACCESS* class_var_access = op_cur->uv.class_var_access;
       fprintf(stderr, " \"%s\"", class_var_access->op_name->uv.name);
-      fprintf(stderr, " (id :%d)", class_var_access->class_var->address_id);
+      fprintf(stderr, " (index :%d)", class_var_access->class_var->index);
     }
     else if (id == SPVM_OP_C_ID_FIELD_ACCESS) {
       SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;

@@ -246,9 +246,6 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
     for (int32_t i = 0; i < basic_type->class_vars->length; i++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
       
-      // Set class_var id
-      class_var->address_id = compiler->class_vars->length;
-      
       class_var->index = i;
       
       // Add the class_var to the compiler
