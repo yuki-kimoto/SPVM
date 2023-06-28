@@ -11,6 +11,13 @@
       +  const char* (*get_field_name)(void* runtime, void* field);
       -  int32_t (*get_method_name_id)(void* runtime, void* method);
       +  const char* (*get_method_name)(void* runtime, void* method);
+
+      -  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);
+      +  const char* (*get_basic_type_module_rel_file)(void* runtime, int32_t basic_type_id);
+      +  const char* (*get_basic_type_module_dir)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
+      +  const char* (*get_basic_type_version_string)(void* runtime, int32_t basic_type_id);
     
   [New Features]
     * The following Native Runtime APIs were added.

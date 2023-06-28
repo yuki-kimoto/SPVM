@@ -406,8 +406,8 @@ struct spvm_env_runtime {
   void* reserved84;
   void* reserved85;
   int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
-  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_module_dir_id)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_module_rel_file)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_module_dir)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_fields_base)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);
@@ -435,7 +435,7 @@ struct spvm_env_runtime {
   int32_t (*get_field_current_basic_type_id)(void* runtime, void* method);
   int32_t (*get_class_var_current_basic_type_id)(void* runtime, void* class_var);
   int32_t (*get_basic_type_parent_id)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_version_string)(void* runtime, int32_t basic_type_id);
   void* (*get_basic_type)(void* runtime, int32_t basic_type_id);
   void* (*get_field)(void* runtime, int32_t basic_type_id, int32_t field_index);
   void* (*get_method)(void* runtime, int32_t basic_type_id, int32_t method_index);
@@ -452,9 +452,6 @@ struct spvm_env_runtime {
   int32_t (*get_field_index)(void* runtime, void* field);
   int32_t (*get_field_offset)(void* runtime, void* field);
   void* (*get_arg)(void* runtime, void* method, int32_t arg_index);
-  const char* (*get_basic_type_module_rel_file)(void* runtime, int32_t basic_type_id);
-  const char* (*get_basic_type_module_dir)(void* runtime, int32_t basic_type_id);
-  const char* (*get_basic_type_version_string)(void* runtime, int32_t basic_type_id);
 };
 
 struct spvm_env_compiler {

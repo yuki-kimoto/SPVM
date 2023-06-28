@@ -108,8 +108,8 @@ Runtime native APIs have its IDs.
   84 reserved84
   85 reserved85
   86 can_assign
-  87 get_basic_type_module_rel_file_id
-  88 get_basic_type_module_dir_id
+  87 get_basic_type_module_rel_file
+  88 get_basic_type_module_dir
   89 get_basic_type_is_anon
   90 get_basic_type_fields_base
   91 get_basic_type_fields_length
@@ -135,6 +135,7 @@ Runtime native APIs have its IDs.
   108 get_arg_type_flag
   109 get_method_current_basic_type_id
   110 get_basic_type_parent_id
+  111 get_basic_type_version_string
 
 =head1 Runtime Native APIs
 
@@ -178,13 +179,13 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
 
-=head2 get_basic_type_module_rel_file_id
+=head2 get_basic_type_module_rel_file
 
-  int32_t (*get_basic_type_module_rel_file_id)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_module_rel_file)(void* runtime, int32_t basic_type_id);
 
-=head2 get_basic_type_include_dir_id
+=head2 get_basic_type_module_dir
 
-  int32_t (*get_basic_type_include_dir_id)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_module_dir)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_is_anon
 
@@ -427,6 +428,10 @@ Gets the ID of the constant string of the version number.
 =head2 get_basic_type_parent_id
 
   int32_t (*get_basic_type_parent_id)(void* runtime, int32_t basic_type_id);
+
+=head2 get_basic_type_version_string
+
+const char* (*get_basic_type_version_string)(void* runtime, int32_t basic_type_id);
 
 =head1 Copyright & License
 
