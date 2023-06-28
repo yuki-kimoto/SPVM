@@ -136,7 +136,7 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
-    SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_basic_type->name_id];
+    SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_basic_type->name_string_index];
     const char* runtime_basic_type_name = (const char*)&runtime->string_pool[basic_type_name_string->string_pool_id];
     SPVM_HASH_set(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
   }

@@ -9,9 +9,9 @@
 struct spvm_runtime_basic_type {
   int32_t id;
   int32_t category;
-  int32_t name_id;
-  int32_t module_dir_id;
-  int32_t module_rel_file_id;
+  int32_t name_string_index;
+  int32_t module_dir_string_index;
+  int32_t module_rel_file_string_index;
   int32_t init_method_index;
   int32_t destructor_method_index;
   int32_t required_method_index;
@@ -26,7 +26,7 @@ struct spvm_runtime_basic_type {
   int32_t class_vars_length;
   int32_t fields_size;
   int32_t parent_id;
-  int32_t version_string_id;
+  int32_t version_string_string_index;
   int8_t has_init_block;
   int8_t is_anon;
   int8_t is_pointer;

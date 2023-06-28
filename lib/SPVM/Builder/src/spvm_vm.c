@@ -1317,7 +1317,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t decl_method_index = opcode->operand2;
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
-        const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
+        const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_string_index, NULL);
         SPVM_IMPLEMENT_CAN(env, stack, int_vars[0], object, method_name);
         break;
       }
@@ -1337,16 +1337,16 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         const char* include_dir = NULL;
         const char* include_dir_sep;
-        int32_t include_dir_id = current_basic_type->module_dir_id;
+        int32_t include_dir_id = current_basic_type->module_dir_string_index;
         if (include_dir_id >= 0) {
           include_dir_sep = "/";
-          include_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_dir_id, NULL);
+          include_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_dir_string_index, NULL);
         }
         else {
           include_dir_sep = "";
           include_dir = "";
         }
-        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_rel_file_id, NULL);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_rel_file_string_index, NULL);
 
         SPVM_IMPLEMENT_WARN(env, stack, string, include_dir, include_dir_sep, module_rel_file, line);
         
@@ -2311,7 +2311,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t items = opcode->operand2;
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
-        const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_id, NULL);
+        const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_string_index, NULL);
         
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, method->current_basic_type_id);
         
