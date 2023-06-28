@@ -412,8 +412,8 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           int32_t dot_count = 0;
           int32_t digits_after_dot = 0;
           int32_t invalid_char = 0;
-          for (int32_t version_string_index = 0; version_string_index < version_string_length; version_string_index++) {
-            char ch = version_string[version_string_index];
+          for (int32_t version_string_address_id = 0; version_string_address_id < version_string_length; version_string_address_id++) {
+            char ch = version_string[version_string_address_id];
             
             if (!(ch == '.' || isdigit(ch))) {
               invalid_char = 1;

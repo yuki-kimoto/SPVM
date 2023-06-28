@@ -10,7 +10,7 @@
 struct spvm_runtime_method {
   int32_t address_id; // Will be removed.
   int32_t index;
-  int32_t name_string_index;
+  int32_t name_string_address_id;
   int32_t args_base;
   int32_t args_length;
   int32_t required_args_length;
