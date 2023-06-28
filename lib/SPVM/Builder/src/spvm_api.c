@@ -4237,7 +4237,7 @@ const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_
   
   const char* version_string = NULL;
   if (basic_type->version_string_string_index >= 0) {
-    version_string = env->api->runtime->get_name(env->runtime, basic_type->version_string_string_index);
+    version_string = SPVM_API_RUNTIME_get_name(env->runtime, basic_type->version_string_string_index);
   }
   
   return version_string;
