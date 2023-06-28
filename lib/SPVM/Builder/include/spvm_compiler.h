@@ -125,9 +125,6 @@ struct spvm_compiler {
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
   
-  // Method ops
-  SPVM_LIST* methods;
-  
   // Anon basic types
   SPVM_LIST* anon_basic_types;
   

@@ -67,7 +67,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  compiler->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->args = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->anon_basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
@@ -524,7 +523,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   length++;
   
   // methods
-  length += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (compiler->methods->length + 1);
+  length += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (SPVM_COMPILER_get_methods_length(compiler) + 1);
   
   // fields_runtime_codes_length
   length++;
@@ -780,7 +779,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr += opcodes_runtime_codes_length;
   
   // methods_runtime_codes_length
-  int32_t methods_runtime_codes_length = (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (compiler->methods->length + 1);
+  int32_t methods_runtime_codes_length = (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (SPVM_COMPILER_get_methods_length(compiler) + 1);
   *runtime_codes_ptr = methods_runtime_codes_length;
   runtime_codes_ptr++;
   
