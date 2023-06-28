@@ -1877,38 +1877,6 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               return;
             }
             
-            // If . left and right is both string literal, concat them at compile time
-            if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT && op_cur->last->id == SPVM_OP_C_ID_CONSTANT) {
-              SPVM_OP* op_constant_string1 = op_cur->first;
-              int32_t string1_length = op_constant_string1->uv.constant->string_length;
-              const char* string1 = op_constant_string1->uv.constant->value.oval;
-              
-              SPVM_OP* op_constant_string2 = op_cur->last;
-              int32_t string2_length = op_constant_string2->uv.constant->string_length;
-              const char* string2 = op_constant_string2->uv.constant->value.oval;
-              
-              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              
-              int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-              char* concat_string_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, string1_length + string2_length + 1);
-              memcpy(concat_string_tmp, string1, string1_length);
-              memcpy(concat_string_tmp + string1_length, string2, string2_length);
-              int32_t concant_string_length = string1_length + string2_length;
-              
-              SPVM_CONSTANT_STRING* concat_string_string = SPVM_CONSTANT_STRING_new(compiler, concat_string_tmp, concant_string_length);
-              const char* concat_string = concat_string_string->value;
-              
-              SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, concat_string_tmp);
-              
-              assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
-              
-              SPVM_OP* op_concat_constant_string = SPVM_OP_new_op_constant_string(compiler, concat_string, concant_string_length, op_cur->file, op_cur->line);
-              
-              SPVM_OP_replace_op(compiler, op_stab, op_concat_constant_string);
-              
-              op_cur = op_concat_constant_string;
-            }
-            
             break;
           }
           case SPVM_OP_C_ID_CONSTANT : {
