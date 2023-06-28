@@ -51,8 +51,7 @@ void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   // Method implementations
   for (int32_t method_index = 0; method_index < basic_type_methods_length; method_index++) {
     SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, method_index);
-    int32_t method_name_id = method->name_id;
-    const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
+    const char* method_name = SPVM_API_RUNTIME_get_method_name(runtime, method);
     int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method);
     if (method_has_precompile_flag) {
       SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, basic_type_name, method_name);
