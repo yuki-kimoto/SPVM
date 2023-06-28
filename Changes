@@ -18,6 +18,10 @@
       +  const char* (*get_basic_type_module_dir)(void* runtime, int32_t basic_type_id);
       -  int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
       +  const char* (*get_basic_type_version_string)(void* runtime, int32_t basic_type_id);
+
+    * The following Native Runtime APIs were removed.
+      -  const char* (*get_constant_string_value)(void* runtime, int32_t constant_string_id, int32_t* string_length);
+      -  const char* (*get_name)(void* runtime, int32_t constant_string_id);
     
   [New Features]
     * The following Native Runtime APIs were added.

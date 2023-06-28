@@ -105,7 +105,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_runtime_codes_length,
     NULL, // reserved6
     NULL, // reserved7,
-    SPVM_API_RUNTIME_get_constant_string_value,
+    NULL, // reserved8,
     NULL, // reserved9
     SPVM_API_RUNTIME_get_basic_type_id_by_name,
     SPVM_API_RUNTIME_get_basic_type_name,
