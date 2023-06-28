@@ -68,7 +68,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->args = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->anon_basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->switch_infos = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -547,7 +546,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   length++;
   
   // anon_basic_type_ids
-  length += (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_basic_types->length + 1);
+  length += (sizeof(int32_t) / sizeof(int32_t)) * (SPVM_COMPILER_get_anon_basic_types_length(compiler) + 1);
   
   return length;
 }
@@ -864,7 +863,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr += args_runtime_codes_length;
   
   // anon_basic_type_basic_types_runtime_codes_length
-  int32_t anon_basic_type_runtime_codes_length = (sizeof(int32_t) / sizeof(int32_t)) * (compiler->anon_basic_types->length + 1);
+  int32_t anon_basic_type_runtime_codes_length = (sizeof(int32_t) / sizeof(int32_t)) * (SPVM_COMPILER_get_anon_basic_types_length(compiler) + 1);
   *runtime_codes_ptr = anon_basic_type_runtime_codes_length;
   runtime_codes_ptr++;
   
@@ -1055,4 +1054,18 @@ int32_t SPVM_COMPILER_get_anon_basic_types_length(SPVM_COMPILER* compiler) {
   }
   
   return anon_basic_types_length;
+}
+
+int32_t SPVM_COMPILER_get_args_length(SPVM_COMPILER* compiler) {
+  
+  int32_t args_length = 0;
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t method_index = 0;method_index < basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      args_length += method->args_length;
+    }
+  }
+  
+  return args_length;
 }

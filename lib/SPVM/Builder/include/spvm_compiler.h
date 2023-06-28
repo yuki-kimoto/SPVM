@@ -125,9 +125,6 @@ struct spvm_compiler {
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
   
-  // Anon basic types
-  SPVM_LIST* anon_basic_types;
-  
   SPVM_LIST* cur_anon_op_types;
   
   // Argments
@@ -174,5 +171,6 @@ int32_t SPVM_COMPILER_get_class_vars_length(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_fields_length(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_methods_length(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_anon_basic_types_length(SPVM_COMPILER* compiler);
+int32_t SPVM_COMPILER_get_args_length(SPVM_COMPILER* compiler);
 
 #endif

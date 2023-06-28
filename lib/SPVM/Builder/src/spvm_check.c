@@ -536,12 +536,6 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       }
     }
     
-    // Add the anon basic type
-    for (int32_t anon_basic_types_index = 0; anon_basic_types_index < basic_type->anon_basic_types->length; anon_basic_types_index++) {
-      SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_types_index);
-      SPVM_LIST_push(compiler->anon_basic_types, anon_basic_type);
-    }
-    
     SPVM_LIST* methods = basic_type->methods;
     
     // Sort methods by name
