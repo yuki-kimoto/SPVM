@@ -268,11 +268,11 @@ int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime) {
   return runtime->runtime_codes_length;
 }
 
-const char* SPVM_API_RUNTIME_get_name(SPVM_RUNTIME* runtime, int32_t constant_string_id) {
+const char* SPVM_API_RUNTIME_get_constant_string_value_nolen(SPVM_RUNTIME* runtime, int32_t constant_string_id) {
   
-  const char* name = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_id, NULL);
+  const char* constant_string_value = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_id, NULL);
   
-  return name;
+  return constant_string_value;
 }
 
 const char* SPVM_API_RUNTIME_get_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_id, int32_t* string_length) {
@@ -334,7 +334,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_name(SPVM_RUNTIME* runtime, int32_t 
   
   int32_t basic_type_name_string_index = basic_type->name_string_index;
   
-  const char* basic_type_name = SPVM_API_RUNTIME_get_name(runtime, basic_type_name_string_index);
+  const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, basic_type_name_string_index);
   
   return basic_type_name;
 }
@@ -374,7 +374,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_version_string(SPVM_RUNTIME* runtime
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  const char* version_string = SPVM_API_RUNTIME_get_name(runtime, basic_type->version_string_string_index);
+  const char* version_string = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, basic_type->version_string_string_index);
   
   return version_string;
 }
@@ -430,7 +430,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file(SPVM_RUNTIME* runtim
   
   int32_t module_rel_file_string_index = basic_type->module_rel_file_string_index;
   
-  const char* module_rel_file = SPVM_API_RUNTIME_get_name(runtime, module_rel_file_string_index);
+  const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_rel_file_string_index);
   
   return module_rel_file;
 }
@@ -450,7 +450,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_module_dir(SPVM_RUNTIME* runtime, in
   
   int32_t module_dir_string_index = basic_type->module_dir_string_index;
   
-  const char* module_dir = SPVM_API_RUNTIME_get_name(runtime, module_dir_string_index);
+  const char* module_dir = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_dir_string_index);
   
   return module_dir;
 }
@@ -570,7 +570,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_name_string_index(SPVM_RUNTIME* runtime, 
 
 const char* SPVM_API_RUNTIME_get_class_var_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  const char* class_var_name = SPVM_API_RUNTIME_get_name(runtime, class_var->name_string_index);
+  const char* class_var_name = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, class_var->name_string_index);
   
   return class_var_name;
 }
@@ -662,7 +662,7 @@ int32_t SPVM_API_RUNTIME_get_field_name_string_index(SPVM_RUNTIME* runtime, SPVM
 
 const char* SPVM_API_RUNTIME_get_field_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  const char* field_name = SPVM_API_RUNTIME_get_name(runtime, field->name_string_index);
+  const char* field_name = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, field->name_string_index);
   
   return field_name;
 }
@@ -789,7 +789,7 @@ int32_t SPVM_API_RUNTIME_get_method_name_string_index(SPVM_RUNTIME* runtime, SPV
 
 const char* SPVM_API_RUNTIME_get_method_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method->name_string_index);
+  const char* method_name = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, method->name_string_index);
   
   return method_name;
 }

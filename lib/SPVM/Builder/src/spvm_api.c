@@ -2301,7 +2301,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   const char* module_dir;
   const char* module_dir_sep;
   if (module_dir_string_index >= 0) {
-    module_dir = SPVM_API_RUNTIME_get_name(runtime, module_dir_string_index);
+    module_dir = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_dir_string_index);
     module_dir_sep = "/";
   }
   else {
@@ -2309,7 +2309,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
     module_dir_sep = "";
   }
   
-  const char* module_rel_file = SPVM_API_RUNTIME_get_name(runtime, module_rel_file_string_index);
+  const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_rel_file_string_index);
   
   // Basic type name and method name
   const char* new_line_part = "\n  ";
@@ -2394,7 +2394,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   const char* module_dir;
   const char* module_dir_sep;
   if (module_dir_string_index >= 0) {
-    module_dir = SPVM_API_RUNTIME_get_name(runtime, module_dir_string_index);
+    module_dir = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_dir_string_index);
     module_dir_sep = "/";
   }
   else {
@@ -2402,7 +2402,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw_by_name(SPVM_ENV* env, SPVM_VALUE* sta
     module_dir_sep = "";
   }
   
-  const char* module_rel_file = SPVM_API_RUNTIME_get_name(runtime, module_rel_file_string_index);
+  const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_rel_file_string_index);
   
   // Basic type name and method name
   const char* new_line_part = "\n  ";
@@ -4237,7 +4237,7 @@ const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_
   
   const char* version_string = NULL;
   if (basic_type->version_string_string_index >= 0) {
-    version_string = SPVM_API_RUNTIME_get_name(env->runtime, basic_type->version_string_string_index);
+    version_string = SPVM_API_RUNTIME_get_constant_string_value_nolen(env->runtime, basic_type->version_string_string_index);
   }
   
   return version_string;
