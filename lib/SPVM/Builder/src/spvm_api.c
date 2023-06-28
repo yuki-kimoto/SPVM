@@ -3052,8 +3052,7 @@ int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 
 const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-  int32_t basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id);
-  const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type_name_id);
+  const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type_id);
   
   assert(basic_type_name);
   
