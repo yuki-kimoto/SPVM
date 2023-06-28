@@ -391,9 +391,6 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
         // Field
         SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
         
-        // Create field id
-        field->address_id = compiler->fields->length;
-        
         // Add field to compiler
         SPVM_LIST_push(compiler->fields, field);
       }

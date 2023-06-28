@@ -1516,7 +1516,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_FIELD* field = op_assign_src->uv.field_access->field;
 
                         opcode.operand0 = call_stack_id_invocant;
-                        opcode.operand1 = field->address_id;
                         opcode.operand2 = field->current_basic_type->id;
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);

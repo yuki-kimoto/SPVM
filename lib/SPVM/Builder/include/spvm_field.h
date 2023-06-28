@@ -13,7 +13,6 @@ struct spvm_field {
   const char* name;
   SPVM_TYPE* type;
   SPVM_BASIC_TYPE* current_basic_type;
-  int32_t address_id;
   int32_t index;
   int32_t offset;
   int8_t is_anon_method_field;

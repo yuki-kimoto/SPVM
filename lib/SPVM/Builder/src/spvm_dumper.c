@@ -101,7 +101,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         fprintf(stderr, " \"%s\"", field_access->op_name->uv.name);
       }
       if (field_access->field) {
-        fprintf(stderr, " (id :%d)", field_access->field->address_id);
+        fprintf(stderr, " (index :%d)", field_access->field->index);
       }
     }
     else if (id == SPVM_OP_C_ID_NAME) {
