@@ -289,6 +289,18 @@ SPVM_CONSTANT_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compile
     SPVM_LIST_push(basic_type->constant_strings, string);
     SPVM_HASH_set(basic_type->constant_string_symtable, string->value, length, string);
     
+    {
+      int32_t string_pool_address_id = compiler->string_pool->length;
+      
+      SPVM_STRING_BUFFER_add_len_nullstr(compiler->string_pool, (char*)value, length);
+      
+      string->address_id = compiler->constant_strings->length;
+      string->string_pool_address_id = string_pool_address_id;
+      
+      SPVM_LIST_push(compiler->constant_strings, string);
+      SPVM_HASH_set(compiler->constant_string_symtable, string->value, length, string);
+    }
+    
     return string;
   }
 }
