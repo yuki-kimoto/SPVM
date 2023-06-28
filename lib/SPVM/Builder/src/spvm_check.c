@@ -573,9 +573,6 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         }
       }
       
-      // Set method id
-      method->address_id = compiler->methods->length;
-      
       method->index = i;
       
       // Add the method to the compiler

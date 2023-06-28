@@ -609,6 +609,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   // basic_types
   int32_t class_vars_base = 0;
   int32_t fields_base = 0;
+  int32_t methods_base = 0;
   int32_t* basic_type_runtime_codes_ptr = runtime_codes_ptr;
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
@@ -677,7 +678,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     if (basic_type->required_method) {
-      assert(basic_type->required_method->address_id >= 0);
       runtime_basic_type->required_method_index = basic_type->required_method->index;
     }
     else {
@@ -686,8 +686,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     runtime_basic_type->methods_length = basic_type->methods->length;
     if (basic_type->methods->length > 0) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, 0);
-      runtime_basic_type->methods_base = method->address_id;
+      runtime_basic_type->methods_base = methods_base;
+      methods_base += basic_type->methods->length;
     }
     else {
       runtime_basic_type->methods_base = -1;

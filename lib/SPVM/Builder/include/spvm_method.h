@@ -21,7 +21,6 @@ struct spvm_method {
   int32_t enum_value;
   int32_t args_length;
   int32_t required_args_length;
-  int32_t address_id;
   int32_t index;
   int32_t opcodes_base_id;
   int32_t opcodes_length;

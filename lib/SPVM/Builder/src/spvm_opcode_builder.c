@@ -55,7 +55,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       method->opcodes_base_id = method_opcodes_base_id;
       
       // Check sub information
-      assert(method->address_id > -1);
       assert(method->op_name);
       assert(method->return_type);
       assert(method->current_basic_type->module_file);
