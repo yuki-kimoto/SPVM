@@ -1911,6 +1911,22 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             
             break;
           }
+          case SPVM_OP_C_ID_CONSTANT : {
+            SPVM_OP* op_constant = op_cur;
+            
+            SPVM_TYPE* constant_type = SPVM_CHECK_get_type(compiler, op_constant);
+            
+            if (SPVM_TYPE_is_string_type(compiler, constant_type->basic_type->id, constant_type->dimension, constant_type->flag)) {
+              SPVM_CONSTANT* constant = op_constant->uv.constant;
+              
+              const char* constant_string_value = constant->value.oval;
+              int32_t constant_string_length = constant->string_length;
+              
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, constant_string_value, constant_string_length);
+            }
+            
+            break;
+          }
           case SPVM_OP_C_ID_NEW: {
             SPVM_OP* op_new = op_cur;
             
