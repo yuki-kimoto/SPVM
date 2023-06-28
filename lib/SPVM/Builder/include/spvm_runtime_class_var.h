@@ -9,6 +9,7 @@
 struct spvm_runtime_class_var {
   int32_t index;
   int32_t name_string_address_id;
+  int32_t name_string_index;
   int32_t current_basic_type_id;
   int32_t basic_type_id;
   int32_t type_dimension;
