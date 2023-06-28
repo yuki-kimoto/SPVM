@@ -2801,7 +2801,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 return;
               }
               else {
-                var_decl->id = method->var_decls->length;
+                var_decl->index = method->var_decls->length;
                 SPVM_LIST_push(method->var_decls, var_decl);
                 SPVM_LIST_push(var_decl_stack, var_decl);
               }
@@ -4046,7 +4046,7 @@ int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_st
         found = 1;
         found_call_stack_id = call_stack_id;
         for (int32_t i = 0; i < items; i++) {
-          call_stack->values[call_stack_id + i] = (void*)(intptr_t)var_decl->id;
+          call_stack->values[call_stack_id + i] = (void*)(intptr_t)var_decl->index;
         }
         break;
       }
@@ -4061,7 +4061,7 @@ int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_st
   if (!found) {
     found_call_stack_id = call_stack->length;
     for (int32_t i = 0; i < items; i++) {
-      SPVM_LIST_push(call_stack, (void*)(intptr_t)var_decl->id);
+      SPVM_LIST_push(call_stack, (void*)(intptr_t)var_decl->index);
     }
   }
   
@@ -4085,7 +4085,7 @@ SPVM_OP* SPVM_CHECK_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPV
   
   op_var_tmp->uv.var->is_initialized = 1;
   
-  op_var_tmp->uv.var->var_decl->id = method->var_decls->length;
+  op_var_tmp->uv.var->var_decl->index = method->var_decls->length;
   SPVM_LIST_push(method->op_method->uv.method->var_decls, op_var_tmp->uv.var->var_decl);
   
   return op_var_tmp;

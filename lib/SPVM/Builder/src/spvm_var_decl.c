@@ -9,7 +9,7 @@
 SPVM_VAR_DECL* SPVM_VAR_DECL_new(SPVM_COMPILER* compiler) {
   SPVM_VAR_DECL* var_decl = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, sizeof(SPVM_VAR_DECL));
 
-  var_decl->id = -1;
+  var_decl->index = -1;
   var_decl->call_stack_id = -1;
   
   return var_decl;
@@ -18,7 +18,7 @@ SPVM_VAR_DECL* SPVM_VAR_DECL_new(SPVM_COMPILER* compiler) {
 SPVM_VAR_DECL* SPVM_VAR_DECL_new_eternal(SPVM_COMPILER* compiler) {
   SPVM_VAR_DECL* var_decl = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_VAR_DECL));
 
-  var_decl->id = -1;
+  var_decl->index = -1;
   var_decl->call_stack_id = -1;
   var_decl->is_permanent = 1;
   

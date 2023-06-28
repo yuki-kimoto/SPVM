@@ -84,10 +84,10 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       SPVM_VAR* var = op_cur->uv.var;
       fprintf(stderr, " \"%s\"", var->name);
       if (var->var_decl) {
-        fprintf(stderr, " (var_decl->id:%d) declaration : %d", var->var_decl->id, op_cur->uv.var->is_declaration);
+        fprintf(stderr, " (var_decl->index:%d) declaration : %d", var->var_decl->index, op_cur->uv.var->is_declaration);
       }
       else {
-        fprintf(stderr, " (var_decl->id:not yet resolved)");
+        fprintf(stderr, " (var_decl->index:not yet resolved)");
       }
     }
     else if (id == SPVM_OP_C_ID_CLASS_VAR_ACCESS) {
@@ -376,7 +376,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
     SPVM_TYPE* type = var_decl->type;
     fprintf(stderr, "%s", SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag));
     fprintf(stderr, "\n");
-    fprintf(stderr, "          id => %d\n", var_decl->id);
+    fprintf(stderr, "          id => %d\n", var_decl->index);
     fprintf(stderr, "          call_stack_id => ");
     
     if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
