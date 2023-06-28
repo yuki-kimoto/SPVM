@@ -185,7 +185,7 @@ int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
-  compiler->cur_basic_type_base = compiler->basic_types->length;
+  compiler->basic_types_base_id = compiler->basic_types->length;
   
   if (compiler->basic_types->length == 0) {
     // Add basic types
@@ -450,7 +450,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   }
   
   // Clear unused pointers
-  for (int32_t basic_type_id = compiler->cur_basic_type_base; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+  for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
     SPVM_LIST_free(basic_type->allows);
