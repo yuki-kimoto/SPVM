@@ -308,7 +308,6 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_module_file = NULL;
   if (basic_type_id >= 0) {
-    int32_t module_rel_file_id = env->api->runtime->get_basic_type_module_rel_file_id(runtime, basic_type_id);
     int32_t module_dir_id = env->api->runtime->get_basic_type_module_dir_id(runtime, basic_type_id);
     const char* module_dir = NULL;
     const char* module_dir_sep;
@@ -320,7 +319,7 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
       module_dir_sep = "";
       module_dir = "";
     }
-    const char* module_rel_file = env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
+    const char* module_rel_file = env->api->runtime->get_basic_type_module_rel_file(runtime, basic_type_id);
     
     int32_t module_file_length = strlen(module_dir) + strlen(module_dir_sep) + strlen(module_rel_file);
     obj_module_file = env->new_string(env, stack, NULL, module_file_length);
