@@ -289,9 +289,6 @@ SPVM_CONSTANT_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compile
     SPVM_LIST_push(basic_type->constant_strings, string);
     SPVM_HASH_set(basic_type->constant_string_symtable, string->value, length, string);
     
-    SPVM_LIST_push(compiler->constant_strings_v2, string);
-    SPVM_HASH_set(compiler->constant_string_symtable_v2, string->value, length, string);
-    
     return string;
   }
 }
