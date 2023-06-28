@@ -230,6 +230,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field_index,
     SPVM_API_RUNTIME_get_field_offset,
     SPVM_API_RUNTIME_get_arg,
+    SPVM_API_RUNTIME_get_basic_type_module_rel_file,
+    SPVM_API_RUNTIME_get_basic_type_module_dir,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -411,13 +413,35 @@ int32_t SPVM_API_RUNTIME_get_basic_type_module_rel_file_id(SPVM_RUNTIME* runtime
   return rel_file_id;
 }
 
+const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  int32_t module_rel_file_id = basic_type->module_rel_file_id;
+  
+  const char* module_rel_file = SPVM_API_RUNTIME_get_name(runtime, module_rel_file_id);
+  
+  return module_rel_file;
+}
+
 int32_t SPVM_API_RUNTIME_get_basic_type_module_dir_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  int32_t include_dir_id = basic_type->module_dir_id;
+  int32_t module_dir_id = basic_type->module_dir_id;
   
-  return include_dir_id;
+  return module_dir_id;
+}
+
+const char* SPVM_API_RUNTIME_get_basic_type_module_dir(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  int32_t module_dir_id = basic_type->module_dir_id;
+  
+  const char* module_dir = SPVM_API_RUNTIME_get_name(runtime, module_dir_id);
+  
+  return module_dir;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_fields_base(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
