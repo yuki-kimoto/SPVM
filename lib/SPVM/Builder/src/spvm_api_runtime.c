@@ -106,7 +106,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved6
     NULL, // reserved7,
     SPVM_API_RUNTIME_get_constant_string_value,
-    SPVM_API_RUNTIME_get_name,
+    NULL, // reserved9
     SPVM_API_RUNTIME_get_basic_type_id_by_name,
     SPVM_API_RUNTIME_get_basic_type_name,
     NULL, // reserved12
@@ -276,6 +276,10 @@ const char* SPVM_API_RUNTIME_get_name(SPVM_RUNTIME* runtime, int32_t constant_st
 }
 
 const char* SPVM_API_RUNTIME_get_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_id, int32_t* string_length) {
+  
+  if (constant_string_id < 0) {
+    return NULL;
+  }
   
   SPVM_RUNTIME_CONSTANT_STRING* constant_string = &runtime->constant_strings[constant_string_id];
   
