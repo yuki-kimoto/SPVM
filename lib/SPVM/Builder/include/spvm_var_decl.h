@@ -14,7 +14,7 @@ struct spvm_var_decl {
   int32_t id;
   int32_t call_stack_id;
   int8_t is_arg;
-  int8_t is_eternal;
+  int8_t is_permanent;
 };
 
 SPVM_VAR_DECL* SPVM_VAR_DECL_new();

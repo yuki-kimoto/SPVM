@@ -20,7 +20,7 @@ SPVM_VAR_DECL* SPVM_VAR_DECL_new_eternal(SPVM_COMPILER* compiler) {
 
   var_decl->id = -1;
   var_decl->call_stack_id = -1;
-  var_decl->is_eternal = 1;
+  var_decl->is_permanent = 1;
   
   return var_decl;
 }

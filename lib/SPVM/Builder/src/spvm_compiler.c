@@ -438,7 +438,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
       }
       case SPVM_OP_C_ID_MY: {
         SPVM_VAR_DECL* var_decl = op->uv.var_decl;
-        if (!var_decl->is_eternal) {
+        if (!var_decl->is_permanent) {
           var_decl->op_var_decl = NULL;
           var_decl->type = NULL;
           var_decl->var = NULL;

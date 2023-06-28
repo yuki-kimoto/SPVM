@@ -544,14 +544,14 @@ int32_t SPVM_TYPE_get_type_name_length(SPVM_COMPILER* compiler, int32_t basic_ty
   return length;
 }
 
-const char* SPVM_TYPE_new_type_name_with_eternal_flag(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag, int32_t is_eternal) {
+const char* SPVM_TYPE_new_type_name_with_eternal_flag(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag, int32_t is_permanent) {
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   assert(basic_type);
   
   int32_t type_name_length = SPVM_TYPE_get_type_name_length(compiler, basic_type_id, dimension, flag);
   
   char* type_name;
-  if (is_eternal) {
+  if (is_permanent) {
     type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, type_name_length + 1);
   }
   else {
@@ -587,13 +587,13 @@ const char* SPVM_TYPE_new_type_name_with_eternal_flag(SPVM_COMPILER* compiler, i
 }
 
 const char* SPVM_TYPE_new_type_name_tmp(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  int32_t is_eternal = 0;
-  return SPVM_TYPE_new_type_name_with_eternal_flag(compiler, basic_type_id, dimension, flag, is_eternal);
+  int32_t is_permanent = 0;
+  return SPVM_TYPE_new_type_name_with_eternal_flag(compiler, basic_type_id, dimension, flag, is_permanent);
 }
 
 const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  int32_t is_eternal = 1;
-  return SPVM_TYPE_new_type_name_with_eternal_flag(compiler, basic_type_id, dimension, flag, is_eternal);
+  int32_t is_permanent = 1;
+  return SPVM_TYPE_new_type_name_with_eternal_flag(compiler, basic_type_id, dimension, flag, is_permanent);
 }
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
