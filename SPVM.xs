@@ -1043,8 +1043,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
         
         if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
           
-          int32_t basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, basic_type_id);
-          const char* basic_type_name = env->api->runtime->get_constant_string_value(env->runtime, basic_type_name_id, NULL);
+          const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type_id);
           int32_t basic_type_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
           
           void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
@@ -1410,8 +1409,7 @@ _xs_call_method(...)
             }
             
             if (error) {
-              int32_t arg_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
-              const char* arg_basic_type_name = env->api->runtime->get_name(env->runtime, arg_basic_type_name_id);
+              const char* arg_basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, arg_basic_type_id);
               void* spvm_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_name, arg_type_dimension, arg_type_flag);
               const char* compile_type_name = env->get_chars(env, stack, spvm_compile_type_name);
               croak("The %dth argument of the \"%s\" method in the \"%s\" basic type must be a SPVM::BlessedObject::Class object of a \"%s\" assignable type or undef\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, compile_type_name, __func__, FILE_NAME, __LINE__);
@@ -1445,8 +1443,7 @@ _xs_call_method(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                int32_t arg_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
-                const char* arg_basic_type_name = env->api->runtime->get_constant_string_value(env->runtime, arg_basic_type_name_id, NULL);
+                const char* arg_basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, arg_basic_type_id);
                 croak("The hash reference for the %dth argument of the \"%s\" method in the \"%s\" basic type must have the \"%s\" key for the \"%s\" field of the \"%s\" basic type\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, mulnum_field_name, mulnum_field_name, arg_basic_type_name, __func__, FILE_NAME, __LINE__);
 
               }
@@ -1583,8 +1580,7 @@ _xs_call_method(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                int32_t arg_basic_type_name_id = env->api->runtime->get_basic_type_name_id(env->runtime, arg_basic_type_id);
-                const char* arg_basic_type_name = env->api->runtime->get_constant_string_value(env->runtime, arg_basic_type_name_id, NULL);
+                const char* arg_basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, arg_basic_type_id);
                 croak("The hash reference for the %dth argument of the \"%s\" method in the \"%s\" basic type must have the \"%s\" key for the \"%s\" field of the \"%s\" basic type\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, mulnum_field_name, mulnum_field_name, arg_basic_type_name, __func__, FILE_NAME, __LINE__);
               }
               switch(arg_basic_type_field_basic_type_id) {
@@ -4723,7 +4719,7 @@ get_basic_type_anon_basic_type_names(...)
     
     if (is_anon_method) {
       int32_t anon_basic_type_id = api_env->api->runtime->get_method_current_basic_type_id(runtime, method);
-      const char* anon_basic_type_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, anon_basic_type_id));
+      const char* anon_basic_type_name = api_env->api->runtime->get_basic_type_name(runtime, anon_basic_type_id);
       SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
       av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
     }
@@ -4753,7 +4749,7 @@ get_basic_type_names(...)
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type_id);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-      const char* basic_type_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_basic_type_name_id(runtime, basic_type_id));
+      const char* basic_type_name = api_env->api->runtime->get_basic_type_name(runtime, basic_type_id);
       SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
       av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
     }
