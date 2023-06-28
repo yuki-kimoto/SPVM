@@ -485,19 +485,19 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   int32_t length = 0;
   
-  // string_pool_runtime_codes_length
+  // global_string_pool_runtime_codes_length
   length++;
   
-  // string_pool
+  // global_string_pool
   length += (compiler->global_string_pool->length / sizeof(int32_t)) + 1;
   
-  // constant_strings length
+  // global_constant_strings length
   length++;
   
-  // constant_strings_runtime_codes_length
+  // global_constant_strings_runtime_codes_length
   length++;
   
-  // constant_strings
+  // global_constant_strings
   length += (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->global_constant_strings->length + 1);
   
   // basic_types length
