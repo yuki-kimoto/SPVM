@@ -7,10 +7,9 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime {
-  // SPVM 32bit codes
+  // SPVM runtime codes
   int32_t* runtime_codes;
   
-  // SPVM 32bit codes
   int32_t runtime_codes_length;
   
   // Allocator
