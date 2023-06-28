@@ -355,12 +355,6 @@ Runtime native APIs have its IDs.
 
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
 
-=head2 get_basic_type_version_string_id
-
-  int32_t (*get_basic_type_version_string_id)(void* runtime, int32_t basic_type_id);
-
-Gets the ID of the constant string of the version number.
-
 =head2 can_assign
 
   int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
