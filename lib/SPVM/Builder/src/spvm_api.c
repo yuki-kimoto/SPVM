@@ -4233,11 +4233,11 @@ double SPVM_API_get_spvm_version_number(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id){
   
-  int32_t version_string_id = env->api->runtime->get_basic_type_version_string_id(env->runtime, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id);
   
   const char* version_string = NULL;
-  if (version_string_id >= 0) {
-    version_string = env->api->runtime->get_name(env->runtime, version_string_id);
+  if (basic_type->version_string_id >= 0) {
+    version_string = env->api->runtime->get_name(env->runtime, basic_type->version_string_id);
   }
   
   return version_string;
