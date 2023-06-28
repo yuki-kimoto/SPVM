@@ -7,46 +7,40 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime {
-  // SPVM runtime codes
   int32_t* runtime_codes;
   
   int32_t runtime_codes_length;
   
-  // Allocator
   SPVM_ALLOCATOR* allocator;
   
   const char* global_string_pool;
   
-  // Strings
   SPVM_RUNTIME_CONSTANT_STRING* global_constant_strings;
   
-  // The length of strings
   int32_t global_constant_strings_length;
   
-  // Basic types
+  const char* string_pool;
+  
+  SPVM_RUNTIME_CONSTANT_STRING* constant_strings;
+  
+  int32_t constant_strings_length;
+  
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
   
-  // The length of basic types
   int32_t basic_types_length;
   
-  // Class variables
   SPVM_RUNTIME_CLASS_VAR* class_vars;
   
-  // Fields
   SPVM_RUNTIME_FIELD* fields;
   
-  // Methods
   SPVM_RUNTIME_METHOD* methods;
   
   SPVM_RUNTIME_ARG* args;
   
-  // Anon nethod ids
   int32_t* anon_basic_type_ids;
   
-  // Operation codes
   SPVM_OPCODE* opcodes;
   
-  // Runtime Basic type symbol table
   SPVM_HASH* basic_type_symtable;
 };
 
