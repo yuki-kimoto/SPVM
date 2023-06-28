@@ -55,9 +55,9 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->ch_ptr = "";
   
-  compiler->constant_strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
-  compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
-  compiler->string_pool = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  compiler->global_constant_strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
+  compiler->global_constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
+  compiler->global_string_pool = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Eternal information
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -486,7 +486,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   length++;
   
   // string_pool
-  length += (compiler->string_pool->length / sizeof(int32_t)) + 1;
+  length += (compiler->global_string_pool->length / sizeof(int32_t)) + 1;
   
   // constant_strings length
   length++;
@@ -495,7 +495,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   length++;
   
   // constant_strings
-  length += (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
+  length += (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->global_constant_strings->length + 1);
   
   // basic_types length
   length++;
@@ -559,27 +559,27 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr++;
   
   // string_pool_runtime_codes_length
-  int32_t string_pool_runtime_codes_length = (compiler->string_pool->length / sizeof(int32_t)) + 1;
+  int32_t string_pool_runtime_codes_length = (compiler->global_string_pool->length / sizeof(int32_t)) + 1;
   *runtime_codes_ptr = string_pool_runtime_codes_length;
   runtime_codes_ptr++;
   
   // string_pool
-  memcpy(runtime_codes_ptr, compiler->string_pool->value, sizeof(int32_t) * string_pool_runtime_codes_length);
+  memcpy(runtime_codes_ptr, compiler->global_string_pool->value, sizeof(int32_t) * string_pool_runtime_codes_length);
   runtime_codes_ptr += string_pool_runtime_codes_length;
   
   // constant_strings length
-  *runtime_codes_ptr = compiler->constant_strings->length;
+  *runtime_codes_ptr = compiler->global_constant_strings->length;
   runtime_codes_ptr++;
   
   // constant_strings_runtime_codes_length
-  int32_t constant_strings_runtime_codes_length = (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
+  int32_t constant_strings_runtime_codes_length = (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->global_constant_strings->length + 1);
   *runtime_codes_ptr = constant_strings_runtime_codes_length;
   runtime_codes_ptr++;
   
   // constant_strings
   int32_t* constant_string_runtime_codes_ptr = runtime_codes_ptr;
-  for (int32_t constant_string_id = 0; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
-    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->constant_strings, constant_string_id);
+  for (int32_t constant_string_id = 0; constant_string_id < compiler->global_constant_strings->length; constant_string_id++) {
+    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->global_constant_strings, constant_string_id);
     SPVM_RUNTIME_CONSTANT_STRING* runtime_string = (SPVM_RUNTIME_CONSTANT_STRING*)constant_string_runtime_codes_ptr;
     
     runtime_string->address_id = string->address_id;
@@ -611,11 +611,11 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->id = basic_type->id;
     runtime_basic_type->category = basic_type->category;
     
-    SPVM_CONSTANT_STRING* basic_type_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->name, strlen(basic_type->name));
+    SPVM_CONSTANT_STRING* basic_type_string = SPVM_HASH_get(compiler->global_constant_string_symtable, basic_type->name, strlen(basic_type->name));
     runtime_basic_type->name_string_address_id = basic_type_string->address_id;
     
     if (basic_type->module_rel_file) {
-      SPVM_CONSTANT_STRING* basic_type_rel_file_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
+      SPVM_CONSTANT_STRING* basic_type_rel_file_string = SPVM_HASH_get(compiler->global_constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
       runtime_basic_type->module_rel_file_string_address_id = basic_type_rel_file_string->address_id;
     }
     else {
@@ -623,7 +623,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     if (basic_type->module_dir) {
-      SPVM_CONSTANT_STRING* basic_type_dir_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
+      SPVM_CONSTANT_STRING* basic_type_dir_string = SPVM_HASH_get(compiler->global_constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
       runtime_basic_type->module_dir_string_address_id = basic_type_dir_string->address_id;
     }
     else {
@@ -645,7 +645,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->fields_size = basic_type->fields_size;
     
     if (basic_type->version_string) {
-      SPVM_CONSTANT_STRING* basic_type_version_string = SPVM_HASH_get(compiler->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
+      SPVM_CONSTANT_STRING* basic_type_version_string = SPVM_HASH_get(compiler->global_constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
       runtime_basic_type->version_string_string_address_id = basic_type_version_string->address_id;
     }
     else {
@@ -727,7 +727,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_class_var->type_flag = class_var->type->flag;
       runtime_class_var->current_basic_type_id = class_var->current_basic_type->id;
       
-      SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(compiler->constant_string_symtable, class_var->name, strlen(class_var->name));
+      SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(compiler->global_constant_string_symtable, class_var->name, strlen(class_var->name));
       runtime_class_var->name_string_address_id = class_var_name_string->address_id;
       
       class_var_runtime_codes_ptr += sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t);
@@ -755,7 +755,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_field->type_flag = field->type->flag;
       runtime_field->current_basic_type_id = field->current_basic_type->id;
       
-      SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->constant_string_symtable, field->name, strlen(field->name));
+      SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(compiler->global_constant_string_symtable, field->name, strlen(field->name));
       runtime_field->name_string_address_id = field_name_string->address_id;
       
       field_runtime_codes_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
@@ -812,7 +812,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_method->is_required = method->is_required;
       runtime_method->is_enum = method->is_enum;
       
-      SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(compiler->constant_string_symtable, method->name, strlen(method->name));
+      SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(compiler->global_constant_string_symtable, method->name, strlen(method->name));
       runtime_method->name_string_address_id = method_name_string->address_id;
       
       runtime_method->args_length = method->args_length;
