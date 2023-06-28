@@ -298,8 +298,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  char* constant_string;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t constant_string_length;\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  char* include_dir;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  char* include_dir_sep;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* module_dir;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* module_dir_sep;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* module_rel_file;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
@@ -2795,29 +2795,29 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t line = opcode->operand1;
         
         int32_t module_rel_file_id = SPVM_API_RUNTIME_get_basic_type_module_rel_file_id(runtime, current_basic_type_id);
-        int32_t include_dir_id = SPVM_API_RUNTIME_get_basic_type_module_dir_id(runtime, current_basic_type_id);
+        int32_t module_dir_id = SPVM_API_RUNTIME_get_basic_type_module_dir_id(runtime, current_basic_type_id);
         const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, module_rel_file_id, NULL);
-        const char* include_dir = NULL;
-        const char* include_dir_sep;
-        if (include_dir_id >= 0) {
-          include_dir_sep = "/";
-          include_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, include_dir_id, NULL);
+        const char* module_dir = NULL;
+        const char* module_dir_sep;
+        if (module_dir_id >= 0) {
+          module_dir_sep = "/";
+          module_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, module_dir_id, NULL);
         }
         else {
-          include_dir_sep = "";
-          include_dir = "";
+          module_dir_sep = "";
+          module_dir = "";
         }
 
         SPVM_STRING_BUFFER_add(string_buffer, "  string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  include_dir = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, include_dir);
+        SPVM_STRING_BUFFER_add(string_buffer, "  module_dir = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_dir);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  include_dir_sep = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, include_dir_sep);
+        SPVM_STRING_BUFFER_add(string_buffer, "  module_dir_sep = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, module_dir_sep);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "  module_rel_file = \"");
@@ -2828,7 +2828,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, include_dir, include_dir_sep, module_rel_file, line);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, module_dir, module_dir_sep, module_rel_file, line);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID: {
