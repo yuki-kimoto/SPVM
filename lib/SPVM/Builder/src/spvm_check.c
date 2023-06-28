@@ -735,7 +735,7 @@ void SPVM_CHECK_check_basic_types_ast(SPVM_COMPILER* compiler) {
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check call stack ids of variable declarations
-        SPVM_CHECK_check_ast_check_call_stack_ids(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_check_call_stack_indexs(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }
     }
@@ -3511,7 +3511,7 @@ void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compile
   SPVM_LIST_free(op_block_stack);
 }
 
-void SPVM_CHECK_check_ast_check_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_check_call_stack_indexs(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
@@ -3566,12 +3566,12 @@ void SPVM_CHECK_check_ast_check_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BAS
               SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, var_decl->op_var_decl);
               
               // Check mem id
-              int32_t call_stack_id;
+              int32_t call_stack_index;
               if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_object_vars, var_decl);
+                call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_object_vars, var_decl);
               }
               else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_ref_vars, var_decl);
+                call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_ref_vars, var_decl);
               }
               else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
@@ -3581,27 +3581,27 @@ void SPVM_CHECK_check_ast_check_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BAS
                 
                 switch (field_type->basic_type->id) {
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_byte_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_byte_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_short_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_short_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_int_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_int_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_long_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_long_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_float_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_float_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_double_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_double_vars, var_decl);
                     break;
                   }
                   default:
@@ -3612,30 +3612,30 @@ void SPVM_CHECK_check_ast_check_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BAS
                 SPVM_TYPE* numeric_type = SPVM_CHECK_get_type(compiler, var_decl->op_var_decl);
                 switch(numeric_type->basic_type->id) {
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_byte_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_byte_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_short_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_short_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_int_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_int_vars, var_decl);
                     if (strcmp(var_decl->var->name, "$.condition_flag") == 0) {
-                      assert(call_stack_id == 0);
+                      assert(call_stack_index == 0);
                     }
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_long_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_long_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_float_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_float_vars, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                    call_stack_id = SPVM_CHECK_get_call_stack_id(compiler, call_stack_double_vars, var_decl);
+                    call_stack_index = SPVM_CHECK_get_call_stack_index(compiler, call_stack_double_vars, var_decl);
                     break;
                   }
                   default:
@@ -3643,12 +3643,12 @@ void SPVM_CHECK_check_ast_check_call_stack_ids(SPVM_COMPILER* compiler, SPVM_BAS
                 }
               }
               else if (SPVM_TYPE_is_void_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                call_stack_id = -1;
+                call_stack_index = -1;
               }
               else {
                 assert(0);
               }
-              var_decl->call_stack_id = call_stack_id;
+              var_decl->call_stack_index = call_stack_index;
               
             }
             break;
@@ -4022,9 +4022,9 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
   return op_src;
 }
 
-int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_stack, SPVM_VAR_DECL* var_decl) {
+int32_t SPVM_CHECK_get_call_stack_index(SPVM_COMPILER* compiler, SPVM_LIST* call_stack, SPVM_VAR_DECL* var_decl) {
   
-  int32_t found_call_stack_id = -1;
+  int32_t found_call_stack_index = -1;
   
   SPVM_TYPE* my_type = var_decl->type;
 
@@ -4032,11 +4032,11 @@ int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_st
   
   // Search free memory
   int32_t found = 0;
-  for (int32_t call_stack_id = 0; call_stack_id < call_stack->length; call_stack_id++) {
-    if (call_stack_id + items <= call_stack->length) {
+  for (int32_t call_stack_index = 0; call_stack_index < call_stack->length; call_stack_index++) {
+    if (call_stack_index + items <= call_stack->length) {
       int32_t is_used = 0;
       for (int32_t i = 0; i < items; i++) {
-        int32_t my_id = (intptr_t)SPVM_LIST_get(call_stack, call_stack_id + i);
+        int32_t my_id = (intptr_t)SPVM_LIST_get(call_stack, call_stack_index + i);
         if (my_id >= 0) {
           is_used = 1;
           break;
@@ -4044,9 +4044,9 @@ int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_st
       }
       if (!is_used) {
         found = 1;
-        found_call_stack_id = call_stack_id;
+        found_call_stack_index = call_stack_index;
         for (int32_t i = 0; i < items; i++) {
-          call_stack->values[call_stack_id + i] = (void*)(intptr_t)var_decl->index;
+          call_stack->values[call_stack_index + i] = (void*)(intptr_t)var_decl->index;
         }
         break;
       }
@@ -4059,13 +4059,13 @@ int32_t SPVM_CHECK_get_call_stack_id(SPVM_COMPILER* compiler, SPVM_LIST* call_st
   
   // Add stack
   if (!found) {
-    found_call_stack_id = call_stack->length;
+    found_call_stack_index = call_stack->length;
     for (int32_t i = 0; i < items; i++) {
       SPVM_LIST_push(call_stack, (void*)(intptr_t)var_decl->index);
     }
   }
   
-  return found_call_stack_id;
+  return found_call_stack_index;
 }
 
 SPVM_OP* SPVM_CHECK_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_METHOD* method, const char* file, int32_t line) {

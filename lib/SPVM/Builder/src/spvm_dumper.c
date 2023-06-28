@@ -377,7 +377,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
     fprintf(stderr, "%s", SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag));
     fprintf(stderr, "\n");
     fprintf(stderr, "          id => %d\n", var_decl->index);
-    fprintf(stderr, "          call_stack_id => ");
+    fprintf(stderr, "          call_stack_index => ");
     
     if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       SPVM_TYPE* numeric_type = SPVM_CHECK_get_type(compiler, var_decl->op_var_decl);
@@ -452,7 +452,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       }
     }
     
-    fprintf(stderr, " %d\n", var_decl->call_stack_id);
+    fprintf(stderr, " %d\n", var_decl->call_stack_index);
   }
   else {
     fprintf(stderr, "          (Unexpected)\n");

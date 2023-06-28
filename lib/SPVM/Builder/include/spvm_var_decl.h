@@ -12,7 +12,7 @@ struct spvm_var_decl {
   SPVM_VAR* var;
   SPVM_OP* op_optional_arg_default;
   int32_t index;
-  int32_t call_stack_id;
+  int32_t call_stack_index;
   int8_t is_arg;
   int8_t is_permanent;
 };
