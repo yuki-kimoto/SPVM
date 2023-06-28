@@ -5021,8 +5021,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t decl_method_index = opcode->operand1;
         int32_t items = opcode->operand2;
         
-        int32_t method_name_id = SPVM_API_RUNTIME_get_method_name_id(runtime, SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index));
-        const char* method_name = SPVM_API_RUNTIME_get_name(runtime, method_name_id);
+        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
+        const char* method_name = SPVM_API_RUNTIME_get_method_name(runtime, decl_method);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, invocant_decl_basic_type_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");

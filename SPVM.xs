@@ -4667,7 +4667,7 @@ get_method_names(...)
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     void* method = api_env->api->runtime->get_method(runtime, basic_type_id, method_index);
-    const char* method_name = api_env->api->runtime->get_name(runtime, api_env->api->runtime->get_method_name_id(runtime, method));
+    const char* method_name = api_env->api->runtime->get_method_name(runtime, method);
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
     if (SvOK(sv_category)) {

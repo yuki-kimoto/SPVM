@@ -2,12 +2,23 @@
   [Incompatibe Changes]
     * The following Native APIs were removed.
     
+    * The following Native Runtime APIs were changed.
+      -  int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
+      +  const char* (*get_basic_type_name)(void* runtime, int32_t basic_type_id);
+      -  int32_t (*get_class_var_name_id)(void* runtime, void* class_var);
+      +  const char* (*get_class_var_name)(void* runtime, void* class_var);
+      -  int32_t (*get_field_name_id)(void* runtime, void* field);
+      +  const char* (*get_field_name)(void* runtime, void* field);
+      -  int32_t (*get_method_name_id)(void* runtime, void* method);
+      +  const char* (*get_method_name)(void* runtime, void* method);
+    
   [New Features]
     * The following Native Runtime APIs were added.
     const char* (*get_basic_type_name)(void* runtime, int32_t basic_type_id);
     const char* (*get_class_var_name)(void* runtime, void* class_var);
     const char* (*get_field_name)(void* runtime, void* field);
     const char* (*get_method_name)(void* runtime, void* method);
+
 
 0.989015 2023-06-27
   [Incompatibe Changes]

@@ -330,7 +330,7 @@ struct spvm_env_runtime {
   const char* (*get_constant_string_value)(void* runtime, int32_t constant_string_id, int32_t* string_length);
   const char* (*get_name)(void* runtime, int32_t constant_string_id);
   int32_t (*get_basic_type_id_by_name)(void* runtime, const char* basic_type_name);
-  int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_name)(void* runtime, int32_t basic_type_id);
   void* reserved12;
   int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
   void* reserved14;
@@ -353,16 +353,16 @@ struct spvm_env_runtime {
   void* reserved31;
   void* (*get_class_var)(void* runtime, int32_t basic_type_id, int32_t class_var_index);
   void* reserved33;
-  int32_t (*get_class_var_name_id)(void* runtime, void* class_var);
+  const char* (*get_class_var_name)(void* runtime, void* class_var);
   void* reserved35;
   void* reserved36;
   void* reserved37;
-  int32_t (*get_field_name_id)(void* runtime, void* field);
+  const char* (*get_field_name)(void* runtime, void* field);
   void* reserved39;
   void* reserved40;
   void* reserved41;
   void* reserved42;
-  int32_t (*get_method_name_id)(void* runtime, void* method);
+  const char* (*get_method_name)(void* runtime, void* method);
   void* reserved44;
   void* reserved45;
   int32_t (*get_method_is_class_method)(void* runtime, void* method);
@@ -452,10 +452,6 @@ struct spvm_env_runtime {
   int32_t (*get_field_index)(void* runtime, void* field);
   int32_t (*get_field_offset)(void* runtime, void* field);
   void* (*get_arg)(void* runtime, void* method, int32_t arg_index);
-  const char* (*get_basic_type_name)(void* runtime, int32_t basic_type_id);
-  const char* (*get_class_var_name)(void* runtime, void* class_var);
-  const char* (*get_field_name)(void* runtime, void* field);
-  const char* (*get_method_name)(void* runtime, void* method);
 };
 
 struct spvm_env_compiler {

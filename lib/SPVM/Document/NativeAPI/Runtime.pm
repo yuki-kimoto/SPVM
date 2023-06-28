@@ -32,7 +32,7 @@ Runtime native APIs have its IDs.
   8  get_constant_string_value
   9  get_name
   10 get_basic_type_id_by_name
-  11 get_basic_type_name_id
+  11 get_basic_type_name
   12 reserved12
   13 get_basic_type_category
   14 reserved14
@@ -55,16 +55,16 @@ Runtime native APIs have its IDs.
   31 reserved31
   32 get_class_var
   33 reserved33
-  34 get_class_var_name_id
+  34 get_class_var_name
   35 reserved35
   36 reserved36
   37 reserved37
-  38 get_field_name_id
+  38 get_field_name
   39 reserved39
   40 reserved40
   41 reserved41
   42 reserved42
-  43 get_method_name_id
+  43 get_method_name
   44 reserved44
   45 reserved45
   46 get_method_is_class_method
@@ -170,17 +170,13 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_basic_type_id_by_name)(void* runtime, const char* basic_type_name);
 
-=head2 get_basic_type_name_id
+=head2 get_basic_type_name
 
-  int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_name)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_category
 
   int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
-
-=head2 get_basic_type_name_id
-
-  int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
 
 =head2 get_basic_type_module_rel_file_id
 
@@ -222,17 +218,17 @@ Runtime native APIs have its IDs.
 
   void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
 
-=head2 get_class_var_name_id
+=head2 get_class_var_name
 
-  int32_t (*get_class_var_name_id)(void* runtime, void* class_var);
+  const char* (*get_class_var_name)(void* runtime, void* class_var);
 
-=head2 get_field_name_id
+=head2 get_field_name
 
-  int32_t (*get_field_name_id)(void* runtime, void* field);
+  const char* (*get_field_name)(void* runtime, void* field);
 
-=head2 get_method_name_id
+=head2 get_method_name
 
-  int32_t (*get_method_name_id)(void* runtime, void* method);
+  const char* (*get_method_name)(void* runtime, void* method);
 
 =head2 get_method_is_class_method
 
