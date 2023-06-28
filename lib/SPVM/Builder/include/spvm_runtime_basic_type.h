@@ -17,7 +17,6 @@ struct spvm_runtime_basic_type {
   int32_t module_rel_file_string_index;
   int32_t version_string_string_address_id;
   int32_t version_string_string_index;
-  int32_t type_id;
   int32_t parent_id;
   int32_t class_vars_base;
   int32_t class_vars_length;
