@@ -18,6 +18,10 @@ struct spvm_runtime_basic_type {
   int32_t version_string_string_address_id;
   int32_t version_string_string_index;
   int32_t parent_id;
+  int32_t string_pool_base;
+  int32_t string_pool_length;
+  int32_t strings_base;
+  int32_t strings_length;
   int32_t class_vars_base;
   int32_t class_vars_length;
   int32_t fields_base;
