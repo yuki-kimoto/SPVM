@@ -127,9 +127,6 @@ struct spvm_compiler {
   
   SPVM_LIST* cur_anon_op_types;
   
-  // Argments
-  SPVM_LIST* args;
-  
   // Switch 
   SPVM_LIST* switch_infos;
   

@@ -67,7 +67,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  compiler->args = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->switch_infos = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -534,7 +533,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   length++;
   
   // args
-  length += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (compiler->args->length + 1);
+  length += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (SPVM_COMPILER_get_args_length(compiler) + 1);
   
   // opcodes_runtime_codes_length
   length++;
@@ -608,6 +607,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   int32_t class_vars_base = 0;
   int32_t fields_base = 0;
   int32_t methods_base = 0;
+  int32_t args_base = 0;
   int32_t* basic_type_runtime_codes_ptr = runtime_codes_ptr;
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
@@ -822,8 +822,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       
       runtime_method->args_length = method->args_length;
       if (method->args_length > 0) {
-        SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, 0);
-        runtime_method->args_base = arg->arg_id;
+        runtime_method->args_base = args_base;
+        args_base += method->args_length;
       }
       else {
         runtime_method->args_base = -1;
@@ -836,7 +836,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr += methods_runtime_codes_length;
   
   // args_runtime_codes_length
-  int32_t args_runtime_codes_length = (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (compiler->args->length + 1);
+  int32_t args_runtime_codes_length = (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (SPVM_COMPILER_get_args_length(compiler) + 1);
   *runtime_codes_ptr = args_runtime_codes_length;
   runtime_codes_ptr++;
   

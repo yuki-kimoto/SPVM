@@ -568,13 +568,6 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       }
       
       method->index = i;
-      
-      // Add the method arguments
-      for (int32_t args_index = 0; args_index < method->args_length; args_index++) {
-        SPVM_VAR_DECL* arg = SPVM_LIST_get(method->var_decls, args_index);
-        arg->arg_id = compiler->args->length;
-        SPVM_LIST_push(compiler->args, arg);
-      }
     }
     
     // Check required method
