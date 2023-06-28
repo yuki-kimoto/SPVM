@@ -385,16 +385,6 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
       
       basic_type->fields = merged_fields;
       
-      
-      // Check fields
-      for (int32_t i = 0; i < basic_type->fields->length; i++) {
-        // Field
-        SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, i);
-        
-        // Add field to compiler
-        SPVM_LIST_push(compiler->fields, field);
-      }
-      
       // Resove field offset
       SPVM_CHECK_check_field_offset(compiler, basic_type);
       

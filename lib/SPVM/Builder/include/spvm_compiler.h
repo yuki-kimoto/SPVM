@@ -125,9 +125,6 @@ struct spvm_compiler {
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
   
-  // Field ops
-  SPVM_LIST* fields;
-  
   // Method ops
   SPVM_LIST* methods;
   
@@ -177,5 +174,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler);
 int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
 
 int32_t SPVM_COMPILER_get_class_vars_length(SPVM_COMPILER* compiler);
+int32_t SPVM_COMPILER_get_fields_length(SPVM_COMPILER* compiler);
 
 #endif
