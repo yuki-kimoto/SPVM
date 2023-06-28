@@ -593,7 +593,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, in
   if (basic_type->fields_length > 0) {
     for (int32_t field_index = 0; field_index <  basic_type->fields_length; field_index++) {
       SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type_id, field_index);
-      const char* field_name_current = SPVM_API_RUNTIME_get_name(runtime, field->name_id);
+      const char* field_name_current = SPVM_API_RUNTIME_get_field_name(runtime, field);
       if (strcmp(field_name_current, field_name) == 0) {
         found_field = field;
         break;
@@ -697,7 +697,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, 
       int32_t cur_half_index = cur_min_index +(cur_max_index - cur_min_index) / 2;
       
       SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, cur_half_index);
-      const char* cur_half_method_name = SPVM_API_RUNTIME_get_name(runtime, method->name_id);
+      const char* cur_half_method_name = SPVM_API_RUNTIME_get_method_name(runtime, method);
       
       int32_t cmp_result = strcmp(method_name, cur_half_method_name);
       
