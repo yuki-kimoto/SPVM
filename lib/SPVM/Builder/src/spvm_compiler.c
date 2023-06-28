@@ -1035,3 +1035,14 @@ int32_t SPVM_COMPILER_get_fields_length(SPVM_COMPILER* compiler) {
   
   return fields_length;
 }
+
+int32_t SPVM_COMPILER_get_methods_length(SPVM_COMPILER* compiler) {
+  
+  int32_t methods_length = 0;
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    methods_length += basic_type->methods->length;
+  }
+  
+  return methods_length;
+}
