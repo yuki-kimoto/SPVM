@@ -309,25 +309,25 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_module_file = NULL;
   if (basic_type_id >= 0) {
     int32_t module_rel_file_id = env->api->runtime->get_basic_type_module_rel_file_id(runtime, basic_type_id);
-    int32_t include_dir_id = env->api->runtime->get_basic_type_module_dir_id(runtime, basic_type_id);
-    const char* include_dir = NULL;
-    const char* include_dir_sep;
-    if (include_dir_id >= 0) {
-      include_dir_sep = "/";
-      include_dir = env->api->runtime->get_constant_string_value(runtime, include_dir_id, NULL);
+    int32_t module_dir_id = env->api->runtime->get_basic_type_module_dir_id(runtime, basic_type_id);
+    const char* module_dir = NULL;
+    const char* module_dir_sep;
+    if (module_dir_id >= 0) {
+      module_dir_sep = "/";
+      module_dir = env->api->runtime->get_constant_string_value(runtime, module_dir_id, NULL);
     }
     else {
-      include_dir_sep = "";
-      include_dir = "";
+      module_dir_sep = "";
+      module_dir = "";
     }
     const char* module_rel_file = env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
     
-    int32_t module_file_length = strlen(include_dir) + strlen(include_dir_sep) + strlen(module_rel_file);
+    int32_t module_file_length = strlen(module_dir) + strlen(module_dir_sep) + strlen(module_rel_file);
     obj_module_file = env->new_string(env, stack, NULL, module_file_length);
     char* module_file = (char*)env->get_chars(env, stack, obj_module_file);
-    memcpy(module_file, include_dir, strlen(include_dir));
-    memcpy(module_file + strlen(include_dir), include_dir_sep, strlen(include_dir_sep));
-    memcpy(module_file + strlen(include_dir) + strlen(include_dir_sep), module_rel_file, strlen(module_rel_file));
+    memcpy(module_file, module_dir, strlen(module_dir));
+    memcpy(module_file + strlen(module_dir), module_dir_sep, strlen(module_dir_sep));
+    memcpy(module_file + strlen(module_dir) + strlen(module_dir_sep), module_rel_file, strlen(module_rel_file));
   }
   
   stack[0].oval = obj_module_file;
