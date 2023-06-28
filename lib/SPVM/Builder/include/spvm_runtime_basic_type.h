@@ -31,7 +31,6 @@ struct spvm_runtime_basic_type {
   int32_t required_method_index;
   int32_t anon_basic_types_base;
   int32_t anon_basic_types_length;
-  int8_t has_init_block;
   int8_t is_anon;
   int8_t is_pointer;
   int8_t initialized;
