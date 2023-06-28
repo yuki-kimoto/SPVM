@@ -4784,7 +4784,6 @@ get_module_file(...)
   if (basic_type_id >= 0) {
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type_id);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-      int32_t module_rel_file_id = api_env->api->runtime->get_basic_type_module_rel_file_id(runtime, basic_type_id);
       int32_t include_dir_id = api_env->api->runtime->get_basic_type_module_dir_id(runtime, basic_type_id);
       const char* include_dir = NULL;
       const char* include_dir_sep;
@@ -4796,7 +4795,7 @@ get_module_file(...)
         include_dir_sep = "";
         include_dir = "";
       }
-      const char* module_rel_file = api_env->api->runtime->get_constant_string_value(runtime, module_rel_file_id, NULL);
+      const char* module_rel_file = api_env->api->runtime->get_basic_type_module_rel_file(runtime, basic_type_id);
       
       sv_module_file = sv_2mortal(newSVpv(include_dir, 0));
       sv_catpv(sv_module_file, include_dir_sep);
