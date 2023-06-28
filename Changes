@@ -29,7 +29,8 @@
     const char* (*get_class_var_name)(void* runtime, void* class_var);
     const char* (*get_field_name)(void* runtime, void* field);
     const char* (*get_method_name)(void* runtime, void* method);
-
+  [Compilation Error Message Improvement]
+    * Complication error messages were improved.
 
 0.989015 2023-06-27
   [Incompatibe Changes]

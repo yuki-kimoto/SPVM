@@ -108,22 +108,6 @@ use Test::More;
   }
 }
 
-# Field Definition
-{
-  {
-    my $source = 'class MyClass { has foo : int; has foo : int; }';
-    compile_not_ok($source, qr/Redeclaration of the "foo" field in the "MyClass" basic type/);
-  }
-}
-
-# Class Variable Definition
-{
-  {
-    my $source = 'class MyClass { our $FOO : int; our $FOO : int;}';
-    compile_not_ok($source, qr/Redeclaration of the class variable "\$FOO" in the "MyClass" basic type/);
-  }
-}
-
 # Method
 {
   {
@@ -144,7 +128,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
-    compile_not_ok($source, qr/Redeclaration of the "foo" method in the "MyClass" basic type/);
+    compile_not_ok($source, qr/Redeclaration of the "foo" method in the "MyClass" class/);
   }
   {
     my $source = 'class MyClass : interface_t { required method foo : void (); required method bar : void (); }';

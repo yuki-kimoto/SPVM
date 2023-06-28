@@ -347,7 +347,7 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
 
           SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
           if (found_field_in_super_class) {
-            SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class of the \"%s\" basic type.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
+            SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class of the \"%s\" class.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
             compile_error = 1;
             break;
           }
@@ -581,7 +581,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         SPVM_METHOD* found_required_method = SPVM_CHECK_search_method(compiler, basic_type, interface_required_method->name);
         
         if (!found_required_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" basic type must have the \"%s\" method that is defined as a required method in the \"%s\" basic type.\n  at %s line %d", basic_type->name, interface_required_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" basic type must have the \"%s\" method that is defined as a required method in the \"%s\" class.\n  at %s line %d", basic_type->name, interface_required_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
           return;
         }
       }
@@ -618,7 +618,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
             if (strcmp(method->name, interface_method->name) == 0) {
               if (method->is_class_method) {
                 if (!interface_method->is_class_method) {
-                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" basic type.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" class.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
                   return;
                 }
               }
@@ -629,12 +629,12 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
                 SPVM_LIST* interface_method_var_decls = interface_method->var_decls;
                 
                 if (!(method->required_args_length == interface_method->required_args_length)) {
-                  SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" basic type must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" basic type.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+                  SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
                   return;
                 }
 
                 if (!(method->args_length >= interface_method->args_length)) {
-                  SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" basic type must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" basic type.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+                  SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
                   return;
                 }
                 
@@ -646,7 +646,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* interface_method_var_decl_type = interface_method_var_decl->type;
                   
                   if (!SPVM_TYPE_equals(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_method_var_decl_type->basic_type->id, interface_method_var_decl_type->dimension, interface_method_var_decl_type->flag)) {
-                    SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" basic type must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" basic type.\n  at %s line %d", arg_index, method->name, basic_type->name, arg_index, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+                    SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" class.\n  at %s line %d", arg_index, method->name, basic_type->name, arg_index, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
                     return;
                   }
                 }
@@ -673,12 +673,12 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
                   
                   if (assignability) {
                     if (need_implicite_conversion) {
-                      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" basic type must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" basic type.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+                      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
                       return;
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" basic type must be able to be assigned to the return type of the \"%s\" method in the \"%s\" basic type.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" class.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
                     return;
                   }
                 }
@@ -996,7 +996,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
       call_method->method = found_method;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is not found.\n  at %s line %d", method_name, found_basic_type->name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is not found.\n  at %s line %d", method_name, found_basic_type->name, op_call_method->file, op_call_method->line);
       return;
     }
   }
@@ -1051,7 +1051,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
       if (found_method) {
         basic_type = found_method->current_basic_type;
         if (found_method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is found, but this is not an instance method.\n  at %s line %d", abs_method_name, basic_type->name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", abs_method_name, basic_type->name, op_call_method->file, op_call_method->line);
           return;
         }
         call_method->method = found_method;
@@ -1068,7 +1068,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
       if (found_method) {
         if (found_method->is_class_method) {
           basic_type = found_method->current_basic_type;
-          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type is found, but this is not an instance method.\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class is found, but this is not an instance method.\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
           return;
         }
         call_method->method = found_method;
@@ -2908,7 +2908,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                     args_length_for_user--;
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Too many arguments are passed to the \"%s\" method in the \"%s\" basic type.\n  at %s line %d", method_name, op_cur->uv.call_method->method->current_basic_type->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Too many arguments are passed to the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, op_cur->uv.call_method->method->current_basic_type->name, op_cur->file, op_cur->line);
                   
                   return;
                 }
@@ -2923,7 +2923,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 if (!call_method->method->is_class_method) {
                   call_method_args_length_for_user--;
                 }
-                sprintf(place, "the %dth argument of the \"%s\" method in the \"%s\" basic type", call_method_args_length_for_user, method_name, op_cur->uv.call_method->method->current_basic_type->name);
+                sprintf(place, "the %dth argument of the \"%s\" method in the \"%s\" class", call_method_args_length_for_user, method_name, op_cur->uv.call_method->method->current_basic_type->name);
                 
                 // Invocant is not checked.
                 op_operand = SPVM_CHECK_check_assign(compiler, arg_var_decl_type, op_operand, place, op_cur->file, op_cur->line);
@@ -2940,7 +2940,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 required_args_length_for_user--;
               }
               
-              SPVM_COMPILER_error(compiler, "Too few arguments are passed to the \"%s\" method in the \"%s\" basic type.\n  at %s line %d", method_name, op_cur->uv.call_method->method->current_basic_type->name, op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "Too few arguments are passed to the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, op_cur->uv.call_method->method->current_basic_type->name, op_cur->file, op_cur->line);
               
               return;
             }
@@ -3050,28 +3050,28 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             
             if (!field) {
               const char* invocant_type_name = SPVM_TYPE_new_type_name(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag);
-              SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" basic type is not found.\n  at %s line %d", op_name->uv.name, invocant_type_name, op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" class is not found.\n  at %s line %d", op_name->uv.name, invocant_type_name, op_cur->file, op_cur->line);
               return;
             }
             
             // weaken operator
             if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_WEAKEN) {
               if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" basic type operated by the weaken operator must be an object type.\n  at %s line %d", field->op_name->uv.name, field->current_basic_type->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" class operated by the weaken operator must be an object type.\n  at %s line %d", field->op_name->uv.name, field->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
             // unweaken operator
             else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
               if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" basic type operated by the unweaken operator must be an object type.\n  at %s line %d", field->op_name->uv.name, field->current_basic_type->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" class operated by the unweaken operator must be an object type.\n  at %s line %d", field->op_name->uv.name, field->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
             // isweak operator
             else if (op_cur->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
               if (!SPVM_TYPE_is_object_type(compiler, field->type->basic_type->id, field->type->dimension, field->type->flag)) {
-                SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" basic type operated by the isweak operator must be an object type.\n  at %s line %d", field->op_name->uv.name, field->current_basic_type->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The \"%s\" field in the \"%s\" class operated by the isweak operator must be an object type.\n  at %s line %d", field->op_name->uv.name, field->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
@@ -3080,7 +3080,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             
             if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type)) {
               if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type)) {
-                SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" basic type cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->current_basic_type->name, method->current_basic_type->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->current_basic_type->name, method->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
@@ -3143,7 +3143,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             );
             
             if (!found_method) {
-              SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" basic type checked by the can operator must be defined.\n  at %s line %d", method_name, basic_type_name, op_name_method->file, op_name_method->line);
+              SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class checked by the can operator must be defined.\n  at %s line %d", method_name, basic_type_name, op_name_method->file, op_name_method->line);
               return;
             }
             
