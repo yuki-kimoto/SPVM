@@ -125,9 +125,6 @@ struct spvm_compiler {
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
   
-  // Class variables
-  SPVM_LIST* class_vars;
-  
   // Field ops
   SPVM_LIST* fields;
   

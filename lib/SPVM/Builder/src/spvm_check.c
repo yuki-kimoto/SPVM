@@ -247,9 +247,6 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, i);
       
       class_var->index = i;
-      
-      // Add the class_var to the compiler
-      SPVM_LIST_push(compiler->class_vars, class_var);
     }
     
     // Multi-numeric type limitation
