@@ -1013,3 +1013,14 @@ const char* SPVM_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t incl
   const char* include_dir = SPVM_LIST_get(compiler->include_dirs, include_dir_id);
   return include_dir;
 }
+
+int32_t SPVM_COMPILER_get_class_vars_length(SPVM_COMPILER* compiler) {
+  
+  int32_t class_vars_length = 0;
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    class_vars_length += basic_type->class_vars->length;
+  }
+  
+  return class_vars_length;
+}
