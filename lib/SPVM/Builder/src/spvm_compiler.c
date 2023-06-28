@@ -791,7 +791,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)method_runtime_codes_ptr;
       
-      runtime_method->opcodes_base = method->opcodes_base_id;
+      runtime_method->opcodes_base = method->opcodes_base_address_id;
       runtime_method->opcodes_length = method->opcodes_length;
       runtime_method->index = method->index;
       runtime_method->current_basic_type_id = method->current_basic_type->id;

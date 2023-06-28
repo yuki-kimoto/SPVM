@@ -338,7 +338,7 @@ void SPVM_DUMPER_dump_method_opcode_array(SPVM_COMPILER* compiler, SPVM_METHOD* 
       }
       
       fprintf(stderr, "      opcode_array\n");
-      SPVM_DUMPER_dump_opcode_array(compiler, compiler->opcode_array, method->opcodes_base_id, method->opcodes_length);
+      SPVM_DUMPER_dump_opcode_array(compiler, compiler->opcode_array, method->opcodes_base_address_id, method->opcodes_length);
     }
   }
   else {
