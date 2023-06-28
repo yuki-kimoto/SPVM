@@ -127,9 +127,6 @@ struct spvm_compiler {
   
   SPVM_LIST* cur_anon_op_types;
   
-  // Switch 
-  SPVM_LIST* switch_infos;
-  
   // SPVM runtime codes
   int32_t* runtime_codes;
   
