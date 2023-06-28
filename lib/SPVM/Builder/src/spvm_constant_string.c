@@ -22,7 +22,7 @@ SPVM_CONSTANT_STRING* SPVM_CONSTANT_STRING_new(SPVM_COMPILER* compiler, const ch
     SPVM_CONSTANT_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CONSTANT_STRING));
     string->value = (char*)(compiler->string_pool->value + string_pool_id);
     string->length = length;
-    string->id = compiler->constant_strings->length;
+    string->address_id = compiler->constant_strings->length;
     string->string_pool_id = string_pool_id;
     
     SPVM_LIST_push(compiler->constant_strings, string);

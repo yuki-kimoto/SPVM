@@ -2778,7 +2778,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(constant_string);
                         
                         opcode.operand0 = call_stack_id_out;
-                        opcode.operand1 = constant_string->id;
+                        opcode.operand1 = constant_string->address_id;
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
