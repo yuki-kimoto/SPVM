@@ -16,7 +16,7 @@ struct spvm_runtime {
   // Allocator
   SPVM_ALLOCATOR* allocator;
   
-  const char* constant_string_pool;
+  const char* string_pool;
   
   // Strings
   SPVM_RUNTIME_CONSTANT_STRING* constant_strings;
