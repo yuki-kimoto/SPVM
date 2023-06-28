@@ -2912,7 +2912,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, int
   
   size_t alloc_size = (size_t)env->api->runtime->object_header_size + sizeof(void*) * (length + 1);
   
-  const char* basic_type_name = env->api->runtime->get_name(env->runtime, basic_type->name_id);
+  const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type_id);
   
   SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, basic_type_id, 1, length, 0);
   
