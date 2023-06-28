@@ -2794,13 +2794,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        int32_t module_dir_id = SPVM_API_RUNTIME_get_basic_type_module_dir_id(runtime, current_basic_type_id);
+        const char* module_dir = SPVM_API_RUNTIME_get_basic_type_module_dir(runtime, current_basic_type_id);
         const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_module_rel_file(runtime, current_basic_type_id);
-        const char* module_dir = NULL;
         const char* module_dir_sep;
-        if (module_dir_id >= 0) {
+        if (module_dir) {
           module_dir_sep = "/";
-          module_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, module_dir_id, NULL);
         }
         else {
           module_dir_sep = "";
