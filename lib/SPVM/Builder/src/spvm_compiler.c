@@ -898,8 +898,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   // constant_strings
   int32_t* constant_string_runtime_codes_ptr = runtime_codes_ptr;
-  for (int32_t constant_string_id = 0; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
-    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->constant_strings, constant_string_id);
+  for (int32_t constant_string_address_id = 0; constant_string_address_id < compiler->constant_strings->length; constant_string_address_id++) {
+    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->constant_strings, constant_string_address_id);
     SPVM_RUNTIME_CONSTANT_STRING* runtime_string = (SPVM_RUNTIME_CONSTANT_STRING*)constant_string_runtime_codes_ptr;
     
     runtime_string->address_id = string->address_id;
