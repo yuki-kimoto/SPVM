@@ -2780,9 +2780,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         SPVM_CONSTANT_STRING* constant_string = SPVM_HASH_get(basic_type->constant_string_symtable, constant_string_value, constant_string_length);
                         assert(constant_string);
                         
-                        assert(constant_string->address_id >= 0);
-                        opcode.operand2 = constant_string->address_id;
-                        
                         assert(constant_string->index >= 0);
                         opcode.operand3 = constant_string->index;
                         

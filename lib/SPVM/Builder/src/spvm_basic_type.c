@@ -293,7 +293,6 @@ SPVM_CONSTANT_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compile
       SPVM_STRING_BUFFER_add_len_nullstr(compiler->string_pool, (char*)value, length);
       
       string->value = (char*)(compiler->string_pool->value + string_pool_address_id);
-      string->address_id = compiler->constant_strings->length;
       string->string_pool_address_id = string_pool_address_id;
       
       SPVM_LIST_push(compiler->constant_strings, string);
