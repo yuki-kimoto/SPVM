@@ -10,7 +10,6 @@ struct spvm_constant_string {
   const char* value;
   int32_t length;
   int32_t index;
-  int32_t string_pool_address_id;
   int32_t string_pool_index;
 };
 
