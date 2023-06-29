@@ -268,20 +268,20 @@ int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime) {
   return runtime->runtime_codes_length;
 }
 
-const char* SPVM_API_RUNTIME_get_global_constant_string_value_nolen(SPVM_RUNTIME* runtime, int32_t constant_string_id) {
+const char* SPVM_API_RUNTIME_get_global_constant_string_value_nolen(SPVM_RUNTIME* runtime, int32_t constant_string_address_id) {
   
-  const char* constant_string_value = SPVM_API_RUNTIME_get_global_constant_string_value(runtime, constant_string_id, NULL);
+  const char* constant_string_value = SPVM_API_RUNTIME_get_global_constant_string_value(runtime, constant_string_address_id, NULL);
   
   return constant_string_value;
 }
 
-const char* SPVM_API_RUNTIME_get_global_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_id, int32_t* string_length) {
+const char* SPVM_API_RUNTIME_get_global_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_address_id, int32_t* string_length) {
   
-  if (constant_string_id < 0) {
+  if (constant_string_address_id < 0) {
     return NULL;
   }
   
-  SPVM_RUNTIME_CONSTANT_STRING* global_constant_string = &runtime->global_constant_strings[constant_string_id];
+  SPVM_RUNTIME_CONSTANT_STRING* global_constant_string = &runtime->global_constant_strings[constant_string_address_id];
   
   const char* global_constant_string_value = global_constant_string->value;
   
