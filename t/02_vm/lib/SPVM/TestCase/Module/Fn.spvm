@@ -4411,12 +4411,17 @@ class TestCase::Module::Fn {
       }
     }
     
+    warn;
+    
     {
       my $version_string = Fn->get_version_string("TestCase::Empty");
+      
       if ($version_string) {
         return 0;
       }
     }
+    
+    warn;
     
     # Exceptions
     {

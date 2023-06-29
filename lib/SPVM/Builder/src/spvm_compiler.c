@@ -704,6 +704,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->version_string_string_index = basic_type_version_string->index;
     }
     else {
+      runtime_basic_type->version_string_string_address_id = -1;
       runtime_basic_type->version_string_string_index = -1;
     }
     
