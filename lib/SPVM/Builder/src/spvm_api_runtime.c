@@ -637,7 +637,7 @@ int32_t SPVM_API_RUNTIME_get_field_offset(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FI
 
 const char* SPVM_API_RUNTIME_get_field_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  const char* field_name = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, field->name_string_address_id);
+  const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, field->current_basic_type_id, field->name_string_index);
   
   return field_name;
 }
