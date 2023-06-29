@@ -47,26 +47,26 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_
 const char* SPVM_API_RUNTIME_get_basic_type_version_string(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t anon_basic_type_index);
 
-const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type, int32_t constant_string_index);
-const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type, int32_t constant_string_index, int32_t* string_length);
-int32_t SPVM_API_RUNTIME_get_basic_type_category_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-const char* SPVM_API_RUNTIME_get_basic_type_name_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_basic_type_id_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_is_anon_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-const char* SPVM_API_RUNTIME_get_basic_type_module_dir_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_fields_base_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_fields_length_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_methods_base_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_methods_length_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_base_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_parent_id_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-const char* SPVM_API_RUNTIME_get_basic_type_version_string_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type);
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_type_id_v2(SPVM_RUNTIME* runtime, SPVM_BASIC_TYPE* basic_type, int32_t anon_basic_type_index);
+const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t constant_string_index);
+const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t constant_string_index, int32_t* string_length);
+int32_t SPVM_API_RUNTIME_get_basic_type_category_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+const char* SPVM_API_RUNTIME_get_basic_type_name_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_basic_type_id_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_is_anon_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+const char* SPVM_API_RUNTIME_get_basic_type_module_dir_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_fields_base_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_fields_length_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_methods_base_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_methods_length_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_base_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_parent_id_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+const char* SPVM_API_RUNTIME_get_basic_type_version_string_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_type_id_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t anon_basic_type_index);
 
 // Class variable
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t class_var_index);
