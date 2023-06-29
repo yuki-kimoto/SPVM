@@ -131,7 +131,7 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings_length; constant_string_index++) {
       SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[basic_type->constant_strings_base + constant_string_index];
-      runtime_string->value = &runtime->string_pool[runtime_string->string_pool_address_id];
+      runtime_string->value = &runtime->string_pool[basic_type->string_pool_base + runtime_string->string_pool_index];
     }
   }
   
