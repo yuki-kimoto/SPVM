@@ -757,7 +757,7 @@ int32_t SPVM_API_RUNTIME_get_method_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ME
 
 const char* SPVM_API_RUNTIME_get_method_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  const char* method_name = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, method->name_string_address_id);
+  const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, method->current_basic_type_id, method->name_string_index);
   
   return method_name;
 }
