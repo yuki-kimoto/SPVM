@@ -552,7 +552,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME
 
 const char* SPVM_API_RUNTIME_get_class_var_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  const char* class_var_name = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, class_var->name_string_address_id);
+  const char* class_var_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, class_var->current_basic_type_id, class_var->name_string_index);
   
   return class_var_name;
 }
