@@ -348,9 +348,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_name(SPVM_RUNTIME* runtime, int32_t 
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  int32_t basic_type_name_string_address_id = basic_type->name_string_address_id;
-  
-  const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, basic_type_name_string_address_id);
+  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type_id, basic_type->name_string_index);
   
   return basic_type_name;
 }
