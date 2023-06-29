@@ -617,6 +617,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr++;
   
   // basic_types
+  int32_t string_pool_base = 0;
+  int32_t constant_strings_base = 0;
   int32_t class_vars_base = 0;
   int32_t fields_base = 0;
   int32_t methods_base = 0;
@@ -720,6 +722,24 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     else {
       runtime_basic_type->class_vars_base = -1;
+    }
+    
+    runtime_basic_type->string_pool_length = basic_type->string_pool->length;
+    if (basic_type->string_pool->length > 0) {
+      runtime_basic_type->string_pool_base = string_pool_base;
+      string_pool_base += basic_type->string_pool->length;
+    }
+    else {
+      runtime_basic_type->string_pool_base = -1;
+    }
+    
+    runtime_basic_type->constant_strings_length = basic_type->constant_strings->length;
+    if (basic_type->constant_strings->length > 0) {
+      runtime_basic_type->constant_strings_base = constant_strings_base;
+      constant_strings_base += basic_type->constant_strings->length;
+    }
+    else {
+      runtime_basic_type->constant_strings_base = -1;
     }
     
     basic_type_runtime_codes_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
