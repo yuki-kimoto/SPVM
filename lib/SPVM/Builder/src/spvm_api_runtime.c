@@ -230,6 +230,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field_index,
     SPVM_API_RUNTIME_get_field_offset,
     SPVM_API_RUNTIME_get_arg,
+    SPVM_API_RUNTIME_get_basic_type_by_name,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
