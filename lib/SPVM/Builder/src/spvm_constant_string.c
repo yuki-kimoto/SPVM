@@ -20,7 +20,6 @@ SPVM_CONSTANT_STRING* SPVM_CONSTANT_STRING_new(SPVM_COMPILER* compiler, const ch
     memcpy((char*)string->value, value, length);
     string->length = length;
     
-    SPVM_LIST_push(compiler->global_constant_strings, string);
     SPVM_HASH_set(compiler->global_constant_string_symtable, string->value, length, string);
     
     return string;

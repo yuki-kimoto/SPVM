@@ -95,9 +95,6 @@ struct spvm_compiler {
   // Module source symtable
   SPVM_HASH* source_symtable;
   
-  // Strings - string literals and symbol names
-  SPVM_LIST* global_constant_strings;
-  
   // String symtable
   SPVM_HASH* global_constant_string_symtable;
   
