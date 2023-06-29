@@ -2776,7 +2776,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(global_constant_string);
                         
                         opcode.operand0 = call_stack_index_out;
-                        opcode.operand1 = global_constant_string->global_address_id;
                         
                         SPVM_CONSTANT_STRING* constant_string = SPVM_HASH_get(basic_type->constant_string_symtable, constant_string_value, constant_string_length);
                         assert(constant_string);
