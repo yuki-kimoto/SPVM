@@ -13,12 +13,6 @@ struct spvm_runtime {
   
   SPVM_ALLOCATOR* allocator;
   
-  const char* global_string_pool;
-  
-  SPVM_RUNTIME_CONSTANT_STRING* global_constant_strings;
-  
-  int32_t global_constant_strings_length;
-  
   const char* string_pool;
   
   SPVM_RUNTIME_CONSTANT_STRING* constant_strings;
