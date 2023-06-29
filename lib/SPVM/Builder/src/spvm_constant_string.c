@@ -22,7 +22,6 @@ SPVM_CONSTANT_STRING* SPVM_CONSTANT_STRING_new(SPVM_COMPILER* compiler, const ch
     SPVM_CONSTANT_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CONSTANT_STRING));
     string->value = (char*)(compiler->global_string_pool->value + global_string_pool_address_id);
     string->length = length;
-    string->global_string_pool_address_id = global_string_pool_address_id;
     
     SPVM_LIST_push(compiler->global_constant_strings, string);
     SPVM_HASH_set(compiler->global_constant_string_symtable, string->value, length, string);
