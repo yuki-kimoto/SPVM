@@ -1335,20 +1335,20 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* string = object_vars[opcode->operand0];
         int32_t line = opcode->operand1;
         
-        const char* include_dir = NULL;
-        const char* include_dir_sep;
-        int32_t include_dir_id = current_basic_type->module_dir_global_string_address_id;
-        if (include_dir_id >= 0) {
-          include_dir_sep = "/";
-          include_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_dir_string_address_id, NULL);
+        const char* module_dir = NULL;
+        const char* module_dir_sep;
+        int32_t module_dir_id = current_basic_type->module_dir_global_string_address_id;
+        if (module_dir_id >= 0) {
+          module_dir_sep = "/";
+          module_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_dir_string_address_id, NULL);
         }
         else {
-          include_dir_sep = "";
-          include_dir = "";
+          module_dir_sep = "";
+          module_dir = "";
         }
         const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_rel_file_string_address_id, NULL);
 
-        SPVM_IMPLEMENT_WARN(env, stack, string, include_dir, include_dir_sep, module_rel_file, line);
+        SPVM_IMPLEMENT_WARN(env, stack, string, module_dir, module_dir_sep, module_rel_file, line);
         
         break;
       }
