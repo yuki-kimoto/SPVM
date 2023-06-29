@@ -281,20 +281,12 @@ SPVM_CONSTANT_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compile
     SPVM_STRING_BUFFER_add_len_nullstr(basic_type->string_pool, (char*)value, length);
     
     SPVM_CONSTANT_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CONSTANT_STRING));
+    string->value = value;
     string->length = length;
     string->index = basic_type->constant_strings->length;
     string->string_pool_index = string_pool_index;
     
     SPVM_LIST_push(basic_type->constant_strings, string);
-    
-    {
-      int32_t string_pool_address_id = compiler->string_pool->length;
-      
-      SPVM_STRING_BUFFER_add_len_nullstr(compiler->string_pool, (char*)value, length);
-      
-      string->value = (char*)(compiler->string_pool->value + string_pool_address_id);
-    }
-    
     SPVM_HASH_set(basic_type->constant_string_symtable, string->value, length, string);
     
     return string;
