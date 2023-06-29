@@ -631,22 +631,11 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->id = basic_type->id;
     runtime_basic_type->category = basic_type->category;
     
-    SPVM_CONSTANT_STRING* global_basic_type_string = SPVM_HASH_get(compiler->global_constant_string_symtable, basic_type->name, strlen(basic_type->name));
-    runtime_basic_type->name_global_string_address_id = global_basic_type_string->global_address_id;
-    
     SPVM_CONSTANT_STRING* basic_type_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     assert(basic_type_string->address_id >= 0);
     runtime_basic_type->name_string_address_id = basic_type_string->address_id;
     assert(basic_type_string->index >= 0);
     runtime_basic_type->name_string_index = basic_type_string->index;
-    
-    if (basic_type->module_rel_file) {
-      SPVM_CONSTANT_STRING* global_basic_type_rel_file_string = SPVM_HASH_get(compiler->global_constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
-      runtime_basic_type->module_rel_file_global_string_address_id = global_basic_type_rel_file_string->global_address_id;
-    }
-    else {
-      runtime_basic_type->module_rel_file_global_string_address_id = -1;
-    }
     
     if (basic_type->module_rel_file) {
       SPVM_CONSTANT_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
@@ -656,14 +645,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     else {
       runtime_basic_type->module_rel_file_string_address_id = -1;
       runtime_basic_type->module_rel_file_string_index = -1;
-    }
-    
-    if (basic_type->module_dir) {
-      SPVM_CONSTANT_STRING* global_basic_type_dir_string = SPVM_HASH_get(compiler->global_constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
-      runtime_basic_type->module_dir_global_string_address_id = global_basic_type_dir_string->global_address_id;
-    }
-    else {
-      runtime_basic_type->module_dir_global_string_address_id = -1;
     }
     
     if (basic_type->module_dir) {
@@ -689,14 +670,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     runtime_basic_type->fields_size = basic_type->fields_size;
-    
-    if (basic_type->version_string) {
-      SPVM_CONSTANT_STRING* global_basic_type_version_string = SPVM_HASH_get(compiler->global_constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
-      runtime_basic_type->version_string_global_string_address_id = global_basic_type_version_string->global_address_id;
-    }
-    else {
-      runtime_basic_type->version_string_global_string_address_id = -1;
-    }
     
     if (basic_type->version_string) {
       SPVM_CONSTANT_STRING* basic_type_version_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
@@ -801,9 +774,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_class_var->type_flag = class_var->type->flag;
       runtime_class_var->current_basic_type_id = class_var->current_basic_type->id;
       
-      SPVM_CONSTANT_STRING* global_class_var_name_string = SPVM_HASH_get(compiler->global_constant_string_symtable, class_var->name, strlen(class_var->name));
-      runtime_class_var->name_global_string_address_id = global_class_var_name_string->global_address_id;
-      
       SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->name, strlen(class_var->name));
       runtime_class_var->name_string_address_id = class_var_name_string->address_id;
       runtime_class_var->name_string_index = class_var_name_string->index;
@@ -832,9 +802,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_field->type_dimension = field->type->dimension;
       runtime_field->type_flag = field->type->flag;
       runtime_field->current_basic_type_id = field->current_basic_type->id;
-      
-      SPVM_CONSTANT_STRING* global_field_name_string = SPVM_HASH_get(compiler->global_constant_string_symtable, field->name, strlen(field->name));
-      runtime_field->name_global_string_address_id = global_field_name_string->global_address_id;
       
       SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
       runtime_field->name_string_address_id = field_name_string->address_id;
@@ -893,9 +860,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_method->is_destructor = method->is_destructor;
       runtime_method->is_required = method->is_required;
       runtime_method->is_enum = method->is_enum;
-      
-      SPVM_CONSTANT_STRING* global_method_name_string = SPVM_HASH_get(compiler->global_constant_string_symtable, method->name, strlen(method->name));
-      runtime_method->name_global_string_address_id = global_method_name_string->global_address_id;
       
       SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
       runtime_method->name_string_address_id = method_name_string->address_id;
