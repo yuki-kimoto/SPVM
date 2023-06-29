@@ -983,45 +983,45 @@ class Fn {
     }
     
     my $length = length $string;
-    my $start_global_string_address_id = -1;
-    my $end_global_string_address_id = -1;
+    my $begin_index = -1;
+    my $end_index = -1;
     
     for (my $i = 0; $i < $length; $i++) {
-      if ($start_global_string_address_id == -1) {
+      if ($begin_index == -1) {
         if (&is_space($string->[$i])) {
           # Skip
         }
         else {
-          $start_global_string_address_id = $i;
+          $begin_index = $i;
           last;
         }
       }
     }
     
     for (my $i = $length - 1; $i >= 0; $i--) {
-      if ($end_global_string_address_id == -1) {
+      if ($end_index == -1) {
         if (&is_space($string->[$i])) {
           # Skip
         }
         else {
-          $end_global_string_address_id = $i;
+          $end_index = $i;
           last;
         }
       }
     }
     
     my $trimed_string : string;
-    if ($start_global_string_address_id == -1 && $end_global_string_address_id == -1) {
+    if ($begin_index == -1 && $end_index == -1) {
       return "";
     }
-    elsif ($end_global_string_address_id == -1) {
-      $trimed_string = &substr($string, $start_global_string_address_id, $length - $start_global_string_address_id);
+    elsif ($end_index == -1) {
+      $trimed_string = &substr($string, $begin_index, $length - $begin_index);
     }
-    elsif ($end_global_string_address_id == -1) {
-      $trimed_string = &substr($string, 0, $end_global_string_address_id + 1);
+    elsif ($end_index == -1) {
+      $trimed_string = &substr($string, 0, $end_index + 1);
     }
     else {
-      $trimed_string = &substr($string, $start_global_string_address_id, $end_global_string_address_id - $start_global_string_address_id + 1);
+      $trimed_string = &substr($string, $begin_index, $end_index - $begin_index + 1);
     }
     
     return $trimed_string;
