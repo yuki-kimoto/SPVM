@@ -294,7 +294,7 @@ SPVM_CONSTANT_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compile
       
       SPVM_STRING_BUFFER_add_len_nullstr(compiler->string_pool, (char*)value, length);
       
-      string->address_id = compiler->constant_strings->length;
+      string->global_address_id = compiler->constant_strings->length;
       string->global_string_pool_address_id = global_string_pool_address_id;
       
       SPVM_LIST_push(compiler->constant_strings, string);

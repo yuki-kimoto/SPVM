@@ -2779,10 +2779,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(constant_string);
                         
                         opcode.operand0 = call_stack_index_out;
-                        opcode.operand1 = global_constant_string->address_id;
+                        opcode.operand1 = global_constant_string->global_address_id;
                         
-                        assert(constant_string->address_id >= 0);
-                        opcode.operand2 = constant_string->address_id;
+                        assert(constant_string->global_address_id >= 0);
+                        opcode.operand2 = constant_string->global_address_id;
                         
                         assert(constant_string->index >= 0);
                         opcode.operand3 = constant_string->index;
