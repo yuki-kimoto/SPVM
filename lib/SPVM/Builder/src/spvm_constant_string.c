@@ -15,12 +15,9 @@ SPVM_CONSTANT_STRING* SPVM_CONSTANT_STRING_new(SPVM_COMPILER* compiler, const ch
     return found_string;
   }
   else {
-    int32_t global_string_pool_address_id = compiler->global_string_pool->length;
-    
-    SPVM_STRING_BUFFER_add_len_nullstr(compiler->global_string_pool, (char*)value, length);
-    
     SPVM_CONSTANT_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CONSTANT_STRING));
-    string->value = (char*)(compiler->global_string_pool->value + global_string_pool_address_id);
+    string->value = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, length + 1);
+    memcpy((char*)string->value, value, length);
     string->length = length;
     
     SPVM_LIST_push(compiler->global_constant_strings, string);

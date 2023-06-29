@@ -101,9 +101,6 @@ struct spvm_compiler {
   // String symtable
   SPVM_HASH* global_constant_string_symtable;
   
-  // String Buffer
-  SPVM_STRING_BUFFER* global_string_pool;
-  
   SPVM_LIST* constant_strings;
   
   SPVM_STRING_BUFFER* string_pool;
