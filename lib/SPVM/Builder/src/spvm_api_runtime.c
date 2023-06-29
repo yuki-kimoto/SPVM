@@ -385,6 +385,15 @@ int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* ru
   return anon_basic_types_length;
 }
 
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t anon_basic_type_index) {
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  int32_t anon_basic_type_id = runtime->anon_basic_type_ids[basic_type->anon_basic_types_base + anon_basic_type_index];
+  
+  return anon_basic_type_id;
+}
+
 int32_t SPVM_API_RUNTIME_get_basic_type_is_anon(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
@@ -898,13 +907,6 @@ int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_A
   int32_t type_flag = arg->type_flag;
   
   return type_flag;
-}
-
-int32_t SPVM_API_RUNTIME_get_anon_basic_type_id(SPVM_RUNTIME* runtime, int32_t anon_basic_type_address_id) {
-  
-  int32_t anon_basic_type_id = runtime->anon_basic_type_ids[anon_basic_type_address_id];
-  
-  return anon_basic_type_id;
 }
 
 void* SPVM_API_RUNTIME_get_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
