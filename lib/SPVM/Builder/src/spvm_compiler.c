@@ -545,6 +545,21 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // anon_basic_type_ids
   length += (sizeof(int32_t) / sizeof(int32_t)) * (SPVM_COMPILER_get_anon_basic_types_length(compiler) + 1);
   
+  // string_pool_runtime_codes_length
+  length++;
+  
+  // string_pool
+  length += (compiler->string_pool->length / sizeof(int32_t)) + 1;
+  
+  // constant_strings length
+  length++;
+  
+  // constant_strings_runtime_codes_length
+  length++;
+  
+  // constant_strings
+  length += (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (SPVM_COMPILER_get_constant_strings_length(compiler) + 1);
+  
   return length;
 }
 
@@ -876,6 +891,37 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
   }
   runtime_codes_ptr += anon_basic_type_runtime_codes_length;
+  
+  // string_pool_runtime_codes_length
+  int32_t string_pool_runtime_codes_length = (compiler->string_pool->length / sizeof(int32_t)) + 1;
+  *runtime_codes_ptr = string_pool_runtime_codes_length;
+  runtime_codes_ptr++;
+  
+  // string_pool
+  memcpy(runtime_codes_ptr, compiler->string_pool->value, sizeof(int32_t) * string_pool_runtime_codes_length);
+  runtime_codes_ptr += string_pool_runtime_codes_length;
+  
+  // constant_strings length
+  *runtime_codes_ptr = compiler->constant_strings->length;
+  runtime_codes_ptr++;
+  
+  // constant_strings_runtime_codes_length
+  int32_t constant_strings_runtime_codes_length = (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
+  *runtime_codes_ptr = constant_strings_runtime_codes_length;
+  runtime_codes_ptr++;
+  
+  // constant_strings
+  int32_t* constant_string_runtime_codes_ptr = runtime_codes_ptr;
+  for (int32_t constant_string_id = 0; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
+    SPVM_CONSTANT_STRING* string = SPVM_LIST_get(compiler->constant_strings, constant_string_id);
+    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = (SPVM_RUNTIME_CONSTANT_STRING*)constant_string_runtime_codes_ptr;
+    
+    runtime_string->address_id = string->address_id;
+    runtime_string->length = string->length;
+    runtime_string->string_pool_address_id = string->string_pool_address_id;
+    constant_string_runtime_codes_ptr += sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t);
+  }
+  runtime_codes_ptr += constant_strings_runtime_codes_length;
   
   return runtime_codes;
 }

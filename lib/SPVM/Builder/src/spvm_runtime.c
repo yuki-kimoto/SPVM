@@ -126,10 +126,36 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->anon_basic_type_ids = runtime_codes_ptr;
   runtime_codes_ptr += anon_basic_types_runtime_codes_length;
   
-  // Runtime string symtable
+  // string_pool runtime codes length
+  int32_t string_pool_runtime_codes_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // string_pool
+  runtime->string_pool = (const char*)runtime_codes_ptr;
+  runtime_codes_ptr += string_pool_runtime_codes_length;
+  
+  // constant_strings length
+  runtime->constant_strings_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // constant_strings_runtime_codes length
+  int32_t constant_strings_runtime_codes_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // constant_strings
+  runtime->constant_strings = (SPVM_RUNTIME_CONSTANT_STRING*)runtime_codes_ptr;
+  runtime_codes_ptr += constant_strings_runtime_codes_length;
+  
+  // Global Runtime string symtable
   for (int32_t global_constant_string_id = 0; global_constant_string_id < runtime->global_constant_strings_length; global_constant_string_id++) {
     SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->global_constant_strings[global_constant_string_id];
     runtime_string->value = &runtime->global_string_pool[runtime_string->string_pool_address_id];
+  }
+  
+  // Runtime string symtable
+  for (int32_t constant_string_id = 0; constant_string_id < runtime->constant_strings_length; constant_string_id++) {
+    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[constant_string_id];
+    runtime_string->value = &runtime->string_pool[runtime_string->string_pool_address_id];
   }
   
   // Runtime basic type symtable
