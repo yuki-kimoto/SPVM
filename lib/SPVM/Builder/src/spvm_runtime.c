@@ -146,12 +146,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->constant_strings = (SPVM_RUNTIME_CONSTANT_STRING*)runtime_codes_ptr;
   runtime_codes_ptr += constant_strings_runtime_codes_length;
   
-  // Global Runtime string symtable
-  for (int32_t global_constant_string_id = 0; global_constant_string_id < runtime->global_constant_strings_length; global_constant_string_id++) {
-    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->global_constant_strings[global_constant_string_id];
-    runtime_string->value = &runtime->global_string_pool[runtime_string->global_string_pool_address_id];
-  }
-  
   // Runtime string symtable
   for (int32_t constant_string_id = 0; constant_string_id < runtime->constant_strings_length; constant_string_id++) {
     SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[constant_string_id];
