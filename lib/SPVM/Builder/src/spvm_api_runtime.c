@@ -426,9 +426,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file(SPVM_RUNTIME* runtim
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  int32_t module_rel_file_string_address_id = basic_type->module_rel_file_string_address_id;
-  
-  const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_rel_file_string_address_id);
+  const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type_id, basic_type->module_rel_file_string_index);
   
   return module_rel_file;
 }
