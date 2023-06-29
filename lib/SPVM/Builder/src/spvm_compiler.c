@@ -57,7 +57,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->global_constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
   
-  compiler->constant_strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
   compiler->string_pool = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Eternal information
@@ -875,11 +874,11 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr += string_pool_runtime_codes_length;
   
   // constant_strings length
-  *runtime_codes_ptr = compiler->constant_strings->length;
+  *runtime_codes_ptr = SPVM_COMPILER_get_constant_strings_length(compiler);
   runtime_codes_ptr++;
   
   // constant_strings_runtime_codes_length
-  int32_t constant_strings_runtime_codes_length = (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (compiler->constant_strings->length + 1);
+  int32_t constant_strings_runtime_codes_length = (sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t)) * (SPVM_COMPILER_get_constant_strings_length(compiler) + 1);
   *runtime_codes_ptr = constant_strings_runtime_codes_length;
   runtime_codes_ptr++;
   
