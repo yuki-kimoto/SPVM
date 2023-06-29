@@ -381,7 +381,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_version_string(SPVM_RUNTIME* runtime
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
   
-  const char* version_string = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, basic_type->version_string_string_address_id);
+  const char* version_string = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type_id, basic_type->version_string_string_index);
   
   return version_string;
 }
