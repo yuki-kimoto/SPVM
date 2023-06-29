@@ -1951,9 +1951,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t constant_string_id = opcode->operand2;
+        int32_t constant_string_index = opcode->operand3;
         
         int32_t constant_string_length;
-        const char* constant_string_value = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_id, &constant_string_length);
+        const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, current_basic_type_id, constant_string_index, &constant_string_length);
         SPVM_STRING_BUFFER_add(string_buffer,
           "  constant_string = \""
         );
