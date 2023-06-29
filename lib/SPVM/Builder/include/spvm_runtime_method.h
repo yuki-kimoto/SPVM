@@ -10,6 +10,7 @@
 struct spvm_runtime_method {
   int32_t index;
   int32_t name_global_string_address_id;
+  int32_t name_string_address_id;
   int32_t name_string_index;
   int32_t args_base;
   int32_t args_length;
