@@ -3111,6 +3111,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             
             
             SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->field->current_basic_type->name, strlen(field_access->field->current_basic_type->name));
+            
             SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, field_access->field->name, strlen(field_access->field->name));
             
             break;
