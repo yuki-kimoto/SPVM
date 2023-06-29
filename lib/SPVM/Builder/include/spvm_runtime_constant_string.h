@@ -12,7 +12,6 @@ struct spvm_runtime_constant_string {
   int32_t global_address_id;
   int32_t address_id;
   int32_t index;
-  int32_t global_string_pool_address_id;
   int32_t string_pool_address_id;
   int32_t string_pool_index;
 };
