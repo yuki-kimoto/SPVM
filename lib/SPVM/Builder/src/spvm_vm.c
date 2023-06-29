@@ -819,8 +819,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t constant_string_id = opcode->operand2;
+        int32_t constant_string_index = opcode->operand3;
         int32_t constant_string_length;
-        const char* constant_string = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_id, &constant_string_length);
+        const char* constant_string = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, current_basic_type->id, constant_string_index, &constant_string_length);
         SPVM_IMPLEMENT_NEW_STRING(env, stack, &object_vars[opcode->operand0], constant_string, constant_string_length, &error_id, object_ref_count_offset);
         break;
       }
