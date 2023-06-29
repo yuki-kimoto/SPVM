@@ -983,45 +983,45 @@ class Fn {
     }
     
     my $length = length $string;
-    my $start_string_address_id = -1;
-    my $end_string_address_id = -1;
+    my $start_global_string_address_id = -1;
+    my $end_global_string_address_id = -1;
     
     for (my $i = 0; $i < $length; $i++) {
-      if ($start_string_address_id == -1) {
+      if ($start_global_string_address_id == -1) {
         if (&is_space($string->[$i])) {
           # Skip
         }
         else {
-          $start_string_address_id = $i;
+          $start_global_string_address_id = $i;
           last;
         }
       }
     }
     
     for (my $i = $length - 1; $i >= 0; $i--) {
-      if ($end_string_address_id == -1) {
+      if ($end_global_string_address_id == -1) {
         if (&is_space($string->[$i])) {
           # Skip
         }
         else {
-          $end_string_address_id = $i;
+          $end_global_string_address_id = $i;
           last;
         }
       }
     }
     
     my $trimed_string : string;
-    if ($start_string_address_id == -1 && $end_string_address_id == -1) {
+    if ($start_global_string_address_id == -1 && $end_global_string_address_id == -1) {
       return "";
     }
-    elsif ($end_string_address_id == -1) {
-      $trimed_string = &substr($string, $start_string_address_id, $length - $start_string_address_id);
+    elsif ($end_global_string_address_id == -1) {
+      $trimed_string = &substr($string, $start_global_string_address_id, $length - $start_global_string_address_id);
     }
-    elsif ($end_string_address_id == -1) {
-      $trimed_string = &substr($string, 0, $end_string_address_id + 1);
+    elsif ($end_global_string_address_id == -1) {
+      $trimed_string = &substr($string, 0, $end_global_string_address_id + 1);
     }
     else {
-      $trimed_string = &substr($string, $start_string_address_id, $end_string_address_id - $start_string_address_id + 1);
+      $trimed_string = &substr($string, $start_global_string_address_id, $end_global_string_address_id - $start_global_string_address_id + 1);
     }
     
     return $trimed_string;
