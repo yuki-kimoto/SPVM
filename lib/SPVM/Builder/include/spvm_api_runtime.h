@@ -18,10 +18,6 @@ void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes);
 int32_t* SPVM_API_RUNTIME_get_runtime_codes(SPVM_RUNTIME* runtime);
 int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime);
 
-// Constant string
-const char* SPVM_API_RUNTIME_get_constant_string_value_nolen(SPVM_RUNTIME* runtime, int32_t constant_string_address_id);
-const char* SPVM_API_RUNTIME_get_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_address_id, int32_t* string_length);
-
 // Basic type
 int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime);
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type(SPVM_RUNTIME* runtime, int32_t basic_type_id);

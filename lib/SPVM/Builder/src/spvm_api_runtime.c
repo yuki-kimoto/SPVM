@@ -268,30 +268,6 @@ int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime) {
   return runtime->runtime_codes_length;
 }
 
-const char* SPVM_API_RUNTIME_get_constant_string_value_nolen(SPVM_RUNTIME* runtime, int32_t constant_string_address_id) {
-  
-  const char* constant_string_value = SPVM_API_RUNTIME_get_constant_string_value(runtime, constant_string_address_id, NULL);
-  
-  return constant_string_value;
-}
-
-const char* SPVM_API_RUNTIME_get_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_address_id, int32_t* string_length) {
-  
-  if (constant_string_address_id < 0) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_CONSTANT_STRING* constant_string = &runtime->constant_strings[constant_string_address_id];
-  
-  const char* constant_string_value = constant_string->value;
-  
-  if (string_length) {
-    *string_length = constant_string->length;
-  }
-  
-  return constant_string_value;
-}
-
 int32_t SPVM_API_RUNTIME_get_basic_type_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name) {
   
   if (basic_type_name == NULL) {
