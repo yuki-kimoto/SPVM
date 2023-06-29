@@ -19,8 +19,6 @@ int32_t* SPVM_API_RUNTIME_get_runtime_codes(SPVM_RUNTIME* runtime);
 int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime);
 
 // Constant string
-const char* SPVM_API_RUNTIME_get_global_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_id, int32_t* string_length);
-const char* SPVM_API_RUNTIME_get_global_constant_string_value_nolen(SPVM_RUNTIME* runtime, int32_t constant_string_id);
 const char* SPVM_API_RUNTIME_get_constant_string_value_nolen(SPVM_RUNTIME* runtime, int32_t constant_string_address_id);
 const char* SPVM_API_RUNTIME_get_constant_string_value(SPVM_RUNTIME* runtime, int32_t constant_string_address_id, int32_t* string_length);
 
