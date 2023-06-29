@@ -9,13 +9,9 @@
 struct spvm_runtime_basic_type {
   int32_t id;
   int32_t category;
-  int32_t name_string_address_id;
   int32_t name_string_index;
-  int32_t module_dir_string_address_id;
   int32_t module_dir_string_index;
-  int32_t module_rel_file_string_address_id;
   int32_t module_rel_file_string_index;
-  int32_t version_string_string_address_id;
   int32_t version_string_string_index;
   int32_t parent_id;
   int32_t string_pool_base;
