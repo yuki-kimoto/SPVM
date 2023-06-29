@@ -1337,16 +1337,16 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         const char* module_dir = NULL;
         const char* module_dir_sep;
-        int32_t module_dir_id = current_basic_type->module_dir_string_address_id;
+        int32_t module_dir_id = current_basic_type->module_dir_string_index;
         if (module_dir_id >= 0) {
           module_dir_sep = "/";
-          module_dir = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_dir_string_address_id, NULL);
+          module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, current_basic_type->id, current_basic_type->module_dir_string_index, NULL);
         }
         else {
           module_dir_sep = "";
           module_dir = "";
         }
-        const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value(runtime, current_basic_type->module_rel_file_string_address_id, NULL);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, current_basic_type->id, current_basic_type->module_rel_file_string_index, NULL);
 
         SPVM_IMPLEMENT_WARN(env, stack, string, module_dir, module_dir_sep, module_rel_file, line);
         
