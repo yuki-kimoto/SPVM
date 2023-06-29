@@ -127,17 +127,20 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime_codes_ptr += constant_strings_runtime_codes_length;
   
   // Runtime string symtable
-  for (int32_t constant_string_address_id = 0; constant_string_address_id < runtime->constant_strings_length; constant_string_address_id++) {
-    SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[constant_string_address_id];
-    runtime_string->value = &runtime->string_pool[runtime_string->string_pool_address_id];
+  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
+    for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings_length; constant_string_index++) {
+      SPVM_RUNTIME_CONSTANT_STRING* runtime_string = &runtime->constant_strings[basic_type->constant_strings_base + constant_string_index];
+      runtime_string->value = &runtime->string_pool[runtime_string->string_pool_address_id];
+    }
   }
   
   // Runtime basic type symtable
   runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
-    SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[runtime_basic_type->constant_strings_base + runtime_basic_type->name_string_index];
-    const char* runtime_basic_type_name = basic_type_name_string->value;
-    SPVM_HASH_set(runtime->basic_type_symtable, runtime_basic_type_name, strlen(runtime_basic_type_name), runtime_basic_type);
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
+    SPVM_RUNTIME_CONSTANT_STRING* basic_type_name_string = (SPVM_RUNTIME_CONSTANT_STRING*)&runtime->constant_strings[basic_type->constant_strings_base + basic_type->name_string_index];
+    const char* basic_type_name = basic_type_name_string->value;
+    SPVM_HASH_set(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name), basic_type);
   }
 }
