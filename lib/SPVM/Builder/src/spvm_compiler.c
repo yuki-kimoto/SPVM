@@ -986,6 +986,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_string->address_id = string->address_id;
     runtime_string->length = string->length;
     runtime_string->string_pool_address_id = string->string_pool_address_id;
+    runtime_string->string_pool_index = string->string_pool_index;
     constant_string_runtime_codes_ptr += sizeof(SPVM_RUNTIME_CONSTANT_STRING) / sizeof(int32_t);
   }
   runtime_codes_ptr += constant_strings_runtime_codes_length;
