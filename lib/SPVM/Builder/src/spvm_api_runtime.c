@@ -308,6 +308,31 @@ int32_t SPVM_API_RUNTIME_get_basic_type_id_by_name(SPVM_RUNTIME* runtime, const 
   }
 }
 
+const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t constant_string_index) {
+  
+  const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type_id, constant_string_index, NULL);
+  
+  return constant_string_value;
+}
+
+const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t constant_string_index, int32_t* string_length) {
+  if (constant_string_index < 0) {
+    return NULL;
+  }
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  SPVM_RUNTIME_CONSTANT_STRING* constant_string = &runtime->constant_strings[basic_type->constant_strings_base + constant_string_index];
+  
+  const char* constant_string_value = constant_string->value;
+  
+  if (string_length) {
+    *string_length = constant_string->length;
+  }
+  
+  return constant_string_value;
+}
+
 int32_t SPVM_API_RUNTIME_get_basic_type_category(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
