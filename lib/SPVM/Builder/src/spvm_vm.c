@@ -1317,7 +1317,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t decl_method_index = opcode->operand2;
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
-        const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_string_address_id, NULL);
+        const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, method->current_basic_type_id, method->name_string_index, NULL);
         SPVM_IMPLEMENT_CAN(env, stack, int_vars[0], object, method_name);
         break;
       }
