@@ -2291,17 +2291,17 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 
   SPVM_RUNTIME* runtime = env->runtime;
 
-  const char* method_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, method->name_string_address_id, NULL);
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, method->current_basic_type_id);
-  const char* basic_type_name = SPVM_API_RUNTIME_get_constant_string_value(runtime, basic_type->name_string_address_id, NULL);
+  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type->id, basic_type->name_string_index, NULL);
+  const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type->id, method->name_string_index, NULL);
 
-  int32_t module_dir_string_address_id = basic_type->module_dir_string_address_id;
-  int32_t module_rel_file_string_address_id = basic_type->module_rel_file_string_address_id;
+  int32_t module_dir_string_index = basic_type->module_dir_string_index;
+  int32_t module_rel_file_string_index = basic_type->module_rel_file_string_index;
   
   const char* module_dir;
   const char* module_dir_sep;
-  if (module_dir_string_address_id >= 0) {
-    module_dir = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_dir_string_address_id);
+  if (module_dir_string_index >= 0) {
+    module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type->id, module_dir_string_index);
     module_dir_sep = "/";
   }
   else {
@@ -2309,7 +2309,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
     module_dir_sep = "";
   }
   
-  const char* module_rel_file = SPVM_API_RUNTIME_get_constant_string_value_nolen(runtime, module_rel_file_string_address_id);
+  const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type->id, module_rel_file_string_index);
   
   // Basic type name and method name
   const char* new_line_part = "\n  ";
