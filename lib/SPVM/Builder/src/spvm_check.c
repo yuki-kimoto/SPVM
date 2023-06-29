@@ -193,6 +193,16 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->name, strlen(basic_type->name));
+    
+    if (basic_type->module_dir) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->module_dir, strlen(basic_type->module_dir));
+    }
+    if (basic_type->module_rel_file) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
+    }
+    if (basic_type->version_string) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->version_string, strlen(basic_type->version_string));
+    }
   }
 }
 
