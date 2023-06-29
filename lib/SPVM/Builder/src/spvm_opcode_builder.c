@@ -2781,7 +2781,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         assert(constant_string);
                         
                         assert(constant_string->index >= 0);
-                        opcode.operand3 = constant_string->index;
+                        opcode.operand1 = constant_string->index;
                         
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                         
