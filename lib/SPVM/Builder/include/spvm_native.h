@@ -404,7 +404,7 @@ struct spvm_env_runtime {
   void* reserved80;
   int32_t (*get_method_is_enum)(void* runtime, void* method);
   void* reserved82;
-  int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
+  int32_t (*is_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
   void* reserved84;
   void* reserved85;
   int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
@@ -482,7 +482,6 @@ struct spvm_env_runtime {
   void* (*get_method_current_basic_type)(void* runtime, void* method);
   void* (*get_method_return_basic_type)(void* runtime, void* method);
   void* (*get_arg_basic_type)(void* runtime, void* arg);
-  int32_t (*is_object_type_v2)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
 };
 
 struct spvm_env_compiler {

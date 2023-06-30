@@ -1577,11 +1577,11 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
       
       SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, basic_type_id, class_var_index);
       
-      int32_t class_var_basic_type_id = env->api->runtime->get_class_var_basic_type_id(runtime, class_var);
+      void* class_var_basic_type = env->api->runtime->get_class_var_basic_type(runtime, class_var);
       int32_t class_var_type_dimension = env->api->runtime->get_class_var_type_dimension(runtime, class_var);
       int32_t class_var_type_flag = env->api->runtime->get_class_var_type_flag(runtime, class_var);
       
-      int32_t class_var_type_is_object = env->api->runtime->is_object_type(runtime, class_var_basic_type_id, class_var_type_dimension, class_var_type_flag);
+      int32_t class_var_type_is_object = env->api->runtime->is_object_type(runtime, class_var_basic_type, class_var_type_dimension, class_var_type_flag);
       if (class_var_type_is_object) {
         SPVM_OBJECT* object = class_var->data.oval;
         if (object) {
@@ -1681,13 +1681,14 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   }
   else {
     int32_t method_return_basic_type_id = method->return_basic_type_id;
+    void* method_return_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method_return_basic_type_id);
     int32_t method_return_type_dimension = method->return_type_dimension;
     int32_t method_return_type_flag = method->return_type_flag;
     
     int32_t current_basic_type_id = method->current_basic_type_id;
     SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_basic_type_id);
     
-    int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type_id, method_return_type_dimension, method_return_type_flag);
+    int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
     int32_t no_need_call = 0;
     if (method->is_init) {
       
@@ -1920,10 +1921,11 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
     }
     else if (object_type_dimension == 1) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
+      void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
       assert(object_basic_type_id >= 0);
       int32_t element_type_dimension = 0;
       int32_t type_flag = 0;
-      is_object_array = SPVM_API_RUNTIME_is_object_type(env->runtime, object_basic_type_id, element_type_dimension, type_flag);
+      is_object_array = SPVM_API_RUNTIME_is_object_type(env->runtime, object_basic_type, element_type_dimension, type_flag);
     }
     else if (object_type_dimension > 1) {
       is_object_array = 1;
@@ -3147,9 +3149,10 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_v2(runtime, object_basic_type, field_index);
           
           int32_t field_basic_type_id = field->basic_type_id;
+          void* field_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, field_basic_type_id);
           int32_t field_type_dimension = field->type_dimension;
           int32_t field_type_flag = field->type_flag;
-          int32_t field_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, field_basic_type_id, field_type_dimension, field_type_flag);
+          int32_t field_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
           
           if (field_type_is_object) {
             SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (size_t)env->api->runtime->object_header_size + field->offset);

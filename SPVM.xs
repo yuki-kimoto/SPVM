@@ -3240,7 +3240,7 @@ _xs_new_object_array(...)
   int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t elem_type_dimension = 0;
-  int32_t is_object_array = env->api->runtime->is_object_type_v2(env->runtime, basic_type, elem_type_dimension, 0);
+  int32_t is_object_array = env->api->runtime->is_object_type(env->runtime, basic_type, elem_type_dimension, 0);
   if (!is_object_array) {
     croak("The $type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
@@ -3294,7 +3294,7 @@ _xs_new_object_array_len(...)
   int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t elem_type_dimension = 0;
-  int32_t is_object_array = env->api->runtime->is_object_type(env->runtime, basic_type_id, elem_type_dimension, 0);
+  int32_t is_object_array = env->api->runtime->is_object_type(env->runtime, basic_type, elem_type_dimension, 0);
   if (!is_object_array) {
     croak("The $type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
