@@ -4823,7 +4823,7 @@ get_method_names(...)
   void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
-  int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length_v2(runtime, basic_type);
+  int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     void* method = api_env->api->runtime->get_method(runtime, basic_type, method_index);
     const char* method_name = api_env->api->runtime->get_method_name(runtime, method);
@@ -4870,7 +4870,7 @@ get_basic_type_anon_basic_type_names(...)
   void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
-  int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length_v2(runtime, basic_type);
+  int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     

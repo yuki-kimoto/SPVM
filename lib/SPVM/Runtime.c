@@ -370,7 +370,7 @@ int32_t SPVM__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_
   void* runtime = env->get_pointer(env, stack, obj_self);
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  int32_t methods_length = env->api->runtime->get_basic_type_methods_length_v2(runtime, basic_type);
+  int32_t methods_length = env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   
   int32_t anon_basic_types_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
@@ -416,7 +416,7 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  int32_t methods_length = env->api->runtime->get_basic_type_methods_length_v2(runtime, basic_type);
+  int32_t methods_length = env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   
   int32_t match_methodes_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
