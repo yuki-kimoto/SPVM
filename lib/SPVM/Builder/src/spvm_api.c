@@ -4044,7 +4044,14 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   }
   else {
     int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-    has_interface = SPVM_API_RUNTIME_has_interface_by_id(runtime, object_basic_type_id, interface_basic_type_id);
+    void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
+    void* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, interface_basic_type_id);
+    if (!interface_basic_type) {
+      has_interface = 0;
+    }
+    else {
+      has_interface = SPVM_API_RUNTIME_has_interface(runtime, object_basic_type, interface_basic_type);
+    }
   }
   
   return has_interface;
