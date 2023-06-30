@@ -45,7 +45,7 @@ void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
   SPVM_RUNTIME* runtime = precompile->runtime;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
-  int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, basic_type_name);
+  int32_t basic_type_id = basic_type->id;
   int32_t basic_type_methods_base = SPVM_API_RUNTIME_get_basic_type_methods_base(runtime, basic_type);
   int32_t basic_type_methods_length = SPVM_API_RUNTIME_get_basic_type_methods_length(runtime, basic_type);
 
