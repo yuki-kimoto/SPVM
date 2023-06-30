@@ -26,7 +26,7 @@
 #include "spvm_var_decl.h"
 #include "spvm_string_buffer.h"
 #include "spvm_method.h"
-#include "spvm_constant_string.h"
+#include "spvm_string.h"
 
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
@@ -1076,7 +1076,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           string_literal_tmp[string_literal_length] = '\0';
         }
         
-        SPVM_CONSTANT_STRING* string_literal_string = SPVM_CONSTANT_STRING_new(compiler, string_literal_tmp, string_literal_length);
+        SPVM_STRING* string_literal_string = SPVM_STRING_new(compiler, string_literal_tmp, string_literal_length);
         const char* string_literal = string_literal_string->value;
         
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, string_literal_tmp);
@@ -1162,7 +1162,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_symbol_name_part_length);
             var_name_tmp[1 + var_name_symbol_name_part_length] = '\0';
             
-            SPVM_CONSTANT_STRING* var_name_string = SPVM_CONSTANT_STRING_new(compiler, var_name_tmp, 1 + var_name_symbol_name_part_length);
+            SPVM_STRING* var_name_string = SPVM_STRING_new(compiler, var_name_tmp, 1 + var_name_symbol_name_part_length);
             var_name = var_name_string->value;
             
             SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
@@ -2402,7 +2402,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             compiler->cur_file = embedded_file_name;
           }
           
-          SPVM_CONSTANT_STRING* cur_file_string = SPVM_CONSTANT_STRING_new(compiler, compiler->cur_file, strlen(compiler->cur_file));
+          SPVM_STRING* cur_file_string = SPVM_STRING_new(compiler, compiler->cur_file, strlen(compiler->cur_file));
           compiler->cur_file = cur_file_string->value;
           
           // Set initial information for tokenization

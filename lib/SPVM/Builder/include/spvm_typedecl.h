@@ -43,9 +43,9 @@ typedef struct spvm_runtime_class_var SPVM_RUNTIME_CLASS_VAR;
 struct spvm_runtime_class;
 typedef struct spvm_runtime_class SPVM_RUNTIME_CLASS;
 
-// spvm_constant_string.h
-struct spvm_constant_string;
-typedef struct spvm_constant_string SPVM_CONSTANT_STRING;
+// spvm_string.h
+struct spvm_string;
+typedef struct spvm_string SPVM_STRING;
 
 // spvm_interface.h
 struct spvm_interface;

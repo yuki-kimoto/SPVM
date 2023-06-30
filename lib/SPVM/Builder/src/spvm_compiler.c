@@ -35,7 +35,7 @@
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_var.h"
-#include "spvm_constant_string.h"
+#include "spvm_string.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class_var.h"
@@ -88,7 +88,7 @@ SPVM_BASIC_TYPE* SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, const cha
    if (!basic_type) {
      basic_type = SPVM_BASIC_TYPE_new(compiler);
      basic_type->id = compiler->basic_types->length;
-     SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
+     SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
      basic_type->name = basic_type_name_string->value;
      SPVM_LIST_push(compiler->basic_types, basic_type);
      SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
@@ -298,7 +298,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   // Use the class that is specified at the argument
   if (basic_type_name) {
-    SPVM_CONSTANT_STRING* basic_type_name_string = SPVM_CONSTANT_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
+    SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
     basic_type_name = basic_type_name_string->value;
     SPVM_COMPILER_use(compiler, basic_type_name, start_file, start_line);
   }
@@ -580,12 +580,12 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->id = basic_type->id;
     runtime_basic_type->category = basic_type->category;
     
-    SPVM_CONSTANT_STRING* basic_type_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->name, strlen(basic_type->name));
+    SPVM_STRING* basic_type_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     assert(basic_type_string->index >= 0);
     runtime_basic_type->name_string_index = basic_type_string->index;
     
     if (basic_type->module_rel_file) {
-      SPVM_CONSTANT_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
+      SPVM_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
       runtime_basic_type->module_rel_file_string_index = basic_type_rel_file_string->index;
     }
     else {
@@ -593,7 +593,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
     
     if (basic_type->module_dir) {
-      SPVM_CONSTANT_STRING* basic_type_dir_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
+      SPVM_STRING* basic_type_dir_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
       runtime_basic_type->module_dir_string_index = basic_type_dir_string->index;
     }
     else {
@@ -615,7 +615,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_basic_type->fields_size = basic_type->fields_size;
     
     if (basic_type->version_string) {
-      SPVM_CONSTANT_STRING* basic_type_version_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
+      SPVM_STRING* basic_type_version_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
       runtime_basic_type->version_string_string_index = basic_type_version_string->index;
     }
     else {
@@ -715,7 +715,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_class_var->type_flag = class_var->type->flag;
       runtime_class_var->current_basic_type_id = class_var->current_basic_type->id;
       
-      SPVM_CONSTANT_STRING* class_var_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->name, strlen(class_var->name));
+      SPVM_STRING* class_var_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->name, strlen(class_var->name));
       runtime_class_var->name_string_index = class_var_name_string->index;
       
       class_var_runtime_codes_ptr += sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t);
@@ -743,7 +743,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_field->type_flag = field->type->flag;
       runtime_field->current_basic_type_id = field->current_basic_type->id;
       
-      SPVM_CONSTANT_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
+      SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
       runtime_field->name_string_index = field_name_string->index;
       
       field_runtime_codes_ptr += sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t);
@@ -800,7 +800,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_method->is_required = method->is_required;
       runtime_method->is_enum = method->is_enum;
       
-      SPVM_CONSTANT_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
+      SPVM_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
       runtime_method->name_string_index = method_name_string->index;
       
       runtime_method->args_length = method->args_length;
@@ -892,7 +892,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings->length; constant_string_index++) {
-      SPVM_CONSTANT_STRING* string = SPVM_LIST_get(basic_type->constant_strings, constant_string_index);
+      SPVM_STRING* string = SPVM_LIST_get(basic_type->constant_strings, constant_string_index);
       SPVM_RUNTIME_CONSTANT_STRING* runtime_string = (SPVM_RUNTIME_CONSTANT_STRING*)constant_string_runtime_codes_ptr;
       
       runtime_string->index = string->index;

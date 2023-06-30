@@ -82,7 +82,7 @@
   #include "spvm_block.h"
   #include "spvm_list.h"
   #include "spvm_attribute.h"
-  #include "spvm_constant_string.h"
+  #include "spvm_string.h"
 
 #line 88 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:339  */
 

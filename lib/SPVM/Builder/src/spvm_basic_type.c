@@ -12,7 +12,7 @@
 #include "spvm_hash.h"
 #include "spvm_method.h"
 #include "spvm_string_buffer.h"
-#include "spvm_constant_string.h"
+#include "spvm_string.h"
 
 const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
 
@@ -269,9 +269,9 @@ int32_t SPVM_BASIC_TYPE_is_super(SPVM_COMPILER* compiler, int32_t super_basic_ty
   }
 }
 
-SPVM_CONSTANT_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* value, int32_t length) {
+SPVM_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* value, int32_t length) {
   
-  SPVM_CONSTANT_STRING* found_string = SPVM_HASH_get(basic_type->constant_string_symtable, value, length);
+  SPVM_STRING* found_string = SPVM_HASH_get(basic_type->constant_string_symtable, value, length);
   if (found_string) {
     return found_string;
   }
@@ -280,7 +280,7 @@ SPVM_CONSTANT_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compile
     
     SPVM_STRING_BUFFER_add_len_nullstr(basic_type->string_pool, (char*)value, length);
     
-    SPVM_CONSTANT_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_CONSTANT_STRING));
+    SPVM_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_STRING));
     string->value = value;
     string->length = length;
     string->index = basic_type->constant_strings->length;

@@ -33,7 +33,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_interface.h"
-#include "spvm_constant_string.h"
+#include "spvm_string.h"
 #include "spvm_attribute.h"
 #include "spvm_dumper.h"
 #include "spvm_allow.h"

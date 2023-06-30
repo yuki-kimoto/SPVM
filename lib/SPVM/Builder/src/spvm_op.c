@@ -37,7 +37,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_allow.h"
 #include "spvm_interface.h"
-#include "spvm_constant_string.h"
+#include "spvm_string.h"
 #include "spvm_dumper.h"
 
 
@@ -291,10 +291,10 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   }
   
   if (type->basic_type->module_dir) {
-    SPVM_CONSTANT_STRING_new(compiler, type->basic_type->module_dir, strlen(type->basic_type->module_dir));
+    SPVM_STRING_new(compiler, type->basic_type->module_dir, strlen(type->basic_type->module_dir));
   }
-  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->module_rel_file, strlen(type->basic_type->module_rel_file));
-  SPVM_CONSTANT_STRING_new(compiler, type->basic_type->module_file, strlen(type->basic_type->module_file));
+  SPVM_STRING_new(compiler, type->basic_type->module_rel_file, strlen(type->basic_type->module_rel_file));
+  SPVM_STRING_new(compiler, type->basic_type->module_file, strlen(type->basic_type->module_file));
   
   // Assert
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
@@ -464,7 +464,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           }
         }
         
-        SPVM_CONSTANT_STRING_new(compiler, version_string, version_string_length);
+        SPVM_STRING_new(compiler, version_string, version_string_length);
         type->basic_type->version_string = version_string;
       }
       // use statement
@@ -527,7 +527,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           // }
           
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, class_var->name + 1, strlen(class_var->name) - 1);
+          SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, class_var->name + 1, strlen(class_var->name) - 1);
           const char* method_name = method_name_string->value;
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
           
@@ -578,7 +578,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           memcpy(method_name_tmp, "SET_", 4);
           memcpy(method_name_tmp + 4, class_var->name + 1, strlen(class_var->name) - 1);
           
-          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
+          SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
           const char* method_name = method_name_string->value;
           
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
@@ -698,7 +698,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(field->name) + 1);
           memcpy(method_name_tmp, "set_", 4);
           memcpy(method_name_tmp + 4, field->name, strlen(field->name));
-          SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
+          SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
           const char* method_name = method_name_string->value;
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
@@ -1342,7 +1342,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   }
   
   if (op_name_method == NULL) {
-    SPVM_CONSTANT_STRING* anon_method_name_string = SPVM_CONSTANT_STRING_new(compiler, "", strlen(""));
+    SPVM_STRING* anon_method_name_string = SPVM_STRING_new(compiler, "", strlen(""));
     const char* anon_method_name = anon_method_name_string->value;
     op_name_method = SPVM_OP_new_op_name(compiler, anon_method_name, op_method->file, op_method->line);
   }
@@ -1604,7 +1604,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   char* name_basic_type_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_basic_type_name_length + 1);
   sprintf(name_basic_type_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_basic_type_name, anon_method_defined_line, anon_method_defined_column);
 
-  SPVM_CONSTANT_STRING* name_basic_type_string = SPVM_CONSTANT_STRING_new(compiler, name_basic_type_tmp, strlen(name_basic_type_tmp));
+  SPVM_STRING* name_basic_type_string = SPVM_STRING_new(compiler, name_basic_type_tmp, strlen(name_basic_type_tmp));
   const char* name_basic_type = name_basic_type_string->value;
   
   SPVM_OP* op_name_basic_type = SPVM_OP_new_op_name(compiler, name_basic_type, op_method->file, op_method->line);
@@ -1639,7 +1639,7 @@ SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPV
 SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPVM_OP* op_block) {
     
   SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_init->file, op_init->line);
-  SPVM_CONSTANT_STRING* method_name_string = SPVM_CONSTANT_STRING_new(compiler, "INIT", strlen("INIT"));
+  SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, "INIT", strlen("INIT"));
   const char* method_name = method_name_string->value;
   SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", op_init->file, op_init->line);
   SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, op_init->file, op_init->line);
@@ -3163,7 +3163,7 @@ SPVM_OP* SPVM_OP_new_op_name(SPVM_COMPILER* compiler, const char* name, const ch
   
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   
-  SPVM_CONSTANT_STRING* name_string = SPVM_CONSTANT_STRING_new(compiler, name, strlen(name));
+  SPVM_STRING* name_string = SPVM_STRING_new(compiler, name, strlen(name));
   
   name = name_string->value;
   
@@ -3357,7 +3357,7 @@ SPVM_OP* SPVM_OP_new_op_constant_string(SPVM_COMPILER* compiler, const char* str
   SPVM_OP* op_constant = SPVM_OP_new_op_constant(compiler, file, line);
   SPVM_CONSTANT* constant = op_constant->uv.constant;
   
-  SPVM_CONSTANT_STRING* cached_string_string = SPVM_CONSTANT_STRING_new(compiler, string, length);
+  SPVM_STRING* cached_string_string = SPVM_STRING_new(compiler, string, length);
   const char* cached_string = cached_string_string->value;
 
   constant->value.oval = (void*)cached_string;

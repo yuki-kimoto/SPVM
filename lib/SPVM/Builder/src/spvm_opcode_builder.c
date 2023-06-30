@@ -36,7 +36,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
-#include "spvm_constant_string.h"
+#include "spvm_string.h"
 #include "spvm_dumper.h"
 
 void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
@@ -2772,12 +2772,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         
                         const char* constant_string_value = constant->value.oval;
                         int32_t constant_string_length = constant->string_length;
-                        SPVM_CONSTANT_STRING* global_constant_string = SPVM_HASH_get(compiler->string_symtable, constant_string_value, constant_string_length);
+                        SPVM_STRING* global_constant_string = SPVM_HASH_get(compiler->string_symtable, constant_string_value, constant_string_length);
                         assert(global_constant_string);
                         
                         opcode.operand0 = call_stack_index_out;
                         
-                        SPVM_CONSTANT_STRING* constant_string = SPVM_HASH_get(basic_type->constant_string_symtable, constant_string_value, constant_string_length);
+                        SPVM_STRING* constant_string = SPVM_HASH_get(basic_type->constant_string_symtable, constant_string_value, constant_string_length);
                         assert(constant_string);
                         
                         assert(constant_string->index >= 0);
