@@ -206,7 +206,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_return_basic_type_id,
     SPVM_API_RUNTIME_get_method_return_type_dimension,
     SPVM_API_RUNTIME_get_method_return_type_flag,
-    SPVM_API_RUNTIME_get_arg_basic_type_id,
+    SPVM_API_RUNTIME_get_arg_basic_type,
     SPVM_API_RUNTIME_get_arg_type_dimension,
     SPVM_API_RUNTIME_get_arg_type_flag,
     SPVM_API_RUNTIME_get_method_current_basic_type_id,
@@ -257,7 +257,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_by_name_v2,
     SPVM_API_RUNTIME_get_method_current_basic_type,
     SPVM_API_RUNTIME_get_method_return_basic_type,
-    SPVM_API_RUNTIME_get_arg_basic_type,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -1235,13 +1234,6 @@ SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg(SPVM_RUNTIME* runtime, SPVM_RUNTIME_M
   SPVM_RUNTIME_ARG* arg = &runtime->args[method->args_base + arg_index];
   
   return arg;
-}
-
-int32_t SPVM_API_RUNTIME_get_arg_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
-  
-  int32_t basic_type_id = arg->basic_type_id;
-  
-  return basic_type_id;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_arg_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
