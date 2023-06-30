@@ -14,6 +14,16 @@
       +  void* (*new_mulnum_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
       +  void* (*new_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
+      -  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
+      -  void* (*new_muldim_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t element_dimension, int32_t length);
+      +  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t element_dimension, int32_t length);
+      +  void* (*new_muldim_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t element_dimension, int32_t length);
+
+      -  void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
+      -  void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
+      +  void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+      +  void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.

@@ -1415,20 +1415,20 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   // 9
   {
-    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
-    if (basic_type_id < 0) {
+    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+    if (!basic_type) {
       return 1;
     }
-    void* obj_objects = env->new_object_array(env, stack, basic_type_id, 3);
+    void* obj_objects = env->new_object_array(env, stack, basic_type, 3);
     ref_count += env->get_ref_count(env, stack, obj_objects);
   }
   // 10
   {
-    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
-    if (basic_type_id < 0) {
+    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+    if (!basic_type) {
       return 1;
     }
-    void* obj_objects = env->new_object_array(env, stack, basic_type_id, 3);
+    void* obj_objects = env->new_object_array(env, stack, basic_type, 3);
     ref_count += env->get_ref_count(env, stack, obj_objects);
   }
   // 11
@@ -2530,7 +2530,7 @@ int32_t SPVM__TestCase__NativeAPI__strerror_string_nolen_value(SPVM_ENV* env, SP
 
 int32_t SPVM__TestCase__NativeAPI__new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_object_array = env->new_object_array_raw(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, 2);
+  void* obj_object_array = env->new_object_array_raw(env, stack, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
   
   if (!(env->is_type(env, stack, obj_object_array, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
     stack[0].ival = 0;
@@ -2557,7 +2557,7 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array_raw(SPVM_ENV* env, SPVM_VALU
 
 int32_t SPVM__TestCase__NativeAPI__new_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_object_array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, 2);
+  void* obj_object_array = env->new_object_array(env, stack, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
   
   if (!(env->is_type(env, stack, obj_object_array, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
     stack[0].ival = 0;

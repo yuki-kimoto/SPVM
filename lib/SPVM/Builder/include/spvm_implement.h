@@ -682,7 +682,7 @@ static inline void SPVM_IMPLEMENT_NEW_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, v
 
 static inline void SPVM_IMPLEMENT_NEW_OBJECT_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* basic_type, int32_t length, int32_t* error_id, int32_t object_ref_count_offset) {
   if (length >= 0) {
-    void* object = env->new_object_array_raw_v2(env, stack, basic_type, length);
+    void* object = env->new_object_array_raw(env, stack, basic_type, length);
     if (object == NULL) {
       void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_NEW_ARRAY_FAILED]);
       env->set_exception(env, stack, exception);

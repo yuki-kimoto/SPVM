@@ -132,8 +132,8 @@ struct spvm_env {
   void* (*new_float_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
   void* (*new_double_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
   void* (*new_double_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
-  void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
-  void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
+  void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+  void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
   void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t element_dimension, int32_t length);
   void* (*new_muldim_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t element_dimension, int32_t length);
   void* (*new_mulnum_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
@@ -319,8 +319,6 @@ struct spvm_env {
   int32_t (*isa_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
   void* (*new_object_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
   void* (*new_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
-  void* (*new_object_array_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
-  void* (*new_object_array_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
   void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 };

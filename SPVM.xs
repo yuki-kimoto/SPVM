@@ -858,81 +858,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, SV* sv_array, SV** sv_error) {
-  
-  *sv_error = &PL_sv_undef;
-  
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Env
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Stack
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-  
-  void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
-  
-  if (SvOK(sv_array)) {
-    if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
-      void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      int32_t type_dimension = 1;
-      if (!env->isa(env, stack, spvm_array, basic_type_id, type_dimension)) {
-        *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be assignable"));
-        return &PL_sv_undef;
-      }
-    }
-    else if (!(SvROK(sv_array) && sv_derived_from(sv_array, "ARRAY"))) {
-      *sv_error = sv_2mortal(newSVpvf(": If it is a reference, it must be an array reference"));
-      return &PL_sv_undef;
-    }
-    else {
-      // Elements
-      AV* av_array = (AV*)SvRV(sv_array);
-      
-      // Array length
-      int32_t length = av_len(av_array) + 1;
-      
-      // New array
-      void* spvm_array = env->new_object_array_v2(env, stack, basic_type, length);
-      
-      for (int32_t index = 0; index < length; index++) {
-        SV** sv_elem_ptr = av_fetch(av_array, index, 0);
-        SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
-        
-        if (!SvOK(sv_elem)) {
-          env->set_elem_object(env, stack, spvm_array, index, NULL);
-        }
-        else if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject")) {
-          void* elem = SPVM_XS_UTIL_get_object(aTHX_ sv_elem);
-          
-          int32_t elem_isa = env->elem_isa(env, stack, spvm_array, elem);
-          if (elem_isa) {
-            env->set_elem_object(env, stack, spvm_array, index, elem);
-          }
-          else {
-            void* spvm_elem_type_name = env->get_type_name(env, stack, elem);
-            const char* elem_type_name = env->get_chars(env, stack, spvm_elem_type_name);
-            *sv_error = sv_2mortal(newSVpvf("'s %dth element must be the \"%s\" assignable type", index + 1, elem_type_name));
-            return &PL_sv_undef;
-          }
-        }
-        else {
-          *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a SPVM::BlessedObject or undef", index + 1));
-          return &PL_sv_undef;
-        }
-      }
-      
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
-    }
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  return sv_array;
-}
-
-SV* SPVM_XS_UTIL_new_object_array_v2(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, void* basic_type, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, void* basic_type, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -965,7 +891,7 @@ SV* SPVM_XS_UTIL_new_object_array_v2(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack
       int32_t length = av_len(av_array) + 1;
       
       // New array
-      void* spvm_array = env->new_object_array_v2(env, stack, basic_type, length);
+      void* spvm_array = env->new_object_array(env, stack, basic_type, length);
       
       for (int32_t index = 0; index < length; index++) {
         SV** sv_elem_ptr = av_fetch(av_array, index, 0);
@@ -1924,7 +1850,7 @@ _xs_call_method(...)
         {
           SV* sv_error = &PL_sv_undef;
           
-          sv_value = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type_id, sv_value, &sv_error);
+          sv_value = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
             croak("The %dth argument of the \"%s\" method in the \"%s\" basic type%s\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3320,7 +3246,7 @@ _xs_new_object_array(...)
   }
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_object_array_v2(aTHX_ sv_self, sv_env, sv_stack, basic_type, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, basic_type, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3373,7 +3299,7 @@ _xs_new_object_array_len(...)
     croak("The $type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  void* spvm_array = env->new_object_array(env, stack, basic_type_id, length);
+  void* spvm_array = env->new_object_array(env, stack, basic_type, length);
   
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
@@ -5237,7 +5163,7 @@ set_command_info_argv(...)
   {
     int32_t scope_id = env->enter_scope(env, stack);
     
-    void* spvm_argv = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, argv_length);
+    void* spvm_argv = env->new_string_array(env, stack, argv_length);
     for (int32_t index = 0; index < argv_length; index++) {
       SV** sv_arg_ptr = av_fetch(av_argv, index, 0);
       SV* sv_arg = sv_arg_ptr ? *sv_arg_ptr : &PL_sv_undef;
