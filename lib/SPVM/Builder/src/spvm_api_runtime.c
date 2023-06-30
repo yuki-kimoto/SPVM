@@ -210,7 +210,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_arg_type_dimension,
     SPVM_API_RUNTIME_get_arg_type_flag,
     SPVM_API_RUNTIME_get_method_current_basic_type,
-    SPVM_API_RUNTIME_get_field_current_basic_type_id,
+    SPVM_API_RUNTIME_get_field_current_basic_type,
     SPVM_API_RUNTIME_get_class_var_current_basic_type_id,
     SPVM_API_RUNTIME_get_basic_type_parent_id,
     SPVM_API_RUNTIME_get_basic_type_version_string,
@@ -251,7 +251,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_basic_type,
     SPVM_API_RUNTIME_get_field_v2,
     SPVM_API_RUNTIME_get_field_by_name_v2,
-    SPVM_API_RUNTIME_get_field_current_basic_type,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -873,13 +872,6 @@ const char* SPVM_API_RUNTIME_get_field_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_
   const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, field->current_basic_type_id, field->name_string_index);
   
   return field_name;
-}
-
-int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
-  
-  int32_t current_basic_type_id = field->current_basic_type_id;
-  
-  return current_basic_type_id;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_field_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
