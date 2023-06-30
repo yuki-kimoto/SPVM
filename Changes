@@ -62,6 +62,9 @@
       -  void* (*get_field_by_name)(void* runtime, int32_t basic_type_id, const char* field_name);
       +  void* (*get_field_by_name)(void* runtime, void* basic_type, const char* field_name);
 
+      -  void* (*get_field)(void* runtime, int32_t basic_type_id, int32_t field_index);
+      +  void* (*get_field)(void* runtime, void* basic_type, int32_t field_index);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.
