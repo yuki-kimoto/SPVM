@@ -421,7 +421,7 @@ struct spvm_env_runtime {
   void* reserved97;
   void* reserved98;
   int32_t (*get_basic_types_length)(void* runtime);
-  int32_t (*get_field_basic_type_id)(void* runtime, void* field);
+  void* (*get_field_basic_type)(void* runtime, void* field);
   int32_t (*get_field_type_dimension)(void* runtime, void* field);
   int32_t (*get_field_type_flag)(void* runtime, void* field);
   int32_t (*get_class_var_basic_type_id)(void* runtime, void* class_var);
@@ -476,7 +476,6 @@ struct spvm_env_runtime {
   void* (*get_field_v2)(void* runtime, void* basic_type, int32_t field_index);
   void* (*get_field_by_name_v2)(void* runtime, void* basic_type, const char* field_name);
   void* (*get_field_current_basic_type)(void* runtime, void* field);
-  void* (*get_field_basic_type)(void* runtime, void* field);
 };
 
 struct spvm_env_compiler {
