@@ -1868,7 +1868,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
+        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NEW_OBJECT_ARRAY_V2(env, stack, ");
