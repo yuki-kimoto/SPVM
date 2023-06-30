@@ -1184,7 +1184,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
       void* runtime = env->runtime;
       
       // New array
-      void* spvm_array = env->new_mulnum_array_v2(env, stack, basic_type, length);
+      void* spvm_array = env->new_mulnum_array(env, stack, basic_type, length);
       
       for (int32_t index = 0; index < length; index++) {
         SV** sv_elem_ptr = av_fetch(av_array, index, 0);
@@ -1302,7 +1302,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array_v2(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack
       void* runtime = env->runtime;
       
       // New array
-      void* spvm_array = env->new_mulnum_array_v2(env, stack, basic_type, length);
+      void* spvm_array = env->new_mulnum_array(env, stack, basic_type, length);
       
       for (int32_t index = 0; index < length; index++) {
         SV** sv_elem_ptr = av_fetch(av_array, index, 0);
@@ -3545,7 +3545,7 @@ _xs_new_mulnum_array_len(...)
     croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  void* spvm_array = env->new_mulnum_array(env, stack, basic_type_id, length);
+  void* spvm_array = env->new_mulnum_array(env, stack, basic_type, length);
   
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
@@ -3643,7 +3643,7 @@ _xs_new_mulnum_array_from_bin(...)
   
   int32_t array_length = binary_length / fields_length / field_size;
 
-  void* spvm_array = env->new_mulnum_array(env, stack, basic_type_id, array_length);
+  void* spvm_array = env->new_mulnum_array(env, stack, basic_type, array_length);
 
   int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
