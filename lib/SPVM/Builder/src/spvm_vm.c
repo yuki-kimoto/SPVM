@@ -396,7 +396,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t cast_basic_type_id = opcode->operand2;
         int32_t cast_type_dimension = opcode->operand3;
         
-        SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECKING(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], cast_basic_type_id, cast_type_dimension, &error_id, object_ref_count_offset);
+        void* cast_basic_type = env->api->runtime->get_basic_type(env->runtime, cast_basic_type_id);
+        
+        SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECKING_V2(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], cast_basic_type, cast_type_dimension, &error_id, object_ref_count_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
