@@ -212,7 +212,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_current_basic_type,
     SPVM_API_RUNTIME_get_field_current_basic_type,
     SPVM_API_RUNTIME_get_class_var_current_basic_type,
-    SPVM_API_RUNTIME_get_basic_type_parent_id,
+    SPVM_API_RUNTIME_get_basic_type_parent,
     SPVM_API_RUNTIME_get_basic_type_version_string,
     SPVM_API_RUNTIME_get_basic_type,
     SPVM_API_RUNTIME_get_field,
@@ -243,7 +243,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_methods_length_v2,
     SPVM_API_RUNTIME_get_basic_type_class_vars_base_v2,
     SPVM_API_RUNTIME_get_basic_type_class_vars_length_v2,
-    SPVM_API_RUNTIME_get_basic_type_parent,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -484,15 +483,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length(SPVM_RUNTIME* runtime,
   int32_t class_vars_length = basic_type->class_vars_length;
   
   return class_vars_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_parent_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  int32_t parent_basic_type_id = basic_type->parent_id;
-  
-  return parent_basic_type_id;
 }
 
 const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t constant_string_index) {
