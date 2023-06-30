@@ -5109,8 +5109,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  END_OF_METHOD:\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  if (error_id == 0) {\n");
-  int32_t current_method_return_basic_type_id = SPVM_API_RUNTIME_get_method_return_basic_type_id(runtime, current_method);
-  void* current_method_return_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_method_return_basic_type_id);
+  void* current_method_return_basic_type = SPVM_API_RUNTIME_get_method_return_basic_type(runtime, current_method);
   int32_t current_method_return_type_dimension = SPVM_API_RUNTIME_get_method_return_type_dimension(runtime, current_method);
   int32_t current_method_return_type_flag = SPVM_API_RUNTIME_get_method_return_type_flag(runtime, current_method);
   int32_t method_return_type_check_runtime_assignability_to_any_object = SPVM_API_RUNTIME_is_object_type(runtime, current_method_return_basic_type, current_method_return_type_dimension, current_method_return_type_flag);

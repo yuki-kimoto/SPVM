@@ -42,6 +42,9 @@
       -  int32_t (*get_arg_basic_type_id)(void* runtime, void* arg);
       +  void* (*get_arg_basic_type)(void* runtime, void* arg);
 
+      -  int32_t (*get_method_return_basic_type_id)(void* runtime, void* method);
+      +  void* (*get_method_return_basic_type)(void* runtime, void* method);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.

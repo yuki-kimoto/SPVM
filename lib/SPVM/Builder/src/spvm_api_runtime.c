@@ -203,7 +203,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_basic_type_id,
     SPVM_API_RUNTIME_get_class_var_type_dimension,
     SPVM_API_RUNTIME_get_class_var_type_flag,
-    SPVM_API_RUNTIME_get_method_return_basic_type_id,
+    SPVM_API_RUNTIME_get_method_return_basic_type,
     SPVM_API_RUNTIME_get_method_return_type_dimension,
     SPVM_API_RUNTIME_get_method_return_type_flag,
     SPVM_API_RUNTIME_get_arg_basic_type,
@@ -256,7 +256,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_v2,
     SPVM_API_RUNTIME_get_method_by_name_v2,
     SPVM_API_RUNTIME_get_method_current_basic_type,
-    SPVM_API_RUNTIME_get_method_return_basic_type,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -1126,13 +1125,6 @@ int32_t SPVM_API_RUNTIME_get_method_is_class_method(SPVM_RUNTIME* runtime, SPVM_
   int32_t is_class_method = method->is_class_method;
   
   return is_class_method;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_return_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  int32_t return_basic_type_id = method->return_basic_type_id;
-  
-  return return_basic_type_id;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_return_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {

@@ -427,7 +427,7 @@ struct spvm_env_runtime {
   int32_t (*get_class_var_basic_type_id)(void* runtime, void* class_var);
   int32_t (*get_class_var_type_dimension)(void* runtime, void* class_var);
   int32_t (*get_class_var_type_flag)(void* runtime, void* class_var);
-  int32_t (*get_method_return_basic_type_id)(void* runtime, void* method);
+  void* (*get_method_return_basic_type)(void* runtime, void* method);
   int32_t (*get_method_return_type_dimension)(void* runtime, void* method);
   int32_t (*get_method_return_type_flag)(void* runtime, void* method);
   void* (*get_arg_basic_type)(void* runtime, void* arg);
@@ -480,7 +480,6 @@ struct spvm_env_runtime {
   void* (*get_method_v2)(void* runtime, void* basic_type, int32_t method_index);
   void* (*get_method_by_name_v2)(void* runtime, void* basic_type, const char* method_name);
   void* (*get_method_current_basic_type)(void* runtime, void* method);
-  void* (*get_method_return_basic_type)(void* runtime, void* method);
 };
 
 struct spvm_env_compiler {
