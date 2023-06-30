@@ -476,7 +476,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             
             int32_t field_basic_type_id = field->basic_type_id;
             
-            const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type_id, field->name_string_index, NULL);
+            const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, field->name_string_index, NULL);
             SPVM_STRING_BUFFER_add(string_buffer, field_name);
             SPVM_STRING_BUFFER_add(string_buffer, " => ");
             
@@ -638,7 +638,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           int32_t field_basic_type_id = field->basic_type_id;
           int32_t field_type_dimension = field->type_dimension;
           int32_t field_offset = field->offset;
-          const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type_id, field->name_string_index, NULL);
+          const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, field->name_string_index, NULL);
           
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " => ");
