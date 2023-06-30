@@ -783,7 +783,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t basic_type_id = opcode->operand1;
         int32_t type_dimension = opcode->operand3;
         int32_t length = int_vars[opcode->operand2];
-        SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(env, stack, &object_vars[opcode->operand0], basic_type_id, type_dimension, length, &error_id, object_ref_count_offset);
+        
+        void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
+        
+        SPVM_IMPLEMENT_NEW_MULDIM_ARRAY_V2(env, stack, &object_vars[opcode->operand0], basic_type, type_dimension, length, &error_id, object_ref_count_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY: {
