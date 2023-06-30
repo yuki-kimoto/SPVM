@@ -413,7 +413,7 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_fields_base)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);
-  int32_t (*get_basic_type_methods_base)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_methods_base_v2)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_methods_length)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_class_vars_base)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_class_vars_length)(void* runtime, void* basic_type);
@@ -463,7 +463,6 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_is_anon_v2)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_fields_base_v2)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_fields_length_v2)(void* runtime, void* basic_type);
-  int32_t (*get_basic_type_methods_base_v2)(void* runtime, void* basic_type);
 };
 
 struct spvm_env_compiler {
