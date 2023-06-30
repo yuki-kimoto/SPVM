@@ -55,7 +55,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->ch_ptr = "";
   
-  compiler->global_constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
+  compiler->string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
   
   // Eternal information
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);

@@ -96,7 +96,7 @@ struct spvm_compiler {
   SPVM_HASH* source_symtable;
   
   // String symtable
-  SPVM_HASH* global_constant_string_symtable;
+  SPVM_HASH* string_symtable;
   
   // Fail load class symtable
   SPVM_HASH* if_require_not_found_basic_type_name_symtable;
