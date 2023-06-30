@@ -4833,7 +4833,7 @@ get_module_file(...)
         module_dir_sep = "";
         module_dir = "";
       }
-      const char* module_rel_file = api_env->api->runtime->get_basic_type_module_rel_file(runtime, basic_type_id);
+      const char* module_rel_file = api_env->api->runtime->get_basic_type_module_rel_file_v2(runtime, basic_type);
       
       sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
       sv_catpv(sv_module_file, module_dir_sep);
