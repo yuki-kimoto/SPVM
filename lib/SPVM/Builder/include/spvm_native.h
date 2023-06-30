@@ -353,7 +353,7 @@ struct spvm_env_runtime {
   void* reserved29;
   void* reserved30;
   void* reserved31;
-  void* (*get_class_var)(void* runtime, int32_t basic_type_id, int32_t class_var_index);
+  void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
   void* reserved33;
   const char* (*get_class_var_name)(void* runtime, void* class_var);
   void* reserved35;
@@ -469,7 +469,6 @@ struct spvm_env_runtime {
   void* (*get_basic_type_parent)(void* runtime, void* basic_type);
   const char* (*get_basic_type_version_string_v2)(void* runtime, void* basic_type);
   void* (*get_basic_type_anon_basic_type)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
-  void* (*get_class_var_v2)(void* runtime, void* basic_type, int32_t class_var_index);
 };
 
 struct spvm_env_compiler {

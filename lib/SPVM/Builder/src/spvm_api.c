@@ -1575,7 +1575,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
     
     for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars_length; class_var_index++) {
       
-      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, basic_type_id, class_var_index);
+      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, basic_type, class_var_index);
       
       void* class_var_basic_type = env->api->runtime->get_class_var_basic_type(runtime, class_var);
       int32_t class_var_type_dimension = env->api->runtime->get_class_var_type_dimension(runtime, class_var);
