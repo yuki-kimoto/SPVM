@@ -4035,7 +4035,7 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM
       isa = 0;
     }
     else {
-      isa = SPVM_API_RUNTIME_can_assign_v2(env->runtime, basic_type, type_dimension, 0, object_basic_type, object_type_dimension, 0);
+      isa = SPVM_API_RUNTIME_can_assign(env->runtime, basic_type, type_dimension, 0, object_basic_type, object_type_dimension, 0);
     }
   }
   

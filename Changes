@@ -32,6 +32,10 @@
       -  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t basic_type_id, int32_t type_dimension);
       +  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
 
+    * The following Native Runtime APIs were change.
+      -  int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
+      +  int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.

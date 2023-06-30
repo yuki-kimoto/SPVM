@@ -407,7 +407,7 @@ struct spvm_env_runtime {
   int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
   void* reserved84;
   void* reserved85;
-  int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
+  int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
   const char* (*get_basic_type_module_rel_file)(void* runtime, int32_t basic_type_id);
   const char* (*get_basic_type_module_dir)(void* runtime, int32_t basic_type_id);
   int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
@@ -485,7 +485,6 @@ struct spvm_env_runtime {
   int32_t (*is_object_type_v2)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
   int32_t (*has_interface)(void* runtime, void* basic_type, void* interface_basic_type);
   int32_t (*is_super)(void* runtime, void* super_basic_type, void* child_basic_type);
-  int32_t (*can_assign_v2)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
 };
 
 struct spvm_env_compiler {
