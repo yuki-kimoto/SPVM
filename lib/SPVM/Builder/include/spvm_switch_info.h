@@ -17,7 +17,7 @@ struct spvm_switch_info {
   SPVM_OP* op_default;
   int32_t id;
   int32_t default_opcode_index;
-  int32_t opcode_address_id;
+  int32_t opcode_index;
 };
 
 SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler);
