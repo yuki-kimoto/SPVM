@@ -280,7 +280,8 @@ int32_t SPVM__Runtime__get_basic_type_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_basic_type_names = env->new_string_array(env, stack, basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
-    const char* basic_type_name = env->api->runtime->get_basic_type_name_v2(runtime, env->api->runtime->get_basic_type(runtime, basic_type_id));
+    void* basic_type = env->api->runtime->get_basic_type(runtime, basic_type_id);
+    const char* basic_type_name = env->api->runtime->get_basic_type_name_v2(runtime, basic_type);
     void* obj_basic_type_name = env->new_string_nolen(env, stack, basic_type_name);
     env->set_elem_object(env, stack, obj_basic_type_names, basic_type_id, obj_basic_type_name);
   }
