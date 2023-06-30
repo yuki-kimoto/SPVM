@@ -39,6 +39,9 @@
       -  int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
       +  int32_t (*is_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
 
+      -  int32_t (*get_arg_basic_type_id)(void* runtime, void* arg);
+      +  void* (*get_arg_basic_type)(void* runtime, void* arg);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.
