@@ -2744,7 +2744,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  void* src_basic_type = env->api->runtime->get_basic_type(runtime, src_basic_type_id);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  src_basic_type = env->api->runtime->get_basic_type(env->runtime, src_basic_type_id);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_IS_ERROR(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
