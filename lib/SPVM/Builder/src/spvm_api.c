@@ -4057,7 +4057,7 @@ int32_t SPVM_API_isa_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   return isa;
 }
 
-int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t interface_basic_type_id) {
+int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -4071,7 +4071,6 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   else {
     int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
     void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
-    void* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, interface_basic_type_id);
     if (!interface_basic_type) {
       has_interface = 0;
     }
@@ -4085,12 +4084,12 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
 
 int32_t SPVM_API_has_interface_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* basic_type_name) {
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
-  if (basic_type_id < 0) {
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, basic_type_name);
+  if (!basic_type) {
     return 0;
   };
   
-  int32_t has_interface = SPVM_API_has_interface(env, stack, object, basic_type_id);
+  int32_t has_interface = SPVM_API_has_interface(env, stack, object, basic_type);
   
   return has_interface;
 }

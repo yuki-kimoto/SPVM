@@ -262,7 +262,7 @@ struct spvm_env {
   void* (*copy_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void* (*copy)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*shorten)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t new_length);
-  int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t interface_basic_type_id);
+  int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* interface_basic_type);
   void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   int32_t (*init_env)(SPVM_ENV* env);

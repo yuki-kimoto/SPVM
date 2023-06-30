@@ -602,12 +602,12 @@ int32_t SPVM__TestCase__NativeAPI__has_interface_test(SPVM_ENV* env, SPVM_VALUE*
   
   void* object = stack[0].oval;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::AnonMethod::AnonMethod");
-  if (basic_type_id < 0) {
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::AnonMethod::AnonMethod");
+  if (!basic_type) {
     assert(0);
   }
   
-  int32_t match = env->has_interface(env, stack, object, basic_type_id);
+  int32_t match = env->has_interface(env, stack, object, basic_type);
   
   stack[0].ival = match;
   
