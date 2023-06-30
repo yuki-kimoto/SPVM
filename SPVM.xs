@@ -1010,7 +1010,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   // Env
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
-  void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
+  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
   
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
@@ -4907,7 +4907,7 @@ get_basic_type_names(...)
   
   int32_t basic_types_length = api_env->api->runtime->get_basic_types_length(runtime);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
-    void* basic_type = api_env->api->runtime->get_basic_type(runtime, basic_type_id);
+    void* basic_type = api_env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       const char* basic_type_name = api_env->api->runtime->get_basic_type_name(runtime, basic_type);

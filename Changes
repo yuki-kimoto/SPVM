@@ -1,3 +1,10 @@
+0.989018 2023-07-01
+  [Incompatibe Changes]
+    * The following Native Runtime APIs were changed.
+
+      -  void* (*get_basic_type)(void* runtime, int32_t basic_type_id);
+      +  void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
+    
 0.989017 2023-06-30
   [New Features]
     The following Native APIs were added.

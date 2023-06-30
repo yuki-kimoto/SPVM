@@ -214,7 +214,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_current_basic_type,
     SPVM_API_RUNTIME_get_basic_type_parent,
     SPVM_API_RUNTIME_get_basic_type_version_string,
-    SPVM_API_RUNTIME_get_basic_type,
+    SPVM_API_RUNTIME_get_basic_type_by_id,
     SPVM_API_RUNTIME_get_field,
     SPVM_API_RUNTIME_get_method,
     NULL, // reserved120,
@@ -270,7 +270,7 @@ int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime) {
   return runtime->runtime_codes_length;
 }
 
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
 
   if (basic_type_id < 0) {
     return NULL;
@@ -300,7 +300,7 @@ int32_t SPVM_API_RUNTIME_get_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_B
 
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t anon_basic_type_index) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
   
   int32_t anon_basic_type_id = runtime->anon_basic_type_ids[basic_type->anon_basic_types_base + anon_basic_type_index];
   
@@ -376,7 +376,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_anon_basic_type(SPVM_RU
   
   int32_t anon_basic_type_id = runtime->anon_basic_type_ids[basic_type->anon_basic_types_base + anon_basic_type_index];
   
-  SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, anon_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, anon_basic_type_id);
   
   return anon_basic_type;
 }
@@ -448,7 +448,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_parent(SPVM_RUNTIME* ru
   
   int32_t parent_basic_type_id = basic_type->parent_id;
   
-  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, parent_basic_type_id);
   
   return parent_basic_type;
 }
@@ -503,7 +503,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_current_basic_type(SPVM_
   
   int32_t current_basic_type_id = class_var->current_basic_type_id;
   
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, current_basic_type_id);
   
   return current_basic_type;
 }
@@ -512,7 +512,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_basic_type(SPVM_RUNTIME*
   
   int32_t basic_type_id = class_var->basic_type_id;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
   
   return basic_type;
 }
@@ -588,7 +588,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_field_current_basic_type(SPVM_RUNT
   
   int32_t current_basic_type_id = field->current_basic_type_id;
   
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, current_basic_type_id);
   
   return current_basic_type;
 }
@@ -597,7 +597,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_field_basic_type(SPVM_RUNTIME* run
   
   int32_t basic_type_id = field->basic_type_id;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
   
   return basic_type;
 }
@@ -671,7 +671,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_current_basic_type(SPVM_RUN
   
   int32_t current_basic_type_id = method->current_basic_type_id;
   
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, current_basic_type_id);
   
   return current_basic_type;
 }
@@ -758,7 +758,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_return_basic_type(SPVM_RUNT
   
   int32_t return_basic_type_id = method->return_basic_type_id;
   
-  SPVM_RUNTIME_BASIC_TYPE* return_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, return_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* return_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, return_basic_type_id);
   
   return return_basic_type;
 }
@@ -859,7 +859,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_arg_basic_type(SPVM_RUNTIME* runti
   
   int32_t basic_type_id = arg->basic_type_id;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
   
   return basic_type;
 }
@@ -900,8 +900,8 @@ void SPVM_API_RUNTIME_set_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_
 
 int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t interface_basic_type_id) {
 
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, interface_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* interface_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, interface_basic_type_id);
   
   if (!(basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     return 0;
@@ -962,7 +962,7 @@ int32_t SPVM_API_RUNTIME_is_super(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE
   int32_t parent_basic_type_id = child_basic_type->parent_id;
   while (1) {
     if (parent_basic_type_id > 0) {
-      SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, parent_basic_type_id);
       if (parent_basic_type->id == super_basic_type->id) {
         is_super_basic_type = 1;
         break;

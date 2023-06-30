@@ -120,22 +120,42 @@ Runtime native APIs have its IDs.
   96 reserved96
   97 reserved97
   98 reserved98
-  99 get_basic_types_length
-  100 get_field_basic_type
-  101 get_field_type_dimension
-  102 get_field_type_flag
-  103 get_class_var_basic_type
-  104 get_class_var_type_dimension
-  105 get_class_var_type_flag
-  103 get_method_return_basic_type
-  104 get_method_return_type_dimension
-  105 get_method_return_type_flag
-  106 get_arg_basic_type
-  107 get_arg_type_dimension
-  108 get_arg_type_flag
-  109 get_method_current_basic_type
-  110 get_basic_type_parent
-  111 get_basic_type_version_string
+  99   get_basic_types_length
+  100   get_field_basic_type
+  101   get_field_type_dimension
+  102   get_field_type_flag
+  103   get_class_var_basic_type
+  104   get_class_var_type_dimension
+  105   get_class_var_type_flag
+  106   get_method_return_basic_type
+  107   get_method_return_type_dimension
+  108   get_method_return_type_flag
+  109   get_arg_basic_type
+  110   get_arg_type_dimension
+  111   get_arg_type_flag
+  112   get_method_current_basic_type
+  113   get_field_current_basic_type
+  114   get_class_var_current_basic_type
+  115   get_basic_type_parent
+  116   get_basic_type_version_string
+  117   get_basic_type
+  118   get_field
+  119   get_method
+  120   reserved120,
+  121   reserved121
+  122   get_class_var_by_name
+  123   get_field_by_name
+  124   get_method_by_name
+  125   get_basic_type_id
+  126   reserved126
+  127   get_method_index
+  128   reserved128,
+  129   get_class_var_index
+  130   get_field_index
+  131   get_field_offset
+  132   get_arg
+  133   get_basic_type_by_name
+  134   get_basic_type_anon_basic_type
 
 =head1 Runtime Native APIs
 
@@ -206,214 +226,134 @@ Runtime native APIs have its IDs.
 =head2 get_basic_type_class_vars_length
 
   int32_t (*get_basic_type_class_vars_length)(void* runtime, void* basic_type);
-
-=head2 get_class_var
-
-  void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
-
-=head2 get_class_var_name
-
-  const char* (*get_class_var_name)(void* runtime, void* class_var);
-
-=head2 get_field_name
-
-  const char* (*get_field_name)(void* runtime, void* field);
-
-=head2 get_method_name
-
-  const char* (*get_method_name)(void* runtime, void* method);
-
-=head2 get_method_is_class_method
-
-  int32_t (*get_method_is_class_method)(void* runtime, void* method);
-
-=head2 get_method_is_anon
-
-  int32_t (*get_method_is_anon)(void* runtime, void* method);
-
-=head2 get_method_is_native
-
-  int32_t (*get_method_is_native)(void* runtime, void* method);
-
-=head2 get_method_is_precompile
-
-  int32_t (*get_method_is_precompile)(void* runtime, void* method);
-
-=head2 get_method_call_stack_byte_vars_length
-
-  int32_t (*get_method_call_stack_byte_vars_length)(void* runtime, void* method);
-
-=head2 get_method_call_stack_short_vars_length
-
-  int32_t (*get_method_call_stack_short_vars_length)(void* runtime, void* method);
-
-=head2 get_method_call_stack_int_vars_length
-
-  int32_t (*get_method_call_stack_int_vars_length)(void* runtime, void* method);
-
-=head2 get_method_call_stack_long_vars_length
-
-  int32_t (*get_method_call_stack_long_vars_length)(void* runtime, void* method);
-
-=head2 get_method_call_stack_float_vars_length
-
-  int32_t (*get_method_call_stack_float_vars_length)(void* runtime, void* method);
-
-=head2 get_method_call_stack_double_vars_length
-
-  int32_t (*get_method_call_stack_double_vars_length)(void* runtime, void* method);
-
-=head2 get_method_call_stack_object_vars_length
-
-  int32_t (*get_method_call_stack_object_vars_length)(void* runtime, void* method);
-
-=head2 get_method_call_stack_ref_vars_length
-
-  int32_t (*get_method_call_stack_ref_vars_length)(void* runtime, void* method);
-
-=head2 get_method_mortal_stack_length
-
-  int32_t (*get_method_mortal_stack_length)(void* runtime, void* method);
-
-=head2 get_method_opcodes_base
-
-  int32_t (*get_method_opcodes_base)(void* runtime, void* method);
-
-=head2 get_method_opcodes_length
-
-  int32_t (*get_method_opcodes_length)(void* runtime, void* method);
-
-=head2 get_method_args_base
-
-  int32_t (*get_method_args_base)(void* runtime, void* method);
-
-=head2 get_method_args_length
-
-  int32_t (*get_method_args_length)(void* runtime, void* method);
-
-=head2 get_native_method_address
-
-  void* (*get_native_method_address)(void* runtime, void* method);
-
-=head2 set_native_method_address
-
-  void (*set_native_method_address)(void* runtime, void* method, void* address);
-
-=head2 get_precompile_method_address
-
-  void* (*get_precompile_method_address)(SPVM_ENV*, void* method);
-
-=head2 set_precompile_method_address
-
-  void (*set_precompile_method_address)(void* runtime, void* method, void* address);
-
-=head2 object_header_size
-
-  void* object_header_size;
-
-=head2 object_ref_count_offset
-
-  void* object_ref_count_offset;
-
-=head2 object_length_offset
-
-  void* object_length_offset;
-
-=head2 get_allocator
-
-  void* (*get_allocator)(void* runtime);
-
-=head2 build
-
-  void (*build)(void* runtime, int32_t* runtime_codes);
-
-=head2 get_method_required_args_length
-
-  int32_t (*get_method_required_args_length)(void* runtime, void* method);
-
-=head2 get_basic_type_is_pointer
-
-  int32_t (*get_basic_type_is_pointer)(void* runtime, void* basic_type);
-
-=head2 get_method_is_enum
-
-  int32_t (*get_basic_type_is_pointer)(void* runtime, void* basic_type);
-
-=head2 is_object_type
-
-  int32_t (*is_object_type)(void* runtime, int32_t basic_type_id, int32_t type_dimension, int32_t flag);
-
-=head2 can_assign
-
-  int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
-
+  
+=head2 get_basic_types_length
+
+  int32_t (*get_basic_types_length)(void* runtime);
+  
 =head2 get_field_basic_type
 
-  int32_t (*get_field_basic_type)(void* runtime, void* field);
-
+  void* (*get_field_basic_type)(void* runtime, void* field);
+  
 =head2 get_field_type_dimension
 
   int32_t (*get_field_type_dimension)(void* runtime, void* field);
-
+  
 =head2 get_field_type_flag
 
   int32_t (*get_field_type_flag)(void* runtime, void* field);
+  
+=head2 get_class_var_basic_type
 
-=head2 get_field_basic_type_id
+  void* (*get_class_var_basic_type)(void* runtime, void* class_var);
+  
+=head2 get_class_var_type_dimension
 
-  int32_t (*get_field_basic_type)(void* runtime, void* field);
+  int32_t (*get_class_var_type_dimension)(void* runtime, void* class_var);
+  
+=head2 get_class_var_type_flag
 
-=head2 get_field_type_dimension
+  int32_t (*get_class_var_type_flag)(void* runtime, void* class_var);
+  
+=head2 get_method_return_basic_type
 
-  int32_t (*get_field_type_dimension)(void* runtime, void* field);
-
-=head2 get_field_type_flag
-
-  int32_t (*get_field_type_flag)(void* runtime, void* field);
-
-=head2 get_method_return_basic_type_id
-
-  int32_t (*get_method_return_basic_type)(void* runtime, void* method);
-
+  void* (*get_method_return_basic_type)(void* runtime, void* method);
+  
 =head2 get_method_return_type_dimension
 
   int32_t (*get_method_return_type_dimension)(void* runtime, void* method);
-
+  
 =head2 get_method_return_type_flag
 
   int32_t (*get_method_return_type_flag)(void* runtime, void* method);
+  
+=head2 get_arg_basic_type
 
-=head2 get_arg_basic_type_id
-
-  int32_t (*get_arg_basic_type)(void* runtime, int32_t arg_id);
-
+  void* (*get_arg_basic_type)(void* runtime, void* arg);
+  
 =head2 get_arg_type_dimension
 
-  int32_t (*get_arg_type_dimension)(void* runtime, int32_t arg_id);
-
+  int32_t (*get_arg_type_dimension)(void* runtime, void* arg);
+  
 =head2 get_arg_type_flag
 
-  int32_t (*get_arg_type_flag)(void* runtime, int32_t arg_id);
+  int32_t (*get_arg_type_flag)(void* runtime, void* arg);
+  
+=head2 get_method_current_basic_type
 
-=head2 get_method_current_basic_type_id
+  void* (*get_method_current_basic_type)(void* runtime, void* method);
+  
+=head2 get_field_current_basic_type
 
-  int32_t (*get_method_current_basic_type)(void* runtime, void* method);
+  void* (*get_field_current_basic_type)(void* runtime, void* field);
+  
+=head2 get_class_var_current_basic_type
 
-=head2 get_field_current_basic_type_id
-
-  int32_t (*get_field_current_basic_type)(void* runtime, void* field);
-
-=head2 get_field_current_basic_type_id
-
-  int32_t (*get_field_current_basic_type)(void* runtime, void* field);
-
+  void* (*get_class_var_current_basic_type)(void* runtime, void* class_var);
+  
 =head2 get_basic_type_parent
 
-  int32_t (*get_basic_type_parent)(void* runtime, void* basic_type);
-
+  void* (*get_basic_type_parent)(void* runtime, void* basic_type);
+  
 =head2 get_basic_type_version_string
 
-const char* (*get_basic_type_version_string)(void* runtime, void* basic_type);
+  const char* (*get_basic_type_version_string)(void* runtime, void* basic_type);
+  
+=head2 get_basic_type_by_id
+
+  void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
+  
+=head2 get_field
+
+  void* (*get_field)(void* runtime, void* basic_type, int32_t field_index);
+  
+=head2 get_method
+
+  void* (*get_method)(void* runtime, void* basic_type, int32_t method_index);
+  
+=head2 get_class_var_by_name
+
+  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const char* class_var_name);
+  
+=head2 get_field_by_name
+
+  void* (*get_field_by_name)(void* runtime, void* basic_type, const char* field_name);
+  
+=head2 get_method_by_name
+
+  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
+  
+=head2 get_basic_type_id
+
+  int32_t (*get_basic_type_id)(void* runtime, void* basic_type);
+  
+=head2 get_method_index
+
+  int32_t (*get_method_index)(void* runtime, void* method);
+  
+=head2 get_class_var_index
+
+  int32_t (*get_class_var_index)(void* runtime, void* class_var);
+  
+=head2 get_field_index
+
+  int32_t (*get_field_index)(void* runtime, void* field);
+  
+=head2 get_field_offset
+
+  int32_t (*get_field_offset)(void* runtime, void* field);
+  
+=head2 get_arg
+
+  void* (*get_arg)(void* runtime, void* method, int32_t arg_index);
+  
+=head2 get_basic_type_by_name
+
+  void* (*get_basic_type_by_name)(void* runtime, const char* basic_type_name);
+  
+=head2 
+
+  void* (*get_basic_type_anon_basic_type)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
 
 =head1 Copyright & License
 
