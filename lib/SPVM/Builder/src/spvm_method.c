@@ -12,12 +12,15 @@
 #include "spvm_op.h"
 #include "spvm_type.h"
 #include "spvm_basic_type.h"
+#include "spvm_opcode_list.h"
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   SPVM_METHOD* method = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_METHOD));
   
   method->var_decls = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   method->anon_method_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  
+  method->opcode_list = SPVM_OPCODE_LIST_new(compiler);
   
   return method;
 }
