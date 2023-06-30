@@ -2936,11 +2936,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
+        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR_ID(error_id, basic_type_id);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR_ID(error_id, basic_type);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_ITEMS: {
