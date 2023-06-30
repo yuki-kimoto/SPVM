@@ -949,7 +949,7 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
-      if (!env->isa(env, stack, spvm_array, basic_type_id, type_dimension)) {
+      if (!env->isa_v2(env, stack, spvm_array, basic_type, type_dimension)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be assignable"));
         return &PL_sv_undef;
       }
@@ -966,7 +966,7 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
       int32_t length = av_len(av_array) + 1;
       
       // New array
-      void* spvm_array = env->new_muldim_array(env, stack, basic_type_id, type_dimension, length);
+      void* spvm_array = env->new_muldim_array_v2(env, stack, basic_type, type_dimension, length);
       
       for (int32_t index = 0; index < length; index++) {
         SV** sv_elem_ptr = av_fetch(av_array, index, 0);
@@ -1023,7 +1023,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
       int32_t type_dimension = 1;
-      if (!env->isa(env, stack, spvm_array, basic_type_id, type_dimension)) {
+      if (!env->isa_v2(env, stack, spvm_array, basic_type, type_dimension)) {
         *sv_error = sv_2mortal(newSVpvf(": If it is a SPVM::BlessedObject::Array object, the type must be assignable"));
         return &PL_sv_undef;
       }
@@ -1041,7 +1041,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
       void* runtime = env->runtime;
       
       // New array
-      void* spvm_array = env->new_mulnum_array(env, stack, basic_type_id, length);
+      void* spvm_array = env->new_mulnum_array_v2(env, stack, basic_type, length);
       
       for (int32_t index = 0; index < length; index++) {
         SV** sv_elem_ptr = av_fetch(av_array, index, 0);
