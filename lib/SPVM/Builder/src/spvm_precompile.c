@@ -2732,6 +2732,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
+        SPVM_STRING_BUFFER_add(string_buffer, "  src_basic_type = env->api->runtime->get_basic_type(env->runtime, src_basic_type_id);");
+        
         SPVM_STRING_BUFFER_add(string_buffer, "  type_dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, type_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2742,9 +2744,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISA_ERROR(env, stack, ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_ISA_ERROR_V2(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", src_basic_type_id, basic_type_id, type_dimension);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", src_basic_type, basic_type, type_dimension);\n");
         
         break;
       }
