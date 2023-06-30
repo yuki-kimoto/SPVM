@@ -1468,7 +1468,7 @@ static inline void SPVM_IMPLEMENT_ISA_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, in
 
 static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, void* dist_basic_type, int32_t dist_type_dimension) {
   if (object) {
-    *out = env->is_type_v2(env, stack, object, dist_basic_type, dist_type_dimension);
+    *out = env->is_type(env, stack, object, dist_basic_type, dist_type_dimension);
   }
   else {
     *out = 0;

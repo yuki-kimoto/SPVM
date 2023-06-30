@@ -195,7 +195,7 @@ struct spvm_env {
   int32_t (*push_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*leave_scope)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id);
   int32_t (*remove_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id, void* remove_object);
-  int32_t (*is_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t basic_type_id, int32_t type_dimension);
+  int32_t (*is_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
   int32_t (*is_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*get_object_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*get_object_type_dimension)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -325,7 +325,6 @@ struct spvm_env {
   void* (*new_muldim_array_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t element_dimension, int32_t length);
   void* (*new_mulnum_array_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
   void* (*new_mulnum_array_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
-  int32_t (*is_type_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
   void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 };

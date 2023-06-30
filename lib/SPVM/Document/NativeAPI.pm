@@ -917,9 +917,9 @@ Given a scope ID and an object, delete the specified object from the mortal stac
 
 =head2 is_type
 
-  int32_t (*is_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t basic_type_id, int32_t type_dimension);
+  int32_t (*is_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
 
-Given an object and a base type ID and a type dimension, returns a nonzero value if the object matches both the base type ID and the type dimension, and 0 otherwise.
+Given an object and a base type and a type dimension, returns a nonzero value if the object matches both the base type and the type dimension, and 0 otherwise.
 
 =head2 is_object_array
 
@@ -1826,21 +1826,21 @@ The alias for the following code using L</"dump">.
 
 =head2 new_pointer_object_raw
 
-  void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+  void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
 
-Creates a pointer object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by the L</"get_basic_type_id"> Native API.
+Creates a pointer object by specifying a basic type and a C language pointer. The basic type must be the correct basic type got by the L</"get_basic_type"> Native API.
 
 =head2 new_pointer_object
 
-  void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+  void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
 
 The same as L</"new_pointer_raw">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_raw>.
 
 Examples:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "MyTime");
+  void* basic_type = env->get_basic_type(env, "MyTime");
   void* pointer = malloc(sizeof (struct tm));
-  void* pointer_obj = env->new_pointer(env, stack, basic_type_id, pointer);
+  void* pointer_obj = env->new_pointer(env, stack, basic_type, pointer);
 
 =head2 new_pointer_object_by_name
 
