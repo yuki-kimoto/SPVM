@@ -244,6 +244,20 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_class_vars_length_v2,
     SPVM_API_RUNTIME_get_basic_type_parent_id_v2,
     SPVM_API_RUNTIME_get_basic_type_version_string_v2,
+    SPVM_API_RUNTIME_get_basic_type_anon_basic_type,
+    SPVM_API_RUNTIME_get_class_var_v2,
+    SPVM_API_RUNTIME_get_class_var_by_name_v2,
+    SPVM_API_RUNTIME_get_class_var_current_basic_type,
+    SPVM_API_RUNTIME_get_class_var_basic_type,
+    SPVM_API_RUNTIME_get_field_v2,
+    SPVM_API_RUNTIME_get_field_by_name_v2,
+    SPVM_API_RUNTIME_get_field_current_basic_type,
+    SPVM_API_RUNTIME_get_field_basic_type,
+    SPVM_API_RUNTIME_get_method_v2,
+    SPVM_API_RUNTIME_get_method_by_name_v2,
+    SPVM_API_RUNTIME_get_method_current_basic_type,
+    SPVM_API_RUNTIME_get_method_return_basic_type,
+    SPVM_API_RUNTIME_get_arg_basic_type,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -569,11 +583,13 @@ int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length_v2(SPVM_RUNTIME*
   return anon_basic_types_length;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_type_id_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t anon_basic_type_index) {
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_anon_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t anon_basic_type_index) {
   
   int32_t anon_basic_type_id = runtime->anon_basic_type_ids[basic_type->anon_basic_types_base + anon_basic_type_index];
   
-  return anon_basic_type_id;
+  SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, anon_basic_type_id);
+  
+  return anon_basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_is_anon_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
@@ -663,6 +679,21 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, in
   return class_var;
 }
 
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t class_var_index) {
+  
+  if (class_var_index < 0) {
+    return NULL;
+  }
+  
+  if (class_var_index >= basic_type->class_vars_length) {
+    return NULL;
+  }
+  
+  SPVM_RUNTIME_CLASS_VAR* class_var = &runtime->class_vars[basic_type->class_vars_base + class_var_index];
+  
+  return class_var;
+}
+
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name(SPVM_RUNTIME* runtime, int32_t basic_type_id, const char* class_var_name) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
@@ -671,6 +702,23 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name(SPVM_RUNTIME* run
   if (basic_type->class_vars_length > 0) {
     for (int32_t class_var_index = 0; class_var_index <  basic_type->class_vars_length; class_var_index++) {
       SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, basic_type_id, class_var_index);
+      const char* class_var_name_current = SPVM_API_RUNTIME_get_class_var_name(runtime, class_var);
+      if (strcmp(class_var_name_current, class_var_name) == 0) {
+        found_class_var = class_var;
+        break;
+      }
+    }
+  }
+  
+  return found_class_var;
+}
+
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* class_var_name) {
+  
+  SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
+  if (basic_type->class_vars_length > 0) {
+    for (int32_t class_var_index = 0; class_var_index <  basic_type->class_vars_length; class_var_index++) {
+      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_v2(runtime, basic_type, class_var_index);
       const char* class_var_name_current = SPVM_API_RUNTIME_get_class_var_name(runtime, class_var);
       if (strcmp(class_var_name_current, class_var_name) == 0) {
         found_class_var = class_var;
@@ -703,11 +751,29 @@ int32_t SPVM_API_RUNTIME_get_class_var_current_basic_type_id(SPVM_RUNTIME* runti
   return current_basic_type_id;
 }
 
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
+  
+  int32_t current_basic_type_id = class_var->current_basic_type_id;
+  
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_basic_type_id);
+  
+  return current_basic_type;
+}
+
 int32_t SPVM_API_RUNTIME_get_class_var_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
   int32_t basic_type_id = class_var->basic_type_id;
   
   return basic_type_id;
+}
+
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
+  
+  int32_t basic_type_id = class_var->basic_type_id;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  return basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_var_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
@@ -741,6 +807,21 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, int32_t ba
   return field;
 }
 
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t field_index) {
+  
+  if (field_index < 0) {
+    return NULL;
+  }
+  
+  if (field_index >= basic_type->fields_length) {
+    return NULL;
+  }
+  
+  SPVM_RUNTIME_FIELD* field = &runtime->fields[basic_type->fields_base + field_index];
+  
+  return field;
+}
+
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, int32_t basic_type_id, const char* field_name) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
@@ -749,6 +830,23 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, in
   if (basic_type->fields_length > 0) {
     for (int32_t field_index = 0; field_index <  basic_type->fields_length; field_index++) {
       SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type_id, field_index);
+      const char* field_name_current = SPVM_API_RUNTIME_get_field_name(runtime, field);
+      if (strcmp(field_name_current, field_name) == 0) {
+        found_field = field;
+        break;
+      }
+    }
+  }
+  
+  return found_field;
+}
+
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* field_name) {
+  
+  SPVM_RUNTIME_FIELD* found_field = NULL;
+  if (basic_type->fields_length > 0) {
+    for (int32_t field_index = 0; field_index <  basic_type->fields_length; field_index++) {
+      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_v2(runtime, basic_type, field_index);
       const char* field_name_current = SPVM_API_RUNTIME_get_field_name(runtime, field);
       if (strcmp(field_name_current, field_name) == 0) {
         found_field = field;
@@ -788,11 +886,29 @@ int32_t SPVM_API_RUNTIME_get_field_current_basic_type_id(SPVM_RUNTIME* runtime, 
   return current_basic_type_id;
 }
 
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_field_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
+  
+  int32_t current_basic_type_id = field->current_basic_type_id;
+  
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_basic_type_id);
+  
+  return current_basic_type;
+}
+
 int32_t SPVM_API_RUNTIME_get_field_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
   int32_t basic_type_id = field->basic_type_id;
   
   return basic_type_id;
+}
+
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_field_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
+  
+  int32_t basic_type_id = field->basic_type_id;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  return basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
@@ -812,6 +928,21 @@ int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME
 SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t method_index) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  if (method_index < 0) {
+    return NULL;
+  }
+  
+  if (method_index >= basic_type->methods_length) {
+    return NULL;
+  }
+  
+  SPVM_RUNTIME_METHOD* method = &runtime->methods[basic_type->methods_base + method_index];
+  
+  return method;
+}
+
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t method_index) {
   
   if (method_index < 0) {
     return NULL;
@@ -866,11 +997,56 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, 
   return found_method;
 }
 
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* method_name) {
+  
+  SPVM_RUNTIME_METHOD* found_method = NULL;
+  if (basic_type->methods_length > 0) {
+    // Performe binary searching because methods are sorted by the names
+    int32_t cur_min_index = 0;
+    int32_t cur_max_index = basic_type->methods_length - 1;
+    
+    while (1) {
+      if (cur_max_index < cur_min_index) {
+        break;
+      }
+      
+      int32_t cur_half_index = cur_min_index +(cur_max_index - cur_min_index) / 2;
+      
+      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_v2(runtime, basic_type, cur_half_index);
+      const char* cur_half_method_name = SPVM_API_RUNTIME_get_method_name(runtime, method);
+      
+      int32_t cmp_result = strcmp(method_name, cur_half_method_name);
+      
+      if (cmp_result > 0) {
+        cur_min_index = cur_half_index + 1;
+      }
+      else if (cmp_result < 0) {
+        cur_max_index = cur_half_index - 1;
+      }
+      else {
+        found_method = method;
+        break;
+      }
+    }
+  }
+  
+  return found_method;
+}
+
 int32_t SPVM_API_RUNTIME_get_method_current_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
   int32_t basic_type_id = method->current_basic_type_id;
   
   return basic_type_id;
+}
+
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+  
+  int32_t current_basic_type_id = method->current_basic_type_id;
+  
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, current_basic_type_id);
+  
+  return current_basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_opcodes_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
@@ -956,6 +1132,15 @@ int32_t SPVM_API_RUNTIME_get_method_return_basic_type_id(SPVM_RUNTIME* runtime, 
   int32_t return_basic_type_id = method->return_basic_type_id;
   
   return return_basic_type_id;
+}
+
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_return_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+  
+  int32_t return_basic_type_id = method->return_basic_type_id;
+  
+  SPVM_RUNTIME_BASIC_TYPE* return_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, return_basic_type_id);
+  
+  return return_basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_return_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
@@ -1055,6 +1240,15 @@ int32_t SPVM_API_RUNTIME_get_arg_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTI
   int32_t basic_type_id = arg->basic_type_id;
   
   return basic_type_id;
+}
+
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_arg_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+  
+  int32_t basic_type_id = arg->basic_type_id;
+  
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+  
+  return basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {

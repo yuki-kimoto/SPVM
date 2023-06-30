@@ -466,6 +466,20 @@ struct spvm_env_runtime {
   int32_t (*get_basic_type_class_vars_length_v2)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_parent_id_v2)(void* runtime, void* basic_type);
   const char* (*get_basic_type_version_string_v2)(void* runtime, void* basic_type);
+  void* (*get_basic_type_anon_basic_type)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
+  void* (*get_class_var_v2)(void* runtime, void* basic_type, int32_t class_var_index);
+  void* (*get_class_var_by_name_v2)(void* runtime, void* basic_type, const char* class_var_name);
+  void* (*get_class_var_current_basic_type)(void* runtime, void* class_var);
+  void* (*get_class_var_basic_type)(void* runtime, void* class_var);
+  void* (*get_field_v2)(void* runtime, void* basic_type, int32_t field_index);
+  void* (*get_field_by_name_v2)(void* runtime, void* basic_type, const char* field_name);
+  void* (*get_field_current_basic_type)(void* runtime, void* field);
+  void* (*get_field_basic_type)(void* runtime, void* field);
+  void* (*get_method_v2)(void* runtime, void* basic_type, int32_t method_index);
+  void* (*get_method_by_name_v2)(void* runtime, void* basic_type, const char* method_name);
+  void* (*get_method_current_basic_type)(void* runtime, void* method);
+  void* (*get_method_return_basic_type)(void* runtime, void* method);
+  void* (*get_arg_basic_type)(void* runtime, void* arg);
 };
 
 struct spvm_env_compiler {
