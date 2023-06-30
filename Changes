@@ -71,6 +71,9 @@
       -  int32_t (*get_class_var_current_basic_type_id)(void* runtime, void* class_var);
       +  void* (*get_class_var_current_basic_type)(void* runtime, void* class_var);
 
+      -  void* (*get_class_var_by_name)(void* runtime, int32_t basic_type_id, const char* class_var_name);
+      +  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const char* class_var_name);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.
