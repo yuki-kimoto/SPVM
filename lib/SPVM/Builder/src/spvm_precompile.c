@@ -943,12 +943,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, cast_basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, cast_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -1849,12 +1843,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -1877,12 +1865,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
@@ -1911,12 +1893,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
-                                              
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -1939,12 +1915,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  length = *(int32_t*)&");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
@@ -2733,12 +2703,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, type_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2766,12 +2730,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, type_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2796,12 +2754,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, "  type_dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, type_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  assert(basic_type_id >= 0);\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
         SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, basic_type_name);
