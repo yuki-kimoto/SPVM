@@ -893,7 +893,7 @@ SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
       int32_t length = av_len(av_array) + 1;
       
       // New array
-      void* spvm_array = env->new_object_array(env, stack, basic_type_id, length);
+      void* spvm_array = env->new_object_array_v2(env, stack, basic_type, length);
       
       for (int32_t index = 0; index < length; index++) {
         SV** sv_elem_ptr = av_fetch(av_array, index, 0);
