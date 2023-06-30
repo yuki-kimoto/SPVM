@@ -829,11 +829,11 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name(SPVM_ENV* env
   int32_t error = 0;
   void* object_simple = stack[0].oval;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
-  if (basic_type_id < 0) {
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+  if (!basic_type) {
     return 1;
   }
-  void* object_minimal = env->new_object(env, stack, basic_type_id);
+  void* object_minimal = env->new_object(env, stack, basic_type);
   
   void* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
   if (!field_minimal_x) {
@@ -851,11 +851,11 @@ int32_t SPVM__TestCase__NativeAPI__native_set_field_object_by_name_exception(SPV
   int32_t error = 0;
   void* object_simple = stack[0].oval;
   
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
-  if (basic_type_id < 0) {
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+  if (!basic_type) {
     return 1;
   }
-  void* object_minimal = env->new_object(env, stack, basic_type_id);
+  void* object_minimal = env->new_object(env, stack, basic_type);
   
   void* field_minimal_x = env->get_field(env, stack, object_minimal, "x");
   if (!field_minimal_x) {
@@ -1406,11 +1406,11 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   // 8
   {
-    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Minimal");
-    if (basic_type_id < 0) {
+    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Minimal");
+    if (!basic_type) {
       return 1;
     }
-    void* obj_object = env->new_object(env, stack, basic_type_id);
+    void* obj_object = env->new_object(env, stack, basic_type);
     ref_count += env->get_ref_count(env, stack, obj_object);
   }
   // 9

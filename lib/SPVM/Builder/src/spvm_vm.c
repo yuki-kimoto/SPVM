@@ -767,7 +767,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t basic_type_id = opcode->operand1;
-        SPVM_IMPLEMENT_NEW_OBJECT(env, stack, &object_vars[opcode->operand0], basic_type_id, &error_id, object_ref_count_offset);
+        
+        void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
+        
+        SPVM_IMPLEMENT_NEW_OBJECT(env, stack, &object_vars[opcode->operand0], basic_type, &error_id, object_ref_count_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {

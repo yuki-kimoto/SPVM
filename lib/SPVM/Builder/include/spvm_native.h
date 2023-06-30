@@ -118,8 +118,8 @@ struct spvm_env {
   void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
   void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
   void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
-  void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
-  void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+  void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
+  void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
   void* (*new_byte_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
   void* (*new_byte_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
   void* (*new_short_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
@@ -317,8 +317,6 @@ struct spvm_env {
   int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
   void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
   int32_t (*isa_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
-  void* (*new_object_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
-  void* (*new_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
   void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 };
