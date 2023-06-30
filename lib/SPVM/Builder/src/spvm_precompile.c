@@ -5169,6 +5169,14 @@ void SPVM_PRECOMPILE_add_basic_type_id(SPVM_PRECOMPILE* precompile, SPVM_STRING_
   SPVM_STRING_BUFFER_add(string_buffer, "____");
 }
 
+void SPVM_PRECOMPILE_add_basic_type(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
+  SPVM_STRING_BUFFER_add(string_buffer, "basic_type");
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+  SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+  SPVM_PRECOMPILE_replace_colon_with_under_score(precompile, string_buffer->value + string_buffer->length - strlen(basic_type_name));
+  SPVM_STRING_BUFFER_add(string_buffer, "____");
+}
+
 void SPVM_PRECOMPILE_add_class_var(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* class_var_name) {
   SPVM_STRING_BUFFER_add(string_buffer, "class_var");
   SPVM_STRING_BUFFER_add(string_buffer, "____");
@@ -5248,6 +5256,15 @@ int32_t SPVM_PRECOMPILE_contains_method(SPVM_PRECOMPILE* precompile, const char*
 int32_t SPVM_PRECOMPILE_contains_basic_type_id(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name) {
   
   const char* label = "basic_type_id";
+  
+  int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, NULL);
+  
+  return found;
+}
+
+int32_t SPVM_PRECOMPILE_contains_basic_type(SPVM_PRECOMPILE* precompile, const char* string, const char* basic_type_name) {
+  
+  const char* label = "basic_type";
   
   int32_t found = SPVM_PRECOMPILE_contains_access_id(precompile,string, label, basic_type_name, NULL);
   
