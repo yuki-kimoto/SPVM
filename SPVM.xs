@@ -4663,7 +4663,9 @@ get_method_names(...)
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
-  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
+  void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
+  
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     void* method = api_env->api->runtime->get_method(runtime, basic_type_id, method_index);
@@ -4708,7 +4710,8 @@ get_basic_type_anon_basic_type_names(...)
   AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
   
-  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
+  void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type_id);
   
@@ -4777,7 +4780,9 @@ get_module_file(...)
   
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
-  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
+  void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
+  
   const char* module_file;
   SV* sv_module_file;
   
@@ -4860,7 +4865,8 @@ set_native_method_address(...)
   // Basic type name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id_by_name(runtime, basic_type_name);
+  void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
   // Method name
   const char* method_name = SvPV_nolen(sv_method_name);
