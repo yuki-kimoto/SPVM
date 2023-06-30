@@ -361,7 +361,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
               SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
               
-              int32_t opcode_rel_index = opcode_list->length - 1 - method_opcodes_base_address_id;
+              int32_t opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) - 1;
               
               SPVM_LIST_push(loop_block_stack_goto_opcode_rel_index, (void*)(intptr_t)opcode_rel_index);
             }
@@ -371,7 +371,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
               SPVM_LIST_push(switch_block_stack_break_base, (void*)(intptr_t)break_block_base);
             }
             else if (block->id == SPVM_BLOCK_C_ID_EVAL) {
-              int32_t opcode_rel_index = opcode_list->length - method_opcodes_base_address_id;
+              int32_t opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id);
               
               SPVM_LIST_push(eval_block_stack_goto_opcode_rel_index, (void*)(intptr_t)opcode_rel_index);
 
@@ -401,7 +401,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
           case SPVM_OP_C_ID_CASE: {
             if (switch_stack_switch_info->length > 0) {
               SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_stack_switch_info, switch_stack_switch_info->length - 1);
-              int32_t opcode_rel_index = opcode_list->length - method_opcodes_base_address_id;
+              int32_t opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id);
               op_cur->uv.case_info->goto_opcode_rel_index = opcode_rel_index;
             }
             break;
@@ -409,7 +409,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
           case SPVM_OP_C_ID_DEFAULT: {
             if (switch_stack_switch_info->length > 0) {
               SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_stack_switch_info, switch_stack_switch_info->length - 1);
-              switch_info->default_opcode_rel_index = opcode_list->length - method_opcodes_base_address_id;
+              switch_info->default_opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id);
             }
             break;
           }
@@ -435,14 +435,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
                     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                     
-                    int32_t opcode_rel_index = opcode_list->length - 1 - method_opcodes_base_address_id;
+                    int32_t opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) - 1;
                     SPVM_LIST_push(if_block_stack_goto_end_opcode_rel_index, (void*)(intptr_t)opcode_rel_index);
                   }
                   
                   int32_t if_eq_or_if_ne_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(unresolved_if_eq_or_if_ne_opcode_rel_index_stack);
                   
-                  SPVM_OPCODE* if_eq_or_if_ne_goto = (opcode_list->values + method_opcodes_base_address_id + if_eq_or_if_ne_goto_opcode_rel_index);
-                  int32_t if_eq_or_if_ne_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                  SPVM_OPCODE* if_eq_or_if_ne_goto = ((opcode_list->values + method_opcodes_base_address_id) + if_eq_or_if_ne_goto_opcode_rel_index);
+                  int32_t if_eq_or_if_ne_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                   if_eq_or_if_ne_goto->operand0 = if_eq_or_if_ne_goto_opcode_base_rel_index;
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_ELSE) {
@@ -451,8 +451,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   
                   int32_t if_block_end_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(if_block_stack_goto_end_opcode_rel_index);
                   
-                  SPVM_OPCODE* if_block_end_goto = (opcode_list->values + method_opcodes_base_address_id + if_block_end_goto_opcode_rel_index);
-                  int32_t if_block_end_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                  SPVM_OPCODE* if_block_end_goto = ((opcode_list->values + method_opcodes_base_address_id) + if_block_end_goto_opcode_rel_index);
+                  int32_t if_block_end_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                   if_block_end_goto->operand0 = if_block_end_goto_opcode_base_rel_index;
                 }
                 else if (block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
@@ -464,8 +464,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   for (int32_t i = 0; i < unresolved_last_opcode_rel_index_stack_pop_count; i++) {
                     int32_t last_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(unresolved_last_opcode_rel_index_stack);
                     
-                    SPVM_OPCODE* last_goto = (opcode_list->values + method_opcodes_base_address_id + last_goto_opcode_rel_index);
-                    int32_t last_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                    SPVM_OPCODE* last_goto = ((opcode_list->values + method_opcodes_base_address_id) + last_goto_opcode_rel_index);
+                    int32_t last_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                     last_goto->operand0 = last_goto_opcode_base_rel_index;
                   }
                 }
@@ -478,8 +478,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   for (int32_t i = 0; i < unresolved_next_opcode_rel_index_stack_pop_count; i++) {
                     int32_t next_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(unresolved_next_opcode_rel_index_stack);
                     
-                    SPVM_OPCODE* next_goto = (opcode_list->values + method_opcodes_base_address_id + next_goto_opcode_rel_index);
-                    int32_t next_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                    SPVM_OPCODE* next_goto = ((opcode_list->values + method_opcodes_base_address_id) + next_goto_opcode_rel_index);
+                    int32_t next_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                     next_goto->operand0 = next_goto_opcode_base_rel_index;
                   }
                 }
@@ -492,8 +492,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   for (int32_t i = 0; i < unresolved_break_opcode_rel_index_stack_pop_count; i++) {
                     int32_t break_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(unresolved_break_opcode_rel_index_stack);
                     
-                    SPVM_OPCODE* break_goto = (opcode_list->values + method_opcodes_base_address_id + break_goto_opcode_rel_index);
-                    int32_t break_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                    SPVM_OPCODE* break_goto = ((opcode_list->values + method_opcodes_base_address_id) + break_goto_opcode_rel_index);
+                    int32_t break_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                     break_goto->operand0 = break_goto_opcode_base_rel_index;
                   }
                 }
@@ -502,8 +502,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   while (unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack->length > 0) {
                     int32_t goto_end_of_eval_on_exception_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack);
                     
-                    SPVM_OPCODE* goto_end_of_eval_on_exception_goto = (opcode_list->values + method_opcodes_base_address_id + goto_end_of_eval_on_exception_goto_opcode_rel_index);
-                    int32_t goto_end_of_eval_on_exception_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                    SPVM_OPCODE* goto_end_of_eval_on_exception_goto = ((opcode_list->values + method_opcodes_base_address_id) + goto_end_of_eval_on_exception_goto_opcode_rel_index);
+                    int32_t goto_end_of_eval_on_exception_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                     goto_end_of_eval_on_exception_goto->operand0 = goto_end_of_eval_on_exception_goto_opcode_base_rel_index;
                   }
                   
@@ -514,16 +514,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     
                     int32_t return_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(unresolved_return_opcode_rel_index_stack);
                     
-                    SPVM_OPCODE* return_goto = (opcode_list->values + method_opcodes_base_address_id + return_goto_opcode_rel_index);
-                    int32_t return_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                    SPVM_OPCODE* return_goto = ((opcode_list->values + method_opcodes_base_address_id) + return_goto_opcode_rel_index);
+                    int32_t return_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                     return_goto->operand1 = return_goto_opcode_base_rel_index;
                   }
 
                   while (unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack->length > 0) {
                     int32_t goto_end_of_method_on_exception_goto_opcode_rel_index = (intptr_t)SPVM_LIST_pop(unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack);
                     
-                    SPVM_OPCODE* goto_end_of_method_on_exception_goto = (opcode_list->values + method_opcodes_base_address_id + goto_end_of_method_on_exception_goto_opcode_rel_index);
-                    int32_t goto_end_of_method_on_exception_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                    SPVM_OPCODE* goto_end_of_method_on_exception_goto = ((opcode_list->values + method_opcodes_base_address_id) + goto_end_of_method_on_exception_goto_opcode_rel_index);
+                    int32_t goto_end_of_method_on_exception_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                     goto_end_of_method_on_exception_goto->operand0 = goto_end_of_method_on_exception_goto_opcode_base_rel_index;
                   }
                 }
@@ -553,8 +553,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                 // Set loop first GOTO opcode
                 int32_t loop_first_goto_opcode_rel_index = (intptr_t)SPVM_LIST_get(loop_block_stack_goto_opcode_rel_index, loop_block_stack_goto_opcode_rel_index->length - 1);
                 
-                SPVM_OPCODE* loop_first_goto = (opcode_list->values + method_opcodes_base_address_id + loop_first_goto_opcode_rel_index);
-                int32_t loop_first_goto_opcode_base_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                SPVM_OPCODE* loop_first_goto = ((opcode_list->values + method_opcodes_base_address_id) + loop_first_goto_opcode_rel_index);
+                int32_t loop_first_goto_opcode_base_rel_index = (opcode_list->length - method_opcodes_base_address_id);
                 loop_first_goto->operand0 = loop_first_goto_opcode_base_rel_index;
                 
                 break;
@@ -563,7 +563,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_ID_CONDITION_NOT:
               {
                 
-                int32_t opcode_rel_index = opcode_list->length - method_opcodes_base_address_id;
+                int32_t opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id);
 
                 SPVM_OPCODE opcode = {0};
                 
@@ -597,7 +597,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 
-                int32_t opcode_rel_index = opcode_list->length - 1 - method_opcodes_base_address_id;
+                int32_t opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) - 1;
                 
                 SPVM_LIST_push(unresolved_next_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                 
@@ -610,7 +610,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 
-                int32_t opcode_rel_index = opcode_list->length - 1 - method_opcodes_base_address_id;
+                int32_t opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) - 1;
                 
                 SPVM_LIST_push(unresolved_last_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                 
@@ -673,7 +673,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                 // Default branch
                 int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
                 if (default_opcode_rel_index == 0) {
-                  default_opcode_rel_index = opcode_list->length + 1 - method_opcodes_base_address_id;
+                  default_opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) + 1;
                 }
                 switch_info->default_opcode_rel_index = default_opcode_rel_index;
 
@@ -686,7 +686,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);
                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 
-                int32_t opcode_rel_index = opcode_list->length - 1 - method_opcodes_base_address_id;
+                int32_t opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) - 1;
                 
                 SPVM_LIST_push(unresolved_break_opcode_rel_index_stack, (void*)(intptr_t)opcode_rel_index);
                 
@@ -811,7 +811,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 }
                 
-                int32_t return_opcode_rel_index = opcode_list->length - 1 - method_opcodes_base_address_id;
+                int32_t return_opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) - 1;
                 
                 SPVM_LIST_push(unresolved_return_opcode_rel_index_stack, (void*)(intptr_t)return_opcode_rel_index);
                 
@@ -5131,7 +5131,7 @@ void SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_ex
     
     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
     
-    int32_t goto_end_of_eval_on_exception_opcode_rel_index = opcode_list->length - 1 - method_opcodes_base_address_id;
+    int32_t goto_end_of_eval_on_exception_opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) - 1;
     
     SPVM_LIST_push(unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack, (void*)(intptr_t)goto_end_of_eval_on_exception_opcode_rel_index);
   }
@@ -5142,7 +5142,7 @@ void SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_ex
     opcode.operand2 = line;
     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
     
-    int32_t goto_end_of_method_on_exception_opcode_rel_index = opcode_list->length - 1 - method_opcodes_base_address_id;
+    int32_t goto_end_of_method_on_exception_opcode_rel_index = (opcode_list->length - method_opcodes_base_address_id) - 1;
     
     SPVM_LIST_push(unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack, (void*)(intptr_t)(goto_end_of_method_on_exception_opcode_rel_index));
   }
