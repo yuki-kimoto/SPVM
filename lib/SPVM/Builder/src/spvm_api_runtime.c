@@ -242,7 +242,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_methods_length_v2,
     SPVM_API_RUNTIME_get_basic_type_class_vars_base_v2,
     SPVM_API_RUNTIME_get_basic_type_class_vars_length_v2,
-    SPVM_API_RUNTIME_get_basic_type_parent_id_v2,
+    SPVM_API_RUNTIME_get_basic_type_parent,
     SPVM_API_RUNTIME_get_basic_type_version_string_v2,
     SPVM_API_RUNTIME_get_basic_type_anon_basic_type,
     SPVM_API_RUNTIME_get_class_var_v2,
@@ -659,11 +659,13 @@ int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length_v2(SPVM_RUNTIME* runti
   return class_vars_length;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_parent_id_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_parent(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   int32_t parent_basic_type_id = basic_type->parent_id;
   
-  return parent_basic_type_id;
+  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_basic_type_id);
+  
+  return parent_basic_type;
 }
 
 SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t class_var_index) {
