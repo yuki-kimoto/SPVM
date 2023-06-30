@@ -92,6 +92,20 @@ static inline int32_t SPVM_IMPLEMENT_GET_BASIC_TYPE_ID_BY_NAME(SPVM_ENV* env, SP
   return basic_type_id;
 }
 
+static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, char* message, int32_t* error_id) {
+
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+
+  if (!basic_type) {
+    snprintf(message, 256, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND], basic_type_name);
+    void* exception = env->new_string_nolen_raw(env, stack, message);
+    env->set_exception(env, stack, exception);
+    *error_id = 1;
+  }
+  
+  return basic_type;
+}
+
 static inline void* SPVM_IMPLEMENT_GET_FIELD_STATIC_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name, char* message, int32_t* error_id) {
   
   void* field = env->get_field_static(env, stack, basic_type_name, field_name);
