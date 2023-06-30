@@ -4011,9 +4011,15 @@ int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int3
   }
   else {
     int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
+    void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
     int32_t object_type_dimension = object->type_dimension;
-    
-    isa = SPVM_API_RUNTIME_can_assign(env->runtime, basic_type_id, type_dimension, 0, object_basic_type_id, object_type_dimension, 0);
+    void* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+    if (!basic_type) {
+      isa = 0;
+    }
+    else {
+      isa = SPVM_API_RUNTIME_can_assign_v2(env->runtime, basic_type, type_dimension, 0, object_basic_type, object_type_dimension, 0);
+    }
   }
   
   return isa;
