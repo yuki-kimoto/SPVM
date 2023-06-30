@@ -1474,7 +1474,7 @@ _xs_call_method(...)
       }
       int32_t static_call_basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, static_call_basic_type);
       
-      int32_t isa = env->isa(env, stack, object, static_call_basic_type_id, 0);
+      int32_t isa = env->isa_v2(env, stack, object, static_call_basic_type, 0);
       if (!isa) {
         croak("The invocant must be assinged to the \"%s\" basic type\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
@@ -1670,7 +1670,7 @@ _xs_call_method(...)
             else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
               spvm_value = SPVM_XS_UTIL_get_object(aTHX_ sv_value);
               
-              if (!env->isa(env, stack, spvm_value, arg_basic_type_id, arg_type_dimension)) {
+              if (!env->isa_v2(env, stack, spvm_value, arg_basic_type, arg_type_dimension)) {
                 error = 1;
               }
             }
