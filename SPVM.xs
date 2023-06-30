@@ -870,6 +870,8 @@ SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
+  void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
+  
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
@@ -942,6 +944,8 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
+  void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
+  
   if (SvOK(sv_array)) {
     if (sv_isobject(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array")) {
       void* spvm_array = SPVM_XS_UTIL_get_object(aTHX_ sv_array);
@@ -1009,6 +1013,8 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   
   // Env
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
   
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
