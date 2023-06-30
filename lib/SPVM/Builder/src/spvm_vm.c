@@ -1320,7 +1320,10 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* object = object_vars[opcode->operand1];
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
-        SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[0], object, basic_type_id, type_dimension);
+        
+        void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
+        
+        SPVM_IMPLEMENT_IS_TYPE_V2(env, stack, &int_vars[0], object, basic_type, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_ERROR: {
