@@ -718,9 +718,47 @@ static inline void SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(SPVM_ENV* env, SPVM_VALUE* st
   }
 }
 
+static inline void SPVM_IMPLEMENT_NEW_MULDIM_ARRAY_V2(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* basic_type, int32_t type_dimension, int32_t length, int32_t* error_id, int32_t object_ref_count_offset) {
+  if (length >= 0) {
+    void* object = env->new_muldim_array_raw_v2(env, stack, basic_type, type_dimension, length);
+    if (object == NULL) {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_NEW_ARRAY_FAILED]);
+      env->set_exception(env, stack, exception);
+      *error_id = 1;
+    }
+    else {
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
+    }
+  }
+  else {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRRAY_LENGTH_SMALL]);
+    env->set_exception(env, stack, exception);
+    *error_id = 1;
+  }
+}
+
 static inline void SPVM_IMPLEMENT_NEW_MULNUM_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, int32_t basic_type_id, int32_t length, int32_t* error_id, int32_t object_ref_count_offset) {
   if (length >= 0) {
     void* object = env->new_mulnum_array_raw(env, stack, basic_type_id, length);
+    if (object == NULL) {
+      void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_NEW_ARRAY_FAILED]);
+      env->set_exception(env, stack, exception);
+      *error_id = 1;
+    }
+    else {
+      SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, object, (intptr_t)env->api->runtime->object_ref_count_offset);
+    }
+  }
+  else {
+    void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ARRRAY_LENGTH_SMALL]);
+    env->set_exception(env, stack, exception);
+    *error_id = 1;
+  }
+}
+
+static inline void SPVM_IMPLEMENT_NEW_MULNUM_ARRAY_V2(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* basic_type, int32_t length, int32_t* error_id, int32_t object_ref_count_offset) {
+  if (length >= 0) {
+    void* object = env->new_mulnum_array_raw_v2(env, stack, basic_type, length);
     if (object == NULL) {
       void* exception = env->new_string_nolen_raw(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_NEW_ARRAY_FAILED]);
       env->set_exception(env, stack, exception);
@@ -1715,6 +1753,15 @@ static inline void SPVM_IMPLEMENT_ISA_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, in
 static inline void SPVM_IMPLEMENT_IS_TYPE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, int32_t dist_basic_type_id, int32_t dist_type_dimension) {
   if (object) {
     *out = env->is_type(env, stack, object, dist_basic_type_id, dist_type_dimension);
+  }
+  else {
+    *out = 0;
+  }
+}
+
+static inline void SPVM_IMPLEMENT_IS_TYPE_V2(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, void* dist_basic_type, int32_t dist_type_dimension) {
+  if (object) {
+    *out = env->is_type_v2(env, stack, object, dist_basic_type, dist_type_dimension);
   }
   else {
     *out = 0;
