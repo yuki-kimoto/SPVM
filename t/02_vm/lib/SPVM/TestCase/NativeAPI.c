@@ -1433,11 +1433,11 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   // 11
   {
-    int32_t basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "TestCase::Pointer");
-    if (basic_type_id < 0) {
+    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::Pointer");
+    if (!basic_type) {
       return 1;
     }
-    void* obj_objects = env->new_pointer_object(env, stack, basic_type_id, NULL);
+    void* obj_objects = env->new_pointer_object(env, stack, basic_type, NULL);
     ref_count += env->get_ref_count(env, stack, obj_objects);
   }
   

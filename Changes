@@ -1,7 +1,13 @@
+0.989017 2023-06-30
+  [Incompatibe Changes]
+    * The following Native APIs were change.
+      -  void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+      -  void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, void* pointer);
+      +  void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
+      +  void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
-    * The following Native APIs were removed.
-    
     * The following Native Runtime APIs were changed.
       -  int32_t (*get_basic_type_name_id)(void* runtime, int32_t basic_type_id);
       +  const char* (*get_basic_type_name)(void* runtime, int32_t basic_type_id);
