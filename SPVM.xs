@@ -1049,8 +1049,8 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
         
         if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
           
-          const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type_id);
-          int32_t basic_type_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type_id);
+          const char* basic_type_name = env->api->runtime->get_basic_type_name_v2(env->runtime, basic_type);
+          int32_t basic_type_fields_length = env->api->runtime->get_basic_type_fields_length_v2(env->runtime, basic_type);
           
           void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
           
@@ -1207,10 +1207,11 @@ _xs_call_method(...)
       const char* basic_type_name = method_name;
       method_name = found_char + 1;
       
-      int32_t static_call_basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, basic_type_name);
-      if (static_call_basic_type_id < 0) {
+      void* static_call_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+      if (!static_call_basic_type) {
         croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
+      int32_t static_call_basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, static_call_basic_type);
       
       int32_t isa = env->isa(env, stack, object, static_call_basic_type_id, 0);
       if (!isa) {
