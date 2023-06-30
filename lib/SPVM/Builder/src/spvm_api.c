@@ -3097,14 +3097,14 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     // Free object
     else {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = env->api->runtime->get_basic_type(runtime, object_basic_type_id);
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, object_basic_type);
       if (object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
         // Class
         SPVM_RUNTIME* runtime = env->runtime;
-        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, object_basic_type_id);
         
         // Call destructor
-        if (basic_type->destructor_method_index >= 0) {
+        if (object_basic_type->destructor_method_index >= 0) {
           int32_t items = 1;
           SPVM_VALUE save_stack0 = stack[0];
           void* save_exception = env->get_exception(env, stack);
@@ -3113,7 +3113,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           }
           
           stack[0].oval = object;
-          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_RUNTIME_get_method(env->runtime, object_basic_type_id, basic_type->destructor_method_index);
+          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_RUNTIME_get_method_v2(env->runtime, object_basic_type, object_basic_type->destructor_method_index);
           
           int32_t error = SPVM_API_call_method_raw(env, stack, destructor_method, items);
           
@@ -3135,10 +3135,10 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         }
         
         // Free object fields
-        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base(runtime, object_basic_type_id);
-        int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, object_basic_type_id);
+        int32_t object_fields_base = SPVM_API_RUNTIME_get_basic_type_fields_base_v2(runtime, object_basic_type);
+        int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length_v2(runtime, object_basic_type);
         for (int32_t field_index = 0; field_index < object_fields_length; field_index++) {
-          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, object_basic_type_id, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_v2(runtime, object_basic_type, field_index);
           
           int32_t field_basic_type_id = field->basic_type_id;
           int32_t field_type_dimension = field->type_dimension;
@@ -4154,7 +4154,7 @@ const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_
   
   const char* version_string = NULL;
   if (basic_type->version_string_string_index >= 0) {
-    version_string = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(env->runtime, basic_type_id, basic_type->version_string_string_index);
+    version_string = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(env->runtime, basic_type, basic_type->version_string_string_index);
   }
   
   return version_string;
