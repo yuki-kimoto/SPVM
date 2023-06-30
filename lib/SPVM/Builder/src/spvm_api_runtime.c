@@ -1339,42 +1339,6 @@ int32_t SPVM_API_RUNTIME_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC
   }
 }
 
-int32_t SPVM_API_RUNTIME_is_super_by_id(SPVM_RUNTIME* runtime, int32_t super_basic_type_id, int32_t child_basic_type_id) {
-
-  int32_t is_super_basic_type = 0;
-  
-  SPVM_RUNTIME_BASIC_TYPE* super_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, super_basic_type_id);
-  SPVM_RUNTIME_BASIC_TYPE* child_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, child_basic_type_id);
-  
-  if (!(super_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
-    return 0;
-  }
-  
-  if (!(child_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
-    return 0;
-  }
-  
-  int32_t parent_basic_type_id = child_basic_type->parent_id;
-  while (1) {
-    if (parent_basic_type_id > 0) {
-      SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_basic_type_id);
-      if (parent_basic_type->id == super_basic_type->id) {
-        is_super_basic_type = 1;
-        break;
-      }
-      else {
-        parent_basic_type_id = parent_basic_type->parent_id;
-      }
-    }
-    else {
-      is_super_basic_type = 0;
-      break;
-    }
-  }
-  
-  return is_super_basic_type;
-}
-
 int32_t SPVM_API_RUNTIME_is_super(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* super_basic_type, SPVM_RUNTIME_BASIC_TYPE* child_basic_type) {
 
   int32_t is_super_basic_type = 0;

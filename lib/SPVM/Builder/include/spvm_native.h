@@ -484,7 +484,6 @@ struct spvm_env_runtime {
   void* (*get_arg_basic_type)(void* runtime, void* arg);
   int32_t (*is_object_type_v2)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
   int32_t (*has_interface)(void* runtime, void* basic_type, void* interface_basic_type);
-  int32_t (*is_super)(void* runtime, void* super_basic_type, void* child_basic_type);
 };
 
 struct spvm_env_compiler {
