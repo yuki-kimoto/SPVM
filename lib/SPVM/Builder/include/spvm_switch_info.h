@@ -16,7 +16,7 @@ struct spvm_switch_info {
   SPVM_LIST* case_infos;
   SPVM_OP* op_default;
   int32_t id;
-  int32_t default_opcode_rel_index;
+  int32_t default_opcode_index;
   int32_t opcode_address_id;
 };
 
