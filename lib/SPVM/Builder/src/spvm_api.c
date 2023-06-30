@@ -2866,7 +2866,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   
   size_t alloc_size = (size_t)env->api->runtime->object_header_size + sizeof(void*) * (length + 1);
   
-  const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type->id);
+  const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type);
   
   SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, basic_type->id, 1, length, 0);
   
@@ -2915,7 +2915,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   SPVM_RUNTIME* runtime = env->runtime;
   
   // valut_t array dimension must be 1
-  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name_v2(runtime, basic_type);
+  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
   
   int32_t fields_length = basic_type->fields_length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field(runtime, basic_type, 0);
@@ -2977,7 +2977,8 @@ int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 
 const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-  const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id);
+  const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type);
   
   assert(basic_type_name);
   

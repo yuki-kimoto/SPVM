@@ -281,7 +281,7 @@ int32_t SPVM__Runtime__get_basic_type_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_basic_type_names = env->new_string_array(env, stack, basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     void* basic_type = env->api->runtime->get_basic_type(runtime, basic_type_id);
-    const char* basic_type_name = env->api->runtime->get_basic_type_name_v2(runtime, basic_type);
+    const char* basic_type_name = env->api->runtime->get_basic_type_name(runtime, basic_type);
     void* obj_basic_type_name = env->new_string_nolen(env, stack, basic_type_name);
     env->set_elem_object(env, stack, obj_basic_type_names, basic_type_id, obj_basic_type_name);
   }
@@ -349,7 +349,7 @@ int32_t SPVM__Runtime__get_basic_type_parent_name(SPVM_ENV* env, SPVM_VALUE* sta
   
   void* obj_parent_basic_type_name = NULL;
   if (parent_basic_type) {
-    const char* parent_basic_type_name = env->api->runtime->get_basic_type_name_v2(runtime, parent_basic_type);
+    const char* parent_basic_type_name = env->api->runtime->get_basic_type_name(runtime, parent_basic_type);
     obj_parent_basic_type_name = env->new_string_nolen(env, stack, parent_basic_type_name);
   }
   
@@ -388,7 +388,7 @@ int32_t SPVM__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method);
     if (is_anon_method) {
       void* anon_basic_type = env->api->runtime->get_method_current_basic_type(runtime, method);
-      const char* anon_basic_type_name = env->api->runtime->get_basic_type_name_v2(runtime, anon_basic_type);
+      const char* anon_basic_type_name = env->api->runtime->get_basic_type_name(runtime, anon_basic_type);
       void* obj_anon_basic_type_name = env->new_string_nolen(env, stack, anon_basic_type_name);
       env->set_elem_object(env, stack, obj_anon_basic_type_names, anon_basic_type_id, obj_anon_basic_type_name);
       anon_basic_type_id++;
