@@ -1864,7 +1864,8 @@ int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
     }
     else if (object_type_dimension == 1) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+      void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, object_basic_type);
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
         {
@@ -1934,7 +1935,8 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
     }
     else if (object_type_dimension == 1) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+      void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, object_basic_type);
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
         {
@@ -1969,7 +1971,8 @@ int32_t SPVM_API_is_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+      void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, object_basic_type);
       
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS: {
@@ -2001,11 +2004,12 @@ int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
       int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, object_basic_type_id);
+      void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
+      int32_t object_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, object_basic_type);
       
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS: {
-          int32_t basic_type_is_pointer = SPVM_API_RUNTIME_get_basic_type_is_pointer(runtime, object_basic_type_id);
+          int32_t basic_type_is_pointer = SPVM_API_RUNTIME_get_basic_type_is_pointer_v2(runtime, object_basic_type);
           
           if (basic_type_is_pointer) {
             is_pointer_class = 1;
@@ -2292,8 +2296,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   SPVM_RUNTIME* runtime = env->runtime;
 
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, method->current_basic_type_id);
-  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type->id, basic_type->name_string_index, NULL);
-  const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type->id, method->name_string_index, NULL);
+  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, basic_type->name_string_index, NULL);
+  const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, method->name_string_index, NULL);
 
   int32_t module_dir_string_index = basic_type->module_dir_string_index;
   int32_t module_rel_file_string_index = basic_type->module_rel_file_string_index;
@@ -2301,7 +2305,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   const char* module_dir;
   const char* module_dir_sep;
   if (module_dir_string_index >= 0) {
-    module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type->id, module_dir_string_index);
+    module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(runtime, basic_type, module_dir_string_index);
     module_dir_sep = "/";
   }
   else {
