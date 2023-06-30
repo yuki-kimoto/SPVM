@@ -91,6 +91,12 @@
       -  int32_t (*get_basic_type_parent_id)(void* runtime, int32_t basic_type_id);
       +  void* (*get_basic_type_parent)(void* runtime, void* basic_type);
 
+      -  int32_t (*get_basic_type_class_vars_length)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_class_vars_length)(void* runtime, void* basic_type);
+
+      -  int32_t (*get_basic_type_class_vars_base)(void* runtime, int32_t basic_type_id);
+      +  int32_t (*get_basic_type_class_vars_base)(void* runtime, void* basic_type);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.
