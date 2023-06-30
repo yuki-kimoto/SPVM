@@ -1426,7 +1426,7 @@ _xs_call_method(...)
     int32_t arg_basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, arg_basic_type);
     int32_t arg_type_dimension = env->api->runtime->get_arg_type_dimension(env->runtime, arg);
     int32_t arg_type_flag = env->api->runtime->get_arg_type_flag(env->runtime, arg);
-    int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category_v2(env->runtime, arg_basic_type);
+    int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type);
     
     int32_t arg_type_is_not_ref = !(arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF);
     
@@ -1900,7 +1900,7 @@ _xs_call_method(...)
   int32_t method_return_basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, method_return_basic_type);
   int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method);
   
-  int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category_v2(env->runtime, method_return_basic_type);
+  int32_t method_return_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, method_return_basic_type);
   
   // Call method
   int32_t call_method_items = stack_index;
@@ -2106,7 +2106,7 @@ _xs_call_method(...)
       int32_t arg_basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, arg_basic_type);
       int32_t arg_type_dimension = env->api->runtime->get_arg_type_dimension(env->runtime, arg);
       int32_t arg_type_flag = env->api->runtime->get_arg_type_flag(env->runtime, arg);
-      int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category_v2(env->runtime, arg_basic_type);
+      int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type);
       
       // Restore reference - numeric
       if (arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
@@ -3344,7 +3344,7 @@ _xs_new_mulnum_array(...)
   int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t elem_type_dimension = 0;
-  int32_t basic_type_category = env->api->runtime->get_basic_type_category_v2(env->runtime, basic_type);
+  int32_t basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, basic_type);
   int32_t is_mulnum_array = basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
   if (!is_mulnum_array) {
     croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
@@ -3398,7 +3398,7 @@ _xs_new_mulnum_array_len(...)
   int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t elem_type_dimension = 0;
-  int32_t basic_type_category = env->api->runtime->get_basic_type_category_v2(env->runtime, basic_type);
+  int32_t basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, basic_type);
   int32_t is_mulnum_array = basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
   if (!is_mulnum_array) {
     croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
@@ -3453,7 +3453,7 @@ _xs_new_mulnum_array_from_bin(...)
   int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t elem_type_dimension = 0;
-  int32_t basic_type_category = env->api->runtime->get_basic_type_category_v2(env->runtime, basic_type);
+  int32_t basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, basic_type);
   int32_t is_mulnum_array = basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
   if (!is_mulnum_array) {
     croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
@@ -4908,7 +4908,7 @@ get_basic_type_names(...)
   int32_t basic_types_length = api_env->api->runtime->get_basic_types_length(runtime);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     void* basic_type = api_env->api->runtime->get_basic_type(runtime, basic_type_id);
-    int32_t basic_type_category = api_env->api->runtime->get_basic_type_category_v2(runtime, basic_type);
+    int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       const char* basic_type_name = api_env->api->runtime->get_basic_type_name_v2(runtime, basic_type);
       SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
@@ -4945,7 +4945,7 @@ get_module_file(...)
   SV* sv_module_file;
   
   if (basic_type) {
-    int32_t basic_type_category = api_env->api->runtime->get_basic_type_category_v2(runtime, basic_type);
+    int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       const char* module_dir = api_env->api->runtime->get_basic_type_module_dir(runtime, basic_type);
       const char* module_dir_sep;

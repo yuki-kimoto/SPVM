@@ -233,7 +233,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_by_name,
     SPVM_API_RUNTIME_get_basic_type_anon_basic_type,
     SPVM_API_RUNTIME_get_basic_type_name_v2,
-    SPVM_API_RUNTIME_get_basic_type_category_v2,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -341,15 +340,6 @@ const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value(SPVM_RUNTIME* 
   return constant_string_value;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_category(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  int32_t basic_type_category = basic_type->category;
-  
-  return basic_type_category;
-}
-
 const char* SPVM_API_RUNTIME_get_basic_type_name(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
@@ -418,7 +408,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(SPVM_RUNTIM
   return constant_string_value;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_category_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+int32_t SPVM_API_RUNTIME_get_basic_type_category(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   int32_t basic_type_category = basic_type->category;
   
@@ -1080,7 +1070,7 @@ int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASI
   
   int32_t is_object_type;
   if (type_dimension == 0) {
-    int32_t basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, basic_type);
+    int32_t basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, basic_type);
     
     switch (basic_type_category) {
       case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
@@ -1110,8 +1100,8 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TY
   
   int32_t isa = 0;
   
-  int32_t dist_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, dist_basic_type);
-  int32_t src_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, src_basic_type);
+  int32_t dist_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, dist_basic_type);
+  int32_t src_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, src_basic_type);
   
   if (dist_basic_type->id == src_basic_type->id && dist_type_dimension == src_type_dimension) {
     isa = 1;
