@@ -318,6 +318,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_class_var_object_address,
     SPVM_API_get_basic_type,
     SPVM_API_get_basic_type_by_name,
+    SPVM_API_get_basic_type_by_id,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4114,6 +4115,13 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_by_name(SPVM_ENV* env, SPVM_VAL
     *error = 1;
     env->die(env, stack, "The %s basic type is not found", basic_type_name, func_name, file, line);
   };
+  
+  return basic_type;
+}
+
+SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_by_id(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id) {
+  
+  void* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, basic_type_id);
   
   return basic_type;
 }

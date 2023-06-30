@@ -2530,9 +2530,9 @@ int32_t SPVM__TestCase__NativeAPI__strerror_string_nolen_value(SPVM_ENV* env, SP
 
 int32_t SPVM__TestCase__NativeAPI__new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_object_array = env->new_object_array_raw(env, stack, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
+  void* obj_object_array = env->new_object_array_raw(env, stack, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
   
-  if (!(env->is_type(env, stack, obj_object_array, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
+  if (!(env->is_type(env, stack, obj_object_array, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
     stack[0].ival = 0;
     return 0;
   }
@@ -2557,9 +2557,9 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array_raw(SPVM_ENV* env, SPVM_VALU
 
 int32_t SPVM__TestCase__NativeAPI__new_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_object_array = env->new_object_array(env, stack, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
+  void* obj_object_array = env->new_object_array(env, stack, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 2);
   
-  if (!(env->is_type(env, stack, obj_object_array, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
+  if (!(env->is_type(env, stack, obj_object_array, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
     stack[0].ival = 0;
     return 0;
   }
@@ -2582,7 +2582,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string_array(SPVM_ENV* env, SPVM_VALUE* s
   
   void* obj_string_array = env->new_string_array(env, stack, 2);
   
-  if (!(env->is_type(env, stack, obj_string_array, env->api->runtime->get_basic_type(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
+  if (!(env->is_type(env, stack, obj_string_array, env->get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING), 1))) {
     stack[0].ival = 0;
     return 0;
   }
