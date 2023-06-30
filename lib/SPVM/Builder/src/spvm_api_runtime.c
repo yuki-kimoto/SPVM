@@ -235,7 +235,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_name_v2,
     SPVM_API_RUNTIME_get_basic_type_category_v2,
     SPVM_API_RUNTIME_get_basic_type_module_rel_file_v2,
-    SPVM_API_RUNTIME_get_basic_type_module_dir_v2,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -406,15 +405,6 @@ const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file(SPVM_RUNTIME* runtim
   return module_rel_file;
 }
 
-const char* SPVM_API_RUNTIME_get_basic_type_module_dir(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  const char* module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type_id, basic_type->module_dir_string_index);
-  
-  return module_dir;
-}
-
 const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t constant_string_index) {
   
   const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, constant_string_index, NULL);
@@ -503,7 +493,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file_v2(SPVM_RUNTIME* run
   return module_rel_file;
 }
 
-const char* SPVM_API_RUNTIME_get_basic_type_module_dir_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+const char* SPVM_API_RUNTIME_get_basic_type_module_dir(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   const char* module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(runtime, basic_type, basic_type->module_dir_string_index);
   
