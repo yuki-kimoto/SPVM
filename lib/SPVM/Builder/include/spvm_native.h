@@ -408,7 +408,7 @@ struct spvm_env_runtime {
   void* reserved84;
   void* reserved85;
   int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
-  const char* (*get_basic_type_module_rel_file)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_module_rel_file)(void* runtime, void* basic_type);
   const char* (*get_basic_type_module_dir)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_is_anon)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_fields_base)(void* runtime, void* basic_type);
@@ -458,7 +458,6 @@ struct spvm_env_runtime {
   void* (*get_basic_type_anon_basic_type)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
   const char* (*get_basic_type_name_v2)(void* runtime, void* basic_type);
   int32_t (*get_basic_type_category_v2)(void* runtime, void* basic_type);
-  const char* (*get_basic_type_module_rel_file_v2)(void* runtime, void* basic_type);
 };
 
 struct spvm_env_compiler {

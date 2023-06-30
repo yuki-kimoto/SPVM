@@ -318,7 +318,7 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
       module_dir_sep = "";
       module_dir = "";
     }
-    const char* module_rel_file = env->api->runtime->get_basic_type_module_rel_file_v2(runtime, basic_type);
+    const char* module_rel_file = env->api->runtime->get_basic_type_module_rel_file(runtime, basic_type);
     
     int32_t module_file_length = strlen(module_dir) + strlen(module_dir_sep) + strlen(module_rel_file);
     obj_module_file = env->new_string(env, stack, NULL, module_file_length);

@@ -2870,7 +2870,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t line = opcode->operand1;
         
         const char* module_dir = SPVM_API_RUNTIME_get_basic_type_module_dir(runtime, current_basic_type);
-        const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_module_rel_file_v2(runtime, current_basic_type);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_module_rel_file(runtime, current_basic_type);
         const char* module_dir_sep;
         if (module_dir) {
           module_dir_sep = "/";
