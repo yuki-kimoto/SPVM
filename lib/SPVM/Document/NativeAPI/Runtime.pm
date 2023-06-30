@@ -121,20 +121,20 @@ Runtime native APIs have its IDs.
   97 reserved97
   98 reserved98
   99 get_basic_types_length
-  100 get_field_basic_type_id
+  100 get_field_basic_type
   101 get_field_type_dimension
   102 get_field_type_flag
-  103 get_class_var_basic_type_id
+  103 get_class_var_basic_type
   104 get_class_var_type_dimension
   105 get_class_var_type_flag
-  103 get_method_return_basic_type_id
+  103 get_method_return_basic_type
   104 get_method_return_type_dimension
   105 get_method_return_type_flag
-  106 get_arg_basic_type_id
+  106 get_arg_basic_type
   107 get_arg_type_dimension
   108 get_arg_type_flag
-  109 get_method_current_basic_type_id
-  110 get_basic_type_parent_id
+  109 get_method_current_basic_type
+  110 get_basic_type_parent
   111 get_basic_type_version_string
 
 =head1 Runtime Native APIs
@@ -165,47 +165,47 @@ Runtime native APIs have its IDs.
 
 =head2 get_basic_type_name
 
-  const char* (*get_basic_type_name)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_name)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_category
 
-  int32_t (*get_basic_type_category)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_category)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_module_rel_file
 
-  const char* (*get_basic_type_module_rel_file)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_module_rel_file)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_module_dir
 
-  const char* (*get_basic_type_module_dir)(void* runtime, int32_t basic_type_id);
+  const char* (*get_basic_type_module_dir)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_is_anon
 
-  int32_t (*get_basic_type_is_anon)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_is_anon)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_fields_base
 
-  int32_t (*get_basic_type_fields_base)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_fields_base)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_fields_length
 
-  int32_t (*get_basic_type_fields_length)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_fields_length)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_methods_base
 
-  int32_t (*get_basic_type_methods_base)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_methods_base)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_methods_length
 
-  int32_t (*get_basic_type_methods_length)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_methods_length)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_class_vars_base
 
-  int32_t (*get_basic_type_class_vars_base)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_class_vars_base)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_class_vars_length
 
-  int32_t (*get_basic_type_class_vars_length)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_class_vars_length)(void* runtime, void* basic_type);
 
 =head2 get_class_var
 
@@ -327,21 +327,17 @@ Runtime native APIs have its IDs.
 
   void (*build)(void* runtime, int32_t* runtime_codes);
 
-=head2 get_basic_type_parent_basic_type_id
-
-  int32_t (*get_basic_type_parent_basic_type_id)(void* runtime, int32_t basic_type_id);
-
 =head2 get_method_required_args_length
 
   int32_t (*get_method_required_args_length)(void* runtime, void* method);
 
 =head2 get_basic_type_is_pointer
 
-  int32_t (*get_basic_type_is_pointer)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_is_pointer)(void* runtime, void* basic_type);
 
 =head2 get_method_is_enum
 
-  int32_t (*get_basic_type_is_pointer)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_is_pointer)(void* runtime, void* basic_type);
 
 =head2 is_object_type
 
@@ -351,9 +347,9 @@ Runtime native APIs have its IDs.
 
   int32_t (*can_assign)(void* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag);
 
-=head2 get_field_basic_type_id
+=head2 get_field_basic_type
 
-  int32_t (*get_field_basic_type_id)(void* runtime, void* field);
+  int32_t (*get_field_basic_type)(void* runtime, void* field);
 
 =head2 get_field_type_dimension
 
@@ -365,7 +361,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_field_basic_type_id
 
-  int32_t (*get_field_basic_type_id)(void* runtime, void* field);
+  int32_t (*get_field_basic_type)(void* runtime, void* field);
 
 =head2 get_field_type_dimension
 
@@ -377,7 +373,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_method_return_basic_type_id
 
-  int32_t (*get_method_return_basic_type_id)(void* runtime, void* method);
+  int32_t (*get_method_return_basic_type)(void* runtime, void* method);
 
 =head2 get_method_return_type_dimension
 
@@ -389,7 +385,7 @@ Runtime native APIs have its IDs.
 
 =head2 get_arg_basic_type_id
 
-  int32_t (*get_arg_basic_type_id)(void* runtime, int32_t arg_id);
+  int32_t (*get_arg_basic_type)(void* runtime, int32_t arg_id);
 
 =head2 get_arg_type_dimension
 
@@ -401,23 +397,23 @@ Runtime native APIs have its IDs.
 
 =head2 get_method_current_basic_type_id
 
-  int32_t (*get_method_current_basic_type_id)(void* runtime, void* method);
+  int32_t (*get_method_current_basic_type)(void* runtime, void* method);
 
 =head2 get_field_current_basic_type_id
 
-  int32_t (*get_field_current_basic_type_id)(void* runtime, void* field);
+  int32_t (*get_field_current_basic_type)(void* runtime, void* field);
 
 =head2 get_field_current_basic_type_id
 
-  int32_t (*get_field_current_basic_type_id)(void* runtime, void* field);
+  int32_t (*get_field_current_basic_type)(void* runtime, void* field);
 
-=head2 get_basic_type_parent_id
+=head2 get_basic_type_parent
 
-  int32_t (*get_basic_type_parent_id)(void* runtime, int32_t basic_type_id);
+  int32_t (*get_basic_type_parent)(void* runtime, void* basic_type);
 
 =head2 get_basic_type_version_string
 
-const char* (*get_basic_type_version_string)(void* runtime, int32_t basic_type_id);
+const char* (*get_basic_type_version_string)(void* runtime, void* basic_type);
 
 =head1 Copyright & License
 

@@ -232,6 +232,10 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   215 new_muldim_array_by_name
   216 new_mulnum_array_by_name
   217 has_interface_by_name
+  218 get_class_var_object_address
+  219 get_basic_type
+  220 get_basic_type_by_name
+  221 get_basic_type_by_id
   
 =head2 api
 
@@ -344,20 +348,20 @@ Examples:
 
 =head2 new_object_raw
 
-  void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+  void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
 
-Creates a new object with a basic type ID. The basic type ID must be the correct base type ID return by the L</"get_basic_type_id"> Native API.
+Creates a new object with a basic type. The basic type must be the correct base type ID return by the L</"get_basic_type_id"> Native API.
 
 =head2 new_object
 
-  void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+  void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
 
 The same as C<new_object_raw>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_raw>.
 
 Examples:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
-  void* object = env->new_object(env, stack, basic_type_id);
+  void* basic_type = env->get_basic_type(env, "Int");
+  void* object = env->new_object(env, stack, basic_type);
 
 =head2 new_byte_array_raw
 
@@ -457,13 +461,13 @@ Examples:
 
 =head2 new_object_array_raw
 
-  void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
+  void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
-Creates a new object type array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by the L</"get_basic_type_id"> Native API.
+Creates a new object type array by specifying the basic type and the array length. The basic type must be the correct basic type got by the L</"get_basic_type"> Native API.
 
 =head2 new_object_array
 
-  void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
+  void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
 The same as C<new_object_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_raw>.
 
@@ -474,13 +478,13 @@ Examples:
 
 =head2 new_muldim_array_raw
 
-  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
+  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);
 
-Creates a new multi-dimensional array by specifying the basic type ID and the type dimension, and the array length. The basic type ID must be the correct basic type ID got bu the L</"get_basic_type_id"> Native API. the type dimension of the element must be less than or equals to 255.
+Creates a new multi-dimensional array by specifying the basic type and the type dimension, and the array length. The basic type must be the correct basic type got bu the L</"get_basic_type_id"> Native API. the type dimension of the element must be less than or equals to 255.
 
 =head2 new_muldim_array
 
-  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t type_dimension, int32_t length);
+  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);
 
 The same as C<new_muldim_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_raw>.
 
@@ -492,13 +496,13 @@ Examples:
 
 =head2 new_mulnum_array_raw
 
-  void* (*new_mulnum_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
+  void* (*new_mulnum_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
-Creates a new multi-numeric array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by the L</"basic_type_id"> Native API.
+Creates a new multi-numeric array by specifying the basic type and the array length. The basic type must be the correct basic type got by the L</"basic_type_id"> Native API.
 
 =head2 new_mulnum_array
 
-  void* (*new_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id, int32_t length);
+  void* (*new_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
 The same as C<new_mulnum_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_raw>.
 
@@ -1686,7 +1690,7 @@ The charaters of the after the given length are filled with C<\0>.
 
 =head2 has_interface
 
-  int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t interface_basic_type_id);
+  int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* interface_basic_type);
 
 Check the type of the object has the interface.
 
@@ -1938,7 +1942,7 @@ Examples:
 
   void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
 
-Returns a method given a basic type ID and a method name. If the method does not exists, returns NULL.
+Returns a method given a basic type name and a method name. If the method does not exists, returns NULL.
 
 Examples:
 
@@ -1994,17 +1998,17 @@ Returns the L<version number|SPVM::Document::Language/"Version Number"> of the S
 
 =head2 get_version_string
 
-  const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+  const char* (*get_version_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
 
-Returns the version string of a basic_type. The C<basic_type_id> must be a valid basic type ID.
+Returns the version string of a basic_type. The C<basic_type_id> must be a valid basic type.
 
 If the version string in the basic_type is not defined, returns NULL.
 
 =head2 get_version_number
 
-  double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+  double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
 
-Returns the version number of a basic_type. The C<basic_type_id> must be a valid basic type ID.
+Returns the version number of a basic_type. The C<basic_type_id> must be a valid basic type.
 
 If the version string in the basic_type is not defined, returns -1.
 
@@ -2079,6 +2083,22 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
   int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
 
 The feature is the same as the L</"has_interface">, but the basic type name can be given. If the basic type name is not found, returns 0.
+
+=head2 get_class_var_object_address
+
+  void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+=head2 get_basic_type
+
+  void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
+
+=head2 get_basic_type_by_name
+
+  void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
+
+=head2 get_basic_type_by_id
+
+  void* (*get_basic_type_by_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
 =head1 Compiler Native API
 
