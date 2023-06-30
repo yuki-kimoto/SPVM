@@ -492,7 +492,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             
             int32_t field_basic_type_id = field->basic_type_id;
             
-            const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, field->name_string_index, NULL);
+            const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type, field->name_string_index, NULL);
             SPVM_STRING_BUFFER_add(string_buffer, field_name);
             SPVM_STRING_BUFFER_add(string_buffer, " => ");
             
@@ -654,7 +654,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           int32_t field_basic_type_id = field->basic_type_id;
           int32_t field_type_dimension = field->type_dimension;
           int32_t field_offset = field->offset;
-          const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, field->name_string_index, NULL);
+          const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type, field->name_string_index, NULL);
           
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " => ");
@@ -2314,8 +2314,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   SPVM_RUNTIME* runtime = env->runtime;
 
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, method->current_basic_type_id);
-  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, basic_type->name_string_index, NULL);
-  const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, basic_type, method->name_string_index, NULL);
+  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type, basic_type->name_string_index, NULL);
+  const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type, method->name_string_index, NULL);
 
   int32_t module_dir_string_index = basic_type->module_dir_string_index;
   int32_t module_rel_file_string_index = basic_type->module_rel_file_string_index;
@@ -2323,7 +2323,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
   const char* module_dir;
   const char* module_dir_sep;
   if (module_dir_string_index >= 0) {
-    module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(runtime, basic_type, module_dir_string_index);
+    module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type, module_dir_string_index);
     module_dir_sep = "/";
   }
   else {
@@ -2331,7 +2331,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
     module_dir_sep = "";
   }
   
-  const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type->id, module_rel_file_string_index);
+  const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type, module_rel_file_string_index);
   
   // Basic type name and method name
   const char* new_line_part = "\n  ";
@@ -4201,7 +4201,7 @@ const char* SPVM_API_get_version_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_R
   
   const char* version_string = NULL;
   if (basic_type->version_string_string_index >= 0) {
-    version_string = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen_v2(env->runtime, basic_type, basic_type->version_string_string_index);
+    version_string = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(env->runtime, basic_type, basic_type->version_string_string_index);
   }
   
   return version_string;

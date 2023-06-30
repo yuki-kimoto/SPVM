@@ -2015,7 +2015,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t constant_string_index = opcode->operand1;
         
         int32_t constant_string_length;
-        const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, current_basic_type, constant_string_index, &constant_string_length);
+        const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, current_basic_type, constant_string_index, &constant_string_length);
         SPVM_STRING_BUFFER_add(string_buffer,
           "  constant_string = \""
         );
@@ -2848,7 +2848,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_RUNTIME_BASIC_TYPE* decl_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, decl_basic_type_id);
         SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, decl_basic_type, decl_method_index);
         SPVM_RUNTIME_BASIC_TYPE* method_current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
-        const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, method_current_basic_type, method->name_string_index, NULL);
+        const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, method_current_basic_type, method->name_string_index, NULL);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
