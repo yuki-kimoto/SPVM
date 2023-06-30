@@ -328,6 +328,8 @@ struct spvm_env {
   int32_t (*is_type_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
   void* (*new_pointer_object_raw_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
   void* (*new_pointer_object_v2)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
+  void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
+  void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
 };
 
 struct spvm_env_runtime {
