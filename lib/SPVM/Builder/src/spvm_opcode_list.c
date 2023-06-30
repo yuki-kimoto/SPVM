@@ -5,15 +5,15 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "spvm_opcode_array.h"
+#include "spvm_opcode_list.h"
 #include "spvm_allocator.h"
 #include "spvm_compiler.h"
 #include "spvm_opcode.h"
 
-SPVM_OPCODE_ARRAY* SPVM_OPCODE_ARRAY_new(SPVM_COMPILER* compiler) {
+SPVM_OPCODE_LIST* SPVM_OPCODE_LIST_new(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_OPCODE_ARRAY* opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_OPCODE_ARRAY));
+  SPVM_OPCODE_LIST* opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_OPCODE_LIST));
   opcodes->capacity = 64;
   opcodes->length = 0;
   
@@ -24,12 +24,12 @@ SPVM_OPCODE_ARRAY* SPVM_OPCODE_ARRAY_new(SPVM_COMPILER* compiler) {
   // Add 1 opcode because 0 mean no opcode
   SPVM_OPCODE opcode;
   memset(&opcode, 0, sizeof(SPVM_OPCODE));
-  SPVM_OPCODE_ARRAY_push_opcode(compiler, opcodes, &opcode);
+  SPVM_OPCODE_LIST_push_opcode(compiler, opcodes, &opcode);
   
   return opcodes;
 }
 
-void SPVM_OPCODE_ARRAY_push_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcodes, SPVM_OPCODE* opcode) {
+void SPVM_OPCODE_LIST_push_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_LIST* opcodes, SPVM_OPCODE* opcode) {
   (void)compiler;
 
   int32_t length = opcodes->length;
@@ -52,6 +52,6 @@ void SPVM_OPCODE_ARRAY_push_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
   opcodes->length++;
 }
 
-void SPVM_OPCODE_ARRAY_free(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcodes) {
+void SPVM_OPCODE_LIST_free(SPVM_COMPILER* compiler, SPVM_OPCODE_LIST* opcodes) {
   (void)compiler;
 }

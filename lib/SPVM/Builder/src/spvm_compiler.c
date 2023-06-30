@@ -14,7 +14,7 @@
 #include "spvm_allocator.h"
 #include "spvm_yacc_util.h"
 #include "spvm_list.h"
-#include "spvm_opcode_array.h"
+#include "spvm_opcode_list.h"
 #include "spvm_method.h"
 #include "spvm_field.h"
 #include "spvm_class_var.h"
@@ -61,7 +61,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
+  compiler->opcode_list = SPVM_OPCODE_LIST_new(compiler);
   compiler->source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
@@ -347,9 +347,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
       }
       else {
         // Build operation code
-        int32_t build_opcode_array_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-        SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
-        assert(compiler->allocator->memory_blocks_count_tmp == build_opcode_array_start_memory_blocks_count_tmp);
+        int32_t build_opcode_list_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
+        SPVM_OPCODE_BUILDER_build_opcode_list(compiler);
+        assert(compiler->allocator->memory_blocks_count_tmp == build_opcode_list_start_memory_blocks_count_tmp);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           die_error_id = 4;
         }
@@ -517,7 +517,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   length++;
   
   // opcodes
-  length += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
+  length += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_list->length + 1);
   
   // anon_basic_type_basic_types_runtime_codes_length
   length++;
@@ -752,12 +752,12 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr += fields_runtime_codes_length;
   
   // opcodes_runtime_codes_length
-  int32_t opcodes_runtime_codes_length = (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_array->length + 1);
+  int32_t opcodes_runtime_codes_length = (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * (compiler->opcode_list->length + 1);
   *runtime_codes_ptr = opcodes_runtime_codes_length;
   runtime_codes_ptr++;
   
   // opcodes
-  memcpy(runtime_codes_ptr, compiler->opcode_array->values, sizeof(int32_t) * opcodes_runtime_codes_length);
+  memcpy(runtime_codes_ptr, compiler->opcode_list->values, sizeof(int32_t) * opcodes_runtime_codes_length);
   runtime_codes_ptr += opcodes_runtime_codes_length;
   
   // methods_runtime_codes_length
@@ -962,7 +962,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   // Free opcode array
-  SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
+  SPVM_OPCODE_LIST_free(compiler, compiler->opcode_list);
   
   const char* start_file = SPVM_COMPILER_get_start_file(compiler);
   

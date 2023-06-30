@@ -429,7 +429,7 @@ sub get_spvm_core_source_file_names {
     spvm_native.c
     spvm_op.c
     spvm_check.c
-    spvm_opcode_array.c
+    spvm_opcode_list.c
     spvm_opcode_builder.c
     spvm_opcode.c
     spvm_precompile.c
@@ -504,7 +504,7 @@ sub get_spvm_core_header_file_names {
     spvm_native.h
     spvm_object.h
     spvm_check.h
-    spvm_opcode_array.h
+    spvm_opcode_list.h
     spvm_opcode_builder.h
     spvm_opcode.h
     spvm_op.h

@@ -95,8 +95,8 @@ lib/SPVM/Builder/include/spvm_native.h
 lib/SPVM/Builder/include/spvm_object.h
 lib/SPVM/Builder/include/spvm_op.h
 lib/SPVM/Builder/include/spvm_opcode.h
-lib/SPVM/Builder/include/spvm_opcode_array.h
 lib/SPVM/Builder/include/spvm_opcode_builder.h
+lib/SPVM/Builder/include/spvm_opcode_list.h
 lib/SPVM/Builder/include/spvm_precompile.h
 lib/SPVM/Builder/include/spvm_public_api.h
 lib/SPVM/Builder/include/spvm_runtime.h
@@ -154,8 +154,8 @@ lib/SPVM/Builder/src/spvm_method.c
 lib/SPVM/Builder/src/spvm_native.c
 lib/SPVM/Builder/src/spvm_op.c
 lib/SPVM/Builder/src/spvm_opcode.c
-lib/SPVM/Builder/src/spvm_opcode_array.c
 lib/SPVM/Builder/src/spvm_opcode_builder.c
+lib/SPVM/Builder/src/spvm_opcode_list.c
 lib/SPVM/Builder/src/spvm_precompile.c
 lib/SPVM/Builder/src/spvm_runtime.c
 lib/SPVM/Builder/src/spvm_strerror.c

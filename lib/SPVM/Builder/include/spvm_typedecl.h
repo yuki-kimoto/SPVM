@@ -85,9 +85,9 @@ typedef struct spvm_case_info SPVM_CASE_INFO;
 struct spvm_basic_type;
 typedef struct spvm_basic_type SPVM_BASIC_TYPE;
 
-// spvm_opcode_array.h
-struct spvm_opcode_array;
-typedef struct spvm_opcode_array SPVM_OPCODE_ARRAY;
+// spvm_opcode_list.h
+struct spvm_opcode_list;
+typedef struct spvm_opcode_list SPVM_OPCODE_LIST;
 
 // spvm_opcode.h
 struct spvm_opcode;

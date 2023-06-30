@@ -6,13 +6,13 @@
 
 #include "spvm_typedecl.h"
 
-void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler);
+void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler);
 
 void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opcode, int32_t opcode_id);
 
 void SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(
   SPVM_COMPILER* compiler,
-  SPVM_OPCODE_ARRAY* opcode_array,
+  SPVM_OPCODE_LIST* opcode_list,
   int32_t in_eval_block,
   SPVM_LIST* unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack,
   SPVM_LIST* unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack,

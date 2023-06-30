@@ -24,7 +24,7 @@
 #include "spvm_opcode.h"
 #include "spvm_class_var.h"
 #include "spvm_class_var_access.h"
-#include "spvm_opcode_array.h"
+#include "spvm_opcode_list.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
 #include "spvm_field_access.h"
@@ -210,7 +210,7 @@ void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_type
   }
 }
 
-void SPVM_DUMPER_dump_basic_types_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* basic_types) {
+void SPVM_DUMPER_dump_basic_types_opcode_list(SPVM_COMPILER* compiler, SPVM_LIST* basic_types) {
   for (int32_t i = 0; i < basic_types->length; i++) {
     fprintf(stderr, "basic_types[%" PRId32 "]\n", i);
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_types, i);
@@ -227,13 +227,13 @@ void SPVM_DUMPER_dump_basic_types_opcode_array(SPVM_COMPILER* compiler, SPVM_LIS
       for (j = 0; j < basic_type->methods->length; j++) {
         SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, j);
         fprintf(stderr, "  methods[%" PRId32 "]\n", j);
-        SPVM_DUMPER_dump_method_opcode_array(compiler, method);
+        SPVM_DUMPER_dump_method_opcode_list(compiler, method);
       }
     }
   }
 }
 
-void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcode_array, int32_t start_pos, int32_t length) {
+void SPVM_DUMPER_dump_opcode_list(SPVM_COMPILER* compiler, SPVM_OPCODE_LIST* opcode_list, int32_t start_pos, int32_t length) {
   (void)compiler;
   
   int32_t end_pos = start_pos + length - 1;
@@ -242,7 +242,7 @@ void SPVM_DUMPER_dump_opcode_array(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
     int32_t i;
     for (i = start_pos; i <= end_pos; i++) {
       
-      SPVM_OPCODE opcode = opcode_array->values[i];
+      SPVM_OPCODE opcode = opcode_list->values[i];
       fprintf(stderr, "        [%" PRId32 "] %-20s", i, (SPVM_OPCODE_C_ID_NAMES())[opcode.id]);
       fprintf(stderr, " %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3);
     }
@@ -320,7 +320,7 @@ void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
   }
 }
 
-void SPVM_DUMPER_dump_method_opcode_array(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
+void SPVM_DUMPER_dump_method_opcode_list(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
   (void)compiler;
   
   if (method) {
@@ -337,8 +337,8 @@ void SPVM_DUMPER_dump_method_opcode_array(SPVM_COMPILER* compiler, SPVM_METHOD* 
         }
       }
       
-      fprintf(stderr, "      opcode_array\n");
-      SPVM_DUMPER_dump_opcode_array(compiler, compiler->opcode_array, method->opcodes_base_address_id, method->opcodes_length);
+      fprintf(stderr, "      opcode_list\n");
+      SPVM_DUMPER_dump_opcode_list(compiler, compiler->opcode_list, method->opcodes_base_address_id, method->opcodes_length);
     }
   }
   else {
