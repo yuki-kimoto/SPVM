@@ -44,13 +44,14 @@ SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
 void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   int32_t basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, basic_type_name);
   int32_t basic_type_methods_base = SPVM_API_RUNTIME_get_basic_type_methods_base(runtime, basic_type_id);
   int32_t basic_type_methods_length = SPVM_API_RUNTIME_get_basic_type_methods_length(runtime, basic_type_id);
 
   // Method implementations
   for (int32_t method_index = 0; method_index < basic_type_methods_length; method_index++) {
-    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, method_index);
+    SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type, method_index);
     const char* method_name = SPVM_API_RUNTIME_get_method_name(runtime, method);
     int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method);
     if (method_has_precompile_flag) {
@@ -115,9 +116,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_PRECOMPILE_build_header(precompile, string_buffer);
   
   // Current basic type id
-  int32_t current_basic_type_id = SPVM_API_RUNTIME_get_basic_type_id_by_name(runtime, current_basic_type_name);
+  void* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, current_basic_type_name);
   
-  void* current_method = SPVM_API_RUNTIME_get_method_by_name(runtime, current_basic_type_id, current_method_name);
+  void* current_method = SPVM_API_RUNTIME_get_method_by_name(runtime, current_basic_type, current_method_name);
   
   // Method declaration
   SPVM_PRECOMPILE_build_method_declaration(precompile, string_buffer, current_basic_type_name, current_method_name);
@@ -130,14 +131,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, current_basic_type_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer,"  int32_t current_basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, current_basic_type_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer,"  void* current_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, current_basic_type_name);\n");
   
   // Current method name
   SPVM_STRING_BUFFER_add(string_buffer, "  const char* current_method_name = \"");
   SPVM_STRING_BUFFER_add(string_buffer, current_method_name);
   SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer,"  void* current_method = env->api->runtime->get_method_by_name(env->runtime, current_basic_type_id, current_method_name);\n");
+  SPVM_STRING_BUFFER_add(string_buffer,"  void* current_method = env->api->runtime->get_method_by_name(env->runtime, current_basic_type, current_method_name);\n");
   
   // object variable declarations
   int32_t call_stack_object_vars_length = SPVM_API_RUNTIME_get_method_call_stack_object_vars_length(runtime, current_method);
@@ -458,8 +459,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC:
       {
         basic_type_id = opcode->operand0;
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
         int32_t method_index = opcode->operand1;
-        method = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, method_index);
+        method = SPVM_API_RUNTIME_get_method(runtime, basic_type, method_index);
         break;
       }
       default: {
@@ -1999,7 +2001,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t constant_string_index = opcode->operand1;
         
         int32_t constant_string_length;
-        const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, current_basic_type_id, constant_string_index, &constant_string_length);
+        const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, current_basic_type, constant_string_index, &constant_string_length);
         SPVM_STRING_BUFFER_add(string_buffer,
           "  constant_string = \""
         );
@@ -2818,8 +2820,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t decl_basic_type_id = opcode->operand1;
         int32_t decl_method_index = opcode->operand2;
         
-        SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, decl_basic_type_id, decl_method_index);
-        const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, method->current_basic_type_id, method->name_string_index, NULL);
+        SPVM_RUNTIME_BASIC_TYPE* decl_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, decl_basic_type_id);
+        SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, decl_basic_type, decl_method_index);
+        SPVM_RUNTIME_BASIC_TYPE* method_current_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, method->current_basic_type_id);
+        const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_v2(runtime, method_current_basic_type, method->name_string_index, NULL);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -2854,8 +2858,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        const char* module_dir = SPVM_API_RUNTIME_get_basic_type_module_dir(runtime, current_basic_type_id);
-        const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_module_rel_file(runtime, current_basic_type_id);
+        const char* module_dir = SPVM_API_RUNTIME_get_basic_type_module_dir_v2(runtime, current_basic_type);
+        const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_module_rel_file_v2(runtime, current_basic_type);
         const char* module_dir_sep;
         if (module_dir) {
           module_dir_sep = "/";
@@ -5010,7 +5014,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t decl_method_index = opcode->operand1;
         int32_t items = opcode->operand2;
         
-        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
+        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, invocant_decl_basic_type_id);
+        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type, decl_method_index);
         const char* method_name = SPVM_API_RUNTIME_get_method_name(runtime, decl_method);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, invocant_decl_basic_type_id);
         
@@ -5043,7 +5048,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t decl_method_index = opcode->operand1;
         int32_t items = opcode->operand2;
         
-        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
+        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, invocant_decl_basic_type_id);
+        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type, decl_method_index);
         const char* method_name = SPVM_API_RUNTIME_get_method_name(runtime, decl_method);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, invocant_decl_basic_type_id);
         
@@ -5077,7 +5083,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t decl_method_index = opcode->operand1;
         int32_t items = opcode->operand2;
         
-        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type_id, decl_method_index);
+        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, invocant_decl_basic_type_id);
+        SPVM_RUNTIME_METHOD* decl_method = SPVM_API_RUNTIME_get_method(runtime, invocant_decl_basic_type, decl_method_index);
         const char* method_name = SPVM_API_RUNTIME_get_method_name(runtime, decl_method);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, invocant_decl_basic_type_id);
         

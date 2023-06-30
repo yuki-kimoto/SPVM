@@ -253,8 +253,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field_by_name_v2,
     SPVM_API_RUNTIME_get_field_current_basic_type,
     SPVM_API_RUNTIME_get_field_basic_type,
-    SPVM_API_RUNTIME_get_method_v2,
-    SPVM_API_RUNTIME_get_method_by_name_v2,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -924,9 +922,7 @@ int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME
   return type_flag;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t method_index) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t method_index) {
   
   if (method_index < 0) {
     return NULL;
@@ -941,26 +937,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, int32_t 
   return method;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t method_index) {
-  
-  if (method_index < 0) {
-    return NULL;
-  }
-  
-  if (method_index >= basic_type->methods_length) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_METHOD* method = &runtime->methods[basic_type->methods_base + method_index];
-  
-  return method;
-}
-
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, int32_t basic_type_id, const char* method_name) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  assert(basic_type_id);
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* method_name) {
   
   SPVM_RUNTIME_METHOD* found_method = NULL;
   if (basic_type->methods_length > 0) {
@@ -975,43 +952,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, 
       
       int32_t cur_half_index = cur_min_index +(cur_max_index - cur_min_index) / 2;
       
-      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type_id, cur_half_index);
-      const char* cur_half_method_name = SPVM_API_RUNTIME_get_method_name(runtime, method);
-      
-      int32_t cmp_result = strcmp(method_name, cur_half_method_name);
-      
-      if (cmp_result > 0) {
-        cur_min_index = cur_half_index + 1;
-      }
-      else if (cmp_result < 0) {
-        cur_max_index = cur_half_index - 1;
-      }
-      else {
-        found_method = method;
-        break;
-      }
-    }
-  }
-  
-  return found_method;
-}
-
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* method_name) {
-  
-  SPVM_RUNTIME_METHOD* found_method = NULL;
-  if (basic_type->methods_length > 0) {
-    // Performe binary searching because methods are sorted by the names
-    int32_t cur_min_index = 0;
-    int32_t cur_max_index = basic_type->methods_length - 1;
-    
-    while (1) {
-      if (cur_max_index < cur_min_index) {
-        break;
-      }
-      
-      int32_t cur_half_index = cur_min_index +(cur_max_index - cur_min_index) / 2;
-      
-      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_v2(runtime, basic_type, cur_half_index);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type, cur_half_index);
       const char* cur_half_method_name = SPVM_API_RUNTIME_get_method_name(runtime, method);
       
       int32_t cmp_result = strcmp(method_name, cur_half_method_name);
@@ -1276,11 +1217,11 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t basi
     return 0;
   }
   
-  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface_basic_type_id, interface_basic_type->required_method_index);
+  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface_basic_type, interface_basic_type->required_method_index);
   
   const char* method_interface_name =  SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, method_interface->current_basic_type_id, method_interface->name_string_index, NULL);
   
-  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type->id, method_interface_name);
+  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type, method_interface_name);
   if (found_method) {
     return 1;
   }
@@ -1299,11 +1240,11 @@ int32_t SPVM_API_RUNTIME_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC
     return 0;
   }
   
-  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method_v2(runtime, interface_basic_type, interface_basic_type->required_method_index);
+  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface_basic_type, interface_basic_type->required_method_index);
   
   const char* method_interface_name =  SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, method_interface->current_basic_type_id, method_interface->name_string_index, NULL);
   
-  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type->id, method_interface_name);
+  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type, method_interface_name);
   if (found_method) {
     return 1;
   }

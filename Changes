@@ -45,6 +45,14 @@
       -  int32_t (*get_method_return_basic_type_id)(void* runtime, void* method);
       +  void* (*get_method_return_basic_type)(void* runtime, void* method);
 
+      -  int32_t (*get_method_current_basic_type_id)(void* runtime, void* method);
+      +  void* (*get_method_current_basic_type)(void* runtime, void* method);
+
+      -  void* (*get_method)(void* runtime, int32_t basic_type_id, int32_t method_index);
+      +  void* (*get_method)(void* runtime, void* basic_type, int32_t method_index);
+      -  void* (*get_method_by_name)(void* runtime, int32_t basic_type_id, const char* method_name);
+      +  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
+
 0.989016 2023-06-29
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.

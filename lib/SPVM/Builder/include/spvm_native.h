@@ -440,12 +440,12 @@ struct spvm_env_runtime {
   const char* (*get_basic_type_version_string)(void* runtime, int32_t basic_type_id);
   void* (*get_basic_type)(void* runtime, int32_t basic_type_id);
   void* (*get_field)(void* runtime, int32_t basic_type_id, int32_t field_index);
-  void* (*get_method)(void* runtime, int32_t basic_type_id, int32_t method_index);
+  void* (*get_method)(void* runtime, void* basic_type, int32_t method_index);
   void* reserved120;
   void* reserved121;
   void* (*get_class_var_by_name)(void* runtime, int32_t basic_type_id, const char* class_var_name);
   void* (*get_field_by_name)(void* runtime, int32_t basic_type_id, const char* field_name);
-  void* (*get_method_by_name)(void* runtime, int32_t basic_type_id, const char* method_name);
+  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
   int32_t (*get_basic_type_id)(void* runtime, void* basic_type);
   void* reserved126;
   int32_t (*get_method_index)(void* runtime, void* method);
@@ -477,8 +477,6 @@ struct spvm_env_runtime {
   void* (*get_field_by_name_v2)(void* runtime, void* basic_type, const char* field_name);
   void* (*get_field_current_basic_type)(void* runtime, void* field);
   void* (*get_field_basic_type)(void* runtime, void* field);
-  void* (*get_method_v2)(void* runtime, void* basic_type, int32_t method_index);
-  void* (*get_method_by_name_v2)(void* runtime, void* basic_type, const char* method_name);
 };
 
 struct spvm_env_compiler {
