@@ -250,7 +250,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_class_var_current_basic_type,
     SPVM_API_RUNTIME_get_class_var_basic_type,
     SPVM_API_RUNTIME_get_field_v2,
-    SPVM_API_RUNTIME_get_field_by_name_v2,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -817,26 +816,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_v2(SPVM_RUNTIME* runtime, SPVM_RU
   return field;
 }
 
-SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, int32_t basic_type_id, const char* field_name) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  SPVM_RUNTIME_FIELD* found_field = NULL;
-  if (basic_type->fields_length > 0) {
-    for (int32_t field_index = 0; field_index <  basic_type->fields_length; field_index++) {
-      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type_id, field_index);
-      const char* field_name_current = SPVM_API_RUNTIME_get_field_name(runtime, field);
-      if (strcmp(field_name_current, field_name) == 0) {
-        found_field = field;
-        break;
-      }
-    }
-  }
-  
-  return found_field;
-}
-
-SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* field_name) {
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* field_name) {
   
   SPVM_RUNTIME_FIELD* found_field = NULL;
   if (basic_type->fields_length > 0) {
