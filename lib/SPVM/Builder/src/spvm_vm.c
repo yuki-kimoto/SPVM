@@ -398,7 +398,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* cast_basic_type = env->api->runtime->get_basic_type(env->runtime, cast_basic_type_id);
         
-        SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECKING_V2(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], cast_basic_type, cast_type_dimension, &error_id, object_ref_count_offset);
+        SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECKING(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], cast_basic_type, cast_type_dimension, &error_id, object_ref_count_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
@@ -776,7 +776,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_NEW_OBJECT_ARRAY_V2(env, stack, &object_vars[opcode->operand0], basic_type, length, &error_id, object_ref_count_offset);
+        SPVM_IMPLEMENT_NEW_OBJECT_ARRAY(env, stack, &object_vars[opcode->operand0], basic_type, length, &error_id, object_ref_count_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_MULDIM_ARRAY: {
@@ -786,7 +786,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_NEW_MULDIM_ARRAY_V2(env, stack, &object_vars[opcode->operand0], basic_type, type_dimension, length, &error_id, object_ref_count_offset);
+        SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(env, stack, &object_vars[opcode->operand0], basic_type, type_dimension, length, &error_id, object_ref_count_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY: {
@@ -795,7 +795,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_NEW_MULNUM_ARRAY_V2(env, stack, &object_vars[opcode->operand0], basic_type, length, &error_id, object_ref_count_offset);
+        SPVM_IMPLEMENT_NEW_MULNUM_ARRAY(env, stack, &object_vars[opcode->operand0], basic_type, length, &error_id, object_ref_count_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
@@ -1301,7 +1301,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_ISA_V2(env, stack, &int_vars[0], object, basic_type, type_dimension);
+        SPVM_IMPLEMENT_ISA(env, stack, &int_vars[0], object, basic_type, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_ISA_ERROR: {
@@ -1313,7 +1313,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_ISA_ERROR_V2(env, stack, &int_vars[0], src_basic_type, basic_type, type_dimension);
+        SPVM_IMPLEMENT_ISA_ERROR(env, stack, &int_vars[0], src_basic_type, basic_type, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_TYPE: {
@@ -1323,7 +1323,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* basic_type = env->api->runtime->get_basic_type(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_IS_TYPE_V2(env, stack, &int_vars[0], object, basic_type, type_dimension);
+        SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[0], object, basic_type, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_ERROR: {
