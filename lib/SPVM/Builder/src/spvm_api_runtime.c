@@ -231,6 +231,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_field_offset,
     SPVM_API_RUNTIME_get_arg,
     SPVM_API_RUNTIME_get_basic_type_by_name,
+    SPVM_API_RUNTIME_get_basic_type_anon_basic_type,
     SPVM_API_RUNTIME_get_basic_type_name_v2,
     SPVM_API_RUNTIME_get_basic_type_category_v2,
     SPVM_API_RUNTIME_get_basic_type_module_rel_file_v2,
@@ -244,7 +245,6 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_class_vars_length_v2,
     SPVM_API_RUNTIME_get_basic_type_parent,
     SPVM_API_RUNTIME_get_basic_type_version_string_v2,
-    SPVM_API_RUNTIME_get_basic_type_anon_basic_type,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
