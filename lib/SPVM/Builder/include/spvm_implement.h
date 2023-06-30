@@ -404,7 +404,7 @@ static inline void SPVM_IMPLEMENT_MOVE_MULNUM_DOUBLE_ZERO(SPVM_ENV* env, SPVM_VA
 
 static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECKING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, void* cast_basic_type, int32_t cast_type_dimension, int32_t* error_id, int32_t object_ref_count_offset) {
   void* object = in;
-  int32_t isa = env->isa_v2(env, stack, object, cast_basic_type, cast_type_dimension);
+  int32_t isa = env->isa(env, stack, object, cast_basic_type, cast_type_dimension);
   if (isa) {
     SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, in, (intptr_t)env->api->runtime->object_ref_count_offset);
   }
@@ -1455,7 +1455,7 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
 
 static inline void SPVM_IMPLEMENT_ISA(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* object, void* dist_basic_type, int32_t dist_type_dimension) {
   if (object) {
-    *out = env->isa_v2(env, stack, object, dist_basic_type, dist_type_dimension);
+    *out = env->isa(env, stack, object, dist_basic_type, dist_type_dimension);
   }
   else {
     *out = 0;

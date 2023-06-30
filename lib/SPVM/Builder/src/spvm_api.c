@@ -316,7 +316,6 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_new_mulnum_array_by_name,
     SPVM_API_has_interface_by_name,
     SPVM_API_get_class_var_object_address,
-    SPVM_API_isa_v2,
     SPVM_API_get_basic_type,
     SPVM_API_get_basic_type_by_name,
   };
@@ -3984,10 +3983,12 @@ int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, 
   assert(array);
   
   int32_t array_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, array);
+  void* array_basic_type = SPVM_API_RUNTIME_get_basic_type(env->runtime, array_basic_type_id);
+  
   int32_t array_type_dimension = array->type_dimension;
   
   assert(array_type_dimension > 0);
-  int32_t runtime_assignability = SPVM_API_isa(env, stack, element, array_basic_type_id, array_type_dimension - 1);
+  int32_t runtime_assignability = SPVM_API_isa(env, stack, element, array_basic_type, array_type_dimension - 1);
 
   return runtime_assignability;
 }
@@ -4018,31 +4019,7 @@ int32_t SPVM_API_is_type_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   return is_type;
 }
 
-int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  int32_t isa;
-  if (object == NULL) {
-    isa = 1;
-  }
-  else {
-    int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-    void* object_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, object_basic_type_id);
-    int32_t object_type_dimension = object->type_dimension;
-    void* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-    if (!basic_type) {
-      isa = 0;
-    }
-    else {
-      isa = SPVM_API_RUNTIME_can_assign_v2(env->runtime, basic_type, type_dimension, 0, object_basic_type, object_type_dimension, 0);
-    }
-  }
-  
-  return isa;
-}
-
-int32_t SPVM_API_isa_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension) {
+int32_t SPVM_API_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -4067,12 +4044,12 @@ int32_t SPVM_API_isa_v2(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, S
 
 int32_t SPVM_API_isa_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* basic_type_name, int32_t type_dimension) {
   
-  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
-  if (basic_type_id < 0) {
+  void* basic_type = env->get_basic_type(env, stack, basic_type_name);
+  if (!basic_type) {
     return 0;
   };
   
-  int32_t isa = SPVM_API_isa(env, stack, object, basic_type_id, type_dimension);
+  int32_t isa = SPVM_API_isa(env, stack, object, basic_type, type_dimension);
   
   return isa;
 }
