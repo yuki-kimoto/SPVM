@@ -229,7 +229,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t basic_type_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_basic_type_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t src_basic_type_id;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t invocant_decl_basic_type_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* basic_type = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* object_basic_type = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* src_basic_type = NULL;\n");
@@ -5058,10 +5057,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add_int(string_buffer, items);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  invocant_decl_basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
         SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -5090,10 +5085,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, items);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  invocant_decl_basic_type_id = ");
-        SPVM_PRECOMPILE_add_basic_type_id(precompile, string_buffer, basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
