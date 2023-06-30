@@ -1270,7 +1270,7 @@ class TestCase::NativeAPI {
 
   native static method new_string_nolen : int ();
   
-  native static method get_basic_type_id_by_name : int ();
+  native static method get_basic_type_id : int ();
 
   native static method strerror_value : string ($errno_value : int);
   native static method strerror_nolen_value : string ($errno_value : int);

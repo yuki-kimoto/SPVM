@@ -107,7 +107,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved7,
     NULL, // reserved8,
     NULL, // reserved9
-    SPVM_API_RUNTIME_get_basic_type_id_by_name,
+    NULL, // reserved10,
     SPVM_API_RUNTIME_get_basic_type_name,
     NULL, // reserved12
     SPVM_API_RUNTIME_get_basic_type_category,
@@ -290,22 +290,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_name(SPVM_RUNTIME* r
   SPVM_RUNTIME_BASIC_TYPE* basic_type = (SPVM_RUNTIME_BASIC_TYPE*)SPVM_HASH_get(runtime->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   
   return basic_type;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_id_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name) {
-  
-  if (basic_type_name == NULL) {
-    return -1;
-  }
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
-  if (basic_type) {
-    int32_t basic_type_id = basic_type->id;
-    return basic_type_id;
-  }
-  else {
-    return -1;
-  }
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {

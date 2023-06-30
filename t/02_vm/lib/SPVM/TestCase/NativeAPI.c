@@ -2258,7 +2258,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved7 != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved8 != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved9 != &env_array[9]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_basic_type_id_by_name != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved10 != &env_array[10]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_type_name != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved12 != &env_array[12]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_type_category != &env_array[13]) { stack[0].ival = 0; return 0; }
@@ -2457,11 +2457,11 @@ int32_t SPVM__TestCase__NativeAPI__new_memory_apis(SPVM_ENV* env, SPVM_VALUE* st
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error = 0;
   
   {
-    int32_t int_basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "int");
+    int32_t int_basic_type_id = env->get_basic_type_id(env, stack, "int");
     
     if (!(int_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT)) {
       stack[0].ival = 0;
@@ -2470,7 +2470,7 @@ int32_t SPVM__TestCase__NativeAPI__get_basic_type_id_by_name(SPVM_ENV* env, SPVM
   }
 
   {
-    int32_t not_found_basic_type_id = env->api->runtime->get_basic_type_id_by_name(env->runtime, "NotFoundBasicType");
+    int32_t not_found_basic_type_id = env->get_basic_type_id(env, stack, "NotFoundBasicType");
     
     if (!(not_found_basic_type_id < 0)) {
       stack[0].ival = 0;

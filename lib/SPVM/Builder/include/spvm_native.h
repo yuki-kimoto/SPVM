@@ -331,7 +331,7 @@ struct spvm_env_runtime {
   void* reserved7;
   void* reserved8;
   void* reserved9;
-  int32_t (*get_basic_type_id_by_name)(void* runtime, const char* basic_type_name);
+  void* reserved10;
   const char* (*get_basic_type_name)(void* runtime, void* basic_type);
   void* reserved12;
   int32_t (*get_basic_type_category)(void* runtime, void* basic_type);
