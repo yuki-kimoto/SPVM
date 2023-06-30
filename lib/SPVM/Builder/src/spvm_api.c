@@ -2027,7 +2027,7 @@ int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
       
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS: {
-          int32_t basic_type_is_pointer = SPVM_API_RUNTIME_get_basic_type_is_pointer_v2(runtime, object_basic_type);
+          int32_t basic_type_is_pointer = SPVM_API_RUNTIME_get_basic_type_is_pointer(runtime, object_basic_type);
           
           if (basic_type_is_pointer) {
             is_pointer_class = 1;

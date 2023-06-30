@@ -314,33 +314,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_B
   return basic_type_id;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  int32_t is_pointer = basic_type->is_pointer;
-  
-  return is_pointer;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  int32_t anon_basic_types_base = basic_type->anon_basic_types_base;
-  
-  return anon_basic_types_base;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
-  
-  int32_t anon_basic_types_length = basic_type->anon_basic_types_length;
-  
-  return anon_basic_types_length;
-}
-
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_type_id(SPVM_RUNTIME* runtime, int32_t basic_type_id, int32_t anon_basic_type_index) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, basic_type_id);
@@ -394,21 +367,21 @@ const char* SPVM_API_RUNTIME_get_basic_type_version_string(SPVM_RUNTIME* runtime
   return version_string;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   int32_t is_pointer = basic_type->is_pointer;
   
   return is_pointer;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   int32_t anon_basic_types_base = basic_type->anon_basic_types_base;
   
   return anon_basic_types_base;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   int32_t anon_basic_types_length = basic_type->anon_basic_types_length;
   
