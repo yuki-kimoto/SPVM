@@ -258,6 +258,10 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_current_basic_type,
     SPVM_API_RUNTIME_get_method_return_basic_type,
     SPVM_API_RUNTIME_get_arg_basic_type,
+    SPVM_API_RUNTIME_is_object_type_v2,
+    SPVM_API_RUNTIME_has_interface,
+    SPVM_API_RUNTIME_is_super,
+    SPVM_API_RUNTIME_can_assign_v2,
   };
   SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -1311,12 +1315,68 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t basi
   }
 }
 
+int32_t SPVM_API_RUNTIME_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
+
+  if (!(basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+    return 0;
+  }
+  
+  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method_v2(runtime, interface_basic_type, interface_basic_type->required_method_index);
+  
+  const char* method_interface_name =  SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, method_interface->current_basic_type_id, method_interface->name_string_index, NULL);
+  
+  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type->id, method_interface_name);
+  if (found_method) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int32_t SPVM_API_RUNTIME_is_super_by_id(SPVM_RUNTIME* runtime, int32_t super_basic_type_id, int32_t child_basic_type_id) {
 
   int32_t is_super_basic_type = 0;
   
   SPVM_RUNTIME_BASIC_TYPE* super_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, super_basic_type_id);
   SPVM_RUNTIME_BASIC_TYPE* child_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, child_basic_type_id);
+  
+  if (!(super_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
+    return 0;
+  }
+  
+  if (!(child_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
+    return 0;
+  }
+  
+  int32_t parent_basic_type_id = child_basic_type->parent_id;
+  while (1) {
+    if (parent_basic_type_id > 0) {
+      SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = SPVM_API_RUNTIME_get_basic_type(runtime, parent_basic_type_id);
+      if (parent_basic_type->id == super_basic_type->id) {
+        is_super_basic_type = 1;
+        break;
+      }
+      else {
+        parent_basic_type_id = parent_basic_type->parent_id;
+      }
+    }
+    else {
+      is_super_basic_type = 0;
+      break;
+    }
+  }
+  
+  return is_super_basic_type;
+}
+
+int32_t SPVM_API_RUNTIME_is_super(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* super_basic_type, SPVM_RUNTIME_BASIC_TYPE* child_basic_type) {
+
+  int32_t is_super_basic_type = 0;
   
   if (!(super_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
     return 0;
@@ -1385,6 +1445,36 @@ int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, int32_t basic_typ
   return is_object_type;
 }
 
+int32_t SPVM_API_RUNTIME_is_object_type_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t flag) {
+  
+  int32_t is_object_type;
+  if (type_dimension == 0) {
+    int32_t basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, basic_type);
+    
+    switch (basic_type_category) {
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
+      {
+        is_object_type = 1;
+        break;
+      }
+      default: {
+        is_object_type = 0;
+      }
+    }
+  }
+  else if (type_dimension >= 1) {
+    is_object_type = 1;
+  }
+  else {
+    assert(0);
+  }
+  
+  return is_object_type;
+}
+
 int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, int32_t dist_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag, int32_t src_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag) {
   
   int32_t isa = 0;
@@ -1413,6 +1503,46 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, int32_t dist_basic_ty
     }
     else if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
       isa = SPVM_API_RUNTIME_is_super_by_id(runtime, dist_basic_type_id, src_basic_type_id);
+    }
+    else {
+      isa = 0;
+    }
+  }
+  else {
+    isa = 0;
+  }
+  
+  return isa;
+}
+
+int32_t SPVM_API_RUNTIME_can_assign_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, SPVM_RUNTIME_BASIC_TYPE* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag) {
+  
+  int32_t isa = 0;
+  
+  int32_t dist_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, dist_basic_type);
+  int32_t src_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category_v2(runtime, src_basic_type);
+  
+  if (dist_basic_type->id == src_basic_type->id && dist_type_dimension == src_type_dimension) {
+    isa = 1;
+  }
+  else if (dist_type_dimension == 0 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+    assert(src_type_dimension >= 0);
+    isa = 1;
+  }
+  else if (dist_type_dimension == 1 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+    if (src_type_dimension >= 1) {
+      isa = 1;
+    }
+    else {
+      isa = 0;
+    }
+  }
+  else if (dist_type_dimension == src_type_dimension) {
+    if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+      isa = SPVM_API_RUNTIME_has_interface(runtime, src_basic_type, dist_basic_type);
+    }
+    else if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+      isa = SPVM_API_RUNTIME_is_super(runtime, dist_basic_type, src_basic_type);
     }
     else {
       isa = 0;

@@ -480,6 +480,10 @@ struct spvm_env_runtime {
   void* (*get_method_current_basic_type)(void* runtime, void* method);
   void* (*get_method_return_basic_type)(void* runtime, void* method);
   void* (*get_arg_basic_type)(void* runtime, void* arg);
+  void* (*is_object_type_v2)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
+  void* (*has_interface)(void* runtime, void* basic_type, void* interface_basic_type);
+  void* (*is_super)(void* runtime, void* super_basic_type, void* child_basic_type);
+  void* (*can_assign_v2)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
 };
 
 struct spvm_env_compiler {
