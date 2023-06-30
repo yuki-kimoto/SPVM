@@ -513,7 +513,7 @@ sub get_spvm_core_header_file_names {
     spvm_runtime_arg.h
     spvm_runtime_basic_type.h
     spvm_runtime_class_var.h
-    spvm_runtime_constant_string.h
+    spvm_runtime_string.h
     spvm_runtime_field.h
     spvm_runtime.h
     spvm_runtime_method.h

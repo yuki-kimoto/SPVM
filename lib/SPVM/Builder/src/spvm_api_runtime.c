@@ -26,7 +26,7 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_method.h"
-#include "spvm_runtime_constant_string.h"
+#include "spvm_runtime_string.h"
 #include "spvm_api_runtime.h"
 #include "spvm_runtime_arg.h"
 
@@ -319,7 +319,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value(SPVM_RUNTIME* 
     return NULL;
   }
   
-  SPVM_RUNTIME_CONSTANT_STRING* constant_string = &runtime->constant_strings[basic_type->constant_strings_base + constant_string_index];
+  SPVM_RUNTIME_STRING* constant_string = &runtime->constant_strings[basic_type->constant_strings_base + constant_string_index];
   
   const char* constant_string_value = constant_string->value;
   

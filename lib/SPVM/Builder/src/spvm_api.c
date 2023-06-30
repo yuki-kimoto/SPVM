@@ -23,7 +23,7 @@
 #include "spvm_string_buffer.h"
 
 #include "spvm_runtime.h"
-#include "spvm_runtime_constant_string.h"
+#include "spvm_runtime_string.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"

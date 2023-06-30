@@ -15,7 +15,7 @@ struct spvm_runtime {
   
   const char* string_pool;
   
-  SPVM_RUNTIME_CONSTANT_STRING* constant_strings;
+  SPVM_RUNTIME_STRING* constant_strings;
   
   int32_t constant_strings_length;
   
