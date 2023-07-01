@@ -5076,10 +5076,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
       method->opcodes_length = opcode_list->length - method->opcodes_base_address_id;
       
-      for (int32_t i = 0; i < opcode_list->length - method_opcodes_base_address_id; i++) {
+      for (int32_t i = 0; i < opcode_list->length - method_opcodes_base_address_id - 1; i++) {
         SPVM_OPCODE* opcode = opcode_list->values + method_opcodes_base_address_id + i;
         SPVM_OPCODE_LIST_push_opcode(compiler, method->opcode_list, opcode);
       }
+      
+      assert(method->opcodes_length == method->opcode_list->length);
       
       method->mortal_stack_length = call_stack_indexs_stack_top + 1;
       
