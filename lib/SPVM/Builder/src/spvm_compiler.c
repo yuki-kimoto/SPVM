@@ -758,7 +758,15 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr++;
   
   // opcodes
-  memcpy(runtime_codes_ptr, compiler->opcode_list->values, sizeof(int32_t) * opcodes_runtime_codes_length);
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      SPVM_OPCODE_LIST* opcode_list = method->opcode_list;
+      memcpy(runtime_codes_ptr + opcodes_base, opcode_list->values, sizeof(SPVM_OPCODE) * opcode_list->length);
+      opcodes_base += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcode_list->length;
+    }
+  }
   runtime_codes_ptr += opcodes_runtime_codes_length;
   
   // methods_runtime_codes_length
