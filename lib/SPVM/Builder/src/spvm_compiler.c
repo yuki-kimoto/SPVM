@@ -572,7 +572,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   int32_t fields_base = 0;
   int32_t methods_base = 0;
   int32_t args_base = 0;
+  int32_t opcodes_runtime_codes_base = 0;
   int32_t opcodes_base = 0;
+  
   int32_t* basic_type_runtime_codes_ptr = runtime_codes_ptr;
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
@@ -763,8 +765,8 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       SPVM_OPCODE_LIST* opcode_list = method->opcode_list;
-      memcpy(runtime_codes_ptr + opcodes_base, opcode_list->values, sizeof(SPVM_OPCODE) * opcode_list->length);
-      opcodes_base += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcode_list->length;
+      memcpy(runtime_codes_ptr + opcodes_runtime_codes_base, opcode_list->values, sizeof(SPVM_OPCODE) * opcode_list->length);
+      opcodes_runtime_codes_base += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcode_list->length;
     }
   }
   runtime_codes_ptr += opcodes_runtime_codes_length;
@@ -784,8 +786,11 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)method_runtime_codes_ptr;
       
-      runtime_method->opcodes_base = method->opcodes_base_address_id;
-      runtime_method->opcodes_length = method->opcodes_length;
+      SPVM_OPCODE_LIST* opcode_list = method->opcode_list;
+      runtime_method->opcodes_base = opcodes_base;
+      runtime_method->opcodes_length = opcode_list->length;
+      opcodes_base += opcode_list->length;
+      
       runtime_method->index = method->index;
       runtime_method->current_basic_type_id = method->current_basic_type->id;
       runtime_method->is_class_method = method->is_class_method;
