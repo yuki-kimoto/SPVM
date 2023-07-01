@@ -5076,6 +5076,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
       method->opcodes_length = opcode_list->length - method->opcodes_base_address_id;
       
+      for (int32_t i = 0; i < opcode_list->length - method_opcodes_base_address_id; i++) {
+        SPVM_OPCODE* opcode = opcode_list->values + method_opcodes_base_address_id + i;
+        SPVM_OPCODE_LIST_push_opcode(compiler, method->opcode_list, opcode);
+      }
+      
       method->mortal_stack_length = call_stack_indexs_stack_top + 1;
       
       // Free list
@@ -5096,10 +5101,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
       SPVM_LIST_free(call_stack_indexs_stack);
       SPVM_LIST_free(block_stack_call_stack_index_top);
       
-      for (int32_t i = method_opcodes_base_address_id; i < opcode_list->length - method_opcodes_base_address_id; i++) {
-        SPVM_OPCODE* opcode = opcode_list->values + method_opcodes_base_address_id + i;
-        SPVM_OPCODE_LIST_push_opcode(compiler, method->opcode_list, opcode);
-      }
     }
   }
   
