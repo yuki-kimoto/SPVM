@@ -1094,6 +1094,20 @@ int32_t SPVM_COMPILER_get_args_length(SPVM_COMPILER* compiler) {
   return args_length;
 }
 
+int32_t SPVM_COMPILER_get_opcodes_length(SPVM_COMPILER* compiler) {
+  
+  int32_t opcodes_length = 0;
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t method_index = 0;method_index < basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+      opcodes_length += method->opcode_list->length;
+    }
+  }
+  
+  return opcodes_length;
+}
+
 int32_t SPVM_COMPILER_get_constant_strings_length(SPVM_COMPILER* compiler) {
   
   int32_t constant_strings_length = 0;

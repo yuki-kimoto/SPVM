@@ -151,7 +151,7 @@ int32_t SPVM_COMPILER_get_fields_length(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_methods_length(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_anon_basic_types_length(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_args_length(SPVM_COMPILER* compiler);
-
+int32_t SPVM_COMPILER_get_opcodes_length(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_constant_strings_length(SPVM_COMPILER* compiler);
 int32_t SPVM_COMPILER_get_string_pool_length(SPVM_COMPILER* compiler);
 
