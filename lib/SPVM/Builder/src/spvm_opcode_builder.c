@@ -5095,6 +5095,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
       SPVM_LIST_free(switch_block_stack_break_base);
       SPVM_LIST_free(call_stack_indexs_stack);
       SPVM_LIST_free(block_stack_call_stack_index_top);
+      
+      for (int32_t i = method_opcodes_base_address_id; i < opcode_list->length - method_opcodes_base_address_id; i++) {
+        SPVM_OPCODE* opcode = opcode_list->values + method_opcodes_base_address_id + i;
+        SPVM_OPCODE_LIST_push_opcode(compiler, method->opcode_list, opcode);
+      }
     }
   }
   
