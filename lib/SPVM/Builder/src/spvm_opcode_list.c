@@ -21,11 +21,6 @@ SPVM_OPCODE_LIST* SPVM_OPCODE_LIST_new(SPVM_COMPILER* compiler) {
   SPVM_OPCODE* values = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, values_size);
   opcodes->values = values;
   
-  // Add 1 opcode because 0 mean no opcode
-  SPVM_OPCODE opcode;
-  memset(&opcode, 0, sizeof(SPVM_OPCODE));
-  SPVM_OPCODE_LIST_push_opcode(compiler, opcodes, &opcode);
-  
   return opcodes;
 }
 
