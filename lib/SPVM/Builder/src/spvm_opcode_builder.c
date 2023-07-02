@@ -5102,7 +5102,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
         method->opcodes_length = opcode_list->length - method->opcodes_base_address_id;
         
         for (int32_t i = 0; i < method->opcodes_length; i++) {
-          SPVM_OPCODE* opcode = opcode_list->values + method_opcodes_base_address_id + i;
+          SPVM_OPCODE* opcode = (opcode_list->values + method_opcodes_base_address_id) + i;
           SPVM_OPCODE_LIST_push_opcode(compiler, method->opcode_list, opcode);
         }
         
