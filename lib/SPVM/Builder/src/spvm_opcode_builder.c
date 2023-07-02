@@ -836,7 +836,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 }
                 
-                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_cur->line);
                 
                 break;
               }
@@ -1020,7 +1020,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       break;
                     }
                     case SPVM_OP_C_ID_TYPE_NAME : {
@@ -1075,7 +1075,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       
                       break;
                     }
@@ -1387,7 +1387,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       
                       if (!SPVM_TYPE_is_void_type(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag)) {
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode_return);
@@ -1409,7 +1409,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       break;
                     }
                     case SPVM_OP_C_ID_ARRAY_LENGTH : {
@@ -1425,7 +1425,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       break;
                     }
                     case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS : {
@@ -1502,7 +1502,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       break;
                     }
                     case SPVM_OP_C_ID_FIELD_ACCESS : {
@@ -1524,7 +1524,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign_src->line);
+                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign_src->line);
                       }
                       else if (op_assign_src->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
                         SPVM_OPCODE opcode = {0};
@@ -1542,7 +1542,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign_src->line);
+                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign_src->line);
                       }
                       else if (op_assign_src->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
                         SPVM_OPCODE opcode = {0};
@@ -1560,7 +1560,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign_src->line);
+                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign_src->line);
                       }
                       else {
                         // $VAR = $VAR_OBJECT->{NAME}
@@ -1740,7 +1740,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                           SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                         }
                       }
                       break;
@@ -1811,7 +1811,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       }
                       else {
                         SPVM_TYPE* element_type = SPVM_CHECK_get_type(compiler, op_array_access);
@@ -1870,7 +1870,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                        SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       }
                       break;
                     }
@@ -2277,7 +2277,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       switch (type_dist->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                         break;
                       }
                       
@@ -2301,7 +2301,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
                       // Check die
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);                              
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);                              
                       break;
                     }
                     case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG : {
@@ -2321,7 +2321,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       
                       break;
                     }
@@ -2361,7 +2361,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       switch (type_dist->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                         break;
                       }
                       break;
@@ -2384,7 +2384,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
                       // Check die
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);                              
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);                              
                       break;
                     }
                     case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG : {
@@ -2404,7 +2404,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       
                       break;
                     }
@@ -2682,7 +2682,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       break;
                     }
                     case SPVM_OP_C_ID_MINUS : {
@@ -3283,7 +3283,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                         
                         if (throw_exception) {
-                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                          SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                         }
                       }
                       
@@ -3323,7 +3323,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                                 
                                 break;
                               }
@@ -3340,7 +3340,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                                 
                                 break;
                               }
@@ -3358,7 +3358,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                                 
                                 break;
                               }
@@ -3376,7 +3376,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                                 
-                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
 
                                 break;
                               }
@@ -3394,7 +3394,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                                 
-                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
 
                                 break;
                               }
@@ -3412,7 +3412,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                                SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
 
                                 break;
                               }
@@ -3432,7 +3432,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                  SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                                  SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                                 }
                                 else {
                                   SPVM_OPCODE opcode = {0};
@@ -3449,7 +3449,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                                  SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                                  SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                                 }
                               }
                             }
@@ -3472,7 +3472,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                             SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                            SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                            SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                           }
                           else {
                             assert(0);
@@ -3510,7 +3510,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       opcode.operand1 = basic_type_id;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_assign->line);
                       
                       break;
                     }
@@ -4642,7 +4642,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       opcode.operand2 = call_stack_index_in;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_cur->line);
                     }
                   }
                   else if (SPVM_TYPE_is_mulnum_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
@@ -4696,7 +4696,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                    SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                    SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_cur->line);
                   }
                   else {
                   
@@ -4715,7 +4715,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       opcode.operand1 = call_stack_index_index;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_cur->line);
                     }
                     else {
                       SPVM_OPCODE opcode = {0};
@@ -4785,7 +4785,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       opcode.operand2 = call_stack_index_in;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_cur->line);
                     }
                   }
                 }
@@ -4918,7 +4918,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       opcode.operand3 = (uint16_t)field->index;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_cur->line);
                     }
                     else {
                       SPVM_OPCODE opcode = {0};
@@ -4972,7 +4972,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       opcode.operand3 = (uint16_t)field->index;
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_cur->line);
                     }
                   }
                 }
@@ -5041,7 +5041,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
 
-                  SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_cur->line);
+                  SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method_opcodes_base_address_id, op_cur->line);
                 }
                 else {
                   assert(0);
@@ -5130,13 +5130,10 @@ void SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_ex
   int32_t in_eval_block,
   SPVM_LIST* unresolved_goto_end_of_eval_on_exception_opcode_index_stack,
   SPVM_LIST* unresolved_goto_end_of_method_on_exception_opcode_index_stack,
-  SPVM_OP* op_method,
+  int32_t method_opcodes_base_address_id,
   int32_t line
 )
 {
-  SPVM_METHOD* method = op_method->uv.method;
-  int32_t method_opcodes_base_address_id = method->opcodes_base_address_id;
-  
   if (in_eval_block) {
     SPVM_OPCODE opcode = {0};
     

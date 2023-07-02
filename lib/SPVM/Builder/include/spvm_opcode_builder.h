@@ -16,7 +16,7 @@ void SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_ex
   int32_t in_eval_block,
   SPVM_LIST* unresolved_goto_end_of_eval_on_exception_opcode_rel_index_stack,
   SPVM_LIST* unresolved_goto_end_of_method_on_exception_opcode_rel_index_stack,
-  SPVM_OP* op_method,
+  int32_t method_opcodes_base_address_id,
   int32_t line
 );
 
