@@ -14,6 +14,6 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
 void SPVM_DUMPER_dump_basic_types(SPVM_COMPILER* compiler, SPVM_LIST* basic_types);
 void SPVM_DUMPER_dump_basic_types_opcode_list(SPVM_COMPILER* compiler, SPVM_LIST* basic_types);
 void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op);
-void SPVM_DUMPER_dump_opcode_list(SPVM_COMPILER* compiler, SPVM_OPCODE_LIST* opcode_list, int32_t base, int32_t length);
+void SPVM_DUMPER_dump_opcode_list(SPVM_COMPILER* compiler, SPVM_OPCODE_LIST* opcode_list);
 
 #endif

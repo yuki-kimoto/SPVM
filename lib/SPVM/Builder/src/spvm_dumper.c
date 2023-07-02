@@ -233,24 +233,17 @@ void SPVM_DUMPER_dump_basic_types_opcode_list(SPVM_COMPILER* compiler, SPVM_LIST
   }
 }
 
-void SPVM_DUMPER_dump_opcode_list(SPVM_COMPILER* compiler, SPVM_OPCODE_LIST* opcode_list, int32_t start_pos, int32_t length) {
-  (void)compiler;
+void SPVM_DUMPER_dump_opcode_list(SPVM_COMPILER* compiler, SPVM_OPCODE_LIST* opcode_list) {
   
-  int32_t end_pos = start_pos + length - 1;
-  
-  {
-    int32_t i;
-    for (i = start_pos; i <= end_pos; i++) {
-      
-      SPVM_OPCODE opcode = opcode_list->values[i];
-      fprintf(stderr, "        [%" PRId32 "] %-20s", i, (SPVM_OPCODE_C_ID_NAMES())[opcode.id]);
-      fprintf(stderr, " %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3);
-    }
+  for (int32_t i = 0; i <= opcode_list->length; i++) {
+    
+    SPVM_OPCODE opcode = opcode_list->values[i];
+    fprintf(stderr, "        [%" PRId32 "] %-20s", i, (SPVM_OPCODE_C_ID_NAMES())[opcode.id]);
+    fprintf(stderr, " %d %d %d %d\n", opcode.operand0, opcode.operand1, opcode.operand2, opcode.operand3);
   }
 }
 
 void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant) {
-  (void)compiler;
   
   if (constant->type->dimension == 0) {
     switch(constant->type->basic_type->id) {
@@ -282,7 +275,6 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
 }
 
 void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
-  (void)compiler;
   
   if (method) {
     
@@ -321,7 +313,6 @@ void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
 }
 
 void SPVM_DUMPER_dump_method_opcode_list(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
-  (void)compiler;
   
   if (method) {
     fprintf(stderr, "      name => \"%s\"\n", method->name);
@@ -338,7 +329,7 @@ void SPVM_DUMPER_dump_method_opcode_list(SPVM_COMPILER* compiler, SPVM_METHOD* m
       }
       
       fprintf(stderr, "      opcode_list\n");
-      SPVM_DUMPER_dump_opcode_list(compiler, compiler->opcode_list, method->opcodes_base_address_id, method->opcodes_length);
+      SPVM_DUMPER_dump_opcode_list(compiler, method->opcode_list);
     }
   }
   else {
@@ -347,7 +338,6 @@ void SPVM_DUMPER_dump_method_opcode_list(SPVM_COMPILER* compiler, SPVM_METHOD* m
 }
 
 void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
-  (void)compiler;
   
   if (field) {
     fprintf(stderr, "      name => \"%s\"\n", field->name);
@@ -367,7 +357,6 @@ void SPVM_DUMPER_dump_field(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
 
 
 void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl) {
-  (void)compiler;
   
   if (var_decl) {
     fprintf(stderr, "\n");
