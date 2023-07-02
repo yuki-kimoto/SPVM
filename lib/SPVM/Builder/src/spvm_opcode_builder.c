@@ -49,7 +49,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
     SPVM_LIST* methods = basic_type->methods;
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
-
+      
+      SPVM_OPCODE_LIST* opcode_list = method->opcode_list;
+      
       if (method_index > 0 && method->op_block) {
         SPVM_OPCODE* last_opcode = compiler->opcode_list->values + compiler->opcode_list->length - 1;
         assert(last_opcode->id == SPVM_OPCODE_C_ID_END_METHOD);
@@ -77,7 +79,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
         SPVM_OPCODE opcode = {0};
         
         int32_t items = SPVM_TYPE_get_items(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-
+        
         if (arg_type_dimension == 0) {
           if (arg_type_is_ref) {
             switch (arg_basic_type_category) {
