@@ -23,8 +23,6 @@ struct spvm_method {
   int32_t required_args_length;
   int32_t index;
   SPVM_OPCODE_LIST* opcode_list;
-  int32_t opcodes_base_address_id;
-  int32_t opcodes_length;
   int32_t call_stack_byte_vars_length;
   int32_t call_stack_short_vars_length;
   int32_t call_stack_int_vars_length;
