@@ -61,7 +61,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  compiler->opcode_list = SPVM_OPCODE_LIST_new(compiler);
   compiler->source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
@@ -974,9 +973,6 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
-  
-  // Free opcode array
-  SPVM_OPCODE_LIST_free(compiler, compiler->opcode_list);
   
   const char* start_file = SPVM_COMPILER_get_start_file(compiler);
   

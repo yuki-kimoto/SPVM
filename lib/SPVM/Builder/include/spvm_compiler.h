@@ -101,9 +101,6 @@ struct spvm_compiler {
   // Fail load class symtable
   SPVM_HASH* if_require_not_found_basic_type_name_symtable;
   
-  // Operation codes
-  SPVM_OPCODE_LIST* opcode_list;
-  
   // Basic types
   SPVM_LIST* basic_types;
   
