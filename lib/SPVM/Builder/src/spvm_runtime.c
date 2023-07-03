@@ -14,6 +14,7 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_method.h"
+#include "spvm_runtime_arg.h"
 #include "spvm_opcode.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
@@ -90,13 +91,13 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->methods = (SPVM_RUNTIME_METHOD*)runtime_codes_ptr;
   runtime_codes_ptr += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * methods_length;
   
-  // args runtime codes length
-  int32_t args_runtime_codes_length = *runtime_codes_ptr;
+  // args_length
+  int32_t args_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
   // args
   runtime->args = (SPVM_RUNTIME_ARG*)runtime_codes_ptr;
-  runtime_codes_ptr += args_runtime_codes_length;
+  runtime_codes_ptr += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * args_length;
   
   // anon_basic_type_basic_types runtime codes length
   int32_t anon_basic_types_runtime_codes_length = *runtime_codes_ptr;
