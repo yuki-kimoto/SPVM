@@ -451,28 +451,6 @@ sub get_spvm_core_source_file_names {
   return \@spvm_core_source_file_names;
 }
 
-sub get_spvm_core_common_source_file_names {
-  
-  my @spvm_core_source_file_names = qw(
-    spvm_allocator.c
-    spvm_api_allocator.c
-    spvm_api.c
-    spvm_api_runtime.c
-    spvm_api_string_buffer.c
-    spvm_hash.c
-    spvm_list.c
-    spvm_module_file.c
-    spvm_native.c
-    spvm_opcode.c
-    spvm_runtime.c
-    spvm_strerror.c
-    spvm_string_buffer.c
-    spvm_vm.c
-  );
-  
-  return \@spvm_core_source_file_names;
-}
-
 sub get_spvm_core_header_file_names {
   
   my @spvm_core_header_file_names = qw(
