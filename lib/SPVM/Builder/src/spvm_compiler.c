@@ -867,11 +867,10 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       SPVM_OPCODE_LIST* opcode_list = method->opcode_list;
-      memcpy(runtime_codes_ptr + opcodes_runtime_codes_base, opcode_list->values, sizeof(SPVM_OPCODE) * opcode_list->length);
-      opcodes_runtime_codes_base += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcode_list->length;
+      memcpy(runtime_codes_ptr, opcode_list->values, sizeof(SPVM_OPCODE) * opcode_list->length);
+      runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcode_list->length;
     }
   }
-  runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
   
   // anon_basic_types_length
   int32_t anon_basic_types_length = SPVM_COMPILER_get_anon_basic_types_length(compiler);
