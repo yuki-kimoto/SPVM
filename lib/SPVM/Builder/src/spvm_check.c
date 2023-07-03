@@ -753,7 +753,7 @@ void SPVM_CHECK_check_basic_types_ast(SPVM_COMPILER* compiler) {
     
     // String pool must end with "\0"
     // This is not needed, but maybe there are bugs in other places
-    SPVM_STRING_BUFFER_add_len(basic_type->string_pool, "\0\0", 2);
+    SPVM_STRING_BUFFER_add_len(basic_type->string_pool, "\0\0\0\0", 4);
   }
 }
 
