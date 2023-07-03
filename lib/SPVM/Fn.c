@@ -154,7 +154,7 @@ int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t* seed_ref = stack[0].iref;
   
-  int32_t random_value = SPVM__Fn__static__rand_r(seed_ref);
+  int32_t random_value = SPVM__Fn__static__rand_r((uint32_t *) seed_ref);
   
   stack[0].ival = random_value;
   
