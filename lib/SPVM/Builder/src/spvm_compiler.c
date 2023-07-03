@@ -61,7 +61,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  compiler->source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  compiler->module_source_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
   return compiler;
@@ -70,7 +70,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 void SPVM_COMPILER_add_source(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, int32_t length) {
   SPVM_STRING_BUFFER* source_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, length, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   SPVM_STRING_BUFFER_add_len(source_buffer, (char*)source, strlen(source));
-  SPVM_HASH_set(compiler->source_symtable, basic_type_name, strlen(basic_type_name), (void*)source_buffer);
+  SPVM_HASH_set(compiler->module_source_symtable, basic_type_name, strlen(basic_type_name), (void*)source_buffer);
 }
 
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category) {

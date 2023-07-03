@@ -2296,7 +2296,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         
         char* cur_file = NULL;
         
-        SPVM_STRING_BUFFER* found_source_buffer = SPVM_HASH_get(compiler->source_symtable, basic_type_name, strlen(basic_type_name));
+        SPVM_STRING_BUFFER* found_source_buffer = SPVM_HASH_get(compiler->module_source_symtable, basic_type_name, strlen(basic_type_name));
         
         const char* include_dir = NULL;
         if (!found_source_buffer) {
@@ -2381,7 +2381,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           }
         }
         
-        found_source_buffer = SPVM_HASH_get(compiler->source_symtable, basic_type_name, strlen(basic_type_name));
+        found_source_buffer = SPVM_HASH_get(compiler->module_source_symtable, basic_type_name, strlen(basic_type_name));
         
         if (found_source_buffer) {
           
