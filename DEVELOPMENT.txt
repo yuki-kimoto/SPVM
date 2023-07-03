@@ -121,9 +121,10 @@ DEVELOPERS NOTE
     
       perl -n -e 'if (/^(%token|%type|%right|%nonassoc|%left|[a-zA-Z]|\s+:|\s+\|)(.+)/) { my $line = "$1$2"; if ($line =~ /^[a-zA-Z]/) { print "\n"; } print "$line\n" } ' yacc/spvm_yacc.y
     
-    Get SPVM::Builder module files
+    Get SPVM Core Perl module files
     
-      find lib | grep Builder | grep '\.pm' | perl -p -e 's|lib/||' | sort
+      find lib | grep -P '(Builder|BlessedObject|ExchangeAPI|Global|SPVM\.pm)' | grep '\.pm' | perl -p -e 's|lib/||' | sort
+      
 
     Get the linkgs of SPVM modules for POD
     
