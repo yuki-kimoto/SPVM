@@ -83,14 +83,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->fields = (SPVM_RUNTIME_FIELD*)runtime_codes_ptr;
   runtime_codes_ptr += (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * fields_length;
   
-  // opcodes length
-  int32_t opcodes_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // opcodes
-  runtime->opcodes = (SPVM_OPCODE*)runtime_codes_ptr;
-  runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
-  
   // methods_length
   int32_t methods_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -106,6 +98,14 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // args
   runtime->args = (SPVM_RUNTIME_ARG*)runtime_codes_ptr;
   runtime_codes_ptr += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * args_length;
+  
+  // opcodes length
+  int32_t opcodes_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // opcodes
+  runtime->opcodes = (SPVM_OPCODE*)runtime_codes_ptr;
+  runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
   
   // anon_basic_types_length
   int32_t anon_basic_types_length = *runtime_codes_ptr;
