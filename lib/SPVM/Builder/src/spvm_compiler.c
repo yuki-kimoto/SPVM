@@ -685,6 +685,22 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     runtime_codes_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
   }
   
+  // string_pool_length
+  int32_t string_pool_length = SPVM_COMPILER_get_string_pool_length(compiler);
+  *runtime_codes_ptr = string_pool_length;
+  runtime_codes_ptr++;
+  
+  // string_pool
+  {
+    int32_t string_pool_base = 0;
+    for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+      memcpy((char*)((intptr_t)runtime_codes_ptr + string_pool_base), basic_type->string_pool->value, basic_type->string_pool->length);
+      string_pool_base += basic_type->string_pool->length;
+    }
+  }
+  runtime_codes_ptr += string_pool_length / sizeof(int32_t);
+  
   // class_vars_length
   int32_t class_vars_length = SPVM_COMPILER_get_class_vars_length(compiler);
   *runtime_codes_ptr = class_vars_length;
@@ -850,22 +866,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_codes_ptr += sizeof(int32_t) / sizeof(int32_t);
     }
   }
-  
-  // string_pool_length
-  int32_t string_pool_length = SPVM_COMPILER_get_string_pool_length(compiler);
-  *runtime_codes_ptr = string_pool_length;
-  runtime_codes_ptr++;
-  
-  // string_pool
-  {
-    int32_t string_pool_base = 0;
-    for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-      memcpy((char*)((intptr_t)runtime_codes_ptr + string_pool_base), basic_type->string_pool->value, basic_type->string_pool->length);
-      string_pool_base += basic_type->string_pool->length;
-    }
-  }
-  runtime_codes_ptr += string_pool_length / sizeof(int32_t);
   
   // constant_strings_length
   *runtime_codes_ptr = SPVM_COMPILER_get_constant_strings_length(compiler);

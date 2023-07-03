@@ -59,6 +59,14 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->basic_types = (SPVM_RUNTIME_BASIC_TYPE*)runtime_codes_ptr;
   runtime_codes_ptr += (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (runtime->basic_types_length);
   
+  // string_pool_length
+  int32_t string_pool_length = *runtime_codes_ptr;
+  runtime_codes_ptr++;
+  
+  // string_pool
+  runtime->string_pool = (const char*)runtime_codes_ptr;
+  runtime_codes_ptr += string_pool_length / sizeof(int32_t);
+  
   // class_vars runtime codes length
   int32_t class_vars_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
@@ -106,14 +114,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   // anon_basic_types_length
   runtime->anon_basic_type_ids = runtime_codes_ptr;
   runtime_codes_ptr += (sizeof(int32_t) / sizeof(int32_t)) * anon_basic_types_length;
-  
-  // string_pool runtime codes length
-  int32_t string_pool_length = *runtime_codes_ptr;
-  runtime_codes_ptr++;
-  
-  // string_pool
-  runtime->string_pool = (const char*)runtime_codes_ptr;
-  runtime_codes_ptr += string_pool_length / sizeof(int32_t);
   
   // constant_strings_length
   runtime->constant_strings_length = *runtime_codes_ptr;
