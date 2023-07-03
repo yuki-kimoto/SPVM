@@ -118,9 +118,6 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->constant_strings_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
-  // Will be removed
-  runtime_codes_ptr++;
-  
   // constant_strings
   runtime->constant_strings = (SPVM_RUNTIME_STRING*)runtime_codes_ptr;
   runtime_codes_ptr += (sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t)) * runtime->constant_strings_length;

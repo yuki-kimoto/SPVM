@@ -895,9 +895,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   *runtime_codes_ptr = SPVM_COMPILER_get_constant_strings_length(compiler);
   runtime_codes_ptr++;
   
-  // Will be removed
-  runtime_codes_ptr++;
-  
   // constant_strings
   int32_t* constant_string_runtime_codes_ptr = runtime_codes_ptr;
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
