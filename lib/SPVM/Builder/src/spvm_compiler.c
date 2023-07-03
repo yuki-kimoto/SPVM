@@ -491,7 +491,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // string_pool
   length += (SPVM_COMPILER_get_string_pool_length(compiler) / sizeof(int32_t));
   
-  // constant_strings length
+  // constant_strings_length
   length++;
   
   // constant_strings
