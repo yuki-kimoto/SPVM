@@ -1135,8 +1135,5 @@ int32_t SPVM_COMPILER_get_string_pool_length(SPVM_COMPILER* compiler) {
     string_pool_length += basic_type->string_pool->length;
   }
   
-  // TODO: maybe other place is wrong.
-  string_pool_length += 2;
-  
   return string_pool_length;
 }

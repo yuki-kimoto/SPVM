@@ -85,6 +85,8 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
+  
+  
 }
 
 void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
@@ -750,6 +752,10 @@ void SPVM_CHECK_check_basic_types_ast(SPVM_COMPILER* compiler) {
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }
     }
+    
+    // String pool must end with "\0"
+    // This is not needed, but maybe there are bugs in other places
+    SPVM_STRING_BUFFER_add_len(basic_type->string_pool, "\0", 1);
   }
 }
 
