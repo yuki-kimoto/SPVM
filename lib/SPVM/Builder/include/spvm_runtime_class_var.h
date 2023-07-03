@@ -5,6 +5,7 @@
 #define SPVM_RUNTIME_CLASS_VAR_H
 
 #include "spvm_typedecl.h"
+#include "spvm_native.h"
 
 struct spvm_runtime_class_var {
   int32_t index;

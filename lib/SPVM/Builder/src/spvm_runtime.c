@@ -12,6 +12,7 @@
 #include "spvm_runtime_string.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_field.h"
+#include "spvm_runtime_class_var.h"
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_RUNTIME* runtime = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_RUNTIME));
@@ -56,12 +57,12 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime_codes_ptr += (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (runtime->basic_types_length);
   
   // class_vars runtime codes length
-  int32_t class_vars_runtime_codes_length = *runtime_codes_ptr;
+  int32_t class_vars_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
   // class_vars
   runtime->class_vars = (SPVM_RUNTIME_CLASS_VAR*)runtime_codes_ptr;
-  runtime_codes_ptr += class_vars_runtime_codes_length;
+  runtime_codes_ptr += (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * class_vars_length;
   
   // fields_length
   int32_t fields_length = *runtime_codes_ptr;
