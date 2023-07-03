@@ -414,11 +414,11 @@ sub get_spvm_core_source_file_names {
     spvm_block.c
     spvm_call_method.c
     spvm_case_info.c
+    spvm_check.c
     spvm_class_var_access.c
     spvm_class_var.c
     spvm_compiler.c
     spvm_constant.c
-    spvm_string.c
     spvm_dumper.c
     spvm_field_access.c
     spvm_field.c
@@ -429,14 +429,14 @@ sub get_spvm_core_source_file_names {
     spvm_module_file.c
     spvm_native.c
     spvm_op.c
-    spvm_check.c
-    spvm_opcode_list.c
     spvm_opcode_builder.c
     spvm_opcode.c
+    spvm_opcode_list.c
     spvm_precompile.c
     spvm_runtime.c
     spvm_strerror.c
     spvm_string_buffer.c
+    spvm_string.c
     spvm_switch_info.c
     spvm_toke.c
     spvm_type.c
@@ -447,7 +447,7 @@ sub get_spvm_core_source_file_names {
     spvm_yacc.c
     spvm_yacc_util.c
   );
-  
+
   return \@spvm_core_source_file_names;
 }
 
