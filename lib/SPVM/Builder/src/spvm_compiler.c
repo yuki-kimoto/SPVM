@@ -479,10 +479,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   int32_t length = 0;
   
-  // basic_types length
-  length++;
-  
-  // basic_types_runtime_codes_length
+  // basic_types_length
   length++;
   
   // basic_types
@@ -557,11 +554,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   
   // basic_types length
   *runtime_codes_ptr = compiler->basic_types->length;
-  runtime_codes_ptr++;
-  
-  // basic_types_runtime_codes_length
-  int32_t basic_types_runtime_codes_length = (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (compiler->basic_types->length);
-  *runtime_codes_ptr = basic_types_runtime_codes_length;
   runtime_codes_ptr++;
   
   // basic_types
@@ -696,7 +688,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     
     basic_type_runtime_codes_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
   }
-  runtime_codes_ptr += basic_types_runtime_codes_length;
+  runtime_codes_ptr += (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (compiler->basic_types->length);
   
   // class_vars_runtime_codes_length
   int32_t class_vars_runtime_codes_length = (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * (SPVM_COMPILER_get_class_vars_length(compiler));
