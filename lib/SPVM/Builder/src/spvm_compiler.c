@@ -704,6 +704,24 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   }
   runtime_codes_ptr += string_pool_length / sizeof(int32_t);
   
+  // constant_strings_length
+  *runtime_codes_ptr = SPVM_COMPILER_get_constant_strings_length(compiler);
+  runtime_codes_ptr++;
+  
+  // constant_strings
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings->length; constant_string_index++) {
+      SPVM_STRING* string = SPVM_LIST_get(basic_type->constant_strings, constant_string_index);
+      SPVM_RUNTIME_STRING* runtime_string = (SPVM_RUNTIME_STRING*)runtime_codes_ptr;
+      
+      runtime_string->index = string->index;
+      runtime_string->length = string->length;
+      runtime_string->string_pool_index = string->string_pool_index;
+      runtime_codes_ptr += sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t);
+    }
+  }
+  
   // class_vars_length
   int32_t class_vars_length = SPVM_COMPILER_get_class_vars_length(compiler);
   *runtime_codes_ptr = class_vars_length;
@@ -854,24 +872,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
   }
   runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
-  
-  // constant_strings_length
-  *runtime_codes_ptr = SPVM_COMPILER_get_constant_strings_length(compiler);
-  runtime_codes_ptr++;
-  
-  // constant_strings
-  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings->length; constant_string_index++) {
-      SPVM_STRING* string = SPVM_LIST_get(basic_type->constant_strings, constant_string_index);
-      SPVM_RUNTIME_STRING* runtime_string = (SPVM_RUNTIME_STRING*)runtime_codes_ptr;
-      
-      runtime_string->index = string->index;
-      runtime_string->length = string->length;
-      runtime_string->string_pool_index = string->string_pool_index;
-      runtime_codes_ptr += sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t);
-    }
-  }
   
   // anon_basic_types_length
   int32_t anon_basic_types_length = SPVM_COMPILER_get_anon_basic_types_length(compiler);
