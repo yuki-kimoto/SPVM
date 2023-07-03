@@ -530,9 +530,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // constant_strings length
   length++;
   
-  // constant_strings_length
-  length++;
-  
   // constant_strings
   length += (sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t)) * (SPVM_COMPILER_get_constant_strings_length(compiler));
   
