@@ -491,7 +491,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // class_vars
   length += (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * (SPVM_COMPILER_get_class_vars_length(compiler));
   
-  // methods_runtime_codes_length
+  // methods_length
   length++;
   
   // methods
@@ -762,9 +762,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   }
   runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
   
-  // methods_runtime_codes_length
-  int32_t methods_runtime_codes_length = (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (SPVM_COMPILER_get_methods_length(compiler));
-  *runtime_codes_ptr = methods_runtime_codes_length;
+  // methods_length
+  int32_t methods_length = SPVM_COMPILER_get_methods_length(compiler);
+  *runtime_codes_ptr = methods_length;
   runtime_codes_ptr++;
   
   // methods
@@ -821,7 +821,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       method_runtime_codes_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
     }
   }
-  runtime_codes_ptr += methods_runtime_codes_length;
+  runtime_codes_ptr += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * methods_length;
   
   // args_runtime_codes_length
   int32_t args_runtime_codes_length = (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * (SPVM_COMPILER_get_args_length(compiler));
