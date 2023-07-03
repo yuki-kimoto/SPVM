@@ -7,6 +7,10 @@
 #include <stdint.h>
 #include <stddef.h>
 
+// spvm_module_file.h
+struct spvm_module_file;
+typedef struct spvm_module_file SPVM_MODULE_FILE;
+
 // spvm_runtime_arg.h
 struct spvm_runtime_arg;
 typedef struct spvm_runtime_arg SPVM_RUNTIME_ARG;

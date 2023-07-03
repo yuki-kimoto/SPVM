@@ -91,6 +91,7 @@ lib/SPVM/Builder/include/spvm_implement.h
 lib/SPVM/Builder/include/spvm_interface.h
 lib/SPVM/Builder/include/spvm_list.h
 lib/SPVM/Builder/include/spvm_method.h
+lib/SPVM/Builder/include/spvm_module_file.h
 lib/SPVM/Builder/include/spvm_native.h
 lib/SPVM/Builder/include/spvm_object.h
 lib/SPVM/Builder/include/spvm_op.h
@@ -151,6 +152,7 @@ lib/SPVM/Builder/src/spvm_hash.c
 lib/SPVM/Builder/src/spvm_interface.c
 lib/SPVM/Builder/src/spvm_list.c
 lib/SPVM/Builder/src/spvm_method.c
+lib/SPVM/Builder/src/spvm_module_file.c
 lib/SPVM/Builder/src/spvm_native.c
 lib/SPVM/Builder/src/spvm_op.c
 lib/SPVM/Builder/src/spvm_opcode.c

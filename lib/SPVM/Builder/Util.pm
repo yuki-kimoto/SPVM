@@ -426,6 +426,7 @@ sub get_spvm_core_source_file_names {
     spvm_interface.c
     spvm_list.c
     spvm_method.c
+    spvm_module_file.c
     spvm_native.c
     spvm_op.c
     spvm_check.c
@@ -460,6 +461,7 @@ sub get_spvm_core_common_source_file_names {
     spvm_api_string_buffer.c
     spvm_hash.c
     spvm_list.c
+    spvm_module_file.c
     spvm_native.c
     spvm_opcode.c
     spvm_runtime.c
@@ -501,6 +503,7 @@ sub get_spvm_core_header_file_names {
     spvm_interface.h
     spvm_list.h
     spvm_method.h
+    spvm_module_file.h
     spvm_native.h
     spvm_object.h
     spvm_check.h

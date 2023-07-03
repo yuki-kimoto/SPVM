@@ -1,3 +1,7 @@
+0.989019 2023-07-04
+  [Changes]
+    * spvm_module_file.h and spvm_module_c were added to include and src directories.
+    
 0.989018 2023-07-03
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.
