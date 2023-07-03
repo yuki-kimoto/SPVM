@@ -528,7 +528,7 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   length++;
   
   // string_pool
-  length += (SPVM_COMPILER_get_string_pool_length(compiler) / sizeof(int32_t)) + 1;
+  length += (SPVM_COMPILER_get_string_pool_length(compiler) / sizeof(int32_t));
   
   // constant_strings length
   length++;
@@ -676,7 +676,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       runtime_basic_type->class_vars_base = -1;
     }
     
-    runtime_basic_type->string_pool_length = basic_type->string_pool->length;
+    runtime_basic_type->string_pool_length = SPVM_COMPILER_get_string_pool_length(compiler);
     if (basic_type->string_pool->length > 0) {
       runtime_basic_type->string_pool_base = string_pool_base;
       string_pool_base += basic_type->string_pool->length;
@@ -876,7 +876,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr += anon_basic_type_runtime_codes_length;
   
   // string_pool_runtime_codes_length
-  int32_t string_pool_runtime_codes_length = (SPVM_COMPILER_get_string_pool_length(compiler) / sizeof(int32_t)) + 1;
+  int32_t string_pool_runtime_codes_length = (SPVM_COMPILER_get_string_pool_length(compiler) / sizeof(int32_t));
   *runtime_codes_ptr = string_pool_runtime_codes_length;
   runtime_codes_ptr++;
   
@@ -1134,6 +1134,9 @@ int32_t SPVM_COMPILER_get_string_pool_length(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     string_pool_length += basic_type->string_pool->length;
   }
+  
+  // TODO: maybe other place is wrong.
+  string_pool_length += 2;
   
   return string_pool_length;
 }
