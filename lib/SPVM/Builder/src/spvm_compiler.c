@@ -909,7 +909,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       constant_string_runtime_codes_ptr += sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t);
     }
   }
-  runtime_codes_ptr += (sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t)) * SPVM_COMPILER_get_constant_strings_length(compiler);
+  runtime_codes_ptr = constant_string_runtime_codes_ptr;
   
   return runtime_codes;
 }
