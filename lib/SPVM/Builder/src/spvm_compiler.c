@@ -485,23 +485,35 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   // basic_types
   length += (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (compiler->basic_types->length);
   
+  // string_pool_length
+  length++;
+  
+  // string_pool
+  length += (SPVM_COMPILER_get_string_pool_length(compiler) / sizeof(int32_t));
+  
+  // constant_strings length
+  length++;
+  
+  // constant_strings
+  length += (sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t)) * (SPVM_COMPILER_get_constant_strings_length(compiler));
+  
   // class_vars_length
   length++;
   
   // class_vars
   length += (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * (SPVM_COMPILER_get_class_vars_length(compiler));
   
-  // methods_length
-  length++;
-  
-  // methods
-  length += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (SPVM_COMPILER_get_methods_length(compiler));
-  
   // fields_length
   length++;
   
   // fields
   length += (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * (SPVM_COMPILER_get_fields_length(compiler));
+  
+  // methods_length
+  length++;
+  
+  // methods
+  length += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * (SPVM_COMPILER_get_methods_length(compiler));
   
   // args_length
   length++;
@@ -520,18 +532,6 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   
   // anon_basic_types
   length += (sizeof(int32_t) / sizeof(int32_t)) * (SPVM_COMPILER_get_anon_basic_types_length(compiler));
-  
-  // string_pool_length
-  length++;
-  
-  // string_pool
-  length += (SPVM_COMPILER_get_string_pool_length(compiler) / sizeof(int32_t));
-  
-  // constant_strings length
-  length++;
-  
-  // constant_strings
-  length += (sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t)) * (SPVM_COMPILER_get_constant_strings_length(compiler));
   
   return length;
 }
