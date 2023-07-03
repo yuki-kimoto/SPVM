@@ -20,6 +20,8 @@ struct spvm_basic_type {
   const char* module_file;
   const char* module_dir;
   const char* module_rel_file;
+  const char* module_source;
+  int32_t module_source_length;
   const char* version_string;
   SPVM_LIST* constant_strings;
   SPVM_HASH* constant_string_symtable;
