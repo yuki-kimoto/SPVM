@@ -768,14 +768,12 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr++;
   
   // methods
-  int32_t* method_runtime_codes_ptr = runtime_codes_ptr;
-  
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
-      SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)method_runtime_codes_ptr;
+      SPVM_RUNTIME_METHOD* runtime_method = (SPVM_RUNTIME_METHOD*)runtime_codes_ptr;
       
       SPVM_OPCODE_LIST* opcode_list = method->opcode_list;
       runtime_method->opcodes_base = opcodes_base;
@@ -818,10 +816,9 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       }
       runtime_method->required_args_length = method->required_args_length;
       
-      method_runtime_codes_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
+      runtime_codes_ptr += sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t);
     }
   }
-  runtime_codes_ptr += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * methods_length;
   
   // args_length
   int32_t args_length = SPVM_COMPILER_get_args_length(compiler);
@@ -829,7 +826,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr++;
   
   // args
-  int32_t* arg_runtime_codes_ptr = runtime_codes_ptr;
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
@@ -837,18 +833,17 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
         SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
-        SPVM_RUNTIME_ARG* runtime_arg = (SPVM_RUNTIME_ARG*)arg_runtime_codes_ptr;
+        SPVM_RUNTIME_ARG* runtime_arg = (SPVM_RUNTIME_ARG*)runtime_codes_ptr;
         
         runtime_arg->index = arg_index;
         runtime_arg->basic_type_id = arg_var_decl->type->basic_type->id;
         runtime_arg->type_dimension = arg_var_decl->type->dimension;
         runtime_arg->type_flag = arg_var_decl->type->flag;
         
-        arg_runtime_codes_ptr += sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t);
+        runtime_codes_ptr += sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t);
       }
     }
   }
-  runtime_codes_ptr += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * args_length;
   
   // anon_basic_types_length
   int32_t anon_basic_types_length = SPVM_COMPILER_get_anon_basic_types_length(compiler);
@@ -856,16 +851,14 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   runtime_codes_ptr++;
   
   // anon_basic_type_ids
-  int32_t* anon_basic_type_runtime_codes_ptr = runtime_codes_ptr;
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type->anon_basic_types->length; anon_basic_type_index++) {
       SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_type_index);
-      *anon_basic_type_runtime_codes_ptr = anon_basic_type->id;
-      anon_basic_type_runtime_codes_ptr += sizeof(int32_t) / sizeof(int32_t);
+      *runtime_codes_ptr = anon_basic_type->id;
+      runtime_codes_ptr += sizeof(int32_t) / sizeof(int32_t);
     }
   }
-  runtime_codes_ptr += (sizeof(int32_t) / sizeof(int32_t)) * anon_basic_types_length;
   
   // string_pool_length
   int32_t string_pool_length = SPVM_COMPILER_get_string_pool_length(compiler);
