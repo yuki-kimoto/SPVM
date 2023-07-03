@@ -115,7 +115,7 @@ void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
   runtime->string_pool = (const char*)runtime_codes_ptr;
   runtime_codes_ptr += string_pool_runtime_codes_length;
   
-  // constant_strings length
+  // constant_strings_length
   runtime->constant_strings_length = *runtime_codes_ptr;
   runtime_codes_ptr++;
   
