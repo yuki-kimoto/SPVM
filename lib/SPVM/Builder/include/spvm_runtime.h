@@ -25,15 +25,27 @@ struct spvm_runtime {
   
   SPVM_RUNTIME_CLASS_VAR* class_vars;
   
+  int32_t class_vars_length;
+  
   SPVM_RUNTIME_FIELD* fields;
+  
+  int32_t fields_length;
   
   SPVM_RUNTIME_METHOD* methods;
   
+  int32_t methods_length;
+  
   SPVM_RUNTIME_ARG* args;
+  
+  int32_t args_length;
   
   int32_t* anon_basic_type_ids;
   
+  int32_t anon_basic_type_ids_length;
+  
   SPVM_OPCODE* opcodes;
+  
+  int32_t* opcodes_length;
   
   SPVM_HASH* basic_type_symtable;
 };
