@@ -140,29 +140,6 @@ my $dev_null = File::Spec->devnull;
     my $myexe_bootstarp_source_content = SPVM::Builder::Util::slurp_binary($myexe_bootstarp_source_file);
     unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
   }
-
-  # no_precompile, no_compiler_api
-  {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_no_precompile_no_compiler_api -c $test_dir/myexe.no_precompile_no_compiler_api.config MyExe);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_no_precompile_no_compiler_api/);
-    my $execute_cmd_with_args = "$execute_cmd args1 args2";
-    system($execute_cmd_with_args) == 0
-      or die "Can't execute command:$execute_cmd_with_args:$!";
-    
-    my $output = `$execute_cmd_with_args`;
-    chomp $output;
-    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
-    is($output, $output_expect);
-    
-    # No precompile source
-    my $myexe_bootstarp_source_file = "$build_dir/work/src/SPVM/MyExe.boot.c";
-    my $myexe_bootstarp_source_content = SPVM::Builder::Util::slurp_binary($myexe_bootstarp_source_file);
-    unlike($myexe_bootstarp_source_content, qr/SPVMPRECOMPILE/);
-  }
-
 }
 
 # SPVM script

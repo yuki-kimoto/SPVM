@@ -928,14 +928,8 @@ sub compile_spvm_core_source_files {
   my $builder_src_dir = "$builder_dir/src";
   
   # SPVM runtime source files
-  my $no_compiler_api = $config_exe->no_compiler_api;
   my $spvm_runtime_src_base_names;
-  if ($no_compiler_api) {
-    $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_common_source_file_names();
-  }
-  else {
-    $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
-  }
+  $spvm_runtime_src_base_names = SPVM::Builder::Util::get_spvm_core_source_file_names();
   my @spvm_core_source_files = map { "$builder_src_dir/$_" } @$spvm_runtime_src_base_names;
   
   # Object dir
@@ -946,10 +940,6 @@ sub compile_spvm_core_source_files {
   my $config = $config_exe->config_spvm_core;
   unless ($config) {
     confess "The config_spvm_core field in the SPVM::Builder::Config module must be defined";
-  }
-  
-  if ($no_compiler_api) {
-    $config->add_ccflag('-DSPVM_NO_COMPILER_API');
   }
   
   # Compile source files

@@ -31,10 +31,8 @@
 
 #include "spvm_implement.h"
 
-#ifndef SPVM_NO_COMPILER_API
-#  include "spvm_api_compiler.h"
-#  include "spvm_api_precompile.h"
-#endif
+#include "spvm_api_compiler.h"
+#include "spvm_api_precompile.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 
@@ -42,32 +40,19 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
 
   // Env Allocator
   SPVM_ENV_ALLOCATOR* env_allocator = SPVM_API_ALLOCATOR_new_env();
-
+  
   // Env String Buffer
   SPVM_ENV_STRING_BUFFER* env_string_buffer = SPVM_API_STRING_BUFFER_new_env();
-
-#ifdef SPVM_NO_COMPILER_API
-
-  // Env Compiler
-  SPVM_ENV_COMPILER* env_compiler = NULL;
-
-  // Env Precompile
-  SPVM_ENV_PRECOMPILE* env_precompile = NULL;
   
-
-#else
-
   // Env Compiler
   SPVM_ENV_COMPILER* env_compiler = SPVM_API_COMPILER_new_env();
-
+  
   // Env Precompile
   SPVM_ENV_PRECOMPILE* env_precompile = SPVM_API_PRECOMPILE_new_env();
-
-#endif
-
+  
   // Env Runtime
   SPVM_ENV_RUNTIME* env_runtime = SPVM_API_RUNTIME_new_env();
-
+  
   // Env API
   void* env_api_init[]  = {
     env_allocator,
@@ -78,7 +63,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
-
+  
   // Allocator
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
 
@@ -95,7 +80,22 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
 
 
 
-  // The impelements of Native APIs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Native APIs
   void* env_init[]  = {
     NULL, // reserved0
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_size
