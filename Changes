@@ -3,6 +3,7 @@
     * spvm_module_file.h and spvm_module_c were added to include and src directories.
   [Incompatibe Changes]
     * The no_compiler_api option in the SPVM::Builder::Config::Exe module was removed.
+    * The no_precompile option in the SPVM::Builder::Config::Exe module was removed.
     
 0.989018 2023-07-03
   [Incompatibe Changes]

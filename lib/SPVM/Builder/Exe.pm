@@ -495,31 +495,27 @@ sub create_bootstrap_header_source {
 
 EOS
   
-  my $no_precompile = $config_exe->no_precompile;
-  
-  unless ($no_precompile) {
-    $source .= "// precompile functions declaration\n";
-    for my $module_name (@$module_names) {
-      my $precompile_method_names = $self->runtime->get_method_names($module_name, 'precompile');
-      for my $method_name (@$precompile_method_names) {
-        my $method_cname = $module_name;
-        $method_cname =~ s/::/__/g;
-        $source .= <<"EOS";
+  $source .= "// precompile functions declaration\n";
+  for my $module_name (@$module_names) {
+    my $precompile_method_names = $self->runtime->get_method_names($module_name, 'precompile');
+    for my $method_name (@$precompile_method_names) {
+      my $method_cname = $module_name;
+      $method_cname =~ s/::/__/g;
+      $source .= <<"EOS";
 int32_t SPVMPRECOMPILE__${method_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
-      }
     }
+  }
 
-    $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
+  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
 
-    $source .= <<"EOS";
+  $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* precompile_address) {
-  void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, module_name);
-  void* method = env->api->runtime->get_method_by_name(env->runtime, module_basic_type, method_name);
-  env->api->runtime->set_precompile_method_address(env->runtime, method, precompile_address);
+void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, module_name);
+void* method = env->api->runtime->get_method_by_name(env->runtime, module_basic_type, method_name);
+env->api->runtime->set_precompile_method_address(env->runtime, method, precompile_address);
 }
 EOS
-  }
   
   $source .= "// native functions declaration\n";
   for my $method_cname (@$module_names) {
@@ -705,10 +701,7 @@ sub create_bootstrap_new_env_prepared_func_source {
   my $set_precompile_method_addresses_source = '';
   
   my $config_exe = $self->config;
-  my $no_precompile = $config_exe->no_precompile;
-  unless ($no_precompile) {
-    $set_precompile_method_addresses_source = "SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);";
-  }
+  $set_precompile_method_addresses_source = "SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);";
   $source .= <<"EOS";
 SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
 EOS
@@ -853,10 +846,7 @@ sub create_bootstrap_source {
 
     # Set precompile method addresses function
     my $config_exe = $self->config;
-    my $no_precompile = $config_exe->no_precompile;
-    unless ($no_precompile) {
-      $bootstrap_source .= $self->create_bootstrap_set_precompile_method_addresses_func_source;
-    }
+    $bootstrap_source .= $self->create_bootstrap_set_precompile_method_addresses_func_source;
 
     # Set native method addresses function
     $bootstrap_source .= $self->create_bootstrap_set_native_method_addresses_func_source;
@@ -966,10 +956,6 @@ sub compile_module_precompile_source_file {
 
   my $config_exe = $self->config;
   
-  my $no_precompile = $config_exe->no_precompile;
-  
-  return [] if $no_precompile;
-
   # Builer
   my $builder = $self->builder;
   

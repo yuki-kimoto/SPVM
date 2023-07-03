@@ -846,8 +846,6 @@ t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.spvm
 t/04_spvmcc/myexe.config
 t/04_spvmcc/myexe.debug.config
-t/04_spvmcc/myexe.no_precompile-azAZ09.config
-t/04_spvmcc/myexe.no_precompile_no_compiler_api.config
 t/04_spvmcc/myexe.pl
 t/04_spvmcc/SPVM_Builder_Exe.t
 t/04_spvmcc/spvmcc.t
