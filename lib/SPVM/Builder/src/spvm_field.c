@@ -13,18 +13,16 @@
 #include "spvm_basic_type.h"
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler) {
-  (void)compiler;
   
   return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_FIELD));
 }
 
 int32_t SPVM_FIELD_get_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {
-  (void)compiler;
   
   SPVM_TYPE* field_type = field->type;
   
   int32_t size;
-  if (field_type->dimension == 0 && field_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && field_type->basic_type->id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
+  if (field_type->dimension == 0 && field_type->basic_type->id >= SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE && field_type->basic_type->id <= SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {    
     if (field_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
       size = sizeof(int8_t);
     }
