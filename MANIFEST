@@ -366,7 +366,7 @@ t/00_builder/link_info.t
 t/00_builder/makefile.t
 t/00_builder/object_file_info.t
 t/00_builder/util.t
-t/01_syntax/ast_checker.t
+t/01_syntax/check.t
 t/01_syntax/dist.pl
 t/01_syntax/extra_definition.t
 t/01_syntax/extra_operator.t
