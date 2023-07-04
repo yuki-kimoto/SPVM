@@ -23,4 +23,14 @@ int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
 int32_t* SPVM_API_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
 
+void SPVM_API_COMPILER_add_module_file(
+  SPVM_COMPILER* compiler,
+  const char* module_name,
+  const char* file,
+  const char* dir,
+  const char* rel_file,
+  const char* content,
+  int32_t content_length
+);
+
 #endif
