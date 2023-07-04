@@ -712,7 +712,7 @@ EOS
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
 
   // New runtime
-  void* runtime = env->api->runtime->new_object(env);
+  void* runtime = env->api->runtime->new_instance();
   
   // Runtime allocator
   void* runtime_allocator = env->api->runtime->get_allocator(runtime);
