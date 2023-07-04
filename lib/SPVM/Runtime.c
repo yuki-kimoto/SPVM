@@ -15,7 +15,7 @@ int32_t SPVM__Runtime__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* runtime = env->get_pointer(env, stack, obj_self);
   
-  env->api->runtime->free_object(runtime);
+  env->api->runtime->free_instance(runtime);
   
   return 0;
 }
@@ -176,28 +176,28 @@ int32_t SPVM__Runtime__build_precompile_source(SPVM_ENV* env, SPVM_VALUE* stack)
   void* runtime = env->get_pointer(env, stack, obj_self);
 
   // New allocator
-  void* allocator = env->api->allocator->new_object();
+  void* allocator = env->api->allocator->new_instance();
   
   // New string buffer
-  void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
+  void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
 
-  void* precompile = env->api->precompile->new_object();
+  void* precompile = env->api->precompile->new_instance();
   
   env->api->precompile->set_runtime(precompile, runtime);
   
   env->api->precompile->build_source(precompile, string_buffer, basic_type_name);
   
-  env->api->precompile->free_object(precompile);
+  env->api->precompile->free_instance(precompile);
 
   const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   void* obj_precompile_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
   
   // Free string buffer
-  env->api->string_buffer->free_object(string_buffer);
+  env->api->string_buffer->free_instance(string_buffer);
 
   // Free allocator
-  env->api->allocator->free_object(allocator);
+  env->api->allocator->free_instance(allocator);
 
   stack[0].oval = obj_precompile_source;
   
@@ -219,28 +219,28 @@ int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE*
   void* runtime = env->get_pointer(env, stack, obj_self);
 
   // New allocator
-  void* allocator = env->api->allocator->new_object();
+  void* allocator = env->api->allocator->new_instance();
   
   // New string buffer
-  void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
+  void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
 
-  void* precompile = env->api->precompile->new_object();
+  void* precompile = env->api->precompile->new_instance();
   
   env->api->precompile->set_runtime(precompile, runtime);
   
   env->api->precompile->build_method_source(precompile, string_buffer, basic_type_name, method_name);
   
-  env->api->precompile->free_object(precompile);
+  env->api->precompile->free_instance(precompile);
 
   const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   void* obj_precompile_method_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
 
   // Free string buffer
-  env->api->string_buffer->free_object(string_buffer);
+  env->api->string_buffer->free_instance(string_buffer);
 
   // Free allocator
-  env->api->allocator->free_object(allocator);
+  env->api->allocator->free_instance(allocator);
 
   stack[0].oval = obj_precompile_method_source;
   

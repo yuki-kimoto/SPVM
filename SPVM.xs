@@ -4595,7 +4595,7 @@ create_compiler(...)
   (void)hv_store(hv_self, "api_env", strlen("api_env"), SvREFCNT_inc(sv_api_env), 0);
 
   // Create compiler
-  void* compiler = api_env->api->compiler->new_object();
+  void* compiler = api_env->api->compiler->new_instance();
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
@@ -4623,7 +4623,7 @@ DESTROY(...)
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
 
   // Free compiler
-  api_env->api->compiler->free_object(compiler);
+  api_env->api->compiler->free_instance(compiler);
   
   api_env->free_env_raw(api_env);
   
@@ -4721,7 +4721,7 @@ build_runtime(...)
   SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
 
   // Build runtime information
-  void* runtime = api_env->api->runtime->new_object();
+  void* runtime = api_env->api->runtime->new_instance();
 
   // Runtime allocator
   void* runtime_allocator = api_env->api->runtime->get_allocator(runtime);
@@ -4793,7 +4793,7 @@ DESTROY(...)
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
 
   // Free native_runtime
-  api_env->api->runtime->free_object(runtime);
+  api_env->api->runtime->free_instance(runtime);
 
   api_env->free_env_raw(api_env);
 
@@ -5059,28 +5059,28 @@ build_precompile_source(...)
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
   
   // New allocator
-  void* allocator = env->api->allocator->new_object();
+  void* allocator = env->api->allocator->new_instance();
   
   // New string buffer
-  void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
+  void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
 
-  void* precompile = env->api->precompile->new_object();
+  void* precompile = env->api->precompile->new_instance();
   
   env->api->precompile->set_runtime(precompile, runtime);
   
   env->api->precompile->build_source(precompile, string_buffer, basic_type_name);
   
-  env->api->precompile->free_object(precompile);
+  env->api->precompile->free_instance(precompile);
 
   const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
 
   // Free string buffer
-  env->api->string_buffer->free_object(string_buffer);
+  env->api->string_buffer->free_instance(string_buffer);
 
   // Free allocator
-  env->api->allocator->free_object(allocator);
+  env->api->allocator->free_instance(allocator);
 
   // Free native_env
   env->free_env_raw(env);

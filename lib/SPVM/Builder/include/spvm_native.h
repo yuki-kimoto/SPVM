@@ -322,8 +322,8 @@ struct spvm_env {
 };
 
 struct spvm_env_runtime {
-  void* (*new_object)(void);
-  void (*free_object)(void* runtime);
+  void* (*new_instance)(void);
+  void (*free_instance)(void* runtime);
   int32_t* (*get_opcodes)(void* runtime);
   void* reserved3;
   int32_t* (*get_runtime_codes)(void* runtime);
@@ -460,8 +460,8 @@ struct spvm_env_runtime {
 };
 
 struct spvm_env_compiler {
-  void* (*new_object)(void);
-  void (*free_object)(void* compiler);
+  void* (*new_instance)(void);
+  void (*free_instance)(void* compiler);
   void (*set_start_line)(void* compiler, int32_t start_line);
   int32_t (*get_start_line)(void* compiler);
   void (*set_start_file)(void* compiler, const char* start_file);
@@ -477,8 +477,8 @@ struct spvm_env_compiler {
 };
 
 struct spvm_env_precompile {
-  void* (*new_object)(void);
-  void (*free_object)(void* precompile);
+  void* (*new_instance)(void);
+  void (*free_instance)(void* precompile);
   void (*set_runtime)(void* precompile, void* runtime);
   void* (*get_runtime)(void* precompile);
   void (*build_source)(void* precompile, void* string_buffer, const char* basic_type_name);
@@ -532,13 +532,13 @@ enum {
 };
 
 struct spvm_env_allocator {
-  void* (*new_object)(void);
-  void (*free_object)(void* allocator);
+  void* (*new_instance)(void);
+  void (*free_instance)(void* allocator);
 };
 
 struct spvm_env_string_buffer {
-  void* (*new_object)(void* allocator, int32_t capacity);
-  void (*free_object)(void* string_buffer);
+  void* (*new_instance)(void* allocator, int32_t capacity);
+  void (*free_instance)(void* string_buffer);
   const char* (*get_value)(void* string_buffer);
   int32_t (*get_length)(void* string_buffer);
 };

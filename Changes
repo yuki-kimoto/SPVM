@@ -9,28 +9,42 @@
     * The following Native Runtime APIs were changed.
 
       -  void* (*new_object)();
-      +  void* (*new_object)(void);
+      +  void* (*new_instance)(void);
+
+      -  void (*free_object)(void* runtime);
+      +  void (*free_instance)(void* runtime);
 
     * The following Native Compiler APIs were changed.
 
       -  void* (*new_object)();
-      +  void* (*new_object)(void);
+      +  void* (*new_instance)(void);
+
+      -  void (*free_object)(void* compiler);
+      +  void (*free_instance)(void* compiler);
 
     * The following Native Precompile APIs were changed.
 
       -  void* (*new_object)();
-      +  void* (*new_object)(void);
+      +  void* (*new_instance)(void);
+
+      -  void (*free_object)(void* precompile);
+      +  void (*free_instance)(void* precompile);
 
     * The following Native Allocator APIs were changed.
 
       -  void* (*new_object)();
-      +  void* (*new_object)(void);
+      +  void* (*new_instance)(void);
+
+      -  void (*free_object)(void* allocator);
+      +  void (*free_instance)(void* allocator);
 
     * The following Native String Buffer APIs were changed.
 
       -  void* (*new_object)();
-      +  void* (*new_object)(void* allocator, int32_t capacity);
+      +  void* (*new_instance)(void* allocator, int32_t capacity);
 
+      -  void (*free_object)(void* string_buffer);
+      +  void (*free_instance)(void* string_buffer);
     
 0.989018 2023-07-03
   [Incompatibe Changes]

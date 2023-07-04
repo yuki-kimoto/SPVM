@@ -12,7 +12,7 @@ int32_t SPVM__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e = 0;
 
   // Create compiler
-  void* compiler = env->api->compiler->new_object();
+  void* compiler = env->api->compiler->new_instance();
   
   void* obj_self = env->new_pointer_object_by_name(env, stack, "Compiler", compiler, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
@@ -32,7 +32,7 @@ int32_t SPVM__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* compiler = env->get_pointer(env, stack, obj_self);
   
-  env->api->compiler->free_object(compiler);
+  env->api->compiler->free_instance(compiler);
   
   return 0;
 }
@@ -77,7 +77,7 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   // Build runtime information
-  void* runtime = env->api->runtime->new_object();
+  void* runtime = env->api->runtime->new_instance();
 
   // Runtime allocator
   void* runtime_allocator = env->api->runtime->get_allocator(runtime);

@@ -97,8 +97,8 @@
 SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
   
   void* env_runtime_init[]  = {
-    SPVM_API_RUNTIME_new_object,
-    SPVM_API_RUNTIME_free_object,
+    SPVM_API_RUNTIME_new_instance,
+    SPVM_API_RUNTIME_free_instance,
     SPVM_API_RUNTIME_get_opcodes,
     NULL, // reserved3
     SPVM_API_RUNTIME_get_runtime_codes,
@@ -239,13 +239,13 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
   return env_runtime;
 }
 
-SPVM_RUNTIME* SPVM_API_RUNTIME_new_object() {
+SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance() {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
   return runtime;
 }
 
-void SPVM_API_RUNTIME_free_object(SPVM_RUNTIME* runtime) {
+void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
 
   SPVM_RUNTIME_free(runtime);
 }

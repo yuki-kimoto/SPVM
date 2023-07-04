@@ -10,8 +10,8 @@
 SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env();
 
 // Runtime
-SPVM_RUNTIME* SPVM_API_RUNTIME_new_object();
-void SPVM_API_RUNTIME_free_object(SPVM_RUNTIME* runtime);
+SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance();
+void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime);
 void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes);
 
 // Runtime codes

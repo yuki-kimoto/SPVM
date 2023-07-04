@@ -11,8 +11,8 @@
 
 SPVM_ENV_PRECOMPILE* SPVM_API_PRECOMPILE_new_env() {
   void* env_precompile_init[]  = {
-    SPVM_API_PRECOMPILE_new_object,
-    SPVM_API_PRECOMPILE_free_object,
+    SPVM_API_PRECOMPILE_new_instance,
+    SPVM_API_PRECOMPILE_free_instance,
     SPVM_API_PRECOMPILE_set_runtime,
     SPVM_API_PRECOMPILE_get_runtime,
     SPVM_API_PRECOMPILE_build_source,
@@ -24,12 +24,12 @@ SPVM_ENV_PRECOMPILE* SPVM_API_PRECOMPILE_new_env() {
   return env_precompile;
 }
 
-SPVM_PRECOMPILE* SPVM_API_PRECOMPILE_new_object() {
+SPVM_PRECOMPILE* SPVM_API_PRECOMPILE_new_instance() {
   SPVM_PRECOMPILE* precompile = SPVM_PRECOMPILE_new(precompile);
   return precompile;
 }
 
-void SPVM_API_PRECOMPILE_free_object(SPVM_PRECOMPILE* precompile) {
+void SPVM_API_PRECOMPILE_free_instance(SPVM_PRECOMPILE* precompile) {
   SPVM_PRECOMPILE_free(precompile);
 }
 
