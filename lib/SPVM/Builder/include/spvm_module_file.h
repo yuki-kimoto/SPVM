@@ -8,9 +8,9 @@
 
 struct spvm_module_file {
   const char* module_name;
-  const char* module_file;
-  const char* module_rel_file;
-  const char* module_dir;
+  const char* file;
+  const char* dir;
+  const char* rel_file;
   const char* content;
   const char* content_length;
 };
