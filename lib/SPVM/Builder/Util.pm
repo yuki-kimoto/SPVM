@@ -25,7 +25,7 @@ sub get_spvm_core_files {
     $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
     
     # SPVM::Builder module files
-    my $spvm_builder_module_file_names = &get_spvm_builder_module_file_names();
+    my $spvm_builder_module_file_names = &get_spvm_core_perl_module_file_names();
     for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
       my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
       unless (-f $module_file) {
@@ -377,21 +377,35 @@ sub create_make_rule {
   return $make_rule;
 }
 
-sub get_spvm_builder_module_file_names {
+sub get_spvm_core_perl_module_file_names {
   my @spvm_builder_module_file_names = qw(
+    SPVM/BlessedObject/Array.pm
+    SPVM/BlessedObject/Class.pm
+    SPVM/BlessedObject.pm
+    SPVM/BlessedObject/String.pm
     SPVM/Builder/API.pm
     SPVM/Builder/CC.pm
     SPVM/Builder/CompileInfo.pm
+    SPVM/Builder/Compiler.pm
     SPVM/Builder/Config/Exe.pm
     SPVM/Builder/Config.pm
+    SPVM/Builder/Env.pm
     SPVM/Builder/Exe.pm
     SPVM/Builder/LibInfo.pm
     SPVM/Builder/LinkInfo.pm
     SPVM/Builder/ObjectFileInfo.pm
     SPVM/Builder.pm
     SPVM/Builder/Resource.pm
+    SPVM/Builder/Runtime.pm
+    SPVM/Builder/Stack.pm
     SPVM/Builder/Util/API.pm
     SPVM/Builder/Util.pm
+    SPVM/Document/ExchangeAPI.pm
+    SPVM/ExchangeAPI/Class.pm
+    SPVM/ExchangeAPI/Error.pm
+    SPVM/ExchangeAPI.pm
+    SPVM/Global.pm
+    SPVM.pm
   );
   
   return \@spvm_builder_module_file_names;
