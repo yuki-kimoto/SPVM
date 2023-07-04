@@ -368,6 +368,16 @@ sub get_spvm_dependent_files {
       }
       push @spvm_dependent_files, $spvm_core_source_file;
     }
+    
+    # SPVM Compiler and Runtime module file names
+    my $spvm_compiler_and_runtime_module_file_names = &get_spvm_core_perl_module_file_names();
+    for my $spvm_compiler_and_runtime_module_file_name (@$spvm_compiler_and_runtime_module_file_names) {
+      my $module_file = "$builder_loaded_dir/$spvm_compiler_and_runtime_module_file_name";
+      unless (-f $module_file) {
+        confess "Can't find $module_file";
+      }
+      push @spvm_dependent_files, $module_file;
+    }
   }
   
   unless (@spvm_dependent_files) {
