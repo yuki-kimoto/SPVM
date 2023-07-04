@@ -340,13 +340,13 @@ sub get_spvm_dependent_files {
     $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
     
     # SPVM::Builder module files
-    my $spvm_builder_module_file_names = &get_spvm_core_perl_module_file_names();
-    for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
-      my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
-      unless (-f $module_file) {
-        confess "Can't find $module_file";
+    my $spvm_core_perl_module_file_names = &get_spvm_core_perl_module_file_names();
+    for my $spvm_core_perl_module_file_name (@$spvm_core_perl_module_file_names) {
+      my $spvm_core_perl_module_file = "$builder_loaded_dir/$spvm_core_perl_module_file_name";
+      unless (-f $spvm_core_perl_module_file) {
+        confess "Can't find $spvm_core_perl_module_file";
       }
-      push @spvm_dependent_files, $module_file;
+      push @spvm_dependent_files, $spvm_core_perl_module_file;
     }
     
     # SPVM core header files
@@ -372,11 +372,11 @@ sub get_spvm_dependent_files {
     # SPVM Compiler and Runtime module file names
     my $spvm_compiler_and_runtime_module_file_names = &get_spvm_core_perl_module_file_names();
     for my $spvm_compiler_and_runtime_module_file_name (@$spvm_compiler_and_runtime_module_file_names) {
-      my $module_file = "$builder_loaded_dir/$spvm_compiler_and_runtime_module_file_name";
-      unless (-f $module_file) {
-        confess "Can't find $module_file";
+      my $spvm_compiler_and_runtime_module_file = "$builder_loaded_dir/$spvm_compiler_and_runtime_module_file_name";
+      unless (-f $spvm_compiler_and_runtime_module_file) {
+        confess "Can't find $spvm_compiler_and_runtime_module_file";
       }
-      push @spvm_dependent_files, $module_file;
+      push @spvm_dependent_files, $spvm_compiler_and_runtime_module_file;
     }
   }
   
