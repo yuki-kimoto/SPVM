@@ -52,6 +52,11 @@
       -  const char* (*get_value)(void* string_buffer);
       +  const char* (*get_string)(void* string_buffer);
     
+    * The following Native Runtime APIs were added.
+    
+      +  void (*build_precompile_module_source)(void* runtime, void* string_buffer, const char* module_name);
+      +  void (*build_precompile_method_source)(void* runtime, void* string_buffer, const char* module_name, const char* method_name);
+
 0.989018 2023-07-03
   [Incompatibe Changes]
     * The following Native Runtime APIs were changed.

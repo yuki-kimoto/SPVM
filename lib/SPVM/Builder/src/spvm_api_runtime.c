@@ -29,7 +29,7 @@
 #include "spvm_runtime_string.h"
 #include "spvm_api_runtime.h"
 #include "spvm_runtime_arg.h"
-
+#include "spvm_precompile.h"
 
 
 
@@ -1058,3 +1058,16 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TY
   return isa;
 }
 
+void SPVM_API_PRECOMPILE_build_precompile_module_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* module_name) {
+  SPVM_PRECOMPILE* precompile = SPVM_PRECOMPILE_new(precompile);
+  SPVM_PRECOMPILE_set_runtime(precompile, runtime);
+  SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, module_name);
+  SPVM_PRECOMPILE_free(precompile);
+}
+
+void SPVM_API_PRECOMPILE_build_precompile_method_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* module_name, const char* method_name) {
+  SPVM_PRECOMPILE* precompile = SPVM_PRECOMPILE_new(precompile);
+  SPVM_PRECOMPILE_set_runtime(precompile, runtime);
+  SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, module_name, method_name);
+  SPVM_PRECOMPILE_free(precompile);
+}
