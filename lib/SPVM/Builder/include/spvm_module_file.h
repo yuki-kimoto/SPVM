@@ -12,7 +12,7 @@ struct spvm_module_file {
   const char* dir;
   const char* rel_file;
   const char* content;
-  const char* content_length;
+  int32_t content_length;
 };
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_new(SPVM_COMPILER* compiler);

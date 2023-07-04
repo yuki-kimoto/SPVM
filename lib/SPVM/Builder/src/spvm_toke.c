@@ -2297,10 +2297,10 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         
         char* cur_file = NULL;
         
-        SPVM_STRING_BUFFER* found_module_file = SPVM_HASH_get(compiler->module_file_symtable, basic_type_name, strlen(basic_type_name));
+        SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
         
         const char* include_dir = NULL;
-        if (!found_module_file) {
+        if (!module_file) {
           
           // Search module file
           FILE* fh = NULL;
@@ -2364,7 +2364,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               return 0;
             }
             fseek(fh, 0, SEEK_SET);
-            char* source = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, source_length + 1);
+            char* source = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, source_length + 1);
             int32_t read_error = 0;
             if ((int32_t)fread(source, 1, source_length, fh) < source_length) {
               SPVM_COMPILER_error(compiler, "[System Error]Failed to read the module file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
@@ -2375,24 +2375,29 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             if (!read_error) {
               fclose(fh);
               source[source_length] = '\0';
-              SPVM_COMPILER_add_source(compiler, basic_type_name, source, source_length);
+              
+              SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+              module_file->module_name = basic_type_name;
+              module_file->file = cur_file;
+              module_file->rel_file = cur_rel_file;
+              module_file->dir = include_dir;
+              module_file->content = source;
+              module_file->content_length = source_length;
+              SPVM_COMPILER_add_module_file(compiler, basic_type_name, module_file);
             }
-            
-            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, source);
           }
         }
         
-        found_module_file = SPVM_HASH_get(compiler->module_file_symtable, basic_type_name, strlen(basic_type_name));
+        module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
         
-        if (found_module_file) {
-          
+        if (module_file) {
           // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-          compiler->cur_source = (char*)found_module_file->value;
-          compiler->cur_source_length = found_module_file->length;
+          compiler->cur_source = (char*)module_file->content;
+          compiler->cur_source_length = module_file->content_length;
           compiler->cur_include_dir = include_dir;
           compiler->cur_rel_file = cur_rel_file;
           compiler->cur_rel_file_basic_type_name = basic_type_name;
-          
+         
           // If we get current module file path, set it, otherwise set module relative file path
           if (cur_file) {
             compiler->cur_file = cur_file;
