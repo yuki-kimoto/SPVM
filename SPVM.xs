@@ -5091,19 +5091,16 @@ build_env(...)
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-
+  
   // Create native_env
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
-
+  
   // Set runtime information
   env->runtime = runtime;
   
-  // Initialize native_env
-  env->init_env(env);
-
   SV* sv_env = SPVM_XS_UTIL_new_sv_object(aTHX_ env, "SPVM::Builder::Env");
   HV* hv_env = (HV*)SvRV(sv_env);
-
+  
   (void)hv_store(hv_env, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   
   XPUSHs(sv_env);

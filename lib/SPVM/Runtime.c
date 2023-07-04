@@ -484,9 +484,6 @@ int32_t SPVM__Runtime__build_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Set runtime information
   my_env->runtime = runtime;
   
-  // Initialize env
-  my_env->init_env(my_env);
-  
   void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", my_env, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   

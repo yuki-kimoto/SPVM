@@ -722,13 +722,10 @@ EOS
   
   // Build runtime
   env->api->runtime->build(runtime, runtime_codes);
-
-  // Set runtime information
+  
+  // Set runtime
   env->runtime = runtime;
-
-  // Initialize env
-  env->init_env(env);
-
+  
   // Set precompile method addresses
   $set_precompile_method_addresses_source
   

@@ -1,3 +1,8 @@
+0.989020 2023-07-05
+  [Incompatibe Changes]
+    * The following Native APIs were removed.
+      int32_t (*init_env)(SPVM_ENV* env);
+
 0.989019 2023-07-04
   [Changes]
     * spvm_module_file.h and spvm_module_c were added to include and src directories.

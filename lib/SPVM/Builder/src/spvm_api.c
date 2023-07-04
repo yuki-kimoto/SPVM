@@ -270,7 +270,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_has_interface,
     SPVM_API_print,
     SPVM_API_print_stderr,
-    SPVM_API_init_env,
+    NULL, // reserved168
     SPVM_API_call_init_blocks,
     NULL, // reserved170
     SPVM_API_new_stack,
@@ -360,11 +360,6 @@ SPVM_OBJECT* SPVM_API_new_object_common_v2(SPVM_ENV* env, SPVM_VALUE* stack, siz
   }
   
   return object;
-}
-
-int32_t SPVM_API_init_env(SPVM_ENV* env) {
-  
-  return 0;
 }
 
 void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
@@ -3942,9 +3937,6 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
   
   // Set the runtime
   new_env->runtime = env->runtime;
-  
-  // Initialize env
-  new_env->init_env(new_env);
   
   return new_env;
 }

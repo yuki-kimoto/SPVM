@@ -182,7 +182,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   165 has_interface
   166 print
   167 print_stderr
-  168 init_env
+  168 reserved168
   169 call_init_blocks
   170 reserved170
   171 new_stack
@@ -1019,13 +1019,9 @@ Gets a new C<string> object that is the type name of the object.
 
 Creates a new environment that is ready to call methods.
 
-1. Create a new environment using the L<"new_env_raw"> native API.
+1. Create a new environment using the L</"new_env_raw"> native API.
 
-2. Set the current compiler to the new enviroment.
-
-3. Initialize the environment using the L<"init_env"> native API
-
-The number of memory blocks is shared with the original execution environment.
+2. Set the current runtime to the new enviroment.
 
 If this method cannnot allocate memory for the new environment, return NULL.
 
@@ -1035,13 +1031,13 @@ Note that L</"call_init_blocks"> need to be called before calling user methods b
 
   void (*free_env)(SPVM_ENV* env);
 
-Frees an environment that is created by the L<"new_env"> native API.
+Frees an environment that is created by the L</"new_env"> native API.
 
 =head2 memory_blocks_count
 
   void* memory_blocks_count;
 
-Unused from v0.9508+. The count of memory blocks is managed in L<"runtime">.
+Unused from v0.9508+. The count of memory blocks is managed in L</"runtime">.
 
 =head2 get_chars
 
@@ -1709,12 +1705,6 @@ If the string is C<NULL>, nothing is printed.
 Prints the characters of the string to stderr.
 
 If the string is C<NULL>, nothing is printed.
-
-=head2 init_env
-
-  int32_t (*init_env)(SPVM_ENV* env);
-
-Initialize the environment.
 
 =head2 call_init_blocks
   
