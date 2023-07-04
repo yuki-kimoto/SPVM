@@ -2212,72 +2212,72 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
     else if (op_use_stack->length > 0) {
       SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
       
-      const char* basic_type_name = op_use->uv.use->op_type->uv.type->unresolved_basic_type_name;
-      int32_t basic_type_name_length = strlen(basic_type_name);
+      const char* module_name = op_use->uv.use->op_type->uv.type->unresolved_basic_type_name;
+      int32_t module_name_length = strlen(module_name);
       
-      // Check the basic type name
+      // Check the module name
       {
-        // A basic type name must begin with an upper case character
-        if (islower(basic_type_name[0])) {
-          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+        // A module name must begin with an upper case character
+        if (islower(module_name[0])) {
+          SPVM_COMPILER_error(compiler, "The module name \"%s\" must begin with an upper case character.\n  at %s line %d", module_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // Part names of the basic type name begin with lower case
-        int32_t basic_type_part_name_is_invalid = 0;
-        int32_t basic_type_name_length = strlen(basic_type_name);
-        for (int32_t i = 0; i < basic_type_name_length; i++) {
+        // Part names of the module name begin with lower case
+        int32_t module_part_name_is_invalid = 0;
+        int32_t module_name_length = strlen(module_name);
+        for (int32_t i = 0; i < module_name_length; i++) {
           if (i > 1) {
-            if (basic_type_name[i - 2] == ':' && basic_type_name[i - 1] == ':') {
-              if (islower(basic_type_name[i])) {
-                SPVM_COMPILER_error(compiler, "The part names of the \"%s\" basic type must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+            if (module_name[i - 2] == ':' && module_name[i - 1] == ':') {
+              if (islower(module_name[i])) {
+                SPVM_COMPILER_error(compiler, "The part names of the \"%s\" module must begin with an upper case character.\n  at %s line %d", module_name, op_use->file, op_use->line);
                 return 0;
               }
             }
           }
         }
         
-        // A basic type name cannnot conatain "__"
-        if (strstr(basic_type_name, "__")) {
-          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot constain \"__\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+        // A module name cannnot conatain "__"
+        if (strstr(module_name, "__")) {
+          SPVM_COMPILER_error(compiler, "The module name \"%s\" cannnot constain \"__\".\n  at %s line %d", module_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // A basic type name cannnot end with "::"
-        if (basic_type_name_length >= 2 && basic_type_name[basic_type_name_length - 2] == ':' && basic_type_name[basic_type_name_length - 1] == ':' ) {
-          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot end with \"::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+        // A module name cannnot end with "::"
+        if (module_name_length >= 2 && module_name[module_name_length - 2] == ':' && module_name[module_name_length - 1] == ':' ) {
+          SPVM_COMPILER_error(compiler, "The module name \"%s\" cannnot end with \"::\".\n  at %s line %d", module_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // A basic type name cannnot contains "::::".
-        if (strstr(basic_type_name, "::::")) {
-          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot contains \"::::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+        // A module name cannnot contains "::::".
+        if (strstr(module_name, "::::")) {
+          SPVM_COMPILER_error(compiler, "The module name \"%s\" cannnot contains \"::::\".\n  at %s line %d", module_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // A basic type name cannnot begin with \"$::\"
-        if (basic_type_name_length >= 2 && basic_type_name[0] == ':' && basic_type_name[1] == ':') {
-          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot begin with \"::\".\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+        // A module name cannnot begin with \"$::\"
+        if (module_name_length >= 2 && module_name[0] == ':' && module_name[1] == ':') {
+          SPVM_COMPILER_error(compiler, "The module name \"%s\" cannnot begin with \"::\".\n  at %s line %d", module_name, op_use->file, op_use->line);
           return 0;
         }
         
-        // A basic type name cannnot begin with a number
-        if (basic_type_name_length >= 1 && isdigit(basic_type_name[0])) {
-          SPVM_COMPILER_error(compiler, "The basic type name \"%s\" cannnot begin with a number.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+        // A module name cannnot begin with a number
+        if (module_name_length >= 1 && isdigit(module_name[0])) {
+          SPVM_COMPILER_error(compiler, "The module name \"%s\" cannnot begin with a number.\n  at %s line %d", module_name, op_use->file, op_use->line);
           return 0;
         }
       }
       
-      SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+      SPVM_BASIC_TYPE* found_module = SPVM_HASH_get(compiler->basic_type_symtable, module_name, strlen(module_name));
       
-      if (found_basic_type) {
+      if (found_module) {
         continue;
       }
       else {
-        // Create moudle relative file name from basic type name by changing :: to / and add ".spvm"
-        int32_t cur_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
+        // Create moudle relative file name from module name by changing :: to / and add ".spvm"
+        int32_t cur_rel_file_length = (int32_t)(strlen(module_name) + 6);
         char* cur_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, cur_rel_file_length + 1);
-        const char* ch_ptr_orig = basic_type_name;
+        const char* ch_ptr_orig = module_name;
         char* ch_ptr_to = cur_rel_file;
         while (*ch_ptr_orig) {
           if (*ch_ptr_orig == ':' && *(ch_ptr_orig + 1) == ':') {
@@ -2297,7 +2297,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         
         char* cur_file = NULL;
         
-        SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
+        SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
         
         const char* include_dir = NULL;
         if (!module_file) {
@@ -2349,7 +2349,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" basic type. The module file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, cur_rel_file, include_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" module. The module file \"%s\" is not found in (%s).\n  at %s line %d", module_name, cur_rel_file, include_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }
@@ -2377,18 +2377,18 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               source[source_length] = '\0';
               
               SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-              module_file->module_name = basic_type_name;
+              module_file->module_name = module_name;
               module_file->file = cur_file;
               module_file->rel_file = cur_rel_file;
               module_file->dir = include_dir;
               module_file->content = source;
               module_file->content_length = source_length;
-              SPVM_COMPILER_add_module_file(compiler, basic_type_name, module_file);
+              SPVM_COMPILER_add_module_file(compiler, module_name, module_file);
             }
           }
         }
         
-        module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
+        module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
         
         if (module_file) {
           // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
@@ -2396,7 +2396,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           compiler->cur_source_length = module_file->content_length;
           compiler->cur_include_dir = include_dir;
           compiler->cur_rel_file = cur_rel_file;
-          compiler->cur_rel_file_basic_type_name = basic_type_name;
+          compiler->cur_rel_file_basic_type_name = module_name;
          
           // If we get current module file path, set it, otherwise set module relative file path
           if (cur_file) {
@@ -2420,7 +2420,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         else {
           // If module is not found and the module is used in require syntax, compilation errors don't occur.
           if (op_use->uv.use->is_require) {
-            SPVM_HASH_set(compiler->if_require_not_found_basic_type_name_symtable, basic_type_name, strlen(basic_type_name), (void*)basic_type_name);
+            SPVM_HASH_set(compiler->if_require_not_found_basic_type_name_symtable, module_name, strlen(module_name), (void*)module_name);
             continue;
           }
         }

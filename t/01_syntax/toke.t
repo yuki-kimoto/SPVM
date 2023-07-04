@@ -43,35 +43,35 @@ use Test::More;
 {
   {
     my $source = 'class myclass;';
-    compile_not_ok($source, qr|The basic type name "myclass" must begin with an upper case character|);
+    compile_not_ok($source, qr|The module name "myclass" must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass::foo;';
-    compile_not_ok($source, qr|The part names of the "Myclass::foo" basic type must begin with an upper case character|);
+    compile_not_ok($source, qr|The part names of the "Myclass::foo" module must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass::Foo::bar;';
-    compile_not_ok($source, qr|The part names of the "Myclass::Foo::bar" basic type must begin with an upper case character|);
+    compile_not_ok($source, qr|The part names of the "Myclass::Foo::bar" module must begin with an upper case character|);
   }
   {
     my $source = 'class Myclass__Foo;';
-    compile_not_ok($source, qr|The basic type name "Myclass__Foo" cannnot constain "__"|);
+    compile_not_ok($source, qr|The module name "Myclass__Foo" cannnot constain "__"|);
   }
   {
     my $source = 'class Myclass::;';
-    compile_not_ok($source, qr|The basic type name "Myclass::" cannnot end with "::"|);
+    compile_not_ok($source, qr|The module name "Myclass::" cannnot end with "::"|);
   }
   {
     my $source = 'class MyClass::::Foo;';
-    compile_not_ok($source, qr|The basic type name "MyClass::::Foo" cannnot contains "::::"|);
+    compile_not_ok($source, qr|The module name "MyClass::::Foo" cannnot contains "::::"|);
   }
   {
     my $source = 'class ::MyClass;';
-    compile_not_ok($source, qr|The basic type name "::MyClass" cannnot begin with "::"|);
+    compile_not_ok($source, qr|The module name "::MyClass" cannnot begin with "::"|);
   }
   {
     my $source = 'class 6MyClass;';
-    compile_not_ok($source, qr|The basic type name "6MyClass" cannnot begin with a number|);
+    compile_not_ok($source, qr|The module name "6MyClass" cannnot begin with a number|);
   }
 }
 
@@ -79,7 +79,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use NotFoundClass; }';
-    compile_not_ok($source, qr|\QFailed to load the "NotFoundClass" basic type. The module file "NotFoundClass.spvm" is not found|);
+    compile_not_ok($source, qr|\QFailed to load the "NotFoundClass" module. The module file "NotFoundClass.spvm" is not found|);
   }
 }
 
