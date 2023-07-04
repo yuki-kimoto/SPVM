@@ -411,60 +411,6 @@ sub get_spvm_core_perl_module_file_names {
   return \@spvm_builder_module_file_names;
 }
 
-sub get_spvm_core_source_file_names {
-  
-  my @spvm_core_source_file_names = qw(
-    spvm_allocator.c
-    spvm_allow.c
-    spvm_api_allocator.c
-    spvm_api.c
-    spvm_api_compiler.c
-    spvm_api_precompile.c
-    spvm_api_runtime.c
-    spvm_api_string_buffer.c
-    spvm_array_field_access.c
-    spvm_attribute.c
-    spvm_basic_type.c
-    spvm_block.c
-    spvm_call_method.c
-    spvm_case_info.c
-    spvm_check.c
-    spvm_class_var_access.c
-    spvm_class_var.c
-    spvm_compiler.c
-    spvm_constant.c
-    spvm_dumper.c
-    spvm_field_access.c
-    spvm_field.c
-    spvm_hash.c
-    spvm_interface.c
-    spvm_list.c
-    spvm_method.c
-    spvm_module_file.c
-    spvm_native.c
-    spvm_op.c
-    spvm_opcode_builder.c
-    spvm_opcode.c
-    spvm_opcode_list.c
-    spvm_precompile.c
-    spvm_runtime.c
-    spvm_strerror.c
-    spvm_string_buffer.c
-    spvm_string.c
-    spvm_switch_info.c
-    spvm_toke.c
-    spvm_type.c
-    spvm_use.c
-    spvm_var.c
-    spvm_var_decl.c
-    spvm_vm.c
-    spvm_yacc.c
-    spvm_yacc_util.c
-  );
-
-  return \@spvm_core_source_file_names;
-}
-
 sub get_spvm_core_header_file_names {
   
   my @spvm_core_header_file_names = qw(
@@ -528,6 +474,60 @@ sub get_spvm_core_header_file_names {
   );
   
   return \@spvm_core_header_file_names;
+}
+
+sub get_spvm_core_source_file_names {
+  
+  my @spvm_core_source_file_names = qw(
+    spvm_allocator.c
+    spvm_allow.c
+    spvm_api_allocator.c
+    spvm_api.c
+    spvm_api_compiler.c
+    spvm_api_precompile.c
+    spvm_api_runtime.c
+    spvm_api_string_buffer.c
+    spvm_array_field_access.c
+    spvm_attribute.c
+    spvm_basic_type.c
+    spvm_block.c
+    spvm_call_method.c
+    spvm_case_info.c
+    spvm_check.c
+    spvm_class_var_access.c
+    spvm_class_var.c
+    spvm_compiler.c
+    spvm_constant.c
+    spvm_dumper.c
+    spvm_field_access.c
+    spvm_field.c
+    spvm_hash.c
+    spvm_interface.c
+    spvm_list.c
+    spvm_method.c
+    spvm_module_file.c
+    spvm_native.c
+    spvm_op.c
+    spvm_opcode_builder.c
+    spvm_opcode.c
+    spvm_opcode_list.c
+    spvm_precompile.c
+    spvm_runtime.c
+    spvm_strerror.c
+    spvm_string_buffer.c
+    spvm_string.c
+    spvm_switch_info.c
+    spvm_toke.c
+    spvm_type.c
+    spvm_use.c
+    spvm_var.c
+    spvm_var_decl.c
+    spvm_vm.c
+    spvm_yacc.c
+    spvm_yacc_util.c
+  );
+
+  return \@spvm_core_source_file_names;
 }
 
 sub get_spvm_compiler_and_runtime_module_file_names {
