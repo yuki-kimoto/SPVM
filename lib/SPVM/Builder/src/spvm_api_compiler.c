@@ -15,6 +15,7 @@
 #include "spvm_method.h"
 #include "spvm_string_buffer.h"
 #include "spvm_allocator.h"
+#include "spvm_string.h"
 
 SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
   void* env_compiler_init[]  = {
@@ -60,7 +61,10 @@ int32_t SPVM_API_COMPILER_get_start_line(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
-  SPVM_COMPILER_set_start_file(compiler, start_file);
+  if (start_file) {
+    SPVM_STRING* start_file_string = SPVM_STRING_new(compiler, start_file, strlen(start_file));
+    SPVM_COMPILER_set_start_file(compiler, start_file_string->value);
+  }
 }
 
 const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
@@ -68,8 +72,11 @@ const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
   return start_file;
 }
 
-void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {  
-  SPVM_COMPILER_add_include_dir(compiler, include_dir);
+void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {
+  if (include_dir) {
+    SPVM_STRING* include_dir_string = SPVM_STRING_new(compiler, include_dir, strlen(include_dir));
+    SPVM_COMPILER_add_include_dir(compiler, include_dir_string->value);
+  }
 }
 
 int32_t SPVM_API_COMPILER_get_include_dirs_length (SPVM_COMPILER* compiler) {
