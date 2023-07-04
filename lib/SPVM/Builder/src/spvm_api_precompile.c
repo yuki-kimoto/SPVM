@@ -41,10 +41,10 @@ SPVM_RUNTIME* SPVM_API_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
   return SPVM_PRECOMPILE_get_runtime(precompile);
 }
 
-void SPVM_API_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
-  SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, basic_type_name);
+void SPVM_API_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* module_name) {
+  SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, module_name);
 }
 
-void SPVM_API_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name, const char* method_name) {
-  SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, basic_type_name, method_name);
+void SPVM_API_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* module_name, const char* method_name) {
+  SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, module_name, method_name);
 }
