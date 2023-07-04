@@ -776,10 +776,10 @@ void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   const char* basic_type_name = type->basic_type->name;
   
   if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN) {
-    const char* if_require_not_found_basic_type_name = SPVM_HASH_get(compiler->if_require_not_found_module_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
+    const char* if_require_not_found_module_name = SPVM_HASH_get(compiler->if_require_not_found_module_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
     
-    if (!if_require_not_found_basic_type_name) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" basic type is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
+    if (!if_require_not_found_module_name) {
+      SPVM_COMPILER_error(compiler, "The \"%s\" class is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
       return;
     }
   }
@@ -1043,7 +1043,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
       if (strstr(abs_method_name, "SUPER::") == abs_method_name) {
         SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
         if (parent_basic_type) {
-          // Search the method of the super basic type
+          // Search the method of the super class
           found_method = SPVM_CHECK_search_method(compiler, parent_basic_type, method_name);
         }
       }
