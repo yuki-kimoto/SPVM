@@ -41,7 +41,7 @@ SPVM_RUNTIME* SPVM_PRECOMPILE_get_runtime(SPVM_PRECOMPILE* precompile) {
   return precompile->runtime;
 }
 
-void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
+void SPVM_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
   SPVM_RUNTIME* runtime = precompile->runtime;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
@@ -67,7 +67,7 @@ void SPVM_PRECOMPILE_build_source(SPVM_PRECOMPILE* precompile, SPVM_STRING_BUFFE
       int32_t anon_basic_type_id = SPVM_API_RUNTIME_get_basic_type_anon_basic_type_id(runtime, basic_type_anon_basic_types_base, anon_basic_type_index);
       void* anon_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, anon_basic_type_id);
       const char* anon_basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, anon_basic_type);
-      SPVM_PRECOMPILE_build_source(precompile, string_buffer, anon_basic_type_name);
+      SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, anon_basic_type_name);
     }
   }
   

@@ -30,6 +30,9 @@
       -  void (*free_object)(void* precompile);
       +  void (*free_instance)(void* precompile);
 
+      -  void (*build_source)(void* precompile, void* string_buffer, const char* basic_type_name);
+      +  void (*build_module_source)(void* precompile, void* string_buffer, const char* basic_type_name);
+
     * The following Native Allocator APIs were changed.
 
       -  void* (*new_object)();

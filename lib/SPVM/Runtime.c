@@ -185,7 +185,7 @@ int32_t SPVM__Runtime__build_precompile_source(SPVM_ENV* env, SPVM_VALUE* stack)
   
   env->api->precompile->set_runtime(precompile, runtime);
   
-  env->api->precompile->build_source(precompile, string_buffer, basic_type_name);
+  env->api->precompile->build_module_source(precompile, string_buffer, basic_type_name);
   
   env->api->precompile->free_instance(precompile);
 
