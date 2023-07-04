@@ -32,7 +32,6 @@
 #include "spvm_implement.h"
 
 #include "spvm_api_compiler.h"
-#include "spvm_api_precompile.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 
@@ -47,9 +46,6 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
   // Env Compiler
   SPVM_ENV_COMPILER* env_compiler = SPVM_API_COMPILER_new_env();
   
-  // Env Precompile
-  SPVM_ENV_PRECOMPILE* env_precompile = SPVM_API_PRECOMPILE_new_env();
-  
   // Env Runtime
   SPVM_ENV_RUNTIME* env_runtime = SPVM_API_RUNTIME_new_env();
   
@@ -58,7 +54,6 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     env_allocator,
     env_string_buffer,
     env_compiler,
-    env_precompile,
     env_runtime,
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
@@ -1599,7 +1594,6 @@ void SPVM_API_free_env_raw(SPVM_ENV* env) {
   free(env->api->allocator);
   free(env->api->string_buffer);
   free(env->api->compiler);
-  free(env->api->precompile);
   free(env->api->runtime);
   free(env->api);
   

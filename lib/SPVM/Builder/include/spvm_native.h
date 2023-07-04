@@ -29,9 +29,6 @@ typedef struct spvm_env_compiler SPVM_ENV_COMPILER;
 struct spvm_env_runtime;
 typedef struct spvm_env_runtime SPVM_ENV_RUNTIME;
 
-struct spvm_env_precompile;
-typedef struct spvm_env_precompile SPVM_ENV_PRECOMPILE;
-
 struct spvm_env_string_buffer;
 typedef struct spvm_env_string_buffer SPVM_ENV_STRING_BUFFER;
 
@@ -478,15 +475,6 @@ struct spvm_env_compiler {
   void (*clear_include_dirs)(void* compiler);
 };
 
-struct spvm_env_precompile {
-  void* (*new_instance)(void);
-  void (*free_instance)(void* precompile);
-  void (*set_runtime)(void* precompile, void* runtime);
-  void* (*get_runtime)(void* precompile);
-  void (*build_module_source)(void* precompile, void* string_buffer, const char* basic_type_name);
-  void (*build_method_source)(void* precompile, void* string_buffer, const char* basic_type_name, const char* method_name);
-};
-
 SPVM_ENV* SPVM_NATIVE_new_env_raw();
 SPVM_ENV* SPVM_NATIVE_new_env_prepared();
 
@@ -506,7 +494,6 @@ struct spvm_env_api {
   SPVM_ENV_ALLOCATOR* allocator;
   SPVM_ENV_STRING_BUFFER* string_buffer;
   SPVM_ENV_COMPILER* compiler;
-  SPVM_ENV_PRECOMPILE* precompile;
   SPVM_ENV_RUNTIME* runtime;
 };
 
