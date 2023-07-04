@@ -36,6 +36,7 @@
 #include "spvm_call_method.h"
 #include "spvm_var.h"
 #include "spvm_string.h"
+#include "spvm_module_file.h"
 
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class_var.h"
@@ -71,6 +72,12 @@ void SPVM_COMPILER_add_source(SPVM_COMPILER* compiler, const char* basic_type_na
   SPVM_STRING_BUFFER* source_buffer = SPVM_STRING_BUFFER_new(compiler->allocator, length, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   SPVM_STRING_BUFFER_add_len(source_buffer, (char*)source, strlen(source));
   SPVM_HASH_set(compiler->module_file_symtable, basic_type_name, strlen(basic_type_name), (void*)source_buffer);
+}
+
+SPVM_MODULE_FILE* SPVM_COMPILER_get_moduel_file(SPVM_COMPILER* compiler, const char* basic_type_name) {
+  SPVM_MODULE_FILE* module_file = SPVM_HASH_get(compiler->module_file_symtable, basic_type_name, strlen(basic_type_name));
+  
+  return module_file;
 }
 
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category) {
