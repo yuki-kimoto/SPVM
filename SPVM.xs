@@ -5072,7 +5072,7 @@ build_precompile_source(...)
   
   env->api->precompile->free_instance(precompile);
 
-  const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
+  const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
 

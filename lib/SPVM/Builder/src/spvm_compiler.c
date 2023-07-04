@@ -740,7 +740,7 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     int32_t string_pool_base = 0;
     for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-      memcpy((char*)((intptr_t)runtime_codes_ptr + string_pool_base), basic_type->string_pool->value, basic_type->string_pool->length);
+      memcpy((char*)((intptr_t)runtime_codes_ptr + string_pool_base), basic_type->string_pool->string, basic_type->string_pool->length);
       string_pool_base += basic_type->string_pool->length;
     }
   }

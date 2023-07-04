@@ -23,7 +23,7 @@ String buffer native APIs have its IDs.
 
   0 new_instance
   1 free_instance
-  2 get_value
+  2 get_string
   3 get_length
 
 =head1 String Buffer Native APIs
@@ -40,9 +40,9 @@ Create a new temporary string buffer object.
 
 Free the string buffer object.
 
-=head2 get_value
+=head2 get_string
 
-  const char* (*get_value)(void* string_buffer);
+  const char* (*get_string)(void* string_buffer);
 
 Get the bytes of the string value of the string buffer object.
 

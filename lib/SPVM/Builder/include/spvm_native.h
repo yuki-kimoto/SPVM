@@ -488,6 +488,28 @@ struct spvm_env_precompile {
 SPVM_ENV* SPVM_NATIVE_new_env_raw();
 SPVM_ENV* SPVM_NATIVE_new_env_prepared();
 
+struct spvm_env_allocator {
+  void* (*new_instance)(void);
+  void (*free_instance)(void* allocator);
+};
+
+struct spvm_env_string_buffer {
+  void* (*new_instance)(void* allocator, int32_t capacity);
+  void (*free_instance)(void* string_buffer);
+  const char* (*get_string)(void* string_buffer);
+  int32_t (*get_length)(void* string_buffer);
+};
+
+struct spvm_env_api {
+  SPVM_ENV_ALLOCATOR* allocator;
+  SPVM_ENV_STRING_BUFFER* string_buffer;
+  SPVM_ENV_COMPILER* compiler;
+  SPVM_ENV_PRECOMPILE* precompile;
+  SPVM_ENV_RUNTIME* runtime;
+};
+
+#define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)
+
 enum {
   SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN,
   SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF,
@@ -530,27 +552,5 @@ enum {
   SPVM_NATIVE_C_TYPE_FLAG_REF = 1,
   SPVM_NATIVE_C_TYPE_FLAG_MUTABLE = 2,
 };
-
-struct spvm_env_allocator {
-  void* (*new_instance)(void);
-  void (*free_instance)(void* allocator);
-};
-
-struct spvm_env_string_buffer {
-  void* (*new_instance)(void* allocator, int32_t capacity);
-  void (*free_instance)(void* string_buffer);
-  const char* (*get_value)(void* string_buffer);
-  int32_t (*get_length)(void* string_buffer);
-};
-
-struct spvm_env_api {
-  SPVM_ENV_ALLOCATOR* allocator;
-  SPVM_ENV_STRING_BUFFER* string_buffer;
-  SPVM_ENV_COMPILER* compiler;
-  SPVM_ENV_PRECOMPILE* precompile;
-  SPVM_ENV_RUNTIME* runtime;
-};
-
-#define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)
 
 #endif

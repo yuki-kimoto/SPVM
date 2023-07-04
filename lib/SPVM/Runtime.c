@@ -189,7 +189,7 @@ int32_t SPVM__Runtime__build_precompile_source(SPVM_ENV* env, SPVM_VALUE* stack)
   
   env->api->precompile->free_instance(precompile);
 
-  const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
+  const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   void* obj_precompile_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
   
@@ -232,7 +232,7 @@ int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE*
   
   env->api->precompile->free_instance(precompile);
 
-  const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
+  const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   void* obj_precompile_method_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
 

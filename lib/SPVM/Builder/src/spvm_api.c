@@ -421,7 +421,7 @@ SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   
   int32_t string_buffer_length = string_buffer->length;
   
-  SPVM_OBJECT* dump = SPVM_API_new_string_raw(env, stack, string_buffer->value, string_buffer->length);
+  SPVM_OBJECT* dump = SPVM_API_new_string_raw(env, stack, string_buffer->string, string_buffer->length);
   
   SPVM_HASH_free(address_symtable);
   address_symtable = NULL;
