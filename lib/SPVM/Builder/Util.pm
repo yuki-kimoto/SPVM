@@ -17,51 +17,6 @@ use File::Find 'find';
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl script, not contain XS functions.
 
-sub get_spvm_dependent_files {
-  
-  my @spvm_dependent_files;
-  if (my $builder_loaded_file = $INC{'SPVM/Builder/Util.pm'}) {
-    my $builder_loaded_dir = $builder_loaded_file;
-    $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
-    
-    # SPVM::Builder module files
-    my $spvm_builder_module_file_names = &get_spvm_core_perl_module_file_names();
-    for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
-      my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
-      unless (-f $module_file) {
-        confess "Can't find $module_file";
-      }
-      push @spvm_dependent_files, $module_file;
-    }
-    
-    # SPVM core header files
-    my $spvm_core_header_file_names = &get_spvm_core_header_file_names();
-    for my $spvm_core_header_file_name (@$spvm_core_header_file_names) {
-      my $spvm_core_header_file = "$builder_loaded_dir/SPVM/Builder/include/$spvm_core_header_file_name";
-      unless (-f $spvm_core_header_file) {
-        confess "Can't find $spvm_core_header_file";
-      }
-      push @spvm_dependent_files, $spvm_core_header_file;
-    }
-    
-    # SPVM core source files
-    my $spvm_core_source_file_names  = &get_spvm_core_source_file_names();
-    for my $spvm_core_source_file_name (@$spvm_core_source_file_names) {
-      my $spvm_core_source_file = "$builder_loaded_dir/SPVM/Builder/src/$spvm_core_source_file_name";
-      unless (-f $spvm_core_source_file) {
-        confess "Can't find $spvm_core_source_file";
-      }
-      push @spvm_dependent_files, $spvm_core_source_file;
-    }
-  }
-  
-  unless (@spvm_dependent_files) {
-    confess "[Unexpected Error]SPVM source files are not found";
-  }
-  
-  return \@spvm_dependent_files;
-}
-
 sub need_generate {
   my ($opt) = @_;
   
@@ -377,19 +332,49 @@ sub create_make_rule {
   return $make_rule;
 }
 
-sub get_spvm_compiler_and_runtime_module_file_names {
-  my @spvm_compiler_and_runtime_module_file_names = qw(
-    SPVM/Compiler.c
-    SPVM/Compiler.spvm
-    SPVM/Env.c
-    SPVM/Env.spvm
-    SPVM/Runtime.c
-    SPVM/Runtime.spvm
-    SPVM/Stack.c
-    SPVM/Stack.spvm
-  );
+sub get_spvm_dependent_files {
   
-  return \@spvm_compiler_and_runtime_module_file_names;
+  my @spvm_dependent_files;
+  if (my $builder_loaded_file = $INC{'SPVM/Builder/Util.pm'}) {
+    my $builder_loaded_dir = $builder_loaded_file;
+    $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
+    
+    # SPVM::Builder module files
+    my $spvm_builder_module_file_names = &get_spvm_core_perl_module_file_names();
+    for my $spvm_builder_module_file_name (@$spvm_builder_module_file_names) {
+      my $module_file = "$builder_loaded_dir/$spvm_builder_module_file_name";
+      unless (-f $module_file) {
+        confess "Can't find $module_file";
+      }
+      push @spvm_dependent_files, $module_file;
+    }
+    
+    # SPVM core header files
+    my $spvm_core_header_file_names = &get_spvm_core_header_file_names();
+    for my $spvm_core_header_file_name (@$spvm_core_header_file_names) {
+      my $spvm_core_header_file = "$builder_loaded_dir/SPVM/Builder/include/$spvm_core_header_file_name";
+      unless (-f $spvm_core_header_file) {
+        confess "Can't find $spvm_core_header_file";
+      }
+      push @spvm_dependent_files, $spvm_core_header_file;
+    }
+    
+    # SPVM core source files
+    my $spvm_core_source_file_names  = &get_spvm_core_source_file_names();
+    for my $spvm_core_source_file_name (@$spvm_core_source_file_names) {
+      my $spvm_core_source_file = "$builder_loaded_dir/SPVM/Builder/src/$spvm_core_source_file_name";
+      unless (-f $spvm_core_source_file) {
+        confess "Can't find $spvm_core_source_file";
+      }
+      push @spvm_dependent_files, $spvm_core_source_file;
+    }
+  }
+  
+  unless (@spvm_dependent_files) {
+    confess "[Unexpected Error]SPVM source files are not found";
+  }
+  
+  return \@spvm_dependent_files;
 }
 
 sub get_spvm_core_perl_module_file_names {
@@ -543,6 +528,21 @@ sub get_spvm_core_header_file_names {
   );
   
   return \@spvm_core_header_file_names;
+}
+
+sub get_spvm_compiler_and_runtime_module_file_names {
+  my @spvm_compiler_and_runtime_module_file_names = qw(
+    SPVM/Compiler.c
+    SPVM/Compiler.spvm
+    SPVM/Env.c
+    SPVM/Env.spvm
+    SPVM/Runtime.c
+    SPVM/Runtime.spvm
+    SPVM/Stack.c
+    SPVM/Stack.spvm
+  );
+  
+  return \@spvm_compiler_and_runtime_module_file_names;
 }
 
 sub get_config_file_from_module_name {
