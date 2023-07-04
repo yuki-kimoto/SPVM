@@ -2268,9 +2268,9 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         }
       }
       
-      SPVM_BASIC_TYPE* found_module = SPVM_HASH_get(compiler->basic_type_symtable, module_name, strlen(module_name));
+      SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, module_name, strlen(module_name));
       
-      if (found_module) {
+      if (basic_type) {
         continue;
       }
       else {
