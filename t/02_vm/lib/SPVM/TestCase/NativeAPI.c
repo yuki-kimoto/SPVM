@@ -2174,8 +2174,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_precompile_indexes(SPVM_ENV*
   
   void** env_array = (void**)env->api->precompile;
 
-  if ((void*)&env->api->precompile->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->precompile->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->precompile->new_instance != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->precompile->free_instance != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->set_runtime != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->get_runtime != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->precompile->build_module_source != &env_array[4]) { stack[0].ival = 0; return 0; }
@@ -2192,9 +2192,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_string_buffer_indexes(SPVM_E
   
   void** env_array = (void**)env->api->string_buffer;
 
-  if ((void*)&env->api->string_buffer->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->string_buffer->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->string_buffer->get_value != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->string_buffer->new_instance != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->string_buffer->free_instance != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->string_buffer->get_string != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->string_buffer->get_length != &env_array[3]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
@@ -2208,8 +2208,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_allocator_indexes(SPVM_ENV* 
   
   void** env_array = (void**)env->api->allocator;
 
-  if ((void*)&env->api->allocator->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->allocator->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->allocator->new_instance != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->allocator->free_instance != &env_array[1]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
@@ -2222,8 +2222,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_indexes(SPVM_ENV* e
   
   void** env_array = (void**)env->api->compiler;
 
-  if ((void*)&env->api->compiler->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->compiler->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->new_instance != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->free_instance != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->set_start_line != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_start_line != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->set_start_file != &env_array[4]) { stack[0].ival = 0; return 0; }
@@ -2248,8 +2248,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   
   void** env_array = (void**)env->api->runtime;
 
-  if ((void*)&env->api->runtime->new_object != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->free_object != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->new_instance != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->free_instance != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_opcodes != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved3 != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_runtime_codes != &env_array[4]) { stack[0].ival = 0; return 0; }
@@ -2820,20 +2820,20 @@ int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env
   
   {
     // New allocator
-    void* allocator = env->api->allocator->new_object();
+    void* allocator = env->api->allocator->new_instance();
     
     // New string buffer
-    void* string_buffer = env->api->string_buffer->new_object(allocator, 0);
+    void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
 
-    void* precompile = env->api->precompile->new_object();
+    void* precompile = env->api->precompile->new_instance();
     
     env->api->precompile->set_runtime(precompile, env->runtime);
     
     env->api->precompile->build_method_source(precompile, string_buffer, "TestCase::NativeAPI", "get_class_var_byte_by_name");
     
-    env->api->precompile->free_object(precompile);
+    env->api->precompile->free_instance(precompile);
 
-    const char* string_buffer_value = env->api->string_buffer->get_value(string_buffer);
+    const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
     int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
     
     if (!strstr(string_buffer_value, "TestCase::NativeAPI")) {
@@ -2845,10 +2845,10 @@ int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env
     }
     
     // Free string buffer
-    env->api->string_buffer->free_object(string_buffer);
+    env->api->string_buffer->free_instance(string_buffer);
 
     // Free allocator
-    env->api->allocator->free_object(allocator);
+    env->api->allocator->free_instance(allocator);
   }
   
   stack[0].ival = success;
