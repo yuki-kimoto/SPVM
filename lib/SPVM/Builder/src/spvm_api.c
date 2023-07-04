@@ -49,6 +49,16 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
   // Env Runtime
   SPVM_ENV_RUNTIME* env_runtime = SPVM_API_RUNTIME_new_env();
   
+  // Adjust alignment SPVM_VALUE
+  int32_t object_header_size = sizeof(SPVM_OBJECT);
+  if (object_header_size % sizeof(SPVM_VALUE) != 0) {
+    object_header_size += (sizeof(SPVM_VALUE) - object_header_size % sizeof(SPVM_VALUE));
+  }
+  assert(object_header_size % sizeof(SPVM_VALUE) == 0);
+  
+  // Object header byte size
+  env_runtime->object_header_size = (void*)(intptr_t)object_header_size;
+  
   // Env API
   void* env_api_init[]  = {
     env_allocator,
@@ -353,18 +363,6 @@ SPVM_OBJECT* SPVM_API_new_object_common_v2(SPVM_ENV* env, SPVM_VALUE* stack, siz
 }
 
 int32_t SPVM_API_init_env(SPVM_ENV* env) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  // Adjust alignment SPVM_VALUE
-  int32_t object_header_size = sizeof(SPVM_OBJECT);
-  if (object_header_size % sizeof(SPVM_VALUE) != 0) {
-    object_header_size += (sizeof(SPVM_VALUE) - object_header_size % sizeof(SPVM_VALUE));
-  }
-  assert(object_header_size % sizeof(SPVM_VALUE) == 0);
-  
-  // Object header byte size
-  env->api->runtime->object_header_size = (void*)(intptr_t)object_header_size;
   
   return 0;
 }
