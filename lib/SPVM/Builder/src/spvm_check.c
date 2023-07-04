@@ -567,7 +567,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         SPVM_METHOD* found_required_method = SPVM_CHECK_search_method(compiler, basic_type, interface_required_method->name);
         
         if (!found_required_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" basic type must have the \"%s\" method that is defined as a required method in the \"%s\" class.\n  at %s line %d", basic_type->name, interface_required_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" class.\n  at %s line %d", basic_type->name, interface_required_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
           return;
         }
       }
@@ -898,7 +898,7 @@ void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_ac
     op_field_access->uv.field_access->field = found_field;
   }
   else {
-    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" basic type or its super classes.\n  at %s line %d", field_name, basic_type->name, op_field_access->file, op_field_access->line);
+    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" class and its super classes.\n  at %s line %d", field_name, basic_type->name, op_field_access->file, op_field_access->line);
     return;
   }
 }
@@ -1089,7 +1089,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
         call_method->method = found_method;
       }
       else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" basic type or its super classes .\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found in the \"%s\" class and its super classes .\n  at %s line %d", method_name, basic_type->name, op_call_method->file, op_call_method->line);
         return;
       }
     }
@@ -1956,7 +1956,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               SPVM_BASIC_TYPE* cur_basic_type = method->current_basic_type;
               if (!SPVM_CHECK_can_access(compiler, cur_basic_type, new_basic_type, new_basic_type->access_control_type)) {
                 if (!SPVM_OP_is_allowed(compiler, cur_basic_type, new_basic_type)) {
-                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" basic type cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, cur_basic_type->name, op_new->file, op_new->line);
+                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, cur_basic_type->name, op_new->file, op_new->line);
                   return;
                 }
               }
@@ -2850,7 +2850,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 
                 if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, class_var_access_basic_type, class_var_access->class_var->access_control_type)) {
                   if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, class_var_access_basic_type)) {
-                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable of the \"%s\" basic type cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_basic_type->name,  method->current_basic_type->name, op_class_var_access->file, op_class_var_access->line);
+                    SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_basic_type->name,  method->current_basic_type->name, op_class_var_access->file, op_class_var_access->line);
                     return;
                   }
                 }
@@ -2889,7 +2889,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
 
             if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, call_method->method->current_basic_type, call_method->method->access_control_type)) {
               if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, call_method->method->current_basic_type)) {
-                SPVM_COMPILER_error(compiler, "The %s \"%s\" method of the \"%s\" basic type cannnot be called from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->current_basic_type->name,  method->current_basic_type->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The %s \"%s\" method in the \"%s\" class cannnot be called from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->current_basic_type->name,  method->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }

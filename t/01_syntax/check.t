@@ -339,7 +339,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () {  new Int; } }';
-    compile_not_ok($source, q|The object of the private "Int" basic type cannnot be created from the current class "MyClass"|);
+    compile_not_ok($source, q|The object of the private "Int" class cannnot be created from the current class "MyClass"|);
   }
 }
 
@@ -860,7 +860,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { MyClass2->foo();  } }',
       'class MyClass2 { static private method foo : void () {} }'
     ];
-    compile_not_ok($source, q|The private "foo" method of the "MyClass2" basic type cannnot be called from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "foo" method in the "MyClass2" class cannnot be called from the current class "MyClass"|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
@@ -883,7 +883,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { $MyClass2::FOO;  } }',
       'class MyClass2 { our $FOO : private int; }'
     ];
-    compile_not_ok($source, q|The private "$FOO" class variable of the "MyClass2" basic type cannnot be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "$FOO" class variable in the "MyClass2" class cannnot be accessed from the current class "MyClass"|);
   }
 }
 
@@ -919,7 +919,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->{foo}; } }';
-    compile_not_ok($source, q|The "foo" field is not found in the "MyClass" basic type or its super classes|);
+    compile_not_ok($source, q|The "foo" field is not found in the "MyClass" class and its super classes|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';
@@ -1059,7 +1059,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" basic type or its super classes|);
+    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class and its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 1; $var->new; } }';
@@ -1094,11 +1094,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" basic type or its super classes|);
+    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class and its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" basic type or its super classes|);
+    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class and its super classes|);
   }
   {
     my $source = [
@@ -1106,7 +1106,7 @@ use Test::More;
       'class MySockaddrIn extends MySockaddr : public;',
       'class MySockaddr : public;',
     ];
-    compile_not_ok($source, q|The "port" method is not found in the "MySockaddrIn" basic type or its super classes|);
+    compile_not_ok($source, q|The "port" method is not found in the "MySockaddrIn" class and its super classes|);
   }
 }
 
@@ -1211,7 +1211,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; }';
-    compile_not_ok($source, q|The "MyClass" basic type must have the "to_string" method that is defined as a required method in the "Stringable" class|);
+    compile_not_ok($source, q|The "MyClass" class must have the "to_string" method that is defined as a required method in the "Stringable" class|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';
