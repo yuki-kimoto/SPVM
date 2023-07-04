@@ -473,6 +473,7 @@ struct spvm_env_compiler {
   const char* (*get_error_message)(void* compiler, int32_t index);
   int32_t* (*create_runtime_codes)(void* compiler, void* allocator);
   void (*clear_include_dirs)(void* compiler);
+  void (*add_module_file)(void* compiler, const char* module_name, const char* file, const char* dir, const char* rel_file, const char* content, int32_t content_length);
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw();

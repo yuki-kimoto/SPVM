@@ -34,6 +34,7 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_get_error_message,
     SPVM_API_COMPILER_create_runtime_codes,
     SPVM_API_COMPILER_clear_include_dirs,
+    SPVM_API_COMPILER_add_module_file,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));

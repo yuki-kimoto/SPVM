@@ -40,6 +40,7 @@ Compiler native APIs have its IDs.
   11 get_error_message
   12 create_runtime_codes
   13 clear_include_dirs
+  14 add_module_file
 
 =head1 Compiler Native APIs
 
@@ -126,6 +127,10 @@ Creates SPVM 32bit codes using a L<allocator|SPVM::Document::NativeAPI::Allocato
   void (*clear_include_dirs)(SPVM_COMPILER* compiler);
 
 Clear the class searching directories. The class searching directories are freed.
+
+=head2 add_module_file
+
+void (*add_module_file)(void* compiler, const char* module_name, const char* file, const char* dir, const char* rel_file, const char* content, int32_t content_length);
 
 =head1 Copyright & License
 
