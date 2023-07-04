@@ -604,7 +604,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
             if (strcmp(method->name, interface_method->name) == 0) {
               if (method->is_class_method) {
                 if (!interface_method->is_class_method) {
-                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must an instance method because the \"%s\" method is defined as an instance method in the \"%s\" class.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must be an instance method. This method is an interface method in the \"%s\" interface.\n  at %s line %d", method->name, basic_type->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
                   return;
                 }
               }
