@@ -1,7 +1,8 @@
 0.989019 2023-07-04
   [Changes]
     * spvm_module_file.h and spvm_module_c were added to include and src directories.
-    * Compilation error messages in the tokenizer were improved.
+    * Compilation error messages in toke.c were improved.
+    * Compilation error messages in op.c were improved.
   [Incompatibe Changes]
     * The no_compiler_api option in the SPVM::Builder::Config::Exe module was removed.
     * The no_precompile option in the SPVM::Builder::Config::Exe module was removed.

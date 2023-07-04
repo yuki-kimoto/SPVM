@@ -307,9 +307,9 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   if (!basic_type->is_anon) {
     assert(!islower(basic_type_name[0]));
     
-    // If basic type name is different from the basic type name corresponding to the module file, compile error occur.
+    // If module name is different from the module name corresponding to the module file, compile error occur.
     if (strcmp(basic_type_name, compiler->cur_rel_file_module_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The basic type name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->cur_rel_file_module_name, op_module->file, op_module->line);
+      SPVM_COMPILER_error(compiler, "The module name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->cur_rel_file_module_name, op_module->file, op_module->line);
       return op_module;
     }
     
@@ -1594,13 +1594,13 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   int32_t int32_max_length = 10;
   
   // Create anon method module name
-  // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method basic type name become Foo::Bar::anon::123::32. This is uniqe in whole program.
+  // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method module name become Foo::Bar::anon::123::32. This is uniqe in whole program.
   const char* anon_method_defined_rel_file_basic_type_name = compiler->cur_rel_file_module_name;
   int32_t anon_method_defined_line = op_method->line;
   int32_t anon_method_defined_column = op_method->column;
   int32_t anon_method_basic_type_name_length = 6 + strlen(anon_method_defined_rel_file_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
   
-  // Anon basic type name
+  // Anon module name
   char* name_basic_type_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_basic_type_name_length + 1);
   sprintf(name_basic_type_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_basic_type_name, anon_method_defined_line, anon_method_defined_column);
 
