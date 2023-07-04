@@ -381,7 +381,7 @@ sub get_spvm_dependent_files {
   }
   
   unless (@spvm_dependent_files) {
-    confess "[Unexpected Error]SPVM source files are not found";
+    confess "[Unexpected Error]SPVM dependent files are not found";
   }
   
   return \@spvm_dependent_files;
