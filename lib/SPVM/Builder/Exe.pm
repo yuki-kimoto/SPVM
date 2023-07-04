@@ -714,9 +714,6 @@ EOS
   // New runtime
   void* runtime = env->api->runtime->new_instance();
   
-  // Runtime allocator
-  void* runtime_allocator = env->api->runtime->get_allocator(runtime);
-  
   // Create SPVM 32bit codes
   int32_t* runtime_codes = SPVM_BOOTSTRAP_get_runtime_codes();
   
