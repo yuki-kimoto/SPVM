@@ -27,6 +27,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_method.h"
 #include "spvm_string.h"
+#include "spvm_module_file.h"
 
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
@@ -2296,10 +2297,10 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         
         char* cur_file = NULL;
         
-        SPVM_STRING_BUFFER* found_source_buffer = SPVM_HASH_get(compiler->module_file_symtable, basic_type_name, strlen(basic_type_name));
+        SPVM_STRING_BUFFER* found_module_file = SPVM_HASH_get(compiler->module_file_symtable, basic_type_name, strlen(basic_type_name));
         
         const char* include_dir = NULL;
-        if (!found_source_buffer) {
+        if (!found_module_file) {
           
           // Search module file
           FILE* fh = NULL;
@@ -2381,13 +2382,13 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           }
         }
         
-        found_source_buffer = SPVM_HASH_get(compiler->module_file_symtable, basic_type_name, strlen(basic_type_name));
+        found_module_file = SPVM_HASH_get(compiler->module_file_symtable, basic_type_name, strlen(basic_type_name));
         
-        if (found_source_buffer) {
+        if (found_module_file) {
           
           // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-          compiler->cur_source = (char*)found_source_buffer->value;
-          compiler->cur_source_length = found_source_buffer->length;
+          compiler->cur_source = (char*)found_module_file->value;
+          compiler->cur_source_length = found_module_file->length;
           compiler->cur_include_dir = include_dir;
           compiler->cur_rel_file = cur_rel_file;
           compiler->cur_rel_file_basic_type_name = basic_type_name;
