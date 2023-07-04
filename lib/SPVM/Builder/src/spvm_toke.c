@@ -2396,7 +2396,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           compiler->cur_source_length = module_file->content_length;
           compiler->cur_include_dir = include_dir;
           compiler->cur_rel_file = cur_rel_file;
-          compiler->cur_rel_file_basic_type_name = module_name;
+          compiler->cur_rel_file_module_name = module_name;
          
           // If we get current module file path, set it, otherwise set module relative file path
           if (cur_file) {

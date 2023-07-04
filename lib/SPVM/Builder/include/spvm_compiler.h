@@ -33,7 +33,7 @@ struct spvm_compiler {
   const char* cur_rel_file;
   
   // Current parsed basic type name
-  const char* cur_rel_file_basic_type_name;
+  const char* cur_rel_file_module_name;
   
   // Current parsed source
   char* cur_source;
