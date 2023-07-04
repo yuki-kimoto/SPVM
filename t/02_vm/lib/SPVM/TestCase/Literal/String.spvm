@@ -718,7 +718,7 @@ ef"
     return 1;
   }
 
-  static method hiredoc_like_lf : int () {
+  static method heredoc_like_lf : int () {
     
     my $string =
 "ab
