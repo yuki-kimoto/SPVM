@@ -166,7 +166,7 @@ sub detect_quiet {
   return $quiet;
 }
 
-sub build_precompile_source_file {
+sub build_precompile_module_source_file {
   my ($self, $module_name, $options) = @_;
 
   my $precompile_source = $options->{precompile_source};

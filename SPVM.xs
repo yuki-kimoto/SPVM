@@ -5046,7 +5046,7 @@ set_native_method_address(...)
 }
 
 SV*
-build_precompile_source(...)
+build_precompile_module_source(...)
   PPCODE:
 {
   SV* sv_runtime = ST(0);

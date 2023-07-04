@@ -164,7 +164,7 @@ int32_t SPVM__Runtime__set_precompile_method_address(SPVM_ENV* env, SPVM_VALUE* 
   return 0;
 }
 
-int32_t SPVM__Runtime__build_precompile_source(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Runtime__build_precompile_module_source(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e = 0;
   

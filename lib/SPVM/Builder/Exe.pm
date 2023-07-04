@@ -976,9 +976,9 @@ sub compile_module_precompile_source_file {
     mkpath $build_src_dir;
     
     my $module_file = $self->runtime->get_module_file($module_name);
-    my $precompile_source = $self->runtime->build_precompile_source($module_name);
+    my $precompile_source = $self->runtime->build_precompile_module_source($module_name);
     
-    $builder_cc->build_precompile_source_file(
+    $builder_cc->build_precompile_module_source_file(
       $module_name,
       {
         output_dir => $build_src_dir,
