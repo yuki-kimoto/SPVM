@@ -377,6 +377,21 @@ sub create_make_rule {
   return $make_rule;
 }
 
+sub get_spvm_compiler_and_runtime_module_file_names {
+  my @spvm_compiler_and_runtime_module_file_names = qw(
+    SPVM/Compiler.c
+    SPVM/Compiler.spvm
+    SPVM/Env.c
+    SPVM/Env.spvm
+    SPVM/Runtime.c
+    SPVM/Runtime.spvm
+    SPVM/Stack.c
+    SPVM/Stack.spvm
+  );
+  
+  return \@spvm_compiler_and_runtime_module_file_names;
+}
+
 sub get_spvm_core_perl_module_file_names {
   my @spvm_builder_module_file_names = qw(
     SPVM/BlessedObject/Array.pm

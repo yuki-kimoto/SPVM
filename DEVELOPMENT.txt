@@ -125,6 +125,9 @@ DEVELOPERS NOTE
     
       find lib | grep -P '(Builder|BlessedObject|ExchangeAPI|Global|SPVM\.pm)' | grep '\.pm' | perl -p -e 's|lib/||' | sort
       
+    Get SPVM Compilation and Rintime module files
+    
+      find lib | grep -P '(Compiler|Runtime|Stack|Env)' | grep -P '\.(spvm|c)$' | perl -p -e 's|lib/||' | sort
 
     Get the linkgs of SPVM modules for POD
     
