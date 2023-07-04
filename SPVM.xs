@@ -5064,14 +5064,8 @@ build_precompile_source(...)
   // New string buffer
   void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
 
-  void* precompile = env->api->precompile->new_instance();
+  env->api->runtime->build_precompile_module_source(runtime, string_buffer, basic_type_name);
   
-  env->api->precompile->set_runtime(precompile, runtime);
-  
-  env->api->precompile->build_module_source(precompile, string_buffer, basic_type_name);
-  
-  env->api->precompile->free_instance(precompile);
-
   const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
