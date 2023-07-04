@@ -17,9 +17,9 @@ use File::Find 'find';
 # SPVM::Builder::Util is used from Makefile.PL
 # so this class must be wrote as pure perl script, not contain XS functions.
 
-sub get_spvm_core_files {
+sub get_spvm_dependent_files {
   
-  my @spvm_core_files;
+  my @spvm_dependent_files;
   if (my $builder_loaded_file = $INC{'SPVM/Builder/Util.pm'}) {
     my $builder_loaded_dir = $builder_loaded_file;
     $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
@@ -31,7 +31,7 @@ sub get_spvm_core_files {
       unless (-f $module_file) {
         confess "Can't find $module_file";
       }
-      push @spvm_core_files, $module_file;
+      push @spvm_dependent_files, $module_file;
     }
     
     # SPVM core header files
@@ -41,7 +41,7 @@ sub get_spvm_core_files {
       unless (-f $spvm_core_header_file) {
         confess "Can't find $spvm_core_header_file";
       }
-      push @spvm_core_files, $spvm_core_header_file;
+      push @spvm_dependent_files, $spvm_core_header_file;
     }
     
     # SPVM core source files
@@ -51,15 +51,15 @@ sub get_spvm_core_files {
       unless (-f $spvm_core_source_file) {
         confess "Can't find $spvm_core_source_file";
       }
-      push @spvm_core_files, $spvm_core_source_file;
+      push @spvm_dependent_files, $spvm_core_source_file;
     }
   }
   
-  unless (@spvm_core_files) {
+  unless (@spvm_dependent_files) {
     confess "[Unexpected Error]SPVM source files are not found";
   }
   
-  return \@spvm_core_files;
+  return \@spvm_dependent_files;
 }
 
 sub need_generate {
@@ -70,14 +70,14 @@ sub need_generate {
   my $output_file = $opt->{output_file};
   
   # SPVM::Builder classes
-  my @spvm_core_files = @{&get_spvm_core_files};
+  my $spvm_dependent_files = &get_spvm_dependent_files;
   
-  my $spvm_core_files_mtime_max;
-  $spvm_core_files_mtime_max = 0;
-  for my $spvm_core_file (@spvm_core_files) {
+  my $spvm_dependent_files_mtime_max;
+  $spvm_dependent_files_mtime_max = 0;
+  for my $spvm_core_file (@$spvm_dependent_files) {
     my $spvm_core_file_mtime = (stat($spvm_core_file))[9];
-    if ($spvm_core_file_mtime > $spvm_core_files_mtime_max) {
-      $spvm_core_files_mtime_max = $spvm_core_file_mtime;
+    if ($spvm_core_file_mtime > $spvm_dependent_files_mtime_max) {
+      $spvm_dependent_files_mtime_max = $spvm_core_file_mtime;
     }
   }
 
@@ -104,9 +104,9 @@ sub need_generate {
       if ($exists_input_file_at_least_one) {
         my $output_file_mtime = (stat($output_file))[9];
         
-        if (defined $spvm_core_files_mtime_max) {
-          if ($spvm_core_files_mtime_max > $input_files_mtime_max) {
-            $input_files_mtime_max = $spvm_core_files_mtime_max;
+        if (defined $spvm_dependent_files_mtime_max) {
+          if ($spvm_dependent_files_mtime_max > $input_files_mtime_max) {
+            $input_files_mtime_max = $spvm_dependent_files_mtime_max;
           }
         }
         
