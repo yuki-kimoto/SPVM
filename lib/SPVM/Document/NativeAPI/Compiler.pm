@@ -20,9 +20,9 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
 
 =head1 Description
 
-SPVM compiler native APIs are the public APIs to use compile SPVM classes.
+SPVM Compiler Native APIs are the APIs to compile SPVM modules.
 
-=head1 Ids Of Compiler Native APIs
+=head1 IDs of Compiler Native APIs
 
 Compiler native APIs have its IDs.
 

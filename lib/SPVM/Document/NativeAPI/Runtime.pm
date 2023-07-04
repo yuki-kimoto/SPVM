@@ -4,20 +4,23 @@ SPVM::Document::NativeAPI::Runtime - SPVM Runtime Native APIs
 
 =head1 Usage
 
-  // New a runtime
-  void* runtime = env->api->runtime->new_instance();
+  // Runtime Native API
+  SSPVM_ENV_RUNTIME* runtime_api = env->api->runtime;
+  
+  // New a runtime object
+  SPVM_ENV_RUNTIME* runtime = runtime_api->new_instance();
   
   // Build the runtime
   env->api->runtime->build(runtime, runtime_codes);
   
-  // Free a runtime
+  // Free a runtime object
   env->api->runtime->free_instance(runtime);
 
 =head1 Description
 
-SPVM runtime native APIs are the public APIs to manipulate the runtime information.
+SPVM Runtime Native APIs are the APIs to manipulate runtime information.
 
-=head1 Ids Of Runtime Native APIs
+=head1 IDs of Runtime Native APIs
 
 Runtime native APIs have its IDs.
 

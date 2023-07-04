@@ -5,7 +5,7 @@ SPVM::Document::NativeAPI::Precompile - SPVM Precompilation Native APIs
 =head1 Usage
 
   // Precompilation Native API
-  void* precompile_api = env->api->precompile;
+  SPVM_ENV_PRECOMPILE* precompile_api = env->api->precompile;
   
   // New precompilation instance
   void* precompile = precompile_api->new_instance();
@@ -46,25 +46,25 @@ Frees a Precompile Native API object.
 
   void (*set_runtime)(void* precompile, void* runtime);
 
-Sets a L<runtime|/SPVM::Document::NativeAPI::Runtime> object.
+Sets a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 =head2 get_runtime
 
   void* (*get_runtime)(void* precompile);
 
-Gets the L<runtime|/SPVM::Document::NativeAPI::Runtime> object.
+Gets the L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 =head2 build_module_source
 
   void (*build_module_source)(void* precompile, void* string_buffer, const char* module_name);
 
-Builds a C source code of a module for precompilation. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
+Builds a C source code of a module for precompilation. The content is added at the end of the string of a L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
 
 =head2 build_method_source
 
   void (*build_method_source)(void* precompile, void* string_buffer, const char* module_name, const char* method_name);
 
-Builds a C source code of a method. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
+Builds a C source code of a method. The content is added at the end of the string of a L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
 
 =head1 Copyright & License
 
