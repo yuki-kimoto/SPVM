@@ -32,7 +32,7 @@ Precompile native APIs have its IDs.
 
 =head2 new_object
 
-  void* (*new_object)();
+  void* (*new_object)(void);
 
 Creates a new Precompile Native API object.
 

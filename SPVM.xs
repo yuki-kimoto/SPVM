@@ -4721,7 +4721,7 @@ build_runtime(...)
   SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
 
   // Build runtime information
-  void* runtime = api_env->api->runtime->new_object(api_env);
+  void* runtime = api_env->api->runtime->new_object();
 
   // Runtime allocator
   void* runtime_allocator = api_env->api->runtime->get_allocator(runtime);

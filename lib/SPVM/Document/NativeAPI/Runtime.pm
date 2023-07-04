@@ -161,7 +161,7 @@ Runtime native APIs have its IDs.
 
 =head2 new_object
 
-  void* (*new_object)();
+  void* (*new_object)(void);
 
 =head2 free_object
 

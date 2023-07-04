@@ -77,7 +77,7 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   // Build runtime information
-  void* runtime = env->api->runtime->new_object(env);
+  void* runtime = env->api->runtime->new_object();
 
   // Runtime allocator
   void* runtime_allocator = env->api->runtime->get_allocator(runtime);
