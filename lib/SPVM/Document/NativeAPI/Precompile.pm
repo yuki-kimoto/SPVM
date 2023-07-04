@@ -1,23 +1,23 @@
 =head1 Name
 
-SPVM::Document::NativeAPI::Precompile - SPVM Precompile Native APIs
+SPVM::Document::NativeAPI::Precompile - SPVM Precompilation Native APIs
 
 =head1 Usage
 
-  // Precompile Native API
+  // Precompilation Native API
   void* precompile_api = env->api->precompile;
   
-  // New precompile
+  // New precompilation instance
   void* precompile = precompile_api->new_instance();
   
-  // Free precompile
+  // Free precompilation instance
   precompile_api->free_instance(precompile);
 
 =head1 Description
 
-SPVM Precompile Native APIs are public APIs to create precompile-source.
+SPVM Precompilation Native APIs are the APIs to create C source codes for precompilation.
 
-=head1 Ids Of Precompile Native APIs
+=head1 IDs of Precompile Native APIs
 
 Precompile native APIs have its IDs.
 
@@ -46,25 +46,25 @@ Frees a Precompile Native API object.
 
   void (*set_runtime)(void* precompile, void* runtime);
 
-Sets a runtime to the Precompile Native API object.
+Sets a L<runtime|/SPVM::Document::NativeAPI::Runtime> object.
 
 =head2 get_runtime
 
   void* (*get_runtime)(void* precompile);
 
-Gets the runtime from the Precompile Native API object.
+Gets the L<runtime|/SPVM::Document::NativeAPI::Runtime> object.
 
 =head2 build_module_source
 
-  void (*build_module_source)(void* precompile, void* string_buffer, const char* basic_type_name);
+  void (*build_module_source)(void* precompile, void* string_buffer, const char* module_name);
 
-Builds a precompiled class source. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
+Builds a C source code of a module for precompilation. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
 
 =head2 build_method_source
 
-  void (*build_method_source)(void* precompile, void* string_buffer, const char* basic_type_name, const char* method_name);
+  void (*build_method_source)(void* precompile, void* string_buffer, const char* module_name, const char* method_name);
 
-Builds a precompiled method source. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
+Builds a C source code of a method. The content is added at the end of the buffer of L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
 
 =head1 Copyright & License
 
