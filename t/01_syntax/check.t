@@ -883,7 +883,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { $MyClass2::FOO;  } }',
       'class MyClass2 { our $FOO : private int; }'
     ];
-    compile_not_ok($source, q|The private "$FOO" basic type variable of the "MyClass2" basic type cannnot be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "$FOO" class variable of the "MyClass2" basic type cannnot be accessed from the current class "MyClass"|);
   }
 }
 
