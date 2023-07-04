@@ -5,7 +5,7 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
 =head1 Usage
 
   // New compiler
-  void* compiler = env->api->compiler->new_object();
+  void* compiler = env->api->compiler->new_instance();
   
   // @INC
   env->api->compiler->add_include_dir(compiler, "lib");
@@ -16,7 +16,7 @@ SPVM::Document::NativeAPI::Compiler - SPVM Compiler Native APIs
   int32_t status = env->api->compiler->compile(compiler, "MyClass");
   
   // Free compiler
-  env->api->compiler->free_object(compiler);
+  env->api->compiler->free_instance(compiler);
 
 =head1 Description
 
@@ -26,8 +26,8 @@ SPVM compiler native APIs are the public APIs to use compile SPVM classes.
 
 Compiler native APIs have its IDs.
 
-  0  new_object
-  1  free_object
+  0  new_instance
+  1  free_instance
   2  set_start_line
   3  get_start_line
   4  set_start_file
@@ -43,15 +43,15 @@ Compiler native APIs have its IDs.
 
 =head1 Compiler Native APIs
 
-=head2 new_object
+=head2 new_instance
   
-  void* (*new_object)(void);
+  void* (*new_instance)(void);
 
 Creates a compiler object.
 
-=head2 free_object
+=head2 free_instance
   
-  void (*free_object)(void* compiler);
+  void (*free_instance)(void* compiler);
 
 Frees a compiler.
 

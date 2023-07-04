@@ -8,33 +8,33 @@ SPVM::Document::NativeAPI::Allocator - SPVM Allocator Native APIs
   void* allocator_api = env->api->allocator;
   
   // New allocator
-  void* allocator = allocator_api->new_object();
+  void* allocator = allocator_api->new_instance();
   
   // Free allocator
-  allocator_api->free_object(allocator);
+  allocator_api->free_instance(allocator);
 
 =head1 Description
 
 SPVM Allocator Native APIs are the public APIs to alloc/free memories.
 
-=head1 Ids Of Allocator Native APIs
+=head1 IDs of Allocator Native APIs
 
 Allocator native APIs have its IDs.
 
-  0 new_object
-  1 free_object
+  0 new_instance
+  1 free_instance
 
 =head1 Allocator Native APIs
 
-=head2 new_object
+=head2 new_instance
 
-  void* (*new_object)(void);
+  void* (*new_instance)(void);
 
 Create a new allocator object.
 
-=head2 free_object
+=head2 free_instance
 
-  void (*free_object)(void* allocator);
+  void (*free_instance)(void* allocator);
 
 Free an allocator object.
 
