@@ -1211,7 +1211,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; }';
-    compile_not_ok($source, q|The "MyClass" class must have the "to_string" method that is defined as a required method in the "Stringable" class|);
+    compile_not_ok($source, q|The "MyClass" class must implement the "to_string" method in the "Stringable" interface|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';

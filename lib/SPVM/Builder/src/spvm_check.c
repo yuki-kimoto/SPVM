@@ -567,7 +567,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         SPVM_METHOD* found_required_method = SPVM_CHECK_search_method(compiler, basic_type, interface_required_method->name);
         
         if (!found_required_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" class must have the \"%s\" method that is defined as a required method in the \"%s\" class.\n  at %s line %d", basic_type->name, interface_required_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+          SPVM_COMPILER_error(compiler, "The \"%s\" class must implement the \"%s\" method in the \"%s\" interface.\n  at %s line %d", basic_type->name, interface_required_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
           return;
         }
       }
