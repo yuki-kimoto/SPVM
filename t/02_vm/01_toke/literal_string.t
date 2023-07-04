@@ -7,6 +7,7 @@ use warnings;
 use Test::More;
 
 use SPVM 'TestCase::Literal::String';
+use SPVM 'TestCase::Literal::StringCRLF';
 
 
 
@@ -23,6 +24,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Literal::String->raw_escape_character);
   ok(SPVM::TestCase::Literal::String->var_expansion);
   ok(SPVM::TestCase::Literal::String->heredoc_like_lf);
+  ok(SPVM::TestCase::Literal::StringCRLF->heredoc_like_crlf);
   ok(SPVM::TestCase::Literal::String->string_literal_extra);
 }
 

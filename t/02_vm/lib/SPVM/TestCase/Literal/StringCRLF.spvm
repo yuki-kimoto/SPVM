@@ -1,0 +1,17 @@
+class TestCase::Literal::StringCRLF {
+  
+  static method heredoc_like_crlf : int () {
+    
+    my $string =
+"ab
+cd
+ef";
+
+    unless ($string eq "ab\ncd\nef") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+}

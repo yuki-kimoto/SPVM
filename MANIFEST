@@ -692,6 +692,7 @@ t/02_vm/lib/SPVM/TestCase/Literal/Character.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/FloatingPoint.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Integer.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/String.spvm
+t/02_vm/lib/SPVM/TestCase/Literal/StringCRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Undef.spvm
 t/02_vm/lib/SPVM/TestCase/LocalVar.spvm
 t/02_vm/lib/SPVM/TestCase/LogicalOperator.spvm
