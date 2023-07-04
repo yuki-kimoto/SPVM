@@ -99,7 +99,7 @@ struct spvm_compiler {
   SPVM_HASH* string_symtable;
   
   // Fail load class symtable
-  SPVM_HASH* if_require_not_found_basic_type_name_symtable;
+  SPVM_HASH* if_require_not_found_module_name_symtable;
   
   // Basic types
   SPVM_LIST* basic_types;

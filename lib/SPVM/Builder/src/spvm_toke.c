@@ -2420,7 +2420,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         else {
           // If module is not found and the module is used in require syntax, compilation errors don't occur.
           if (op_use->uv.use->is_require) {
-            SPVM_HASH_set(compiler->if_require_not_found_basic_type_name_symtable, module_name, strlen(module_name), (void*)module_name);
+            SPVM_HASH_set(compiler->if_require_not_found_module_name_symtable, module_name, strlen(module_name), (void*)module_name);
             continue;
           }
         }
