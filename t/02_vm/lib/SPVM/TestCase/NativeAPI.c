@@ -2169,23 +2169,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__check_native_api_precompile_indexes(SPVM_ENV* env, SPVM_VALUE* stack) {  
-  int32_t error = 0;
-  
-  void** env_array = (void**)env->api->precompile;
-
-  if ((void*)&env->api->precompile->new_instance != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->precompile->free_instance != &env_array[1]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->precompile->set_runtime != &env_array[2]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->precompile->get_runtime != &env_array[3]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->precompile->build_module_source != &env_array[4]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->precompile->build_method_source != &env_array[5]) { stack[0].ival = 0; return 0; }
-
-  stack[0].ival = 1;
-
-  return 0;
-}
-
 int32_t SPVM__TestCase__NativeAPI__check_native_api_string_buffer_indexes(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
