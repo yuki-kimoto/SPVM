@@ -22,6 +22,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Literal::String->unicode_escape_character);
   ok(SPVM::TestCase::Literal::String->raw_escape_character);
   ok(SPVM::TestCase::Literal::String->var_expansion);
+  ok(SPVM::TestCase::Literal::String->hiredoc_like_lf);
   ok(SPVM::TestCase::Literal::String->string_literal_extra);
 }
 

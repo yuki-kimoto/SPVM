@@ -718,6 +718,20 @@ ef"
     return 1;
   }
 
+  static method hiredoc_like_lf : int () {
+    
+    my $string =
+"ab
+cd
+ef";
+
+    unless ($string eq "ab\ncd\nef") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   static method string_literal_extra : int () {
 
     # String literal last character is \\
