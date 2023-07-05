@@ -586,7 +586,25 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   _setmode(fileno(stdin), _O_BINARY);
 #endif
   
-  SPVM_ENV* env = SPVM_NATIVE_new_env_prepared();
+  // Create env
+  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
+  
+  // Compiler
+  void* compiler = env->api->compiler->new_instance();
+  
+  void* runtime = SPVM_BOOTSTRAP_build_runtime(env, compiler);
+  
+  // Set runtime
+  env->runtime = runtime;
+  
+  // Free compiler
+  env->api->compiler->free_instance(compiler);
+  
+  // Set precompile method addresses
+  SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);
+  
+  // Set native method addresses
+  SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(env);
   
   SPVM_VALUE* stack = env->new_stack(env);
   
@@ -770,44 +788,6 @@ EOS
   return $source;
 }
 
-sub create_bootstrap_new_env_prepared_func_source {
-  my ($self) = @_;
-  
-  my $source = '';
-  
-  $source .= <<"EOS";
-SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
-EOS
-
-  $source .= <<"EOS";
-  
-  // Create env
-  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
-  
-  // Compiler
-  void* compiler = env->api->compiler->new_instance();
-  
-  void* runtime = SPVM_BOOTSTRAP_build_runtime(env, compiler);
-  
-  // Set runtime
-  env->runtime = runtime;
-  
-  // Free compiler
-  env->api->compiler->free_instance(compiler);
-  
-  // Set precompile method addresses
-  SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);
-  
-  // Set native method addresses
-  SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(env);
-  
-  return env;
-}
-EOS
-  
-  return $source;
-}
-
 sub create_bootstrap_set_precompile_method_addresses_func_source {
   my ($self) = @_;
 
@@ -906,9 +886,6 @@ sub create_bootstrap_source {
     
     # main function
     $bootstrap_source .= $self->create_bootstrap_main_func_source;
-    
-    # SPVM_NATIVE_new_env_prepared function
-    $bootstrap_source .= $self->create_bootstrap_new_env_prepared_func_source;
     
     # Set precompile method addresses function
     my $config_exe = $self->config;
