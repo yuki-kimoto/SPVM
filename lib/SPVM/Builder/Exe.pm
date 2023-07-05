@@ -711,7 +711,59 @@ sub create_bootstrap_build_runtime_source {
   
   $source .= <<"EOS";
 static void* SPVM_BOOTSTRAP_build_runtime(SPVM_ENV* env, void* compiler) {
-  return NULL;
+  
+EOS
+  
+  my $module_names = $self->get_module_names;
+  
+  my $compiler = $self->compiler;
+  
+  for my $module_name (@$module_names) {
+    my $module_file = $compiler->get_module_file($module_name);
+    
+    my $source_module_file = '';
+    
+    $source_module_file .= qq|  {\n|;
+
+    $source_module_file .= qq|    void* module_file = env->api->module_file->new_instance(compiler);\n|;
+    
+    $source_module_file .= qq|    env->api->module_file->set_module_name(compiler, module_file, "$module_name");\n|;
+    
+    if (defined $module_file->{file}) {
+      $source_module_file .= qq|    env->api->module_file->set_file(compiler, module_file, "$module_file->{file}");\n|;
+    }
+    
+    if (defined $module_file->{dir}) {
+      $source_module_file .= qq|    env->api->module_file->set_dir(compiler, module_file, "$module_file->{dir}");\n|;
+    }
+    
+    if (defined $module_file->{rel_file}) {
+      $source_module_file .= qq|    env->api->module_file->set_rel_file(compiler, module_file, "$module_file->{rel_file}");\n|;
+    }
+    
+    if (defined $module_file->{content}) {
+      my $content_espcaped = $module_file->{content};
+      
+      {
+        use bytes;
+        $content_espcaped =~ s/\\/\\\\/g;
+        $content_espcaped =~ s/"/\\"/g;
+        $content_espcaped =~ s/([^\p{PosixPrint}])/sprintf("\\x%02X", ord($1))/ge;
+      }
+      
+      $source_module_file .= qq|    env->api->module_file->set_content(compiler, module_file, "$content_espcaped");\n|;
+    }
+    
+    $source_module_file .= qq|    env->api->module_file->set_content_length(compiler, module_file, $module_file->{content_length});\n|;
+      
+    $source_module_file .= qq|    env->api->compiler->add_module_file(compiler, "$module_name", module_file);\n\n|;
+    
+    $source_module_file .= qq|  }\n|;
+    
+    $source .= $source_module_file;
+  }
+  
+  $source .= <<"EOS";
 }
 EOS
   

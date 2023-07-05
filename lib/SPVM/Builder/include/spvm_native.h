@@ -494,7 +494,7 @@ struct spvm_env_module_file {
   const char* (*get_content)(void* compiler, void* module_file);
   void (*set_content)(void* compiler, void* module_file, void* content);
   int32_t (*get_content_length)(void* compiler, void* module_file);
-  void (*set_content_length)(void* compiler, void* module_file, void* content_length);
+  void (*set_content_length)(void* compiler, void* module_file, int32_t content_length);
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw(void);

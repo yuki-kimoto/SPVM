@@ -103,6 +103,10 @@ SPVM::Test - SPVM test class
 
   static method main : int () {
     
+    {
+      my $string = "あいう";
+    }
+    
     my $start_file = CommandInfo->PROGRAM_NAME;
     
     my $args = CommandInfo->ARGV;

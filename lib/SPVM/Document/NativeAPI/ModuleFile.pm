@@ -82,7 +82,7 @@ Module File native APIs have its IDs.
 
 =head2 set_content_length
 
-  void (*set_content_length)(void* compiler, void* module_file, void* content_length);
+  void (*set_content_length)(void* compiler, void* module_file, int32_t content_length);
 
 =head1 Copyright & License
 
