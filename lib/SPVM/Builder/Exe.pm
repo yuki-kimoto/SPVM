@@ -115,6 +115,17 @@ sub config_file {
   }
 }
 
+sub compiler {
+  my $self = shift;
+  if (@_) {
+    $self->{compiler} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{compiler};
+  }
+}
+
 sub runtime {
   my $self = shift;
   if (@_) {
