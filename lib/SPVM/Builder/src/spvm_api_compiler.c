@@ -121,44 +121,11 @@ int32_t* SPVM_API_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_AL
   return runtime_codes;
 }
 
-void SPVM_API_COMPILER_add_module_file(
-  SPVM_COMPILER* compiler,
-  const char* module_name,
-  const char* file,
-  const char* dir,
-  const char* rel_file,
-  const char* content,
-  int32_t content_length
-) {
-  
-  SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-  
+void SPVM_API_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
   if (module_name) {
     SPVM_STRING* module_name_string = SPVM_STRING_new(compiler, module_name, strlen(module_name));
-    module_file->module_name = module_name_string->value;
+    module_name = module_name_string->value;
   }
-  
-  if (file) {
-    SPVM_STRING* file_string = SPVM_STRING_new(compiler, file, strlen(file));
-    module_file->file = file_string->value;
-  }
-  
-  if (dir) {
-    SPVM_STRING* dir_string = SPVM_STRING_new(compiler, dir, strlen(dir));
-    module_file->dir = dir_string->value;
-  }
-  
-  if (rel_file) {
-    SPVM_STRING* rel_file_string = SPVM_STRING_new(compiler, rel_file, strlen(rel_file));
-    module_file->rel_file = rel_file_string->value;
-  }
-  
-  if (content) {
-    SPVM_STRING* content_string = SPVM_STRING_new(compiler, content, content_length);
-    module_file->content = content_string->value;
-  }
-  
-  module_file->content_length = content_length;
   
   SPVM_COMPILER_add_module_file(compiler, module_name, module_file);
   
