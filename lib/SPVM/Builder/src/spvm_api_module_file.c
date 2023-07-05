@@ -19,7 +19,7 @@ SPVM_ENV_MODULE_FILE* SPVM_API_MODULE_FILE_new_env(void) {
     SPVM_API_MODULE_FILE_new_instance,
     SPVM_API_MODULE_FILE_get_module_name,
     SPVM_API_MODULE_FILE_set_module_name,
-    SPVM_API_MODULE_FILE_get_module_name,
+    SPVM_API_MODULE_FILE_get_file,
     SPVM_API_MODULE_FILE_set_file,
     SPVM_API_MODULE_FILE_get_dir,
     SPVM_API_MODULE_FILE_set_dir,
@@ -56,6 +56,11 @@ void SPVM_API_MODULE_FILE_set_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_F
   else {
     module_file->module_name = NULL;
   }
+}
+
+const char* SPVM_API_MODULE_FILE_get_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
+  const char* file = module_file->file;
+  return file;
 }
 
 void SPVM_API_MODULE_FILE_set_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* file) {

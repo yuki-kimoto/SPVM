@@ -4606,6 +4606,69 @@ create_compiler(...)
 }
 
 SV*
+get_module_file(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SV* sv_module_name = ST(1);
+  const char* module_name = SvPV_nolen(sv_module_name);
+  
+  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
+  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
+  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
+  
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+  
+  void* module_file = api_env->api->compiler->get_module_file(compiler, module_name);
+  SV* sv_module_file = &PL_sv_undef;
+  if (module_file) {
+    HV* hv_module_file = (HV*)sv_2mortal((SV*)newHV());
+    
+    (void)hv_store(hv_module_file, "module_name", strlen("module_name"), SvREFCNT_inc(sv_module_name), 0);
+    
+    const char* file = api_env->api->module_file->get_file(compiler, module_file);
+    if (file) {
+      SV* sv_file = sv_2mortal(newSVpv(file, 0));
+      (void)hv_store(hv_module_file, "file", strlen("file"), SvREFCNT_inc(sv_file), 0);
+    }
+    
+    const char* dir = api_env->api->module_file->get_dir(compiler, module_file);
+    if (dir) {
+      SV* sv_dir = sv_2mortal(newSVpv(dir, 0));
+      (void)hv_store(hv_module_file, "dir", strlen("dir"), SvREFCNT_inc(sv_dir), 0);
+    }
+    
+    const char* rel_file = api_env->api->module_file->get_rel_file(compiler, module_file);
+    if (rel_file) {
+      SV* sv_rel_file = sv_2mortal(newSVpv(rel_file, 0));
+      (void)hv_store(hv_module_file, "rel_file", strlen("rel_file"), SvREFCNT_inc(sv_rel_file), 0);
+    }
+    
+    const char* content = api_env->api->module_file->get_content(compiler, module_file);
+    if (content) {
+      SV* sv_content = sv_2mortal(newSVpv(content, 0));
+      (void)hv_store(hv_module_file, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
+    }
+    
+    int32_t content_length = api_env->api->module_file->get_content_length(compiler, module_file);
+    SV* sv_content_length = sv_2mortal(newSViv(content_length));
+    (void)hv_store(hv_module_file, "content_length", strlen("content_length"), SvREFCNT_inc(sv_content_length), 0);
+    
+    sv_module_file = sv_2mortal(newRV_inc((SV*)hv_module_file));
+  }
+  
+  XPUSHs(sv_module_file);
+  
+  XSRETURN(1);
+}
+
+SV*
 DESTROY(...)
   PPCODE:
 {

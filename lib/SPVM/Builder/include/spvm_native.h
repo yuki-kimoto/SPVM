@@ -485,6 +485,7 @@ struct spvm_env_module_file {
   void* (*new_instance)(void* compiler);
   const char* (*get_module_name)(void* compiler, void* module_file);
   void (*set_module_name)(void* compiler, void* module_file, void* module_name);
+  const char* (*get_file)(void* compiler, void* module_file);
   void (*set_file)(void* compiler, void* module_file, void* file);
   const char* (*get_dir)(void* compiler, void* module_file);
   void (*set_dir)(void* compiler, void* module_file, void* dir);
