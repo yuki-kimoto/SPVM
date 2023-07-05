@@ -196,6 +196,12 @@ sub new {
   
   $self->{builder} = $builder;
   
+  # Compile SPVM
+  my $compiler = SPVM::Builder::Compiler->new(
+    include_dirs => $builder->include_dirs
+  );
+  $self->{compiler} = $compiler;
+  
   return bless $self, $class;
 }
 
@@ -367,10 +373,8 @@ sub compile {
   # Module name
   my $module_name = $self->{module_name};
   
-  # Compile SPVM
-  my $compiler = SPVM::Builder::Compiler->new(
-    include_dirs => $builder->include_dirs
-  );
+  my $compiler = $self->compiler;
+  
   my $success = $compiler->compile($module_name, __FILE__, __LINE__);
   unless ($success) {
     $compiler->print_error_messages(*STDERR);
