@@ -8,6 +8,8 @@
   [New Features]
     * The following Native Compiler APIs were added.
       void (*add_module_file)(void* compiler, const char* module_name, const char* file, const char* dir, const char* rel_file, const char* content, int32_t content_length);
+    
+    * SPVM Module File Native APIs were added.
   
 0.989019 2023-07-04
   [Changes]

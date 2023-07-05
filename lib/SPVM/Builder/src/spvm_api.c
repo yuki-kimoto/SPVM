@@ -32,6 +32,7 @@
 #include "spvm_implement.h"
 
 #include "spvm_api_compiler.h"
+#include "spvm_api_module_file.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 
@@ -49,6 +50,9 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
   // Env Runtime
   SPVM_ENV_RUNTIME* env_runtime = SPVM_API_RUNTIME_new_env();
   
+  // Env module file
+  SPVM_ENV_MODULE_FILE* env_module_file = SPVM_API_MODULE_FILE_new_env();
+  
   // Adjust alignment SPVM_VALUE
   int32_t object_header_size = sizeof(SPVM_OBJECT);
   if (object_header_size % sizeof(SPVM_VALUE) != 0) {
@@ -65,6 +69,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     env_string_buffer,
     env_compiler,
     env_runtime,
+    env_module_file,
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));

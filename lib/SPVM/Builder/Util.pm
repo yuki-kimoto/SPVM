@@ -429,6 +429,7 @@ sub get_spvm_core_header_file_names {
     spvm_api_allocator.h
     spvm_api_compiler.h
     spvm_api.h
+    spvm_api_module_file.h
     spvm_api_runtime.h
     spvm_api_string_buffer.h
     spvm_array_field_access.h
@@ -437,11 +438,11 @@ sub get_spvm_core_header_file_names {
     spvm_block.h
     spvm_call_method.h
     spvm_case_info.h
+    spvm_check.h
     spvm_class_var_access.h
     spvm_class_var.h
     spvm_compiler.h
     spvm_constant.h
-    spvm_string.h
     spvm_dumper.h
     spvm_field_access.h
     spvm_field.h
@@ -453,22 +454,22 @@ sub get_spvm_core_header_file_names {
     spvm_module_file.h
     spvm_native.h
     spvm_object.h
-    spvm_check.h
-    spvm_opcode_list.h
     spvm_opcode_builder.h
     spvm_opcode.h
+    spvm_opcode_list.h
     spvm_op.h
     spvm_precompile.h
     spvm_public_api.h
     spvm_runtime_arg.h
     spvm_runtime_basic_type.h
     spvm_runtime_class_var.h
-    spvm_runtime_string.h
     spvm_runtime_field.h
     spvm_runtime.h
     spvm_runtime_method.h
+    spvm_runtime_string.h
     spvm_strerror.h
     spvm_string_buffer.h
+    spvm_string.h
     spvm_switch_info.h
     spvm_toke.h
     spvm_typedecl.h
@@ -493,6 +494,7 @@ sub get_spvm_core_source_file_names {
     spvm_api_allocator.c
     spvm_api.c
     spvm_api_compiler.c
+    spvm_api_module_file.c
     spvm_api_runtime.c
     spvm_api_string_buffer.c
     spvm_array_field_access.c

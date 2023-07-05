@@ -26,6 +26,9 @@ typedef struct spvm_env_api SPVM_ENV_API;
 struct spvm_env_compiler;
 typedef struct spvm_env_compiler SPVM_ENV_COMPILER;
 
+struct spvm_env_module_file;
+typedef struct spvm_env_module_file SPVM_ENV_MODULE_FILE;
+
 struct spvm_env_runtime;
 typedef struct spvm_env_runtime SPVM_ENV_RUNTIME;
 
@@ -476,8 +479,24 @@ struct spvm_env_compiler {
   void (*add_module_file)(void* compiler, const char* module_name, const char* file, const char* dir, const char* rel_file, const char* content, int32_t content_length);
 };
 
-SPVM_ENV* SPVM_NATIVE_new_env_raw();
-SPVM_ENV* SPVM_NATIVE_new_env_prepared();
+struct spvm_env_module_file {
+  SPVM_ENV_MODULE_FILE* (*new_env)(void);
+  void* (*new_instance)(void* compiler);
+  const char* (*get_module_name)(void* compiler, void* module_file);
+  void (*set_module_name)(void* compiler, void* module_file, void* module_name);
+  void (*set_file)(void* compiler, void* module_file, void* file);
+  const char* (*get_dir)(void* compiler, void* module_file);
+  void (*set_dir)(void* compiler, void* module_file, void* dir);
+  const char* (*get_rel_file)(void* compiler, void* module_file);
+  void (*set_rel_file)(void* compiler, void* module_file, void* rel_file);
+  const char* (*get_content)(void* compiler, void* module_file);
+  void (*set_content)(void* compiler, void* module_file, void* content);
+  int32_t (*get_content_length)(void* compiler, void* module_file);
+  void (*set_content_length)(void* compiler, void* module_file, void* content_length);
+};
+
+SPVM_ENV* SPVM_NATIVE_new_env_raw(void);
+SPVM_ENV* SPVM_NATIVE_new_env_prepared(void);
 
 struct spvm_env_allocator {
   void* (*new_instance)(void);
@@ -496,6 +515,7 @@ struct spvm_env_api {
   SPVM_ENV_STRING_BUFFER* string_buffer;
   SPVM_ENV_COMPILER* compiler;
   SPVM_ENV_RUNTIME* runtime;
+  SPVM_ENV_MODULE_FILE* module_file;
 };
 
 #define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)
