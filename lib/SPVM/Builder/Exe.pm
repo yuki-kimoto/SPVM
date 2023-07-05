@@ -771,13 +771,7 @@ EOS
   $source .= qq|    exit(255);\n|;
   $source .= qq|  }\n|;
   
-  $source .= qq|  void* runtime = env->api->runtime->new_instance();\n|;
-  
-  $source .= qq|  void* runtime_allocator = env->api->runtime->get_allocator(runtime);\n|;
-  
-  $source .= qq|  int32_t* runtime_codes = env->api->compiler->create_runtime_codes(compiler, runtime_allocator);\n|;
-  
-  $source .= qq|  env->api->runtime->build(runtime, runtime_codes);\n|;
+  $source .= qq|  void* runtime = env->api->compiler->build_runtime(compiler);\n|;
   
   $source .= qq|  return runtime;\n|;
   
