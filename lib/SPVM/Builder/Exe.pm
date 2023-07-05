@@ -529,9 +529,11 @@ EOS
     }
   }
 
-  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n";
+  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n\n";
 
-  $source .= "static int32_t* SPVM_BOOTSTRAP_get_runtime_codes();\n";
+  $source .= "static int32_t* SPVM_BOOTSTRAP_get_runtime_codes();\n\n";
+
+  $source .= "static void* SPVM_BOOTSTRAP_build_runtime(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* native_address) {
@@ -684,6 +686,23 @@ EOS
   return $source;
 }
 
+sub create_bootstrap_build_runtime_source {
+  my ($self) = @_;
+  
+  # Builder
+  my $builder = $self->builder;
+  
+  my $source = '';
+  
+  $source .= <<"EOS";
+static void* SPVM_BOOTSTRAP_build_runtime(SPVM_ENV* env, void* compiler) {
+  return NULL;
+}
+EOS
+  
+  return $source;
+}
+
 sub create_bootstrap_new_env_prepared_func_source {
   my ($self) = @_;
   
@@ -713,6 +732,8 @@ EOS
   
   // Compiler
   void* compiler = env->api->compiler->new_instance();
+  
+  void* new_runtime = SPVM_BOOTSTRAP_build_runtime(env, compiler);
   
   // New runtime
   void* runtime = env->api->runtime->new_instance();
@@ -853,6 +874,9 @@ sub create_bootstrap_source {
 
     # get_runtime_codes function
     $bootstrap_source .= $self->create_bootstrap_get_runtime_codes_func_source;
+
+    # get_runtime_codes function
+    $bootstrap_source .= $self->create_bootstrap_build_runtime_source;
 
     # Build source directory
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
