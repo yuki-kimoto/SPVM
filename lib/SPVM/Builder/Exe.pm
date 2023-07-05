@@ -678,29 +678,6 @@ EOS
   return $source;
 }
 
-sub create_bootstrap_get_runtime_codes_func_source {
-  my ($self) = @_;
-
-  # Builder
-  my $builder = $self->builder;
-
-  my $runtime_codes = SPVM::Builder::Runtime->get_runtime_codes($self->runtime);
-  my $runtime_codes_length = @$runtime_codes;
-  my $source = '';
-  
-  my $runtime_codes_str = join(",", @$runtime_codes);
-
-  $source .= "static int32_t SPVM_BOOTSTRAP_runtime_codes[$runtime_codes_length] = {$runtime_codes_str};\n";
-
-  $source .= <<"EOS";
-static int32_t* SPVM_BOOTSTRAP_get_runtime_codes() {
-  return SPVM_BOOTSTRAP_runtime_codes;
-}
-EOS
-  
-  return $source;
-}
-
 sub create_bootstrap_build_runtime_source {
   my ($self) = @_;
   
@@ -796,21 +773,8 @@ EOS
 sub create_bootstrap_new_env_prepared_func_source {
   my ($self) = @_;
   
-  # Builder
-  my $builder = $self->builder;
-  
-  # Module name
-  my $module_name = $self->module_name;
-  
-  # Module names
-  my $module_names = $self->get_module_names;
-  
   my $source = '';
   
-  my $set_precompile_method_addresses_source = '';
-  
-  my $config_exe = $self->config;
-  $set_precompile_method_addresses_source = "SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);";
   $source .= <<"EOS";
 SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
 EOS
@@ -823,25 +787,16 @@ EOS
   // Compiler
   void* compiler = env->api->compiler->new_instance();
   
-  void* new_runtime = SPVM_BOOTSTRAP_build_runtime(env, compiler);
-  
-  // New runtime
-  void* runtime = env->api->runtime->new_instance();
-  
-  // Create SPVM 32bit codes
-  int32_t* runtime_codes = SPVM_BOOTSTRAP_get_runtime_codes();
-  
-  // Build runtime
-  env->api->runtime->build(runtime, runtime_codes);
+  void* runtime = SPVM_BOOTSTRAP_build_runtime(env, compiler);
   
   // Set runtime
-  env->runtime = new_runtime;
+  env->runtime = runtime;
   
   // Free compiler
   env->api->compiler->free_instance(compiler);
   
   // Set precompile method addresses
-  $set_precompile_method_addresses_source
+  SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);
   
   // Set native method addresses
   SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(env);
@@ -951,23 +906,19 @@ sub create_bootstrap_source {
     
     # main function
     $bootstrap_source .= $self->create_bootstrap_main_func_source;
-
+    
     # SPVM_NATIVE_new_env_prepared function
     $bootstrap_source .= $self->create_bootstrap_new_env_prepared_func_source;
-
+    
     # Set precompile method addresses function
     my $config_exe = $self->config;
     $bootstrap_source .= $self->create_bootstrap_set_precompile_method_addresses_func_source;
-
+    
     # Set native method addresses function
     $bootstrap_source .= $self->create_bootstrap_set_native_method_addresses_func_source;
-
-    # get_runtime_codes function
-    $bootstrap_source .= $self->create_bootstrap_get_runtime_codes_func_source;
-
-    # get_runtime_codes function
+    
     $bootstrap_source .= $self->create_bootstrap_build_runtime_source;
-
+    
     # Build source directory
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
     mkpath $build_src_dir;
@@ -975,7 +926,7 @@ sub create_bootstrap_source {
     
     open my $bootstrap_source_fh, '>', $bootstrap_source_file
       or die "Can't open file $bootstrap_source_file:$!";
-
+    
     print $bootstrap_source_fh $bootstrap_source;
   };
   
