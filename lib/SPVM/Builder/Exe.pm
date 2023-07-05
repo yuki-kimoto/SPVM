@@ -719,7 +719,6 @@ EOS
   my $compiler = $self->compiler;
   
   for my $module_name (@$module_names) {
-    warn("AAA $module_name");
     my $module_file = $compiler->get_module_file($module_name);
     
     my $source_module_file = '';
@@ -772,10 +771,10 @@ EOS
   
   $source .= qq|  int32_t error_id = env->api->compiler->compile(compiler, \"$start_module_name\");\n|;
   
-  $source .= qq|  //if (error_id != 0) {\n|;
-  $source .= qq|  //  fprintf(stderr, "[Unexpected Compile Error]%s.", env->api->compiler->get_error_message(compiler, 0));\n|;
-  $source .= qq|  //  exit(255);\n|;
-  $source .= qq|  //}\n|;
+  $source .= qq|  if (error_id != 0) {\n|;
+  $source .= qq|    fprintf(stderr, "[Unexpected Compile Error]%s.", env->api->compiler->get_error_message(compiler, 0));\n|;
+  $source .= qq|    exit(255);\n|;
+  $source .= qq|  }\n|;
   
   $source .= <<"EOS";
 }
