@@ -478,6 +478,7 @@ struct spvm_env_compiler {
   void (*clear_include_dirs)(void* compiler);
   void* (*get_module_file)(void* compiler, const char* module_name);
   void (*add_module_file)(void* compiler, const char* module_name, void* module_file);
+  void* (*build_runtime)(void* compiler);
 };
 
 struct spvm_env_module_file {

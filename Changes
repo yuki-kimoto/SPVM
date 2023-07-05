@@ -10,7 +10,8 @@
     
       void* (*get_module_file)(void* compiler, const char* module_name);
       void (*add_module_file)(void* compiler, const char* module_name, void* module_file);
-    
+      void* (*build_runtime)(void* compiler);
+      
     * SPVM Module File Native APIs were added.
   
 0.989019 2023-07-04

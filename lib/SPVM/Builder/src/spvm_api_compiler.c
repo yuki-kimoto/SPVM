@@ -36,6 +36,7 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_clear_include_dirs,
     SPVM_API_COMPILER_get_module_file,
     SPVM_API_COMPILER_add_module_file,
+    SPVM_API_COMPILER_build_runtime,
   };
   SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
@@ -120,6 +121,13 @@ int32_t* SPVM_API_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_AL
   int32_t* runtime_codes = SPVM_COMPILER_create_runtime_codes(compiler, allocator);
   
   return runtime_codes;
+}
+
+SPVM_RUNTIME* SPVM_API_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
+  
+  SPVM_RUNTIME* runtime = SPVM_COMPILER_build_runtime(compiler);
+  
+  return runtime;
 }
 
 SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
