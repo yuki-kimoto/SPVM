@@ -4972,11 +4972,9 @@ get_basic_type_names(...)
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     void* basic_type = api_env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type);
-    if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-      const char* basic_type_name = api_env->api->runtime->get_basic_type_name(runtime, basic_type);
-      SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-      av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
-    }
+    const char* basic_type_name = api_env->api->runtime->get_basic_type_name(runtime, basic_type);
+    SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+    av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
   }
   
   api_env->free_env_raw(api_env);
