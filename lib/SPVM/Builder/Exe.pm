@@ -748,7 +748,7 @@ EOS
         use bytes;
         $content_espcaped =~ s/\\/\\\\/g;
         $content_espcaped =~ s/"/\\"/g;
-        $content_espcaped =~ s/([^\p{PosixPrint}])/sprintf("\\%03o", ord($1))/ge;
+        $content_espcaped =~ s/([^[:print:]])/sprintf("\\%03o", ord($1))/ge;
       }
       
       $source_module_file .= qq|    env->api->module_file->set_content(compiler, module_file, "$content_espcaped");\n|;
