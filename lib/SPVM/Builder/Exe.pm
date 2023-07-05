@@ -835,7 +835,7 @@ EOS
   env->api->runtime->build(runtime, runtime_codes);
   
   // Set runtime
-  env->runtime = runtime;
+  env->runtime = new_runtime;
   
   // Free compiler
   env->api->compiler->free_instance(compiler);
