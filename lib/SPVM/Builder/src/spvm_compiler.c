@@ -38,6 +38,7 @@
 #include "spvm_string.h"
 #include "spvm_module_file.h"
 
+#include "spvm_runtime.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
@@ -934,6 +935,17 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
   }
   
   return runtime_codes;
+}
+
+SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  
+  int32_t* runtime_codes = SPVM_COMPILER_create_runtime_codes(compiler, runtime->allocator);
+  
+  SPVM_RUNTIME_build(runtime, runtime_codes);
+  
+  return runtime;
 }
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {
