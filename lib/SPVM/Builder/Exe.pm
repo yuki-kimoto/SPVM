@@ -707,10 +707,13 @@ SPVM_ENV* SPVM_NATIVE_new_env_prepared() {
 EOS
 
   $source .= <<"EOS";
-
+  
   // Create env
   SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
-
+  
+  // Compiler
+  void* compiler = env->api->compiler->new_instance();
+  
   // New runtime
   void* runtime = env->api->runtime->new_instance();
   
@@ -722,6 +725,9 @@ EOS
   
   // Set runtime
   env->runtime = runtime;
+  
+  // Free compiler
+  env->api->compiler->free_instance(compiler);
   
   // Set precompile method addresses
   $set_precompile_method_addresses_source
