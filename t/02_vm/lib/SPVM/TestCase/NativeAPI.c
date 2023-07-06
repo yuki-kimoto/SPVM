@@ -2308,7 +2308,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved74 != &env_array[74]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->object_length_offset != &env_array[75]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_allocator != &env_array[76]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->build != &env_array[77]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved77 != &env_array[77]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved78 != &env_array[78]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_required_args_length != &env_array[79]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved80 != &env_array[80]) { stack[0].ival = 0; return 0; }

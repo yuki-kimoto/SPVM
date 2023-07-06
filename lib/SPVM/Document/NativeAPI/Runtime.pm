@@ -8,10 +8,7 @@ SPVM::Document::NativeAPI::Runtime - SPVM Runtime Native APIs
   SSPVM_ENV_RUNTIME* runtime_api = env->api->runtime;
   
   // New a runtime object
-  SPVM_ENV_RUNTIME* runtime = runtime_api->new_instance();
-  
-  // Build the runtime
-  env->api->runtime->build(runtime, runtime_codes);
+  void* runtime = runtime_api->new_instance();
   
   // Free a runtime object
   env->api->runtime->free_instance(runtime);
@@ -101,7 +98,7 @@ Runtime native APIs have its IDs.
   74 reserved74
   75 object_length_offset
   76 get_allocator
-  77 build
+  77 reserved77
   78 reserved78
   79 get_method_required_args_length
   80 reserved80

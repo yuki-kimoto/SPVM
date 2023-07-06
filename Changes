@@ -2,17 +2,19 @@
   [Incompatibe Changes]
     * The following Native APIs were removed.
       int32_t (*init_env)(SPVM_ENV* env);
+    
     * The following Native Runtime APIs were removed.
-      -  int32_t* (*get_runtime_codes)(void* runtime);
-      -  int32_t (*get_runtime_codes_length)(void* runtime);
+      - int32_t* (*get_runtime_codes)(void* runtime);
+      - int32_t (*get_runtime_codes_length)(void* runtime);
+      - void (*build)(void* runtime, int32_t* runtime_codes);
     
     * The following methods in the Runtime were removed.
      
       method get_runtime_codes : int[] ();
-
+      
     * The following Native Compiler APIs were removed.
       -  int32_t* (*create_runtime_codes)(void* compiler, void* allocator);
-
+    
   [Changes]
     * The start_file argument of the set_start_file method in the Native Compiler API was copied.
     * The include_dir argument of the add_include_dir method in the Native Compiler API was copied.
