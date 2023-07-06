@@ -752,6 +752,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_constant_strings[constant_string_index];
       runtime_constant_string->value = &runtime_basic_type->string_pool[constant_string->string_pool_index];
       runtime_constant_string->length = constant_string->length;
+      runtime_constant_string->index = constant_string->index;
+      runtime_constant_string->string_pool_index = constant_string->string_pool_index;
     }
     runtime_basic_type->constant_strings = runtime_constant_strings;
     runtime_basic_type->constant_strings_length = basic_type->constant_strings->length;
@@ -764,12 +766,15 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         runtime_class_var->index = class_var->index;
         runtime_class_var->basic_type = &runtime_basic_types[class_var->type->basic_type->id];
+        runtime_class_var->basic_type_id = class_var->type->basic_type->id;
         runtime_class_var->type_dimension = class_var->type->dimension;
         runtime_class_var->type_flag = class_var->type->flag;
         runtime_class_var->current_basic_type = &runtime_basic_types[class_var->current_basic_type->id];
+        runtime_class_var->current_basic_type_id = class_var->current_basic_type->id;
         
         SPVM_STRING* class_var_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->name, strlen(class_var->name));
         runtime_class_var->name = runtime_basic_type->constant_strings[class_var_name_string->index].value;
+        runtime_class_var->name_string_index = class_var_name_string->index;
       }
       runtime_basic_type->class_vars = runtime_class_vars;
       runtime_basic_type->class_vars_length = basic_type->class_vars->length;
@@ -784,12 +789,15 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_field->index = field->index;
         runtime_field->offset = field->offset;
         runtime_field->basic_type = &runtime_basic_types[field->type->basic_type->id];
+        runtime_field->basic_type_id = field->type->basic_type->id;
         runtime_field->type_dimension = field->type->dimension;
         runtime_field->type_flag = field->type->flag;
         runtime_field->current_basic_type = &runtime_basic_types[field->current_basic_type->id];
+        runtime_field->current_basic_type_id = field->current_basic_type->id;
         
         SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
         runtime_field->name = runtime_basic_type->constant_strings[field_name_string->index].value;
+        runtime_field->name_string_index = field_name_string->index;
       }
       runtime_basic_type->fields = runtime_fields;
       runtime_basic_type->fields_length = basic_type->fields->length;
@@ -806,6 +814,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         runtime_method->index = method->index;
         runtime_method->current_basic_type = &runtime_basic_types[method->current_basic_type->id];
+        runtime_method->current_basic_type_id = method->current_basic_type->id;
         runtime_method->is_class_method = method->is_class_method;
         runtime_method->is_init = method->is_init;
         runtime_method->is_anon = method->is_anon;
@@ -819,6 +828,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->call_stack_ref_vars_length = method->call_stack_ref_vars_length;
         runtime_method->mortal_stack_length  = method->mortal_stack_length;
         runtime_method->return_basic_type = &runtime_basic_types[method->return_type->basic_type->id];
+        runtime_method->return_basic_type_id = method->return_type->basic_type->id;
         runtime_method->return_type_dimension = method->return_type->dimension;
         runtime_method->return_type_flag = method->return_type->flag;
         runtime_method->is_native = method->is_native;
@@ -829,6 +839,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         SPVM_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
         runtime_method->name = runtime_basic_type->constant_strings[method_name_string->index].value;
+        runtime_method->name_string_index = method_name_string->index;
         
         if (method->args_length > 0) {
           runtime_method->args = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_ARG) * method->args_length);
@@ -838,6 +849,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             
             runtime_arg->index = arg_index;
             runtime_arg->basic_type = &runtime_basic_types[arg_var_decl->type->basic_type->id];
+            runtime_arg->basic_type_id = arg_var_decl->type->basic_type->id;
             runtime_arg->type_dimension = arg_var_decl->type->dimension;
             runtime_arg->type_flag = arg_var_decl->type->flag;
           }
