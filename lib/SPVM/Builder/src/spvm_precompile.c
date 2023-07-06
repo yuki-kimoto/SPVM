@@ -46,13 +46,13 @@ void SPVM_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, basic_type_name);
   int32_t basic_type_id = basic_type->id;
-  int32_t basic_type_methods_length = SPVM_API_RUNTIME_get_basic_type_methods_length(runtime, basic_type);
+  int32_t basic_type_methods_length = basic_type->methods_length;
 
   // Method implementations
   for (int32_t method_index = 0; method_index < basic_type_methods_length; method_index++) {
     SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type, method_index);
-    const char* method_name = SPVM_API_RUNTIME_get_method_name(runtime, method);
-    int32_t method_has_precompile_flag = SPVM_API_RUNTIME_get_method_is_precompile(runtime, method);
+    const char* method_name = method->name;
+    int32_t method_has_precompile_flag = method->is_precompile;
     if (method_has_precompile_flag) {
       SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, basic_type_name, method_name);
     }
@@ -63,8 +63,7 @@ void SPVM_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   if (basic_type_anon_basic_types_length > 0) {
     for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type_anon_basic_types_length; anon_basic_type_index++) {
       SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = SPVM_API_RUNTIME_get_basic_type_anon_basic_type(runtime, basic_type, anon_basic_type_index);
-      const char* anon_basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, anon_basic_type);
-      SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, anon_basic_type_name);
+      SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, anon_basic_type->name);
     }
   }
   
