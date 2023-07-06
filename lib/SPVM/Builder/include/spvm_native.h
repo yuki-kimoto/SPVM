@@ -499,7 +499,6 @@ struct spvm_env_module_file {
 };
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw(void);
-SPVM_ENV* SPVM_NATIVE_new_env_prepared(void);
 
 struct spvm_env_allocator {
   void* (*new_instance)(void);
