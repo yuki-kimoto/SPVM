@@ -735,6 +735,12 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     }
     
     runtime_codes_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
+    
+    
+    // New logic
+    const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
+    memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
+    runtime_basic_type->string_pool = runtime_string_pool;
   }
   
   {
