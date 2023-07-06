@@ -1112,7 +1112,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_codes_ptr++;
     
     // constant_strings
-    runtime->constant_strings = (SPVM_RUNTIME_STRING*)runtime_codes_ptr;
     runtime_codes_ptr += (sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t)) * constant_strings_length;
     
     // class_vars runtime codes length

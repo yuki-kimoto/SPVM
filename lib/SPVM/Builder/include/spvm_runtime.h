@@ -15,10 +15,6 @@ struct spvm_runtime {
   
   const char* string_pool;
   
-  SPVM_RUNTIME_STRING* constant_strings;
-  
-  int32_t constant_strings_length;
-  
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
   
   int32_t basic_types_length;
