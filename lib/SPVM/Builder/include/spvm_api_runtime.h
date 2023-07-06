@@ -14,10 +14,6 @@ SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance();
 void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime);
 void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes);
 
-// Runtime codes
-int32_t* SPVM_API_RUNTIME_get_runtime_codes(SPVM_RUNTIME* runtime);
-int32_t SPVM_API_RUNTIME_get_runtime_codes_length(SPVM_RUNTIME* runtime);
-
 // Basic type
 int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime);
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);

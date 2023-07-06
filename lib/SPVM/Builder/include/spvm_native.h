@@ -326,8 +326,8 @@ struct spvm_env_runtime {
   void (*free_instance)(void* runtime);
   int32_t* (*get_opcodes)(void* runtime);
   void* reserved3;
-  int32_t* (*get_runtime_codes)(void* runtime);
-  int32_t (*get_runtime_codes_length)(void* runtime);
+  void* reserved4;
+  void* reserved5;
   void* reserved6;
   void* reserved7;
   void* reserved8;
