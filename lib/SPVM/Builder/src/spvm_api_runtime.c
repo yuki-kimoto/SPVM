@@ -470,27 +470,17 @@ int32_t SPVM_API_RUNTIME_get_class_var_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME
 
 const char* SPVM_API_RUNTIME_get_class_var_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  const char* class_var_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, SPVM_API_RUNTIME_get_class_var_current_basic_type(runtime, class_var), class_var->name_string_index);
-  
-  return class_var_name;
+  return class_var->name;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  int32_t current_basic_type_id = class_var->current_basic_type_id;
-  
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, current_basic_type_id);
-  
-  return current_basic_type;
+  return class_var->current_basic_type;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  int32_t basic_type_id = class_var->basic_type_id;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-  
-  return basic_type;
+  return class_var->basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_var_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
