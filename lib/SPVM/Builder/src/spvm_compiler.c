@@ -741,6 +741,16 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
     memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
     runtime_basic_type->string_pool = runtime_string_pool;
+    
+    SPVM_RUNTIME_STRING* runtime_constant_strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_STRING) * basic_type->constant_strings->length);
+    
+    for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings->length; constant_string_index++) {
+      SPVM_STRING* constant_string = SPVM_LIST_get(basic_type->constant_strings, constant_string_index);
+      SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_constant_strings[constant_string_index];
+      runtime_constant_string->value = &runtime_basic_type->string_pool[constant_string->string_pool_index];
+      runtime_constant_string->length = constant_string->length;
+    }
+    runtime_basic_type->constant_strings = runtime_constant_strings;
   }
   
   {
