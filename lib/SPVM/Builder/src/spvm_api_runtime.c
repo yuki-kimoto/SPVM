@@ -302,7 +302,7 @@ const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value(SPVM_RUNTIME* 
     return NULL;
   }
   
-  SPVM_RUNTIME_STRING* constant_string = &runtime->constant_strings[basic_type->constant_strings_base + constant_string_index];
+  SPVM_RUNTIME_STRING* constant_string = &basic_type->constant_strings[constant_string_index];
   
   const char* constant_string_value = constant_string->value;
   
