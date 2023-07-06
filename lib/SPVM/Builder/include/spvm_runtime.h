@@ -42,8 +42,4 @@ SPVM_RUNTIME* SPVM_RUNTIME_new();
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 
-SPVM_ALLOCATOR* SPVM_RUNTIME_get_allocator(SPVM_RUNTIME* runtime);
-
-void SPVM_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes);
-
 #endif
