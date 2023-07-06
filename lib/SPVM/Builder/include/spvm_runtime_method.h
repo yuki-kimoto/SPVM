@@ -42,6 +42,7 @@ struct spvm_runtime_method {
   SPVM_OPCODE* opcodes;
   SPVM_RUNTIME_BASIC_TYPE* current_basic_type;
   SPVM_RUNTIME_BASIC_TYPE* return_basic_type;
+  SPVM_RUNTIME_ARG* args;
 };
 
 #endif
