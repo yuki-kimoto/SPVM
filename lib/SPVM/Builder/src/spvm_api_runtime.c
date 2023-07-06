@@ -524,7 +524,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, SPVM_RUNTI
     return NULL;
   }
   
-  SPVM_RUNTIME_FIELD* field = &runtime->fields[basic_type->fields_base + field_index];
+  SPVM_RUNTIME_FIELD* field = &basic_type->fields[field_index];
   
   return field;
 }
