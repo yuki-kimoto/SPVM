@@ -1132,20 +1132,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     // fields
     runtime_codes_ptr += (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * fields_length;
     
-    // methods_length
-    int32_t methods_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // methods
-    runtime_codes_ptr += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * methods_length;
-    
-    // args_length
-    int32_t args_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // args
-    runtime_codes_ptr += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * args_length;
-    
     // Runtime basic type symtable
     runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
     for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
