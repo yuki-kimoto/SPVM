@@ -523,16 +523,13 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, SP
 
 int32_t SPVM_API_RUNTIME_get_field_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  int32_t index = field->index;
   
-  return index;
+  return field->index;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_offset(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  int32_t offset = field->offset;
-  
-  return offset;
+  return field->offset;
 }
 
 const char* SPVM_API_RUNTIME_get_field_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
@@ -542,34 +539,22 @@ const char* SPVM_API_RUNTIME_get_field_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_field_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  int32_t current_basic_type_id = field->current_basic_type_id;
-  
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, current_basic_type_id);
-  
-  return current_basic_type;
+  return field->current_basic_type;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_field_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  int32_t basic_type_id = field->basic_type_id;
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-  
-  return basic_type;
+  return field->basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  int32_t type_dimension = field->type_dimension;
-  
-  return type_dimension;
+  return field->type_dimension;
 }
 
 int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  int32_t type_flag = field->type_flag;
-  
-  return type_flag;
+  return  field->type_flag;
 }
 
 SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t method_index) {

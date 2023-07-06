@@ -660,15 +660,12 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_field->index = field->index;
         runtime_field->offset = field->offset;
         runtime_field->basic_type = &runtime_basic_types[field->type->basic_type->id];
-        runtime_field->basic_type_id = field->type->basic_type->id;
         runtime_field->type_dimension = field->type->dimension;
         runtime_field->type_flag = field->type->flag;
         runtime_field->current_basic_type = &runtime_basic_types[field->current_basic_type->id];
-        runtime_field->current_basic_type_id = field->current_basic_type->id;
         
         SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
         runtime_field->name = runtime_basic_type->constant_strings[field_name_string->index].value;
-        runtime_field->name_string_index = field_name_string->index;
       }
       runtime_basic_type->fields = runtime_fields;
       runtime_basic_type->fields_length = basic_type->fields->length;
