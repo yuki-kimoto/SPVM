@@ -879,8 +879,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     else {
       runtime_basic_type->constant_strings_base = -1;
     }
-    
-    runtime_codes_ptr += sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t);
   }
   
   {
