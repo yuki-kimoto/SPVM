@@ -446,7 +446,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var(SPVM_RUNTIME* runtime, SP
     return NULL;
   }
   
-  SPVM_RUNTIME_CLASS_VAR* class_var = &runtime->class_vars[basic_type->class_vars_base + class_var_index];
+  SPVM_RUNTIME_CLASS_VAR* class_var = &basic_type->class_vars[class_var_index];
   
   return class_var;
 }
