@@ -357,9 +357,7 @@ int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* ru
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_anon_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t anon_basic_type_index) {
   
-  int32_t anon_basic_type_id = runtime->anon_basic_type_ids[basic_type->anon_basic_types_base + anon_basic_type_index];
-  
-  SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, anon_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = &basic_type->anon_basic_types[anon_basic_type_index];
   
   return anon_basic_type;
 }
