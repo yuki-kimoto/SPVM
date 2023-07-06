@@ -6,12 +6,6 @@
 
 #include "spvm_typedecl.h"
 
-#include "spvm_runtime_string.h"
-#include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_field.h"
-#include "spvm_runtime_class_var.h"
-#include "spvm_runtime_method.h"
-
 struct spvm_runtime_basic_type {
   int32_t id;
   int32_t category;
