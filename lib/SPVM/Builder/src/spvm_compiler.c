@@ -597,15 +597,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   runtime->runtime_codes = runtime_codes;
   runtime->runtime_codes_length = runtime_codes_length;
   
-  // basic_types
-  int32_t string_pool_base = 0;
-  int32_t constant_strings_base = 0;
-  int32_t class_vars_base = 0;
-  int32_t fields_base = 0;
-  int32_t methods_base = 0;
-  int32_t args_base = 0;
-  int32_t opcodes_base = 0;
-  
   SPVM_RUNTIME_BASIC_TYPE* runtime_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * compiler->basic_types->length);
   int32_t runtime_basic_types_length = compiler->basic_types->length;
   
@@ -801,51 +792,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     }
     else {
       runtime_basic_type->required_method_index = -1;
-    }
-    
-    runtime_basic_type->methods_length = basic_type->methods->length;
-    if (basic_type->methods->length > 0) {
-      runtime_basic_type->methods_base = methods_base;
-      methods_base += basic_type->methods->length;
-    }
-    else {
-      runtime_basic_type->methods_base = -1;
-    }
-    
-    runtime_basic_type->fields_length = basic_type->fields->length;
-    if (basic_type->fields->length > 0) {
-      runtime_basic_type->fields_base = fields_base;
-      fields_base += basic_type->fields->length;
-    }
-    else {
-      runtime_basic_type->fields_base = -1;
-    }
-    
-    runtime_basic_type->class_vars_length = basic_type->class_vars->length;
-    if (basic_type->class_vars->length > 0) {
-      runtime_basic_type->class_vars_base = class_vars_base;
-      class_vars_base += basic_type->class_vars->length;
-    }
-    else {
-      runtime_basic_type->class_vars_base = -1;
-    }
-    
-    runtime_basic_type->string_pool_length = basic_type->string_pool->length;
-    if (basic_type->string_pool->length > 0) {
-      runtime_basic_type->string_pool_base = string_pool_base;
-      string_pool_base += basic_type->string_pool->length;
-    }
-    else {
-      runtime_basic_type->string_pool_base = -1;
-    }
-    
-    runtime_basic_type->constant_strings_length = basic_type->constant_strings->length;
-    if (basic_type->constant_strings->length > 0) {
-      runtime_basic_type->constant_strings_base = constant_strings_base;
-      constant_strings_base += basic_type->constant_strings->length;
-    }
-    else {
-      runtime_basic_type->constant_strings_base = -1;
     }
   }
   
