@@ -1085,70 +1085,14 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   }
   
   {
-    SPVM_ALLOCATOR* allocator = runtime->allocator;
-    
-    // runtime_codes_length
-    runtime_codes_ptr++;
-    
     // basic_types length
     runtime->basic_types_length = runtime_basic_types_length;
-    runtime_codes_ptr++;
     
     // basic_types
     runtime->basic_types = runtime_basic_types;
-    runtime_codes_ptr += (sizeof(SPVM_RUNTIME_BASIC_TYPE) / sizeof(int32_t)) * (runtime->basic_types_length);
-    
-    // string_pool_length
-    int32_t string_pool_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // string_pool
-    runtime_codes_ptr += string_pool_length / sizeof(int32_t);
-    
-    // constant_strings_length
-    int32_t constant_strings_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // constant_strings
-    runtime_codes_ptr += (sizeof(SPVM_RUNTIME_STRING) / sizeof(int32_t)) * constant_strings_length;
-    
-    // class_vars runtime codes length
-    int32_t class_vars_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // class_vars
-    runtime_codes_ptr += (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * class_vars_length;
-    
-    // fields_length
-    int32_t fields_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // fields
-    runtime_codes_ptr += (sizeof(SPVM_RUNTIME_FIELD) / sizeof(int32_t)) * fields_length;
-    
-    // methods_length
-    int32_t methods_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // methods
-    runtime_codes_ptr += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * methods_length;
-    
-    // args_length
-    int32_t args_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // args
-    runtime_codes_ptr += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * args_length;
-    
-    // opcodes length
-    int32_t opcodes_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // opcodes
-    runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
     
     // Runtime basic type symtable
-    runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
+    runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, runtime->basic_types_length);
     for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
       SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
       SPVM_RUNTIME_STRING* basic_type_name_string = (SPVM_RUNTIME_STRING*)&basic_type->constant_strings[basic_type->name_string_index];
