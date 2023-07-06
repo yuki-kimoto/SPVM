@@ -203,55 +203,34 @@ int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE*
   int32_t e = 0;
   
   void* obj_self = stack[0].oval;
-
+  
   void* obj_basic_type_name = stack[1].oval;
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
-
+  
   void* obj_method_name = stack[2].oval;
   const char* method_name = env->get_chars(env, stack, obj_method_name);
-
+  
   void* runtime = env->get_pointer(env, stack, obj_self);
-
+  
   // New allocator
   void* allocator = env->api->allocator->new_instance();
   
   // New string buffer
   void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
-
+  
   env->api->runtime->build_precompile_method_source(runtime, string_buffer, basic_type_name, method_name);
   
   const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
   void* obj_precompile_method_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
-
+  
   // Free string buffer
   env->api->string_buffer->free_instance(string_buffer);
-
+  
   // Free allocator
   env->api->allocator->free_instance(allocator);
-
+  
   stack[0].oval = obj_precompile_method_source;
-  
-  return 0;
-}
-
-int32_t SPVM__Runtime__get_runtime_codes(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t e = 0;
-
-  void* obj_self = stack[0].oval;
-
-  void* runtime = env->get_pointer(env, stack, obj_self);
-  
-  // SPVM 32bit codes
-  int32_t* runtime_runtime_codes = env->api->runtime->get_runtime_codes(runtime);
-  int32_t runtime_codes_length = env->api->runtime->get_runtime_codes_length(runtime);
-  
-  void* obj_runtime_codes = env->new_int_array(env, stack, runtime_codes_length);
-  int32_t* runtime_codes = env->get_elems_int(env, stack, obj_runtime_codes);
-  memcpy(runtime_codes, runtime_runtime_codes, sizeof(int32_t) * runtime_codes_length);
-  
-  stack[0].oval = obj_runtime_codes;
   
   return 0;
 }

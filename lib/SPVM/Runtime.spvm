@@ -6,8 +6,6 @@ class Runtime : pointer {
   use Stack;
   
   # Instance Methods
-  native method get_runtime_codes : int[] ();
-  
   native method get_basic_type_names : string[] ();
   
   native method get_basic_type_parent_name : string ($basic_type_name : string);

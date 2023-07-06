@@ -42,12 +42,6 @@ Its insntace has a pointer to a L<runtime|SPVM::Document::NativeAPI::Runtime> ob
 
 =head1 Instance Methods
 
-=head2 get_runtime_codes
-
-  method get_runtime_codes : int[] ();
-
-Gets the runtime codes and returns it.
-
 =head2 get_basic_type_name
 
   method get_basic_type_name : string[] ();
