@@ -621,12 +621,32 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = (SPVM_RUNTIME_BASIC_TYPE*)runtime_codes_ptr;
+
+    // New logic
+    const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
+    memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
+    runtime_basic_type->string_pool = runtime_string_pool;
+    runtime_basic_type->string_pool_length = basic_type->string_pool->length;
     
+    SPVM_RUNTIME_STRING* runtime_constant_strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_STRING) * basic_type->constant_strings->length);
+    for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings->length; constant_string_index++) {
+      SPVM_STRING* constant_string = SPVM_LIST_get(basic_type->constant_strings, constant_string_index);
+      SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_constant_strings[constant_string_index];
+      runtime_constant_string->value = &runtime_basic_type->string_pool[constant_string->string_pool_index];
+      runtime_constant_string->length = constant_string->length;
+      runtime_constant_string->index = constant_string->index;
+      runtime_constant_string->string_pool_index = constant_string->string_pool_index;
+    }
+    runtime_basic_type->constant_strings = runtime_constant_strings;
+    runtime_basic_type->constant_strings_length = basic_type->constant_strings->length;
+    
+    // Old logic
     runtime_basic_type->id = basic_type->id;
     runtime_basic_type->category = basic_type->category;
     
     SPVM_STRING* basic_type_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     assert(basic_type_string->index >= 0);
+    runtime_basic_type->name = runtime_basic_type->constant_strings[basic_type_string->index].value;
     runtime_basic_type->name_string_index = basic_type_string->index;
     
     if (basic_type->module_rel_file) {
@@ -741,23 +761,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     
     
     // New logic
-    const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
-    memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
-    runtime_basic_type->string_pool = runtime_string_pool;
-    runtime_basic_type->string_pool_length = basic_type->string_pool->length;
-    
-    SPVM_RUNTIME_STRING* runtime_constant_strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_STRING) * basic_type->constant_strings->length);
-    for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings->length; constant_string_index++) {
-      SPVM_STRING* constant_string = SPVM_LIST_get(basic_type->constant_strings, constant_string_index);
-      SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_constant_strings[constant_string_index];
-      runtime_constant_string->value = &runtime_basic_type->string_pool[constant_string->string_pool_index];
-      runtime_constant_string->length = constant_string->length;
-      runtime_constant_string->index = constant_string->index;
-      runtime_constant_string->string_pool_index = constant_string->string_pool_index;
-    }
-    runtime_basic_type->constant_strings = runtime_constant_strings;
-    runtime_basic_type->constant_strings_length = basic_type->constant_strings->length;
-    
     if (basic_type->class_vars->length > 0) {
       SPVM_RUNTIME_CLASS_VAR* runtime_class_vars = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_CLASS_VAR) * basic_type->class_vars->length);
       for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
