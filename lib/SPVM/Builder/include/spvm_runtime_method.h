@@ -9,13 +9,11 @@
 // Runtime method information
 struct spvm_runtime_method {
   int32_t index;
-  int32_t name_string_index;
   int32_t args_base;
   int32_t args_length;
   int32_t required_args_length;
   int32_t opcodes_base;
   int32_t opcodes_length;
-  int32_t current_basic_type_id;
   int32_t call_stack_byte_vars_length;
   int32_t call_stack_short_vars_length;
   int32_t call_stack_int_vars_length;
@@ -25,7 +23,6 @@ struct spvm_runtime_method {
   int32_t call_stack_object_vars_length;
   int32_t call_stack_ref_vars_length;
   int32_t mortal_stack_length;
-  int32_t return_basic_type_id;
   int32_t return_type_dimension;
   int32_t return_type_flag;
   int8_t is_class_method;

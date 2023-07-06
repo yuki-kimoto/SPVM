@@ -686,7 +686,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         runtime_method->index = method->index;
         runtime_method->current_basic_type = &runtime_basic_types[method->current_basic_type->id];
-        runtime_method->current_basic_type_id = method->current_basic_type->id;
         runtime_method->is_class_method = method->is_class_method;
         runtime_method->is_init = method->is_init;
         runtime_method->is_anon = method->is_anon;
@@ -700,7 +699,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->call_stack_ref_vars_length = method->call_stack_ref_vars_length;
         runtime_method->mortal_stack_length  = method->mortal_stack_length;
         runtime_method->return_basic_type = &runtime_basic_types[method->return_type->basic_type->id];
-        runtime_method->return_basic_type_id = method->return_type->basic_type->id;
         runtime_method->return_type_dimension = method->return_type->dimension;
         runtime_method->return_type_flag = method->return_type->flag;
         runtime_method->is_native = method->is_native;
@@ -711,7 +709,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         SPVM_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
         runtime_method->name = runtime_basic_type->constant_strings[method_name_string->index].value;
-        runtime_method->name_string_index = method_name_string->index;
         
         if (method->args_length > 0) {
           runtime_method->args = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_ARG) * method->args_length);

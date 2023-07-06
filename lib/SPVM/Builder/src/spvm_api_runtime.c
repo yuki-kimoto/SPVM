@@ -610,11 +610,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, 
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t current_basic_type_id = method->current_basic_type_id;
-  
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, current_basic_type_id);
-  
-  return current_basic_type;
+  return method->current_basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_opcodes_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
@@ -695,11 +691,7 @@ int32_t SPVM_API_RUNTIME_get_method_is_class_method(SPVM_RUNTIME* runtime, SPVM_
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_return_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t return_basic_type_id = method->return_basic_type_id;
-  
-  SPVM_RUNTIME_BASIC_TYPE* return_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, return_basic_type_id);
-  
-  return return_basic_type;
+  return method->return_basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_return_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {

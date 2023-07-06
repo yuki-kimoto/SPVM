@@ -1673,13 +1673,11 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     error = env->die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
-    int32_t method_return_basic_type_id = method->return_basic_type_id;
-    void* method_return_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, method_return_basic_type_id);
+    void* method_return_basic_type = method->return_basic_type;
     int32_t method_return_type_dimension = method->return_type_dimension;
     int32_t method_return_type_flag = method->return_type_flag;
     
-    int32_t current_basic_type_id = method->current_basic_type_id;
-    SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, current_basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* current_basic_type = method->current_basic_type;
     
     int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
     int32_t no_need_call = 0;
@@ -2303,7 +2301,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 
   SPVM_RUNTIME* runtime = env->runtime;
 
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, method->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = method->current_basic_type;
   const char* basic_type_name = basic_type->name;
   const char* method_name = method->name;
 
