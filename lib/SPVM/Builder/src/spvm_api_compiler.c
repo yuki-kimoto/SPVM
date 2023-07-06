@@ -32,7 +32,7 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_compile,
     SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_error_message,
-    SPVM_API_COMPILER_create_runtime_codes,
+    NULL, // reserved12
     SPVM_API_COMPILER_clear_include_dirs,
     SPVM_API_COMPILER_get_module_file,
     SPVM_API_COMPILER_add_module_file,
@@ -114,13 +114,6 @@ int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {
 
 const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index) {  
   return SPVM_COMPILER_get_error_message(compiler, index);
-}
-
-int32_t* SPVM_API_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator) {
-  
-  int32_t* runtime_codes = SPVM_COMPILER_create_runtime_codes(compiler, allocator);
-  
-  return runtime_codes;
 }
 
 SPVM_RUNTIME* SPVM_API_COMPILER_build_runtime(SPVM_COMPILER* compiler) {

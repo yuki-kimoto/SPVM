@@ -38,7 +38,7 @@ Compiler native APIs have its IDs.
   9  compile
   10 get_error_messages_length
   11 get_error_message
-  12 create_runtime_codes
+  12 reserved12
   13 clear_include_dirs
   14 get_module_file
   15 add_module_file
@@ -117,12 +117,6 @@ Gets the length of the compilation error messages.
   const char* (*get_error_message)(void* compiler, int32_t index);
 
 Gets the compiler error messages.
-
-=head2 create_runtime_codes
-
-  int32_t* (*create_runtime_codes)(void* compiler, void* allocator);
-
-Creates SPVM 32bit codes using a L<allocator|SPVM::Document::NativeAPI::Allocator> object and returns the address.
 
 =head2 clear_include_dirs
   

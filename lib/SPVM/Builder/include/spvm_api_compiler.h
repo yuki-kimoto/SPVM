@@ -35,8 +35,6 @@ int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 
 const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
 
-int32_t* SPVM_API_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator);
-
 SPVM_RUNTIME* SPVM_API_COMPILER_build_runtime(SPVM_COMPILER* compiler);
 
 SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name);
