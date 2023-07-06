@@ -332,13 +332,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, SPVM_R
   return is_pointer;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
-  
-  int32_t anon_basic_types_base = basic_type->anon_basic_types_base;
-  
-  return anon_basic_types_base;
-}
-
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   int32_t anon_basic_types_length = basic_type->anon_basic_types_length;
@@ -370,13 +363,6 @@ const char* SPVM_API_RUNTIME_get_basic_type_module_dir(SPVM_RUNTIME* runtime, SP
   return basic_type->module_dir;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_fields_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
-  
-  int32_t fields_base = basic_type->fields_base;
-  
-  return fields_base;
-}
-
 int32_t SPVM_API_RUNTIME_get_basic_type_fields_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   int32_t fields_length = basic_type->fields_length;
@@ -384,25 +370,11 @@ int32_t SPVM_API_RUNTIME_get_basic_type_fields_length(SPVM_RUNTIME* runtime, SPV
   return fields_length;
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_type_methods_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
-  
-  int32_t methods_base = basic_type->methods_base;
-  
-  return methods_base;
-}
-
 int32_t SPVM_API_RUNTIME_get_basic_type_methods_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
   int32_t methods_length = basic_type->methods_length;
   
   return methods_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
-  
-  int32_t class_vars_base = basic_type->class_vars_base;
-  
-  return class_vars_base;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
@@ -613,13 +585,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_current_basic_type(SPVM_RUN
   return method->current_basic_type;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_opcodes_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  int32_t opcodes_base = method->opcodes_base;
-  
-  return opcodes_base;
-}
-
 int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
   int32_t opcodes_length = method->opcodes_length;
@@ -673,13 +638,6 @@ int32_t SPVM_API_RUNTIME_get_method_required_args_length(SPVM_RUNTIME* runtime, 
   int32_t required_args_length = method->required_args_length;
   
   return required_args_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_args_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  int32_t args_base = method->args_base;
-  
-  return args_base;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
