@@ -1158,7 +1158,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_codes_ptr++;
     
     // anon_basic_types_length
-    runtime->anon_basic_type_ids = runtime_codes_ptr;
     runtime_codes_ptr += (sizeof(int32_t) / sizeof(int32_t)) * anon_basic_types_length;
     
     // Runtime string symtable
