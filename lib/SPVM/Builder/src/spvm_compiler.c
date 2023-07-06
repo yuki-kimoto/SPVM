@@ -857,7 +857,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->class_vars_base = -1;
     }
     
-    runtime_basic_type->string_pool_length = SPVM_COMPILER_get_string_pool_length(compiler);
+    runtime_basic_type->string_pool_length = basic_type->string_pool->length;
     if (basic_type->string_pool->length > 0) {
       runtime_basic_type->string_pool_base = string_pool_base;
       string_pool_base += basic_type->string_pool->length;
