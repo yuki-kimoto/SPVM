@@ -99,7 +99,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
   void* env_runtime_init[]  = {
     SPVM_API_RUNTIME_new_instance,
     SPVM_API_RUNTIME_free_instance,
-    SPVM_API_RUNTIME_get_opcodes,
+    NULL, // reserved2
     NULL, // reserved3
     NULL, // reserved4
     NULL, // reserved5,
@@ -250,11 +250,6 @@ SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance() {
 void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
 
   SPVM_RUNTIME_free(runtime);
-}
-
-SPVM_OPCODE* SPVM_API_RUNTIME_get_opcodes(SPVM_RUNTIME* runtime) {
-
-  return runtime->opcodes;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime) {
@@ -607,7 +602,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, SPVM_RUN
     return NULL;
   }
   
-  SPVM_RUNTIME_METHOD* method = &runtime->methods[basic_type->methods_base + method_index];
+  SPVM_RUNTIME_METHOD* method = &basic_type->methods[method_index];
   
   return method;
 }
@@ -831,7 +826,7 @@ SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg(SPVM_RUNTIME* runtime, SPVM_RUNTIME_M
     return NULL;
   }
   
-  SPVM_RUNTIME_ARG* arg = &runtime->args[method->args_base + arg_index];
+  SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
   
   return arg;
 }

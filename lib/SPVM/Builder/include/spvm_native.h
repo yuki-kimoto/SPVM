@@ -324,7 +324,7 @@ struct spvm_env {
 struct spvm_env_runtime {
   void* (*new_instance)(void);
   void (*free_instance)(void* runtime);
-  int32_t* (*get_opcodes)(void* runtime);
+  void* reserved2;
   void* reserved3;
   void* reserved4;
   void* reserved5;

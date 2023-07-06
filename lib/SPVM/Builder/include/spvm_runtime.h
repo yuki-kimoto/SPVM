@@ -17,12 +17,6 @@ struct spvm_runtime {
   
   int32_t basic_types_length;
   
-  SPVM_RUNTIME_METHOD* methods;
-  
-  SPVM_RUNTIME_ARG* args;
-  
-  SPVM_OPCODE* opcodes;
-  
   SPVM_HASH* basic_type_symtable;
 };
 

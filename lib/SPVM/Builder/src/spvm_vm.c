@@ -55,16 +55,13 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   const char* current_basic_type_name =  SPVM_API_RUNTIME_get_basic_type_name(runtime, current_basic_type);
   
   // Operation codes
-  SPVM_OPCODE* opcodes = runtime->opcodes;
+  SPVM_OPCODE* opcodes = current_method->opcodes;
   
   // Error
   int32_t error_id = 0;
   
   // Caught eval error_id
   int32_t eval_error_id = 0;
-  
-  // Operation code base
-  int32_t current_method_opcodes_base = current_method->opcodes_base;
   
   // Mortal stack
   int32_t* mortal_stack = NULL;
@@ -181,7 +178,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   
   // Execute operation codes
   while (1) {
-    SPVM_OPCODE* opcode = &(opcodes[current_method_opcodes_base + opcode_rel_index]);
+    SPVM_OPCODE* opcode = &(opcodes[opcode_rel_index]);
     
     int32_t opcode_id = opcode->id;
     
@@ -238,11 +235,11 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
 
         if (case_infos_length > 0) {
           // min
-          SPVM_OPCODE* opcode_case_info_min = &(opcodes[current_method_opcodes_base + opcode_rel_index + 1 + 0]);
+          SPVM_OPCODE* opcode_case_info_min = &(opcodes[opcode_rel_index + 1 + 0]);
           int32_t min = opcode_case_info_min->operand1;
           
           // max
-          SPVM_OPCODE* opcode_case_info_max = &(opcodes[current_method_opcodes_base + opcode_rel_index + 1 + case_infos_length - 1]);
+          SPVM_OPCODE* opcode_case_info_max = &(opcodes[opcode_rel_index + 1 + case_infos_length - 1]);
           int32_t max = opcode_case_info_max->operand1;
           
           if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
@@ -256,7 +253,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
                 break;
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[current_method_opcodes_base + opcode_rel_index + 1 + cur_half_pos]);
+              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[opcode_rel_index + 1 + cur_half_pos]);
               int32_t cur_half = opcode_case_cur_half->operand1;
               
               if (int_vars[opcode->operand0] > cur_half) {

@@ -1704,16 +1704,13 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         if (optional_args_length > 0) {
           
           // Operation codes
-          SPVM_OPCODE* opcodes = runtime->opcodes;
-          
-          // Operation code base
-          int32_t method_opcodes_base = method->opcodes_base;
+          SPVM_OPCODE* opcodes = method->opcodes;
           
           // Execute operation codes
           int32_t opcode_rel_index = 0;
           while (1) {
             
-            SPVM_OPCODE* opcode = &(opcodes[method_opcodes_base + opcode_rel_index]);
+            SPVM_OPCODE* opcode = &(opcodes[opcode_rel_index]);
             
             if (opcode->id == SPVM_OPCODE_C_ID_END_ARGS) {
               break;

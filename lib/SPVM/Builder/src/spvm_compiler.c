@@ -696,6 +696,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         assert(method->opcode_list->length > 0);
         
         runtime_method->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_OPCODE) * method->opcode_list->length);
+        memcpy(runtime_method->opcodes, method->opcode_list->values, sizeof(SPVM_OPCODE) * method->opcode_list->length);
         runtime_method->opcodes_length = method->opcode_list->length;
         
         runtime_method->index = method->index;
@@ -1136,7 +1137,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_codes_ptr++;
     
     // methods
-    runtime->methods = (SPVM_RUNTIME_METHOD*)runtime_codes_ptr;
     runtime_codes_ptr += (sizeof(SPVM_RUNTIME_METHOD) / sizeof(int32_t)) * methods_length;
     
     // args_length
@@ -1144,7 +1144,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_codes_ptr++;
     
     // args
-    runtime->args = (SPVM_RUNTIME_ARG*)runtime_codes_ptr;
     runtime_codes_ptr += (sizeof(SPVM_RUNTIME_ARG) / sizeof(int32_t)) * args_length;
     
     // opcodes length
@@ -1152,7 +1151,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_codes_ptr++;
     
     // opcodes
-    runtime->opcodes = (SPVM_OPCODE*)runtime_codes_ptr;
     runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
     
     // Runtime string symtable

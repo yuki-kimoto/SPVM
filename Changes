@@ -8,6 +8,7 @@
       - int32_t (*get_runtime_codes_length)(void* runtime);
       - void (*build)(void* runtime, int32_t* runtime_codes);
       - void* (*get_allocator)(void* runtime);
+      - int32_t* (*get_opcodes)(void* runtime);
     
     * The following methods in the Runtime were removed.
      

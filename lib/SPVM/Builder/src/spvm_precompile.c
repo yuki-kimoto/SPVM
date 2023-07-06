@@ -115,9 +115,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_PRECOMPILE_build_header(precompile, string_buffer);
   
   // Current basic type id
-  void* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, current_basic_type_name);
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_name(runtime, current_basic_type_name);
   
-  void* current_method = SPVM_API_RUNTIME_get_method_by_name(runtime, current_basic_type, current_method_name);
+  SPVM_RUNTIME_METHOD* current_method = SPVM_API_RUNTIME_get_method_by_name(runtime, current_basic_type, current_method_name);
   
   // Method declaration
   SPVM_PRECOMPILE_build_method_declaration(precompile, string_buffer, current_basic_type_name, current_method_name);
@@ -316,8 +316,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_ref_count_offset = (intptr_t)env->api->runtime->object_ref_count_offset;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = (intptr_t)env->api->runtime->object_length_offset;\n");
   
-  SPVM_OPCODE* opcodes = SPVM_API_RUNTIME_get_opcodes(runtime);
-  int32_t method_opcodes_base = SPVM_API_RUNTIME_get_method_opcodes_base(runtime, current_method);
+  SPVM_OPCODE* opcodes = current_method->opcodes;
   int32_t opcodes_length = SPVM_API_RUNTIME_get_method_opcodes_length(runtime, current_method);
   int32_t opcode_index = 0;
   
@@ -326,7 +325,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   int32_t string_buffer_begin_offset = string_buffer->length;
   opcode_index = 0;
   while (opcode_index < opcodes_length) {
-    opcode = &(opcodes[method_opcodes_base + opcode_index]);
+    opcode = &(opcodes[opcode_index]);
     int32_t opcode_id = opcode->id;
     
     int32_t basic_type_id = -1;
@@ -584,7 +583,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     SPVM_STRING_BUFFER_add_int(string_buffer, opcode_index);
     SPVM_STRING_BUFFER_add(string_buffer, ": ");
     
-    opcode = &(opcodes[method_opcodes_base + opcode_index]);
+    opcode = &(opcodes[opcode_index]);
 
     int32_t opcode_id = opcode->id;
 
@@ -659,7 +658,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
         for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
-          SPVM_OPCODE* opcode_case_info = &(opcodes[method_opcodes_base + opcode_index + 1 + case_index]);
+          SPVM_OPCODE* opcode_case_info = &(opcodes[opcode_index + 1 + case_index]);
 
           int32_t match = opcode_case_info->operand1;
           int32_t opcode_rel_index = opcode_case_info->operand2;
