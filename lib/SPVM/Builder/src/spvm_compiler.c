@@ -592,19 +592,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_COMPILER_compile(compiler, NULL);
   
-  int32_t runtime_codes_length = SPVM_COMPILER_calculate_runtime_codes_length(compiler);
-  int32_t* runtime_codes = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(int32_t) * runtime_codes_length);
-  
-  int32_t* runtime_codes_ptr = runtime_codes;
-  
-  // Total length
-  *runtime_codes_ptr = runtime_codes_length;
-  runtime_codes_ptr++;
-  
-  // basic_types length
-  *runtime_codes_ptr = compiler->basic_types->length;
-  runtime_codes_ptr++;
-  
   // basic_types
   int32_t string_pool_base = 0;
   int32_t constant_strings_base = 0;
@@ -612,7 +599,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   int32_t fields_base = 0;
   int32_t methods_base = 0;
   int32_t args_base = 0;
-  int32_t opcodes_runtime_codes_base = 0;
   int32_t opcodes_base = 0;
   
   SPVM_RUNTIME_BASIC_TYPE* runtime_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * compiler->basic_types->length);
