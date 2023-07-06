@@ -484,9 +484,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             
             SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type, field_index);
             
-            int32_t field_basic_type_id = field->basic_type_id;
+            int32_t field_basic_type_id = field->basic_type->id;
             
-            const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type, field->name_string_index, NULL);
+            const char* field_name = field->name;
             SPVM_STRING_BUFFER_add(string_buffer, field_name);
             SPVM_STRING_BUFFER_add(string_buffer, " => ");
             
@@ -645,10 +645,10 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           
           SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type, field_index);
           
-          int32_t field_basic_type_id = field->basic_type_id;
+          int32_t field_basic_type_id = field->basic_type->id;
           int32_t field_type_dimension = field->type_dimension;
           int32_t field_offset = field->offset;
-          const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type, field->name_string_index, NULL);
+          const char* field_name = field->name;
           
           SPVM_STRING_BUFFER_add(string_buffer, field_name);
           SPVM_STRING_BUFFER_add(string_buffer, " => ");
@@ -2090,7 +2090,7 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       
       SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field(runtime, basic_type, 0);
       
-      int32_t field_basic_type_id = first_field->basic_type_id;
+      int32_t field_basic_type_id = first_field->basic_type->id;
       
       if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
         elem_size = 1 * fields_length;
@@ -2910,7 +2910,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   int32_t fields_length = basic_type->fields_length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field(runtime, basic_type, 0);
   
-  int32_t field_basic_type_id = field_first->basic_type_id;
+  int32_t field_basic_type_id = field_first->basic_type->id;
   
   int32_t unit_size;
   if (field_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
@@ -3139,7 +3139,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         for (int32_t field_index = 0; field_index < object_fields_length; field_index++) {
           SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, object_basic_type, field_index);
           
-          int32_t field_basic_type_id = field->basic_type_id;
+          int32_t field_basic_type_id = field->basic_type->id;
           void* field_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_basic_type_id);
           int32_t field_type_dimension = field->type_dimension;
           int32_t field_type_flag = field->type_flag;
