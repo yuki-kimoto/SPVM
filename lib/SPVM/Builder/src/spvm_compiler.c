@@ -751,33 +751,20 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_STRING* basic_type_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->name, strlen(basic_type->name));
     assert(basic_type_string->index >= 0);
     runtime_basic_type->name = runtime_basic_type->constant_strings[basic_type_string->index].value;
-    runtime_basic_type->name_string_index = basic_type_string->index;
     
     if (basic_type->module_rel_file) {
       SPVM_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
-      runtime_basic_type->module_rel_file_string_index = basic_type_rel_file_string->index;
       runtime_basic_type->module_rel_file = runtime_basic_type->constant_strings[basic_type_rel_file_string->index].value;
-    }
-    else {
-      runtime_basic_type->module_rel_file_string_index = -1;
     }
     
     if (basic_type->module_dir) {
       SPVM_STRING* basic_type_dir_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
-      runtime_basic_type->module_dir_string_index = basic_type_dir_string->index;
       runtime_basic_type->module_dir = runtime_basic_type->constant_strings[basic_type_dir_string->index].value;
-    }
-    else {
-      runtime_basic_type->module_dir_string_index = -1;
     }
     
     if (basic_type->version_string) {
       SPVM_STRING* basic_type_version_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
-      runtime_basic_type->version_string_string_index = basic_type_version_string->index;
       runtime_basic_type->version_string = runtime_basic_type->constant_strings[basic_type_version_string->index].value;
-    }
-    else {
-      runtime_basic_type->version_string_string_index = -1;
     }
     
     runtime_basic_type->is_anon = basic_type->is_anon;
