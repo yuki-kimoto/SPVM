@@ -1120,7 +1120,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_codes_ptr++;
     
     // class_vars
-    runtime->class_vars = (SPVM_RUNTIME_CLASS_VAR*)runtime_codes_ptr;
     runtime_codes_ptr += (sizeof(SPVM_RUNTIME_CLASS_VAR) / sizeof(int32_t)) * class_vars_length;
     
     // fields_length
