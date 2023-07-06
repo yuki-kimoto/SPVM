@@ -1386,7 +1386,6 @@ _xs_call_method(...)
 
   int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method);
   int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method);
-  int32_t method_args_base = env->api->runtime->get_method_args_base(env->runtime, method);
   
   // Check argument count
   int32_t call_method_args_length = args_length - spvm_args_base;

@@ -2290,9 +2290,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_method_call_stack_object_vars_length != &env_array[56]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_call_stack_ref_vars_length != &env_array[57]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_mortal_stack_length != &env_array[58]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_opcodes_base != &env_array[59]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved59 != &env_array[59]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_opcodes_length != &env_array[60]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_args_base != &env_array[61]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->reserved61 != &env_array[61]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_args_length != &env_array[62]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved63 != &env_array[63]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved64 != &env_array[64]) { stack[0].ival = 0; return 0; }

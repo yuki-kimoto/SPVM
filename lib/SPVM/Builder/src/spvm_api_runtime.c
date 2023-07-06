@@ -156,9 +156,9 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_call_stack_object_vars_length,
     SPVM_API_RUNTIME_get_method_call_stack_ref_vars_length,
     SPVM_API_RUNTIME_get_method_mortal_stack_length,
-    SPVM_API_RUNTIME_get_method_opcodes_base,
+    NULL, // reserved59
     SPVM_API_RUNTIME_get_method_opcodes_length,
-    SPVM_API_RUNTIME_get_method_args_base,
+    NULL, // reserved 61
     SPVM_API_RUNTIME_get_method_args_length,
     NULL, // reserved63
     NULL, // reserved64
@@ -187,11 +187,11 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_basic_type_module_rel_file,
     SPVM_API_RUNTIME_get_basic_type_module_dir,
     SPVM_API_RUNTIME_get_basic_type_is_anon,
-    SPVM_API_RUNTIME_get_basic_type_fields_base,
+    NULL, // reserved90
     SPVM_API_RUNTIME_get_basic_type_fields_length,
-    SPVM_API_RUNTIME_get_basic_type_methods_base,
+    NULL, // reserved92
     SPVM_API_RUNTIME_get_basic_type_methods_length,
-    SPVM_API_RUNTIME_get_basic_type_class_vars_base,
+    NULL, // reserved94
     SPVM_API_RUNTIME_get_basic_type_class_vars_length,
     NULL, // reserved96
     NULL, // reserved97
