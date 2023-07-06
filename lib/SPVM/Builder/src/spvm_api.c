@@ -3545,7 +3545,7 @@ int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack)
 
 int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3560,7 +3560,7 @@ int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3575,7 +3575,7 @@ int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNT
 
 int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3590,7 +3590,7 @@ int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   
   assert(basic_type);
@@ -3606,7 +3606,7 @@ int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
 
 float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3621,7 +3621,7 @@ float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3636,7 +3636,7 @@ double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNT
 
 SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3652,7 +3652,7 @@ SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPV
 
 SPVM_OBJECT** SPVM_API_get_class_var_object_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3667,7 +3667,7 @@ SPVM_OBJECT** SPVM_API_get_class_var_object_address(SPVM_ENV* env, SPVM_VALUE* s
 
 void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int8_t value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3680,7 +3680,7 @@ void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_
 
 void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int16_t value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3693,7 +3693,7 @@ void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
 
 void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int32_t value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3706,7 +3706,7 @@ void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_C
 
 void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int64_t value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3719,7 +3719,7 @@ void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_
 
 void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, float value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3732,7 +3732,7 @@ void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME
 
 void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, double value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
@@ -3745,7 +3745,7 @@ void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, class_var->current_basic_type_id);
+  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
   assert(basic_type);
   
