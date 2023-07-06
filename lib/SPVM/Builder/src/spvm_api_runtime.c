@@ -317,16 +317,12 @@ int32_t SPVM_API_RUNTIME_get_basic_type_category(SPVM_RUNTIME* runtime, SPVM_RUN
 
 const char* SPVM_API_RUNTIME_get_basic_type_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type, basic_type->name_string_index);
-  
-  return basic_type_name;
+  return  basic_type->name;
 }
 
 const char* SPVM_API_RUNTIME_get_basic_type_version_string(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  const char* version_string = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type, basic_type->version_string_string_index);
-  
-  return version_string;
+  return basic_type->version_string;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
@@ -366,16 +362,12 @@ int32_t SPVM_API_RUNTIME_get_basic_type_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNT
 
 const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  const char* module_rel_file = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type, basic_type->module_rel_file_string_index);
-  
-  return module_rel_file;
+  return basic_type->module_rel_file;
 }
 
 const char* SPVM_API_RUNTIME_get_basic_type_module_dir(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  const char* module_dir = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, basic_type, basic_type->module_dir_string_index);
-  
-  return module_dir;
+  return basic_type->module_dir;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_fields_base(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
@@ -470,9 +462,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME
 
 const char* SPVM_API_RUNTIME_get_class_var_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  const char* class_var_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, SPVM_API_RUNTIME_get_class_var_current_basic_type(runtime, class_var), class_var->name_string_index);
-  
-  return class_var_name;
+  return class_var->name;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
@@ -555,9 +545,7 @@ int32_t SPVM_API_RUNTIME_get_field_offset(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FI
 
 const char* SPVM_API_RUNTIME_get_field_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
   
-  const char* field_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, SPVM_API_RUNTIME_get_field_current_basic_type(runtime, field), field->name_string_index);
-  
-  return field_name;
+  return field->name;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_field_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
@@ -675,9 +663,7 @@ int32_t SPVM_API_RUNTIME_get_method_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ME
 
 const char* SPVM_API_RUNTIME_get_method_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  const char* method_name = SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(runtime, SPVM_API_RUNTIME_get_method_current_basic_type(runtime, method), method->name_string_index);
-  
-  return method_name;
+  return method->name;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
@@ -889,7 +875,7 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t basi
   
   SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface_basic_type, interface_basic_type->required_method_index);
   
-  const char* method_interface_name =  SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, SPVM_API_RUNTIME_get_method_current_basic_type(runtime, method_interface), method_interface->name_string_index, NULL);
+  const char* method_interface_name = method_interface->name;
   
   SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type, method_interface_name);
   if (found_method) {
@@ -912,7 +898,7 @@ int32_t SPVM_API_RUNTIME_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC
   
   SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface_basic_type, interface_basic_type->required_method_index);
   
-  const char* method_interface_name =  SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, SPVM_API_RUNTIME_get_method_current_basic_type(runtime, method_interface), method_interface->name_string_index, NULL);
+  const char* method_interface_name = method_interface->name;
   
   SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type, method_interface_name);
   if (found_method) {
