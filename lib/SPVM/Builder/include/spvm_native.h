@@ -398,8 +398,8 @@ struct spvm_env_runtime {
   void* reserved73;
   void* reserved74;
   void* object_length_offset;
-  void* (*get_allocator)(void* runtime);
-  void* reserved77
+  void* reserved76;
+  void* reserved77;
   void* reserved78;
   int32_t (*get_method_required_args_length)(void* runtime, void* method);
   void* reserved80;

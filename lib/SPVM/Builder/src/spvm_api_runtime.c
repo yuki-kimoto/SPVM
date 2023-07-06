@@ -173,8 +173,8 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     NULL, // reserved73
     NULL, // reserved74
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
-    SPVM_API_RUNTIME_get_allocator,
-    SPVM_API_RUNTIME_build,
+    NULL, // reserved76
+    NULL, // reserved77
     NULL, // reserved78
     SPVM_API_RUNTIME_get_method_required_args_length,
     NULL, // reserved80
@@ -970,14 +970,6 @@ int32_t SPVM_API_RUNTIME_is_super(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE
   }
   
   return is_super_basic_type;
-}
-
-SPVM_ALLOCATOR* SPVM_API_RUNTIME_get_allocator(SPVM_RUNTIME* runtime) {
-  return SPVM_RUNTIME_get_allocator(runtime);
-}
-
-void SPVM_API_RUNTIME_build(SPVM_RUNTIME* runtime, int32_t* runtime_codes) {
-  SPVM_RUNTIME_build(runtime, runtime_codes);
 }
 
 int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t flag) {

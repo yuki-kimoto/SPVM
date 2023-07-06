@@ -97,7 +97,7 @@ Runtime native APIs have its IDs.
   73 reserved73
   74 reserved74
   75 object_length_offset
-  76 get_allocator
+  76 reserved76
   77 reserved77
   78 reserved78
   79 get_method_required_args_length
