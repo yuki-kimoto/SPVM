@@ -45,10 +45,10 @@ struct spvm_runtime_basic_type {
   const char* version_string;
   SPVM_RUNTIME_BASIC_TYPE* parent;
   const char* string_pool;
-  SPVM_RUNTIME_STRING** constant_strings;
-  SPVM_RUNTIME_CLASS_VAR** class_vars;
-  SPVM_RUNTIME_FIELD** fields;
-  SPVM_RUNTIME_METHOD** methods;
+  SPVM_RUNTIME_STRING* constant_strings;
+  SPVM_RUNTIME_CLASS_VAR* class_vars;
+  SPVM_RUNTIME_FIELD* fields;
+  SPVM_RUNTIME_METHOD* methods;
   SPVM_RUNTIME_METHOD* init_method;
   SPVM_RUNTIME_METHOD* destructor_method;
   SPVM_RUNTIME_METHOD* required_method;
