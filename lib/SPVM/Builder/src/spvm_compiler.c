@@ -695,6 +695,9 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         assert(method->opcode_list->length > 0);
         
+        runtime_method->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_OPCODE) * method->opcode_list->length);
+        runtime_method->opcodes_length = method->opcode_list->length;
+        
         runtime_method->index = method->index;
         runtime_method->current_basic_type = &runtime_basic_types[method->current_basic_type->id];
         runtime_method->current_basic_type_id = method->current_basic_type->id;
@@ -726,6 +729,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         if (method->args_length > 0) {
           runtime_method->args = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_ARG) * method->args_length);
+          runtime_method->args_length = method->args_length;
           for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
             SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
             SPVM_RUNTIME_ARG* runtime_arg = &runtime_method->args[arg_index];
