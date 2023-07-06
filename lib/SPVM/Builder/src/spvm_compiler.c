@@ -1153,15 +1153,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     // opcodes
     runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
     
-    // Runtime string symtable
-    for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
-      for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings_length; constant_string_index++) {
-        SPVM_RUNTIME_STRING* runtime_string = &basic_type->constant_strings[constant_string_index];
-        runtime_string->value = &basic_type->string_pool[runtime_string->string_pool_index];
-      }
-    }
-    
     // Runtime basic type symtable
     runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
     for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
