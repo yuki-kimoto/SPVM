@@ -6,11 +6,9 @@
 static const char* FILE_NAME = "Compiler.c";
 
 int32_t SPVM__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
-
+  
   // Create compiler
   void* compiler = env->api->compiler->new_instance();
   
@@ -23,8 +21,6 @@ int32_t SPVM__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -38,13 +34,11 @@ int32_t SPVM__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
   void* obj_self = stack[0].oval;
-
+  
   void* obj_basic_type_name = stack[1].oval;
   const char* basic_type_name = NULL;
   if (obj_basic_type_name) {
@@ -76,18 +70,8 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* compiler = env->get_pointer(env, stack, obj_self);
   
-  // Build runtime information
-  void* runtime = env->api->runtime->new_instance();
-
-  // Runtime allocator
-  void* runtime_allocator = env->api->runtime->get_allocator(runtime);
+  void* runtime = env->api->compiler->build_runtime(compiler);
   
-  // SPVM 32bit codes
-  int32_t* runtime_codes = env->api->compiler->create_runtime_codes(compiler, runtime_allocator);
-  
-  // Build runtime
-  env->api->runtime->build(runtime, runtime_codes);
-
   void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
@@ -105,7 +89,7 @@ int32_t SPVM__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   void* obj_start_file = stack[1].oval;
-
+  
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   const char* start_file = NULL;
@@ -126,7 +110,7 @@ int32_t SPVM__Compiler__set_start_line(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   int32_t start_line = stack[1].ival;
-
+  
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   env->api->compiler->set_start_line(compiler, start_line);
@@ -139,9 +123,9 @@ int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e = 0;
   
   void* obj_self = stack[0].oval;
-
+  
   void* compiler = env->get_pointer(env, stack, obj_self);
-
+  
   int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
   
   void* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
@@ -166,7 +150,7 @@ int32_t SPVM__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   void* obj_include_dir = stack[1].oval;
-
+  
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   const char* include_dir = NULL;
