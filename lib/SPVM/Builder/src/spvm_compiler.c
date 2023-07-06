@@ -848,6 +848,17 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->methods = runtime_methods;
       runtime_basic_type->methods_length = basic_type->methods->length;
     }
+    
+    if (basic_type->anon_basic_types->length > 0) {
+      SPVM_RUNTIME_BASIC_TYPE* runtime_anon_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * basic_type->anon_basic_types->length);
+      
+      for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type->anon_basic_types->length; anon_basic_type_index++) {
+        SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_type_index);
+        runtime_anon_basic_types[anon_basic_type_index] = runtime_basic_types[anon_basic_type->id];
+      }
+      runtime_basic_type->anon_basic_types = runtime_anon_basic_types;
+      runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;
+    }
   }
   
   {
