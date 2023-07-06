@@ -1157,7 +1157,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
       for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings_length; constant_string_index++) {
         SPVM_RUNTIME_STRING* runtime_string = &basic_type->constant_strings[constant_string_index];
-        runtime_string->value = &runtime->string_pool[basic_type->string_pool_base + runtime_string->string_pool_index];
+        runtime_string->value = &basic_type->string_pool[runtime_string->string_pool_index];
       }
     }
     
