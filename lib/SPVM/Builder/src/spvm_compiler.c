@@ -1088,8 +1088,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     // runtime_codes
     runtime->runtime_codes = runtime_codes;
     
-    int32_t* runtime_codes_ptr = runtime->runtime_codes;
-    
     // runtime_codes_length
     runtime->runtime_codes_length = runtime_codes_length;
     
