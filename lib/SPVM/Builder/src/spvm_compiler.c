@@ -1153,13 +1153,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime->opcodes = (SPVM_OPCODE*)runtime_codes_ptr;
     runtime_codes_ptr += (sizeof(SPVM_OPCODE) / sizeof(int32_t)) * opcodes_length;
     
-    // anon_basic_types_length
-    int32_t anon_basic_types_length = *runtime_codes_ptr;
-    runtime_codes_ptr++;
-    
-    // anon_basic_types_length
-    runtime_codes_ptr += (sizeof(int32_t) / sizeof(int32_t)) * anon_basic_types_length;
-    
     // Runtime string symtable
     for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
       SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
