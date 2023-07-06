@@ -4676,7 +4676,7 @@ DESTROY(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
   SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
   SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
@@ -4684,7 +4684,7 @@ DESTROY(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
+  
   // Free compiler
   api_env->api->compiler->free_instance(compiler);
   
@@ -4705,7 +4705,7 @@ compile(...)
   SV* sv_start_line = ST(3);
   
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
@@ -4722,11 +4722,11 @@ compile(...)
   
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
-
+  
   SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
   SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
   SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
-
+  
   // Set starting file
   api_env->api->compiler->set_start_file(compiler, start_file);
   
@@ -4748,7 +4748,7 @@ compile(...)
     char* include_dir = SvPV_nolen(sv_include_dir);
     api_env->api->compiler->add_include_dir(compiler, include_dir);
   }
-
+  
   // Compile SPVM
   int32_t compile_error_id = api_env->api->compiler->compile(compiler, basic_type_name);
   
@@ -4756,7 +4756,7 @@ compile(...)
   if (compile_error_id == 0) {
     sv_success = sv_2mortal(newSViv(1));
   }
-
+  
   XPUSHs(sv_success);
   
   XSRETURN(1);
@@ -4774,7 +4774,7 @@ build_runtime(...)
   SV* sv_start_line = ST(3);
   
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
@@ -4782,21 +4782,11 @@ build_runtime(...)
   SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
   SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
   SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
-
-  // Build runtime information
-  void* runtime = api_env->api->runtime->new_instance();
-
-  // Runtime allocator
-  void* runtime_allocator = api_env->api->runtime->get_allocator(runtime);
   
-  // SPVM 32bit codes
-  int32_t* runtime_codes = api_env->api->compiler->create_runtime_codes(compiler, runtime_allocator);
+  void* runtime = api_env->api->compiler->build_runtime(compiler);
   
-  // Build runtime
-  api_env->api->runtime->build(runtime, runtime_codes);
-
   SV* sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
-
+  
   XPUSHs(sv_runtime);
   
   XSRETURN(1);
@@ -4809,9 +4799,9 @@ get_error_messages(...)
   (void)RETVAL;
   
   SV* sv_self = ST(0);
-
+  
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   // The api_environment
   SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
   SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
@@ -4821,12 +4811,12 @@ get_error_messages(...)
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
-
+  
   AV* av_error_messages = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_error_messages = sv_2mortal(newRV_inc((SV*)av_error_messages));
-
+  
   int32_t error_messages_length = api_env->api->compiler->get_error_messages_length(compiler);
-
+  
   for (int32_t i = 0; i < error_messages_length; i++) {
     const char* error_message = api_env->api->compiler->get_error_message(compiler, i);
     SV* sv_error_message = sv_2mortal(newSVpv(error_message, 0));
