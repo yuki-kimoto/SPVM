@@ -1085,8 +1085,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   }
   
   {
-    SPVM_ALLOCATOR* allocator = runtime->allocator;
-    
     // runtime_codes
     runtime->runtime_codes = runtime_codes;
     
@@ -1102,7 +1100,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime->basic_types = runtime_basic_types;
     
     // Runtime basic type symtable
-    runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(allocator, runtime->basic_types_length);
+    runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, runtime->basic_types_length);
     for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
       SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
       SPVM_HASH_set(runtime->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
