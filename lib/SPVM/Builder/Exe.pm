@@ -546,8 +546,6 @@ EOS
 
   $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n\n";
 
-  $source .= "static int32_t* SPVM_BOOTSTRAP_get_runtime_codes();\n\n";
-
   $source .= "static void* SPVM_BOOTSTRAP_build_runtime(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
