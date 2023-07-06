@@ -586,12 +586,14 @@ int32_t SPVM_COMPILER_calculate_runtime_codes_length(SPVM_COMPILER* compiler) {
   return length;
 }
 
-int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCATOR* allocator) {
-
+SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
+  
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  
   SPVM_COMPILER_compile(compiler, NULL);
   
   int32_t runtime_codes_length = SPVM_COMPILER_calculate_runtime_codes_length(compiler);
-  int32_t* runtime_codes = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, sizeof(int32_t) * runtime_codes_length);
+  int32_t* runtime_codes = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(int32_t) * runtime_codes_length);
   
   int32_t* runtime_codes_ptr = runtime_codes;
   
@@ -934,14 +936,6 @@ int32_t* SPVM_COMPILER_create_runtime_codes(SPVM_COMPILER* compiler, SPVM_ALLOCA
     }
   }
   
-  return runtime_codes;
-}
-
-SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
-  
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
-  
-  int32_t* runtime_codes = SPVM_COMPILER_create_runtime_codes(compiler, runtime->allocator);
   
   {
     SPVM_ALLOCATOR* allocator = runtime->allocator;
