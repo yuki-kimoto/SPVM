@@ -23,8 +23,6 @@ struct spvm_runtime {
   
   int32_t basic_types_length;
   
-  SPVM_RUNTIME_FIELD* fields;
-  
   SPVM_RUNTIME_METHOD* methods;
   
   SPVM_RUNTIME_ARG* args;
