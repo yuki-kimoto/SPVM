@@ -728,7 +728,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             
             runtime_arg->index = arg_index;
             runtime_arg->basic_type = &runtime_basic_types[arg_var_decl->type->basic_type->id];
-            runtime_arg->basic_type_id = arg_var_decl->type->basic_type->id;
             runtime_arg->type_dimension = arg_var_decl->type->dimension;
             runtime_arg->type_flag = arg_var_decl->type->flag;
           }
