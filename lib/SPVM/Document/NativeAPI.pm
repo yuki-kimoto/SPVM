@@ -24,8 +24,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
     7 reserved7
     8 api
     9 allocator
-   10 new_env_raw
-   11 free_env_raw
+   10 new_env
+   11 free_env
    12 isa
    13 elem_isa
    14 runtime
@@ -272,17 +272,17 @@ Examples:
 
 The memory allocator for this environment.
 
-=head2 new_env_raw
+=head2 new_env
 
-  SPVM_ENV* (*new_env_raw)();
+  SPVM_ENV* (*new_env)();
 
 Creates a new raw envriment.
 
-=head2 free_env_raw
+=head2 free_env
 
-  void (*free_env_raw)(SPVM_ENV* env);
+  void (*free_env)(SPVM_ENV* env);
 
-Frees the raw environemt that is created by L</"new_env_raw">.
+Frees the raw environemt that is created by L</"new_env">.
 
 =head2 isa
 

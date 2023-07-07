@@ -129,7 +129,7 @@ int32_t SPVM__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_ENV* my_env= env->get_pointer(env, stack, obj_self);
   
-  my_env->free_env_raw(my_env);
+  my_env->free_env(my_env);
   
   return 0;
 }

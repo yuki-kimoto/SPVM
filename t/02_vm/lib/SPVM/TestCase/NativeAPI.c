@@ -26,8 +26,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->reserved7 != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->allocator != &env_array[9]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_env_raw != &env_array[10]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->free_env_raw != &env_array[11]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_env != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->free_env != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->isa != &env_array[12]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->elem_isa != &env_array[13]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->runtime != &env_array[14]) { stack[0].ival = 0; return 0; }

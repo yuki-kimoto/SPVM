@@ -458,7 +458,7 @@ int32_t SPVM__Runtime__build_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  SPVM_ENV* my_env = env->new_env_raw(env);
+  SPVM_ENV* my_env = env->new_env(env);
   
   // Set runtime information
   my_env->runtime = runtime;

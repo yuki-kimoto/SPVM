@@ -43,7 +43,7 @@
 
 static const char* FILE_NAME = "spvm_api.c";
 
-SPVM_ENV* SPVM_API_new_env_raw(void) {
+SPVM_ENV* SPVM_API_new_env(void) {
 
   SPVM_API_ALLOCATOR* api_allocator = SPVM_API_ALLOCATOR_new_api();
   
@@ -107,8 +107,8 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     env_api,
     allocator, // allocator
-    SPVM_API_new_env_raw,
-    SPVM_API_free_env_raw,
+    SPVM_API_new_env,
+    SPVM_API_free_env,
     SPVM_API_isa,
     SPVM_API_elem_isa,
     NULL, // runtime
@@ -1560,7 +1560,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
   }
 }
 
-void SPVM_API_free_env_raw(SPVM_ENV* env) {
+void SPVM_API_free_env(SPVM_ENV* env) {
 
   // Free env api
   SPVM_API_ALLOCATOR_free_api(env->api->allocator);

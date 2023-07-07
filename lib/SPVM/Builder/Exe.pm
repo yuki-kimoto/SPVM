@@ -585,7 +585,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
 #endif
   
   // Create env
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
   
   // Compiler
   void* compiler = env_api->api->compiler->new_instance();

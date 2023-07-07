@@ -252,7 +252,7 @@ SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance() {
 void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
   
   if (runtime->env) {
-    SPVM_API_free_env_raw(runtime->env);
+    SPVM_API_free_env(runtime->env);
   }
   
   SPVM_RUNTIME_free(runtime);

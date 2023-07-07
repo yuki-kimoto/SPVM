@@ -34,11 +34,21 @@
       +struct spvm_api_allocator;
       +typedef struct spvm_api_allocator SPVM_API_ALLOCATOR;
     
-    * The following native API was removed.
+    * The following native API were removed.
     
       -  void (*free_env_prepared)(SPVM_ENV* env);
       -  void (*free_env)(SPVM_ENV* env);
       -  SPVM_ENV* (*new_env)(SPVM_ENV* env);
+
+    * The following native API were renamed.
+
+      -  SPVM_ENV* (*new_env_raw)();
+      -  void (*free_env_raw)(SPVM_ENV* env);
+      +  SPVM_ENV* (*new_env)();
+      +  void (*free_env)(SPVM_ENV* env);
+
+      -SPVM_ENV* SPVM_NATIVE_new_env_raw(void);
+      +SPVM_ENV* SPVM_NATIVE_new_env(void);
 
 0.989020 2023-07-07
   [Incompatibe Changes]

@@ -107,8 +107,8 @@ struct spvm_env {
   void* reserved7;
   SPVM_ENV_API* api;
   void* allocator;
-  SPVM_ENV* (*new_env_raw)();
-  void (*free_env_raw)(SPVM_ENV* env);
+  SPVM_ENV* (*new_env)();
+  void (*free_env)(SPVM_ENV* env);
   int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
   int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
   void* runtime;
@@ -500,7 +500,7 @@ struct spvm_api_module_file {
   void (*set_content_length)(void* compiler, void* module_file, int32_t content_length);
 };
 
-SPVM_ENV* SPVM_NATIVE_new_env_raw(void);
+SPVM_ENV* SPVM_NATIVE_new_env(void);
 
 struct spvm_api_allocator {
   void* (*new_instance)(void);

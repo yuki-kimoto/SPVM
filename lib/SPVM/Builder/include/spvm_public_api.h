@@ -7,6 +7,6 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
-SPVM_ENV* SPVM_PUBLIC_API_new_env_raw();
+SPVM_ENV* SPVM_PUBLIC_API_new_env();
 
 #endif
