@@ -463,9 +463,6 @@ int32_t SPVM__Runtime__get_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", my_env, &e, __func__, FILE_NAME, __LINE__);
   if (e) { return e; }
   
-  env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &e, __func__, FILE_NAME, __LINE__);
-  if (e) { return e; }
-  
   stack[0].oval = obj_self;
   
   return 0;
