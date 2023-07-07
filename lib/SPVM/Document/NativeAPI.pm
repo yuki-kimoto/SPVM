@@ -124,7 +124,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   107 get_memory_blocks_count
   108 get_type_name_raw
   109 get_type_name
-  110 new_env
+  110 reserved110
   111 reserved111
   112 memory_blocks_count
   113 get_chars
@@ -1018,20 +1018,6 @@ This function does not add the returned object to the mortal stack, so use the L
   void* (*get_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
 Gets a new C<string> object that is the type name of the object.
-
-=head2 new_env
-
-  SPVM_ENV* (*new_env)(SPVM_ENV* env);
-
-Creates a new environment that is ready to call methods.
-
-1. Create a new environment using the L</"new_env_raw"> native API.
-
-2. Set the current runtime to the new enviroment.
-
-If this method cannnot allocate memory for the new environment, return NULL.
-
-Note that L</"call_init_blocks"> need to be called before calling user methods by yourself.
 
 =head2 memory_blocks_count
 

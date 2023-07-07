@@ -207,7 +207,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_memory_blocks_count_env, // env->get_memory_blocks_count
     SPVM_API_get_type_name_raw,
     SPVM_API_get_type_name,
-    SPVM_API_new_env,
+    NULL, // reserved110
     NULL, // reserved111
     NULL, // memory_blocks_count
     SPVM_API_get_chars,
@@ -3890,18 +3890,6 @@ int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, in
   if (error) { return error; }
   
   return 0;
-}
-
-SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
-  
-  
-  // New raw env
-  SPVM_ENV* new_env = SPVM_API_new_env_raw();
-  
-  // Set the runtime
-  new_env->runtime = env->runtime;
-  
-  return new_env;
 }
 
 int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, SPVM_OBJECT* element) {
