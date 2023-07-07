@@ -139,13 +139,4 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
 
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler);
 
-int32_t SPVM_COMPILER_get_class_vars_length(SPVM_COMPILER* compiler);
-int32_t SPVM_COMPILER_get_fields_length(SPVM_COMPILER* compiler);
-int32_t SPVM_COMPILER_get_methods_length(SPVM_COMPILER* compiler);
-int32_t SPVM_COMPILER_get_anon_basic_types_length(SPVM_COMPILER* compiler);
-int32_t SPVM_COMPILER_get_args_length(SPVM_COMPILER* compiler);
-int32_t SPVM_COMPILER_get_opcodes_length(SPVM_COMPILER* compiler);
-int32_t SPVM_COMPILER_get_constant_strings_length(SPVM_COMPILER* compiler);
-int32_t SPVM_COMPILER_get_string_pool_length(SPVM_COMPILER* compiler);
-
 #endif
