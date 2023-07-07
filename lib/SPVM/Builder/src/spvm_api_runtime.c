@@ -846,3 +846,7 @@ void SPVM_API_PRECOMPILE_build_precompile_method_source(SPVM_RUNTIME* runtime, S
   SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, module_name, method_name);
   SPVM_PRECOMPILE_free(precompile);
 }
+
+void SPVM_API_RUNTIME_free_api(SPVM_API_RUNTIME* api) {
+  free(api);
+}

@@ -41,4 +41,6 @@ SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, con
 
 void SPVM_API_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file);
 
+void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api);
+
 #endif

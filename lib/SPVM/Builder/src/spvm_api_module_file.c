@@ -127,3 +127,6 @@ void SPVM_API_MODULE_FILE_set_content_length(SPVM_COMPILER* compiler, SPVM_MODUL
   module_file->content_length = content_length;
 }
 
+void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api) {
+  free(api);
+}

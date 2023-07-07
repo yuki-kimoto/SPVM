@@ -31,7 +31,9 @@
 
 #include "spvm_implement.h"
 
+#include "spvm_api_string_buffer.h"
 #include "spvm_api_compiler.h"
+#include "spvm_api_runtime.h"
 #include "spvm_api_module_file.h"
 #include "spvm_api_basic_type.h"
 #include "spvm_api_class_var.h"
@@ -1568,10 +1570,17 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
 void SPVM_API_free_env_raw(SPVM_ENV* env) {
 
   // Free env api
-  free(env->api->allocator);
-  free(env->api->string_buffer);
-  free(env->api->compiler);
-  free(env->api->runtime);
+  SPVM_API_ALLOCATOR_free_api(env->api->allocator);
+  SPVM_API_STRING_BUFFER_free_api(env->api->string_buffer);
+  SPVM_API_COMPILER_free_api(env->api->compiler);
+  SPVM_API_RUNTIME_free_api(env->api->runtime);
+  SPVM_API_MODULE_FILE_free_api(env->api->module_file);
+  SPVM_API_BASIC_TYPE_free_api(env->api->basic_type);
+  SPVM_API_CLASS_VAR_free_api(env->api->class_var);
+  SPVM_API_FIELD_free_api(env->api->field);
+  SPVM_API_METHOD_free_api(env->api->method);
+  SPVM_API_ARG_free_api(env->api->arg);
+  
   free(env->api);
   
   // Free allocator

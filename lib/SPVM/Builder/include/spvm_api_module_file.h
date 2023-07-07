@@ -35,4 +35,6 @@ int32_t SPVM_API_MODULE_FILE_get_content_length(SPVM_COMPILER* compiler, SPVM_MO
 
 void SPVM_API_MODULE_FILE_set_content_length(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, int32_t content_length);
 
+void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api);
+
 #endif

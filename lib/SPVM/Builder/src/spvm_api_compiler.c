@@ -139,3 +139,7 @@ void SPVM_API_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* modu
   
   return;
 }
+
+void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api) {
+  free(api);
+}

@@ -40,3 +40,7 @@ int32_t SPVM_API_STRING_BUFFER_get_length(SPVM_STRING_BUFFER* string_buffer) {
 void SPVM_API_STRING_BUFFER_free_instance(SPVM_STRING_BUFFER* string_buffer) {
   SPVM_STRING_BUFFER_free(string_buffer);
 }
+
+void SPVM_API_STRING_BUFFER_free_api(SPVM_API_STRING_BUFFER* api) {
+  free(api);
+}

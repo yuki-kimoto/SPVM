@@ -30,3 +30,7 @@ SPVM_ALLOCATOR* SPVM_API_ALLOCATOR_new_instance() {
 void SPVM_API_ALLOCATOR_free_instance(SPVM_ALLOCATOR* allocator) {
   SPVM_ALLOCATOR_free(allocator);
 }
+
+void SPVM_API_ALLOCATOR_free_api(SPVM_API_ALLOCATOR* api) {
+  free(api);
+}
