@@ -684,8 +684,11 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   // Free stack
   env->free_stack(env, stack);
   
-  // Free env
-  env->free_env_prepared(env);
+  env->api->runtime->free_instance(env->runtime);
+  
+  env->runtime = NULL;
+  
+  env->free_env_raw(env);
   
   return status;
 }
