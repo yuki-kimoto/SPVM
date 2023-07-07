@@ -285,13 +285,6 @@ int32_t SPVM_API_RUNTIME_get_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_B
   return basic_type_id;
 }
 
-const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value_nolen(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t constant_string_index) {
-  
-  const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, basic_type, constant_string_index, NULL);
-  
-  return constant_string_value;
-}
-
 const char* SPVM_API_RUNTIME_get_basic_type_constant_string_value(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t constant_string_index, int32_t* string_length) {
   if (constant_string_index < 0) {
     return NULL;
