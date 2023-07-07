@@ -133,14 +133,14 @@ DEVELOPERS NOTE
     
       find lib | grep -P '\.pm$' | grep -v 'SPVM\.pm$' | perl -p -e 's/\.pm$//' | sort | grep -v -P '^lib/SPVM(\.pm|/(ExchangeAPI|Document|Builder|BlessedObject|Dist))' | perl -p -e 'chomp;s|lib/SPVM/||; s|/|::|g; $_ = "=item * L<$_|SPVM::$_>\n\n";'
 
-    Get SPVM source files
-    
-      find lib | grep Builder | grep -P '\.c$' | perl -p -e 's|lib/SPVM/Builder/src/||' | sort
-
     Get SPVM header files
     
       find lib | grep Builder | grep -P '\.h$' | perl -p -e 's|lib/SPVM/Builder/include/||' | sort
     
+    Get SPVM source files
+    
+      find lib | grep Builder | grep -P '\.c$' | perl -p -e 's|lib/SPVM/Builder/src/||' | sort
+
     Create compile error test module
     
       spvmdist --genlib TestCase::CompileError::Foo t/default/lib

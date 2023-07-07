@@ -427,8 +427,13 @@ sub get_spvm_core_header_file_names {
     spvm_allocator.h
     spvm_allow.h
     spvm_api_allocator.h
+    spvm_api_arg.h
+    spvm_api_basic_type.h
+    spvm_api_class_var.h
     spvm_api_compiler.h
+    spvm_api_field.h
     spvm_api.h
+    spvm_api_method.h
     spvm_api_module_file.h
     spvm_api_runtime.h
     spvm_api_string_buffer.h
@@ -492,8 +497,13 @@ sub get_spvm_core_source_file_names {
     spvm_allocator.c
     spvm_allow.c
     spvm_api_allocator.c
+    spvm_api_arg.c
+    spvm_api_basic_type.c
     spvm_api.c
+    spvm_api_class_var.c
     spvm_api_compiler.c
+    spvm_api_field.c
+    spvm_api_method.c
     spvm_api_module_file.c
     spvm_api_runtime.c
     spvm_api_string_buffer.c
