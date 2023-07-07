@@ -248,7 +248,7 @@ SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance() {
 }
 
 void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
-
+  
   SPVM_RUNTIME_free(runtime);
 }
 
@@ -258,7 +258,7 @@ int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime) {
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
-
+  
   if (basic_type_id < 0) {
     return NULL;
   }
@@ -310,6 +310,14 @@ int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* ru
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_anon_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t anon_basic_type_index) {
+  
+  if (anon_basic_type_index < 0) {
+    return NULL;
+  }
+  
+  if (anon_basic_type_index >= basic_type->anon_basic_types_length) {
+    return NULL;
+  }
   
   SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = &basic_type->anon_basic_types[anon_basic_type_index];
   
