@@ -4996,28 +4996,28 @@ build_precompile_module_source(...)
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   // Create precompile source
-  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
   
   // New allocator
-  void* allocator = env->api->allocator->new_instance();
+  void* allocator = env_api->api->allocator->new_instance();
   
   // New string buffer
-  void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
+  void* string_buffer = env_api->api->string_buffer->new_instance(allocator, 0);
 
-  env->api->runtime->build_precompile_module_source(runtime, string_buffer, basic_type_name);
+  env_api->api->runtime->build_precompile_module_source(runtime, string_buffer, basic_type_name);
   
-  const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
-  int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
+  const char* string_buffer_value = env_api->api->string_buffer->get_string(string_buffer);
+  int32_t string_buffer_length = env_api->api->string_buffer->get_length(string_buffer);
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
 
   // Free string buffer
-  env->api->string_buffer->free_instance(string_buffer);
+  env_api->api->string_buffer->free_instance(string_buffer);
 
   // Free allocator
-  env->api->allocator->free_instance(allocator);
+  env_api->api->allocator->free_instance(allocator);
 
-  // Free native_env
-  env->free_env_raw(env);
+  // Free native_env_api
+  env_api->free_env_raw(env_api);
   
   XPUSHs(sv_precompile_source);
   XSRETURN(1);
