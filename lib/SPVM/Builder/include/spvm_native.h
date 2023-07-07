@@ -38,6 +38,21 @@ typedef struct spvm_api_string_buffer SPVM_API_STRING_BUFFER;
 struct spvm_api_allocator;
 typedef struct spvm_api_allocator SPVM_API_ALLOCATOR;
 
+struct spvm_api_basic_type;
+typedef struct spvm_api_basic_type SPVM_API_BASIC_TYPE;
+
+struct spvm_api_class_var;
+typedef struct spvm_api_class_var SPVM_API_CLASS_VAR;
+
+struct spvm_api_field;
+typedef struct spvm_api_field SPVM_API_FIELD;
+
+struct spvm_api_method;
+typedef struct spvm_api_method SPVM_API_METHOD;
+
+struct spvm_api_arg;
+typedef struct spvm_api_arg SPVM_API_ARG;
+
 typedef union spvm_value SPVM_VALUE;
 
 union spvm_value {
