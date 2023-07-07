@@ -840,16 +840,16 @@ int32_t SPVM_API_RUNTIME_is_super(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE
     return 0;
   }
   
-  int32_t parent_basic_type_id = child_basic_type->parent_id;
+  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = child_basic_type->parent;
+  
   while (1) {
-    if (parent_basic_type_id > 0) {
-      SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, parent_basic_type_id);
+    if (parent_basic_type) {
       if (parent_basic_type->id == super_basic_type->id) {
         is_super_basic_type = 1;
         break;
       }
       else {
-        parent_basic_type_id = parent_basic_type->parent_id;
+        parent_basic_type = parent_basic_type->parent;
       }
     }
     else {
