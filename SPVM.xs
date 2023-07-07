@@ -4863,17 +4863,16 @@ get_method_names(...)
   
   SV* sv_basic_type_name = ST(1);
   SV* sv_category = ST(2);
-
+  
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-
+  
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
   void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
@@ -4908,19 +4907,18 @@ get_basic_type_anon_basic_type_names(...)
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-
+  
   SV* sv_basic_type_name = ST(1);
-
+  
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-
+  
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
   AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
   
   void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
   int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   
@@ -4989,7 +4987,6 @@ get_module_file(...)
   SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
   
   void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
   const char* module_file;
   SV* sv_module_file = &PL_sv_undef;
