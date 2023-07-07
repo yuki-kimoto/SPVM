@@ -1993,7 +1993,7 @@ int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
       
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS: {
-          int32_t basic_type_is_pointer = SPVM_API_RUNTIME_get_basic_type_is_pointer(runtime, object_basic_type);
+          int32_t basic_type_is_pointer = object_basic_type->is_pointer;
           
           if (basic_type_is_pointer) {
             is_pointer_class = 1;
@@ -2884,7 +2884,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   SPVM_RUNTIME* runtime = env->runtime;
   
   // valut_t array dimension must be 1
-  const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
+  const char* basic_type_name = basic_type->name;
   
   int32_t fields_length = basic_type->fields_length;
   SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field(runtime, basic_type, 0);
