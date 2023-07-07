@@ -23,7 +23,6 @@ struct spvm_runtime_basic_type {
   SPVM_RUNTIME_BASIC_TYPE* anon_basic_types;
   int32_t id;
   int32_t category;
-  int32_t parent_id;
   int32_t string_pool_length;
   int32_t constant_strings_length;
   int32_t class_vars_length;
