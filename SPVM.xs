@@ -5039,7 +5039,6 @@ set_native_method_address(...)
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
   // Method name
   const char* method_name = SvPV_nolen(sv_method_name);
