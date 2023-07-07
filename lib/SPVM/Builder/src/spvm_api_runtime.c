@@ -232,8 +232,8 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_arg,
     SPVM_API_RUNTIME_get_basic_type_by_name,
     SPVM_API_RUNTIME_get_basic_type_anon_basic_type,
-    SPVM_API_PRECOMPILE_build_precompile_module_source,
-    SPVM_API_PRECOMPILE_build_precompile_method_source,
+    SPVM_API_RUNTIME_build_precompile_module_source,
+    SPVM_API_RUNTIME_build_precompile_method_source,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -833,14 +833,14 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TY
   return isa;
 }
 
-void SPVM_API_PRECOMPILE_build_precompile_module_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* module_name) {
+void SPVM_API_RUNTIME_build_precompile_module_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* module_name) {
   SPVM_PRECOMPILE* precompile = SPVM_PRECOMPILE_new(precompile);
   SPVM_PRECOMPILE_set_runtime(precompile, runtime);
   SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, module_name);
   SPVM_PRECOMPILE_free(precompile);
 }
 
-void SPVM_API_PRECOMPILE_build_precompile_method_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* module_name, const char* method_name) {
+void SPVM_API_RUNTIME_build_precompile_method_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, const char* module_name, const char* method_name) {
   SPVM_PRECOMPILE* precompile = SPVM_PRECOMPILE_new(precompile);
   SPVM_PRECOMPILE_set_runtime(precompile, runtime);
   SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, module_name, method_name);
