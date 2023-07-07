@@ -690,8 +690,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     
     runtime_basic_type->is_pointer = basic_type->is_pointer;
     
-    if (basic_type->parent_name) {
-      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent_name, strlen(basic_type->parent_name));
+    if (basic_type->parent) {
+      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent->name, strlen(basic_type->parent->name));
       runtime_basic_type->parent_id = parent_basic_type->id;
       runtime_basic_type->parent = &runtime_basic_types[parent_basic_type->id];
     }
