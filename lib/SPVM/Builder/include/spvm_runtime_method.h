@@ -8,6 +8,13 @@
 
 // Runtime method information
 struct spvm_runtime_method {
+  void* native_address;
+  void* precompile_address;
+  const char* name;
+  SPVM_OPCODE* opcodes;
+  SPVM_RUNTIME_BASIC_TYPE* current_basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* return_basic_type;
+  SPVM_RUNTIME_ARG* args;
   int32_t index;
   int32_t args_length;
   int32_t required_args_length;
@@ -31,13 +38,6 @@ struct spvm_runtime_method {
   int8_t is_destructor;
   int8_t is_required;
   int8_t is_enum;
-  void* native_address;
-  void* precompile_address;
-  const char* name;
-  SPVM_OPCODE* opcodes;
-  SPVM_RUNTIME_BASIC_TYPE* current_basic_type;
-  SPVM_RUNTIME_BASIC_TYPE* return_basic_type;
-  SPVM_RUNTIME_ARG* args;
 };
 
 #endif
