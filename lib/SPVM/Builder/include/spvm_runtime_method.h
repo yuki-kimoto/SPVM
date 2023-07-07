@@ -9,10 +9,8 @@
 // Runtime method information
 struct spvm_runtime_method {
   int32_t index;
-  int32_t args_base;
   int32_t args_length;
   int32_t required_args_length;
-  int32_t opcodes_base;
   int32_t opcodes_length;
   int32_t byte_vars_width;
   int32_t short_vars_width;
