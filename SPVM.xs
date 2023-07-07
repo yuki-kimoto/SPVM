@@ -179,7 +179,7 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
 
 SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_address, SV** sv_error) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   *sv_error = &PL_sv_undef;
   
@@ -206,8 +206,8 @@ SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack,
     }
     else {
       void* address = (void*)(intptr_t)SvIV(sv_address);
-      void* spvm_address = env->new_pointer_object_by_name(env, stack, "Address", address, &e, __func__, FILE_NAME, __LINE__);
-      assert(e == 0);
+      void* spvm_address = env->new_pointer_object_by_name(env, stack, "Address", address, &error_id, __func__, FILE_NAME, __LINE__);
+      assert(error_id == 0);
       sv_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_address, "SPVM::BlessedObject::Class");
     }
   }
@@ -2297,7 +2297,7 @@ _xs_new_address_object(...)
   PPCODE:
 {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -5071,9 +5071,9 @@ set_command_info_program_name(...)
     
     // Set command info
     {
-      int32_t e;
-      e = env->set_command_info_program_name(env, stack, spvm_program_name);
-      assert(e == 0);
+      int32_t error_id;
+      error_id = env->set_command_info_program_name(env, stack, spvm_program_name);
+      assert(error_id == 0);
     }
     
     env->leave_scope(env, stack, scope_id);
@@ -5114,9 +5114,9 @@ set_command_info_argv(...)
     
     // Set command info
     {
-      int32_t e;
-      e = env->set_command_info_argv(env, stack, spvm_argv);
-      assert(e == 0);
+      int32_t error_id;
+      error_id = env->set_command_info_argv(env, stack, spvm_argv);
+      assert(error_id == 0);
     }
     
     env->leave_scope(env, stack, scope_id);
@@ -5142,11 +5142,10 @@ set_command_info_base_time(...)
   {
     int32_t scope_id = env->enter_scope(env, stack);
     
-    // Set command info
     {
-      int32_t e;
-      e = env->set_command_info_base_time(env, stack, base_time);
-      assert(e == 0);
+      int32_t error_id;
+      error_id = env->set_command_info_base_time(env, stack, base_time);
+      assert(error_id == 0);
     }
     
     env->leave_scope(env, stack, scope_id);
@@ -5166,9 +5165,9 @@ call_init_blocks(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
   
-  int32_t e = env->call_init_blocks(env, stack);
+  int32_t error_id = env->call_init_blocks(env, stack);
   
-  if (e) {
+  if (error_id) {
     croak("[Initialization Exception]%s \n  at %s line %d", env->get_chars(env, stack, env->get_exception(env, stack)), FILE_NAME, __LINE__);
   }
   
