@@ -4992,7 +4992,7 @@ get_module_file(...)
   int32_t basic_type_id = api_env->api->runtime->get_basic_type_id(runtime, basic_type);
   
   const char* module_file;
-  SV* sv_module_file;
+  SV* sv_module_file = &PL_sv_undef;
   
   if (basic_type) {
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type);
@@ -5012,9 +5012,6 @@ get_module_file(...)
       sv_catpv(sv_module_file, module_dir_sep);
       sv_catpv(sv_module_file, module_rel_file);
     }
-  }
-  else {
-    sv_module_file = &PL_sv_undef;
   }
   
   api_env->free_env_raw(api_env);
