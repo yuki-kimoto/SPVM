@@ -3344,12 +3344,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* sta
       break;
     }
     
-    if (parent_basic_type->parent_id != -1) {
-      parent_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, parent_basic_type->parent_id);
-    }
-    else {
-      parent_basic_type = NULL;
-    }
+    parent_basic_type = parent_basic_type->parent;
   }
   
   return method;
