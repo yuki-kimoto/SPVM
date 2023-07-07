@@ -7,19 +7,6 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime_basic_type {
-  int32_t id;
-  int32_t category;
-  int32_t parent_id;
-  int32_t string_pool_length;
-  int32_t constant_strings_length;
-  int32_t class_vars_length;
-  int32_t fields_length;
-  int32_t fields_size;
-  int32_t methods_length;
-  int32_t anon_basic_types_length;
-  int8_t is_anon;
-  int8_t is_pointer;
-  int8_t initialized;
   const char* name;
   const char* module_dir;
   const char* module_rel_file;
@@ -34,6 +21,19 @@ struct spvm_runtime_basic_type {
   SPVM_RUNTIME_METHOD* destructor_method;
   SPVM_RUNTIME_METHOD* required_method;
   SPVM_RUNTIME_BASIC_TYPE* anon_basic_types;
+  int32_t id;
+  int32_t category;
+  int32_t parent_id;
+  int32_t string_pool_length;
+  int32_t constant_strings_length;
+  int32_t class_vars_length;
+  int32_t fields_length;
+  int32_t fields_size;
+  int32_t methods_length;
+  int32_t anon_basic_types_length;
+  int8_t is_anon;
+  int8_t is_pointer;
+  int8_t initialized;
 };
 
 #endif
