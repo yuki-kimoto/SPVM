@@ -51,6 +51,10 @@
       void* (*build_runtime)(void* compiler);
       
     * SPVM Module File Native APIs were added.
+    
+    * The following Native API was added.
+    
+      void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   
 0.989019 2023-07-04
   [Changes]

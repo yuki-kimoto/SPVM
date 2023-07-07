@@ -236,6 +236,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   219 get_basic_type
   220 get_basic_type_by_name
   221 get_basic_type_by_id
+  222 get_object_basic_type
   
 =head2 api
 
@@ -2089,6 +2090,10 @@ The feature is the same as the L</"has_interface">, but the basic type name can 
 =head2 get_basic_type_by_id
 
   void* (*get_basic_type_by_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+
+=head2 get_object_basic_type
+
+  void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
 =head1 Compiler Native API
 
