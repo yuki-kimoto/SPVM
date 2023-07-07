@@ -4527,14 +4527,14 @@ create_compiler(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Create compiler native_env
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
-  size_t iv_api_env = PTR2IV(api_env);
-  SV* sviv_api_env = sv_2mortal(newSViv(iv_api_env));
-  SV* sv_api_env = sv_2mortal(newRV_inc(sviv_api_env));
-  (void)hv_store(hv_self, "api_env", strlen("api_env"), SvREFCNT_inc(sv_api_env), 0);
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
+  size_t iv_env_api = PTR2IV(env_api);
+  SV* sviv_env_api = sv_2mortal(newSViv(iv_env_api));
+  SV* sv_env_api = sv_2mortal(newRV_inc(sviv_env_api));
+  (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
 
   // Create compiler
-  void* compiler = api_env->api->compiler->new_instance();
+  void* compiler = env_api->api->compiler->new_instance();
 
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
@@ -4555,46 +4555,46 @@ get_module_file(...)
   SV* sv_module_name = ST(1);
   const char* module_name = SvPV_nolen(sv_module_name);
   
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
-  void* module_file = api_env->api->compiler->get_module_file(compiler, module_name);
+  void* module_file = env_api->api->compiler->get_module_file(compiler, module_name);
   SV* sv_module_file = &PL_sv_undef;
   if (module_file) {
     HV* hv_module_file = (HV*)sv_2mortal((SV*)newHV());
     
     (void)hv_store(hv_module_file, "module_name", strlen("module_name"), SvREFCNT_inc(sv_module_name), 0);
     
-    const char* file = api_env->api->module_file->get_file(compiler, module_file);
+    const char* file = env_api->api->module_file->get_file(compiler, module_file);
     if (file) {
       SV* sv_file = sv_2mortal(newSVpv(file, 0));
       (void)hv_store(hv_module_file, "file", strlen("file"), SvREFCNT_inc(sv_file), 0);
     }
     
-    const char* dir = api_env->api->module_file->get_dir(compiler, module_file);
+    const char* dir = env_api->api->module_file->get_dir(compiler, module_file);
     if (dir) {
       SV* sv_dir = sv_2mortal(newSVpv(dir, 0));
       (void)hv_store(hv_module_file, "dir", strlen("dir"), SvREFCNT_inc(sv_dir), 0);
     }
     
-    const char* rel_file = api_env->api->module_file->get_rel_file(compiler, module_file);
+    const char* rel_file = env_api->api->module_file->get_rel_file(compiler, module_file);
     if (rel_file) {
       SV* sv_rel_file = sv_2mortal(newSVpv(rel_file, 0));
       (void)hv_store(hv_module_file, "rel_file", strlen("rel_file"), SvREFCNT_inc(sv_rel_file), 0);
     }
     
-    const char* content = api_env->api->module_file->get_content(compiler, module_file);
+    const char* content = env_api->api->module_file->get_content(compiler, module_file);
     if (content) {
       SV* sv_content = sv_2mortal(newSVpv(content, 0));
       (void)hv_store(hv_module_file, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
     }
     
-    int32_t content_length = api_env->api->module_file->get_content_length(compiler, module_file);
+    int32_t content_length = env_api->api->module_file->get_content_length(compiler, module_file);
     SV* sv_content_length = sv_2mortal(newSViv(content_length));
     (void)hv_store(hv_module_file, "content_length", strlen("content_length"), SvREFCNT_inc(sv_content_length), 0);
     
@@ -4614,18 +4614,18 @@ DESTROY(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
   // Free compiler
-  api_env->api->compiler->free_instance(compiler);
+  env_api->api->compiler->free_instance(compiler);
   
-  api_env->free_env_raw(api_env);
+  env_api->free_env_raw(env_api);
   
   XSRETURN(0);
 }
@@ -4659,15 +4659,15 @@ compile(...)
   // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
   
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
   // Set starting file
-  api_env->api->compiler->set_start_file(compiler, start_file);
+  env_api->api->compiler->set_start_file(compiler, start_file);
   
   // Set starting line
-  api_env->api->compiler->set_start_line(compiler, start_line);
+  env_api->api->compiler->set_start_line(compiler, start_line);
   
   // Add include paths
   AV* av_include_dirs;
@@ -4682,11 +4682,11 @@ compile(...)
     SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
     SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
     char* include_dir = SvPV_nolen(sv_include_dir);
-    api_env->api->compiler->add_include_dir(compiler, include_dir);
+    env_api->api->compiler->add_include_dir(compiler, include_dir);
   }
   
   // Compile SPVM
-  int32_t compile_error_id = api_env->api->compiler->compile(compiler, basic_type_name);
+  int32_t compile_error_id = env_api->api->compiler->compile(compiler, basic_type_name);
   
   SV* sv_success = &PL_sv_undef;
   if (compile_error_id == 0) {
@@ -4714,11 +4714,11 @@ build_runtime(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
-  void* runtime = api_env->api->compiler->build_runtime(compiler);
+  void* runtime = env_api->api->compiler->build_runtime(compiler);
   
   SV* sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
   
@@ -4736,10 +4736,10 @@ get_error_messages(...)
   
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  // The api_environment
-  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
-  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
-  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
+  // The env_apiironment
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
   // Compiler
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
@@ -4749,10 +4749,10 @@ get_error_messages(...)
   AV* av_error_messages = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_error_messages = sv_2mortal(newRV_inc((SV*)av_error_messages));
   
-  int32_t error_messages_length = api_env->api->compiler->get_error_messages_length(compiler);
+  int32_t error_messages_length = env_api->api->compiler->get_error_messages_length(compiler);
   
   for (int32_t i = 0; i < error_messages_length; i++) {
-    const char* error_message = api_env->api->compiler->get_error_message(compiler, i);
+    const char* error_message = env_api->api->compiler->get_error_message(compiler, i);
     SV* sv_error_message = sv_2mortal(newSVpv(error_message, 0));
     av_push(av_error_messages, SvREFCNT_inc(sv_error_message));
   }
@@ -4776,12 +4776,12 @@ DESTROY(...)
   SV* sv_native_runtime = sv_native_runtime_ptr ? *sv_native_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_native_runtime)));
 
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
 
   // Free native_runtime
-  api_env->api->runtime->free_instance(runtime);
+  env_api->api->runtime->free_instance(runtime);
 
-  api_env->free_env_raw(api_env);
+  env_api->free_env_raw(env_api);
 
   XSRETURN(0);
 }
@@ -4800,24 +4800,24 @@ get_method_names(...)
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
   
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
-  void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
+  int32_t methods_length = env_api->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    void* method = api_env->api->runtime->get_method(runtime, basic_type, method_index);
-    const char* method_name = api_env->api->runtime->get_method_name(runtime, method);
+    void* method = env_api->api->runtime->get_method(runtime, basic_type, method_index);
+    const char* method_name = env_api->api->runtime->get_method_name(runtime, method);
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
     if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && api_env->api->runtime->get_method_is_native(runtime, method)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && env_api->api->runtime->get_method_is_native(runtime, method)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && api_env->api->runtime->get_method_is_precompile(runtime, method)) {
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && env_api->api->runtime->get_method_is_precompile(runtime, method)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
     }
@@ -4826,7 +4826,7 @@ get_method_names(...)
     }
   }
 
-  api_env->free_env_raw(api_env);
+  env_api->free_env_raw(env_api);
   
   XPUSHs(sv_method_names);
   XSRETURN(1);
@@ -4845,29 +4845,29 @@ get_basic_type_anon_basic_type_names(...)
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
   
   AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
   
-  void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  int32_t methods_length = api_env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
+  int32_t methods_length = env_api->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    void* method = api_env->api->runtime->get_method(runtime, basic_type, method_index);
-    int32_t is_anon_method = api_env->api->runtime->get_method_is_anon(runtime, method);
+    void* method = env_api->api->runtime->get_method(runtime, basic_type, method_index);
+    int32_t is_anon_method = env_api->api->runtime->get_method_is_anon(runtime, method);
     
     if (is_anon_method) {
-      void* anon_basic_type = api_env->api->runtime->get_method_current_basic_type(runtime, method);
-      const char* anon_basic_type_name = api_env->api->runtime->get_basic_type_name(runtime, anon_basic_type);
+      void* anon_basic_type = env_api->api->runtime->get_method_current_basic_type(runtime, method);
+      const char* anon_basic_type_name = env_api->api->runtime->get_basic_type_name(runtime, anon_basic_type);
       SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
       av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
     }
   }
 
-  api_env->free_env_raw(api_env);
+  env_api->free_env_raw(env_api);
   
   XPUSHs(sv_anon_basic_type_names);
   XSRETURN(1);
@@ -4881,21 +4881,21 @@ get_basic_type_names(...)
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
   
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
   
   AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
   
-  int32_t basic_types_length = api_env->api->runtime->get_basic_types_length(runtime);
+  int32_t basic_types_length = env_api->api->runtime->get_basic_types_length(runtime);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
-    void* basic_type = api_env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
-    int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type);
-    const char* basic_type_name = api_env->api->runtime->get_basic_type_name(runtime, basic_type);
+    void* basic_type = env_api->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
+    int32_t basic_type_category = env_api->api->runtime->get_basic_type_category(runtime, basic_type);
+    const char* basic_type_name = env_api->api->runtime->get_basic_type_name(runtime, basic_type);
     SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
     av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
   }
   
-  api_env->free_env_raw(api_env);
+  env_api->free_env_raw(env_api);
   
   XPUSHs(sv_basic_type_names);
   XSRETURN(1);
@@ -4914,17 +4914,17 @@ get_module_file(...)
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
   
-  void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
   const char* module_file;
   SV* sv_module_file = &PL_sv_undef;
   
   if (basic_type) {
-    int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type);
+    int32_t basic_type_category = env_api->api->runtime->get_basic_type_category(runtime, basic_type);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-      const char* module_dir = api_env->api->runtime->get_basic_type_module_dir(runtime, basic_type);
+      const char* module_dir = env_api->api->runtime->get_basic_type_module_dir(runtime, basic_type);
       const char* module_dir_sep;
       if (module_dir) {
         module_dir_sep = "/";
@@ -4933,7 +4933,7 @@ get_module_file(...)
         module_dir_sep = "";
         module_dir = "";
       }
-      const char* module_rel_file = api_env->api->runtime->get_basic_type_module_rel_file(runtime, basic_type);
+      const char* module_rel_file = env_api->api->runtime->get_basic_type_module_rel_file(runtime, basic_type);
       
       sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
       sv_catpv(sv_module_file, module_dir_sep);
@@ -4941,7 +4941,7 @@ get_module_file(...)
     }
   }
   
-  api_env->free_env_raw(api_env);
+  env_api->free_env_raw(env_api);
   
   XPUSHs(sv_module_file);
   XSRETURN(1);
@@ -4959,28 +4959,28 @@ set_native_method_address(...)
   SV* sv_method_name = ST(2);
   SV* sv_native_address = ST(3);
   
-  SPVM_ENV* api_env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
   
   // Basic type name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  void* basic_type = api_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
   // Method name
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Method
-  void* method = api_env->api->runtime->get_method_by_name(runtime, basic_type, method_name);
+  void* method = env_api->api->runtime->get_method_by_name(runtime, basic_type, method_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  api_env->api->runtime->set_native_method_address(runtime, method, native_address);
+  env_api->api->runtime->set_native_method_address(runtime, method, native_address);
   
-  assert(native_address == api_env->api->runtime->get_native_method_address(runtime, method));
+  assert(native_address == env_api->api->runtime->get_native_method_address(runtime, method));
   
   // Free native_env
-  api_env->free_env_raw(api_env);
+  env_api->free_env_raw(env_api);
   
   XSRETURN(0);
 }
