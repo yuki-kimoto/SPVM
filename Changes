@@ -1,4 +1,4 @@
-0.989020 2023-07-05
+0.989020 2023-07-07
   [Incompatibe Changes]
     * The following Native APIs were removed.
       int32_t (*init_env)(SPVM_ENV* env);
