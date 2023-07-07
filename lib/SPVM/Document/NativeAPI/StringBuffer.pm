@@ -5,7 +5,7 @@ SPVM::Document::NativeAPI::StringBuffer - SPVM String Buffer Native APIs
 =head1 Usage
 
   // String Buffer API
-  SPVM_ENV_STRING_BUFFER* string_buffer_api = env->api->string_buffer;
+  SPVM_API_STRING_BUFFER* string_buffer_api = env->api->string_buffer;
   
   // New string_buffer
   void* string_buffer = string_buffer_api->new_instance();

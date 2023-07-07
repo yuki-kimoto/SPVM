@@ -23,20 +23,20 @@ typedef struct spvm_env SPVM_ENV;
 struct spvm_env_api;
 typedef struct spvm_env_api SPVM_ENV_API;
 
-struct spvm_env_compiler;
-typedef struct spvm_env_compiler SPVM_ENV_COMPILER;
+struct spvm_api_compiler;
+typedef struct spvm_api_compiler SPVM_API_COMPILER;
 
-struct spvm_env_module_file;
-typedef struct spvm_env_module_file SPVM_ENV_MODULE_FILE;
+struct spvm_api_module_file;
+typedef struct spvm_api_module_file SPVM_API_MODULE_FILE;
 
-struct spvm_env_runtime;
-typedef struct spvm_env_runtime SPVM_ENV_RUNTIME;
+struct spvm_api_runtime;
+typedef struct spvm_api_runtime SPVM_API_RUNTIME;
 
-struct spvm_env_string_buffer;
-typedef struct spvm_env_string_buffer SPVM_ENV_STRING_BUFFER;
+struct spvm_api_string_buffer;
+typedef struct spvm_api_string_buffer SPVM_API_STRING_BUFFER;
 
-struct spvm_env_allocator;
-typedef struct spvm_env_allocator SPVM_ENV_ALLOCATOR;
+struct spvm_api_allocator;
+typedef struct spvm_api_allocator SPVM_API_ALLOCATOR;
 
 typedef union spvm_value SPVM_VALUE;
 
@@ -322,7 +322,7 @@ struct spvm_env {
   void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 };
 
-struct spvm_env_runtime {
+struct spvm_api_runtime {
   void* (*new_instance)(void);
   void (*free_instance)(void* runtime);
   void* reserved2;
@@ -462,7 +462,7 @@ struct spvm_env_runtime {
   void (*build_precompile_method_source)(void* runtime, void* string_buffer, const char* module_name, const char* method_name);
 };
 
-struct spvm_env_compiler {
+struct spvm_api_compiler {
   void* (*new_instance)(void);
   void (*free_instance)(void* compiler);
   void (*set_start_line)(void* compiler, int32_t start_line);
@@ -482,8 +482,8 @@ struct spvm_env_compiler {
   void* (*build_runtime)(void* compiler);
 };
 
-struct spvm_env_module_file {
-  SPVM_ENV_MODULE_FILE* (*new_env)(void);
+struct spvm_api_module_file {
+  SPVM_API_MODULE_FILE* (*new_env)(void);
   void* (*new_instance)(void* compiler);
   const char* (*get_module_name)(void* compiler, void* module_file);
   void (*set_module_name)(void* compiler, void* module_file, void* module_name);
@@ -501,12 +501,12 @@ struct spvm_env_module_file {
 
 SPVM_ENV* SPVM_NATIVE_new_env_raw(void);
 
-struct spvm_env_allocator {
+struct spvm_api_allocator {
   void* (*new_instance)(void);
   void (*free_instance)(void* allocator);
 };
 
-struct spvm_env_string_buffer {
+struct spvm_api_string_buffer {
   void* (*new_instance)(void* allocator, int32_t capacity);
   void (*free_instance)(void* string_buffer);
   const char* (*get_string)(void* string_buffer);
@@ -514,11 +514,11 @@ struct spvm_env_string_buffer {
 };
 
 struct spvm_env_api {
-  SPVM_ENV_ALLOCATOR* allocator;
-  SPVM_ENV_STRING_BUFFER* string_buffer;
-  SPVM_ENV_COMPILER* compiler;
-  SPVM_ENV_RUNTIME* runtime;
-  SPVM_ENV_MODULE_FILE* module_file;
+  SPVM_API_ALLOCATOR* allocator;
+  SPVM_API_STRING_BUFFER* string_buffer;
+  SPVM_API_COMPILER* compiler;
+  SPVM_API_RUNTIME* runtime;
+  SPVM_API_MODULE_FILE* module_file;
 };
 
 #define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)

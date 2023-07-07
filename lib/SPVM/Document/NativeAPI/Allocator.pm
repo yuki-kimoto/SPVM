@@ -5,7 +5,7 @@ SPVM::Document::NativeAPI::Allocator - SPVM Allocator Native APIs
 =head1 Usage
 
   // Allocator API
-  SPVM_ENV_ALLOCATOR* allocator_api = env->api->allocator;
+  SPVM_API_ALLOCATOR* allocator_api = env->api->allocator;
   
   // New allocator
   void* allocator = allocator_api->new_instance();

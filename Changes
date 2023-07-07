@@ -1,7 +1,34 @@
 0.989021 2023-07-07
   [Document Changes]
     * SPVM::Document::NativeClass was renamed to SPVM::Document::NativeModule.
-    
+  [Incompatibe Changes]
+    * The following structures in Native API were renamed.
+
+    -struct spvm_env_compiler;
+    -typedef struct spvm_env_compiler SPVM_ENV_COMPILER;
+    +struct spvm_api_compiler;
+    +typedef struct spvm_api_compiler SPVM_API_COMPILER;
+
+    -struct spvm_env_module_file;
+    -typedef struct spvm_env_module_file SPVM_ENV_MODULE_FILE;
+    +struct spvm_api_module_file;
+    +typedef struct spvm_api_module_file SPVM_API_MODULE_FILE;
+
+    -struct spvm_env_runtime;
+    -typedef struct spvm_env_runtime SPVM_ENV_RUNTIME;
+    +struct spvm_api_runtime;
+    +typedef struct spvm_api_runtime SPVM_API_RUNTIME;
+
+    -struct spvm_env_string_buffer;
+    -typedef struct spvm_env_string_buffer SPVM_ENV_STRING_BUFFER;
+    +struct spvm_api_string_buffer;
+    +typedef struct spvm_api_string_buffer SPVM_API_STRING_BUFFER;
+
+    -struct spvm_env_allocator;
+    -typedef struct spvm_env_allocator SPVM_ENV_ALLOCATOR;
+    +struct spvm_api_allocator;
+    +typedef struct spvm_api_allocator SPVM_API_ALLOCATOR;
+
 0.989020 2023-07-07
   [Incompatibe Changes]
     * The following Native APIs were removed.

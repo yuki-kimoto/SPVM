@@ -10,14 +10,14 @@
 #include "spvm_allocator.h"
 #include "spvm_string_buffer.h"
 
-SPVM_ENV_STRING_BUFFER* SPVM_API_STRING_BUFFER_new_env() {
+SPVM_API_STRING_BUFFER* SPVM_API_STRING_BUFFER_new_env() {
   void* env_string_buffer_init[]  = {
     SPVM_API_STRING_BUFFER_new_instance,
     SPVM_API_STRING_BUFFER_free_instance,
     SPVM_API_STRING_BUFFER_get_string,
     SPVM_API_STRING_BUFFER_get_length,
   };
-  SPVM_ENV_STRING_BUFFER* env_string_buffer = calloc(1, sizeof(env_string_buffer_init));
+  SPVM_API_STRING_BUFFER* env_string_buffer = calloc(1, sizeof(env_string_buffer_init));
   memcpy(env_string_buffer, env_string_buffer_init, sizeof(env_string_buffer_init));
   
   return env_string_buffer;

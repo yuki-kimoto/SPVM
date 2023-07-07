@@ -7,7 +7,7 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
-SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env();
+SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_env();
 
 // Runtime
 SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance();

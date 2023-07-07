@@ -18,7 +18,7 @@
 #include "spvm_string.h"
 #include "spvm_module_file.h"
 
-SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
+SPVM_API_COMPILER* SPVM_API_COMPILER_new_env() {
   void* env_compiler_init[]  = {
     SPVM_API_COMPILER_new_instance,
     SPVM_API_COMPILER_free_instance,
@@ -38,7 +38,7 @@ SPVM_ENV_COMPILER* SPVM_API_COMPILER_new_env() {
     SPVM_API_COMPILER_add_module_file,
     SPVM_API_COMPILER_build_runtime,
   };
-  SPVM_ENV_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
+  SPVM_API_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
   
   return env_compiler;

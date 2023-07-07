@@ -94,7 +94,7 @@
 
 
 
-SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
+SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_env() {
   
   void* env_runtime_init[]  = {
     SPVM_API_RUNTIME_new_instance,
@@ -235,7 +235,7 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_PRECOMPILE_build_precompile_module_source,
     SPVM_API_PRECOMPILE_build_precompile_method_source,
   };
-  SPVM_ENV_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
+  SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
   
   return env_runtime;

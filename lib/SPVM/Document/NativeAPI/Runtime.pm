@@ -5,7 +5,7 @@ SPVM::Document::NativeAPI::Runtime - SPVM Runtime Native APIs
 =head1 Usage
 
   // Runtime Native API
-  SSPVM_ENV_RUNTIME* runtime_api = env->api->runtime;
+  SSPVM_API_RUNTIME* runtime_api = env->api->runtime;
   
   // New a runtime object
   void* runtime = runtime_api->new_instance();

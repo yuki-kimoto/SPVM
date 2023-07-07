@@ -39,19 +39,19 @@ static const char* FILE_NAME = "spvm_api.c";
 SPVM_ENV* SPVM_API_new_env_raw(void) {
 
   // Env Allocator
-  SPVM_ENV_ALLOCATOR* env_allocator = SPVM_API_ALLOCATOR_new_env();
+  SPVM_API_ALLOCATOR* env_allocator = SPVM_API_ALLOCATOR_new_env();
   
   // Env String Buffer
-  SPVM_ENV_STRING_BUFFER* env_string_buffer = SPVM_API_STRING_BUFFER_new_env();
+  SPVM_API_STRING_BUFFER* env_string_buffer = SPVM_API_STRING_BUFFER_new_env();
   
   // Env Compiler
-  SPVM_ENV_COMPILER* env_compiler = SPVM_API_COMPILER_new_env();
+  SPVM_API_COMPILER* env_compiler = SPVM_API_COMPILER_new_env();
   
   // Env Runtime
-  SPVM_ENV_RUNTIME* env_runtime = SPVM_API_RUNTIME_new_env();
+  SPVM_API_RUNTIME* env_runtime = SPVM_API_RUNTIME_new_env();
   
   // Env module file
-  SPVM_ENV_MODULE_FILE* env_module_file = SPVM_API_MODULE_FILE_new_env();
+  SPVM_API_MODULE_FILE* env_module_file = SPVM_API_MODULE_FILE_new_env();
   
   // Adjust alignment SPVM_VALUE
   int32_t object_header_size = sizeof(SPVM_OBJECT);

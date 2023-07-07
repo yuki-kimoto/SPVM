@@ -34,7 +34,7 @@ Module File native APIs have its IDs.
 
 =head2 new_env
 
-  SPVM_ENV_MODULE_FILE* (*new_env)(void);
+  SPVM_API_MODULE_FILE* (*new_env)(void);
 
 =head2 new_instance
 
