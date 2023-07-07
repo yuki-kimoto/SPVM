@@ -9,7 +9,6 @@
 struct spvm_runtime_string {
   const char* value;
   int32_t length;
-  int32_t index;
 };
 
 #endif

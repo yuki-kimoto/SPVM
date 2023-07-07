@@ -547,7 +547,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_constant_strings[constant_string_index];
       runtime_constant_string->value = &runtime_basic_type->string_pool[constant_string->string_pool_index];
       runtime_constant_string->length = constant_string->length;
-      runtime_constant_string->index = constant_string->index;
     }
     runtime_basic_type->constant_strings = runtime_constant_strings;
     runtime_basic_type->constant_strings_length = basic_type->constant_strings->length;
