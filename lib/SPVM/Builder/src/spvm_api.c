@@ -345,7 +345,7 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
   
   if (object) {
-    object->basic_type_id = basic_type->id;
+    object->basic_type = basic_type;
     object->type_dimension = type_dimension;
     object->length = length;
     object->flag = flag;
@@ -2820,7 +2820,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   SPVM_RUNTIME* runtime = env->runtime;
   
   SPVM_OBJECT object_for_type_check;
-  object_for_type_check.basic_type_id = basic_type->id;
+  object_for_type_check.basic_type = basic_type;
   object_for_type_check.type_dimension = 1;
   
   int32_t is_object_array = SPVM_API_is_object_array(env, stack, &object_for_type_check);
@@ -2932,7 +2932,6 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
 
 SPVM_OBJECT* SPVM_API_new_pointer_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type, void* pointer) {
   
-  
   void* obj_object = SPVM_API_new_object_raw(env, stack, basic_type);
   
   env->set_pointer(env, stack, obj_object, pointer);
@@ -2941,14 +2940,12 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, S
 }
 
 int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  return object->basic_type_id;
+  return object->basic_type->id;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_object_basic_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, object->basic_type_id);
-  
-  return object_basic_type;
+  return object->basic_type;
 }
 
 const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
