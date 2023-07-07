@@ -50,6 +50,10 @@
       -SPVM_ENV* SPVM_NATIVE_new_env_raw(void);
       +SPVM_ENV* SPVM_NATIVE_new_env(void);
 
+    * The following native module file API were removed.
+       
+       - SPVM_API_MODULE_FILE* (*new_env)(void);
+
 0.989020 2023-07-07
   [Incompatibe Changes]
     * The following Native APIs were removed.
