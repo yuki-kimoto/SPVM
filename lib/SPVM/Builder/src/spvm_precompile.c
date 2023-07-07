@@ -18,6 +18,7 @@
 #include "spvm_opcode.h"
 #include "spvm_runtime_method.h"
 #include "spvm_runtime_basic_type.h"
+#include "spvm_runtime_string.h"
 
 SPVM_PRECOMPILE* SPVM_PRECOMPILE_new() {
   SPVM_PRECOMPILE* precompile = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_PRECOMPILE));
@@ -1938,8 +1939,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t constant_string_index = opcode->operand1;
         
-        int32_t constant_string_length;
-        const char* constant_string_value = SPVM_API_RUNTIME_get_basic_type_constant_string_value(runtime, current_basic_type, constant_string_index, &constant_string_length);
+        SPVM_RUNTIME_STRING* constant_string = &current_basic_type->constant_strings[constant_string_index];
+        const char* constant_string_value = constant_string->value;
+        int32_t constant_string_length = constant_string->length;
         SPVM_STRING_BUFFER_add(string_buffer,
           "  constant_string = \""
         );
