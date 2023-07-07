@@ -1001,7 +1001,7 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, v
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, int32_t basic_type_id, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, void* basic_type, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -1009,8 +1009,6 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, i
   
   // Env
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
   
   // Stack
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
@@ -1817,7 +1815,7 @@ _xs_call_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
         {
           SV* sv_error = &PL_sv_undef;
-          sv_value = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type_id, sv_value, &sv_error);
+          sv_value = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
             croak("The %dth argument of the \"%s\" method in the \"%s\" basic type%s\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3309,8 +3307,6 @@ _xs_new_mulnum_array(...)
   if (!basic_type) {
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
-  
   int32_t elem_type_dimension = 0;
   int32_t basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, basic_type);
   int32_t is_mulnum_array = basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
@@ -3319,7 +3315,7 @@ _xs_new_mulnum_array(...)
   }
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, basic_type_id, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, basic_type, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
