@@ -4052,8 +4052,7 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
     has_interface = 0;
   }
   else {
-    int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-    SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, object_basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
     if (!interface_basic_type) {
       has_interface = 0;
     }
