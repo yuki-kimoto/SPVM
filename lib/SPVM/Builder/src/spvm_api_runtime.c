@@ -796,7 +796,7 @@ int32_t SPVM_API_RUNTIME_has_interface_by_id(SPVM_RUNTIME* runtime, int32_t basi
     return 0;
   }
   
-  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface_basic_type, interface_basic_type->required_method_index);
+  SPVM_RUNTIME_METHOD* method_interface = interface_basic_type->required_method;
   
   const char* method_interface_name = method_interface->name;
   
@@ -819,7 +819,7 @@ int32_t SPVM_API_RUNTIME_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC
     return 0;
   }
   
-  SPVM_RUNTIME_METHOD* method_interface = SPVM_API_RUNTIME_get_method(runtime, interface_basic_type, interface_basic_type->required_method_index);
+  SPVM_RUNTIME_METHOD* method_interface = interface_basic_type->required_method;
   
   const char* method_interface_name = method_interface->name;
   

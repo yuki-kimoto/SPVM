@@ -702,27 +702,15 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_basic_type->fields_size = basic_type->fields_size;
     
     if (basic_type->init_method) {
-      runtime_basic_type->init_method_index = basic_type->init_method->index;
       runtime_basic_type->init_method = &runtime_basic_type->methods[basic_type->init_method->index];
-    }
-    else {
-      runtime_basic_type->init_method_index = -1;
     }
     
     if (basic_type->destructor_method) {
-      runtime_basic_type->destructor_method_index = basic_type->destructor_method->index;
       runtime_basic_type->destructor_method = &runtime_basic_type->methods[basic_type->destructor_method->index];
-    }
-    else {
-      runtime_basic_type->destructor_method_index = -1;
     }
     
     if (basic_type->required_method) {
-      runtime_basic_type->required_method_index = basic_type->required_method->index;
       runtime_basic_type->required_method = &runtime_basic_type->methods[basic_type->required_method->index];
-    }
-    else {
-      runtime_basic_type->required_method_index = -1;
     }
   }
   

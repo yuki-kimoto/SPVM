@@ -3097,7 +3097,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         SPVM_RUNTIME* runtime = env->runtime;
         
         // Call destructor
-        if (object_basic_type->destructor_method_index >= 0) {
+        if (object_basic_type->destructor_method) {
           int32_t items = 1;
           SPVM_VALUE save_stack0 = stack[0];
           void* save_exception = env->get_exception(env, stack);
@@ -3106,7 +3106,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           }
           
           stack[0].oval = object;
-          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_RUNTIME_get_method(env->runtime, object_basic_type, object_basic_type->destructor_method_index);
+          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_RUNTIME_get_method(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
           
           int32_t error = SPVM_API_call_method_raw(env, stack, destructor_method, items);
           
@@ -3864,9 +3864,8 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t basic_types_length = runtime->basic_types_length;
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
-    int32_t init_method_index = basic_type->init_method_index;
-    if (init_method_index >= 0) {
-      SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method(env->runtime, basic_type, init_method_index);
+    if (basic_type->init_method) {
+      SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method(env->runtime, basic_type, basic_type->init_method->index);
       int32_t items = 0;
       error = env->call_method_raw(env, stack, init_method, items);
       if (error) { break; }

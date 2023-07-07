@@ -16,9 +16,6 @@ struct spvm_runtime_basic_type {
   int32_t fields_length;
   int32_t fields_size;
   int32_t methods_length;
-  int32_t init_method_index;
-  int32_t destructor_method_index;
-  int32_t required_method_index;
   int32_t anon_basic_types_length;
   int8_t is_anon;
   int8_t is_pointer;
