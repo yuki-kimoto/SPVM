@@ -765,7 +765,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t basic_type_id = opcode->operand1;
         
-        void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_IMPLEMENT_NEW_OBJECT(env, stack, &object_vars[opcode->operand0], basic_type, &error_id, object_ref_count_offset);
         break;
@@ -774,7 +774,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t basic_type_id = opcode->operand1;
         int32_t length = int_vars[opcode->operand2];
         
-        void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_IMPLEMENT_NEW_OBJECT_ARRAY(env, stack, &object_vars[opcode->operand0], basic_type, length, &error_id, object_ref_count_offset);
         break;
@@ -784,7 +784,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t type_dimension = opcode->operand3;
         int32_t length = int_vars[opcode->operand2];
         
-        void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_IMPLEMENT_NEW_MULDIM_ARRAY(env, stack, &object_vars[opcode->operand0], basic_type, type_dimension, length, &error_id, object_ref_count_offset);
         break;
@@ -793,7 +793,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t basic_type_id = opcode->operand1;
         int32_t length = int_vars[opcode->operand2];
         
-        void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_IMPLEMENT_NEW_MULNUM_ARRAY(env, stack, &object_vars[opcode->operand0], basic_type, length, &error_id, object_ref_count_offset);
         break;
@@ -1333,7 +1333,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
         
-        void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_IMPLEMENT_ISA(env, stack, &int_vars[0], object, basic_type, type_dimension);
         break;
@@ -1345,7 +1345,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* src_basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, src_basic_type_id);
         
-        void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_IMPLEMENT_ISA_ERROR(env, stack, &int_vars[0], src_basic_type, basic_type, type_dimension);
         break;
@@ -1355,7 +1355,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
         
-        void* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[0], object, basic_type, type_dimension);
         break;
@@ -1431,7 +1431,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_GET_BASIC_TYPE_ID: {
         int32_t basic_type_id = opcode->operand1;
         
-        void* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, int_vars[opcode->operand0], basic_type);
         

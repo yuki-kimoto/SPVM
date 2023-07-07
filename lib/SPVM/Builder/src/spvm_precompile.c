@@ -453,7 +453,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
     
     if (id_set) {
       if (basic_type_id >= 0) {
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         int32_t found_basic_type = SPVM_PRECOMPILE_contains_basic_type(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name);
@@ -483,7 +483,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         assert(basic_type_id >= 0);
         
         const char* class_var_name = SPVM_API_RUNTIME_get_class_var_name(runtime, class_var);
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         int32_t found = SPVM_PRECOMPILE_contains_class_var(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, class_var_name);
         
@@ -513,7 +513,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         assert(basic_type_id >= 0);
         
         const char* field_name = SPVM_API_RUNTIME_get_field_name(runtime, field);
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         int32_t found = SPVM_PRECOMPILE_contains_field_offset(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, field_name);
@@ -544,7 +544,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         assert(basic_type_id >= 0);
         
         const char* method_name =SPVM_API_RUNTIME_get_method_name(runtime, method);
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         int32_t found = SPVM_PRECOMPILE_contains_method(precompile, string_buffer->string + string_buffer_begin_offset, basic_type_name, method_name);
         
@@ -892,7 +892,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t cast_basic_type_id = opcode->operand2;
         int32_t cast_type_dimension = opcode->operand3;
         
-        void* cast_basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, cast_basic_type_id);
+        void* cast_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, cast_basic_type_id);
         const char* cast_basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, cast_basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
@@ -1792,7 +1792,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t basic_type_id = opcode->operand1;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
@@ -1811,7 +1811,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
@@ -1833,7 +1833,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_NEW_MULDIM_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         int32_t type_dimension = opcode->operand3;
         
@@ -1861,7 +1861,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
@@ -2649,7 +2649,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
@@ -2674,7 +2674,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  src_basic_type_id = ");
@@ -2701,7 +2701,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
@@ -2726,7 +2726,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       {
         int32_t basic_type_id = opcode->operand2;
         int32_t type_dimension = opcode->operand3;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  src_basic_type_id = ");
@@ -2838,7 +2838,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_ID: {
         int32_t basic_type_id = opcode->operand0;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
@@ -2860,7 +2860,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       }
       case SPVM_OPCODE_C_ID_GET_BASIC_TYPE_ID: {
         int32_t basic_type_id = opcode->operand1;
-        void* basic_type =  SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
         const char* basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, basic_type);
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
