@@ -5,6 +5,7 @@
 #define SPVM_RUNTIME_H
 
 #include "spvm_typedecl.h"
+#include "spvm_native.h"
 
 struct spvm_runtime {
   SPVM_ENV* env;

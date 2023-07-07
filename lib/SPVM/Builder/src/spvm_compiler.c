@@ -38,6 +38,7 @@
 #include "spvm_string.h"
 #include "spvm_module_file.h"
 
+#include "spvm_api.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class_var.h"
@@ -720,6 +721,10 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     SPVM_HASH_set(runtime->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
   }
+  
+  SPVM_ENV* env = SPVM_API_new_env_raw();
+  
+  runtime->env = env;
   
   return runtime;
 }

@@ -30,6 +30,7 @@
 #include "spvm_api_runtime.h"
 #include "spvm_runtime_arg.h"
 #include "spvm_precompile.h"
+#include "spvm_api.h"
 
 
 
@@ -248,6 +249,8 @@ SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance() {
 }
 
 void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
+  
+  SPVM_API_free_env_raw(runtime->env);
   
   SPVM_RUNTIME_free(runtime);
 }
