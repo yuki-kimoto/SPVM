@@ -14,7 +14,7 @@ C<SPVM::Env> is the C<Env> class in the L<SPVM> language.
 
 The instance is an execution environemnt. It has the Native APIs and the data of class variables.
 
-An instance of the C<Env> class is build by the L<build_env|SPVM::Runtime/"build_env"> method in the L<Runtime|SPVM::Runtime> class.
+An instance of the C<Env> class is build by the L<get_env|SPVM::Runtime/"get_env"> method in the L<Runtime|SPVM::Runtime> class.
 
 A call stack is build by the L<build_stack|/"build_stack"> method in this class.
 
@@ -22,7 +22,7 @@ A call stack is build by the L<build_stack|/"build_stack"> method in this class.
 
   use Env;
   
-  my $env = $runtime->build_env;
+  my $env = $runtime->get_env;
   
   my $stack = $env->build_stack;
 
