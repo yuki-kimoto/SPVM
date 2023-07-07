@@ -33,25 +33,35 @@
 
 #include "spvm_api_compiler.h"
 #include "spvm_api_module_file.h"
+#include "spvm_api_basic_type.h"
+#include "spvm_api_class_var.h"
+#include "spvm_api_field.h"
+#include "spvm_api_method.h"
+#include "spvm_api_arg.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 
 SPVM_ENV* SPVM_API_new_env_raw(void) {
 
-  // Env Allocator
-  SPVM_API_ALLOCATOR* env_allocator = SPVM_API_ALLOCATOR_new_api();
+  SPVM_API_ALLOCATOR* api_allocator = SPVM_API_ALLOCATOR_new_api();
   
-  // Env String Buffer
-  SPVM_API_STRING_BUFFER* env_string_buffer = SPVM_API_STRING_BUFFER_new_api();
+  SPVM_API_STRING_BUFFER* api_string_buffer = SPVM_API_STRING_BUFFER_new_api();
   
-  // Env Compiler
-  SPVM_API_COMPILER* env_compiler = SPVM_API_COMPILER_new_api();
+  SPVM_API_COMPILER* api_compiler = SPVM_API_COMPILER_new_api();
   
-  // Env Runtime
-  SPVM_API_RUNTIME* env_runtime = SPVM_API_RUNTIME_new_api();
+  SPVM_API_RUNTIME* api_runtime = SPVM_API_RUNTIME_new_api();
   
-  // Env module file
-  SPVM_API_MODULE_FILE* env_module_file = SPVM_API_MODULE_FILE_new_api();
+  SPVM_API_MODULE_FILE* api_module_file = SPVM_API_MODULE_FILE_new_api();
+  
+  SPVM_API_BASIC_TYPE* api_basic_type = SPVM_API_BASIC_TYPE_new_api();
+  
+  SPVM_API_CLASS_VAR* api_class_var = SPVM_API_CLASS_VAR_new_api();
+  
+  SPVM_API_FIELD* api_field = SPVM_API_FIELD_new_api();
+  
+  SPVM_API_METHOD* api_method = SPVM_API_METHOD_new_api();
+  
+  SPVM_API_ARG* api_arg = SPVM_API_ARG_new_api();
   
   // Adjust alignment SPVM_VALUE
   int32_t object_header_size = sizeof(SPVM_OBJECT);
@@ -60,40 +70,25 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
   }
   assert(object_header_size % sizeof(SPVM_VALUE) == 0);
   
-  // Object header byte size
-  env_runtime->object_header_size = (void*)(intptr_t)object_header_size;
+  api_runtime->object_header_size = (void*)(intptr_t)object_header_size;
   
-  // Env API
   void* env_api_init[]  = {
-    env_allocator,
-    env_string_buffer,
-    env_compiler,
-    env_runtime,
-    env_module_file,
+    api_allocator,
+    api_string_buffer,
+    api_compiler,
+    api_runtime,
+    api_module_file,
+    api_basic_type,
+    api_class_var,
+    api_field,
+    api_method,
+    api_arg,
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
   
   // Allocator
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

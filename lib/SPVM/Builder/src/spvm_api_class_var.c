@@ -10,7 +10,7 @@
 #include "spvm_allocator.h"
 #include "spvm_runtime_class_var.h"
 
-SPVM_API_CLASS_VAR* SPVM_API_CLASS_new_api() {
+SPVM_API_CLASS_VAR* SPVM_API_CLASS_VAR_new_api() {
   
   void* native_apis_init[]  = {
     NULL,

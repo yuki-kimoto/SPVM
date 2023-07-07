@@ -7,7 +7,7 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
-SPVM_API_CLASS_VAR* SPVM_API_CLASS_new_api();
+SPVM_API_CLASS_VAR* SPVM_API_CLASS_VAR_new_api();
 
 void SPVM_API_CLASS_VAR_free_api(SPVM_API_CLASS_VAR* api);
 

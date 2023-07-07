@@ -242,25 +242,30 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
 
   void* api;
 
-The environment of APIs such as L<compiler native APIs|SPVM::Document::NativeAPI::Compiler>, L<precompile native APIs|SPVM::Document::NativeAPI::Precompile>, L<runtime native APIs|SPVM::Document::NativeAPI::Runtime>, L<string buffer native APIs|SPVM::Document::NativeAPI::StringBuffer>, L<allocator native APIs|SPVM::Document::NativeAPI::Allocator>.
+The environment of APIs such as L<compiler native APIs|SPVM::Document::NativeAPI::Compiler>, L<precompile native APIs|SPVM::Document::NativeAPI::Precompile>, L<runtime native APIs|SPVM::Document::NativeAPI::Runtime>, L<string buffer native APIs|SPVM::Document::NativeAPI::StringBuffer>, L<allocator native APIs|SPVM::Document::NativeAPI::Allocator>, L<basic type native APIs|SPVM::Document::NativeAPI::BasicType>, L<class variable native APIs|SPVM::Document::NativeAPI::ClassVar>, L<field native APIs|SPVM::Document::NativeAPI::Field>, L<method native APIs|SPVM::Document::NativeAPI::Method>, L<argument native APIs|SPVM::Document::NativeAPI::Argument>.
 
 Examples:
   
-  // Compiler native APIs
   void* compiler_api = env->api->compiler;
   
-  // Precompile native APIs
   void* precompile_api = env->api->precompile;
   
-  // Runtime native APIs
   void* runtime_api = env->api->runtime;
   
-  // String buffer native APIs
   void* string_buffer_api = env->api->string_buffer;
   
-  // Allocator native APIs
   void* allocator_api = env->api->allocator;
-
+  
+  void* basic_type_api = env->api->basic_type;
+  
+  void* class_var_api = env->api->clsas_var;
+  
+  void* field_api = env->api->field;
+  
+  void* method_api = env->api->method;
+  
+  void* arg_api = env->api->arg;
+  
 =head2 allocator
 
   void* allocator;
