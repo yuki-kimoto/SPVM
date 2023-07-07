@@ -7,6 +7,8 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime {
+  SPVM_ENV* env;
+  
   SPVM_ALLOCATOR* allocator;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
