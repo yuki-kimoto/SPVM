@@ -1247,7 +1247,6 @@ SV*
 _xs_call_method(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   int32_t args_length = items;
   
@@ -1873,7 +1872,7 @@ _xs_call_method(...)
     }
     else if (arg_type_dimension > 1) {
       
-      // Argument conversion - multi-dimensional array
+      // Argument conversion - multi-type_dimensional array
       SV* sv_error = &PL_sv_undef;
       
       sv_value = SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type, arg_type_dimension, sv_value, &sv_error);
@@ -2230,7 +2229,6 @@ SV*
 _xs_dump(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2272,7 +2270,6 @@ SV*
 _xs_new_string(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2304,7 +2301,6 @@ SV*
 _xs_new_address_object(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   int32_t e = 0;
   
@@ -2338,7 +2334,6 @@ SV*
 _xs_new_byte_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2370,7 +2365,6 @@ SV*
 _xs_new_byte_array_unsigned(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2402,7 +2396,6 @@ SV*
 _xs_new_byte_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2439,7 +2432,6 @@ SV*
 _xs_new_byte_array_from_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2479,7 +2471,6 @@ SV*
 _xs_new_short_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2511,7 +2502,6 @@ SV*
 _xs_new_short_array_unsigned(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2543,7 +2533,6 @@ SV*
 _xs_new_short_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2580,7 +2569,6 @@ SV*
 _xs_new_short_array_from_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2626,7 +2614,6 @@ SV*
 _xs_new_int_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2658,7 +2645,6 @@ SV*
 _xs_new_int_array_unsigned(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2690,7 +2676,6 @@ SV*
 _xs_new_int_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2727,7 +2712,6 @@ SV*
 _xs_new_int_array_from_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2773,7 +2757,6 @@ SV*
 _xs_new_long_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2805,7 +2788,6 @@ SV*
 _xs_new_long_array_unsigned(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2837,7 +2819,6 @@ SV*
 _xs_new_long_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2874,7 +2855,6 @@ SV*
 _xs_new_long_array_from_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2920,7 +2900,6 @@ SV*
 _xs_new_float_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2952,7 +2931,6 @@ SV*
 _xs_new_float_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -2989,7 +2967,6 @@ SV*
 _xs_new_float_array_from_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3035,7 +3012,6 @@ SV*
 _xs_new_double_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3067,7 +3043,6 @@ SV*
 _xs_new_double_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3104,7 +3079,6 @@ SV*
 _xs_new_double_array_from_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3150,7 +3124,6 @@ SV*
 _xs_new_string_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3182,7 +3155,6 @@ SV*
 _xs_new_string_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3219,7 +3191,6 @@ SV*
 _xs_new_object_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3265,7 +3236,6 @@ SV*
 _xs_new_object_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3316,7 +3286,6 @@ SV*
 _xs_new_mulnum_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3364,7 +3333,6 @@ SV*
 _xs_new_mulnum_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3415,7 +3383,6 @@ SV*
 _xs_new_mulnum_array_from_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3504,7 +3471,7 @@ _xs_new_mulnum_array_from_bin(...)
 
   void* spvm_array = env->new_mulnum_array(env, stack, basic_type, array_length);
 
-  int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
+  int32_t type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
   
   int32_t copy_length = fields_length * array_length * field_size;
   switch (mulnum_field_basic_type_id) {
@@ -3565,7 +3532,6 @@ SV*
 _xs_new_muldim_array(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3608,7 +3574,6 @@ SV*
 _xs_new_muldim_array_len(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3654,7 +3619,6 @@ SV*
 _xs_get_exception(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3688,7 +3652,6 @@ SV*
 _xs_set_exception(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3723,7 +3686,6 @@ SV*
 _xs_get_memory_blocks_count(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3751,7 +3713,6 @@ SV*
 DESTROY(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_object = ST(0);
   HV* hv_object = (HV*)SvRV(sv_object);
@@ -3788,7 +3749,6 @@ SV*
 _xs___get_type_name(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3831,7 +3791,6 @@ SV*
 _xs_to_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3871,7 +3830,6 @@ SV*
 _xs_length(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3911,7 +3869,6 @@ SV*
 _xs_to_elems(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -3947,14 +3904,14 @@ _xs_to_elems(...)
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
-  int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
-  int32_t is_array_type = dimension > 0;
+  int32_t type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+  int32_t is_array_type = type_dimension > 0;
   
   assert(is_array_type);
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
-    int32_t elem_type_dimension = dimension - 1;
+    int32_t elem_type_dimension = type_dimension - 1;
     
     int32_t array_is_mulnum_array = env->is_mulnum_array(env, stack, spvm_array);
     int32_t array_is_object_array = env->is_object_array(env, stack, spvm_array);
@@ -4122,7 +4079,6 @@ SV*
 _xs_to_bin(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -4158,13 +4114,13 @@ _xs_to_bin(...)
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
-  int32_t dimension = env->get_object_type_dimension(env, stack, spvm_array);
-  int32_t is_array_type = dimension > 0;
+  int32_t type_dimension = env->get_object_type_dimension(env, stack, spvm_array);
+  int32_t is_array_type = type_dimension > 0;
   assert(is_array_type);
   
   SV* sv_binary;
   if (is_array_type) {
-    int32_t elem_type_dimension = dimension - 1;
+    int32_t elem_type_dimension = type_dimension - 1;
     
     int32_t array_is_mulnum_array = env->is_mulnum_array(env, stack, spvm_array);
     int32_t array_is_object_array = env->is_object_array(env, stack, spvm_array);
@@ -4275,7 +4231,6 @@ SV*
 _xs_set(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -4414,7 +4369,6 @@ SV*
 _xs_get(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -4541,7 +4495,6 @@ SV*
 get_basic_type_name(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_object = ST(0);
   HV* hv_object = (HV*)SvRV(sv_object);
@@ -4581,7 +4534,6 @@ SV*
 create_compiler(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -4608,7 +4560,6 @@ SV*
 get_module_file(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -4671,7 +4622,6 @@ SV*
 DESTROY(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -4696,7 +4646,6 @@ SV*
 compile(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   SV* sv_basic_type_name = ST(1);
@@ -4765,7 +4714,6 @@ SV*
 build_runtime(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   SV* sv_basic_type_name = ST(1);
@@ -4795,7 +4743,6 @@ SV*
 get_error_messages(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   
@@ -4832,7 +4779,6 @@ SV*
 DESTROY(...)
   PPCODE:
 {
-  (void)RETVAL;
 
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -4856,7 +4802,6 @@ SV*
 get_method_names(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
@@ -4903,7 +4848,6 @@ SV*
 get_basic_type_anon_basic_type_names(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
@@ -4945,7 +4889,6 @@ SV*
 get_basic_type_names(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
@@ -4974,7 +4917,6 @@ SV*
 get_module_file(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
@@ -5021,7 +4963,6 @@ SV*
 set_native_method_address(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
@@ -5098,7 +5039,6 @@ SV*
 build_env(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
@@ -5124,7 +5064,6 @@ SV*
 set_command_info_program_name(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_env = ST(0);
   SV* sv_stack = ST(1);
@@ -5159,7 +5098,6 @@ SV*
 set_command_info_argv(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_env = ST(0);
   SV* sv_stack = ST(1);
@@ -5203,7 +5141,6 @@ SV*
 set_command_info_base_time(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_env = ST(0);
   SV* sv_stack = ST(1);
@@ -5234,7 +5171,6 @@ SV*
 call_init_blocks(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_env = ST(0);
   SV* sv_stack = ST(1);
@@ -5255,7 +5191,6 @@ SV*
 cleanup_global_vars(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_env = ST(0);
   SV* sv_stack = ST(1);
@@ -5272,7 +5207,6 @@ SV*
 build_stack(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   // Env
   SV* sv_env = ST(0);
@@ -5293,7 +5227,6 @@ SV*
 DESTROY(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
@@ -5312,7 +5245,6 @@ SV*
 DESTROY(...)
   PPCODE:
 {
-  (void)RETVAL;
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
