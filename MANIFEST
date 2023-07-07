@@ -136,6 +136,7 @@ lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
 lib/SPVM/Builder/src/spvm_api_allocator.c
 lib/SPVM/Builder/src/spvm_api_arg.c
+lib/SPVM/Builder/src/spvm_api_basic_type.c
 lib/SPVM/Builder/src/spvm_api_class_var.c
 lib/SPVM/Builder/src/spvm_api_compiler.c
 lib/SPVM/Builder/src/spvm_api_field.c
