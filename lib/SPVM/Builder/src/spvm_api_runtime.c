@@ -759,7 +759,7 @@ int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASI
   
   int32_t is_object_type;
   if (type_dimension == 0) {
-    int32_t basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, basic_type);
+    int32_t basic_type_category = basic_type->category;
     
     switch (basic_type_category) {
       case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
@@ -789,8 +789,8 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TY
   
   int32_t isa = 0;
   
-  int32_t dist_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, dist_basic_type);
-  int32_t src_basic_type_category = SPVM_API_RUNTIME_get_basic_type_category(runtime, src_basic_type);
+  int32_t dist_basic_type_category = dist_basic_type->category;
+  int32_t src_basic_type_category = src_basic_type->category;
   
   if (dist_basic_type->id == src_basic_type->id && dist_type_dimension == src_type_dimension) {
     isa = 1;
