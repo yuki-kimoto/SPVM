@@ -4996,7 +4996,7 @@ get_module_file(...)
   
   if (basic_type) {
     int32_t basic_type_category = api_env->api->runtime->get_basic_type_category(runtime, basic_type);
-    if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+    if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
       const char* module_dir = api_env->api->runtime->get_basic_type_module_dir(runtime, basic_type);
       const char* module_dir_sep;
       if (module_dir) {
