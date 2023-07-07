@@ -9,8 +9,6 @@
 struct spvm_runtime {
   int32_t* runtime_codes;
   
-  int32_t runtime_codes_length;
-  
   SPVM_ALLOCATOR* allocator;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
