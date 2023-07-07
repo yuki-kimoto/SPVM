@@ -11,9 +11,9 @@ struct spvm_runtime {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_types;
   
-  int32_t basic_types_length;
-  
   SPVM_HASH* basic_type_symtable;
+  
+  int32_t basic_types_length;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
