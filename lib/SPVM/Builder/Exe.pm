@@ -585,15 +585,14 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
 #endif
   
   // Create env
-  SPVM_ENV* env = SPVM_NATIVE_new_env_raw();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env_raw();
   
   // Compiler
-  void* compiler = env->api->compiler->new_instance();
+  void* compiler = env_api->api->compiler->new_instance();
   
-  void* runtime = SPVM_BOOTSTRAP_build_runtime(env, compiler);
+  void* runtime = SPVM_BOOTSTRAP_build_runtime(env_api, compiler);
   
-  // Set runtime
-  env->runtime = runtime;
+  SPVM_ENV* env = env_api->api->runtime->get_env(runtime);
   
   // Free compiler
   env->api->compiler->free_instance(compiler);
@@ -684,11 +683,8 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   // Free stack
   env->free_stack(env, stack);
   
-  env->api->runtime->free_instance(env->runtime);
-  
-  env->runtime = NULL;
-  
-  env->free_env_raw(env);
+  env->api->runtime->free_instance(runtime);
+  env = NULL;
   
   return status;
 }
