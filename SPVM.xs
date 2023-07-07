@@ -1309,7 +1309,6 @@ _xs_call_method(...)
     
     void* object = SPVM_XS_UTIL_get_object(aTHX_ sv_invocant);
     basic_type_name = env->get_object_basic_type_name(env, stack, object);
-    int32_t basic_type_id = env->get_object_basic_type_id(env, stack, object);
     
     char* found_char = strrchr(method_name, ':');
     if (found_char) {
@@ -1324,7 +1323,6 @@ _xs_call_method(...)
       if (!static_call_basic_type) {
         croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
-      int32_t static_call_basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, static_call_basic_type);
       
       int32_t isa = env->isa(env, stack, object, static_call_basic_type, 0);
       if (!isa) {
@@ -1352,7 +1350,6 @@ _xs_call_method(...)
     class_method_call = 1;
     basic_type_name = SvPV_nolen(sv_invocant);
     void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
-    int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
     
     method = env->api->runtime->get_method_by_name(env->runtime, basic_type, method_name);
     
@@ -3211,7 +3208,6 @@ _xs_new_object_array(...)
   if (!basic_type) {
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t elem_type_dimension = 0;
   int32_t is_object_array = env->api->runtime->is_object_type(env->runtime, basic_type, elem_type_dimension, 0);
@@ -3264,7 +3260,6 @@ _xs_new_object_array_len(...)
   if (!basic_type) {
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t elem_type_dimension = 0;
   int32_t is_object_array = env->api->runtime->is_object_type(env->runtime, basic_type, elem_type_dimension, 0);
@@ -3358,7 +3353,6 @@ _xs_new_mulnum_array_len(...)
   if (!basic_type) {
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t elem_type_dimension = 0;
   int32_t basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, basic_type);
@@ -3551,7 +3545,6 @@ _xs_new_muldim_array(...)
   if (!basic_type) {
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t type_dimension = (int32_t)SvIV(sv_type_dimension);
   
@@ -3593,7 +3586,6 @@ _xs_new_muldim_array_len(...)
   if (!basic_type) {
     croak("The \"%s\" basic type is not found\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
   }
-  int32_t basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, basic_type);
   
   int32_t type_dimension = (int32_t)SvIV(sv_type_dimension);
   
