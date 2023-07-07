@@ -11,7 +11,7 @@
 #include "spvm_runtime_method.h"
 #include "spvm_api_method.h"
 
-SPVM_API_METHOD* SPVM_API_METHOD_new_env() {
+SPVM_API_METHOD* SPVM_API_METHOD_new_api() {
   
   void* native_apis_init[]  = {
     NULL,
@@ -24,3 +24,7 @@ SPVM_API_METHOD* SPVM_API_METHOD_new_env() {
   return native_apis;
 }
 
+void SPVM_API_METHOD_free_api(SPVM_API_METHOD* api) {
+  
+  free(api);
+}
