@@ -340,20 +340,6 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
   return env;
 }
 
-SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t alloc_size, int32_t basic_type_id, int32_t type_dimension, int32_t length, int32_t flag) {
-  
-  SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
-  
-  if (object) {
-    object->basic_type_id = basic_type_id;
-    object->type_dimension = type_dimension;
-    object->length = length;
-    object->flag = flag;
-  }
-  
-  return object;
-}
-
 SPVM_OBJECT* SPVM_API_new_object_common_v2(SPVM_ENV* env, SPVM_VALUE* stack, size_t alloc_size, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t length, int32_t flag) {
   
   SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
