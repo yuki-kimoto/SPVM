@@ -246,7 +246,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
   }
 }
 
-int32_t SPVM_BASIC_TYPE_is_super(SPVM_COMPILER* compiler, int32_t super_basic_type_id, int32_t child_basic_type_id) {
+int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_basic_type_id, int32_t child_basic_type_id) {
   
   SPVM_BASIC_TYPE* super_basic_type = SPVM_LIST_get(compiler->basic_types, super_basic_type_id);
   SPVM_BASIC_TYPE* child_basic_type = SPVM_LIST_get(compiler->basic_types, child_basic_type_id);

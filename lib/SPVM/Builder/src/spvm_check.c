@@ -3764,7 +3764,7 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_ty
       can_access = 1;
     }
     else {
-      if (SPVM_BASIC_TYPE_is_super(compiler, basic_type_to->id, basic_type_from->id)) {
+      if (SPVM_BASIC_TYPE_is_super_class(compiler, basic_type_to->id, basic_type_from->id)) {
         can_access = 1;
       }
       else {

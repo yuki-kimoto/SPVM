@@ -185,7 +185,7 @@ int32_t SPVM_TYPE_can_cast(
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag
 );
 
-int32_t SPVM_TYPE_is_super(SPVM_COMPILER* compiler,
+int32_t SPVM_TYPE_is_super_class(SPVM_COMPILER* compiler,
   int32_t super_basic_type_id, int32_t super_dimension, int32_t super_flag,
   int32_t child_basic_type_id, int32_t child_dimension, int32_t child_flag);
 
