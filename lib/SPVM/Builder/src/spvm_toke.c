@@ -2403,9 +2403,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             compiler->cur_file = cur_file;
           }
           else {
-            char* embedded_file_name = (char*)SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 11 + strlen(cur_rel_file) + 1);
-            sprintf(embedded_file_name, "embedded://%s", cur_rel_file);
-            compiler->cur_file = embedded_file_name;
+            compiler->cur_file = cur_rel_file;
           }
           
           SPVM_STRING* cur_file_string = SPVM_STRING_new(compiler, compiler->cur_file, strlen(compiler->cur_file));
