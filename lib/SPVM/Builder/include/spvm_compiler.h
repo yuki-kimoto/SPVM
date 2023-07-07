@@ -101,17 +101,13 @@ struct spvm_compiler {
   // Fail load class symtable
   SPVM_HASH* if_require_not_found_module_name_symtable;
   
+  SPVM_LIST* cur_anon_op_types;
+  
   // Basic types
   SPVM_LIST* basic_types;
   
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
-  
-  SPVM_LIST* cur_anon_op_types;
-  
-  // SPVM runtime codes
-  int32_t* runtime_codes;
-  
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
