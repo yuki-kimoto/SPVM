@@ -7,7 +7,7 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
-SPVM_API_COMPILER* SPVM_API_COMPILER_new_env();
+SPVM_API_COMPILER* SPVM_API_COMPILER_new_api();
 
 SPVM_COMPILER* SPVM_API_COMPILER_new_instance();
 

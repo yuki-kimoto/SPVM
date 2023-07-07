@@ -18,7 +18,7 @@
 #include "spvm_string.h"
 #include "spvm_module_file.h"
 
-SPVM_API_COMPILER* SPVM_API_COMPILER_new_env() {
+SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
   void* env_compiler_init[]  = {
     SPVM_API_COMPILER_new_instance,
     SPVM_API_COMPILER_free_instance,

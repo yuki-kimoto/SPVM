@@ -13,9 +13,9 @@
 #include "spvm_string.h"
 #include "spvm_module_file.h"
 
-SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_env(void) {
+SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_api(void) {
   void* env_compiler_init[]  = {
-    SPVM_API_MODULE_FILE_new_env,
+    SPVM_API_MODULE_FILE_new_api,
     SPVM_API_MODULE_FILE_new_instance,
     SPVM_API_MODULE_FILE_get_module_name,
     SPVM_API_MODULE_FILE_set_module_name,

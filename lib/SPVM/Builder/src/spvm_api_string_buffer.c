@@ -10,7 +10,7 @@
 #include "spvm_allocator.h"
 #include "spvm_string_buffer.h"
 
-SPVM_API_STRING_BUFFER* SPVM_API_STRING_BUFFER_new_env() {
+SPVM_API_STRING_BUFFER* SPVM_API_STRING_BUFFER_new_api() {
   void* env_string_buffer_init[]  = {
     SPVM_API_STRING_BUFFER_new_instance,
     SPVM_API_STRING_BUFFER_free_instance,

@@ -8,7 +8,7 @@
 #include "spvm_allocator.h"
 #include "spvm_api_allocator.h"
 
-SPVM_API_ALLOCATOR* SPVM_API_ALLOCATOR_new_env() {
+SPVM_API_ALLOCATOR* SPVM_API_ALLOCATOR_new_api() {
   
   // Env Allocator
   void* env_allocator_init[]  = {

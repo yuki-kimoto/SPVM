@@ -7,7 +7,7 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
-SPVM_API_ALLOCATOR* SPVM_API_ALLOCATOR_new_env();
+SPVM_API_ALLOCATOR* SPVM_API_ALLOCATOR_new_api();
 
 SPVM_ALLOCATOR* SPVM_API_ALLOCATOR_new_instance();
 void SPVM_API_ALLOCATOR_free_instance(SPVM_ALLOCATOR* allocator);
