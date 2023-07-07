@@ -1,3 +1,7 @@
+0.989021 2023-07-07
+  [Document Changes]
+    * SPVM::Document::NativeClass was renamed to SPVM::Document::NativeModule.
+    
 0.989020 2023-07-07
   [Incompatibe Changes]
     * The following Native APIs were removed.
