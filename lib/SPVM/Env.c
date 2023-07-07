@@ -127,9 +127,14 @@ int32_t SPVM__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  SPVM_ENV* my_env= env->get_pointer(env, stack, obj_self);
+  SPVM_ENV* my_env = env->get_pointer(env, stack, obj_self);
   
-  my_env->free_env(my_env);
+  void* runtime = env->runtime;
+  
+  // If the runtime exists, this env was freed by the runtime
+  if (!runtime) {
+    my_env->free_env(my_env);
+  }
   
   return 0;
 }

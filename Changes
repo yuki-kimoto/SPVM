@@ -7,6 +7,11 @@
   [Document Changes]
     * SPVM::Document::NativeClass was renamed to SPVM::Document::NativeModule.
   [Incompatibe Changes]
+    * The methods in the Runtime class were changed.
+
+      -  method build_env : Env ();
+      +  method get_env : Env ();
+
     * The following structures in Native API were renamed.
 
       -struct spvm_env_compiler;

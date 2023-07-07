@@ -18,7 +18,7 @@ This class provides only the minimal methods to get the information of classes a
 
 An instance of the C<Runtime> class is build by the L<build_runtime|SPVM::Compiler/"build_runtime"> method in the L<Compiler|SPVM::Compiler> class.
 
-A execution environemt is build by the L<build_env|/"build_env"> method in this class.
+A execution environemt is got by the L<get_env|/"get_env"> method in this class.
 
 =head1 Usage
 
@@ -30,7 +30,7 @@ A execution environemt is build by the L<build_env|/"build_env"> method in this 
   
   my $method_names = $runtime->get_method_names("Foo");
   
-  my $env = $runtime->build_env;
+  my $env = $runtime->get_env;
   
   my $stack = $env->build_stack;
 
@@ -142,11 +142,11 @@ Sets the address of a C<precompile> method.
 
 The address is the L<Address|SPVM::Address> class.
 
-=head2 build_env
+=head2 get_env
 
-  method build_env : Env ();
+  method get_env : Env ();
 
-Builds an execution environemnt and returns it.
+Return an execution environemnt of the runtime.
 
 The return type is the L<Env|SPVM::Env> class.
 
@@ -164,7 +164,7 @@ The L<build_runtime|SPVM::Compiler/"build_runtime"> method in the L<Compiler|SPV
 
 =head2 Env
 
-The instance of the L<Env|SPVM::Env> class is build by the L</"build_env"> method in this class.
+The instance of the L<Env|SPVM::Env> class is build by the L</"get_env"> method in this class.
 
 =head1 Copyright & License
 

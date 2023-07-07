@@ -57,7 +57,7 @@ class Runtime : pointer {
   
   native method set_precompile_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
   
-  native method build_env : Env ();
+  native method get_env : Env ();
   
   native method DESTROY : void ();
 }
