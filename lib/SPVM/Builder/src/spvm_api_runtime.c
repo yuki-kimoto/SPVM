@@ -147,14 +147,14 @@ SPVM_ENV_RUNTIME* SPVM_API_RUNTIME_new_env() {
     SPVM_API_RUNTIME_get_method_is_anon,
     SPVM_API_RUNTIME_get_method_is_native,
     SPVM_API_RUNTIME_get_method_is_precompile,
-    SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length,
-    SPVM_API_RUNTIME_get_method_call_stack_short_vars_length,
-    SPVM_API_RUNTIME_get_method_call_stack_int_vars_length,
-    SPVM_API_RUNTIME_get_method_call_stack_long_vars_length,
-    SPVM_API_RUNTIME_get_method_call_stack_float_vars_length,
-    SPVM_API_RUNTIME_get_method_call_stack_double_vars_length,
-    SPVM_API_RUNTIME_get_method_call_stack_object_vars_length,
-    SPVM_API_RUNTIME_get_method_call_stack_ref_vars_length,
+    SPVM_API_RUNTIME_get_method_byte_vars_width,
+    SPVM_API_RUNTIME_get_method_short_vars_width,
+    SPVM_API_RUNTIME_get_method_int_vars_width,
+    SPVM_API_RUNTIME_get_method_long_vars_width,
+    SPVM_API_RUNTIME_get_method_float_vars_width,
+    SPVM_API_RUNTIME_get_method_double_vars_width,
+    SPVM_API_RUNTIME_get_method_object_vars_width,
+    SPVM_API_RUNTIME_get_method_ref_vars_width,
     SPVM_API_RUNTIME_get_method_mortal_stack_length,
     NULL, // reserved59
     SPVM_API_RUNTIME_get_method_opcodes_length,
@@ -662,60 +662,60 @@ int32_t SPVM_API_RUNTIME_get_method_return_type_flag(SPVM_RUNTIME* runtime, SPVM
   return return_type_flag;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_call_stack_byte_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_byte_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t call_stack_byte_vars_length = method->call_stack_byte_vars_length;
+  int32_t byte_vars_width = method->byte_vars_width;
   
-  return call_stack_byte_vars_length;
+  return byte_vars_width;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_call_stack_short_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_short_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t call_stack_short_vars_length = method->call_stack_short_vars_length;
+  int32_t short_vars_width = method->short_vars_width;
   
-  return call_stack_short_vars_length;
+  return short_vars_width;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_call_stack_int_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_int_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t call_stack_int_vars_length = method->call_stack_int_vars_length;
+  int32_t int_vars_width = method->int_vars_width;
   
-  return call_stack_int_vars_length;
+  return int_vars_width;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_call_stack_long_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_long_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t call_stack_long_vars_length = method->call_stack_long_vars_length;
+  int32_t long_vars_width = method->long_vars_width;
   
-  return call_stack_long_vars_length;
+  return long_vars_width;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_call_stack_float_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_float_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t call_stack_float_vars_length = method->call_stack_float_vars_length;
+  int32_t float_vars_width = method->float_vars_width;
   
-  return call_stack_float_vars_length;
+  return float_vars_width;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_call_stack_double_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_double_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t call_stack_double_vars_length = method->call_stack_double_vars_length;
+  int32_t double_vars_width = method->double_vars_width;
   
-  return call_stack_double_vars_length;
+  return double_vars_width;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_call_stack_object_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_object_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t call_stack_object_vars_length = method->call_stack_object_vars_length;
+  int32_t object_vars_width = method->object_vars_width;
   
-  return call_stack_object_vars_length;
+  return object_vars_width;
 }
 
-int32_t SPVM_API_RUNTIME_get_method_call_stack_ref_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_RUNTIME_get_method_ref_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t call_stack_ref_vars_length = method->call_stack_ref_vars_length;
+  int32_t ref_vars_width = method->ref_vars_width;
   
-  return call_stack_ref_vars_length;
+  return ref_vars_width;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_mortal_stack_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {

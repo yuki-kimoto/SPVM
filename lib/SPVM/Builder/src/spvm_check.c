@@ -3678,14 +3678,14 @@ void SPVM_CHECK_check_ast_check_call_stack_indexs(SPVM_COMPILER* compiler, SPVM_
     }
   }
   
-  method->call_stack_byte_vars_length = call_stack_byte_vars->length;
-  method->call_stack_short_vars_length = call_stack_short_vars->length;
-  method->call_stack_int_vars_length = call_stack_int_vars->length;
-  method->call_stack_long_vars_length = call_stack_long_vars->length;
-  method->call_stack_float_vars_length = call_stack_float_vars->length;
-  method->call_stack_double_vars_length = call_stack_double_vars->length;
-  method->call_stack_object_vars_length = call_stack_object_vars->length;
-  method->call_stack_ref_vars_length = call_stack_ref_vars->length;
+  method->byte_vars_width = call_stack_byte_vars->length;
+  method->short_vars_width = call_stack_short_vars->length;
+  method->int_vars_width = call_stack_int_vars->length;
+  method->long_vars_width = call_stack_long_vars->length;
+  method->float_vars_width = call_stack_float_vars->length;
+  method->double_vars_width = call_stack_double_vars->length;
+  method->object_vars_width = call_stack_object_vars->length;
+  method->ref_vars_width = call_stack_ref_vars->length;
   
   SPVM_LIST_free(tmp_var_decl_stack);
   

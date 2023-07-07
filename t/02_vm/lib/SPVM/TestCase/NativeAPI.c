@@ -2281,14 +2281,14 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_method_is_anon != &env_array[47]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_is_native != &env_array[48]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_is_precompile != &env_array[49]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_call_stack_byte_vars_length != &env_array[50]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_call_stack_short_vars_length != &env_array[51]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_call_stack_int_vars_length != &env_array[52]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_call_stack_long_vars_length != &env_array[53]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_call_stack_float_vars_length != &env_array[54]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_call_stack_double_vars_length != &env_array[55]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_call_stack_object_vars_length != &env_array[56]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_call_stack_ref_vars_length != &env_array[57]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_byte_vars_width != &env_array[50]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_short_vars_width != &env_array[51]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_int_vars_width != &env_array[52]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_long_vars_width != &env_array[53]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_float_vars_width != &env_array[54]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_double_vars_width != &env_array[55]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_object_vars_width != &env_array[56]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_method_ref_vars_width != &env_array[57]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_mortal_stack_length != &env_array[58]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved59 != &env_array[59]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_opcodes_length != &env_array[60]) { stack[0].ival = 0; return 0; }

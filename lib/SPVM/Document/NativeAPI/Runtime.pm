@@ -71,14 +71,14 @@ Runtime native APIs have its IDs.
   47 get_method_is_anon
   48 get_method_is_native
   49 get_method_is_precompile
-  50 get_method_call_stack_byte_vars_length
-  51 get_method_call_stack_short_vars_length
-  52 get_method_call_stack_int_vars_length
-  53 get_method_call_stack_long_vars_length
-  54 get_method_call_stack_float_vars_length
-  55 get_method_call_stack_double_vars_length
-  56 get_method_call_stack_object_vars_length
-  57 get_method_call_stack_ref_vars_length
+  50 get_method_byte_vars_width
+  51 get_method_short_vars_width
+  52 get_method_int_vars_width
+  53 get_method_long_vars_width
+  54 get_method_float_vars_width
+  55 get_method_double_vars_width
+  56 get_method_object_vars_width
+  57 get_method_ref_vars_width
   58 get_method_mortal_stack_length
   59 reserved59
   60 get_method_opcodes_length
