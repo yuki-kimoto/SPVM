@@ -95,13 +95,6 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
 
 
 
-
-
-
-
-
-
-
   // Native APIs
   void* env_init[]  = {
     NULL, // reserved0
@@ -251,7 +244,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_call_class_method_by_name,
     SPVM_API_call_instance_method_by_name,
     SPVM_API_get_field_string_chars_by_name,
-    SPVM_API_free_env_prepared,
+    NULL, // reserved147
     SPVM_API_dump_raw,
     SPVM_API_dump,
     SPVM_API_get_instance_method_static,
@@ -3920,18 +3913,6 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   runtime->allocator = NULL;
   allocator= NULL;
   
-  env->free_env_raw(env);
-}
-
-void SPVM_API_free_env_prepared(SPVM_ENV* env) {
-
-  SPVM_RUNTIME* runtime = env->runtime;
-
-  // Free runtime
-  SPVM_API_RUNTIME_free_instance(runtime);
-  env->runtime = NULL;
-  
-  // Free env
   env->free_env_raw(env);
 }
 

@@ -96,21 +96,6 @@ union spvm_value {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 struct spvm_env {
   void* reserved0;
   void* reserved1;
@@ -259,7 +244,7 @@ struct spvm_env {
   void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error, const char* func_name, const char* file, int32_t line);
   void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t items, int32_t* error, const char* func_name, const char* file, int32_t line);
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error, const char* func_name, const char* file, int32_t line);
-  void (*free_env_prepared)(SPVM_ENV* env);
+  void* reserved147;
   void* (*dump_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);

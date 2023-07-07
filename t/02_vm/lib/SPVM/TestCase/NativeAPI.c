@@ -163,7 +163,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->call_class_method_by_name != &env_array[144]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_instance_method_by_name != &env_array[145]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_string_chars_by_name != &env_array[146]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->free_env_prepared != &env_array[147]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved147 != &env_array[147]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dump_raw != &env_array[148]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->dump != &env_array[149]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_instance_method_static != &env_array[150]) { stack[0].ival = 0; return 0; }

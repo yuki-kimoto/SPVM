@@ -161,7 +161,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   144 call_class_method_by_name
   145 call_instance_method_by_name
   146 get_field_string_chars_by_name
-  147 free_env_prepared
+  147 reserved147
   148 dump_raw
   149 dump
   150 get_instance_method_static
@@ -1561,12 +1561,6 @@ Calls an instance method given the method name.
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
-
-=head2 free_env_prepared
-  
-  void (*free_env_prepared)(SPVM_ENV* env);
-
-Frees the environment prepared by the L</"SPVM_NATIVE_new_env_prepared"> Native API.
 
 =head2 dump_raw
 
