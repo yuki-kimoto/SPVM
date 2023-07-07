@@ -280,16 +280,13 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_name(SPVM_RUNTIME* r
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_id(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
-  int32_t basic_type_id = basic_type->id;
   
-  return basic_type_id;
+  return basic_type->id;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_category(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  int32_t basic_type_category = basic_type->category;
-  
-  return basic_type_category;
+  return basic_type->category;
 }
 
 const char* SPVM_API_RUNTIME_get_basic_type_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
@@ -304,16 +301,12 @@ const char* SPVM_API_RUNTIME_get_basic_type_version_string(SPVM_RUNTIME* runtime
 
 int32_t SPVM_API_RUNTIME_get_basic_type_is_pointer(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  int32_t is_pointer = basic_type->is_pointer;
-  
-  return is_pointer;
+  return basic_type->is_pointer;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  int32_t anon_basic_types_length = basic_type->anon_basic_types_length;
-  
-  return anon_basic_types_length;
+  return basic_type->anon_basic_types_length;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_anon_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t anon_basic_type_index) {
@@ -325,9 +318,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_anon_basic_type(SPVM_RU
 
 int32_t SPVM_API_RUNTIME_get_basic_type_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  int32_t is_anon = basic_type->is_anon;
-  
-  return is_anon;
+  return basic_type->is_anon;
 }
 
 const char* SPVM_API_RUNTIME_get_basic_type_module_rel_file(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
@@ -342,23 +333,17 @@ const char* SPVM_API_RUNTIME_get_basic_type_module_dir(SPVM_RUNTIME* runtime, SP
 
 int32_t SPVM_API_RUNTIME_get_basic_type_fields_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  int32_t fields_length = basic_type->fields_length;
-  
-  return fields_length;
+  return basic_type->fields_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_methods_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  int32_t methods_length = basic_type->methods_length;
-  
-  return methods_length;
+  return basic_type->methods_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_basic_type_class_vars_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
   
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  return class_vars_length;
+  return basic_type->class_vars_length;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_parent(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
@@ -400,9 +385,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name(SPVM_RUNTIME* run
 
 int32_t SPVM_API_RUNTIME_get_class_var_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* class_var) {
   
-  int32_t index = class_var->index;
-  
-  return index;
+  return class_var->index;
 }
 
 const char* SPVM_API_RUNTIME_get_class_var_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
@@ -422,16 +405,12 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_basic_type(SPVM_RUNTIME*
 
 int32_t SPVM_API_RUNTIME_get_class_var_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  int32_t type_dimension = class_var->type_dimension;
-  
-  return type_dimension;
+  return class_var->type_dimension;
 }
 
 int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  int32_t type_flag = class_var->type_flag;
-  
-  return type_flag;
+  return class_var->type_flag;
 }
 
 SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t field_index) {
@@ -467,7 +446,6 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, SP
 }
 
 int32_t SPVM_API_RUNTIME_get_field_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_FIELD* field) {
-  
   
   return field->index;
 }
@@ -560,16 +538,13 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_current_basic_type(SPVM_RUN
 
 int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t opcodes_length = method->opcodes_length;
   
-  return opcodes_length;
+  return method->opcodes_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t index = method->index;
-  
-  return index;
+  return method->index;
 }
 
 const char* SPVM_API_RUNTIME_get_method_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
@@ -579,9 +554,7 @@ const char* SPVM_API_RUNTIME_get_method_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME
 
 int32_t SPVM_API_RUNTIME_get_method_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t is_anon = method->is_anon;
-  
-  return is_anon;
+  return method->is_anon;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_is_native(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
@@ -601,23 +574,17 @@ int32_t SPVM_API_RUNTIME_get_method_is_enum(SPVM_RUNTIME* runtime, SPVM_RUNTIME_
 
 int32_t SPVM_API_RUNTIME_get_method_args_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t args_length = method->args_length;
-  
-  return args_length;
+  return method->args_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_required_args_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t required_args_length = method->required_args_length;
-  
-  return required_args_length;
+  return method->required_args_length;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t is_class_method = method->is_class_method;
-  
-  return is_class_method;
+  return method->is_class_method;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_return_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
@@ -627,16 +594,12 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_return_basic_type(SPVM_RUNT
 
 int32_t SPVM_API_RUNTIME_get_method_return_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t return_type_dimension = method->return_type_dimension;
-  
-  return return_type_dimension;
+  return method->return_type_dimension;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_return_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t return_type_flag = method->return_type_flag;
-  
-  return return_type_flag;
+  return method->return_type_flag;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_byte_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
@@ -648,58 +611,42 @@ int32_t SPVM_API_RUNTIME_get_method_byte_vars_width(SPVM_RUNTIME* runtime, SPVM_
 
 int32_t SPVM_API_RUNTIME_get_method_short_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t short_vars_width = method->short_vars_width;
-  
-  return short_vars_width;
+  return method->short_vars_width;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_int_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t int_vars_width = method->int_vars_width;
-  
-  return int_vars_width;
+  return method->int_vars_width;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_long_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t long_vars_width = method->long_vars_width;
-  
-  return long_vars_width;
+  return method->long_vars_width;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_float_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t float_vars_width = method->float_vars_width;
-  
-  return float_vars_width;
+  return method->float_vars_width;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_double_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t double_vars_width = method->double_vars_width;
-  
-  return double_vars_width;
+  return method->double_vars_width;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_object_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t object_vars_width = method->object_vars_width;
-  
-  return object_vars_width;
+  return method->object_vars_width;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_ref_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t ref_vars_width = method->ref_vars_width;
-  
-  return ref_vars_width;
+  return method->ref_vars_width;
 }
 
 int32_t SPVM_API_RUNTIME_get_method_mortal_stack_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  int32_t mortal_stack_length = method->mortal_stack_length;
-  
-  return mortal_stack_length;
+  return method->mortal_stack_length;
 }
 
 SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index) {
@@ -724,16 +671,12 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_arg_basic_type(SPVM_RUNTIME* runti
 
 int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
   
-  int32_t type_dimension = arg->type_dimension;
-  
-  return type_dimension;
+  return arg->type_dimension;
 }
 
 int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
   
-  int32_t type_flag = arg->type_flag;
-  
-  return type_flag;
+  return arg->type_flag;
 }
 
 void* SPVM_API_RUNTIME_get_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
