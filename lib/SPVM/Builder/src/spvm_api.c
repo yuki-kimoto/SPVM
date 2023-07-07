@@ -208,7 +208,7 @@ SPVM_ENV* SPVM_API_new_env_raw(void) {
     SPVM_API_get_type_name_raw,
     SPVM_API_get_type_name,
     SPVM_API_new_env,
-    SPVM_API_free_env,
+    NULL, // reserved111
     NULL, // memory_blocks_count
     SPVM_API_get_chars,
     SPVM_API_die,
@@ -3902,18 +3902,6 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
   new_env->runtime = env->runtime;
   
   return new_env;
-}
-
-void SPVM_API_free_env(SPVM_ENV* env) {
-  
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  SPVM_ALLOCATOR* allocator = runtime->allocator;
-  SPVM_ALLOCATOR_free(allocator);
-  runtime->allocator = NULL;
-  allocator= NULL;
-  
-  env->free_env_raw(env);
 }
 
 int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, SPVM_OBJECT* element) {

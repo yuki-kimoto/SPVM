@@ -33,7 +33,6 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 SPVM_ENV* SPVM_API_new_env_raw(void);
 void SPVM_API_free_env_raw(SPVM_ENV* env);
 SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env);
-void SPVM_API_free_env(SPVM_ENV* env);
 void* SPVM_API_new_memory_env(SPVM_ENV* env, size_t size);
 void SPVM_API_free_memory_env(SPVM_ENV* env, void* block);
 int32_t SPVM_API_get_memory_blocks_count_env(SPVM_ENV* env);

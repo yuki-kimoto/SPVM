@@ -229,16 +229,8 @@ The object of the C<SPVM_ENV*> type is an execution environement.
 This object is passed as the first argument of a Native API.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
-
+  
   }
-
-To create a new execution environment with the same runtime, initialize command line arguments and call C<INIT> blocks, use the L<new_env|SPVM::Document::NativeAPI/"new_env"> method.
-
-  SPVM_ENV* my_env = env->new_env(env);
-
-To free this object, use the L<free_env|SPVM::Document::NativeAPI/"free_env"> method.
-
-  my_env->free_env(my_env);
 
 =head1 Call Stack
 

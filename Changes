@@ -32,6 +32,7 @@
     * The following native API was removed.
     
       -  void (*free_env_prepared)(SPVM_ENV* env);
+      -  void (*free_env)(SPVM_ENV* env);
 
 0.989020 2023-07-07
   [Incompatibe Changes]

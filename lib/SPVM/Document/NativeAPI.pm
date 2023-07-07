@@ -125,7 +125,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   108 get_type_name_raw
   109 get_type_name
   110 new_env
-  111 free_env
+  111 reserved111
   112 memory_blocks_count
   113 get_chars
   114 die
@@ -1032,12 +1032,6 @@ Creates a new environment that is ready to call methods.
 If this method cannnot allocate memory for the new environment, return NULL.
 
 Note that L</"call_init_blocks"> need to be called before calling user methods by yourself.
-
-=head2 free_env
-
-  void (*free_env)(SPVM_ENV* env);
-
-Frees an environment that is created by the L</"new_env"> native API.
 
 =head2 memory_blocks_count
 
