@@ -534,6 +534,11 @@ struct spvm_env_api {
   SPVM_API_COMPILER* compiler;
   SPVM_API_RUNTIME* runtime;
   SPVM_API_MODULE_FILE* module_file;
+  SPVM_API_BASIC_TYPE* basic_type;
+  SPVM_API_CLASS_VAR* class_var;
+  SPVM_API_FIELD* field;
+  SPVM_API_METHOD* method;
+  SPVM_API_ARG* arg;
 };
 
 #define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)
