@@ -2676,7 +2676,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNT
   // Alloc body length + 1
   int32_t fields_length = basic_type->fields_length;
   
-  size_t alloc_size = (size_t)env->api->runtime->object_header_size + basic_type->fields_size + 1;
+  size_t alloc_size = (size_t)env->api->runtime->object_header_size + basic_type->fields_width + 1;
   
   if (!basic_type) {
     return NULL;
