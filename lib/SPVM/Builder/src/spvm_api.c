@@ -369,8 +369,8 @@ SPVM_OBJECT* SPVM_API_new_object_common_v2(SPVM_ENV* env, SPVM_VALUE* stack, siz
 }
 
 void SPVM_API_make_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
-  int32_t string_basci_type_id = SPVM_API_get_object_basic_type_id(env, stack, string);
-  if (string && string_basci_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string->type_dimension == 0) {
+  SPVM_RUNTIME_BASIC_TYPE* string_basic_type = SPVM_API_get_object_basic_type(env, stack, string);
+  if (string && string_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && string->type_dimension == 0) {
     string->flag |= SPVM_OBJECT_C_FLAG_IS_READ_ONLY;
   }
 }
@@ -462,8 +462,8 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       
       SPVM_STRING_BUFFER_add(string_buffer, "[\n");
             
-      int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
+      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
+      const char* object_basic_type_name =  object_basic_type->name;
           
       for (int32_t array_index = 0; array_index < array_length; array_index++) {
         
@@ -475,15 +475,14 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           
           SPVM_STRING_BUFFER_add(string_buffer, "{\n");
           
-          SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
-          int32_t fields_length = basic_type->fields_length;
+          int32_t fields_length = object_basic_type->fields_length;
           
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             for (int32_t depth_index = 0; depth_index < *depth + 2; depth_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
             }
             
-            SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, object_basic_type, field_index);
             
             int32_t field_basic_type_id = field->basic_type->id;
             
@@ -541,7 +540,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           SPVM_STRING_BUFFER_add(string_buffer, "  }");
         }
         else if (SPVM_API_is_numeric_array(env, stack, object)) {
-          switch (basic_type_id) {
+          switch (object_basic_type->id) {
             case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
               int8_t element = ((int8_t*)((intptr_t)object + env->api->runtime->object_header_size))[array_index];
               sprintf(tmp_buffer, "%d", element);
@@ -605,7 +604,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       SPVM_STRING_BUFFER_add(string_buffer, "]");
       
       SPVM_STRING_BUFFER_add(string_buffer, " : ");
-      SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+      SPVM_STRING_BUFFER_add(string_buffer, object_basic_type_name);
       for (int32_t type_dimension_index = 0; type_dimension_index < type_dimension; type_dimension_index++) {
         SPVM_STRING_BUFFER_add(string_buffer, "[]");
       }
@@ -624,12 +623,10 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
       else {
-        int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-        const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
+        SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
+        const char* basic_type_name = object_basic_type->name;
         
         SPVM_HASH_set(address_symtable, tmp_buffer, strlen(tmp_buffer), (void*)(intptr_t)1);
-        
-        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
         
         SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
         sprintf(tmp_buffer, " (%p) ", object);
@@ -638,13 +635,13 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         SPVM_STRING_BUFFER_add(string_buffer, "{\n");
         
         // Free object fields
-        int32_t fields_length = basic_type->fields_length;
+        int32_t fields_length = object_basic_type->fields_length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           for (int32_t depth_index = 0; depth_index < *depth + 1; depth_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
           }
           
-          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, object_basic_type, field_index);
           
           int32_t field_basic_type_id = field->basic_type->id;
           int32_t field_type_dimension = field->type_dimension;
@@ -1848,8 +1845,8 @@ int32_t SPVM_API_is_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
   
   int32_t is_string;
   if (object) {
-    int32_t object_basci_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-    is_string = (object_basci_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && object->type_dimension == 0);
+    SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
+    is_string = (object_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && object->type_dimension == 0);
   }
   else {
     is_string = 0;
@@ -1869,8 +1866,7 @@ int32_t SPVM_API_is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
       is_numeric_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, object_basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
       int32_t object_basic_type_category = object_basic_type->category;
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC:
@@ -1909,9 +1905,7 @@ int32_t SPVM_API_is_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
       is_object_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, object_basic_type_id);
-      assert(object_basic_type_id >= 0);
+      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
       int32_t element_type_dimension = 0;
       int32_t type_flag = 0;
       is_object_array = SPVM_API_RUNTIME_is_object_type(env->runtime, object_basic_type, element_type_dimension, type_flag);
@@ -1941,8 +1935,7 @@ int32_t SPVM_API_is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
       is_mulnum_array = 0;
     }
     else if (object_type_dimension == 1) {
-      int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, object_basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
       int32_t object_basic_type_category = object_basic_type->category;
       switch (object_basic_type_category) {
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
@@ -1977,8 +1970,7 @@ int32_t SPVM_API_is_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
   if (object) {
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
-      int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, object_basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
       int32_t object_basic_type_category = object_basic_type->category;
       
       switch (object_basic_type_category) {
@@ -2010,8 +2002,7 @@ int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   if (object) {
     int32_t object_type_dimension = object->type_dimension;
     if (object_type_dimension == 0) {
-      int32_t object_basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, object);
-      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, object_basic_type_id);
+      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
       int32_t object_basic_type_category = object_basic_type->category;
       
       switch (object_basic_type_category) {
@@ -2055,23 +2046,21 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       elem_size = sizeof(void*);
     }
     else if (SPVM_API_is_numeric_array(env, stack, array)) {
-
-      int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, array);
       
+      SPVM_RUNTIME_BASIC_TYPE* array_basic_type = SPVM_API_get_object_basic_type(env, stack, array);
       int32_t type_dimension = array->type_dimension;
       assert(type_dimension == 1);
       
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
-      if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
+      if (array_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE) {
         elem_size = 1;
       }
-      else if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
+      else if (array_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT) {
         elem_size = 2;
       }
-      else if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
+      else if (array_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT || array_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
         elem_size = 4;
       }
-      else if (basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG || basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
+      else if (array_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG || array_basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
         elem_size = 8;
       }
       else {
@@ -2079,15 +2068,13 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       }
     }
     else if (SPVM_API_is_mulnum_array(env, stack, array)) {
-      int32_t basic_type_id = SPVM_API_get_object_basic_type_id(env, stack, array);
+      SPVM_RUNTIME_BASIC_TYPE* array_basic_type = SPVM_API_get_object_basic_type(env, stack, array);
       int32_t type_dimension = array->type_dimension;
       assert(type_dimension == 1);
       
-      SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
+      int32_t fields_length = array_basic_type->fields_length;
       
-      int32_t fields_length = basic_type->fields_length;
-      
-      SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field(runtime, basic_type, 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field(runtime, array_basic_type, 0);
       
       int32_t field_basic_type_id = first_field->basic_type->id;
       
