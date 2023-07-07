@@ -1,4 +1,9 @@
 0.989021 2023-07-07
+  [New Features]
+    * The following native runtime APIs were added.
+
+      SPVM_ENV* (*get_env)(void* runtime);
+
   [Document Changes]
     * SPVM::Document::NativeClass was renamed to SPVM::Document::NativeModule.
   [Incompatibe Changes]

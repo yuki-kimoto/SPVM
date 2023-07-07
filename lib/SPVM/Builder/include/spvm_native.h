@@ -460,6 +460,7 @@ struct spvm_api_runtime {
   void* (*get_basic_type_anon_basic_type)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
   void (*build_precompile_module_source)(void* runtime, void* string_buffer, const char* module_name);
   void (*build_precompile_method_source)(void* runtime, void* string_buffer, const char* module_name, const char* method_name);
+  SPVM_ENV* (*get_env)(void* runtime);
 };
 
 struct spvm_api_compiler {
