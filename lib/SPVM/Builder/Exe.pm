@@ -722,14 +722,6 @@ EOS
     
     $source_module_file .= qq|    env->api->module_file->set_module_name(compiler, module_file, "$module_name");\n|;
     
-    if (defined $module_file->{file}) {
-      $source_module_file .= qq|    env->api->module_file->set_file(compiler, module_file, "$module_file->{file}");\n|;
-    }
-    
-    if (defined $module_file->{dir}) {
-      $source_module_file .= qq|    env->api->module_file->set_dir(compiler, module_file, "$module_file->{dir}");\n|;
-    }
-    
     if (defined $module_file->{rel_file}) {
       $source_module_file .= qq|    env->api->module_file->set_rel_file(compiler, module_file, "$module_file->{rel_file}");\n|;
     }
