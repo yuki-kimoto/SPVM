@@ -1,5 +1,7 @@
 0.989021 2023-07-07
   [New Features]
+    * The native arg API was added.
+    
     * The following method were added to the Env class.
     
       static method new : Env ($runtime : Runtime = undef);

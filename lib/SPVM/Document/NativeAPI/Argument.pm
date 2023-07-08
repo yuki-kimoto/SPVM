@@ -8,30 +8,29 @@ SPVM Argument Native APIs are the APIs for arguments.
 
 =head1 Usage
 
-  SPVM_ENV_Arg* arg_api = env->api->arg;
+  SPVM_API_Arg* api_arg = env->api->arg;
   
-  void* arg = arg_api->new_instance();
+  void* arg_basic_type = api_arg->get_basic_type(arg);
   
-  arg_api->free_instance(arg);
-
 =head1 Native APIs
 
-=head2 new_instance
+=head2 get_basic_type
 
-  void* (*new_instance)();
+  void* (*get_basic_type)(void* runtime, void* arg);
 
-Creates a new argument object.
+=head2 get_type_dimension
 
-=head2 free_instance
+  int32_t (*get_type_dimension)(void* runtime, void* arg);
 
-  void (*free_instance)(void* arg);
+=head2 get_type_flag
 
-Frees an argument object.
+  int32_t (*get_type_flag)(void* runtime, void* arg);
 
 =head1 Native API IDs
 
-  0 new_instance
-  1 free_instance
+  0 get_basic_type
+  1 get_type_dimension
+  2 get_type_flag
 
 =head1 Copyright & License
 

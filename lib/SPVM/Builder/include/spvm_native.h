@@ -498,6 +498,12 @@ struct spvm_api_module_file {
   void (*set_content_length)(void* compiler, void* module_file, int32_t content_length);
 };
 
+struct spvm_api_arg {
+  void* (*get_basic_type)(void* runtime, void* arg);
+  int32_t (*get_type_dimension)(void* runtime, void* arg);
+  int32_t (*get_type_flag)(void* runtime, void* arg);
+};
+
 SPVM_ENV* SPVM_API_new_env(void);
 
 void SPVM_API_free_env(SPVM_ENV* env);
