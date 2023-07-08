@@ -244,7 +244,7 @@ sub build {
 sub init_api {
   &init_runtime();
   
-  $ENV = $RUNTIME->get_env;
+  $ENV = $BUILDER_API->class("Env")->new($RUNTIME);
   
   $STACK = $ENV->build_stack;
   
