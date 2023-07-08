@@ -2074,20 +2074,6 @@ The feature is the same as the L</"has_interface">, but the basic type name can 
 
   void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-=head1 Functions
-
-=head2 SPVM_NATIVE_new_env
-
-  SPVM_ENV* SPVM_NATIVE_new_env(void);
-
-Creates a new C<SPVM_ENV> object.
-
-=head2 SPVM_NATIVE_free_env
-
-  void SPVM_NATIVE_free_env(SPVM_ENV* env);
-
-Frees a C<SPVM_ENV> object.
-
 =head1 Compiler Native API
 
 L<SPVM::Document::NativeAPI::Compiler>
