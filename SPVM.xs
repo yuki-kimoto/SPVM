@@ -5050,6 +5050,20 @@ get_env(...)
 MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
 
 SV*
+new_env(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  SPVM_ENV* env = SPVM_API_new_env();
+  
+  SV* sv_env = SPVM_XS_UTIL_new_sv_object(aTHX_ env, "SPVM::Builder::Env");
+  
+  XPUSHs(sv_env);
+  XSRETURN(1);
+}
+
+SV*
 set_command_info_program_name(...)
   PPCODE:
 {
