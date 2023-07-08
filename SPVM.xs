@@ -5024,23 +5024,24 @@ build_precompile_module_source(...)
 }
 
 SV*
-build_env(...)
+get_env(...)
   PPCODE:
 {
   
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-  
+
   // Create native_env
-  SPVM_ENV* env = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
   
-  // Set runtime information
-  env->runtime = runtime;
+  SPVM_ENV* env = env_api->api->runtime->get_env(runtime);
   
   SV* sv_env = SPVM_XS_UTIL_new_sv_object(aTHX_ env, "SPVM::Builder::Env");
   HV* hv_env = (HV*)SvRV(sv_env);
   
   (void)hv_store(hv_env, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  
+  // TODO: free_env
   
   XPUSHs(sv_env);
   XSRETURN(1);
@@ -5221,7 +5222,12 @@ DESTROY(...)
   // Env
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_self);
   
-  env->free_env(env);
+  void* runtime = env->runtime;
+  
+  // If the runtime exists, this env was freed by the runtime
+  if (!runtime) {
+    env->free_env(env);
+  }
   
   XSRETURN(0);
 }

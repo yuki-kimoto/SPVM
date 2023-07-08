@@ -114,7 +114,7 @@ sub init_runtime {
     $builder_runtime->load_dynamic_libs;
 
     # Build an environment
-    $BUILDER_ENV = $builder_runtime->build_env;
+    $BUILDER_ENV = $builder_runtime->get_env;
     
     # Set command line info
     $BUILDER_STACK = $BUILDER_ENV->build_stack;
