@@ -8,30 +8,39 @@ SPVM Class Variable Native APIs are the APIs for class variables.
 
 =head1 Usage
 
-  SPVM_ENV_ClassVar* class_var_api = env->api->class_var;
+  SPVM_API_ClassVar* api_class_var = env->api->class_var;
   
-  void* class_var = class_var_api->new_instance();
+  const char* name = api_class_var->get_name(runtime, class_var);
   
-  class_var_api->free_instance(class_var);
-
 =head1 Native APIs
 
-=head2 new_instance
+=head2 get_name
 
-  void* (*new_instance)();
+  const char* (*get_name)(void* runtime, void* class_var);
 
-Creates a new class variable object.
+=head2 get_current_basic_type
 
-=head2 free_instance
+  void* (*get_current_basic_type)(void* runtime, void* class_var);
 
-  void (*free_instance)(void* class_var);
+=head2 get_basic_type
 
-Frees a class variable object.
+  void* (*get_basic_type)(void* runtime, void* class_var);
+
+=head2 get_type_dimension
+
+  int32_t (*get_type_dimension)(void* runtime, void* class_var);
+
+=head2 get_type_flag
+
+  int32_t (*get_type_flag)(void* runtime, void* class_var);
 
 =head1 Native API IDs
 
-  0 new_instance
-  1 free_instance
+  0 get_name
+  1 get_current_basic_type
+  2 get_basic_type
+  3 get_type_dimension
+  4 get_type_flag
 
 =head1 Copyright & License
 

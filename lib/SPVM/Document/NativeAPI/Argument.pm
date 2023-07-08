@@ -10,7 +10,7 @@ SPVM Argument Native APIs are the APIs for arguments.
 
   SPVM_API_Arg* api_arg = env->api->arg;
   
-  void* arg_basic_type = api_arg->get_basic_type(arg);
+  void* basic_type = api_arg->get_basic_type(runtime, arg);
   
 =head1 Native APIs
 
