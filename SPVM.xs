@@ -5023,30 +5023,6 @@ build_precompile_module_source(...)
   XSRETURN(1);
 }
 
-SV*
-get_env(...)
-  PPCODE:
-{
-  
-  SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-
-  // Create native_env
-  SPVM_ENV* env_api = SPVM_API_new_env();
-  
-  SPVM_ENV* env = env_api->api->runtime->get_env(runtime);
-  
-  SV* sv_env = SPVM_XS_UTIL_new_sv_object(aTHX_ env, "SPVM::Builder::Env");
-  HV* hv_env = (HV*)SvRV(sv_env);
-  
-  (void)hv_store(hv_env, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
-  
-  // TODO: free_env
-  
-  XPUSHs(sv_env);
-  XSRETURN(1);
-}
-
 MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
 
 SV*
