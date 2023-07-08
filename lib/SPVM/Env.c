@@ -7,12 +7,12 @@ static const char* FILE_NAME = "Env.c";
 
 int32_t SPVM__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   SPVM_ENV* self = env->new_env(env);
   
-  void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", self, &e, __func__, FILE_NAME, __LINE__);
-  if (e) { return e; }
+  void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", self, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
   
   stack[0].oval = obj_self;
   
@@ -47,7 +47,7 @@ int32_t SPVM__Env__cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Env__set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e;
+  int32_t error_id;
   
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
@@ -57,8 +57,8 @@ int32_t SPVM__Env__set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stac
   
   void* obj_program_name = stack[2].oval;
   
-  e = my_env->set_command_info_program_name(my_env, my_stack, obj_program_name);
-  if (e) { return e; }
+  error_id = my_env->set_command_info_program_name(my_env, my_stack, obj_program_name);
+  if (error_id) { return error_id; }
   
   return 0;
 }
@@ -66,7 +66,7 @@ int32_t SPVM__Env__set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stac
 
 int32_t SPVM__Env__set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e;
+  int32_t error_id;
   
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
@@ -76,15 +76,15 @@ int32_t SPVM__Env__set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_argv = stack[2].oval;
 
-  e = my_env->set_command_info_argv(my_env, my_stack, obj_argv);
-  if (e) { return e; }
+  error_id = my_env->set_command_info_argv(my_env, my_stack, obj_argv);
+  if (error_id) { return error_id; }
   
   return 0;
 }
 
 int32_t SPVM__Env__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e;
+  int32_t error_id;
   
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
@@ -94,15 +94,15 @@ int32_t SPVM__Env__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   int64_t base_time = stack[2].lval;
   
-  e = my_env->set_command_info_base_time(my_env, my_stack, base_time);
-  if (e) { return e; }
+  error_id = my_env->set_command_info_base_time(my_env, my_stack, base_time);
+  if (error_id) { return error_id; }
   
   return 0;
 }
 
 int32_t SPVM__Env__build_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_my_env = stack[0].oval;
   
@@ -110,11 +110,11 @@ int32_t SPVM__Env__build_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_VALUE* my_stack = my_env->new_stack(my_env);
   
-  void* obj_self= env->new_pointer_object_by_name(env, stack, "Stack", my_stack, &e, __func__, FILE_NAME, __LINE__);
-  if (e) { return e; }
+  void* obj_self= env->new_pointer_object_by_name(env, stack, "Stack", my_stack, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
   
-  env->set_field_object_by_name(env, stack, obj_self, "env", obj_my_env, &e, __func__, FILE_NAME, __LINE__);
-  if (e) { return e; }
+  env->set_field_object_by_name(env, stack, obj_self, "env", obj_my_env, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
   
   stack[0].oval = obj_self;
   
@@ -123,7 +123,7 @@ int32_t SPVM__Env__build_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Env__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
   
