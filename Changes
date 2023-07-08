@@ -13,6 +13,8 @@
   [Document Changes]
     * SPVM::Document::NativeClass was renamed to SPVM::Document::NativeModule.
   [Incompatibe Changes]
+    * The spvm_native.c was removed.
+      
     * The methods in the Runtime class were changed.
 
       -  method build_env : Env ();

@@ -526,7 +526,6 @@ sub get_spvm_core_source_file_names {
     spvm_list.c
     spvm_method.c
     spvm_module_file.c
-    spvm_native.c
     spvm_op.c
     spvm_opcode_builder.c
     spvm_opcode.c
