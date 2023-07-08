@@ -450,21 +450,3 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Runtime__get_env(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
-  
-  void* obj_runtime = stack[0].oval;
-  
-  void* runtime = env->get_pointer(env, stack, obj_runtime);
-  
-  SPVM_ENV* my_env = env->api->runtime->get_env(runtime);
-  
-  void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", my_env, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  stack[0].oval = obj_self;
-  
-  return 0;
-}
-

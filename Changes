@@ -17,10 +17,9 @@
   [Incompatibe Changes]
     * The spvm_native.c was removed.
       
-    * The methods in the Runtime class were changed.
+    * The methods in the Runtime class were removed.
 
       -  method build_env : Env ();
-      +  method get_env : Env ();
 
     * The following structures in Native API were renamed.
 
