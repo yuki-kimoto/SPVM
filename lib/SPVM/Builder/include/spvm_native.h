@@ -501,6 +501,8 @@ struct spvm_api_module_file {
 
 SPVM_ENV* SPVM_NATIVE_new_env(void);
 
+void SPVM_NATIVE_free_env(SPVM_ENV* env);
+
 struct spvm_api_allocator {
   void* (*new_instance)(void);
   void (*free_instance)(void* allocator);
