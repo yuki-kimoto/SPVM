@@ -5050,7 +5050,7 @@ get_env(...)
 MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
 
 SV*
-new_env_v2(...)
+new_env(...)
   PPCODE:
 {
   SV* sv_class = ST(0);
