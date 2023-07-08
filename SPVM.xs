@@ -5055,11 +5055,11 @@ new_env_v2(...)
 {
   SV* sv_class = ST(0);
   
-  SPVM_ENV* env = SPVM_API_new_env();
+  SPVM_ENV* new_env = SPVM_API_new_env();
   
-  SV* sv_env = SPVM_XS_UTIL_new_sv_object(aTHX_ env, "SPVM::Builder::Env");
+  SV* sv_new_env = SPVM_XS_UTIL_new_sv_object(aTHX_ new_env, "SPVM::Builder::Env");
   
-  XPUSHs(sv_env);
+  XPUSHs(sv_new_env);
   XSRETURN(1);
 }
 
