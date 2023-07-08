@@ -320,6 +320,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_basic_type_by_name,
     SPVM_API_get_basic_type_by_id,
     SPVM_API_get_object_basic_type,
+    SPVM_API_get_runtime,
+    SPVM_API_set_runtime,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4145,4 +4147,14 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   assert(errno == 0);
   
   return version_number;
+}
+
+SPVM_RUNTIME* SPVM_API_get_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return env->runtime;
+}
+
+void SPVM_API_set_runtime(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME* runtime) {
+  
+  env->runtime = runtime;
 }

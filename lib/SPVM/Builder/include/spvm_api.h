@@ -50,6 +50,8 @@ int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, in
 void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack);
 
 // Runtime information
+SPVM_RUNTIME* SPVM_API_get_runtime(SPVM_ENV* env, SPVM_VALUE* stack);
+void SPVM_API_set_runtime(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME* runtime);
 
 // Manipulate memory
 void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);

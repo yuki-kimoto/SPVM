@@ -4,12 +4,10 @@
 
       SPVM_ENV* (*get_env)(void* runtime);
 
-    * The following native functions were added.
+    * The following native APIs were added.
+      void* (*get_runtime)(SPVM_ENV* env, SPVM_VALUE* stack);
+      void (*set_runtime)(SPVM_ENV* env, SPVM_VALUE* stack, void* runtime);
 
-      SPVM_ENV* SPVM_NATIVE_new_env(void); (Only document added)
-      
-      void SPVM_NATIVE_free_env(SPVM_ENV* env);
-    
   [Document Changes]
     * SPVM::Document::NativeClass was renamed to SPVM::Document::NativeModule.
   [Incompatibe Changes]
