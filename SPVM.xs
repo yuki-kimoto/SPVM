@@ -1415,10 +1415,10 @@ _xs_call_method(...)
     SV* sv_value = ST(spvm_args_base + arg_index);
     
     void* arg = env->api->runtime->get_arg(env->runtime, method, arg_index);
-    void* arg_basic_type = env->api->runtime->get_arg_basic_type(env->runtime, arg);
+    void* arg_basic_type = env->api->arg->get_basic_type(env->runtime, arg);
     int32_t arg_basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, arg_basic_type);
-    int32_t arg_type_dimension = env->api->runtime->get_arg_type_dimension(env->runtime, arg);
-    int32_t arg_type_flag = env->api->runtime->get_arg_type_flag(env->runtime, arg);
+    int32_t arg_type_dimension = env->api->arg->get_type_dimension(env->runtime, arg);
+    int32_t arg_type_flag = env->api->arg->get_type_flag(env->runtime, arg);
     int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type);
     
     int32_t arg_type_is_not_ref = !(arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF);
@@ -2095,10 +2095,10 @@ _xs_call_method(...)
       
       // Argument type
       void* arg = env->api->runtime->get_arg(env->runtime, method, arg_index);
-      void* arg_basic_type = env->api->runtime->get_arg_basic_type(env->runtime, arg);
+      void* arg_basic_type = env->api->arg->get_basic_type(env->runtime, arg);
       int32_t arg_basic_type_id = env->api->runtime->get_basic_type_id(env->runtime, arg_basic_type);
-      int32_t arg_type_dimension = env->api->runtime->get_arg_type_dimension(env->runtime, arg);
-      int32_t arg_type_flag = env->api->runtime->get_arg_type_flag(env->runtime, arg);
+      int32_t arg_type_dimension = env->api->arg->get_type_dimension(env->runtime, arg);
+      int32_t arg_type_flag = env->api->arg->get_type_flag(env->runtime, arg);
       int32_t arg_basic_type_category = env->api->runtime->get_basic_type_category(env->runtime, arg_basic_type);
       
       // Restore reference - numeric
