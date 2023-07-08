@@ -5055,9 +5055,18 @@ new(...)
 {
   SV* sv_class = ST(0);
   
-  SPVM_ENV* self = SPVM_API_new_env();
+  SV* sv_runtime = ST(1);
   
-  SV* sv_self = SPVM_XS_UTIL_new_sv_object(aTHX_ self, "SPVM::Builder::Env");
+  SPVM_ENV* new_env = SPVM_API_new_env();
+  
+  SV* sv_self = SPVM_XS_UTIL_new_sv_object(aTHX_ new_env, "SPVM::Builder::Env");
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  if (SvOK(sv_runtime)) {
+    void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+    new_env->runtime = runtime;
+    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  }
   
   XPUSHs(sv_self);
   XSRETURN(1);
