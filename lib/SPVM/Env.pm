@@ -42,7 +42,7 @@ A runtime. The field type is the L<Runtime|SPVM::Runtime> class.
 
 =head1 Class Methods
 
-  native static method new : Env ();
+  native static method new : Env ($runtime = undef : Runtime);
 
 Creates a new L<Env|SPVM::Env> ojbect, and returns it.
 
