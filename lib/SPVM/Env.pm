@@ -40,6 +40,12 @@ Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::Native
 
 A runtime. The field type is the L<Runtime|SPVM::Runtime> class.
 
+=head1 Class Methods
+
+  native static method new : Env ();
+
+Creates a new L<Env|SPVM::Env> ojbect, and returns it.
+
 =head1 Instance Methods
 
 =head2 set_command_info

@@ -1,5 +1,9 @@
 0.989021 2023-07-07
   [New Features]
+    * The following method were added to the Env class.
+    
+      native static method new : Env ();
+    
     * The following native runtime APIs were added.
 
       SPVM_ENV* (*get_env)(void* runtime);

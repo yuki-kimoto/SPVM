@@ -5,6 +5,20 @@
 
 static const char* FILE_NAME = "Env.c";
 
+int32_t SPVM__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t e = 0;
+  
+  SPVM_ENV* self = env->new_env(env);
+  
+  void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", self, &e, __func__, FILE_NAME, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].oval = obj_self;
+  
+  return 0;
+}
+
 int32_t SPVM__Env__call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
