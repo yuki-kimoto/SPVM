@@ -499,9 +499,9 @@ struct spvm_api_module_file {
   void (*set_content_length)(void* compiler, void* module_file, int32_t content_length);
 };
 
-SPVM_ENV* SPVM_NATIVE_new_env(void);
+SPVM_ENV* SPVM_API_new_env(void);
 
-void SPVM_NATIVE_free_env(SPVM_ENV* env);
+void SPVM_API_free_env(SPVM_ENV* env);
 
 struct spvm_api_allocator {
   void* (*new_instance)(void);

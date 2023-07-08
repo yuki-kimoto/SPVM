@@ -4527,7 +4527,7 @@ create_compiler(...)
   HV* hv_self = (HV*)SvRV(sv_self);
 
   // Create compiler native_env
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
   size_t iv_env_api = PTR2IV(env_api);
   SV* sviv_env_api = sv_2mortal(newSViv(iv_env_api));
   SV* sv_env_api = sv_2mortal(newRV_inc(sviv_env_api));
@@ -4776,7 +4776,7 @@ DESTROY(...)
   SV* sv_native_runtime = sv_native_runtime_ptr ? *sv_native_runtime_ptr : &PL_sv_undef;
   void* runtime = INT2PTR(void*, SvIV(SvRV(sv_native_runtime)));
 
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
 
   // Free native_runtime
   env_api->api->runtime->free_instance(runtime);
@@ -4800,7 +4800,7 @@ get_method_names(...)
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
   
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
@@ -4845,7 +4845,7 @@ get_basic_type_anon_basic_type_names(...)
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
   
   AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
@@ -4881,7 +4881,7 @@ get_basic_type_names(...)
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
   
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
   
   AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
@@ -4914,7 +4914,7 @@ get_module_file(...)
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
   
   void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
@@ -4959,7 +4959,7 @@ set_native_method_address(...)
   SV* sv_method_name = ST(2);
   SV* sv_native_address = ST(3);
   
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
   
   // Basic type name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -4996,7 +4996,7 @@ build_precompile_module_source(...)
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   // Create precompile source
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
   
   // New allocator
   void* allocator = env_api->api->allocator->new_instance();
@@ -5032,7 +5032,7 @@ get_env(...)
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
 
   // Create native_env
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* env_api = SPVM_API_new_env();
   
   SPVM_ENV* env = env_api->api->runtime->get_env(runtime);
   
