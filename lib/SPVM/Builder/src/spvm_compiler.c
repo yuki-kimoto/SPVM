@@ -724,8 +724,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_ENV* env = SPVM_API_new_env();
   
-  runtime->env = env;
-  
   env->runtime = runtime;
   
   return runtime;

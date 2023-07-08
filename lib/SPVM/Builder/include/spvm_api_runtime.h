@@ -12,7 +12,6 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api();
 // Runtime
 SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance();
 void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime);
-SPVM_ENV* SPVM_API_RUNTIME_get_env(SPVM_RUNTIME* runtime);
 
 // Basic type
 int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime);

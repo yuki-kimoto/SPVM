@@ -4,10 +4,6 @@
     
       static method new : Env ($runtime : Runtime = undef);
     
-    * The following native runtime APIs were added.
-
-      SPVM_ENV* (*get_env)(void* runtime);
-
     * The following native APIs were added.
       void* (*get_runtime)(SPVM_ENV* env, SPVM_VALUE* stack);
       void (*set_runtime)(SPVM_ENV* env, SPVM_VALUE* stack, void* runtime);
