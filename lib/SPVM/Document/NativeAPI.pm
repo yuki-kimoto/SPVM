@@ -30,7 +30,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
    13 elem_isa
    14 runtime
    15 get_basic_type_id
-   16 get_field
+   16 get_field_by_index
    17 reserved17
    18 get_class_var
    19 get_class_method
@@ -312,15 +312,15 @@ Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
 
-=head2 get_field
+=head2 get_field_by_index
 
-  void* (*get_field)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
+  void* (*get_field_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
 
 Returns a field given an object and field name. If the field does not exist, returns NULL.
 
 Examples:
 
-  void* field = env->get_field(env, object, "x");
+  void* field = env->get_field_by_index(env, object, "x");
 
 =head2 get_class_var
 
@@ -675,85 +675,85 @@ Examples:
 
   int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field are specified, the byte field value will be returned as a C language int8_t type value. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field are specified, the byte field value will be returned as a C language int8_t type value. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 get_field_short
 
   int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the short type field will be returned as the int16_t type value of C language. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field, the value of the short type field will be returned as the int16_t type value of C language. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 get_field_int
 
   int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field are specified, the value of the int type field will be returned as a C language int32_t type value. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field are specified, the value of the int type field will be returned as a C language int32_t type value. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 get_field_long
 
   int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the long type field will be returned as the value of int64_t type of C language. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field, the value of the long type field will be returned as the value of int64_t type of C language. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 get_field_float
 
   float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the float type field will be returned as a C language float type value. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field, the value of the float type field will be returned as a C language float type value. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 get_field_double
 
   double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the double type field will be returned as a double type value in C language. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field, the value of the double type field will be returned as a double type value in C language. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 get_field_object
 
   void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
-If an object and a field, the value of the object type field is returned as a void* type value in C language. The field must be a valid field obtained with the L</"get_field"> Native API If the field is a weak reference, it will be removed.
+If an object and a field, the value of the object type field is returned as a void* type value in C language. The field must be a valid field obtained with the L</"get_field_by_index"> Native API If the field is a weak reference, it will be removed.
 
 =head2 set_field_byte
 
   void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
 
-If an object and a field is given, the value is set to the byte type field. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field is given, the value is set to the byte type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 set_field_short
 
   void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
 
-If an object and a field is given, the value is set to the short type field. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field is given, the value is set to the short type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 set_field_int
 
   void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
 
-If an object and a field is given, the value is set to the int type field. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field is given, the value is set to the int type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 set_field_long
 
   void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
 
-If an object and a field is given, the value is set to the long type field. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field is given, the value is set to the long type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 set_field_float
 
   void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
 
-If an object and a field is given, the value is set to the float type field. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field is given, the value is set to the float type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 set_field_double
 
   void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
 
-If an object and a field is given, the value is set to the double type field. The field must be a valid field obtained with the L</"get_field"> Native API
+If an object and a field is given, the value is set to the double type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
 
 =head2 set_field_object
 
   void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
 
-An object and a field Specifies the ID and the value of the field and set the value to the object type field. The field must be a valid field obtained with the L</"get_field"> Native API After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
+An object and a field Specifies the ID and the value of the field and set the value to the object type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 =head2 get_class_var_byte
 

@@ -12,7 +12,7 @@ The field native APIs of L<SPVM> are the APIs to get information of fields.
   
   const char* name = api_field->get_name(runtime, field);
 
-The C<field> is got by the L<get_field|SPVM::Document::NativeAPI::BasicType/"get_field"> and the L<get_field_by_name|SPVM::Document::NativeAPI::BasicType/"get_class_var_by_name"> basic type native API.
+The C<field> is got by the L<get_field_by_index|SPVM::Document::NativeAPI::BasicType/"get_field_by_index"> and the L<get_field_by_name|SPVM::Document::NativeAPI::BasicType/"get_class_var_by_name"> basic type native API.
 
 =head1 Native APIs
 

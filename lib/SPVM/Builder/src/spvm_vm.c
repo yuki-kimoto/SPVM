@@ -955,7 +955,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_GET_FIELD_BYTE(env, stack, &byte_vars[opcode->operand0], object, field_offset, &error_id, object_header_size);
@@ -967,7 +967,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_GET_FIELD_SHORT(env, stack, &short_vars[opcode->operand0], object, field_offset, &error_id, object_header_size);
@@ -979,7 +979,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_GET_FIELD_INT(env, stack, &int_vars[opcode->operand0], object, field_offset, &error_id, object_header_size);
@@ -992,7 +992,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_GET_FIELD_LONG(env, stack, &long_vars[opcode->operand0], object, field_offset, &error_id, object_header_size);
@@ -1004,7 +1004,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_GET_FIELD_FLOAT(env, stack, &float_vars[opcode->operand0], object, field_offset, &error_id, object_header_size);
@@ -1016,7 +1016,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_GET_FIELD_DOUBLE(env, stack, &double_vars[opcode->operand0], object, field_offset, &error_id, object_header_size);
@@ -1028,7 +1028,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_GET_FIELD_OBJECT(env, stack, &object_vars[opcode->operand0], object, field_offset, &error_id, object_header_size, object_ref_count_offset);
@@ -1040,7 +1040,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_SET_FIELD_BYTE(env, stack, object, field_offset, byte_vars[opcode->operand1], &error_id, object_header_size);
@@ -1052,7 +1052,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_SET_FIELD_SHORT(env, stack, object, field_offset, short_vars[opcode->operand1], &error_id, object_header_size);
@@ -1064,7 +1064,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_SET_FIELD_INT(env, stack, object, field_offset, int_vars[opcode->operand1], &error_id, object_header_size);
@@ -1076,7 +1076,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_SET_FIELD_LONG(env, stack, object, field_offset, long_vars[opcode->operand1], &error_id, object_header_size);
@@ -1088,7 +1088,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_SET_FIELD_FLOAT(env, stack, object, field_offset, float_vars[opcode->operand1], &error_id, object_header_size);
@@ -1100,7 +1100,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_SET_FIELD_DOUBLE(env, stack, object, field_offset, double_vars[opcode->operand1], &error_id, object_header_size);
@@ -1112,7 +1112,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_SET_FIELD_OBJECT(env, stack, object, field_offset, object_vars[opcode->operand1], &error_id, object_header_size, object_ref_count_offset);
@@ -1124,7 +1124,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_SET_FIELD_UNDEF(env, stack, object, field_offset, &error_id, object_header_size, object_ref_count_offset);
@@ -1136,7 +1136,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* object = object_vars[opcode->operand0];
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_WEAKEN_FIELD(env, stack, object, field_offset, &error_id, object_header_size);
@@ -1148,7 +1148,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* object = object_vars[opcode->operand0];
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_UNWEAKEN_FIELD(env, stack, object, field_offset, &error_id, object_header_size);
@@ -1160,7 +1160,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* object = object_vars[opcode->operand1];
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(env->runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
         SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_offset, &error_id, object_header_size);

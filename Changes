@@ -15,6 +15,11 @@
   [Document Changes]
     * SPVM::Document::NativeClass was renamed to SPVM::Document::NativeModule.
   [Incompatibe Changes]
+    * The following runtime native APIs were changed.
+    
+      -  void* (*get_field)(void* runtime, void* basic_type, int32_t field_index);
+      +  void* (*get_field_by_index)(void* runtime, void* basic_type, int32_t field_index);
+
     * The spvm_native.c was removed.
       
     * The methods in the Runtime class were removed.

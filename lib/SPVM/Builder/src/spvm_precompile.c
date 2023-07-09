@@ -385,7 +385,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         basic_type_id = opcode->operand2;
         int32_t field_index = opcode->operand3;
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-        field = SPVM_API_RUNTIME_get_field(runtime, basic_type, field_index);
+        field = SPVM_API_RUNTIME_get_field_by_index(runtime, basic_type, field_index);
         field_offset = field->offset;
         assert(field);
         break;
@@ -405,7 +405,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         basic_type_id = opcode->operand2;
         int32_t field_index = opcode->operand3;
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-        field = SPVM_API_RUNTIME_get_field(runtime, basic_type, field_index);
+        field = SPVM_API_RUNTIME_get_field_by_index(runtime, basic_type, field_index);
         assert(field);
         field_offset = field->offset;
         break;
@@ -2228,7 +2228,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, field_current_basic_type, field_index);
         const char* basic_type_name = field_current_basic_type->name;
         const char* field_name = field->name;
         
@@ -2310,7 +2310,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, field_current_basic_type, field_index);
         const char* basic_type_name = field_current_basic_type->name;
         const char* field_name = field->name;
         
@@ -2388,7 +2388,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, field_current_basic_type, field_index);
         const char* basic_type_name = field_current_basic_type->name;
         const char* field_name = field->name;
         
@@ -2417,7 +2417,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, field_current_basic_type, field_index);
         const char* basic_type_name = field_current_basic_type->name;
         const char* field_name = field->name;
         
@@ -2446,7 +2446,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t field_index = (uint16_t)opcode->operand3;
         
         SPVM_RUNTIME_BASIC_TYPE* field_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_current_basic_type_id);
-        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, field_current_basic_type, field_index);
+        SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, field_current_basic_type, field_index);
         const char* basic_type_name = field_current_basic_type->name;
         const char* field_name = field->name;
         

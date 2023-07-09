@@ -216,7 +216,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_basic_type_parent,
     SPVM_API_RUNTIME_get_basic_type_version_string,
     SPVM_API_RUNTIME_get_basic_type_by_id,
-    SPVM_API_RUNTIME_get_field,
+    SPVM_API_RUNTIME_get_field_by_index,
     SPVM_API_RUNTIME_get_method,
     NULL, // reserved120,
     NULL, // reserved121
@@ -422,7 +422,7 @@ int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, SPVM_RUN
   return class_var->type_flag;
 }
 
-SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t field_index) {
+SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t field_index) {
   
   if (field_index < 0) {
     return NULL;
@@ -442,7 +442,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_RUNTIME_get_field_by_name(SPVM_RUNTIME* runtime, SP
   SPVM_RUNTIME_FIELD* found_field = NULL;
   if (basic_type->fields_length > 0) {
     for (int32_t field_index = 0; field_index <  basic_type->fields_length; field_index++) {
-      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field(runtime, basic_type, field_index);
+      SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, basic_type, field_index);
       const char* field_name_current = SPVM_API_RUNTIME_get_field_name(runtime, field);
       if (strcmp(field_name_current, field_name) == 0) {
         found_field = field;
