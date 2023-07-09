@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::Field - Field Native APIs
 
 =head1 Description
 
-The field native APIs of L<SPVM> are the APIs to get information of fields
+The field native APIs of L<SPVM> are the APIs to get information of fields.
 
 =head1 Usage
 
