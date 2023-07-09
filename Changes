@@ -2,6 +2,7 @@
   [New Features]
     * The native arg API was added.
     * The native class variable API was added.
+    * The native field API was added.
     
     * The following method were added to the Env class.
     

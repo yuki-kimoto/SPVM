@@ -506,6 +506,16 @@ struct spvm_api_class_var {
   int32_t (*get_type_flag)(void* runtime, void* class_var);
 };
 
+struct spvm_api_field {
+  const char* (*get_name)(void* runtime, void* field);
+  int32_t (*get_index)(void* runtime, void* field);
+  int32_t (*get_offset)(void* runtime, void* field);
+  void* (*get_basic_type)(void* runtime, void* field);
+  int32_t (*get_type_dimension)(void* runtime, void* field);
+  int32_t (*get_type_flag)(void* runtime, void* field);
+  void* (*get_current_basic_type)(void* runtime, void* field);
+};
+
 struct spvm_api_arg {
   void* (*get_basic_type)(void* runtime, void* arg);
   int32_t (*get_type_dimension)(void* runtime, void* arg);
