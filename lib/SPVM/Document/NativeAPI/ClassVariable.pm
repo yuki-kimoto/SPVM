@@ -60,7 +60,7 @@ The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVaria
 
   void* (*get_current_basic_type)(void* runtime, void* class_var);
 
-Returns the current basic type of the class variable.
+Returns the current L<basic type|SPVM::Document::NativeAPI::BasicType> of the class variable.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 

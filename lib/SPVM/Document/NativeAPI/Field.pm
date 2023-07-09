@@ -1,39 +1,100 @@
 =head1 Name
 
-SPVM::Document::NativeAPI::Field - SPVM Field Native APIs
+SPVM::Document::NativeAPI::Field - Field Native APIs
 
 =head1 Description
 
-SPVM Field Native APIs are the APIs for string buffers.
+The field native APIs of L<SPVM> are the APIs to get information of fields
 
 =head1 Usage
 
-  SPVM_ENV_FIELD* field_api = env->api->field;
+  SPVM_API_FIELD* api_field = env->api->field;
   
-  void* field = field_api->new_instance();
-  
-  field_api->free_instance(field);
+  const char* name = api_field->get_name(runtime, field);
 
-=head1 IDs of Field Native APIs
+The C<field> is got by the L<get_field|SPVM::Document::NativeAPI::BasicType/"get_field"> and the L<get_field_by_name|SPVM::Document::NativeAPI::BasicType/"get_class_var_by_name"> basic type native API.
 
-The field native APIs have its IDs.
+=head1 Native APIs
 
-  0 new_instance
-  1 free_instance
+=head2 get_name
 
-=head1 Field Native APIs
+  const char* (*get_name)(void* runtime, void* field);
 
-=head2 new_instance
+Returns the name of the field.
 
-  void* (*new_instance)();
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
-Creates a new string buffer object with an L<allocator|SPVM::Document::NativeAPI::Allocator> and a capacity.
+The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
 
-=head2 free_instance
+=head2 get_index
 
-  void (*free_instance)(void* field);
+  int32_t (*get_index)(void* runtime, void* field);
 
-Frees a string buffer object.
+Returns the index of the field.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_offset
+
+  int32_t (*get_offset)(void* runtime, void* field);
+
+Returns the offset of the field.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_basic_type
+
+  void* (*get_basic_type)(void* runtime, void* field);
+
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the field.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_type_dimension
+
+  int32_t (*get_type_dimension)(void* runtime, void* field);
+
+Returns the type dimension of the field.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_type_flag
+
+  int32_t (*get_type_flag)(void* runtime, void* field);
+
+Returns the type flag of the field.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_current_basic_type
+
+  void* (*get_current_basic_type)(void* runtime, void* field);
+
+Returns the current L<basic type|SPVM::Document::NativeAPI::BasicType> of the field.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head1 Native API IDs
+
+  0 get_name
+  1 get_index
+  2 get_offset
+  3 get_basic_type
+  4 get_type_dimension
+  5 get_type_flag
+  6 get_current_basic_type
 
 =head1 Copyright & License
 
