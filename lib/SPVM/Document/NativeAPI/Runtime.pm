@@ -140,7 +140,7 @@ Runtime native APIs have its IDs.
   116   get_basic_type_version_string
   117   get_basic_type
   118   get_field_by_index
-  119   get_method
+  119   get_method_by_index
   120   reserved120,
   121   reserved121
   122   get_class_var_by_name
@@ -287,9 +287,9 @@ Runtime native APIs have its IDs.
 
   void* (*get_field_by_index)(void* runtime, void* basic_type, int32_t field_index);
   
-=head2 get_method
+=head2 get_method_by_index
 
-  void* (*get_method)(void* runtime, void* basic_type, int32_t method_index);
+  void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
   
 =head2 get_class_var_by_name
 

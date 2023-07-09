@@ -4809,7 +4809,7 @@ get_method_names(...)
   
   int32_t methods_length = env_api->api->runtime->get_basic_type_methods_length(runtime, basic_type);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    void* method = env_api->api->runtime->get_method(runtime, basic_type, method_index);
+    void* method = env_api->api->runtime->get_method_by_index(runtime, basic_type, method_index);
     const char* method_name = env_api->api->runtime->get_method_name(runtime, method);
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
@@ -4856,7 +4856,7 @@ get_basic_type_anon_basic_type_names(...)
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    void* method = env_api->api->runtime->get_method(runtime, basic_type, method_index);
+    void* method = env_api->api->runtime->get_method_by_index(runtime, basic_type, method_index);
     int32_t is_anon_method = env_api->api->runtime->get_method_is_anon(runtime, method);
     
     if (is_anon_method) {

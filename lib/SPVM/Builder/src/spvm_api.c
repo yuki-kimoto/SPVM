@@ -296,7 +296,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_field_static,
     SPVM_API_items,
     SPVM_API_call_instance_method_static_by_name,
-    SPVM_API_get_method,
+    SPVM_API_get_method_by_index,
     SPVM_API_strerror_nolen,
     SPVM_API_strerror_string_nolen,
     SPVM_API_get_compile_type_name_raw,
@@ -3088,7 +3088,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           }
           
           stack[0].oval = object;
-          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_RUNTIME_get_method(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
+          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_RUNTIME_get_method_by_index(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
           
           int32_t error = SPVM_API_call_method_raw(env, stack, destructor_method, items);
           
@@ -3248,7 +3248,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
   return class_var;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
+SPVM_RUNTIME_METHOD* SPVM_API_get_method_by_index(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
   
@@ -3834,7 +3834,7 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
     if (basic_type->init_method) {
-      SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method(env->runtime, basic_type, basic_type->init_method->index);
+      SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method_by_index(env->runtime, basic_type, basic_type->init_method->index);
       int32_t items = 0;
       error = env->call_method_raw(env, stack, init_method, items);
       if (error) { break; }

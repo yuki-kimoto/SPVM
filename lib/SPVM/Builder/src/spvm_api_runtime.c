@@ -217,7 +217,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_basic_type_version_string,
     SPVM_API_RUNTIME_get_basic_type_by_id,
     SPVM_API_RUNTIME_get_field_by_index,
-    SPVM_API_RUNTIME_get_method,
+    SPVM_API_RUNTIME_get_method_by_index,
     NULL, // reserved120,
     NULL, // reserved121
     SPVM_API_RUNTIME_get_class_var_by_name,
@@ -489,7 +489,7 @@ int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME
   return  field->type_flag;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t method_index) {
+SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t method_index) {
   
   if (method_index < 0) {
     return NULL;
@@ -519,7 +519,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, 
       
       int32_t cur_half_index = cur_min_index +(cur_max_index - cur_min_index) / 2;
       
-      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method(runtime, basic_type, cur_half_index);
+      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_index(runtime, basic_type, cur_half_index);
       const char* cur_half_method_name = method->name;
       
       int32_t cmp_result = strcmp(method_name, cur_half_method_name);

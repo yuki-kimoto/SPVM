@@ -442,7 +442,7 @@ struct spvm_api_runtime {
   const char* (*get_basic_type_version_string)(void* runtime, void* basic_type);
   void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
   void* (*get_field_by_index)(void* runtime, void* basic_type, int32_t field_index);
-  void* (*get_method)(void* runtime, void* basic_type, int32_t method_index);
+  void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
   void* reserved120;
   void* reserved121;
   void* (*get_class_var_by_name)(void* runtime, void* basic_type, const char* class_var_name);
