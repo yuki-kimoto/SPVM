@@ -88,7 +88,7 @@ const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_object_basic_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
 // Class variable
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var_by_index(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
 
 // Get Class variable
 int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var);

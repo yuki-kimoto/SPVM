@@ -115,7 +115,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_basic_type_id,
     SPVM_API_get_field,
     NULL, // reserved17,
-    SPVM_API_get_class_var,
+    SPVM_API_get_class_var_by_index,
     SPVM_API_get_class_method,
     SPVM_API_get_instance_method,
     SPVM_API_new_object_raw,
@@ -1543,7 +1543,7 @@ void SPVM_API_cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack){
     
     for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars_length; class_var_index++) {
       
-      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var(runtime, basic_type, class_var_index);
+      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_index(runtime, basic_type, class_var_index);
       
       void* class_var_basic_type = env->api->class_var->get_basic_type(runtime, class_var);
       int32_t class_var_type_dimension = env->api->class_var->get_type_dimension(runtime, class_var);
@@ -3235,7 +3235,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_field_static(SPVM_ENV* env, SPVM_VALUE* stack, 
   return field;
 }
 
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name) {
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var_by_index(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
   

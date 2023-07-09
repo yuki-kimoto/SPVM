@@ -34,7 +34,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_basic_type_id != &env_array[15]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_by_index != &env_array[16]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved17 != &env_array[17]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_class_var != &env_array[18]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_by_index != &env_array[18]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_class_method != &env_array[19]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_instance_method != &env_array[20]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_object_raw != &env_array[21]) { stack[0].ival = 0; return 0; }
@@ -240,11 +240,11 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__get_class_var(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__get_class_var_by_index(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
   
-  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$INT_VALUE");
+  void* class_var = env->get_class_var_by_index(env, stack, "TestCase::NativeAPI", "$INT_VALUE");
   
   if (!class_var) {
     stack[0].ival = 0;
@@ -2263,7 +2263,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved29 != &env_array[29]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved30 != &env_array[30]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved31 != &env_array[31]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_var != &env_array[32]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_class_var_by_index != &env_array[32]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved33 != &env_array[33]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_class_var_name != &env_array[34]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved35 != &env_array[35]) { stack[0].ival = 0; return 0; }

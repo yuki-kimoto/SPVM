@@ -32,7 +32,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
    15 get_basic_type_id
    16 get_field_by_index
    17 reserved17
-   18 get_class_var
+   18 get_class_var_by_index
    19 get_class_method
    20 get_instance_method
    21 new_object_raw
@@ -322,15 +322,15 @@ Examples:
 
   void* field = env->get_field_by_index(env, object, "x");
 
-=head2 get_class_var
+=head2 get_class_var_by_index
 
-  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
+  void* (*get_class_var_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
 
 Returns a class variable given a basic type name and a class variable name. If the class variable does not exist, returns NULL.
 
 Examples:
 
-  void* class_var = env->get_class_var(env, "MyClass", "$VAR");
+  void* class_var = env->get_class_var_by_index(env, "MyClass", "$VAR");
 
 =head2 get_class_method
 
@@ -759,43 +759,43 @@ An object and a field Specifies the ID and the value of the field and set the va
 
   int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the byte type class variable is returned as a C language int8_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
+If a class variable is given, the value of the byte type class variable is returned as a C language int8_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
 
 =head2 get_class_var_short
 
   int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the short type class variable will be returned as a C language int16_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
+If a class variable is given, the value of the short type class variable will be returned as a C language int16_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
 
 =head2 get_class_var_int
 
   int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the int type class variable will be returned as a C language int32_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
+If a class variable is given, the value of the int type class variable will be returned as a C language int32_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
 
 =head2 get_class_var_long
 
   int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the long type class variable will be returned as a C language int64_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
+If a class variable is given, the value of the long type class variable will be returned as a C language int64_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
 
 =head2 get_class_var_float
 
   float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If a class variable is given, the value of the float type class variable will be returned as a C language float type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
+If a class variable is given, the value of the float type class variable will be returned as a C language float type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
 
 =head2 get_class_var_double
 
   double (*get_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-If you specify an object and a class variable, the value of the double type class variable is returned as a C type double type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
+If you specify an object and a class variable, the value of the double type class variable is returned as a C type double type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
 
 =head2 get_class_var_object
 
   void* (*get_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
-When an object and a class variable are specified, the value of the object type class variable is returned as a C language void* type value. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API.
+When an object and a class variable are specified, the value of the object type class variable is returned as a C language void* type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
 
 =head2 set_class_var_byte
 
@@ -837,7 +837,7 @@ If a class variable is given, the value is set to the double type class variable
 
   void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, void* value);
 
-If a class variable is given, the value of the class variable and set the value to the object type class variable. The class variable must be a valid class variable obtained with the L</"get_class_var"> Native API. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
+If a class variable is given, the value of the class variable and set the value to the object type class variable. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 =head2 get_pointer
 

@@ -12,7 +12,7 @@ The class variable native APIs of L<SPVM> are the APIs to get information of cla
   
   const char* name = api_class_var->get_name(runtime, class_var);
 
-The C<class_var> is got by the L<get_class_var|SPVM::Document::NativeAPI::BasicType/"get_class_var"> and the L<get_class_var_by_name|SPVM::Document::NativeAPI::BasicType/"get_class_var_by_name"> basic type native API.
+The C<class_var> is got by the L<get_class_var_by_index|SPVM::Document::NativeAPI::BasicType/"get_class_var_by_index"> and the L<get_class_var_by_name|SPVM::Document::NativeAPI::BasicType/"get_class_var_by_name"> basic type native API.
 
 =head1 Native APIs
 

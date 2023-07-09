@@ -53,7 +53,7 @@ Runtime native APIs have its IDs.
   29 reserved29
   30 reserved30
   31 reserved31
-  32 get_class_var
+  32 get_class_var_by_index
   33 reserved33
   34 get_class_var_name
   35 reserved35

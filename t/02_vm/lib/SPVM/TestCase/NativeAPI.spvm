@@ -53,7 +53,7 @@ class TestCase::NativeAPI {
   native static method check_native_api_runtime_indexes : int ();
   native static method check_native_api_constant_values : int ();
   
-  native static method get_class_var : int ();
+  native static method get_class_var_by_index : int ();
   
   static method get_class_var_byte_by_name : int () {
     

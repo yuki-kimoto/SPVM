@@ -355,7 +355,7 @@ struct spvm_api_runtime {
   void* reserved29;
   void* reserved30;
   void* reserved31;
-  void* (*get_class_var)(void* runtime, void* basic_type, int32_t class_var_index);
+  void* (*get_class_var_by_index)(void* runtime, void* basic_type, int32_t class_var_index);
   void* reserved33;
   const char* (*get_class_var_name)(void* runtime, void* class_var);
   void* reserved35;

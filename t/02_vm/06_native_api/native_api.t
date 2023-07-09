@@ -46,7 +46,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # class variable access
 {
-  ok(SPVM::TestCase::NativeAPI->get_class_var);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_by_index);
   
   ok(SPVM::TestCase::NativeAPI->get_class_var_byte_by_name);
   ok(SPVM::TestCase::NativeAPI->get_class_var_byte_by_name_exception);
