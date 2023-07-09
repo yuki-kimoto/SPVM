@@ -500,10 +500,10 @@ struct spvm_api_module_file {
 
 struct spvm_api_class_var {
   const char* (*get_name)(void* runtime, void* class_var);
-  void* (*get_current_basic_type)(void* runtime, void* class_var);
   void* (*get_basic_type)(void* runtime, void* class_var);
   int32_t (*get_type_dimension)(void* runtime, void* class_var);
   int32_t (*get_type_flag)(void* runtime, void* class_var);
+  void* (*get_current_basic_type)(void* runtime, void* class_var);
 };
 
 struct spvm_api_field {
