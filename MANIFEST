@@ -227,6 +227,7 @@ lib/SPVM/Document/NativeAPI/Compiler.pm
 lib/SPVM/Document/NativeAPI/Field.pm
 lib/SPVM/Document/NativeAPI/Method.pm
 lib/SPVM/Document/NativeAPI/ModuleFile.pm
+lib/SPVM/Document/NativeAPI/OperationCode.pm
 lib/SPVM/Document/NativeAPI/Precompile.pm
 lib/SPVM/Document/NativeAPI/Runtime.pm
 lib/SPVM/Document/NativeAPI/StringBuffer.pm
