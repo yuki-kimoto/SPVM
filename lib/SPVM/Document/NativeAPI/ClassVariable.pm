@@ -20,21 +20,51 @@ The C<class_var> is got by the L<get_class_var|SPVM::Document::NativeAPI::Method
 
   const char* (*get_name)(void* runtime, void* class_var);
 
+Returns the name of the class variable.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVariable> object.
+
 =head2 get_basic_type
 
   void* (*get_basic_type)(void* runtime, void* class_var);
+
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the class variable.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVariable> object.
 
 =head2 get_type_dimension
 
   int32_t (*get_type_dimension)(void* runtime, void* class_var);
 
+Returns the type dimension of the class variable.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVariable> object.
+
 =head2 get_type_flag
 
   int32_t (*get_type_flag)(void* runtime, void* class_var);
 
+Returns the type flag of the class variable.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVariable> object.
+
 =head2 get_current_basic_type
 
   void* (*get_current_basic_type)(void* runtime, void* class_var);
+
+Returns the current basic type of the class variable.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVariable> object.
 
 =head1 Native API IDs
 
