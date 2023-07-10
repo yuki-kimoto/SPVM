@@ -242,6 +242,10 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
   return env_runtime;
 }
 
+void SPVM_API_RUNTIME_free_api(SPVM_API_RUNTIME* api) {
+  free(api);
+}
+
 SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance() {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
   
@@ -848,6 +852,3 @@ void SPVM_API_RUNTIME_build_precompile_method_source(SPVM_RUNTIME* runtime, SPVM
   SPVM_PRECOMPILE_free(precompile);
 }
 
-void SPVM_API_RUNTIME_free_api(SPVM_API_RUNTIME* api) {
-  free(api);
-}
