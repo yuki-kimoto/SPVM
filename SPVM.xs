@@ -1337,7 +1337,7 @@ _xs_call_method(...)
     }
     
     if (method) {
-      int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method);
+      int32_t is_class_method = env->api->method->get_is_class_method(env->runtime, method);
       if (is_class_method) {
         method = NULL;
       }
@@ -1354,7 +1354,7 @@ _xs_call_method(...)
     method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, method_name);
     
     if (method) {
-      int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method);
+      int32_t is_class_method = env->api->method->get_is_class_method(env->runtime, method);
       if (!is_class_method) {
         method = NULL;
       }
@@ -1378,8 +1378,8 @@ _xs_call_method(...)
     spvm_args_base = 2;
   }
 
-  int32_t method_args_length = env->api->runtime->get_method_args_length(env->runtime, method);
-  int32_t method_required_args_length = env->api->runtime->get_method_required_args_length(env->runtime, method);
+  int32_t method_args_length = env->api->method->get_args_length(env->runtime, method);
+  int32_t method_required_args_length = env->api->method->get_required_args_length(env->runtime, method);
   
   // Check argument count
   int32_t call_method_args_length = args_length - spvm_args_base;
