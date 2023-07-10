@@ -566,6 +566,10 @@ struct spvm_api_method {
   int32_t (*get_object_vars_width)(void* runtime, void* method);
   int32_t (*get_ref_vars_width)(void* runtime, void* method);
   int32_t (*get_mortal_stack_length)(void* runtime, void* method);
+  void* (*get_native_address)(void* runtime, void* method);
+  void (*set_native_address)(void* runtime, void* method, void* address);
+  void* (*get_precompile_address)(void* runtime, void* method);
+  void (*set_precompile_address)(void* runtime, void* method, void* address);
 };
 
 struct spvm_api_arg {

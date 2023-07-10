@@ -116,6 +116,22 @@ The C<method> is got by the L<get_method_by_index|SPVM::Document::NativeAPI::Bas
 
   int32_t (*get_mortal_stack_length)(void* runtime, void* method);
 
+=head2 get_native_address
+
+  void* (*get_native_address)(void* runtime, void* method);
+
+=head2 set_native_address
+
+  void (*set_native_address)(void* runtime, void* method, void* address);
+
+=head2 get_precompile_address
+
+  void* (*get_precompile_address)(void* runtime, void* method);
+
+=head2 set_precompile_address
+
+  void (*set_precompile_address)(void* runtime, void* method, void* address);
+
 =head1 Native API IDs
 
   0 get_name
@@ -143,7 +159,11 @@ The C<method> is got by the L<get_method_by_index|SPVM::Document::NativeAPI::Bas
   22 get_object_vars_width
   23 get_ref_vars_width
   24 get_mortal_stack_length
-
+  25 get_native_address
+  26 set_native_address
+  27 get_precompile_address
+  28 set_precompile_address
+  
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

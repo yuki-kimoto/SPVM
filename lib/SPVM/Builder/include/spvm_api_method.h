@@ -61,4 +61,12 @@ int32_t SPVM_API_METHOD_get_ref_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_M
 
 int32_t SPVM_API_METHOD_get_mortal_stack_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
+void* SPVM_API_METHOD_get_native_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+
+void SPVM_API_METHOD_set_native_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address);
+
+void* SPVM_API_METHOD_get_precompile_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+
+void SPVM_API_METHOD_set_precompile_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address);
+
 #endif
