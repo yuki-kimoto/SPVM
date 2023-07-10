@@ -1329,7 +1329,7 @@ _xs_call_method(...)
         croak("The invocant must be assinged to the \"%s\" basic type\n    %s at %s line %d\n", basic_type_name, __func__, FILE_NAME, __LINE__);
       }
       
-      method = env->api->runtime->get_method_by_name(env->runtime, static_call_basic_type, method_name);
+      method = env->api->basic_type->get_method_by_name(env->runtime, static_call_basic_type, method_name);
       *(found_char - 1) = ':';
     }
     else {
@@ -1351,7 +1351,7 @@ _xs_call_method(...)
     basic_type_name = SvPV_nolen(sv_invocant);
     void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
     
-    method = env->api->runtime->get_method_by_name(env->runtime, basic_type, method_name);
+    method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, method_name);
     
     if (method) {
       int32_t is_class_method = env->api->runtime->get_method_is_class_method(env->runtime, method);
@@ -4970,7 +4970,7 @@ set_native_method_address(...)
   const char* method_name = SvPV_nolen(sv_method_name);
   
   // Method
-  void* method = env_api->api->runtime->get_method_by_name(runtime, basic_type, method_name);
+  void* method = env_api->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
