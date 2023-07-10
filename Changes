@@ -1,4 +1,7 @@
 0.989021 2023-07-07
+  [Changes]
+    * Exception messages were improved.
+    
   [New Features]
     * The native arg API was added.
     * The native class variable API was added.

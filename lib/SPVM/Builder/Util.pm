@@ -471,6 +471,7 @@ sub get_spvm_core_header_file_names {
     spvm_runtime_field.h
     spvm_runtime.h
     spvm_runtime_method.h
+    spvm_runtime_opcode.h
     spvm_runtime_string.h
     spvm_strerror.h
     spvm_string_buffer.h
