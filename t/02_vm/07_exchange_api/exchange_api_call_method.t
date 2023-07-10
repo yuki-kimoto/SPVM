@@ -121,7 +121,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # Calls a non-defined method
     {
       eval { SPVM::Int->not_defined_method };
-      like($@, qr|The "not_defined_method" method in the "Int" basic type is not found|);
+      like($@, qr|The "not_defined_method" method in the "Int" class is not found|);
     }
   }
 }
