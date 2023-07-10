@@ -516,6 +516,34 @@ struct spvm_api_field {
   void* (*get_current_basic_type)(void* runtime, void* field);
 };
 
+struct spvm_api_method {
+  const void* (*get_name)(void* runtime, void* method);
+  int32_t (*get_index)(void* runtime, void* method);
+  void* (*get_return_basic_type)(void* runtime, void* method);
+  int32_t (*get_return_type_dimension)(void* runtime, void* method);
+  int32_t (*get_return_type_flag)(void* runtime, void* method);
+  void* (*get_arg_by_index)(void* runtime, void* method, int32_t arg_index);
+  int32_t (*get_args_length)(void* runtime, void* method);
+  int32_t (*get_required_args_length)(void* runtime, void* method);
+  void* (*get_current_basic_type)(void* runtime, void* method);
+  void* (*get_opcodes)(void* runtime, void* method);
+  int32_t (*get_opcodes_length)(void* runtime, void* method);
+  int32_t (*get_is_class_method)(void* runtime, void* method);
+  int32_t (*get_is_anon)(void* runtime, void* method);
+  int32_t (*get_is_native)(void* runtime, void* method);
+  int32_t (*get_is_precompile)(void* runtime, void* method);
+  int32_t (*get_is_enum)(void* runtime, void* method);
+  int32_t (*get_byte_vars_width)(void* runtime, void* method);
+  int32_t (*get_short_vars_width)(void* runtime, void* method);
+  int32_t (*get_int_vars_width)(void* runtime, void* method);
+  int32_t (*get_long_vars_width)(void* runtime, void* method);
+  int32_t (*get_float_vars_width)(void* runtime, void* method);
+  int32_t (*get_double_vars_width)(void* runtime, void* method);
+  int32_t (*get_object_vars_width)(void* runtime, void* method);
+  int32_t (*get_ref_vars_width)(void* runtime, void* method);
+  int32_t (*get_mortal_stack_length)(void* runtime, void* method);
+};
+
 struct spvm_api_arg {
   void* (*get_basic_type)(void* runtime, void* arg);
   int32_t (*get_type_dimension)(void* runtime, void* arg);

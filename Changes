@@ -1,8 +1,9 @@
 0.989021 2023-07-07
   [New Features]
-    * The native arg API was added.
-    * The native class variable API was added.
-    * The native field API was added.
+    * The argument native API was added.
+    * The class native variable API was added.
+    * The field native API was added.
+    * The method native API was added.
     
     * The following method were added to the Env class.
     
