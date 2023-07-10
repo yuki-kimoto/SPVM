@@ -1043,7 +1043,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, v
         
         if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
           
-          const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type);
+          const char* basic_type_name = env->api->basic_type->get_name(env->runtime, basic_type);
           int32_t basic_type_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type);
           
           void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
@@ -1162,7 +1162,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array_v2(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack
         
         if (SvROK(sv_elem) && sv_derived_from(sv_elem, "HASH")) {
           
-          const char* basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, basic_type);
+          const char* basic_type_name = env->api->basic_type->get_name(env->runtime, basic_type);
           int32_t basic_type_fields_length = env->api->runtime->get_basic_type_fields_length(env->runtime, basic_type);
           
           void* elems = (void*)env->get_elems_int(env, stack, spvm_array);
@@ -1527,7 +1527,7 @@ _xs_call_method(...)
             }
             
             if (error) {
-              const char* arg_basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, arg_basic_type);
+              const char* arg_basic_type_name = env->api->basic_type->get_name(env->runtime, arg_basic_type);
               void* spvm_compile_type_name = env->get_compile_type_name(env, stack, arg_basic_type_name, arg_type_dimension, arg_type_flag);
               const char* compile_type_name = env->get_chars(env, stack, spvm_compile_type_name);
               croak("The %dth argument of the \"%s\" method in the \"%s\" basic type must be a SPVM::BlessedObject::Class object of a \"%s\" assignable type or undef\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, compile_type_name, __func__, FILE_NAME, __LINE__);
@@ -1562,7 +1562,7 @@ _xs_call_method(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                const char* arg_basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, arg_basic_type);
+                const char* arg_basic_type_name = env->api->basic_type->get_name(env->runtime, arg_basic_type);
                 croak("The hash reference for the %dth argument of the \"%s\" method in the \"%s\" basic type must have the \"%s\" key for the \"%s\" field of the \"%s\" basic type\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, mulnum_field_name, mulnum_field_name, arg_basic_type_name, __func__, FILE_NAME, __LINE__);
 
               }
@@ -1700,7 +1700,7 @@ _xs_call_method(...)
                 sv_field_value = *sv_field_value_ptr;
               }
               else {
-                const char* arg_basic_type_name = env->api->runtime->get_basic_type_name(env->runtime, arg_basic_type);
+                const char* arg_basic_type_name = env->api->basic_type->get_name(env->runtime, arg_basic_type);
                 croak("The hash reference for the %dth argument of the \"%s\" method in the \"%s\" basic type must have the \"%s\" key for the \"%s\" field of the \"%s\" basic type\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, mulnum_field_name, mulnum_field_name, arg_basic_type_name, __func__, FILE_NAME, __LINE__);
               }
               switch(arg_basic_type_field_basic_type_id) {
