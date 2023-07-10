@@ -23,11 +23,11 @@ SPVM_API_METHOD* SPVM_API_METHOD_new_api() {
     SPVM_API_METHOD_get_current_basic_type,
     SPVM_API_METHOD_get_opcodes,
     SPVM_API_METHOD_get_opcodes_length,
-    SPVM_API_METHOD_get_is_class_method,
-    SPVM_API_METHOD_get_is_anon,
-    SPVM_API_METHOD_get_is_native,
-    SPVM_API_METHOD_get_is_precompile,
-    SPVM_API_METHOD_get_is_enum,
+    SPVM_API_METHOD_is_class_method,
+    SPVM_API_METHOD_is_anon,
+    SPVM_API_METHOD_is_native,
+    SPVM_API_METHOD_is_precompile,
+    SPVM_API_METHOD_is_enum,
     SPVM_API_METHOD_get_byte_vars_width,
     SPVM_API_METHOD_get_short_vars_width,
     SPVM_API_METHOD_get_int_vars_width,
@@ -116,27 +116,27 @@ int32_t SPVM_API_METHOD_get_opcodes_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_M
   return method->opcodes_length;
 }
 
-int32_t SPVM_API_METHOD_get_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_METHOD_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
   return method->is_class_method;
 }
 
-int32_t SPVM_API_METHOD_get_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_METHOD_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
   return method->is_anon;
 }
 
-int32_t SPVM_API_METHOD_get_is_native(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_METHOD_is_native(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
   return method->is_native;
 }
 
-int32_t SPVM_API_METHOD_get_is_precompile(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_METHOD_is_precompile(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
   return method->is_precompile;
 }
 
-int32_t SPVM_API_METHOD_get_is_enum(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+int32_t SPVM_API_METHOD_is_enum(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
   return method->is_enum;
 }

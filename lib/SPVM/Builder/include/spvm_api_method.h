@@ -33,15 +33,15 @@ SPVM_OPCODE* SPVM_API_METHOD_get_opcodes(SPVM_RUNTIME* runtime, SPVM_RUNTIME_MET
 
 int32_t SPVM_API_METHOD_get_opcodes_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
-int32_t SPVM_API_METHOD_get_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+int32_t SPVM_API_METHOD_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
-int32_t SPVM_API_METHOD_get_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+int32_t SPVM_API_METHOD_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
-int32_t SPVM_API_METHOD_get_is_native(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+int32_t SPVM_API_METHOD_is_native(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
-int32_t SPVM_API_METHOD_get_is_precompile(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+int32_t SPVM_API_METHOD_is_precompile(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
-int32_t SPVM_API_METHOD_get_is_enum(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+int32_t SPVM_API_METHOD_is_enum(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
 int32_t SPVM_API_METHOD_get_byte_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 

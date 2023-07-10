@@ -44,13 +44,13 @@ The C<class_var> is got by the L<get_basic_type_by_id|SPVM::Document::NativeAPI:
 
   const void* (*get_module_rel_file)(void* runtime, void* basic_type);
 
-=head2 get_is_pointer
+=head2 is_pointer
 
-  int32_t (*get_is_pointer)(void* runtime, void* basic_type);
+  int32_t (*is_pointer)(void* runtime, void* basic_type);
 
-=head2 get_is_anon
+=head2 is_anon
 
-  int32_t (*get_is_anon)(void* runtime, void* basic_type);
+  int32_t (*is_anon)(void* runtime, void* basic_type);
 
 =head2 get_class_var_by_index
 
@@ -105,11 +105,11 @@ The C<class_var> is got by the L<get_basic_type_by_id|SPVM::Document::NativeAPI:
   8 get_current_basic_type,
   9 get_opcodes,
   10 get_opcodes_length,
-  11 get_is_class_method,
-  12 get_is_anon,
-  13 get_is_native,
-  14 get_is_precompile,
-  15 get_is_enum,
+  11 is_class_method,
+  12 is_anon,
+  13 is_native,
+  14 is_precompile,
+  15 is_enum,
   16 get_byte_vars_width,
   17 get_short_vars_width,
   18 get_int_vars_width,

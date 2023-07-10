@@ -506,8 +506,8 @@ struct spvm_api_basic_type {
   const void* (*get_version_string)(void* runtime, void* basic_type);
   const void* (*get_module_dir)(void* runtime, void* basic_type);
   const void* (*get_module_rel_file)(void* runtime, void* basic_type);
-  int32_t (*get_is_pointer)(void* runtime, void* basic_type);
-  int32_t (*get_is_anon)(void* runtime, void* basic_type);
+  int32_t (*is_pointer)(void* runtime, void* basic_type);
+  int32_t (*is_anon)(void* runtime, void* basic_type);
   void* (*get_class_var_by_index)(void* runtime, void* basic_type, int32_t class_var_index);
   void* (*get_class_var_by_name)(void* runtime, void* basic_type, const void* class_var_name);
   int32_t (*get_class_vars_length)(void* runtime, void* basic_type);
@@ -550,11 +550,11 @@ struct spvm_api_method {
   void* (*get_current_basic_type)(void* runtime, void* method);
   void* (*get_opcodes)(void* runtime, void* method);
   int32_t (*get_opcodes_length)(void* runtime, void* method);
-  int32_t (*get_is_class_method)(void* runtime, void* method);
-  int32_t (*get_is_anon)(void* runtime, void* method);
-  int32_t (*get_is_native)(void* runtime, void* method);
-  int32_t (*get_is_precompile)(void* runtime, void* method);
-  int32_t (*get_is_enum)(void* runtime, void* method);
+  int32_t (*is_class_method)(void* runtime, void* method);
+  int32_t (*is_anon)(void* runtime, void* method);
+  int32_t (*is_native)(void* runtime, void* method);
+  int32_t (*is_precompile)(void* runtime, void* method);
+  int32_t (*is_enum)(void* runtime, void* method);
   int32_t (*get_byte_vars_width)(void* runtime, void* method);
   int32_t (*get_short_vars_width)(void* runtime, void* method);
   int32_t (*get_int_vars_width)(void* runtime, void* method);

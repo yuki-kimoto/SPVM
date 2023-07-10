@@ -1337,7 +1337,7 @@ _xs_call_method(...)
     }
     
     if (method) {
-      int32_t is_class_method = env->api->method->get_is_class_method(env->runtime, method);
+      int32_t is_class_method = env->api->method->is_class_method(env->runtime, method);
       if (is_class_method) {
         method = NULL;
       }
@@ -1354,7 +1354,7 @@ _xs_call_method(...)
     method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, method_name);
     
     if (method) {
-      int32_t is_class_method = env->api->method->get_is_class_method(env->runtime, method);
+      int32_t is_class_method = env->api->method->is_class_method(env->runtime, method);
       if (!is_class_method) {
         method = NULL;
       }
