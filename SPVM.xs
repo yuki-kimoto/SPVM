@@ -4807,7 +4807,7 @@ get_method_names(...)
   
   void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  int32_t methods_length = env_api->api->runtime->get_basic_type_methods_length(runtime, basic_type);
+  int32_t methods_length = env_api->api->basic_type->get_methods_length(runtime, basic_type);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     void* method = env_api->api->runtime->get_method_by_index(runtime, basic_type, method_index);
     const char* method_name = env_api->api->runtime->get_method_name(runtime, method);
@@ -4852,7 +4852,7 @@ get_basic_type_anon_basic_type_names(...)
   
   void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  int32_t methods_length = env_api->api->runtime->get_basic_type_methods_length(runtime, basic_type);
+  int32_t methods_length = env_api->api->basic_type->get_methods_length(runtime, basic_type);
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
@@ -4924,7 +4924,7 @@ get_module_file(...)
   if (basic_type) {
     int32_t basic_type_category = env_api->api->basic_type->get_category(runtime, basic_type);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-      const char* module_dir = env_api->api->runtime->get_basic_type_module_dir(runtime, basic_type);
+      const char* module_dir = env_api->api->basic_type->get_module_dir(runtime, basic_type);
       const char* module_dir_sep;
       if (module_dir) {
         module_dir_sep = "/";
@@ -4933,7 +4933,7 @@ get_module_file(...)
         module_dir_sep = "";
         module_dir = "";
       }
-      const char* module_rel_file = env_api->api->runtime->get_basic_type_module_rel_file(runtime, basic_type);
+      const char* module_rel_file = env_api->api->basic_type->get_module_rel_file(runtime, basic_type);
       
       sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
       sv_catpv(sv_module_file, module_dir_sep);
