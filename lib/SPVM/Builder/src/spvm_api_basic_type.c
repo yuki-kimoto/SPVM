@@ -36,6 +36,8 @@ SPVM_API_BASIC_TYPE* SPVM_API_BASIC_TYPE_new_api() {
     SPVM_API_BASIC_TYPE_get_methods_length,
     SPVM_API_BASIC_TYPE_get_anon_basic_type_by_index,
     SPVM_API_BASIC_TYPE_get_anon_basic_types_length,
+    SPVM_API_BASIC_TYPE_has_interface,
+    SPVM_API_BASIC_TYPE_is_super_class,
   };
   
   SPVM_API_BASIC_TYPE* native_apis = calloc(1, sizeof(native_apis_init));
@@ -243,4 +245,60 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_BASIC_TYPE_get_anon_basic_type_by_index(SPVM_R
   SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = &basic_type->anon_basic_types[anon_basic_type_index];
   
   return anon_basic_type;
+}
+
+int32_t SPVM_API_BASIC_TYPE_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
+
+  if (!(basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+    return 0;
+  }
+  
+  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_METHOD* method_interface = interface_basic_type->required_method;
+  
+  const char* method_interface_name = method_interface->name;
+  
+  SPVM_RUNTIME_METHOD* found_method = SPVM_API_BASIC_TYPE_get_method_by_name(runtime, basic_type, method_interface_name);
+  if (found_method) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_API_BASIC_TYPE_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* super_basic_type, SPVM_RUNTIME_BASIC_TYPE* child_basic_type) {
+
+  int32_t is_super_class_basic_type = 0;
+  
+  if (!(super_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
+    return 0;
+  }
+  
+  if (!(child_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
+    return 0;
+  }
+  
+  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = child_basic_type->parent;
+  
+  while (1) {
+    if (parent_basic_type) {
+      if (parent_basic_type->id == super_basic_type->id) {
+        is_super_class_basic_type = 1;
+        break;
+      }
+      else {
+        parent_basic_type = parent_basic_type->parent;
+      }
+    }
+    else {
+      is_super_class_basic_type = 0;
+      break;
+    }
+  }
+  
+  return is_super_class_basic_type;
 }

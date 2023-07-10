@@ -92,33 +92,43 @@ The C<class_var> is got by the L<get_basic_type_by_id|SPVM::Document::NativeAPI:
 
   void* (*get_anon_basic_type_by_index)(void* runtime, void* basic_type, int32_t anon_basic_type_index);  int32_t (*get_anon_basic_types_length)(void* runtime, void* basic_type);
 
+=head2 has_interface
+
+  int32_t (*has_interface)(void* runtime, void* basic_type, void* interface_basic_type);
+
+=head2 is_super_class
+
+  int32_t (*is_super_class)(void* runtime, void* super_basic_type, void* child_basic_type);
+
 =head1 Native API IDs
 
-  0 get_name,
-  1 get_index,
-  2 get_return_basic_type,
-  3 get_return_type_dimension,
-  4 get_return_type_flag,
-  5 get_arg_by_index,
-  6 get_args_length,
-  7 get_required_args_length,
-  8 get_current_basic_type,
-  9 get_opcodes,
-  10 get_opcodes_length,
-  11 is_class_method,
-  12 is_anon,
-  13 is_native,
-  14 is_precompile,
-  15 is_enum,
-  16 get_byte_vars_width,
-  17 get_short_vars_width,
-  18 get_int_vars_width,
-  19 get_long_vars_width,
-  20 get_float_vars_width,
-  21 get_double_vars_width,
-  22 get_object_vars_width,
-  23 get_ref_vars_width,
-  24 get_mortal_stack_length,
+  0 get_name
+  1 get_index
+  2 get_return_basic_type
+  3 get_return_type_dimension
+  4 get_return_type_flag
+  5 get_arg_by_index
+  6 get_args_length
+  7 get_required_args_length
+  8 get_current_basic_type
+  9 get_opcodes
+  10 get_opcodes_length
+  11 is_class_method
+  12 is_anon
+  13 is_native
+  14 is_precompile
+  15 is_enum
+  16 get_byte_vars_width
+  17 get_short_vars_width
+  18 get_int_vars_width
+  19 get_long_vars_width
+  20 get_float_vars_width
+  21 get_double_vars_width
+  22 get_object_vars_width
+  23 get_ref_vars_width
+  24 get_mortal_stack_length
+  25 has_interface
+  26 is_super_class
 
 =head1 Copyright & License
 
