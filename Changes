@@ -4,6 +4,7 @@
     * The class native variable API was added.
     * The field native API was added.
     * The method native API was added.
+    * The basic type native API was added.
     
     * The following method were added to the Env class.
     
