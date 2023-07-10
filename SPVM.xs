@@ -1414,7 +1414,7 @@ _xs_call_method(...)
     // Get value from Perl argument native_stack
     SV* sv_value = ST(spvm_args_base + arg_index);
     
-    void* arg = env->api->runtime->get_arg_by_index(env->runtime, method, arg_index);
+    void* arg = env->api->method->get_arg_by_index(env->runtime, method, arg_index);
     void* arg_basic_type = env->api->arg->get_basic_type(env->runtime, arg);
     int32_t arg_basic_type_id = env->api->basic_type->get_id(env->runtime, arg_basic_type);
     int32_t arg_type_dimension = env->api->arg->get_type_dimension(env->runtime, arg);
@@ -2094,7 +2094,7 @@ _xs_call_method(...)
       SV* sv_value = ST(spvm_args_base + arg_index);
       
       // Argument type
-      void* arg = env->api->runtime->get_arg_by_index(env->runtime, method, arg_index);
+      void* arg = env->api->method->get_arg_by_index(env->runtime, method, arg_index);
       void* arg_basic_type = env->api->arg->get_basic_type(env->runtime, arg);
       int32_t arg_basic_type_id = env->api->basic_type->get_id(env->runtime, arg_basic_type);
       int32_t arg_type_dimension = env->api->arg->get_type_dimension(env->runtime, arg);
