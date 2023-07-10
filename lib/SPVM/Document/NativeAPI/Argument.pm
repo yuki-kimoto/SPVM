@@ -14,7 +14,7 @@ The argument native APIs of L<SPVM> are the APIs to get information of arguments
   
   void* basic_type = api_arg->get_basic_type(env->runtime, arg);
 
-The C<arg> is got by the L<get_arg|SPVM::Document::NativeAPI::Method/"get_arg"> method native API.
+The C<arg> is got by the L<get_arg_by_index|SPVM::Document::NativeAPI::Method/"get_arg_by_index"> method native API.
 
 =head1 Native APIs
 

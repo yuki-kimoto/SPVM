@@ -230,7 +230,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_class_var_index,
     SPVM_API_RUNTIME_get_field_index,
     SPVM_API_RUNTIME_get_field_offset,
-    SPVM_API_RUNTIME_get_arg,
+    SPVM_API_RUNTIME_get_arg_by_index,
     SPVM_API_RUNTIME_get_basic_type_by_name,
     SPVM_API_RUNTIME_get_basic_type_anon_basic_type,
     SPVM_API_RUNTIME_build_precompile_module_source,
@@ -658,7 +658,7 @@ int32_t SPVM_API_RUNTIME_get_method_mortal_stack_length(SPVM_RUNTIME* runtime, S
   return method->mortal_stack_length;
 }
 
-SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index) {
+SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index) {
   
   if (arg_index < 0) {
     return NULL;

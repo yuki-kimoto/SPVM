@@ -455,7 +455,7 @@ struct spvm_api_runtime {
   int32_t (*get_class_var_index)(void* runtime, void* class_var);
   int32_t (*get_field_index)(void* runtime, void* field);
   int32_t (*get_field_offset)(void* runtime, void* field);
-  void* (*get_arg)(void* runtime, void* method, int32_t arg_index);
+  void* (*get_arg_by_index)(void* runtime, void* method, int32_t arg_index);
   void* (*get_basic_type_by_name)(void* runtime, const char* basic_type_name);
   void* (*get_basic_type_anon_basic_type)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
   void (*build_precompile_module_source)(void* runtime, void* string_buffer, const char* module_name);

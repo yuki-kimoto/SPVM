@@ -26,6 +26,9 @@
       -  void* (*get_method)(void* runtime, void* basic_type, int32_t method_index);
       +  void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
 
+      -  void* (*get_arg)(void* runtime, void* method, int32_t arg_index);
+      +  void* (*get_arg_by_index)(void* runtime, void* method, int32_t arg_index);
+
     * The spvm_native.c was removed.
       
     * The methods in the Runtime class were removed.
