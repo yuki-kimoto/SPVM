@@ -155,7 +155,6 @@ Runtime native APIs have its IDs.
   131   get_field_offset
   132   get_arg_by_index
   133   get_basic_type_by_name
-  134   get_basic_type_anon_basic_type
 
 =head1 Runtime Native APIs
 
@@ -331,10 +330,6 @@ Runtime native APIs have its IDs.
 
   void* (*get_basic_type_by_name)(void* runtime, const char* basic_type_name);
   
-=head2 
-
-  void* (*get_basic_type_anon_basic_type)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
-
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

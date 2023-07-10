@@ -94,7 +94,6 @@
 
 
 
-
 SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
   
   void* env_runtime_init[]  = {
