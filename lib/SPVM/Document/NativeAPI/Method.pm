@@ -52,9 +52,9 @@ The C<method> is got by the L<get_method_by_index|SPVM::Document::NativeAPI::Bas
 
   void* (*get_current_basic_type)(void* runtime, void* method);
 
-=head2 get_opcodes
+=head2 get_opcode
 
-  void* (*get_opcodes)(void* runtime, void* method);
+  void* (*get_opcode)(void* runtime, void* method, int32_t opcode_index);
 
 =head2 get_opcodes_length
 
@@ -127,7 +127,7 @@ The C<method> is got by the L<get_method_by_index|SPVM::Document::NativeAPI::Bas
   6 get_args_length
   7 get_required_args_length
   8 get_current_basic_type
-  9 get_opcodes
+  9 get_opcode
   10 get_opcodes_length
   11 is_class_method
   12 is_anon

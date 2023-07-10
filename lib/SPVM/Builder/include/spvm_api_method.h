@@ -29,7 +29,7 @@ int32_t SPVM_API_METHOD_get_required_args_length(SPVM_RUNTIME* runtime, SPVM_RUN
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_METHOD_get_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
-SPVM_OPCODE* SPVM_API_METHOD_get_opcodes(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+SPVM_OPCODE* SPVM_API_METHOD_get_opcode(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t opcode_index);
 
 int32_t SPVM_API_METHOD_get_opcodes_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
 
