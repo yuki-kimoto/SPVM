@@ -102,7 +102,7 @@ The C<method> argument is a method object.
 
   void* (*get_opcode_by_index)(void* runtime, void* method, int32_t opcode_index);
 
-Gets an operation code by a operation code index, and returns it.
+Gets an operation code object by an operation code index, and returns it.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -112,6 +112,8 @@ The C<method> argument is a method object.
 
   int32_t (*get_opcodes_length)(void* runtime, void* method);
 
+Returns the length of operation codes.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -119,6 +121,8 @@ The C<method> argument is a method object.
 =head2 is_class_method
 
   int32_t (*is_class_method)(void* runtime, void* method);
+
+If the method is a class method, returns 1. Otherwise returns 0.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -128,6 +132,8 @@ The C<method> argument is a method object.
 
   int32_t (*is_anon)(void* runtime, void* method);
 
+If the method is a anon method, returns 1. Otherwise returns 0.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -135,6 +141,8 @@ The C<method> argument is a method object.
 =head2 is_native
 
   int32_t (*is_native)(void* runtime, void* method);
+
+If the method is a native method, returns 1. Otherwise returns 0.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -144,6 +152,8 @@ The C<method> argument is a method object.
 
   int32_t (*is_precompile)(void* runtime, void* method);
 
+If the method is a precompiled method, returns 1. Otherwise returns 0.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -151,6 +161,8 @@ The C<method> argument is a method object.
 =head2 is_enum
 
   int32_t (*is_enum)(void* runtime, void* method);
+
+If the method is a enum method, returns 1. Otherwise returns 0.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -160,6 +172,8 @@ The C<method> argument is a method object.
 
   int32_t (*get_byte_vars_width)(void* runtime, void* method);
 
+Returns the total byte size of the byte variables assigned by the method.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -167,6 +181,8 @@ The C<method> argument is a method object.
 =head2 get_short_vars_width
 
   int32_t (*get_short_vars_width)(void* runtime, void* method);
+
+Returns the total byte size of the short variables assigned by the method.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -176,6 +192,8 @@ The C<method> argument is a method object.
 
   int32_t (*get_int_vars_width)(void* runtime, void* method);
 
+Returns the total byte size of the int variables assigned by the method.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -183,6 +201,8 @@ The C<method> argument is a method object.
 =head2 get_long_vars_width
 
   int32_t (*get_long_vars_width)(void* runtime, void* method);
+
+Returns the total byte size of the long variables assigned by the method.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -192,6 +212,8 @@ The C<method> argument is a method object.
 
   int32_t (*get_float_vars_width)(void* runtime, void* method);
 
+Returns the total byte size of the float variables assigned by the method.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -199,6 +221,8 @@ The C<method> argument is a method object.
 =head2 get_double_vars_width
 
   int32_t (*get_double_vars_width)(void* runtime, void* method);
+
+Returns the total byte size of the double variables assigned by the method.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -208,6 +232,8 @@ The C<method> argument is a method object.
 
   int32_t (*get_object_vars_width)(void* runtime, void* method);
 
+Returns the total byte size of the object variables assigned by the method.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -215,6 +241,8 @@ The C<method> argument is a method object.
 =head2 get_ref_vars_width
 
   int32_t (*get_ref_vars_width)(void* runtime, void* method);
+
+Returns the total byte size of the reference variables assigned by the method.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -224,6 +252,8 @@ The C<method> argument is a method object.
 
   int32_t (*get_mortal_stack_length)(void* runtime, void* method);
 
+Returns the length of the mortal stack of the method.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -231,6 +261,8 @@ The C<method> argument is a method object.
 =head2 get_native_address
 
   void* (*get_native_address)(void* runtime, void* method);
+
+Returns the address of the native method.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
@@ -240,6 +272,8 @@ The C<method> argument is a method object.
 
   void (*set_native_address)(void* runtime, void* method, void* address);
 
+Sets an address of the native method.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -248,6 +282,8 @@ The C<method> argument is a method object.
 
   void* (*get_precompile_address)(void* runtime, void* method);
 
+Returns the address of the precompiled method.
+
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
 The C<method> argument is a method object.
@@ -255,6 +291,8 @@ The C<method> argument is a method object.
 =head2 set_precompile_address
 
   void (*set_precompile_address)(void* runtime, void* method, void* address);
+
+Sets an address of the precompiled method.
 
 The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
 
