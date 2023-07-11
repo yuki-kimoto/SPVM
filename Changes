@@ -1,3 +1,9 @@
+0.989022 2023-07-11
+  [Document Fix]
+    * The doc of Native API IDs of the module file native APIs were fixed.
+  
+  
+  
 0.989021 2023-07-11
   [New Features]
     * The argument native API was added.
