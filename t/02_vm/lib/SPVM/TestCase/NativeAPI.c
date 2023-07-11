@@ -2265,7 +2265,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved35 != &env_array[35]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved36 != &env_array[36]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved37 != &env_array[37]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_field_name != &env_array[38]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved39 != &env_array[39]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved40 != &env_array[40]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved41 != &env_array[41]) { stack[0].ival = 0; return 0; }
@@ -2314,14 +2313,10 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved84 != &env_array[84]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved85 != &env_array[85]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->can_assign != &env_array[86]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_field_basic_type != &env_array[100]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_field_type_dimension != &env_array[101]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_field_type_flag != &env_array[102]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_return_basic_type != &env_array[106]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_return_type_dimension != &env_array[107]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_return_type_flag != &env_array[108]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_current_basic_type != &env_array[112]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_field_current_basic_type != &env_array[113]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");
