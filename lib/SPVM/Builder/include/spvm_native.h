@@ -266,7 +266,7 @@ struct spvm_env {
   void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   void* reserved168;
-  int32_t (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*init_env)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* reserved170;
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
