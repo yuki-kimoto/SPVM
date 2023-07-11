@@ -108,9 +108,9 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     NULL, // reserved8,
     NULL, // reserved9
     NULL, // reserved10,
-    SPVM_API_RUNTIME_get_basic_type_name,
+    NULL,
     NULL, // reserved12
-    SPVM_API_RUNTIME_get_basic_type_category,
+    NULL,
     NULL, // reserved14
     NULL, // reserved15
     NULL, // reserve16
@@ -129,43 +129,43 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     NULL, // reserved29
     NULL, // reserved30
     NULL, // reserved31
-    SPVM_API_RUNTIME_get_class_var_by_index,
+    NULL,
     NULL, // reserved33,
-    SPVM_API_RUNTIME_get_class_var_name,
+    NULL,
     NULL, // reserved35
     NULL, // reserved36,
     NULL, // reserved37,
-    SPVM_API_RUNTIME_get_field_name,
+    NULL,
     NULL, // reserved39
     NULL, // reserved40
     NULL, // reserved41
     NULL, // reserved42
-    SPVM_API_RUNTIME_get_method_name,
+    NULL,
     NULL, // reserved44,
     NULL, // reserved45,
-    SPVM_API_RUNTIME_get_method_is_class_method,
-    SPVM_API_RUNTIME_get_method_is_anon,
-    SPVM_API_RUNTIME_get_method_is_native,
-    SPVM_API_RUNTIME_get_method_is_precompile,
-    SPVM_API_RUNTIME_get_method_byte_vars_width,
-    SPVM_API_RUNTIME_get_method_short_vars_width,
-    SPVM_API_RUNTIME_get_method_int_vars_width,
-    SPVM_API_RUNTIME_get_method_long_vars_width,
-    SPVM_API_RUNTIME_get_method_float_vars_width,
-    SPVM_API_RUNTIME_get_method_double_vars_width,
-    SPVM_API_RUNTIME_get_method_object_vars_width,
-    SPVM_API_RUNTIME_get_method_ref_vars_width,
-    SPVM_API_RUNTIME_get_method_mortal_stack_length,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL, // reserved59
-    SPVM_API_RUNTIME_get_method_opcodes_length,
+    NULL,
     NULL, // reserved 61
-    SPVM_API_RUNTIME_get_method_args_length,
+    NULL,
     NULL, // reserved63
     NULL, // reserved64
-    SPVM_API_RUNTIME_get_native_method_address,
-    SPVM_API_RUNTIME_set_native_method_address,
-    SPVM_API_RUNTIME_get_precompile_method_address,
-    SPVM_API_RUNTIME_set_precompile_method_address,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL, // reserved69
     NULL, // reserved70
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
@@ -176,62 +176,62 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     NULL, // reserved76
     NULL, // reserved77
     NULL, // reserved78
-    SPVM_API_RUNTIME_get_method_required_args_length,
+    NULL,
     NULL, // reserved80
-    SPVM_API_RUNTIME_get_method_is_enum,
+    NULL,
     NULL, // reserved82
     SPVM_API_RUNTIME_is_object_type,
     NULL, // reserved84
     NULL, // reserved85
     SPVM_API_RUNTIME_can_assign,
-    SPVM_API_RUNTIME_get_basic_type_module_rel_file,
-    SPVM_API_RUNTIME_get_basic_type_module_dir,
-    SPVM_API_RUNTIME_get_basic_type_is_anon,
+    NULL,
+    NULL,
+    NULL,
     NULL, // reserved90
-    SPVM_API_RUNTIME_get_basic_type_fields_length,
+    NULL,
     NULL, // reserved92
-    SPVM_API_RUNTIME_get_basic_type_methods_length,
+    NULL,
     NULL, // reserved94
-    SPVM_API_RUNTIME_get_basic_type_class_vars_length,
+    NULL,
     NULL, // reserved96
     NULL, // reserved97
     NULL, // reserved98
     SPVM_API_RUNTIME_get_basic_types_length,
-    SPVM_API_RUNTIME_get_field_basic_type,
-    SPVM_API_RUNTIME_get_field_type_dimension,
-    SPVM_API_RUNTIME_get_field_type_flag,
-    SPVM_API_RUNTIME_get_class_var_basic_type,
-    SPVM_API_RUNTIME_get_class_var_type_dimension,
-    SPVM_API_RUNTIME_get_class_var_type_flag,
-    SPVM_API_RUNTIME_get_method_return_basic_type,
-    SPVM_API_RUNTIME_get_method_return_type_dimension,
-    SPVM_API_RUNTIME_get_method_return_type_flag,
-    SPVM_API_RUNTIME_get_arg_basic_type,
-    SPVM_API_RUNTIME_get_arg_type_dimension,
-    SPVM_API_RUNTIME_get_arg_type_flag,
-    SPVM_API_RUNTIME_get_method_current_basic_type,
-    SPVM_API_RUNTIME_get_field_current_basic_type,
-    SPVM_API_RUNTIME_get_class_var_current_basic_type,
-    SPVM_API_RUNTIME_get_basic_type_parent,
-    SPVM_API_RUNTIME_get_basic_type_version_string,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     SPVM_API_RUNTIME_get_basic_type_by_id,
-    SPVM_API_RUNTIME_get_field_by_index,
-    SPVM_API_RUNTIME_get_method_by_index,
+    NULL,
+    NULL,
     NULL, // reserved120,
     NULL, // reserved121
-    SPVM_API_RUNTIME_get_class_var_by_name,
-    SPVM_API_RUNTIME_get_field_by_name,
-    SPVM_API_RUNTIME_get_method_by_name,
-    SPVM_API_RUNTIME_get_basic_type_id,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL, // reserved126
-    SPVM_API_RUNTIME_get_method_index,
+    NULL,
     NULL, // reserved128,
-    SPVM_API_RUNTIME_get_class_var_index,
-    SPVM_API_RUNTIME_get_field_index,
-    SPVM_API_RUNTIME_get_field_offset,
-    SPVM_API_RUNTIME_get_arg_by_index,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     SPVM_API_RUNTIME_get_basic_type_by_name,
-    SPVM_API_RUNTIME_get_basic_type_anon_basic_type,
+    NULL,
     SPVM_API_RUNTIME_build_precompile_module_source,
     SPVM_API_RUNTIME_build_precompile_method_source,
   };
