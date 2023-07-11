@@ -3688,7 +3688,7 @@ _xs_get_memory_blocks_count(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  int32_t memory_blocks_count = env->get_memory_blocks_count(env);
+  int32_t memory_blocks_count = env->get_memory_blocks_count_env(env);
   SV* sv_memory_blocks_count = sv_2mortal(newSViv(memory_blocks_count));
   
   XPUSHs(sv_memory_blocks_count);
