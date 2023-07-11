@@ -365,68 +365,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_parent(SPVM_RUNTIME* ru
   return basic_type->parent;
 }
 
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t class_var_index) {
-  
-  if (class_var_index < 0) {
-    return NULL;
-  }
-  
-  if (class_var_index >= basic_type->class_vars_length) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_CLASS_VAR* class_var = &basic_type->class_vars[class_var_index];
-  
-  return class_var;
-}
-
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_RUNTIME_get_class_var_by_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* class_var_name) {
-  
-  SPVM_RUNTIME_CLASS_VAR* found_class_var = NULL;
-  if (basic_type->class_vars_length > 0) {
-    for (int32_t class_var_index = 0; class_var_index <  basic_type->class_vars_length; class_var_index++) {
-      SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_RUNTIME_get_class_var_by_index(runtime, basic_type, class_var_index);
-      const char* class_var_name_current = SPVM_API_RUNTIME_get_class_var_name(runtime, class_var);
-      if (strcmp(class_var_name_current, class_var_name) == 0) {
-        found_class_var = class_var;
-        break;
-      }
-    }
-  }
-  
-  return found_class_var;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_var_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* class_var) {
-  
-  return class_var->index;
-}
-
-const char* SPVM_API_RUNTIME_get_class_var_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
-  
-  return class_var->name;
-}
-
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
-  
-  return class_var->current_basic_type;
-}
-
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_class_var_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
-  
-  return class_var->basic_type;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_var_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
-  
-  return class_var->type_dimension;
-}
-
-int32_t SPVM_API_RUNTIME_get_class_var_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_CLASS_VAR* class_var) {
-  
-  return class_var->type_flag;
-}
-
 SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index) {
   
   if (arg_index < 0) {
