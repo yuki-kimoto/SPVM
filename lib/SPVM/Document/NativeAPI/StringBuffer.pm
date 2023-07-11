@@ -1,38 +1,30 @@
 =head1 Name
 
-SPVM::Document::NativeAPI::StringBuffer - SPVM String Buffer Native APIs
-
-=head1 Usage
-
-  // String Buffer API
-  SPVM_API_STRING_BUFFER* string_buffer_api = env->api->string_buffer;
-  
-  // New string_buffer
-  void* string_buffer = string_buffer_api->new_instance();
-  
-  // Free string_buffer
-  string_buffer_api->free_instance(string_buffer);
+SPVM::Document::NativeAPI::StringBuffer - String Buffer Native APIs
 
 =head1 Description
 
-SPVM String Buffer Native APIs are the APIs for string buffers.
+The string buffer native APIs of L<SPVM> are the APIs to manipulate string buffers
 
-=head1 IDs of String Buffer Native APIs
+=head1 Usage
 
-String buffer native APIs have its IDs.
+  SPVM_API_STRING_BUFFER* string_buffer_api = env->api->string_buffer;
+  
+  void* string_buffer = string_buffer_api->new_instance();
+  
+  string_buffer_api->free_instance(string_buffer);
 
-  0 new_instance
-  1 free_instance
-  2 get_string
-  3 get_length
-
-=head1 String Buffer Native APIs
+=head1 Native APIs
 
 =head2 new_instance
 
   void* (*new_instance)(void* allocator, int32_t capacity);
 
-Creates a new string buffer object with an L<allocator|SPVM::Document::NativeAPI::Allocator> and a capacity.
+Creates a new string buffer object and returns it.
+
+The C<allocator> argument is an L<allocator|SPVM::Document::NativeAPI::Allocator> object.
+
+The C<capacity> argument is the capacity of the string buffer.
 
 =head2 free_instance
 
@@ -44,13 +36,20 @@ Frees a string buffer object.
 
   const char* (*get_string)(void* string_buffer);
 
-Gets the string saved in the string buffer object.
+Gets the string in the string buffer object.
 
 =head2 get_length
 
   int32_t (*get_length)(void* string_buffer);
 
 Gets the length of the string in the string buffer object.
+
+=head1 Native API IDs
+
+  0 new_instance
+  1 free_instance
+  2 get_string
+  3 get_length
 
 =head1 Copyright & License
 
