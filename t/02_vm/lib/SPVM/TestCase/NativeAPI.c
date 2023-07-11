@@ -1431,10 +1431,10 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
 int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t length = 10;
-  int32_t start_memory_blocks_count = env->get_memory_blocks_count(env);
+  int32_t start_memory_blocks_count = env->get_memory_blocks_count_env(env);
   env->new_int_array(env, stack, length);
   env->new_int_array(env, stack, length);
-  int32_t before_enter_memory_blocks_count = env->get_memory_blocks_count(env);
+  int32_t before_enter_memory_blocks_count = env->get_memory_blocks_count_env(env);
   int32_t before_leave_memory_blocks_count;
   {
     int32_t scope_id = env->enter_scope(env, stack);
@@ -1443,11 +1443,11 @@ int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_V
     env->new_int_array(env, stack, length);
     env->new_int_array(env, stack, length);
     
-    before_leave_memory_blocks_count = env->get_memory_blocks_count(env);
+    before_leave_memory_blocks_count = env->get_memory_blocks_count_env(env);
     env->leave_scope(env, stack, scope_id);
   }
   
-  int32_t after_leave_memory_blocks_counts = env->get_memory_blocks_count(env);
+  int32_t after_leave_memory_blocks_counts = env->get_memory_blocks_count_env(env);
   
   stack[0].ival = 0;
   if ((before_enter_memory_blocks_count - start_memory_blocks_count) == 2) {
