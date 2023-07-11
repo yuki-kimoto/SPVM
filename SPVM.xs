@@ -4991,7 +4991,7 @@ build_precompile_module_source(...)
 {
   SV* sv_runtime = ST(0);
   void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
-
+  
   SV* sv_basic_type_name = ST(1);
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
@@ -5003,19 +5003,21 @@ build_precompile_module_source(...)
   
   // New string buffer
   void* string_buffer = env_api->api->string_buffer->new_instance(allocator, 0);
-
-  env_api->api->runtime->build_precompile_module_source(runtime, string_buffer, basic_type_name);
+  
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  
+  env_api->api->runtime->build_precompile_module_source_v2(runtime, string_buffer, basic_type);
   
   const char* string_buffer_value = env_api->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env_api->api->string_buffer->get_length(string_buffer);
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
-
+  
   // Free string buffer
   env_api->api->string_buffer->free_instance(string_buffer);
-
+  
   // Free allocator
   env_api->api->allocator->free_instance(allocator);
-
+  
   // Free native_env_api
   env_api->free_env(env_api);
   
