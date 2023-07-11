@@ -5177,7 +5177,7 @@ init_env(...)
 }
 
 SV*
-cleanup_global_vars(...)
+cleanup_env(...)
   PPCODE:
 {
   
@@ -5187,7 +5187,7 @@ cleanup_global_vars(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
   
-  env->cleanup_global_vars(env, stack);
+  env->cleanup_env(env, stack);
   
   XSRETURN(0);
 }

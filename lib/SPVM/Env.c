@@ -42,7 +42,7 @@ int32_t SPVM__Env__init_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Env__cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Env__cleanup_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_my_env = stack[0].oval;
   SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
@@ -50,7 +50,7 @@ int32_t SPVM__Env__cleanup_global_vars(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_my_stack = stack[1].oval;
   SPVM_VALUE* my_stack = env->get_pointer(env, stack, obj_my_stack);
   
-  my_env->cleanup_global_vars(my_env, my_stack);
+  my_env->cleanup_env(my_env, my_stack);
   
   return 0;
 }
