@@ -209,7 +209,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_type_name,
     NULL, // reserved110
     NULL, // reserved111
-    NULL, // memory_blocks_count
+    NULL, // memory_blocks_count_env
     SPVM_API_get_chars,
     SPVM_API_die,
     SPVM_API_new_object_by_name,

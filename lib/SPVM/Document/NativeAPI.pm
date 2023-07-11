@@ -769,12 +769,6 @@ This function does not add the returned object to the mortal stack, so use the L
 
 Gets a new C<string> object that is the type name of the object.
 
-=head2 memory_blocks_count
-
-  void* memory_blocks_count;
-
-Unused from v0.9508+. The count of memory blocks is managed in L</"runtime">.
-
 =head2 get_chars
 
   const char* (*get_chars)(SPVM_ENV* env, SPVM_VALUE* stack, void* string_object);

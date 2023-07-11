@@ -7,6 +7,7 @@
       -  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t size);
       -  void (*free_memory_block)(SPVM_ENV* env, void* block);
       -  int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
+      -  void* memory_blocks_count;
     
     * The following methods in the Env class were renamed.
     
