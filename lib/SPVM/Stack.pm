@@ -14,13 +14,13 @@ C<SPVM::Stack> is the C<Stack> class in the L<SPVM> language.
 
 The instance is a call stack. It has information of the call stack.
 
-An instance of the C<Stack> class is build by the L<build_stack|SPVM::Env/"build_stack"> method in the L<Env|SPVM::Env> class.
+An instance of the C<Stack> class is build by the L<new_stack|SPVM::Env/"new_stack"> method in the L<Env|SPVM::Env> class.
 
 =head1 Usage
 
   use Stack;
   
-  my $stack = $env->build_stack;
+  my $stack = $env->new_stack;
 
 =head1 Pointer
 
@@ -48,7 +48,7 @@ The destructor.
 
 =head2 Env
 
-The L<build_stack|SPVM::Env/"build_stack"> method in the L<Env|SPVM::Env> class builds a call stack.
+The L<new_stack|SPVM::Env/"new_stack"> method in the L<Env|SPVM::Env> class builds a call stack.
 
 =head1 Copyright & License
 

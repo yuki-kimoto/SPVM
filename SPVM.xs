@@ -5193,7 +5193,7 @@ cleanup_global_vars(...)
 }
 
 SV*
-build_stack(...)
+new_stack(...)
   PPCODE:
 {
   

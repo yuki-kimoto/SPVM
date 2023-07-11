@@ -28,7 +28,7 @@ An instance of the C<Runtime> class is build by the L<build_runtime|SPVM::Compil
   
   my $method_names = $runtime->get_method_names("Foo");
   
-  my $stack = $env->build_stack;
+  my $stack = $env->new_stack;
 
 =head1 Pointer
 

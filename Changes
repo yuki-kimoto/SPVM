@@ -5,6 +5,11 @@
       - int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* interface_basic_type);
       -  int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
     
+    * The following methods in the Env class were renamed.
+    
+      -  method build_stack : Stack ();
+      +  method new_stack : Stack ();
+      
 0.989022 2023-07-11
   [Document Fix]
     * The doc of Native API IDs of the module file native APIs were fixed.

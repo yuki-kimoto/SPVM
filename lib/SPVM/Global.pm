@@ -117,7 +117,7 @@ sub init_runtime {
     $BUILDER_ENV = SPVM::Builder::Env->new($builder_runtime);
     
     # Set command line info
-    $BUILDER_STACK = $BUILDER_ENV->build_stack;
+    $BUILDER_STACK = $BUILDER_ENV->new_stack;
     
     $BUILDER_ENV->set_command_info_program_name($BUILDER_STACK, $0);
     $BUILDER_ENV->set_command_info_argv($BUILDER_STACK, \@ARGV);
@@ -246,7 +246,7 @@ sub init_api {
   
   $ENV = $BUILDER_API->class("Env")->new($RUNTIME);
   
-  $STACK = $ENV->build_stack;
+  $STACK = $ENV->new_stack;
   
   $ENV->set_command_info_program_name($STACK, $0);
   $ENV->set_command_info_argv($STACK, \@ARGV);

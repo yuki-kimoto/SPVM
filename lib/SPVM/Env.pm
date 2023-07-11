@@ -16,7 +16,7 @@ The instance is an execution environemnt. It has the Native APIs and the data of
 
 An instance of the C<Env> class is build by the L<get_env|SPVM::Runtime/"get_env"> method in the L<Runtime|SPVM::Runtime> class.
 
-A call stack is build by the L<build_stack|/"build_stack"> method in this class.
+A call stack is build by the L<new_stack|/"new_stack"> method in this class.
 
 =head1 Usage
 
@@ -24,7 +24,7 @@ A call stack is build by the L<build_stack|/"build_stack"> method in this class.
   
   my $env = $runtime->get_env;
   
-  my $stack = $env->build_stack;
+  my $stack = $env->new_stack;
 
 =head1 Pointer
 
@@ -60,9 +60,9 @@ Sets command line information.
 
 Calls all L<INIT blocks|SPVM::Document::Language/"INIT Block">.
 
-=head2 build_stack
+=head2 new_stack
 
-  method build_stack : Stack ();
+  method new_stack : Stack ();
 
 Builds a call stack and returns it.
 
@@ -82,7 +82,7 @@ The L<build_runtime|SPVM::Runtime/"build_runtime"> method in the L<Runtime|SPVM:
 
 =head2 Stack
 
-The instance of the L<Stack|SPVM::Stack> class is build by the L</"build_stack"> method in this class.
+The instance of the L<Stack|SPVM::Stack> class is build by the L</"new_stack"> method in this class.
 
 =head1 Copyright & License
 

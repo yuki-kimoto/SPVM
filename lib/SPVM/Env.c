@@ -110,7 +110,7 @@ int32_t SPVM__Env__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack) 
   return 0;
 }
 
-int32_t SPVM__Env__build_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Env__new_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
