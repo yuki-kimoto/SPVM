@@ -2242,9 +2242,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved8 != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved9 != &env_array[9]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved10 != &env_array[10]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_basic_type_name != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved12 != &env_array[12]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_basic_type_category != &env_array[13]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved14 != &env_array[14]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved15 != &env_array[15]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved16 != &env_array[16]) { stack[0].ival = 0; return 0; }
@@ -2263,9 +2261,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved29 != &env_array[29]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved30 != &env_array[30]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved31 != &env_array[31]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_var_by_index != &env_array[32]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved33 != &env_array[33]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_var_name != &env_array[34]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved35 != &env_array[35]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved36 != &env_array[36]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved37 != &env_array[37]) { stack[0].ival = 0; return 0; }
@@ -2321,18 +2317,11 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_field_basic_type != &env_array[100]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_type_dimension != &env_array[101]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_type_flag != &env_array[102]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_var_basic_type != &env_array[103]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_var_type_dimension != &env_array[104]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_var_type_flag != &env_array[105]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_return_basic_type != &env_array[106]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_return_type_dimension != &env_array[107]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_return_type_flag != &env_array[108]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_arg_basic_type != &env_array[109]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_arg_type_dimension != &env_array[110]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_arg_type_flag != &env_array[111]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_method_current_basic_type != &env_array[112]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_field_current_basic_type != &env_array[113]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_class_var_current_basic_type != &env_array[114]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");
