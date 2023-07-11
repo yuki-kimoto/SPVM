@@ -755,12 +755,6 @@ Given the address of an object, returns non-zero if the object is a weak referen
 
 Specifying the address of the object releases the weak reference to the object.
 
-=head2 get_memory_blocks_count
-
-  int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
-
-Returns the count of the memory blocks on the environment.
-
 =head2 get_type_name_raw
 
   void* (*get_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -1925,7 +1919,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   104 unweaken
   105 
   106 
-  107 get_memory_blocks_count
+  107 
   108 get_type_name_raw
   109 get_type_name
   110 reserved110

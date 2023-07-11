@@ -6,6 +6,7 @@
       -  int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
       -  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t size);
       -  void (*free_memory_block)(SPVM_ENV* env, void* block);
+      -  int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
     
     * The following methods in the Env class were renamed.
     
@@ -2012,7 +2013,7 @@
         111 unweaken
         112 alloc_memory_block_zero
         113 free_memory_block
-        114 get_memory_blocks_count
+        114 
         115 get_type_name_raw
         116 get_type_name
         117 new_env
