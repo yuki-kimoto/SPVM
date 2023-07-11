@@ -1,14 +1,12 @@
 =head1 Name
 
-SPVM::Document::NativeAPI - SPVM Native APIs
+SPVM::Document::NativeAPI - Native APIs
 
 =head1 Description
 
-The SPVM native APIs are public APIs that are used in native language sources such as C<C/C++>.
+The native APIs of L<SPVM> are the APIs used in L<native modules|SPVM::Document::NativeModule>.
 
-The native APIs are writen in the C language, but the languages that have compatibility of the C language such as <C++>, C<CUDA/nvcc> can call the native APIs.
-
-The native APIs is used when L<native methods|SPVM::Document::NativeClass> are implemented.
+These are writen by the C language.
 
 =head1 Native APIs
 
