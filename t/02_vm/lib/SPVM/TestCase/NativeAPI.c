@@ -181,7 +181,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->copy_raw != &env_array[162]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->copy != &env_array[163]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->shorten != &env_array[164]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->has_interface != &env_array[165]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->print != &env_array[166]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->print_stderr != &env_array[167]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved168 != &env_array[168]) { stack[0].ival = 0; return 0; }
@@ -233,7 +232,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->new_object_array_by_name != &env_array[214]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_muldim_array_by_name != &env_array[215]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_mulnum_array_by_name != &env_array[216]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->has_interface_by_name != &env_array[217]) { stack[0].ival = 0; return 0; }
 
   stack[0].ival = 1;
 
@@ -593,23 +591,6 @@ int32_t SPVM__TestCase__NativeAPI__native_new_pointer_object_by_name_exception(S
   if (error) { return error; }
   
   stack[0].oval = minimal;
-  
-  return 0;
-}
-
-
-int32_t SPVM__TestCase__NativeAPI__has_interface_test(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* object = stack[0].oval;
-  
-  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::AnonMethod::AnonMethod");
-  if (!basic_type) {
-    assert(0);
-  }
-  
-  int32_t match = env->has_interface(env, stack, object, basic_type);
-  
-  stack[0].ival = match;
   
   return 0;
 }
