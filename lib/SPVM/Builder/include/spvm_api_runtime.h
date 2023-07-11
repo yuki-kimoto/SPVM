@@ -15,6 +15,13 @@ SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance();
 
 void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime);
 
+// SPVM_OBJECT information
+int32_t SPVM_API_RUNTIME_get_object_header_size(SPVM_RUNTIME* runtime);
+
+int32_t SPVM_API_RUNTIME_get_object_ref_count_offset(SPVM_RUNTIME* runtime);
+
+int32_t SPVM_API_RUNTIME_get_object_length_offset(SPVM_RUNTIME* runtime);
+
 // Basic type
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id);
 

@@ -131,6 +131,21 @@ void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
   SPVM_RUNTIME_free(runtime);
 }
 
+int32_t SPVM_API_RUNTIME_get_object_header_size(SPVM_RUNTIME* runtime) {
+  
+  return sizeof(SPVM_OBJECT);
+}
+
+int32_t SPVM_API_RUNTIME_get_object_ref_count_offset(SPVM_RUNTIME* runtime) {
+  
+  return offsetof(SPVM_OBJECT, ref_count);
+}
+
+int32_t SPVM_API_RUNTIME_get_object_length_offset(SPVM_RUNTIME* runtime) {
+  
+  return offsetof(SPVM_OBJECT, length);
+}
+
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   if (basic_type_id < 0) {

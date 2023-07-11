@@ -8,13 +8,10 @@ The runtime native APIs of L<SPVM> are the APIs to manipulate information of run
 
 =head1 Usage
 
-  // Runtime Native API
   SPVM_API_RUNTIME* runtime_api = env->api->runtime;
   
-  // New a runtime object
   void* runtime = runtime_api->new_instance();
   
-  // Free a runtime object
   env->api->runtime->free_instance(runtime);
 
 =head1 Runtime Native APIs
@@ -23,9 +20,13 @@ The runtime native APIs of L<SPVM> are the APIs to manipulate information of run
 
   void* (*new_instance)(void);
 
+Creates a new runtime object and returns it.
+
 =head2 free_instance
 
   void (*free_instance)(void* runtime);
+
+Frees a runtime object.
 
 =head2 object_header_size
 
