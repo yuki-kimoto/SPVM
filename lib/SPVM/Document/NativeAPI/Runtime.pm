@@ -53,9 +53,9 @@ Runtime native APIs have its IDs.
   29 reserved29
   30 reserved30
   31 reserved31
-  32 get_class_var_by_index
+  32 
   33 reserved33
-  34 get_class_var_name
+  34 
   35 reserved35
   36 reserved36
   37 reserved37
@@ -124,9 +124,9 @@ Runtime native APIs have its IDs.
   100   get_field_basic_type
   101   get_field_type_dimension
   102   get_field_type_flag
-  103   get_class_var_basic_type
-  104   get_class_var_type_dimension
-  105   get_class_var_type_flag
+  103   
+  104   
+  105   
   106   get_method_return_basic_type
   107   get_method_return_type_dimension
   108   get_method_return_type_flag
@@ -135,7 +135,7 @@ Runtime native APIs have its IDs.
   111   
   112   get_method_current_basic_type
   113   get_field_current_basic_type
-  114   get_class_var_current_basic_type
+  114   
   115   
   116   
   117   get_basic_type_by_id
@@ -143,14 +143,14 @@ Runtime native APIs have its IDs.
   119   get_method_by_index
   120   reserved120,
   121   reserved121
-  122   get_class_var_by_name
+  122   
   123   get_field_by_name
   124   get_method_by_name
   125   
   126   reserved126
   127   get_method_index
   128   reserved128,
-  129   get_class_var_index
+  129   
   130   get_field_index
   131   get_field_offset
   132   
@@ -186,18 +186,6 @@ Runtime native APIs have its IDs.
 
   int32_t (*get_field_type_flag)(void* runtime, void* field);
   
-=head2 get_class_var_basic_type
-
-  void* (*get_class_var_basic_type)(void* runtime, void* class_var);
-  
-=head2 get_class_var_type_dimension
-
-  int32_t (*get_class_var_type_dimension)(void* runtime, void* class_var);
-  
-=head2 get_class_var_type_flag
-
-  int32_t (*get_class_var_type_flag)(void* runtime, void* class_var);
-  
 =head2 get_method_return_basic_type
 
   void* (*get_method_return_basic_type)(void* runtime, void* method);
@@ -218,10 +206,6 @@ Runtime native APIs have its IDs.
 
   void* (*get_field_current_basic_type)(void* runtime, void* field);
   
-=head2 get_class_var_current_basic_type
-
-  void* (*get_class_var_current_basic_type)(void* runtime, void* class_var);
-  
 =head2 get_basic_type_by_id
 
   void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
@@ -234,10 +218,6 @@ Runtime native APIs have its IDs.
 
   void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
   
-=head2 get_class_var_by_name
-
-  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const char* class_var_name);
-  
 =head2 get_field_by_name
 
   void* (*get_field_by_name)(void* runtime, void* basic_type, const char* field_name);
@@ -249,10 +229,6 @@ Runtime native APIs have its IDs.
 =head2 get_method_index
 
   int32_t (*get_method_index)(void* runtime, void* method);
-  
-=head2 get_class_var_index
-
-  int32_t (*get_class_var_index)(void* runtime, void* class_var);
   
 =head2 get_field_index
 
