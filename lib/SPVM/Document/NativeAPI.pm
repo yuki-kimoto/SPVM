@@ -179,7 +179,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   162 copy_raw
   163 copy
   164 shorten
-  165 has_interface
+  165 
   166 print
   167 print_stderr
   168 reserved168
@@ -231,7 +231,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   214 new_object_array_by_name
   215 new_muldim_array_by_name
   216 new_mulnum_array_by_name
-  217 has_interface_by_name
+  217 
   218 get_class_var_object_address
   219 get_basic_type
   220 get_basic_type_by_name
@@ -1664,12 +1664,6 @@ If the given length is lower than 0, the given length become 0.
 
 The charaters of the after the given length are filled with C<\0>.
 
-=head2 has_interface
-
-  int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* interface_basic_type);
-
-Check the type of the object has the interface.
-
 =head2 print
 
   void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
@@ -2047,12 +2041,6 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
 =head2 new_mulnum_array_by_name
 
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
-
-=head2 has_interface_by_name
-
-  int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
-
-The feature is the same as the L</"has_interface">, but the basic type name can be given. If the basic type name is not found, returns 0.
 
 =head2 get_class_var_object_address
 
