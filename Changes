@@ -11,6 +11,11 @@
       +  int32_t (*get_object_data_offset)(void* runtime);
       +  int32_t (*get_object_ref_count_offset)(void* runtime);
       +  int32_t (*get_object_length_offset)(void* runtime);  
+
+      -  void (*build_precompile_module_source)(void* runtime, void* string_buffer, const char* module_name);
+      -  void (*build_precompile_method_source)(void* runtime, void* string_buffer, const char* module_name, const char* method_name);
+      +  void (*build_precompile_module_source)(void* runtime, void* string_buffer, void* module_basic_type);
+      +  void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
     
 0.989021 2023-07-11
   [New Features]

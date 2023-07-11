@@ -183,7 +183,7 @@ int32_t SPVM__Runtime__build_precompile_module_source(SPVM_ENV* env, SPVM_VALUE*
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  env->api->runtime->build_precompile_module_source_v2(runtime, string_buffer, basic_type);
+  env->api->runtime->build_precompile_module_source(runtime, string_buffer, basic_type);
   
   const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
@@ -220,7 +220,11 @@ int32_t SPVM__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE*
   // New string buffer
   void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
   
-  env->api->runtime->build_precompile_method_source(runtime, string_buffer, basic_type_name, method_name);
+  void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  
+  void* method = env->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
+  
+  env->api->runtime->build_precompile_method_source(runtime, string_buffer, method);
   
   const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);

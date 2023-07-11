@@ -90,7 +90,7 @@ The C<basic_type> argument is a L<basic type|SPVM::Document::NativeAPI::BasicTyp
 
   int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
 
-If a source type can be assigned to a dist type, return 1. Otherwise returns 0.
+If a source type can be assigned to a dist type, returns 1. Otherwise returns 0.
 
 The C<runtime> argument is a runtime object.
 
@@ -100,23 +100,27 @@ The C<src_basic_type> argument is a L<basic type|SPVM::Document::NativeAPI::Basi
 
 =head2 build_precompile_module_source
 
-  void (*build_precompile_module_source)(void* runtime, void* string_buffer, const char* module_name);
+  void (*build_precompile_module_source)(void* runtime, void* string_buffer, void* module_basic_type);
 
-Builds the C source code of a precompiled module.
+Builds the C source code of a precompiled module, and saves it to the string buffer.
 
 The C<runtime> argument is a runtime object.
 
 The C<string_buffer> argument is a L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
+
+The C<module_basic_type> argument is a L<basic type|SPVM::Document::NativeAPI::BasicType> object.
 
 =head2 build_precompile_method_source
 
-  void (*build_precompile_method_source)(void* runtime, void* string_buffer, const char* module_name, const char* method_name);
+  void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
   
-Builds the C source code of a precompiled method.
+Builds the C source code of a precompiled method, and saves it to the string buffer.
 
 The C<runtime> argument is a runtime object.
 
 The C<string_buffer> argument is a L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
+
+The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
 
 =head1 Native API IDs
 
@@ -125,6 +129,7 @@ The C<string_buffer> argument is a L<string buffer|SPVM::Document::NativeAPI::St
   2 get_object_data_offset
   3 get_object_ref_count_offset
   4 get_object_length_offset
+  5 get_basic_type_by_id
   6 get_basic_type_by_name
   7 get_basic_types_length
   8 is_object_type

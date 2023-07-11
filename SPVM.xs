@@ -5006,7 +5006,7 @@ build_precompile_module_source(...)
   
   void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  env_api->api->runtime->build_precompile_module_source_v2(runtime, string_buffer, basic_type);
+  env_api->api->runtime->build_precompile_module_source(runtime, string_buffer, basic_type);
   
   const char* string_buffer_value = env_api->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env_api->api->string_buffer->get_length(string_buffer);
