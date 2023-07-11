@@ -135,8 +135,14 @@ void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
 }
 
 int32_t SPVM_API_RUNTIME_get_object_header_size(SPVM_RUNTIME* runtime) {
+  // Adjust alignment SPVM_VALUE
+  int32_t object_header_size = sizeof(SPVM_OBJECT);
+  if (object_header_size % sizeof(SPVM_VALUE) != 0) {
+    object_header_size += (sizeof(SPVM_VALUE) - object_header_size % sizeof(SPVM_VALUE));
+  }
+  assert(object_header_size % sizeof(SPVM_VALUE) == 0);
   
-  return sizeof(SPVM_OBJECT);
+  return object_header_size;
 }
 
 int32_t SPVM_API_RUNTIME_get_object_ref_count_offset(SPVM_RUNTIME* runtime) {
