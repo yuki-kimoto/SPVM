@@ -386,7 +386,7 @@ struct spvm_api_module_file {
 struct spvm_api_runtime {
   void* (*new_instance)(void);
   void (*free_instance)(void* runtime);
-  int32_t (*get_object_header_size)(void* runtime);
+  int32_t (*get_object_data_offset)(void* runtime);
   int32_t (*get_object_ref_count_offset)(void* runtime);
   int32_t (*get_object_length_offset)(void* runtime);
   void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);

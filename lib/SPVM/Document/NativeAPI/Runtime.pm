@@ -28,17 +28,23 @@ Creates a new runtime object and returns it.
 
 Frees a runtime object.
 
-=head2 get_object_header_size
+=head2 get_object_data_offset
 
-  int32_t (*get_object_header_size)(void* runtime);
+  int32_t (*get_object_data_offset)(void* runtime);
+
+Returns the offset of the data header size of the object.
 
 =head2 get_object_ref_count_offset
 
   int32_t (*get_object_ref_count_offset)(void* runtime);
 
+Returns the offset of the C<ref_count> member variable of the C<SPVM_OBJECT> type.
+
 =head2 get_object_length_offset
 
   int32_t (*get_object_length_offset)(void* runtime);
+
+Returns the offset of the C<length> member variable of the C<SPVM_OBJECT> type.
 
 =head2 get_basic_type_by_id
 
@@ -72,7 +78,7 @@ Frees a runtime object.
 
   0 new_instance
   1 free_instance
-  2 get_object_header_size
+  2 get_object_data_offset
   3 get_object_ref_count_offset
   4 get_object_length_offset
   6 get_basic_type_by_name

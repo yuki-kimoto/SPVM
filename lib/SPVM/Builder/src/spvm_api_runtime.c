@@ -99,7 +99,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
   void* env_runtime_init[]  = {
     SPVM_API_RUNTIME_new_instance,
     SPVM_API_RUNTIME_free_instance,
-    SPVM_API_RUNTIME_get_object_header_size,
+    SPVM_API_RUNTIME_get_object_data_offset,
     SPVM_API_RUNTIME_get_object_ref_count_offset,
     SPVM_API_RUNTIME_get_object_length_offset,
     SPVM_API_RUNTIME_get_basic_type_by_id,
@@ -131,7 +131,7 @@ void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
   SPVM_RUNTIME_free(runtime);
 }
 
-int32_t SPVM_API_RUNTIME_get_object_header_size(SPVM_RUNTIME* runtime) {
+int32_t SPVM_API_RUNTIME_get_object_data_offset(SPVM_RUNTIME* runtime) {
   // Adjust alignment SPVM_VALUE
   int32_t object_header_size = sizeof(SPVM_OBJECT);
   if (object_header_size % sizeof(SPVM_VALUE) != 0) {

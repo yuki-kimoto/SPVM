@@ -318,7 +318,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* decl_method;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t decl_field_offset;\n");
   
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = env->api->runtime->get_object_header_size(env->runtime);\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = env->api->runtime->get_object_data_offset(env->runtime);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_ref_count_offset = env->api->runtime->get_object_ref_count_offset(env->runtime);\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
   
