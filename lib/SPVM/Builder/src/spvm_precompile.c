@@ -320,7 +320,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_header_size = (intptr_t)env->api->runtime->object_header_size;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_ref_count_offset = (intptr_t)env->api->runtime->object_ref_count_offset;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = (intptr_t)env->api->runtime->object_length_offset;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);\n");
   
   SPVM_OPCODE* opcodes = current_method->opcodes;
   int32_t opcodes_length = current_method->opcodes_length;
