@@ -1889,9 +1889,9 @@ _xs_call_method(...)
   }
   
   // Return
-  void* method_return_basic_type = env->api->runtime->get_method_return_basic_type(env->runtime, method);
+  void* method_return_basic_type = env->api->method->get_return_basic_type(env->runtime, method);
   int32_t method_return_basic_type_id = env->api->basic_type->get_id(env->runtime, method_return_basic_type);
-  int32_t method_return_type_dimension = env->api->runtime->get_method_return_type_dimension(env->runtime, method);
+  int32_t method_return_type_dimension = env->api->method->get_return_type_dimension(env->runtime, method);
   
   int32_t method_return_basic_type_category = env->api->basic_type->get_category(env->runtime, method_return_basic_type);
   
@@ -4809,15 +4809,15 @@ get_method_names(...)
   
   int32_t methods_length = env_api->api->basic_type->get_methods_length(runtime, basic_type);
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    void* method = env_api->api->runtime->get_method_by_index(runtime, basic_type, method_index);
-    const char* method_name = env_api->api->runtime->get_method_name(runtime, method);
+    void* method = env_api->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
+    const char* method_name = env_api->api->method->get_name(runtime, method);
     SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     int32_t is_push = 0;
     if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && env_api->api->runtime->get_method_is_native(runtime, method)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && env_api->api->method->is_native(runtime, method)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && env_api->api->runtime->get_method_is_precompile(runtime, method)) {
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && env_api->api->method->is_precompile(runtime, method)) {
         av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
     }
@@ -4856,11 +4856,11 @@ get_basic_type_anon_basic_type_names(...)
   
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
     
-    void* method = env_api->api->runtime->get_method_by_index(runtime, basic_type, method_index);
-    int32_t is_anon_method = env_api->api->runtime->get_method_is_anon(runtime, method);
+    void* method = env_api->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
+    int32_t is_anon_method = env_api->api->method->is_anon(runtime, method);
     
     if (is_anon_method) {
-      void* anon_basic_type = env_api->api->runtime->get_method_current_basic_type(runtime, method);
+      void* anon_basic_type = env_api->api->method->get_current_basic_type(runtime, method);
       const char* anon_basic_type_name = env_api->api->basic_type->get_name(runtime, anon_basic_type);
       SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
       av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
