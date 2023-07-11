@@ -19,6 +19,11 @@
   [Incompatibe Changes]
     * The following runtime native APIs were removed.
     
+      -  void* (*get_arg_basic_type)(void* runtime, void* arg);
+      -  int32_t (*get_arg_type_dimension)(void* runtime, void* arg);
+      -  int32_t (*get_arg_type_flag)(void* runtime, void* arg);
+      -  void* (*get_arg_by_index)(void* runtime, void* method, int32_t arg_index);
+    
       - void* (*get_basic_type_anon_basic_type)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
       -  const char* (*get_basic_type_module_rel_file)(void* runtime, void* basic_type);
       -  const char* (*get_basic_type_module_dir)(void* runtime, void* basic_type);
@@ -35,7 +40,7 @@
       -  void* (*get_basic_type_parent)(void* runtime, void* basic_type);
       -  const char* (*get_basic_type_version_string)(void* runtime, void* basic_type);
       -  int32_t (*get_basic_type_id)(void* runtime, void* basic_type);
-    
+
     * The following runtime native APIs were renamed.
     
       -  void* (*get_field)(void* runtime, void* basic_type, int32_t field_index);

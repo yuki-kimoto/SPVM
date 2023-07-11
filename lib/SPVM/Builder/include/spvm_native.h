@@ -493,9 +493,9 @@ struct spvm_api_runtime {
   void* (*get_method_return_basic_type)(void* runtime, void* method);
   int32_t (*get_method_return_type_dimension)(void* runtime, void* method);
   int32_t (*get_method_return_type_flag)(void* runtime, void* method);
-  void* (*get_arg_basic_type)(void* runtime, void* arg);
-  int32_t (*get_arg_type_dimension)(void* runtime, void* arg);
-  int32_t (*get_arg_type_flag)(void* runtime, void* arg);
+  void* r496;
+  void* r497;
+  void* r498;
   void* (*get_method_current_basic_type)(void* runtime, void* method);
   void* (*get_field_current_basic_type)(void* runtime, void* field);
   void* (*get_class_var_current_basic_type)(void* runtime, void* class_var);
@@ -516,7 +516,7 @@ struct spvm_api_runtime {
   int32_t (*get_class_var_index)(void* runtime, void* class_var);
   int32_t (*get_field_index)(void* runtime, void* field);
   int32_t (*get_field_offset)(void* runtime, void* field);
-  void* (*get_arg_by_index)(void* runtime, void* method, int32_t arg_index);
+  void* r519;
   void* (*get_basic_type_by_name)(void* runtime, const char* basic_type_name);
   void* reserved134;
   void (*build_precompile_module_source)(void* runtime, void* string_buffer, const char* module_name);
