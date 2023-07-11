@@ -118,7 +118,7 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(SPVM_ENV* env, SPV
     return -1;
   }
   
-  int32_t field_offset = env->api->runtime->get_field_offset(env->runtime, field);
+  int32_t field_offset = env->api->field->get_offset(env->runtime, field);
   
   return field_offset;
 }
