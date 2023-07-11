@@ -4975,9 +4975,9 @@ set_native_method_address(...)
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  env_api->api->runtime->set_native_method_address(runtime, method, native_address);
+  env_api->api->method->set_native_address(runtime, method, native_address);
   
-  assert(native_address == env_api->api->method->get_native_method_address(runtime, method));
+  assert(native_address == env_api->api->method->get_native_address(runtime, method));
   
   // Free native_env
   env_api->free_env(env_api);

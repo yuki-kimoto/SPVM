@@ -23,7 +23,7 @@ Runtime native APIs have its IDs.
 
   0  new_instance
   1  free_instance
-  2  get_opcodes
+  2  
   3  reserved3
   4  reserved4
   5  reserved5
@@ -64,32 +64,32 @@ Runtime native APIs have its IDs.
   40 reserved40
   41 reserved41
   42 reserved42
-  43 get_method_name
+  43 
   44 reserved44
   45 reserved45
-  46 get_method_is_class_method
-  47 get_method_is_anon
-  48 get_method_is_native
-  49 get_method_is_precompile
-  50 get_method_byte_vars_width
-  51 get_method_short_vars_width
-  52 get_method_int_vars_width
-  53 get_method_long_vars_width
-  54 get_method_float_vars_width
-  55 get_method_double_vars_width
-  56 get_method_object_vars_width
-  57 get_method_ref_vars_width
-  58 get_method_mortal_stack_length
+  46 
+  47 
+  48 
+  49 
+  50 
+  51 
+  52 
+  53 
+  54 
+  55 
+  56 
+  57 
+  58 
   59 reserved59
-  60 get_method_opcodes_length
+  60 
   61 reserved61
-  62 get_method_args_length
+  62 
   63 reserved63
   64 reserved64
-  65 get_native_method_address
-  66 set_native_method_address
-  67 get_precompile_method_address
-  68 set_precompile_method_address
+  65 
+  66 
+  67 
+  68 
   69 object_header_size
   70 object_weaken_backref_head_offset
   71 object_ref_count_offset
@@ -100,9 +100,9 @@ Runtime native APIs have its IDs.
   76 reserved76
   77 reserved77
   78 reserved78
-  79 get_method_required_args_length
+  79 
   80 reserved80
-  81 get_method_is_enum
+  81 
   82 reserved82
   83 is_object_type
   84 reserved84
@@ -127,28 +127,28 @@ Runtime native APIs have its IDs.
   103   
   104   
   105   
-  106   get_method_return_basic_type
-  107   get_method_return_type_dimension
-  108   get_method_return_type_flag
+  106   
+  107   
+  108   
   109   
   110   
   111   
-  112   get_method_current_basic_type
+  112   
   113   
   114   
   115   
   116   
   117   get_basic_type_by_id
   118   
-  119   get_method_by_index
+  119   
   120   reserved120,
   121   reserved121
   122   
   123   
-  124   get_method_by_name
+  124   
   125   
   126   reserved126
-  127   get_method_index
+  127   
   128   reserved128,
   129   
   130   
@@ -166,45 +166,13 @@ Runtime native APIs have its IDs.
 
   void (*free_instance)(void* runtime);
 
-=head2 get_opcodes
-
-  int32_t* (*get_opcodes)(void* runtime);
-
 =head2 get_basic_types_length
 
   int32_t (*get_basic_types_length)(void* runtime);
   
-=head2 get_method_return_basic_type
-
-  void* (*get_method_return_basic_type)(void* runtime, void* method);
-  
-=head2 get_method_return_type_dimension
-
-  int32_t (*get_method_return_type_dimension)(void* runtime, void* method);
-  
-=head2 get_method_return_type_flag
-
-  int32_t (*get_method_return_type_flag)(void* runtime, void* method);
-  
-=head2 get_method_current_basic_type
-
-  void* (*get_method_current_basic_type)(void* runtime, void* method);
-  
 =head2 get_basic_type_by_id
 
   void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
-  
-=head2 get_method_by_index
-
-  void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
-  
-=head2 get_method_by_name
-
-  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
-  
-=head2 get_method_index
-
-  int32_t (*get_method_index)(void* runtime, void* method);
   
 =head2 get_basic_type_by_name
 

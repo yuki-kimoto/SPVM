@@ -19,6 +19,37 @@
   [Incompatibe Changes]
     * The following runtime native APIs were removed.
 
+      -  const char* (*get_method_name)(void* runtime, void* method);
+      -  int32_t (*get_method_is_class_method)(void* runtime, void* method);
+      -  int32_t (*get_method_is_anon)(void* runtime, void* method);
+      -  int32_t (*get_method_is_native)(void* runtime, void* method);
+      -  int32_t (*get_method_is_precompile)(void* runtime, void* method);
+      -  int32_t (*get_method_byte_vars_width)(void* runtime, void* method);
+      -  int32_t (*get_method_short_vars_width)(void* runtime, void* method);
+      -  int32_t (*get_method_int_vars_width)(void* runtime, void* method);
+      -  int32_t (*get_method_long_vars_width)(void* runtime, void* method);
+      -  int32_t (*get_method_float_vars_width)(void* runtime, void* method);
+      -  int32_t (*get_method_double_vars_width)(void* runtime, void* method);
+      -  int32_t (*get_method_object_vars_width)(void* runtime, void* method);
+      -  int32_t (*get_method_ref_vars_width)(void* runtime, void* method);
+      -  int32_t (*get_method_mortal_stack_length)(void* runtime, void* method);
+      -  int32_t (*get_method_opcodes_length)(void* runtime, void* method);
+      -  int32_t (*get_method_args_length)(void* runtime, void* method);
+      -  int32_t (*get_method_required_args_length)(void* runtime, void* method);
+      -  int32_t (*get_method_is_enum)(void* runtime, void* method);
+      -  void* (*get_method_return_basic_type)(void* runtime, void* method);
+      -  int32_t (*get_method_return_type_dimension)(void* runtime, void* method);
+      -  int32_t (*get_method_return_type_flag)(void* runtime, void* method);
+      -  void* (*get_method_current_basic_type)(void* runtime, void* method);
+      -  void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
+      -  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
+      -  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
+      -  int32_t (*get_method_index)(void* runtime, void* method);
+      -  void* (*get_native_method_address)(void* runtime, void* method);
+      -  void (*set_native_method_address)(void* runtime, void* method, void* address);
+      -  void* (*get_precompile_method_address)(SPVM_ENV*, void* method);
+      -  void (*set_precompile_method_address)(void* runtime, void* method, void* address);
+         
       -  const char* (*get_field_name)(void* runtime, void* field);
       -  void* (*get_field_basic_type)(void* runtime, void* field);
       -  int32_t (*get_field_type_dimension)(void* runtime, void* field);

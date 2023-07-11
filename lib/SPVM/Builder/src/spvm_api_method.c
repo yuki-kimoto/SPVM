@@ -38,6 +38,10 @@ SPVM_API_METHOD* SPVM_API_METHOD_new_api() {
     SPVM_API_METHOD_get_object_vars_width,
     SPVM_API_METHOD_get_ref_vars_width,
     SPVM_API_METHOD_get_mortal_stack_length,
+    SPVM_API_METHOD_get_native_address,
+    SPVM_API_METHOD_set_native_address,
+    SPVM_API_METHOD_get_precompile_address,
+    SPVM_API_METHOD_set_precompile_address,
   };
   
   SPVM_API_METHOD* native_apis = calloc(1, sizeof(native_apis_init));
