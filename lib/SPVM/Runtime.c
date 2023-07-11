@@ -248,7 +248,7 @@ int32_t SPVM__Runtime__get_basic_type_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_basic_type_names = env->new_string_array(env, stack, basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     void* basic_type = env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
-    const char* basic_type_name = env->api->runtime->get_basic_type_name(runtime, basic_type);
+    const char* basic_type_name = env->api->basic_type->get_name(runtime, basic_type);
     void* obj_basic_type_name = env->new_string_nolen(env, stack, basic_type_name);
     env->set_elem_object(env, stack, obj_basic_type_names, basic_type_id, obj_basic_type_name);
   }
@@ -276,7 +276,7 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_module_file = NULL;
   if (basic_type) {
-    const char* module_dir = env->api->runtime->get_basic_type_module_dir(runtime, basic_type);
+    const char* module_dir = env->api->basic_type->get_module_dir(runtime, basic_type);
     const char* module_dir_sep;
     if (module_dir) {
       module_dir_sep = "/";
@@ -285,7 +285,7 @@ int32_t SPVM__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
       module_dir_sep = "";
       module_dir = "";
     }
-    const char* module_rel_file = env->api->runtime->get_basic_type_module_rel_file(runtime, basic_type);
+    const char* module_rel_file = env->api->basic_type->get_module_rel_file(runtime, basic_type);
     
     int32_t module_file_length = strlen(module_dir) + strlen(module_dir_sep) + strlen(module_rel_file);
     obj_module_file = env->new_string(env, stack, NULL, module_file_length);
@@ -312,11 +312,11 @@ int32_t SPVM__Runtime__get_basic_type_parent_name(SPVM_ENV* env, SPVM_VALUE* sta
   void* runtime = env->get_pointer(env, stack, obj_self);
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  void* parent_basic_type = env->api->runtime->get_basic_type_parent(runtime, basic_type);
+  void* parent_basic_type = env->api->basic_type->get_parent(runtime, basic_type);
   
   void* obj_parent_basic_type_name = NULL;
   if (parent_basic_type) {
-    const char* parent_basic_type_name = env->api->runtime->get_basic_type_name(runtime, parent_basic_type);
+    const char* parent_basic_type_name = env->api->basic_type->get_name(runtime, parent_basic_type);
     obj_parent_basic_type_name = env->new_string_nolen(env, stack, parent_basic_type_name);
   }
   
@@ -337,7 +337,7 @@ int32_t SPVM__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_
   void* runtime = env->get_pointer(env, stack, obj_self);
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  int32_t methods_length = env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
+  int32_t methods_length = env->api->basic_type->get_methods_length(runtime, basic_type);
   
   int32_t anon_basic_types_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
@@ -355,7 +355,7 @@ int32_t SPVM__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_
     int32_t is_anon_method = env->api->runtime->get_method_is_anon(runtime, method);
     if (is_anon_method) {
       void* anon_basic_type = env->api->runtime->get_method_current_basic_type(runtime, method);
-      const char* anon_basic_type_name = env->api->runtime->get_basic_type_name(runtime, anon_basic_type);
+      const char* anon_basic_type_name = env->api->basic_type->get_name(runtime, anon_basic_type);
       void* obj_anon_basic_type_name = env->new_string_nolen(env, stack, anon_basic_type_name);
       env->set_elem_object(env, stack, obj_anon_basic_type_names, anon_basic_type_id, obj_anon_basic_type_name);
       anon_basic_type_id++;
@@ -383,7 +383,7 @@ int32_t SPVM__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  int32_t methods_length = env->api->runtime->get_basic_type_methods_length(runtime, basic_type);
+  int32_t methods_length = env->api->basic_type->get_methods_length(runtime, basic_type);
   
   int32_t match_methodes_length = 0;
   for (int32_t method_index = 0; method_index < methods_length; method_index++) {
