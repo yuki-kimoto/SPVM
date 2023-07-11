@@ -16,6 +16,10 @@
       -  void (*build_precompile_method_source)(void* runtime, void* string_buffer, const char* module_name, const char* method_name);
       +  void (*build_precompile_module_source)(void* runtime, void* string_buffer, void* module_basic_type);
       +  void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
+
+    * The method native APIs were changed.
+      -  void* (*get_opcode)(void* runtime, void* method, int32_t opcode_index);
+      +  void* (*get_opcode_by_index)(void* runtime, void* method, int32_t opcode_index);
     
 0.989021 2023-07-11
   [New Features]

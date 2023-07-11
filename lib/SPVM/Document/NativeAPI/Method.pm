@@ -20,117 +20,245 @@ The C<method> is got by the L<get_method_by_index|SPVM::Document::NativeAPI::Bas
 
   const void* (*get_name)(void* runtime, void* method);
 
+Returns the name of the method.
+
 =head2 get_index
 
   int32_t (*get_index)(void* runtime, void* method);
+
+Returns the index of the method.
 
 =head2 get_return_basic_type
 
   void* (*get_return_basic_type)(void* runtime, void* method);
 
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> object of the return value of the method.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_return_type_dimension
 
   int32_t (*get_return_type_dimension)(void* runtime, void* method);
+
+Returns the type dimention of the return value of the method.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_return_type_flag
 
   int32_t (*get_return_type_flag)(void* runtime, void* method);
 
+Returns the type flag of the return value of the method.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_arg_by_index
 
   void* (*get_arg_by_index)(void* runtime, void* method, int32_t arg_index);
+
+Gets an L<argument|SPVM::Document::NativeAPI::Argument> object by an argument index, and returns it.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_args_length
 
   int32_t (*get_args_length)(void* runtime, void* method);
 
+Returns the length of the arguments of the method.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_required_args_length
 
   int32_t (*get_required_args_length)(void* runtime, void* method);
+
+Returns the length of the required arguments of the method.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_current_basic_type
 
   void* (*get_current_basic_type)(void* runtime, void* method);
 
-=head2 get_opcode
+Returns the current L<basic type|SPVM::Document::NativeAPI::BasicType> object of the method.
 
-  void* (*get_opcode)(void* runtime, void* method, int32_t opcode_index);
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
+=head2 get_opcode_by_index
+
+  void* (*get_opcode_by_index)(void* runtime, void* method, int32_t opcode_index);
+
+Gets an operation code by a operation code index, and returns it.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_opcodes_length
 
   int32_t (*get_opcodes_length)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 is_class_method
 
   int32_t (*is_class_method)(void* runtime, void* method);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 is_anon
 
   int32_t (*is_anon)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 is_native
 
   int32_t (*is_native)(void* runtime, void* method);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 is_precompile
 
   int32_t (*is_precompile)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 is_enum
 
   int32_t (*is_enum)(void* runtime, void* method);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_byte_vars_width
 
   int32_t (*get_byte_vars_width)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_short_vars_width
 
   int32_t (*get_short_vars_width)(void* runtime, void* method);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_int_vars_width
 
   int32_t (*get_int_vars_width)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_long_vars_width
 
   int32_t (*get_long_vars_width)(void* runtime, void* method);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_float_vars_width
 
   int32_t (*get_float_vars_width)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_double_vars_width
 
   int32_t (*get_double_vars_width)(void* runtime, void* method);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_object_vars_width
 
   int32_t (*get_object_vars_width)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_ref_vars_width
 
   int32_t (*get_ref_vars_width)(void* runtime, void* method);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 get_mortal_stack_length
 
   int32_t (*get_mortal_stack_length)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_native_address
 
   void* (*get_native_address)(void* runtime, void* method);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head2 set_native_address
 
   void (*set_native_address)(void* runtime, void* method, void* address);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 get_precompile_address
 
   void* (*get_precompile_address)(void* runtime, void* method);
 
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
+
 =head2 set_precompile_address
 
   void (*set_precompile_address)(void* runtime, void* method, void* address);
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<method> argument is a method object.
 
 =head1 Native API IDs
 
@@ -143,7 +271,7 @@ The C<method> is got by the L<get_method_by_index|SPVM::Document::NativeAPI::Bas
   6 get_args_length
   7 get_required_args_length
   8 get_current_basic_type
-  9 get_opcode
+  9 get_opcode_by_index
   10 get_opcodes_length
   11 is_class_method
   12 is_anon

@@ -22,7 +22,7 @@ SPVM_API_METHOD* SPVM_API_METHOD_new_api() {
     SPVM_API_METHOD_get_args_length,
     SPVM_API_METHOD_get_required_args_length,
     SPVM_API_METHOD_get_current_basic_type,
-    SPVM_API_METHOD_get_opcode,
+    SPVM_API_METHOD_get_opcode_by_index,
     SPVM_API_METHOD_get_opcodes_length,
     SPVM_API_METHOD_is_class_method,
     SPVM_API_METHOD_is_anon,
@@ -111,7 +111,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_METHOD_get_current_basic_type(SPVM_RUNTIME* ru
   return method->current_basic_type;
 }
 
-SPVM_OPCODE* SPVM_API_METHOD_get_opcode(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t opcode_index) {
+SPVM_OPCODE* SPVM_API_METHOD_get_opcode_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t opcode_index) {
   
   if (opcode_index < 0) {
     return NULL;

@@ -450,7 +450,7 @@ struct spvm_api_method {
   int32_t (*get_args_length)(void* runtime, void* method);
   int32_t (*get_required_args_length)(void* runtime, void* method);
   void* (*get_current_basic_type)(void* runtime, void* method);
-  void* (*get_opcode)(void* runtime, void* method, int32_t opcode_index);
+  void* (*get_opcode_by_index)(void* runtime, void* method, int32_t opcode_index);
   int32_t (*get_opcodes_length)(void* runtime, void* method);
   int32_t (*is_class_method)(void* runtime, void* method);
   int32_t (*is_anon)(void* runtime, void* method);
