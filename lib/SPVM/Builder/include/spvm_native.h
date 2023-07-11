@@ -396,6 +396,9 @@ struct spvm_api_runtime {
   int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
   void (*build_precompile_module_source)(void* runtime, void* string_buffer, const char* module_name);
   void (*build_precompile_method_source)(void* runtime, void* string_buffer, const char* module_name, const char* method_name);
+  int32_t (*get_object_header_size)(void* runtime);
+  int32_t (*get_object_ref_count_offset)(void* runtime);
+  int32_t (*get_object_length_offset)(void* runtime);
 };
 
 struct spvm_api_basic_type {

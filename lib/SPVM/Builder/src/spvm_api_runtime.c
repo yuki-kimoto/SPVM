@@ -109,6 +109,9 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_can_assign,
     SPVM_API_RUNTIME_build_precompile_module_source,
     SPVM_API_RUNTIME_build_precompile_method_source,
+    SPVM_API_RUNTIME_get_object_header_size,
+    SPVM_API_RUNTIME_get_object_ref_count_offset,
+    SPVM_API_RUNTIME_get_object_length_offset,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
