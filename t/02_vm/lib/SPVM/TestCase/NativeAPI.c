@@ -1487,7 +1487,7 @@ int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_V
 int32_t SPVM__TestCase__NativeAPI__native_call_method_raw(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
-  void* method = env->api->runtime->get_method_by_name(env->runtime, basic_type, "my_value");
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "my_value");
   if (!method) {
     return 1;
   }
@@ -1516,7 +1516,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   int32_t error = 0;
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "Point");
-  void* method = env->api->runtime->get_method_by_name(env->runtime, basic_type, "new");
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "new");
   if (!method) {
     return 1;
   }
@@ -2269,32 +2269,12 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved40 != &env_array[40]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved41 != &env_array[41]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved42 != &env_array[42]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_name != &env_array[43]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved44 != &env_array[44]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved45 != &env_array[45]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_is_class_method != &env_array[46]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_is_anon != &env_array[47]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_is_native != &env_array[48]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_is_precompile != &env_array[49]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_byte_vars_width != &env_array[50]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_short_vars_width != &env_array[51]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_int_vars_width != &env_array[52]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_long_vars_width != &env_array[53]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_float_vars_width != &env_array[54]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_double_vars_width != &env_array[55]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_object_vars_width != &env_array[56]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_ref_vars_width != &env_array[57]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_mortal_stack_length != &env_array[58]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved59 != &env_array[59]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_opcodes_length != &env_array[60]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved61 != &env_array[61]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_args_length != &env_array[62]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved63 != &env_array[63]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved64 != &env_array[64]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_native_method_address != &env_array[65]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->set_native_method_address != &env_array[66]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_precompile_method_address != &env_array[67]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->set_precompile_method_address != &env_array[68]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->object_header_size != &env_array[69]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved70 != &env_array[70]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->object_ref_count_offset != &env_array[71]) { stack[0].ival = 0; return 0; }
@@ -2305,18 +2285,12 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->reserved76 != &env_array[76]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved77 != &env_array[77]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved78 != &env_array[78]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_required_args_length != &env_array[79]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved80 != &env_array[80]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_is_enum != &env_array[81]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved82 != &env_array[82]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->is_object_type != &env_array[83]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved84 != &env_array[84]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->reserved85 != &env_array[85]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->can_assign != &env_array[86]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_return_basic_type != &env_array[106]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_return_type_dimension != &env_array[107]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_return_type_flag != &env_array[108]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->get_method_current_basic_type != &env_array[112]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");
@@ -2877,10 +2851,10 @@ int32_t SPVM__TestCase__NativeAPI__runtime_get_method_is_enum(SPVM_ENV* env, SPV
   stack[0].ival = 1;
   
   void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
-  void* method = env->api->runtime->get_method_by_name(env->runtime, basic_type, "VALUE0");
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "VALUE0");
   assert(method);
   
-  int32_t is_enum = env->api->runtime->get_method_is_enum(env->runtime, method);
+  int32_t is_enum = env->api->method->is_enum(env->runtime, method);
   if (!is_enum) {
       stack[0].ival = 0;
   }

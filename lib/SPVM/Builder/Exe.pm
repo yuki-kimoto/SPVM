@@ -527,8 +527,8 @@ EOS
   $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* precompile_address) {
 void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, module_name);
-void* method = env->api->runtime->get_method_by_name(env->runtime, module_basic_type, method_name);
-env->api->runtime->set_precompile_method_address(env->runtime, method, precompile_address);
+void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, method_name);
+env->api->method->set_precompile_address(env->runtime, method, precompile_address);
 }
 EOS
   
@@ -551,8 +551,8 @@ EOS
   $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* native_address) {
   void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, module_name);
-  void* method = env->api->runtime->get_method_by_name(env->runtime, module_basic_type, method_name);
-  env->api->runtime->set_native_method_address(env->runtime, method, native_address);
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, method_name);
+  env->api->method->set_native_address(env->runtime, method, native_address);
 }
 EOS
 
@@ -658,7 +658,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     
     // Class
     void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, module_name);
-    void* method = env->api->runtime->get_method_by_name(env->runtime, module_basic_type, "main");
+    void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, "main");
     
     if (!method) {
       fprintf(stderr, "The class method %s->main is not defined\\n", module_name);
