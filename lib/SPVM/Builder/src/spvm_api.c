@@ -699,7 +699,7 @@ void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
   *error = 0;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, basic_type_name);
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type, method_name);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
   if (!method) {
     *error = env->die(env, stack, "The %s class method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
     return;
@@ -716,7 +716,7 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   *error = 0;
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, basic_type_name);
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type, method_name);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
   if (!method) {
     *error = env->die(env, stack, "The %s instance method in the %s class is not found", method_name, basic_type_name, func_name, file, line);
     return;
@@ -3086,7 +3086,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           }
           
           stack[0].oval = object;
-          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_RUNTIME_get_method_by_index(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
+          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
           
           int32_t error = SPVM_API_call_method_raw(env, stack, destructor_method, items);
           
@@ -3254,7 +3254,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_method_by_index(SPVM_ENV* env, SPVM_VALUE* sta
     return NULL;
   }
   
-  SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_name(env->runtime, basic_type, method_name);
+  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
   
   return method;
 }
@@ -3307,7 +3307,7 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* sta
     }
     
     // Method
-    method = SPVM_API_RUNTIME_get_method_by_name(runtime, parent_basic_type, method_name);
+    method = SPVM_API_BASIC_TYPE_get_method_by_name(runtime, parent_basic_type, method_name);
     if (method) {
       // Instance method
       if (method->is_class_method) {
@@ -3832,7 +3832,7 @@ int32_t SPVM_API_call_init_blocks(SPVM_ENV* env, SPVM_VALUE* stack) {
   for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
     if (basic_type->init_method) {
-      SPVM_RUNTIME_METHOD* init_method = SPVM_API_RUNTIME_get_method_by_index(env->runtime, basic_type, basic_type->init_method->index);
+      SPVM_RUNTIME_METHOD* init_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, basic_type, basic_type->init_method->index);
       int32_t items = 0;
       error = env->call_method_raw(env, stack, init_method, items);
       if (error) { break; }
@@ -3983,7 +3983,7 @@ int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
       has_interface = 0;
     }
     else {
-      has_interface = SPVM_API_RUNTIME_has_interface(runtime, object_basic_type, interface_basic_type);
+      has_interface = SPVM_API_BASIC_TYPE_has_interface(runtime, object_basic_type, interface_basic_type);
     }
   }
   

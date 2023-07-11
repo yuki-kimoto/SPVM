@@ -31,6 +31,8 @@
 #include "spvm_runtime_arg.h"
 #include "spvm_precompile.h"
 #include "spvm_api.h"
+#include "spvm_runtime_basic_type.h"
+#include "spvm_api_basic_type.h"
 
 
 
@@ -492,175 +494,6 @@ int32_t SPVM_API_RUNTIME_get_field_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME
   return  field->type_flag;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t method_index) {
-  
-  if (method_index < 0) {
-    return NULL;
-  }
-  
-  if (method_index >= basic_type->methods_length) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_METHOD* method = &basic_type->methods[method_index];
-  
-  return method;
-}
-
-SPVM_RUNTIME_METHOD* SPVM_API_RUNTIME_get_method_by_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, const char* method_name) {
-  
-  SPVM_RUNTIME_METHOD* found_method = NULL;
-  if (basic_type->methods_length > 0) {
-    // Performe binary searching because methods are sorted by the names
-    int32_t cur_min_index = 0;
-    int32_t cur_max_index = basic_type->methods_length - 1;
-    
-    while (1) {
-      if (cur_max_index < cur_min_index) {
-        break;
-      }
-      
-      int32_t cur_half_index = cur_min_index +(cur_max_index - cur_min_index) / 2;
-      
-      SPVM_RUNTIME_METHOD* method = SPVM_API_RUNTIME_get_method_by_index(runtime, basic_type, cur_half_index);
-      const char* cur_half_method_name = method->name;
-      
-      int32_t cmp_result = strcmp(method_name, cur_half_method_name);
-      
-      if (cmp_result > 0) {
-        cur_min_index = cur_half_index + 1;
-      }
-      else if (cmp_result < 0) {
-        cur_max_index = cur_half_index - 1;
-      }
-      else {
-        found_method = method;
-        break;
-      }
-    }
-  }
-  
-  return found_method;
-}
-
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_current_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->current_basic_type;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_opcodes_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  
-  return method->opcodes_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->index;
-}
-
-const char* SPVM_API_RUNTIME_get_method_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->name;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->is_anon;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_is_native(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->is_native;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_is_precompile(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->is_precompile;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_is_enum(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->is_enum;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_args_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->args_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_required_args_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->required_args_length;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->is_class_method;
-}
-
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_method_return_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->return_basic_type;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_return_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->return_type_dimension;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_return_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->return_type_flag;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_byte_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  int32_t byte_vars_width = method->byte_vars_width;
-  
-  return byte_vars_width;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_short_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->short_vars_width;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_int_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->int_vars_width;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_long_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->long_vars_width;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_float_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->float_vars_width;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_double_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->double_vars_width;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_object_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->object_vars_width;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_ref_vars_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->ref_vars_width;
-}
-
-int32_t SPVM_API_RUNTIME_get_method_mortal_stack_length(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-  
-  return method->mortal_stack_length;
-}
-
 SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index) {
   
   if (arg_index < 0) {
@@ -709,62 +542,6 @@ void* SPVM_API_RUNTIME_get_precompile_method_address(SPVM_RUNTIME* runtime, SPVM
 void SPVM_API_RUNTIME_set_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
 
   method->precompile_address = address;
-}
-
-int32_t SPVM_API_RUNTIME_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
-
-  if (!(basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
-    return 0;
-  }
-  
-  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
-    return 0;
-  }
-  
-  SPVM_RUNTIME_METHOD* method_interface = interface_basic_type->required_method;
-  
-  const char* method_interface_name = method_interface->name;
-  
-  SPVM_RUNTIME_METHOD* found_method = SPVM_API_RUNTIME_get_method_by_name(runtime, basic_type, method_interface_name);
-  if (found_method) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
-}
-
-int32_t SPVM_API_RUNTIME_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* super_basic_type, SPVM_RUNTIME_BASIC_TYPE* child_basic_type) {
-
-  int32_t is_super_class_basic_type = 0;
-  
-  if (!(super_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
-    return 0;
-  }
-  
-  if (!(child_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
-    return 0;
-  }
-  
-  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = child_basic_type->parent;
-  
-  while (1) {
-    if (parent_basic_type) {
-      if (parent_basic_type->id == super_basic_type->id) {
-        is_super_class_basic_type = 1;
-        break;
-      }
-      else {
-        parent_basic_type = parent_basic_type->parent;
-      }
-    }
-    else {
-      is_super_class_basic_type = 0;
-      break;
-    }
-  }
-  
-  return is_super_class_basic_type;
 }
 
 int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t flag) {
@@ -821,10 +598,10 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TY
   }
   else if (dist_type_dimension == src_type_dimension) {
     if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-      isa = SPVM_API_RUNTIME_has_interface(runtime, src_basic_type, dist_basic_type);
+      isa = SPVM_API_BASIC_TYPE_has_interface(runtime, src_basic_type, dist_basic_type);
     }
     else if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-      isa = SPVM_API_RUNTIME_is_super_class(runtime, dist_basic_type, src_basic_type);
+      isa = SPVM_API_BASIC_TYPE_is_super_class(runtime, dist_basic_type, src_basic_type);
     }
     else {
       isa = 0;
