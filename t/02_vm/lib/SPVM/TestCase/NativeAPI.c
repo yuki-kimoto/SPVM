@@ -2718,7 +2718,11 @@ int32_t SPVM__TestCase__NativeAPI__precompile_build_methodd_source(SPVM_ENV* env
     // New string buffer
     void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
 
-    env->api->runtime->build_precompile_method_source(env->runtime, string_buffer, "TestCase::NativeAPI", "get_class_var_byte_by_name");
+    void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, "TestCase::NativeAPI");
+    
+    void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, "get_class_var_byte_by_name");
+    
+    env->api->runtime->build_precompile_method_source(env->runtime, string_buffer, method);
     
     const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
     int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
