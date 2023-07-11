@@ -67,10 +67,10 @@ void SPVM_PRECOMPILE_build_module_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   }
   
   // If the basic type has anon methods, the anon methods is merged to this basic type
-  int32_t basic_type_anon_basic_types_length = SPVM_API_RUNTIME_get_basic_type_anon_basic_types_length(runtime, basic_type);
+  int32_t basic_type_anon_basic_types_length = basic_type->anon_basic_types_length;
   if (basic_type_anon_basic_types_length > 0) {
     for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type_anon_basic_types_length; anon_basic_type_index++) {
-      SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = SPVM_API_RUNTIME_get_basic_type_anon_basic_type(runtime, basic_type, anon_basic_type_index);
+      SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = SPVM_API_BASIC_TYPE_get_anon_basic_type_by_index(runtime, basic_type, anon_basic_type_index);
       SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, anon_basic_type->name);
     }
   }
@@ -899,8 +899,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         int32_t cast_basic_type_id = opcode->operand2;
         int32_t cast_type_dimension = opcode->operand3;
         
-        void* cast_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, cast_basic_type_id);
-        const char* cast_basic_type_name = SPVM_API_RUNTIME_get_basic_type_name(runtime, cast_basic_type);
+        SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, cast_basic_type_id);
+        const char* cast_basic_type_name = cast_basic_type->name;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
