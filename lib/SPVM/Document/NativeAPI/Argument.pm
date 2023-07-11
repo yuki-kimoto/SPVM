@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::Argument - Argument Native APIs
 
 =head1 Description
 
-The argument native APIs of L<SPVM> are the APIs to get information of arguments.
+The argument native APIs of L<SPVM> are the APIs to manipulate information of arguments.
 
 =head1 Usage
 

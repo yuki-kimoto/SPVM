@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::BasicType - Basic Type Native APIs
 
 =head1 Description
 
-The basic type native APIs are the APIs to get information of basic types.
+The basic type native APIs are the APIs to manipulate information of basic types.
 
 =head1 Usage
 

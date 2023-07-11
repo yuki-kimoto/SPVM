@@ -2233,64 +2233,16 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
 
   if ((void*)&env->api->runtime->new_instance != &env_array[0]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->free_instance != &env_array[1]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved2 != &env_array[2]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved3 != &env_array[3]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved4 != &env_array[4]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved5 != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved6 != &env_array[6]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved7 != &env_array[7]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved8 != &env_array[8]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved9 != &env_array[9]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved10 != &env_array[10]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved12 != &env_array[12]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved14 != &env_array[14]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved15 != &env_array[15]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved16 != &env_array[16]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved17 != &env_array[17]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved18 != &env_array[18]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved19 != &env_array[19]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved20 != &env_array[20]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved21 != &env_array[21]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved22 != &env_array[22]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved23 != &env_array[23]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved24 != &env_array[24]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved25 != &env_array[25]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved26 != &env_array[26]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved27 != &env_array[27]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved28 != &env_array[28]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved29 != &env_array[29]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved30 != &env_array[30]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved31 != &env_array[31]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved33 != &env_array[33]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved35 != &env_array[35]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved36 != &env_array[36]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved37 != &env_array[37]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved39 != &env_array[39]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved40 != &env_array[40]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved41 != &env_array[41]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved42 != &env_array[42]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved44 != &env_array[44]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved45 != &env_array[45]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved59 != &env_array[59]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved61 != &env_array[61]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved63 != &env_array[63]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved64 != &env_array[64]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->object_header_size != &env_array[69]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved70 != &env_array[70]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->object_ref_count_offset != &env_array[71]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved72 != &env_array[72]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved73 != &env_array[73]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved74 != &env_array[74]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->object_length_offset != &env_array[75]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved76 != &env_array[76]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved77 != &env_array[77]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved78 != &env_array[78]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved80 != &env_array[80]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved82 != &env_array[82]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->is_object_type != &env_array[83]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved84 != &env_array[84]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->reserved85 != &env_array[85]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->can_assign != &env_array[86]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->object_header_size != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->object_ref_count_offset != &env_array[3]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->object_length_offset != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_basic_type_by_id != &env_array[5]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_basic_type_by_name != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_basic_types_length != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->is_object_type != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->can_assign != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->build_precompile_module_source != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->build_precompile_method_source != &env_array[11]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");

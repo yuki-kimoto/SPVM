@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::ClassVariable - Class Variable Native APIs
 
 =head1 Description
 
-The class variable native APIs of L<SPVM> are the APIs to get information of class variables.
+The class variable native APIs of L<SPVM> are the APIs to manipulate information of class variables.
 
 =head1 Usage
 

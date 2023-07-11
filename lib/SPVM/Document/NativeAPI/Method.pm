@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::Method - Method Native APIs
 
 =head1 Description
 
-The method native APIs are the APIs to get information of methods.
+The method native APIs are the APIs to manipulate information of methods.
 
 =head1 Usage
 

@@ -94,146 +94,19 @@
 
 
 
-
-
 SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
   
   void* env_runtime_init[]  = {
     SPVM_API_RUNTIME_new_instance,
     SPVM_API_RUNTIME_free_instance,
-    NULL, // reserved2
-    NULL, // reserved3
-    NULL, // reserved4
-    NULL, // reserved5,
-    NULL, // reserved6
-    NULL, // reserved7,
-    NULL, // reserved8,
-    NULL, // reserved9
-    NULL, // reserved10,
-    NULL,
-    NULL, // reserved12
-    NULL,
-    NULL, // reserved14
-    NULL, // reserved15
-    NULL, // reserve16
-    NULL, // reserved17
-    NULL, // reserved18
-    NULL, // reserved19
-    NULL, // reserved20
-    NULL, // reserved21
-    NULL, // reserved22
-    NULL, // reserved23
-    NULL, // reserved24
-    NULL, // reserved25
-    NULL, // reserved26
-    NULL, // reserved27
-    NULL, // reserved28
-    NULL, // reserved29
-    NULL, // reserved30
-    NULL, // reserved31
-    NULL,
-    NULL, // reserved33,
-    NULL,
-    NULL, // reserved35
-    NULL, // reserved36,
-    NULL, // reserved37,
-    NULL,
-    NULL, // reserved39
-    NULL, // reserved40
-    NULL, // reserved41
-    NULL, // reserved42
-    NULL,
-    NULL, // reserved44,
-    NULL, // reserved45,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL, // reserved59
-    NULL,
-    NULL, // reserved 61
-    NULL,
-    NULL, // reserved63
-    NULL, // reserved64
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL, // reserved69
-    NULL, // reserved70
+    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_size
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
-    NULL, // reserved72
-    NULL, // reserved73
-    NULL, // reserved74
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
-    NULL, // reserved76
-    NULL, // reserved77
-    NULL, // reserved78
-    NULL,
-    NULL, // reserved80
-    NULL,
-    NULL, // reserved82
-    SPVM_API_RUNTIME_is_object_type,
-    NULL, // reserved84
-    NULL, // reserved85
-    SPVM_API_RUNTIME_can_assign,
-    NULL,
-    NULL,
-    NULL,
-    NULL, // reserved90
-    NULL,
-    NULL, // reserved92
-    NULL,
-    NULL, // reserved94
-    NULL,
-    NULL, // reserved96
-    NULL, // reserved97
-    NULL, // reserved98
-    SPVM_API_RUNTIME_get_basic_types_length,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
     SPVM_API_RUNTIME_get_basic_type_by_id,
-    NULL,
-    NULL,
-    NULL, // reserved120,
-    NULL, // reserved121
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL, // reserved126
-    NULL,
-    NULL, // reserved128,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
     SPVM_API_RUNTIME_get_basic_type_by_name,
-    NULL,
+    SPVM_API_RUNTIME_get_basic_types_length,
+    SPVM_API_RUNTIME_is_object_type,
+    SPVM_API_RUNTIME_can_assign,
     SPVM_API_RUNTIME_build_precompile_module_source,
     SPVM_API_RUNTIME_build_precompile_method_source,
   };
@@ -258,11 +131,6 @@ void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
   SPVM_RUNTIME_free(runtime);
 }
 
-int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime) {
-  
-  return runtime->basic_types_length;
-}
-
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_id(SPVM_RUNTIME* runtime, int32_t basic_type_id) {
   
   if (basic_type_id < 0) {
@@ -285,54 +153,9 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_name(SPVM_RUNTIME* r
   return basic_type;
 }
 
-SPVM_RUNTIME_ARG* SPVM_API_RUNTIME_get_arg_by_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t arg_index) {
+int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime) {
   
-  if (arg_index < 0) {
-    return NULL;
-  }
-  
-  if (arg_index >= method->args_length) {
-    return NULL;
-  }
-  
-  SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
-  
-  return arg;
-}
-
-SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_arg_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
-  
-  return arg->basic_type;
-}
-
-int32_t SPVM_API_RUNTIME_get_arg_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
-  
-  return arg->type_dimension;
-}
-
-int32_t SPVM_API_RUNTIME_get_arg_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
-  
-  return arg->type_flag;
-}
-
-void* SPVM_API_RUNTIME_get_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-
-  return method->native_address;
-}
-
-void SPVM_API_RUNTIME_set_native_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
-  
-  method->native_address = address;
-}
-
-void* SPVM_API_RUNTIME_get_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
-
-  return method->precompile_address;
-}
-
-void SPVM_API_RUNTIME_set_precompile_method_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
-
-  method->precompile_address = address;
+  return runtime->basic_types_length;
 }
 
 int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t flag) {
