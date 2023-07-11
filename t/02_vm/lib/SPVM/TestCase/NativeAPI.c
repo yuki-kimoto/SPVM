@@ -121,7 +121,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->weaken != &env_array[102]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->isweak != &env_array[103]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->unweaken != &env_array[104]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->alloc_memory_block_zero != &env_array[105]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_memory_block != &env_array[106]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_memory_blocks_count != &env_array[107]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_type_name_raw != &env_array[108]) { stack[0].ival = 0; return 0; }
@@ -2237,24 +2236,6 @@ int32_t SPVM__TestCase__NativeAPI__new_memory_apis(SPVM_ENV* env, SPVM_VALUE* st
   
   int32_t error = 0;
   
-  {
-    int32_t memory_blocks_count_env_start = env->get_memory_blocks_count(env);
-    
-    void* memory_block = env->alloc_memory_block_zero(env, sizeof(SPVM_ENV));
-    
-    if (!(env->get_memory_blocks_count(env) == memory_blocks_count_env_start + 1)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    
-    env->free_memory_block(env, memory_block);
-    
-    if (!(env->get_memory_blocks_count(env) == memory_blocks_count_env_start)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-  }
-
   {
     int32_t memory_blocks_count_env_start = env->get_memory_blocks_count_env(env);
     

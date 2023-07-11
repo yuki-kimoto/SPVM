@@ -755,14 +755,6 @@ Given the address of an object, returns non-zero if the object is a weak referen
 
 Specifying the address of the object releases the weak reference to the object.
 
-=head2 alloc_memory_block_zero
-
-  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t size);
-
-Creates a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
-
-The count of the memory block that is managed by the environment is incremented by 1.
-
 =head2 free_memory_block
 
   void (*free_memory_block)(SPVM_ENV* env, void* block);
@@ -1473,8 +1465,6 @@ Calls all C<INIT> blocks. If an exception is thrown, returns 1. Otherwise return
 Creates a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
 
 The count of the memory block that is managed by the environment is incremented by 1.
-
-This is the same as L</"alloc_memory_block_zero">. This is more understandable name that memories are managed by the environment.
 
 =head2 free_memory_env
 

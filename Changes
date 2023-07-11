@@ -4,6 +4,7 @@
     
       - int32_t (*has_interface)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* interface_basic_type);
       -  int32_t (*has_interface_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name);
+      -  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t size);
     
     * The following methods in the Env class were renamed.
     

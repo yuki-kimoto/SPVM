@@ -202,7 +202,7 @@ struct spvm_env {
   int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, SPVM_VALUE* stack, void** object);
   void (*unweaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
-  void* (*alloc_memory_block_zero)(SPVM_ENV* env, size_t size);
+  void* r105;
   void (*free_memory_block)(SPVM_ENV* env, void* block);
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
   void* (*get_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
