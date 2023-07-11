@@ -2543,7 +2543,7 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
     SPVM_API_dec_ref_count(env, stack, *cur_excetpion_ptr);
   }
   
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)cur_excetpion_ptr, exception, (intptr_t)env->api->runtime->object_ref_count_offset);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)cur_excetpion_ptr, exception, env->api->runtime->get_object_ref_count_offset(env->runtime));
   
   if (*cur_excetpion_ptr != NULL) {
     (*cur_excetpion_ptr)->ref_count++;
@@ -3018,7 +3018,7 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
   
   void* object_address = &((void**)((intptr_t)array + env->api->runtime->object_header_size))[index];
   
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, object, (intptr_t)env->api->runtime->object_ref_count_offset);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, object, env->api->runtime->get_object_ref_count_offset(env->runtime));
 }
 
 SPVM_OBJECT* SPVM_API_get_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
@@ -3420,7 +3420,7 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   // Get field value
   void* get_field_object_address = (void**)((intptr_t)object + env->api->runtime->object_header_size + field->offset);
 
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value, (intptr_t)env->api->runtime->object_ref_count_offset);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value, env->api->runtime->get_object_ref_count_offset(env->runtime));
 }
 
 void* SPVM_API_new_memory_env(SPVM_ENV* env, size_t size) {
@@ -3718,7 +3718,7 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   assert(class_var->index >= 0 && class_var->index < class_vars_length);
   
   void* get_field_object_address = &class_var->data.oval;
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value, (intptr_t)env->api->runtime->object_ref_count_offset);
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value, env->api->runtime->get_object_ref_count_offset(env->runtime));
 }
 
 SPVM_OBJECT* SPVM_API_new_array_proto_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t length) {

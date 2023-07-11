@@ -173,7 +173,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   }
   
   int32_t object_header_size = (intptr_t)env->api->runtime->object_header_size;
-  int32_t object_ref_count_offset = (intptr_t)env->api->runtime->object_ref_count_offset;
+  int32_t object_ref_count_offset = (intptr_t)env->api->runtime->get_object_ref_count_offset(env->runtime);
   int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);
   
   // Buffer for string convertion
