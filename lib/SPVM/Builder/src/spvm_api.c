@@ -458,7 +458,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
             }
             
-            SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, object_basic_type, field_index);
+            SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_basic_type, field_index);
             
             int32_t field_basic_type_id = field->basic_type->id;
             
@@ -617,7 +617,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
           }
           
-          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, object_basic_type, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_basic_type, field_index);
           
           int32_t field_basic_type_id = field->basic_type->id;
           int32_t field_type_dimension = field->type_dimension;
@@ -2057,7 +2057,7 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
       
       int32_t fields_length = array_basic_type->fields_length;
       
-      SPVM_RUNTIME_FIELD* first_field = SPVM_API_RUNTIME_get_field_by_index(runtime, array_basic_type, 0);
+      SPVM_RUNTIME_FIELD* first_field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, array_basic_type, 0);
       
       int32_t field_basic_type_id = first_field->basic_type->id;
       
@@ -2882,7 +2882,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   const char* basic_type_name = basic_type->name;
   
   int32_t fields_length = basic_type->fields_length;
-  SPVM_RUNTIME_FIELD* field_first = SPVM_API_RUNTIME_get_field_by_index(runtime, basic_type, 0);
+  SPVM_RUNTIME_FIELD* field_first = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, basic_type, 0);
   
   int32_t field_basic_type_id = field_first->basic_type->id;
   
@@ -3110,7 +3110,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         // Free object fields
         int32_t object_fields_length = SPVM_API_RUNTIME_get_basic_type_fields_length(runtime, object_basic_type);
         for (int32_t field_index = 0; field_index < object_fields_length; field_index++) {
-          SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_index(runtime, object_basic_type, field_index);
+          SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_basic_type, field_index);
           
           int32_t field_basic_type_id = field->basic_type->id;
           void* field_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_basic_type_id);
@@ -3215,7 +3215,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return NULL;
   }
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(runtime, object_basic_type, field_name);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_name(runtime, object_basic_type, field_name);
   
   return field;
 }
@@ -3228,7 +3228,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_field_static(SPVM_ENV* env, SPVM_VALUE* stack, 
     return NULL;
   }
   
-  SPVM_RUNTIME_FIELD* field = SPVM_API_RUNTIME_get_field_by_name(env->runtime, basic_type, field_name);
+  SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_name(env->runtime, basic_type, field_name);
   
   return field;
 }
