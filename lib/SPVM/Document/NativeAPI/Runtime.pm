@@ -28,17 +28,17 @@ Creates a new runtime object and returns it.
 
 Frees a runtime object.
 
-=head2 object_header_size
+=head2 get_object_header_size
 
-  void* object_header_size;
+  int32_t (*get_object_header_size)(void* runtime);
 
-=head2 object_ref_count_offset
+=head2 get_object_ref_count_offset
 
-  void* object_ref_count_offset;
+  int32_t (*get_object_ref_count_offset)(void* runtime);
 
-=head2 object_length_offset
+=head2 get_object_length_offset
 
-  void* object_length_offset;
+  int32_t (*get_object_length_offset)(void* runtime);
 
 =head2 get_basic_type_by_id
 
@@ -72,10 +72,9 @@ Frees a runtime object.
 
   0 new_instance
   1 free_instance
-  2 object_header_size
-  3 object_ref_count_offset
-  4 object_length_offset
-  5 get_basic_type_by_id
+  2 get_object_header_size
+  3 get_object_ref_count_offset
+  4 get_object_length_offset
   6 get_basic_type_by_name
   7 get_basic_types_length
   8 is_object_type

@@ -99,9 +99,9 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
   void* env_runtime_init[]  = {
     SPVM_API_RUNTIME_new_instance,
     SPVM_API_RUNTIME_free_instance,
-    (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_size
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
+    SPVM_API_RUNTIME_get_object_header_size,
+    SPVM_API_RUNTIME_get_object_ref_count_offset,
+    SPVM_API_RUNTIME_get_object_length_offset,
     SPVM_API_RUNTIME_get_basic_type_by_id,
     SPVM_API_RUNTIME_get_basic_type_by_name,
     SPVM_API_RUNTIME_get_basic_types_length,
@@ -109,9 +109,6 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_can_assign,
     SPVM_API_RUNTIME_build_precompile_module_source,
     SPVM_API_RUNTIME_build_precompile_method_source,
-    SPVM_API_RUNTIME_get_object_header_size,
-    SPVM_API_RUNTIME_get_object_ref_count_offset,
-    SPVM_API_RUNTIME_get_object_length_offset,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));

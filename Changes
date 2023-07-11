@@ -2,8 +2,16 @@
   [Document Fix]
     * The doc of Native API IDs of the module file native APIs were fixed.
   
-  
-  
+  [Incompatibe Changes]
+    * The runtime native APIs were changed.
+    
+      -  void* object_header_size;
+      -  void* object_ref_count_offset;
+      -  void* object_length_offset;
+      +  int32_t (*get_object_header_size)(void* runtime);
+      +  int32_t (*get_object_ref_count_offset)(void* runtime);
+      +  int32_t (*get_object_length_offset)(void* runtime);  
+    
 0.989021 2023-07-11
   [New Features]
     * The argument native API was added.

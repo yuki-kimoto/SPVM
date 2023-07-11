@@ -65,15 +65,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
   
   SPVM_API_ARG* api_arg = SPVM_API_ARG_new_api();
   
-  // Adjust alignment SPVM_VALUE
-  int32_t object_header_size = sizeof(SPVM_OBJECT);
-  if (object_header_size % sizeof(SPVM_VALUE) != 0) {
-    object_header_size += (sizeof(SPVM_VALUE) - object_header_size % sizeof(SPVM_VALUE));
-  }
-  assert(object_header_size % sizeof(SPVM_VALUE) == 0);
-  
-  api_runtime->object_header_size = (void*)(intptr_t)object_header_size;
-  
   void* env_api_init[]  = {
     api_allocator,
     api_string_buffer,
@@ -91,6 +82,15 @@ SPVM_ENV* SPVM_API_new_env(void) {
   
   // Allocator
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
+
+
+
+
+
+
+
+
+
 
 
 
