@@ -755,14 +755,6 @@ Given the address of an object, returns non-zero if the object is a weak referen
 
 Specifying the address of the object releases the weak reference to the object.
 
-=head2 free_memory_block
-
-  void (*free_memory_block)(SPVM_ENV* env, void* block);
-
-Frees the memory block that is managed by the environment.
-
-The count of the memory block that is managed by the environment is decremented by 1.
-
 =head2 get_memory_blocks_count
 
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
@@ -1474,8 +1466,6 @@ Frees the memory block that is managed by the environment.
 
 The count of the memory block that is managed by the environment is decremented by 1.
 
-This is the same as L</"free_memory_block">. This is more understandable name that memories are managed by the environment.
-
 =head2 get_memory_blocks_count_env
 
   int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
@@ -1933,8 +1923,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   102 weaken
   103 isweak
   104 unweaken
-  105 alloc_memory_block_zero
-  106 free_memory_block
+  105 
+  106 
   107 get_memory_blocks_count
   108 get_type_name_raw
   109 get_type_name

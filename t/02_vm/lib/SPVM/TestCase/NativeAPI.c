@@ -121,7 +121,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->weaken != &env_array[102]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->isweak != &env_array[103]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->unweaken != &env_array[104]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->free_memory_block != &env_array[106]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_memory_blocks_count != &env_array[107]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_type_name_raw != &env_array[108]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_type_name != &env_array[109]) { stack[0].ival = 0; return 0; }

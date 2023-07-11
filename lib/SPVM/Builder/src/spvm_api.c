@@ -203,7 +203,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_isweak,
     SPVM_API_unweaken,
     NULL,
-    SPVM_API_free_memory_env, // env->free_memory_block
+    SPVM_API_free_memory_env,
     SPVM_API_get_memory_blocks_count_env, // env->get_memory_blocks_count
     SPVM_API_get_type_name_raw,
     SPVM_API_get_type_name,
