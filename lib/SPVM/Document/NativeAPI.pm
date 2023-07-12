@@ -176,31 +176,43 @@ Returns the basic type name of the object.
 
 Returns the type dimension of the object.
 
-=head2 isa
+=head2 get_basic_type
 
-  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* cast_basic_type, int32_t cast_type_dimension);
+  void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
 
-Checks if the object C<object> can be assigned to the type given by the basic type C<cast_basic_type> and the type dimension C<cast_type_dimension>.
+Gets a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type name.
 
-If it is ok, returns 1. Otherwise returns 0.
+=head2 get_basic_type_by_name
 
-=head2 elem_isa
+  void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
-  int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
+Gets a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type name.
 
-Checks if the element C<element> can be assigned to the element of the array C<array>.
+If an exception is thrown, C<error_id> is set to non-zero value. Otherwise it is set to 0.
 
-If it is ok, returns 1. Otherwise returns 0.
+=head2 get_basic_type_by_id
+
+  void* (*get_basic_type_by_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+
+Gets a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type ID.
 
 =head2 get_basic_type_id
 
   int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
 
-Gets the basic type ID given the name of the basic type. If it does not exist, a value less than 0 is returned.
+Gets a basic type ID by a basic type name.
 
 Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, stack, "Int");
+
+=head2 get_basic_type_id_by_name
+
+  int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets a basic type ID by a basic type name.
+
+If an exception is thrown, C<error_id> is set to non-zero value. Otherwise it is set to 0.
 
 =head2 get_field_by_index
 
@@ -256,7 +268,7 @@ The same as C<new_object_no_mortal>, and add the created object to the mortal st
 
 Examples:
 
-  void* basic_type = env->get_basic_type(env, "Int");
+  void* basic_type = env->get_basic_type(env, stack, "Int");
   void* object = env->new_object(env, stack, basic_type);
 
 =head2 new_byte_array_no_mortal
@@ -814,6 +826,22 @@ Specifies a scope ID to exit that scope and decrement the object's reference cou
   int32_t (*remove_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id, void* remove_object);
 
 Given a scope ID and an object, delete the specified object from the mortal stack.
+
+=head2 isa
+
+  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* cast_basic_type, int32_t cast_type_dimension);
+
+Checks if the object C<object> can be assigned to the type given by the basic type C<cast_basic_type> and the type dimension C<cast_type_dimension>.
+
+If it is ok, returns 1. Otherwise returns 0.
+
+=head2 elem_isa
+
+  int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
+
+Checks if the element C<element> can be assigned to the element of the array C<array>.
+
+If it is ok, returns 1. Otherwise returns 0.
 
 =head2 is_type
 
@@ -1620,7 +1648,7 @@ The same as L</"new_pointer_no_mortal">, and push the created object to the mort
 
 Examples:
 
-  void* basic_type = env->get_basic_type(env, "MyTime");
+  void* basic_type = env->get_basic_type(env, stack, "MyTime");
   void* pointer = malloc(sizeof (struct tm));
   void* pointer_obj = env->new_pointer(env, stack, basic_type, pointer);
 
@@ -1669,14 +1697,6 @@ If the object is C<NULL>, returns 0.
   void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
 
 The same as the L</"strerror"> function, but return a C<string> object.
-
-=head2 get_basic_type_id_by_name
-
-  int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-Gets the basic_type id by the basic_type name.
-
-If the basic_type is not loaded, The C<error> is set to 1. Otherwise set to 0.
 
 =head2 get_field_static
 
@@ -1831,18 +1851,6 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
 =head2 get_class_var_object_address
 
   void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-
-=head2 get_basic_type
-
-  void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
-
-=head2 get_basic_type_by_name
-
-  void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-=head2 get_basic_type_by_id
-
-  void* (*get_basic_type_by_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
 
 =head1 Native API IDs
 
