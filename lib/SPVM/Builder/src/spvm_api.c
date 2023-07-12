@@ -437,11 +437,6 @@ void SPVM_API_cleanup_env(SPVM_ENV* env, SPVM_VALUE* stack){
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  assert(runtime);
-  
-  // Free exception
-  SPVM_API_set_exception(env, stack, NULL);
-
   // Free objects of class variables
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
