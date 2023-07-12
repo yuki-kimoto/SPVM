@@ -592,7 +592,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   void* runtime = SPVM_BOOTSTRAP_build_runtime(env_api, compiler);
   
-  SPVM_ENV* env = env_api->new_env(env_api);
+  SPVM_ENV* env = env_api->new_env();
   
   env->runtime = runtime;
   

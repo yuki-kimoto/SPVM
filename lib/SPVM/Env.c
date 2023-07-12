@@ -11,7 +11,7 @@ int32_t SPVM__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_runtime = stack[0].oval;
   
-  SPVM_ENV* new_env = env->new_env(env);
+  SPVM_ENV* new_env = env->new_env();
   
   void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", new_env, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
