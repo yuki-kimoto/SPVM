@@ -927,7 +927,7 @@ int32_t SPVM_TYPE_get_items(SPVM_COMPILER* compiler, int32_t basic_type_id, int3
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     assert(basic_type);
     
-    items = basic_type->unmerged_fields->length;
+    items = basic_type->fields->length;
   }
   else {
     items = 1;
@@ -944,9 +944,9 @@ int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     assert(basic_type);
     
-    assert(basic_type->unmerged_fields->length > 0);
+    assert(basic_type->fields->length > 0);
     
-    SPVM_FIELD* mulnum_field = SPVM_LIST_get(basic_type->unmerged_fields, 0);
+    SPVM_FIELD* mulnum_field = SPVM_LIST_get(basic_type->fields, 0);
     
     SPVM_TYPE* mulnum_field_type = mulnum_field->type;
     
