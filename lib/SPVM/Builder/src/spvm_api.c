@@ -249,7 +249,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_dump,
     SPVM_API_get_instance_method_static,
     SPVM_API_get_bool_object_value,
-    SPVM_API_cleanup_env,
+    SPVM_API_destroy_class_vars,
     SPVM_API_make_read_only,
     SPVM_API_is_read_only,
     SPVM_API_is_array,
@@ -432,7 +432,7 @@ int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, in
   return 0;
 }
 
-void SPVM_API_cleanup_env(SPVM_ENV* env, SPVM_VALUE* stack){
+void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;

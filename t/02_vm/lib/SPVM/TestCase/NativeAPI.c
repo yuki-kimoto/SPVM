@@ -164,7 +164,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->dump != &env_array[149]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_instance_method_static != &env_array[150]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_bool_object_value != &env_array[151]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->cleanup_env != &env_array[152]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->destroy_class_vars != &env_array[152]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->make_read_only != &env_array[153]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_read_only != &env_array[154]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_array != &env_array[155]) { stack[0].ival = 0; return 0; }

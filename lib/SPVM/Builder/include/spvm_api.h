@@ -36,7 +36,7 @@ int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack);
 int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name);
 int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_argv);
 int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
-void SPVM_API_cleanup_env(SPVM_ENV* env, SPVM_VALUE* stack);
+void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack);
 
 // Manipulate memory
 void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);

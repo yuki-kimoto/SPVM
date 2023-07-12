@@ -680,7 +680,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   }
   
   // Cleanup global vars
-  env->cleanup_env(env, stack);
+  env->destroy_class_vars(env, stack);
   
   // Free stack
   env->free_stack(env, stack);

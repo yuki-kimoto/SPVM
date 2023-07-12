@@ -5177,7 +5177,7 @@ call_init_methods(...)
 }
 
 SV*
-cleanup_env(...)
+destroy_class_vars(...)
   PPCODE:
 {
   
@@ -5187,7 +5187,7 @@ cleanup_env(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
   
-  env->cleanup_env(env, stack);
+  env->destroy_class_vars(env, stack);
   
   XSRETURN(0);
 }

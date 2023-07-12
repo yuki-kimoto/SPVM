@@ -263,7 +263,7 @@ END {
   $COMPILER = undef;
   $API = undef;
   if ($ENV) {
-    $ENV->cleanup_env($STACK);
+    $ENV->destroy_class_vars($STACK);
   }
   $STACK = undef;
   $ENV = undef;
@@ -271,7 +271,7 @@ END {
   $DYNAMIC_LIB_FILES = undef;
   $BUILDER_API = undef;
   if ($BUILDER_ENV) {
-    $BUILDER_ENV->cleanup_env($BUILDER_STACK);
+    $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
   }
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;

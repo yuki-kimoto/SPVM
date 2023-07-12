@@ -1318,9 +1318,9 @@ Examples:
 
   int32_t bool_value = env->get_bool_object_value(env, stack, bool_object);
 
-=head2 cleanup_env
+=head2 destroy_class_vars
   
-  void (*cleanup_env)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Cleanup gloval variable, such as class variables and the exception variable.
 
@@ -1958,7 +1958,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   149 dump
   150 get_instance_method_static
   151 get_bool_object_value
-  152 cleanup_env
+  152 destroy_class_vars
   153 make_read_only
   154 is_read_only
   155 is_array

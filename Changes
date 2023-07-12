@@ -32,7 +32,7 @@
       +  int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
 
       -  void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
-      +  void (*cleanup_env)(SPVM_ENV* env, SPVM_VALUE* stack);
+      +  void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
 
       -  void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
       +  void* (*new_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
