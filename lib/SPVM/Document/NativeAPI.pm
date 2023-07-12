@@ -124,9 +124,9 @@ Examples:
 
   void* method = env->get_instance_method(env, object, "get");
 
-=head2 new_object_raw
+=head2 new_object_no_mortal
 
-  void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
+  void* (*new_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
 
 Creates a new object with a basic type. The basic type must be the correct base type ID return by the L</"get_basic_type_id"> Native API.
 
@@ -134,16 +134,16 @@ Creates a new object with a basic type. The basic type must be the correct base 
 
   void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
 
-The same as C<new_object_raw>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_raw>.
+The same as C<new_object_no_mortal>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_no_mortal>.
 
 Examples:
 
   void* basic_type = env->get_basic_type(env, "Int");
   void* object = env->new_object(env, stack, basic_type);
 
-=head2 new_byte_array_raw
+=head2 new_byte_array_no_mortal
 
-  void* (*new_byte_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+  void* (*new_byte_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
 Creates a new byte[] type array by specifying the length.
 
@@ -151,15 +151,15 @@ Creates a new byte[] type array by specifying the length.
 
   void* (*new_byte_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-The same as C<new_byte_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_byte_array_raw>.
+The same as C<new_byte_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_byte_array_no_mortal>.
 
 Examples:
 
   void* byte_array = env->new_byte_array(env, stack, 100);
 
-=head2 new_short_array_raw
+=head2 new_short_array_no_mortal
 
-  void* (*new_short_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+  void* (*new_short_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
 Creates a new short[] type array by specifying the length.
 
@@ -167,15 +167,15 @@ Creates a new short[] type array by specifying the length.
 
   void* (*new_short_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-The same as C<new_short_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_short_array_raw>.
+The same as C<new_short_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_short_array_no_mortal>.
 
 Examples:
 
   void* short_array = env->new_short_array(env, stack, 100);
 
-=head2 new_int_array_raw
+=head2 new_int_array_no_mortal
 
-  void* (*new_int_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+  void* (*new_int_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
 Creates a new int[] type array by specifying the length.
 
@@ -183,15 +183,15 @@ Creates a new int[] type array by specifying the length.
 
   void* (*new_int_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-The same as C<new_int_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_int_array_raw>.
+The same as C<new_int_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_int_array_no_mortal>.
 
 Examples:
 
   void* int_array = env->new_int_array(env, stack, 100);
 
-=head2 new_long_array_raw
+=head2 new_long_array_no_mortal
 
-  void* (*new_long_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+  void* (*new_long_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
 Creates a new long[] type array by specifying the length.
 
@@ -199,15 +199,15 @@ Creates a new long[] type array by specifying the length.
 
   void* (*new_long_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-The same as C<new_long_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_long_array_raw>.
+The same as C<new_long_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_long_array_no_mortal>.
 
 Examples:
 
   void* long_array = env->new_long_array(env, stack, 100);
 
-=head2 new_float_array_raw
+=head2 new_float_array_no_mortal
 
-  void* (*new_float_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+  void* (*new_float_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
 Creates a new float[] type array by specifying the length.
 
@@ -215,15 +215,15 @@ Creates a new float[] type array by specifying the length.
 
   void* (*new_float_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-The same as C<new_float_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_float_array_raw>.
+The same as C<new_float_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_float_array_no_mortal>.
 
 Examples:
 
   void* float_array = env->new_float_array(env, stack, 100);
 
-=head2 new_double_array_raw
+=head2 new_double_array_no_mortal
 
-  void* (*new_double_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+  void* (*new_double_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
 Creates a new double[] type array by specifying the length.
 
@@ -231,15 +231,15 @@ Creates a new double[] type array by specifying the length.
 
   void* (*new_double_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-The same as C<new_double_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_double_array_raw>.
+The same as C<new_double_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_double_array_no_mortal>.
 
 Examples:
 
   void* double_array = env->new_double_array(env, stack, 100);
 
-=head2 new_object_array_raw
+=head2 new_object_array_no_mortal
 
-  void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+  void* (*new_object_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
 Creates a new object type array by specifying the basic type and the array length. The basic type must be the correct basic type got by the L</"get_basic_type"> Native API.
 
@@ -247,24 +247,24 @@ Creates a new object type array by specifying the basic type and the array lengt
 
   void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
-The same as C<new_object_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_raw>.
+The same as C<new_object_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_no_mortal>.
 
 Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* object_array = env->new_object_array(env, stack, basic_type_id, 100);
 
-=head2 new_muldim_array_raw
+=head2 new_muldim_array_no_mortal
 
-  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);
+  void* (*new_muldim_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);
 
 Creates a new multi-dimensional array by specifying the basic type and the type dimension, and the array length. The basic type must be the correct basic type got bu the L</"get_basic_type_id"> Native API. the type dimension of the element must be less than or equals to 255.
 
 =head2 new_muldim_array
 
-  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);
+  void* (*new_muldim_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);
 
-The same as C<new_muldim_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_raw>.
+The same as C<new_muldim_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_no_mortal>.
 
 Examples:
 
@@ -272,9 +272,9 @@ Examples:
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* multi_array = env->new_muldim_array(env, stack, basic_type_id, 2, 100);
 
-=head2 new_mulnum_array_raw
+=head2 new_mulnum_array_no_mortal
 
-  void* (*new_mulnum_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+  void* (*new_mulnum_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
 Creates a new multi-numeric array by specifying the basic type and the array length. The basic type must be the correct basic type got by the L</"basic_type_id"> Native API.
 
@@ -282,16 +282,16 @@ Creates a new multi-numeric array by specifying the basic type and the array len
 
   void* (*new_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
 
-The same as C<new_mulnum_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_raw>.
+The same as C<new_mulnum_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_no_mortal>.
 
 Examples:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Complex_2d");
   void* value_array = env->new_mulnum_array(env, stack, basic_type_id, 100);
 
-=head2 new_string_nolen_raw
+=head2 new_string_nolen_no_mortal
 
-  void* (*new_string_nolen_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
+  void* (*new_string_nolen_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
 
 Creates a new string object by specifying C language char* type value. this value must end with "\0".
 
@@ -299,15 +299,15 @@ Creates a new string object by specifying C language char* type value. this valu
 
   void* (*new_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
 
-The same as C<new_string_nolen_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<new_string_nolen_raw>.
+The same as C<new_string_nolen_no_mortal>, and push the created object to the mortal stack. Use this function in normal use instead of C<new_string_nolen_no_mortal>.
 
 Examples:
 
   void* str_obj = env->new_string_nolen(env, stack, "Hello World");
 
-=head2 new_string_raw
+=head2 new_string_no_mortal
 
-  void* (*new_string_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
+  void* (*new_string_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
 
 Creates a new string object with the bytes and the length.
 
@@ -317,15 +317,15 @@ If the length of bytes is lower than the specified length or the bytes is NULL, 
 
   void* (*new_string)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
 
-The same as C<new_string_raw>, and push the created object to the mortal stack. Usually use this function instead of C<new_string_raw>.
+The same as C<new_string_no_mortal>, and push the created object to the mortal stack. Usually use this function instead of C<new_string_no_mortal>.
 
 Examples:
 
   void* str_obj = env->new_string(env, stack, "Hello \0World", 11);
 
-=head2 concat_raw
+=head2 concat_no_mortal
 
-  void* (*concat_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
+  void* (*concat_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
 
 Concats two strings.
 
@@ -333,11 +333,11 @@ Concats two strings.
 
   void* (*concat)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
 
-The same as C<concat_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<concat_raw>.
+The same as C<concat_no_mortal>, and push the created object to the mortal stack. Use this function in normal use instead of C<concat_no_mortal>.
 
-=head2 new_stack_trace_raw
+=head2 new_stack_trace_no_mortal
 
-  void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+  void* (*new_stack_trace_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
 
 Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
 
@@ -345,7 +345,7 @@ Creates a string object that represents a stack trace by adding the file and lin
 
   void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
 
-The same as L</"new_stack_trace_raw">, and push the created object to the mortal stack.
+The same as L</"new_stack_trace_no_mortal">, and push the created object to the mortal stack.
 
 =head2 length
 
@@ -627,9 +627,9 @@ Examples:
 
 If you specify a pointer object and a C language pointer, the C language pointer is saved in the internal data of the pointer type object.
 
-=head2 call_method_raw
+=head2 call_method_no_mortal
 
-  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
+  int32_t (*call_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
 
 Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
@@ -755,9 +755,9 @@ Given the address of an object, returns non-zero if the object is a weak referen
 
 Specifying the address of the object releases the weak reference to the object.
 
-=head2 get_type_name_raw
+=head2 get_type_name_no_mortal
 
-  void* (*get_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void* (*get_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
 Gets a new C<string> object that is the type name of the object.
 
@@ -1286,9 +1286,9 @@ Calls an instance method given the method name.
     void* object, const char* field_name,
     int32_t* error, const char* func_name, const char* file, int32_t line);
 
-=head2 dump_raw
+=head2 dump_no_mortal
 
-  void* (*dump_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void* (*dump_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
 Gets the string which dump the object. The string is the same as the return value of C<dump> operator.
 
@@ -1296,7 +1296,7 @@ Gets the string which dump the object. The string is the same as the return valu
 
   void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
-The same as C<dump_raw>, and push the created object to the mortal stack. Use this function in normal use instead of C<dump_raw>.
+The same as C<dump_no_mortal>, and push the created object to the mortal stack. Use this function in normal use instead of C<dump_no_mortal>.
 
 =head2 get_instance_method_static
 
@@ -1532,9 +1532,9 @@ The alias for the following code using L</"dump">.
 
   const char* ret = env->get_chars(env, stack, SPVM_API_dump(env, stack, object));
 
-=head2 new_pointer_object_raw
+=head2 new_pointer_object_no_mortal
 
-  void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
+  void* (*new_pointer_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
 
 Creates a pointer object by specifying a basic type and a C language pointer. The basic type must be the correct basic type got by the L</"get_basic_type"> Native API.
 
@@ -1542,7 +1542,7 @@ Creates a pointer object by specifying a basic type and a C language pointer. Th
 
   void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
 
-The same as L</"new_pointer_raw">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_raw>.
+The same as L</"new_pointer_no_mortal">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_no_mortal>.
 
 Examples:
 
@@ -1664,9 +1664,9 @@ The same as L</"strerror"> given the length to 0.
 
 The same as L</"strerror_string"> given the length to 0.
 
-=head2 get_compile_type_name_raw
+=head2 get_compile_type_name_no_mortal
 
-  void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);
+  void* (*get_compile_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);
 
 Gets a new C<string> object that is the compile-time type name with a basic type name, a type dimension, a type flag.
 
@@ -1827,33 +1827,33 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
    18 get_class_var_by_index
    19 get_class_method
    20 get_instance_method
-   21 new_object_raw
+   21 new_object_no_mortal
    22 new_object
-   23 new_byte_array_raw
+   23 new_byte_array_no_mortal
    24 new_byte_array
-   25 new_short_array_raw
+   25 new_short_array_no_mortal
    26 new_short_array
-   27 new_int_array_raw
+   27 new_int_array_no_mortal
    28 new_int_array
-   29 new_long_array_raw
+   29 new_long_array_no_mortal
    30 new_long_array
-   31 new_float_array_raw
+   31 new_float_array_no_mortal
    32 new_float_array
-   33 new_double_array_raw
+   33 new_double_array_no_mortal
    34 new_double_array
-   35 new_object_array_raw
+   35 new_object_array_no_mortal
    36 new_object_array
-   37 new_muldim_array_raw
+   37 new_muldim_array_no_mortal
    38 new_muldim_array
-   39 new_mulnum_array_raw
+   39 new_mulnum_array_no_mortal
    40 new_mulnum_array
-   41 new_string_nolen_raw
+   41 new_string_nolen_no_mortal
    42 new_string_nolen
-   43 new_string_raw
+   43 new_string_no_mortal
    44 new_string
-   45 concat_raw
+   45 concat_no_mortal
    46 concat
-   47 new_stack_trace_raw
+   47 new_stack_trace_no_mortal
    48 new_stack_trace
    49 length
    50 get_elems_byte
@@ -1894,7 +1894,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
    85 set_class_var_object
    86 get_pointer
    87 set_pointer
-   88 call_method_raw
+   88 call_method_no_mortal
    89 get_exception
    90 set_exception
    91 get_ref_count
@@ -1914,7 +1914,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   105 
   106 
   107 
-  108 get_type_name_raw
+  108 get_type_name_no_mortal
   109 get_type_name
   110 reserved110
   111 reserved111
@@ -1954,7 +1954,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   145 call_instance_method_by_name
   146 get_field_string_chars_by_name
   147 reserved147
-  148 dump_raw
+  148 dump_no_mortal
   149 dump
   150 get_instance_method_static
   151 get_bool_object_value
@@ -1966,9 +1966,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   157 is_numeric_array
   158 is_mulnum_array
   159 get_elem_size
-  160 new_array_proto_raw
+  160 new_array_proto_no_mortal
   161 new_array_proto
-  162 copy_raw
+  162 copy_no_mortal
   163 copy
   164 shorten
   165 
@@ -1993,7 +1993,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   184 reserved184
   185 reserved185
   186 dumpc
-  187 new_pointer_object_raw
+  187 new_pointer_object_no_mortal
   188 new_pointer_object
   189 new_pointer_object_by_name
   190 get_elem_string
@@ -2008,7 +2008,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   199 get_method_by_index
   200 strerror_nolen
   201 strerror_string_nolen
-  202 get_compile_type_name_raw
+  202 get_compile_type_name_no_mortal
   203 get_compile_type_name
   204 set_command_info_base_time
   205 get_spvm_version_string

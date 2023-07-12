@@ -1091,7 +1091,7 @@ class TestCase::NativeAPI {
   
   static method my_value : int ($value : int) { return $value; }
   
-  native static method native_call_method_raw : int ();
+  native static method native_call_method_no_mortal : int ();
   native static method native_call_method : int ();
   native static method native_call_class_method_by_name : int ();
   native static method native_call_class_method_by_name_exception : int ();
@@ -1240,11 +1240,11 @@ class TestCase::NativeAPI {
   }
   native static method get_bool_object_value_native : int ($bool_object : Bool);
 
-  native static method new_string_raw : int ();
+  native static method new_string_no_mortal : int ();
 
   native static method new_string : int ();
 
-  native static method new_string_nolen_raw : int ();
+  native static method new_string_nolen_no_mortal : int ();
 
   native static method new_string_nolen : int ();
   
@@ -1254,7 +1254,7 @@ class TestCase::NativeAPI {
   native static method strerror_nolen_value : string ($errno_value : int);
   native static method strerror_string_value : string ($errno_value : int);
   native static method strerror_string_nolen_value : string ($errno_value : int);
-  native static method new_object_array_raw : int ();
+  native static method new_object_array_no_mortal : int ();
   native static method new_object_array : int ();
   native static method new_string_array : int ();
   native static method new_string_array_value : string[] ();

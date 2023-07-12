@@ -132,9 +132,9 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->enter_scope_leave_scope);
 }
 
-# env->call_method_raw
+# env->call_method_no_mortal
 {
-  ok(SPVM::TestCase::NativeAPI->native_call_method_raw);
+  ok(SPVM::TestCase::NativeAPI->native_call_method_no_mortal);
 }
 
 # env->call_method
@@ -195,9 +195,9 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->get_bool_object_value);
 }
 
-# new_string_raw
+# new_string_no_mortal
 {
-  ok(SPVM::TestCase::NativeAPI->new_string_raw);
+  ok(SPVM::TestCase::NativeAPI->new_string_no_mortal);
 }
 
 # new_string
@@ -205,9 +205,9 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->new_string);
 }
 
-# new_string_nolen_raw
+# new_string_nolen_no_mortal
 {
-  ok(SPVM::TestCase::NativeAPI->new_string_nolen_raw);
+  ok(SPVM::TestCase::NativeAPI->new_string_nolen_no_mortal);
 }
 
 # new_string_nolen
@@ -256,9 +256,9 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   }
 }
 
-# new_object_array_raw
+# new_object_array_no_mortal
 {
-  ok(SPVM::TestCase::NativeAPI->new_object_array_raw);
+  ok(SPVM::TestCase::NativeAPI->new_object_array_no_mortal);
 }
 
 # items

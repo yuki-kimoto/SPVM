@@ -18,6 +18,49 @@
       -  void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
       +  void (*cleanup_env)(SPVM_ENV* env, SPVM_VALUE* stack);
 
+      -  void* (*new_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
+      +  void* (*new_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
+      -  void* (*new_byte_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      +  void* (*new_byte_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      -  void* (*new_short_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      +  void* (*new_short_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      -  void* (*new_int_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      +  void* (*new_int_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      -  void* (*new_long_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      +  void* (*new_long_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      -  void* (*new_float_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      +  void* (*new_float_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      -  void* (*new_double_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      +  void* (*new_double_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+      -  void* (*new_object_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+      +  void* (*new_object_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+      -  void* (*new_muldim_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t element_dimension, int32_t length);
+      +  void* (*new_muldim_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t element_dimension, int32_t length);
+      -  void* (*new_mulnum_array_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+      +  void* (*new_mulnum_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+      -  void* (*new_string_nolen_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
+      +  void* (*new_string_nolen_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
+      -  void* (*new_string_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
+      +  void* (*new_string_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
+      -  void* (*concat_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
+      +  void* (*concat_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
+      -  void* (*new_stack_trace_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+      +  void* (*new_stack_trace_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+      -  int32_t (*call_method_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
+      +  int32_t (*call_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
+      -  void* (*get_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      +  void* (*get_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      -  void* (*dump_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      +  void* (*dump_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      -  void* (*new_array_proto_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
+      +  void* (*new_array_proto_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
+      -  void* (*copy_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      +  void* (*copy_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      -  void* (*new_pointer_object_raw)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
+      +  void* (*new_pointer_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
+      -  void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t dimension, int32_t flag);
+      +  void* (*get_compile_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t dimension, int32_t flag);
+
     * The following methods in the Env class were renamed.
     
       -  method build_stack : Stack ();
