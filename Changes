@@ -8,7 +8,13 @@
       +  void* (*get_field_string)(void* env, void* stack, void* object, void* field);
       +  void (*set_field_string)(void* env, void* stack, void* object, void* field, void* value);
       +  void* (*get_field_string_by_name)(void* env, void* stack, void* object, const void* field_name, int32_t** error_id, const void* func_name, const void* file, int32_t line);
-      +  void (*set_field_string_by_name)(void* env, void* stack, void* object, const void* field_name, void* value, int32_t** error_id, const void* func_name, const void* file, int32_t line);    
+      +  void (*set_field_string_by_name)(void* env, void* stack, void* object, const void* field_name, void* value, int32_t** error_id, const void* func_name, const void* file, int32_t line);
+    
+    * The following methods were added to the Env class.
+    
+      method get_exception : string ();
+      method set_exception : void ($exception : string);
+      
   [Incompatibe Changes]
     * The following native APIs were removed.
     

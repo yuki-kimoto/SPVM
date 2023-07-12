@@ -68,6 +68,18 @@ Builds a call stack and returns it.
 
 The return type is the L<Stack|SPVM::Stack> class.
 
+=head2 get_exception
+
+  method get_exception : string ();
+
+Gets the excetpion.
+
+=head2 set_exception
+
+  method set_exception : void ($exception : string);
+
+Sets an excetpion.
+
 =head2 DESTROY
 
   method DESTROY : void ();
