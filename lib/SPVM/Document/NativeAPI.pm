@@ -96,35 +96,111 @@ The memory allocator for this environment.
 
   SPVM_ENV* (*new_env)();
 
-Creates a new raw envriment.
+Creates a new environment.
 
 =head2 free_env
 
   void (*free_env)(SPVM_ENV* env);
 
-Frees the raw environemt that is created by L</"new_env">.
+Frees an environment.
+
+=head2 call_init_methods
+  
+  int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Calls all C<INIT> methods defined by C<INIT> blocks.
+
+If an exception is thrown, returns non-zero value. Otherwise returns 0.
+
+=head2 set_command_info_program_name
+
+  int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
+
+Sets the L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable to the program name.
+
+If an exception is thrown, returns non-zero value. Otherwise returns 0.
+
+=head2 set_command_info_argv
+
+  int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
+
+Sets the L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"ARGV"> class variable to the command line arguments.
+
+If an exception is thrown, returns non-zero value. Otherwise returns 0.
+
+=head2 set_command_info_base_time
+
+  int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
+
+Sets the L<CommandInfo->BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable to the time when the program starts.
+
+If an exception is thrown, returns non-zero value. Otherwise returns 0.
+
+=head2 destroy_class_vars
+  
+  void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Destroys all class variables.
+
+=head2 items
+
+  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Returns the total width of the arguments given by the caller.
+
+Examples:
+
+  int32_t items = env->items(env, stack);
+
+=head2 get_object_basic_type
+
+  void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the object.
+
+=head2 get_object_basic_type_id
+
+  int32_t (*get_object_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Returns the basic type ID of the object.
+
+=head2 get_object_basic_type_name
+
+  const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Returns the basic type name of the object.
+
+=head2 get_object_type_dimension
+
+  int32_t (*get_object_type_dimension)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+
+Returns the type dimension of the object.
 
 =head2 isa
 
-  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t cast_basic_type_id, int32_t cast_type_dimension);
+  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* cast_basic_type, int32_t cast_type_dimension);
 
-Performs C<isa> operation.
+Checks if the object C<object> can be assigned to the type given by the basic type C<cast_basic_type> and the type dimension C<cast_type_dimension>.
+
+If it is ok, returns 1. Otherwise returns 0.
 
 =head2 elem_isa
 
   int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
 
-Checks the runtime type assignability of an array element.
+Checks if the element C<element> can be assigned to the element of the array C<array>.
+
+If it is ok, returns 1. Otherwise returns 0.
 
 =head2 get_basic_type_id
 
   int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
 
-Gets the base type ID given the name of the base type. If it does not exist, a value less than 0 is returned.
+Gets the basic type ID given the name of the basic type. If it does not exist, a value less than 0 is returned.
 
 Examples:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, "Int");
 
 =head2 get_field_by_index
 
@@ -170,7 +246,7 @@ Examples:
 
   void* (*new_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
 
-Creates a new object with a basic type. The basic type must be the correct base type ID return by the L</"get_basic_type_id"> Native API.
+Creates a new object with a basic type. The basic type must be the correct basic type ID return by the L</"get_basic_type_id"> Native API.
 
 =head2 new_object
 
@@ -293,7 +369,7 @@ The same as C<new_object_array_no_mortal>, and add the created array to the mort
 
 Examples:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, "Int");
   void* object_array = env->new_object_array(env, stack, basic_type_id, 100);
 
 =head2 new_muldim_array_no_mortal
@@ -311,7 +387,7 @@ The same as C<new_muldim_array_no_mortal>, and add the created array to the mort
 Examples:
 
   // Creates 2-dimensional array - The same as "new Int[][100]".
-  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, "Int");
   void* multi_array = env->new_muldim_array(env, stack, basic_type_id, 2, 100);
 
 =head2 new_mulnum_array_no_mortal
@@ -328,7 +404,7 @@ The same as C<new_mulnum_array_no_mortal>, and add the created array to the mort
 
 Examples:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "Complex_2d");
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, "Complex_2d");
   void* value_array = env->new_mulnum_array(env, stack, basic_type_id, 100);
 
 =head2 new_string_nolen_no_mortal
@@ -743,7 +819,7 @@ Given a scope ID and an object, delete the specified object from the mortal stac
 
   int32_t (*is_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
 
-Given an object and a base type and a type dimension, returns a nonzero value if the object matches both the base type and the type dimension, and 0 otherwise.
+Given an object and a basic type and a type dimension, returns a nonzero value if the object matches both the basic type and the type dimension, and 0 otherwise.
 
 =head2 is_object_array
 
@@ -752,18 +828,6 @@ Given an object and a base type and a type dimension, returns a nonzero value if
 If the object is a object array, returns 1, otherwise returns 0.
 
 If the object is C<NULL>, returns 0.
-
-=head2 get_object_basic_type_id
-
-  int32_t (*get_object_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Gets the base type ID of the object.
-
-=head2 get_object_type_dimension
-
-  int32_t (*get_object_type_dimension)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Gets the dimension of the type of object.
 
 =head2 weaken
 
@@ -1360,12 +1424,6 @@ Examples:
 
   int32_t bool_value = env->get_bool_object_value(env, stack, bool_object);
 
-=head2 destroy_class_vars
-  
-  void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
-
-Cleanup gloval variable, such as class variables and the exception variable.
-
 =head2 make_read_only
 
   void (*make_read_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* string)
@@ -1466,12 +1524,6 @@ Prints the characters of the string to stderr.
 
 If the string is C<NULL>, nothing is printed.
 
-=head2 call_init_methods
-  
-  int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
-
-Calls all C<INIT> blocks. If an exception is thrown, returns 1. Otherwise returns 0.
-
 =head2 new_stack
 
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
@@ -1529,26 +1581,6 @@ The count of the memory block that is managed by the environment is decremented 
   int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Returns the count of the memory blocks on the stack.
-
-=head2 set_command_info_program_name
-
-  int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
-
-Sets the program name. This value is got by L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME">.
-
-If it succeed, return 0.
-
-The program name must be a C<string> object. Otherwise return non-zero value.
-
-=head2 set_command_info_argv
-
-  int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
-
-Sets the argv. This value is got by L<CommandInfo->ARGV|SPVM::CommandInfo/"ARGV">.
-
-If it succeed, return 0.
-
-The argv must be a C<string[]> object. Otherwise return non-zero value.
 
 =head2 strerror
 
@@ -1656,16 +1688,6 @@ Examples:
 
   void* field = env->get_field_static(env, stack, "Point", "x");
 
-=head2 items
-
-  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
-
-Gets the stack length of the arguments specified by the caller.
-
-Examples:
-
-  int32_t items = env->items(env, stack);
-
 =head2 call_instance_method_static_by_name
 
   void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
@@ -1720,16 +1742,6 @@ This function does not add the returned object to the mortal stack, so use the L
 
 Gets a new C<string> object that is the compile-time type name with a basic type name, a type dimension, a type flag.
 
-=head2 set_command_info_base_time
-
-  int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
-
-Sets the time when the program starts. This value is got by L<CommandInfo->BASE_TIME|SPVM::CommandInfo/"BASE_TIME">.
-
-If it succeed, return 0.
-
-The program name must be a C<string> object. Otherwise return non-zero value.
-
 =head2 get_spvm_version_string
 
   const char* (*get_spvm_version_string)(SPVM_ENV* env, SPVM_VALUE* stack);
@@ -1767,14 +1779,6 @@ Call a method by specifying the method address and the stack length of the argum
 The return value of the method is set to stack[0].
 
 If stack[0] is a value of an object type, the object is pushed to the mortal stack.
-
-=head2 get_object_basic_type_name
-
-  const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Gets the basic type name of the object.
-
-Internally Used.
 
 =head2 isa_by_name
 
@@ -1839,10 +1843,6 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
 =head2 get_basic_type_by_id
 
   void* (*get_basic_type_by_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
-
-=head2 get_object_basic_type
-
-  void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 
 =head1 Native API IDs
 
