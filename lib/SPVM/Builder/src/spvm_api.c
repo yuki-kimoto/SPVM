@@ -262,7 +262,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_copy_no_mortal,
     SPVM_API_copy,
     SPVM_API_shorten,
-    SPVM_API_has_interface,
+    NULL,
     SPVM_API_print,
     SPVM_API_print_stderr,
     NULL, // reserved168
@@ -314,7 +314,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_new_object_array_by_name,
     SPVM_API_new_muldim_array_by_name,
     SPVM_API_new_mulnum_array_by_name,
-    SPVM_API_has_interface_by_name,
+    NULL,
     SPVM_API_get_class_var_object_address,
     SPVM_API_get_basic_type,
     SPVM_API_get_basic_type_by_name,
@@ -3956,42 +3956,6 @@ int32_t SPVM_API_isa_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   int32_t isa = SPVM_API_isa(env, stack, object, basic_type, type_dimension);
   
   return isa;
-}
-
-int32_t SPVM_API_has_interface(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  assert(object);
-  
-  int32_t object_type_dimension = object->type_dimension;
-  int32_t has_interface;
-  if (object->type_dimension > 0) {
-    has_interface = 0;
-  }
-  else {
-    SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
-    if (!interface_basic_type) {
-      has_interface = 0;
-    }
-    else {
-      has_interface = SPVM_API_BASIC_TYPE_has_interface(runtime, object_basic_type, interface_basic_type);
-    }
-  }
-  
-  return has_interface;
-}
-
-int32_t SPVM_API_has_interface_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* basic_type_name) {
-  
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = env->get_basic_type(env, stack, basic_type_name);
-  if (!basic_type) {
-    return 0;
-  };
-  
-  int32_t has_interface = SPVM_API_has_interface(env, stack, object, basic_type);
-  
-  return has_interface;
 }
 
 int32_t SPVM_API_get_basic_type_id_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
