@@ -214,6 +214,377 @@ Gets a basic type ID by a basic type name.
 
 If an exception is thrown, C<error_id> is set to non-zero value. Otherwise it is set to 0.
 
+=head2 get_class_var
+
+  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
+
+Gets a L<class variable|SPVM::Document::NativeAPI::ClassVariable> object by its basic type name and class variable name, and returns it.
+
+If the class variable does not exist, returns NULL.
+
+Examples:
+
+  void* class_var = env->get_class_var(env, stack, "MyClass", "$VAR");
+
+=head2 get_class_var_byte
+
+  int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+Gets the value of a class variable of the byte type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 get_class_var_short
+
+  int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+Gets the value of a class variable of the short type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 get_class_var_int
+
+  int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+Gets the value of a class variable of the int type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 get_class_var_long
+
+  int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+Gets the value of a class variable of the long type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 get_class_var_float
+
+  float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+Gets the value of a class variable of the float type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 get_class_var_double
+
+  double (*get_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+Gets the value of a class variable of the double type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 get_class_var_object
+
+  void* (*get_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+Gets the value of a class variable of the object type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 get_class_var_strig
+
+The same as L</"get_class_var_object">.
+
+=head2 get_class_var_object_address
+
+  void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+
+Gets the address of the value of a class variable of the object type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 set_class_var_byte
+
+  void (*set_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int8_t value);
+
+Sets the value of a class variable of the byte type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 set_class_var_short
+
+  void (*set_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int16_t value);
+
+Sets the value of a class variable of the short type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 set_class_var_int
+
+  void (*set_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int32_t value);
+
+Sets the value of a class variable of the int type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 set_class_var_long
+
+  void (*set_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int64_t value);
+
+Sets the value of a class variable of the long type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 set_class_var_float
+
+  void (*set_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, float value);
+
+Sets the value of a class variable of the float type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 set_class_var_double
+
+  void (*set_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, double value);
+
+Sets the value of a class variable of the double type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 set_class_var_object
+
+  void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, void* value);
+
+Sets the value of a class variable of the object type.
+
+The argument C<class_var> must be a valid L<class variable|SPVM::Document::NativeAPI::ClassVariable> object.
+
+=head2 set_class_var_string
+
+The same as L</"set_class_var_object">.
+
+=head2 get_class_var_byte_by_name
+
+  int8_t (*get_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a class variable of the byte type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_class_var_short_by_name
+
+  int16_t (*get_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a class variable of the short type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int16_t value = env->get_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_class_var_int_by_name
+
+  int32_t (*get_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a class variable of the int type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_class_var_long_by_name
+
+  int64_t (*get_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a class variable of the long type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int64_t value = env->get_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_class_var_float_by_name
+
+  float (*get_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a class variable of the float type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  float value = env->get_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_class_var_double_by_name
+
+  double (*get_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a class variable of the double type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  double value = env->get_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_class_var_object_by_name
+
+  void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a class variable of the object type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+  
+  int32_t error_id = 0;
+  void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_class_var_string_by_name
+
+The same as L</"get_class_var_object_by_name">.
+
+=head2 set_class_var_byte_by_name
+
+  void (*set_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name, int8_t value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a class variable of the byte type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_class_var_short_by_name
+
+  void (*set_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name, int16_t value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a class variable of the short type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_class_var_int_by_name
+
+  void (*set_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name, int32_t value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a class variable of the int type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", 15, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_class_var_long_by_name
+
+  void (*set_class_var_long_by_name)(SPVM_ENV* env
+    const char* basic_type_name, const char* class_var_name, int64_t value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a class variable of the long type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", 15, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_class_var_float_by_name
+
+  void (*set_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name, float value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a class variable of the float type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_class_var_double_by_name
+
+  void (*set_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name, double value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a class variable of the double type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_class_var_object_by_name
+
+  void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    const char* basic_type_name, const char* class_var_name, void* value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a class variable of the object type by its basic type name and class variable name.
+
+If an excetpion is thrown because the class variable does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", minimal, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_class_var_string_by_name
+
+The same as L</"set_class_var_object_by_name">.
+
 =head2 get_field
 
   void* (*get_field_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
@@ -223,16 +594,6 @@ Returns a field given an object and field name. If the field does not exist, ret
 Examples:
 
   void* field = env->get_field(env, stack, object, "x");
-
-=head2 get_class_var_by_index
-
-  void* (*get_class_var_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
-
-Returns a class variable given a basic type name and a class variable name. If the class variable does not exist, returns NULL.
-
-Examples:
-
-  void* class_var = env->get_class_var(env, stack, "MyClass", "$VAR");
 
 =head2 get_class_method
 
@@ -657,90 +1018,6 @@ If an object and a field is given, the value is set to the double type field. Th
 
 An object and a field Specifies the ID and the value of the field and set the value to the object type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
-=head2 get_class_var_byte
-
-  int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-
-If a class variable is given, the value of the byte type class variable is returned as a C language int8_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
-
-=head2 get_class_var_short
-
-  int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-
-If a class variable is given, the value of the short type class variable will be returned as a C language int16_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
-
-=head2 get_class_var_int
-
-  int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-
-If a class variable is given, the value of the int type class variable will be returned as a C language int32_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
-
-=head2 get_class_var_long
-
-  int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-
-If a class variable is given, the value of the long type class variable will be returned as a C language int64_t type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
-
-=head2 get_class_var_float
-
-  float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-
-If a class variable is given, the value of the float type class variable will be returned as a C language float type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
-
-=head2 get_class_var_double
-
-  double (*get_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-
-If you specify an object and a class variable, the value of the double type class variable is returned as a C type double type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
-
-=head2 get_class_var_object
-
-  void* (*get_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
-
-When an object and a class variable are specified, the value of the object type class variable is returned as a C language void* type value. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API.
-
-=head2 set_class_var_byte
-
-  void (*set_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int8_t value);
-
-If a class variable is given, the value is set to the byte type class variable.
-
-=head2 set_class_var_short
-
-  void (*set_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int16_t value);
-
-If a class variable is given, the value is set to the short type class variable.
-
-=head2 set_class_var_int
-
-  void (*set_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int32_t value);
-
-If a class variable is given, the value is set to the int type class variable.
-
-=head2 set_class_var_long
-
-  void (*set_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int64_t value);
-
-If a class variable is given, the value is set to the long type class variable.
-
-=head2 set_class_var_float
-
-  void (*set_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, float value);
-
-If a class variable is given, the value is set to the float type class variable.
-
-=head2 set_class_var_double
-
-  void (*set_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, double value);
-
-If a class variable is given, the value is set to the double type class variable.
-
-=head2 set_class_var_object
-
-  void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, void* value);
-
-If a class variable is given, the value of the class variable and set the value to the object type class variable. The class variable must be a valid class variable obtained with the L</"get_class_var_by_index"> Native API. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
-
 =head2 get_pointer
 
   void* (*get_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object);
@@ -937,9 +1214,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 set_field_byte_by_name
 
@@ -953,9 +1230,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 set_field_short_by_name
 
@@ -969,9 +1246,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  env->set_field_short_by_name(env, stack, object, "short_value", 13, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  env->set_field_short_by_name(env, stack, object, "short_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 set_field_int_by_name
 
@@ -985,9 +1262,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  env->set_field_int_by_name(env, stack, object, "int_value", 13, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  env->set_field_int_by_name(env, stack, object, "int_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 set_field_long_by_name
 
@@ -1001,9 +1278,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  env->set_field_long_by_name(env, stack, object, "long_value", 13, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  env->set_field_long_by_name(env, stack, object, "long_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 set_field_float_by_name
 
@@ -1017,9 +1294,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  env->set_field_float_by_name(env, stack, object, "float_value", 13, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  env->set_field_float_by_name(env, stack, object, "float_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 set_field_double_by_name
 
@@ -1033,9 +1310,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  env->set_field_double_by_name(env, stack, object, "double_value", 13, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  env->set_field_double_by_name(env, stack, object, "double_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 set_field_object_by_name
 
@@ -1049,9 +1326,9 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 get_field_byte_by_name
 
@@ -1065,9 +1342,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 get_field_short_by_name
 
@@ -1081,9 +1358,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 get_field_int_by_name
 
@@ -1097,9 +1374,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 get_field_long_by_name
 
@@ -1113,9 +1390,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 get_field_float_by_name
 
@@ -1129,9 +1406,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 get_field_double_by_name
 
@@ -1145,9 +1422,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 get_field_object_by_name
 
@@ -1161,233 +1438,9 @@ If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> 
 
 Examples:
 
-  int32_t error = 0;
-  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 set_class_var_byte_by_name
-
-  void (*set_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, int8_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_class_var_byte"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  env->set_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 set_class_var_short_by_name
-
-  void (*set_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, int16_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_class_var_short"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  env->set_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 set_class_var_int_by_name
-
-  void (*set_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, int32_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_class_var_int"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$INT_VALUE", 15, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 set_class_var_long_by_name
-
-  void (*set_class_var_long_by_name)(SPVM_ENV* env
-    const char* basic_type_name, const char* class_var_name, int64_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_class_var_long"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  env->set_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", 15, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 set_class_var_float_by_name
-
-  void (*set_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, float value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_class_var_float"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  env->set_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 set_class_var_double_by_name
-
-  void (*set_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, double value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_class_var_double"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  env->set_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 set_class_var_object_by_name
-
-  void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, void* value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_class_var_object"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  env->set_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 get_class_var_byte_by_name
-
-  int8_t (*get_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_class_var_byte"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 get_class_var_short_by_name
-
-  int16_t (*get_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_class_var_short"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  int16_t value = env->get_class_var_short_by_name(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 get_class_var_int_by_name
-
-  int32_t (*get_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_class_var_int"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 get_class_var_long_by_name
-
-  int64_t (*get_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_class_var_long"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  int64_t value = env->get_class_var_long_by_name(env, stack, "TestCase::NativeAPI", "$LONG_VALUE", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 get_class_var_float_by_name
-
-  float (*get_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_class_var_float"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  float value = env->get_class_var_float_by_name(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 get_class_var_double_by_name
-
-  double (*get_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_class_var_double"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error = 0;
-  double value = env->get_class_var_double_by_name(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
-
-=head2 get_class_var_object_by_name
-
-  void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_class_var_object"> Native API, but you can specify the basic type name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-  
-  int32_t error = 0;
-  void* value = env->get_class_var_object_by_name(env, stack, "TestCase::NativeAPI", "$MINIMAL_VALUE", &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 call_class_method_by_name
 
@@ -1397,13 +1450,13 @@ Calls a class method given the basic type name and method name.
 
 Examples:
   
-  int32_t error = 0;
+  int32_t error_id = 0;
   int32_t output;
   {
     int32_t items = 1;
     stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", items, &error, __func__, __FILE__, __LINE__);
-    if (error) { return error; }
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", items, &error_id, __func__, __FILE__, __LINE__);
+    if (error_id) { return error_id; }
     
     output = stack[0].ival;
   }
@@ -1660,9 +1713,9 @@ This is the same as L</"new_pointer"> function, but you can specify basic type n
 
 If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
 
-  int32_t error = 0;
-  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  int32_t error_id = 0;
+  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
 =head2 get_elem_string
 
@@ -1716,13 +1769,13 @@ Calls an instance method by the basic type name and the method name.
 
 Examples:
   
-  int32_t error = 0;
+  int32_t error_id = 0;
   int32_t output;
   {
     int32_t items = 1;
     stack[0].oval = obj_point;
-    env->call_instance_method_static_by_name(env, stack, "Point", "x", items, &error, __func__, __FILE__, __LINE__);
-    if (error) { return error; }
+    env->call_instance_method_static_by_name(env, stack, "Point", "x", items, &error_id, __func__, __FILE__, __LINE__);
+    if (error_id) { return error_id; }
     output = stack[0].ival;
   }
 
@@ -1847,10 +1900,6 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
 =head2 new_mulnum_array_by_name
 
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
-
-=head2 get_class_var_object_address
-
-  void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
 =head1 Native API IDs
 
