@@ -23,7 +23,7 @@
     * The following native APIs were renamed.
 
       -  int32_t (*call_init_blocks)(SPVM_ENV* env, SPVM_VALUE* stack);
-      +  int32_t (*init_env)(SPVM_ENV* env, SPVM_VALUE* stack);
+      +  int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
 
       -  void (*cleanup_global_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
       +  void (*cleanup_env)(SPVM_ENV* env, SPVM_VALUE* stack);

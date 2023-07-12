@@ -645,7 +645,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   // Call INIT blocks
   
   int32_t status = 0;
-  error = env->init_env(env, stack);
+  error = env->call_init_methods(env, stack);
   if (error) {
     env->print_stderr(env, stack, env->get_exception(env, stack));
     printf("\\n");

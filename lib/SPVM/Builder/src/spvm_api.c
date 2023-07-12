@@ -266,7 +266,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_print,
     SPVM_API_print_stderr,
     NULL, // reserved168
-    SPVM_API_init_env,
+    SPVM_API_call_init_methods,
     NULL, // reserved170
     SPVM_API_new_stack,
     SPVM_API_free_stack,
@@ -362,7 +362,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   env = NULL;
 }
 
-int32_t SPVM_API_init_env(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
   

@@ -54,9 +54,9 @@ Creates a new L<Env|SPVM::Env> ojbect, and returns it.
 
 Sets command line information.
 
-=head2 init_env
+=head2 call_init_methods
 
-  method init_env : void ();
+  method call_init_methods : void ();
 
 Calls all L<INIT blocks|SPVM::Document::Language/"INIT Block">.
 

@@ -1424,9 +1424,9 @@ Prints the characters of the string to stderr.
 
 If the string is C<NULL>, nothing is printed.
 
-=head2 init_env
+=head2 call_init_methods
   
-  int32_t (*init_env)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Calls all C<INIT> blocks. If an exception is thrown, returns 1. Otherwise returns 0.
 
@@ -1975,7 +1975,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   166 print
   167 print_stderr
   168 reserved168
-  169 init_env
+  169 call_init_methods
   170 reserved170
   171 new_stack
   172 free_stack

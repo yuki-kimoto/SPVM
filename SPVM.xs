@@ -5157,7 +5157,7 @@ set_command_info_base_time(...)
 }
 
 SV*
-init_env(...)
+call_init_methods(...)
   PPCODE:
 {
   
@@ -5167,7 +5167,7 @@ init_env(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
   
-  int32_t error_id = env->init_env(env, stack);
+  int32_t error_id = env->call_init_methods(env, stack);
   
   if (error_id) {
     croak("[Initialization Exception]%s \n  at %s line %d", env->get_chars(env, stack, env->get_exception(env, stack)), FILE_NAME, __LINE__);
