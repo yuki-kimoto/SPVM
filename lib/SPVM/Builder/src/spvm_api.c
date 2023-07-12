@@ -186,7 +186,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_pointer,
     SPVM_API_set_pointer,
     SPVM_API_call_method_no_mortal,
-    SPVM_API_exception,
+    SPVM_API_get_exception,
     SPVM_API_set_exception,
     SPVM_API_ref_count,
     SPVM_API_inc_ref_count,
@@ -2962,7 +2962,7 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
   return 0;
 }
 
-SPVM_OBJECT* SPVM_API_exception(SPVM_ENV* env, SPVM_VALUE* stack){
+SPVM_OBJECT* SPVM_API_get_exception(SPVM_ENV* env, SPVM_VALUE* stack){
 
   SPVM_OBJECT** cur_excetpion_ptr = (SPVM_OBJECT**)&stack[STACK_INDEX_EXCEPTION];
   SPVM_OBJECT* cur_excetpion = *cur_excetpion_ptr;
