@@ -3132,17 +3132,9 @@ SPVM_OBJECT* SPVM_API_new_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, con
   return object;
 }
 
-int32_t SPVM_API_get_field_first_int(SPVM_ENV* env, SPVM_OBJECT* object) {
-
-  int32_t value = *(int32_t*)((intptr_t)object + env->api->runtime->get_object_data_offset(env->runtime));
-  
-  return value;
-}
-
 int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* bool_object) {
   
-
-  int32_t value = SPVM_API_get_field_first_int(env, bool_object);
+  int32_t value = *(int32_t*)((intptr_t)bool_object + env->api->runtime->get_object_data_offset(env->runtime));
   
   return value;
 }
