@@ -4,40 +4,88 @@ SPVM::Document::NativeAPI - Native APIs
 
 =head1 Description
 
-The native APIs of L<SPVM> are the APIs used in L<native modules|SPVM::Document::NativeModule>.
+The native APIs of L<SPVM> are the APIs written by the C language for various operations.
 
-These are writen by the C language.
+These APIs are used in L<native modules|SPVM::Document::NativeModule>.
 
 =head1 Native APIs
+
+=head2 runtime
+
+  void* runtime;
+
+The runtime object for this environment.
+
+Examples:
+
+  env->runtime;
 
 =head2 api
 
   void* api;
 
-The environment of APIs such as L<compiler native APIs|SPVM::Document::NativeAPI::Compiler>, L<precompile native APIs|SPVM::Document::NativeAPI::Precompile>, L<runtime native APIs|SPVM::Document::NativeAPI::Runtime>, L<string buffer native APIs|SPVM::Document::NativeAPI::StringBuffer>, L<allocator native APIs|SPVM::Document::NativeAPI::Allocator>, L<basic type native APIs|SPVM::Document::NativeAPI::BasicType>, L<class variable native APIs|SPVM::Document::NativeAPI::ClassVar>, L<field native APIs|SPVM::Document::NativeAPI::Field>, L<method native APIs|SPVM::Document::NativeAPI::Method>, L<argument native APIs|SPVM::Document::NativeAPI::Argument>.
+Access to other native APIs.
 
-Examples:
+=head3 Allocator Native API
   
-  void* compiler_api = env->api->compiler;
-  
-  void* precompile_api = env->api->precompile;
-  
-  void* runtime_api = env->api->runtime;
-  
-  void* string_buffer_api = env->api->string_buffer;
-  
-  void* allocator_api = env->api->allocator;
-  
-  void* basic_type_api = env->api->basic_type;
-  
-  void* class_var_api = env->api->clsas_var;
-  
-  void* field_api = env->api->field;
-  
-  void* method_api = env->api->method;
-  
-  void* arg_api = env->api->arg;
-  
+  env->api->allocator;
+
+L<SPVM::Document::NativeAPI::Allocator>
+
+=head3 String Buffer Native API
+
+  env->api->string_buffer;
+
+L<SPVM::Document::NativeAPI::StringBuffer>
+
+=head3 Compiler Native API
+
+  env->api->compiler;
+
+L<SPVM::Document::NativeAPI::Compiler>
+
+=head3 Module File Native API
+
+  env->api->module_file;
+
+L<SPVM::Document::NativeAPI::ModuleFile>
+
+=head3 Runtime Native API
+
+  env->api->runtime;
+
+L<SPVM::Document::NativeAPI::Runtime>
+
+=head3 Basic Type Native API
+
+  env->api->basic_type;
+
+L<SPVM::Document::NativeAPI::BasicType>
+
+=head3 Class Variable Native API
+
+  env->api->clsas_var;
+
+L<SPVM::Document::NativeAPI::ClassVariable>
+
+=head3 Field Native API
+
+  env->api->field;
+
+L<SPVM::Document::NativeAPI::Field>
+
+=head3 Method Native API
+
+  env->api->method;
+
+L<SPVM::Document::NativeAPI::Method>
+
+=head3 Argument Native API
+
+  env->api->arg;
+
+L<SPVM::Document::NativeAPI::Argument>
+
 =head2 allocator
 
   void* allocator;
@@ -67,12 +115,6 @@ Performs C<isa> operation.
   int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
 
 Checks the runtime type assignability of an array element.
-
-=head2 runtime
-
-  void* runtime;
-
-A pointer to the runtime information. This is used internally.
 
 =head2 get_basic_type_id
 
@@ -2013,22 +2055,6 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   204 get_ref_count
   205 inc_ref_count
   206 dec_ref_count
-
-=head1 Compiler Native API
-
-L<SPVM::Document::NativeAPI::Compiler>
-
-=head1 Runtime Native API
-
-L<SPVM::Document::NativeAPI::Runtime>
-
-=head1 String Buffer Native API
-
-L<SPVM::Document::NativeAPI::StringBuffer>
-
-=head1 Allocator Native API
-
-L<SPVM::Document::NativeAPI::Allocator>
 
 =head1 Constant Values
 
