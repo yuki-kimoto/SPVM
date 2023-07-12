@@ -972,7 +972,7 @@ void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
     offset += offset_size;
   }
   
-  basic_type->fields_width = offset;
+  basic_type->fields_size = offset;
 }
 
 void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name) {

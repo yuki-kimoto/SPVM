@@ -694,7 +694,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->parent = &runtime_basic_types[parent_basic_type->id];
     }
     
-    runtime_basic_type->fields_width = basic_type->fields_width;
+    runtime_basic_type->fields_size = basic_type->fields_size;
     
     if (basic_type->init_method) {
       runtime_basic_type->init_method = &runtime_basic_type->methods[basic_type->init_method->index];

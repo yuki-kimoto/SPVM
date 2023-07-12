@@ -27,7 +27,7 @@ struct spvm_runtime_basic_type {
   int32_t constant_strings_length;
   int32_t class_vars_length;
   int32_t fields_length;
-  int32_t fields_width;
+  int32_t fields_size;
   int32_t methods_length;
   int32_t anon_basic_types_length;
   int8_t is_anon;
