@@ -1,4 +1,14 @@
 0.989023 2023-07-12
+  [New Features]
+    * The following native APIs were added.
+      +  void* (*get_class_var_string)(void* env, void* stack, void* class_var);
+      +  void (*set_class_var_string)(void* env, void* stack, void* class_var, void* value);
+      +  void* (*get_class_var_string_by_name)(void* env, void* stack, const void* basic_type_name, const void* class_var_name, int32_t** error_id, const void* func_name, const void* file, int32_t line);
+      +  void (*set_class_var_string_by_name)(void* env, void* stack, const void* basic_type_name, const void* class_var_name, void* value, int32_t** error_id, const void* func_name, const void* file, int32_t line);
+      +  void* (*get_field_string)(void* env, void* stack, void* object, void* field);
+      +  void (*set_field_string)(void* env, void* stack, void* object, void* field, void* value);
+      +  void* (*get_field_string_by_name)(void* env, void* stack, void* object, const void* field_name, int32_t** error_id, const void* func_name, const void* file, int32_t line);
+      +  void (*set_field_string_by_name)(void* env, void* stack, void* object, const void* field_name, void* value, int32_t** error_id, const void* func_name, const void* file, int32_t line);    
   [Incompatibe Changes]
     * The following native APIs were removed.
     

@@ -320,6 +320,14 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_basic_type_by_name,
     SPVM_API_get_basic_type_by_id,
     SPVM_API_get_object_basic_type,
+    SPVM_API_get_class_var_string,
+    SPVM_API_set_class_var_string,
+    SPVM_API_get_class_var_string_by_name,
+    SPVM_API_set_class_var_string_by_name,
+    SPVM_API_get_field_string,
+    SPVM_API_set_field_string,
+    SPVM_API_get_field_string_by_name,
+    SPVM_API_set_field_string_by_name,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -756,6 +764,11 @@ SPVM_OBJECT** SPVM_API_get_class_var_object_address(SPVM_ENV* env, SPVM_VALUE* s
   return value_address;
 }
 
+SPVM_OBJECT* SPVM_API_get_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
+  
+  return SPVM_API_get_class_var_object(env, stack, class_var);
+}
+
 void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int8_t value) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
@@ -846,6 +859,11 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   
   void* get_field_object_address = &class_var->data.oval;
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value, SPVM_API_RUNTIME_get_object_ref_count_offset(env->runtime));
+}
+
+void SPVM_API_set_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value) {
+  
+  SPVM_API_set_class_var_object(env, stack, class_var, value);
 }
 
 int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
@@ -995,6 +1013,12 @@ SPVM_OBJECT* SPVM_API_get_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* st
   return value;
 }
 
+SPVM_OBJECT* SPVM_API_get_class_var_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  *error_id = 0;
+  
+  return SPVM_API_get_class_var_object_by_name(env, stack, basic_type_name, class_var_name, error_id, func_name, file, line);
+}
+
 void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   *error_id = 0;
   
@@ -1135,6 +1159,10 @@ void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
   SPVM_API_set_class_var_object(env, stack, class_var, value);
 }
 
+void SPVM_API_set_class_var_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, SPVM_OBJECT* value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  SPVM_API_set_class_var_object_by_name(env, stack, basic_type_name, class_var_name, value, error_id, func_name, file, line);
+}
+
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
 
   // Get field value
@@ -1192,6 +1220,11 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   return value;
 }
 
+SPVM_OBJECT* SPVM_API_get_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+  
+  SPVM_API_get_field_object(env, stack, object, field);
+}
+
 void SPVM_API_set_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int8_t value) {
 
   // Get field value
@@ -1234,6 +1267,11 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   void* get_field_object_address = (void**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
 
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value, SPVM_API_RUNTIME_get_object_ref_count_offset(env->runtime));
+}
+
+void SPVM_API_set_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
+  
+  SPVM_API_set_field_object(env, stack, object, field, value);
 }
 
 int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
@@ -1402,6 +1440,11 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   };
   SPVM_OBJECT* value = SPVM_API_get_field_object(env, stack, object, field);
   return value;
+}
+
+SPVM_OBJECT* SPVM_API_get_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  
+  return SPVM_API_get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file, line);
 }
 
 const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
@@ -1581,6 +1624,10 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return;
   };
   SPVM_API_set_field_object(env, stack, object, field, value);
+}
+
+void SPVM_API_set_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, SPVM_OBJECT* value, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  SPVM_API_set_field_object_by_name(env, stack, object, field_name, value, error_id, func_name, file, line);
 }
 
 int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...) {

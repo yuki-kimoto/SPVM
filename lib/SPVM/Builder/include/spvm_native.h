@@ -320,6 +320,14 @@ struct spvm_env {
   void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
   void* (*get_basic_type_by_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
   void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void* (*get_class_var_string)(void* env, void* stack, void* class_var);
+  void (*set_class_var_string)(void* env, void* stack, void* class_var, void* value);
+  void* (*get_class_var_string_by_name)(void* env, void* stack, const void* basic_type_name, const void* class_var_name, int32_t** error_id, const void* func_name, const void* file, int32_t line);
+  void (*set_class_var_string_by_name)(void* env, void* stack, const void* basic_type_name, const void* class_var_name, void* value, int32_t** error_id, const void* func_name, const void* file, int32_t line);
+  void* (*get_field_string)(void* env, void* stack, void* object, void* field);
+  void (*set_field_string)(void* env, void* stack, void* object, void* field, void* value);
+  void* (*get_field_string_by_name)(void* env, void* stack, void* object, const void* field_name, int32_t** error_id, const void* func_name, const void* file, int32_t line);
+  void (*set_field_string_by_name)(void* env, void* stack, void* object, const void* field_name, void* value, int32_t** error_id, const void* func_name, const void* file, int32_t line);
 };
 
 struct spvm_env_api {
