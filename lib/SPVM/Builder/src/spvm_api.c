@@ -364,7 +364,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
 
 int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t error = 0;
+  int32_t error_id = 0;
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -376,17 +376,17 @@ int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (basic_type->init_method) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, basic_type, basic_type->init_method->index);      
       int32_t items = 0;
-      error = SPVM_API_call_method_no_mortal(env, stack, init_method, items);
-      if (error) { break; }
+      error_id = SPVM_API_call_method_no_mortal(env, stack, init_method, items);
+      if (error_id) { break; }
     }
   }
   
-  return error;
+  return error_id;
 }
 
 int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_program_name) {
   
-  int32_t error = 0;
+  int32_t error_id = 0;
   
   if (!obj_program_name) {
     return SPVM_API_die(env, stack, "The obj_program_name must be defined", __func__, FILE_NAME, __LINE__);
@@ -397,15 +397,15 @@ int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return SPVM_API_die(env, stack, "The obj_program_name must be a string", __func__, FILE_NAME, __LINE__);
   }
   
-  SPVM_API_set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  SPVM_API_set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
   
   return 0;
 }
 
 int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obj_argv) {
   
-  int32_t error = 0;
+  int32_t error_id = 0;
   
   if (!obj_argv) {
     return SPVM_API_die(env, stack, "The obj_argv must be defined", __func__, FILE_NAME, __LINE__);
@@ -416,18 +416,18 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return SPVM_API_die(env, stack, "The obj_argv must be a string array", __func__, FILE_NAME, __LINE__);
   }
   
-  SPVM_API_set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", obj_argv, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  SPVM_API_set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", obj_argv, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
   
   return 0;
 }
 
 int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time) {
   
-  int32_t error = 0;
+  int32_t error_id = 0;
   
-  SPVM_API_set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &error, __func__, __FILE__, __LINE__);
-  if (error) { return error; }
+  SPVM_API_set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
   
   return 0;
 }
@@ -1729,17 +1729,17 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t items) {
   
   int32_t mortal = 0;
-  int32_t error = SPVM_API_call_method_common(env, stack, method, items, mortal);
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, items, mortal);
   
-  return error;
+  return error_id;
 }
 
 int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t items) {
   
   int32_t mortal = 1;
-  int32_t error = SPVM_API_call_method_common(env, stack, method, items, mortal);
+  int32_t error_id = SPVM_API_call_method_common(env, stack, method, items, mortal);
   
-  return error;
+  return error_id;
 }
 
 int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t items, int32_t mortal) {
@@ -1747,13 +1747,13 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t error = 0;
+  int32_t error_id = 0;
   stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = items;
   stack[STACK_INDEX_CALL_DEPTH].ival++;
   
   int32_t max_call_depth = 10000;
   if (stack[STACK_INDEX_CALL_DEPTH].ival > max_call_depth) {
-    error = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
+    error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
     void* method_return_basic_type = method->return_basic_type;
@@ -1858,10 +1858,10 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         // Call native subrotuine
         int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = method->native_address;
         assert(native_address != NULL);
-        error = (*native_address)(env, stack);
+        error_id = (*native_address)(env, stack);
         
         // Increment ref count of return value
-        if (!error) {
+        if (!error_id) {
           if (method_return_type_is_object) {
             SPVM_OBJECT* return_object = *(void**)&stack[0];
             if (return_object != NULL) {
@@ -1874,7 +1874,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         SPVM_API_leave_scope(env, stack, original_mortal_stack_top);
         
         // Decrement ref count of return value
-        if (!error) {
+        if (!error_id) {
           if (method_return_type_is_object) {
             SPVM_OBJECT* return_object = *(void**)&stack[0];
             if (return_object != NULL) {
@@ -1884,7 +1884,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         }
         
         // Set default exception message
-        if (error && SPVM_API_get_exception(env, stack) == NULL) {
+        if (error_id && SPVM_API_get_exception(env, stack) == NULL) {
           void* exception = SPVM_API_new_string_nolen_no_mortal(env, stack, "Error");
           SPVM_API_set_exception(env, stack, exception);
         }
@@ -1894,11 +1894,11 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         void* method_precompile_address = method->precompile_address;
         if (method_precompile_address) {
           int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
-          error = (*precompile_address)(env, stack);
+          error_id = (*precompile_address)(env, stack);
         }
         // Call sub virtual machine
         else {
-          error = SPVM_API_call_method_vm(env, stack, method, items);
+          error_id = SPVM_API_call_method_vm(env, stack, method, items);
         }
       }
       
@@ -1910,7 +1910,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   stack[STACK_INDEX_CALL_DEPTH].ival--;
   
-  return error;
+  return error_id;
 }
 
 int32_t SPVM_API_is_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
@@ -3562,10 +3562,10 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           stack[0].oval = object;
           SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
           
-          int32_t error = SPVM_API_call_method_no_mortal(env, stack, destructor_method, items);
+          int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, items);
           
           // Exception in destructor is changed to warning
-          if (error) {
+          if (error_id) {
             void* exception = SPVM_API_get_exception(env, stack);
             const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
             fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
