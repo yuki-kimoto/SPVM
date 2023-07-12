@@ -214,7 +214,7 @@ Gets a basic type ID by a basic type name.
 
 If an exception is thrown, C<error_id> is set to non-zero value. Otherwise it is set to 0.
 
-=head2 get_field_by_index
+=head2 get_field
 
   void* (*get_field_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
 
@@ -222,7 +222,7 @@ Returns a field given an object and field name. If the field does not exist, ret
 
 Examples:
 
-  void* field = env->get_field_by_index(env, object, "x");
+  void* field = env->get_field(env, stack, object, "x");
 
 =head2 get_class_var_by_index
 
@@ -232,7 +232,7 @@ Returns a class variable given a basic type name and a class variable name. If t
 
 Examples:
 
-  void* class_var = env->get_class_var_by_index(env, "MyClass", "$VAR");
+  void* class_var = env->get_class_var(env, stack, "MyClass", "$VAR");
 
 =head2 get_class_method
 
@@ -242,7 +242,7 @@ Returns a class method given a basic type name and a method name. If the class m
 
 Examples:
 
-  void* method = env->get_class_method(env, "Foo", "get");
+  void* method = env->get_class_method(env, stack, "Foo", "get");
 
 =head2 get_instance_method
 
@@ -252,7 +252,7 @@ Gets an instance method address by the object and the method name. If the instan
 
 Examples:
 
-  void* method = env->get_instance_method(env, object, "get");
+  void* method = env->get_instance_method(env, stack, object, "get");
 
 =head2 new_object_no_mortal
 
@@ -1440,7 +1440,7 @@ Returns an instance method given a basic type name and a method name. If the ins
 
 Examples:
   
-  void* method = env->get_instance_method_static(env, "Foo", "get");
+  void* method = env->get_instance_method_static(env, stack, "Foo", "get");
 
 =head2 get_bool_object_value
 
@@ -1734,7 +1734,7 @@ Returns a method given a basic type name and a method name. If the method does n
 
 Examples:
 
-  void* method = env->get_method_by_index(env, "Foo", "get");
+  void* method = env->get_method(env, stack, "Foo", "get");
 
 =head2 strerror_nolen
 
