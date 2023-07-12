@@ -401,7 +401,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char* dest = (char*)env->get_chars(env, stack, obj_dest);
   int32_t dest_length = env->length(env, stack, obj_dest);
-  int32_t dest_elem_size = env->get_elem_width(env, stack, obj_dest);
+  int32_t dest_elem_size = env->get_elem_size(env, stack, obj_dest);
   int32_t dest_byte_length = dest_elem_size * dest_length;
   
   if (!(obj_dest_offset + length <= dest_byte_length)) {
@@ -410,7 +410,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* source = env->get_chars(env, stack, obj_source);
   int32_t source_length = env->length(env, stack, obj_source);
-  int32_t source_elem_size = env->get_elem_width(env, stack, obj_source);
+  int32_t source_elem_size = env->get_elem_size(env, stack, obj_source);
   int32_t source_byte_length = source_elem_size * source_length;
   
   if (!(obj_source_offset + length <= source_byte_length)) {
@@ -460,7 +460,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char* dest = (char*)env->get_chars(env, stack, obj_dest);
   int32_t dest_length = env->length(env, stack, obj_dest);
-  int32_t dest_elem_size = env->get_elem_width(env, stack, obj_dest);
+  int32_t dest_elem_size = env->get_elem_size(env, stack, obj_dest);
   int32_t dest_byte_length = dest_elem_size * dest_length;
   
   if (!(obj_dest_offset + length <= dest_byte_length)) {
@@ -469,7 +469,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   const char* source = env->get_chars(env, stack, obj_source);
   int32_t source_length = env->length(env, stack, obj_source);
-  int32_t source_elem_size = env->get_elem_width(env, stack, obj_source);
+  int32_t source_elem_size = env->get_elem_size(env, stack, obj_source);
   int32_t source_byte_length = source_elem_size * source_length;
   
   if (!(obj_source_offset + length <= source_byte_length)) {

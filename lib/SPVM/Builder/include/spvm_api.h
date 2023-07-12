@@ -165,7 +165,7 @@ const char* SPVM_API_get_object_basic_type_name(SPVM_ENV* env, SPVM_VALUE* stack
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_object_basic_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
 // Get array information
-int32_t SPVM_API_get_elem_width(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array);
+int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array);
 
 // Get and set array element
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array);

@@ -195,7 +195,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->is_type != &env_array[176]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->is_type_by_name != &env_array[177]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->elem_isa != &env_array[178]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_elem_width != &env_array[179]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_elem_size != &env_array[179]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_type_name_no_mortal != &env_array[180]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_type_name != &env_array[181]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_compile_type_name_no_mortal != &env_array[182]) { stack[0].ival = 0; return 0; }

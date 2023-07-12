@@ -197,7 +197,7 @@
       176 is_type
       177 is_type_by_name
       178 elem_isa
-      179 get_elem_width
+      179 get_elem_size
       180 get_type_name_no_mortal
       181 get_type_name
       182 get_compile_type_name_no_mortal
@@ -286,9 +286,6 @@
       +  void* (*new_pointer_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
       -  void* (*get_compile_type_name_raw)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t dimension, int32_t flag);
       +  void* (*get_compile_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t dimension, int32_t flag);
-
-      -  int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
-      +  int32_t (*get_elem_width)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
 
     * The following methods in the Env class were renamed.
     

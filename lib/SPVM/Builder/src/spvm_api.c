@@ -276,7 +276,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_is_type,
     SPVM_API_is_type_by_name,
     SPVM_API_elem_isa,
-    SPVM_API_get_elem_width,
+    SPVM_API_get_elem_size,
     SPVM_API_get_type_name_no_mortal,
     SPVM_API_get_type_name,
     SPVM_API_get_compile_type_name_no_mortal,
@@ -2094,7 +2094,7 @@ int32_t SPVM_API_is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT*
   return is_pointer_class;
 }
 
-int32_t SPVM_API_get_elem_width(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array) {
+int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -3364,7 +3364,7 @@ SPVM_OBJECT* SPVM_API_new_array_proto_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
     return NULL;
   }
   
-  size_t element_size = SPVM_API_get_elem_width(env, stack, array);
+  size_t element_size = SPVM_API_get_elem_size(env, stack, array);
   
   size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + element_size * (length + 1);
   
@@ -3846,7 +3846,7 @@ SPVM_OBJECT* SPVM_API_copy_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     const char* object_bytes = (const char*)SPVM_API_get_elems_byte(env, stack, object);
     char* new_object_bytes = (char*)SPVM_API_get_elems_byte(env, stack, new_object);
     
-    size_t element_size = SPVM_API_get_elem_width(env, stack, object);
+    size_t element_size = SPVM_API_get_elem_size(env, stack, object);
     
     memcpy(new_object_bytes, object_bytes, element_size * length);
   }

@@ -276,7 +276,7 @@ struct spvm_env {
   int32_t (*is_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
   int32_t (*is_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);
   int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
-  int32_t (*get_elem_width)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+  int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   void* (*get_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void* (*get_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void* (*get_compile_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t dimension, int32_t flag);

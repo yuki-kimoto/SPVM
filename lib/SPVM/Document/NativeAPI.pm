@@ -1468,9 +1468,9 @@ If the object is a multi numeric array, returns 1, otherwise returns 0.
 
 If the object is C<NULL>, returns 0.
 
-=head2 get_elem_width
+=head2 get_elem_size
 
-  int32_t (*get_elem_width)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+  int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
 
 Gets the byte size of the element of the array.
 
@@ -2027,7 +2027,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   176 is_type
   177 is_type_by_name
   178 elem_isa
-  179 get_elem_width
+  179 get_elem_size
   180 get_type_name_no_mortal
   181 get_type_name
   182 get_compile_type_name_no_mortal
