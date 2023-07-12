@@ -442,9 +442,9 @@ void SPVM_API_cleanup_env(SPVM_ENV* env, SPVM_VALUE* stack){
       
       SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_BASIC_TYPE_get_class_var_by_index(runtime, basic_type, class_var_index);
       
-      void* class_var_basic_type = env->api->class_var->get_basic_type(runtime, class_var);
-      int32_t class_var_type_dimension = env->api->class_var->get_type_dimension(runtime, class_var);
-      int32_t class_var_type_flag = env->api->class_var->get_type_flag(runtime, class_var);
+      SPVM_RUNTIME_BASIC_TYPE* class_var_basic_type = class_var->basic_type;
+      int32_t class_var_type_dimension = class_var->type_dimension;
+      int32_t class_var_type_flag = class_var->type_flag;
       
       int32_t class_var_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, class_var_basic_type, class_var_type_dimension, class_var_type_flag);
       if (class_var_type_is_object) {
