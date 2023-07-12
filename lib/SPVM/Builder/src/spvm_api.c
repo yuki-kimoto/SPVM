@@ -115,7 +115,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_basic_type_id,
     SPVM_API_get_field,
     NULL, // reserved17,
-    SPVM_API_get_class_var_by_index,
+    SPVM_API_get_class_var,
     SPVM_API_get_class_method,
     SPVM_API_get_instance_method,
     SPVM_API_new_object_no_mortal,
@@ -296,7 +296,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_field_static,
     SPVM_API_items,
     SPVM_API_call_instance_method_static_by_name,
-    SPVM_API_get_method_by_index,
+    SPVM_API_get_method,
     SPVM_API_strerror_nolen,
     SPVM_API_strerror_string_nolen,
     SPVM_API_get_compile_type_name_no_mortal,
@@ -3632,7 +3632,7 @@ SPVM_RUNTIME_FIELD* SPVM_API_get_field_static(SPVM_ENV* env, SPVM_VALUE* stack, 
   return field;
 }
 
-SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var_by_index(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name) {
+SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
   
@@ -3645,7 +3645,7 @@ SPVM_RUNTIME_CLASS_VAR* SPVM_API_get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
   return class_var;
 }
 
-SPVM_RUNTIME_METHOD* SPVM_API_get_method_by_index(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
+SPVM_RUNTIME_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
   
