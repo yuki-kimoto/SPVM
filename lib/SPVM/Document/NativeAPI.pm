@@ -795,7 +795,7 @@ Examples:
 
 =head2 new_object_by_name
 
-  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"new_object"> Native API, but you can specify basic type name directly.
 
@@ -811,7 +811,7 @@ Examples:
 
   void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, int8_t value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_field_byte"> Native API, but you can specify field name directly.
 
@@ -827,7 +827,7 @@ Examples:
 
   void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, int16_t value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_field_short"> Native API, but you can specify field name directly.
 
@@ -843,7 +843,7 @@ Examples:
 
   void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, int32_t value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_field_int"> Native API, but you can specify field name directly.
 
@@ -859,7 +859,7 @@ Examples:
 
   void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, int64_t value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_field_long"> Native API, but you can specify field name directly.
 
@@ -875,7 +875,7 @@ Examples:
 
   void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, float value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_field_float"> Native API, but you can specify field name directly.
 
@@ -891,7 +891,7 @@ Examples:
 
   void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, double value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_field_double"> Native API, but you can specify field name directly.
 
@@ -907,7 +907,7 @@ Examples:
 
   void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name, void* value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_field_object"> Native API, but you can specify field name directly.
 
@@ -923,7 +923,7 @@ Examples:
 
   int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_field_byte"> Native API, but you can specify field name directly.
 
@@ -939,7 +939,7 @@ Examples:
 
   int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_field_short"> Native API, but you can specify field name directly.
 
@@ -955,7 +955,7 @@ Examples:
 
   int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_field_int"> Native API, but you can specify field name directly.
 
@@ -971,7 +971,7 @@ Examples:
 
   int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_field_long"> Native API, but you can specify field name directly.
 
@@ -987,7 +987,7 @@ Examples:
 
   float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_field_float"> Native API, but you can specify field name directly.
 
@@ -1003,7 +1003,7 @@ Examples:
 
   double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_field_double"> Native API, but you can specify field name directly.
 
@@ -1019,7 +1019,7 @@ Examples:
 
   void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_field_object"> Native API, but you can specify field name directly.
 
@@ -1035,7 +1035,7 @@ Examples:
 
   void (*set_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name, int8_t value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_class_var_byte"> Native API, but you can specify the basic type name directly.
 
@@ -1051,7 +1051,7 @@ Examples:
 
   void (*set_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name, int16_t value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_class_var_short"> Native API, but you can specify the basic type name directly.
 
@@ -1067,7 +1067,7 @@ Examples:
 
   void (*set_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name, int32_t value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_class_var_int"> Native API, but you can specify the basic type name directly.
 
@@ -1083,7 +1083,7 @@ Examples:
 
   void (*set_class_var_long_by_name)(SPVM_ENV* env
     const char* basic_type_name, const char* class_var_name, int64_t value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_class_var_long"> Native API, but you can specify the basic type name directly.
 
@@ -1099,7 +1099,7 @@ Examples:
 
   void (*set_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name, float value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_class_var_float"> Native API, but you can specify the basic type name directly.
 
@@ -1115,7 +1115,7 @@ Examples:
 
   void (*set_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name, double value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_class_var_double"> Native API, but you can specify the basic type name directly.
 
@@ -1131,7 +1131,7 @@ Examples:
 
   void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name, void* value,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"set_class_var_object"> Native API, but you can specify the basic type name directly.
 
@@ -1147,7 +1147,7 @@ Examples:
 
   int8_t (*get_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_class_var_byte"> Native API, but you can specify the basic type name directly.
 
@@ -1163,7 +1163,7 @@ Examples:
 
   int16_t (*get_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_class_var_short"> Native API, but you can specify the basic type name directly.
 
@@ -1179,7 +1179,7 @@ Examples:
 
   int32_t (*get_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_class_var_int"> Native API, but you can specify the basic type name directly.
 
@@ -1195,7 +1195,7 @@ Examples:
 
   int64_t (*get_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_class_var_long"> Native API, but you can specify the basic type name directly.
 
@@ -1211,7 +1211,7 @@ Examples:
 
   float (*get_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_class_var_float"> Native API, but you can specify the basic type name directly.
 
@@ -1227,7 +1227,7 @@ Examples:
 
   double (*get_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_class_var_double"> Native API, but you can specify the basic type name directly.
 
@@ -1243,7 +1243,7 @@ Examples:
 
   void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     const char* basic_type_name, const char* class_var_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as the L</"get_class_var_object"> Native API, but you can specify the basic type name directly.
 
@@ -1257,7 +1257,7 @@ Examples:
 
 =head2 call_class_method_by_name
 
-  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 Calls a class method given the basic type name and method name.
 
@@ -1276,7 +1276,7 @@ Examples:
 
 =head2 call_instance_method_by_name
 
-  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t items, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 Calls an instance method given the method name.
 
@@ -1284,7 +1284,7 @@ Calls an instance method given the method name.
 
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
     void* object, const char* field_name,
-    int32_t* error, const char* func_name, const char* file, int32_t line);
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 =head2 dump_no_mortal
 
@@ -1552,7 +1552,7 @@ Examples:
 
 =head2 new_pointer_object_by_name
 
-  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 This is the same as L</"new_pointer"> function, but you can specify basic type name directly.
 
@@ -1598,7 +1598,7 @@ The same as the L</"strerror"> function, but return a C<string> object.
 
 =head2 get_basic_type_id_by_name
 
-  int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
+  int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 Gets the basic_type id by the basic_type name.
 
@@ -1626,7 +1626,7 @@ Examples:
 
 =head2 call_instance_method_static_by_name
 
-  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 Calls an instance method by the basic type name and the method name.
 
@@ -1792,7 +1792,7 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
 
 =head2 get_basic_type_by_name
 
-  void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error, const char* func_name, const char* file, int32_t line);
+  void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 =head2 get_basic_type_by_id
 
