@@ -256,7 +256,7 @@ struct spvm_env {
   int32_t (*is_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_numeric_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*is_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+  int32_t (*get_elem_width)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   void* (*new_array_proto_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
   void* (*new_array_proto)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
   void* (*copy_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
