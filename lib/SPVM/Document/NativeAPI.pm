@@ -398,7 +398,7 @@ If an excetpion is thrown because the class variable does not exist or other err
 Examples:
 
   int32_t error_id = 0;
-  int8_t value = env->get_class_var_byte_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error_id, __func__, __FILE__, __LINE__);
+  int8_t value = env->get_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$BYTE_VALUE", &error_id, __func__, __FILE__, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 get_class_var_long_by_name
@@ -589,11 +589,387 @@ The same as L</"set_class_var_object_by_name">.
 
   void* (*get_field_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
 
-Returns a field given an object and field name. If the field does not exist, returns NULL.
+Gets a L<field|SPVM::Document::NativeAPI::Field> object by its basic type name of the object and field name, and returns it.
+
+If the field does not exist, returns NULL.
 
 Examples:
 
   void* field = env->get_field(env, stack, object, "x");
+
+=head2 get_field_static
+
+  void* (*get_field_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
+
+Gets a L<field|SPVM::Document::NativeAPI::Field> object by its basic type name and field name, and returns it.
+
+If the field does not exist, returns NULL.
+
+Examples:
+
+  void* field = env->get_field_static(env, stack, "Point", "x");
+
+=head2 get_field_byte
+
+  int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+
+Gets the value of a field of the byte type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_field_short
+
+  int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+
+Gets the value of a field of the short type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_field_int
+
+  int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+
+Gets the value of a field of the int type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_field_long
+
+  int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+
+Gets the value of a field of the long type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_field_float
+
+  float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+
+Gets the value of a field of the float type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_field_double
+
+  double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+
+Gets the value of a field of the double type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_field_object
+
+  void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+
+Gets the value of a field of the object type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 get_field_string
+
+The same as L<"get_field_object">.
+
+=head2 set_field_byte
+
+  void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
+
+Sets the value of a field of the byte type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 set_field_short
+
+  void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
+
+Sets the value of a field of the short type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 set_field_int
+
+  void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
+
+Sets the value of a field of the int type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 set_field_long
+
+  void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
+
+Sets the value of a field of the long type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 set_field_float
+
+  void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
+
+Sets the value of a field of the float type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 set_field_double
+
+  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
+
+Sets the value of a field of the double type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 set_field_object
+
+  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
+
+Sets the value of a field of the object type.
+
+The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
+
+=head2 set_field_string
+
+The same as L<"set_field_object">.
+
+=head2 get_field_byte_by_name
+
+  int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a field of the byte type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_field_short_by_name
+
+  int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a field of the short type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_field_int_by_name
+
+  int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a field of the int type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_field_long_by_name
+
+  int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a field of the long type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_field_float_by_name
+
+  float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a field of the float type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_field_double_by_name
+
+  double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a field of the double type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_field_object_by_name
+
+  void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the value of a field of the object type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 get_field_string_by_name
+
+The same as L</"get_field_object_by_name">.
+
+=head2 set_field_byte_by_name
+
+  void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, int8_t value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a field of the byte type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_field_short_by_name
+
+  void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, int16_t value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a field of the short type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_field_short_by_name(env, stack, object, "short_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_field_int_by_name
+
+  void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, int32_t value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a field of the int type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_field_int_by_name(env, stack, object, "int_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_field_long_by_name
+
+  void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, int64_t value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a field of the long type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_field_long_by_name(env, stack, object, "long_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_field_float_by_name
+
+  void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, float value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a field of the float type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_field_float_by_name(env, stack, object, "float_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_field_double_by_name
+
+  void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, double value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a field of the double type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_field_double_by_name(env, stack, object, "double_value", 13, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_field_object_by_name
+
+  void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
+    void* object, const char* field_name, void* value,
+    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Sets the value of a field of the object type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
+Examples:
+
+  int32_t error_id = 0;
+  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
+
+=head2 set_field_string_by_name
+
+The same as L</"set_field_object_by_name">.
+
+=head2 get_method
+
+  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
+
+Returns a method given a basic type name and a method name. If the method does not exists, returns NULL.
+
+Examples:
+
+  void* method = env->get_method(env, stack, "Foo", "get");
 
 =head2 get_class_method
 
@@ -934,90 +1310,6 @@ Examples:
 
   env->get_elem_object(env, stack, array, 3, object);
 
-=head2 get_field_byte
-
-  int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-
-If an object and a field are specified, the byte field value will be returned as a C language int8_t type value. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 get_field_short
-
-  int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-
-If an object and a field, the value of the short type field will be returned as the int16_t type value of C language. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 get_field_int
-
-  int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-
-If an object and a field are specified, the value of the int type field will be returned as a C language int32_t type value. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 get_field_long
-
-  int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-
-If an object and a field, the value of the long type field will be returned as the value of int64_t type of C language. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 get_field_float
-
-  float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-
-If an object and a field, the value of the float type field will be returned as a C language float type value. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 get_field_double
-
-  double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-
-If an object and a field, the value of the double type field will be returned as a double type value in C language. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 get_field_object
-
-  void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-
-If an object and a field, the value of the object type field is returned as a void* type value in C language. The field must be a valid field obtained with the L</"get_field_by_index"> Native API If the field is a weak reference, it will be removed.
-
-=head2 set_field_byte
-
-  void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
-
-If an object and a field is given, the value is set to the byte type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 set_field_short
-
-  void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
-
-If an object and a field is given, the value is set to the short type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 set_field_int
-
-  void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
-
-If an object and a field is given, the value is set to the int type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 set_field_long
-
-  void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
-
-If an object and a field is given, the value is set to the long type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 set_field_float
-
-  void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
-
-If an object and a field is given, the value is set to the float type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 set_field_double
-
-  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
-
-If an object and a field is given, the value is set to the double type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API
-
-=head2 set_field_object
-
-  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
-
-An object and a field Specifies the ID and the value of the field and set the value to the object type field. The field must be a valid field obtained with the L</"get_field_by_index"> Native API After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
-
 =head2 get_pointer
 
   void* (*get_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object);
@@ -1216,230 +1508,6 @@ Examples:
 
   int32_t error_id = 0;
   void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 set_field_byte_by_name
-
-  void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, int8_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_field_byte"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  env->set_field_byte_by_name(env, stack, object, "byte_value", 13, &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 set_field_short_by_name
-
-  void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, int16_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_field_short"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  env->set_field_short_by_name(env, stack, object, "short_value", 13, &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 set_field_int_by_name
-
-  void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, int32_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_field_int"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  env->set_field_int_by_name(env, stack, object, "int_value", 13, &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 set_field_long_by_name
-
-  void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, int64_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_field_long"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  env->set_field_long_by_name(env, stack, object, "long_value", 13, &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 set_field_float_by_name
-
-  void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, float value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_field_float"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  env->set_field_float_by_name(env, stack, object, "float_value", 13, &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 set_field_double_by_name
-
-  void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, double value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_field_double"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  env->set_field_double_by_name(env, stack, object, "double_value", 13, &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 set_field_object_by_name
-
-  void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, void* value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"set_field_object"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  env->set_field_object_by_name(env, stack, object_simple, "object_value", object_minimal, &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 get_field_byte_by_name
-
-  int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_field_byte"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  int8_t byte_value = env->get_field_byte_by_name(env, stack, object, "byte_value", &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 get_field_short_by_name
-
-  int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_field_short"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  int8_t short_value = env->get_field_short_by_name(env, stack, object, "short_value", &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 get_field_int_by_name
-
-  int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_field_int"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  int8_t int_value = env->get_field_int_by_name(env, stack, object, "int_value", &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 get_field_long_by_name
-
-  int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_field_long"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  int8_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 get_field_float_by_name
-
-  float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_field_float"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  int8_t float_value = env->get_field_float_by_name(env, stack, object, "float_value", &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 get_field_double_by_name
-
-  double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_field_double"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  int8_t double_value = env->get_field_double_by_name(env, stack, object, "double_value", &error_id, __func__, __FILE__, __LINE__);
-  if (error_id) { return error_id; }
-
-=head2 get_field_object_by_name
-
-  void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
-
-This is the same as the L</"get_field_object"> Native API, but you can specify field name directly.
-
-If function is succeeded, C<error> is get to 0. If a exception occurs, C<error> is get to 1. 
-
-Examples:
-
-  int32_t error_id = 0;
-  void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", "TestCase::Minimal", &error_id, __func__, __FILE__, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 call_class_method_by_name
@@ -1751,16 +1819,6 @@ If the object is C<NULL>, returns 0.
 
 The same as the L</"strerror"> function, but return a C<string> object.
 
-=head2 get_field_static
-
-  void* (*get_field_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
-
-Gets the field given an basic type name and field name. If the field does not exist, a value less than 0 is returned.
-
-Examples:
-
-  void* field = env->get_field_static(env, stack, "Point", "x");
-
 =head2 call_instance_method_static_by_name
 
   void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
@@ -1778,16 +1836,6 @@ Examples:
     if (error_id) { return error_id; }
     output = stack[0].ival;
   }
-
-=head2 get_method_by_index
-
-  void* (*get_method_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
-
-Returns a method given a basic type name and a method name. If the method does not exists, returns NULL.
-
-Examples:
-
-  void* method = env->get_method(env, stack, "Foo", "get");
 
 =head2 strerror_nolen
 
