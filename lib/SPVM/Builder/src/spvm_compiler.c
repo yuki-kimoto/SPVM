@@ -523,6 +523,10 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   return die_error_id;
 }
 
+int32_t SPVM_COMPILER_compile_diff(SPVM_COMPILER* compiler, const char* basic_type_name, SPVM_RUNTIME* current_runtime) {
+  
+}
+
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
