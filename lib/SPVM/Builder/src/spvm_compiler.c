@@ -740,9 +740,13 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime->basic_types[basic_type_id] = runtime_basic_type;
   }
   
+  runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, runtime->basic_types_length);
+  
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+    
+    SPVM_HASH_set(runtime->basic_type_symtable, basic_type->name, strlen(basic_type->name), runtime_basic_type);
     
     const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
     memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
@@ -911,13 +915,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     if (basic_type->required_method) {
       runtime_basic_type->required_method = &runtime_basic_type->methods[basic_type->required_method->index];
     }
-  }
-  
-  // Runtime basic type symtable
-  runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, runtime->basic_types_length);
-  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-    SPVM_HASH_set(runtime->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
   }
   
   compiler->current_runtime = runtime;
