@@ -75,6 +75,33 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
   
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
+    
+    for (int32_t constant_string_index = 0; constant_string_index < runtime_basic_type->constant_strings_length; constant_string_index++) {
+      SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_basic_type->constant_strings[constant_string_index];
+      
+      const char* constant_string_value = runtime_constant_string->value;
+      int32_t constant_string_length = runtime_constant_string->length;
+      SPVM_STRING* constant_string = SPVM_STRING_new(compiler, constant_string_value, constant_string_length);
+      
+      SPVM_STRING* found_constant_string = SPVM_HASH_get(compiler->constant_string_symtable, constant_string_value, constant_string_length);
+      if (!found_constant_string) {
+        SPVM_HASH_set(compiler->constant_string_symtable, constant_string_value, constant_string_length, constant_string);
+      }
+    }
+  }
+  
+  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
+    SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+    
+    basic_type->name = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name));
+    
+    SPVM_LIST_push(compiler->basic_types, basic_type);
+    SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
+  }
+  
+  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
     
     for (int32_t constant_string_index = 0; constant_string_index < runtime_basic_type->constant_strings_length; constant_string_index++) {
@@ -92,8 +119,6 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
     
     basic_type->id = runtime_basic_type->id;
     basic_type->category = runtime_basic_type->category;
-    
-    basic_type->name = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name));
     
     if (runtime_basic_type->module_rel_file) {
       basic_type->module_rel_file = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->module_rel_file, strlen(runtime_basic_type->module_rel_file));
