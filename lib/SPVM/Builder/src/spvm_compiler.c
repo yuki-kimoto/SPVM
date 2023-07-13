@@ -82,8 +82,12 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
       
       const char* string_value = runtime_constant_string->value;
       int32_t string_length = runtime_constant_string->length;
-      SPVM_STRING* constant_string = SPVM_STRING_new(compiler, string_value, string_length);
-      SPVM_HASH_set(compiler->string_symtable, string_value, string_length, constant_string);
+      SPVM_STRING* string = SPVM_STRING_new(compiler, string_value, string_length);
+      
+      SPVM_STRING* found_string = SPVM_HASH_get(compiler->string_symtable, string_value, string_length);
+      if (!found_string) {
+        SPVM_HASH_set(compiler->string_symtable, string_value, string_length, string);
+      }
     }
     
     /*
