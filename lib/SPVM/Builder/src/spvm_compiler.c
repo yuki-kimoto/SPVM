@@ -73,6 +73,192 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
+  for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
+    SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
+    
+    for (int32_t constant_string_index = 0; constant_string_index < runtime_basic_type->constant_strings_length; constant_string_index++) {
+      SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_basic_type->constant_strings[constant_string_index];
+      
+      const char* string_value = runtime_constant_string->value;
+      int32_t string_length = runtime_constant_string->length;
+      SPVM_STRING* constant_string = SPVM_STRING_new(compiler, string_value, string_length);
+      SPVM_HASH_set(compiler->string_symtable, string_value, string_length, constant_string);
+    }
+    
+    /*
+    
+    basic_type->id = runtime_basic_type->id;
+    basic_type->category = runtime_basic_type->category;
+    
+    SPVM_STRING* basic_type_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->name, strlen(basic_type->name));
+    assert(basic_type_string->index >= 0);
+    runtime_basic_type->name = runtime_basic_type->constant_strings[basic_type_string->index].value;
+    
+    if (basic_type->module_rel_file) {
+      SPVM_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
+      runtime_basic_type->module_rel_file = runtime_basic_type->constant_strings[basic_type_rel_file_string->index].value;
+    }
+    
+    if (basic_type->module_dir) {
+      SPVM_STRING* basic_type_dir_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
+      runtime_basic_type->module_dir = runtime_basic_type->constant_strings[basic_type_dir_string->index].value;
+    }
+    
+    if (basic_type->version_string) {
+      SPVM_STRING* basic_type_version_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
+      runtime_basic_type->version_string = runtime_basic_type->constant_strings[basic_type_version_string->index].value;
+    }
+    
+    runtime_basic_type->is_anon = basic_type->is_anon;
+    
+    runtime_basic_type->is_pointer = basic_type->is_pointer;
+    
+    if (basic_type->parent) {
+      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent->name, strlen(basic_type->parent->name));
+      runtime_basic_type->parent = &runtime_basic_types[parent_basic_type->id];
+    }
+    
+    runtime_basic_type->fields_size = basic_type->fields_size;
+    
+    if (basic_type->init_method) {
+      runtime_basic_type->init_method = &runtime_basic_type->methods[basic_type->init_method->index];
+    }
+    
+    if (basic_type->destructor_method) {
+      runtime_basic_type->destructor_method = &runtime_basic_type->methods[basic_type->destructor_method->index];
+    }
+    
+    if (basic_type->required_method) {
+      runtime_basic_type->required_method = &runtime_basic_type->methods[basic_type->required_method->index];
+    }
+    
+    const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
+    memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
+    runtime_basic_type->string_pool = runtime_string_pool;
+    runtime_basic_type->string_pool_length = basic_type->string_pool->length;
+    
+    SPVM_RUNTIME_STRING* runtime_constant_strings = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_STRING) * basic_type->constant_strings->length);
+    for (int32_t constant_string_index = 0; constant_string_index < basic_type->constant_strings->length; constant_string_index++) {
+      SPVM_STRING* constant_string = SPVM_LIST_get(basic_type->constant_strings, constant_string_index);
+      SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_constant_strings[constant_string_index];
+      runtime_constant_string->value = &runtime_basic_type->string_pool[constant_string->string_pool_index];
+      runtime_constant_string->length = constant_string->length;
+    }
+    runtime_basic_type->constant_strings = runtime_constant_strings;
+    runtime_basic_type->constant_strings_length = basic_type->constant_strings->length;
+    
+    if (basic_type->class_vars->length > 0) {
+      SPVM_RUNTIME_CLASS_VAR* runtime_class_vars = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_CLASS_VAR) * basic_type->class_vars->length);
+      for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
+        SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
+        SPVM_RUNTIME_CLASS_VAR* runtime_class_var = &runtime_class_vars[class_var_index];
+        
+        runtime_class_var->index = class_var->index;
+        runtime_class_var->basic_type = &runtime_basic_types[class_var->type->basic_type->id];
+        runtime_class_var->type_dimension = class_var->type->dimension;
+        runtime_class_var->type_flag = class_var->type->flag;
+        runtime_class_var->current_basic_type = &runtime_basic_types[class_var->current_basic_type->id];
+        
+        SPVM_STRING* class_var_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->name, strlen(class_var->name));
+        runtime_class_var->name = runtime_basic_type->constant_strings[class_var_name_string->index].value;
+      }
+      runtime_basic_type->class_vars = runtime_class_vars;
+      runtime_basic_type->class_vars_length = basic_type->class_vars->length;
+    }
+    
+    if (basic_type->fields->length > 0) {
+      SPVM_RUNTIME_FIELD* runtime_fields = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_FIELD) * basic_type->fields->length);
+      for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+        SPVM_RUNTIME_FIELD* runtime_field = &runtime_fields[field_index];
+        
+        runtime_field->index = field->index;
+        runtime_field->offset = field->offset;
+        runtime_field->basic_type = &runtime_basic_types[field->type->basic_type->id];
+        runtime_field->type_dimension = field->type->dimension;
+        runtime_field->type_flag = field->type->flag;
+        runtime_field->current_basic_type = &runtime_basic_types[field->current_basic_type->id];
+        
+        SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
+        runtime_field->name = runtime_basic_type->constant_strings[field_name_string->index].value;
+      }
+      runtime_basic_type->fields = runtime_fields;
+      runtime_basic_type->fields_length = basic_type->fields->length;
+    }
+    
+    if (basic_type->methods->length > 0) {
+      SPVM_RUNTIME_METHOD* runtime_methods = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_METHOD) * basic_type->methods->length);
+      for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
+        
+        SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+        SPVM_RUNTIME_METHOD* runtime_method = &runtime_methods[method_index];
+        
+        assert(method->opcode_list->length > 0);
+        
+        runtime_method->opcodes = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_OPCODE) * method->opcode_list->length);
+        memcpy(runtime_method->opcodes, method->opcode_list->values, sizeof(SPVM_OPCODE) * method->opcode_list->length);
+        runtime_method->opcodes_length = method->opcode_list->length;
+        
+        runtime_method->index = method->index;
+        runtime_method->current_basic_type = &runtime_basic_types[method->current_basic_type->id];
+        runtime_method->is_class_method = method->is_class_method;
+        runtime_method->is_init = method->is_init;
+        runtime_method->is_anon = method->is_anon;
+        runtime_method->byte_vars_width  = method->byte_vars_width;
+        runtime_method->short_vars_width  = method->short_vars_width;
+        runtime_method->int_vars_width  = method->int_vars_width;
+        runtime_method->long_vars_width  = method->long_vars_width;
+        runtime_method->float_vars_width  = method->float_vars_width;
+        runtime_method->double_vars_width  = method->double_vars_width;
+        runtime_method->object_vars_width = method->object_vars_width;
+        runtime_method->ref_vars_width = method->ref_vars_width;
+        runtime_method->mortal_stack_length  = method->mortal_stack_length;
+        runtime_method->return_basic_type = &runtime_basic_types[method->return_type->basic_type->id];
+        runtime_method->return_type_dimension = method->return_type->dimension;
+        runtime_method->return_type_flag = method->return_type->flag;
+        runtime_method->is_native = method->is_native;
+        runtime_method->is_precompile = method->is_precompile;
+        runtime_method->is_destructor = method->is_destructor;
+        runtime_method->is_required = method->is_required;
+        runtime_method->is_enum = method->is_enum;
+        
+        SPVM_STRING* method_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, method->name, strlen(method->name));
+        runtime_method->name = runtime_basic_type->constant_strings[method_name_string->index].value;
+        
+        if (method->args_length > 0) {
+          runtime_method->args = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_ARG) * method->args_length);
+          runtime_method->args_length = method->args_length;
+          for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+            SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
+            SPVM_RUNTIME_ARG* runtime_arg = &runtime_method->args[arg_index];
+            
+            runtime_arg->index = arg_index;
+            runtime_arg->basic_type = &runtime_basic_types[arg_var_decl->type->basic_type->id];
+            runtime_arg->type_dimension = arg_var_decl->type->dimension;
+            runtime_arg->type_flag = arg_var_decl->type->flag;
+          }
+        }
+        
+        runtime_method->required_args_length = method->required_args_length;
+      }
+      runtime_basic_type->methods = runtime_methods;
+      runtime_basic_type->methods_length = basic_type->methods->length;
+    }
+    
+    if (basic_type->anon_basic_types->length > 0) {
+      SPVM_RUNTIME_BASIC_TYPE* runtime_anon_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * basic_type->anon_basic_types->length);      
+      for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type->anon_basic_types->length; anon_basic_type_index++) {
+        SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_type_index);
+        runtime_anon_basic_types[anon_basic_type_index] = runtime_basic_types[anon_basic_type->id];
+      }
+      runtime_basic_type->anon_basic_types = runtime_anon_basic_types;
+      runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;
+    }
+    
+    */
+  }
+  
   compiler->current_runtime = runtime;
   
   return compiler;
@@ -543,8 +729,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime_basic_types[basic_type_id];
-
-    // New logic
+    
     const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
     memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
     runtime_basic_type->string_pool = runtime_string_pool;
@@ -560,7 +745,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     runtime_basic_type->constant_strings = runtime_constant_strings;
     runtime_basic_type->constant_strings_length = basic_type->constant_strings->length;
     
-    // New logic
     if (basic_type->class_vars->length > 0) {
       SPVM_RUNTIME_CLASS_VAR* runtime_class_vars = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_CLASS_VAR) * basic_type->class_vars->length);
       for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
@@ -579,7 +763,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->class_vars = runtime_class_vars;
       runtime_basic_type->class_vars_length = basic_type->class_vars->length;
     }
-
+    
     if (basic_type->fields->length > 0) {
       SPVM_RUNTIME_FIELD* runtime_fields = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_FIELD) * basic_type->fields->length);
       for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
@@ -660,8 +844,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     }
     
     if (basic_type->anon_basic_types->length > 0) {
-      SPVM_RUNTIME_BASIC_TYPE* runtime_anon_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * basic_type->anon_basic_types->length);
-      
+      SPVM_RUNTIME_BASIC_TYPE* runtime_anon_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * basic_type->anon_basic_types->length);      
       for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type->anon_basic_types->length; anon_basic_type_index++) {
         SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_type_index);
         runtime_anon_basic_types[anon_basic_type_index] = runtime_basic_types[anon_basic_type->id];
@@ -669,8 +852,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->anon_basic_types = runtime_anon_basic_types;
       runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;
     }
-
-    // Old logic
+    
     runtime_basic_type->id = basic_type->id;
     runtime_basic_type->category = basic_type->category;
     
