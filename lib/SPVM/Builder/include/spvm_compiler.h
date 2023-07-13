@@ -113,28 +113,45 @@ struct spvm_compiler {
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
+
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
+
+SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime);
+
 SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name);
+
 void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file);
+
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category);
+
 SPVM_BASIC_TYPE* SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, const char* basic_type_name);
+
 void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler);
+
 SPVM_RUNTIME* SPVM_COMPILER_new_object(SPVM_COMPILER* compiler);
+
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
 
 void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh);
 
 const char* SPVM_COMPILER_get_start_file(SPVM_COMPILER* compiler);
+
 void SPVM_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file);
+
 int32_t SPVM_COMPILER_get_start_line(SPVM_COMPILER* compiler);
+
 void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
 
 void SPVM_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir);
+
 int32_t SPVM_COMPILER_get_include_dirs_length(SPVM_COMPILER* compiler);
+
 const char* SPVM_COMPILER_get_include_dir(SPVM_COMPILER* compiler, int32_t index);
+
 void SPVM_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler);
 
 int32_t SPVM_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
+
 const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name);

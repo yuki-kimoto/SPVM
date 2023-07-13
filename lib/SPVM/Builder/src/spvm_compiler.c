@@ -70,7 +70,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   return compiler;
 }
 
-SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
+SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime) {
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
