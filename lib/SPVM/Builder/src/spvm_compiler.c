@@ -724,7 +724,12 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_COMPILER_compile(compiler, NULL);
   }
   
-  runtime->basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * compiler->basic_types->length);
+  SPVM_RUNTIME_BASIC_TYPE** current_runtime_basic_types = runtime->basic_types;
+  runtime->basic_types = SPVM_ALLOCATOR_alloc_memory_block_tmp(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * compiler->basic_types->length);
+  if (current_runtime_basic_types) {
+    memcpy(runtime->basic_types, current_runtime_basic_types, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * runtime->basic_types_length);
+    SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, current_runtime_basic_types);
+  }
   
   runtime->basic_types_length = compiler->basic_types->length;
   
