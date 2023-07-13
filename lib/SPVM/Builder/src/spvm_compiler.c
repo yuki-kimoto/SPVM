@@ -95,26 +95,23 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
     
     basic_type->name = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name));
     
+    if (runtime_basic_type->module_rel_file) {
+      basic_type->module_rel_file = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->module_rel_file, strlen(runtime_basic_type->module_rel_file));
+    }
+    
+    if (runtime_basic_type->module_dir) {
+      basic_type->module_dir = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->module_dir, strlen(runtime_basic_type->module_dir));
+    }
+    
+    if (runtime_basic_type->version_string) {
+      basic_type->version_string = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->version_string, strlen(runtime_basic_type->version_string));
+    }
+    
+    basic_type->is_anon = runtime_basic_type->is_anon;
+    
+    basic_type->is_pointer = runtime_basic_type->is_pointer;
+    
     /*
-    
-    if (basic_type->module_rel_file) {
-      SPVM_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
-      runtime_basic_type->module_rel_file = runtime_basic_type->constant_strings[basic_type_rel_file_string->index].value;
-    }
-    
-    if (basic_type->module_dir) {
-      SPVM_STRING* basic_type_dir_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_dir, strlen(basic_type->module_dir));
-      runtime_basic_type->module_dir = runtime_basic_type->constant_strings[basic_type_dir_string->index].value;
-    }
-    
-    if (basic_type->version_string) {
-      SPVM_STRING* basic_type_version_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->version_string, strlen(basic_type->version_string));
-      runtime_basic_type->version_string = runtime_basic_type->constant_strings[basic_type_version_string->index].value;
-    }
-    
-    runtime_basic_type->is_anon = basic_type->is_anon;
-    
-    runtime_basic_type->is_pointer = basic_type->is_pointer;
     
     if (basic_type->parent) {
       SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent->name, strlen(basic_type->parent->name));
