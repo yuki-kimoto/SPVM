@@ -39,6 +39,7 @@
 #include "spvm_module_file.h"
 
 #include "spvm_api.h"
+#include "spvm_api_runtime.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class_var.h"
@@ -74,7 +75,7 @@ SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime) {
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
     
     for (int32_t constant_string_index = 0; constant_string_index < runtime_basic_type->constant_strings_length; constant_string_index++) {
       SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_basic_type->constant_strings[constant_string_index];
@@ -91,7 +92,7 @@ SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime) {
   }
   
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
     
     basic_type->name = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name));
@@ -101,7 +102,7 @@ SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime) {
   }
   
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
     SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
     
     for (int32_t constant_string_index = 0; constant_string_index < runtime_basic_type->constant_strings_length; constant_string_index++) {
@@ -187,7 +188,7 @@ SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime) {
         runtime_method->opcodes_length = method->opcode_list->length;
         
         runtime_method->index = method->index;
-        runtime_method->current_basic_type = &runtime->basic_types[method->current_basic_type->id];
+        runtime_method->current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, method->current_basic_type->id);
         runtime_method->is_class_method = method->is_class_method;
         runtime_method->is_init = method->is_init;
         runtime_method->is_anon = method->is_anon;
@@ -200,7 +201,7 @@ SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime) {
         runtime_method->object_vars_width = method->object_vars_width;
         runtime_method->ref_vars_width = method->ref_vars_width;
         runtime_method->mortal_stack_length  = method->mortal_stack_length;
-        runtime_method->return_basic_type = &runtime->basic_types[method->return_type->basic_type->id];
+        runtime_method->return_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, method->return_type->basic_type->id);
         runtime_method->return_type_dimension = method->return_type->dimension;
         runtime_method->return_type_flag = method->return_type->flag;
         runtime_method->is_native = method->is_native;
@@ -220,7 +221,7 @@ SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime) {
             SPVM_RUNTIME_ARG* runtime_arg = &runtime_method->args[arg_index];
             
             runtime_arg->index = arg_index;
-            runtime_arg->basic_type = &runtime->basic_types[arg_var_decl->type->basic_type->id];
+            runtime_arg->basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, arg_var_decl->type->basic_type->id);
             runtime_arg->type_dimension = arg_var_decl->type->dimension;
             runtime_arg->type_flag = arg_var_decl->type->flag;
           }
@@ -248,7 +249,7 @@ SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime) {
       SPVM_RUNTIME_BASIC_TYPE* runtime_anon_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * basic_type->anon_basic_types->length);      
       for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type->anon_basic_types->length; anon_basic_type_index++) {
         SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_type_index);
-        runtime_anon_basic_types[anon_basic_type_index] = runtime->basic_types[anon_basic_type->id];
+        runtime_anon_basic_types[anon_basic_type_index] = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, anon_basic_type->id);
       }
       runtime_basic_type->anon_basic_types = runtime_anon_basic_types;
       runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;
@@ -729,7 +730,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = &runtime->basic_types[basic_type_id];
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
     
     const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
     memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
@@ -753,10 +754,10 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         SPVM_RUNTIME_CLASS_VAR* runtime_class_var = &runtime_class_vars[class_var_index];
         
         runtime_class_var->index = class_var->index;
-        runtime_class_var->basic_type = &runtime->basic_types[class_var->type->basic_type->id];
+        runtime_class_var->basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, class_var->type->basic_type->id);
         runtime_class_var->type_dimension = class_var->type->dimension;
         runtime_class_var->type_flag = class_var->type->flag;
-        runtime_class_var->current_basic_type = &runtime->basic_types[class_var->current_basic_type->id];
+        runtime_class_var->current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, class_var->current_basic_type->id);
         
         SPVM_STRING* class_var_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, class_var->name, strlen(class_var->name));
         runtime_class_var->name = runtime_basic_type->constant_strings[class_var_name_string->index].value;
@@ -773,10 +774,10 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         
         runtime_field->index = field->index;
         runtime_field->offset = field->offset;
-        runtime_field->basic_type = &runtime->basic_types[field->type->basic_type->id];
+        runtime_field->basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field->type->basic_type->id);
         runtime_field->type_dimension = field->type->dimension;
         runtime_field->type_flag = field->type->flag;
-        runtime_field->current_basic_type = &runtime->basic_types[field->current_basic_type->id];
+        runtime_field->current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field->current_basic_type->id);
         
         SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
         runtime_field->name = runtime_basic_type->constant_strings[field_name_string->index].value;
@@ -799,7 +800,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->opcodes_length = method->opcode_list->length;
         
         runtime_method->index = method->index;
-        runtime_method->current_basic_type = &runtime->basic_types[method->current_basic_type->id];
+        runtime_method->current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, method->current_basic_type->id);
         runtime_method->is_class_method = method->is_class_method;
         runtime_method->is_init = method->is_init;
         runtime_method->is_anon = method->is_anon;
@@ -812,7 +813,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->object_vars_width = method->object_vars_width;
         runtime_method->ref_vars_width = method->ref_vars_width;
         runtime_method->mortal_stack_length  = method->mortal_stack_length;
-        runtime_method->return_basic_type = &runtime->basic_types[method->return_type->basic_type->id];
+        runtime_method->return_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, method->return_type->basic_type->id);
         runtime_method->return_type_dimension = method->return_type->dimension;
         runtime_method->return_type_flag = method->return_type->flag;
         runtime_method->is_native = method->is_native;
@@ -832,7 +833,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             SPVM_RUNTIME_ARG* runtime_arg = &runtime_method->args[arg_index];
             
             runtime_arg->index = arg_index;
-            runtime_arg->basic_type = &runtime->basic_types[arg_var_decl->type->basic_type->id];
+            runtime_arg->basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, arg_var_decl->type->basic_type->id);
             runtime_arg->type_dimension = arg_var_decl->type->dimension;
             runtime_arg->type_flag = arg_var_decl->type->flag;
           }
@@ -848,7 +849,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       SPVM_RUNTIME_BASIC_TYPE* runtime_anon_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * basic_type->anon_basic_types->length);      
       for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type->anon_basic_types->length; anon_basic_type_index++) {
         SPVM_BASIC_TYPE* anon_basic_type = SPVM_LIST_get(basic_type->anon_basic_types, anon_basic_type_index);
-        runtime_anon_basic_types[anon_basic_type_index] = runtime->basic_types[anon_basic_type->id];
+        runtime_anon_basic_types[anon_basic_type_index] = *SPVM_API_RUNTIME_get_basic_type_by_id(runtime, anon_basic_type->id);
       }
       runtime_basic_type->anon_basic_types = runtime_anon_basic_types;
       runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;
@@ -882,7 +883,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     
     if (basic_type->parent) {
       SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent->name, strlen(basic_type->parent->name));
-      runtime_basic_type->parent = &runtime->basic_types[parent_basic_type->id];
+      runtime_basic_type->parent = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, parent_basic_type->id);
     }
     
     runtime_basic_type->fields_size = basic_type->fields_size;
@@ -903,7 +904,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   // Runtime basic type symtable
   runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, runtime->basic_types_length);
   for (int32_t basic_type_id = 0; basic_type_id < runtime->basic_types_length; basic_type_id++) {
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
+    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
     SPVM_HASH_set(runtime->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
   }
   
