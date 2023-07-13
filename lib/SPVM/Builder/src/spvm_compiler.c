@@ -910,10 +910,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_HASH_set(runtime->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);
   }
   
-  SPVM_ENV* env = SPVM_API_new_env();
-  
-  env->runtime = runtime;
-  
   compiler->current_runtime = runtime;
   
   return runtime;
