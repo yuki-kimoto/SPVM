@@ -381,6 +381,10 @@ sub compile {
     exit(255);
   }
   my $runtime = $compiler->build_runtime;
+  
+  # This is not needed, but check when build_runtime is called more than one.
+  $runtime = $compiler->build_runtime;
+  
   $self->runtime($runtime);
   
   $self->{finish_compile} = 1;
