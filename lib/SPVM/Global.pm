@@ -133,6 +133,7 @@ sub init_runtime {
     for my $include_dir (@{$BUILDER->include_dirs}) {
       $COMPILER->add_include_dir($include_dir);
     }
+    $COMPILER->compile(undef);
     $RUNTIME = $COMPILER->build_runtime;
     
     &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
@@ -235,13 +236,15 @@ sub build {
       $COMPILER = undef;
       exit(255);
     }
+    
     $RUNTIME = $COMPILER->build_runtime;
-
+    
     &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
 }
 
 sub init_api {
+  
   &init_runtime();
   
   $ENV = $BUILDER_API->class("Env")->new($RUNTIME);
@@ -249,6 +252,7 @@ sub init_api {
   $STACK = $ENV->new_stack;
   
   $ENV->set_command_info_program_name($STACK, $0);
+  
   $ENV->set_command_info_argv($STACK, \@ARGV);
   my $base_time = $^T + 0; # For Perl 5.8.9
   $ENV->set_command_info_base_time($STACK, $base_time);
