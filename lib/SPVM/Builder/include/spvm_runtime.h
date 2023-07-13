@@ -10,7 +10,7 @@
 struct spvm_runtime {
   SPVM_ALLOCATOR* allocator;
   
-  SPVM_RUNTIME_BASIC_TYPE** basic_types_ptr;
+  SPVM_RUNTIME_BASIC_TYPE** basic_types;
   
   SPVM_HASH* basic_type_symtable;
   
