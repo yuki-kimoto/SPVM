@@ -242,7 +242,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_BASIC_TYPE_get_anon_basic_type_by_index(SPVM_R
     return NULL;
   }
   
-  SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = &basic_type->anon_basic_types[anon_basic_type_index];
+  SPVM_RUNTIME_BASIC_TYPE* anon_basic_type = basic_type->anon_basic_types[anon_basic_type_index];
   
   return anon_basic_type;
 }
