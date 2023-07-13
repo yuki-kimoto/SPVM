@@ -90,14 +90,12 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
       }
     }
     
-    /*
-    
     basic_type->id = runtime_basic_type->id;
     basic_type->category = runtime_basic_type->category;
     
-    SPVM_STRING* basic_type_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->name, strlen(basic_type->name));
-    assert(basic_type_string->index >= 0);
-    runtime_basic_type->name = runtime_basic_type->constant_strings[basic_type_string->index].value;
+    basic_type->name = SPVM_HASH_get(compiler->constant_string_symtable, runtime_basic_type->name, strlen(runtime_basic_type->name));
+    
+    /*
     
     if (basic_type->module_rel_file) {
       SPVM_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
