@@ -361,9 +361,9 @@ void SPVM_COMPILER_check_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_ty
   }
 }
 
-const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_string_symtable, const char* name) {
+const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_constant_string_symtable, const char* name) {
   
-  SPVM_RUNTIME_STRING* string = SPVM_HASH_get(runtime_string_symtable, name, strlen(name));
+  SPVM_RUNTIME_STRING* string = SPVM_HASH_get(runtime_constant_string_symtable, name, strlen(name));
   
   const char* new_name = string->value;
   
