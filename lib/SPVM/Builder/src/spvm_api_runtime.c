@@ -164,7 +164,15 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_id(SPVM_RUNTIME* run
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
   
-  return basic_type;
+  SPVM_RUNTIME_BASIC_TYPE* basic_type2 = runtime->basic_types_ptr[basic_type_id];
+  
+  assert(basic_type2);
+  
+  // warn("AAA %p %d", basic_type, basic_type->id);
+  
+  // warn("BBB %p", basic_type2);
+  
+  return basic_type2;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_RUNTIME_get_basic_type_by_name(SPVM_RUNTIME* runtime, const char* basic_type_name) {

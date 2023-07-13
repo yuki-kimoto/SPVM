@@ -734,6 +734,13 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE));
     
+    runtime->basic_types_ptr[basic_type_id] = runtime_basic_type;
+  }
+  
+  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
+    
     const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
     memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
     runtime_basic_type->string_pool = runtime_string_pool;
@@ -903,8 +910,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     }
     
     runtime->basic_types[basic_type_id] = *runtime_basic_type;
-    
-    runtime->basic_types_ptr[basic_type_id] = runtime_basic_type;
   }
   
   // Runtime basic type symtable
