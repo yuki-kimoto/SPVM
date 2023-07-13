@@ -156,27 +156,22 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
       class_var->name = SPVM_HASH_get(compiler->constant_string_symtable, runtime_class_var->name, strlen(runtime_class_var->name));
     }
     
-    /*
-    
-    if (basic_type->fields->length > 0) {
-      SPVM_RUNTIME_FIELD* runtime_fields = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_FIELD) * basic_type->fields->length);
-      for (int32_t field_index = 0; field_index < basic_type->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
-        SPVM_RUNTIME_FIELD* runtime_field = &runtime_fields[field_index];
-        
-        runtime_field->index = field->index;
-        runtime_field->offset = field->offset;
-        runtime_field->basic_type = &runtime_basic_types[field->type->basic_type->id];
-        runtime_field->type_dimension = field->type->dimension;
-        runtime_field->type_flag = field->type->flag;
-        runtime_field->current_basic_type = &runtime_basic_types[field->current_basic_type->id];
-        
-        SPVM_STRING* field_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, field->name, strlen(field->name));
-        runtime_field->name = runtime_basic_type->constant_strings[field_name_string->index].value;
-      }
-      runtime_basic_type->fields = runtime_fields;
-      runtime_basic_type->fields_length = basic_type->fields->length;
+    for (int32_t field_index = 0; field_index < runtime_basic_type->fields_length; field_index++) {
+      SPVM_RUNTIME_FIELD* runtime_field = &runtime_basic_type->fields[field_index];
+      SPVM_FIELD* field = SPVM_LIST_get(basic_type->fields, field_index);
+      SPVM_TYPE* field_type = SPVM_TYPE_new_uninitialized(compiler);
+      
+      field->index = runtime_field->index;
+      field->offset = runtime_field->offset;
+      field->type = field_type;
+      field->type->basic_type = SPVM_LIST_get(compiler->basic_types, runtime_field->basic_type->id);
+      field->type->dimension = runtime_field->type_dimension;
+      field->type->flag = runtime_field->type_flag;
+      field->current_basic_type = SPVM_LIST_get(compiler->basic_types, runtime_field->current_basic_type->id);
+      field->name = SPVM_HASH_get(compiler->constant_string_symtable, runtime_field->name, strlen(runtime_field->name));
     }
+    
+    /*
     
     if (basic_type->methods->length > 0) {
       SPVM_RUNTIME_METHOD* runtime_methods = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_METHOD) * basic_type->methods->length);
