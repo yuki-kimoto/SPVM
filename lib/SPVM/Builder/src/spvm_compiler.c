@@ -68,6 +68,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->if_require_not_found_module_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
+  compiler->current_runtime = SPVM_RUNTIME_new();
+  
   return compiler;
 }
 
@@ -718,22 +720,32 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
 
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  SPVM_RUNTIME* current_runtime = compiler->current_runtime;
   
-  runtime->basic_types = SPVM_ALLOCATOR_alloc_memory_block_tmp(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * compiler->basic_types->length);
+  int32_t current_runtime_basic_types_length = current_runtime->basic_types_length;
+  
+  SPVM_RUNTIME* runtime = current_runtime;
+  
+  SPVM_RUNTIME_BASIC_TYPE** current_runtime_basic_types = current_runtime->basic_types;
+  
+  runtime->basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * compiler->basic_types->length);
+  if (current_runtime_basic_types_length > 0) {
+    memcpy(runtime->basic_types, current_runtime_basic_types, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * current_runtime_basic_types_length);
+  }
   
   runtime->basic_types_length = compiler->basic_types->length;
   
-  runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
-  
-  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+  for (int32_t basic_type_id = current_runtime_basic_types_length; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE));
     
     runtime->basic_types[basic_type_id] = runtime_basic_type;
   }
+  
+  assert(runtime->basic_types[0]);
+  
+  for (int32_t basic_type_id = current_runtime_basic_types_length; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     
-  for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     SPVM_RUNTIME_BASIC_TYPE* runtime_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
     
@@ -975,6 +987,11 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   }
   
   SPVM_COMPILER_clear_include_dirs(compiler);
+  
+  if (compiler->current_runtime) {
+    SPVM_RUNTIME_free(compiler->current_runtime);
+    compiler->current_runtime = NULL;
+  }
   
   // Free allocator
   SPVM_ALLOCATOR_free(compiler->allocator);

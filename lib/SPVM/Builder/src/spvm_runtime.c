@@ -24,14 +24,16 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
   runtime->allocator = allocator;
   
+  runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
+  
   return runtime;
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   
-  SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, runtime->basic_types);
+  // SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, runtime->basic_types);
     
   // Free allocator
-  SPVM_ALLOCATOR_free(runtime->allocator);
-  runtime->allocator = NULL;
+  // SPVM_ALLOCATOR_free(runtime->allocator);
+  // runtime->allocator = NULL;
 }
