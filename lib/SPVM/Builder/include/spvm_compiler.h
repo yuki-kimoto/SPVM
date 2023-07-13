@@ -108,6 +108,8 @@ struct spvm_compiler {
   
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
+  
+  SPVM_RUNTIME* current_runtime;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
