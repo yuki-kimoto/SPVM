@@ -19,6 +19,8 @@ struct spvm_runtime {
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
 
+SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime);
+
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 
 #endif

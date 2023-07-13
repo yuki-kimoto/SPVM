@@ -70,6 +70,14 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   return compiler;
 }
 
+SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  
+  compiler->current_runtime = runtime;
+  
+  return compiler;
+}
+
 SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
   SPVM_MODULE_FILE* module_file = SPVM_HASH_get(compiler->module_file_symtable, module_name, strlen(module_name));
   
