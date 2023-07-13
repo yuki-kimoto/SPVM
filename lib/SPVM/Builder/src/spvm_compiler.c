@@ -58,7 +58,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->ch_ptr = "";
   
-  compiler->string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
+  compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
   
   // Eternal information
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
@@ -84,9 +84,9 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
       int32_t constant_string_length = runtime_constant_string->length;
       SPVM_STRING* constant_string = SPVM_STRING_new(compiler, constant_string_value, constant_string_length);
       
-      SPVM_STRING* found_constant_string = SPVM_HASH_get(compiler->string_symtable, constant_string_value, constant_string_length);
+      SPVM_STRING* found_constant_string = SPVM_HASH_get(compiler->constant_string_symtable, constant_string_value, constant_string_length);
       if (!found_constant_string) {
-        SPVM_HASH_set(compiler->string_symtable, constant_string_value, constant_string_length, constant_string);
+        SPVM_HASH_set(compiler->constant_string_symtable, constant_string_value, constant_string_length, constant_string);
       }
     }
     
