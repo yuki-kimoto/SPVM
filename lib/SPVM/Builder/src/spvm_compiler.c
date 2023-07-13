@@ -80,13 +80,13 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
     for (int32_t constant_string_index = 0; constant_string_index < runtime_basic_type->constant_strings_length; constant_string_index++) {
       SPVM_RUNTIME_STRING* runtime_constant_string = &runtime_basic_type->constant_strings[constant_string_index];
       
-      const char* string_value = runtime_constant_string->value;
-      int32_t string_length = runtime_constant_string->length;
-      SPVM_STRING* string = SPVM_STRING_new(compiler, string_value, string_length);
+      const char* constant_string_value = runtime_constant_string->value;
+      int32_t constant_string_length = runtime_constant_string->length;
+      SPVM_STRING* constant_string = SPVM_STRING_new(compiler, constant_string_value, constant_string_length);
       
-      SPVM_STRING* found_string = SPVM_HASH_get(compiler->string_symtable, string_value, string_length);
-      if (!found_string) {
-        SPVM_HASH_set(compiler->string_symtable, string_value, string_length, string);
+      SPVM_STRING* found_constant_string = SPVM_HASH_get(compiler->string_symtable, constant_string_value, constant_string_length);
+      if (!found_constant_string) {
+        SPVM_HASH_set(compiler->string_symtable, constant_string_value, constant_string_length, constant_string);
       }
     }
     
