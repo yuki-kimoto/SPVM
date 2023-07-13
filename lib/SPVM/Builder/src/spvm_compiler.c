@@ -914,6 +914,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
   env->runtime = runtime;
   
+  compiler->current_runtime = runtime;
+  
   return runtime;
 }
 
