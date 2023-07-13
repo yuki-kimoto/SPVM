@@ -724,7 +724,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
   runtime->basic_types_length = compiler->basic_types->length;
   
-  runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, runtime->basic_types_length);
+  runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
   
   for (int32_t basic_type_id = 0; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
