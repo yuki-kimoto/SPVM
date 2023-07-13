@@ -164,7 +164,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
       }
     }
     
-    SPVM_BASIC_TYPE* cur_basic_type = basic_type;
+    SPVM_BASIC_TYPE* current_basic_type = basic_type;
     for (int32_t basic_type_id = basic_type_merge_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_merge_stack, basic_type_id);
       
@@ -324,7 +324,7 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
         }
       }
       
-      SPVM_BASIC_TYPE* cur_basic_type = basic_type;
+      SPVM_BASIC_TYPE* current_basic_type = basic_type;
       int32_t merged_fields_index = 0;
       for (int32_t basic_type_id = basic_type_merge_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_merge_stack, basic_type_id);
@@ -343,14 +343,14 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
           }
           
           SPVM_FIELD* new_field;
-          if (strcmp(field->current_basic_type->name, cur_basic_type->name) == 0) {
+          if (strcmp(field->current_basic_type->name, current_basic_type->name) == 0) {
             new_field = field;
           }
           // Clone field
           else {
             new_field = SPVM_FIELD_new(compiler);
             new_field->name = field->name;
-            new_field->current_basic_type = cur_basic_type;
+            new_field->current_basic_type = current_basic_type;
             new_field->type = field->type;
             new_field->access_control_type = field->access_control_type;
           }
@@ -1956,10 +1956,10 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 return;
               }
 
-              SPVM_BASIC_TYPE* cur_basic_type = method->current_basic_type;
-              if (!SPVM_CHECK_can_access(compiler, cur_basic_type, new_basic_type, new_basic_type->access_control_type)) {
-                if (!SPVM_OP_is_allowed(compiler, cur_basic_type, new_basic_type)) {
-                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, cur_basic_type->name, op_new->file, op_new->line);
+              SPVM_BASIC_TYPE* current_basic_type = method->current_basic_type;
+              if (!SPVM_CHECK_can_access(compiler, current_basic_type, new_basic_type, new_basic_type->access_control_type)) {
+                if (!SPVM_OP_is_allowed(compiler, current_basic_type, new_basic_type)) {
+                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, current_basic_type->name, op_new->file, op_new->line);
                   return;
                 }
               }

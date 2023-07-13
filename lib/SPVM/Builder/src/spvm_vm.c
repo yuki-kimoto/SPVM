@@ -249,23 +249,23 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
           
           if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
             // 2 opcode_rel_index searching
-            int32_t cur_min_pos = 0;
-            int32_t cur_max_pos = case_infos_length - 1;
+            int32_t current_min_pos = 0;
+            int32_t current_max_pos = case_infos_length - 1;
             
             while (1) {
-              if (cur_max_pos < cur_min_pos) {
+              if (current_max_pos < current_min_pos) {
                 opcode_rel_index = default_opcode_rel_index;
                 break;
               }
-              int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[opcode_rel_index + 1 + cur_half_pos]);
-              int32_t cur_half = opcode_case_cur_half->operand1;
+              int32_t current_half_pos = current_min_pos + (current_max_pos - current_min_pos) / 2;
+              SPVM_OPCODE* opcode_case_cur_half = &(opcodes[opcode_rel_index + 1 + current_half_pos]);
+              int32_t current_half = opcode_case_cur_half->operand1;
               
-              if (int_vars[opcode->operand0] > cur_half) {
-                cur_min_pos = cur_half_pos + 1;
+              if (int_vars[opcode->operand0] > current_half) {
+                current_min_pos = current_half_pos + 1;
               }
-              else if (int_vars[opcode->operand0] < cur_half) {
-                cur_max_pos = cur_half_pos - 1;
+              else if (int_vars[opcode->operand0] < current_half) {
+                current_max_pos = current_half_pos - 1;
               }
               else {
                 opcode_rel_index = opcode_case_cur_half->operand2;

@@ -65,8 +65,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   while(1) {
     
     // Load module file
-    int32_t source_index = compiler->ch_ptr - compiler->cur_source;
-    if (!compiler->cur_source || source_index >= compiler->cur_source_length) {
+    int32_t source_index = compiler->ch_ptr - compiler->current_source;
+    if (!compiler->current_source || source_index >= compiler->current_source_length) {
       
       // End of file
       if (!parse_not_started) {
@@ -83,7 +83,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return success;
       }
       
-      if (compiler->cur_source) {
+      if (compiler->current_source) {
         continue;
       }
       else {
@@ -151,7 +151,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         
         compiler->ch_ptr++;
-        compiler->cur_line++;
+        compiler->current_line++;
         compiler->line_begin_ptr = compiler->ch_ptr;
         compiler->before_ch_ptr = compiler->ch_ptr;
         continue;
@@ -401,11 +401,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       case '=': {
         // POD
-        if (compiler->ch_ptr == compiler->cur_source || *(compiler->ch_ptr - 1) == '\n') {
+        if (compiler->ch_ptr == compiler->current_source || *(compiler->ch_ptr - 1) == '\n') {
           while (1) {
             compiler->ch_ptr++;
             if (*compiler->ch_ptr == '\n') {
-              compiler->cur_line++;
+              compiler->current_line++;
             }
             
             if (*compiler->ch_ptr == '\0') {
@@ -594,7 +594,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char ch = 0;
         
         if (*compiler->ch_ptr == '\'') {
-          SPVM_COMPILER_error(compiler, "The character literal cannnot be empty.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "The character literal cannnot be empty.\n  at %s line %d", compiler->current_file, compiler->current_line);
           compiler->ch_ptr++;
         }
         else {
@@ -649,7 +649,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->ch_ptr = char_ptr;
             }
             else {
-              SPVM_COMPILER_error(compiler, "\"\\%c\" is the invalid charater literal escape character.\n  at %s line %d", *compiler->ch_ptr, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "\"\\%c\" is the invalid charater literal escape character.\n  at %s line %d", *compiler->ch_ptr, compiler->current_file, compiler->current_line);
               compiler->ch_ptr++;
             }
           }
@@ -662,12 +662,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->ch_ptr++;
           }
           else {
-            SPVM_COMPILER_error(compiler, "The character literal must ends with \"'\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "The character literal must ends with \"'\".\n  at %s line %d", compiler->current_file, compiler->current_line);
           }
         }
         
         // Constant 
-        SPVM_OP* op_constant = SPVM_OP_new_op_constant_byte(compiler, ch, compiler->cur_file, compiler->cur_line);
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_byte(compiler, ch, compiler->current_file, compiler->current_line);
         
         yylvalp->opval = op_constant;
         
@@ -683,7 +683,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         
         // Save current position
-        const char* cur_token_ptr = compiler->ch_ptr;
+        const char* current_token_ptr = compiler->ch_ptr;
         
         int8_t next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
         
@@ -790,7 +790,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           next_string_literal_ch_ptr++;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The character after \"->\" in a string literal must be \"[\" or \"{\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The character after \"->\" in a string literal must be \"[\" or \"{\".\n  at %s line %d", compiler->current_file, compiler->current_line);
                           return 0;
                         }
                       }
@@ -805,7 +805,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           open_getting_field_brace = 0;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The getting field in a string literal must be closed with \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The getting field in a string literal must be closed with \"}\".\n  at %s line %d", compiler->current_file, compiler->current_line);
                           return 0;
                         }
                       }
@@ -815,7 +815,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           open_bracket = 0;
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The getting array element in a string literal must be closed with \"]\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The getting array element in a string literal must be closed with \"]\".\n  at %s line %d", compiler->current_file, compiler->current_line);
                           return 0;
                         }
                       }
@@ -856,17 +856,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
           }
           if (*compiler->ch_ptr == '\0') {
-            SPVM_COMPILER_error(compiler, "The string literal must be end with '\"'.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "The string literal must be end with '\"'.\n  at %s line %d", compiler->current_file, compiler->current_line);
             return 0;
           }
           
-          int32_t string_literal_tmp_len = (int32_t)(compiler->ch_ptr - cur_token_ptr) * 4;
+          int32_t string_literal_tmp_len = (int32_t)(compiler->ch_ptr - current_token_ptr) * 4;
           
           compiler->ch_ptr++;
           
           string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, string_literal_tmp_len + 1);
           {
-            char* char_ptr = (char*)cur_token_ptr;
+            char* char_ptr = (char*)current_token_ptr;
             while (char_ptr != compiler->ch_ptr - 1) {
               if (*char_ptr == '\\') {
                 char_ptr++;
@@ -946,10 +946,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     if (*char_ptr == '}') {
                       char_ptr++;
                       if (unicode_chars_length < 1) {
-                        SPVM_COMPILER_error(compiler, "One or more than one hexadecimal numbers must be followed by \"\\N{U+\" of the Unicode escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+                        SPVM_COMPILER_error(compiler, "One or more than one hexadecimal numbers must be followed by \"\\N{U+\" of the Unicode escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
                       }
                       else if (unicode_chars_length > 8) {
-                        SPVM_COMPILER_error(compiler, "Too big Unicode escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+                        SPVM_COMPILER_error(compiler, "Too big Unicode escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
                       }
                       else {
                         int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
@@ -968,18 +968,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           }
                         }
                         else {
-                          SPVM_COMPILER_error(compiler, "The code point of Unicode escape character must be a Unicode scalar value.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+                          SPVM_COMPILER_error(compiler, "The code point of Unicode escape character must be a Unicode scalar value.\n  at %s line %d", compiler->current_file, compiler->current_line);
                         }
                         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, unicode_chars);
                         assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
                       }
                     }
                     else {
-                      SPVM_COMPILER_error(compiler, "A Unicode escape character must be closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+                      SPVM_COMPILER_error(compiler, "A Unicode escape character must be closed by \"}\".\n  at %s line %d", compiler->current_file, compiler->current_line);
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "Invalid Unicode escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+                    SPVM_COMPILER_error(compiler, "Invalid Unicode escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
                   }
                 }
                 else {
@@ -1054,7 +1054,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       break;
                     }
                     default: {
-                      SPVM_COMPILER_error(compiler, "Invalid string literal escape character \"\\%c\".\n  at %s line %d", *char_ptr, compiler->cur_file, compiler->cur_line);
+                      SPVM_COMPILER_error(compiler, "Invalid string literal escape character \"\\%c\".\n  at %s line %d", *char_ptr, compiler->current_file, compiler->current_line);
                     }
                   }
                 }
@@ -1064,7 +1064,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   char_ptr++;
                 }
                 if (*char_ptr == '\n' || *char_ptr == '\r') {
-                  compiler->cur_line++;
+                  compiler->current_line++;
                   compiler->line_begin_ptr = compiler->ch_ptr;
                 }
                 
@@ -1083,7 +1083,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, string_literal_tmp);
         assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
         
-        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, string_literal, string_literal_length, compiler->cur_file, compiler->cur_line);
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, string_literal, string_literal_length, compiler->current_file, compiler->current_line);
         
         yylvalp->opval = op_constant;
         
@@ -1112,14 +1112,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // A exception variable
         else if (*(compiler->ch_ptr + 1) == '@') {
           compiler->ch_ptr += 2;
-          SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
+          SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->current_file, compiler->current_line);
           yylvalp->opval = op_exception_var;
           return EXCEPTION_VAR;
         }
         // A exception variable with {}
         else if (*(compiler->ch_ptr + 1) == '{' && *(compiler->ch_ptr + 2) == '@' && *(compiler->ch_ptr + 3) == '}') {
           compiler->ch_ptr += 4;
-          SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
+          SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->current_file, compiler->current_line);
           yylvalp->opval = op_exception_var;
           return EXCEPTION_VAR;
         }
@@ -1176,7 +1176,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->ch_ptr++;
             }
             else {
-              SPVM_COMPILER_error(compiler, "The variable name is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The variable name is not closed by \"}\".\n  at %s line %d", compiler->current_file, compiler->current_line);
             }
           }
           
@@ -1184,32 +1184,32 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           {
             // A variable name cannnot conatain "__"
             if (strstr(var_name, "__")) {
-              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"__\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"__\".\n  at %s line %d", var_name, compiler->current_file, compiler->current_line);
             }
             
             // A variable name cannnot begin with \"$::\"
             if (var_name_symbol_name_part_length >= 2 && var_name[1] == ':' && var_name[2] == ':') {
-              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot begin with \"$::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot begin with \"$::\".\n  at %s line %d", var_name, compiler->current_file, compiler->current_line);
             }
             
             // A variable name cannnot end with \"::\"
             if (var_name_symbol_name_part_length >= 2 && var_name[var_name_length - 1] == ':' && var_name[var_name_length - 2] == ':') {
-              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot end with \"::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot end with \"::\".\n  at %s line %d", var_name, compiler->current_file, compiler->current_line);
             }
             
             // A variable name \"%s\" cannnot contain \"::::\"
             if (strstr(var_name, "::::")) {
-              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"::::\".\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The variable name \"%s\" cannnot contain \"::::\".\n  at %s line %d", var_name, compiler->current_file, compiler->current_line);
             }
             
             // A variable name cannnot begin with a number
             if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
-              SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number.\n  at %s line %d", var_name, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number.\n  at %s line %d", var_name, compiler->current_file, compiler->current_line);
             }
           }
           
           // Name op
-          SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
+          SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->current_file, compiler->current_line);
           yylvalp->opval = op_name;
           
           return VAR_NAME;
@@ -1438,7 +1438,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (out_of_range) {
-              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s\" is out of range of maximum and minimum values of int type.\n  at %s line %d", minus ? "-" : "", numeric_literal, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s\" is out of range of maximum and minimum values of int type.\n  at %s line %d", minus ? "-" : "", numeric_literal, compiler->current_file, compiler->current_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
@@ -1502,7 +1502,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (invalid) {
-              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s%s\" is out of range of maximum and minimum values of long type.\n  at %s line %d", minus ? "-" : "", numeric_literal, suffix, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "The numeric literal \"%s%s%s\" is out of range of maximum and minimum values of long type.\n  at %s line %d", minus ? "-" : "", numeric_literal, suffix, compiler->current_file, compiler->current_line);
             }
             
             if (digit == 16 || digit == 8 || digit == 2) {
@@ -1520,7 +1520,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             char *end;
             num.fval = strtof(numeric_literal, &end);
             if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "Invalid float literal.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "Invalid float literal.\n  at %s line %d", compiler->current_file, compiler->current_line);
             }
             
             if (minus) {
@@ -1532,7 +1532,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             char *end;
             num.dval = strtod(numeric_literal, &end);
             if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "Invalid double literal.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "Invalid double literal.\n  at %s line %d", compiler->current_file, compiler->current_line);
             }
             if (minus) {
               num.dval = -num.dval;
@@ -1548,19 +1548,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           SPVM_OP* op_constant;
           switch (constant_type->basic_type->id) {
             case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-              op_constant = SPVM_OP_new_op_constant_int(compiler, num.ival, compiler->cur_file, compiler->cur_line);
+              op_constant = SPVM_OP_new_op_constant_int(compiler, num.ival, compiler->current_file, compiler->current_line);
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-              op_constant = SPVM_OP_new_op_constant_long(compiler, num.lval, compiler->cur_file, compiler->cur_line);
+              op_constant = SPVM_OP_new_op_constant_long(compiler, num.lval, compiler->current_file, compiler->current_line);
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-              op_constant = SPVM_OP_new_op_constant_float(compiler, num.fval, compiler->cur_file, compiler->cur_line);
+              op_constant = SPVM_OP_new_op_constant_float(compiler, num.fval, compiler->current_file, compiler->current_line);
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-              op_constant = SPVM_OP_new_op_constant_double(compiler, num.dval, compiler->cur_file, compiler->cur_line);
+              op_constant = SPVM_OP_new_op_constant_double(compiler, num.dval, compiler->current_file, compiler->current_line);
               break;
             }
             default: {
@@ -1795,7 +1795,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = INT;
                 }
                 else if (strcmp(symbol_name, "interface_t") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_INTERFACE_T, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_INTERFACE_T, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   keyword_token = ATTRIBUTE;
                 }
@@ -1866,12 +1866,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = MAKE_READ_ONLY;
                 }
                 else if (strcmp(symbol_name, "my") == 0) {
-                  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_var_decl;
                   keyword_token = MY;
                 }
                 else if (strcmp(symbol_name, "mulnum_t") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_MULNUM_T, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_MULNUM_T, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   keyword_token = ATTRIBUTE;
                 }
@@ -1891,7 +1891,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               case 'n' : {
                 if (strcmp(symbol_name, "native") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_NATIVE, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_NATIVE, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   
                   keyword_token = ATTRIBUTE;
@@ -1935,31 +1935,31 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = PRINT;
                 }
                 else if (strcmp(symbol_name, "private") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PRIVATE, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PRIVATE, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   
                   keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "protected") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PROTECTED, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PROTECTED, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   
                   keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "public") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PUBLIC, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PUBLIC, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   
                   keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "precompile") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PRECOMPILE, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_PRECOMPILE, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   
                   keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "pointer") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_POINTER, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_POINTER, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   
                   keyword_token = ATTRIBUTE;
@@ -1984,17 +1984,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = REQUIRE;
                 }
                 else if (strcmp(symbol_name, "required") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_REQUIRED, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_REQUIRED, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "rw") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_RW, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_RW, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   keyword_token = ATTRIBUTE;
                 }
                 else if (strcmp(symbol_name, "ro") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_RO, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_RO, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   keyword_token = ATTRIBUTE;
                 }
@@ -2006,7 +2006,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = SAY;
                 }
                 else if (strcmp(symbol_name, "static") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   keyword_token = ATTRIBUTE;
                 }
@@ -2044,7 +2044,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               case 'u' : {
                 if (strcmp(symbol_name, "undef") == 0) {
-                  yylvalp->opval = SPVM_OP_new_op_undef(compiler, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = SPVM_OP_new_op_undef(compiler, compiler->current_file, compiler->current_line);
                   keyword_token = UNDEF;
                 }
                 else if (strcmp(symbol_name, "unless") == 0) {
@@ -2056,7 +2056,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = UNWEAKEN;
                 }
                 else if (strcmp(symbol_name, "use") == 0) {
-                  yylvalp->opval = SPVM_OP_new_op_use(compiler, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = SPVM_OP_new_op_use(compiler, compiler->current_file, compiler->current_line);
                   keyword_token = USE;
                 }
                 break;
@@ -2086,7 +2086,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = WEAKEN;
                 }
                 else if (strcmp(symbol_name, "wo") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_WO, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_WO, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   keyword_token = ATTRIBUTE;
                 }
@@ -2101,7 +2101,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               case '_': {
                 if (strcmp(symbol_name, "__END__") == 0) {
-                  compiler->ch_ptr = compiler->cur_source + compiler->cur_source_length;
+                  compiler->ch_ptr = compiler->current_source + compiler->current_source_length;
                   compiler->before_ch_ptr = compiler->ch_ptr;
                   compiler->parse_not_started = 1;
                   SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END_OF_FILE);
@@ -2109,16 +2109,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = END_OF_FILE;
                 }
                 else if (strcmp(symbol_name, "__PACKAGE__") == 0) {
-                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_MODULE_NAME, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_MODULE_NAME, compiler->current_file, compiler->current_line);
                   keyword_token = CURRENT_MODULE_NAME;
                 }
                 else if (strcmp(symbol_name, "__FILE__") == 0) {
-                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->cur_rel_file, strlen(compiler->cur_rel_file), compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->current_rel_file, strlen(compiler->current_rel_file), compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_constant;
                   keyword_token = CONSTANT;
                 }
                 else if (strcmp(symbol_name, "__LINE__") == 0) {
-                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, compiler->cur_line, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, compiler->current_line, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_constant;
                   keyword_token = CONSTANT;
                 }
@@ -2138,17 +2138,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             {
               // A symbol name cannnot conatain "__"
               if (strstr(symbol_name, "__")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot constain \"__\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot constain \"__\".\n  at %s line %d", symbol_name, compiler->current_file, compiler->current_line);
               }
               
               // A symbol name cannnot end with "::"
               if (symbol_name_length >= 2 && symbol_name[symbol_name_length - 2] == ':' && symbol_name[symbol_name_length - 1] == ':' ) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\".\n  at %s line %d", symbol_name, compiler->current_file, compiler->current_line);
               }
               
               // A symbol name cannnot contains "::::".
               if (strstr(symbol_name, "::::")) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\".\n  at %s line %d", symbol_name, compiler->current_file, compiler->current_line);
               }
               
               // A symbol name cannnot begin with "::"
@@ -2162,16 +2162,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (next_is_fat_camma) {
               // The string literal of the left operand of the fat camma cannnot contains "::".
               if (symbol_name_length >= 2 && strstr(symbol_name, "::")) {
-                SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma cannnot contains \"::\".\n  at %s line %d", symbol_name, compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "The string literal \"%s\" of the left operand of the fat camma cannnot contains \"::\".\n  at %s line %d", symbol_name, compiler->current_file, compiler->current_line);
               }
               
-              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->cur_file, compiler->cur_line);
+              SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, symbol_name, symbol_name_length, compiler->current_file, compiler->current_line);
               yylvalp->opval = op_constant;
               token = CONSTANT;
             }
             // A symbol name
             else {
-              SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->cur_file, compiler->cur_line);
+              SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, symbol_name, compiler->current_file, compiler->current_line);
               yylvalp->opval = op_name;
               token = SYMBOL_NAME;
             }
@@ -2183,7 +2183,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return token;
         }
         else {
-          SPVM_COMPILER_error(compiler, "The character %d in a 8bit signed integer is not expected.\n  at %s line %d", ch, compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "The character %d in a 8bit signed integer is not expected.\n  at %s line %d", ch, compiler->current_file, compiler->current_line);
           return (int) (uint8_t) ch;
         }
       }
@@ -2194,13 +2194,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
 
   // Start parsing a source code
-  compiler->cur_file = NULL;
-  compiler->cur_source = NULL;
-  compiler->cur_tmp_vars_length = 0;
+  compiler->current_file = NULL;
+  compiler->current_source = NULL;
+  compiler->current_tmp_vars_length = 0;
   compiler->ch_ptr = NULL;
   compiler->before_ch_ptr = NULL;
   compiler->line_begin_ptr = NULL;
-  compiler->cur_anon_op_types = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
+  compiler->current_anon_op_types = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
   
   // If there are more module, load it
   SPVM_LIST* op_use_stack = compiler->op_use_stack;
@@ -2275,10 +2275,10 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
       }
       else {
         // Create moudle relative file name from module name by changing :: to / and add ".spvm"
-        int32_t cur_rel_file_length = (int32_t)(strlen(module_name) + 6);
-        char* cur_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, cur_rel_file_length + 1);
+        int32_t current_rel_file_length = (int32_t)(strlen(module_name) + 6);
+        char* current_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, current_rel_file_length + 1);
         const char* ch_ptr_orig = module_name;
-        char* ch_ptr_to = cur_rel_file;
+        char* ch_ptr_to = current_rel_file;
         while (*ch_ptr_orig) {
           if (*ch_ptr_orig == ':' && *(ch_ptr_orig + 1) == ':') {
             *ch_ptr_to = '/';
@@ -2295,7 +2295,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         ch_ptr_to += 5;
         *ch_ptr_to = '\0';
         
-        char* cur_file = NULL;
+        char* current_file = NULL;
         
         SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
         
@@ -2309,20 +2309,20 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
             
             // File name
-            int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(cur_rel_file));
-            cur_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_name_length + 1);
-            sprintf(cur_file, "%s/%s", include_dir, cur_rel_file);
-            cur_file[file_name_length] = '\0';
+            int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(current_rel_file));
+            current_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_name_length + 1);
+            sprintf(current_file, "%s/%s", include_dir, current_rel_file);
+            current_file[file_name_length] = '\0';
             
             // \ is replaced to /
             for (int32_t i = 0; i < file_name_length; i++) {
-              if (cur_file[i] == '\\') {
-                cur_file[i] = '/';
+              if (current_file[i] == '\\') {
+                current_file[i] = '/';
               }
             }
             
             // Open source file
-            fh = fopen(cur_file, "rb");
+            fh = fopen(current_file, "rb");
             if (fh) {
               break;
             }
@@ -2349,7 +2349,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" module. The module file \"%s\" is not found in (%s).\n  at %s line %d", module_name, cur_rel_file, include_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" module. The module file \"%s\" is not found in (%s).\n  at %s line %d", module_name, current_rel_file, include_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }
@@ -2360,14 +2360,14 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             fseek(fh, 0, SEEK_END);
             int32_t source_length = (int32_t)ftell(fh);
             if (source_length < 0) {
-              SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the module file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the module file \"%s\".\n  at %s line %d", current_file, op_use->file, op_use->line);
               return 0;
             }
             fseek(fh, 0, SEEK_SET);
             char* source = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, source_length + 1);
             int32_t read_error = 0;
             if ((int32_t)fread(source, 1, source_length, fh) < source_length) {
-              SPVM_COMPILER_error(compiler, "[System Error]Failed to read the module file \"%s\".\n  at %s line %d", cur_file, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "[System Error]Failed to read the module file \"%s\".\n  at %s line %d", current_file, op_use->file, op_use->line);
               SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, source);
               read_error = 1;
             }
@@ -2378,8 +2378,8 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               
               SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
               module_file->module_name = module_name;
-              module_file->file = cur_file;
-              module_file->rel_file = cur_rel_file;
+              module_file->file = current_file;
+              module_file->rel_file = current_rel_file;
               module_file->dir = include_dir;
               module_file->content = source;
               module_file->content_length = source_length;
@@ -2392,28 +2392,28 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         
         if (module_file) {
           // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-          compiler->cur_source = (char*)module_file->content;
-          compiler->cur_source_length = module_file->content_length;
-          compiler->cur_include_dir = include_dir;
-          compiler->cur_rel_file = cur_rel_file;
-          compiler->cur_rel_file_module_name = module_name;
+          compiler->current_source = (char*)module_file->content;
+          compiler->current_source_length = module_file->content_length;
+          compiler->current_include_dir = include_dir;
+          compiler->current_rel_file = current_rel_file;
+          compiler->current_rel_file_module_name = module_name;
          
           // If we get current module file path, set it, otherwise set module relative file path
-          if (cur_file) {
-            compiler->cur_file = cur_file;
+          if (current_file) {
+            compiler->current_file = current_file;
           }
           else {
-            compiler->cur_file = cur_rel_file;
+            compiler->current_file = current_rel_file;
           }
           
-          SPVM_STRING* cur_file_string = SPVM_STRING_new(compiler, compiler->cur_file, strlen(compiler->cur_file));
-          compiler->cur_file = cur_file_string->value;
+          SPVM_STRING* current_file_string = SPVM_STRING_new(compiler, compiler->current_file, strlen(compiler->current_file));
+          compiler->current_file = current_file_string->value;
           
           // Set initial information for tokenization
-          compiler->ch_ptr = compiler->cur_source;
-          compiler->before_ch_ptr = compiler->cur_source;
-          compiler->line_begin_ptr = compiler->cur_source;
-          compiler->cur_line = 1;
+          compiler->ch_ptr = compiler->current_source;
+          compiler->before_ch_ptr = compiler->current_source;
+          compiler->line_begin_ptr = compiler->current_source;
+          compiler->current_line = 1;
         }
         else {
           // If module is not found and the module is used in require syntax, compilation errors don't occur.
@@ -2436,14 +2436,14 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
 
 SPVM_OP* SPVM_TOKE_new_op(SPVM_COMPILER* compiler, int32_t type) {
   
-  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
+  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->current_file, compiler->current_line);
   
   return op;
 }
 
 SPVM_OP* SPVM_TOKE_new_op_with_column(SPVM_COMPILER* compiler, int32_t type, int32_t column) {
   
-  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
+  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->current_file, compiler->current_line);
   
   // column is only used to decide anon method uniquness
   op->column = column;
@@ -2497,12 +2497,12 @@ char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) 
       has_brace = 1;
       char_ptr++;
       if (!SPVM_TOKE_is_octal_number(compiler, *char_ptr)) {
-        SPVM_COMPILER_error(compiler, "At least one octal number must be followed by \"\\o{\" of the octal escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+        SPVM_COMPILER_error(compiler, "At least one octal number must be followed by \"\\o{\" of the octal escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
         return ch;
       }
     }
     else {
-      SPVM_COMPILER_error(compiler, "\"\\o\" of the octal escape character must have its brace.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+      SPVM_COMPILER_error(compiler, "\"\\o\" of the octal escape character must have its brace.\n  at %s line %d", compiler->current_file, compiler->current_line);
       return ch;
     }
   }
@@ -2522,7 +2522,7 @@ char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) 
     char* end;
     int32_t number = strtol(octal_escape_char, &end, 8);
     if (number > 255) {
-      SPVM_COMPILER_error(compiler, "The maxmum number of the octal escape charcater is 377.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+      SPVM_COMPILER_error(compiler, "The maxmum number of the octal escape charcater is 377.\n  at %s line %d", compiler->current_file, compiler->current_line);
       return ch;
     }
     ch = (char)number;
@@ -2533,7 +2533,7 @@ char SPVM_TOKE_parse_octal_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) 
       char_ptr++;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The octal escape character is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+      SPVM_COMPILER_error(compiler, "The octal escape character is not closed by \"}\".\n  at %s line %d", compiler->current_file, compiler->current_line);
     }
   }
   
@@ -2571,7 +2571,7 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
     ch = (char)strtol(hex_escape_char, &end, 16);
   }
   else {
-    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be followed by \"\\x\" of the hexadecimal escape character.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+    SPVM_COMPILER_error(compiler, "One or tow hexadecimal numbers must be followed by \"\\x\" of the hexadecimal escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
   }
   
   if (has_brace) {
@@ -2579,7 +2579,7 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
       char_ptr++;
     }
     else {
-      SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\".\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+      SPVM_COMPILER_error(compiler, "The hexadecimal escape character is not closed by \"}\".\n  at %s line %d", compiler->current_file, compiler->current_line);
     }
   }
   

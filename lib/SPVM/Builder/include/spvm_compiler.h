@@ -24,28 +24,28 @@ struct spvm_compiler {
   SPVM_LIST* op_types;
   
   // Directory of curreparsed file
-  const char* cur_include_dir;
+  const char* current_include_dir;
   
   // Current parsed file name
-  const char* cur_file;
+  const char* current_file;
   
   // Current parsed file relative name
-  const char* cur_rel_file;
+  const char* current_rel_file;
   
   // Current parsed basic type name
-  const char* cur_rel_file_module_name;
+  const char* current_rel_file_module_name;
   
   // Current parsed source
-  char* cur_source;
+  char* current_source;
   
   // Current parsed source
-  int32_t cur_source_length;
+  int32_t current_source_length;
   
   // Current line number
-  int32_t cur_line;
+  int32_t current_line;
   
   // Current temporary variables length
-  int32_t cur_tmp_vars_length;
+  int32_t current_tmp_vars_length;
   
   // Allocator
   SPVM_ALLOCATOR* allocator;
@@ -101,7 +101,7 @@ struct spvm_compiler {
   // Fail load class symtable
   SPVM_HASH* if_require_not_found_module_name_symtable;
   
-  SPVM_LIST* cur_anon_op_types;
+  SPVM_LIST* current_anon_op_types;
   
   // Basic types
   SPVM_LIST* basic_types;

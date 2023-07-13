@@ -191,26 +191,26 @@ SPVM_RUNTIME_METHOD* SPVM_API_BASIC_TYPE_get_method_by_name(SPVM_RUNTIME* runtim
   SPVM_RUNTIME_METHOD* found_method = NULL;
   if (basic_type->methods_length > 0) {
     // Performe binary searching because methods are sorted by the names
-    int32_t cur_min_index = 0;
-    int32_t cur_max_index = basic_type->methods_length - 1;
+    int32_t current_min_index = 0;
+    int32_t current_max_index = basic_type->methods_length - 1;
     
     while (1) {
-      if (cur_max_index < cur_min_index) {
+      if (current_max_index < current_min_index) {
         break;
       }
       
-      int32_t cur_half_index = cur_min_index +(cur_max_index - cur_min_index) / 2;
+      int32_t current_half_index = current_min_index +(current_max_index - current_min_index) / 2;
       
-      SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, basic_type, cur_half_index);
-      const char* cur_half_method_name = method->name;
+      SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, basic_type, current_half_index);
+      const char* current_half_method_name = method->name;
       
-      int32_t cmp_result = strcmp(method_name, cur_half_method_name);
+      int32_t cmp_result = strcmp(method_name, current_half_method_name);
       
       if (cmp_result > 0) {
-        cur_min_index = cur_half_index + 1;
+        current_min_index = current_half_index + 1;
       }
       else if (cmp_result < 0) {
-        cur_max_index = cur_half_index - 1;
+        current_max_index = current_half_index - 1;
       }
       else {
         found_method = method;

@@ -288,7 +288,7 @@ sub compile_source_files {
   my $object_files = [];
   my $is_native_module = 1;
   for my $source_file ($native_module_file, @$resource_src_files) {
-    my $cur_is_native_module = $is_native_module;
+    my $current_is_native_module = $is_native_module;
     $is_native_module = 0;
     
     next unless defined $source_file;
@@ -296,7 +296,7 @@ sub compile_source_files {
     my $object_file_name;
     
     # Object file of native module
-    if ($cur_is_native_module) {
+    if ($current_is_native_module) {
       my $object_rel_file = SPVM::Builder::Util::convert_module_name_to_category_rel_file($module_name, $category, 'o');
       $object_file_name = "$output_dir/$object_rel_file";
     }
@@ -339,7 +339,7 @@ sub compile_source_files {
       if (defined $config->file) {
         push @$input_files, $config->file;
       };
-      if ($cur_is_native_module) {
+      if ($current_is_native_module) {
         my $module_file = $source_file;
         $module_file =~ s/\.[^\/\\]+$//;
         $module_file .= '.spvm';

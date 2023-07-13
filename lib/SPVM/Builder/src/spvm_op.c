@@ -272,9 +272,9 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   type->basic_type->op_module = op_module;
   type->basic_type->op_extends = op_extends;
   
-  type->basic_type->module_dir = compiler->cur_include_dir;
-  type->basic_type->module_rel_file = compiler->cur_rel_file;
-  type->basic_type->module_file = compiler->cur_file;
+  type->basic_type->module_dir = compiler->current_include_dir;
+  type->basic_type->module_rel_file = compiler->current_rel_file;
+  type->basic_type->module_file = compiler->current_file;
   
   if (op_extends) {
     SPVM_OP* op_type_parent_basic_type = op_extends->first;
@@ -308,12 +308,12 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     assert(!islower(basic_type_name[0]));
     
     // If module name is different from the module name corresponding to the module file, compile error occur.
-    if (strcmp(basic_type_name, compiler->cur_rel_file_module_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The module name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->cur_rel_file_module_name, op_module->file, op_module->line);
+    if (strcmp(basic_type_name, compiler->current_rel_file_module_name) != 0) {
+      SPVM_COMPILER_error(compiler, "The module name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_rel_file_module_name, op_module->file, op_module->line);
       return op_module;
     }
     
-    SPVM_LIST* anon_op_types = compiler->cur_anon_op_types;
+    SPVM_LIST* anon_op_types = compiler->current_anon_op_types;
     for (int32_t i = 0; i < anon_op_types->length; i++) {
       SPVM_OP* anon_op_type = SPVM_LIST_get(anon_op_types, i);
       const char* anon_unresolved_basic_type_name = anon_op_type->uv.type->unresolved_basic_type_name;
@@ -458,7 +458,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
             char *end;
             double double_value = strtod(version_string, &end);
             if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "A version string must be able to be parsed by the \"strtod\" C function.\n  at %s line %d", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "A version string must be able to be parsed by the \"strtod\" C function.\n  at %s line %d", compiler->current_file, compiler->current_line);
               break;
             }
           }
@@ -557,8 +557,8 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
+          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
@@ -624,8 +624,8 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
+          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
           op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
@@ -1161,8 +1161,8 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_TYPE* return_type = op_constant->uv.constant->type;
   SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type->unresolved_basic_type_name, return_type->basic_type, return_type->dimension, return_type->flag, op_name->file, op_name->line);
   
-  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
+  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);
   SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
   
   // Build method
@@ -1586,7 +1586,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   // Create module block
   SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, op_method->file, op_method->line);
-  SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+  SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
   SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
   SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, op_list_definitions);
 
@@ -1595,7 +1595,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   // Create anon method module name
   // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method module name become Foo::Bar::anon::123::32. This is uniqe in whole program.
-  const char* anon_method_defined_rel_file_basic_type_name = compiler->cur_rel_file_module_name;
+  const char* anon_method_defined_rel_file_basic_type_name = compiler->current_rel_file_module_name;
   int32_t anon_method_defined_line = op_method->line;
   int32_t anon_method_defined_column = op_method->column;
   int32_t anon_method_basic_type_name_length = 6 + strlen(anon_method_defined_rel_file_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
@@ -1624,7 +1624,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   SPVM_OP* op_anon_method = SPVM_OP_build_new(compiler, op_new, op_type_new, NULL);
   
-  SPVM_LIST_push(compiler->cur_anon_op_types, op_type);
+  SPVM_LIST_push(compiler->current_anon_op_types, op_type);
   
   return op_anon_method;
 }
@@ -1849,7 +1849,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   
   // @$.array
   SPVM_OP* op_var_array_for_length = SPVM_OP_clone_op_var(compiler, op_var_array_orig);
-  SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
+  SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
   SPVM_OP_build_array_length(compiler, op_array_length, op_var_array_for_length);
   
   // my $.array_length
@@ -1870,7 +1870,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   // $.array->[$.i]
   SPVM_OP* op_var_init_for_array_access = SPVM_OP_clone_op_var(compiler, op_var_init_orig);
   SPVM_OP* op_var_array_for_array_access = SPVM_OP_clone_op_var(compiler, op_var_array_orig);
-  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->cur_file, compiler->cur_line);
+  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
   op_array_access = SPVM_OP_build_array_access(compiler, op_array_access, op_var_array_for_array_access, op_var_init_for_array_access);
   
   // my $element = $.array->[$.i]
@@ -3561,8 +3561,8 @@ SPVM_OP* SPVM_OP_new_op_name_tmp_var(SPVM_COMPILER* compiler, const char* file, 
   
   // Temparary variable name
   char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_in_op2147483647") + 1);
-  sprintf(name, "$.tmp_in_op%d", compiler->cur_tmp_vars_length);
-  compiler->cur_tmp_vars_length++;
+  sprintf(name, "$.tmp_in_op%d", compiler->current_tmp_vars_length);
+  compiler->current_tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
   op_name->uv.name = name;
   

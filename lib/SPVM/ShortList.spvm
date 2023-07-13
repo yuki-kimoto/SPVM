@@ -232,15 +232,15 @@ class ShortList {
       die "The \$array must be defined.";
     }
     
-    my $cur_length = $self->length;
+    my $current_length = $self->length;
     
     my $set_length = @$array;
     
-    unless ($set_length == $cur_length) {
+    unless ($set_length == $current_length) {
       die "The length of the \$array must be the \$same as the length of the \$list.";
     }
     
-    Array->memcpy_short($self->{array}, 0, $array, 0, $cur_length);
+    Array->memcpy_short($self->{array}, 0, $array, 0, $current_length);
   }
   
   method shift : short () {

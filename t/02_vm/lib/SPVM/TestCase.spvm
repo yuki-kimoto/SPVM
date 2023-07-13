@@ -24,8 +24,8 @@ class TestCase {
   has minimal : rw public TestCase::Minimal;
   has private_field : private int;
   
-  static method main : int ($cur_file : string, $args : string[]) {
-    warn("GGGGGGG $cur_file $args->[0] $args->[1]");
+  static method main : int ($current_file : string, $args : string[]) {
+    warn("GGGGGGG $current_file $args->[0] $args->[1]");
   }
   
   static method INT : int () { return 127; }
