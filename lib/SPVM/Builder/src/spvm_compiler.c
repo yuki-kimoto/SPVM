@@ -136,26 +136,13 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
     
     basic_type->is_pointer = runtime_basic_type->is_pointer;
     
+    if (runtime_basic_type->parent) {
+      basic_type->parent = SPVM_LIST_get(compiler->basic_types, runtime_basic_type->parent->id);
+    }
+    
+    basic_type->fields_size = runtime_basic_type->fields_size;
+    
     /*
-    
-    if (basic_type->parent) {
-      SPVM_BASIC_TYPE* parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->parent->name, strlen(basic_type->parent->name));
-      runtime_basic_type->parent = &runtime_basic_types[parent_basic_type->id];
-    }
-    
-    runtime_basic_type->fields_size = basic_type->fields_size;
-    
-    if (basic_type->init_method) {
-      runtime_basic_type->init_method = &runtime_basic_type->methods[basic_type->init_method->index];
-    }
-    
-    if (basic_type->destructor_method) {
-      runtime_basic_type->destructor_method = &runtime_basic_type->methods[basic_type->destructor_method->index];
-    }
-    
-    if (basic_type->required_method) {
-      runtime_basic_type->required_method = &runtime_basic_type->methods[basic_type->required_method->index];
-    }
     
     const char* runtime_string_pool = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, basic_type->string_pool->length);
     memcpy((char*)runtime_string_pool, basic_type->string_pool->string, basic_type->string_pool->length);
@@ -268,6 +255,18 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime) {
       }
       runtime_basic_type->methods = runtime_methods;
       runtime_basic_type->methods_length = basic_type->methods->length;
+    }
+    
+    if (basic_type->init_method) {
+      runtime_basic_type->init_method = &runtime_basic_type->methods[basic_type->init_method->index];
+    }
+    
+    if (basic_type->destructor_method) {
+      runtime_basic_type->destructor_method = &runtime_basic_type->methods[basic_type->destructor_method->index];
+    }
+    
+    if (basic_type->required_method) {
+      runtime_basic_type->required_method = &runtime_basic_type->methods[basic_type->required_method->index];
     }
     
     if (basic_type->anon_basic_types->length > 0) {
