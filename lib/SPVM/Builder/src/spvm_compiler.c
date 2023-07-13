@@ -724,8 +724,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     SPVM_COMPILER_compile(compiler, NULL);
   }
   
-  runtime->basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE) * compiler->basic_types->length);
-  
   runtime->basic_types_ptr = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * compiler->basic_types->length);
   
   runtime->basic_types_length = compiler->basic_types->length;
@@ -908,8 +906,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     if (basic_type->required_method) {
       runtime_basic_type->required_method = &runtime_basic_type->methods[basic_type->required_method->index];
     }
-    
-    runtime->basic_types[basic_type_id] = *runtime_basic_type;
   }
   
   // Runtime basic type symtable
