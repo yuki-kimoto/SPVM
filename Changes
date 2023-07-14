@@ -1,3 +1,11 @@
+0.989025 2023-07-15
+  [Incompatibe Changes]
+    * Modules renamed.
+      Env was renamed to Native::Env.
+      Stack was renamed to Native::Stack.
+      Runtime was renamed to Native::Runtime.
+      Compiler was renamed to Native::Compiler.
+      
 0.989024 2023-07-14
   [New Features]
     * The runtime was created by the additional compile.
