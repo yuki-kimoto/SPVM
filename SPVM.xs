@@ -5078,16 +5078,11 @@ DESTROY(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   // Env
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_self);
   
-  void* runtime = env->runtime;
-  
-  // If the runtime exists, this env was freed by the runtime
-  if (!runtime) {
-    env->free_env(env);
-  }
+  env->free_env(env);
   
   XSRETURN(0);
 }
