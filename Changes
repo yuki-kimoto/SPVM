@@ -3,6 +3,8 @@
     * The runtime was created by the additional compile.
   [Incompatibe Changes]
     * The DESTROY method in the Runtime class was removed.
+  [Incompatibe Changes]
+    * The DESTROY method in the Runtime class was removed.
 0.989023 2023-07-12
   [New Features]
     * The following native APIs were added.
