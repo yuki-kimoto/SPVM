@@ -1,0 +1,12 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Native::Stack : pointer {
+  use Native::Env;
+  
+  # Fields
+  has env : ro Native::Env;
+  
+  # Instance Methods
+  native method DESTROY : void ();
+}
