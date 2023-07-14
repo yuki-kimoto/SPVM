@@ -166,10 +166,8 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
     SV** sv_native_blessed_object_env_ptr = hv_fetch(hv_blessed_object_env, "object", strlen("object"), 0);
     SV* sv_native_blessed_object_env = sv_native_blessed_object_env_ptr ? *sv_native_blessed_object_env_ptr : &PL_sv_undef;
     SPVM_ENV* blessed_object_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_blessed_object_env)));
-
-    SV** sv_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-    SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-    void* spvm_stack = INT2PTR(void*, SvIV(SvRV(sv_stack)));
+    
+    void* spvm_stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
     
     stack = blessed_object_env->get_pointer(blessed_object_env, blessed_object_stack, spvm_stack);
   }
