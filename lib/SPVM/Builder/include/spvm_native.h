@@ -97,6 +97,7 @@ union spvm_value {
 
 
 struct spvm_env {
+  void* compiler;
   void* runtime;
   SPVM_ENV_API* api;
   SPVM_ENV* (*new_env)(void);
@@ -304,7 +305,6 @@ struct spvm_env {
   int32_t (*get_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void* compiler;
 };
 
 struct spvm_env_api {

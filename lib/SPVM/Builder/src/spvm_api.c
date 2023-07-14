@@ -97,6 +97,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
 
   // Native APIs
   void* env_init[]  = {
+    NULL, // compiler
     NULL, // runtime
     env_api, // api
     SPVM_API_new_env,
@@ -304,7 +305,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_ref_count,
     SPVM_API_inc_ref_count,
     SPVM_API_dec_ref_count,
-    NULL, // compiler
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
