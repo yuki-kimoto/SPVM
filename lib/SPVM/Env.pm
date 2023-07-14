@@ -34,15 +34,15 @@ Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::Native
 
 =head1 Fields
 
-=head2 runtime
+=head2 compiler
 
-  has runtime : ro Runtime;
+  has compiler : ro Compiler;
 
-A runtime. The field type is the L<Runtime|SPVM::Runtime> class.
+A compiler. The field type is the L<Compiler|SPVM::Compiler> class.
 
 =head1 Class Methods
 
-  native static method new : Env ($runtime = undef : Runtime);
+  static method new : Env ($compiler : Compiler = undef);
 
 Creates a new L<Env|SPVM::Env> ojbect, and returns it.
 

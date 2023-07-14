@@ -9,19 +9,20 @@ int32_t SPVM__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
-  void* obj_runtime = stack[0].oval;
+  void* obj_compiler = stack[0].oval;
   
   SPVM_ENV* new_env = env->new_env();
   
   void* obj_self= env->new_pointer_object_by_name(env, stack, "Env", new_env, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  if (obj_runtime) {
-    env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  if (obj_compiler) {
+    env->set_field_object_by_name(env, stack, obj_self, "compiler", obj_compiler, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     
-    void* runtime = env->get_pointer(env, stack, obj_runtime);
-    new_env->runtime = runtime;
+    void* compiler = env->get_pointer(env, stack, obj_compiler);
+    new_env->compiler = compiler;
+    new_env->runtime = new_env->api->compiler->get_runtime(compiler);
   }
   
   stack[0].oval = obj_self;

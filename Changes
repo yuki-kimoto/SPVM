@@ -33,6 +33,15 @@
       
       -  native method build_runtime : Runtime ();
       +  native method get_runtime : Runtime ();
+
+    * The following methods and fields in the Env class were changed.
+         # Fields
+      -  has runtime : ro Runtime;
+      +  has compiler : ro Compiler;
+
+         # Class Methods
+      -  native static method new : Env ($runtime : Runtime = undef);
+      +  native static method new : Env ($compiler : Compiler = undef);
     
 0.989023 2023-07-12
   [New Features]

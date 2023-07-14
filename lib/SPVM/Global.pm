@@ -249,7 +249,7 @@ sub init_api {
   
   &init_runtime();
   
-  $ENV = $BUILDER_API->class("Env")->new($RUNTIME);
+  $ENV = $BUILDER_API->class("Env")->new($COMPILER);
   
   $STACK = $ENV->new_stack;
   
