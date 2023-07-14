@@ -67,6 +67,23 @@ void* SPVM_XS_UTIL_get_object(pTHX_ SV* sv_data) {
   }
 }
 
+void* SPVM_XS_UTIL_get_pointer(pTHX_ SV* sv_data) {
+  
+  if (SvOK(sv_data)) {
+    HV* hv_data = (HV*)SvRV(sv_data);
+    
+    SV** sv_pointer_ptr = hv_fetch(hv_data, "pointer", strlen("pointer"), 0);
+    SV* sv_pointer = sv_pointer_ptr ? *sv_pointer_ptr : &PL_sv_undef;
+    size_t iv_pointer = SvIV(SvRV(sv_pointer));
+    void* pointer = INT2PTR(void*, iv_pointer);
+    
+    return pointer;
+  }
+  else {
+    return NULL;
+  }
+}
+
 SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   
   SPVM_ENV* env;
