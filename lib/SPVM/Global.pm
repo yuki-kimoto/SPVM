@@ -263,8 +263,6 @@ sub init_api {
 }
 
 END {
-  $BUILDER = undef;
-  $COMPILER = undef;
   $API = undef;
   if ($ENV) {
     $ENV->destroy_class_vars($STACK);
@@ -273,12 +271,14 @@ END {
   $ENV = undef;
   $RUNTIME = undef;
   $DYNAMIC_LIB_FILES = undef;
+  $COMPILER = undef;
   $BUILDER_API = undef;
   if ($BUILDER_ENV) {
     $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
   }
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
+  $BUILDER = undef;
 }
 
 sub get_module_names {
