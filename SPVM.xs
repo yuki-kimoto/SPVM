@@ -29,38 +29,38 @@ SV* SPVM_XS_UTIL_new_sv_pointer_object(pTHX_ void* object, const char* class) {
   return sv_data;
 }
 
-SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack, void* object, const char* class) {
+SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack, void* spvm_object, const char* class) {
   
-  // Create object
-  size_t iv_object = PTR2IV(object);
-  SV* sviv_object = sv_2mortal(newSViv(iv_object));
-  SV* sv_object = sv_2mortal(newRV_inc(sviv_object));
-
-  HV* hv_data = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
-
-  (void)hv_store(hv_data, "object", strlen("object"), SvREFCNT_inc(sv_object), 0);
-  (void)hv_store(hv_data, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
-  (void)hv_store(hv_data, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-  (void)hv_store(hv_data, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
-
+  // Create spvm_object
+  size_t iv_spvm_object = PTR2IV(spvm_object);
+  SV* sviv_spvm_object = sv_2mortal(newSViv(iv_spvm_object));
+  SV* sv_spvm_object = sv_2mortal(newRV_inc(sviv_spvm_object));
+  
+  HV* hv_blessed_object = (HV*)sv_2mortal((SV*)newHV());
+  SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
+  
+  (void)hv_store(hv_blessed_object, "spvm_object", strlen("spvm_object"), SvREFCNT_inc(sv_spvm_object), 0);
+  (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
+  (void)hv_store(hv_blessed_object, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+  (void)hv_store(hv_blessed_object, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
+  
   HV* hv_class = gv_stashpv(class, 0);
-  sv_bless(sv_data, hv_class);
+  sv_bless(sv_blessed_object, hv_class);
   
-  return sv_data;
+  return sv_blessed_object;
 }
 
-void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_data) {
+void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_blessed_object) {
   
-  if (SvOK(sv_data)) {
-    HV* hv_data = (HV*)SvRV(sv_data);
+  if (SvOK(sv_blessed_object)) {
+    HV* hv_blessed_object = (HV*)SvRV(sv_blessed_object);
     
-    SV** sv_object_ptr = hv_fetch(hv_data, "object", strlen("object"), 0);
-    SV* sv_object = sv_object_ptr ? *sv_object_ptr : &PL_sv_undef;
-    size_t iv_object = SvIV(SvRV(sv_object));
-    void* object = INT2PTR(void*, iv_object);
+    SV** sv_spvm_object_ptr = hv_fetch(hv_blessed_object, "spvm_object", strlen("spvm_object"), 0);
+    SV* sv_spvm_object = sv_spvm_object_ptr ? *sv_spvm_object_ptr : &PL_sv_undef;
+    size_t iv_spvm_object = SvIV(SvRV(sv_spvm_object));
+    void* spvm_object = INT2PTR(void*, iv_spvm_object);
     
-    return object;
+    return spvm_object;
   }
   else {
     return NULL;
