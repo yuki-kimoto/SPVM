@@ -68,7 +68,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   compiler->if_require_not_found_module_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
   
-  compiler->current_runtime = SPVM_RUNTIME_new();
+  compiler->runtime = SPVM_RUNTIME_new();
   
   return compiler;
 }
@@ -532,7 +532,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
 
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime_private(SPVM_COMPILER* compiler) {
   
-  SPVM_RUNTIME* current_runtime = compiler->current_runtime;
+  SPVM_RUNTIME* current_runtime = compiler->runtime;
   
   int32_t current_runtime_basic_types_length = current_runtime->basic_types_length;
   
@@ -733,13 +733,13 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime_private(SPVM_COMPILER* compiler) {
     }
   }
   
-  compiler->current_runtime = runtime;
+  compiler->runtime = runtime;
   
   return runtime;
 }
 
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
-  return compiler->current_runtime;
+  return compiler->runtime;
 }
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {
@@ -805,9 +805,9 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   SPVM_COMPILER_clear_include_dirs(compiler);
   
-  if (compiler->current_runtime) {
-    SPVM_RUNTIME_free(compiler->current_runtime);
-    compiler->current_runtime = NULL;
+  if (compiler->runtime) {
+    SPVM_RUNTIME_free(compiler->runtime);
+    compiler->runtime = NULL;
   }
   
   // Free allocator
