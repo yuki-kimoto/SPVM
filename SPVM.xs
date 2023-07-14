@@ -4437,7 +4437,7 @@ create_native_compiler(...)
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
-  (void)hv_store(hv_self, "native_compiler", strlen("native_compiler"), SvREFCNT_inc(sv_compiler), 0);
+  (void)hv_store(hv_self, "pointer", strlen("pointer"), SvREFCNT_inc(sv_compiler), 0);
 
   XSRETURN(0);
 }
@@ -4457,9 +4457,7 @@ get_module_file(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
   void* module_file = env_api->api->compiler->get_module_file(compiler, module_name);
   SV* sv_module_file = &PL_sv_undef;
@@ -4516,9 +4514,7 @@ DESTROY(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
   // Free compiler
   env_api->api->compiler->free_instance(compiler);
@@ -4540,9 +4536,7 @@ compile(...)
   
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
   // Include directries
   SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
@@ -4608,9 +4602,7 @@ get_runtime(...)
   
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
   SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
@@ -4639,10 +4631,7 @@ get_error_messages(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
-  // Compiler
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
   AV* av_error_messages = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_error_messages = sv_2mortal(newRV_inc((SV*)av_error_messages));

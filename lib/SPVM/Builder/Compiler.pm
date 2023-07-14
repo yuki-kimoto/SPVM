@@ -3,14 +3,14 @@ package SPVM::Builder::Compiler;
 use strict;
 use warnings;
 
-sub native_compiler {
+sub pointer {
   my $self = shift;
   if (@_) {
-    $self->{native_compiler} = $_[0];
+    $self->{pointer} = $_[0];
     return $self;
   }
   else {
-    return $self->{native_compiler};
+    return $self->{pointer};
   }
 }
 
