@@ -113,7 +113,7 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
     // Stack
     SV** sv_blessed_object_stack_ptr = hv_fetch(hv_env, "stack", strlen("stack"), 0);
     SV* sv_blessed_object_stack = sv_blessed_object_stack_ptr ? *sv_blessed_object_stack_ptr : &PL_sv_undef;
-    SPVM_VALUE* blessed_object_stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_blessed_object_stack);
+    SPVM_VALUE* blessed_object_stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_blessed_object_stack);
     
     // Env
     SV** sv_blessed_object_env_ptr = hv_fetch(hv_env, "env", strlen("env"), 0);
@@ -132,7 +132,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   
   SPVM_VALUE* stack;
   if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Stack")) {
-    stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
+    stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   }
   else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
     HV* hv_stack = (HV*)SvRV(sv_stack);
@@ -140,7 +140,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
     // Stack
     SV** sv_blessed_object_stack_ptr = hv_fetch(hv_stack, "stack", strlen("stack"), 0);
     SV* sv_blessed_object_stack = sv_blessed_object_stack_ptr ? *sv_blessed_object_stack_ptr : &PL_sv_undef;
-    SPVM_VALUE* blessed_object_stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_blessed_object_stack);
+    SPVM_VALUE* blessed_object_stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_blessed_object_stack);
     
     // Env
     SV** sv_blessed_object_env_ptr = hv_fetch(hv_stack, "env", strlen("env"), 0);
@@ -4919,7 +4919,7 @@ set_command_info_program_name(...)
   SV* sv_stack = ST(1);
   
   SPVM_ENV* env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   
   SV* sv_program_name = ST(2);
   const char* program_name = SvPV_nolen(sv_program_name);
@@ -4953,7 +4953,7 @@ set_command_info_argv(...)
   SV* sv_stack = ST(1);
   
   SPVM_ENV* env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   
   SV* sv_argv = ST(2);
   AV* av_argv = (AV*)SvRV(sv_argv);
@@ -4996,7 +4996,7 @@ set_command_info_base_time(...)
   SV* sv_stack = ST(1);
   
   SPVM_ENV* env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   
   SV* sv_base_time = ST(2);
   int64_t base_time = SvIV(sv_base_time);
@@ -5025,7 +5025,7 @@ call_init_methods(...)
   SV* sv_stack = ST(1);
   
   SPVM_ENV* env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   
   int32_t error_id = env->call_init_methods(env, stack);
   
@@ -5045,7 +5045,7 @@ destroy_class_vars(...)
   SV* sv_stack = ST(1);
   
   SPVM_ENV* env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   
   env->destroy_class_vars(env, stack);
   
@@ -5063,7 +5063,7 @@ new_stack(...)
 
   // Create native_stack
   SPVM_VALUE* stack = env->new_stack(env);
-  SV* sv_stack = SPVM_XS_UTIL_new_sv_object(aTHX_ stack, "SPVM::Builder::Stack");
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ stack, "SPVM::Builder::Stack");
   HV* hv_stack = (HV*)SvRV(sv_stack);
 
   (void)hv_store(hv_stack, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
@@ -5099,7 +5099,7 @@ DESTROY(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   // Stack
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_self);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
   // Env
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
