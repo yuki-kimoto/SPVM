@@ -38,8 +38,6 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<Comparator::String|SPVM::Comparator::String>
 
-=item * L<Compiler|SPVM::Compiler>
-
 =item * L<Complex_2d|SPVM::Complex_2d>
 
 =item * L<Complex_2f|SPVM::Complex_2f>
@@ -47,8 +45,6 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 =item * L<Double|SPVM::Double>
 
 =item * L<DoubleList|SPVM::DoubleList>
-
-=item * L<Env|SPVM::Env>
 
 =item * L<EqualityChecker|SPVM::EqualityChecker>
 
@@ -96,11 +92,17 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<LongList|SPVM::LongList>
 
+=item * L<Native::Compiler|SPVM::Native::Compiler>
+
+=item * L<Native::Env|SPVM::Native::Env>
+
+=item * L<Native::Runtime|SPVM::Native::Runtime>
+
+=item * L<Native::Stack|SPVM::Native::Stack>
+
 =item * L<Point|SPVM::Point>
 
 =item * L<Point3D|SPVM::Point3D>
-
-=item * L<Runtime|SPVM::Runtime>
 
 =item * L<Scope::Guard|SPVM::Scope::Guard>
 
@@ -111,8 +113,6 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 =item * L<ShortList|SPVM::ShortList>
 
 =item * L<Sort|SPVM::Sort>
-
-=item * L<Stack|SPVM::Stack>
 
 =item * L<Stringable|SPVM::Stringable>
 

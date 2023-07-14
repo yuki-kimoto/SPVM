@@ -348,13 +348,13 @@ Options:
 
 An execution environment.
 
-C<env> must be a L<SPVM::Bulder::Env> or L<SPVM::BlessedObject::Class> object of the L<Env|SPVM::Env> class.
+C<env> must be a L<SPVM::Bulder::Env> or L<SPVM::BlessedObject::Class> object of the L<Native::Env|SPVM::Native::Env> class.
   
 =item C<stack>
 
 An call stack.
 
-C<stack> must be a L<SPVM::Bulder::Stack> or L<SPVM::BlessedObject::Class> object of the L<Stack|SPVM::Stack> class.
+C<stack> must be a L<SPVM::Bulder::Stack> or L<SPVM::BlessedObject::Class> object of the L<Native::Stack|SPVM::Native::Stack> class.
 
 =back
 

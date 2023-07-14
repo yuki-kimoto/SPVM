@@ -106,10 +106,10 @@ sub init_runtime {
       include_dirs => $BUILDER->include_dirs
     );
     # Load SPVM Compilers
-    $BUILDER_COMPILER->compile_with_exit("Compiler", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Runtime", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Env", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Stack", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Compiler", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Runtime", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Env", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Stack", __FILE__, __LINE__);
     
     $BUILDER_RUNTIME = $BUILDER_COMPILER->get_runtime;
 
@@ -131,7 +131,7 @@ sub init_runtime {
     
     $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     
-    $COMPILER = $BUILDER_API->class("Compiler")->new;
+    $COMPILER = $BUILDER_API->class("Native::Compiler")->new;
     for my $include_dir (@{$BUILDER->include_dirs}) {
       $COMPILER->add_include_dir($include_dir);
     }
@@ -249,7 +249,7 @@ sub init_api {
   
   &init_runtime();
   
-  $ENV = $BUILDER_API->class("Env")->new($COMPILER);
+  $ENV = $BUILDER_API->class("Native::Env")->new($COMPILER);
   
   $STACK = $ENV->new_stack;
   
