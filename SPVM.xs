@@ -12,21 +12,37 @@
 
 static const char* FILE_NAME = "SPVM.xs";
 
-SV* SPVM_XS_UTIL_new_sv_pointer_object(pTHX_ void* object, const char* class) {
+SV* SPVM_XS_UTIL_new_sv_pointer_object(pTHX_ void* pointer, const char* class) {
   
-  // Create object
-  size_t iv_object = PTR2IV(object);
-  SV* sviv_object = sv_2mortal(newSViv(iv_object));
-  SV* sv_object = sv_2mortal(newRV_inc(sviv_object));
+  size_t iv_pointer = PTR2IV(pointer);
+  SV* sviv_pointer = sv_2mortal(newSViv(iv_pointer));
+  SV* sv_pointer = sv_2mortal(newRV_inc(sviv_pointer));
   
-  HV* hv_data = (HV*)sv_2mortal((SV*)newHV());
-  (void)hv_store(hv_data, "pointer", strlen("pointer"), SvREFCNT_inc(sv_object), 0);
-  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  HV* hv_pointer_object = (HV*)sv_2mortal((SV*)newHV());
+  (void)hv_store(hv_pointer_object, "pointer", strlen("pointer"), SvREFCNT_inc(sv_pointer), 0);
+  SV* sv_pointer_object = sv_2mortal(newRV_inc((SV*)hv_pointer_object));
   
   HV* hv_class = gv_stashpv(class, 0);
-  sv_bless(sv_data, hv_class);
+  sv_bless(sv_pointer_object, hv_class);
   
-  return sv_data;
+  return sv_pointer_object;
+}
+
+void* SPVM_XS_UTIL_get_pointer(pTHX_ SV* sv_data) {
+  
+  if (SvOK(sv_data)) {
+    HV* hv_data = (HV*)SvRV(sv_data);
+    
+    SV** sv_pointer_ptr = hv_fetch(hv_data, "pointer", strlen("pointer"), 0);
+    SV* sv_pointer = sv_pointer_ptr ? *sv_pointer_ptr : &PL_sv_undef;
+    size_t iv_pointer = SvIV(SvRV(sv_pointer));
+    void* pointer = INT2PTR(void*, iv_pointer);
+    
+    return pointer;
+  }
+  else {
+    return NULL;
+  }
 }
 
 SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack, void* spvm_object, const char* class) {
@@ -61,23 +77,6 @@ void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_blessed_object) {
     void* spvm_object = INT2PTR(void*, iv_spvm_object);
     
     return spvm_object;
-  }
-  else {
-    return NULL;
-  }
-}
-
-void* SPVM_XS_UTIL_get_pointer(pTHX_ SV* sv_data) {
-  
-  if (SvOK(sv_data)) {
-    HV* hv_data = (HV*)SvRV(sv_data);
-    
-    SV** sv_pointer_ptr = hv_fetch(hv_data, "pointer", strlen("pointer"), 0);
-    SV* sv_pointer = sv_pointer_ptr ? *sv_pointer_ptr : &PL_sv_undef;
-    size_t iv_pointer = SvIV(SvRV(sv_pointer));
-    void* pointer = INT2PTR(void*, iv_pointer);
-    
-    return pointer;
   }
   else {
     return NULL;
