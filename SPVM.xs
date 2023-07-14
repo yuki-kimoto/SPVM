@@ -4400,7 +4400,7 @@ get_basic_type_name(...)
 MODULE = SPVM::Builder::Compiler		PACKAGE = SPVM::Builder::Compiler
 
 SV*
-create_compiler(...)
+create_native_compiler(...)
   PPCODE:
 {
   
@@ -4420,7 +4420,7 @@ create_compiler(...)
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
-  (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
+  (void)hv_store(hv_self, "native_compiler", strlen("native_compiler"), SvREFCNT_inc(sv_compiler), 0);
 
   XSRETURN(0);
 }
@@ -4440,7 +4440,7 @@ get_module_file(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
@@ -4499,7 +4499,7 @@ DESTROY(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
@@ -4523,7 +4523,7 @@ compile(...)
   
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
@@ -4591,7 +4591,7 @@ get_runtime(...)
   
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   
@@ -4623,7 +4623,7 @@ get_error_messages(...)
   SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
   // Compiler
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "native_compiler", strlen("native_compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   void* compiler = INT2PTR(void*, SvIV(SvRV(sv_compiler)));
   

@@ -3,14 +3,14 @@ package SPVM::Builder::Compiler;
 use strict;
 use warnings;
 
-sub compiler {
+sub native_compiler {
   my $self = shift;
   if (@_) {
-    $self->{compiler} = $_[0];
+    $self->{native_compiler} = $_[0];
     return $self;
   }
   else {
-    return $self->{compiler};
+    return $self->{native_compiler};
   }
 }
 
@@ -41,7 +41,7 @@ sub new {
   
   bless $self, $class;
   
-  $self->create_compiler;
+  $self->create_native_compiler;
   
   return $self;
 }
