@@ -4627,7 +4627,7 @@ get_runtime(...)
   
   void* runtime = env_api->api->compiler->get_runtime(compiler);
   
-  SV* sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
+  SV* sv_runtime = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ runtime, "SPVM::Builder::Runtime");
   
   XPUSHs(sv_runtime);
   
@@ -4673,7 +4673,7 @@ get_method_names(...)
 {
   
   SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SV* sv_basic_type_name = ST(1);
   SV* sv_category = ST(2);
@@ -4719,7 +4719,7 @@ get_basic_type_anon_basic_type_names(...)
 {
   
   SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SV* sv_basic_type_name = ST(1);
   
@@ -4760,7 +4760,7 @@ get_basic_type_names(...)
 {
   
   SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SPVM_ENV* env_api = SPVM_API_new_env();
   
@@ -4788,7 +4788,7 @@ get_module_file(...)
 {
   
   SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SV* sv_basic_type_name = ST(1);
   
@@ -4835,7 +4835,7 @@ set_native_method_address(...)
 {
   
   SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
 
   SV* sv_basic_type_name = ST(1);
   SV* sv_method_name = ST(2);
@@ -4872,7 +4872,7 @@ build_precompile_module_source(...)
   PPCODE:
 {
   SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SV* sv_basic_type_name = ST(1);
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -4923,7 +4923,7 @@ new(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   if (SvOK(sv_runtime)) {
-    void* runtime = SPVM_XS_UTIL_get_object(aTHX_ sv_runtime);
+    void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
     new_env->runtime = runtime;
     (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }

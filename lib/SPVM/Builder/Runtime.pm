@@ -3,6 +3,17 @@ package SPVM::Builder::Runtime;
 use strict;
 use warnings;
 
+sub pointer {
+  my $self = shift;
+  if (@_) {
+    $self->{pointer} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{pointer};
+  }
+}
+
 sub load_dynamic_libs {
   my ($self) = @_;
 
