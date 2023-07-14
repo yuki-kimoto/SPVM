@@ -600,9 +600,6 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   env->runtime = runtime;
   
-  // Free compiler
-  env->api->compiler->free_instance(compiler);
-  
   // Set precompile method addresses
   SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);
   
@@ -683,13 +680,15 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     }
   }
   
-  // Cleanup global vars
   env->destroy_class_vars(env, stack);
   
-  // Free stack
   env->free_stack(env, stack);
   
   env->free_env(env);
+  
+  env_api->api->compiler->free_instance(compiler);
+  
+  env_api->free_env(env_api);
   
   return status;
 }
