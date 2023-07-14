@@ -135,10 +135,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   
   SPVM_VALUE* stack;
   if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Stack")) {
-    HV* hv_stack = (HV*)SvRV(sv_stack);
-    SV** sv_native_stack_ptr = hv_fetch(hv_stack, "object", strlen("object"), 0);
-    SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-    stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+    stack = SPVM_XS_UTIL_get_object(aTHX_ sv_stack);
   }
   else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
     HV* hv_stack = (HV*)SvRV(sv_stack);
