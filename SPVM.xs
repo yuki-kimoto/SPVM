@@ -105,10 +105,7 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   
   SPVM_ENV* env;
   if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::Builder::Env")) {
-    HV* hv_env = (HV*)SvRV(sv_env);
-    SV** sv_native_env_ptr = hv_fetch(hv_env, "object", strlen("object"), 0);
-    SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
-    env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_native_env)));
+    env = SPVM_XS_UTIL_get_object(aTHX_ sv_env);
   }
   else if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
     HV* hv_env = (HV*)SvRV(sv_env);
