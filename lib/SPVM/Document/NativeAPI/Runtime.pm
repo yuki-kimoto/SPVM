@@ -8,25 +8,11 @@ The runtime native APIs of L<SPVM> are the APIs to manipulate information of run
 
 =head1 Usage
 
-  SPVM_API_RUNTIME* runtime_api = env->api->runtime;
+  SPVM_API_RUNTIME* api_runtime = env->api->runtime;
   
-  void* runtime = runtime_api->new_instance();
-  
-  env->api->runtime->free_instance(runtime);
+  int32_t basic_types_length = api_runtime->get_basic_types_length(env->runtime);
 
 =head1 Runtime Native APIs
-
-=head2 new_instance
-
-  void* (*new_instance)(void);
-
-Creates a new runtime object and returns it.
-
-=head2 free_instance
-
-  void (*free_instance)(void* runtime);
-
-Frees a runtime object.
 
 =head2 get_object_data_offset
 
@@ -124,18 +110,16 @@ The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
 
 =head1 Native API IDs
 
-  0 new_instance
-  1 free_instance
-  2 get_object_data_offset
-  3 get_object_ref_count_offset
-  4 get_object_length_offset
-  5 get_basic_type_by_id
-  6 get_basic_type_by_name
-  7 get_basic_types_length
-  8 is_object_type
-  9 can_assign
-  10 build_precompile_module_source
-  11 build_precompile_method_source
+  0 get_object_data_offset
+  1 get_object_ref_count_offset
+  2 get_object_length_offset
+  3 get_basic_type_by_id
+  4 get_basic_type_by_name
+  5 get_basic_types_length
+  6 is_object_type
+  7 can_assign
+  8 build_precompile_module_source
+  9 build_precompile_method_source
 
 =head1 Copyright & License
 

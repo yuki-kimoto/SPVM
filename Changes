@@ -5,6 +5,26 @@
     * The DESTROY method in the Runtime class was removed.
   [Incompatibe Changes]
     * The DESTROY method in the Runtime class was removed.
+    
+    * The following runtime native APIs were removed.
+    
+      -  void* (*new_instance)(void);
+      -  void (*free_instance)(void* runtime);
+    
+    * The runtime native API IDs were reordered.
+    
+      0 get_object_data_offset
+      1 get_object_ref_count_offset
+      2 get_object_length_offset
+      3 get_basic_type_by_id
+      4 get_basic_type_by_name
+      5 get_basic_types_length
+      6 is_object_type
+      7 can_assign
+      8 build_precompile_module_source
+      9 build_precompile_method_source
+
+      
 0.989023 2023-07-12
   [New Features]
     * The following native APIs were added.

@@ -97,8 +97,6 @@
 SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
   
   void* env_runtime_init[]  = {
-    SPVM_API_RUNTIME_new_instance,
-    SPVM_API_RUNTIME_free_instance,
     SPVM_API_RUNTIME_get_object_data_offset,
     SPVM_API_RUNTIME_get_object_ref_count_offset,
     SPVM_API_RUNTIME_get_object_length_offset,
@@ -118,17 +116,6 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
 
 void SPVM_API_RUNTIME_free_api(SPVM_API_RUNTIME* api) {
   free(api);
-}
-
-SPVM_RUNTIME* SPVM_API_RUNTIME_new_instance() {
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
-  
-  return runtime;
-}
-
-void SPVM_API_RUNTIME_free_instance(SPVM_RUNTIME* runtime) {
-  
-  SPVM_RUNTIME_free(runtime);
 }
 
 int32_t SPVM_API_RUNTIME_get_object_data_offset(SPVM_RUNTIME* runtime) {
