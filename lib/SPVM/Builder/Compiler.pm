@@ -46,7 +46,7 @@ sub new {
   return $self;
 }
 
-sub use {
+sub compile_with_exit {
   my ($self, $module_name, $file, $line) = @_;
   
   my $success = $self->compile($module_name, __FILE__, __LINE__);

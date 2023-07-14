@@ -106,10 +106,10 @@ sub init_runtime {
       include_dirs => $BUILDER->include_dirs
     );
     # Load SPVM Compilers
-    $BUILDER_COMPILER->use("Compiler", __FILE__, __LINE__);
-    $BUILDER_COMPILER->use("Runtime", __FILE__, __LINE__);
-    $BUILDER_COMPILER->use("Env", __FILE__, __LINE__);
-    $BUILDER_COMPILER->use("Stack", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Compiler", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Runtime", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Env", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Stack", __FILE__, __LINE__);
     
     $BUILDER_RUNTIME = $BUILDER_COMPILER->get_runtime;
 
