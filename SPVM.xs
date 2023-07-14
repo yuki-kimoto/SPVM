@@ -4645,29 +4645,6 @@ get_error_messages(...)
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
-DESTROY(...)
-  PPCODE:
-{
-
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Runtime
-  SV** sv_native_runtime_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
-  SV* sv_native_runtime = sv_native_runtime_ptr ? *sv_native_runtime_ptr : &PL_sv_undef;
-  void* runtime = INT2PTR(void*, SvIV(SvRV(sv_native_runtime)));
-
-  SPVM_ENV* env_api = SPVM_API_new_env();
-
-  // Free native_runtime
-  env_api->api->runtime->free_instance(runtime);
-
-  env_api->free_env(env_api);
-
-  XSRETURN(0);
-}
-
-SV*
 get_method_names(...)
   PPCODE:
 {
