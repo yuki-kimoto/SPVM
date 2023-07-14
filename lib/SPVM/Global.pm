@@ -14,6 +14,7 @@ use SPVM::Builder::Runtime;
 use SPVM::ExchangeAPI;
 
 our $BUILDER;
+our $BUILDER_COMPILER;
 our $BUILDER_ENV;
 our $BUILDER_STACK;
 our $BUILDER_API;
@@ -100,16 +101,16 @@ sub init_runtime {
       $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
     }
     
-    my $builder_compiler = SPVM::Builder::Compiler->new(
+    $BUILDER_COMPILER = SPVM::Builder::Compiler->new(
       include_dirs => $BUILDER->include_dirs
     );
     # Load SPVM Compilers
-    $builder_compiler->use("Compiler", __FILE__, __LINE__);
-    $builder_compiler->use("Runtime", __FILE__, __LINE__);
-    $builder_compiler->use("Env", __FILE__, __LINE__);
-    $builder_compiler->use("Stack", __FILE__, __LINE__);
+    $BUILDER_COMPILER->use("Compiler", __FILE__, __LINE__);
+    $BUILDER_COMPILER->use("Runtime", __FILE__, __LINE__);
+    $BUILDER_COMPILER->use("Env", __FILE__, __LINE__);
+    $BUILDER_COMPILER->use("Stack", __FILE__, __LINE__);
     
-    my $builder_runtime = $builder_compiler->build_runtime;
+    my $builder_runtime = $BUILDER_COMPILER->build_runtime;
 
     $builder_runtime->load_dynamic_libs;
 
@@ -279,6 +280,7 @@ END {
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
   $BUILDER = undef;
+  $BUILDER_COMPILER = undef;
 }
 
 sub get_module_names {

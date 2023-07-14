@@ -32,8 +32,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   
   // SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, runtime->basic_types);
-    
+  
   // Free allocator
-  // SPVM_ALLOCATOR_free(runtime->allocator);
-  // runtime->allocator = NULL;
+  SPVM_ALLOCATOR_free(runtime->allocator);
+  runtime->allocator = NULL;
 }
