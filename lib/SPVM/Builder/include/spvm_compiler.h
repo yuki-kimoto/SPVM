@@ -116,8 +116,6 @@ SPVM_COMPILER* SPVM_COMPILER_new();
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
 
-SPVM_COMPILER* SPVM_COMPILER_new_parse_runtime(SPVM_RUNTIME* runtime);
-
 SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name);
 
 void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file);
