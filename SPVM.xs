@@ -29,6 +29,23 @@ SV* SPVM_XS_UTIL_new_sv_object(pTHX_ void* object, const char* class) {
   return sv_data;
 }
 
+SV* SPVM_XS_UTIL_new_sv_pointer_object(pTHX_ void* object, const char* class) {
+  
+  // Create object
+  size_t iv_object = PTR2IV(object);
+  SV* sviv_object = sv_2mortal(newSViv(iv_object));
+  SV* sv_object = sv_2mortal(newRV_inc(sviv_object));
+  
+  HV* hv_data = (HV*)sv_2mortal((SV*)newHV());
+  (void)hv_store(hv_data, "pointer", strlen("pointer"), SvREFCNT_inc(sv_object), 0);
+  SV* sv_data = sv_2mortal(newRV_inc((SV*)hv_data));
+  
+  HV* hv_class = gv_stashpv(class, 0);
+  sv_bless(sv_data, hv_class);
+  
+  return sv_data;
+}
+
 SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack, void* object, const char* class) {
   
   // Create object
