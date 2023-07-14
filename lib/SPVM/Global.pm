@@ -15,6 +15,7 @@ use SPVM::ExchangeAPI;
 
 our $BUILDER;
 our $BUILDER_COMPILER;
+our $BUILDER_RUNTIME;
 our $BUILDER_ENV;
 our $BUILDER_STACK;
 our $BUILDER_API;
@@ -110,12 +111,12 @@ sub init_runtime {
     $BUILDER_COMPILER->use("Env", __FILE__, __LINE__);
     $BUILDER_COMPILER->use("Stack", __FILE__, __LINE__);
     
-    my $builder_runtime = $BUILDER_COMPILER->build_runtime;
+    $BUILDER_RUNTIME = $BUILDER_COMPILER->build_runtime;
 
-    $builder_runtime->load_dynamic_libs;
+    $BUILDER_RUNTIME->load_dynamic_libs;
 
     # Build an environment
-    $BUILDER_ENV = SPVM::Builder::Env->new($builder_runtime);
+    $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_RUNTIME);
     
     # Set command line info
     $BUILDER_STACK = $BUILDER_ENV->new_stack;
@@ -279,8 +280,9 @@ END {
   }
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
-  $BUILDER = undef;
+  $BUILDER_RUNTIME = undef;
   $BUILDER_COMPILER = undef;
+  $BUILDER = undef;
 }
 
 sub get_module_names {
