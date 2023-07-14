@@ -65,7 +65,7 @@ sub build_dynamic_lib_dist {
     $compiler->print_error_messages(*STDERR);
     exit(255);
   }
-  my $runtime = $compiler->build_runtime;
+  my $runtime = $compiler->get_runtime;
   my $module_file = $runtime->get_module_file($module_name);
   my $method_names = $runtime->get_method_names($module_name, $category);
   my $anon_module_names = $runtime->get_basic_type_anon_basic_type_names($module_name);

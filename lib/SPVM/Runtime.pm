@@ -16,13 +16,13 @@ The instance has the runtime information such as operation codes, classes, metho
 
 This class provides only the minimal methods to get the information of classes and methods.
 
-An instance of the C<Runtime> class is build by the L<build_runtime|SPVM::Compiler/"build_runtime"> method in the L<Compiler|SPVM::Compiler> class.
+An instance of the C<Runtime> class is build by the L<get_runtime|SPVM::Compiler/"get_runtime"> method in the L<Compiler|SPVM::Compiler> class.
 
 =head1 Usage
 
   use Runtime;
   
-  my $runtime = $compiler->build_runtime;
+  my $runtime = $compiler->get_runtime;
   
   my $basic_type_names = $runtime->get_basic_type_names;
   
@@ -142,7 +142,7 @@ The address is the L<Address|SPVM::Address> class.
 
 =head2 Compiler
 
-The L<build_runtime|SPVM::Compiler/"build_runtime"> method in the L<Compiler|SPVM::Compiler> class builds a rutnime.
+The L<get_runtime|SPVM::Compiler/"get_runtime"> method in the L<Compiler|SPVM::Compiler> class builds a rutnime.
 
 =head1 Copyright & License
 

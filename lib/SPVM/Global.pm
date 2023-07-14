@@ -111,7 +111,7 @@ sub init_runtime {
     $BUILDER_COMPILER->use("Env", __FILE__, __LINE__);
     $BUILDER_COMPILER->use("Stack", __FILE__, __LINE__);
     
-    $BUILDER_RUNTIME = $BUILDER_COMPILER->build_runtime;
+    $BUILDER_RUNTIME = $BUILDER_COMPILER->get_runtime;
 
     $BUILDER_RUNTIME->load_dynamic_libs;
 
@@ -136,7 +136,7 @@ sub init_runtime {
       $COMPILER->add_include_dir($include_dir);
     }
     $COMPILER->compile(undef);
-    $RUNTIME = $COMPILER->build_runtime;
+    $RUNTIME = $COMPILER->get_runtime;
     
     &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }
@@ -239,7 +239,7 @@ sub build {
       exit(255);
     }
     
-    $RUNTIME = $COMPILER->build_runtime;
+    $RUNTIME = $COMPILER->get_runtime;
     
     &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
   }

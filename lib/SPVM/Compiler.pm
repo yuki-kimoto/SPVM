@@ -12,7 +12,7 @@ SPVM::Compiler - Compiler
 
 C<SPVM::Compiler> is the C<Compiler> class in the L<SPVM> language. It compiles SPVM source codes and builds the runtime.
 
-The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"build_runtime"> method in this class.
+The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"get_runtime"> method in this class.
 
 =head1 Usage
 
@@ -50,7 +50,7 @@ The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"build_run
     }
   }
   
-  my $runtime = $compiler->build_runtime;
+  my $runtime = $compiler->get_runtime;
 
 =head1 Pointer
 
@@ -102,11 +102,11 @@ This method can be called multiple times.
 
 Returns compilation error messages in this compiling by the L</"compile"> method.
 
-=head2 build_runtime
+=head2 get_runtime
 
-  native method build_runtime : Runtime ();
+  native method get_runtime : Runtime ();
 
-Builds the runtime and returns it.
+Returns the runtime.
 
 The return value is a L<Runtime|SPVM::Runtime> object.
 
@@ -114,7 +114,7 @@ The return value is a L<Runtime|SPVM::Runtime> object.
 
 =head2 Runtime
 
-The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"build_runtime"> method in this class.
+The instance of the L<Runtime|SPVM::Runtime> class is build by the L</"get_runtime"> method in this class.
 
 =head1 Copyright & License
 

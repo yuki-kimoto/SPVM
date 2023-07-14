@@ -90,7 +90,7 @@ The destructor.
 
 =head2 Runtime
 
-The L<build_runtime|SPVM::Runtime/"build_runtime"> method in the L<Runtime|SPVM::Runtime> class builds an executable environement.
+The L<get_runtime|SPVM::Runtime/"get_runtime"> method in the L<Runtime|SPVM::Runtime> class builds an executable environement.
 
 =head2 Stack
 

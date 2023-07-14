@@ -154,8 +154,8 @@ const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t ind
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name);
 
-SPVM_RUNTIME* SPVM_COMPILER_build_runtime_private(SPVM_COMPILER* compiler);
-
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler);
+
+SPVM_RUNTIME* SPVM_COMPILER_get_runtime(SPVM_COMPILER* compiler);
 
 #endif

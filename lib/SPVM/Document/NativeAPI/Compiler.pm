@@ -42,7 +42,7 @@ Compiler native APIs have its IDs.
   13 clear_include_dirs
   14 get_module_file
   15 add_module_file
-  16 build_runtime
+  16 get_runtime
   
 =head1 Compiler Native APIs
 
@@ -132,9 +132,9 @@ Clear the class searching directories. The class searching directories are freed
 
   void (*add_module_file)(void* compiler, const char* module_name, void* module_file);
 
-=head2 build_runtime
+=head2 get_runtime
 
-void* (*build_runtime)(void* compiler);
+void* (*get_runtime)(void* compiler);
 
 =head1 Copyright & License
 

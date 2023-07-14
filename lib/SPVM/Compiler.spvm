@@ -10,7 +10,7 @@ class Compiler : pointer {
   # Instance Methods
   native method compile : int ($basic_type_name : string);
   
-  native method build_runtime : Runtime ();
+  native method get_runtime : Runtime ();
   
   native method set_start_file : void ($start_file : string);
   

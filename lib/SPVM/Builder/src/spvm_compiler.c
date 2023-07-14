@@ -524,13 +524,13 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   assert(compiler->allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
   if (!error_id) {
-    SPVM_COMPILER_build_runtime_private(compiler);
+    SPVM_COMPILER_build_runtime(compiler);
   }
   
   return error_id;
 }
 
-SPVM_RUNTIME* SPVM_COMPILER_build_runtime_private(SPVM_COMPILER* compiler) {
+SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* current_runtime = compiler->runtime;
   
@@ -738,7 +738,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime_private(SPVM_COMPILER* compiler) {
   return runtime;
 }
 
-SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
+SPVM_RUNTIME* SPVM_COMPILER_get_runtime(SPVM_COMPILER* compiler) {
   return compiler->runtime;
 }
 

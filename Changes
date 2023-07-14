@@ -23,8 +23,17 @@
       7 can_assign
       8 build_precompile_module_source
       9 build_precompile_method_source
+    
+    * Compiler native APIs were changed.
 
+      -  void* (*build_runtime)(void* compiler);
+      +  void* (*get_runtime)(void* compiler);
+    
+    * The following methods in the Compiler class were changed.
       
+      -  native method build_runtime : Runtime ();
+      +  native method get_runtime : Runtime ();
+    
 0.989023 2023-07-12
   [New Features]
     * The following native APIs were added.

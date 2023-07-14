@@ -4580,7 +4580,7 @@ compile(...)
 }
 
 SV*
-build_runtime(...)
+get_runtime(...)
   PPCODE:
 {
   
@@ -4599,7 +4599,7 @@ build_runtime(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
   
-  void* runtime = env_api->api->compiler->build_runtime(compiler);
+  void* runtime = env_api->api->compiler->get_runtime(compiler);
   
   SV* sv_runtime = SPVM_XS_UTIL_new_sv_object(aTHX_ runtime, "SPVM::Builder::Runtime");
   

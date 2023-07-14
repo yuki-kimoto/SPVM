@@ -60,7 +60,7 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Compiler__get_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -68,7 +68,7 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* compiler = env->get_pointer(env, stack, obj_self);
   
-  void* runtime = env->api->compiler->build_runtime(compiler);
+  void* runtime = env->api->compiler->get_runtime(compiler);
   
   void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }

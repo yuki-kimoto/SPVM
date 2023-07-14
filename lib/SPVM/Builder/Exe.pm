@@ -380,10 +380,10 @@ sub compile {
     $compiler->print_error_messages(*STDERR);
     exit(255);
   }
-  my $runtime = $compiler->build_runtime;
+  my $runtime = $compiler->get_runtime;
   
-  # This is not needed, but check when build_runtime is called more than one.
-  $runtime = $compiler->build_runtime;
+  # This is not needed, but check when get_runtime is called more than one.
+  $runtime = $compiler->get_runtime;
   
   $self->runtime($runtime);
   
@@ -550,7 +550,7 @@ EOS
 
   $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n\n";
 
-  $source .= "static void* SPVM_BOOTSTRAP_build_runtime(SPVM_ENV* env, void* compiler);\n\n";
+  $source .= "static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
 static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* native_address) {
@@ -594,7 +594,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   // Compiler
   void* compiler = env_api->api->compiler->new_instance();
   
-  void* runtime = SPVM_BOOTSTRAP_build_runtime(env_api, compiler);
+  void* runtime = SPVM_BOOTSTRAP_get_runtime(env_api, compiler);
   
   SPVM_ENV* env = env_api->new_env();
   
@@ -697,7 +697,7 @@ EOS
   return $source;
 }
 
-sub create_bootstrap_build_runtime_source {
+sub create_bootstrap_get_runtime_source {
   my ($self) = @_;
   
   # Builder
@@ -706,7 +706,7 @@ sub create_bootstrap_build_runtime_source {
   my $source = '';
   
   $source .= <<"EOS";
-static void* SPVM_BOOTSTRAP_build_runtime(SPVM_ENV* env, void* compiler) {
+static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler) {
   
 EOS
   
@@ -764,7 +764,7 @@ EOS
   $source .= qq|    exit(255);\n|;
   $source .= qq|  }\n|;
   
-  $source .= qq|  void* runtime = env->api->compiler->build_runtime(compiler);\n|;
+  $source .= qq|  void* runtime = env->api->compiler->get_runtime(compiler);\n|;
   
   $source .= qq|  return runtime;\n|;
   
@@ -881,7 +881,7 @@ sub create_bootstrap_source {
     # Set native method addresses function
     $bootstrap_source .= $self->create_bootstrap_set_native_method_addresses_func_source;
     
-    $bootstrap_source .= $self->create_bootstrap_build_runtime_source;
+    $bootstrap_source .= $self->create_bootstrap_get_runtime_source;
     
     # Build source directory
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
