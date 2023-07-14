@@ -304,6 +304,7 @@ struct spvm_env {
   int32_t (*get_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void* compiler;
 };
 
 struct spvm_env_api {
