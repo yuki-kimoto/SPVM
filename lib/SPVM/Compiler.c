@@ -7,13 +7,13 @@ static const char* FILE_NAME = "Compiler.c";
 
 int32_t SPVM__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   // Create compiler
   void* compiler = env->api->compiler->new_instance();
   
-  void* obj_self = env->new_pointer_object_by_name(env, stack, "Compiler", compiler, &e, __func__, FILE_NAME, __LINE__);
-  if (e) { return e; }
+  void* obj_self = env->new_pointer_object_by_name(env, stack, "Compiler", compiler, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
   
   stack[0].oval = obj_self;
   
@@ -22,7 +22,7 @@ int32_t SPVM__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
   
@@ -35,7 +35,7 @@ int32_t SPVM__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
   
@@ -62,7 +62,7 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
   
@@ -70,8 +70,8 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* runtime = env->api->compiler->build_runtime(compiler);
   
-  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &e, __func__, FILE_NAME, __LINE__);
-  if (e) { return e; }
+  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Runtime", runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
   
   stack[0].oval = obj_runtime;
   
@@ -80,7 +80,7 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
   
@@ -99,7 +99,7 @@ int32_t SPVM__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Compiler__set_start_line(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
   
@@ -114,7 +114,7 @@ int32_t SPVM__Compiler__set_start_line(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
   
@@ -137,7 +137,7 @@ int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e = 0;
+  int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
   
