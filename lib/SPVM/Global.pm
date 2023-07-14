@@ -116,7 +116,7 @@ sub init_runtime {
     $BUILDER_RUNTIME->load_dynamic_libs;
 
     # Build an environment
-    $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_RUNTIME);
+    $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
     
     # Set command line info
     $BUILDER_STACK = $BUILDER_ENV->new_stack;
