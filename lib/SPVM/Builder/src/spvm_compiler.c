@@ -336,7 +336,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   // Initialize error messages
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   
-  int32_t die_error_id = 0;
+  int32_t error_id = 0;
   
   int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
   
@@ -383,17 +383,17 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   }
   
   if (parse_error_flag) {
-    die_error_id = 1;
+    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
     if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-      die_error_id = 2;
+      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     else {
       // Check syntax
       SPVM_CHECK_check(compiler);
       if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-        die_error_id = 3;
+        error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       }
       else {
         // Build operation code
@@ -401,7 +401,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
         SPVM_OPCODE_BUILDER_build_opcode_list(compiler);
         assert(compiler->allocator->memory_blocks_count_tmp == build_opcode_list_start_memory_blocks_count_tmp);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-          die_error_id = 4;
+          error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
         }
       }
     }
@@ -523,10 +523,14 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   assert(compiler->allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
-  return die_error_id;
+  if (!error_id) {
+    SPVM_COMPILER_build_runtime_private(compiler);
+  }
+  
+  return error_id;
 }
 
-SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
+SPVM_RUNTIME* SPVM_COMPILER_build_runtime_private(SPVM_COMPILER* compiler) {
   
   SPVM_RUNTIME* current_runtime = compiler->current_runtime;
   
@@ -732,6 +736,10 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   compiler->current_runtime = runtime;
   
   return runtime;
+}
+
+SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
+  return compiler->current_runtime;
 }
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {
