@@ -138,12 +138,6 @@ Sets the address of a C<precompile> method.
 
 The address is the L<Address|SPVM::Address> class.
 
-=head2 DESTROY
-
-  method DESTROY : void ();
-
-The destructor.
-
 =head1 See Also
 
 =head2 Compiler

@@ -7,19 +7,6 @@
 
 static const char* FILE_NAME = "Runtime.c";
 
-int32_t SPVM__Runtime__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
-  
-  void* obj_self = stack[0].oval;
-  
-  void* runtime = env->get_pointer(env, stack, obj_self);
-  
-  env->api->runtime->free_instance(runtime);
-  
-  return 0;
-}
-
 int32_t SPVM__Runtime__set_native_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
