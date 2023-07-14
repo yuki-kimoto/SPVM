@@ -61,8 +61,6 @@ int32_t SPVM__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -81,8 +79,6 @@ int32_t SPVM__Compiler__build_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -102,8 +98,6 @@ int32_t SPVM__Compiler__set_start_file(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Compiler__set_start_line(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
@@ -142,8 +136,6 @@ int32_t SPVM__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 
 int32_t SPVM__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   int32_t e = 0;
   
