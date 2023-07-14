@@ -5119,17 +5119,15 @@ DESTROY(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   // Stack
-  SV** sv_native_stack_ptr = hv_fetch(hv_self, "object", strlen("object"), 0);
-  SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
-  SPVM_VALUE* stack = INT2PTR(SPVM_VALUE*, SvIV(SvRV(sv_native_stack)));
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_object(aTHX_ sv_self);
   
   // Env
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-
+  
   // Free native_stack
   env->free_stack(env, stack);
   
