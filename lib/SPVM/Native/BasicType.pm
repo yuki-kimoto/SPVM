@@ -18,9 +18,19 @@ The Native::BasicType class of L<SPVM> has methods for someting.
 
 =head1 Instance Methods
 
+=head2 get_id
+
   native method get_id : int ();
 
 Gets the basic type ID.
+
+If a memory error occurs, an exception is thrown.
+
+=head2 get_name
+
+  native method get_name : string ();
+
+Gets the basic type name.
 
 If a memory error occurs, an exception is thrown.
 

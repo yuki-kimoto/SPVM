@@ -7,4 +7,17 @@ class Native::BasicType {
   has runtime : Native::Runtime;
   
   native method get_id : int ();
+  
+  native method get_name : string ();
+
+=pod
+
+  native method get_parent : Native::BasicType ();
+  
+  native method get_module_dir : string ();
+  
+  native method get_module_rel_file : string ();
+
+=cut
+
 }
