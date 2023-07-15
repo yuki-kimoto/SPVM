@@ -228,6 +228,42 @@ int32_t SPVM__Native__Runtime__build_precompile_method_source(SPVM_ENV* env, SPV
   return 0;
 }
 
+int32_t SPVM__Native__Runtime__get_basic_types_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* runtime = env->get_pointer(env, stack, obj_self);
+  
+  int32_t basic_types_length = env->api->runtime->get_basic_types_length(runtime);
+  
+  stack[0].ival = basic_types_length;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Runtime__get_basic_type(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  int32_t index = stack[1].ival;
+  
+  void* runtime = env->get_pointer(env, stack, obj_self);
+  
+  void* basic_type = env->api->runtime->get_basic_type_by_id(runtime, index);
+  
+  if (!basic_type) {
+    return env->die(env, stack, "The basic type cannot be found.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  stack[0].oval = basic_type;
+  
+  return 0;
+}
+
 int32_t SPVM__Native__Runtime__get_basic_type_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;

@@ -4,8 +4,13 @@
 class Native::Runtime : pointer {
   use Native::Env;
   use Native::Stack;
+  use Native::BasicType;
   
   # Instance Methods
+  native method get_basic_types_length : int ();
+  
+  native method get_basic_type : Native::BasicType ($id : int);
+  
   native method get_basic_type_names : string[] ();
   
   native method get_basic_type_parent_name : string ($basic_type_name : string);

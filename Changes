@@ -1,4 +1,11 @@
 0.989025 2023-07-15
+  [New Features]
+    * The following methods were added to the Native::Runtime.
+      method get_basic_types_length : int ();
+      
+      method get_basic_type : Native::BasicType ($id : int);
+      
+  method get_basic_type : Native::BasicType ($id : int);      
   [Incompatibe Changes]
     * Modules renamed.
       Env was renamed to Native::Env.
