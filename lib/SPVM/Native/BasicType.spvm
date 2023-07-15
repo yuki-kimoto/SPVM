@@ -2,5 +2,9 @@
 # MIT License
 
 class Native::BasicType {
+  use Native::Runtime;
   
+  has runtime : Native::Runtime;
+  
+  native method get_id : int ();
 }

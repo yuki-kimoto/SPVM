@@ -16,18 +16,13 @@ The Native::BasicType class of L<SPVM> has methods for someting.
 
   use Native::BasicType;
 
-=head1 Fields
-
-
-
-=head1 Class Methods
-
-
-
 =head1 Instance Methods
 
+  native method get_id : int ();
 
+Gets the basic type ID.
 
+If a memory error occurs, an exception is thrown.
 
 =head1 Repository
 
