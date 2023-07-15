@@ -5,6 +5,7 @@ class Native::Runtime : pointer {
   use Native::Env;
   use Native::Stack;
   use Native::BasicType;
+  use Native::Method;
   
   # Instance Methods
   native method get_basic_types_length : int ();
@@ -13,15 +14,19 @@ class Native::Runtime : pointer {
   
   native method get_basic_type_names : string[] ();
   
-  native method get_basic_type_parent_name : string ($basic_type_name : string);
+  native method build_precompile_module_source_v2 : string ($basic_type : Native::BasicType);
   
-  native method get_module_file : string ($basic_type_name : string);
+  native method build_precompile_method_source_v2 : string ($method : Native::Method);
   
   native method build_precompile_module_source : string ($basic_type_name : string);
   
   native method build_precompile_method_source : string ($basic_type_name : string, $method_name : string);
   
   native method get_basic_type_anon_basic_type_names : string[] ($basic_type_name : string);
+  
+  native method get_basic_type_parent_name : string ($basic_type_name : string);
+  
+  native method get_module_file : string ($basic_type_name : string);
   
   method get_method_names : string[] ($basic_type_name : string, $options : object[] = undef) {
     

@@ -7,6 +7,68 @@
 
 static const char* FILE_NAME = "Native::Runtime.c";
 
+int32_t SPVM__Native__Runtime__build_precompile_module_source_v2(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_basic_type = stack[1].oval;
+  
+  void* runtime = env->get_pointer(env, stack, obj_self);
+  
+  void* basic_type = env->get_pointer(env, stack, obj_basic_type);
+  
+  void* allocator = env->api->allocator->new_instance();
+  
+  void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
+  
+  env->api->runtime->build_precompile_module_source(runtime, string_buffer, basic_type);
+  
+  const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
+  int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
+  void* obj_precompile_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
+  
+  env->api->string_buffer->free_instance(string_buffer);
+  
+  env->api->allocator->free_instance(allocator);
+  
+  stack[0].oval = obj_precompile_source;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Runtime__build_precompile_method_source_v2(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_method = stack[1].oval;
+  
+  void* runtime = env->get_pointer(env, stack, obj_self);
+  
+  void* method = env->get_pointer(env, stack, obj_method);
+  
+  void* allocator = env->api->allocator->new_instance();
+  
+  void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
+  
+  env->api->runtime->build_precompile_method_source(runtime, string_buffer, method);
+  
+  const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
+  int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
+  void* obj_precompile_method_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
+  
+  env->api->string_buffer->free_instance(string_buffer);
+  
+  env->api->allocator->free_instance(allocator);
+  
+  stack[0].oval = obj_precompile_method_source;
+  
+  return 0;
+}
+
 int32_t SPVM__Native__Runtime__set_native_method_address(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
