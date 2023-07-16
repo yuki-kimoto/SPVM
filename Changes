@@ -12,7 +12,20 @@
       Stack was renamed to Native::Stack.
       Runtime was renamed to Native::Runtime.
       Compiler was renamed to Native::Compiler.
+    
+    * The native API IDs in the class variable native APIs were changed.
       
+      0 get_name
+      1 get_index
+      2 get_basic_type
+      3 get_type_dimension
+      4 get_type_flag
+      5 get_current_basic_type
+    
+    * The index native API were added to the class variable native APIs.
+    
+      int32_t (*get_index)(void* runtime, void* class_var);
+    
 0.989024 2023-07-14
   [New Features]
     * The runtime was created by the additional compile.

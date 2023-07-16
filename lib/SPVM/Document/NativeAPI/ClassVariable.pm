@@ -26,6 +26,16 @@ The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> objec
 
 The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVariable> object.
 
+=head2 get_index
+
+  int32_t (*get_index)(void* runtime, void* class_var);
+
+Returns the index of the class variable.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVar> object.
+
 =head2 get_basic_type
 
   void* (*get_basic_type)(void* runtime, void* class_var);
@@ -69,10 +79,11 @@ The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVaria
 =head1 Native API IDs
 
   0 get_name
-  1 get_basic_type
-  2 get_type_dimension
-  3 get_type_flag
-  4 get_current_basic_type
+  1 get_index
+  2 get_basic_type
+  3 get_type_dimension
+  4 get_type_flag
+  5 get_current_basic_type
 
 =head1 Copyright & License
 
