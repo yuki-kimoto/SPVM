@@ -20,7 +20,7 @@ The Native::BasicType class of L<SPVM> has methods for someting.
 
 =head2 get_id
 
-  native method get_id : int ();
+  method get_id : int ();
 
 Gets the basic type ID.
 
@@ -28,19 +28,27 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_name
 
-  native method get_name : string ();
+  method get_name : string ();
 
 Gets the basic type name.
 
 If a memory error occurs, an exception is thrown.
 
-=head1 Repository
+=head2 get_module_dir
 
+  method get_module_dir : string ();
 
+Gets the module directory.
 
-=head1 Author
+If a memory error occurs, an exception is thrown.
 
-[--user-name] C<[--user-email]>
+=head2 get_rel_file
+
+  method get_rel_file : string ();
+
+Gets the module relative file path.
+
+If a memory error occurs, an exception is thrown.
 
 =head1 Copyright & License
 
