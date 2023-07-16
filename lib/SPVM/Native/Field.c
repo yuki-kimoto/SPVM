@@ -16,7 +16,7 @@ int32_t SPVM__Native__Field__get_index(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* field = env->get_pointer(env, stack, obj_self);
   
   if (!field) {
-    return env->die(env, stack, "The class variable was already destroyed.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The field was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
@@ -44,7 +44,7 @@ int32_t SPVM__Native__Field__get_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* field = env->get_pointer(env, stack, obj_self);
   
   if (!field) {
-    return env->die(env, stack, "The class variable was already destroyed.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The field was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
@@ -74,7 +74,7 @@ int32_t SPVM__Native__Field__get_basic_type(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* field = env->get_pointer(env, stack, obj_self);
   
   if (!field) {
-    return env->die(env, stack, "The class variable was already destroyed.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The field was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
@@ -105,7 +105,7 @@ int32_t SPVM__Native__Field__get_type_dimension(SPVM_ENV* env, SPVM_VALUE* stack
   void* field = env->get_pointer(env, stack, obj_self);
   
   if (!field) {
-    return env->die(env, stack, "The class variable was already destroyed.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The field was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
@@ -133,7 +133,7 @@ int32_t SPVM__Native__Field__get_type_flag(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* field = env->get_pointer(env, stack, obj_self);
   
   if (!field) {
-    return env->die(env, stack, "The class variable was already destroyed.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The field was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
@@ -161,7 +161,7 @@ int32_t SPVM__Native__Field__get_current_basic_type(SPVM_ENV* env, SPVM_VALUE* s
   void* field = env->get_pointer(env, stack, obj_self);
   
   if (!field) {
-    return env->die(env, stack, "The class variable was already destroyed.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The field was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
