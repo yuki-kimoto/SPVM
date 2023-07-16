@@ -5,8 +5,9 @@
       
       method get_basic_type : Native::BasicType ($id : int);
       
-  method get_basic_type : Native::BasicType ($id : int);      
-  [Incompatibe Changes]
+  method get_basic_type : Native::BasicType ($id : int);
+  
+  [Incompatible Changes]
     * Modules renamed.
       Env was renamed to Native::Env.
       Stack was renamed to Native::Stack.

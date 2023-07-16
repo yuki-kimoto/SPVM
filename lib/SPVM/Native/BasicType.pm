@@ -6,11 +6,11 @@ package SPVM::Native::BasicType;
 
 =head1 Name
 
-SPVM::Native::BasicType - Short Description
+SPVM::Native::BasicType - Information of Basic Types
 
 =head1 Description
 
-The Native::BasicType class of L<SPVM> has methods for someting.
+The Native::BasicType class of L<SPVM> has methods to manipulate information of basic types.
 
 =head1 Usage
 
@@ -50,9 +50,17 @@ Gets the module relative file path.
 
 If a memory error occurs, an exception is thrown.
 
+=head2 get_parent
+
+  method get_parent : Native::BasicType ();
+
+Gets the parent L<Native::BasicType|SPVM::Native::BasicType> object.
+
+If a memory error occurs, an exception is thrown.
+
 =head1 Copyright & License
 
-Copyright (c) 2023 [--user-name]
+Copyright (c) 2023 Yuki Kimoto
 
 MIT License
 
