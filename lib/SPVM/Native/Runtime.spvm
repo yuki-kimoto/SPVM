@@ -7,6 +7,7 @@ class Native::Runtime : pointer {
   use Native::BasicType;
   use Native::Method;
   use Native::ClassVar;
+  use Native::Field;
   
   # Instance Methods
   native method get_basic_types_length : int ();
