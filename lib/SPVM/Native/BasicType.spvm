@@ -9,15 +9,10 @@ class Native::BasicType {
   native method get_id : int ();
   
   native method get_name : string ();
-
+  
   native method get_module_dir : string ();
   
   native method get_module_rel_file : string ();
-
-=pod
-
-  native method get_parent : Native::BasicType ();
   
-=cut
-
+  native method get_parent : Native::BasicType ();
 }
