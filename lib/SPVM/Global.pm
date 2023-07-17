@@ -198,8 +198,6 @@ sub load_dynamic_libs {
           }
           
           if (-f $dynamic_lib_file) {
-            my $category_method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-            
             my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
             
             my $method_addresses = SPVM::Builder::Util::get_method_addresses(
