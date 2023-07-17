@@ -155,9 +155,16 @@ sub load_dynamic_libs {
         $category => $runtime->__api->class('Int')->new(1)
       });
       
-      my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
+      my $category_method_names;
       
-      if (@$method_names) {
+      if ($category eq 'native') {
+        $category_method_names = &get_native_method_names($basic_type);
+      }
+      elsif ($category eq 'precompile') {
+        $category_method_names = &get_precompile_method_names($basic_type);
+      }
+      
+      if (@$category_method_names) {
         # Build modules - Compile C source codes and link them to SPVM precompile method
         # Shared library which is already installed in distribution directory
         
@@ -172,7 +179,7 @@ sub load_dynamic_libs {
             
             my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
               $basic_type_name,
-              $method_names,
+              $category_method_names,
               $anon_basic_type_names,
               {category => $category}
             );
@@ -191,14 +198,14 @@ sub load_dynamic_libs {
           }
           
           if (-f $dynamic_lib_file) {
-            my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
+            my $category_method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
             
             my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
             
             my $method_addresses = SPVM::Builder::Util::get_method_addresses(
               $dynamic_lib_file,
               $basic_type_name,
-              $method_names,
+              $category_method_names,
               $anon_basic_type_names,
               $category
             );
@@ -225,6 +232,40 @@ sub load_dynamic_libs {
       }
     }
   }
+}
+
+sub get_native_method_names {
+  my ($basic_type) = @_;
+  
+  my $methods_length = $basic_type->get_methods_length;
+  
+  my $native_method_names = [];
+  for (my $index = 0; $index < $methods_length; $index++) {
+    my $method = $basic_type->get_method_by_index($index);
+    
+    if ($method->is_native) {
+      push @$native_method_names, $method->get_name->to_string;
+    }
+  }
+  
+  return $native_method_names;
+}
+
+sub get_precompile_method_names {
+  my ($basic_type) = @_;
+  
+  my $methods_length = $basic_type->get_methods_length;
+  
+  my $precompile_method_names = [];
+  for (my $index = 0; $index < $methods_length; $index++) {
+    my $method = $basic_type->get_method_by_index($index);
+    
+    if ($method->is_precompile) {
+      push @$precompile_method_names, $method->get_name->to_string;
+    }
+  }
+  
+  return $precompile_method_names;
 }
 
 my $BIND_TO_PERL_MODULE_NAME_H = {};
