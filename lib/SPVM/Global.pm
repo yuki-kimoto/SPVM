@@ -144,20 +144,20 @@ sub init_runtime {
 
 my $BIND_TO_PERL_MODULE_NAME_H = {};
 sub bind_to_perl {
-  my ($module_name) = @_;
+  my ($basic_type_name) = @_;
   
   my $perl_module_name_base = "SPVM::";
-  my $perl_module_name = "$perl_module_name_base$module_name";
+  my $perl_module_name = "$perl_module_name_base$basic_type_name";
   
   unless ($BIND_TO_PERL_MODULE_NAME_H->{$perl_module_name}) {
     
-    my $parent_module_name = &get_parent_basic_type_name($RUNTIME, $module_name);
-    my $parent_module_name_str = defined $parent_module_name ? "($parent_module_name)" : "()";
+    my $parent_basic_type_name = &get_parent_basic_type_name($RUNTIME, $basic_type_name);
+    my $parent_basic_type_name_str = defined $parent_basic_type_name ? "($parent_basic_type_name)" : "()";
     
     # The inheritance
     my @isa;
-    if (defined $parent_module_name) {
-      push @isa, "$perl_module_name_base$parent_module_name";
+    if (defined $parent_basic_type_name) {
+      push @isa, "$perl_module_name_base$parent_basic_type_name";
     }
     push @isa, 'SPVM::BlessedObject::Class';
     my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
@@ -169,7 +169,7 @@ sub bind_to_perl {
       confess $error;
     }
     
-    my $method_names = $RUNTIME->get_method_names($module_name);
+    my $method_names = $RUNTIME->get_method_names($basic_type_name);
 
     for my $method_name (@$method_names) {
       
@@ -183,14 +183,14 @@ sub bind_to_perl {
       }
       
       my $perl_method_abs_name = "${perl_module_name}::$method_name";
-      my $is_class_method = $RUNTIME->get_method_is_class_method($module_name, $method_name);
+      my $is_class_method = $RUNTIME->get_method_is_class_method($basic_type_name, $method_name);
       
       if ($is_class_method) {
         # Define Perl method
         no strict 'refs';
         
         # Suppress refer to objects
-        my $module_name_string = "$module_name";
+        my $basic_type_name_string = "$basic_type_name";
         my $method_name_string = "$method_name";
         
         *{"$perl_method_abs_name"} = sub {
@@ -198,7 +198,7 @@ sub bind_to_perl {
           
           my $return_value;
           
-          eval { $return_value = SPVM::api()->call_method($module_name_string, $method_name_string, @_) };
+          eval { $return_value = SPVM::api()->call_method($basic_type_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess $error;
@@ -307,19 +307,19 @@ sub get_module_names {
 }
 
 sub get_anon_basic_type_names {
-  my ($runtime, $module_name) = @_;
+  my ($runtime, $basic_type_name) = @_;
   
-  my $anon_module_names = $runtime->get_basic_type_anon_basic_type_names($module_name)->to_strings;
+  my $anon_module_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
   
   return $anon_module_names;
 }
 
 sub get_parent_basic_type_name {
-  my ($runtime, $module_name) = @_;
+  my ($runtime, $basic_type_name) = @_;
   
-  my $parent_module_name = $runtime->get_basic_type_parent_name($module_name);
+  my $parent_basic_type_name = $runtime->get_basic_type_parent_name($basic_type_name);
   
-  return $parent_module_name;
+  return $parent_basic_type_name;
 }
 
 =head1 Name
