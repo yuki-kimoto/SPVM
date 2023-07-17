@@ -38,7 +38,7 @@ int32_t SPVM__Native__Runtime__build_precompile_module_source(SPVM_ENV* env, SPV
   return 0;
 }
 
-int32_t SPVM__Native__Runtime__build_precompile_method_source_v2(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -210,47 +210,6 @@ int32_t SPVM__Native__Runtime__set_precompile_method_address(SPVM_ENV* env, SPVM
   
   env->api->method->set_precompile_address(runtime, method, address);
 
-  return 0;
-}
-
-int32_t SPVM__Native__Runtime__build_precompile_method_source(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
-  
-  void* obj_self = stack[0].oval;
-  
-  void* obj_basic_type_name = stack[1].oval;
-  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
-  
-  void* obj_method_name = stack[2].oval;
-  const char* method_name = env->get_chars(env, stack, obj_method_name);
-  
-  void* runtime = env->get_pointer(env, stack, obj_self);
-  
-  // New allocator
-  void* allocator = env->api->allocator->new_instance();
-  
-  // New string buffer
-  void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
-  
-  void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  
-  void* method = env->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
-  
-  env->api->runtime->build_precompile_method_source(runtime, string_buffer, method);
-  
-  const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
-  int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);
-  void* obj_precompile_method_source = env->new_string(env, stack, string_buffer_value, string_buffer_length);
-  
-  // Free string buffer
-  env->api->string_buffer->free_instance(string_buffer);
-  
-  // Free allocator
-  env->api->allocator->free_instance(allocator);
-  
-  stack[0].oval = obj_precompile_method_source;
-  
   return 0;
 }
 

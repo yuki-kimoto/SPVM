@@ -19,9 +19,7 @@ class Native::Runtime : pointer {
   
   native method build_precompile_module_source : string ($basic_type : Native::BasicType);
   
-  native method build_precompile_method_source_v2 : string ($method : Native::Method);
-  
-  native method build_precompile_method_source : string ($basic_type_name : string, $method_name : string);
+  native method build_precompile_method_source : string ($method : Native::Method);
   
   native method get_basic_type_anon_basic_type_names : string[] ($basic_type_name : string);
   

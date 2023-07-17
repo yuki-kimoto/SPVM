@@ -108,9 +108,9 @@ Gets the module file name and returns it.
 
 =head2 build_precompile_module_source
 
-  method build_precompile_module_source : string ($basic_type_name : string);
+  method build_precompile_module_source : string ($basic_type : Native::BasicType);
 
-Builds the C source code of the class that contains C<precompile> methods and return it.
+Builds the C source code of the class that contains C<precompile> methods and returns it.
 
 =head2 get_basic_type_anon_basic_type_names
 
@@ -126,9 +126,9 @@ Checks if the method is a class method. If it is so, returns 1, otherwise return
 
 =head2 build_precompile_method_source
 
-  method build_precompile_method_source : string ($basic_type_name : string, $method_name : string);
+  method method build_precompile_method_source : string ($method : Native::Method);
 
-Builds the C source code of a C<precompile> method and return it.
+Builds the C source code of a C<precompile> method and returns it.
 
 =head2 get_native_method_address
 
