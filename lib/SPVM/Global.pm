@@ -28,12 +28,17 @@ our $API;
 
 sub load_dynamic_libs {
   my ($runtime, $dynamic_lib_files) = @_;
-
-  my $module_names = &get_module_names($runtime);
-
+  
+  my $basic_types_length = $runtime->get_basic_types_length;
+  
   # Set addresses of native methods and precompile methods
-  for my $module_name (@$module_names) {
-    next if $module_name =~ /::anon/;
+  for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
+    my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+    
+    my $spvm_basic_type_name = $basic_type->get_name;
+    my $basic_type_name = $spvm_basic_type_name->to_string;
+    
+    next if $basic_type_name =~ /::anon::/;
     
     for my $category ('precompile', 'native') {
       
@@ -41,32 +46,32 @@ sub load_dynamic_libs {
         $category => $runtime->__api->class('Int')->new(1)
       });
       
-      my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
+      my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
       
       if (@$method_names) {
         # Build modules - Compile C source codes and link them to SPVM precompile method
         # Shared library which is already installed in distribution directory
-        my $module_file = $runtime->get_module_file($module_name)->to_string;
+        my $module_file = $runtime->get_module_file($basic_type_name)->to_string;
         my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
         
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
-          my $module_file = $runtime->get_module_file($module_name)->to_string;
-          my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
-          my $anon_module_names = &get_anon_basic_type_names($runtime, $module_name);
-          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($module_name, $method_names, $anon_module_names, {category => $category});
-          my $precompile_source = $runtime->build_precompile_module_source($module_name)->to_string;
+          my $module_file = $runtime->get_module_file($basic_type_name)->to_string;
+          my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
+          my $anon_module_names = &get_anon_basic_type_names($runtime, $basic_type_name);
+          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_module_names, {category => $category});
+          my $precompile_source = $runtime->build_precompile_module_source($basic_type_name)->to_string;
           
-          $dynamic_lib_file = $BUILDER->build_at_runtime($module_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+          $dynamic_lib_file = $BUILDER->build_at_runtime($basic_type_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
         }
         
         if (-f $dynamic_lib_file) {
-          $dynamic_lib_files->{$category}{$module_name} = $dynamic_lib_file;
+          $dynamic_lib_files->{$category}{$basic_type_name} = $dynamic_lib_file;
         }
       }
     }
   }
-
+  
   # Set function addresses of native and precompile methods
   for my $category ('precompile', 'native') {
     my $get_method_names_options = $runtime->__api->new_options({
@@ -74,7 +79,6 @@ sub load_dynamic_libs {
     });
     
     for my $module_name (keys %{$dynamic_lib_files->{$category}}) {
-      next unless grep { "$_" eq $module_name } @$module_names;
       
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$module_name};
       my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
@@ -287,27 +291,6 @@ END {
   $BUILDER_RUNTIME = undef;
   $BUILDER_COMPILER = undef;
   $BUILDER = undef;
-}
-
-sub get_module_names {
-  my ($runtime) = @_;
-  
-  my $basic_types_length = $runtime->get_basic_types_length;
-  
-  my $module_names = [];
-  for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
-    my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-    my $spvm_basic_type_name = $basic_type->get_name;
-    my $basic_type_name = $spvm_basic_type_name->to_string;
-    
-    if ($basic_type->is_anon || $basic_type_name !~ /^[A-Z]/) {
-      next;
-    }
-    
-    push @$module_names, $basic_type_name;
-  }
-  
-  return $module_names;
 }
 
 sub get_anon_basic_type_names {
