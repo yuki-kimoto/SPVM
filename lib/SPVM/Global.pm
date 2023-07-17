@@ -56,7 +56,7 @@ sub load_dynamic_libs {
         unless (-f $dynamic_lib_file) {
           my $module_file = $runtime->get_module_file($basic_type_name)->to_string;
           my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-          my $anon_basic_type_names = &get_anon_basic_type_names_v2($runtime, $basic_type);
+          my $anon_basic_type_names = &get_anon_basic_type_names_precompiled($runtime, $basic_type);
           
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_basic_type_names, {category => $category});
           
@@ -87,7 +87,7 @@ sub load_dynamic_libs {
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$module_name};
       my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
       
-      my $anon_basic_type_names = &get_anon_basic_type_names_v2($runtime, $basic_type);
+      my $anon_basic_type_names = &get_anon_basic_type_names_precompiled($runtime, $basic_type);
       
       my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $module_name, $method_names, $anon_basic_type_names, $category);
       
@@ -298,7 +298,7 @@ END {
   $BUILDER = undef;
 }
 
-sub get_anon_basic_type_names_v2 {
+sub get_anon_basic_type_names_precompiled {
   my ($runtime, $basic_type) = @_;
   
   my $anon_basic_type_names_length = $basic_type->get_anon_basic_types_length;
