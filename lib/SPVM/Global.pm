@@ -146,6 +146,8 @@ my $BIND_TO_PERL_MODULE_NAME_H = {};
 sub bind_to_perl {
   my ($basic_type_name) = @_;
   
+  my $basic_type = $RUNTIME->get_basic_type_by_name($basic_type_name);
+  
   my $perl_module_name_base = "SPVM::";
   my $perl_module_name = "$perl_module_name_base$basic_type_name";
   

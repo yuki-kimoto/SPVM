@@ -332,6 +332,39 @@ int32_t SPVM__Native__Runtime__get_basic_type_by_id(SPVM_ENV* env, SPVM_VALUE* s
   return 0;
 }
 
+int32_t SPVM__Native__Runtime__get_basic_type_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_name = stack[1].oval;
+  
+  if (!obj_name) {
+    return env->die(env, stack, "The basic type cannot be found.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  const char* name = env->get_chars(env, stack, obj_name);
+  
+  void* runtime = env->get_pointer(env, stack, obj_self);
+  
+  void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, name);
+  
+  if (!basic_type) {
+    return env->die(env, stack, "The basic type cannot be found.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_basic_type = env->new_pointer_object_by_name(env, stack, "Native::BasicType", basic_type, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_basic_type, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  stack[0].oval = obj_basic_type;
+  
+  return 0;
+}
+
 int32_t SPVM__Native__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;

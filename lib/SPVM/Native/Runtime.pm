@@ -42,11 +42,21 @@ Its insntace has a pointer to a L<runtime|SPVM::Document::NativeAPI::Native::Run
 
 Returns the length of the all basic types in the runtime.
 
-=head2 get_basic_type
+=head2 get_basic_type_by_id
 
-  method get_basic_type : Native::BasicType ($id : int);
+  method get_basic_type_by_id : Native::BasicType ($id : int);
 
 Returns a L<Native::BasicType|SPVM::Native::BasicType> object by a basic type ID.
+
+Exceptions:
+
+If The basic type cannot be found, an exception is throen.
+
+=head2 get_basic_type_by_name
+
+  method get_basic_type_by_name : Native::BasicType ($name : string);
+
+Returns a L<Native::BasicType|SPVM::Native::BasicType> object by a basic type name.
 
 Exceptions:
 
