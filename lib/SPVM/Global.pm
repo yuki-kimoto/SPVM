@@ -20,7 +20,6 @@ our $BUILDER_ENV;
 our $BUILDER_STACK;
 our $BUILDER_API;
 our $COMPILER;
-our $RUNTIME;
 our $ENV;
 our $STACK;
 our $API;
@@ -34,8 +33,7 @@ sub load_dynamic_libs {
   for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
     my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
     
-    my $spvm_basic_type_name = $basic_type->get_name;
-    my $basic_type_name = $spvm_basic_type_name->to_string;
+    my $basic_type_name = $basic_type->get_name->to_string;
     
     my $spvm_module_dir = $basic_type->get_module_dir;
     my $spvm_module_rel_file = $basic_type->get_module_rel_file;
@@ -69,8 +67,6 @@ sub load_dynamic_libs {
           }
           
           if (-f $dynamic_lib_file) {
-            my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
-            
             my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
             
             my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
@@ -94,7 +90,7 @@ sub load_dynamic_libs {
 }
 
 sub init_runtime {
-  unless ($RUNTIME) {
+  unless ($COMPILER) {
     unless ($BUILDER) {
       my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
       $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
@@ -134,9 +130,9 @@ sub init_runtime {
       $COMPILER->add_include_dir($include_dir);
     }
     $COMPILER->compile(undef);
-    $RUNTIME = $COMPILER->get_runtime;
+    my $runtime = $COMPILER->get_runtime;
     
-    &load_dynamic_libs($RUNTIME);
+    &load_dynamic_libs($runtime);
   }
 }
 
@@ -144,7 +140,9 @@ my $BIND_TO_PERL_MODULE_NAME_H = {};
 sub bind_to_perl {
   my ($basic_type_name) = @_;
   
-  my $basic_type = $RUNTIME->get_basic_type_by_name($basic_type_name);
+  my $runtime = $COMPILER->get_runtime;
+    
+  my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
   
   my $perl_module_name_base = "SPVM::";
   my $perl_module_name = "$perl_module_name_base$basic_type_name";
@@ -185,7 +183,7 @@ sub bind_to_perl {
       }
       
       my $perl_method_abs_name = "${perl_module_name}::$method_name";
-      my $is_class_method = $RUNTIME->get_method_is_class_method($basic_type_name, $method_name);
+      my $is_class_method = $runtime->get_method_is_class_method($basic_type_name, $method_name);
       
       if ($is_class_method) {
         # Define Perl method
@@ -241,9 +239,9 @@ sub build {
       exit(255);
     }
     
-    $RUNTIME = $COMPILER->get_runtime;
+    my $runtime = $COMPILER->get_runtime;
     
-    &load_dynamic_libs($RUNTIME);
+    &load_dynamic_libs($runtime);
   }
 }
 
@@ -273,7 +271,6 @@ END {
   }
   $STACK = undef;
   $ENV = undef;
-  $RUNTIME = undef;
   $COMPILER = undef;
   $BUILDER_API = undef;
   if ($BUILDER_ENV) {
