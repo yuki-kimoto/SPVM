@@ -21,8 +21,6 @@ class Native::Runtime : pointer {
   
   native method build_precompile_method_source : string ($method : Native::Method);
   
-  native method get_method_is_class_method : int ($basic_type_name : string, $method_name : string);
-  
   native method get_native_method_address : Address ($basic_type_name : string, $method_name : string);
   
   native method set_native_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);

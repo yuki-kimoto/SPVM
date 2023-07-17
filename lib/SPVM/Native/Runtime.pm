@@ -84,12 +84,6 @@ Gets the module file name and returns it.
 
 Builds the C source code of the class that contains C<precompile> methods and returns it.
 
-=head2 get_method_is_class_method
-
-  method get_method_is_class_method : int ($basic_type_name : string, $method_name : string);
-
-Checks if the method is a class method. If it is so, returns 1, otherwise returns 0.
-
 =head2 build_precompile_method_source
 
   method method build_precompile_method_source : string ($method : Native::Method);
