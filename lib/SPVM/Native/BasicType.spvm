@@ -18,35 +18,30 @@ class Native::BasicType {
   native method get_module_rel_file : string ();
   
   native method get_parent : Native::BasicType ();
-
-=pod
-
-  int32_t (*get_category)(void* runtime, void* basic_type);
   
-  const void* (*get_version_string)(void* runtime, void* basic_type);
+  native method get_category : int ();
   
-  int32_t (*is_pointer)(void* runtime, void* basic_type);
+  native method get_version_string : string ();
   
-  int32_t (*is_anon)(void* runtime, void* basic_type);
+  native method is_pointer : int ();
   
-  void* (*get_class_var_by_index)(void* runtime, void* basic_type, int32_t class_var_index);
+  native method is_anon : int ();
   
-  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const void* class_var_name);
+  native method get_class_var_by_index : Native::ClassVar ($class_var_index : int);
   
-  int32_t (*get_class_vars_length)(void* runtime, void* basic_type);
+  native method get_class_var_by_name : Native::ClassVar ($class_var_name : string);
   
-  void* (*get_field_by_index)(void* runtime, void* basic_type, int32_t field_index);
+  native method get_class_vars_length : int ();
   
-  void* (*get_field_by_name)(void* runtime, void* basic_type, const void* field_name);
+  native method get_field_by_index : Native::Field ($field_index : int);
   
-  int32_t (*get_fields_length)(void* runtime, void* basic_type);
+  native method get_field_by_name : Native::Field ($field_name : string);
   
-  void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
+  native method get_fields_length : int ();
   
-  void* (*get_method_by_name)(void* runtime, void* basic_type, const void* method_name);
+  native method get_method_by_index : Native::Method ($method_index : int);
   
-  int32_t (*get_methods_length)(void* runtime, void* basic_type);
-
-=cut
-
+  native method get_method_by_name : Native::Method ($method_name : string);
+  
+  native method get_methods_length : int ();
 }
