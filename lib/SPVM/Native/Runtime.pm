@@ -24,8 +24,6 @@ An instance of the C<Native::Runtime> class is build by the L<get_runtime|SPVM::
   
   my $runtime = $compiler->get_runtime;
   
-  my $method_names = $runtime->get_method_names("Foo");
-  
   my $stack = $env->new_stack;
 
 =head1 Pointer
@@ -73,32 +71,6 @@ Gets the all basic type names in the runtime and returns it.
   method get_basic_type_parent_name : string ($basic_type_name : string);
 
 Gets the parent basic type name and returns it.
-
-=head2 get_method_names
-
-  method get_method_names : string[] ($basic_type_name : string, $options : object[] = undef);
-
-Gets method names and returns it.
-
-Options:
-
-The options are key-value pairs. The key is the C<string> type.
-
-=over 2
-
-=item * C<native> : Int
-
-Gets only C<native> methods if this option is true.
-
-=item * C<precompile> : Int
-
-Gets only C<precompile> methods if this option is true.
-
-=item * C<enum> : Int
-
-Get only C<enum> methods if this option is true.
-
-=back
 
 =head2 get_module_file
 
