@@ -1241,7 +1241,7 @@ _xs_call_method(...)
   
   // Method not found
   if (!method) {
-    croak("The \"%s\" method in the \"%s\" basic type is not found\n    %s at %s line %d\n", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
+    croak("The \"%s\" method in the \"%s\" class is not found\n    %s at %s line %d\n", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
   // Base index of SPVM arguments
