@@ -71,38 +71,26 @@ sub load_dynamic_libs {
           
           if (-f $dynamic_lib_file) {
             $dynamic_lib_files->{$category}{$basic_type_name} = $dynamic_lib_file;
+
+            my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
+            
+            my $dynamic_lib_file = $dynamic_lib_files->{$category}{$basic_type_name};
+            my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
+            
+            my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
+            
+            my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $anon_basic_type_names, $category);
+            
+            for my $method_name (sort keys %$method_addresses) {
+              my $cfunc_address = $method_addresses->{$method_name};
+              if ($category eq 'native') {
+                $runtime->set_native_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
+              }
+              elsif ($category eq 'precompile') {
+                $runtime->set_precompile_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
+              }
+            }
           }
-        }
-      }
-    }
-  }
-  
-  # Set function addresses of native and precompile methods
-  for my $category ('precompile', 'native') {
-    my $get_method_names_options = $runtime->__api->new_options({
-      $category => $runtime->__api->class('Int')->new(1)
-    });
-    
-    for my $basic_type_name (keys %{$dynamic_lib_files->{$category}}) {
-      
-      my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
-      
-      my $basic_type_name = $basic_type->get_name;
-      
-      my $dynamic_lib_file = $dynamic_lib_files->{$category}{$basic_type_name};
-      my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-      
-      my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
-      
-      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $anon_basic_type_names, $category);
-      
-      for my $method_name (sort keys %$method_addresses) {
-        my $cfunc_address = $method_addresses->{$method_name};
-        if ($category eq 'native') {
-          $runtime->set_native_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
-        }
-        elsif ($category eq 'precompile') {
-          $runtime->set_precompile_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
         }
       }
     }
