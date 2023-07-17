@@ -153,12 +153,12 @@ sub bind_to_perl {
   
   unless ($BIND_TO_PERL_MODULE_NAME_H->{$perl_module_name}) {
     
-    my $parent_basic_type_name = &get_parent_basic_type_name($RUNTIME, $basic_type_name);
-    my $parent_basic_type_name_str = defined $parent_basic_type_name ? "($parent_basic_type_name)" : "()";
+    my $parent_basic_type = $basic_type->get_parent;
     
     # The inheritance
     my @isa;
-    if (defined $parent_basic_type_name) {
+    if (defined $parent_basic_type) {
+      my $parent_basic_type_name = $parent_basic_type->get_name;
       push @isa, "$perl_module_name_base$parent_basic_type_name";
     }
     push @isa, 'SPVM::BlessedObject::Class';
@@ -314,14 +314,6 @@ sub get_anon_basic_type_names {
   my $anon_module_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
   
   return $anon_module_names;
-}
-
-sub get_parent_basic_type_name {
-  my ($runtime, $basic_type_name) = @_;
-  
-  my $parent_basic_type_name = $runtime->get_basic_type_parent_name($basic_type_name);
-  
-  return $parent_basic_type_name;
 }
 
 =head1 Name

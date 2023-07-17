@@ -148,8 +148,14 @@ int32_t SPVM__Native__BasicType__get_parent(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* parent = env->api->basic_type->get_parent(runtime, basic_type);
   
-  void* obj_parent = env->new_pointer_object_by_name(env, stack, "Native::BasicType", parent, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
+  void* obj_parent = NULL;
+  if (parent) {
+    void* obj_parent = env->new_pointer_object_by_name(env, stack, "Native::BasicType", parent, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    env->set_field_object_by_name(env, stack, obj_parent, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+  }
   
   stack[0].oval = obj_parent;
   
