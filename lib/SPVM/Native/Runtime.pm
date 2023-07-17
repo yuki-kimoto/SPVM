@@ -24,8 +24,6 @@ An instance of the C<Native::Runtime> class is build by the L<get_runtime|SPVM::
   
   my $runtime = $compiler->get_runtime;
   
-  my $basic_type_names = $runtime->get_basic_type_names;
-  
   my $method_names = $runtime->get_method_names("Foo");
   
   my $stack = $env->new_stack;
