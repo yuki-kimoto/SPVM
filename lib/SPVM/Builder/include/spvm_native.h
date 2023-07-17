@@ -458,6 +458,8 @@ struct spvm_api_method {
 };
 
 struct spvm_api_arg {
+  const void* (*get_name)(void* runtime, void* arg);
+  int32_t (*get_index)(void* runtime, void* arg);
   void* (*get_basic_type)(void* runtime, void* arg);
   int32_t (*get_type_dimension)(void* runtime, void* arg);
   int32_t (*get_type_flag)(void* runtime, void* arg);

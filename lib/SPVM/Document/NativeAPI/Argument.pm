@@ -18,6 +18,26 @@ The C<arg> is got by the L<get_arg_by_index|SPVM::Document::NativeAPI::Method/"g
 
 =head1 Native APIs
 
+=head2 get_name
+
+  const char* (*get_name)(void* runtime, void* arg);
+
+Returns the name of the argument.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<arg> argument is a L<arg|SPVM::Document::NativeAPI::Argument> object.
+
+=head2 get_index
+
+  int32_t (*get_index)(void* runtime, void* arg);
+
+Returns the index of the argument.
+
+The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
+
+The C<arg> argument is a L<arg|SPVM::Document::NativeAPI::Argument> object.
+
 =head2 get_basic_type
 
   void* (*get_basic_type)(void* runtime, void* arg);
@@ -50,9 +70,11 @@ The C<arg> argument is a L<arg|SPVM::Document::NativeAPI::Arg> object.
 
 =head1 Native API IDs
 
-  0 get_basic_type
-  1 get_type_dimension
-  2 get_type_flag
+  0 get_name
+  1 get_index
+  2 get_basic_type
+  3 get_type_dimension
+  4 get_type_flag
 
 =head1 Copyright & License
 

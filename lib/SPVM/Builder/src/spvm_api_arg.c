@@ -13,6 +13,8 @@
 SPVM_API_ARG* SPVM_API_ARG_new_api() {
   
   void* native_apis_init[]  = {
+    SPVM_API_ARG_get_name,
+    SPVM_API_ARG_get_index,
     SPVM_API_ARG_get_basic_type,
     SPVM_API_ARG_get_type_dimension,
     SPVM_API_ARG_get_type_flag,
@@ -28,6 +30,16 @@ SPVM_API_ARG* SPVM_API_ARG_new_api() {
 void SPVM_API_ARG_free_api(SPVM_API_ARG* api) {
   
   free(api);
+}
+
+const char* SPVM_API_ARG_get_name(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+  
+  return arg->name;
+}
+
+int32_t SPVM_API_ARG_get_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+  
+  return arg->index;
 }
 
 SPVM_RUNTIME_BASIC_TYPE* SPVM_API_ARG_get_basic_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
