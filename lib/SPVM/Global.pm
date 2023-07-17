@@ -59,7 +59,6 @@ sub load_dynamic_libs {
           
           # Try to build the shared library at runtime if shared library is not found
           unless (-f $dynamic_lib_file) {
-            my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
             my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
             
             my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_basic_type_names, {category => $category});
