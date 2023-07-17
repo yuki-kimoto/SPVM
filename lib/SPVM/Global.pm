@@ -21,13 +21,12 @@ our $BUILDER_STACK;
 our $BUILDER_API;
 our $COMPILER;
 our $RUNTIME;
-our $DYNAMIC_LIB_FILES = {};
 our $ENV;
 our $STACK;
 our $API;
 
 sub load_dynamic_libs {
-  my ($runtime, $dynamic_lib_files) = @_;
+  my ($runtime) = @_;
   
   my $basic_types_length = $runtime->get_basic_types_length;
   
@@ -70,11 +69,8 @@ sub load_dynamic_libs {
           }
           
           if (-f $dynamic_lib_file) {
-            $dynamic_lib_files->{$category}{$basic_type_name} = $dynamic_lib_file;
-
             my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
             
-            my $dynamic_lib_file = $dynamic_lib_files->{$category}{$basic_type_name};
             my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
             
             my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
@@ -140,7 +136,7 @@ sub init_runtime {
     $COMPILER->compile(undef);
     $RUNTIME = $COMPILER->get_runtime;
     
-    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
+    &load_dynamic_libs($RUNTIME);
   }
 }
 
@@ -247,7 +243,7 @@ sub build {
     
     $RUNTIME = $COMPILER->get_runtime;
     
-    &load_dynamic_libs($RUNTIME, $DYNAMIC_LIB_FILES);
+    &load_dynamic_libs($RUNTIME);
   }
 }
 
@@ -278,7 +274,6 @@ END {
   $STACK = undef;
   $ENV = undef;
   $RUNTIME = undef;
-  $DYNAMIC_LIB_FILES = undef;
   $COMPILER = undef;
   $BUILDER_API = undef;
   if ($BUILDER_ENV) {
