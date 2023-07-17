@@ -20,8 +20,6 @@ class Native::Method {
   
   native method get_current_basic_type : Native::BasicType ();
   
-=pod TODO
-  
   native method get_arg_by_index : Native::Arg ($arg_index : int);
   
   native method get_args_length : int ();
@@ -45,7 +43,4 @@ class Native::Method {
   native method get_precompile_address : Address ();
   
   native method set_precompile_address : void ($address : Address);
-
-=cut
-
 }

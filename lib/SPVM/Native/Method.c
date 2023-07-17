@@ -182,3 +182,358 @@ int32_t SPVM__Native__Method__get_current_basic_type(SPVM_ENV* env, SPVM_VALUE* 
   
   return 0;
 }
+
+int32_t SPVM__Native__Method__get_arg_by_index(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t arg_index = stack[1].ival;
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* arg = env->api->method->get_arg_by_index(runtime, method, arg_index);
+  if (!arg) {
+    return env->die(env, stack, "The argument is not found.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_arg = env->new_pointer_object_by_name(env, stack, "Native::Arg", arg, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  stack[0].oval = obj_arg;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__get_args_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t get_args_length = env->api->method->get_args_length(runtime, method);
+  
+  stack[0].ival = get_args_length;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__get_required_args_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t get_required_args_length = env->api->method->get_required_args_length(runtime, method);
+  
+  stack[0].ival = get_required_args_length;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__is_class_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t is_class_method = env->api->method->is_class_method(runtime, method);
+  
+  stack[0].ival = is_class_method;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__is_anon(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t is_anon = env->api->method->is_anon(runtime, method);
+  
+  stack[0].ival = is_anon;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__is_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t is_native = env->api->method->is_native(runtime, method);
+  
+  stack[0].ival = is_native;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__is_precompile(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t is_precompile = env->api->method->is_precompile(runtime, method);
+  
+  stack[0].ival = is_precompile;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__is_enum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t is_enum = env->api->method->is_enum(runtime, method);
+  
+  stack[0].ival = is_enum;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__get_native_address(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* native_address = env->api->method->get_native_address(runtime, method);
+  
+  void* obj_native_address = env->new_pointer_object_by_name(env, stack, "Address", native_address, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  stack[0].oval = obj_native_address;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__set_native_address(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_native_address = stack[1].oval;
+  
+  void* native_address = env->get_pointer(env, stack, obj_native_address);
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  env->api->method->set_native_address(runtime, method, native_address);
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__get_precompile_address(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* Precompile_address = env->api->method->get_precompile_address(runtime, method);
+  
+  void* obj_precompile_address = env->new_pointer_object_by_name(env, stack, "Address", Precompile_address, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  stack[0].oval = obj_precompile_address;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__set_precompile_address(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  if (!method) {
+    return env->die(env, stack, "The method was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_precompile_address = stack[1].oval;
+  
+  void* precompile_address = env->get_pointer(env, stack, obj_precompile_address);
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  env->api->method->set_precompile_address(runtime, method, precompile_address);
+  
+  return 0;
+}
+
