@@ -11,6 +11,7 @@ struct spvm_var_decl {
   SPVM_TYPE* type;
   SPVM_VAR* var;
   SPVM_OP* op_optional_arg_default;
+  const char* name;
   int32_t index;
   int32_t call_stack_index;
   int8_t is_arg;
