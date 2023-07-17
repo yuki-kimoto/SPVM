@@ -43,11 +43,6 @@ END {
 sub build_module {
   my ($module_name, $file, $line) = @_;
   
-  unless ($BUILDER) {
-    my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-  }
-  
   &init_global();
   
   # Add module informations
