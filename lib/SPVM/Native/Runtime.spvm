@@ -6,6 +6,7 @@ class Native::Runtime : pointer {
   use Native::Stack;
   use Native::BasicType;
   use Native::Method;
+  use Native::Arg;
   use Native::ClassVar;
   use Native::Field;
   

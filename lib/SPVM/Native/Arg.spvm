@@ -2,5 +2,15 @@
 # MIT License
 
 class Native::Arg {
+  use Native::BasicType;
   
+  has runtime : Native::Runtime;
+  
+  native method get_index : int ();
+  
+  native method get_basic_type : Native::BasicType ();
+  
+  native method get_type_dimension : int ();
+  
+  native method get_type_flag : int ();
 }
