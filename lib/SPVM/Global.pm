@@ -288,7 +288,20 @@ END {
 sub get_module_names {
   my ($runtime) = @_;
   
-  my $module_names = $runtime->get_basic_type_names->to_strings;
+  my $basic_types_length = $runtime->get_basic_types_length;
+  
+  my $module_names = [];
+  for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
+    my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+    my $spvm_basic_type_name = $basic_type->get_name;
+    my $basic_type_name = $spvm_basic_type_name->to_string;
+    
+    if ($basic_type->is_anon || $basic_type_name !~ /^[A-Z]/) {
+      next;
+    }
+    
+    push @$module_names, $basic_type_name;
+  }
   
   return $module_names;
 }

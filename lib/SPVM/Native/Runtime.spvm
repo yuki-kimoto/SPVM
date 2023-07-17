@@ -13,7 +13,7 @@ class Native::Runtime : pointer {
   # Instance Methods
   native method get_basic_types_length : int ();
   
-  native method get_basic_type : Native::BasicType ($id : int);
+  native method get_basic_type_by_id : Native::BasicType ($id : int);
   
   native method get_basic_type_names : string[] ();
   
