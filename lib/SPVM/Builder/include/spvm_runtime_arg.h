@@ -7,6 +7,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_runtime_arg {
+  const char* name;
   SPVM_RUNTIME_BASIC_TYPE* basic_type;
   int32_t index;
   int32_t type_dimension;

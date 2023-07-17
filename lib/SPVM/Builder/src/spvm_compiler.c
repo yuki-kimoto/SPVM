@@ -664,6 +664,9 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
             SPVM_RUNTIME_ARG* runtime_arg = &runtime_method->args[arg_index];
             
+            SPVM_STRING* arg_name_string = SPVM_HASH_get(basic_type->constant_string_symtable, arg_var_decl->name, strlen(arg_var_decl->name));
+            
+            runtime_arg->name = runtime_basic_type->constant_strings[arg_name_string->index].value;
             runtime_arg->index = arg_index;
             runtime_arg->basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, arg_var_decl->type->basic_type->id);
             runtime_arg->type_dimension = arg_var_decl->type->dimension;
