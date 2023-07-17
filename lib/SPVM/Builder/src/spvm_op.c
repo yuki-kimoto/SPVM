@@ -650,7 +650,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
-
+          
           // If the type of the field is byte or short, the return type becomes int
           SPVM_TYPE* field_type = field->type;
           SPVM_TYPE* return_type;
@@ -670,13 +670,13 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
-
+          
           SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
           SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
           SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
           
           SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_decl->file, op_decl->line);
-
+          
           SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
           
           SPVM_OP_insert_child(compiler, op_return, op_return->last, op_field_access);
@@ -687,13 +687,13 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           
           SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
-
+        
         // Setter
         if (field->has_setter) {
           // method set_foo : void ($foo : TYPE) {
           //   $self->{foo} = $foo;
           // }
-
+          
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
           char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(field->name) + 1);
           memcpy(method_name_tmp, "set_", 4);
@@ -703,7 +703,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-
+          
           // If the type of the field is byte or short, the arg type becomes int
           SPVM_TYPE* field_type = field->type;
           SPVM_TYPE* arg_type;
@@ -717,30 +717,36 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           }
           SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type->unresolved_basic_type_name, arg_type->basic_type, arg_type->dimension, arg_type->flag, op_decl->file, op_decl->line);
           
-
-          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+          char* arg_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 1 + strlen(field->name) + 1);
+          memcpy(arg_name_tmp, "$", 1);
+          memcpy(arg_name_tmp + 1, field->name, strlen(field->name));
+          SPVM_STRING* arg_name_string = SPVM_STRING_new(compiler, arg_name_tmp, strlen(arg_name_tmp));
+          const char* arg_name = arg_name_string->value;
+          SPVM_OP* op_name_arg = SPVM_OP_new_op_name(compiler, arg_name, op_decl->file, op_decl->line);
+          
+          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, arg_name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value, NULL, NULL);
-
+          
           SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_value);
           
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-
+          
           SPVM_OP* op_var_name_invocant = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
           SPVM_OP* op_var_self_invocant = SPVM_OP_new_op_var(compiler, op_var_name_invocant);
           SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
           SPVM_OP* op_field_access = SPVM_OP_new_op_field_access(compiler, op_decl->file, op_decl->line);
           SPVM_OP_build_field_access(compiler, op_field_access, op_var_self_invocant, op_name_field_access);
-
-          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
+          
+          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, arg_name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
           
           SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_decl->file, op_decl->line);
           SPVM_OP* op_type_for_cast = SPVM_OP_new_op_type(compiler, field_type->unresolved_basic_type_name, field_type->basic_type, field_type->dimension, field_type->flag, op_decl->file, op_decl->line);
           
           SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_var_assign_value, NULL);
-
+          
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
           SPVM_OP_build_assign(compiler, op_assign, op_field_access, op_type_cast);
           
@@ -918,12 +924,12 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         assert(op_arg_first_type->uv.type->basic_type);
       }
     }
-
+    
     // If Method is anon, method must be method
     if (strlen(method_name) == 0 && method->is_class_method) {
       SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
     }
-
+    
     if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
       // Method having interface_t attribute must be method
       if (method->is_class_method) {
