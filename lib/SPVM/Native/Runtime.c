@@ -288,48 +288,6 @@ int32_t SPVM__Native__Runtime__get_basic_type_by_name(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPVM__Native__Runtime__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
-  
-  void* obj_self = stack[0].oval;
-  
-  void* obj_basic_type_name = stack[1].oval;
-  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
-  
-  void* runtime = env->get_pointer(env, stack, obj_self);
-  
-  // Copy class load path to builder
-  void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  const char* module_file;
-  void* sv_module_file;
-
-  void* obj_module_file = NULL;
-  if (basic_type) {
-    const char* module_dir = env->api->basic_type->get_module_dir(runtime, basic_type);
-    const char* module_dir_sep;
-    if (module_dir) {
-      module_dir_sep = "/";
-    }
-    else {
-      module_dir_sep = "";
-      module_dir = "";
-    }
-    const char* module_rel_file = env->api->basic_type->get_module_rel_file(runtime, basic_type);
-    
-    int32_t module_file_length = strlen(module_dir) + strlen(module_dir_sep) + strlen(module_rel_file);
-    obj_module_file = env->new_string(env, stack, NULL, module_file_length);
-    char* module_file = (char*)env->get_chars(env, stack, obj_module_file);
-    memcpy(module_file, module_dir, strlen(module_dir));
-    memcpy(module_file + strlen(module_dir), module_dir_sep, strlen(module_dir_sep));
-    memcpy(module_file + strlen(module_dir) + strlen(module_dir_sep), module_rel_file, strlen(module_rel_file));
-  }
-  
-  stack[0].oval = obj_module_file;
-  
-  return 0;
-}
-
 int32_t SPVM__Native__Runtime__get_basic_type_parent_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
