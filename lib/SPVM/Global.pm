@@ -10,7 +10,6 @@ use SPVM::BlessedObject::String;
 
 use SPVM ();
 use SPVM::Builder;
-use SPVM::Builder::Runtime;
 use SPVM::ExchangeAPI;
 
 our $BUILDER;
@@ -22,6 +21,58 @@ our $COMPILER;
 our $ENV;
 our $STACK;
 our $API;
+
+END {
+  $API = undef;
+  if ($ENV) {
+    $ENV->destroy_class_vars($STACK);
+  }
+  $STACK = undef;
+  $ENV = undef;
+  $COMPILER = undef;
+  $BUILDER_API = undef;
+  if ($BUILDER_ENV) {
+    $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
+  }
+  $BUILDER_STACK = undef;
+  $BUILDER_ENV = undef;
+  $BUILDER_COMPILER = undef;
+  $BUILDER = undef;
+}
+
+sub build_module {
+  my ($module_name, $file, $line) = @_;
+  
+  unless ($BUILDER) {
+    my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+  }
+  
+  &init_global();
+  
+  # Add module informations
+  my $build_success;
+  if (defined $module_name) {
+    
+    $COMPILER->set_start_file($file);
+    $COMPILER->set_start_line($line);
+    my $success = $COMPILER->compile($module_name);
+    unless ($success) {
+      my $error_messages = $COMPILER->get_error_messages;
+      for my $error_message (@$error_messages) {
+        printf STDERR "[CompileError]$error_message\n";
+      }
+      $COMPILER = undef;
+      exit(255);
+    }
+    
+    my $runtime = $COMPILER->get_runtime;
+    
+    &load_dynamic_libs($runtime);
+    
+    &bind_to_perl($module_name);
+  }
+}
 
 sub init_global {
   unless ($COMPILER) {
@@ -228,57 +279,6 @@ sub bind_to_perl {
     
     $BIND_TO_PERL_MODULE_NAME_H->{$perl_module_name} = 1;
   }
-}
-
-
-sub build_module {
-  my ($module_name, $file, $line) = @_;
-  
-  unless ($BUILDER) {
-    my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-  }
-  
-  &init_global();
-  
-  # Add module informations
-  my $build_success;
-  if (defined $module_name) {
-    
-    $COMPILER->set_start_file($file);
-    $COMPILER->set_start_line($line);
-    my $success = $COMPILER->compile($module_name);
-    unless ($success) {
-      my $error_messages = $COMPILER->get_error_messages;
-      for my $error_message (@$error_messages) {
-        printf STDERR "[CompileError]$error_message\n";
-      }
-      $COMPILER = undef;
-      exit(255);
-    }
-    
-    my $runtime = $COMPILER->get_runtime;
-    
-    &load_dynamic_libs($runtime);
-  }
-}
-
-END {
-  $API = undef;
-  if ($ENV) {
-    $ENV->destroy_class_vars($STACK);
-  }
-  $STACK = undef;
-  $ENV = undef;
-  $COMPILER = undef;
-  $BUILDER_API = undef;
-  if ($BUILDER_ENV) {
-    $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
-  }
-  $BUILDER_STACK = undef;
-  $BUILDER_ENV = undef;
-  $BUILDER_COMPILER = undef;
-  $BUILDER = undef;
 }
 
 sub get_anon_basic_type_names {

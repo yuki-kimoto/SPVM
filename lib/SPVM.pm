@@ -3,8 +3,6 @@ package SPVM;
 use strict;
 use warnings;
 
-use Carp 'cluck';
-
 use SPVM::Global;
 
 our $VERSION = "0.989024";
@@ -19,7 +17,6 @@ sub import {
   
   if (defined $module_name) {
     SPVM::Global::build_module($module_name, $file, $line);
-    SPVM::Global::bind_to_perl($module_name);
   }
 }
 
