@@ -44,4 +44,8 @@ class Native::BasicType {
   native method get_method_by_name : Native::Method ($method_name : string);
   
   native method get_methods_length : int ();
+  
+  native method get_anon_basic_type_by_index : Native::BasicType ($anon_basic_type_index : int);
+  
+  native method get_anon_basic_types_length : int ();
 }

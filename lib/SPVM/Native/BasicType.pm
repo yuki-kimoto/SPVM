@@ -162,6 +162,22 @@ Gets the length of the methods.
 
 If a memory error occurs, an exception is thrown.
 
+=head2 
+
+  method get_anon_basic_type_by_index : Native::BasicType ($anon_basic_type_index : int);
+
+Gets a anon L<basic type|SPVM::Native::BasicType> object defined in this basic type by an index.
+
+If a memory error occurs, an exception is thrown.
+
+=head2 
+
+  method get_anon_basic_types_length : int ();
+  
+Gets the length of the anon basic types defined in this basic type.
+
+If a memory error occurs, an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

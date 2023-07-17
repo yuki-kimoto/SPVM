@@ -591,3 +591,67 @@ int32_t SPVM__Native__BasicType__get_methods_length(SPVM_ENV* env, SPVM_VALUE* s
   return 0;
 }
 
+int32_t SPVM__Native__BasicType__get_anon_basic_type_by_index(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* basic_type = env->get_pointer(env, stack, obj_self);
+  
+  if (!basic_type) {
+    return env->die(env, stack, "The basic_type was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t anon_basic_type_index = stack[1].ival;
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* anon_basic_type = env->api->basic_type->get_anon_basic_type_by_index(runtime, basic_type, anon_basic_type_index);
+  if (!anon_basic_type) {
+    return env->die(env, stack, "The basic type is not found.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_anon_basic_type = env->new_pointer_object_by_name(env, stack, "Native::BasicType", anon_basic_type, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  stack[0].oval = obj_anon_basic_type;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__BasicType__get_anon_basic_types_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* basic_type = env->get_pointer(env, stack, obj_self);
+  
+  if (!basic_type) {
+    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t anon_basic_types_length = env->api->basic_type->get_anon_basic_types_length(runtime, basic_type);
+  
+  stack[0].ival = anon_basic_types_length;
+  
+  return 0;
+}
+
