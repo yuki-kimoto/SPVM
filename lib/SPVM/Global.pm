@@ -82,26 +82,26 @@ sub load_dynamic_libs {
       $category => $runtime->__api->class('Int')->new(1)
     });
     
-    for my $module_name (keys %{$dynamic_lib_files->{$category}}) {
+    for my $basic_type_name (keys %{$dynamic_lib_files->{$category}}) {
       
-      my $basic_type = $runtime->get_basic_type_by_name($module_name);
+      my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
       
       my $basic_type_name = $basic_type->get_name;
       
-      my $dynamic_lib_file = $dynamic_lib_files->{$category}{$module_name};
-      my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
+      my $dynamic_lib_file = $dynamic_lib_files->{$category}{$basic_type_name};
+      my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
       
       my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
       
-      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $module_name, $method_names, $anon_basic_type_names, $category);
+      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $anon_basic_type_names, $category);
       
       for my $method_name (sort keys %$method_addresses) {
         my $cfunc_address = $method_addresses->{$method_name};
         if ($category eq 'native') {
-          $runtime->set_native_method_address($module_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
+          $runtime->set_native_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
         }
         elsif ($category eq 'precompile') {
-          $runtime->set_precompile_method_address($module_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
+          $runtime->set_precompile_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
         }
       }
     }
