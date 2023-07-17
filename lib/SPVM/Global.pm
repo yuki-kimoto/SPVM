@@ -15,7 +15,6 @@ use SPVM::ExchangeAPI;
 
 our $BUILDER;
 our $BUILDER_COMPILER;
-our $BUILDER_RUNTIME;
 our $BUILDER_ENV;
 our $BUILDER_STACK;
 our $BUILDER_API;
@@ -105,10 +104,10 @@ sub init_runtime {
     $BUILDER_COMPILER->compile_with_exit("Native::Env", __FILE__, __LINE__);
     $BUILDER_COMPILER->compile_with_exit("Native::Stack", __FILE__, __LINE__);
     
-    $BUILDER_RUNTIME = $BUILDER_COMPILER->get_runtime;
-
-    $BUILDER_RUNTIME->load_dynamic_libs;
-
+    my $builder_runtime = $BUILDER_COMPILER->get_runtime;
+    
+    $builder_runtime->load_dynamic_libs;
+    
     # Build an environment
     $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
     
@@ -278,7 +277,6 @@ END {
   }
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
-  $BUILDER_RUNTIME = undef;
   $BUILDER_COMPILER = undef;
   $BUILDER = undef;
 }
