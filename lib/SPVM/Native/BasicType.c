@@ -1,8 +1,8 @@
 // Copyright (c) 2023 Yuki Kimot
 // MIT License
 
+#include <assert.h>
 #include "spvm_native.h"
-
 
 
 static const char* FILE_NAME = "Native/BasicType.c";
@@ -88,7 +88,10 @@ int32_t SPVM__Native__BasicType__get_module_dir(SPVM_ENV* env, SPVM_VALUE* stack
   
   const char* module_dir = env->api->basic_type->get_module_dir(runtime, basic_type);
   
-  void* obj_module_dir = env->new_string_nolen(env, stack, module_dir);
+  void* obj_module_dir = NULL;
+  if (module_dir) {
+    obj_module_dir = env->new_string_nolen(env, stack, module_dir);
+  }
   
   stack[0].oval = obj_module_dir;
   
@@ -118,7 +121,10 @@ int32_t SPVM__Native__BasicType__get_module_rel_file(SPVM_ENV* env, SPVM_VALUE* 
   
   const char* module_rel_file = env->api->basic_type->get_module_rel_file(runtime, basic_type);
   
-  void* obj_module_rel_file = env->new_string_nolen(env, stack, module_rel_file);
+  void* obj_module_rel_file = NULL;
+  if (module_rel_file) {
+    obj_module_rel_file = env->new_string_nolen(env, stack, module_rel_file);
+  }
   
   stack[0].oval = obj_module_rel_file;
   

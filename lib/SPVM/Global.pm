@@ -38,6 +38,9 @@ sub load_dynamic_libs {
     my $spvm_basic_type_name = $basic_type->get_name;
     my $basic_type_name = $spvm_basic_type_name->to_string;
     
+    my $spvm_module_dir = $basic_type->get_module_dir;
+    my $spvm_module_rel_file = $basic_type->get_module_rel_file;
+    
     for my $category ('precompile', 'native') {
       
       my $get_method_names_options = $runtime->__api->new_options({
@@ -49,8 +52,6 @@ sub load_dynamic_libs {
       if (@$method_names) {
         # Build modules - Compile C source codes and link them to SPVM precompile method
         # Shared library which is already installed in distribution directory
-        my $spvm_module_dir = $basic_type->get_module_dir;
-        my $spvm_module_rel_file = $basic_type->get_module_rel_file;
         
         if ($spvm_module_dir) {
           
