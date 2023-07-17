@@ -53,7 +53,7 @@ sub load_dynamic_libs {
         unless (-f $dynamic_lib_file) {
           my $module_file = $runtime->get_module_file($module_name)->to_string;
           my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
-          my $anon_module_names = &get_anon_module_names($runtime, $module_name);
+          my $anon_module_names = &get_anon_basic_type_names($runtime, $module_name);
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($module_name, $method_names, $anon_module_names, {category => $category});
           my $precompile_source = $runtime->build_precompile_module_source($module_name)->to_string;
           
@@ -78,7 +78,7 @@ sub load_dynamic_libs {
       
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$module_name};
       my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
-      my $anon_module_names = &get_anon_module_names($runtime, $module_name);
+      my $anon_module_names = &get_anon_basic_type_names($runtime, $module_name);
       
       my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $module_name, $method_names, $anon_module_names, $category);
       
@@ -151,7 +151,7 @@ sub bind_to_perl {
   
   unless ($BIND_TO_PERL_MODULE_NAME_H->{$perl_module_name}) {
     
-    my $parent_module_name = &get_parent_module_name($RUNTIME, $module_name);
+    my $parent_module_name = &get_parent_basic_type_name($RUNTIME, $module_name);
     my $parent_module_name_str = defined $parent_module_name ? "($parent_module_name)" : "()";
     
     # The inheritance
@@ -306,7 +306,7 @@ sub get_module_names {
   return $module_names;
 }
 
-sub get_anon_module_names {
+sub get_anon_basic_type_names {
   my ($runtime, $module_name) = @_;
   
   my $anon_module_names = $runtime->get_basic_type_anon_basic_type_names($module_name)->to_strings;
@@ -314,7 +314,7 @@ sub get_anon_module_names {
   return $anon_module_names;
 }
 
-sub get_parent_module_name {
+sub get_parent_basic_type_name {
   my ($runtime, $module_name) = @_;
   
   my $parent_module_name = $runtime->get_basic_type_parent_name($module_name);
