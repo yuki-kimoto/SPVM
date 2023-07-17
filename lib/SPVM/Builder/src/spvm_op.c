@@ -923,6 +923,12 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         op_arg_first_type = op_type_new_arg_var_decl_first;
         assert(op_arg_first_type->uv.type->basic_type);
       }
+      
+      for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
+        SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
+        SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, arg_var_decl->var->name, strlen(arg_var_decl->var->name));
+        arg_var_decl->name = arg_var_decl->var->name;
+      }
     }
     
     // If Method is anon, method must be method
