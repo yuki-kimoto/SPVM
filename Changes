@@ -37,10 +37,11 @@
       2 get_basic_type
       3 get_type_dimension
       4 get_type_flag
-
-    * The runtime native APIs were removed.
-
+      
+    * The following methods in the Native::Runtime were removed.
+      
       -  native method get_basic_type_names : string[] ();
+      -  native method get_basic_type_parent_name : string ($basic_type_name : string);
     
 0.989024 2023-07-14
   [New Features]
