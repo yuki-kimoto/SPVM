@@ -171,9 +171,11 @@ sub bind_to_perl {
       confess $error;
     }
     
-    my $method_names = $RUNTIME->get_method_names($basic_type_name);
-
-    for my $method_name (@$method_names) {
+    my $methods_length = $basic_type->get_methods_length;
+    for (my $method_index = 0; $method_index < $methods_length; $method_index++) {
+      my $method = $basic_type->get_method_by_index($method_index);
+      
+      my $method_name = $method->get_name;
       
       # Destrutor is skip
       if ($method_name eq 'DESTROY') {
