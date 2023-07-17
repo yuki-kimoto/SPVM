@@ -634,6 +634,9 @@ int32_t SPVM__Native__BasicType__get_anon_basic_type_by_index(SPVM_ENV* env, SPV
   void* obj_anon_basic_type = env->new_pointer_object_by_name(env, stack, "Native::BasicType", anon_basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
+  env->set_field_object_by_name(env, stack, obj_anon_basic_type, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   stack[0].oval = obj_anon_basic_type;
   
   return 0;

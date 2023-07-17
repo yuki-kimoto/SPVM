@@ -660,12 +660,12 @@ sub create_dl_func_list {
       push @$dl_func_list, $anon_method_cfunc_name;
     }
   }
-
+  
   # This is bad hack to suppress boot strap function error.
   unless (@$dl_func_list) {
     push @$dl_func_list, '';
   }
-
+  
   return $dl_func_list;
 }
 
