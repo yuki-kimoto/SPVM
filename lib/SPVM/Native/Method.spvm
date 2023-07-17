@@ -2,7 +2,9 @@
 # MIT License
 
 class Native::Method {
+  use Address;
   use Native::BasicType;
+  use Native::Arg;
   
   has runtime : Native::Runtime;
   
@@ -17,4 +19,33 @@ class Native::Method {
   native method get_return_type_flag : int ();
   
   native method get_current_basic_type : Native::BasicType ();
+  
+=pod TODO
+  
+  native method get_arg_by_index : Native::Arg ($arg_index : int);
+  
+  native method get_args_length : int ();
+  
+  native method get_required_args_length : int ();
+  
+  native method is_class_method : int ();
+  
+  native method is_anon : int ();
+  
+  native method is_native : int ();
+  
+  native method is_precompile : int ();
+  
+  native method is_enum : int ();
+  
+  native method get_native_address : Address ();
+  
+  native method set_native_address : void ($address : Address);
+  
+  native method get_precompile_address : Address ();
+  
+  native method set_precompile_address : void ($address : Address);
+
+=cut
+
 }
