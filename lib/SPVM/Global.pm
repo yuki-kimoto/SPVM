@@ -54,9 +54,8 @@ sub load_dynamic_libs {
         
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
-          my $module_file = $runtime->get_module_file($basic_type_name)->to_string;
           my $method_names = $runtime->get_method_names($basic_type_name, $get_method_names_options)->to_strings;
-          my $anon_basic_type_names = &get_anon_basic_type_names_precompiled($runtime, $basic_type);
+          my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
           
           my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_basic_type_names, {category => $category});
           
@@ -87,7 +86,7 @@ sub load_dynamic_libs {
       my $dynamic_lib_file = $dynamic_lib_files->{$category}{$module_name};
       my $method_names = $runtime->get_method_names($module_name, $get_method_names_options)->to_strings;
       
-      my $anon_basic_type_names = &get_anon_basic_type_names_precompiled($runtime, $basic_type);
+      my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
       
       my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $module_name, $method_names, $anon_basic_type_names, $category);
       
@@ -298,19 +297,19 @@ END {
   $BUILDER = undef;
 }
 
-sub get_anon_basic_type_names_precompiled {
+sub get_anon_basic_type_names {
   my ($runtime, $basic_type) = @_;
+  
+  my $methods_length = $basic_type->get_methods_length;
   
   my $anon_basic_type_names_length = $basic_type->get_anon_basic_types_length;
   
   my $anon_basic_type_names = [];
-  for (my $anon_basic_type_id = 0; $anon_basic_type_id < $anon_basic_type_names_length; $anon_basic_type_id++) {
-    my $anon_basic_type = $basic_type->get_anon_basic_type_by_index($anon_basic_type_id);
+  for (my $method_index = 0; $method_index < $methods_length; $method_index++) {
+    my $method = $basic_type->get_method_by_index($method_index);
     
-    my $anon_method = $anon_basic_type->get_method_by_name("");
-    
-    if ($anon_method->is_precompile) {
-      $anon_basic_type->get_name;
+    if ($method->is_anon) {
+      my $anon_basic_type = $method->get_current_basic_type;
       push @$anon_basic_type_names, $anon_basic_type->get_name->to_string;
     }
   }
