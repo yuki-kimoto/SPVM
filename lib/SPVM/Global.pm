@@ -23,6 +23,72 @@ our $ENV;
 our $STACK;
 our $API;
 
+sub init_global {
+  unless ($COMPILER) {
+    unless ($BUILDER) {
+      my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+    }
+    
+    $BUILDER_COMPILER = SPVM::Builder::Compiler->new(
+      include_dirs => $BUILDER->include_dirs
+    );
+    # Load SPVM Compilers
+    $BUILDER_COMPILER->compile_with_exit("Native::Compiler", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Runtime", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Env", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Stack", __FILE__, __LINE__);
+    
+    my $builder_runtime = $BUILDER_COMPILER->get_runtime;
+    
+    $builder_runtime->load_dynamic_libs;
+    
+    # Build an environment
+    $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
+    
+    # Set command line info
+    $BUILDER_STACK = $BUILDER_ENV->new_stack;
+    
+    $BUILDER_ENV->set_command_info_program_name($BUILDER_STACK, $0);
+    $BUILDER_ENV->set_command_info_argv($BUILDER_STACK, \@ARGV);
+    my $base_time = $^T + 0; # For Perl 5.8.9
+    $BUILDER_ENV->set_command_info_base_time($BUILDER_STACK, $base_time);
+    
+    # Call INIT blocks
+    $BUILDER_ENV->call_init_methods($BUILDER_STACK);
+    
+    $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
+    
+    $COMPILER = $BUILDER_API->class("Native::Compiler")->new;
+    for my $include_dir (@{$BUILDER->include_dirs}) {
+      $COMPILER->add_include_dir($include_dir);
+    }
+    $COMPILER->compile(undef);
+    my $runtime = $COMPILER->get_runtime;
+    
+    &load_dynamic_libs($runtime);
+  }
+}
+
+sub init_api {
+  
+  &init_global();
+  
+  $ENV = $BUILDER_API->class("Native::Env")->new($COMPILER);
+  
+  $STACK = $ENV->new_stack;
+  
+  $ENV->set_command_info_program_name($STACK, $0);
+  
+  $ENV->set_command_info_argv($STACK, \@ARGV);
+  my $base_time = $^T + 0; # For Perl 5.8.9
+  $ENV->set_command_info_base_time($STACK, $base_time);
+  
+  $ENV->call_init_methods($STACK);
+  
+  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
+}
+
 sub load_dynamic_libs {
   my ($runtime) = @_;
   
@@ -85,53 +151,6 @@ sub load_dynamic_libs {
         }
       }
     }
-  }
-}
-
-sub init_global {
-  unless ($COMPILER) {
-    unless ($BUILDER) {
-      my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-    }
-    
-    $BUILDER_COMPILER = SPVM::Builder::Compiler->new(
-      include_dirs => $BUILDER->include_dirs
-    );
-    # Load SPVM Compilers
-    $BUILDER_COMPILER->compile_with_exit("Native::Compiler", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Runtime", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Env", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Stack", __FILE__, __LINE__);
-    
-    my $builder_runtime = $BUILDER_COMPILER->get_runtime;
-    
-    $builder_runtime->load_dynamic_libs;
-    
-    # Build an environment
-    $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
-    
-    # Set command line info
-    $BUILDER_STACK = $BUILDER_ENV->new_stack;
-    
-    $BUILDER_ENV->set_command_info_program_name($BUILDER_STACK, $0);
-    $BUILDER_ENV->set_command_info_argv($BUILDER_STACK, \@ARGV);
-    my $base_time = $^T + 0; # For Perl 5.8.9
-    $BUILDER_ENV->set_command_info_base_time($BUILDER_STACK, $base_time);
-    
-    # Call INIT blocks
-    $BUILDER_ENV->call_init_methods($BUILDER_STACK);
-    
-    $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
-    
-    $COMPILER = $BUILDER_API->class("Native::Compiler")->new;
-    for my $include_dir (@{$BUILDER->include_dirs}) {
-      $COMPILER->add_include_dir($include_dir);
-    }
-    $COMPILER->compile(undef);
-    my $runtime = $COMPILER->get_runtime;
-    
-    &load_dynamic_libs($runtime);
   }
 }
 
@@ -242,25 +261,6 @@ sub build {
     
     &load_dynamic_libs($runtime);
   }
-}
-
-sub init_api {
-  
-  &init_global();
-  
-  $ENV = $BUILDER_API->class("Native::Env")->new($COMPILER);
-  
-  $STACK = $ENV->new_stack;
-  
-  $ENV->set_command_info_program_name($STACK, $0);
-  
-  $ENV->set_command_info_argv($STACK, \@ARGV);
-  my $base_time = $^T + 0; # For Perl 5.8.9
-  $ENV->set_command_info_base_time($STACK, $base_time);
-  
-  $ENV->call_init_methods($STACK);
-  
-  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
 }
 
 END {
