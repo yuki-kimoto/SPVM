@@ -42,12 +42,13 @@
       
       -  native method get_basic_type_names : string[] ();
       -  native method get_basic_type_parent_name : string ($basic_type_name : string);
+      -  native method get_basic_type_anon_basic_type_names : string[] ($basic_type_name : string);
 
     * The following methods in the Native::Runtime were changed.
       
       -  native method build_precompile_module_source : string ($basic_type_name : string);
       +  native method build_precompile_module_source : string ($basic_type : Native::BasicType);
-    
+      
 0.989024 2023-07-14
   [New Features]
     * The runtime was created by the additional compile.

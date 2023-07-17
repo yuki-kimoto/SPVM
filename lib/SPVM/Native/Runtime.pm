@@ -112,12 +112,6 @@ Gets the module file name and returns it.
 
 Builds the C source code of the class that contains C<precompile> methods and returns it.
 
-=head2 get_basic_type_anon_basic_type_names
-
-  method get_basic_type_anon_basic_type_names : string[] ($basic_type_name : string);
-
-Gets the anon basic type names and returns it.
-
 =head2 get_method_is_class_method
 
   method get_method_is_class_method : int ($basic_type_name : string, $method_name : string);

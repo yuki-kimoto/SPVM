@@ -21,8 +21,6 @@ class Native::Runtime : pointer {
   
   native method build_precompile_method_source : string ($method : Native::Method);
   
-  native method get_basic_type_anon_basic_type_names : string[] ($basic_type_name : string);
-  
   native method get_module_file : string ($basic_type_name : string);
   
   method get_method_names : string[] ($basic_type_name : string, $options : object[] = undef) {

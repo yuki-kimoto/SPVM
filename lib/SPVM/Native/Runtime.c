@@ -355,48 +355,6 @@ int32_t SPVM__Native__Runtime__get_basic_type_parent_name(SPVM_ENV* env, SPVM_VA
   return 0;
 }
 
-int32_t SPVM__Native__Runtime__get_basic_type_anon_basic_type_names(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
- 
-  void* obj_self = stack[0].oval;
-  
-  void* obj_basic_type = stack[1].oval;
-  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type);
-  
-  void* runtime = env->get_pointer(env, stack, obj_self);
-  
-  void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  int32_t methods_length = env->api->basic_type->get_methods_length(runtime, basic_type);
-  
-  int32_t anon_basic_types_length = 0;
-  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    void* method = env->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
-    int32_t is_anon_method = env->api->method->is_anon(runtime, method);
-    if (is_anon_method) {
-      anon_basic_types_length++;
-    }
-  }
-  
-  void* obj_anon_basic_type_names = env->new_string_array(env, stack, anon_basic_types_length);
-  int32_t anon_basic_type_id = 0;
-  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    void* method = env->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
-    int32_t is_anon_method = env->api->method->is_anon(runtime, method);
-    if (is_anon_method) {
-      void* anon_basic_type = env->api->method->get_current_basic_type(runtime, method);
-      const char* anon_basic_type_name = env->api->basic_type->get_name(runtime, anon_basic_type);
-      void* obj_anon_basic_type_name = env->new_string_nolen(env, stack, anon_basic_type_name);
-      env->set_elem_object(env, stack, obj_anon_basic_type_names, anon_basic_type_id, obj_anon_basic_type_name);
-      anon_basic_type_id++;
-    }
-  }
-  
-  stack[0].oval = obj_anon_basic_type_names;
-  
-  return 0;
-}
-
 int32_t SPVM__Native__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;

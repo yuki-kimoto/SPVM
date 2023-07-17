@@ -298,14 +298,6 @@ END {
   $BUILDER = undef;
 }
 
-sub get_anon_basic_type_names {
-  my ($runtime, $basic_type_name) = @_;
-  
-  my $anon_basic_type_names = $runtime->get_basic_type_anon_basic_type_names($basic_type_name)->to_strings;
-  
-  return $anon_basic_type_names;
-}
-
 sub get_anon_basic_type_names_v2 {
   my ($runtime, $basic_type) = @_;
   
