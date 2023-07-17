@@ -18,7 +18,7 @@ sub import {
   my ($file, $line) = (caller)[1, 2];
   
   if (defined $module_name) {
-    SPVM::Global::build($module_name, $file, $line);
+    SPVM::Global::build_module($module_name, $file, $line);
     SPVM::Global::bind_to_perl($module_name);
   }
 }

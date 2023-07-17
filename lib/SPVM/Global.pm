@@ -231,7 +231,7 @@ sub bind_to_perl {
 }
 
 
-sub build {
+sub build_module {
   my ($module_name, $file, $line) = @_;
   
   unless ($BUILDER) {
