@@ -90,14 +90,6 @@ Builds the C source code of the class that contains C<precompile> methods and re
 
 Builds the C source code of a C<precompile> method and returns it.
 
-=head2 get_native_method_address
-
-  method get_native_method_address : Address ($basic_type_name : string, $method_name : string);
-
-Gets the address of a C<native> method and returns it.
-
-The return type is the L<Address|SPVM::Address> class.
-
 =head2 set_native_method_address
 
   method set_native_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
@@ -105,14 +97,6 @@ The return type is the L<Address|SPVM::Address> class.
 Sets the address of a C<native> method.
 
 The address is the L<Address|SPVM::Address> class.
-
-=head2 get_precompile_method_address
-
-  method get_precompile_method_address : Address ($basic_type_name : string, $method_name : string);
-
-Gets the address of a C<precompile> method and returns it.
-
-The return type is the L<Address|SPVM::Address> class.
 
 =head2 set_precompile_method_address
 
