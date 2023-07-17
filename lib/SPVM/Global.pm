@@ -313,7 +313,7 @@ sub bind_to_perl {
       }
       
       my $perl_method_abs_name = "${perl_module_name}::$method_name";
-      my $is_class_method = $runtime->get_method_is_class_method($basic_type_name, $method_name);
+      my $is_class_method = $method->is_class_method;
       
       if ($is_class_method) {
         # Define Perl method
