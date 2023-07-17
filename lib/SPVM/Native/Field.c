@@ -91,6 +91,9 @@ int32_t SPVM__Native__Field__get_basic_type(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_basic_type = env->new_pointer_object_by_name(env, stack, "Native::BasicType", basic_type, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
+  env->set_field_object_by_name(env, stack, obj_basic_type, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   stack[0].oval = obj_basic_type;
   
   return 0;
@@ -176,6 +179,9 @@ int32_t SPVM__Native__Field__get_current_basic_type(SPVM_ENV* env, SPVM_VALUE* s
   void* current_basic_type = env->api->field->get_current_basic_type(runtime, field);
   
   void* obj_current_basic_type = env->new_pointer_object_by_name(env, stack, "Native::BasicType", current_basic_type, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_current_basic_type, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = obj_current_basic_type;

@@ -310,6 +310,9 @@ int32_t SPVM__Native__BasicType__get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
   void* obj_class_var = env->new_pointer_object_by_name(env, stack, "Native::ClassVar", class_var, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
+  env->set_field_object_by_name(env, stack, obj_class_var, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   stack[0].oval = obj_class_var;
   
   return 0;
@@ -350,6 +353,9 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
   }
   
   void* obj_class_var = env->new_pointer_object_by_name(env, stack, "Native::ClassVar", class_var, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_class_var, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = obj_class_var;
@@ -416,6 +422,9 @@ int32_t SPVM__Native__BasicType__get_field_by_index(SPVM_ENV* env, SPVM_VALUE* s
   void* obj_field = env->new_pointer_object_by_name(env, stack, "Native::Field", field, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
+  env->set_field_object_by_name(env, stack, obj_field, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   stack[0].oval = obj_field;
   
   return 0;
@@ -456,6 +465,9 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
   }
   
   void* obj_field = env->new_pointer_object_by_name(env, stack, "Native::Field", field, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_field, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = obj_field;
