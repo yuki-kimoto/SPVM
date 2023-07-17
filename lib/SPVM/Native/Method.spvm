@@ -2,5 +2,19 @@
 # MIT License
 
 class Native::Method {
+  use Native::BasicType;
   
+  has runtime : Native::Runtime;
+  
+  native method get_index : int ();
+  
+  native method get_name : string ();
+  
+  native method get_return_basic_type : Native::BasicType ();
+  
+  native method get_return_type_dimension : int ();
+  
+  native method get_return_type_flag : int ();
+  
+  native method get_current_basic_type : Native::BasicType ();
 }
