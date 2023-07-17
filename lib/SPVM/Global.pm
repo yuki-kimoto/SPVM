@@ -170,11 +170,24 @@ sub load_dynamic_libs {
           unless (-f $dynamic_lib_file) {
             my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
             
-            my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($basic_type_name, $method_names, $anon_basic_type_names, {category => $category});
+            my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
+              $basic_type_name,
+              $method_names,
+              $anon_basic_type_names,
+              {category => $category}
+            );
             
             my $precompile_source = $runtime->build_precompile_module_source($basic_type)->to_string;
             
-            $dynamic_lib_file = $BUILDER->build_at_runtime($basic_type_name, {module_file => $module_file, category => $category, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+            $dynamic_lib_file = $BUILDER->build_at_runtime(
+              $basic_type_name,
+              {
+                module_file => $module_file,
+                category => $category,
+                dl_func_list => $dl_func_list,
+                precompile_source => $precompile_source
+              }
+            );
           }
           
           if (-f $dynamic_lib_file) {
@@ -182,15 +195,29 @@ sub load_dynamic_libs {
             
             my $anon_basic_type_names = &get_anon_basic_type_names($runtime, $basic_type);
             
-            my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $anon_basic_type_names, $category);
+            my $method_addresses = SPVM::Builder::Util::get_method_addresses(
+              $dynamic_lib_file,
+              $basic_type_name,
+              $method_names,
+              $anon_basic_type_names,
+              $category
+            );
             
             for my $method_name (sort keys %$method_addresses) {
               my $cfunc_address = $method_addresses->{$method_name};
               if ($category eq 'native') {
-                $runtime->set_native_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
+                $runtime->set_native_method_address(
+                  $basic_type_name,
+                  $method_name,
+                  $runtime->__api->new_address_object($cfunc_address)
+                );
               }
               elsif ($category eq 'precompile') {
-                $runtime->set_precompile_method_address($basic_type_name, $method_name, $runtime->__api->new_address_object($cfunc_address));
+                $runtime->set_precompile_method_address(
+                  $basic_type_name,
+                  $method_name,
+                  $runtime->__api->new_address_object($cfunc_address)
+                );
               }
             }
           }
