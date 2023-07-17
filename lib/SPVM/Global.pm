@@ -88,7 +88,7 @@ sub load_dynamic_libs {
   }
 }
 
-sub init_runtime {
+sub init_global {
   unless ($COMPILER) {
     unless ($BUILDER) {
       my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
@@ -220,7 +220,7 @@ sub build {
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
   
-  &init_runtime();
+  &init_global();
   
   # Add module informations
   my $build_success;
@@ -246,7 +246,7 @@ sub build {
 
 sub init_api {
   
-  &init_runtime();
+  &init_global();
   
   $ENV = $BUILDER_API->class("Native::Env")->new($COMPILER);
   
