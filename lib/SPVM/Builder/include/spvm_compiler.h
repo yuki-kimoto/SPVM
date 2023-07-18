@@ -33,7 +33,7 @@ struct spvm_compiler {
   const char* current_rel_file;
   
   // Current parsed basic type name
-  const char* current_rel_file_module_name;
+  const char* current_rel_file_basic_type_name;
   
   // Current parsed source
   char* current_source;
@@ -99,7 +99,7 @@ struct spvm_compiler {
   SPVM_HASH* constant_string_symtable;
   
   // Fail load class symtable
-  SPVM_HASH* if_require_not_found_module_name_symtable;
+  SPVM_HASH* if_require_not_found_basic_type_name_symtable;
   
   SPVM_LIST* current_anon_op_types;
   
@@ -116,9 +116,9 @@ SPVM_COMPILER* SPVM_COMPILER_new();
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
 
-SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name);
+SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* basic_type_name);
 
-void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file);
+void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* basic_type_name, SPVM_MODULE_FILE* module_file);
 
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category);
 
