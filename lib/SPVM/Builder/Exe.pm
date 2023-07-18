@@ -765,12 +765,14 @@ EOS
   my $compiler = $self->compiler;
   
   for my $basic_type_name (@$basic_type_names) {
+    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    
     my $module_file = $compiler->get_module_file($basic_type_name);
     
     my $source_module_file = '';
     
     $source_module_file .= qq|  {\n|;
-
+    
     $source_module_file .= qq|    void* module_file = env->api->module_file->new_instance(compiler);\n|;
     
     $source_module_file .= qq|    env->api->module_file->set_module_name(compiler, module_file, "$basic_type_name");\n|;
@@ -1054,7 +1056,8 @@ sub compile_module_precompile_source_file {
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
     mkpath $build_src_dir;
     
-    my $module_file = $self->runtime->get_module_file($basic_type_name);
+    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    my $module_file = $self->basic_type_get_module_file($basic_type);
     my $precompile_source = $self->runtime->build_precompile_module_source($basic_type_name);
     
     $builder_cc->build_precompile_module_source_file(
@@ -1109,9 +1112,11 @@ sub compile_module_native_source_files {
   
   my $perl_basic_type_name = "SPVM::$basic_type_name";
   
+  my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+  
   my $native_method_names = $self->runtime->get_method_names($basic_type_name, 'native');
   if (@$native_method_names) {
-    my $native_module_file = $self->runtime->get_module_file($basic_type_name);
+    my $native_module_file = $self->basic_type_get_module_file($basic_type);
     my $native_dir = $native_module_file;
     
     $native_dir =~ s/\.spvm$//;
@@ -1121,7 +1126,7 @@ sub compile_module_native_source_files {
     mkpath $build_object_dir;
 
     # Class file
-    my $module_file = $self->runtime->get_module_file($basic_type_name);
+    my $module_file = $native_module_file;
     unless (defined $module_file) {
       my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
       if ($config_file) {
