@@ -102,7 +102,7 @@ sub new {
 }
 
 # Instance Methods
-sub resource_src_dir_from_module_name {
+sub resource_src_dir_from_basic_type_name {
   my ($self, $basic_type_name) = @_;
 
   my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
@@ -481,7 +481,7 @@ sub create_link_info {
       build_dir => $self->build_dir,
     );
     
-    my $resource_src_dir = $self->resource_src_dir_from_module_name($resource);
+    my $resource_src_dir = $self->resource_src_dir_from_basic_type_name($resource);
     my $resource_object_dir = $self->get_resource_object_dir_from_module_name($basic_type_name);
     mkpath $resource_object_dir;
     
