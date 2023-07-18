@@ -913,7 +913,7 @@ sub compile_bootstrap_source_file {
   my $target_perl_module_name = "SPVM::$basic_type_name";
   
   # Compile source files
-  my $basic_type_name_rel_file = SPVM::Builder::Util::convert_module_name_to_rel_file($target_perl_module_name);
+  my $basic_type_name_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($target_perl_module_name);
   my $object_file_name = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$basic_type_name_rel_file.boot.o");
   my $source_file = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir, "$basic_type_name_rel_file.boot.c");
   
