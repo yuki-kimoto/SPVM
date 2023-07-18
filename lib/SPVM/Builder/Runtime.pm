@@ -31,7 +31,7 @@ sub load_dynamic_libs {
       my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
       
       if (-f $dynamic_lib_file) {
-        my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $module_name, $method_names, [], $category);
+        my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $module_name, $method_names, $category);
         
         for my $method_name (sort keys %$method_addresses) {
           my $cfunc_address = $method_addresses->{$method_name};

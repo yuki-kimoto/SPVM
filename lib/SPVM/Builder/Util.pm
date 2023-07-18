@@ -678,7 +678,7 @@ sub get_dynamic_lib_file_dist {
 }
 
 sub get_method_addresses {
-  my ($dynamic_lib_file, $module_name, $method_names, $anon_module_names, $category) = @_;
+  my ($dynamic_lib_file, $module_name, $method_names, $category) = @_;
   
   my $method_addresses = {};
   if (@$method_names) {
@@ -688,16 +688,6 @@ sub get_method_addresses {
       $method_info->{module_name} = $module_name;
       $method_info->{method_name} = $method_name;
       push @$method_infos, $method_info;
-    }
-    
-    # Add anon class sub names if precompile
-    if ($category eq 'precompile') {
-      for my $anon_module_name (@$anon_module_names) {
-        my $method_info = {};
-        $method_info->{module_name} = $anon_module_name;
-        $method_info->{method_name} = "";
-        push @$method_infos, $method_info;
-      }
     }
     
     for my $method_info (@$method_infos) {

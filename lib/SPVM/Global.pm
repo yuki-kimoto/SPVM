@@ -200,7 +200,6 @@ sub load_dynamic_libs {
               $dynamic_lib_file,
               $basic_type_name,
               $category_method_names,
-              [],
               $category
             );
             
