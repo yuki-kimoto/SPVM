@@ -244,7 +244,6 @@ sub build_exe_file {
   # Builder
   my $builder = $self->builder;
   
-  # Module name
   my $basic_type_name = $self->{module_name};
   
   # Build runtime
@@ -252,12 +251,14 @@ sub build_exe_file {
     $self->compile;
   }
   
+  my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+  
   # Config file
-  my $module_file = $self->runtime->get_module_file($basic_type_name);
-
+  my $module_file = $self->basic_type_get_module_file($basic_type);
+  
   # Object files
   my $object_files = [];
-
+  
   # Compile SPVM core source files
   my $spvm_core_object_files = $self->compile_spvm_core_source_files;
   push @$object_files, @$spvm_core_object_files;
@@ -267,7 +268,7 @@ sub build_exe_file {
   
   # Create bootstrap C source
   $self->create_bootstrap_source;
-
+  
   # Compile bootstrap C source
   my $bootstrap_object_file = $self->compile_bootstrap_source_file;
   push @$object_files, $bootstrap_object_file;
@@ -275,7 +276,7 @@ sub build_exe_file {
   # Build directory
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
-
+  
   # Link and generate executable file
   my $config_exe = $self->config;
   my $cc_linker = SPVM::Builder::CC->new(
@@ -288,7 +289,7 @@ sub build_exe_file {
     config => $self->config,
     category => 'native',
   };
-
+  
   $cc_linker->link($basic_type_name, $object_files, $options);
 }
 
@@ -1168,6 +1169,18 @@ sub get_module_names {
   $basic_type_names = [grep { /^[A-Z]/ && $_ !~ /::anon::/ } @$basic_type_names];
   
   return $basic_type_names;
+}
+
+sub basic_type_get_module_file {
+  my ($self, $basic_type) = @_;
+  
+  my $module_dir = $basic_type->get_module_dir;
+  
+  my $module_rel_file = $basic_type->get_module_rel_file;
+  
+  my $module_file = "$module_dir/$module_rel_file";
+  
+  return $module_file;
 }
 
 1;
