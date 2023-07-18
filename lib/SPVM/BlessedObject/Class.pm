@@ -16,11 +16,11 @@ sub AUTOLOAD {
   
   # If the class method is not found, AUTOLOAD is called.
   unless (ref $self) {
-    my $module_name = $self;
-    $module_name =~ s/^SPVM:://;
+    my $basic_type_name = $self;
+    $basic_type_name =~ s/^SPVM:://;
     $method_name =~ s/^.*:://;
     
-    Carp::confess("The \"$method_name\" method in the \"$module_name\" class is not found");
+    Carp::confess("The \"$method_name\" method in the \"$basic_type_name\" class is not found");
   }
   
   # For a static instant method call

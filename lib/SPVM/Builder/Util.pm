@@ -119,7 +119,7 @@ sub spurt_binary {
 }
 
 sub create_cfunc_name {
-  my ($module_name, $method_name, $category) = @_;
+  my ($basic_type_name, $method_name, $category) = @_;
   
   my $prefix;
   if ($category eq 'native') {
@@ -130,7 +130,7 @@ sub create_cfunc_name {
   }
   
   # Precompile Method names
-  my $method_abs_name_under_score = "${module_name}::$method_name";
+  my $method_abs_name_under_score = "${basic_type_name}::$method_name";
   $method_abs_name_under_score =~ s/:/_/g;
   my $cfunc_name = "$prefix$method_abs_name_under_score";
   
@@ -176,21 +176,21 @@ sub convert_module_file_to_dynamic_lib_file {
 }
 
 sub convert_module_name_to_dynamic_lib_rel_file {
-  my ($module_name, $category) = @_;
+  my ($basic_type_name, $category) = @_;
   
   my $dlext = $Config{dlext};
-  my $dynamic_lib_category_rel_file = &convert_module_name_to_rel_file($module_name);
+  my $dynamic_lib_category_rel_file = &convert_module_name_to_rel_file($basic_type_name);
   $dynamic_lib_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dynamic_lib_category_rel_file;
 }
 
 sub convert_module_name_to_category_rel_file {
-  my ($module_name, $category, $ext) = @_;
+  my ($basic_type_name, $category, $ext) = @_;
   
-  $module_name =~ s/^SPVM:://;
+  $basic_type_name =~ s/^SPVM:://;
   
-  my $rel_file_with_ext = "SPVM::$module_name";
+  my $rel_file_with_ext = "SPVM::$basic_type_name";
   $rel_file_with_ext =~ s/::/\//g;
   $rel_file_with_ext .= $category eq 'native' ? "" : ".$category";
   if (defined $ext) {
@@ -201,12 +201,12 @@ sub convert_module_name_to_category_rel_file {
 }
 
 sub convert_module_name_to_rel_dir {
-  my ($module_name) = @_;
+  my ($basic_type_name) = @_;
 
-  $module_name =~ s/^SPVM:://;
+  $basic_type_name =~ s/^SPVM:://;
 
   my $rel_dir;
-  my $rel_file = "SPVM::$module_name";
+  my $rel_file = "SPVM::$basic_type_name";
   $rel_file =~ s/::/\//g;
   $rel_dir = dirname $rel_file;
   
@@ -214,11 +214,11 @@ sub convert_module_name_to_rel_dir {
 }
 
 sub convert_module_name_to_rel_file {
-  my ($module_name, $ext) = @_;
+  my ($basic_type_name, $ext) = @_;
 
-  $module_name =~ s/^SPVM:://;
+  $basic_type_name =~ s/^SPVM:://;
   
-  my $rel_file_with_ext = "SPVM::$module_name";
+  my $rel_file_with_ext = "SPVM::$basic_type_name";
   $rel_file_with_ext =~ s/::/\//g;
   
   if (defined $ext) {
@@ -229,12 +229,12 @@ sub convert_module_name_to_rel_file {
 }
 
 sub remove_module_name_part_from_file {
-  my ($file, $module_name) = @_;
+  my ($file, $basic_type_name) = @_;
 
-  $module_name =~ s/^SPVM:://;
+  $basic_type_name =~ s/^SPVM:://;
   
   $file =~ s/\.spvm$//;
-  my $module_file = "SPVM::$module_name";
+  my $module_file = "SPVM::$basic_type_name";
   $module_file =~ s/::/\//g;
   $file =~ s/$module_file$//;
   $file =~ s/[\\\/]$//;
@@ -243,29 +243,29 @@ sub remove_module_name_part_from_file {
 }
 
 sub create_make_rule_native {
-  my $module_name = shift;
+  my $basic_type_name = shift;
   
-  create_make_rule($module_name, 'native', @_);
+  create_make_rule($basic_type_name, 'native', @_);
 }
 
 sub create_make_rule_precompile {
-  my $module_name = shift;
+  my $basic_type_name = shift;
   
-  create_make_rule($module_name, 'precompile', @_);
+  create_make_rule($basic_type_name, 'precompile', @_);
 }
 
 sub create_make_rule {
-  my ($module_name, $category, $options) = @_;
+  my ($basic_type_name, $category, $options) = @_;
   
   $options ||= {};
-  $module_name =~ s/^SPVM:://;
+  $basic_type_name =~ s/^SPVM:://;
   
-  my $module_base_name = $module_name;
+  my $module_base_name = $basic_type_name;
   $module_base_name =~ s/^.+:://;
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
-  my $module_rel_file = &convert_module_name_to_rel_file($module_name, 'spvm');
+  my $module_rel_file = &convert_module_name_to_rel_file($basic_type_name, 'spvm');
   
   my $noext_file = $module_rel_file;
   $noext_file =~ s/\.[^\.]+$//;
@@ -316,7 +316,7 @@ sub create_make_rule {
   }
   
   # Shared library file
-  my $dynamic_lib_rel_file = &convert_module_name_to_dynamic_lib_rel_file($module_name, $category);
+  my $dynamic_lib_rel_file = &convert_module_name_to_dynamic_lib_rel_file($basic_type_name, $category);
   my $dynamic_lib_file = "blib/lib/$dynamic_lib_rel_file";
   
   my $make_rule = '';
@@ -327,7 +327,7 @@ sub create_make_rule {
   
   # Get source files
   $make_rule .= "$dynamic_lib_file :: @deps\n";
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$module_name')\"\n\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$basic_type_name')\"\n\n";
   
   return $make_rule;
 }
@@ -565,14 +565,14 @@ sub get_spvm_compiler_and_runtime_module_file_names {
 }
 
 sub get_config_file_from_module_name {
-  my ($module_name, $mode) = @_;
+  my ($basic_type_name, $mode) = @_;
   
   my $ext = 'config';
   if (defined $mode) {
     $ext = "$mode.$ext";
   }
   
-  my $config_file_base = SPVM::Builder::Util::convert_module_name_to_rel_file($module_name, $ext);
+  my $config_file_base = SPVM::Builder::Util::convert_module_name_to_rel_file($basic_type_name, $ext);
   my $config_file;
   for my $inc (@INC) {
     my $config_file_tmp = "$inc/$config_file_base";
@@ -640,7 +640,7 @@ sub create_build_lib_path {
 }
 
 sub create_dl_func_list {
-  my ($module_name, $method_names, $options) = @_;
+  my ($basic_type_name, $method_names, $options) = @_;
   
   $options ||= {};
   
@@ -650,7 +650,7 @@ sub create_dl_func_list {
   # This option is needed Windows DLL file
   my $dl_func_list = [];
   for my $method_name (@$method_names) {
-    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($module_name, $method_name, $category);
+    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($basic_type_name, $method_name, $category);
     push @$dl_func_list, $cfunc_name;
   }
   
@@ -671,20 +671,20 @@ sub get_dynamic_lib_file_dist {
 }
 
 sub get_method_addresses {
-  my ($dynamic_lib_file, $module_name, $method_names, $category) = @_;
+  my ($dynamic_lib_file, $basic_type_name, $method_names, $category) = @_;
   
   my $method_addresses = {};
   if (@$method_names) {
     my $method_infos = [];
     for my $method_name (@$method_names) {
       my $method_info = {};
-      $method_info->{module_name} = $module_name;
+      $method_info->{module_name} = $basic_type_name;
       $method_info->{method_name} = $method_name;
       push @$method_infos, $method_info;
     }
     
     for my $method_info (@$method_infos) {
-      my $module_name = $method_info->{module_name};
+      my $basic_type_name = $method_info->{module_name};
       my $method_name = $method_info->{method_name};
 
       my $cfunc_address;
@@ -693,12 +693,12 @@ sub get_method_addresses {
         
         if ($dynamic_lib_libref) {
 
-          my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($module_name, $method_name, $category);
+          my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($basic_type_name, $method_name, $category);
           $cfunc_address = DynaLoader::dl_find_symbol($dynamic_lib_libref, $cfunc_name);
           unless ($cfunc_address) {
             my $dl_error = DynaLoader::dl_error();
             my $error = <<"EOS";
-Can't find native function \"$cfunc_name\" corresponding to ${module_name}->$method_name in \"$dynamic_lib_file\"
+Can't find native function \"$cfunc_name\" corresponding to ${basic_type_name}->$method_name in \"$dynamic_lib_file\"
 
 You must write the following definition.
 --------------------------------------------------
@@ -717,7 +717,7 @@ EOS
         }
         else {
           my $dl_error = DynaLoader::dl_error();
-          confess "The DynaLoader::dl_load_file function failed:Can't load the \"$dynamic_lib_file\" file for the $category methods in the $module_name class: $dl_error";
+          confess "The DynaLoader::dl_load_file function failed:Can't load the \"$dynamic_lib_file\" file for the $category methods in the $basic_type_name class: $dl_error";
         }
       }
       else {

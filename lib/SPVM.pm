@@ -11,12 +11,12 @@ require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
 sub import {
-  my ($class, $module_name) = @_;
+  my ($class, $basic_type_name) = @_;
 
   my ($file, $line) = (caller)[1, 2];
   
-  if (defined $module_name) {
-    SPVM::Global::build_module($module_name, $file, $line);
+  if (defined $basic_type_name) {
+    SPVM::Global::build_module($basic_type_name, $file, $line);
   }
 }
 

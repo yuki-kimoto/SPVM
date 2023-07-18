@@ -674,12 +674,12 @@ sub use_resource {
     $resource = $first_arg;
   }
   else {
-    my $module_name = $first_arg;
+    my $basic_type_name = $first_arg;
     my %args = @args;
     if (exists $args{module_name}) {
-      $module_name = delete $args{module_name};
+      $basic_type_name = delete $args{module_name};
     }
-    $resource = SPVM::Builder::Resource->new(module_name => $module_name, %args);
+    $resource = SPVM::Builder::Resource->new(module_name => $basic_type_name, %args);
   }
   
   my $resource_module_name = $resource->module_name;
@@ -1084,8 +1084,8 @@ If this field is undef, whether the messages are output or not is determined by 
 
 =head2 module_name
 
-  my $module_name = $config->module_name;
-  $config->module_name($module_name);
+  my $basic_type_name = $config->module_name;
+  $config->module_name($basic_type_name);
 
 Gets and sets the C<module_name> field.
 

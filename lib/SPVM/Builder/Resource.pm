@@ -96,8 +96,8 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
 
 =head2 module_name
 
-  my $module_name = $resource->module_name;
-  $resource->module_name($module_name);
+  my $basic_type_name = $resource->module_name;
+  $resource->module_name($basic_type_name);
 
 Gets and sets the C<module_name> field.
 
@@ -182,7 +182,7 @@ Always true.
 
 =head2 stringify
 
-  my $module_name = "$resource";
+  my $basic_type_name = "$resource";
 
 The alias for the L</"to_string"> method.
 

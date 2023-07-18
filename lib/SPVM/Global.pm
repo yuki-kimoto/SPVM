@@ -41,17 +41,17 @@ END {
 }
 
 sub build_module {
-  my ($module_name, $file, $line) = @_;
+  my ($basic_type_name, $file, $line) = @_;
   
   &init_global();
   
   # Add module informations
   my $build_success;
-  if (defined $module_name) {
+  if (defined $basic_type_name) {
     
     $COMPILER->set_start_file($file);
     $COMPILER->set_start_line($line);
-    my $success = $COMPILER->compile($module_name);
+    my $success = $COMPILER->compile($basic_type_name);
     unless ($success) {
       my $error_messages = $COMPILER->get_error_messages;
       for my $error_message (@$error_messages) {
@@ -65,7 +65,7 @@ sub build_module {
     
     &load_dynamic_libs($runtime);
     
-    &bind_to_perl($module_name);
+    &bind_to_perl($basic_type_name);
   }
 }
 
