@@ -336,26 +336,6 @@ sub bind_to_perl {
   }
 }
 
-sub get_anon_basic_type_names {
-  my ($runtime, $basic_type) = @_;
-  
-  my $methods_length = $basic_type->get_methods_length;
-  
-  my $anon_basic_type_names_length = $basic_type->get_anon_basic_types_length;
-  
-  my $anon_basic_type_names = [];
-  for (my $method_index = 0; $method_index < $methods_length; $method_index++) {
-    my $method = $basic_type->get_method_by_index($method_index);
-    
-    if ($method->is_anon) {
-      my $anon_basic_type = $method->get_current_basic_type;
-      push @$anon_basic_type_names, $anon_basic_type->get_name->to_string;
-    }
-  }
-  
-  return $anon_basic_type_names;
-}
-
 =head1 Name
 
 SPVM::Global - SPVM Global Instance for Perl Interpreter
