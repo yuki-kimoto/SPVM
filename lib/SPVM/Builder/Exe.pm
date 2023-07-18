@@ -253,7 +253,6 @@ sub build_exe_file {
   
   my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
   
-  # Config file
   my $module_file = $self->basic_type_get_module_file($basic_type);
   
   # Object files
@@ -319,11 +318,13 @@ sub get_required_resources {
   my $all_object_files = [];
   for my $basic_type_name (@$basic_type_names) {
 
+    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+
     my $perl_basic_type_name = "SPVM::$basic_type_name";
     
     my $native_method_names = $self->runtime->get_method_names($basic_type_name, 'native');
     if (@$native_method_names) {
-      my $native_module_file = $self->runtime->get_module_file($basic_type_name);
+      my $native_module_file = $self->basic_type_get_module_file($basic_type);
       my $native_dir = $native_module_file;
       
       $native_dir =~ s/\.spvm$//;
@@ -333,7 +334,7 @@ sub get_required_resources {
       mkpath $build_object_dir;
 
       # Class file
-      my $module_file = $self->runtime->get_module_file($basic_type_name);
+      my $module_file = $native_module_file;
       unless (defined $module_file) {
         my $config_exe_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
         if ($config_exe_file) {
