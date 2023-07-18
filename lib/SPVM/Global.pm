@@ -258,7 +258,7 @@ sub get_precompile_method_names {
   return $precompile_method_names;
 }
 
-my $BIND_TO_PERL_MODULE_NAME_H = {};
+my $BIND_TO_PERL_BASIC_TYPE_NAME_H = {};
 sub bind_to_perl {
   my ($basic_type_name) = @_;
   
@@ -269,7 +269,7 @@ sub bind_to_perl {
   my $perl_basic_type_name_base = "SPVM::";
   my $perl_basic_type_name = "$perl_basic_type_name_base$basic_type_name";
   
-  unless ($BIND_TO_PERL_MODULE_NAME_H->{$perl_basic_type_name}) {
+  unless ($BIND_TO_PERL_BASIC_TYPE_NAME_H->{$perl_basic_type_name}) {
     
     my $parent_basic_type = $basic_type->get_parent;
     
@@ -330,7 +330,7 @@ sub bind_to_perl {
       }
     }
     
-    $BIND_TO_PERL_MODULE_NAME_H->{$perl_basic_type_name} = 1;
+    $BIND_TO_PERL_BASIC_TYPE_NAME_H->{$perl_basic_type_name} = 1;
   }
 }
 
