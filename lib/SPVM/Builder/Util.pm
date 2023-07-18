@@ -640,7 +640,7 @@ sub create_build_lib_path {
 }
 
 sub create_dl_func_list {
-  my ($module_name, $method_names, $anon_module_names, $options) = @_;
+  my ($module_name, $method_names, $options) = @_;
   
   $options ||= {};
   
@@ -652,13 +652,6 @@ sub create_dl_func_list {
   for my $method_name (@$method_names) {
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($module_name, $method_name, $category);
     push @$dl_func_list, $cfunc_name;
-  }
-  
-  if ($category eq 'precompile') {
-    for my $anon_module_name (@$anon_module_names) {
-      my $anon_method_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_module_name, "", $category);
-      push @$dl_func_list, $anon_method_cfunc_name;
-    }
   }
   
   # This is bad hack to suppress boot strap function error.

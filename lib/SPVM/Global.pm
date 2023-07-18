@@ -178,7 +178,6 @@ sub load_dynamic_libs {
             my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
               $basic_type_name,
               $category_method_names,
-              [],
               {category => $category}
             );
             
