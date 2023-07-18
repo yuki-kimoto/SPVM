@@ -13,6 +13,12 @@ use SPVM::Builder::Config::Exe;
 use SPVM::Builder::Runtime;
 use JSON::PP;
 
+use SPVM 'Native::Compiler';
+use SPVM 'Native::Runtime';
+use SPVM 'Native::Env';
+use SPVM 'Native::Stack';
+
+
 use File::Spec;
 use File::Find 'find';
 
@@ -137,6 +143,28 @@ sub runtime {
   }
 }
 
+sub native_compiler {
+  my $self = shift;
+  if (@_) {
+    $self->{native_compiler} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{native_compiler};
+  }
+}
+
+sub native_runtime {
+  my $self = shift;
+  if (@_) {
+    $self->{native_runtime} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{native_runtime};
+  }
+}
+
 # Methods
 sub new {
   my $class = shift;
@@ -201,6 +229,11 @@ sub new {
     include_dirs => $builder->include_dirs
   );
   $self->{compiler} = $compiler;
+  
+  
+  my $native_compiler = SPVM::Native::Compiler->new;
+  $native_compiler->add_include_dir($_) for @{$builder->include_dirs};
+  $self->{native_compiler} = $native_compiler;
   
   return bless $self, $class;
 }
@@ -382,10 +415,25 @@ sub compile {
   }
   my $runtime = $compiler->get_runtime;
   
-  # This is not needed, but check when get_runtime is called more than one.
-  $runtime = $compiler->get_runtime;
-  
   $self->runtime($runtime);
+  
+  {
+    my $native_compiler = $self->native_compiler;
+    
+    $native_compiler->set_start_file(__FILE__);
+    $native_compiler->set_start_line(__LINE__ + 1);
+    my $success = $native_compiler->compile($basic_type_name);
+    unless ($success) {
+      my $error_messages = $native_compiler->get_error_messages;
+      for my $error_message (@$error_messages) {
+        print STDERR "$error_message\n";
+      }
+      exit(255);
+    }
+    my $native_runtime = $native_compiler->get_runtime;
+    
+    $self->native_runtime($native_runtime);
+  }
   
   $self->{finish_compile} = 1;
 }
