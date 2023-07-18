@@ -228,7 +228,7 @@ sub convert_basic_type_name_to_rel_file {
   return $rel_file_with_ext;
 }
 
-sub remove_module_name_part_from_file {
+sub remove_basic_type_name_part_from_file {
   my ($file, $basic_type_name) = @_;
 
   $basic_type_name =~ s/^SPVM:://;
