@@ -247,7 +247,7 @@ sub new_muldim_array_len {
 sub class {
   my ($self, $basic_type_name) = @_;
   
-  my $class = SPVM::ExchangeAPI::Class->__new(__module_name => $basic_type_name, __api => $self);
+  my $class = SPVM::ExchangeAPI::Class->__new(__name => $basic_type_name, __api => $self);
   
   return $class;
 }

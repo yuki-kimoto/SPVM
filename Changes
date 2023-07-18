@@ -1,3 +1,6 @@
+0.989026 2023-07-18
+  [Incompatible Changes]
+    * The __module_name field in the SPVM::ExchangAPI::Class was renamed to the __name field.
 0.989025 2023-07-18
   [New Features]
     * The following methods were added to the Native::Runtime.
