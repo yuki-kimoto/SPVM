@@ -901,11 +901,13 @@ sub create_bootstrap_source {
   # Module names
   my $basic_type_names = $self->get_module_names;
   
-  # Class files - Input
   my $module_files = [];
   for my $basic_type_name (@$basic_type_names) {
-    my $module_file = $self->runtime->get_module_file($basic_type_name);
-    push @$module_files, $module_file;
+    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    if ($basic_type->get_module_dir) {
+      my $module_file = $self->basic_type_get_module_file($basic_type);
+      push @$module_files, $module_file;
+    }
   }
   
   # Source file - Output
