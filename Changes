@@ -47,6 +47,8 @@
       - method get_method_is_class_method : int ($basic_type_name : string, $method_name : string);
       - method get_precompile_method_address : Address ($basic_type_name : string, $method_name : string);
       - method get_native_method_address : Address ($basic_type_name : string, $method_name : string);
+      - method set_native_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
+      - method set_precompile_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
       
     * The following methods in the Native::Runtime were changed.
       

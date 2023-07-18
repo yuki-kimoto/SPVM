@@ -60,24 +60,6 @@ Exceptions:
 
 If The basic type cannot be found, an exception is throen.
 
-=head2 get_basic_type_name
-
-  method get_basic_type_name : string[] ();
-
-Gets the all basic type names in the runtime and returns it.
-
-=head2 get_basic_type_parent_name
-
-  method get_basic_type_parent_name : string ($basic_type_name : string);
-
-Gets the parent basic type name and returns it.
-
-=head2 get_module_file
-
-  method get_module_file : string ($basic_type_name : string);
-
-Gets the module file name and returns it.
-
 =head2 build_precompile_module_source
 
   method build_precompile_module_source : string ($basic_type : Native::BasicType);
@@ -89,22 +71,6 @@ Builds the C source code of the class that contains C<precompile> methods and re
   method method build_precompile_method_source : string ($method : Native::Method);
 
 Builds the C source code of a C<precompile> method and returns it.
-
-=head2 set_native_method_address
-
-  method set_native_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
-
-Sets the address of a C<native> method.
-
-The address is the L<Address|SPVM::Address> class.
-
-=head2 set_precompile_method_address
-
-  method set_precompile_method_address : string ($basic_type_name : string, $method_name : string, $address : Address);
-
-Sets the address of a C<precompile> method.
-
-The address is the L<Address|SPVM::Address> class.
 
 =head1 See Also
 
