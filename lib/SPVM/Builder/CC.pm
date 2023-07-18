@@ -114,7 +114,7 @@ sub resource_src_dir_from_basic_type_name {
   return $resource_src_dir;
 }
 
-sub get_resource_object_dir_from_module_name {
+sub get_resource_object_dir_from_basic_type_name {
   my ($self, $basic_type_name) = @_;
 
   my $module_rel_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name);
@@ -482,7 +482,7 @@ sub create_link_info {
     );
     
     my $resource_src_dir = $self->resource_src_dir_from_basic_type_name($resource);
-    my $resource_object_dir = $self->get_resource_object_dir_from_module_name($basic_type_name);
+    my $resource_object_dir = $self->get_resource_object_dir_from_basic_type_name($basic_type_name);
     mkpath $resource_object_dir;
     
     my $resource_basic_type_name;
