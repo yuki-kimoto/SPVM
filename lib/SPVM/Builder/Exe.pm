@@ -1117,7 +1117,7 @@ sub get_module_names {
   
   my $basic_type_names = $self->runtime->get_basic_type_names;
   
-  my $basic_type_names = [grep { /^[A-Z]/ && $_ !~ /::anon::/ } @$basic_type_names];
+  $basic_type_names = [grep { /^[A-Z]/ && $_ !~ /::anon::/ } @$basic_type_names];
   
   return $basic_type_names;
 }
