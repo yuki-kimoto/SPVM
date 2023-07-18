@@ -301,7 +301,7 @@ sub get_required_resources {
       # Class file
       my $module_file = $self->runtime->get_module_file($basic_type_name);
       unless (defined $module_file) {
-        my $config_exe_file = SPVM::Builder::Util::get_config_file_from_module_name($basic_type_name);
+        my $config_exe_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
         if ($config_exe_file) {
           $module_file = $config_exe_file;
           $module_file =~ s/\.config$/\.spvm/;
@@ -1073,7 +1073,7 @@ sub compile_module_native_source_files {
     # Class file
     my $module_file = $self->runtime->get_module_file($basic_type_name);
     unless (defined $module_file) {
-      my $config_file = SPVM::Builder::Util::get_config_file_from_module_name($basic_type_name);
+      my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
       if ($config_file) {
         $module_file = $config_file;
         $module_file =~ s/\.config$/\.spvm/;

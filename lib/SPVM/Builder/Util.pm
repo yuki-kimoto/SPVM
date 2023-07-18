@@ -564,7 +564,7 @@ sub get_spvm_compiler_and_runtime_module_file_names {
   return \@spvm_compiler_and_runtime_module_file_names;
 }
 
-sub get_config_file_from_module_name {
+sub get_config_file_from_basic_type_name {
   my ($basic_type_name, $mode) = @_;
   
   my $ext = 'config';
