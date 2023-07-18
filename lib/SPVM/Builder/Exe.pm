@@ -1182,6 +1182,10 @@ sub basic_type_get_module_file {
   
   my $module_dir = $basic_type->get_module_dir;
   
+  unless ($module_dir) {
+    confess "The module directory must be defined.";
+  }
+  
   my $module_rel_file = $basic_type->get_module_rel_file;
   
   my $module_file = "$module_dir/$module_rel_file";
