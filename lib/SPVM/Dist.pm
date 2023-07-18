@@ -593,8 +593,8 @@ sub generate_native_module_file {
   }
   
   # Content
-  my $native_module_name = $basic_type_name;
-  $native_module_name =~ s/::/__/g;
+  my $native_basic_type_name = $basic_type_name;
+  $native_basic_type_name =~ s/::/__/g;
   my $native_module_file = $basic_type_name;
   $native_module_file =~ s/::/\//g;
   $native_module_file .= ".$native_module_ext";
@@ -618,7 +618,7 @@ $extern_c_start
 
 static const char* FILE_NAME = "$native_module_file";
 
-int32_t SPVM__${native_module_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__${native_basic_type_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -1050,14 +1050,14 @@ sub generate_basic_test_native_module_file {
   }
   
   # Content
-  my $native_module_name = $basic_type_name;
-  $native_module_name =~ s/::/__/g;
+  my $native_basic_type_name = $basic_type_name;
+  $native_basic_type_name =~ s/::/__/g;
   my $basic_test_native_module_content = <<"EOS";
 #include "spvm_native.h"
 
 $extern_c_start
 
-int32_t SPVM__TestCase__${native_module_name}__test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__${native_basic_type_name}__test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   

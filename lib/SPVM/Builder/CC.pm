@@ -485,14 +485,14 @@ sub create_link_info {
     my $resource_object_dir = $self->get_resource_object_dir_from_module_name($basic_type_name);
     mkpath $resource_object_dir;
     
-    my $resource_module_name;
+    my $resource_basic_type_name;
     my $resource_config;
     if (ref $resource) {
-      $resource_module_name = $resource->module_name;
+      $resource_basic_type_name = $resource->module_name;
       $resource_config = $resource->config;
     }
     else {
-      $resource_module_name = $resource;
+      $resource_basic_type_name = $resource;
     }
     
     $resource_config->add_include_dir(@$resource_include_dirs);
@@ -506,7 +506,7 @@ sub create_link_info {
       category => $category,
     };
     
-    my $object_files = $builder_cc_resource->compile_source_files($resource_module_name, $compile_options);
+    my $object_files = $builder_cc_resource->compile_source_files($resource_basic_type_name, $compile_options);
     
     push @$all_object_files, @$object_files;
   }

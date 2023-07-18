@@ -682,14 +682,14 @@ sub use_resource {
     $resource = SPVM::Builder::Resource->new(module_name => $basic_type_name, %args);
   }
   
-  my $resource_module_name = $resource->module_name;
+  my $resource_basic_type_name = $resource->module_name;
   my $resource_mode = $resource->mode;
   my $resource_argv = $resource->argv;
   
   my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
-  my $config_file_base = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($resource_module_name, $ext);
+  my $config_file_base = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($resource_basic_type_name, $ext);
   
-  my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($resource_module_name, $resource_mode);
+  my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($resource_basic_type_name, $resource_mode);
   
   my $config = $self->load_config($config_file, @$resource_argv);
   $config->file($config_file);
@@ -698,7 +698,7 @@ sub use_resource {
   
   my $index = keys %{$self->{resources}};
   
-  $self->{resources}->{$resource_module_name} = {resource => $resource, index => $index};
+  $self->{resources}->{$resource_basic_type_name} = {resource => $resource, index => $index};
   
   return $resource;
 }
@@ -715,13 +715,13 @@ sub disable_resource {
 }
 
 sub get_resource {
-  my ($self, $resource_module_name) = @_;
+  my ($self, $resource_basic_type_name) = @_;
   
-  unless (defined $self->{resources}{$resource_module_name}) {
+  unless (defined $self->{resources}{$resource_basic_type_name}) {
     return;
   }
   
-  my $resource = $self->{resources}{$resource_module_name}{resource};
+  my $resource = $self->{resources}{$resource_basic_type_name}{resource};
   
   return $resource;
 }

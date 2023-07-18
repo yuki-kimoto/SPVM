@@ -266,10 +266,10 @@ sub bind_to_perl {
     
   my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
   
-  my $perl_module_name_base = "SPVM::";
-  my $perl_module_name = "$perl_module_name_base$basic_type_name";
+  my $perl_basic_type_name_base = "SPVM::";
+  my $perl_basic_type_name = "$perl_basic_type_name_base$basic_type_name";
   
-  unless ($BIND_TO_PERL_MODULE_NAME_H->{$perl_module_name}) {
+  unless ($BIND_TO_PERL_MODULE_NAME_H->{$perl_basic_type_name}) {
     
     my $parent_basic_type = $basic_type->get_parent;
     
@@ -277,12 +277,12 @@ sub bind_to_perl {
     my @isa;
     if (defined $parent_basic_type) {
       my $parent_basic_type_name = $parent_basic_type->get_name;
-      push @isa, "$perl_module_name_base$parent_basic_type_name";
+      push @isa, "$perl_basic_type_name_base$parent_basic_type_name";
     }
     push @isa, 'SPVM::BlessedObject::Class';
     my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
     
-    my $code = "package $perl_module_name; $isa";
+    my $code = "package $perl_basic_type_name; $isa";
     eval $code;
     
     if (my $error = $@) {
@@ -304,7 +304,7 @@ sub bind_to_perl {
         next;
       }
       
-      my $perl_method_abs_name = "${perl_module_name}::$method_name";
+      my $perl_method_abs_name = "${perl_basic_type_name}::$method_name";
       my $is_class_method = $method->is_class_method;
       
       if ($is_class_method) {
@@ -316,7 +316,7 @@ sub bind_to_perl {
         my $method_name_string = "$method_name";
         
         *{"$perl_method_abs_name"} = sub {
-          my $perl_module_name = shift;
+          my $perl_basic_type_name = shift;
           
           my $return_value;
           
@@ -330,7 +330,7 @@ sub bind_to_perl {
       }
     }
     
-    $BIND_TO_PERL_MODULE_NAME_H->{$perl_module_name} = 1;
+    $BIND_TO_PERL_MODULE_NAME_H->{$perl_basic_type_name} = 1;
   }
 }
 

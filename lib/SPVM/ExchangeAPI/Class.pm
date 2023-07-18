@@ -40,12 +40,12 @@ our $AUTOLOAD;
 sub AUTOLOAD {
   my $self = shift;
   
-  my $__module_name = $self->__module_name;
+  my $__basic_type_name = $self->__module_name;
   
   my $method_name = $AUTOLOAD;
   $method_name =~ s/^SPVM::ExchangeAPI::Class:://;
   
-  my $ret = $self->__api->call_method($__module_name, $method_name, @_);
+  my $ret = $self->__api->call_method($__basic_type_name, $method_name, @_);
   
   return $ret;
 }
@@ -76,8 +76,8 @@ Create a class object using the L<SPVM::ExchangeAPI|SPVM::ExchangeAPI/"class"> m
 
 =head2 __module_name
 
-  my $__module_name = $self->__module_name;
-  $self->__module_name($__module_name);
+  my $__basic_type_name = $self->__module_name;
+  $self->__module_name($__basic_type_name);
 
 Gets and sets a basic type name.
 

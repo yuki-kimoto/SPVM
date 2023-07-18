@@ -8727,7 +8727,7 @@ Examples:
   class Foo::Bar {
     static method baz : void () {
       # Foo::Bar
-      my $current_module_name = __PACKAGE__;
+      my $current_basic_type_name = __PACKAGE__;
     }
   }
 
