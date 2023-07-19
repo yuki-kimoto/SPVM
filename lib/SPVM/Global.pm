@@ -50,8 +50,6 @@ sub build_module {
   
   &init_global();
   
-  # Add module informations
-  my $build_success;
   if (defined $basic_type_name) {
     
     my $start_runtime = $COMPILER->get_runtime;
@@ -118,14 +116,6 @@ sub init_global {
     
     # Set command line info
     $BUILDER_STACK = $BUILDER_ENV->new_stack;
-    
-    $BUILDER_ENV->set_command_info_program_name($BUILDER_STACK, $0);
-    $BUILDER_ENV->set_command_info_argv($BUILDER_STACK, \@ARGV);
-    my $base_time = $^T + 0; # For Perl 5.8.9
-    $BUILDER_ENV->set_command_info_base_time($BUILDER_STACK, $base_time);
-    
-    # Call INIT blocks
-    $BUILDER_ENV->call_init_methods($BUILDER_STACK);
     
     $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     
