@@ -220,7 +220,7 @@ sub build_exe_file {
   
   my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
   
-  my $module_file = $self->basic_type_get_module_file($basic_type);
+  my $module_file = $basic_type->_get_module_file;
   
   # Object files
   my $object_files = [];
@@ -291,7 +291,7 @@ sub get_required_resources {
     
     my $native_method_names = $basic_type->_get_native_method_names;
     if (@$native_method_names) {
-      my $module_file = $self->basic_type_get_module_file($basic_type);
+      my $module_file = $basic_type->_get_module_file;
       my $native_dir = $module_file;
       
       $native_dir =~ s/\.spvm$//;
@@ -869,7 +869,7 @@ sub create_bootstrap_source {
   for my $basic_type_name (@$basic_type_names) {
     my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     if ($basic_type->get_module_dir) {
-      my $module_file = $self->basic_type_get_module_file($basic_type);
+      my $module_file = $basic_type->_get_module_file;
       push @$module_files, $module_file;
     }
   }
@@ -1023,7 +1023,7 @@ sub compile_module_precompile_source_file {
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
     mkpath $build_src_dir;
     
-    my $module_file = $self->basic_type_get_module_file($basic_type);
+    my $module_file = $basic_type->_get_module_file;
     my $precompile_source = $self->runtime->build_precompile_module_source($basic_type);
     
     $builder_cc->build_precompile_module_source_file(
@@ -1082,7 +1082,7 @@ sub compile_module_native_source_files {
   
   my $native_method_names = $basic_type->_get_native_method_names;
   if (@$native_method_names) {
-    my $module_file = $self->basic_type_get_module_file($basic_type);
+    my $module_file = $basic_type->_get_module_file;
     my $native_dir = $module_file;
     
     $native_dir =~ s/\.spvm$//;
@@ -1129,22 +1129,6 @@ sub compile_module_native_source_files {
   }
   
   return $all_object_files;
-}
-
-sub basic_type_get_module_file {
-  my ($self, $basic_type) = @_;
-  
-  my $module_dir = $basic_type->get_module_dir;
-  
-  unless ($module_dir) {
-    confess "The module directory must be defined.";
-  }
-  
-  my $module_rel_file = $basic_type->get_module_rel_file;
-  
-  my $module_file = "$module_dir/$module_rel_file";
-  
-  return $module_file;
 }
 
 1;

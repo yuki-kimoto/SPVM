@@ -84,4 +84,19 @@ class Native::BasicType {
     return $precompile_method_names_list->to_array;
   }
   
+  method _get_module_file : string () {
+    
+    my $module_dir = $self->get_module_dir;
+    
+    unless ($module_dir) {
+      die "The module_dir field must be defined.";
+    }
+    
+    my $module_rel_file = $self->get_module_rel_file;
+    
+    my $module_file = "$module_dir/$module_rel_file";
+    
+    return $module_file;
+  }
+
 }
