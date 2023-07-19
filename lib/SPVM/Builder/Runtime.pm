@@ -14,29 +14,6 @@ sub pointer {
   }
 }
 
-sub load_dynamic_lib_native {
-  my ($self, $basic_type_name) = @_;
-  
-  my $category = 'native';
-  my $method_names = $self->get_method_names($basic_type_name, $category);
-  
-  if (@$method_names) {
-    # Build classs - Compile C source codes and link them to SPVM precompile method
-    # Shared library which is already installed in distribution directory
-    my $module_file = $self->get_module_file($basic_type_name);
-    my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
-    
-    if (-f $dynamic_lib_file) {
-      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $category);
-      
-      for my $method_name (sort keys %$method_addresses) {
-        my $cfunc_address = $method_addresses->{$method_name};
-        $self->set_native_method_address($basic_type_name, $method_name, $cfunc_address);
-      }
-    }
-  }
-}
-
 1;
 
 =head1 Name
