@@ -20,6 +20,11 @@
 
   [New Features]
     * The Native::ModuleFile class was added.
+
+    * The following methods were added to the Native::Compiler.
+      +  method get_module_file : Native::ModuleFile ($module_name : string);
+      +  method set_module_file : void ($module_name : string, $module_file : Native::ModuleFile);
+
   [Bug Fix]
     * The bug that SPVM file dependencies was wrong was fixed.
 0.989025 2023-07-18

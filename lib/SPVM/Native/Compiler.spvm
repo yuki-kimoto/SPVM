@@ -3,6 +3,7 @@
 
 class Native::Compiler : pointer {
   use Native::Runtime;
+  use Native::ModuleFile;
   
   # Class Methods
   native static method new : Native::Compiler ();
@@ -19,4 +20,9 @@ class Native::Compiler : pointer {
   native method add_include_dir : void ($include_dir : string);
   
   native method get_error_messages : string[] ();
+  
+  native method get_module_file : Native::ModuleFile ($module_name : string);
+  
+  native method set_module_file : void ($module_name : string, $module_file : Native::ModuleFile);
+  
 }

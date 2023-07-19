@@ -134,7 +134,6 @@ int32_t SPVM__Native__Compiler__get_error_messages(SPVM_ENV* env, SPVM_VALUE* st
   return 0;
 }
 
-
 int32_t SPVM__Native__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
@@ -154,3 +153,62 @@ int32_t SPVM__Native__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   return 0;
 }
 
+int32_t SPVM__Native__Compiler__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_module_name = stack[1].oval;
+  
+  if (!obj_module_name) {
+    return env->die(env, stack, "The $module_name must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  const char* module_name = env->get_chars(env, stack, obj_module_name);
+  
+  void* compiler = env->get_pointer(env, stack, obj_self);
+  
+  void* module_file = env->api->compiler->get_module_file(compiler, module_name);
+  
+  void* obj_module_file = NULL;
+  if (module_file) {
+    obj_module_file = env->new_pointer_object_by_name(env, stack, "Native::ModuleFile", module_file, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    env->set_field_object_by_name(env, stack, obj_module_file, "compiler", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+  }
+  
+  stack[0].oval = obj_module_file;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Compiler__set_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_module_name = stack[1].oval;
+  
+  if (!obj_module_name) {
+    return env->die(env, stack, "The $module_name must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  const char* module_name = env->get_chars(env, stack, obj_module_name);
+  
+  void* compiler = env->get_pointer(env, stack, obj_self);
+  
+  void* obj_module_file = stack[2].oval;
+  if (!obj_module_file) {
+    return env->die(env, stack, "The $module_file must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  void* module_file = env->get_pointer(env, stack, obj_module_file);
+  
+  env->api->compiler->set_module_file(compiler, module_name, module_file);
+  
+  stack[0].oval = obj_module_file;
+  
+  return 0;
+}

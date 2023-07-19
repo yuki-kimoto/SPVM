@@ -62,7 +62,7 @@ Its insntace has a pointer to a L<compiler|SPVM::Document::NativeAPI::Native::Co
 
 =head2 new
 
-  native static method new : Native::Compiler ();
+  static method new : Native::Compiler ();
 
 Creates a new C<Native::Compiler> object and returns it.
 
@@ -70,25 +70,25 @@ Creates a new C<Native::Compiler> object and returns it.
 
 =head2 add_include_dir
 
-  native method add_include_dir : void ($include_dir : string);
+  method add_include_dir : void ($include_dir : string);
 
 Adds a class directory to search for classes.
 
 =head2 set_start_file
 
-  native method set_start_file : void ($start_file : string);
+  method set_start_file : void ($start_file : string);
 
 Sets the name of the file to start the compiling by the L</"compile"> method.
 
 =head2 set_start_line
 
-  native method set_start_line : void ($start_line : int);
+  method set_start_line : void ($start_line : int);
 
 Sets the line to start compiling by the L</"compile"> method.
 
 =head2 compile
 
-  native method compile : int ($basic_type_name : string);
+  method compile : int ($basic_type_name : string);
 
 Compiles the specified class and the classes that are load in the specified class. 
 
@@ -98,17 +98,29 @@ This method can be called multiple times.
 
 =head2 get_error_messages
 
-  native method get_error_messages : string[] ();
+  method get_error_messages : string[] ();
 
 Returns compilation error messages in this compiling by the L</"compile"> method.
 
 =head2 get_runtime
 
-  native method get_runtime : Native::Runtime ();
+  method get_runtime : Native::Runtime ();
 
 Returns the runtime.
 
 The return value is a L<Native::Runtime|SPVM::Native::Runtime> object.
+
+=head2 get_module_file
+
+  method get_module_file : Native::ModuleFile ($module_name : string);
+
+Gets a L<Native::ModuleFile> object by a module name, and returns it.
+
+=head2 set_module_file
+
+  method set_module_file : void ($module_name : string, $module_file : Native::ModuleFile);
+
+Sets a L<Native::ModuleFile> object by a module name.
 
 =head1 See Also
 
