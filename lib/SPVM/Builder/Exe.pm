@@ -132,17 +132,6 @@ sub compiler {
   }
 }
 
-sub runtime {
-  my $self = shift;
-  if (@_) {
-    $self->{runtime} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{runtime};
-  }
-}
-
 sub native_compiler {
   my $self = shift;
   if (@_) {
@@ -415,9 +404,6 @@ sub compile {
     $compiler->print_error_messages(*STDERR);
     exit(255);
   }
-  my $runtime = $compiler->get_runtime;
-  
-  $self->runtime($runtime);
   
   {
     my $native_compiler = $self->native_compiler;
