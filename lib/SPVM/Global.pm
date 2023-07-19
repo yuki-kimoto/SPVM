@@ -54,6 +54,9 @@ sub build_module {
   my $build_success;
   if (defined $basic_type_name) {
     
+    my $start_runtime = $COMPILER->get_runtime;
+    my $start_basic_types_length = $start_runtime->get_basic_types_length;
+    
     $COMPILER->set_start_file($file);
     $COMPILER->set_start_line($line);
     my $success = $COMPILER->compile($basic_type_name);
@@ -68,7 +71,12 @@ sub build_module {
     
     my $runtime = $COMPILER->get_runtime;
     
-    &load_dynamic_libs($runtime);
+    my $basic_types_length = $runtime->get_basic_types_length;
+    
+    for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
+      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+      &load_dynamic_lib($runtime, $basic_type);
+    }
     
     &bind_to_perl($basic_type_name);
   }
@@ -148,14 +156,8 @@ sub init_api {
   $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
 }
 
-sub load_dynamic_libs {
-  my ($runtime) = @_;
-  
-  my $basic_types_length = $runtime->get_basic_types_length;
-  
-  # Set addresses of native methods and precompile methods
-  for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
-    my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+sub load_dynamic_lib {
+  my ($runtime, $basic_type) = @_;
     
     my $basic_type_name = $basic_type->get_name->to_string;
     
@@ -234,7 +236,6 @@ sub load_dynamic_libs {
         }
       }
     }
-  }
 }
 
 my $BIND_TO_PERL_BASIC_TYPE_NAME_H = {};
