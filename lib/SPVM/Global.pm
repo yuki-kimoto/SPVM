@@ -158,10 +158,10 @@ sub load_dynamic_libs {
       my $category_method_names;
       
       if ($category eq 'native') {
-        $category_method_names = &get_native_method_names($basic_type);
+        $category_method_names = $basic_type->_get_native_method_names;
       }
       elsif ($category eq 'precompile') {
-        $category_method_names = &get_precompile_method_names($basic_type);
+        $category_method_names = $basic_type->_get_precompile_method_names;
       }
       
       if (@$category_method_names) {
@@ -222,40 +222,6 @@ sub load_dynamic_libs {
       }
     }
   }
-}
-
-sub get_native_method_names {
-  my ($basic_type) = @_;
-  
-  my $methods_length = $basic_type->get_methods_length;
-  
-  my $native_method_names = [];
-  for (my $index = 0; $index < $methods_length; $index++) {
-    my $method = $basic_type->get_method_by_index($index);
-    
-    if ($method->is_native) {
-      push @$native_method_names, $method->get_name->to_string;
-    }
-  }
-  
-  return $native_method_names;
-}
-
-sub get_precompile_method_names {
-  my ($basic_type) = @_;
-  
-  my $methods_length = $basic_type->get_methods_length;
-  
-  my $precompile_method_names = [];
-  for (my $index = 0; $index < $methods_length; $index++) {
-    my $method = $basic_type->get_method_by_index($index);
-    
-    if ($method->is_precompile) {
-      push @$precompile_method_names, $method->get_name->to_string;
-    }
-  }
-  
-  return $precompile_method_names;
 }
 
 my $BIND_TO_PERL_BASIC_TYPE_NAME_H = {};

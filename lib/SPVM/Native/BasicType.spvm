@@ -7,6 +7,8 @@ class Native::BasicType {
   use Native::Field;
   use Native::Method;
   
+  use StringList;
+  
   has runtime : Native::Runtime;
   
   native method get_id : int ();
@@ -48,4 +50,38 @@ class Native::BasicType {
   native method get_anon_basic_type_by_index : Native::BasicType ($anon_basic_type_index : int);
   
   native method get_anon_basic_types_length : int ();
+  
+  # Private Instance Methods - Only used in core.
+  method _get_native_method_names : string[] () {
+    
+    my $methods_length = $self->get_methods_length;
+    
+    my $native_method_names_list = StringList->new;
+    for (my $index = 0; $index < $methods_length; $index++) {
+      my $method = $self->get_method_by_index($index);
+      
+      if ($method->is_native) {
+        $native_method_names_list->push($method->get_name);
+      }
+    }
+    
+    return $native_method_names_list->to_array;
+  }
+  
+  method _get_precompile_method_names : string[] () {
+    
+    my $methods_length = $self->get_methods_length;
+    
+    my $precompile_method_names_list = StringList->new;
+    for (my $index = 0; $index < $methods_length; $index++) {
+      my $method = $self->get_method_by_index($index);
+      
+      if ($method->is_precompile) {
+        $precompile_method_names_list->push($method->get_name);
+      }
+    }
+    
+    return $precompile_method_names_list->to_array;
+  }
+  
 }
