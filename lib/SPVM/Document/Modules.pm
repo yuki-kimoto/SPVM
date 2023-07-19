@@ -92,9 +92,21 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<LongList|SPVM::LongList>
 
+=item * L<Native::Arg|SPVM::Native::Arg>
+
+=item * L<Native::BasicType|SPVM::Native::BasicType>
+
+=item * L<Native::ClassVar|SPVM::Native::ClassVar>
+
 =item * L<Native::Compiler|SPVM::Native::Compiler>
 
 =item * L<Native::Env|SPVM::Native::Env>
+
+=item * L<Native::Field|SPVM::Native::Field>
+
+=item * L<Native::Method|SPVM::Native::Method>
+
+=item * L<Native::ModuleFile|SPVM::Native::ModuleFile>
 
 =item * L<Native::Runtime|SPVM::Native::Runtime>
 
