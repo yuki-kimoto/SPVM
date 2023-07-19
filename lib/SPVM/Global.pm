@@ -104,7 +104,11 @@ sub init_global {
     for my $native_compiler_module (@native_compiler_modules) {
       $BUILDER_COMPILER->compile_with_exit($native_compiler_module, __FILE__, __LINE__);
       my $builder_runtime = $BUILDER_COMPILER->get_runtime;
-      $builder_runtime->load_dynamic_lib_native($native_compiler_module, __FILE__, __LINE__);
+      my $native_method_addresses = &get_native_method_addresses($builder_runtime, $native_compiler_module);
+      for my $method_name (keys %$native_method_addresses) {
+        my $native_method_address = $native_method_addresses->{$method_name};
+        $builder_runtime->set_native_method_address($native_compiler_module, $method_name, $native_method_address);
+      }
     }
     
     # Build an environment
@@ -143,6 +147,30 @@ sub init_api {
   $ENV->call_init_methods($STACK);
   
   $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
+}
+
+sub get_native_method_addresses {
+  my ($builder_runtime, $basic_type_name) = @_;
+  
+  my $category = 'native';
+  my $method_names = $builder_runtime->get_method_names($basic_type_name, $category);
+  
+  my $native_method_addresses = {};
+  if (@$method_names) {
+    my $module_file = $builder_runtime->get_module_file($basic_type_name);
+    my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
+    
+    if (-f $dynamic_lib_file) {
+      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $category);
+      
+      for my $method_name (sort keys %$method_addresses) {
+        my $cfunc_address = $method_addresses->{$method_name};
+        $native_method_addresses->{$method_name} = $cfunc_address;
+      }
+    }
+  }
+  
+  return $native_method_addresses;
 }
 
 sub load_dynamic_lib {
