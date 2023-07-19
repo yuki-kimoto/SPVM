@@ -12,6 +12,11 @@ use SPVM ();
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
 
+use SPVM 'Native::Compiler';
+use SPVM 'Native::Runtime';
+use SPVM 'Native::Env';
+use SPVM 'Native::Stack';
+
 our $BUILDER;
 our $BUILDER_COMPILER;
 our $BUILDER_ENV;
@@ -111,8 +116,6 @@ sub init_global {
     }
     $COMPILER->compile(undef);
     my $runtime = $COMPILER->get_runtime;
-    
-    &load_dynamic_libs($runtime);
   }
 }
 
