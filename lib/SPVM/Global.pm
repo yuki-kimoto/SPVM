@@ -94,13 +94,9 @@ sub init_global {
     
     my @native_compiler_modules = qw(
       Native::Compiler
-      Native::ModuleFile
       Native::Method
-      Native::Field
       Native::Runtime
       Native::BasicType
-      Native::ClassVar
-      Native::Arg
       Native::Stack
       Native::Env
     );
