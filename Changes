@@ -14,6 +14,9 @@
       +  void (*set_rel_file)(void* compiler, void* module_file, const char* rel_file);
       -  void (*set_content)(void* compiler, void* module_file, void* content);
       +  void (*set_content)(void* compiler, void* module_file, const char* content);
+   * The following compiler native APIs were renamed.
+     -  void (*add_module_file)(void* compiler, const char* module_name, void* module_file);
+     +  void (*set_module_file)(void* compiler, const char* module_name, void* module_file);
 
   [New Features]
     * The Native::ModuleFile class was added.

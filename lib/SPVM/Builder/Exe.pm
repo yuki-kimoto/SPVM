@@ -784,7 +784,7 @@ EOS
     
     $source_module_file .= qq|    env->api->module_file->set_content_length(compiler, module_file, $module_file->{content_length});\n|;
       
-    $source_module_file .= qq|    env->api->compiler->add_module_file(compiler, "$basic_type_name", module_file);\n\n|;
+    $source_module_file .= qq|    env->api->compiler->set_module_file(compiler, "$basic_type_name", module_file);\n\n|;
     
     $source_module_file .= qq|  }\n|;
     
