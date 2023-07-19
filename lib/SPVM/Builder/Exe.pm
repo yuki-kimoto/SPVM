@@ -750,12 +750,18 @@ EOS
   
   my $basic_type_names = $self->get_module_names;
   
-  my $compiler = $self->compiler;
+  my $native_compiler = $self->native_compiler;
   
   for my $basic_type_name (@$basic_type_names) {
     my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
     
-    my $module_file = $compiler->get_module_file($basic_type_name);
+    my $native_module_file = $native_compiler->get_module_file($basic_type_name);
+    
+    my $native_module_file_rel_file = $native_module_file->get_rel_file;
+    
+    my $native_module_file_content = $native_module_file->get_content;
+    
+    my $native_module_file_content_length = $native_module_file->get_content_length;
     
     my $source_module_file = '';
     
@@ -765,12 +771,12 @@ EOS
     
     $source_module_file .= qq|    env->api->module_file->set_module_name(compiler, module_file, "$basic_type_name");\n|;
     
-    if (defined $module_file->{rel_file}) {
-      $source_module_file .= qq|    env->api->module_file->set_rel_file(compiler, module_file, "$module_file->{rel_file}");\n|;
+    if (defined $native_module_file_rel_file) {
+      $source_module_file .= qq|    env->api->module_file->set_rel_file(compiler, module_file, "$native_module_file_rel_file");\n|;
     }
     
-    if (defined $module_file->{content}) {
-      my $content_espcaped = $module_file->{content};
+    if (defined $native_module_file_content) {
+      my $content_espcaped = $native_module_file_content;
       
       {
         use bytes;
@@ -782,7 +788,7 @@ EOS
       $source_module_file .= qq|    env->api->module_file->set_content(compiler, module_file, "$content_espcaped");\n|;
     }
     
-    $source_module_file .= qq|    env->api->module_file->set_content_length(compiler, module_file, $module_file->{content_length});\n|;
+    $source_module_file .= qq|    env->api->module_file->set_content_length(compiler, module_file, $native_module_file_content_length);\n|;
       
     $source_module_file .= qq|    env->api->compiler->set_module_file(compiler, "$basic_type_name", module_file);\n\n|;
     
