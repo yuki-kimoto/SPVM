@@ -1060,7 +1060,7 @@ sub compile_module_precompile_source_file {
     
     my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
     my $module_file = $self->basic_type_get_module_file($basic_type);
-    my $precompile_source = $self->runtime->build_precompile_module_source($basic_type_name);
+    my $precompile_source = $self->native_runtime->build_precompile_module_source($basic_type);
     
     $builder_cc->build_precompile_module_source_file(
       $basic_type_name,
