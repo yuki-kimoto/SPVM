@@ -1172,7 +1172,7 @@ sub compile_module_native_source_files {
 sub get_module_names {
   my ($self) = @_;
   
-  my $basic_type_names = $self->runtime->get_basic_type_names;
+  my $basic_type_names = $self->get_basic_type_names;
   
   $basic_type_names = [grep { /^[A-Z]/ && $_ !~ /::anon::/ } @$basic_type_names];
   
@@ -1193,6 +1193,20 @@ sub basic_type_get_module_file {
   my $module_file = "$module_dir/$module_rel_file";
   
   return $module_file;
+}
+
+sub get_basic_type_names {
+  my ($self) = @_;
+  
+  my $basic_types_length = $self->native_runtime->get_basic_types_length;
+  
+  my $basic_type_names = [];
+  for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
+    my $basic_type = $self->native_runtime->get_basic_type_by_id($basic_type_id);
+    push @$basic_type_names, $basic_type->get_name->to_string;
+  }
+  
+  return $basic_type_names;
 }
 
 1;
