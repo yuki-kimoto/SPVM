@@ -85,29 +85,24 @@ sub init_global {
       include_dirs => $BUILDER->include_dirs
     );
     
-    $BUILDER_COMPILER->compile_with_exit("Native::Compiler", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::ModuleFile", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Method", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Field", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Runtime", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::BasicType", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::ClassVar", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Arg", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Stack", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Env", __FILE__, __LINE__);
+    my @native_compiler_modules = qw(
+      Native::Compiler
+      Native::ModuleFile
+      Native::Method
+      Native::Field
+      Native::Runtime
+      Native::BasicType
+      Native::ClassVar
+      Native::Arg
+      Native::Stack
+      Native::Env
+    );
     
-    my $builder_runtime = $BUILDER_COMPILER->get_runtime;
-    
-    $builder_runtime->load_dynamic_lib_native("Native::Compiler", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::ModuleFile", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::Method", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::Field", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::Runtime", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::BasicType", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::ClassVar", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::Arg", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::Stack", __FILE__, __LINE__);
-    $builder_runtime->load_dynamic_lib_native("Native::Env", __FILE__, __LINE__);
+    for my $native_compiler_module (@native_compiler_modules) {
+      $BUILDER_COMPILER->compile_with_exit($native_compiler_module, __FILE__, __LINE__);
+      my $builder_runtime = $BUILDER_COMPILER->get_runtime;
+      $builder_runtime->load_dynamic_lib_native($native_compiler_module, __FILE__, __LINE__);
+    }
     
     # Build an environment
     $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
