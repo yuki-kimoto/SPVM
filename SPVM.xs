@@ -4674,47 +4674,6 @@ get_method_names(...)
 }
 
 SV*
-get_basic_type_anon_basic_type_names(...)
-  PPCODE:
-{
-  
-  SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV* sv_basic_type_name = ST(1);
-  
-  // Name
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_ENV* env_api = SPVM_API_new_env();
-  
-  AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
-  
-  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  
-  int32_t methods_length = env_api->api->basic_type->get_methods_length(runtime, basic_type);
-  
-  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
-    
-    void* method = env_api->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
-    int32_t is_anon_method = env_api->api->method->is_anon(runtime, method);
-    
-    if (is_anon_method) {
-      void* anon_basic_type = env_api->api->method->get_current_basic_type(runtime, method);
-      const char* anon_basic_type_name = env_api->api->basic_type->get_name(runtime, anon_basic_type);
-      SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
-      av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
-    }
-  }
-
-  env_api->free_env(env_api);
-  
-  XPUSHs(sv_anon_basic_type_names);
-  XSRETURN(1);
-}
-
-SV*
 get_basic_type_names(...)
   PPCODE:
 {
