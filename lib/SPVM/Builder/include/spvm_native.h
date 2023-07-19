@@ -355,15 +355,15 @@ struct spvm_api_compiler {
 struct spvm_api_module_file {
   void* (*new_instance)(void* compiler);
   const char* (*get_module_name)(void* compiler, void* module_file);
-  void (*set_module_name)(void* compiler, void* module_file, void* module_name);
+  void (*set_module_name)(void* compiler, void* module_file, const char* module_name);
   const char* (*get_file)(void* compiler, void* module_file);
-  void (*set_file)(void* compiler, void* module_file, void* file);
+  void (*set_file)(void* compiler, void* module_file, const char* file);
   const char* (*get_dir)(void* compiler, void* module_file);
-  void (*set_dir)(void* compiler, void* module_file, void* dir);
+  void (*set_dir)(void* compiler, void* module_file, const char* dir);
   const char* (*get_rel_file)(void* compiler, void* module_file);
-  void (*set_rel_file)(void* compiler, void* module_file, void* rel_file);
+  void (*set_rel_file)(void* compiler, void* module_file, const char* rel_file);
   const char* (*get_content)(void* compiler, void* module_file);
-  void (*set_content)(void* compiler, void* module_file, void* content);
+  void (*set_content)(void* compiler, void* module_file, const char* content);
   int32_t (*get_content_length)(void* compiler, void* module_file);
   void (*set_content_length)(void* compiler, void* module_file, int32_t content_length);
 };

@@ -26,7 +26,7 @@ Returns the module name.
 
 =head2 set_module_name
 
-  void (*set_module_name)(void* compiler, void* module_file, void* module_name);
+  void (*set_module_name)(void* compiler, void* module_file, const char* module_name);
 
 Sets a module name.
 
@@ -38,7 +38,7 @@ Returns the file.
 
 =head2 set_file
 
-  void (*set_file)(void* compiler, void* module_file, void* file);
+  void (*set_file)(void* compiler, void* module_file, const char* file);
 
 Sets a file.
 
@@ -50,7 +50,7 @@ Returns the directory.
 
 =head2 set_dir
 
-  void (*set_dir)(void* compiler, void* module_file, void* dir);
+  void (*set_dir)(void* compiler, void* module_file, const char* dir);
 
 Sets a directory.
 
@@ -62,7 +62,7 @@ Returns the relative file.
 
 =head2 set_rel_file
 
-  void (*set_rel_file)(void* compiler, void* module_file, void* rel_file);
+  void (*set_rel_file)(void* compiler, void* module_file, const char* rel_file);
 
 Sets a relative file.
 
@@ -74,7 +74,7 @@ Returns the content.
 
 =head2 set_content
 
-  void (*set_content)(void* compiler, void* module_file, void* content);
+  void (*set_content)(void* compiler, void* module_file, const char* content);
 
 Sets a content.
 

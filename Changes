@@ -1,6 +1,20 @@
 0.989026 2023-07-18
   [Incompatible Changes]
     * The __module_name field in the SPVM::ExchangAPI::Class was renamed to the __name field.
+    
+    * The module file native APIs were changed.
+    
+      -  void (*set_module_name)(void* compiler, void* module_file, void* module_name);
+      +  void (*set_module_name)(void* compiler, void* module_file, const char* module_name);
+      -  void (*set_file)(void* compiler, void* module_file, void* file);
+      +  void (*set_file)(void* compiler, void* module_file, const char* file);
+      -  void (*set_dir)(void* compiler, void* module_file, void* dir);
+      +  void (*set_dir)(void* compiler, void* module_file, const char* dir);
+      -  void (*set_rel_file)(void* compiler, void* module_file, void* rel_file);
+      +  void (*set_rel_file)(void* compiler, void* module_file, const char* rel_file);
+      -  void (*set_content)(void* compiler, void* module_file, void* content);
+      +  void (*set_content)(void* compiler, void* module_file, const char* content);
+
   [New Features]
     * The Native::ModuleFile class was added.
   [Bug Fix]
