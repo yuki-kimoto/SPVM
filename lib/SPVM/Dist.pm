@@ -619,8 +619,6 @@ $extern_c_start
 static const char* FILE_NAME = "$native_module_file";
 
 int32_t SPVM__${native_basic_type_name}__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   return 0;
 }
@@ -1058,8 +1056,6 @@ sub generate_basic_test_native_module_file {
 $extern_c_start
 
 int32_t SPVM__TestCase__${native_basic_type_name}__test(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].ival = 1;
   
