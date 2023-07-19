@@ -1116,7 +1116,7 @@ sub compile_module_native_source_files {
   
   my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
   
-  my $native_method_names = $self->runtime->get_method_names($basic_type_name, 'native');
+  my $native_method_names = $self->get_native_method_names($basic_type);
   if (@$native_method_names) {
     my $native_module_file = $self->basic_type_get_module_file($basic_type);
     my $native_dir = $native_module_file;
@@ -1207,6 +1207,40 @@ sub get_basic_type_names {
   }
   
   return $basic_type_names;
+}
+
+sub get_native_method_names {
+  my ($self, $basic_type) = @_;
+  
+  my $methods_length = $basic_type->get_methods_length;
+  
+  my $native_method_names = [];
+  for (my $index = 0; $index < $methods_length; $index++) {
+    my $method = $basic_type->get_method_by_index($index);
+    
+    if ($method->is_native) {
+      push @$native_method_names, $method->get_name->to_string;
+    }
+  }
+  
+  return $native_method_names;
+}
+
+sub get_precompile_method_names {
+  my ($self, $basic_type) = @_;
+  
+  my $methods_length = $basic_type->get_methods_length;
+  
+  my $precompile_method_names = [];
+  for (my $index = 0; $index < $methods_length; $index++) {
+    my $method = $basic_type->get_method_by_index($index);
+    
+    if ($method->is_precompile) {
+      push @$precompile_method_names, $method->get_name->to_string;
+    }
+  }
+  
+  return $precompile_method_names;
 }
 
 1;
