@@ -281,7 +281,7 @@ sub get_required_resources {
     force => $self->force,
   );
   
-  my $basic_type_names = $self->get_module_names;
+  my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
   my $all_object_files = [];
   for my $basic_type_name (@$basic_type_names) {
     
@@ -395,7 +395,7 @@ sub compile {
 sub compile_modules {
   my ($self) = @_;
 
-  my $basic_type_names = $self->get_module_names;
+  my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
   
   my $object_files = [];
   for my $basic_type_name (@$basic_type_names) {
@@ -496,7 +496,7 @@ sub create_bootstrap_header_source {
   my $basic_type_name = $self->module_name;
 
   # Module names
-  my $basic_type_names = $self->get_module_names;
+  my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
   
   my $source = '';
   
@@ -577,7 +577,7 @@ sub create_bootstrap_main_func_source {
   my $basic_type_name = $self->module_name;
 
   # Module names
-  my $basic_type_names = $self->get_module_names;
+  my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
 
   my $source = '';
 
@@ -714,7 +714,7 @@ static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler) {
   
 EOS
   
-  my $basic_type_names = $self->get_module_names;
+  my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
   
   my $compiler = $self->compiler;
   
@@ -794,7 +794,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Module names
-  my $basic_type_names = $self->get_module_names;
+  my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
 
   my $source = '';
 
@@ -827,7 +827,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   my $builder = $self->builder;
 
   # Module names
-  my $basic_type_names = $self->get_module_names;
+  my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
 
   my $source = '';
 
@@ -863,7 +863,7 @@ sub create_bootstrap_source {
   my $basic_type_name = $self->module_name;
   
   # Module names
-  my $basic_type_names = $self->get_module_names;
+  my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
   
   my $module_files = [];
   for my $basic_type_name (@$basic_type_names) {
@@ -1129,16 +1129,6 @@ sub compile_module_native_source_files {
   }
   
   return $all_object_files;
-}
-
-sub get_module_names {
-  my ($self) = @_;
-  
-  my $basic_type_names = $self->get_basic_type_names;
-  
-  $basic_type_names = [grep { /^[A-Z]/ && $_ !~ /::anon::/ } @$basic_type_names];
-  
-  return $basic_type_names;
 }
 
 sub basic_type_get_module_file {
