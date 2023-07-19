@@ -117,25 +117,25 @@ sub config_file {
   }
 }
 
-sub native_compiler {
+sub compiler {
   my $self = shift;
   if (@_) {
-    $self->{native_compiler} = $_[0];
+    $self->{compiler} = $_[0];
     return $self;
   }
   else {
-    return $self->{native_compiler};
+    return $self->{compiler};
   }
 }
 
-sub native_runtime {
+sub runtime {
   my $self = shift;
   if (@_) {
-    $self->{native_runtime} = $_[0];
+    $self->{runtime} = $_[0];
     return $self;
   }
   else {
-    return $self->{native_runtime};
+    return $self->{runtime};
   }
 }
 
@@ -198,9 +198,9 @@ sub new {
   
   $self->{builder} = $builder;
   
-  my $native_compiler = SPVM::Native::Compiler->new;
-  $native_compiler->add_include_dir($_) for @{$builder->include_dirs};
-  $self->{native_compiler} = $native_compiler;
+  my $compiler = SPVM::Native::Compiler->new;
+  $compiler->add_include_dir($_) for @{$builder->include_dirs};
+  $self->{compiler} = $compiler;
   
   return bless $self, $class;
 }
@@ -218,7 +218,7 @@ sub build_exe_file {
     $self->compile;
   }
   
-  my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+  my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
   
   my $module_file = $self->basic_type_get_module_file($basic_type);
   
@@ -285,23 +285,21 @@ sub get_required_resources {
   my $all_object_files = [];
   for my $basic_type_name (@$basic_type_names) {
     
-    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     
     my $perl_basic_type_name = "SPVM::$basic_type_name";
     
     my $native_method_names = $self->get_native_method_names($basic_type);
     if (@$native_method_names) {
-      my $native_module_file = $self->basic_type_get_module_file($basic_type);
-      my $native_dir = $native_module_file;
+      my $module_file = $self->basic_type_get_module_file($basic_type);
+      my $native_dir = $module_file;
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
-      my $input_dir = SPVM::Builder::Util::remove_basic_type_name_part_from_file($native_module_file, $perl_basic_type_name);
+      my $input_dir = SPVM::Builder::Util::remove_basic_type_name_part_from_file($module_file, $perl_basic_type_name);
       my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
       
-      # Class file
-      my $module_file = $native_module_file;
       unless (defined $module_file) {
         my $config_exe_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
         if ($config_exe_file) {
@@ -375,21 +373,21 @@ sub compile {
   # Module name
   my $basic_type_name = $self->{module_name};
   
-  my $native_compiler = $self->native_compiler;
+  my $compiler = $self->compiler;
   
-  $native_compiler->set_start_file(__FILE__);
-  $native_compiler->set_start_line(__LINE__ + 1);
-  my $success = $native_compiler->compile($basic_type_name);
+  $compiler->set_start_file(__FILE__);
+  $compiler->set_start_line(__LINE__ + 1);
+  my $success = $compiler->compile($basic_type_name);
   unless ($success) {
-    my $error_messages = $native_compiler->get_error_messages;
+    my $error_messages = $compiler->get_error_messages;
     for my $error_message (@$error_messages) {
       print STDERR "$error_message\n";
     }
     exit(255);
   }
-  my $native_runtime = $native_compiler->get_runtime;
+  my $runtime = $compiler->get_runtime;
   
-  $self->native_runtime($native_runtime);
+  $self->runtime($runtime);
   
   $self->{finish_compile} = 1;
 }
@@ -520,7 +518,7 @@ EOS
   
   $source .= "// precompile functions declaration\n";
   for my $basic_type_name (@$basic_type_names) {
-    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     my $precompile_method_names = $self->get_precompile_method_names($basic_type);
     for my $method_name (@$precompile_method_names) {
       my $method_cname = $basic_type_name;
@@ -543,7 +541,7 @@ EOS
   
   $source .= "// native functions declaration\n";
   for my $basic_type_name (@$basic_type_names) {
-    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     my $native_method_names = $self->get_native_method_names($basic_type);
     for my $method_name (@$native_method_names) {
       my $basic_type_name = $basic_type_name;
@@ -718,18 +716,18 @@ EOS
   
   my $basic_type_names = $self->get_module_names;
   
-  my $native_compiler = $self->native_compiler;
+  my $compiler = $self->compiler;
   
   for my $basic_type_name (@$basic_type_names) {
-    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     
-    my $native_module_file = $native_compiler->get_module_file($basic_type_name);
+    my $module_file = $compiler->get_module_file($basic_type_name);
     
-    my $native_module_file_rel_file = $native_module_file->get_rel_file;
+    my $module_file_rel_file = $module_file->get_rel_file;
     
-    my $native_module_file_content = $native_module_file->get_content;
+    my $module_file_content = $module_file->get_content;
     
-    my $native_module_file_content_length = $native_module_file->get_content_length;
+    my $module_file_content_length = $module_file->get_content_length;
     
     my $source_module_file = '';
     
@@ -739,12 +737,12 @@ EOS
     
     $source_module_file .= qq|    env->api->module_file->set_module_name(compiler, module_file, "$basic_type_name");\n|;
     
-    if (defined $native_module_file_rel_file) {
-      $source_module_file .= qq|    env->api->module_file->set_rel_file(compiler, module_file, "$native_module_file_rel_file");\n|;
+    if (defined $module_file_rel_file) {
+      $source_module_file .= qq|    env->api->module_file->set_rel_file(compiler, module_file, "$module_file_rel_file");\n|;
     }
     
-    if (defined $native_module_file_content) {
-      my $content_espcaped = $native_module_file_content;
+    if (defined $module_file_content) {
+      my $content_espcaped = $module_file_content;
       
       {
         use bytes;
@@ -756,7 +754,7 @@ EOS
       $source_module_file .= qq|    env->api->module_file->set_content(compiler, module_file, "$content_espcaped");\n|;
     }
     
-    $source_module_file .= qq|    env->api->module_file->set_content_length(compiler, module_file, $native_module_file_content_length);\n|;
+    $source_module_file .= qq|    env->api->module_file->set_content_length(compiler, module_file, $module_file_content_length);\n|;
       
     $source_module_file .= qq|    env->api->compiler->set_module_file(compiler, "$basic_type_name", module_file);\n\n|;
     
@@ -803,7 +801,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env){\n";
 
   for my $basic_type_name (@$basic_type_names) {
-    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     
     my $method_cname = $basic_type_name;
     $method_cname =~ s/::/__/g;
@@ -836,7 +834,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env){\n";
 
   for my $basic_type_name (@$basic_type_names) {
-    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     
     my $method_cname = $basic_type_name;
     $method_cname =~ s/::/__/g;
@@ -869,7 +867,7 @@ sub create_bootstrap_source {
   
   my $module_files = [];
   for my $basic_type_name (@$basic_type_names) {
-    my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     if ($basic_type->get_module_dir) {
       my $module_file = $self->basic_type_get_module_file($basic_type);
       push @$module_files, $module_file;
@@ -1019,14 +1017,14 @@ sub compile_module_precompile_source_file {
   );
   
   my $object_files = [];
-  my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+  my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
   my $precompile_method_names = $self->get_precompile_method_names($basic_type);
   if (@$precompile_method_names) {
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
     mkpath $build_src_dir;
     
     my $module_file = $self->basic_type_get_module_file($basic_type);
-    my $precompile_source = $self->native_runtime->build_precompile_module_source($basic_type);
+    my $precompile_source = $self->runtime->build_precompile_module_source($basic_type);
     
     $builder_cc->build_precompile_module_source_file(
       $basic_type_name,
@@ -1080,21 +1078,19 @@ sub compile_module_native_source_files {
   
   my $perl_basic_type_name = "SPVM::$basic_type_name";
   
-  my $basic_type = $self->native_runtime->get_basic_type_by_name($basic_type_name);
+  my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
   
   my $native_method_names = $self->get_native_method_names($basic_type);
   if (@$native_method_names) {
-    my $native_module_file = $self->basic_type_get_module_file($basic_type);
-    my $native_dir = $native_module_file;
+    my $module_file = $self->basic_type_get_module_file($basic_type);
+    my $native_dir = $module_file;
     
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir = SPVM::Builder::Util::remove_basic_type_name_part_from_file($native_module_file, $perl_basic_type_name);
+    my $input_dir = SPVM::Builder::Util::remove_basic_type_name_part_from_file($module_file, $perl_basic_type_name);
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
 
-    # Class file
-    my $module_file = $native_module_file;
     unless (defined $module_file) {
       my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
       if ($config_file) {
@@ -1164,11 +1160,11 @@ sub basic_type_get_module_file {
 sub get_basic_type_names {
   my ($self) = @_;
   
-  my $basic_types_length = $self->native_runtime->get_basic_types_length;
+  my $basic_types_length = $self->runtime->get_basic_types_length;
   
   my $basic_type_names = [];
   for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
-    my $basic_type = $self->native_runtime->get_basic_type_by_id($basic_type_id);
+    my $basic_type = $self->runtime->get_basic_type_by_id($basic_type_id);
     push @$basic_type_names, $basic_type->get_name->to_string;
   }
   
