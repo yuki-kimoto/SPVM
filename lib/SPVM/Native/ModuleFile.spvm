@@ -6,8 +6,30 @@ class Native::ModuleFile {
   
   has compiler : Native::Compiler;
   
+  native static method new : Native::ModuleFile ($compiler : Native::Compiler);
+  
   native method get_module_name : string ();
   
   native method set_module_name : void ($module_name : string);
+  
+  native method get_file : string ();
+  
+  native method set_file : void ($file : string);
+  
+  native method get_dir : string ();
+  
+  native method set_dir : void ($dir : string);
+  
+  native method get_rel_file : string ();
+  
+  native method set_rel_file : void ($rel_file : string);
+  
+  native method get_content : string ();
+  
+  native method set_content : void ($content : string);
+  
+  native method get_content_length : int ();
+  
+  native method set_content_length : void ($content_length : int);
   
 }
