@@ -84,15 +84,30 @@ sub init_global {
     $BUILDER_COMPILER = SPVM::Builder::Compiler->new(
       include_dirs => $BUILDER->include_dirs
     );
-    # Load SPVM Compilers
+    
     $BUILDER_COMPILER->compile_with_exit("Native::Compiler", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::ModuleFile", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Method", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Field", __FILE__, __LINE__);
     $BUILDER_COMPILER->compile_with_exit("Native::Runtime", __FILE__, __LINE__);
-    $BUILDER_COMPILER->compile_with_exit("Native::Env", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::BasicType", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::ClassVar", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Arg", __FILE__, __LINE__);
     $BUILDER_COMPILER->compile_with_exit("Native::Stack", __FILE__, __LINE__);
+    $BUILDER_COMPILER->compile_with_exit("Native::Env", __FILE__, __LINE__);
     
     my $builder_runtime = $BUILDER_COMPILER->get_runtime;
     
-    $builder_runtime->load_dynamic_libs;
+    $builder_runtime->load_dynamic_lib("Native::Compiler", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::ModuleFile", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::Method", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::Field", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::Runtime", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::BasicType", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::ClassVar", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::Arg", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::Stack", __FILE__, __LINE__);
+    $builder_runtime->load_dynamic_lib("Native::Env", __FILE__, __LINE__);
     
     # Build an environment
     $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
