@@ -14,7 +14,7 @@ sub pointer {
   }
 }
 
-sub load_dynamic_lib {
+sub load_dynamic_lib_native {
   my ($self, $basic_type_name) = @_;
   
   my $category = 'native';
@@ -35,14 +35,6 @@ sub load_dynamic_lib {
       }
     }
   }
-}
-
-sub get_module_names {
-  my ($self) = @_;
-  
-  my $basic_type_names = $self->get_basic_type_names;
-  
-  return $basic_type_names;
 }
 
 1;
