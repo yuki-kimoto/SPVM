@@ -10,14 +10,10 @@ use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
-use SPVM::Builder::Runtime;
 use JSON::PP;
 
 use SPVM 'Native::Compiler';
 use SPVM 'Native::Runtime';
-use SPVM 'Native::Env';
-use SPVM 'Native::Stack';
-
 
 use File::Spec;
 use File::Find 'find';
