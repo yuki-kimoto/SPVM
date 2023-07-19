@@ -121,17 +121,6 @@ sub config_file {
   }
 }
 
-sub compiler {
-  my $self = shift;
-  if (@_) {
-    $self->{compiler} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{compiler};
-  }
-}
-
 sub native_compiler {
   my $self = shift;
   if (@_) {
@@ -212,13 +201,6 @@ sub new {
   $self->{config} = $config;
   
   $self->{builder} = $builder;
-  
-  # Compile SPVM
-  my $compiler = SPVM::Builder::Compiler->new(
-    include_dirs => $builder->include_dirs
-  );
-  $self->{compiler} = $compiler;
-  
   
   my $native_compiler = SPVM::Native::Compiler->new;
   $native_compiler->add_include_dir($_) for @{$builder->include_dirs};
@@ -397,31 +379,21 @@ sub compile {
   # Module name
   my $basic_type_name = $self->{module_name};
   
-  my $compiler = $self->compiler;
+  my $native_compiler = $self->native_compiler;
   
-  my $success = $compiler->compile($basic_type_name, __FILE__, __LINE__);
+  $native_compiler->set_start_file(__FILE__);
+  $native_compiler->set_start_line(__LINE__ + 1);
+  my $success = $native_compiler->compile($basic_type_name);
   unless ($success) {
-    $compiler->print_error_messages(*STDERR);
+    my $error_messages = $native_compiler->get_error_messages;
+    for my $error_message (@$error_messages) {
+      print STDERR "$error_message\n";
+    }
     exit(255);
   }
+  my $native_runtime = $native_compiler->get_runtime;
   
-  {
-    my $native_compiler = $self->native_compiler;
-    
-    $native_compiler->set_start_file(__FILE__);
-    $native_compiler->set_start_line(__LINE__ + 1);
-    my $success = $native_compiler->compile($basic_type_name);
-    unless ($success) {
-      my $error_messages = $native_compiler->get_error_messages;
-      for my $error_message (@$error_messages) {
-        print STDERR "$error_message\n";
-      }
-      exit(255);
-    }
-    my $native_runtime = $native_compiler->get_runtime;
-    
-    $self->native_runtime($native_runtime);
-  }
+  $self->native_runtime($native_runtime);
   
   $self->{finish_compile} = 1;
 }
