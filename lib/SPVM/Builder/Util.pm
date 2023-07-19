@@ -370,7 +370,7 @@ sub get_spvm_dependent_files {
     }
     
     # SPVM Compiler and Runtime module file names
-    my $spvm_compiler_and_runtime_module_file_names = &get_spvm_core_perl_module_file_names();
+    my $spvm_compiler_and_runtime_module_file_names = &get_spvm_compiler_and_runtime_module_file_names();
     for my $spvm_compiler_and_runtime_module_file_name (@$spvm_compiler_and_runtime_module_file_names) {
       my $spvm_compiler_and_runtime_module_file = "$builder_loaded_dir/$spvm_compiler_and_runtime_module_file_name";
       unless (-f $spvm_compiler_and_runtime_module_file) {
@@ -551,14 +551,26 @@ sub get_spvm_core_source_file_names {
 
 sub get_spvm_compiler_and_runtime_module_file_names {
   my @spvm_compiler_and_runtime_module_file_names = qw(
-    SPVM/Compiler.c
-    SPVM/Compiler.spvm
-    SPVM/Env.c
-    SPVM/Env.spvm
-    SPVM/Runtime.c
-    SPVM/Runtime.spvm
-    SPVM/Stack.c
-    SPVM/Stack.spvm
+    SPVM/Native/Arg.c
+    SPVM/Native/Arg.spvm
+    SPVM/Native/BasicType.c
+    SPVM/Native/BasicType.spvm
+    SPVM/Native/ClassVar.c
+    SPVM/Native/ClassVar.spvm
+    SPVM/Native/Compiler.c
+    SPVM/Native/Compiler.spvm
+    SPVM/Native/Env.c
+    SPVM/Native/Env.spvm
+    SPVM/Native/Field.c
+    SPVM/Native/Field.spvm
+    SPVM/Native/Method.c
+    SPVM/Native/Method.spvm
+    SPVM/Native/ModuleFile.c
+    SPVM/Native/ModuleFile.spvm
+    SPVM/Native/Runtime.c
+    SPVM/Native/Runtime.spvm
+    SPVM/Native/Stack.c
+    SPVM/Native/Stack.spvm
   );
   
   return \@spvm_compiler_and_runtime_module_file_names;

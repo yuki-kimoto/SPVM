@@ -127,7 +127,7 @@ DEVELOPERS NOTE
       
     Get SPVM Compilation and Rintime module files
     
-      find lib | grep -P '(Compiler|Runtime|Stack|Env)' | grep -P '\.(spvm|c)$' | perl -p -e 's|lib/||' | sort
+      find lib | grep -P '(Native\b)' | grep -P '\.(spvm|c)$' | perl -p -e 's|lib/||' | sort
 
     Get the linkgs of SPVM modules for POD
     
