@@ -7,6 +7,7 @@ use SPVM::BlessedObject;
 use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
+use SPVM::ExchangeAPI;
 
 use SPVM ();
 use SPVM::Builder;
@@ -71,9 +72,10 @@ sub build_module {
     
     my $basic_types_length = $runtime->get_basic_types_length;
     
+    my $api = SPVM::ExchangeAPI->new(env => $runtime->{env}, stack => $runtime->{stack});
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-      &load_dynamic_lib($runtime, $basic_type);
+      &load_dynamic_lib($runtime, $basic_type, $api);
     }
     
     &bind_to_perl($basic_type_name);
@@ -117,9 +119,9 @@ sub init_global {
     # Set command line info
     $BUILDER_STACK = SPVM::Builder->new_stack($BUILDER_ENV);
     
-    $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
+    my $builder_api = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     
-    $COMPILER = $BUILDER_API->class("Native::Compiler")->new;
+    $COMPILER = $builder_api->class("Native::Compiler")->new;
     for my $include_dir (@{$BUILDER->include_dirs}) {
       $COMPILER->add_include_dir($include_dir);
     }
@@ -134,7 +136,9 @@ sub init_api {
   
   &init_global();
   
-  $ENV = $BUILDER_API->class("Native::Env")->new($COMPILER);
+  my $builder_api = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
+    
+  $ENV = $builder_api->class("Native::Env")->new($COMPILER);
   
   $STACK = $ENV->new_stack;
   
@@ -174,7 +178,7 @@ sub get_native_method_addresses {
 }
 
 sub load_dynamic_lib {
-  my ($runtime, $basic_type) = @_;
+  my ($runtime, $basic_type, $api) = @_;
     
     my $basic_type_name = $basic_type->get_name->to_string;
     
@@ -183,8 +187,8 @@ sub load_dynamic_lib {
     
     for my $category ('precompile', 'native') {
       
-      my $get_method_names_options = $runtime->__api->new_options({
-        $category => $runtime->__api->class('Int')->new(1)
+      my $get_method_names_options = $api->new_options({
+        $category => $api->class('Int')->new(1)
       });
       
       my $category_method_names;
@@ -240,12 +244,12 @@ sub load_dynamic_lib {
               my $cfunc_address = $method_addresses->{$method_name};
               if ($category eq 'native') {
                 $method->set_native_address(
-                  $runtime->__api->new_address_object($cfunc_address)
+                  $api->new_address_object($cfunc_address)
                 );
               }
               elsif ($category eq 'precompile') {
                 $method->set_precompile_address(
-                  $runtime->__api->new_address_object($cfunc_address)
+                  $api->new_address_object($cfunc_address)
                 );
               }
             }
