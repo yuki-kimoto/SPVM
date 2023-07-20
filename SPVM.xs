@@ -4373,7 +4373,7 @@ new_native_compiler(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
   
   SV* sv_stack = ST(2);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   env->call_class_method_by_name(env, stack, "Native::Compiler", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { croak("[Unexpected Error]Creating a Native::Compiler object failed."); }
@@ -4399,7 +4399,7 @@ new_native_env(...)
   SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
   
   SV* sv_stack = ST(2);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
   int32_t spvm_items = 0;
   SV* sv_native_compiler = ST(3);
