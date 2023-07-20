@@ -101,26 +101,6 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   return env;
 }
 
-SPVM_ENV* SPVM_XS_UTIL_get_env_from_blessed_object(pTHX_ SV* sv_env) {
-  
-  SPVM_ENV* env = NULL;
-  if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
-    
-    void* spvm_env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
-    
-    SPVM_ENV* env_api = SPVM_API_new_env();
-    
-    env = env_api->get_pointer(env_api, NULL, spvm_env);
-    
-    env_api->free_env(env_api);
-  }
-  else {
-    croak("[Unexpected Error]");
-  }
-  
-  return env;
-}
-
 SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   
   SPVM_VALUE* stack = NULL;
@@ -4468,7 +4448,18 @@ convert_native_env_to_builder_env(...)
   SV* sv_class = ST(0);
   
   SV* sv_native_env = ST(1);
-  SPVM_ENV* native_env = SPVM_XS_UTIL_get_env_from_blessed_object(aTHX_ sv_native_env);
+  
+  if (!(sv_isobject(sv_native_env) && sv_derived_from(sv_native_env, "SPVM::BlessedObject::Class"))) {
+    croak("[Unexpected Error]");
+  }
+  
+  void* spvm_native_env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_native_env);
+  
+  SPVM_ENV* env_api = SPVM_API_new_env();
+  
+  SPVM_ENV* native_env = env_api->get_pointer(env_api, NULL, spvm_native_env);
+  
+  env_api->free_env(env_api);
   
   SV* sv_builder_env = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ native_env, "SPVM::Builder::Env");
   
@@ -4483,7 +4474,7 @@ convert_native_stack_to_builder_stack(...)
   SV* sv_class = ST(0);
   
   SV* sv_native_stack = ST(1);
-
+  
   if (!(sv_isobject(sv_native_stack) && sv_derived_from(sv_native_stack, "SPVM::BlessedObject::Class"))) {
     croak("[Unexpected Error]");
   }
