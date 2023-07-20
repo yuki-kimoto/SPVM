@@ -154,6 +154,26 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   return stack;
 }
 
+SPVM_VALUE* SPVM_XS_UTIL_get_stack_from_blessed_object(pTHX_ SV* sv_stack) {
+  
+  SPVM_VALUE* stack = NULL;
+  if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
+    
+    void* spvm_stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
+    
+    SPVM_ENV* env_api = SPVM_API_new_env();
+    
+    stack = env_api->get_pointer(env_api, NULL, spvm_stack);
+    
+    env_api->free_env(env_api);
+  }
+  else {
+    croak("[Unexpected Error]");
+  }
+  
+  return stack;
+}
+
 SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_string, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
@@ -4503,7 +4523,7 @@ convert_native_stack_to_builder_stack(...)
   SV* sv_class = ST(0);
   
   SV* sv_native_stack = ST(1);
-  SPVM_VALUE* native_stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_native_stack);
+  SPVM_VALUE* native_stack = SPVM_XS_UTIL_get_stack_from_blessed_object(aTHX_ sv_native_stack);
   
   SV* sv_builder_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ native_stack, "SPVM::Builder::Stack");
   
