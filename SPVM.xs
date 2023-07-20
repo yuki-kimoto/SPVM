@@ -4981,28 +4981,4 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Builder::Stack		PACKAGE = SPVM::Builder::Stack
-
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Stack
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  // Env
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-  
-  // Free native_stack
-  env->free_stack(env, stack);
-  
-  XSRETURN(0);
-}
-
 MODULE = SPVM		PACKAGE = SPVM
