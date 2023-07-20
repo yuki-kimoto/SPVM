@@ -4458,9 +4458,6 @@ new_stack(...)
   // Create native_stack
   SPVM_VALUE* stack = env->new_stack(env);
   SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ stack, "SPVM::Builder::Stack");
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-  
-  (void)hv_store(hv_stack, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   
   XPUSHs(sv_stack);
   XSRETURN(1);
