@@ -4464,6 +4464,21 @@ new_stack(...)
 }
 
 SV*
+convert_native_env_to_builder_env(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  SV* sv_native_env = ST(1);
+  SPVM_ENV* native_env = SPVM_XS_UTIL_get_env(aTHX_ sv_native_env);
+  
+  SV* sv_builder_env = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ native_env, "SPVM::Builder::Env");
+  
+  XPUSHs(sv_builder_env);
+  XSRETURN(1);
+}
+
+SV*
 convert_native_stack_to_builder_stack(...)
   PPCODE:
 {
