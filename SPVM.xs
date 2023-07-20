@@ -4946,40 +4946,6 @@ new(...)
 }
 
 SV*
-set_command_info_program_name(...)
-  PPCODE:
-{
-  
-  SV* sv_env = ST(0);
-  SV* sv_stack = ST(1);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
-  
-  SV* sv_program_name = ST(2);
-  const char* program_name = SvPV_nolen(sv_program_name);
-  int32_t program_name_length = strlen(program_name);
-  
-  {
-    int32_t scope_id = env->enter_scope(env, stack);
-    
-    // Program name - string
-    void* spvm_program_name = env->new_string(env, stack, program_name, program_name_length);
-    
-    // Set command info
-    {
-      int32_t error_id;
-      error_id = env->set_command_info_program_name(env, stack, spvm_program_name);
-      assert(error_id == 0);
-    }
-    
-    env->leave_scope(env, stack, scope_id);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 destroy_class_vars(...)
   PPCODE:
 {
