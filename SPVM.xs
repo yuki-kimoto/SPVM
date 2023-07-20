@@ -4362,6 +4362,67 @@ get_basic_type_name(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
+new_native_compiler(...)
+  PPCODE:
+{
+  int32_t error_id = 0;
+  
+  SV* sv_class = ST(0);
+  
+  SV* sv_env = ST(1);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  
+  SV* sv_stack = ST(2);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+  
+  env->call_class_method_by_name(env, stack, "Native::Compiler", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { croak("[Unexpected Error]Creating a Native::Compiler object failed."); }
+  
+  void* native_compiler = stack[0].oval;
+  
+  env->inc_ref_count(env, stack, native_compiler);
+  SV* sv_native_compiler = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, native_compiler, "SPVM::BlessedObject::Class");
+  
+  XPUSHs(sv_native_compiler);
+  XSRETURN(1);
+}
+
+SV*
+new_native_env(...)
+  PPCODE:
+{
+  int32_t error_id = 0;
+  
+  SV* sv_class = ST(0);
+  
+  SV* sv_env = ST(1);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  
+  SV* sv_stack = ST(2);
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+  
+  int32_t spvm_items = 0;
+  SV* sv_native_compiler = ST(3);
+  void* obj_native_compiler = NULL;
+  if (SvOK(sv_native_compiler)) {
+    obj_native_compiler = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_native_compiler);
+    spvm_items++;
+    stack[0].oval = obj_native_compiler;
+  }
+  
+  env->call_class_method_by_name(env, stack, "Native::Env", "new", spvm_items, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { croak("[Unexpected Error]Creating a Native::Compiler object failed."); }
+  
+  void* native_env = stack[0].oval;
+  
+  env->inc_ref_count(env, stack, native_env);
+  SV* sv_native_env = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, native_env, "SPVM::BlessedObject::Class");
+  
+  XPUSHs(sv_native_env);
+  XSRETURN(1);
+}
+
+SV*
 new_env(...)
   PPCODE:
 {

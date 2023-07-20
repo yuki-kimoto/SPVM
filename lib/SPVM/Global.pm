@@ -119,9 +119,7 @@ sub init_global {
     # Set command line info
     $BUILDER_STACK = SPVM::Builder->new_stack($BUILDER_ENV);
     
-    my $builder_api = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
-    
-    $COMPILER = $builder_api->class("Native::Compiler")->new;
+    $COMPILER = SPVM::Builder->new_native_compiler($BUILDER_ENV, $BUILDER_STACK);
     for my $include_dir (@{$BUILDER->include_dirs}) {
       $COMPILER->add_include_dir($include_dir);
     }
@@ -136,9 +134,7 @@ sub init_api {
   
   &init_global();
   
-  my $builder_api = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
-    
-  $ENV = $builder_api->class("Native::Env")->new($COMPILER);
+  $ENV = SPVM::Builder->new_native_env($COMPILER->{env}, $COMPILER->{stack}, $COMPILER);
   
   $STACK = $ENV->new_stack;
   
