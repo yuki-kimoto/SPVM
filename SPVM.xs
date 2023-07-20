@@ -56,7 +56,9 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stac
   SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
   
   (void)hv_store(hv_blessed_object, "spvm_object", strlen("spvm_object"), SvREFCNT_inc(sv_spvm_object), 0);
-  (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
+  if (sv_api) {
+    (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
+  }
   (void)hv_store(hv_blessed_object, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   (void)hv_store(hv_blessed_object, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
   
