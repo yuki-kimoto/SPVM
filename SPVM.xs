@@ -110,6 +110,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   
   SPVM_VALUE* stack = NULL;
   if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Stack")) {
+    assert(0);
     stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   }
   else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
