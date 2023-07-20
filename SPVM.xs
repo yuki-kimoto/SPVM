@@ -45,7 +45,7 @@ void* SPVM_XS_UTIL_get_pointer(pTHX_ SV* sv_data) {
   }
 }
 
-SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stack, void* spvm_object, const char* class) {
+SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_env, SV* sv_stack, void* spvm_object, const char* class) {
   
   // Create spvm_object
   size_t iv_spvm_object = PTR2IV(spvm_object);
@@ -56,9 +56,6 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, SV* sv_env, SV* sv_stac
   SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
   
   (void)hv_store(hv_blessed_object, "spvm_object", strlen("spvm_object"), SvREFCNT_inc(sv_spvm_object), 0);
-  if (sv_api) {
-    (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
-  }
   (void)hv_store(hv_blessed_object, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   (void)hv_store(hv_blessed_object, "stack", strlen("stack"), SvREFCNT_inc(sv_stack), 0);
   
@@ -163,7 +160,7 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* sv_
       STRLEN length = -1;
       const char* string = SvPV(sv_string, length);
       void* spvm_string = env->new_string(env, stack, string, (int32_t)length);
-      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_string, "SPVM::BlessedObject::String");
+      sv_string = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_string, "SPVM::BlessedObject::String");
     }
   }
   else {
@@ -204,7 +201,7 @@ SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack,
       void* address = (void*)(intptr_t)SvIV(sv_address);
       void* spvm_address = env->new_pointer_object_by_name(env, stack, "Address", address, &error_id, __func__, FILE_NAME, __LINE__);
       assert(error_id == 0);
-      sv_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_address, "SPVM::BlessedObject::Class");
+      sv_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_address, "SPVM::BlessedObject::Class");
     }
   }
   else {
@@ -262,7 +259,7 @@ SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
         elems[i] = (int8_t)SvIV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -320,7 +317,7 @@ SV* SPVM_XS_UTIL_new_byte_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
         elems[i] = (int8_t)(uint8_t)SvUV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -378,7 +375,7 @@ SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
         elems[i] = (int16_t)SvIV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -436,7 +433,7 @@ SV* SPVM_XS_UTIL_new_short_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_
         elems[i] = (int16_t)(uint16_t)SvUV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -494,7 +491,7 @@ SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV* 
         elems[i] = (int32_t)SvIV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -552,7 +549,7 @@ SV* SPVM_XS_UTIL_new_int_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_st
         elems[i] = (int32_t)(uint32_t)SvUV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -610,7 +607,7 @@ SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV*
         elems[i] = (int64_t)SvIV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -668,7 +665,7 @@ SV* SPVM_XS_UTIL_new_long_array_unsigned(pTHX_ SV* sv_self, SV* sv_env, SV* sv_s
         elems[i] = (int64_t)(uint64_t)SvUV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -726,7 +723,7 @@ SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, SV
         elems[i] = (float)SvNV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -784,7 +781,7 @@ SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
         elems[i] = (double)SvNV(sv_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -844,7 +841,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
         env->set_elem_string(env, stack, spvm_array, i, spvm_elem);
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -916,7 +913,7 @@ SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, v
         }
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -987,7 +984,7 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, v
         }
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -1106,7 +1103,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, v
         }
       }
       
-      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+      sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
   else {
@@ -1897,7 +1894,7 @@ _xs_call_method(...)
         sv_return_value = NULL;
         if (return_value != NULL) {
           env->inc_ref_count(env, stack, return_value);
-          sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::String");
+          sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::String");
         }
         // undef
         else {
@@ -1915,14 +1912,14 @@ _xs_call_method(...)
           const char* return_value_basic_type_name = env->get_object_basic_type_name(env, stack, return_value);
           int32_t return_value_type_dimension = env->get_object_type_dimension(env, stack, return_value);
           if (return_value_type_dimension > 0) {
-            sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::Array");
+            sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::Array");
           }
           else {
             if (strcmp(return_value_basic_type_name, "string") == 0) {
-              sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::String");
+              sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::String");
             }
             else {
-              sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::Class");
+              sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::Class");
             }
           }
         }
@@ -1939,7 +1936,7 @@ _xs_call_method(...)
         sv_return_value = NULL;
         if (return_value != NULL) {
           env->inc_ref_count(env, stack, return_value);
-          sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::Class");
+          sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::Class");
         }
         // undef
         else {
@@ -1958,7 +1955,7 @@ _xs_call_method(...)
     sv_return_value = NULL;
     if (return_value != NULL) {
       env->inc_ref_count(env, stack, return_value);
-      sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, return_value, "SPVM::BlessedObject::Array");
+      sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, return_value, "SPVM::BlessedObject::Array");
     }
     else {
       sv_return_value = &PL_sv_undef;
@@ -2132,7 +2129,7 @@ _xs_dump(...)
   const char* dump = env->get_chars(env, stack, spvm_dump);
   int32_t dump_length = env->length(env, stack, spvm_dump);
   
-  SV* sv_dump = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_dump, "SPVM::BlessedObject::String");
+  SV* sv_dump = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_dump, "SPVM::BlessedObject::String");
   
   XPUSHs(sv_dump);
   XSRETURN(1);
@@ -2294,7 +2291,7 @@ _xs_new_byte_array_len(...)
   void* spvm_array = env->new_byte_array(env, stack, length);
   
   // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_byte_array);
   XSRETURN(1);
@@ -2333,7 +2330,7 @@ _xs_new_byte_array_from_bin(...)
   int8_t* elems = env->get_elems_byte(env, stack, spvm_array);
   memcpy(elems, binary, length);
   
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -2431,7 +2428,7 @@ _xs_new_short_array_len(...)
   void* spvm_array = env->new_short_array(env, stack, length);
   
   // New sv array
-  SV* sv_short_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_short_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_short_array);
   XSRETURN(1);
@@ -2476,7 +2473,7 @@ _xs_new_short_array_from_bin(...)
   int16_t* elems = env->get_elems_short(env, stack, spvm_array);
   memcpy(elems, binary, array_length * sizeof(int16_t));
   
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -2574,7 +2571,7 @@ _xs_new_int_array_len(...)
   void* spvm_array = env->new_int_array(env, stack, length);
   
   // New sv array
-  SV* sv_int_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_int_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_int_array);
   XSRETURN(1);
@@ -2619,7 +2616,7 @@ _xs_new_int_array_from_bin(...)
   int32_t* elems = env->get_elems_int(env, stack, spvm_array);
   memcpy(elems, binary, array_length * sizeof(int32_t));
   
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -2717,7 +2714,7 @@ _xs_new_long_array_len(...)
   void* spvm_array = env->new_long_array(env, stack, length);
   
   // New sv array
-  SV* sv_long_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_long_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_long_array);
   XSRETURN(1);
@@ -2762,7 +2759,7 @@ _xs_new_long_array_from_bin(...)
   int64_t* elems = env->get_elems_long(env, stack, spvm_array);
   memcpy(elems, binary, array_length * sizeof(int64_t));
     
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -2829,7 +2826,7 @@ _xs_new_float_array_len(...)
   void* spvm_array = env->new_float_array(env, stack, length);
   
   // New sv array
-  SV* sv_float_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_float_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_float_array);
   XSRETURN(1);
@@ -2874,7 +2871,7 @@ _xs_new_float_array_from_bin(...)
   float* elems = env->get_elems_float(env, stack, spvm_array);
   memcpy(elems, binary, array_length * sizeof(float));
   
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -2941,7 +2938,7 @@ _xs_new_double_array_len(...)
   void* spvm_array = env->new_double_array(env, stack, length);
   
   // New sv array
-  SV* sv_double_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_double_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_double_array);
   XSRETURN(1);
@@ -2986,7 +2983,7 @@ _xs_new_double_array_from_bin(...)
   double* elems = env->get_elems_double(env, stack, spvm_array);
   memcpy(elems, binary, array_length * sizeof(double));
   
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3053,7 +3050,7 @@ _xs_new_string_array_len(...)
   void* spvm_array = env->new_string_array(env, stack, length);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3146,7 +3143,7 @@ _xs_new_object_array_len(...)
   
   void* spvm_array = env->new_object_array(env, stack, basic_type, length);
   
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3240,7 +3237,7 @@ _xs_new_mulnum_array_len(...)
   
   void* spvm_array = env->new_mulnum_array(env, stack, basic_type, length);
   
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3389,7 +3386,7 @@ _xs_new_mulnum_array_from_bin(...)
   }
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3474,7 +3471,7 @@ _xs_new_muldim_array_len(...)
   
   void* spvm_array = env->new_muldim_array(env, stack, basic_type, type_dimension, length);
   
-  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -3503,7 +3500,7 @@ _xs_get_exception(...)
   SV* sv_exception;
   if (str_exception) {
     env->inc_ref_count(env, stack, str_exception);
-    sv_exception = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, sv_env, sv_stack, str_exception, "SPVM::BlessedObject::String");
+    sv_exception = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, str_exception, "SPVM::BlessedObject::String");
   }
   else {
     sv_exception = &PL_sv_undef;
@@ -3637,7 +3634,7 @@ _xs___get_type_name(...)
   const char* type_name = env->get_chars(env, stack, spvm_type_name);
   int32_t type_name_length = env->length(env, stack, spvm_type_name);
   
-  SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, spvm_type_name, "SPVM::BlessedObject::String");
+  SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, spvm_type_name, "SPVM::BlessedObject::String");
   
   SV* sv_type_name = sv_2mortal(newSVpv(type_name, type_name_length));
   
@@ -3832,7 +3829,7 @@ _xs_to_elems(...)
           SV* sv_value;
           if (object != NULL) {
             env->inc_ref_count(env, stack, object);
-            sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, object, "SPVM::BlessedObject::String");
+            sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, object, "SPVM::BlessedObject::String");
           }
           else {
             sv_value = &PL_sv_undef;
@@ -3853,10 +3850,10 @@ _xs_to_elems(...)
             int32_t elem_type_is_array_type = elem_type_dimension > 0;
             SV* sv_value;
             if (elem_type_is_array_type) {
-              sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, value, "SPVM::BlessedObject::Array");
+              sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, "SPVM::BlessedObject::Array");
             }
             else {
-              sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, value, "SPVM::BlessedObject::Class");
+              sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, value, "SPVM::BlessedObject::Class");
             }
             av_push(av_values, SvREFCNT_inc(sv_value));
           }
@@ -4318,10 +4315,10 @@ _xs_get(...)
     void* elem = env->get_elem_object(env, stack, spvm_array, index);
     
     if (elem_type_dimension == 0) {
-      sv_elem = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, elem, "SPVM::BlessedObject::Class");
+      sv_elem = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, elem, "SPVM::BlessedObject::Class");
     }
     else if (elem_type_dimension > 0) {
-      sv_elem = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, elem, "SPVM::BlessedObject::Array");
+      sv_elem = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_env, sv_stack, elem, "SPVM::BlessedObject::Array");
     }
   }
   
