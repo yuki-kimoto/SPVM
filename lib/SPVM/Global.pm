@@ -115,7 +115,7 @@ sub init_global {
     $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
     
     # Set command line info
-    $BUILDER_STACK = $BUILDER_ENV->new_stack;
+    $BUILDER_STACK = SPVM::Builder->new_stack($BUILDER_ENV);
     
     $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     

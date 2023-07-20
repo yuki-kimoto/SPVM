@@ -4392,6 +4392,27 @@ get_basic_type_name(...)
 
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
+SV*
+new_stack(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  // Env
+  SV* sv_env = ST(1);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  
+  // Create native_stack
+  SPVM_VALUE* stack = env->new_stack(env);
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ stack, "SPVM::Builder::Stack");
+  HV* hv_stack = (HV*)SvRV(sv_stack);
+  
+  (void)hv_store(hv_stack, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+  
+  XPUSHs(sv_stack);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Builder::Compiler		PACKAGE = SPVM::Builder::Compiler
 
 SV*
@@ -4850,26 +4871,6 @@ new(...)
   }
   
   XPUSHs(sv_self);
-  XSRETURN(1);
-}
-
-SV*
-new_stack(...)
-  PPCODE:
-{
-  
-  // Env
-  SV* sv_env = ST(0);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
-
-  // Create native_stack
-  SPVM_VALUE* stack = env->new_stack(env);
-  SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ stack, "SPVM::Builder::Stack");
-  HV* hv_stack = (HV*)SvRV(sv_stack);
-
-  (void)hv_store(hv_stack, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-
-  XPUSHs(sv_stack);
   XSRETURN(1);
 }
 
