@@ -4370,7 +4370,7 @@ new_native_compiler(...)
   SV* sv_class = ST(0);
   
   SV* sv_env = ST(1);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
@@ -4396,7 +4396,7 @@ new_native_env(...)
   SV* sv_class = ST(0);
   
   SV* sv_env = ST(1);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   SV* sv_stack = ST(2);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
@@ -4453,7 +4453,7 @@ new_stack(...)
   SV* sv_class = ST(0);
   
   SV* sv_env = ST(1);
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Create native_stack
   SPVM_VALUE* stack = env->new_stack(env);
