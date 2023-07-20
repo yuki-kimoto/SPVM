@@ -36,9 +36,9 @@ END {
   $ENV = undef;
   $COMPILER = undef;
   $BUILDER_API = undef;
-  if ($BUILDER_ENV) {
-    $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
-  }
+  # if ($BUILDER_ENV) {
+  #   $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
+  # }
   $BUILDER_STACK = undef;
   $BUILDER_ENV = undef;
   $BUILDER_COMPILER = undef;
