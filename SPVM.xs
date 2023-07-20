@@ -4965,20 +4965,4 @@ new_stack(...)
   XSRETURN(1);
 }
 
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Env
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_self);
-  
-  env->free_env(env);
-  
-  XSRETURN(0);
-}
-
 MODULE = SPVM		PACKAGE = SPVM
