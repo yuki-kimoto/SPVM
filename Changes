@@ -17,7 +17,7 @@
    * The following compiler native APIs were renamed.
      -  void (*add_module_file)(void* compiler, const char* module_name, void* module_file);
      +  void (*set_module_file)(void* compiler, const char* module_name, void* module_file);
-
+   * The __api method was removed from the SPVM::BlessedObject class.
   [New Features]
     * The Native::ModuleFile class was added.
 
