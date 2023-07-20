@@ -4980,49 +4980,6 @@ set_command_info_program_name(...)
 }
 
 SV*
-set_command_info_argv(...)
-  PPCODE:
-{
-  
-  SV* sv_env = ST(0);
-  SV* sv_stack = ST(1);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
-  
-  SV* sv_argv = ST(2);
-  AV* av_argv = (AV*)SvRV(sv_argv);
-  int32_t argv_length = av_len(av_argv) + 1;
-  
-  {
-    int32_t scope_id = env->enter_scope(env, stack);
-    
-    void* spvm_argv = env->new_string_array(env, stack, argv_length);
-    for (int32_t index = 0; index < argv_length; index++) {
-      SV** sv_arg_ptr = av_fetch(av_argv, index, 0);
-      SV* sv_arg = sv_arg_ptr ? *sv_arg_ptr : &PL_sv_undef;
-      
-      const char* arg = SvPV_nolen(sv_arg);
-      int32_t arg_length = strlen(arg);
-      
-      void* spvm_arg = env->new_string(env, stack, arg, arg_length);
-      env->set_elem_string(env, stack, spvm_argv, index, spvm_arg);
-    }
-    
-    // Set command info
-    {
-      int32_t error_id;
-      error_id = env->set_command_info_argv(env, stack, spvm_argv);
-      assert(error_id == 0);
-    }
-    
-    env->leave_scope(env, stack, scope_id);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 destroy_class_vars(...)
   PPCODE:
 {
