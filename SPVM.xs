@@ -84,7 +84,7 @@ void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_blessed_object) {
 
 SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   
-  SPVM_ENV* env;
+  SPVM_ENV* env = NULL;
   if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::Builder::Env")) {
     assert(0);
     env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
@@ -99,15 +99,17 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
     
     env_api->free_env(env_api);
   }
+  else {
+    assert(0);
+  }
   
   return env;
 }
 
 SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   
-  SPVM_VALUE* stack;
+  SPVM_VALUE* stack = NULL;
   if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Stack")) {
-    assert(0);
     stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   }
   else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
@@ -119,6 +121,9 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
     stack = env_api->get_pointer(env_api, NULL, spvm_stack);
     
     env_api->free_env(env_api);
+  }
+  else {
+    assert(0);
   }
   
   return stack;
