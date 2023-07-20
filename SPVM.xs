@@ -4466,66 +4466,6 @@ create_native_compiler(...)
 }
 
 SV*
-get_module_file(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  SV* sv_module_name = ST(1);
-  const char* module_name = SvPV_nolen(sv_module_name);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
-  
-  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  void* module_file = env_api->api->compiler->get_module_file(compiler, module_name);
-  SV* sv_module_file = &PL_sv_undef;
-  if (module_file) {
-    HV* hv_module_file = (HV*)sv_2mortal((SV*)newHV());
-    
-    (void)hv_store(hv_module_file, "module_name", strlen("module_name"), SvREFCNT_inc(sv_module_name), 0);
-    
-    const char* file = env_api->api->module_file->get_file(compiler, module_file);
-    if (file) {
-      SV* sv_file = sv_2mortal(newSVpv(file, 0));
-      (void)hv_store(hv_module_file, "file", strlen("file"), SvREFCNT_inc(sv_file), 0);
-    }
-    
-    const char* dir = env_api->api->module_file->get_dir(compiler, module_file);
-    if (dir) {
-      SV* sv_dir = sv_2mortal(newSVpv(dir, 0));
-      (void)hv_store(hv_module_file, "dir", strlen("dir"), SvREFCNT_inc(sv_dir), 0);
-    }
-    
-    const char* rel_file = env_api->api->module_file->get_rel_file(compiler, module_file);
-    if (rel_file) {
-      SV* sv_rel_file = sv_2mortal(newSVpv(rel_file, 0));
-      (void)hv_store(hv_module_file, "rel_file", strlen("rel_file"), SvREFCNT_inc(sv_rel_file), 0);
-    }
-    
-    const char* content = env_api->api->module_file->get_content(compiler, module_file);
-    if (content) {
-      SV* sv_content = sv_2mortal(newSVpv(content, 0));
-      (void)hv_store(hv_module_file, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
-    }
-    
-    int32_t content_length = env_api->api->module_file->get_content_length(compiler, module_file);
-    SV* sv_content_length = sv_2mortal(newSViv(content_length));
-    (void)hv_store(hv_module_file, "content_length", strlen("content_length"), SvREFCNT_inc(sv_content_length), 0);
-    
-    sv_module_file = sv_2mortal(newRV_inc((SV*)hv_module_file));
-  }
-  
-  XPUSHs(sv_module_file);
-  
-  XSRETURN(1);
-}
-
-SV*
 DESTROY(...)
   PPCODE:
 {
