@@ -29,7 +29,9 @@ sub AUTOLOAD {
   # For an instance method call
   $method_name =~ s/^BlessedObject::Class:://;
   
-  my $ret = $self->__api->call_method($self, $method_name, @_);
+  my $api = SPVM::ExchangeAPI->new(env => $self->{env}, stack => $self->{stack});
+    
+  my $ret = $api->call_method($self, $method_name, @_);
   
   return $ret;
 }
