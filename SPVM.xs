@@ -5052,30 +5052,6 @@ set_command_info_base_time(...)
 }
 
 SV*
-call_init_methods(...)
-  PPCODE:
-{
-  
-  SV* sv_env = ST(0);
-  SV* sv_stack = ST(1);
-  
-  int32_t error_id = 0;
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
-  
-  {
-    error_id = env->call_init_methods(env, stack);
-    
-    if (error_id) {
-      croak("[Initialization Exception]%s \n  at %s line %d", env->get_chars(env, stack, env->get_exception(env, stack)), FILE_NAME, __LINE__);
-    }
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
 destroy_class_vars(...)
   PPCODE:
 {
