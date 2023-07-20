@@ -94,18 +94,8 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::Builder::Env")) {
     env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
   }
-  else if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
-    
-    void* spvm_env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
-    
-    SPVM_ENV* env_api = SPVM_API_new_env();
-    
-    env = env_api->get_pointer(env_api, NULL, spvm_env);
-    
-    env_api->free_env(env_api);
-  }
   else {
-    assert(0);
+    croak("[Unexpected Error]");
   }
   
   return env;
