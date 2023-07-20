@@ -144,7 +144,9 @@ sub init_api {
   
   $ENV->call_init_methods($STACK);
   
-  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
+  my $builder_stack = SPVM::Builder->convert_native_stack_to_builder_stack($STACK);
+  
+  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $builder_stack);
 }
 
 sub get_native_method_addresses {

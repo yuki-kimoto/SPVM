@@ -4463,6 +4463,21 @@ new_stack(...)
   XSRETURN(1);
 }
 
+SV*
+convert_native_stack_to_builder_stack(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  SV* sv_native_stack = ST(1);
+  SPVM_VALUE* native_stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_native_stack);
+  
+  SV* sv_builder_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ native_stack, "SPVM::Builder::Stack");
+  
+  XPUSHs(sv_builder_stack);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Builder::Compiler		PACKAGE = SPVM::Builder::Compiler
 
 SV*
