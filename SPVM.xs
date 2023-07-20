@@ -4397,22 +4397,23 @@ init_env(...)
   PPCODE:
 {
   
-  SV* sv_env = ST(0);
-  SV* sv_stack = ST(1);
+  SV* sv_self = ST(0);
+  SV* sv_env = ST(1);
+  SV* sv_stack = ST(2);
   
   int32_t error_id = 0;
       
   SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   
-  SV* sv_program_name = ST(2);
+  SV* sv_program_name = ST(3);
   const char* program_name = SvPV_nolen(sv_program_name);
   int32_t program_name_length = strlen(program_name);
   
-  SV* sv_argv = ST(3);
+  SV* sv_argv = ST(4);
   AV* av_argv = (AV*)SvRV(sv_argv);
   
-  SV* sv_base_time = ST(4);
+  SV* sv_base_time = ST(5);
   int64_t base_time = SvIV(sv_base_time);
   
   {
@@ -5058,13 +5059,17 @@ call_init_methods(...)
   SV* sv_env = ST(0);
   SV* sv_stack = ST(1);
   
+  int32_t error_id = 0;
+  
   SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   
-  int32_t error_id = env->call_init_methods(env, stack);
-  
-  if (error_id) {
-    croak("[Initialization Exception]%s \n  at %s line %d", env->get_chars(env, stack, env->get_exception(env, stack)), FILE_NAME, __LINE__);
+  {
+    error_id = env->call_init_methods(env, stack);
+    
+    if (error_id) {
+      croak("[Initialization Exception]%s \n  at %s line %d", env->get_chars(env, stack, env->get_exception(env, stack)), FILE_NAME, __LINE__);
+    }
   }
   
   XSRETURN(0);
