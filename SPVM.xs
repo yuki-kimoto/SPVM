@@ -3579,24 +3579,19 @@ DESTROY(...)
   
   SV* sv_object = ST(0);
   HV* hv_object = (HV*)SvRV(sv_object);
-
+  
   assert(SvOK(sv_object));
   
   // Get object
   void* object = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_object);
-
-  // API
-  SV** sv_api_ptr = hv_fetch(hv_object, "__api", strlen("__api"), 0);
-  SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
-  HV* hv_api = (HV*)SvRV(sv_api);
-
+  
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_object, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -3615,19 +3610,19 @@ _xs___get_type_name(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   // API
   SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
   SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
   HV* hv_api = (HV*)SvRV(sv_api);
   
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -3658,18 +3653,13 @@ _xs_to_bin(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
 
-  // API
-  SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
-  SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
-  HV* hv_api = (HV*)SvRV(sv_api);
-  
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -3697,18 +3687,13 @@ _xs_length(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  // API
-  SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
-  SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
-  HV* hv_api = (HV*)SvRV(sv_api);
-  
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -3742,12 +3727,12 @@ _xs_to_elems(...)
   HV* hv_api = (HV*)SvRV(sv_api);
   
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -3946,18 +3931,13 @@ _xs_to_bin(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  // API
-  SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
-  SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
-  HV* hv_api = (HV*)SvRV(sv_api);
-  
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -4098,18 +4078,13 @@ _xs_set(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  // API
-  SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
-  SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
-  HV* hv_api = (HV*)SvRV(sv_api);
-  
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -4242,12 +4217,12 @@ _xs_get(...)
   HV* hv_api = (HV*)SvRV(sv_api);
   
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -4367,18 +4342,13 @@ get_basic_type_name(...)
   // Get object
   void* object = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_object);
 
-  // API
-  SV** sv_api_ptr = hv_fetch(hv_object, "__api", strlen("__api"), 0);
-  SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
-  HV* hv_api = (HV*)SvRV(sv_api);
-
   // Env
-  SV** sv_env_ptr = hv_fetch(hv_api, "env", strlen("env"), 0);
+  SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
   
   // Stack
-  SV** sv_stack_ptr = hv_fetch(hv_api, "stack", strlen("stack"), 0);
+  SV** sv_stack_ptr = hv_fetch(hv_object, "stack", strlen("stack"), 0);
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
@@ -4422,7 +4392,6 @@ new_stack(...)
 {
   SV* sv_class = ST(0);
   
-  // Env
   SV* sv_env = ST(1);
   SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
   
