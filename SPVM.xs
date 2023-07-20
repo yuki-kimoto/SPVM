@@ -4432,8 +4432,8 @@ new_env(...)
   
   SPVM_ENV* new_env = SPVM_API_new_env();
   
-  SV* sv_self = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Env");
-  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_env = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Env");
+  HV* hv_self = (HV*)SvRV(sv_env);
   
   if (SvOK(sv_compiler)) {
     void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
@@ -4442,7 +4442,7 @@ new_env(...)
     (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
   }
   
-  XPUSHs(sv_self);
+  XPUSHs(sv_env);
   XSRETURN(1);
 }
 
