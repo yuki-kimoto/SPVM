@@ -4393,6 +4393,30 @@ get_basic_type_name(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
+new_env(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  SV* sv_compiler = ST(1);
+  
+  SPVM_ENV* new_env = SPVM_API_new_env();
+  
+  SV* sv_self = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Env");
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  if (SvOK(sv_compiler)) {
+    void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
+    new_env->compiler = compiler;
+    new_env->runtime = new_env->api->compiler->get_runtime(compiler);
+    (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
+  }
+  
+  XPUSHs(sv_self);
+  XSRETURN(1);
+}
+
+SV*
 new_stack(...)
   PPCODE:
 {
@@ -4845,32 +4869,6 @@ build_precompile_module_source(...)
   env_api->free_env(env_api);
   
   XPUSHs(sv_precompile_source);
-  XSRETURN(1);
-}
-
-MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
-
-SV*
-new(...)
-  PPCODE:
-{
-  SV* sv_class = ST(0);
-  
-  SV* sv_compiler = ST(1);
-  
-  SPVM_ENV* new_env = SPVM_API_new_env();
-  
-  SV* sv_self = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Env");
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  if (SvOK(sv_compiler)) {
-    void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
-    new_env->compiler = compiler;
-    new_env->runtime = new_env->api->compiler->get_runtime(compiler);
-    (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
-  }
-  
-  XPUSHs(sv_self);
   XSRETURN(1);
 }
 

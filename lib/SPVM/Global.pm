@@ -112,7 +112,7 @@ sub init_global {
     }
     
     # Build an environment
-    $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
+    $BUILDER_ENV = SPVM::Builder->new_env($BUILDER_COMPILER);
     
     # Set command line info
     $BUILDER_STACK = SPVM::Builder->new_stack($BUILDER_ENV);
