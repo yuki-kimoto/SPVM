@@ -22,7 +22,6 @@ our $BUILDER;
 our $BUILDER_COMPILER;
 our $BUILDER_ENV;
 our $BUILDER_STACK;
-our $BUILDER_API;
 our $COMPILER;
 our $ENV;
 our $STACK;
@@ -36,7 +35,6 @@ END {
   $STACK = undef;
   $ENV = undef;
   $COMPILER = undef;
-  $BUILDER_API = undef;
   # if ($BUILDER_ENV) {
   #   $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
   #}
