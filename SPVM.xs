@@ -4720,34 +4720,6 @@ get_method_names(...)
 }
 
 SV*
-get_basic_type_names(...)
-  PPCODE:
-{
-  
-  SV* sv_runtime = ST(0);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SPVM_ENV* env_api = SPVM_API_new_env();
-  
-  AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
-  
-  int32_t basic_types_length = env_api->api->runtime->get_basic_types_length(runtime);
-  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
-    void* basic_type = env_api->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
-    int32_t basic_type_category = env_api->api->basic_type->get_category(runtime, basic_type);
-    const char* basic_type_name = env_api->api->basic_type->get_name(runtime, basic_type);
-    SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-    av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
-  }
-  
-  env_api->free_env(env_api);
-  
-  XPUSHs(sv_basic_type_names);
-  XSRETURN(1);
-}
-
-SV*
 get_module_file(...)
   PPCODE:
 {
