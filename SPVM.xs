@@ -127,18 +127,8 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Stack")) {
     stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   }
-  else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
-    
-    void* spvm_stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
-    
-    SPVM_ENV* env_api = SPVM_API_new_env();
-    
-    stack = env_api->get_pointer(env_api, NULL, spvm_stack);
-    
-    env_api->free_env(env_api);
-  }
   else {
-    assert(0);
+    croak("[Unexpected Error]");
   }
   
   return stack;
