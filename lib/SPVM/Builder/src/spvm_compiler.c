@@ -465,8 +465,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     SPVM_COMPILER_set_default_loaded_module_files(compiler);
   }
   
-  compiler->parse_started = 0;
-  
   // Initialize error messages
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   
@@ -493,6 +491,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   SPVM_yydebug = 0;
 #endif
 
+  compiler->parse_started = 0;
+  
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   
   SPVM_COMPILER_check_basic_type_ids(compiler);
