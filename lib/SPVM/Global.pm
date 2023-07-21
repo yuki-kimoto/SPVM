@@ -104,6 +104,14 @@ sub init_global {
     my ($env, $stack) = SPVM::Builder->new_env_and_stack_for_compiler(\@native_compiler_modules, __FILE__, __LINE__, $BUILDER->include_dirs);
     
     for my $native_compiler_module (@native_compiler_modules) {
+      my $native_method_addresses = &get_native_method_addresses_v2($env, $stack, $native_compiler_module);
+      for my $method_name (keys %$native_method_addresses) {
+        my $native_method_address = $native_method_addresses->{$method_name};
+        SPVM::Builder->set_native_method_address($env, $stack, $native_compiler_module, $method_name, $native_method_address);
+      }
+    }
+    
+    for my $native_compiler_module (@native_compiler_modules) {
       $BUILDER_COMPILER->compile_with_exit($native_compiler_module, __FILE__, __LINE__);
       my $builder_runtime = $BUILDER_COMPILER->get_runtime;
       my $native_method_addresses = &get_native_method_addresses($builder_runtime, $native_compiler_module);
