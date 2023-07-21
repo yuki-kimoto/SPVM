@@ -4575,7 +4575,7 @@ new_env_and_stack_for_compiler(...)
   
   SV* sv_env = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ env, "SPVM::Builder::Env");
   
-  SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ env, "SPVM::Builder::Stack");
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ stack, "SPVM::Builder::Stack");
   
   env_api->free_env(env_api);
   

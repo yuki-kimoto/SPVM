@@ -111,21 +111,11 @@ sub init_global {
       }
     }
     
-    for my $native_compiler_module (@native_compiler_modules) {
-      $BUILDER_COMPILER->compile_with_exit($native_compiler_module, __FILE__, __LINE__);
-      my $builder_runtime = $BUILDER_COMPILER->get_runtime;
-      my $native_method_addresses = &get_native_method_addresses($builder_runtime, $native_compiler_module);
-      for my $method_name (keys %$native_method_addresses) {
-        my $native_method_address = $native_method_addresses->{$method_name};
-        $builder_runtime->set_native_method_address($native_compiler_module, $method_name, $native_method_address);
-      }
-    }
-    
     # Build an environment
-    $BUILDER_ENV = SPVM::Builder->new_env($BUILDER_COMPILER);
+    $BUILDER_ENV = $env;
     
     # Set command line info
-    $BUILDER_STACK = SPVM::Builder->new_stack($BUILDER_ENV);
+    $BUILDER_STACK = $stack;
     
     $COMPILER = SPVM::Builder->new_native_compiler($BUILDER_ENV, $BUILDER_STACK);
     for my $include_dir (@{$BUILDER->include_dirs}) {
