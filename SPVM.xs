@@ -4340,6 +4340,25 @@ get_basic_type_name(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
+destroy_class_vars(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  SV* sv_env = ST(1);
+  
+  SV* sv_stack = ST(2);
+  
+  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+  
+  env->destroy_class_vars(env, stack);
+  
+  XSRETURN(0);
+}
+
+SV*
 get_module_file(...)
   PPCODE:
 {
