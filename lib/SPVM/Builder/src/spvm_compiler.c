@@ -53,9 +53,8 @@
 SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_COMPILER));
   
-  // Allocator
-  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
-  compiler->global_allocator = allocator;
+  compiler->global_allocator = SPVM_ALLOCATOR_new();
+  compiler->error_message_allocator = SPVM_ALLOCATOR_new();
   
   compiler->ch_ptr = "";
   
@@ -72,6 +71,28 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->runtime = SPVM_RUNTIME_new();
   
   return compiler;
+}
+
+void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
+  
+  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
+  
+  if (start_file) {
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)start_file);
+  }
+  
+  SPVM_COMPILER_clear_include_dirs(compiler);
+  
+  if (compiler->runtime) {
+    SPVM_RUNTIME_free(compiler->runtime);
+    compiler->runtime = NULL;
+  }
+  
+  SPVM_ALLOCATOR_free(compiler->error_message_allocator);
+  compiler->error_message_allocator = NULL;
+  
+  SPVM_ALLOCATOR_free(compiler->global_allocator);
+  compiler->global_allocator = NULL;
 }
 
 SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
@@ -799,26 +820,6 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* error_message_temp
   va_end(args);
   
   SPVM_LIST_push(compiler->error_messages, error_message);
-}
-
-void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
-  
-  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
-  
-  if (start_file) {
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)start_file);
-  }
-  
-  SPVM_COMPILER_clear_include_dirs(compiler);
-  
-  if (compiler->runtime) {
-    SPVM_RUNTIME_free(compiler->runtime);
-    compiler->runtime = NULL;
-  }
-  
-  // Free allocator
-  SPVM_ALLOCATOR_free(compiler->global_allocator);
-  compiler->global_allocator = NULL;
 }
 
 const char* SPVM_COMPILER_get_start_file(SPVM_COMPILER* compiler) {

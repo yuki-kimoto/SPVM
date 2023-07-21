@@ -54,6 +54,8 @@ struct spvm_compiler {
   
   SPVM_ALLOCATOR* current_each_compile_allocator;
   
+  SPVM_ALLOCATOR* error_message_allocator;
+  
   // Line start position
   char* line_begin_ptr;
   
