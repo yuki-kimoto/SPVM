@@ -36,7 +36,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message_not_used) {
     ptr++;
   }
   
-  char* token = (char*) SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, length + 1);
+  char* token = (char*) SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, length + 1);
   memcpy(token, compiler->before_ch_ptr + empty_count, length);
   token[length] = '\0';
   
@@ -44,7 +44,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message_not_used) {
   
   SPVM_COMPILER_error(compiler, "Unexpected token \"%s\"\n  at %s line %d:%d", token, compiler->current_file, compiler->current_line, char_pos);
 
-  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, token);
+  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, token);
 }
 
 // Print the token value in yacc/bison debug mode

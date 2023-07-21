@@ -688,10 +688,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         int8_t next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
         
         char* string_literal_tmp;
-        int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
+        int32_t memory_blocks_count_tmp = compiler->global_allocator->memory_blocks_count_tmp;
         int32_t string_literal_length = 0;
         if (*(compiler->ch_ptr) == '"') {
-          string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, 1);
+          string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, 1);
           string_literal_tmp[0] = '\0';
           compiler->ch_ptr++;
         }
@@ -864,7 +864,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           compiler->ch_ptr++;
           
-          string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, string_literal_tmp_len + 1);
+          string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, string_literal_tmp_len + 1);
           {
             char* char_ptr = (char*)current_token_ptr;
             while (char_ptr != compiler->ch_ptr - 1) {
@@ -952,8 +952,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         SPVM_COMPILER_error(compiler, "Too big Unicode escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
                       }
                       else {
-                        int32_t memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-                        char* unicode_chars = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, unicode_chars_length + 1);
+                        int32_t memory_blocks_count_tmp = compiler->global_allocator->memory_blocks_count_tmp;
+                        char* unicode_chars = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, unicode_chars_length + 1);
                         memcpy(unicode_chars, char_start_ptr, unicode_chars_length);
                         char *end;
                         int64_t unicode = (int64_t)strtoll(unicode_chars, &end, 16);
@@ -970,8 +970,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         else {
                           SPVM_COMPILER_error(compiler, "The code point of Unicode escape character must be a Unicode scalar value.\n  at %s line %d", compiler->current_file, compiler->current_line);
                         }
-                        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, unicode_chars);
-                        assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
+                        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, unicode_chars);
+                        assert(compiler->global_allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
                       }
                     }
                     else {
@@ -1080,8 +1080,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_STRING* string_literal_string = SPVM_STRING_new(compiler, string_literal_tmp, string_literal_length);
         const char* string_literal = string_literal_string->value;
         
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, string_literal_tmp);
-        assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, string_literal_tmp);
+        assert(compiler->global_allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
         
         SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, string_literal, string_literal_length, compiler->current_file, compiler->current_line);
         
@@ -1157,8 +1157,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t var_name_length = var_name_symbol_name_part_length + 1;
           const char* var_name = NULL;
           {
-            int32_t memory_blocks_count_tmp_var_name_tmp = compiler->allocator->memory_blocks_count_tmp;
-            char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, var_name_length + 1);
+            int32_t memory_blocks_count_tmp_var_name_tmp = compiler->global_allocator->memory_blocks_count_tmp;
+            char* var_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, var_name_length + 1);
             var_name_tmp[0] = '$';
             memcpy(&var_name_tmp[1], var_name_symbol_name_part_start_ptr, var_name_symbol_name_part_length);
             var_name_tmp[1 + var_name_symbol_name_part_length] = '\0';
@@ -1166,8 +1166,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_STRING* var_name_string = SPVM_STRING_new(compiler, var_name_tmp, 1 + var_name_symbol_name_part_length);
             var_name = var_name_string->value;
             
-            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_name_tmp);
-            assert(compiler->allocator->memory_blocks_count_tmp == memory_blocks_count_tmp_var_name_tmp);
+            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, var_name_tmp);
+            assert(compiler->global_allocator->memory_blocks_count_tmp == memory_blocks_count_tmp_var_name_tmp);
           }
           
           // Check the closing brace
@@ -1326,8 +1326,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t str_len = (compiler->ch_ptr - number_literal_begin_ptr);
           
           // Ignore under line
-          int32_t numeric_literal_memoyr_blocks_count = compiler->allocator->memory_blocks_count_tmp;
-          char* numeric_literal = (char*)SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, str_len + 1);
+          int32_t numeric_literal_memoyr_blocks_count = compiler->global_allocator->memory_blocks_count_tmp;
+          char* numeric_literal = (char*)SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, str_len + 1);
           int32_t pos = 0;
           {
             int32_t i;
@@ -1541,8 +1541,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             assert(0);
           }
-          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, numeric_literal);
-          assert(compiler->allocator->memory_blocks_count_tmp == numeric_literal_memoyr_blocks_count);
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, numeric_literal);
+          assert(compiler->global_allocator->memory_blocks_count_tmp == numeric_literal_memoyr_blocks_count);
           
           // Constant op
           SPVM_OP* op_constant;
@@ -1598,7 +1598,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Symbol name
           int32_t symbol_name_length = (compiler->ch_ptr - symbol_name_start_ptr);
-          char* symbol_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, symbol_name_length + 1);
+          char* symbol_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, symbol_name_length + 1);
           memcpy(symbol_name, symbol_name_start_ptr, symbol_name_length);
           symbol_name[symbol_name_length] = '\0';
           
@@ -2176,7 +2176,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // Free symbol name
-          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, symbol_name);
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, symbol_name);
           
           return token;
         }
@@ -2198,7 +2198,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
   compiler->ch_ptr = NULL;
   compiler->before_ch_ptr = NULL;
   compiler->line_begin_ptr = NULL;
-  compiler->current_anon_op_types = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
+  compiler->current_anon_op_types = SPVM_LIST_new_list_permanent(compiler->global_allocator, 128);
   
   // If there are more module, load it
   SPVM_LIST* op_use_stack = compiler->op_use_stack;
@@ -2274,7 +2274,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
       else {
         // Create moudle relative file name from module name by changing :: to / and add ".spvm"
         int32_t current_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
-        char* current_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, current_rel_file_length + 1);
+        char* current_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, current_rel_file_length + 1);
         const char* ch_ptr_orig = basic_type_name;
         char* ch_ptr_to = current_rel_file;
         while (*ch_ptr_orig) {
@@ -2308,7 +2308,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             
             // File name
             int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(current_rel_file));
-            current_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, file_name_length + 1);
+            current_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, file_name_length + 1);
             sprintf(current_file, "%s/%s", include_dir, current_rel_file);
             current_file[file_name_length] = '\0';
             
@@ -2335,7 +2335,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
                 const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
                 include_dirs_str_length += 1 + strlen(include_dir);
               }
-              char* include_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, include_dirs_str_length + 1);
+              char* include_dirs_str = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, include_dirs_str_length + 1);
               int32_t include_dirs_str_offset = 0;
               for (int32_t i = 0; i < include_dirs_length; i++) {
                 const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
@@ -2362,11 +2362,11 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               return 0;
             }
             fseek(fh, 0, SEEK_SET);
-            char* source = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, source_length + 1);
+            char* source = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, source_length + 1);
             int32_t read_error = 0;
             if ((int32_t)fread(source, 1, source_length, fh) < source_length) {
               SPVM_COMPILER_error(compiler, "[System Error]Failed to read the module file \"%s\".\n  at %s line %d", current_file, op_use->file, op_use->line);
-              SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, source);
+              SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, source);
               read_error = 1;
             }
             

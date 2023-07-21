@@ -14,7 +14,7 @@
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler) {
   
-  return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_FIELD));
+  return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_FIELD));
 }
 
 int32_t SPVM_FIELD_get_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {

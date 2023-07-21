@@ -15,8 +15,8 @@ SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t
     return found_string;
   }
   else {
-    SPVM_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_STRING));
-    string->value = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, length + 1);
+    SPVM_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_STRING));
+    string->value = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, length + 1);
     memcpy((char*)string->value, value, length);
     string->length = length;
     

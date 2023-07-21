@@ -48,7 +48,7 @@ struct spvm_compiler {
   int32_t current_tmp_vars_length;
   
   // Allocator
-  SPVM_ALLOCATOR* allocator;
+  SPVM_ALLOCATOR* global_allocator;
   
   // Line start position
   char* line_begin_ptr;

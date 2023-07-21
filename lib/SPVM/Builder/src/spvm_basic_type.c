@@ -63,37 +63,37 @@ const char* const* SPVM_BASIC_TYPE_C_CATEGORY_NAMES(void) {
 }
 
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
-  SPVM_BASIC_TYPE* basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_BASIC_TYPE));
+  SPVM_BASIC_TYPE* basic_type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_BASIC_TYPE));
   
-  basic_type->constant_strings = SPVM_LIST_new_list_permanent(compiler->allocator, 128);
-  basic_type->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
-  basic_type->string_pool = SPVM_STRING_BUFFER_new(compiler->allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  basic_type->constant_strings = SPVM_LIST_new_list_permanent(compiler->global_allocator, 128);
+  basic_type->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 128);
+  basic_type->string_pool = SPVM_STRING_BUFFER_new(compiler->global_allocator, 8192, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Fields
-  basic_type->unmerged_fields = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->unmerged_field_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  basic_type->unmerged_fields = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  basic_type->unmerged_field_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
-  basic_type->field_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  basic_type->field_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
   // Class variables
-  basic_type->class_vars = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->class_var_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  basic_type->class_vars = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  basic_type->class_var_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
   // Methods
-  basic_type->methods = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->method_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  basic_type->methods = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  basic_type->method_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
   // Interfaces
-  basic_type->interfaces = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->interface_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  basic_type->interfaces = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  basic_type->interface_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
-  basic_type->allows = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->interface_decls = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->anon_unresolved_basic_type_names = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->anon_basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  basic_type->alias_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  basic_type->allows = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  basic_type->interface_decls = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  basic_type->anon_unresolved_basic_type_names = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  basic_type->anon_basic_types = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  basic_type->alias_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
-  basic_type->use_basic_type_names = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  basic_type->use_basic_type_names = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   return basic_type;
 }
@@ -280,7 +280,7 @@ SPVM_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compiler, SPVM_B
     
     SPVM_STRING_BUFFER_add_len_nullstr(basic_type->string_pool, (char*)value, length);
     
-    SPVM_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, sizeof(SPVM_STRING));
+    SPVM_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_STRING));
     string->value = value;
     string->length = length;
     string->index = basic_type->constant_strings->length;

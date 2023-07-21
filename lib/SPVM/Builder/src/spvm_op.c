@@ -574,7 +574,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           // }
           
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(class_var->name) - 1 + 1);
+          char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, 4 + strlen(class_var->name) - 1 + 1);
           memcpy(method_name_tmp, "SET_", 4);
           memcpy(method_name_tmp + 4, class_var->name + 1, strlen(class_var->name) - 1);
           
@@ -695,7 +695,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           // }
           
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 4 + strlen(field->name) + 1);
+          char* method_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, 4 + strlen(field->name) + 1);
           memcpy(method_name_tmp, "set_", 4);
           memcpy(method_name_tmp + 4, field->name, strlen(field->name));
           SPVM_STRING* method_name_string = SPVM_STRING_new(compiler, method_name_tmp, strlen(method_name_tmp));
@@ -717,7 +717,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
           }
           SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_type->unresolved_basic_type_name, arg_type->basic_type, arg_type->dimension, arg_type->flag, op_decl->file, op_decl->line);
           
-          char* arg_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, 1 + strlen(field->name) + 1);
+          char* arg_name_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, 1 + strlen(field->name) + 1);
           memcpy(arg_name_tmp, "$", 1);
           memcpy(arg_name_tmp + 1, field->name, strlen(field->name));
           SPVM_STRING* arg_name_string = SPVM_STRING_new(compiler, arg_name_tmp, strlen(arg_name_tmp));
@@ -988,7 +988,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         
         // Method absolute name
         int32_t method_abs_name_length = strlen(type->unresolved_basic_type_name) + 2 + strlen(method->name);
-        char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, method_abs_name_length + 1);
+        char* method_abs_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, method_abs_name_length + 1);
         memcpy(method_abs_name, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
         memcpy(method_abs_name + strlen(basic_type_name), "->", 2);
         memcpy(method_abs_name + strlen(basic_type_name) + 2, method_name, strlen(method_name));
@@ -1613,7 +1613,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   int32_t anon_method_basic_type_name_length = 6 + strlen(anon_method_defined_rel_file_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
   
   // Anon module name
-  char* name_basic_type_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, anon_method_basic_type_name_length + 1);
+  char* name_basic_type_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, anon_method_basic_type_name_length + 1);
   sprintf(name_basic_type_tmp, "%s::anon::%d::%d", anon_method_defined_rel_file_basic_type_name, anon_method_defined_line, anon_method_defined_column);
 
   SPVM_STRING* name_basic_type_string = SPVM_STRING_new(compiler, name_basic_type_tmp, strlen(name_basic_type_tmp));
@@ -3572,7 +3572,7 @@ SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t 
 SPVM_OP* SPVM_OP_new_op_name_tmp_var(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   
   // Temparary variable name
-  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, strlen("$.tmp_in_op2147483647") + 1);
+  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, strlen("$.tmp_in_op2147483647") + 1);
   sprintf(name, "$.tmp_in_op%d", compiler->current_tmp_vars_length);
   compiler->current_tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
@@ -3583,7 +3583,7 @@ SPVM_OP* SPVM_OP_new_op_name_tmp_var(SPVM_COMPILER* compiler, const char* file, 
 
 SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
 
-  SPVM_OP *op = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, sizeof(SPVM_OP));
+  SPVM_OP *op = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, sizeof(SPVM_OP));
   
   memset(op, 0, sizeof(SPVM_OP));
   

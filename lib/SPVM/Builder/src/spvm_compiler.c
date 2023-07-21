@@ -55,18 +55,18 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   // Allocator
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
-  compiler->allocator = allocator;
+  compiler->global_allocator = allocator;
   
   compiler->ch_ptr = "";
   
-  compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 128);
+  compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 128);
   
   // Eternal information
-  compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
-  compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->allocator, 0);
+  compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
+  compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
+  compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
   compiler->runtime = SPVM_RUNTIME_new();
   
@@ -346,61 +346,61 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
     int32_t op_id = op->id;
     switch(op_id) {
       case SPVM_OP_C_ID_BLOCK: {
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op->uv.block);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, op->uv.block);
         break;
       }
       case SPVM_OP_C_ID_ATTRIBUTE: {
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op->uv.attribute);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, op->uv.attribute);
         break;
       }
       case SPVM_OP_C_ID_USE: {
         SPVM_USE* use = op->uv.use;
         use->alias_name = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, use);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, use);
         break;
       }
       case SPVM_OP_C_ID_ALLOW: {
         SPVM_ALLOW* allow = op->uv.allow;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, allow);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, allow);
         break;
       }
       case SPVM_OP_C_ID_INTERFACE: {
         SPVM_INTERFACE* interface = op->uv.interface;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, interface);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, interface);
         break;
       }
       case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
         SPVM_CLASS_VAR_ACCESS* class_var_access = op->uv.class_var_access;
         class_var_access->op_name = NULL;
         class_var_access->class_var = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, class_var_access);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, class_var_access);
         break;
       }
       case SPVM_OP_C_ID_CONSTANT: {
         SPVM_CONSTANT* constant = op->uv.constant;
         constant->op_constant = NULL;
         constant->type = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, constant);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, constant);
         break;
       }
       case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
         SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
         array_field_access->field = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, array_field_access);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, array_field_access);
         break;
       }
       case SPVM_OP_C_ID_FIELD_ACCESS: {
         SPVM_FIELD_ACCESS* field_access = op->uv.field_access;
         field_access->op_name = NULL;
         field_access->field = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, field_access);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, field_access);
         break;
       }
       case SPVM_OP_C_ID_CALL_METHOD: {
         SPVM_CALL_METHOD* call_method = op->uv.call_method;
         call_method->op_name = NULL;
         call_method->method = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, call_method);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, call_method);
         break;
       }
       case SPVM_OP_C_ID_VAR: {
@@ -409,7 +409,7 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
         var->name = NULL;
         var->var_decl = NULL;
         var->call_method = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, var);
         break;
       }
       case SPVM_OP_C_ID_MY: {
@@ -418,12 +418,12 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
           var_decl->op_var_decl = NULL;
           var_decl->type = NULL;
           var_decl->var = NULL;
-          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, var_decl);
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, var_decl);
         }
         break;
       }
     }
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, op);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, op);
   }
   
   // Clear unused pointers
@@ -457,13 +457,13 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
-  compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
-  int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
+  int32_t compile_start_memory_blocks_count_tmp = compiler->global_allocator->memory_blocks_count_tmp;
   
-  compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->ops = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->op_use_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->op_types = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   
   compiler->basic_types_base_id = compiler->basic_types->length;
   
@@ -511,9 +511,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
         error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       }
       else {
-        int32_t build_opcode_list_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
+        int32_t build_opcode_list_start_memory_blocks_count_tmp = compiler->global_allocator->memory_blocks_count_tmp;
         SPVM_OPCODE_BUILDER_build_opcode_list(compiler);
-        assert(compiler->allocator->memory_blocks_count_tmp == build_opcode_list_start_memory_blocks_count_tmp);
+        assert(compiler->global_allocator->memory_blocks_count_tmp == build_opcode_list_start_memory_blocks_count_tmp);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
         }
@@ -523,7 +523,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   SPVM_COMPILER_free_memory_each_compile(compiler);
   
-  assert(compiler->allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
+  assert(compiler->global_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
   if (!error_id) {
     SPVM_COMPILER_build_runtime(compiler);
@@ -791,7 +791,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   }
   va_end(args);
   
-  char* message = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->allocator, message_length + 1);
+  char* message = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, message_length + 1);
   
   va_start(args, message_template);
   vsprintf(message, message_template, args);
@@ -805,7 +805,7 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   const char* start_file = SPVM_COMPILER_get_start_file(compiler);
   
   if (start_file) {
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)start_file);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)start_file);
   }
   
   SPVM_COMPILER_clear_include_dirs(compiler);
@@ -816,8 +816,8 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   }
   
   // Free allocator
-  SPVM_ALLOCATOR_free(compiler->allocator);
-  compiler->allocator = NULL;
+  SPVM_ALLOCATOR_free(compiler->global_allocator);
+  compiler->global_allocator = NULL;
 }
 
 const char* SPVM_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
@@ -827,14 +827,14 @@ const char* SPVM_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
 void SPVM_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
   
   if (compiler->start_file) {
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)compiler->start_file);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)compiler->start_file);
     compiler->start_file = NULL;
   }
   
   char* compiler_start_file = NULL;
   if (start_file) {
     int32_t start_file_length = strlen(start_file);
-    compiler_start_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, start_file_length + 1);
+    compiler_start_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, start_file_length + 1);
     memcpy(compiler_start_file, start_file, start_file_length);
   }
   
@@ -857,7 +857,7 @@ int32_t SPVM_COMPILER_get_include_dirs_length(SPVM_COMPILER* compiler) {
 
 void SPVM_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {  
   int32_t include_dir_length = strlen(include_dir);
-  char* compiler_include_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->allocator, include_dir_length + 1);
+  char* compiler_include_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, include_dir_length + 1);
   memcpy(compiler_include_dir, include_dir, include_dir_length);
   SPVM_LIST_push(compiler->include_dirs, (void*)compiler_include_dir);
 }
@@ -867,7 +867,7 @@ void SPVM_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
   
   for (int32_t i = 0; i < include_dirs_length; i++) {
     const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->allocator, (void*)include_dir);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)include_dir);
     include_dir = NULL;
   }
   
