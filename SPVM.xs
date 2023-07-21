@@ -4340,6 +4340,53 @@ get_basic_type_name(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
+get_module_file(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  SV* sv_env = ST(1);
+  
+  SV* sv_stack = ST(2);
+  
+  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+  
+  SV* sv_basic_type_name = ST(3);
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+  
+  const char* module_file;
+  SV* sv_module_file = &PL_sv_undef;
+  
+  if (basic_type) {
+    int32_t basic_type_category = env->api->basic_type->get_category(env->runtime, basic_type);
+    if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+      const char* module_dir = env->api->basic_type->get_module_dir(env->runtime, basic_type);
+      const char* module_dir_sep;
+      if (module_dir) {
+        module_dir_sep = "/";
+      }
+      else {
+        module_dir_sep = "";
+        module_dir = "";
+      }
+      const char* module_rel_file = env->api->basic_type->get_module_rel_file(env->runtime, basic_type);
+      
+      sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
+      sv_catpv(sv_module_file, module_dir_sep);
+      sv_catpv(sv_module_file, module_rel_file);
+    }
+  }
+  
+  XPUSHs(sv_module_file);
+  XSRETURN(1);
+}
+
+SV*
 get_method_names(...)
   PPCODE:
 {
