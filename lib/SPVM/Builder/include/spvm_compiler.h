@@ -50,6 +50,8 @@ struct spvm_compiler {
   // Allocator
   SPVM_ALLOCATOR* global_allocator;
   
+  SPVM_LIST* each_compile_allocators;
+  
   // Line start position
   char* line_begin_ptr;
   
