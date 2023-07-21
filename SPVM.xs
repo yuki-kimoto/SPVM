@@ -124,13 +124,18 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
     HV* hv_stack = (HV*)SvRV(sv_stack);
     
+    // API
+    SV** sv_native_api_ptr = hv_fetch(hv_stack, "__api", strlen("__api"), 0);
+    SV* sv_native_api = sv_native_api_ptr ? *sv_native_api_ptr : &PL_sv_undef;
+    HV* hv_native_api = (HV*)SvRV(sv_native_api);
+    
     // Stack
-    SV** sv_native_stack_ptr = hv_fetch(hv_stack, "stack", strlen("stack"), 0);
+    SV** sv_native_stack_ptr = hv_fetch(hv_native_api, "stack", strlen("stack"), 0);
     SV* sv_native_stack = sv_native_stack_ptr ? *sv_native_stack_ptr : &PL_sv_undef;
     SPVM_VALUE* native_stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_native_stack);
     
     // Env
-    SV** sv_native_env_ptr = hv_fetch(hv_stack, "env", strlen("env"), 0);
+    SV** sv_native_env_ptr = hv_fetch(hv_native_api, "env", strlen("env"), 0);
     SV* sv_native_env = sv_native_env_ptr ? *sv_native_env_ptr : &PL_sv_undef;
     SPVM_ENV* native_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_native_env);
     
