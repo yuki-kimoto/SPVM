@@ -748,34 +748,34 @@ SPVM_RUNTIME* SPVM_COMPILER_get_runtime(SPVM_COMPILER* compiler) {
   return compiler->runtime;
 }
 
-void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {
+void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* error_message_template, ...) {
   
-  int32_t message_length = 0;
+  int32_t error_message_length = 0;
   
   // Message template
-  int32_t message_template_length = (int32_t)strlen(message_template);
+  int32_t error_message_template_length = (int32_t)strlen(error_message_template);
   
   va_list args;
-  va_start(args, message_template);
+  va_start(args, error_message_template);
   
-  message_length += message_template_length;
+  error_message_length += error_message_template_length;
   
   // Argument count
-  char* found_ptr = (char*)message_template;
+  char* found_ptr = (char*)error_message_template;
   while (1) {
     found_ptr = strchr(found_ptr, '%');
     if (found_ptr) {
       if (*(found_ptr + 1) == 'c') {
         int arg = va_arg(args, int);
-        message_length++;
+        error_message_length++;
       }
       else if (*(found_ptr + 1) == 's') {
         char* arg = va_arg(args, char*);
-        message_length += strlen(arg);
+        error_message_length += strlen(arg);
       }
       else if (*(found_ptr + 1) == 'd') {
         (void) va_arg(args, int);
-        message_length += 30;
+        error_message_length += 30;
       }
       else if (*(found_ptr + 1) == '%') {
         // Nothing
@@ -792,13 +792,13 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   }
   va_end(args);
   
-  char* message = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, message_length + 1);
+  char* error_message = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, error_message_length + 1);
   
-  va_start(args, message_template);
-  vsprintf(message, message_template, args);
+  va_start(args, error_message_template);
+  vsprintf(error_message, error_message_template, args);
   va_end(args);
   
-  SPVM_LIST_push(compiler->error_messages, message);
+  SPVM_LIST_push(compiler->error_messages, error_message);
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
