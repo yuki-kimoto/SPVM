@@ -4340,6 +4340,44 @@ get_basic_type_name(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
+set_native_method_address(...)
+  PPCODE:
+{
+  
+  SV* sv_class = ST(0);
+  
+  SV* sv_env = ST(1);
+  
+  SV* sv_stack = ST(2);
+  
+  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+  
+  SV* sv_basic_type_name = ST(3);
+  SV* sv_method_name = ST(4);
+  SV* sv_native_address = ST(5);
+  
+  // Basic type name
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+  
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Method
+  void* method = env->api->basic_type->get_method_by_name(env->runtime, basic_type, method_name);
+  
+  // Native address
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+  
+  env->api->method->set_native_address(env->runtime, method, native_address);
+  
+  XSRETURN(0);
+}
+
+SV*
 new_native_compiler(...)
   PPCODE:
 {
