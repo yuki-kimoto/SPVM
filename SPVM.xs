@@ -4366,7 +4366,7 @@ new_native_compiler(...)
 }
 
 SV*
-new_env_and_stack_for_bootstrap(...)
+new_env_and_stack_for_compiler(...)
   PPCODE:
 {
   int32_t error_id = 0;

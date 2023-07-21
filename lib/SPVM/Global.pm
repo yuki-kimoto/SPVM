@@ -101,7 +101,7 @@ sub init_global {
       Native::Env
     );
     
-    my ($env, $stack) = SPVM::Builder->new_env_and_stack_for_bootstrap(\@native_compiler_modules, __FILE__, __LINE__, $BUILDER->include_dirs);
+    my ($env, $stack) = SPVM::Builder->new_env_and_stack_for_compiler(\@native_compiler_modules, __FILE__, __LINE__, $BUILDER->include_dirs);
     
     for my $native_compiler_module (@native_compiler_modules) {
       $BUILDER_COMPILER->compile_with_exit($native_compiler_module, __FILE__, __LINE__);
