@@ -4340,6 +4340,53 @@ get_basic_type_name(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
+get_method_names(...)
+  PPCODE:
+{
+  SV* sv_class = ST(0);
+  
+  SV* sv_env = ST(1);
+  
+  SV* sv_stack = ST(2);
+  
+  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
+  
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
+  
+  SV* sv_basic_type_name = ST(3);
+  SV* sv_category = ST(4);
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
+  
+  void* basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, basic_type_name);
+  
+  int32_t methods_length = env->api->basic_type->get_methods_length(env->runtime, basic_type);
+  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
+    void* method = env->api->basic_type->get_method_by_index(env->runtime, basic_type, method_index);
+    const char* method_name = env->api->method->get_name(env->runtime, method);
+    SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
+    int32_t is_push = 0;
+    if (SvOK(sv_category)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && env->api->method->is_native(env->runtime, method)) {
+        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+      }
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && env->api->method->is_precompile(env->runtime, method)) {
+        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+      }
+    }
+    else {
+      av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+    }
+  }
+  
+  XPUSHs(sv_method_names);
+  XSRETURN(1);
+}
+
+SV*
 set_native_method_address(...)
   PPCODE:
 {
