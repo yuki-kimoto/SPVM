@@ -148,13 +148,13 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
 
   compiler->end_of_file = 1;
   
-  int32_t parse_error_flag = SPVM_yyparse(compiler);
+  int32_t yyparse_error_id = SPVM_yyparse(compiler);
   
   SPVM_COMPILER_check_basic_type_ids(compiler);
   
   int32_t error_id = 0;
   
-  if (parse_error_flag) {
+  if (yyparse_error_id) {
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
