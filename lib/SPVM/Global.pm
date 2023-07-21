@@ -102,19 +102,9 @@ sub init_global {
       $builder_runtime->load_dynamic_lib_native($native_compiler_module, __FILE__, __LINE__);
     }
     
-    # Build an environment
     my $builder_env = SPVM::Builder::Env->new($builder_compiler);
     
-    # Set command line info
     my $builder_stack = $builder_env->new_stack;
-    
-    $builder_env->set_command_info_program_name($builder_stack, $0);
-    $builder_env->set_command_info_argv($builder_stack, \@ARGV);
-    my $base_time = $^T + 0; # For Perl 5.8.9
-    $builder_env->set_command_info_base_time($builder_stack, $base_time);
-    
-    # Call INIT blocks
-    $builder_env->call_init_methods($builder_stack);
     
     my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
     
