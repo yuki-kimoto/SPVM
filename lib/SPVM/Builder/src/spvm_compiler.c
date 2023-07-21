@@ -465,15 +465,10 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     SPVM_COMPILER_set_default_loaded_module_files(compiler);
   }
   
-  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
-  int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
-  
-  //yacc/bison debug mode. The default is off.
-  SPVM_yydebug = 0;
-  
 #ifdef SPVM_DEBUG_YACC
-  // Turn on yacc/bison debug mode
   SPVM_yydebug = 1;
+#else
+  SPVM_yydebug = 0;
 #endif
 
   compiler->parse_not_started = 1;
@@ -494,6 +489,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   if (basic_type_name) {
     SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
     basic_type_name = basic_type_name_string->value;
+    const char* start_file = SPVM_COMPILER_get_start_file(compiler);
+    int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
+    
     SPVM_COMPILER_use(compiler, basic_type_name, start_file, start_line);
   }
   
