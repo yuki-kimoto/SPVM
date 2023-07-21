@@ -69,6 +69,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   compiler->ops = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  compiler->op_use_stack = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   compiler->runtime = SPVM_RUNTIME_new();
   
@@ -119,7 +120,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   int32_t compile_start_memory_blocks_count_tmp = compiler->global_allocator->memory_blocks_count_tmp;
   
-  compiler->op_use_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   
   compiler->basic_types_base_id = compiler->basic_types->length;
@@ -558,9 +558,7 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
     }
   }
   
-  // Free
-  SPVM_LIST_free(compiler->op_use_stack);
-  compiler->op_use_stack = NULL;
+  compiler->op_use_stack->length = 0;
   
   SPVM_LIST_free(compiler->op_types);
   compiler->op_types = NULL;
