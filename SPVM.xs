@@ -1174,24 +1174,6 @@ _xs_call_method(...)
     
     HV* hv_invocant = (HV*)SvRV(sv_invocant);
     
-    // Env
-    SV** sv_env_ptr = hv_fetch(hv_invocant, "env", strlen("env"), 0);
-    SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-    SPVM_ENV* object_env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
-    
-    if (!(object_env == env)) {
-      croak("The env of the argument is differnt from the env of the invocant\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
-    // Stack
-    SV** sv_stack_ptr = hv_fetch(hv_invocant, "stack", strlen("stack"), 0);
-    SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
-    SPVM_VALUE* object_stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
-    
-    if (!(object_stack == stack)) {
-      croak("The stack of the argument is differnt from the stack of the invocant\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
-    }
-    
     void* object = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_invocant);
     basic_type_name = env->get_object_basic_type_name(env, stack, object);
     
