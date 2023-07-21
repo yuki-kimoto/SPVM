@@ -162,4 +162,6 @@ int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler);
 
+void SPVM_COMPILER_check_basic_type_ids(SPVM_COMPILER* compiler);
+
 #endif
