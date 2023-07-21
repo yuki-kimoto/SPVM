@@ -72,7 +72,7 @@ struct spvm_compiler {
   int8_t before_token_is_arrow;
   
   // Parsing is not started
-  int8_t parse_not_started;
+  int8_t parse_started;
   
   // State of variable expansion
   int8_t var_expansion_state;

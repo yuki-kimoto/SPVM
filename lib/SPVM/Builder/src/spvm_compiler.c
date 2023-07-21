@@ -465,7 +465,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     SPVM_COMPILER_set_default_loaded_module_files(compiler);
   }
   
-  compiler->parse_not_started = 1;
+  compiler->parse_started = 0;
   
   // Initialize error messages
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);

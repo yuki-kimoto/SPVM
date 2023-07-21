@@ -59,8 +59,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t var_expansion_state = compiler->var_expansion_state;
   compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
   
-  int32_t parse_not_started = compiler->parse_not_started;
-  compiler->parse_not_started = 0;
+  int32_t parse_started = compiler->parse_started;
+  compiler->parse_started = 1;
   
   while(1) {
     
@@ -69,8 +69,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     if (!compiler->current_source || source_index >= compiler->current_source_length) {
       
       // End of file
-      if (!parse_not_started) {
-        compiler->parse_not_started = 1;
+      if (parse_started) {
+        compiler->parse_started = 0;
         SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END_OF_FILE);
         yylvalp->opval = op;
         return END_OF_FILE;
@@ -2103,7 +2103,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(symbol_name, "__END__") == 0) {
                   compiler->ch_ptr = compiler->current_source + compiler->current_source_length;
                   compiler->before_ch_ptr = compiler->ch_ptr;
-                  compiler->parse_not_started = 1;
+                  compiler->parse_started = 0;
                   SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END_OF_FILE);
                   yylvalp->opval = op;
                   keyword_token = END_OF_FILE;
