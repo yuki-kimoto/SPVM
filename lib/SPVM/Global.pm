@@ -18,7 +18,6 @@ use SPVM 'Native::Env';
 use SPVM 'Native::Stack';
 
 our $BUILDER;
-our $BUILDER_COMPILER;
 our $COMPILER;
 our $ENV;
 our $STACK;
@@ -32,7 +31,6 @@ END {
   $STACK = undef;
   $ENV = undef;
   $COMPILER = undef;
-  $BUILDER_COMPILER = undef;
   $BUILDER = undef;
 }
 
@@ -81,7 +79,7 @@ sub init_global {
       $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
     }
     
-    $BUILDER_COMPILER = SPVM::Builder::Compiler->new(
+    my $builder_compiler = SPVM::Builder::Compiler->new(
       include_dirs => $BUILDER->include_dirs
     );
     
@@ -99,13 +97,13 @@ sub init_global {
     );
     
     for my $native_compiler_module (@native_compiler_modules) {
-      $BUILDER_COMPILER->compile_with_exit($native_compiler_module, __FILE__, __LINE__);
-      my $builder_runtime = $BUILDER_COMPILER->get_runtime;
+      $builder_compiler->compile_with_exit($native_compiler_module, __FILE__, __LINE__);
+      my $builder_runtime = $builder_compiler->get_runtime;
       $builder_runtime->load_dynamic_lib_native($native_compiler_module, __FILE__, __LINE__);
     }
     
     # Build an environment
-    my $builder_env = SPVM::Builder::Env->new($BUILDER_COMPILER);
+    my $builder_env = SPVM::Builder::Env->new($builder_compiler);
     
     # Set command line info
     my $builder_stack = $builder_env->new_stack;
