@@ -176,6 +176,30 @@ sub get_native_method_addresses {
   return $native_method_addresses;
 }
 
+sub get_native_method_addresses_v2 {
+  my ($env, $stack, $basic_type_name) = @_;
+  
+  my $category = 'native';
+  my $method_names = SPVM::Builder->get_method_names($env, $stack, $basic_type_name, $category);
+  
+  my $native_method_addresses = {};
+  if (@$method_names) {
+    my $module_file = SPVM::Builder->get_module_file($env, $stack, $basic_type_name);
+    my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
+    
+    if (-f $dynamic_lib_file) {
+      my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $category);
+      
+      for my $method_name (sort keys %$method_addresses) {
+        my $cfunc_address = $method_addresses->{$method_name};
+        $native_method_addresses->{$method_name} = $cfunc_address;
+      }
+    }
+  }
+  
+  return $native_method_addresses;
+}
+
 sub load_dynamic_lib {
   my ($runtime, $basic_type, $api) = @_;
     
