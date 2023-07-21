@@ -4366,6 +4366,93 @@ new_native_compiler(...)
 }
 
 SV*
+new_env_and_stack_for_bootstrap(...)
+  PPCODE:
+{
+  int32_t error_id = 0;
+  
+  SV* sv_class = ST(0);
+  
+  SV* sv_basic_type_names = ST(1);
+  
+  AV* av_basic_type_names;
+  if (SvOK(sv_basic_type_names)) {
+    av_basic_type_names = (AV*)SvRV(sv_basic_type_names);
+  }
+  else {
+    av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
+  }
+  
+  SV* sv_start_file = ST(2);
+  const char* start_file = SvPV_nolen(sv_start_file);
+  
+  SV* sv_start_line = ST(3);
+  int32_t start_line = (int32_t)SvIV(sv_start_line);
+  
+  SV* sv_include_dirs = ST(4);
+  
+  AV* av_include_dirs;
+  if (SvOK(sv_include_dirs)) {
+    av_include_dirs = (AV*)SvRV(sv_include_dirs);
+  }
+  else {
+    av_include_dirs = (AV*)sv_2mortal((SV*)newAV());
+  }
+  
+  SPVM_ENV* env_api = SPVM_API_new_env();
+  
+  void* compiler = env_api->api->compiler->new_instance();
+  
+  env_api->api->compiler->set_start_file(compiler, start_file);
+  
+  env_api->api->compiler->set_start_line(compiler, start_line);
+  
+  int32_t av_include_dirs_length = (int32_t)av_len(av_include_dirs) + 1;
+  for (int32_t i = 0; i < av_include_dirs_length; i++) {
+    SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
+    SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
+    char* include_dir = SvPV_nolen(sv_include_dir);
+    env_api->api->compiler->add_include_dir(compiler, include_dir);
+  }
+  
+  int32_t av_basic_type_names_length = (int32_t)av_len(av_basic_type_names) + 1;
+  for (int32_t i = 0; i < av_basic_type_names_length; i++) {
+    SV** sv_basic_type_name_ptr = av_fetch(av_basic_type_names, i, 0);
+    SV* sv_basic_type_name = sv_basic_type_name_ptr ? *sv_basic_type_name_ptr : &PL_sv_undef;
+    const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+    
+    error_id = env_api->api->compiler->compile(compiler, basic_type_name);
+    if (error_id) {
+      int32_t error_messages_length = env_api->api->compiler->get_error_messages_length(compiler);
+      
+      for (int32_t i = 0; i < error_messages_length; i++) {
+        const char* error_message = env_api->api->compiler->get_error_message(compiler, i);
+        fprintf(stderr, "[Compile Error]%s", error_message);
+      }
+      croak("[Compile Error]");
+    }
+  }
+  
+  SPVM_ENV* env = env_api->new_env();
+  
+  env->compiler = compiler;
+  
+  env->runtime = env_api->api->compiler->get_runtime(compiler);
+  
+  SPVM_VALUE* stack = env->new_stack(env);
+  
+  SV* sv_env = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ env, "SPVM::Builder::Env");
+  
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ env, "SPVM::Builder::Stack");
+  
+  env_api->free_env(env_api);
+  
+  XPUSHs(sv_env);
+  XPUSHs(sv_stack);
+  XSRETURN(2);
+}
+
+SV*
 new_native_env(...)
   PPCODE:
 {
