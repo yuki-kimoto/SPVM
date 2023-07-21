@@ -340,75 +340,7 @@ void SPVM_COMPILER_check_basic_type_ids(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_check_basic_type_id(compiler, SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS);
 }
 
-int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
-  
-  compiler->basic_types_base_id = compiler->basic_types->length;
-  
-  if (compiler->basic_types->length == 0) {
-    SPVM_COMPILER_add_basic_types(compiler);
-    
-    SPVM_COMPILER_set_default_loaded_module_files(compiler);
-  }
-  
-  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
-  int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
-  
-  //yacc/bison debug mode. The default is off.
-  SPVM_yydebug = 0;
-  
-#ifdef SPVM_DEBUG_YACC
-  // Turn on yacc/bison debug mode
-  SPVM_yydebug = 1;
-#endif
-
-  compiler->parse_not_started = 1;
- 
-  // Initialize error messages
-  compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  
-  int32_t error_id = 0;
-  
-  int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-  
-  compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  
-  SPVM_COMPILER_use_default_loaded_modules(compiler);
-  
-  if (basic_type_name) {
-    SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
-    basic_type_name = basic_type_name_string->value;
-    SPVM_COMPILER_use(compiler, basic_type_name, start_file, start_line);
-  }
-  
-  int32_t parse_error_flag = SPVM_yyparse(compiler);
-  
-  SPVM_COMPILER_check_basic_type_ids(compiler);
-  
-  if (parse_error_flag) {
-    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-  }
-  else {
-    if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-    else {
-      SPVM_CHECK_check(compiler);
-      if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-        error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-      }
-      else {
-        int32_t build_opcode_list_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
-        SPVM_OPCODE_BUILDER_build_opcode_list(compiler);
-        assert(compiler->allocator->memory_blocks_count_tmp == build_opcode_list_start_memory_blocks_count_tmp);
-        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-          error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-        }
-      }
-    }
-  }
-  
+void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
   for (int32_t i = 0; i < compiler->ops->length; i++) {
     SPVM_OP* op = SPVM_LIST_get(compiler->ops, i);
     int32_t op_id = op->id;
@@ -521,6 +453,78 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   SPVM_LIST_free(compiler->ops);
   compiler->ops = NULL;
+}
+
+int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
+  
+  compiler->basic_types_base_id = compiler->basic_types->length;
+  
+  if (compiler->basic_types->length == 0) {
+    SPVM_COMPILER_add_basic_types(compiler);
+    
+    SPVM_COMPILER_set_default_loaded_module_files(compiler);
+  }
+  
+  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
+  int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
+  
+  //yacc/bison debug mode. The default is off.
+  SPVM_yydebug = 0;
+  
+#ifdef SPVM_DEBUG_YACC
+  // Turn on yacc/bison debug mode
+  SPVM_yydebug = 1;
+#endif
+
+  compiler->parse_not_started = 1;
+ 
+  // Initialize error messages
+  compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
+  
+  int32_t error_id = 0;
+  
+  int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
+  
+  compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  
+  SPVM_COMPILER_use_default_loaded_modules(compiler);
+  
+  if (basic_type_name) {
+    SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
+    basic_type_name = basic_type_name_string->value;
+    SPVM_COMPILER_use(compiler, basic_type_name, start_file, start_line);
+  }
+  
+  int32_t parse_error_flag = SPVM_yyparse(compiler);
+  
+  SPVM_COMPILER_check_basic_type_ids(compiler);
+  
+  if (parse_error_flag) {
+    error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+  else {
+    if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    }
+    else {
+      SPVM_CHECK_check(compiler);
+      if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+        error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+      }
+      else {
+        int32_t build_opcode_list_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
+        SPVM_OPCODE_BUILDER_build_opcode_list(compiler);
+        assert(compiler->allocator->memory_blocks_count_tmp == build_opcode_list_start_memory_blocks_count_tmp);
+        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+          error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+        }
+      }
+    }
+  }
+  
+  SPVM_COMPILER_free_memory_each_compile(compiler);
   
   assert(compiler->allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
