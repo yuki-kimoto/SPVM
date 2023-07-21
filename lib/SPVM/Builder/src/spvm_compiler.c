@@ -457,15 +457,6 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
-  compiler->basic_types_base_id = compiler->basic_types->length;
-  
-  if (compiler->basic_types->length == 0) {
-    SPVM_COMPILER_add_basic_types(compiler);
-    
-    SPVM_COMPILER_set_default_loaded_module_files(compiler);
-  }
-  
-  // Initialize error messages
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
   
   int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
@@ -473,6 +464,14 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   compiler->ops = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  
+  compiler->basic_types_base_id = compiler->basic_types->length;
+  
+  if (compiler->basic_types->length == 0) {
+    SPVM_COMPILER_add_basic_types(compiler);
+    
+    SPVM_COMPILER_set_default_loaded_module_files(compiler);
+  }
   
   SPVM_COMPILER_use_default_loaded_modules(compiler);
   
