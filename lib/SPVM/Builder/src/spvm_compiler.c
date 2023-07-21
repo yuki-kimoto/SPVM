@@ -175,7 +175,7 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_constant_string_sy
   return new_name;
 }
 
-int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
+int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
   // Use automatically loaded classes
   SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
   SPVM_COMPILER_use(compiler, "Short", "Short", 0);
@@ -191,133 +191,136 @@ int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_use(compiler, "Address", "Address", 0);
 }
 
+void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler) {
+  // Add Bool module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Bool";
+    module_file->rel_file = "Bool.spvm";
+    module_file->content = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Error module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Error";
+    module_file->rel_file = "Error.spvm";
+    module_file->content = "class Error;";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Error::System module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Error::System";
+    module_file->rel_file = "Error/System.spvm";
+    module_file->content = "class Error::System extends Error;";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Error::NotSupported module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Error::NotSupported";
+    module_file->rel_file = "Error/NotSupported.spvm";
+    module_file->content = "class Error::NotSupported extends Error;";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Byte module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Byte";
+    module_file->rel_file = "Byte.spvm";
+    module_file->content = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Short module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Short";
+    module_file->rel_file = "Short.spvm";
+    module_file->content = "class Short {\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Int module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Int";
+    module_file->rel_file = "Int.spvm";
+    module_file->content = "class Int {\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Long module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Long";
+    module_file->rel_file = "Long.spvm";
+    module_file->content = "class Long {\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Float module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Float";
+    module_file->rel_file = "Float.spvm";
+    module_file->content = "class Float {\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Double module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Double";
+    module_file->rel_file = "Double.spvm";
+    module_file->content = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add CommandInfo module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "CommandInfo";
+    module_file->rel_file = "CommandInfo.spvm";
+    module_file->content = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+  
+  // Add Address module file
+  {
+    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+    module_file->module_name = "Address";
+    module_file->rel_file = "Address.spvm";
+    module_file->content = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
+    module_file->content_length = strlen(module_file->content);
+    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  }
+}
+
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
   compiler->basic_types_base_id = compiler->basic_types->length;
   
   if (compiler->basic_types->length == 0) {
-    // Add basic types
     SPVM_COMPILER_add_basic_types(compiler);
     
-    // Add Bool module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Bool";
-      module_file->rel_file = "Bool.spvm";
-      module_file->content = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Error module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Error";
-      module_file->rel_file = "Error.spvm";
-      module_file->content = "class Error;";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Error::System module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Error::System";
-      module_file->rel_file = "Error/System.spvm";
-      module_file->content = "class Error::System extends Error;";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Error::NotSupported module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Error::NotSupported";
-      module_file->rel_file = "Error/NotSupported.spvm";
-      module_file->content = "class Error::NotSupported extends Error;";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Byte module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Byte";
-      module_file->rel_file = "Byte.spvm";
-      module_file->content = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Short module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Short";
-      module_file->rel_file = "Short.spvm";
-      module_file->content = "class Short {\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Int module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Int";
-      module_file->rel_file = "Int.spvm";
-      module_file->content = "class Int {\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Long module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Long";
-      module_file->rel_file = "Long.spvm";
-      module_file->content = "class Long {\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Float module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Float";
-      module_file->rel_file = "Float.spvm";
-      module_file->content = "class Float {\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Double module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Double";
-      module_file->rel_file = "Double.spvm";
-      module_file->content = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add CommandInfo module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "CommandInfo";
-      module_file->rel_file = "CommandInfo.spvm";
-      module_file->content = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
-    
-    // Add Address module file
-    {
-      SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-      module_file->module_name = "Address";
-      module_file->rel_file = "Address.spvm";
-      module_file->content = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
-      module_file->content_length = strlen(module_file->content);
-      SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
-    }
+    SPVM_COMPILER_set_default_loaded_module_files(compiler);
   }
   
   const char* start_file = SPVM_COMPILER_get_start_file(compiler);
@@ -344,7 +347,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   
-  SPVM_COMPILER_use_default_loaded_classes(compiler);
+  SPVM_COMPILER_use_default_loaded_modules(compiler);
   
   // Use the class that is specified at the argument
   if (basic_type_name) {
