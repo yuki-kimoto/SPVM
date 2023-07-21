@@ -21,7 +21,6 @@ our $BUILDER;
 our $BUILDER_COMPILER;
 our $BUILDER_ENV;
 our $BUILDER_STACK;
-our $BUILDER_API;
 our $COMPILER;
 our $ENV;
 our $STACK;
@@ -35,7 +34,6 @@ END {
   $STACK = undef;
   $ENV = undef;
   $COMPILER = undef;
-  $BUILDER_API = undef;
   if ($BUILDER_ENV) {
     $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
   }
@@ -127,9 +125,9 @@ sub init_global {
     # Call INIT blocks
     $BUILDER_ENV->call_init_methods($BUILDER_STACK);
     
-    $BUILDER_API = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
+    my $builder_api = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
     
-    $COMPILER = $BUILDER_API->class("Native::Compiler")->new;
+    $COMPILER = $builder_api->class("Native::Compiler")->new;
     for my $include_dir (@{$BUILDER->include_dirs}) {
       $COMPILER->add_include_dir($include_dir);
     }
@@ -144,7 +142,9 @@ sub init_api {
   
   &init_global();
   
-  $ENV = $BUILDER_API->class("Native::Env")->new($COMPILER);
+  my $builder_api = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
+    
+  $ENV = $builder_api->class("Native::Env")->new($COMPILER);
   
   $STACK = $ENV->new_stack;
   
