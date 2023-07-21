@@ -175,7 +175,7 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_constant_string_sy
   return new_name;
 }
 
-int32_t SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
+int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
   // Use automatically loaded classes
   SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
   SPVM_COMPILER_use(compiler, "Short", "Short", 0);
@@ -344,7 +344,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   compiler->op_use_stack = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   compiler->op_types = SPVM_LIST_new(compiler->allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   
-  SPVM_COMPILER_use_default_loaded_classes(compiler);
+  SPVM_COMPILER_use_default_loaded_modules(compiler);
   
   // Use the class that is specified at the argument
   if (basic_type_name) {
