@@ -170,9 +170,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
         int32_t build_opcode_list_start_memory_blocks_count_tmp = compiler->global_allocator->memory_blocks_count_tmp;
         SPVM_OPCODE_BUILDER_build_opcode_list(compiler);
         assert(compiler->global_allocator->memory_blocks_count_tmp == build_opcode_list_start_memory_blocks_count_tmp);
-        if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-          error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-        }
+        assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }
     }
   }
