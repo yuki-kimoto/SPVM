@@ -135,11 +135,7 @@ sub init_api {
   
   &init_global();
   
-  my $builder_env = SPVM::Builder::Env->new($BUILDER_COMPILER);
-  
-  my $builder_stack = $builder_env->new_stack;
-  
-  my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
+  my $builder_api = SPVM::ExchangeAPI->new(env => $COMPILER->{env}, stack => $COMPILER->{stack});
   
   $ENV = $builder_api->class("Native::Env")->new($COMPILER);
   
