@@ -60,13 +60,13 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 128);
   
-  // Eternal information
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   compiler->each_compile_allocators = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   compiler->runtime = SPVM_RUNTIME_new();
   
@@ -74,6 +74,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
+  
+  SPVM_COMPILER_clear_error_messages(compiler);
   
   const char* start_file = SPVM_COMPILER_get_start_file(compiler);
   
@@ -111,7 +113,7 @@ int32_t SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
-  compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  SPVM_COMPILER_clear_error_messages(compiler);
   
   int32_t compile_start_memory_blocks_count_tmp = compiler->global_allocator->memory_blocks_count_tmp;
   
@@ -827,7 +829,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* error_message_temp
   }
   va_end(args);
   
-  char* error_message = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, error_message_length + 1);
+  char* error_message = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->error_message_allocator, error_message_length + 1);
   
   va_start(args, error_message_template);
   vsprintf(error_message, error_message_template, args);

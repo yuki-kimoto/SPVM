@@ -1,3 +1,7 @@
+0.989027 2023-07-22
+  [Bug Fix]
+    * A bug fixed: The error messages of the compiler had not been freeded properly.
+    
 0.989026 2023-07-21
   [Incompatible Changes]
     * The __module_name field in the SPVM::ExchangAPI::Class was renamed to the __name field.
