@@ -125,6 +125,10 @@ sub init_global {
     $COMPILER->compile(undef);
     my $runtime = $COMPILER->get_runtime;
     
+    $ENV = $builder_api->class("Native::Env")->new($COMPILER);
+    
+    $STACK = $ENV->new_stack;
+    
     $INIT_GLOBAL = 1;
   }
 }
@@ -133,11 +137,7 @@ sub init_api {
   
   &init_global();
   
-  my $builder_api = SPVM::ExchangeAPI->new(env => $COMPILER->{env}, stack => $COMPILER->{stack});
-  
-  $ENV = $builder_api->class("Native::Env")->new($COMPILER);
-  
-  $STACK = $ENV->new_stack;
+  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
   
   $ENV->set_command_info_program_name($STACK, $0);
   
@@ -146,8 +146,6 @@ sub init_api {
   $ENV->set_command_info_base_time($STACK, $base_time);
   
   $ENV->call_init_methods($STACK);
-  
-  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
 }
 
 sub load_dynamic_lib {
