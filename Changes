@@ -1,4 +1,4 @@
-0.989026 2023-07-18
+0.989026 2023-07-21
   [Incompatible Changes]
     * The __module_name field in the SPVM::ExchangAPI::Class was renamed to the __name field.
     
