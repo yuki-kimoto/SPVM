@@ -465,18 +465,10 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     SPVM_COMPILER_set_default_loaded_module_files(compiler);
   }
   
-#ifdef SPVM_DEBUG_YACC
-  SPVM_yydebug = 1;
-#else
-  SPVM_yydebug = 0;
-#endif
-
   compiler->parse_not_started = 1;
- 
+  
   // Initialize error messages
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->allocator, 0);
-  
-  int32_t error_id = 0;
   
   int32_t compile_start_memory_blocks_count_tmp = compiler->allocator->memory_blocks_count_tmp;
   
@@ -495,9 +487,17 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     SPVM_COMPILER_use(compiler, basic_type_name, start_file, start_line);
   }
   
+#ifdef SPVM_DEBUG_YACC
+  SPVM_yydebug = 1;
+#else
+  SPVM_yydebug = 0;
+#endif
+
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   
   SPVM_COMPILER_check_basic_type_ids(compiler);
+  
+  int32_t error_id = 0;
   
   if (parse_error_flag) {
     error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
