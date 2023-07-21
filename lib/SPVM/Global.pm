@@ -19,8 +19,6 @@ use SPVM 'Native::Stack';
 
 our $BUILDER;
 our $BUILDER_COMPILER;
-our $BUILDER_ENV;
-our $BUILDER_STACK;
 our $COMPILER;
 our $ENV;
 our $STACK;
@@ -34,11 +32,6 @@ END {
   $STACK = undef;
   $ENV = undef;
   $COMPILER = undef;
-  if ($BUILDER_ENV) {
-    $BUILDER_ENV->destroy_class_vars($BUILDER_STACK);
-  }
-  $BUILDER_STACK = undef;
-  $BUILDER_ENV = undef;
   $BUILDER_COMPILER = undef;
   $BUILDER = undef;
 }
@@ -112,20 +105,20 @@ sub init_global {
     }
     
     # Build an environment
-    $BUILDER_ENV = SPVM::Builder::Env->new($BUILDER_COMPILER);
+    my $builder_env = SPVM::Builder::Env->new($BUILDER_COMPILER);
     
     # Set command line info
-    $BUILDER_STACK = $BUILDER_ENV->new_stack;
+    my $builder_stack = $builder_env->new_stack;
     
-    $BUILDER_ENV->set_command_info_program_name($BUILDER_STACK, $0);
-    $BUILDER_ENV->set_command_info_argv($BUILDER_STACK, \@ARGV);
+    $builder_env->set_command_info_program_name($builder_stack, $0);
+    $builder_env->set_command_info_argv($builder_stack, \@ARGV);
     my $base_time = $^T + 0; # For Perl 5.8.9
-    $BUILDER_ENV->set_command_info_base_time($BUILDER_STACK, $base_time);
+    $builder_env->set_command_info_base_time($builder_stack, $base_time);
     
     # Call INIT blocks
-    $BUILDER_ENV->call_init_methods($BUILDER_STACK);
+    $builder_env->call_init_methods($builder_stack);
     
-    my $builder_api = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
+    my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
     
     $COMPILER = $builder_api->class("Native::Compiler")->new;
     for my $include_dir (@{$BUILDER->include_dirs}) {
@@ -142,8 +135,12 @@ sub init_api {
   
   &init_global();
   
-  my $builder_api = SPVM::ExchangeAPI->new(env => $BUILDER_ENV, stack => $BUILDER_STACK);
-    
+  my $builder_env = SPVM::Builder::Env->new($BUILDER_COMPILER);
+  
+  my $builder_stack = $builder_env->new_stack;
+  
+  my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
+  
   $ENV = $builder_api->class("Native::Env")->new($COMPILER);
   
   $STACK = $ENV->new_stack;
