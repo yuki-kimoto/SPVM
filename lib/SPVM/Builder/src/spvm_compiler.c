@@ -95,6 +95,20 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   compiler->global_allocator = NULL;
 }
 
+int32_t SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler) {
+  
+  SPVM_LIST* error_messages = compiler->error_messages;
+  
+  for (int32_t i = 0; i < error_messages->length; i++) {
+    const char* error_message = SPVM_LIST_get(error_messages, i);
+    
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->error_message_allocator, (void*)error_message);
+    error_message = NULL;
+  }
+  
+  error_messages->length = 0;
+}
+
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
