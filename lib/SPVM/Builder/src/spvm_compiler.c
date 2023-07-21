@@ -491,7 +491,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   SPVM_yydebug = 0;
 #endif
 
-  compiler->parse_started = 0;
+  compiler->not_end_of_file = 0;
   
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   
