@@ -482,6 +482,11 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, use);
         break;
       }
+      case SPVM_OP_C_ID_ALLOW: {
+        SPVM_ALLOW* allow = op->uv.allow;
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, allow);
+        break;
+      }
       case SPVM_OP_C_ID_INTERFACE: {
         SPVM_INTERFACE* interface = op->uv.interface;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, interface);
