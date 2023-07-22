@@ -496,7 +496,7 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
         SPVM_CLASS_VAR_ACCESS* class_var_access = op->uv.class_var_access;
         class_var_access->op_name = NULL;
         class_var_access->class_var = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, class_var_access);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, class_var_access);
         break;
       }
       case SPVM_OP_C_ID_CONSTANT: {

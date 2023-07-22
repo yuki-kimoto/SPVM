@@ -7,5 +7,5 @@
 #include "spvm_compiler.h"
 
 SPVM_CLASS_VAR_ACCESS* SPVM_CLASS_VAR_ACCESS_new(SPVM_COMPILER* compiler) {
-  return SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, sizeof(SPVM_CLASS_VAR_ACCESS));
+  return SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, sizeof(SPVM_CLASS_VAR_ACCESS));
 }
