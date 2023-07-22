@@ -1,6 +1,7 @@
-0.989027 2023-07-22
+0.989027 2023-07-23
   [Bug Fix]
     * A bug fixed: The error messages of the compiler had not been freeded properly.
+    * A bug fixed: The each time compile memory had not been freeded when the compilation failed.
     
 0.989026 2023-07-21
   [Incompatible Changes]
