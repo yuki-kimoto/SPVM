@@ -95,6 +95,11 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
     compiler->runtime = NULL;
   }
   
+  for (int32_t i = 0; i < compiler->each_compile_allocators->length; i++) {
+    SPVM_ALLOCATOR* each_compile_allocator = SPVM_LIST_get(compiler->each_compile_allocators, i);
+    SPVM_ALLOCATOR_free(each_compile_allocator);
+  }
+  
   SPVM_ALLOCATOR_free(compiler->error_message_allocator);
   compiler->error_message_allocator = NULL;
   
