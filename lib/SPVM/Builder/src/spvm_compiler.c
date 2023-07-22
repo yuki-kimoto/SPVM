@@ -164,7 +164,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     }
   }
   
-  SPVM_COMPILER_free_memory_each_compile(compiler);
+  SPVM_COMPILER_free_memory_tmp_each_compile(compiler);
   
   assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
@@ -463,7 +463,7 @@ void SPVM_COMPILER_assert_check_basic_type_id(SPVM_COMPILER* compiler, int32_t b
   }
 }
 
-void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
+void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
   for (int32_t i = 0; i < compiler->ops->length; i++) {
     SPVM_OP* op = SPVM_LIST_get(compiler->ops, i);
     int32_t op_id = op->id;
