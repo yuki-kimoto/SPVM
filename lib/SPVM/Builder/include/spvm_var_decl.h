@@ -20,6 +20,6 @@ struct spvm_var_decl {
 
 SPVM_VAR_DECL* SPVM_VAR_DECL_new();
 
-SPVM_VAR_DECL* SPVM_VAR_DECL_new_eternal(SPVM_COMPILER* compiler);
+SPVM_VAR_DECL* SPVM_VAR_DECL_new_arg(SPVM_COMPILER* compiler);
 
 #endif

@@ -3129,7 +3129,7 @@ SPVM_OP* SPVM_OP_new_op_var_decl(SPVM_COMPILER* compiler, const char* file, int3
 
 SPVM_OP* SPVM_OP_new_op_var_decl_eternal(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_OP* op_var_decl = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR_DECL, file, line);
-  SPVM_VAR_DECL* var_decl = SPVM_VAR_DECL_new_eternal(compiler);
+  SPVM_VAR_DECL* var_decl = SPVM_VAR_DECL_new_arg(compiler);
   
   op_var_decl->uv.var_decl = var_decl;
   var_decl->op_var_decl = op_var_decl;
