@@ -532,7 +532,7 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
         var->name = NULL;
         var->var_decl = NULL;
         var->call_method = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, var);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, var);
         break;
       }
       case SPVM_OP_C_ID_MY: {
