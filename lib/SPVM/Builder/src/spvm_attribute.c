@@ -34,5 +34,5 @@ const char* SPVM_ATTRIBUTE_get_name(SPVM_COMPILER* compiler, int32_t id) {
 }
 
 SPVM_ATTRIBUTE* SPVM_ATTRIBUTE_new(SPVM_COMPILER* compiler) {
-  return SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, sizeof(SPVM_ATTRIBUTE));
+  return SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, sizeof(SPVM_ATTRIBUTE));
 }
