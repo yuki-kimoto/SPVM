@@ -1578,7 +1578,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
 
 SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_attributes, SPVM_OP* op_optional_arg_default) {
   
-  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl_eternal(compiler, op_var->file, op_var->line);
+  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl_arg(compiler, op_var->file, op_var->line);
   
   op_var_decl->uv.var_decl->is_arg = 1;
   
@@ -2064,7 +2064,7 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
       SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_new->file, op_new->line);
       SPVM_OP* op_var_invocant_new_name = SPVM_OP_new_op_name_tmp_var(compiler, op_new->file, op_new->line);
       SPVM_OP* op_var_invocant_new = SPVM_OP_new_op_var(compiler, op_var_invocant_new_name);
-      SPVM_OP* op_var_decl_invocant_new = SPVM_OP_new_op_var_decl_eternal(compiler, op_new->file, op_new->line);
+      SPVM_OP* op_var_decl_invocant_new = SPVM_OP_new_op_var_decl_arg(compiler, op_new->file, op_new->line);
       op_var_invocant_new = SPVM_OP_build_var_decl(compiler, op_var_decl_invocant_new, op_var_invocant_new, NULL, NULL);
       SPVM_OP_build_assign(compiler, op_assign_new, op_var_invocant_new, op_new);
       SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
@@ -2153,7 +2153,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
     // my $first_element = FIRST_ELEMENT;
     SPVM_OP* op_var_first_element_name = SPVM_OP_new_op_name_tmp_var(compiler, op_array_init->file, op_array_init->line);
     SPVM_OP* op_var_first_element = SPVM_OP_new_op_var(compiler, op_var_first_element_name);
-    SPVM_OP* op_var_decl_first_element = SPVM_OP_new_op_var_decl_eternal(compiler, op_array_init->file, op_array_init->line);
+    SPVM_OP* op_var_decl_first_element = SPVM_OP_new_op_var_decl_arg(compiler, op_array_init->file, op_array_init->line);
     op_var_first_element = SPVM_OP_build_var_decl(compiler, op_var_decl_first_element, op_var_first_element, NULL, NULL);
     SPVM_OP* op_assign_first_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_array_init->file, op_array_init->line);
     SPVM_OP_cut_op(compiler, op_first_element);
@@ -2167,7 +2167,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
     SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_array_init->file, op_array_init->line);
     SPVM_OP* op_var_array_new_name = SPVM_OP_new_op_name_tmp_var(compiler, op_array_init->file, op_array_init->line);
     SPVM_OP* op_var_array_new = SPVM_OP_new_op_var(compiler, op_var_array_new_name);
-    SPVM_OP* op_var_decl_array_new = SPVM_OP_new_op_var_decl_eternal(compiler, op_array_init->file, op_array_init->line);
+    SPVM_OP* op_var_decl_array_new = SPVM_OP_new_op_var_decl_arg(compiler, op_array_init->file, op_array_init->line);
     op_var_array_new = SPVM_OP_build_var_decl(compiler, op_var_decl_array_new, op_var_array_new, NULL, NULL);
     SPVM_OP_build_assign(compiler, op_assign_new, op_var_array_new, op_new);
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
@@ -3127,7 +3127,7 @@ SPVM_OP* SPVM_OP_new_op_var_decl(SPVM_COMPILER* compiler, const char* file, int3
   return op_var_decl;
 }
 
-SPVM_OP* SPVM_OP_new_op_var_decl_eternal(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+SPVM_OP* SPVM_OP_new_op_var_decl_arg(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_OP* op_var_decl = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_VAR_DECL, file, line);
   SPVM_VAR_DECL* var_decl = SPVM_VAR_DECL_new_arg(compiler);
   
