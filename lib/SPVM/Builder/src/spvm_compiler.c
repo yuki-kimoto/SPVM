@@ -503,7 +503,7 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
         SPVM_CONSTANT* constant = op->uv.constant;
         constant->op_constant = NULL;
         constant->type = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, constant);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, constant);
         break;
       }
       case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
