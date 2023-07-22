@@ -4290,7 +4290,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = SPVM_TYPE_new_string_type(compiler);
       break;
     }
-    case SPVM_OP_C_ID_MY: {
+    case SPVM_OP_C_ID_VAR_DECL: {
       
       SPVM_VAR_DECL* var_decl = op->uv.var_decl;
       type = var_decl->type;

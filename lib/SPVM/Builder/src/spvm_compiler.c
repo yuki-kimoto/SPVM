@@ -535,7 +535,7 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, var);
         break;
       }
-      case SPVM_OP_C_ID_MY: {
+      case SPVM_OP_C_ID_VAR_DECL: {
         SPVM_VAR_DECL* var_decl = op->uv.var_decl;
         if (!var_decl->is_permanent) {
           var_decl->op_var_decl = NULL;
