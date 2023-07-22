@@ -537,7 +537,7 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
       }
       case SPVM_OP_C_ID_VAR_DECL: {
         SPVM_VAR_DECL* var_decl = op->uv.var_decl;
-        if (!var_decl->is_permanent) {
+        if (!var_decl->is_arg) {
           var_decl->op_var_decl = NULL;
           var_decl->type = NULL;
           var_decl->var = NULL;

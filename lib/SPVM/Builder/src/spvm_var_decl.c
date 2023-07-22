@@ -20,7 +20,7 @@ SPVM_VAR_DECL* SPVM_VAR_DECL_new_arg(SPVM_COMPILER* compiler) {
 
   var_decl->index = -1;
   var_decl->call_stack_index = -1;
-  var_decl->is_permanent = 1;
+  var_decl->is_arg = 1;
   
   return var_decl;
 }
