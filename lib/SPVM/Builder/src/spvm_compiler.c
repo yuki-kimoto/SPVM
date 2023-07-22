@@ -546,7 +546,7 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
         break;
       }
     }
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, op);
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, op);
   }
   
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
