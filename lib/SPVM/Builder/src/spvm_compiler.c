@@ -469,7 +469,7 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
     int32_t op_id = op->id;
     switch(op_id) {
       case SPVM_OP_C_ID_BLOCK: {
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, op->uv.block);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, op->uv.block);
         break;
       }
       case SPVM_OP_C_ID_ATTRIBUTE: {
