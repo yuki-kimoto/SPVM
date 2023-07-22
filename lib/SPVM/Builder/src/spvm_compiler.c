@@ -479,7 +479,7 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
       case SPVM_OP_C_ID_USE: {
         SPVM_USE* use = op->uv.use;
         use->alias_name = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, use);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, use);
         break;
       }
       case SPVM_OP_C_ID_ALLOW: {
