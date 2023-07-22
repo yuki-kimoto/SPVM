@@ -482,11 +482,6 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, use);
         break;
       }
-      case SPVM_OP_C_ID_ALLOW: {
-        SPVM_ALLOW* allow = op->uv.allow;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, allow);
-        break;
-      }
       case SPVM_OP_C_ID_INTERFACE: {
         SPVM_INTERFACE* interface = op->uv.interface;
         SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, interface);
@@ -549,11 +544,8 @@ void SPVM_COMPILER_free_memory_each_compile(SPVM_COMPILER* compiler) {
     SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, op);
   }
   
-  // Clear unused pointers
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    
-    SPVM_LIST_free(basic_type->allows);
     
     SPVM_LIST* methods = basic_type->methods;
     {
