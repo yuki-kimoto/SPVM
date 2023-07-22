@@ -104,6 +104,8 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
+  compiler->current_each_compile_allocator = SPVM_ALLOCATOR_new();
+  
   SPVM_COMPILER_clear_error_messages(compiler);
   
   int32_t compile_start_memory_blocks_count_tmp = compiler->global_allocator->memory_blocks_count_tmp;
@@ -166,7 +168,14 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   assert(compiler->global_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
-  if (!error_id) {
+  if (error_id) {
+    SPVM_ALLOCATOR_free(compiler->current_each_compile_allocator);
+    compiler->current_each_compile_allocator = NULL;
+  }
+  else {
+    SPVM_LIST_push(compiler->each_compile_allocators, compiler->current_each_compile_allocator);
+    compiler->current_each_compile_allocator = NULL;
+    
     SPVM_COMPILER_build_runtime(compiler);
   }
   
