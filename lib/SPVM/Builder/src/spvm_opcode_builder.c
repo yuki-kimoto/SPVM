@@ -294,37 +294,37 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
         goto END_OF_FUNCTION;
       }
       
-      SPVM_LIST* block_stack_call_stack_index_top = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* block_stack_call_stack_index_top = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* if_block_stack_goto_end_opcode_index = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* if_block_stack_goto_end_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* loop_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* loop_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* loop_block_stack_next_base = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* loop_block_stack_next_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* loop_block_stack_last_base = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* loop_block_stack_last_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* switch_stack_switch_info = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* switch_stack_switch_info = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* switch_block_stack_break_base = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* switch_block_stack_break_base = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* eval_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* eval_block_stack_goto_opcode_index = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* unresolved_if_eq_or_if_ne_opcode_index_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* unresolved_if_eq_or_if_ne_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* unresolved_last_opcode_index_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* unresolved_last_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* unresolved_break_opcode_index_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* unresolved_break_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* unresolved_next_opcode_index_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* unresolved_next_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* unresolved_return_opcode_index_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* unresolved_return_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* unresolved_goto_end_of_eval_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* unresolved_goto_end_of_eval_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* unresolved_goto_end_of_method_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* unresolved_goto_end_of_method_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* call_stack_indexs_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* call_stack_indexs_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       // Run OPs
       SPVM_OP* op_base = method->op_block;
