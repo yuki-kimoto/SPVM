@@ -552,10 +552,10 @@ const char* SPVM_TYPE_new_type_name_with_eternal_flag(SPVM_COMPILER* compiler, i
   
   char* type_name;
   if (is_permanent) {
-    type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, type_name_length + 1);
+    type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, type_name_length + 1);
   }
   else {
-    type_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, type_name_length + 1);
+    type_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, type_name_length + 1);
   }
   
   char* cur = type_name;
@@ -598,7 +598,7 @@ const char* SPVM_TYPE_new_type_name(SPVM_COMPILER* compiler, int32_t basic_type_
 
 SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
-  SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_TYPE));
+  SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_TYPE));
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   if (basic_type_id > 0) {
     type->unresolved_basic_type_name = basic_type->name;
@@ -612,14 +612,14 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t
 
 SPVM_TYPE* SPVM_TYPE_new_uninitialized(SPVM_COMPILER* compiler) {
   
-  SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_TYPE));
+  SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_TYPE));
   
   return type;
 }
 
 SPVM_TYPE* SPVM_TYPE_new_unresolved_type(SPVM_COMPILER* compiler, const char* unresolved_basic_type_name, int32_t dimension, int32_t flag) {
   
-  SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_TYPE));
+  SPVM_TYPE* type = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_TYPE));
   type->unresolved_basic_type_name = unresolved_basic_type_name;
   type->basic_type = SPVM_LIST_get(compiler->basic_types, SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN);
   type->dimension = dimension;
