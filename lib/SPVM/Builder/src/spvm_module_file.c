@@ -11,5 +11,5 @@
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_new(SPVM_COMPILER* compiler) {
   
-  return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_MODULE_FILE));
+  return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_MODULE_FILE));
 }
