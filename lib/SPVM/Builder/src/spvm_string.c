@@ -4,24 +4,22 @@
 #include "spvm_string.h"
 #include "spvm_allocator.h"
 #include "spvm_compiler.h"
-#include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_string_buffer.h"
 
 SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length) {
   
-  SPVM_STRING* found_string = SPVM_HASH_get(compiler->constant_string_symtable, value, length);
-  if (found_string) {
-    return found_string;
+  SPVM_STRING* found_constant_string = SPVM_HASH_get(compiler->constant_string_symtable, value, length);
+  if (found_constant_string) {
+    return found_constant_string;
   }
   else {
-    SPVM_STRING* string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_STRING));
-    string->value = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, length + 1);
-    memcpy((char*)string->value, value, length);
-    string->length = length;
+    SPVM_STRING* constant_string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_STRING));
+    constant_string->value = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, length + 1);
+    memcpy((char*)constant_string->value, value, length);
+    constant_string->length = length;
     
-    SPVM_HASH_set(compiler->constant_string_symtable, string->value, length, string);
+    SPVM_HASH_set(compiler->constant_string_symtable, constant_string->value, length, constant_string);
     
-    return string;
+    return constant_string;
   }
 }
