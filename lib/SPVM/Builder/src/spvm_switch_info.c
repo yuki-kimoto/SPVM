@@ -8,9 +8,9 @@
 #include "spvm_list.h"
 
 SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler) {
-  SPVM_SWITCH_INFO* switch_info = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_SWITCH_INFO));
+  SPVM_SWITCH_INFO* switch_info = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, sizeof(SPVM_SWITCH_INFO));
   
-  switch_info->case_infos = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  switch_info->case_infos = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   
   return switch_info;
 }
