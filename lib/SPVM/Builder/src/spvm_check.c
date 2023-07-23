@@ -148,10 +148,10 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     // Merge inheritance
-    SPVM_LIST* basic_type_merge_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+    SPVM_LIST* basic_type_merge_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
     SPVM_LIST_push(basic_type_merge_stack, basic_type);
     
-    SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+    SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
     
     SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
     while (1) {
@@ -260,7 +260,7 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
       }
       
       // Check type name
-      char* tail_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, 255);
+      char* tail_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, 255);
       switch (first_field_type->basic_type->id) {
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
           sprintf(tail_name, "_%db", fields->length);
@@ -308,10 +308,10 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
     
     {
       // Merge fields
-      SPVM_LIST* basic_type_merge_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* basic_type_merge_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       SPVM_LIST_push(basic_type_merge_stack, basic_type);
       
-      SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+      SPVM_LIST* merged_fields = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
       
       SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
       while (1) {
@@ -840,12 +840,12 @@ void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_clas
     // Basic type name
     // (end - start + 1) - $ - colon * 2
     int32_t basic_type_name_length = (colon_ptr - name + 1) - 1 - 2;
-    basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, basic_type_name_length + 1);
+    basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, basic_type_name_length + 1);
     memcpy(basic_type_name, name + 1, basic_type_name_length);
     
     // Base name($foo)
     int32_t base_name_length = 1 + (name + strlen(name) - 1) - colon_ptr;
-    base_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, base_name_length + 1);
+    base_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, base_name_length + 1);
     base_name[0] = '$';
     memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
@@ -1198,9 +1198,9 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
   // Loop block stack length
   int32_t loop_block_stack_length = 0;
   
-  SPVM_LIST* var_decl_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
-  SPVM_LIST* var_decl_scope_base_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
-  SPVM_LIST* op_switch_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  SPVM_LIST* var_decl_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  SPVM_LIST* var_decl_scope_base_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
+  SPVM_LIST* op_switch_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT);
   
   // Check tree
   SPVM_OP* op_root = method->op_block;
@@ -3414,7 +3414,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
 void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   // Block stack
-  SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   
   // Run OPs
   SPVM_OP* op_root = method->op_block;
@@ -3513,16 +3513,16 @@ void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compile
 
 void SPVM_CHECK_check_ast_check_call_stack_indexs(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
-  SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
-  SPVM_LIST* call_stack_byte_vars = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_short_vars = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_int_vars = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_long_vars = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_float_vars = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_double_vars = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_object_vars = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_ref_vars = SPVM_LIST_new(compiler->global_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* call_stack_byte_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* call_stack_short_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* call_stack_int_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* call_stack_long_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* call_stack_float_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* call_stack_double_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* call_stack_object_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* call_stack_ref_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
   // Run OPs
   SPVM_OP* op_root = method->op_block;
@@ -4071,7 +4071,7 @@ int32_t SPVM_CHECK_get_call_stack_index(SPVM_COMPILER* compiler, SPVM_LIST* call
 SPVM_OP* SPVM_CHECK_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_METHOD* method, const char* file, int32_t line) {
   
   // Temparary variable name
-  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, strlen("$.tmp_in_method2147483647") + 1);
+  char* name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, strlen("$.tmp_in_method2147483647") + 1);
   sprintf(name, "$.tmp_in_method%d", method->tmp_vars_length);
   method->tmp_vars_length++;
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, file, line);
