@@ -514,7 +514,7 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
       case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS: {
         SPVM_ARRAY_FIELD_ACCESS* array_field_access = op->uv.array_field_access;
         array_field_access->field = NULL;
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, array_field_access);
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, array_field_access);
         break;
       }
       case SPVM_OP_C_ID_FIELD_ACCESS: {
