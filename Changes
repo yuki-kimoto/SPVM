@@ -1,3 +1,23 @@
+0.989028 2023-07-24
+  [Incompatible Changes]
+    * The order of the compiler native APIs were changed.
+      0 new_instance,
+      1 free_instance,
+      2 get_start_line,
+      3 set_start_line,
+      4 get_start_file,
+      5 set_start_file,
+      6 get_include_dirs_length,
+      7 get_include_dir,
+      8 add_include_dir,
+      9 clear_include_dirs,
+      10 get_module_file,
+      11 set_module_file,
+      12 compile,
+      13 get_error_message,
+      14 get_error_messages_length,
+      15 get_runtime,
+    
 0.989027 2023-07-23
   [Bug Fix]
     * A bug fixed: The error messages of the compiler had not been freeded properly.

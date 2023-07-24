@@ -22,20 +22,19 @@ SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
   void* env_compiler_init[]  = {
     SPVM_API_COMPILER_new_instance,
     SPVM_API_COMPILER_free_instance,
-    SPVM_API_COMPILER_set_start_line,
     SPVM_API_COMPILER_get_start_line,
-    SPVM_API_COMPILER_set_start_file,
+    SPVM_API_COMPILER_set_start_line,
     SPVM_API_COMPILER_get_start_file,
-    SPVM_API_COMPILER_add_include_dir,
+    SPVM_API_COMPILER_set_start_file,
     SPVM_API_COMPILER_get_include_dirs_length,
     SPVM_API_COMPILER_get_include_dir,
-    SPVM_API_COMPILER_compile,
-    SPVM_API_COMPILER_get_error_messages_length,
-    SPVM_API_COMPILER_get_error_message,
-    NULL, // reserved12
+    SPVM_API_COMPILER_add_include_dir,
     SPVM_API_COMPILER_clear_include_dirs,
     SPVM_API_COMPILER_get_module_file,
     SPVM_API_COMPILER_set_module_file,
+    SPVM_API_COMPILER_compile,
+    SPVM_API_COMPILER_get_error_message,
+    SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_runtime,
   };
   SPVM_API_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));

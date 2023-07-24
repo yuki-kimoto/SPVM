@@ -26,24 +26,23 @@ SPVM Compiler Native APIs are the APIs to compile SPVM modules.
 
 Compiler native APIs have its IDs.
 
-  0  new_instance
-  1  free_instance
-  2  set_start_line
-  3  get_start_line
-  4  set_start_file
-  5  get_start_file
-  6  add_include_dir
-  7  get_include_dirs_length
-  8  get_include_dir
-  9  compile
-  10 get_error_messages_length
-  11 get_error_message
-  12 reserved12
-  13 clear_include_dirs
-  14 get_module_file
-  15 set_module_file
-  16 get_runtime
-  
+  0 new_instance,
+  1 free_instance,
+  2 get_start_line,
+  3 set_start_line,
+  4 get_start_file,
+  5 set_start_file,
+  6 get_include_dirs_length,
+  7 get_include_dir,
+  8 add_include_dir,
+  9 clear_include_dirs,
+  10 get_module_file,
+  11 set_module_file,
+  12 compile,
+  13 get_error_message,
+  14 get_error_messages_length,
+  15 get_runtime,
+
 =head1 Compiler Native APIs
 
 =head2 new_instance

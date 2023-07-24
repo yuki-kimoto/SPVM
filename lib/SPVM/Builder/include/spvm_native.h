@@ -335,20 +335,19 @@ struct spvm_api_string_buffer {
 struct spvm_api_compiler {
   void* (*new_instance)(void);
   void (*free_instance)(void* compiler);
-  void (*set_start_line)(void* compiler, int32_t start_line);
   int32_t (*get_start_line)(void* compiler);
-  void (*set_start_file)(void* compiler, const char* start_file);
+  void (*set_start_line)(void* compiler, int32_t start_line);
   const char* (*get_start_file)(void* compiler);
-  void (*add_include_dir)(void* compiler, const char* include_dir);
+  void (*set_start_file)(void* compiler, const char* start_file);
   int32_t (*get_include_dirs_length )(void* compiler);
   const char* (*get_include_dir )(void* compiler, int32_t index);
-  int32_t (*compile)(void* compiler, const char* basic_type_name);
-  int32_t (*get_error_messages_length)(void* compiler);
-  const char* (*get_error_message)(void* compiler, int32_t index);
-  void* reserved12;
+  void (*add_include_dir)(void* compiler, const char* include_dir);
   void (*clear_include_dirs)(void* compiler);
   void* (*get_module_file)(void* compiler, const char* module_name);
   void (*set_module_file)(void* compiler, const char* module_name, void* module_file);
+  int32_t (*compile)(void* compiler, const char* basic_type_name);
+  const char* (*get_error_message)(void* compiler, int32_t index);
+  int32_t (*get_error_messages_length)(void* compiler);
   void* (*get_runtime)(void* compiler);
 };
 
