@@ -12,6 +12,7 @@
 #include "spvm_compiler.h"
 #include "spvm_string.h"
 #include "spvm_module_file.h"
+#include "spvm_module_file.h"
 
 SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_api(void) {
   void* env_compiler_init[]  = {
@@ -41,92 +42,54 @@ void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api) {
 
 SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance(SPVM_COMPILER* compiler) {
   
-  SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-  
-  return module_file;
+  return SPVM_MODULE_FILE_new(compiler);
 }
 
 const char* SPVM_API_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
-  const char* module_name = module_file->module_name;
-  return module_name;
+  return SPVM_MODULE_FILE_get_module_name(compiler, module_file);
 }
 
 void SPVM_API_MODULE_FILE_set_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* module_name) {
-  if (module_name) {
-    SPVM_STRING* module_name_string = SPVM_STRING_new(compiler, module_name, strlen(module_name));
-    module_file->module_name = module_name_string->value;
-  }
-  else {
-    module_file->module_name = NULL;
-  }
+  SPVM_API_MODULE_FILE_set_module_name(compiler, module_file, module_name);
 }
 
 const char* SPVM_API_MODULE_FILE_get_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
-  const char* file = module_file->file;
-  return file;
+  return SPVM_API_MODULE_FILE_get_file(compiler, module_file);
 }
 
 void SPVM_API_MODULE_FILE_set_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* file) {
-  if (file) {
-    SPVM_STRING* file_string = SPVM_STRING_new(compiler, file, strlen(file));
-    module_file->file = file_string->value;
-  }
-  else {
-    module_file->file = NULL;
-  }
+  SPVM_MODULE_FILE_set_file(compiler, module_file, file);
 }
 
 const char* SPVM_API_MODULE_FILE_get_dir(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
-  const char* dir = module_file->dir;
-  return dir;
+  return SPVM_MODULE_FILE_get_dir(compiler, module_file);
 }
 
 void SPVM_API_MODULE_FILE_set_dir(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* dir) {
-  if (dir) {
-    SPVM_STRING* dir_string = SPVM_STRING_new(compiler, dir, strlen(dir));
-    module_file->dir = dir_string->value;
-  }
-  else {
-    module_file->dir = NULL;
-  }
+  SPVM_MODULE_FILE_set_dir(compiler, module_file, dir);
 }
 
 const char* SPVM_API_MODULE_FILE_get_rel_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
-  const char* rel_file = module_file->rel_file;
-  return rel_file;
+  return SPVM_MODULE_FILE_get_rel_file(compiler, module_file);
 }
 
 void SPVM_API_MODULE_FILE_set_rel_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* rel_file) {
-  if (rel_file) {
-    SPVM_STRING* rel_file_string = SPVM_STRING_new(compiler, rel_file, strlen(rel_file));
-    module_file->rel_file = rel_file_string->value;
-  }
-  else {
-    module_file->rel_file = NULL;
-  }
+  SPVM_MODULE_FILE_set_rel_file(compiler, module_file, rel_file);
 }
 
 const char* SPVM_API_MODULE_FILE_get_content(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
-  const char* content = module_file->content;
-  return content;
+  return SPVM_MODULE_FILE_get_content(compiler, module_file);
 }
 
 void SPVM_API_MODULE_FILE_set_content(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* content) {
-  if (content) {
-    SPVM_STRING* content_string = SPVM_STRING_new(compiler, content, strlen(content));
-    module_file->content = content_string->value;
-  }
-  else {
-    module_file->content = NULL;
-  }
+  SPVM_MODULE_FILE_set_content(compiler, module_file, content);
 }
 
 int32_t SPVM_API_MODULE_FILE_get_content_length(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
-  int32_t content_length = module_file->content_length;
-  return content_length;
+  return SPVM_MODULE_FILE_get_content_length(compiler, module_file);
 }
 
 void SPVM_API_MODULE_FILE_set_content_length(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, int32_t content_length) {
-  module_file->content_length = content_length;
+  SPVM_MODULE_FILE_set_content_length(compiler, module_file, content_length);
 }
 
