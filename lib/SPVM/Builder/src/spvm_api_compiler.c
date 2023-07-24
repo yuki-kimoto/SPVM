@@ -65,14 +65,7 @@ const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
-  
-  if (start_file) {
-    SPVM_STRING* start_file_string = SPVM_STRING_new(compiler, start_file, strlen(start_file));
-    SPVM_COMPILER_set_start_file(compiler, start_file_string->value);
-  }
-  else {
-    SPVM_COMPILER_set_start_file(compiler, NULL);
-  }
+  SPVM_COMPILER_set_start_file(compiler, start_file);
 }
 
 void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {

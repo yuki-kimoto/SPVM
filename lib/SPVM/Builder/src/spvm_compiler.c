@@ -869,20 +869,16 @@ const char* SPVM_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
-  
   if (compiler->start_file) {
     SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)compiler->start_file);
     compiler->start_file = NULL;
   }
   
-  char* compiler_start_file = NULL;
   if (start_file) {
     int32_t start_file_length = strlen(start_file);
-    compiler_start_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, start_file_length + 1);
-    memcpy(compiler_start_file, start_file, start_file_length);
+    compiler->start_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, start_file_length + 1);
+    memcpy((void*)compiler->start_file, start_file, start_file_length);
   }
-  
-  compiler->start_file = compiler_start_file;
 }
 
 int32_t SPVM_COMPILER_get_start_line(SPVM_COMPILER* compiler) {
