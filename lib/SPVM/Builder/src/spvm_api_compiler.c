@@ -45,13 +45,10 @@ SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
 }
 
 SPVM_COMPILER* SPVM_API_COMPILER_new_instance() {
-  
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
-  return compiler;
+  return SPVM_COMPILER_new();
 }
 
 void SPVM_API_COMPILER_free_instance(SPVM_COMPILER* compiler) {
-  
   SPVM_COMPILER_free(compiler);
 }
 
@@ -60,8 +57,7 @@ void SPVM_API_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_lin
 }
 
 int32_t SPVM_API_COMPILER_get_start_line(SPVM_COMPILER* compiler) {  
-  int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
-  return start_line;
+  return SPVM_COMPILER_get_start_line(compiler);
 }
 
 void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
@@ -75,8 +71,7 @@ void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start
 }
 
 const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
-  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
-  return start_file;
+  return SPVM_COMPILER_get_start_file(compiler);
 }
 
 void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {
@@ -89,13 +84,11 @@ void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* incl
 }
 
 int32_t SPVM_API_COMPILER_get_include_dirs_length (SPVM_COMPILER* compiler) {
-  int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
-  return include_dirs_length;
+  return SPVM_COMPILER_get_include_dirs_length(compiler);
 }
 
 const char* SPVM_API_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t include_dir_id) {  
-  const char* include_dir = SPVM_COMPILER_get_include_dir(compiler, include_dir_id);
-  return include_dir;
+  return SPVM_COMPILER_get_include_dir(compiler, include_dir_id);
 }
 
 void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
@@ -104,8 +97,7 @@ void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
-  int32_t die_error_id = SPVM_COMPILER_compile(compiler, basic_type_name);
-  return die_error_id;
+  return SPVM_COMPILER_compile(compiler, basic_type_name);
 }
 
 int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler) {  
@@ -117,10 +109,7 @@ const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t
 }
 
 SPVM_RUNTIME* SPVM_API_COMPILER_get_runtime(SPVM_COMPILER* compiler) {
-  
-  SPVM_RUNTIME* runtime = SPVM_COMPILER_get_runtime(compiler);
-  
-  return runtime;
+  return SPVM_COMPILER_get_runtime(compiler);
 }
 
 SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
