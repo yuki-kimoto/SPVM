@@ -70,7 +70,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
-  compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
@@ -111,6 +110,8 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
   compiler->current_each_compile_allocator = SPVM_ALLOCATOR_new();
+  
+  compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
   
   SPVM_COMPILER_clear_error_messages(compiler);
   
@@ -179,6 +180,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   SPVM_COMPILER_free_memory_tmp_each_compile(compiler);
   
   assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
+  
+  compiler->if_require_not_found_basic_type_name_symtable = NULL;
   
   if (error_id) {
     for (int32_t basic_type_id = compiler_basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
