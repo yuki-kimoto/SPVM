@@ -69,6 +69,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
   compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
+  compiler->added_module_files_in_this_compile = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
@@ -180,6 +181,8 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   SPVM_COMPILER_free_memory_tmp_each_compile(compiler);
   
   assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
+  
+  compiler->added_module_files_in_this_compile->length = 0;
   
   if (error_id) {
     for (int32_t basic_type_id = compiler_basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
