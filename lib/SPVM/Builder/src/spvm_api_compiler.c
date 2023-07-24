@@ -84,8 +84,15 @@ void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_clear_include_dirs(compiler);
 }
 
+SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+  return SPVM_COMPILER_get_module_file(compiler, module_name);
+}
+
+void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
+  SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
+}
+
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
-  
   return SPVM_COMPILER_compile(compiler, basic_type_name);
 }
 
@@ -99,14 +106,6 @@ const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t
 
 SPVM_RUNTIME* SPVM_API_COMPILER_get_runtime(SPVM_COMPILER* compiler) {
   return SPVM_COMPILER_get_runtime(compiler);
-}
-
-SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
-  return SPVM_COMPILER_get_module_file(compiler, module_name);
-}
-
-void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
-  SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
 }
 
 void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api) {
