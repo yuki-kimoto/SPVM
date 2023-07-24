@@ -39,12 +39,15 @@ const char* SPVM_MODULE_FILE_get_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE*
 }
 
 void SPVM_MODULE_FILE_set_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* file) {
-  if (file) {
-    SPVM_STRING* file_string = SPVM_STRING_new(compiler, file, strlen(file));
-    module_file->file = file_string->value;
-  }
-  else {
+  if (module_file->file) {
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)module_file->file);
     module_file->file = NULL;
+  }
+  
+  if (file) {
+    int32_t file_length = strlen(file);
+    module_file->file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, file_length + 1);
+    memcpy((void*)module_file->file, file, file_length);
   }
 }
 
