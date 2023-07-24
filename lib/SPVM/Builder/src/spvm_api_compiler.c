@@ -52,15 +52,20 @@ void SPVM_API_COMPILER_free_instance(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_free(compiler);
 }
 
-void SPVM_API_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line) {
-  SPVM_COMPILER_set_start_line(compiler, start_line);
-}
-
 int32_t SPVM_API_COMPILER_get_start_line(SPVM_COMPILER* compiler) {  
   return SPVM_COMPILER_get_start_line(compiler);
 }
 
+void SPVM_API_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line) {
+  SPVM_COMPILER_set_start_line(compiler, start_line);
+}
+
+const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
+  return SPVM_COMPILER_get_start_file(compiler);
+}
+
 void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file) {
+  
   if (start_file) {
     SPVM_STRING* start_file_string = SPVM_STRING_new(compiler, start_file, strlen(start_file));
     SPVM_COMPILER_set_start_file(compiler, start_file_string->value);
@@ -68,10 +73,6 @@ void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start
   else {
     SPVM_COMPILER_set_start_file(compiler, NULL);
   }
-}
-
-const char* SPVM_API_COMPILER_get_start_file(SPVM_COMPILER* compiler) {
-  return SPVM_COMPILER_get_start_file(compiler);
 }
 
 void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {
