@@ -54,24 +54,24 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_COMPILER));
   
   compiler->global_allocator = SPVM_ALLOCATOR_new();
+  compiler->each_compile_allocators = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->error_message_allocator = SPVM_ALLOCATOR_new();
   
   compiler->ch_ptr = "";
   
   compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 128);
-  
-  compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
+  
   compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
+  compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
-  compiler->each_compile_allocators = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   compiler->ops = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->op_use_stack = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->op_types = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
-  
   
   compiler->runtime = SPVM_RUNTIME_new();
   
