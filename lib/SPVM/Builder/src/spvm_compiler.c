@@ -121,6 +121,10 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   compiler->basic_types_base_id = compiler_basic_types_base_id;
   
+  int32_t compiler_constant_strings_base_id = compiler->constant_strings->length;
+  
+  compiler->constant_strings_base_id = compiler_constant_strings_base_id;
+  
   if (compiler->basic_types->length == 0) {
     SPVM_COMPILER_add_basic_types(compiler);
     
@@ -184,6 +188,12 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     }
     compiler->basic_types->length = compiler_basic_types_base_id;
      
+    for (int32_t constant_string_id = compiler_constant_strings_base_id; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
+      SPVM_BASIC_TYPE* constant_string = SPVM_LIST_get(compiler->constant_strings, constant_string_id);
+      SPVM_HASH_set(compiler->constant_string_symtable, constant_string->name, strlen(constant_string->name), NULL);
+    }
+    compiler->constant_strings->length = compiler_constant_strings_base_id;
+    
     SPVM_ALLOCATOR_free(compiler->current_each_compile_allocator);
     compiler->current_each_compile_allocator = NULL;
   }
