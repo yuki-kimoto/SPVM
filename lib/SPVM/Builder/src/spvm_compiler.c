@@ -59,7 +59,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->ch_ptr = "";
   
-  compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 128);
+  compiler->constant_string_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   compiler->basic_types = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
