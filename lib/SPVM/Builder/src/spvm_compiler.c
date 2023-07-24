@@ -84,11 +84,7 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   SPVM_COMPILER_clear_error_messages(compiler);
   
-  const char* start_file = SPVM_COMPILER_get_start_file(compiler);
-  
-  if (start_file) {
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)start_file);
-  }
+  SPVM_COMPILER_set_start_file(compiler, NULL);
   
   SPVM_COMPILER_clear_include_dirs(compiler);
   
