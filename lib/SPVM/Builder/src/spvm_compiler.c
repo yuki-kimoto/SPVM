@@ -115,7 +115,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   int32_t compile_start_memory_blocks_count_tmp = compiler->current_each_compile_allocator->memory_blocks_count_tmp;
   
-  compiler->basic_types_base_id = compiler->basic_types->length;
+  int32_t compiler_basic_types_base_id = compiler->basic_types->length;
+  
+  compiler->basic_types_base_id = compiler_basic_types_base_id;
   
   if (compiler->basic_types->length == 0) {
     SPVM_COMPILER_add_basic_types(compiler);
@@ -174,6 +176,12 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
   if (error_id) {
+    for (int32_t basic_type_id = compiler_basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+      SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), NULL);
+    }
+    compiler->basic_types->length = compiler_basic_types_base_id;
+     
     SPVM_ALLOCATOR_free(compiler->current_each_compile_allocator);
     compiler->current_each_compile_allocator = NULL;
   }
