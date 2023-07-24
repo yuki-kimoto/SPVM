@@ -69,12 +69,7 @@ void SPVM_API_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start
 }
 
 void SPVM_API_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {
-  assert(include_dir);
-  
-  if (include_dir) {
-    SPVM_STRING* include_dir_string = SPVM_STRING_new(compiler, include_dir, strlen(include_dir));
-    SPVM_COMPILER_add_include_dir(compiler, include_dir_string->value);
-  }
+  SPVM_COMPILER_add_include_dir(compiler, include_dir);
 }
 
 int32_t SPVM_API_COMPILER_get_include_dirs_length (SPVM_COMPILER* compiler) {
