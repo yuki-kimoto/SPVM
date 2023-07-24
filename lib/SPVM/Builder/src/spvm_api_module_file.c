@@ -35,6 +35,10 @@ SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_api(void) {
   return env_compiler;
 }
 
+void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api) {
+  free(api);
+}
+
 SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance(SPVM_COMPILER* compiler) {
   
   SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
@@ -126,6 +130,3 @@ void SPVM_API_MODULE_FILE_set_content_length(SPVM_COMPILER* compiler, SPVM_MODUL
   module_file->content_length = content_length;
 }
 
-void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api) {
-  free(api);
-}
