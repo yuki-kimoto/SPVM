@@ -76,8 +76,8 @@ int32_t SPVM_API_COMPILER_get_include_dirs_length (SPVM_COMPILER* compiler) {
   return SPVM_COMPILER_get_include_dirs_length(compiler);
 }
 
-const char* SPVM_API_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t include_dir_id) {  
-  return SPVM_COMPILER_get_include_dir(compiler, include_dir_id);
+const char* SPVM_API_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t index) {  
+  return SPVM_COMPILER_get_include_dir(compiler, index);
 }
 
 void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
