@@ -75,12 +75,15 @@ const char* SPVM_MODULE_FILE_get_rel_file(SPVM_COMPILER* compiler, SPVM_MODULE_F
 }
 
 void SPVM_MODULE_FILE_set_rel_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* rel_file) {
-  if (rel_file) {
-    SPVM_STRING* rel_file_string = SPVM_STRING_new(compiler, rel_file, strlen(rel_file));
-    module_file->rel_file = rel_file_string->value;
-  }
-  else {
+  if (module_file->rel_file) {
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)module_file->rel_file);
     module_file->rel_file = NULL;
+  }
+  
+  if (rel_file) {
+    int32_t rel_file_length = strlen(rel_file);
+    module_file->rel_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, rel_file_length + 1);
+    memcpy((void*)module_file->rel_file, rel_file, rel_file_length);
   }
 }
 
