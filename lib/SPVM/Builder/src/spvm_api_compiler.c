@@ -106,14 +106,7 @@ SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, con
 }
 
 void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
-  if (module_name) {
-    SPVM_STRING* module_name_string = SPVM_STRING_new(compiler, module_name, strlen(module_name));
-    module_name = module_name_string->value;
-  }
-  
   SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
-  
-  return;
 }
 
 void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api) {
