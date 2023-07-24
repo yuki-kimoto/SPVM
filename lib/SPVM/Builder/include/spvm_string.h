@@ -15,4 +15,8 @@ struct spvm_string {
 
 SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t length);
 
+SPVM_STRING* SPVM_STRING_new_global_tmp(SPVM_COMPILER* compiler, const char* value, int32_t length);
+
+void SPVM_STRING_free_global_tmp(SPVM_COMPILER* compiler, SPVM_STRING* string);
+
 #endif

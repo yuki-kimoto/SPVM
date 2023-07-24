@@ -25,3 +25,18 @@ SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t
     return constant_string;
   }
 }
+
+SPVM_STRING* SPVM_STRING_new_global_tmp(SPVM_COMPILER* compiler, const char* value, int32_t length) {
+  
+  SPVM_STRING* global_string = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, sizeof(SPVM_STRING));
+  global_string->value = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, length + 1);
+  memcpy((char*)global_string->value, value, length);
+  global_string->length = length;
+  
+  return global_string;
+}
+
+void SPVM_STRING_free_global_tmp(SPVM_COMPILER* compiler, SPVM_STRING* string) {
+  
+  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, string);
+}
