@@ -228,7 +228,7 @@ SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const c
 
 void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
   if (module_name) {
-    SPVM_STRING* module_name_string = SPVM_STRING_new(compiler, module_name, strlen(module_name));
+    SPVM_STRING* module_name_string = SPVM_STRING_new_global(compiler, module_name, strlen(module_name));
     module_name = module_name_string->value;
   }
   
