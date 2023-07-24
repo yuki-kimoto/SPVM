@@ -111,11 +111,11 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   compiler->current_each_compile_allocator = SPVM_ALLOCATOR_new();
   
-  compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
-  
   SPVM_COMPILER_clear_error_messages(compiler);
   
   int32_t compile_start_memory_blocks_count_tmp = compiler->current_each_compile_allocator->memory_blocks_count_tmp;
+  
+  compiler->if_require_not_found_basic_type_name_symtable = SPVM_HASH_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
   
   int32_t compiler_basic_types_base_id = compiler->basic_types->length;
   
@@ -180,8 +180,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   SPVM_COMPILER_free_memory_tmp_each_compile(compiler);
   
   assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
-  
-  compiler->if_require_not_found_basic_type_name_symtable = NULL;
   
   if (error_id) {
     for (int32_t basic_type_id = compiler_basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
@@ -600,6 +598,8 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
   compiler->op_types->length = 0;
   
   compiler->ops->length = 0;
+  
+  SPVM_HASH_free(compiler->if_require_not_found_basic_type_name_symtable);
 }
 
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
