@@ -93,12 +93,15 @@ const char* SPVM_MODULE_FILE_get_content(SPVM_COMPILER* compiler, SPVM_MODULE_FI
 }
 
 void SPVM_MODULE_FILE_set_content(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* content) {
-  if (content) {
-    SPVM_STRING* content_string = SPVM_STRING_new(compiler, content, strlen(content));
-    module_file->content = content_string->value;
-  }
-  else {
+  if (module_file->content) {
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)module_file->content);
     module_file->content = NULL;
+  }
+  
+  if (content) {
+    int32_t content_length = strlen(content);
+    module_file->content = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, content_length + 1);
+    memcpy((void*)module_file->content, content, content_length);
   }
 }
 
