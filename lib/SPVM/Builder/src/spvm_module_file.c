@@ -57,12 +57,15 @@ const char* SPVM_MODULE_FILE_get_dir(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* 
 }
 
 void SPVM_MODULE_FILE_set_dir(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* dir) {
-  if (dir) {
-    SPVM_STRING* dir_string = SPVM_STRING_new(compiler, dir, strlen(dir));
-    module_file->dir = dir_string->value;
-  }
-  else {
+  if (module_file->dir) {
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)module_file->dir);
     module_file->dir = NULL;
+  }
+  
+  if (dir) {
+    int32_t dir_length = strlen(dir);
+    module_file->dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, dir_length + 1);
+    memcpy((void*)module_file->dir, dir, dir_length);
   }
 }
 
