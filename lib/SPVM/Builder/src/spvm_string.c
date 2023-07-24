@@ -26,6 +26,25 @@ SPVM_STRING* SPVM_STRING_new(SPVM_COMPILER* compiler, const char* value, int32_t
   }
 }
 
+SPVM_STRING* SPVM_STRING_new_global(SPVM_COMPILER* compiler, const char* value, int32_t length) {
+  
+  SPVM_STRING* found_global_string = SPVM_HASH_get(compiler->global_string_symtable, value, length);
+  if (found_global_string) {
+    return found_global_string;
+  }
+  else {
+    SPVM_STRING* global_string = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, sizeof(SPVM_STRING));
+    global_string->value = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, length + 1);
+    memcpy((char*)global_string->value, value, length);
+    global_string->length = length;
+    
+    SPVM_LIST_push(compiler->global_strings, global_string);
+    SPVM_HASH_set(compiler->global_string_symtable, global_string->value, length, global_string);
+    
+    return global_string;
+  }
+}
+
 SPVM_STRING* SPVM_STRING_new_global_tmp(SPVM_COMPILER* compiler, const char* value, int32_t length) {
   
   SPVM_STRING* global_string = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, sizeof(SPVM_STRING));

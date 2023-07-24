@@ -19,4 +19,6 @@ SPVM_STRING* SPVM_STRING_new_global_tmp(SPVM_COMPILER* compiler, const char* val
 
 void SPVM_STRING_free_global_tmp(SPVM_COMPILER* compiler, SPVM_STRING* string);
 
+SPVM_STRING* SPVM_STRING_new_global(SPVM_COMPILER* compiler, const char* value, int32_t length);
+
 #endif
