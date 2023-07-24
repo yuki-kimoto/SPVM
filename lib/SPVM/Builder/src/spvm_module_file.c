@@ -21,12 +21,15 @@ const char* SPVM_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODUL
 }
 
 void SPVM_MODULE_FILE_set_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* module_name) {
-  if (module_name) {
-    SPVM_STRING* module_name_string = SPVM_STRING_new(compiler, module_name, strlen(module_name));
-    module_file->module_name = module_name_string->value;
-  }
-  else {
+  if (module_file->module_name) {
+    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, (void*)module_file->module_name);
     module_file->module_name = NULL;
+  }
+  
+  if (module_name) {
+    int32_t module_name_length = strlen(module_name);
+    module_file->module_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, module_name_length + 1);
+    memcpy((void*)module_file->module_name, module_name, module_name_length);
   }
 }
 
