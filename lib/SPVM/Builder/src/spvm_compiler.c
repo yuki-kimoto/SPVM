@@ -186,16 +186,15 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
-  for (int32_t i = 0; i < compiler->added_module_files_in_this_compile->length; i++) {
-    SPVM_MODULE_FILE* module_file = SPVM_LIST_get(compiler->added_module_files_in_this_compile, i);
-    const char* module_name = module_file->module_name;
-    SPVM_COMPILER_set_module_file(compiler, module_name, NULL);
-  }
-  compiler->added_module_files_in_this_compile->length = 0;
-  
   if (error_id) {
     for (int32_t basic_type_id = compiler_basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+      
+      SPVM_MODULE_FILE* found_module_file = SPVM_COMPILER_get_module_file(compiler, basic_type->name);
+      if (found_module_file) {
+        SPVM_COMPILER_set_module_file(compiler, basic_type->name, NULL);
+      }
+      
       SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), NULL);
     }
     compiler->basic_types->length = compiler_basic_types_base_id;
