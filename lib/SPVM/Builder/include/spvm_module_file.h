@@ -21,6 +21,8 @@ SPVM_MODULE_FILE* SPVM_MODULE_FILE_new_tmp(SPVM_COMPILER* compiler);
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_free(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
+SPVM_MODULE_FILE* SPVM_MODULE_FILE_clone(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
+
 const char* SPVM_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
 void SPVM_MODULE_FILE_set_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* module_name);

@@ -350,6 +350,7 @@ struct spvm_api_compiler {
   int32_t (*get_error_messages_length)(void* compiler);
   void* (*get_runtime)(void* compiler);
   void* (*new_instance_tmp)(void);
+  void (*set_module_file_tmp)(void* compiler, const char* module_name, void* module_file);
 };
 
 struct spvm_api_module_file {
