@@ -30,6 +30,7 @@ SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_api(void) {
     SPVM_API_MODULE_FILE_get_content_length,
     SPVM_API_MODULE_FILE_set_content_length,
     SPVM_API_MODULE_FILE_free_instance,
+    SPVM_API_MODULE_FILE_new_instance_tmp,
   };
   SPVM_API_MODULE_FILE* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
@@ -44,6 +45,11 @@ void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api) {
 SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance(SPVM_COMPILER* compiler) {
   
   return SPVM_MODULE_FILE_new(compiler);
+}
+
+SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance_tmp(SPVM_COMPILER* compiler) {
+  
+  return SPVM_MODULE_FILE_new_tmp(compiler);
 }
 
 void SPVM_API_MODULE_FILE_free_instance(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {

@@ -17,6 +17,8 @@ struct spvm_module_file {
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_new(SPVM_COMPILER* compiler);
 
+SPVM_MODULE_FILE* SPVM_MODULE_FILE_new_tmp(SPVM_COMPILER* compiler);
+
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_free(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
 const char* SPVM_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
