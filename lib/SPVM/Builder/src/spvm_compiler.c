@@ -70,7 +70,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
   compiler->module_file_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
-  compiler->added_module_files_in_this_compile = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   compiler->error_messages = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);

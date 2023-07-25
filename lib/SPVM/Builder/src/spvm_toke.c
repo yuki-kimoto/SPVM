@@ -2382,7 +2382,6 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               module_file->content = source;
               module_file->content_length = source_length;
               SPVM_COMPILER_set_module_file(compiler, basic_type_name, module_file);
-              SPVM_LIST_push(compiler->added_module_files_in_this_compile, module_file);
             }
           }
         }
