@@ -15,6 +15,8 @@ SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance(SPVM_COMPILER* compiler);
 
 void SPVM_API_MODULE_FILE_free_instance(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
+SPVM_MODULE_FILE* SPVM_MODULE_FILE_clone(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
+
 const char* SPVM_API_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
 void SPVM_API_MODULE_FILE_set_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* module_name);

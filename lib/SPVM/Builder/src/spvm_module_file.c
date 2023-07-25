@@ -30,6 +30,25 @@ SPVM_MODULE_FILE* SPVM_MODULE_FILE_free(SPVM_COMPILER* compiler, SPVM_MODULE_FIL
   SPVM_ALLOCATOR_free_memory_block_tmp(compiler->global_allocator, module_file);
 }
 
+SPVM_MODULE_FILE* SPVM_MODULE_FILE_clone(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {
+  
+  SPVM_MODULE_FILE* module_file_clone = SPVM_MODULE_FILE_new(compiler);
+  
+  SPVM_MODULE_FILE_set_module_name(compiler, module_file_clone, module_file->module_name);
+  
+  SPVM_MODULE_FILE_set_file(compiler, module_file_clone, module_file->file);
+  
+  SPVM_MODULE_FILE_set_dir(compiler, module_file_clone, module_file->dir);
+  
+  SPVM_MODULE_FILE_set_rel_file(compiler, module_file_clone, module_file->rel_file);
+  
+  SPVM_MODULE_FILE_set_content(compiler, module_file_clone, module_file->content);
+  
+  module_file_clone->content_length = module_file->content_length;
+  
+  return module_file_clone;
+}
+
 const char* SPVM_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
   const char* module_name = module_file->module_name;
   return module_name;
