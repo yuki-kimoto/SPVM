@@ -244,20 +244,6 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
   SPVM_HASH_set(compiler->module_file_symtable, module_name, strlen(module_name), (void*)module_file);
 }
 
-void SPVM_COMPILER_set_module_file_tmp(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
-  
-  SPVM_MODULE_FILE* found_module_file = SPVM_HASH_get(compiler->module_file_symtable, module_name, strlen(module_name));
-  if (found_module_file) {
-    SPVM_MODULE_FILE_free(compiler, found_module_file);
-    SPVM_HASH_set(compiler->module_file_symtable, module_name, strlen(module_name), NULL);
-  }
-  
-  if (module_file) {
-    SPVM_MODULE_FILE* module_file_clone = SPVM_MODULE_FILE_clone(compiler, module_file);
-    SPVM_HASH_set(compiler->module_file_symtable, module_name, strlen(module_name), (void*)module_file_clone);
-  }
-}
-
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category) {
    const char* basic_type_name = SPVM_BASIC_TYPE_get_basic_type_name(compiler, basic_type_id);
    SPVM_BASIC_TYPE* basic_type = SPVM_COMPILER_add_basic_type(compiler, basic_type_name);
