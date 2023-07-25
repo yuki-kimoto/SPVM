@@ -9,7 +9,11 @@
 
 SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_api(void);
 
+void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api);
+
 SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance(SPVM_COMPILER* compiler);
+
+void SPVM_API_MODULE_FILE_free_instance(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
 const char* SPVM_API_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
@@ -34,7 +38,5 @@ void SPVM_API_MODULE_FILE_set_content(SPVM_COMPILER* compiler, SPVM_MODULE_FILE*
 int32_t SPVM_API_MODULE_FILE_get_content_length(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);  
 
 void SPVM_API_MODULE_FILE_set_content_length(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, int32_t content_length);
-
-void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api);
 
 #endif
