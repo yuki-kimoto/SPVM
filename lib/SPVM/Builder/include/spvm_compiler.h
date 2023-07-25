@@ -181,6 +181,8 @@ int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler);
 
+void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* module_name, const char* rel_file, const char* content);
+
 void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_assert_check_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id);

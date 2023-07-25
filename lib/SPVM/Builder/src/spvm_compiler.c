@@ -349,12 +349,10 @@ int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
 void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler) {
   // Add Bool module file
   {
-    SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-    module_file->module_name = "Bool";
-    module_file->rel_file = "Bool.spvm";
-    module_file->content = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
-    module_file->content_length = strlen(module_file->content);
-    SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+    const char* module_name = "Bool";
+    const char* rel_file = "Bool.spvm";
+    const char* content = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
   }
   
   // Add Error module file
@@ -466,6 +464,15 @@ void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler) {
     module_file->content_length = strlen(module_file->content);
     SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
   }
+}
+
+void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* module_name, const char* rel_file, const char* content) {
+  SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
+  module_file->module_name = module_name;
+  module_file->rel_file = rel_file;
+  module_file->content = content;
+  module_file->content_length = strlen(content);
+  SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
 }
 
 void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler) {
