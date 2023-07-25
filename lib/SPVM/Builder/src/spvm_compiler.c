@@ -236,11 +236,7 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
     module_name = module_name_string->value;
   }
   
-  SPVM_MODULE_FILE* found_module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
-  
-  if (!found_module_file) {
-    SPVM_HASH_set(compiler->module_file_symtable, module_name, strlen(module_name), (void*)module_file);
-  }
+  SPVM_HASH_set(compiler->module_file_symtable, module_name, strlen(module_name), (void*)module_file);
 }
 
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category) {

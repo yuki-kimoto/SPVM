@@ -18,6 +18,7 @@
       14 get_error_messages_length,
       15 get_runtime,
     * if (rquire Foo) statement was now reset after a single compilation.
+    * The set_module_file compiler native API can be set even if the module file alread exists.
 0.989027 2023-07-23
   [Bug Fix]
     * A bug fixed: The error messages of the compiler had not been freeded properly.
