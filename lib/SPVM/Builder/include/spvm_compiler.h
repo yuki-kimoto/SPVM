@@ -102,6 +102,10 @@ struct spvm_compiler {
   // Syntax error count
   SPVM_LIST* error_messages;
   
+  SPVM_LIST* module_files;
+  
+  SPVM_LIST* module_file_module_names;
+  
   // Module source symtable
   SPVM_HASH* module_file_symtable;
   
