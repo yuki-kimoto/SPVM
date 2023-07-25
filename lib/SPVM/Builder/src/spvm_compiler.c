@@ -182,6 +182,11 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   
   assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == compile_start_memory_blocks_count_tmp);
   
+  for (int32_t i = 0; i < compiler->added_module_files_in_this_compile->length; i++) {
+    SPVM_MODULE_FILE* module_file = SPVM_LIST_get(compiler->added_module_files_in_this_compile, i);
+    const char* module_name = module_file->module_name;
+    SPVM_COMPILER_set_module_file(compiler, module_name, NULL);
+  }
   compiler->added_module_files_in_this_compile->length = 0;
   
   if (error_id) {
