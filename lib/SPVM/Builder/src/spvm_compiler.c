@@ -56,6 +56,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->global_allocator = SPVM_ALLOCATOR_new();
   compiler->each_compile_allocators = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->error_message_allocator = SPVM_ALLOCATOR_new();
+  compiler->module_file_allocator = SPVM_ALLOCATOR_new();
   
   compiler->ch_ptr = "";
   
@@ -103,6 +104,9 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   SPVM_ALLOCATOR_free(compiler->error_message_allocator);
   compiler->error_message_allocator = NULL;
+  
+  SPVM_ALLOCATOR_free(compiler->module_file_allocator);
+  compiler->module_file_allocator = NULL;
   
   SPVM_ALLOCATOR_free(compiler->global_allocator);
   compiler->global_allocator = NULL;
