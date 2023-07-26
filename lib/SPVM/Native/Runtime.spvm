@@ -2,6 +2,7 @@
 # MIT License
 
 class Native::Runtime : pointer {
+  use Native::Compiler;
   use Native::Env;
   use Native::Stack;
   use Native::BasicType;
@@ -12,6 +13,9 @@ class Native::Runtime : pointer {
   
   use StringList;
   use Fn;
+  
+  # Fields
+  has compiler : Native::Compiler;
   
   # Instance Methods
   native method get_basic_types_length : int ();
