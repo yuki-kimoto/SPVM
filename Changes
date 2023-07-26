@@ -43,6 +43,21 @@
     * The following compiler native APIs were removed.
       
       void (*set_module_file)(void* compiler, const char* module_name, void* module_file);
+    
+    * Native API IDs of the module file native APIs were changed.
+
+      0 get_module_name
+      1 get_file
+      2 set_file
+      3 get_dir
+      4 set_dir
+      5 get_rel_file
+      6 set_rel_file
+      7 get_content
+      8 set_content
+      9 get_content_length
+      10 set_content_length
+
       
 0.989027 2023-07-23
   [Bug Fix]

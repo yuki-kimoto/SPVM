@@ -344,7 +344,7 @@ struct spvm_api_compiler {
   void (*add_include_dir)(void* compiler, const char* include_dir);
   void (*clear_include_dirs)(void* compiler);
   void* (*get_module_file)(void* compiler, const char* module_name);
-  void (*set_module_file)(void* compiler, const char* module_name, void* module_file);
+  void* r347;
   int32_t (*compile)(void* compiler, const char* basic_type_name);
   const char* (*get_error_message)(void* compiler, int32_t index);
   int32_t (*get_error_messages_length)(void* compiler);
@@ -354,9 +354,7 @@ struct spvm_api_compiler {
 };
 
 struct spvm_api_module_file {
-  void* r0;
   const char* (*get_module_name)(void* compiler, void* module_file);
-  void* r2;
   const char* (*get_file)(void* compiler, void* module_file);
   void (*set_file)(void* compiler, void* module_file, const char* file);
   const char* (*get_dir)(void* compiler, void* module_file);

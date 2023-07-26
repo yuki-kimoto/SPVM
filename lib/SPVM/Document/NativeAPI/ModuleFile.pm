@@ -81,19 +81,17 @@ Sets the length of a content.
 
 =head1 Native API IDs
 
-  0  
-  1  get_module_name
-  2  
-  3  get_file
-  4  set_file
-  5  get_dir
-  6  set_dir
-  7  get_rel_file
-  8  set_rel_file
-  9  get_content
-  10  set_content
-  11  get_content_length
-  12  set_content_length
+  0 get_module_name
+  1 get_file
+  2 set_file
+  3 get_dir
+  4 set_dir
+  5 get_rel_file
+  6 set_rel_file
+  7 get_content
+  8 set_content
+  9 get_content_length
+  10 set_content_length
 
 =head1 Copyright & License
 

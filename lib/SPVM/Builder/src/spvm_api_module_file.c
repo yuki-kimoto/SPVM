@@ -16,9 +16,7 @@
 
 SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_api(void) {
   void* env_compiler_init[]  = {
-    NULL,
     SPVM_API_MODULE_FILE_get_module_name,
-    NULL,
     SPVM_API_MODULE_FILE_get_file,
     SPVM_API_MODULE_FILE_set_file,
     SPVM_API_MODULE_FILE_get_dir,
