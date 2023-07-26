@@ -106,9 +106,17 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   SPVM_ALLOCATOR_free(compiler->error_message_allocator);
   compiler->error_message_allocator = NULL;
   
-  // TODO
-  // SPVM_ALLOCATOR_free(compiler->module_file_allocator);
-  // compiler->module_file_allocator = NULL;
+  int32_t found = 0;
+  for (int32_t i = 0; i < compiler->module_files->length; i++) {
+    SPVM_MODULE_FILE* module_file = SPVM_LIST_get(compiler->module_files, i);
+    if (module_file) {
+      SPVM_COMPILER_free_module_file(compiler, compiler->module_files->values[i]);
+      compiler->module_files->values[i] = NULL;
+    }
+  }
+  
+  SPVM_ALLOCATOR_free(compiler->module_file_allocator);
+  compiler->module_file_allocator = NULL;
   
   SPVM_ALLOCATOR_free(compiler->global_allocator);
   compiler->global_allocator = NULL;
