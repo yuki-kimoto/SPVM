@@ -7,30 +7,6 @@
 
 static const char* FILE_NAME = "Native/ModuleFile.c";
 
-int32_t SPVM__Native__ModuleFile__new(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
-  
-  void* obj_compiler = stack[0].oval;
-  if (!obj_compiler) {
-    return env->die(env, stack, "The $compiler must be defined.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  void* module_file = env->api->module_file->new_instance(compiler);
-  
-  void* obj_self = env->new_pointer_object_by_name(env, stack, "Native::ModuleFile", module_file, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  env->set_field_object_by_name(env, stack, obj_self, "compiler", obj_compiler, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  stack[0].oval = obj_self;
-  
-  return 0;
-}
-
 int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;

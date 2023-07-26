@@ -24,6 +24,10 @@
       15 get_runtime,
     * if (rquire Foo) statement was now reset after a single compilation.
     * The set_module_file compiler native API can be set even if the module file alread exists.
+    * The following methods in the Native::ModuleFile class were removed.
+      
+      static method new : Native::ModuleFile ($compiler : Native::Compiler);
+
 0.989027 2023-07-23
   [Bug Fix]
     * A bug fixed: The error messages of the compiler had not been freeded properly.

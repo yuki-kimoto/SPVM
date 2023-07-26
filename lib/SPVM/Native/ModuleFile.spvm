@@ -6,8 +6,6 @@ class Native::ModuleFile {
   
   has compiler : Native::Compiler;
   
-  native static method new : Native::ModuleFile ($compiler : Native::Compiler);
-  
   native method get_module_name : string ();
   
   native method set_module_name : void ($module_name : string);
