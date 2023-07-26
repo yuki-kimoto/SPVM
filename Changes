@@ -33,7 +33,11 @@
       
       static method new : Native::ModuleFile ($compiler : Native::Compiler);
       method set_module_name : void ($module_name : string);
-
+      
+    * The following module file Native APIs were removed.
+      
+      void* (*new_instance)(void* compiler);
+      
 0.989027 2023-07-23
   [Bug Fix]
     * A bug fixed: The error messages of the compiler had not been freeded properly.

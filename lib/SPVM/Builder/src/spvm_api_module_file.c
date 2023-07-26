@@ -16,7 +16,7 @@
 
 SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_api(void) {
   void* env_compiler_init[]  = {
-    SPVM_API_MODULE_FILE_new_instance,
+    NULL,
     SPVM_API_MODULE_FILE_get_module_name,
     SPVM_API_MODULE_FILE_set_module_name,
     SPVM_API_MODULE_FILE_get_file,
@@ -38,11 +38,6 @@ SPVM_API_MODULE_FILE* SPVM_API_MODULE_FILE_new_api(void) {
 
 void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api) {
   free(api);
-}
-
-SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance(SPVM_COMPILER* compiler) {
-  
-  return SPVM_MODULE_FILE_new(compiler);
 }
 
 const char* SPVM_API_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  

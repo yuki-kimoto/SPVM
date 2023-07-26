@@ -7,16 +7,11 @@ SPVM::Document::NativeAPI::ModuleFile - Module File Native APIs
 The module file native APIs of L<SPVM> are the APIs to manipulate module files.
 
 =head1 Usage
-
-  void* mdoule_file = env->api->module_file->new_instance(compiler);
+  
+  void* module_file = env->api->compiler->get_module_file(compiler, "MyClass");
+  const char* module_name = env->api->module_file->get_module_name(compiler, module_file);
 
 =head1 Native APIs
-
-=head2 new_instance
-
-  void* (*new_instance)(void* compiler);
-
-Creates a new module file object and returns it.
 
 =head2 get_module_name
 
@@ -92,7 +87,7 @@ Sets the length of a content.
 
 =head1 Native API IDs
 
-  0  new_instance
+  0  
   1  get_module_name
   2  set_module_name
   3  get_file
