@@ -255,7 +255,11 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
   for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
     const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
     if (strcmp(module_name, module_file_module_name) == 0) {
-      // free compiler->module_files->values[i];
+      if (compiler->module_files->values[i]) {
+        
+        SPVM_COMPILER_free_module_file(compiler, compiler->module_files->values[i]);
+        compiler->module_files->values[i] = NULL;
+      }
       compiler->module_files->values[i] = module_file;
       found = 1;
       break;
@@ -273,6 +277,10 @@ SPVM_MODULE_FILE* SPVM_COMPILER_new_module_file(SPVM_COMPILER* compiler, const c
   SPVM_MODULE_FILE* module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
   
   module_file->module_name = module_name;
+  
+  SPVM_MODULE_FILE* found_module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
+  
+  assert(!found_module_file);
   
   SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
   
@@ -487,10 +495,10 @@ void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler) {
 
 void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* module_name, const char* rel_file, const char* content) {
   SPVM_MODULE_FILE* module_file = SPVM_COMPILER_new_module_file(compiler, module_name);
+  
   SPVM_MODULE_FILE_set_rel_file(compiler, module_file, rel_file);
   SPVM_MODULE_FILE_set_content(compiler, module_file, content);
   SPVM_MODULE_FILE_set_content_length(compiler, module_file, strlen(content));
-  SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
 }
 
 void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler) {

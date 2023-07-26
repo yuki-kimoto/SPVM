@@ -2374,14 +2374,16 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               fclose(fh);
               source[source_length] = '\0';
               
-              SPVM_MODULE_FILE* module_file = SPVM_COMPILER_new_module_file(compiler, basic_type_name);
-              SPVM_MODULE_FILE_set_file(compiler, module_file, current_file);
-              SPVM_MODULE_FILE_set_rel_file(compiler, module_file, current_rel_file);
-              SPVM_MODULE_FILE_set_dir(compiler, module_file, include_dir);
-              SPVM_MODULE_FILE_set_content(compiler, module_file, source);
-              SPVM_MODULE_FILE_set_content_length(compiler, module_file, source_length);
+              SPVM_MODULE_FILE* found_module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
               
-              SPVM_COMPILER_set_module_file(compiler, basic_type_name, module_file);
+              if (!found_module_file) {
+                SPVM_MODULE_FILE* module_file = SPVM_COMPILER_new_module_file(compiler, basic_type_name);
+                SPVM_MODULE_FILE_set_file(compiler, module_file, current_file);
+                SPVM_MODULE_FILE_set_rel_file(compiler, module_file, current_rel_file);
+                SPVM_MODULE_FILE_set_dir(compiler, module_file, include_dir);
+                SPVM_MODULE_FILE_set_content(compiler, module_file, source);
+                SPVM_MODULE_FILE_set_content_length(compiler, module_file, source_length);
+              }
             }
           }
         }
