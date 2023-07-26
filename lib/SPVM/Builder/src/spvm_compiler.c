@@ -500,8 +500,9 @@ void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* module_name, const char* rel_file, const char* content) {
-  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_new_module_file(compiler, module_name);
+  SPVM_COMPILER_new_module_file(compiler, module_name);
   
+  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
   SPVM_MODULE_FILE_set_rel_file(compiler, module_file, rel_file);
   SPVM_MODULE_FILE_set_content(compiler, module_file, content);
   SPVM_MODULE_FILE_set_content_length(compiler, module_file, strlen(content));
