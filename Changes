@@ -27,6 +27,7 @@
     * The following methods in the Native::ModuleFile class were removed.
       
       static method new : Native::ModuleFile ($compiler : Native::Compiler);
+      method set_module_name : void ($module_name : string);
 
 0.989027 2023-07-23
   [Bug Fix]

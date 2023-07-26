@@ -26,14 +26,6 @@ Returns the module name.
 
 If a memory error occurs, an exception is thrown.
 
-=head2 set_module_name
-
-  method set_module_name : void ($module_name : string);
-
-Sets the module name.
-
-If a memory error occurs, an exception is thrown.
-
 =head2 get_file
 
   method get_file : string ();
