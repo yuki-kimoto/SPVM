@@ -124,24 +124,25 @@ Gets a compiler error message by an index.
 
 Gets the runtime.
 
-=head1 Compiler Native API IDs
+=head1 Native API IDs
 
-  0 new_instance 
-  1 free_instance 
-  2 get_start_line 
-  3 set_start_line 
-  4 get_start_file 
-  5 set_start_file 
-  6 get_include_dirs_length 
-  7 get_include_dir 
-  8 add_include_dir 
-  9 clear_include_dirs 
-  10 get_module_file 
-  11 
-  12 compile 
-  13 get_error_message 
-  14 get_error_messages_length 
-  15 get_runtime 
+  0 new_instance
+  1 free_instance
+  2 get_start_line
+  3 set_start_line
+  4 get_start_file
+  5 set_start_file
+  6 get_include_dirs_length
+  7 get_include_dir
+  8 add_include_dir
+  9 clear_include_dirs
+  10 add_module_file
+  11 delete_module_file
+  12 get_module_file
+  13 compile
+  14 get_error_message
+  15 get_error_messages_length
+  16 get_runtime
 
 =head1 Copyright & License
 
