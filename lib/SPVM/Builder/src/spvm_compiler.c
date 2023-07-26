@@ -268,6 +268,32 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
   }
 }
 
+SPVM_MODULE_FILE* SPVM_COMPILER_new_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+  
+  SPVM_MODULE_FILE* module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
+  
+  module_file->module_name = module_name;
+  
+  SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
+  
+  return module_file;
+}
+
+SPVM_MODULE_FILE* SPVM_COMPILER_free_module_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {
+  
+  assert(module_file);
+  
+  SPVM_MODULE_FILE_set_file(compiler, module_file, NULL);
+  
+  SPVM_MODULE_FILE_set_dir(compiler, module_file, NULL);
+  
+  SPVM_MODULE_FILE_set_rel_file(compiler, module_file, NULL);
+  
+  SPVM_MODULE_FILE_set_content(compiler, module_file, NULL);
+  
+  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, module_file);
+}
+
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category) {
    const char* basic_type_name = SPVM_BASIC_TYPE_get_basic_type_name(compiler, basic_type_id);
    SPVM_BASIC_TYPE* basic_type = SPVM_COMPILER_add_basic_type(compiler, basic_type_name);

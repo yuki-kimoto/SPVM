@@ -138,6 +138,10 @@ SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const c
 
 void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* basic_type_name, SPVM_MODULE_FILE* module_file);
 
+SPVM_MODULE_FILE* SPVM_COMPILER_new_module_file(SPVM_COMPILER* compiler, const char* module_name);
+
+SPVM_MODULE_FILE* SPVM_COMPILER_free_module_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
+
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category);
 
 SPVM_BASIC_TYPE* SPVM_COMPILER_add_basic_type(SPVM_COMPILER* compiler, const char* basic_type_name);
