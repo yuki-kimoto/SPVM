@@ -37,39 +37,6 @@ int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* sta
   return 0;
 }
 
-int32_t SPVM__Native__ModuleFile__set_module_name(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
-  
-  void* obj_self = stack[0].oval;
-  
-  void* module_file = env->get_pointer(env, stack, obj_self);
-  
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  void* obj_module_name = stack[1].oval;
-  
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  const char* module_name = NULL;
-  if (obj_module_name) {
-    module_name = env->get_chars(env, stack, obj_module_name);
-  }
-  
-  env->api->module_file->set_module_name(compiler, module_file, module_name);
-  
-  return 0;
-}
-
 int32_t SPVM__Native__ModuleFile__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
