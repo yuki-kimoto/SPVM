@@ -96,6 +96,10 @@ void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* modu
   SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
 }
 
+void SPVM_API_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+  SPVM_COMPILER_delete_module_file(compiler, module_name);
+}
+
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   return SPVM_COMPILER_compile(compiler, basic_type_name);
 }

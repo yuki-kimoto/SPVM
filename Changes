@@ -1,8 +1,9 @@
 0.989028 2023-07-24
   [New Features]
     * The following compiler native APIs were added.
-
+    
       void (*add_module_file)(void* compiler, const char* module_name);
+      void (*delete_module_file)(void* compiler, const char* module_name);
 
   [New Features]
     * The following module file native APIs are added.

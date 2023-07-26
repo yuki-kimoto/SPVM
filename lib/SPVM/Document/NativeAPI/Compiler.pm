@@ -80,13 +80,19 @@ Adds a directory for searching modules.
 
 Clears the directories for searching modules.
 
-=head2 get_module_file
+=head2 add_module_file
 
   void (*add_module_file)(void* compiler, const char* module_name);
 
 Adds a L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
 
 If the module file already exists, nothing is performed.
+
+=head2 delete_module_file
+
+  void (*delete_module_file)(void* compiler, const char* module_name);
+  
+Deletes a L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
 
 =head2 get_module_file
 

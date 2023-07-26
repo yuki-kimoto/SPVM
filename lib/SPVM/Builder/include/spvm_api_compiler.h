@@ -33,6 +33,8 @@ SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, con
 
 void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file);
 
+void SPVM_API_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name);
+
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name);
 
 void SPVM_API_COMPILER_free_instance(SPVM_COMPILER* compiler);
