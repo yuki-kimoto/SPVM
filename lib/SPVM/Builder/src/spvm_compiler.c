@@ -282,15 +282,13 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
 
 SPVM_MODULE_FILE* SPVM_COMPILER_new_module_file(SPVM_COMPILER* compiler, const char* module_name) {
   
-  SPVM_MODULE_FILE* module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
+  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
   
-  module_file->module_name = module_name;
-  
-  SPVM_MODULE_FILE* found_module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
-  
-  assert(!found_module_file);
-  
-  SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
+  if (!module_file) {
+    module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
+    module_file->module_name = module_name;
+    SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
+  }
   
   return module_file;
 }
