@@ -367,7 +367,6 @@ struct spvm_api_module_file {
   int32_t (*get_content_length)(void* compiler, void* module_file);
   void (*set_content_length)(void* compiler, void* module_file, int32_t content_length);
   void* (*free_instance)(void* compiler, void* module_file);
-  void* (*new_instance_v2)(void* compiler, const char* module_name);
 };
 
 struct spvm_api_runtime {
