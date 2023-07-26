@@ -355,7 +355,7 @@ struct spvm_api_compiler {
 struct spvm_api_module_file {
   void* r0;
   const char* (*get_module_name)(void* compiler, void* module_file);
-  void (*set_module_name)(void* compiler, void* module_file, const char* module_name);
+  void* r2;
   const char* (*get_file)(void* compiler, void* module_file);
   void (*set_file)(void* compiler, void* module_file, const char* file);
   const char* (*get_dir)(void* compiler, void* module_file);
