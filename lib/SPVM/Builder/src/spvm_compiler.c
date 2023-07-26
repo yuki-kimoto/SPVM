@@ -256,6 +256,7 @@ void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_n
 void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name) {
   
   int32_t found = 0;
+  int32_t found_index = -1;
   for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
     const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
     if (strcmp(module_name, module_file_module_name) == 0) {
@@ -264,9 +265,21 @@ void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* modul
         SPVM_COMPILER_free_module_file(compiler, compiler->module_files->values[i]);
         compiler->module_files->values[i] = NULL;
       }
+      found_index = i;
       found = 1;
       break;
     }
+  }
+  
+  if (found_index >= 0) {
+    if (found_index < compiler->module_file_module_names->length - 1) {
+      int32_t move_length = compiler->module_file_module_names->length - 1 - found_index;
+      memmove(compiler->module_file_module_names->values + found_index, compiler->module_file_module_names->values + found_index + 1, sizeof(void*) * move_length);
+      memmove(compiler->module_files->values + found_index, compiler->module_files->values + found_index + 1, sizeof(void*) * move_length);
+    }
+    
+    compiler->module_file_module_names->length--;
+    compiler->module_files->length--;
   }
 }
 
