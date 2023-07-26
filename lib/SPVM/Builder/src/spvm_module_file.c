@@ -15,14 +15,16 @@ SPVM_MODULE_FILE* SPVM_MODULE_FILE_new(SPVM_COMPILER* compiler) {
   return SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
 }
 
-SPVM_MODULE_FILE* SPVM_MODULE_FILE_new_tmp(SPVM_COMPILER* compiler) {
+SPVM_MODULE_FILE* SPVM_MODULE_FILE_new_v2(SPVM_COMPILER* compiler, const char* module_name) {
   
-  return SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
+  SPVM_MODULE_FILE* module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
+  
+  SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
 }
 
-SPVM_MODULE_FILE* SPVM_MODULE_FILE_free(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {
+SPVM_MODULE_FILE* SPVM_MODULE_FILE_free_v2(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {
   
-  SPVM_MODULE_FILE_set_module_name(compiler, module_file, NULL);
+  assert(module_file);
   
   SPVM_MODULE_FILE_set_file(compiler, module_file, NULL);
   
@@ -32,7 +34,11 @@ SPVM_MODULE_FILE* SPVM_MODULE_FILE_free(SPVM_COMPILER* compiler, SPVM_MODULE_FIL
   
   SPVM_MODULE_FILE_set_content(compiler, module_file, NULL);
   
-  SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, module_file);
+  const char* module_name = module_file->module_name;
+  
+  assert(module_name);
+  
+  SPVM_COMPILER_set_module_file(compiler, module_name, NULL);
 }
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_clone(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {

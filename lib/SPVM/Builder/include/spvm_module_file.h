@@ -17,9 +17,9 @@ struct spvm_module_file {
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_new(SPVM_COMPILER* compiler);
 
-SPVM_MODULE_FILE* SPVM_MODULE_FILE_new_tmp(SPVM_COMPILER* compiler);
+SPVM_MODULE_FILE* SPVM_MODULE_FILE_new_v2(SPVM_COMPILER* compiler, const char* module_name);
 
-SPVM_MODULE_FILE* SPVM_MODULE_FILE_free(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
+SPVM_MODULE_FILE* SPVM_MODULE_FILE_free_v2(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
 const char* SPVM_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
@@ -44,4 +44,5 @@ void SPVM_MODULE_FILE_set_content(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* mod
 int32_t SPVM_MODULE_FILE_get_content_length(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
 void SPVM_MODULE_FILE_set_content_length(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, int32_t content_length);
+
 #endif
