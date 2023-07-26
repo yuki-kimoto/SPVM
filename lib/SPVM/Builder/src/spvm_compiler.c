@@ -107,6 +107,13 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   compiler->error_message_allocator = NULL;
   
   int32_t found = 0;
+  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
+    SPVM_MODULE_FILE* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
+    if (module_file_module_name) {
+      SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, compiler->module_file_module_names->values[i]);
+      compiler->module_file_module_names->values[i] = NULL;
+    }
+  }
   for (int32_t i = 0; i < compiler->module_files->length; i++) {
     SPVM_MODULE_FILE* module_file = SPVM_LIST_get(compiler->module_files, i);
     if (module_file) {
@@ -262,6 +269,9 @@ void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* modul
     if (strcmp(module_name, module_file_module_name) == 0) {
       if (compiler->module_files->values[i]) {
         
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, compiler->module_file_module_names->values[i]);
+        compiler->module_file_module_names->values[i] = NULL;
+        
         SPVM_COMPILER_free_module_file(compiler, compiler->module_files->values[i]);
         compiler->module_files->values[i] = NULL;
       }
@@ -301,7 +311,9 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
   }
   
   if (!found) {
-    SPVM_LIST_push(compiler->module_file_module_names, (void*)module_name);
+    const char* module_name_clone = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, strlen(module_name) + 1);
+    memcpy((void*)module_name_clone, module_name, strlen(module_name));
+    SPVM_LIST_push(compiler->module_file_module_names, (void*)module_name_clone);
     SPVM_LIST_push(compiler->module_files, (void*)module_file);
   }
 }
