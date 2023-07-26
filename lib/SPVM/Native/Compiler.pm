@@ -116,12 +116,6 @@ The return value is a L<Native::Runtime|SPVM::Native::Runtime> object.
 
 Gets a L<Native::ModuleFile> object by a module name, and returns it.
 
-=head2 set_module_file
-
-  method set_module_file : void ($module_name : string, $module_file : Native::ModuleFile);
-
-Sets a L<Native::ModuleFile> object by a module name.
-
 =head1 See Also
 
 =head2 Native::Runtime

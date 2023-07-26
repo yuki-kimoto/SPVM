@@ -23,6 +23,4 @@ class Native::Compiler : pointer {
   
   native method get_module_file : Native::ModuleFile ($module_name : string);
   
-  native method set_module_file : void ($module_name : string, $module_file : Native::ModuleFile);
-  
 }
