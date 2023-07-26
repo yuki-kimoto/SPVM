@@ -236,13 +236,37 @@ int32_t SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler) {
 }
 
 SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
-  SPVM_MODULE_FILE* module_file = SPVM_HASH_get(compiler->module_file_symtable, module_name, strlen(module_name));
   
-  return module_file;
+  SPVM_MODULE_FILE* found_module_file = NULL;
+  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
+    const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
+    
+    if (strcmp(module_name, module_file_module_name) == 0) {
+      found_module_file = SPVM_LIST_get(compiler->module_files, i);
+      break;
+    }
+  }
+  
+  return found_module_file;
 }
 
 void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
-  SPVM_HASH_set(compiler->module_file_symtable, module_name, strlen(module_name), (void*)module_file);
+  
+  int32_t found = 0;
+  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
+    const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
+    if (strcmp(module_name, module_file_module_name) == 0) {
+      // free compiler->module_files->values[i];
+      compiler->module_files->values[i] = module_file;
+      found = 1;
+      break;
+    }
+  }
+  
+  if (!found) {
+    SPVM_LIST_push(compiler->module_file_module_names, (void*)module_name);
+    SPVM_LIST_push(compiler->module_files, (void*)module_file);
+  }
 }
 
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category) {
