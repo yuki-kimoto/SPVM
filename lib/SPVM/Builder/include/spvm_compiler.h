@@ -138,7 +138,7 @@ SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const c
 
 void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* basic_type_name, SPVM_MODULE_FILE* module_file);
 
-SPVM_MODULE_FILE* SPVM_COMPILER_new_module_file(SPVM_COMPILER* compiler, const char* module_name);
+void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name);
 
 void SPVM_COMPILER_free_module_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 

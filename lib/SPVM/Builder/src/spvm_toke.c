@@ -2377,7 +2377,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               SPVM_MODULE_FILE* found_module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
               
               if (!found_module_file) {
-                SPVM_COMPILER_new_module_file(compiler, basic_type_name);
+                SPVM_COMPILER_add_module_file(compiler, basic_type_name);
                 SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
                 SPVM_MODULE_FILE_set_file(compiler, module_file, current_file);
                 SPVM_MODULE_FILE_set_rel_file(compiler, module_file, current_rel_file);
