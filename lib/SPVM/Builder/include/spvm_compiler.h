@@ -106,9 +106,6 @@ struct spvm_compiler {
   
   SPVM_LIST* module_file_module_names;
   
-  // Module source symtable
-  SPVM_HASH* module_file_symtable;
-  
   SPVM_LIST* constant_strings;
   
   // String symtable
