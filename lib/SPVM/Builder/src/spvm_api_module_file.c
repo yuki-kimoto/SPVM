@@ -62,11 +62,11 @@ const char* SPVM_API_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_M
 }
 
 void SPVM_API_MODULE_FILE_set_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* module_name) {
-  SPVM_API_MODULE_FILE_set_module_name(compiler, module_file, module_name);
+  SPVM_MODULE_FILE_set_module_name(compiler, module_file, module_name);
 }
 
 const char* SPVM_API_MODULE_FILE_get_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
-  return SPVM_API_MODULE_FILE_get_file(compiler, module_file);
+  return SPVM_MODULE_FILE_get_file(compiler, module_file);
 }
 
 void SPVM_API_MODULE_FILE_set_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* file) {
