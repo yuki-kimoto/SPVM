@@ -279,7 +279,7 @@ SPVM_MODULE_FILE* SPVM_COMPILER_new_module_file(SPVM_COMPILER* compiler, const c
   return module_file;
 }
 
-SPVM_MODULE_FILE* SPVM_COMPILER_free_module_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {
+void SPVM_COMPILER_free_module_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {
   
   assert(module_file);
   
