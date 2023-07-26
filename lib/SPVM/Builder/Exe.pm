@@ -733,9 +733,7 @@ EOS
     
     $source_module_file .= qq|  {\n|;
     
-    $source_module_file .= qq|    void* module_file = env->api->module_file->new_instance(compiler);\n|;
-    
-    $source_module_file .= qq|    env->api->module_file->set_module_name(compiler, module_file, "$basic_type_name");\n|;
+    $source_module_file .= qq|    void* module_file = env->api->module_file->new_instance_v2(compiler, "$basic_type_name");\n|;
     
     if (defined $module_file_rel_file) {
       $source_module_file .= qq|    env->api->module_file->set_rel_file(compiler, module_file, "$module_file_rel_file");\n|;
