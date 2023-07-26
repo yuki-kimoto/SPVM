@@ -19,7 +19,11 @@ SPVM_MODULE_FILE* SPVM_MODULE_FILE_new_v2(SPVM_COMPILER* compiler, const char* m
   
   SPVM_MODULE_FILE* module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
   
+  module_file->module_name = module_name;
+  
   SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
+  
+  return module_file;
 }
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_free_v2(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {

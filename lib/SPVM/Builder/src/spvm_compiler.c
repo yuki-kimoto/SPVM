@@ -460,12 +460,11 @@ void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler) {
 }
 
 void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* module_name, const char* rel_file, const char* content) {
-  SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new(compiler);
-  module_file->module_name = module_name;
-  module_file->rel_file = rel_file;
-  module_file->content = content;
-  module_file->content_length = strlen(content);
-  SPVM_COMPILER_set_module_file(compiler, module_file->module_name, module_file);
+  SPVM_MODULE_FILE* module_file = SPVM_MODULE_FILE_new_v2(compiler, module_name);
+  SPVM_MODULE_FILE_set_rel_file(compiler, module_file, rel_file);
+  SPVM_MODULE_FILE_set_content(compiler, module_file, content);
+  SPVM_MODULE_FILE_set_content_length(compiler, module_file, strlen(content));
+  SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
 }
 
 void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler) {
