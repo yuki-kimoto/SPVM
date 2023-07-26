@@ -27,6 +27,12 @@ const char* SPVM_API_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t 
 
 void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler);
 
+void SPVM_API_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name);
+
+SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name);
+
+void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file);
+
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name);
 
 void SPVM_API_COMPILER_free_instance(SPVM_COMPILER* compiler);
@@ -36,10 +42,6 @@ int32_t SPVM_API_COMPILER_get_error_messages_length(SPVM_COMPILER* compiler);
 const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t index);
 
 SPVM_RUNTIME* SPVM_API_COMPILER_get_runtime(SPVM_COMPILER* compiler);
-
-SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name);
-
-void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file);
 
 void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api);
 
