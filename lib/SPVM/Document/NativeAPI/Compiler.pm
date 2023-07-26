@@ -100,12 +100,6 @@ Deletes a L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a modu
 
 Gets the L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
 
-=head2 set_module_file
-
-  void (*set_module_file)(void* compiler, const char* module_name, void* module_file);
-
-Sets a L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
-
 =head2 compile
   
   int32_t (*compile)(void* compiler, const char* module_name);
@@ -143,7 +137,7 @@ Gets the runtime.
   8 add_include_dir 
   9 clear_include_dirs 
   10 get_module_file 
-  11 set_module_file 
+  11 
   12 compile 
   13 get_error_message 
   14 get_error_messages_length 

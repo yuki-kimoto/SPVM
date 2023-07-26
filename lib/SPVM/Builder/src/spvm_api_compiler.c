@@ -31,7 +31,7 @@ SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
     SPVM_API_COMPILER_add_include_dir,
     SPVM_API_COMPILER_clear_include_dirs,
     SPVM_API_COMPILER_get_module_file,
-    SPVM_API_COMPILER_set_module_file,
+    NULL,
     SPVM_API_COMPILER_compile,
     SPVM_API_COMPILER_get_error_message,
     SPVM_API_COMPILER_get_error_messages_length,
@@ -91,10 +91,6 @@ void SPVM_API_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* modu
 
 SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
   return SPVM_COMPILER_get_module_file(compiler, module_name);
-}
-
-void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
-  SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
 }
 
 void SPVM_API_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name) {
