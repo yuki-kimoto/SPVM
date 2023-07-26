@@ -19,7 +19,7 @@ SPVM_MODULE_FILE* SPVM_MODULE_FILE_clone(SPVM_COMPILER* compiler, SPVM_MODULE_FI
   
   SPVM_MODULE_FILE* module_file_clone = SPVM_MODULE_FILE_new(compiler);
   
-  SPVM_MODULE_FILE_set_module_name(compiler, module_file_clone, module_file->module_name);
+  module_file_clone->module_name = module_file->module_name;
   
   SPVM_MODULE_FILE_set_file(compiler, module_file_clone, module_file->file);
   
@@ -37,19 +37,6 @@ SPVM_MODULE_FILE* SPVM_MODULE_FILE_clone(SPVM_COMPILER* compiler, SPVM_MODULE_FI
 const char* SPVM_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  
   const char* module_name = module_file->module_name;
   return module_name;
-}
-
-void SPVM_MODULE_FILE_set_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file, const char* module_name) {
-  if (module_file->module_name) {
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, (void*)module_file->module_name);
-    module_file->module_name = NULL;
-  }
-  
-  if (module_name) {
-    int32_t module_name_length = strlen(module_name);
-    module_file->module_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, module_name_length + 1);
-    memcpy((void*)module_file->module_name, module_name, module_name_length);
-  }
 }
 
 const char* SPVM_MODULE_FILE_get_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {  

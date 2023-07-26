@@ -37,6 +37,7 @@
     * The following module file Native APIs were removed.
       
       void* (*new_instance)(void* compiler);
+      void (*set_module_name)(void* compiler, void* module_file, const char* module_name);
       
 0.989027 2023-07-23
   [Bug Fix]

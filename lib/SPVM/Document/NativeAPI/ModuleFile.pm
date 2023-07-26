@@ -19,12 +19,6 @@ The module file native APIs of L<SPVM> are the APIs to manipulate module files.
 
 Returns the module name.
 
-=head2 set_module_name
-
-  void (*set_module_name)(void* compiler, void* module_file, const char* module_name);
-
-Sets a module name.
-
 =head2 get_file
 
   const char* (*get_file)(void* compiler, void* module_file);
@@ -89,7 +83,7 @@ Sets the length of a content.
 
   0  
   1  get_module_name
-  2  set_module_name
+  2  
   3  get_file
   4  set_file
   5  get_dir
