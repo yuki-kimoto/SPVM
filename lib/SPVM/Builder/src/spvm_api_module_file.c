@@ -49,7 +49,7 @@ SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance(SPVM_COMPILER* compiler) {
 
 SPVM_MODULE_FILE* SPVM_API_MODULE_FILE_new_instance_v2(SPVM_COMPILER* compiler, const char* module_name) {
   
-  return SPVM_MODULE_FILE_new_v2(compiler, module_name);
+  return SPVM_COMPILER_new_module_file(compiler, module_name);
 }
 
 void SPVM_API_MODULE_FILE_free_instance_v2(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {
