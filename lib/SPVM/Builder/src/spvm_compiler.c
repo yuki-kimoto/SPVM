@@ -107,8 +107,9 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   SPVM_ALLOCATOR_free(compiler->error_message_allocator);
   compiler->error_message_allocator = NULL;
   
-  SPVM_ALLOCATOR_free(compiler->module_file_allocator);
-  compiler->module_file_allocator = NULL;
+  // TODO
+  // SPVM_ALLOCATOR_free(compiler->module_file_allocator);
+  // compiler->module_file_allocator = NULL;
   
   SPVM_ALLOCATOR_free(compiler->global_allocator);
   compiler->global_allocator = NULL;
