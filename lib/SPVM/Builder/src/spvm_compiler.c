@@ -242,19 +242,19 @@ int32_t SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler) {
   error_messages->length = 0;
 }
 
-SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name) {
   
-  SPVM_MODULE_FILE* found_module_file = NULL;
-  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
-    const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
-    
-    if (strcmp(module_name, module_file_module_name) == 0) {
-      found_module_file = SPVM_LIST_get(compiler->module_files, i);
-      break;
-    }
+  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
+  
+  if (!module_file) {
+    module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
+    module_file->module_name = module_name;
+    SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
   }
-  
-  return found_module_file;
+}
+
+void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+  SPVM_COMPILER_set_module_file(compiler, module_name, NULL);
 }
 
 void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
@@ -280,19 +280,19 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
   }
 }
 
-void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name) {
-  SPVM_COMPILER_set_module_file(compiler, module_name, NULL);
-}
-
-void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
   
-  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
-  
-  if (!module_file) {
-    module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
-    module_file->module_name = module_name;
-    SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
+  SPVM_MODULE_FILE* found_module_file = NULL;
+  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
+    const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
+    
+    if (strcmp(module_name, module_file_module_name) == 0) {
+      found_module_file = SPVM_LIST_get(compiler->module_files, i);
+      break;
+    }
   }
+  
+  return found_module_file;
 }
 
 void SPVM_COMPILER_free_module_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {
