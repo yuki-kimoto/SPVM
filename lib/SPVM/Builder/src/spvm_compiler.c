@@ -254,7 +254,20 @@ void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_n
 }
 
 void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name) {
-  SPVM_COMPILER_set_module_file(compiler, module_name, NULL);
+  
+  int32_t found = 0;
+  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
+    const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
+    if (strcmp(module_name, module_file_module_name) == 0) {
+      if (compiler->module_files->values[i]) {
+        
+        SPVM_COMPILER_free_module_file(compiler, compiler->module_files->values[i]);
+        compiler->module_files->values[i] = NULL;
+      }
+      found = 1;
+      break;
+    }
+  }
 }
 
 void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
