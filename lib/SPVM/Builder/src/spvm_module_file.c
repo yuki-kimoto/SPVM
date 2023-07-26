@@ -42,7 +42,7 @@ SPVM_MODULE_FILE* SPVM_MODULE_FILE_free_v2(SPVM_COMPILER* compiler, SPVM_MODULE_
   
   assert(module_name);
   
-  SPVM_COMPILER_set_module_file(compiler, module_name, NULL);
+  SPVM_COMPILER_delete_module_file(compiler, module_name);
 }
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_clone(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file) {

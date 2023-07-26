@@ -202,7 +202,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
       
       SPVM_MODULE_FILE* found_module_file = SPVM_COMPILER_get_module_file(compiler, basic_type->name);
       if (found_module_file) {
-        SPVM_COMPILER_set_module_file(compiler, basic_type->name, NULL);
+        SPVM_COMPILER_delete_module_file(compiler, basic_type->name);
       }
       
       SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), NULL);
@@ -278,6 +278,10 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
     SPVM_LIST_push(compiler->module_file_module_names, (void*)module_name);
     SPVM_LIST_push(compiler->module_files, (void*)module_file);
   }
+}
+
+void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+  SPVM_COMPILER_set_module_file(compiler, module_name, NULL);
 }
 
 void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name) {
