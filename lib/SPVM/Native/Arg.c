@@ -38,10 +38,6 @@ int32_t SPVM__Native__Arg__get_index(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* arg = env->get_pointer(env, stack, obj_self);
   
-  if (!arg) {
-    return env->die(env, stack, "The argument was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -61,10 +57,6 @@ int32_t SPVM__Native__Arg__get_basic_type(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   void* arg = env->get_pointer(env, stack, obj_self);
-  
-  if (!arg) {
-    return env->die(env, stack, "The argument was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -92,10 +84,6 @@ int32_t SPVM__Native__Arg__get_type_dimension(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   void* arg = env->get_pointer(env, stack, obj_self);
   
-  if (!arg) {
-    return env->die(env, stack, "The argument was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -115,10 +103,6 @@ int32_t SPVM__Native__Arg__get_type_flag(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   void* arg = env->get_pointer(env, stack, obj_self);
-  
-  if (!arg) {
-    return env->die(env, stack, "The argument was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
