@@ -23,61 +23,61 @@ class Native::MethodCall {
   
   static method new_instance_method : Native::MethodCall($object : object, $method_name : string) {}
   
-  method init : () {}
+  method init : void () {}
   
-  method set_stack_byte : void ($index : int, $value : byte) {};
+  method set_stack_byte : void ($index : int, $value : byte) {}
   
-  method set_stack_short : void ($index : int, $value : short) {};
+  method set_stack_short : void ($index : int, $value : short) {}
   
-  method set_stack_int : void ($index : int, $value : int) {};
+  method set_stack_int : void ($index : int, $value : int) {}
   
-  method set_stack_long : void ($index : int, $value : long) {};
+  method set_stack_long : void ($index : int, $value : long) {}
   
-  method set_stack_float : void ($index : int, $value : float) {};
+  method set_stack_float : void ($index : int, $value : float) {}
   
-  method set_stack_double : void ($index : int, $value : double) {};
+  method set_stack_double : void ($index : int, $value : double) {}
   
-  method set_stack_object : void ($index : int, $value : object) {};
+  method set_stack_object : void ($index : int, $value : object) {}
   
-  method set_stack_byte_ref : void ($index : int, $value : byte*) {};
+  method set_stack_byte_ref : void ($index : int, $value : byte*) {}
   
-  method set_stack_short_ref : void ($index : int, $value : short*) {};
+  method set_stack_short_ref : void ($index : int, $value : short*) {}
   
-  method set_stack_int_ref : void ($index : int, $value : int*) {};
+  method set_stack_int_ref : void ($index : int, $value : int*) {}
   
-  method set_stack_long_ref : void ($index : int, $value : long*) {};
+  method set_stack_long_ref : void ($index : int, $value : long*) {}
   
-  method set_stack_float_ref : void ($index : int, $value : float*) {};
+  method set_stack_float_ref : void ($index : int, $value : float*) {}
   
-  method set_stack_double_ref : void ($index : int, $value : double*) {};
+  method set_stack_double_ref : void ($index : int, $value : double*) {}
   
-  method set_stack_mulnum_byte_ref : void ($index : int, $value : byte[]) {};
+  method set_stack_mulnum_byte_ref : void ($index : int, $value : byte[]) {}
   
-  method set_stack_mulnum_short_ref : void ($index : int, $value : short[]) {};
+  method set_stack_mulnum_short_ref : void ($index : int, $value : short[]) {}
   
-  method set_stack_mulnum_int_ref : void ($index : int, $value : int[]) {};
+  method set_stack_mulnum_int_ref : void ($index : int, $value : int[]) {}
   
-  method set_stack_mulnum_long_ref : void ($index : int, $value : long[]) {};
+  method set_stack_mulnum_long_ref : void ($index : int, $value : long[]) {}
   
-  method set_stack_mulnum_float_ref : void ($index : int, $value : float[]) {};
+  method set_stack_mulnum_float_ref : void ($index : int, $value : float[]) {}
   
-  method set_stack_mulnum_double_ref : void ($index : int, $value : double[]) {};
+  method set_stack_mulnum_double_ref : void ($index : int, $value : double[]) {}
   
-  method set_stack_length : void ($index : int, $value : byte) {};
+  method set_stack_length : void ($index : int, $value : byte) {}
   
-  method call : () {}
+  method call : void () {}
   
-  method get_stack_byte : byte ($index : int) {};
+  method get_stack_byte : byte ($index : int) {}
   
-  method get_stack_short : short ($index : int) {};
+  method get_stack_short : short ($index : int) {}
   
-  method get_stack_int : int ($index : int) {};
+  method get_stack_int : int ($index : int) {}
   
-  method get_stack_long : long ($index : int) {};
+  method get_stack_long : long ($index : int) {}
   
-  method get_stack_float : float ($index : int) {};
+  method get_stack_float : float ($index : int) {}
   
-  method get_stack_double : double ($index : int) {};
+  method get_stack_double : double ($index : int) {}
   
-  method get_stack_object : object ($index : int) {};
+  method get_stack_object : object ($index : int) {}
 }
