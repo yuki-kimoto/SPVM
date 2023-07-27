@@ -7,6 +7,29 @@
 
 static const char* FILE_NAME = "Native/ModuleFile.c";
 
+static void* get_field_native_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
+  
+  *error_id = 0;
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file_name, line);
+  
+  if (*error_id) { return NULL; }
+  
+  if (!obj_runtime) {
+    *error_id = env->die(env, stack, "The %s cannot be got.", field_name, func_name, file_name, line);
+    return NULL;
+  }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    *error_id = env->die(env, stack, "The pointer to the native %s cannot be got.", field_name, func_name, file_name, line);
+    return NULL;
+  }
+  
+  return obj_runtime;
+}
+
 int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
@@ -19,14 +42,10 @@ int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* sta
     return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* module_name = env->api->module_file->get_module_name(compiler, module_file);
   
@@ -49,14 +68,10 @@ int32_t SPVM__Native__ModuleFile__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* file = env->api->module_file->get_file(compiler, module_file);
   
@@ -81,14 +96,10 @@ int32_t SPVM__Native__ModuleFile__set_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_file = stack[1].oval;
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* file = NULL;
   if (obj_file) {
@@ -112,14 +123,10 @@ int32_t SPVM__Native__ModuleFile__get_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* dir = env->api->module_file->get_dir(compiler, module_file);
   
@@ -144,14 +151,10 @@ int32_t SPVM__Native__ModuleFile__set_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dir = stack[1].oval;
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* dir = NULL;
   if (obj_dir) {
@@ -175,14 +178,10 @@ int32_t SPVM__Native__ModuleFile__get_rel_file(SPVM_ENV* env, SPVM_VALUE* stack)
     return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* rel_file = env->api->module_file->get_rel_file(compiler, module_file);
   
@@ -207,14 +206,10 @@ int32_t SPVM__Native__ModuleFile__set_rel_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   void* obj_rel_file = stack[1].oval;
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* rel_file = NULL;
   if (obj_rel_file) {
@@ -238,14 +233,10 @@ int32_t SPVM__Native__ModuleFile__get_content(SPVM_ENV* env, SPVM_VALUE* stack) 
     return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* content = env->api->module_file->get_content(compiler, module_file);
   
@@ -270,14 +261,10 @@ int32_t SPVM__Native__ModuleFile__set_content(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   void* obj_content = stack[1].oval;
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   const char* content = NULL;
   if (obj_content) {
@@ -301,14 +288,10 @@ int32_t SPVM__Native__ModuleFile__get_content_length(SPVM_ENV* env, SPVM_VALUE* 
     return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
   }
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   int32_t content_length = env->api->module_file->get_content_length(compiler, module_file);
   
@@ -331,14 +314,10 @@ int32_t SPVM__Native__ModuleFile__set_content_length(SPVM_ENV* env, SPVM_VALUE* 
   
   int32_t content_length = stack[1].ival;
   
-  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
-  
-  if (!compiler) {
-    return env->die(env, stack, "The compiler was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   env->api->module_file->set_content_length(compiler, module_file, content_length);
   
