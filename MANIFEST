@@ -317,6 +317,10 @@ lib/SPVM/Native/Method.c
 lib/SPVM/Native/Method.config
 lib/SPVM/Native/Method.pm
 lib/SPVM/Native/Method.spvm
+lib/SPVM/Native/MethodCall.c
+lib/SPVM/Native/MethodCall.config
+lib/SPVM/Native/MethodCall.pm
+lib/SPVM/Native/MethodCall.spvm
 lib/SPVM/Native/ModuleFile.c
 lib/SPVM/Native/ModuleFile.config
 lib/SPVM/Native/ModuleFile.pm
