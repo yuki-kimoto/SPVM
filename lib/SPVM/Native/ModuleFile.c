@@ -38,10 +38,6 @@ int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* sta
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -64,10 +60,6 @@ int32_t SPVM__Native__ModuleFile__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -89,10 +81,6 @@ int32_t SPVM__Native__ModuleFile__set_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   void* module_file = env->get_pointer(env, stack, obj_self);
-  
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_file = stack[1].oval;
   
@@ -119,10 +107,6 @@ int32_t SPVM__Native__ModuleFile__get_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -144,10 +128,6 @@ int32_t SPVM__Native__ModuleFile__set_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   void* module_file = env->get_pointer(env, stack, obj_self);
-  
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_dir = stack[1].oval;
   
@@ -174,10 +154,6 @@ int32_t SPVM__Native__ModuleFile__get_rel_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -199,10 +175,6 @@ int32_t SPVM__Native__ModuleFile__set_rel_file(SPVM_ENV* env, SPVM_VALUE* stack)
   void* obj_self = stack[0].oval;
   
   void* module_file = env->get_pointer(env, stack, obj_self);
-  
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_rel_file = stack[1].oval;
   
@@ -229,10 +201,6 @@ int32_t SPVM__Native__ModuleFile__get_content(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -254,10 +222,6 @@ int32_t SPVM__Native__ModuleFile__set_content(SPVM_ENV* env, SPVM_VALUE* stack) 
   void* obj_self = stack[0].oval;
   
   void* module_file = env->get_pointer(env, stack, obj_self);
-  
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_content = stack[1].oval;
   
@@ -284,10 +248,6 @@ int32_t SPVM__Native__ModuleFile__get_content_length(SPVM_ENV* env, SPVM_VALUE* 
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -307,10 +267,6 @@ int32_t SPVM__Native__ModuleFile__set_content_length(SPVM_ENV* env, SPVM_VALUE* 
   void* obj_self = stack[0].oval;
   
   void* module_file = env->get_pointer(env, stack, obj_self);
-  
-  if (!module_file) {
-    return env->die(env, stack, "The module file was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   int32_t content_length = stack[1].ival;
   
