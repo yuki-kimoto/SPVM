@@ -36,10 +36,10 @@ struct spvm_compiler {
   const char* current_rel_file_basic_type_name;
   
   // Current parsed source
-  char* current_source;
+  char* current_module_content;
   
   // Current parsed source
-  int32_t current_source_length;
+  int32_t current_module_content_length;
   
   // Current line number
   int32_t current_line;
