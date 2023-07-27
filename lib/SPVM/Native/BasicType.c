@@ -38,10 +38,6 @@ int32_t SPVM__Native__BasicType__get_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -61,10 +57,6 @@ int32_t SPVM__Native__BasicType__get_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -87,10 +79,6 @@ int32_t SPVM__Native__BasicType__get_module_dir(SPVM_ENV* env, SPVM_VALUE* stack
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -117,10 +105,6 @@ int32_t SPVM__Native__BasicType__get_module_rel_file(SPVM_ENV* env, SPVM_VALUE* 
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -145,10 +129,6 @@ int32_t SPVM__Native__BasicType__get_parent(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -179,10 +159,6 @@ int32_t SPVM__Native__BasicType__get_category(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -202,10 +178,6 @@ int32_t SPVM__Native__BasicType__get_version_string(SPVM_ENV* env, SPVM_VALUE* s
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
@@ -230,10 +202,6 @@ int32_t SPVM__Native__BasicType__is_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -255,10 +223,6 @@ int32_t SPVM__Native__BasicType__is_anon(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -279,10 +243,6 @@ int32_t SPVM__Native__BasicType__get_class_var_by_index(SPVM_ENV* env, SPVM_VALU
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic_type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   int32_t class_var_index = stack[1].ival;
   
@@ -314,10 +274,6 @@ int32_t SPVM__Native__BasicType__get_class_var_by_name(SPVM_ENV* env, SPVM_VALUE
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic_type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_class_var_name = stack[1].oval;
   
@@ -356,10 +312,6 @@ int32_t SPVM__Native__BasicType__get_class_vars_length(SPVM_ENV* env, SPVM_VALUE
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -379,10 +331,6 @@ int32_t SPVM__Native__BasicType__get_field_by_index(SPVM_ENV* env, SPVM_VALUE* s
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic_type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   int32_t field_index = stack[1].ival;
   
@@ -414,10 +362,6 @@ int32_t SPVM__Native__BasicType__get_field_by_name(SPVM_ENV* env, SPVM_VALUE* st
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic_type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_field_name = stack[1].oval;
   
@@ -456,10 +400,6 @@ int32_t SPVM__Native__BasicType__get_fields_length(SPVM_ENV* env, SPVM_VALUE* st
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -479,10 +419,6 @@ int32_t SPVM__Native__BasicType__get_method_by_index(SPVM_ENV* env, SPVM_VALUE* 
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic_type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   int32_t method_index = stack[1].ival;
   
@@ -515,10 +451,6 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic_type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_method_name = stack[1].oval;
   
   if (!obj_method_name) {
@@ -531,10 +463,6 @@ int32_t SPVM__Native__BasicType__get_method_by_name(SPVM_ENV* env, SPVM_VALUE* s
   if (error_id) { return error_id; }
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
-  
-  if (!runtime) {
-    return env->die(env, stack, "The runtime was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* method = env->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
   if (!method) {
@@ -560,10 +488,6 @@ int32_t SPVM__Native__BasicType__get_methods_length(SPVM_ENV* env, SPVM_VALUE* s
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
   
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
-  
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
@@ -583,10 +507,6 @@ int32_t SPVM__Native__BasicType__get_anon_basic_type_by_index(SPVM_ENV* env, SPV
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic_type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   int32_t anon_basic_type_index = stack[1].ival;
   
@@ -618,10 +538,6 @@ int32_t SPVM__Native__BasicType__get_anon_basic_types_length(SPVM_ENV* env, SPVM
   void* obj_self = stack[0].oval;
   
   void* basic_type = env->get_pointer(env, stack, obj_self);
-  
-  if (!basic_type) {
-    return env->die(env, stack, "The basic type was already destroyed.", __func__, FILE_NAME, __LINE__);
-  }
   
   void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
