@@ -1414,6 +1414,29 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   return value;
 }
 
+SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
+  
+  *error_id = 0;
+  
+  void* obj_runtime = env->get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file_name, line);
+  
+  if (*error_id) { return NULL; }
+  
+  if (!obj_runtime) {
+    *error_id = env->die(env, stack, "The %s field must be defined.", field_name, func_name, file_name, line);
+    return NULL;
+  }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  if (!runtime) {
+    *error_id = env->die(env, stack, "The pointer of the %s field must be defined.", field_name, func_name, file_name, line);
+    return NULL;
+  }
+  
+  return obj_runtime;
+}
+
 SPVM_OBJECT* SPVM_API_get_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   
   return SPVM_API_get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file, line);

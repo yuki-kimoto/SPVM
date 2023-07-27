@@ -1955,6 +1955,10 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
 
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
 
+=head2 get_field_object_defined_and_has_pointer_by_name
+
+  void* (*get_field_object_defined_and_has_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
@@ -2167,7 +2171,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   205 get_ref_count
   206 inc_ref_count
   207 dec_ref_count
-
+  208 get_field_object_defined_and_has_pointer_by_name
+  
 =head1 Constant Values
 
 =head2 Basic Type IDs

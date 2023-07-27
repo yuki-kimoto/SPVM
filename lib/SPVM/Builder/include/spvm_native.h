@@ -305,6 +305,7 @@ struct spvm_env {
   int32_t (*get_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void* (*get_field_object_defined_and_has_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);
 };
 
 struct spvm_env_api {
