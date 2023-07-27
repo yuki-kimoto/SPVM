@@ -122,11 +122,6 @@ int32_t SPVM__Native__MethodCall__set_stack_mulnum_double_ref(SPVM_ENV* env, SPV
   return 0;
 }
 
-int32_t SPVM__Native__MethodCall__set_stack_length(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  return 0;
-}
-
 int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;

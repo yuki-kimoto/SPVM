@@ -3,19 +3,47 @@
 
 class Native::MethodCall {
   
-  enum {
-    CATEGORY_CLASS_METHOD,
-    CATEGORY_INSTANCE_METHOD_STATIC,
-    CATEGORY_INSTANCE_METHOD,
+  private enum {
+    METHOD_CALL_CATEGORY_CLASS_METHOD,
+    METHOD_CALL_CATEGORY_INSTANCE_METHOD_STATIC,
+    METHOD_CALL_CATEGORY_INSTANCE_METHOD,
+  }
+  
+  private enum {
+    TYPE_CATEGORY_BYTE,
+    TYPE_CATEGORY_SHORT,
+    TYPE_CATEGORY_INT,
+    TYPE_CATEGORY_LONG,
+    TYPE_CATEGORY_FLOAT,
+    TYPE_CATEGORY_DOUBLE,
+    TYPE_CATEGORY_OBJECT,
+    TYPE_CATEGORY_BYTE_REF,
+    TYPE_CATEGORY_SHORT_REF,
+    TYPE_CATEGORY_INT_REF,
+    TYPE_CATEGORY_LONG_REF,
+    TYPE_CATEGORY_FLOAT_REF,
+    TYPE_CATEGORY_DOUBLE_REF,
+    TYPE_CATEGORY_MULNUM_BYTE_REF,
+    TYPE_CATEGORY_MULNUM_SHORT_REF,
+    TYPE_CATEGORY_MULNUM_INT_REF,
+    TYPE_CATEGORY_MULNUM_LONG_REF,
+    TYPE_CATEGORY_MULNUM_FLOAT_REF,
+    TYPE_CATEGORY_MULNUM_DOUBLE_REF,
   }
   
   has initialized : byte;
   
   has called : byte;
   
-  has category : int;
+  has method_call_category : int;
   
-  has stack_length : int;
+  has type_category : int;
+  
+  has stack_arg_type_categories : int[];
+  
+  has stack_return_type_categories : int[];
+  
+  has items : rw int;
   
   native static method new_class_method : Native::MethodCall ($class_name : string, $method_name : string);
   
@@ -62,8 +90,6 @@ class Native::MethodCall {
   native method set_stack_mulnum_float_ref : void ($index : int, $value : float[]);
   
   native method set_stack_mulnum_double_ref : void ($index : int, $value : double[]);
-  
-  native method set_stack_length : void ($index : int, $value : byte);
   
   native method call : void ();
   
