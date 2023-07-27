@@ -52,7 +52,7 @@ class Native::MethodCall {
   
   native static method new_instance_method_static : Native::MethodCall($runtime : Native::Runtime, $basic_type_name : string, $method_name : string);
   
-  native static method new_instance_method : Native::MethodCall($runtime : Native::Runtime, $object : object, $method_name : string);
+  native static method new_instance_method : Native::MethodCall($runtime : Native::Runtime, $invocant : object, $method_name : string);
   
   native method init : void ();
   
