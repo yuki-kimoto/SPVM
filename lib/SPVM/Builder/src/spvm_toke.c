@@ -2392,10 +2392,29 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
         
         if (module_file) {
+          if (!module_file->content) {
+            SPVM_COMPILER_error(compiler, "The content of the module file in the \"%s\" module must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+            return 0;
+          }
+          
           compiler->current_source = (char*)module_file->content;
+          
+          if (!(module_file->content_length >= 0)) {
+            SPVM_COMPILER_error(compiler, "The content length of the module file in the \"%s\" must be greater than 0.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+            return 0;
+          }
+          
           compiler->current_source_length = module_file->content_length;
+          
           compiler->current_include_dir = module_file->dir;
+          
+          if (!module_file->rel_file) {
+            SPVM_COMPILER_error(compiler, "The relative file path of the module file in the \"%s\" must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+            return 0;
+          }
+          
           compiler->current_rel_file = module_file->rel_file;
+          
           compiler->current_rel_file_basic_type_name = module_file->module_name;
           
           // If we get current module file path, set it, otherwise set module relative file path
