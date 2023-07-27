@@ -48,9 +48,9 @@ class Native::MethodCall {
   
   has items : rw int;
   
-  native static method new_class_method : Native::MethodCall ($runtime : Native::Runtime, $class_name : string, $method_name : string);
+  native static method new_class_method : Native::MethodCall ($runtime : Native::Runtime, $basic_type_name : string, $method_name : string);
   
-  native static method new_instance_method_static : Native::MethodCall($runtime : Native::Runtime, $class_name : string, $method_name : string);
+  native static method new_instance_method_static : Native::MethodCall($runtime : Native::Runtime, $basic_type_name : string, $method_name : string);
   
   native static method new_instance_method : Native::MethodCall($runtime : Native::Runtime, $object : object, $method_name : string);
   
