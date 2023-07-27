@@ -7,29 +7,6 @@
 
 static const char* FILE_NAME = "Native/ModuleFile.c";
 
-static void* get_field_native_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
-  
-  *error_id = 0;
-  
-  void* obj_runtime = env->get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file_name, line);
-  
-  if (*error_id) { return NULL; }
-  
-  if (!obj_runtime) {
-    *error_id = env->die(env, stack, "The %s cannot be got.", field_name, func_name, file_name, line);
-    return NULL;
-  }
-  
-  void* runtime = env->get_pointer(env, stack, obj_runtime);
-  
-  if (!runtime) {
-    *error_id = env->die(env, stack, "The pointer to the native %s cannot be got.", field_name, func_name, file_name, line);
-    return NULL;
-  }
-  
-  return obj_runtime;
-}
-
 int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
@@ -38,7 +15,7 @@ int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* sta
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -60,7 +37,7 @@ int32_t SPVM__Native__ModuleFile__get_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -84,7 +61,7 @@ int32_t SPVM__Native__ModuleFile__set_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_file = stack[1].oval;
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -107,7 +84,7 @@ int32_t SPVM__Native__ModuleFile__get_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -131,7 +108,7 @@ int32_t SPVM__Native__ModuleFile__set_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dir = stack[1].oval;
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -154,7 +131,7 @@ int32_t SPVM__Native__ModuleFile__get_rel_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -178,7 +155,7 @@ int32_t SPVM__Native__ModuleFile__set_rel_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   void* obj_rel_file = stack[1].oval;
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -201,7 +178,7 @@ int32_t SPVM__Native__ModuleFile__get_content(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -225,7 +202,7 @@ int32_t SPVM__Native__ModuleFile__set_content(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   void* obj_content = stack[1].oval;
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -248,7 +225,7 @@ int32_t SPVM__Native__ModuleFile__get_content_length(SPVM_ENV* env, SPVM_VALUE* 
   
   void* module_file = env->get_pointer(env, stack, obj_self);
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
@@ -270,7 +247,7 @@ int32_t SPVM__Native__ModuleFile__set_content_length(SPVM_ENV* env, SPVM_VALUE* 
   
   int32_t content_length = stack[1].ival;
   
-  void* obj_compiler = get_field_native_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
