@@ -2111,7 +2111,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = CURRENT_MODULE_NAME;
                 }
                 else if (strcmp(symbol_name, "__FILE__") == 0) {
-                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->current_rel_file, strlen(compiler->current_rel_file), compiler->current_file, compiler->current_line);
+                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->current_module_rel_file, strlen(compiler->current_module_rel_file), compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_constant;
                   keyword_token = CONSTANT;
                 }
@@ -2273,10 +2273,10 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
       }
       else {
         // Create moudle relative file name from module name by changing :: to / and add ".spvm"
-        int32_t current_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
-        char* current_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, current_rel_file_length + 1);
+        int32_t current_module_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
+        char* current_module_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, current_module_rel_file_length + 1);
         const char* ch_ptr_orig = basic_type_name;
-        char* ch_ptr_to = current_rel_file;
+        char* ch_ptr_to = current_module_rel_file;
         while (*ch_ptr_orig) {
           if (*ch_ptr_orig == ':' && *(ch_ptr_orig + 1) == ':') {
             *ch_ptr_to = '/';
@@ -2307,9 +2307,9 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
             
             // File name
-            int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(current_rel_file));
+            int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(current_module_rel_file));
             current_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, file_name_length + 1);
-            sprintf(current_file, "%s/%s", include_dir, current_rel_file);
+            sprintf(current_file, "%s/%s", include_dir, current_module_rel_file);
             current_file[file_name_length] = '\0';
             
             // \ is replaced to /
@@ -2347,7 +2347,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" module. The module file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, current_rel_file, include_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" module. The module file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, current_module_rel_file, include_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }
@@ -2380,7 +2380,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
                 SPVM_COMPILER_add_module_file(compiler, basic_type_name);
                 SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
                 SPVM_MODULE_FILE_set_file(compiler, module_file, current_file);
-                SPVM_MODULE_FILE_set_rel_file(compiler, module_file, current_rel_file);
+                SPVM_MODULE_FILE_set_rel_file(compiler, module_file, current_module_rel_file);
                 SPVM_MODULE_FILE_set_dir(compiler, module_file, include_dir);
                 SPVM_MODULE_FILE_set_content(compiler, module_file, source);
                 SPVM_MODULE_FILE_set_content_length(compiler, module_file, source_length);
@@ -2413,9 +2413,9 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             return 0;
           }
           
-          compiler->current_rel_file = module_file->rel_file;
+          compiler->current_module_rel_file = module_file->rel_file;
           
-          compiler->current_rel_file_basic_type_name = module_file->module_name;
+          compiler->current_module_rel_file_basic_type_name = module_file->module_name;
           
           // If we get current module file path, set it, otherwise set module relative file path
           if (module_file->file) {
