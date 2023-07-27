@@ -272,7 +272,7 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
   type->basic_type->op_module = op_module;
   type->basic_type->op_extends = op_extends;
   
-  type->basic_type->module_dir = compiler->current_include_dir;
+  type->basic_type->module_dir = compiler->current_module_dir;
   type->basic_type->module_rel_file = compiler->current_rel_file;
   type->basic_type->module_file = compiler->current_file;
   

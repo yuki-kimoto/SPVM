@@ -2406,7 +2406,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
           
           compiler->current_source_length = module_file->content_length;
           
-          compiler->current_include_dir = module_file->dir;
+          compiler->current_module_dir = module_file->dir;
           
           if (!module_file->rel_file) {
             SPVM_COMPILER_error(compiler, "The relative file path of the module file in the \"%s\" must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
