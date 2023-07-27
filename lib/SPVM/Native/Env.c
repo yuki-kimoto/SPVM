@@ -22,7 +22,16 @@ int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
     
     void* compiler = env->get_pointer(env, stack, obj_compiler);
     new_env->compiler = compiler;
-    new_env->runtime = new_env->api->compiler->get_runtime(compiler);
+    
+    stack[0].oval = obj_compiler;
+    env->call_instance_method_by_name(env, stack, "get_runtime", 0, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    void* obj_runtime = stack[0].oval;
+    
+    env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    new_env->runtime = env->get_pointer(env, stack, obj_runtime);
   }
   
   stack[0].oval = obj_self;
