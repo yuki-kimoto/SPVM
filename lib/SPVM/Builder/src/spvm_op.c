@@ -308,8 +308,8 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
     assert(!islower(basic_type_name[0]));
     
     // If module name is different from the module name corresponding to the module file, compile error occur.
-    if (strcmp(basic_type_name, compiler->current_module_rel_file_basic_type_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The module name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_module_rel_file_basic_type_name, op_module->file, op_module->line);
+    if (strcmp(basic_type_name, compiler->current_module_name) != 0) {
+      SPVM_COMPILER_error(compiler, "The module name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_module_name, op_module->file, op_module->line);
       return op_module;
     }
     
@@ -1605,7 +1605,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   // Create anon method module name
   // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method module name become Foo::Bar::anon::123::32. This is uniqe in whole program.
-  const char* anon_method_defined_rel_file_basic_type_name = compiler->current_module_rel_file_basic_type_name;
+  const char* anon_method_defined_rel_file_basic_type_name = compiler->current_module_name;
   int32_t anon_method_defined_line = op_method->line;
   int32_t anon_method_defined_column = op_method->column;
   int32_t anon_method_basic_type_name_length = 6 + strlen(anon_method_defined_rel_file_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
