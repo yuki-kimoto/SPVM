@@ -305,6 +305,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_ref_count,
     SPVM_API_inc_ref_count,
     SPVM_API_dec_ref_count,
+    SPVM_API_get_field_object_defined_and_has_pointer_by_name,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
