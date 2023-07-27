@@ -2392,23 +2392,19 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
         
         if (module_file) {
-          // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
           compiler->current_source = (char*)module_file->content;
           compiler->current_source_length = module_file->content_length;
-          compiler->current_include_dir = include_dir;
-          compiler->current_rel_file = current_rel_file;
-          compiler->current_rel_file_basic_type_name = basic_type_name;
-         
+          compiler->current_include_dir = module_file->dir;
+          compiler->current_rel_file = module_file->rel_file;
+          compiler->current_rel_file_basic_type_name = module_file->module_name;
+          
           // If we get current module file path, set it, otherwise set module relative file path
-          if (current_file) {
-            compiler->current_file = current_file;
+          if (module_file->file) {
+            compiler->current_file = module_file->file;
           }
           else {
-            compiler->current_file = current_rel_file;
+            compiler->current_file = module_file->rel_file;
           }
-          
-          SPVM_STRING* current_file_string = SPVM_STRING_new(compiler, compiler->current_file, strlen(compiler->current_file));
-          compiler->current_file = current_file_string->value;
           
           // Set initial information for tokenization
           compiler->ch_ptr = compiler->current_source;
