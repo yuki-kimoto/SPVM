@@ -3515,14 +3515,14 @@ void SPVM_CHECK_check_ast_check_runtime_var_indexs(SPVM_COMPILER* compiler, SPVM
   
   SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
-  SPVM_LIST* call_stack_byte_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_short_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_int_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_long_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_float_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_double_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_object_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
-  SPVM_LIST* call_stack_ref_vars = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* runtime_vars_byte = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* runtime_vars_short = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* runtime_vars_int = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* runtime_vars_long = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* runtime_vars_float = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* runtime_vars_double = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* runtime_vars_object = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+  SPVM_LIST* runtime_vars_ref = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
   // Run OPs
   SPVM_OP* op_root = method->op_block;
@@ -3568,10 +3568,10 @@ void SPVM_CHECK_check_ast_check_runtime_var_indexs(SPVM_COMPILER* compiler, SPVM
               // Check mem id
               int32_t runtime_var_index;
               if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_object_vars, var_decl);
+                runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_object, var_decl);
               }
               else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_ref_vars, var_decl);
+                runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_ref, var_decl);
               }
               else if (SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                 SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
@@ -3581,27 +3581,27 @@ void SPVM_CHECK_check_ast_check_runtime_var_indexs(SPVM_COMPILER* compiler, SPVM
                 
                 switch (field_type->basic_type->id) {
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_byte_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_byte, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_short_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_short, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_int_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_int, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_long_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_long, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_float_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_float, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_double_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_double, var_decl);
                     break;
                   }
                   default:
@@ -3612,30 +3612,30 @@ void SPVM_CHECK_check_ast_check_runtime_var_indexs(SPVM_COMPILER* compiler, SPVM
                 SPVM_TYPE* numeric_type = SPVM_CHECK_get_type(compiler, var_decl->op_var_decl);
                 switch(numeric_type->basic_type->id) {
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_byte_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_byte, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_short_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_short, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_int_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_int, var_decl);
                     if (strcmp(var_decl->var->name, "$.condition_flag") == 0) {
                       assert(runtime_var_index == 0);
                     }
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_long_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_long, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_float_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_float, var_decl);
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, call_stack_double_vars, var_decl);
+                    runtime_var_index = SPVM_CHECK_get_runtime_var_index(compiler, runtime_vars_double, var_decl);
                     break;
                   }
                   default:
@@ -3678,25 +3678,25 @@ void SPVM_CHECK_check_ast_check_runtime_var_indexs(SPVM_COMPILER* compiler, SPVM
     }
   }
   
-  method->byte_vars_width = call_stack_byte_vars->length;
-  method->short_vars_width = call_stack_short_vars->length;
-  method->int_vars_width = call_stack_int_vars->length;
-  method->long_vars_width = call_stack_long_vars->length;
-  method->float_vars_width = call_stack_float_vars->length;
-  method->double_vars_width = call_stack_double_vars->length;
-  method->object_vars_width = call_stack_object_vars->length;
-  method->ref_vars_width = call_stack_ref_vars->length;
+  method->byte_vars_width = runtime_vars_byte->length;
+  method->short_vars_width = runtime_vars_short->length;
+  method->int_vars_width = runtime_vars_int->length;
+  method->long_vars_width = runtime_vars_long->length;
+  method->float_vars_width = runtime_vars_float->length;
+  method->double_vars_width = runtime_vars_double->length;
+  method->object_vars_width = runtime_vars_object->length;
+  method->ref_vars_width = runtime_vars_ref->length;
   
   SPVM_LIST_free(tmp_var_decl_stack);
   
-  SPVM_LIST_free(call_stack_byte_vars);
-  SPVM_LIST_free(call_stack_short_vars);
-  SPVM_LIST_free(call_stack_int_vars);
-  SPVM_LIST_free(call_stack_long_vars);
-  SPVM_LIST_free(call_stack_float_vars);
-  SPVM_LIST_free(call_stack_double_vars);
-  SPVM_LIST_free(call_stack_object_vars);
-  SPVM_LIST_free(call_stack_ref_vars);
+  SPVM_LIST_free(runtime_vars_byte);
+  SPVM_LIST_free(runtime_vars_short);
+  SPVM_LIST_free(runtime_vars_int);
+  SPVM_LIST_free(runtime_vars_long);
+  SPVM_LIST_free(runtime_vars_float);
+  SPVM_LIST_free(runtime_vars_double);
+  SPVM_LIST_free(runtime_vars_object);
+  SPVM_LIST_free(runtime_vars_ref);
 }
 
 SPVM_METHOD* SPVM_CHECK_search_method(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* method_name) {
@@ -4022,7 +4022,7 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
   return op_src;
 }
 
-int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* call_stack, SPVM_VAR_DECL* var_decl) {
+int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* runtime_vars, SPVM_VAR_DECL* var_decl) {
   
   int32_t found_runtime_var_index = -1;
   
@@ -4032,11 +4032,11 @@ int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* cal
   
   // Search free memory
   int32_t found = 0;
-  for (int32_t runtime_var_index = 0; runtime_var_index < call_stack->length; runtime_var_index++) {
-    if (runtime_var_index + items <= call_stack->length) {
+  for (int32_t runtime_var_index = 0; runtime_var_index < runtime_vars->length; runtime_var_index++) {
+    if (runtime_var_index + items <= runtime_vars->length) {
       int32_t is_used = 0;
       for (int32_t i = 0; i < items; i++) {
-        int32_t my_id = (intptr_t)SPVM_LIST_get(call_stack, runtime_var_index + i);
+        int32_t my_id = (intptr_t)SPVM_LIST_get(runtime_vars, runtime_var_index + i);
         if (my_id >= 0) {
           is_used = 1;
           break;
@@ -4046,7 +4046,7 @@ int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* cal
         found = 1;
         found_runtime_var_index = runtime_var_index;
         for (int32_t i = 0; i < items; i++) {
-          call_stack->values[runtime_var_index + i] = (void*)(intptr_t)var_decl->index;
+          runtime_vars->values[runtime_var_index + i] = (void*)(intptr_t)var_decl->index;
         }
         break;
       }
@@ -4059,9 +4059,9 @@ int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* cal
   
   // Add stack
   if (!found) {
-    found_runtime_var_index = call_stack->length;
+    found_runtime_var_index = runtime_vars->length;
     for (int32_t i = 0; i < items; i++) {
-      SPVM_LIST_push(call_stack, (void*)(intptr_t)var_decl->index);
+      SPVM_LIST_push(runtime_vars, (void*)(intptr_t)var_decl->index);
     }
   }
   
