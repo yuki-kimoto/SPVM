@@ -26,7 +26,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->set_command_info_argv != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_command_info_base_time != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->destroy_class_vars != &env_array[9]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->items != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->args_width != &env_array[10]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_object_basic_type != &env_array[11]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_object_basic_type_id != &env_array[12]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_object_basic_type_name != &env_array[13]) { stack[0].ival = 0; return 0; }
@@ -1466,9 +1466,9 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method_no_mortal(SPVM_ENV* env, S
   }
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].ival = 5;
-    int32_t error = env->call_method_no_mortal(env, stack, method, items);
+    int32_t error = env->call_method_no_mortal(env, stack, method, args_width);
     if (error) {
       return 1;
     }
@@ -1495,10 +1495,10 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
   }
   void* obj_point = NULL;
   {
-    int32_t items = 2;
+    int32_t args_width = 2;
     stack[0].ival = 1;
     stack[1].ival = 2;
-    error = env->call_method(env, stack, method, items);
+    error = env->call_method(env, stack, method, args_width);
     if (error) { return error; }
     obj_point = stack[0].oval;
   }
@@ -1530,9 +1530,9 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
   
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", items, &error, __func__, FILE_NAME, __LINE__);
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_width, &error, __func__, FILE_NAME, __LINE__);
     if (error) {
       return error;
     }
@@ -1554,9 +1554,9 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name_exception(SP
   
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "not_found", items, &error, __func__, FILE_NAME, __LINE__);
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "not_found", args_width, &error, __func__, FILE_NAME, __LINE__);
     if (error) {
       return error;
     }
@@ -1580,9 +1580,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native(SP
   
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].oval = minimal;
-    env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "x", items, &error, __func__, FILE_NAME, __LINE__);
+    env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "x", args_width, &error, __func__, FILE_NAME, __LINE__);
     if (error) { return error; }
     output = stack[0].ival;
   }
@@ -1600,9 +1600,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_exception
   
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].oval = minimal;
-    env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "not_found", items, &error, __func__, FILE_NAME, __LINE__);
+    env->call_instance_method_static_by_name(env, stack, "TestCase::Minimal", "not_found", args_width, &error, __func__, FILE_NAME, __LINE__);
     if (error) { return error; };
     output = stack[0].ival;
   }
@@ -1623,9 +1623,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
   
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].oval = minimal;
-    env->call_instance_method_by_name(env, stack, "x", items, &error, __func__, FILE_NAME, __LINE__);
+    env->call_instance_method_by_name(env, stack, "x", args_width, &error, __func__, FILE_NAME, __LINE__);
     if (error) { return error; }
     output = stack[0].ival;
   }
@@ -1643,9 +1643,9 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_exception_native
   
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].oval = minimal;
-    env->call_instance_method_by_name(env, stack, "not_found", items, &error, __func__, FILE_NAME, __LINE__);
+    env->call_instance_method_by_name(env, stack, "not_found", args_width, &error, __func__, FILE_NAME, __LINE__);
     if (error) { return error; };
     output = stack[0].ival;
   }
@@ -1680,8 +1680,8 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_static_native(SPVM_ENV* e
   
   int32_t ret;
   {
-    int32_t items = 0;
-    env->call_method(env, stack, method, items);
+    int32_t args_width = 0;
+    env->call_method(env, stack, method, args_width);
     if (error) { return error; }
     ret = stack[0].ival;
   }
@@ -2461,37 +2461,37 @@ int32_t SPVM__TestCase__NativeAPI__new_string_array_value(SPVM_ENV* env, SPVM_VA
 }
 
 
-int32_t SPVM__TestCase__NativeAPI__items_0(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__args_width_0(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  stack[0].ival = env->items(env, stack);
-  
-  return 0;
-}
-
-int32_t SPVM__TestCase__NativeAPI__items_1(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].ival = env->items(env, stack);
+  stack[0].ival = env->args_width(env, stack);
   
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__items_2(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__args_width_1(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  stack[0].ival = env->items(env, stack);
+  stack[0].ival = env->args_width(env, stack);
   
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__items_4(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__args_width_2(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  stack[0].ival = env->items(env, stack);
+  stack[0].ival = env->args_width(env, stack);
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__args_width_4(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = env->args_width(env, stack);
   
   return 0;
 }
 
 int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t items = env->items(env, stack);
+  int32_t args_width = env->args_width(env, stack);
   
   int8_t value_byte = stack[0].bval;
   int16_t value_short = stack[1].sval;
@@ -2503,7 +2503,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
   
   spvm_warn("line %d", __LINE__);
   
-  if (items >= 1) {
+  if (args_width >= 1) {
     if (!(value_byte == 1)) {
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);
@@ -2518,7 +2518,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
     }
   }
   
-  if (items >= 2) {
+  if (args_width >= 2) {
     if (!(value_short == 2)) {
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);
@@ -2533,7 +2533,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
     }
   }
   
-  if (items >= 3) {
+  if (args_width >= 3) {
     if (!(value_int == 3)) {
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);
@@ -2548,7 +2548,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
     }
   }
   
-  if (items >= 4) {
+  if (args_width >= 4) {
     if (!(value_long == 4)) {
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);
@@ -2563,7 +2563,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
     }
   }
   
-  if (items >= 5) {
+  if (args_width >= 5) {
     if (!(value_float == 5.5f)) {
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);
@@ -2581,7 +2581,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
     }
   }
   
-  if (items >= 6) {
+  if (args_width >= 6) {
     if (!(value_double == 6.5)) {
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);
@@ -2596,7 +2596,7 @@ int32_t SPVM__TestCase__NativeAPI__default_all_types_native(SPVM_ENV* env, SPVM_
     }
   }
   
-  if (items >= 7) {
+  if (args_width >= 7) {
     if (!(value_object != NULL)) {
       stack[0].ival = 0;
       spvm_warn("line %d", __LINE__);

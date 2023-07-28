@@ -1,3 +1,9 @@
+0.989030 2023-07-28
+  [Incompatible Changes]
+    * The following native APIs are renamed.
+      -  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
+      +  int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);
+
 0.989029 2023-07-27
   [New Features]
     * The following native APIs were added.

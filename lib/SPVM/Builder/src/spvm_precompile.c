@@ -244,7 +244,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* new_object_no_mortal = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t index = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t items = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t args_width = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t return_value = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* string = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* string1 = NULL;\n");
@@ -4461,7 +4461,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_BYTE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -4469,11 +4469,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "  , stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 & 0xFF);
-        SPVM_STRING_BUFFER_add(string_buffer, ", items);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", args_width);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_SHORT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -4481,11 +4481,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "  , stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 & 0xFF);
-        SPVM_STRING_BUFFER_add(string_buffer, ", items);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", args_width);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -4493,11 +4493,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "  , stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 & 0xFF);
-        SPVM_STRING_BUFFER_add(string_buffer, ", items);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", args_width);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -4505,11 +4505,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "  , stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 & 0xFF);
-        SPVM_STRING_BUFFER_add(string_buffer, ", items);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", args_width);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -4517,11 +4517,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "  , stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 & 0xFF);
-        SPVM_STRING_BUFFER_add(string_buffer, ", items);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", args_width);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 >> 8);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -4529,7 +4529,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, "  , stack, ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3 & 0xFF);
-        SPVM_STRING_BUFFER_add(string_buffer, ", items);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", args_width);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE: {
@@ -4948,7 +4948,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t items = opcode->operand2;
+        int32_t args_width = opcode->operand2;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
@@ -4963,22 +4963,22 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, items);
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, args_width);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
         SPVM_PRECOMPILE_add_method(precompile, string_buffer, basic_type_name, method_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, decl_method, items);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, decl_method, args_width);\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t items = opcode->operand2;
+        int32_t args_width = opcode->operand2;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
@@ -4993,8 +4993,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, items);
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, args_width);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  decl_method = ");
@@ -5002,14 +5002,14 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer,
-                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, items);\n");
+                                              "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, decl_method, args_width);\n");
         
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t items = opcode->operand2;
+        int32_t args_width = opcode->operand2;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         SPVM_RUNTIME_METHOD* decl_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
@@ -5024,11 +5024,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  items = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, items);
+        SPVM_STRING_BUFFER_add(string_buffer, "  args_width = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, args_width);
         SPVM_STRING_BUFFER_add(string_buffer,
                                               ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, basic_type_name, method_name, items, &error_id, tmp_buffer, sizeof(tmp_buffer));\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, basic_type_name, method_name, args_width, &error_id, tmp_buffer, sizeof(tmp_buffer));\n");
         
         break;
       }

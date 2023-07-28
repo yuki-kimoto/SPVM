@@ -437,7 +437,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
       
       // Argument limit check
-      int32_t items = 0;
+      int32_t args_width = 0;
       SPVM_TYPE* last_arg_type = NULL;
       int32_t found_optional_arg = 0;
       for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
@@ -493,10 +493,10 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         }
         
         if (is_arg_type_is_mulnum_type || is_arg_type_is_value_ref_type) {
-          items += arg_type->basic_type->unmerged_fields->length;
+          args_width += arg_type->basic_type->unmerged_fields->length;
         }
         else {
-          items++;
+          args_width++;
         }
         
         if (arg_index == method->args_length - 1) {
@@ -504,7 +504,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         }
       }
       
-      if (!(items <= 255)) {
+      if (!(args_width <= 255)) {
         SPVM_COMPILER_error(compiler, "The stack length of arguments must be less than or equal to 255.\n  at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
@@ -4028,14 +4028,14 @@ int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* run
   
   SPVM_TYPE* my_type = var_decl->type;
 
-  int32_t items = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+  int32_t args_width = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
   
   // Search free memory
   int32_t found = 0;
   for (int32_t runtime_var_index = 0; runtime_var_index < runtime_vars->length; runtime_var_index++) {
-    if (runtime_var_index + items <= runtime_vars->length) {
+    if (runtime_var_index + args_width <= runtime_vars->length) {
       int32_t is_used = 0;
-      for (int32_t i = 0; i < items; i++) {
+      for (int32_t i = 0; i < args_width; i++) {
         int32_t my_id = (intptr_t)SPVM_LIST_get(runtime_vars, runtime_var_index + i);
         if (my_id >= 0) {
           is_used = 1;
@@ -4045,7 +4045,7 @@ int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* run
       if (!is_used) {
         found = 1;
         found_runtime_var_index = runtime_var_index;
-        for (int32_t i = 0; i < items; i++) {
+        for (int32_t i = 0; i < args_width; i++) {
           runtime_vars->values[runtime_var_index + i] = (void*)(intptr_t)var_decl->index;
         }
         break;
@@ -4060,7 +4060,7 @@ int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* run
   // Add stack
   if (!found) {
     found_runtime_var_index = runtime_vars->length;
-    for (int32_t i = 0; i < items; i++) {
+    for (int32_t i = 0; i < args_width; i++) {
       SPVM_LIST_push(runtime_vars, (void*)(intptr_t)var_decl->index);
     }
   }

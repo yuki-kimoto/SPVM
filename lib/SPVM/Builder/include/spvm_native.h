@@ -107,7 +107,7 @@ struct spvm_env {
   int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
   int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
   void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
-  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int32_t (*get_object_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
@@ -190,11 +190,11 @@ struct spvm_env {
   void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
   void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
   void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
-  int32_t (*call_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
-  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
-  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
-  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
-  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+  int32_t (*call_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);
+  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);
+  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
   void* (*new_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
   void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
   void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);

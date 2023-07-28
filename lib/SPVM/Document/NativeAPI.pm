@@ -148,15 +148,15 @@ If an exception is thrown, returns non-zero value. Otherwise returns 0.
 
 Destroys all class variables.
 
-=head2 items
+=head2 args_width
 
-  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Returns the total width of the arguments given by the caller.
 
 Examples:
 
-  int32_t items = env->items(env, stack);
+  int32_t args_width = env->args_width(env, stack);
 
 =head2 get_object_basic_type
 
@@ -1334,7 +1334,7 @@ If you specify a pointer object and a C language pointer, the C language pointer
 
 =head2 call_method_no_mortal
 
-  int32_t (*call_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
+  int32_t (*call_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);
 
 Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
@@ -1518,7 +1518,7 @@ Examples:
 
 =head2 call_class_method_by_name
 
-  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 Calls a class method given the basic type name and method name.
 
@@ -1527,9 +1527,9 @@ Examples:
   int32_t error_id = 0;
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", items, &error_id, __func__, __FILE__, __LINE__);
+    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_width, &error_id, __func__, __FILE__, __LINE__);
     if (error_id) { return error_id; }
     
     output = stack[0].ival;
@@ -1537,7 +1537,7 @@ Examples:
 
 =head2 call_instance_method_by_name
 
-  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 Calls an instance method given the method name.
 
@@ -1827,7 +1827,7 @@ The same as the L</"strerror"> function, but return a C<string> object.
 
 =head2 call_instance_method_static_by_name
 
-  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t items, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 Calls an instance method by the basic type name and the method name.
 
@@ -1836,9 +1836,9 @@ Examples:
   int32_t error_id = 0;
   int32_t output;
   {
-    int32_t items = 1;
+    int32_t args_width = 1;
     stack[0].oval = obj_point;
-    env->call_instance_method_static_by_name(env, stack, "Point", "x", items, &error_id, __func__, __FILE__, __LINE__);
+    env->call_instance_method_static_by_name(env, stack, "Point", "x", args_width, &error_id, __func__, __FILE__, __LINE__);
     if (error_id) { return error_id; }
     output = stack[0].ival;
   }
@@ -1899,7 +1899,7 @@ If the version string in the basic_type is not defined, returns -1.
 
 =head2 call_method
 
-  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t items);
+  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);
 
 Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
@@ -1973,7 +1973,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   7 set_command_info_argv
   8 set_command_info_base_time
   9 destroy_class_vars
-  10 items
+  10 args_width
   11 get_object_basic_type
   12 get_object_basic_type_id
   13 get_object_basic_type_name

@@ -1259,9 +1259,9 @@ class TestCase::NativeAPI {
   native static method new_string_array : int ();
   native static method new_string_array_value : string[] ();
   
-  static method items : int () {
+  static method args_width : int () {
     {
-      my $args_length = &items_0;
+      my $args_length = &args_width_0;
       unless ($args_length == 0) {
         return 0;
       }
@@ -1269,21 +1269,21 @@ class TestCase::NativeAPI {
     
     
     {
-      my $args_length = &items_1(0);
+      my $args_length = &args_width_1(0);
       unless ($args_length == 1) {
         return 0;
       }
     }
     
     {
-      my $args_length = &items_2(0);
+      my $args_length = &args_width_2(0);
       unless ($args_length == 1) {
         return 0;
       }
     }
     
     {
-      my $args_length = &items_2(0, 0);
+      my $args_length = &args_width_2(0, 0);
       unless ($args_length == 2) {
         return 0;
       }
@@ -1291,7 +1291,7 @@ class TestCase::NativeAPI {
 
     {
       my $z : Complex_2d;
-      my $args_length = &items_4($z, 0, 0);
+      my $args_length = &args_width_4($z, 0, 0);
       unless ($args_length == 4) {
         return 0;
       }
@@ -1299,7 +1299,7 @@ class TestCase::NativeAPI {
 
     {
       my $z : Complex_2d;
-      my $args_length = &items_4($z);
+      my $args_length = &args_width_4($z);
       unless ($args_length == 2) {
         return 0;
       }
@@ -1307,10 +1307,10 @@ class TestCase::NativeAPI {
     
     return 1;
   }
-  native static method items_0 : int ();
-  native static method items_1 : int ($args0 : int);
-  native static method items_2 : int ($args0 : int, $args1 : int = 0);
-  native static method items_4 : int ($args_2d : Complex_2d, $args0 : int = 0, $args1 : int = 0);
+  native static method args_width_0 : int ();
+  native static method args_width_1 : int ($args0 : int);
+  native static method args_width_2 : int ($args0 : int, $args1 : int = 0);
+  native static method args_width_4 : int ($args_2d : Complex_2d, $args0 : int = 0, $args1 : int = 0);
 
   native static method default_all_types_native : int (
     $value_byte : byte = -128,

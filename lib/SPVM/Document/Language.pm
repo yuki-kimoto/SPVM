@@ -278,7 +278,7 @@ The list of keywords:
   is_type
   is_error
   is_read_only
-  items
+  args_width
   last
   length
   lt
@@ -9105,11 +9105,11 @@ A instance method can be called statically by specifing the calss name.
 
   $point3d->Point::clear;
 
-=head2 items Operator
+=head2 args_width Operator
 
-The C<items> operator gets the stack length of the arguments passed to the method.
+The C<args_width> operator gets the stack length of the arguments passed to the method.
 
-  items
+  args_width
 
 Note that the stack length of the arguments is different from the length of the arguments.
 
@@ -9120,9 +9120,9 @@ If an argument is a multi-numeric type, the stack length of the argument becomes
 Examples:
   
   static method my_static_method : int ($args : int, $bar : int = 0) {
-    my $items = items;
+    my $args_width = args_width;
     
-    return $items;
+    return $args_width;
   };
   
   # 1
@@ -9132,9 +9132,9 @@ Examples:
   &my_static_method(1, 2);
   
   static method my_instance_method : int ($args : int, $bar : int = 0) {
-    my $items = items;
+    my $args_width = args_width;
     
-    return $items;
+    return $args_width;
   };
   
   # 2 (1 + the invocant)
@@ -9144,9 +9144,9 @@ Examples:
   &my_instance_method(1, 2);
 
   static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
-    my $items = items;
+    my $args_width = args_width;
     
-    return $items;
+    return $args_width;
   };
 
   # 2 (The length of the fields of Complex_2d)

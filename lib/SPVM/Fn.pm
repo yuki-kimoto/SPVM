@@ -25,11 +25,11 @@ The Fn class of L<SPVM> has methods for numbers, strings, general utilities.
   
   # Split
   my $csv = "foo,bar,baz";
-  my $items = Fn->split(",", $string);
+  my $args_width = Fn->split(",", $string);
   
   # Join
-  my $items = ["foo", "bar", "baz"];
-  my $csv = Fn->join(",", $items);
+  my $args_width = ["foo", "bar", "baz"];
+  my $csv = Fn->join(",", $args_width);
   
   # Constant values
   my $byte_max = Fn->BYTE_MAX();

@@ -49,7 +49,7 @@ class Native::MethodCall {
   
   has stack_return_type_categories : int[];
   
-  has items : rw int;
+  has args_width : rw int;
   
   native static method new_class_method : Native::MethodCall ($runtime : Native::Runtime, $basic_type_name : string, $method_name : string);
   

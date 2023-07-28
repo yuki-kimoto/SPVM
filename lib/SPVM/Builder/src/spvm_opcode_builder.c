@@ -68,7 +68,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
         
         SPVM_OPCODE opcode = {0};
         
-        int32_t items = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        int32_t args_width = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
 
         if (arg_type_dimension == 0) {
           if (arg_type_is_ref) {
@@ -214,9 +214,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   }
                 }
                 opcode.operand0 = arg->runtime_var_index;
-                assert(items < 0xFFFF);
-                opcode.operand3 = items << 8 | stack_index & 0xFF;
-                stack_index += items;
+                assert(args_width < 0xFFFF);
+                opcode.operand3 = args_width << 8 | stack_index & 0xFF;
+                stack_index += args_width;
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
@@ -793,10 +793,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       assert(0);
                     }
                     
-                    int32_t method_return_items = SPVM_TYPE_get_width(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag);
+                    int32_t method_return_width = SPVM_TYPE_get_width(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag);
 
                     opcode.operand0 = runtime_var_index_in;
-                    opcode.operand2 = method_return_items;
+                    opcode.operand2 = method_return_width;
                     
                     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                   }
@@ -1112,14 +1112,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term_arg = op_term_args->first;
 
                       SPVM_LIST* args = method_call_method->var_decls;
-                      int32_t items = 0;
+                      int32_t args_width = 0;
                       {
                         for (int32_t arg_index = 0; arg_index < method_call_method->args_length; arg_index++) {
                           SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(args, arg_index);
                           
                           // Argument type
                           SPVM_TYPE* arg_type = arg_var_decl->type;
-                          int32_t arg_items = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+                          int32_t arg_args_width = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
                           
                           // Term argment type
                           op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
@@ -1131,7 +1131,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                           
                           SPVM_OPCODE opcode = {0};
                           
-                          opcode.operand3 = items;
+                          opcode.operand3 = args_width;
                           
                           if (SPVM_TYPE_is_undef_type(compiler, term_arg_type->basic_type->id, term_arg_type->dimension, term_arg_type->flag)) {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_UNDEF);
@@ -1259,7 +1259,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                           }
-                          items += arg_items;
+                          args_width += arg_args_width;
                         }
                       }
 
@@ -1283,7 +1283,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       }
                       opcode.operand0 = call_method->method->current_basic_type->id;
                       opcode.operand1 = call_method->method->index;
-                      opcode.operand2 = items;
+                      opcode.operand2 = args_width;
                       
                       SPVM_OPCODE opcode_return = {0};
                       {
@@ -1338,9 +1338,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                           SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
                           assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
                           
-                          int32_t call_method_return_items = SPVM_TYPE_get_width(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
-                          assert(call_method_return_items < 0xFFFF);
-                          opcode_return.operand3 = call_method_return_items << 8 | 0;
+                          int32_t call_method_return_width = SPVM_TYPE_get_width(compiler, call_method_return_type->basic_type->id, call_method_return_type->dimension, call_method_return_type->flag);
+                          assert(call_method_return_width < 0xFFFF);
+                          opcode_return.operand3 = call_method_return_width << 8 | 0;
 
                           switch (field_type->basic_type->id) {
                             case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {

@@ -1825,7 +1825,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_IS_READ_ONLY);
                   keyword_token = IS_READ_ONLY;
                 }
-                else if (strcmp(symbol_name, "items") == 0) {
+                else if (strcmp(symbol_name, "args_width") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_ITEMS);
                   keyword_token = ITEMS;
                 }

@@ -238,9 +238,9 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Method->optional_args);
 }
 
-# items
+# args_width
 {
-  ok(SPVM::TestCase::Method->items);
+  ok(SPVM::TestCase::Method->args_width);
 }
 
 # Interface Methods

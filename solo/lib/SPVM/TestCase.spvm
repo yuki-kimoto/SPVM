@@ -112,7 +112,7 @@ SPVM::Test - SPVM test class
     my $args = CommandInfo->ARGV;
     
     {
-      my $items = items;
+      my $args_width = args_width;
     }
     
     {

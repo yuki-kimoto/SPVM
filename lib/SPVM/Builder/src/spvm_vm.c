@@ -44,7 +44,7 @@
 
 static const char* FILE_NAME = "spvm_vm.c";
 
-int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, int32_t items) {
+int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* current_method, int32_t args_width) {
   
   // Opcode relative index
   register int32_t opcode_rel_index = 0;
@@ -2140,33 +2140,33 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_BYTE: {
-        int32_t items = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(env, &byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
+        int32_t args_width = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(env, &byte_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, args_width);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_SHORT: {
-        int32_t items = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(env, &short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
+        int32_t args_width = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(env, &short_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, args_width);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_INT: {
-        int32_t items = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(env, &int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
+        int32_t args_width = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(env, &int_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, args_width);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_LONG: {
-        int32_t items = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(env, &long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
+        int32_t args_width = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(env, &long_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, args_width);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_FLOAT: {
-        int32_t items = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(env, &float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
+        int32_t args_width = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(env, &float_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, args_width);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_MULNUM_DOUBLE: {
-        int32_t items = opcode->operand3 >> 8;
-        SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(env, &double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, items);
+        int32_t args_width = opcode->operand3 >> 8;
+        SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(env, &double_vars[opcode->operand0], stack, opcode->operand3 & 0xFF, args_width);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE: {
@@ -2359,32 +2359,32 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t items = opcode->operand2;
+        int32_t args_width = opcode->operand2;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, invocant_decl_basic_type, decl_method_index);
         
-        SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method, items);
+        SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method, args_width);
         
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t items = opcode->operand2;
+        int32_t args_width = opcode->operand2;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         
         SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, invocant_decl_basic_type, decl_method_index);
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, items);
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, args_width);
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
         int32_t invocant_decl_basic_type_id = opcode->operand0;
         int32_t decl_method_index = opcode->operand1;
-        int32_t items = opcode->operand2;
+        int32_t args_width = opcode->operand2;
         
         SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
         
@@ -2393,7 +2393,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         const char* basic_type_name = method->current_basic_type->name;
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, basic_type_name, method_name, items, &error_id, tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, basic_type_name, method_name, args_width, &error_id, tmp_buffer, sizeof(tmp_buffer));
         break;
       }
     }

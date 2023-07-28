@@ -261,9 +261,9 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->new_object_array_no_mortal);
 }
 
-# items
+# args_width
 {
-  ok(SPVM::TestCase::NativeAPI->items);
+  ok(SPVM::TestCase::NativeAPI->args_width);
 }
 
 # Default

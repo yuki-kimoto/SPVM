@@ -1527,7 +1527,7 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
 
 #define SPVM_IMPLEMENT_SET_EVAL_ERROR_ID(eval_error_id, die_error_id) (eval_error_id = die_error_id)
 
-#define SPVM_IMPLEMENT_ITEMS(env, stack, out) (out = env->items(env, stack))
+#define SPVM_IMPLEMENT_ITEMS(env, stack, out) (out = env->args_width(env, stack))
 
 #define SPVM_IMPLEMENT_GET_BASIC_TYPE_ID(env, stack, out, basic_type) (out = env->api->basic_type->get_id(env->runtime, basic_type))
 
@@ -2422,38 +2422,38 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
 #define SPVM_IMPLEMENT_SET_STACK_REF(stack, stack_index, in) (*(void**)&stack[stack_index] = in)
 #define SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, stack_index) (*(void**)&stack[stack_index] = NULL)
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, int8_t* in) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width, int8_t* in) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int8_t*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, int16_t* in) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width, int16_t* in) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int16_t*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, int32_t* in) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width, int32_t* in) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int32_t*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, int64_t* in) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width, int64_t* in) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int64_t*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, float* in) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width, float* in) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(float*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t items, double* in) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width, double* in) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(double*)&stack[stack_base + stack_index] = *(in + stack_index);
   }
 }
@@ -2471,45 +2471,45 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OBJECT(SPVM_ENV* env, void** out, SP
 
 #define SPVM_IMPLEMENT_GET_STACK_REF(out, stack, stack_index) (out = *(void**)&stack[stack_index])
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(out + stack_index) = *(int8_t*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(SPVM_ENV* env, int16_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_SHORT(SPVM_ENV* env, int16_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(out + stack_index) = *(int16_t*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(SPVM_ENV* env, int32_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_INT(SPVM_ENV* env, int32_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(out + stack_index) = *(int32_t*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(SPVM_ENV* env, int64_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_LONG(SPVM_ENV* env, int64_t* out, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(out + stack_index) = *(int64_t*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(SPVM_ENV* env, float* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_FLOAT(SPVM_ENV* env, float* out, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(out + stack_index) = *(float*)&stack[(stack_base) + stack_index];
   }
 }
 
-static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, double* out, SPVM_VALUE* stack, int32_t stack_base, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_GET_STACK_MULNUM_DOUBLE(SPVM_ENV* env, double* out, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(out + stack_index) = *(double*)&stack[(stack_base) + stack_index];
   }
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_BYTE(SPVM_ENV* env, int8_t* out, SPVM_VALUE* stack, int32_t stack_index, int8_t default_value) {
-  int32_t items = env->items(env, stack);
-  if (stack_index >= items) {
+  int32_t args_width = env->args_width(env, stack);
+  if (stack_index >= args_width) {
     *out = default_value;
   }
   else {
@@ -2518,8 +2518,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_BYTE(SPVM_ENV* env, int8_t*
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_SHORT(SPVM_ENV* env, int16_t* out, SPVM_VALUE* stack, int32_t stack_index, int16_t default_value) {
-  int32_t items = env->items(env, stack);
-  if (stack_index >= items) {
+  int32_t args_width = env->args_width(env, stack);
+  if (stack_index >= args_width) {
     *out = default_value;
   }
   else {
@@ -2528,8 +2528,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_SHORT(SPVM_ENV* env, int16_
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_INT(SPVM_ENV* env, int32_t* out, SPVM_VALUE* stack, int32_t stack_index, int32_t default_value) {
-  int32_t items = env->items(env, stack);
-  if (stack_index >= items) {
+  int32_t args_width = env->args_width(env, stack);
+  if (stack_index >= args_width) {
     *out = default_value;
   }
   else {
@@ -2538,8 +2538,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_INT(SPVM_ENV* env, int32_t*
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_LONG(SPVM_ENV* env, int64_t* out, SPVM_VALUE* stack, int32_t stack_index, int64_t default_value) {
-  int32_t items = env->items(env, stack);
-  if (stack_index >= items) {
+  int32_t args_width = env->args_width(env, stack);
+  if (stack_index >= args_width) {
     *out = default_value;
   }
   else {
@@ -2548,8 +2548,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_LONG(SPVM_ENV* env, int64_t
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_FLOAT(SPVM_ENV* env, float* out, SPVM_VALUE* stack, int32_t stack_index, float default_value) {
-  int32_t items = env->items(env, stack);
-  if (stack_index >= items) {
+  int32_t args_width = env->args_width(env, stack);
+  if (stack_index >= args_width) {
     *out = default_value;
   }
   else {
@@ -2558,8 +2558,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_FLOAT(SPVM_ENV* env, float*
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(SPVM_ENV* env, double* out, SPVM_VALUE* stack, int32_t stack_index, double default_value) {
-  int32_t items = env->items(env, stack);
-  if (stack_index >= items) {
+  int32_t args_width = env->args_width(env, stack);
+  if (stack_index >= args_width) {
     *out = default_value;
   }
   else {
@@ -2568,8 +2568,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_DOUBLE(SPVM_ENV* env, doubl
 }
 
 static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void** out, SPVM_VALUE* stack, int32_t stack_index, int32_t object_ref_count_offset) {
-  int32_t items = env->items(env, stack);
-  if (stack_index >= items) {
+  int32_t args_width = env->args_width(env, stack);
+  if (stack_index >= args_width) {
     SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, out, NULL, object_ref_count_offset);
   }
   else {
@@ -2593,47 +2593,47 @@ static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack
 
 #define SPVM_IMPLEMENT_RETURN_UNDEF(stack) (*(void**)&stack[0] = NULL)
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* in, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* in, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int8_t*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* in, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* in, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int16_t*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* in, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* in, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int32_t*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* in, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* in, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int64_t*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* in, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* in, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(float*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* in, int32_t items) {
-  for (int32_t stack_index = 0; stack_index < items; stack_index++) {
+static inline void SPVM_IMPLEMENT_RETURN_MULNUM_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* in, int32_t args_width) {
+  for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(double*)&stack[stack_index] = *(in + stack_index);
   }
 }
 
-#define SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method, items) (error_id = env->call_method_no_mortal(env, stack, method, items))
+#define SPVM_IMPLEMENT_CALL_CLASS_METHOD(env, stack, error_id, method, args_width) (error_id = env->call_method_no_mortal(env, stack, method, args_width))
 
-#define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, items) (error_id = env->call_method_no_mortal(env, stack, method, items))
+#define SPVM_IMPLEMENT_CALL_INSTANCE_METHOD_STATIC(env, stack, error_id, method, args_width) (error_id = env->call_method_no_mortal(env, stack, method, args_width))
 
-static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, const char* interface_name, const char* method_name, int32_t items, int32_t* error_id, char* tmp_buffer, int32_t tmp_buffer_length) {
+static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE* stack, const char* interface_name, const char* method_name, int32_t args_width, int32_t* error_id, char* tmp_buffer, int32_t tmp_buffer_length) {
   
   void* object = stack[0].oval;
   
@@ -2657,7 +2657,7 @@ static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE
   }
   
   if (!*error_id) {
-    *error_id = env->call_method_no_mortal(env, stack, method, items);
+    *error_id = env->call_method_no_mortal(env, stack, method, args_width);
   }
 }
 
