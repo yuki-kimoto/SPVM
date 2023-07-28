@@ -11,45 +11,11 @@ class Native::MethodCall {
     METHOD_CALL_CATEGORY_INSTANCE_METHOD,
   }
   
-  private enum {
-    TYPE_CATEGORY_BYTE,
-    TYPE_CATEGORY_SHORT,
-    TYPE_CATEGORY_INT,
-    TYPE_CATEGORY_LONG,
-    TYPE_CATEGORY_FLOAT,
-    TYPE_CATEGORY_DOUBLE,
-    TYPE_CATEGORY_OBJECT,
-    TYPE_CATEGORY_BYTE_REF,
-    TYPE_CATEGORY_SHORT_REF,
-    TYPE_CATEGORY_INT_REF,
-    TYPE_CATEGORY_LONG_REF,
-    TYPE_CATEGORY_FLOAT_REF,
-    TYPE_CATEGORY_DOUBLE_REF,
-    TYPE_CATEGORY_MULNUM_BYTE_REF,
-    TYPE_CATEGORY_MULNUM_SHORT_REF,
-    TYPE_CATEGORY_MULNUM_INT_REF,
-    TYPE_CATEGORY_MULNUM_LONG_REF,
-    TYPE_CATEGORY_MULNUM_FLOAT_REF,
-    TYPE_CATEGORY_MULNUM_DOUBLE_REF,
-  }
-  
   has runtime : Native::Runtime;
   
   has method : Native::Method;
   
-  has initialized : byte;
-  
-  has called : byte;
-  
   has method_call_category : int;
-  
-  has type_category : int;
-  
-  has stack_arg_type_categories : int[];
-  
-  has stack_return_type_categories : int[];
-  
-  has args_width : rw int;
   
   native static method new_class_method : Native::MethodCall ($runtime : Native::Runtime, $basic_type_name : string, $method_name : string);
   
@@ -57,59 +23,5 @@ class Native::MethodCall {
   
   native static method new_instance_method : Native::MethodCall($runtime : Native::Runtime, $invocant : object, $method_name : string);
   
-  native method init : void ();
-  
-  native method set_stack_byte : void ($index : int, $value : byte);
-  
-  native method set_stack_short : void ($index : int, $value : short);
-  
-  native method set_stack_int : void ($index : int, $value : int);
-  
-  native method set_stack_long : void ($index : int, $value : long);
-  
-  native method set_stack_float : void ($index : int, $value : float);
-  
-  native method set_stack_double : void ($index : int, $value : double);
-  
-  native method set_stack_object : void ($index : int, $value : object);
-  
-  native method set_stack_byte_ref : void ($index : int, $value : byte*);
-  
-  native method set_stack_short_ref : void ($index : int, $value : short*);
-  
-  native method set_stack_int_ref : void ($index : int, $value : int*);
-  
-  native method set_stack_long_ref : void ($index : int, $value : long*);
-  
-  native method set_stack_float_ref : void ($index : int, $value : float*);
-  
-  native method set_stack_double_ref : void ($index : int, $value : double*);
-  
-  native method set_stack_mulnum_byte_ref : void ($index : int, $value : byte[]);
-  
-  native method set_stack_mulnum_short_ref : void ($index : int, $value : short[]);
-  
-  native method set_stack_mulnum_int_ref : void ($index : int, $value : int[]);
-  
-  native method set_stack_mulnum_long_ref : void ($index : int, $value : long[]);
-  
-  native method set_stack_mulnum_float_ref : void ($index : int, $value : float[]);
-  
-  native method set_stack_mulnum_double_ref : void ($index : int, $value : double[]);
-  
-  native method call : void ();
-  
-  native method get_stack_byte : byte ($index : int);
-  
-  native method get_stack_short : short ($index : int);
-  
-  native method get_stack_int : int ($index : int);
-  
-  native method get_stack_long : long ($index : int);
-  
-  native method get_stack_float : float ($index : int);
-  
-  native method get_stack_double : double ($index : int);
-  
-  native method get_stack_object : object ($index : int);
+  native method call : object ($args : object[]);
 }
