@@ -1512,7 +1512,7 @@ _xs_call_method(...)
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int8_t)));
                 int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(int8_t));
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].bref = ref;
                 
                 break;
@@ -1525,7 +1525,7 @@ _xs_call_method(...)
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int16_t)));
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(int16_t));
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].sref = ref;
                 
                 break;
@@ -1538,7 +1538,7 @@ _xs_call_method(...)
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int32_t)));
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(int32_t));
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].iref = ref;
                 
                 break;
@@ -1551,7 +1551,7 @@ _xs_call_method(...)
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int64_t)));
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(int64_t));
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].lref = ref;
                 
                 break;
@@ -1564,7 +1564,7 @@ _xs_call_method(...)
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(float)));
                 float* ref = (float*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(float));
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].fref = ref;
                 
                 break;
@@ -1577,7 +1577,7 @@ _xs_call_method(...)
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(double)));
                 double* ref = (double*)SvPV_nolen(sv_ref);
                 memcpy((void*)ref, &value, sizeof(double));
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].dref = ref;
                 
                 break;
@@ -1610,7 +1610,7 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int8_t) * arg_basic_type_fields_length));
                 int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].bref = ref;
                 
                 break;
@@ -1618,7 +1618,7 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int16_t) * arg_basic_type_fields_length));
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].sref = ref;
                 
                 break;
@@ -1626,7 +1626,7 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int32_t) * arg_basic_type_fields_length));
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].iref = ref;
                 
                 break;
@@ -1634,7 +1634,7 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int64_t) * arg_basic_type_fields_length));
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].lref = ref;
                 
                 break;
@@ -1642,7 +1642,7 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(float) * arg_basic_type_fields_length));
                 float* ref = (float*)SvPV_nolen(sv_ref);
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].fref = ref;
                 
                 break;
@@ -1650,7 +1650,7 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(double) * arg_basic_type_fields_length));
                 double* ref = (double*)SvPV_nolen(sv_ref);
-                av_store(av_refs, arg_index, sv_ref);
+                av_store(av_refs, arg_index,SvREFCNT_inc(sv_ref));
                 stack[stack_index].dref = ref;
                 
                 break;
