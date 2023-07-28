@@ -1256,7 +1256,6 @@ _xs_call_method(...)
     croak("Too many arguments are passed to the \"%s\" method in the \"%s\" basic type\n    %s at %s line %d\n", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
   }
   
-  // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal native_stack.
   int32_t stack_index = 0;
   
   // Reference native_stack.
