@@ -1620,7 +1620,6 @@ _xs_call_method(...)
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].sref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1629,7 +1628,6 @@ _xs_call_method(...)
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].iref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1638,7 +1636,6 @@ _xs_call_method(...)
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].lref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1647,7 +1644,6 @@ _xs_call_method(...)
                 float* ref = (float*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].fref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1656,7 +1652,6 @@ _xs_call_method(...)
                 double* ref = (double*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].dref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -2122,7 +2117,7 @@ _xs_call_method(...)
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
-                sv_setiv(sv_value_deref, *(int8_t*)ref);
+                sv_setiv(sv_value_deref, *ref);
                 
                 break;
               }
@@ -2132,7 +2127,7 @@ _xs_call_method(...)
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
-                sv_setiv(sv_value_deref, *(int16_t*)ref);
+                sv_setiv(sv_value_deref, *ref);
                 
                 break;
               }
@@ -2142,7 +2137,7 @@ _xs_call_method(...)
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
-                sv_setiv(sv_value_deref, *(int32_t*)ref);
+                sv_setiv(sv_value_deref, *ref);
                 
                 break;
               }
@@ -2152,7 +2147,7 @@ _xs_call_method(...)
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
-                sv_setiv(sv_value_deref, *(int64_t*)ref);
+                sv_setiv(sv_value_deref, *ref);
                 
                 break;
               }
@@ -2162,7 +2157,7 @@ _xs_call_method(...)
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 float* ref = (float*)SvPV_nolen(sv_ref);
-                sv_setiv(sv_value_deref, *(float*)ref);
+                sv_setnv(sv_value_deref, *ref);
                 
                 break;
               }
@@ -2172,7 +2167,7 @@ _xs_call_method(...)
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 double* ref = (double*)SvPV_nolen(sv_ref);
-                sv_setiv(sv_value_deref, *(double*)ref);
+                sv_setnv(sv_value_deref, *ref);
                 
                 break;
               }
@@ -2200,33 +2195,53 @@ _xs_call_method(...)
                   SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                   SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                   int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
-                  
                   sv_field_value = sv_2mortal(newSViv(*(ref + field_index)));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                   // Restore reference value - multi-numeric short
-                  sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
+                  sv_field_value = sv_2mortal(newSViv(*(ref + field_index)));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                   // Restore reference value - multi-numeric int
-                  sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
+                  sv_field_value = sv_2mortal(newSViv(*(ref + field_index)));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                   // Restore reference value - multi-numeric long
-                  sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
+                  sv_field_value = sv_2mortal(newSViv(*(ref + field_index)));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                   // Restore reference value - multi-numeric float
-                  sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  float* ref = (float*)SvPV_nolen(sv_ref);
+                  sv_field_value = sv_2mortal(newSVnv(*(ref + field_index)));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                   // Restore reference value - multi-numeric double
-                  sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  double* ref = (double*)SvPV_nolen(sv_ref);
+                  sv_field_value = sv_2mortal(newSVnv(*(ref + field_index)));
+                  
                   break;
                 }
                 default: {
