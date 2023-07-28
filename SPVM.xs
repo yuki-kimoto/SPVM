@@ -1761,8 +1761,8 @@ _xs_call_method(...)
   int32_t method_return_basic_type_category = env->api->basic_type->get_category(env->runtime, method_return_basic_type);
   
   // Call method
-  int32_t call_method_items = stack_index;
-  int32_t error_id = env->call_method_no_mortal(env, stack, method, call_method_items);
+  int32_t call_method_args_width = stack_index;
+  int32_t error_id = env->call_method_no_mortal(env, stack, method, call_method_args_width);
   
   if (error_id) {
     if (SvOK(sv_error_ret)) {

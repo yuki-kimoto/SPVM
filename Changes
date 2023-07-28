@@ -3,7 +3,7 @@
     * The following native APIs are renamed.
       -  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
       +  int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);
-
+    * The items operator is renamed to args_width.
   [New Features]
     * The following runtime native APIs were added.
     
