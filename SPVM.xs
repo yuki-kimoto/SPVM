@@ -1508,36 +1508,72 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 int8_t value = (int8_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].bval = value;
+                
+                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(int8_t)));
+                char* binary = SvPV_nolen(sv_binary);
+                memcpy(binary, &value, sizeof(int8_t));
+                av_store(av_refs, arg_index, sv_binary);
+                
                 break;
               }
               // Argument conversion - short reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                 int16_t value = (int16_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].sval = value;
+                
+                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(int16_t)));
+                char* binary = SvPV_nolen(sv_binary);
+                memcpy(binary, &value, sizeof(int16_t));
+                av_store(av_refs, arg_index, sv_binary);
+                
                 break;
               }
               // Argument conversion - int reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                 int32_t value = (int32_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].ival = value;
+                
+                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(int32_t)));
+                char* binary = SvPV_nolen(sv_binary);
+                memcpy(binary, &value, sizeof(int32_t));
+                av_store(av_refs, arg_index, sv_binary);
+                
                 break;
               }
               // Argument conversion - long reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                 int64_t value = (int64_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].lval = value;
+                
+                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(int64_t)));
+                char* binary = SvPV_nolen(sv_binary);
+                memcpy(binary, &value, sizeof(int64_t));
+                av_store(av_refs, arg_index, sv_binary);
+                
                 break;
               }
               // Argument conversion - float reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                 float value = (float)SvNV(sv_value_deref);
                 ref_stack[ref_stack_index].fval = value;
+                
+                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(float)));
+                char* binary = SvPV_nolen(sv_binary);
+                memcpy(binary, &value, sizeof(float));
+                av_store(av_refs, arg_index, sv_binary);
+                
                 break;
               }
               // Argument conversion - double reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                 double value = (double)SvNV(sv_value_deref);
                 ref_stack[ref_stack_index].dval = value;
+                
+                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(double)));
+                char* binary = SvPV_nolen(sv_binary);
+                memcpy(binary, &value, sizeof(double));
+                av_store(av_refs, arg_index, sv_binary);
+                
                 break;
               }
             }
