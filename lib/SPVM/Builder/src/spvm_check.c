@@ -3648,7 +3648,7 @@ void SPVM_CHECK_check_ast_check_call_stack_indexs(SPVM_COMPILER* compiler, SPVM_
               else {
                 assert(0);
               }
-              var_decl->call_stack_index = call_stack_index;
+              var_decl->runtime_var_index = call_stack_index;
               
             }
             break;

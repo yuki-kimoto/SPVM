@@ -77,7 +77,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
               {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_REF);
-                opcode.operand0 = arg->call_stack_index;
+                opcode.operand0 = arg->runtime_var_index;
                 opcode.operand3 = stack_index & 0xFF;
                 stack_index++;
                 break;
@@ -100,7 +100,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_BYTE);
                     }
-                    opcode.operand0 = arg->call_stack_index;
+                    opcode.operand0 = arg->runtime_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
@@ -114,7 +114,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_SHORT);
                     }
-                    opcode.operand0 = arg->call_stack_index;
+                    opcode.operand0 = arg->runtime_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
@@ -128,7 +128,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_INT);
                     }
-                    opcode.operand0 = arg->call_stack_index;
+                    opcode.operand0 = arg->runtime_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
@@ -142,7 +142,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_LONG);
                     }
-                    opcode.operand0 = arg->call_stack_index;
+                    opcode.operand0 = arg->runtime_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
@@ -156,7 +156,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_FLOAT);
                     }
-                    opcode.operand0 = arg->call_stack_index;
+                    opcode.operand0 = arg->runtime_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
@@ -170,7 +170,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_DOUBLE);
                     }
-                    opcode.operand0 = arg->call_stack_index;
+                    opcode.operand0 = arg->runtime_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
@@ -213,7 +213,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     break;
                   }
                 }
-                opcode.operand0 = arg->call_stack_index;
+                opcode.operand0 = arg->runtime_var_index;
                 assert(items < 0xFFFF);
                 opcode.operand3 = items << 8 | stack_index & 0xFF;
                 stack_index += items;
@@ -230,7 +230,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                 else {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
                 }
-                opcode.operand0 = arg->call_stack_index;
+                opcode.operand0 = arg->runtime_var_index;
                 opcode.operand3 = stack_index & 0xFF;
                 stack_index++;
                 break;
@@ -256,7 +256,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
               else {
                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
               }
-              opcode.operand0 = arg->call_stack_index;
+              opcode.operand0 = arg->runtime_var_index;
               opcode.operand3 = stack_index & 0xFF;
               stack_index++;
               break;
@@ -273,7 +273,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
           else {
             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
           }
-          opcode.operand0 = arg->call_stack_index;
+          opcode.operand0 = arg->runtime_var_index;
           opcode.operand3 = stack_index & 0xFF;
           stack_index++;
         }
@@ -5205,7 +5205,7 @@ int32_t SPVM_OPCODE_BUILDER_get_call_stack_index(SPVM_COMPILER* compiler, SPVM_O
         assert(0);
       }
       
-      return op_var->uv.var->var_decl->call_stack_index;
+      return op_var->uv.var->var_decl->runtime_var_index;
     }
   }
   

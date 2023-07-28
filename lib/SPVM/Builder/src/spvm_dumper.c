@@ -441,7 +441,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       }
     }
     
-    fprintf(stderr, " %d\n", var_decl->call_stack_index);
+    fprintf(stderr, " %d\n", var_decl->runtime_var_index);
   }
   else {
     fprintf(stderr, "          (Unexpected)\n");
