@@ -1113,158 +1113,157 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
 
                       SPVM_LIST* args = method_call_method->var_decls;
                       int32_t args_width = 0;
-                      {
-                        for (int32_t arg_index = 0; arg_index < method_call_method->args_length; arg_index++) {
-                          SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(args, arg_index);
-                          
-                          // Argument type
-                          SPVM_TYPE* arg_type = arg_var_decl->type;
-                          int32_t arg_args_width = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-                          
-                          // Term argment type
-                          op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
-                          if (!op_term_arg) {
-                            break;
+                      
+                      for (int32_t arg_index = 0; arg_index < method_call_method->args_length; arg_index++) {
+                        SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(args, arg_index);
+                        
+                        // Argument type
+                        SPVM_TYPE* arg_type = arg_var_decl->type;
+                        int32_t arg_args_width = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+                        
+                        // Term argment type
+                        op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
+                        if (!op_term_arg) {
+                          break;
+                        }
+                        
+                        SPVM_TYPE* term_arg_type = SPVM_CHECK_get_type(compiler, op_term_arg);
+                        
+                        SPVM_OPCODE opcode = {0};
+                        
+                        opcode.operand3 = args_width;
+                        
+                        if (SPVM_TYPE_is_undef_type(compiler, term_arg_type->basic_type->id, term_arg_type->dimension, term_arg_type->flag)) {
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_UNDEF);
+                          SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                        }
+                        else {
+                          if (SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_REF);
+
+                            // Term of argument
+                            int32_t runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                            
+                            opcode.operand0 = runtime_var_index_arg;
+                            
+                            SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                           }
-                          
-                          SPVM_TYPE* term_arg_type = SPVM_CHECK_get_type(compiler, op_term_arg);
-                          
-                          SPVM_OPCODE opcode = {0};
-                          
-                          opcode.operand3 = args_width;
-                          
-                          if (SPVM_TYPE_is_undef_type(compiler, term_arg_type->basic_type->id, term_arg_type->dimension, term_arg_type->flag)) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_UNDEF);
+                          else if (SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+
+                            SPVM_FIELD* first_field = SPVM_LIST_get(arg_type->basic_type->fields, 0);
+                            assert(first_field);
+                            
+                            SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
+                            assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
+                            
+                            int32_t runtime_var_index_arg;
+                            switch (field_type->basic_type->id) {
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_BYTE);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_SHORT);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_INT);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_LONG);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_FLOAT);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_DOUBLE);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              default:
+                                assert(0);
+                            }
+                            
+                            int32_t fields_length = arg_type->basic_type->fields->length;
+                            opcode.operand0 = runtime_var_index_arg;
+                            opcode.operand1 = fields_length;
+                            
+                            SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                          }
+                          // Object type
+                          else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_OBJECT);
+                            int32_t runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                            
+                            opcode.operand0 = runtime_var_index_arg;
+                            
+                            if (arg_index == 0) {
+                              first_arg_runtime_var_index = runtime_var_index_arg;
+                            }
+                            SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                          }
+                          // Numeric type
+                          else if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+                            int32_t runtime_var_index_arg;
+                            switch (arg_type->basic_type->id) {
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_BYTE);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_SHORT);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_INT);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_LONG);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_FLOAT);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_DOUBLE);
+                                runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
+                                break;
+                              }
+                              default:
+                                assert(0);
+                            }
+                            
+                            opcode.operand0 = runtime_var_index_arg;
+                            
+                            if (arg_index == 0) {
+                              first_arg_runtime_var_index = runtime_var_index_arg;
+                            }
                             SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                           }
                           else {
-                            if (SPVM_TYPE_is_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_REF);
-
-                              // Term of argument
-                              int32_t runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                              
-                              opcode.operand0 = runtime_var_index_arg;
-                              
-                              SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-                            }
-                            else if (SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-
-                              SPVM_FIELD* first_field = SPVM_LIST_get(arg_type->basic_type->fields, 0);
-                              assert(first_field);
-                              
-                              SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
-                              assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
-                              
-                              int32_t runtime_var_index_arg;
-                              switch (field_type->basic_type->id) {
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_BYTE);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_SHORT);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_INT);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_LONG);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_FLOAT);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_MULNUM_DOUBLE);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                default:
-                                  assert(0);
-                              }
-                              
-                              int32_t fields_length = arg_type->basic_type->fields->length;
-                              opcode.operand0 = runtime_var_index_arg;
-                              opcode.operand1 = fields_length;
-                              
-                              SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-                            }
-                            // Object type
-                            else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_OBJECT);
-                              int32_t runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                              
-                              opcode.operand0 = runtime_var_index_arg;
-                              
-                              if (arg_index == 0) {
-                                first_arg_runtime_var_index = runtime_var_index_arg;
-                              }
-                              SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-                            }
-                            // Numeric type
-                            else if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-                              int32_t runtime_var_index_arg;
-                              switch (arg_type->basic_type->id) {
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_BYTE);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_SHORT);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_INT);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_LONG);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_FLOAT);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_DOUBLE);
-                                  runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
-                                  break;
-                                }
-                                default:
-                                  assert(0);
-                              }
-                              
-                              opcode.operand0 = runtime_var_index_arg;
-                              
-                              if (arg_index == 0) {
-                                first_arg_runtime_var_index = runtime_var_index_arg;
-                              }
-                              SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-                            }
-                            else {
-                              assert(0);
-                            }
+                            assert(0);
                           }
-                          args_width += arg_args_width;
                         }
+                        args_width += arg_args_width;
                       }
-
+                      
                       int32_t runtime_var_index_out;
-
+                      
                       // Return
                       SPVM_TYPE* call_method_return_type = call_method->method->return_type;
                       // Call method
