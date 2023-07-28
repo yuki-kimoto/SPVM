@@ -1258,11 +1258,6 @@ _xs_call_method(...)
   
   int32_t stack_index = 0;
   
-  // Reference native_stack.
-  int32_t ref_stack_index = 0;
-  SPVM_VALUE ref_stack[256];
-  int32_t ref_stack_indexes[256];
-  
   AV* av_refs = NULL;
   
   int32_t has_ref_arg = 0;
@@ -1507,7 +1502,6 @@ _xs_call_method(...)
               // Argument conversion - byte reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 int8_t value = (int8_t)SvIV(sv_value_deref);
-                ref_stack[ref_stack_index].bval = value;
                 
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int8_t)));
                 int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
@@ -1520,7 +1514,6 @@ _xs_call_method(...)
               // Argument conversion - short reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                 int16_t value = (int16_t)SvIV(sv_value_deref);
-                ref_stack[ref_stack_index].sval = value;
                 
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int16_t)));
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
@@ -1533,7 +1526,6 @@ _xs_call_method(...)
               // Argument conversion - int reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                 int32_t value = (int32_t)SvIV(sv_value_deref);
-                ref_stack[ref_stack_index].ival = value;
                 
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int32_t)));
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
@@ -1546,7 +1538,6 @@ _xs_call_method(...)
               // Argument conversion - long reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                 int64_t value = (int64_t)SvIV(sv_value_deref);
-                ref_stack[ref_stack_index].lval = value;
                 
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int64_t)));
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
@@ -1559,7 +1550,6 @@ _xs_call_method(...)
               // Argument conversion - float reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                 float value = (float)SvNV(sv_value_deref);
-                ref_stack[ref_stack_index].fval = value;
                 
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(float)));
                 float* ref = (float*)SvPV_nolen(sv_ref);
@@ -1572,7 +1562,6 @@ _xs_call_method(...)
               // Argument conversion - double reference
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                 double value = (double)SvNV(sv_value_deref);
-                ref_stack[ref_stack_index].dval = value;
                 
                 SV* sv_ref = sv_2mortal(newSVpv("", sizeof(double)));
                 double* ref = (double*)SvPV_nolen(sv_ref);
@@ -1584,8 +1573,6 @@ _xs_call_method(...)
               }
             }
             
-            ref_stack_indexes[arg_index] = ref_stack_index;
-            ref_stack_index++;
             stack_index++;
             
             break;
@@ -1676,7 +1663,6 @@ _xs_call_method(...)
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                   // Argument conversion - multi-numeric byte reference
                   int8_t value = (int8_t)SvIV(sv_field_value);
-                  ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
                   
                   SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                   SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
@@ -1688,7 +1674,6 @@ _xs_call_method(...)
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                   // Argument conversion - multi-numeric short reference
                   int16_t value = (int16_t)SvIV(sv_field_value);
-                  ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
                   
                   SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                   SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
@@ -1700,7 +1685,6 @@ _xs_call_method(...)
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                   // Argument conversion - multi-numeric int reference
                   int32_t value = (int32_t)SvIV(sv_field_value);
-                  ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
                   
                   SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                   SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
@@ -1712,7 +1696,6 @@ _xs_call_method(...)
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                   // Argument conversion - multi-numeric long reference
                   int64_t value = (int64_t)SvIV(sv_field_value);
-                  ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
                   
                   SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                   SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
@@ -1724,7 +1707,6 @@ _xs_call_method(...)
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                   // Argument conversion - multi-numeric float reference
                   float value = (float)SvNV(sv_field_value);
-                  ((float*)&ref_stack[ref_stack_index])[field_index] = value;
                   
                   SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                   SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
@@ -1736,7 +1718,6 @@ _xs_call_method(...)
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                   // Argument conversion - multi-numeric double reference
                   double value = (double)SvNV(sv_field_value);
-                  ((double*)&ref_stack[ref_stack_index])[field_index] = value;
                   
                   SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                   SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
@@ -1750,8 +1731,7 @@ _xs_call_method(...)
                 }
               }
             }
-            ref_stack_indexes[arg_index] = ref_stack_index;
-            ref_stack_index += arg_basic_type_fields_length;
+            
             stack_index++;
             break;
           }
@@ -2107,7 +2087,6 @@ _xs_call_method(...)
       
       // Restore reference - numeric
       if (arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
-        int32_t ref_stack_index = ref_stack_indexes[arg_index];
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
             switch (arg_basic_type_id) {
