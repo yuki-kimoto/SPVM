@@ -463,6 +463,7 @@ struct spvm_api_arg {
   void* (*get_basic_type)(void* runtime, void* arg);
   int32_t (*get_type_dimension)(void* runtime, void* arg);
   int32_t (*get_type_flag)(void* runtime, void* arg);
+  int32_t (*get_stack_index)(void* runtime, void* arg);
 };
 
 SPVM_ENV* SPVM_API_new_env(void);

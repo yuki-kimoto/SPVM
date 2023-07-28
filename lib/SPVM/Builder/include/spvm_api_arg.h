@@ -21,4 +21,6 @@ int32_t SPVM_API_ARG_get_type_dimension(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG*
 
 int32_t SPVM_API_ARG_get_type_flag(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg);
 
+int32_t SPVM_API_ARG_get_stack_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg);
+
 #endif
