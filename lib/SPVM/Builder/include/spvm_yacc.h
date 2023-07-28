@@ -62,7 +62,7 @@ extern int SPVM_yydebug;
     MAKE_READ_ONLY = 272,
     INTERFACE = 273,
     EVAL_ERROR_ID = 274,
-    ITEMS = 275,
+    ARGS_WIDTH = 275,
     VERSION_DECL = 276,
     IF = 277,
     UNLESS = 278,

@@ -1442,8 +1442,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         break;
       }
-      case SPVM_OPCODE_C_ID_ITEMS: {
-        SPVM_IMPLEMENT_ITEMS(env, stack, int_vars[opcode->operand0]);
+      case SPVM_OPCODE_C_ID_ARGS_WIDTH: {
+        SPVM_IMPLEMENT_ARGS_WIDTH(env, stack, int_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_NAME: {

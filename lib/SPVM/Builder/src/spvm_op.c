@@ -249,7 +249,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DIE_ERROR_ID",
     "SET_DIE_ERROR_ID",
     "EVAL_ERROR_ID",
-    "ITEMS",
+    "ARGS_WIDTH",
     "VERSION",
   };
   

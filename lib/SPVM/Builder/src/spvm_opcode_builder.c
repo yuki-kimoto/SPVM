@@ -3516,10 +3516,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
-                    case SPVM_OP_C_ID_ITEMS : {
+                    case SPVM_OP_C_ID_ARGS_WIDTH : {
                       
                       SPVM_OPCODE opcode = {0};
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ITEMS);
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARGS_WIDTH);
                       
                       int32_t runtime_var_index_out = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_dist);
                       opcode.operand0 = runtime_var_index_out;

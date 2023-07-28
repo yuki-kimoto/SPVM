@@ -3278,7 +3278,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_NEW:
               case SPVM_OP_C_ID_BASIC_TYPE_ID:
               case SPVM_OP_C_ID_EVAL_ERROR_ID:
-              case SPVM_OP_C_ID_ITEMS:
+              case SPVM_OP_C_ID_ARGS_WIDTH:
               case SPVM_OP_C_ID_CONCAT:
               case SPVM_OP_C_ID_TYPE_NAME:
               case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
@@ -4158,7 +4158,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CAN:
     case SPVM_OP_C_ID_BASIC_TYPE_ID:
     case SPVM_OP_C_ID_EVAL_ERROR_ID:
-    case SPVM_OP_C_ID_ITEMS:
+    case SPVM_OP_C_ID_ARGS_WIDTH:
     {
       type = SPVM_TYPE_new_int_type(compiler);
       break;

@@ -1232,7 +1232,7 @@ The SPVM language is assumed to be parsed by yacc/bison.
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
-  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ITEMS VERSION_DECL
+  %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
@@ -1544,7 +1544,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | logical_operator
     | BASIC_TYPE_ID type
     | EVAL_ERROR_ID
-    | ITEMS
+    | ARGS_WIDTH
 
   operators
     : operators ',' operator
