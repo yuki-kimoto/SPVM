@@ -1527,7 +1527,6 @@ _xs_call_method(...)
                 memcpy((void*)ref, &value, sizeof(int16_t));
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].sref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1541,7 +1540,6 @@ _xs_call_method(...)
                 memcpy((void*)ref, &value, sizeof(int32_t));
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].iref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1555,7 +1553,6 @@ _xs_call_method(...)
                 memcpy((void*)ref, &value, sizeof(int64_t));
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].lref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1569,7 +1566,6 @@ _xs_call_method(...)
                 memcpy((void*)ref, &value, sizeof(float));
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].fref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1583,7 +1579,6 @@ _xs_call_method(...)
                 memcpy((void*)ref, &value, sizeof(double));
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].dref = ref;
-                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -2133,30 +2128,60 @@ _xs_call_method(...)
                 // Restore reference - short
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setiv(sv_value_deref, ref_stack[ref_stack_index].sval);
+                
+                SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
+                sv_setiv(sv_value_deref, *(int16_t*)ref);
+                
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
                 // Restore reference - int
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setiv(sv_value_deref, ref_stack[ref_stack_index].ival);
+                
+                SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
+                sv_setiv(sv_value_deref, *(int32_t*)ref);
+                
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
                 // Restore reference - long
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setiv(sv_value_deref, ref_stack[ref_stack_index].lval);
+                
+                SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
+                sv_setiv(sv_value_deref, *(int64_t*)ref);
+                
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
                 // Restore reference - float
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setnv(sv_value_deref, ref_stack[ref_stack_index].fval);
+                
+                SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                float* ref = (float*)SvPV_nolen(sv_ref);
+                sv_setiv(sv_value_deref, *(float*)ref);
+                
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
                 // Restore reference - double
                 SV* sv_value_deref = SvRV(sv_value);
                 sv_setnv(sv_value_deref, ref_stack[ref_stack_index].dval);
+                
+                SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                double* ref = (double*)SvPV_nolen(sv_ref);
+                sv_setiv(sv_value_deref, *(double*)ref);
+                
                 break;
               }
               default: {
