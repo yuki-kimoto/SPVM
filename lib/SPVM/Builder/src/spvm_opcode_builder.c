@@ -324,14 +324,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
       
       SPVM_LIST* unresolved_goto_end_of_method_on_exception_opcode_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
-      SPVM_LIST* runtime_var_index_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
+      SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
       
       // Run OPs
       SPVM_OP* op_base = method->op_block;
       SPVM_OP* op_cur = op_base;
       int32_t finish = 0;
       
-      int32_t runtime_var_index_stack_top = 0;
+      int32_t mortal_stack_top = 0;
 
       while (op_cur) {
         
@@ -385,7 +385,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
               }
             }
             
-            int32_t runtime_var_indexs_top = runtime_var_index_stack->length;
+            int32_t runtime_var_indexs_top = mortal_stack->length;
             SPVM_LIST_push(block_stack_runtime_var_index_top, (void*)(intptr_t)runtime_var_indexs_top);
             
             break;
@@ -538,8 +538,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 }
                 
-                while (runtime_var_index_stack->length > runtime_var_indexs_top) {
-                  SPVM_LIST_pop(runtime_var_index_stack);
+                while (mortal_stack->length > runtime_var_indexs_top) {
+                  SPVM_LIST_pop(mortal_stack);
                 }
                 
                 SPVM_LIST_pop(block_stack_runtime_var_index_top);
@@ -848,9 +848,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     
                     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                     
-                    SPVM_LIST_push(runtime_var_index_stack, (void*)(intptr_t)runtime_var_index);
+                    SPVM_LIST_push(mortal_stack, (void*)(intptr_t)runtime_var_index);
                     
-                    runtime_var_index_stack_top++;
+                    mortal_stack_top++;
                   }
                   
                   // Initialized not initialized variable
@@ -5081,7 +5081,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
       SPVM_LIST_free(loop_block_stack_next_base);
       SPVM_LIST_free(loop_block_stack_last_base);
       SPVM_LIST_free(switch_block_stack_break_base);
-      SPVM_LIST_free(runtime_var_index_stack);
+      SPVM_LIST_free(mortal_stack);
       SPVM_LIST_free(block_stack_runtime_var_index_top);
       
       END_OF_FUNCTION: {
@@ -5091,7 +5091,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode,  SPVM_OPCODE_C_ID_END_METHOD);
         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
         
-        method->mortal_stack_length = runtime_var_index_stack_top + 1;
+        method->mortal_stack_length = mortal_stack_top + 1;
       }
     }
   }
