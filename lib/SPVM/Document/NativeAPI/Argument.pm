@@ -70,7 +70,7 @@ The C<arg> argument is a L<arg|SPVM::Document::NativeAPI::Arg> object.
 
 =head2 get_stack_index
 
-int32_t (*get_stack_index)(void* runtime, void* arg);
+  int32_t (*get_stack_index)(void* runtime, void* arg);
 
 Gets the stack index of the argument.
 
