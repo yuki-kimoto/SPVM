@@ -14,6 +14,7 @@ struct spvm_var_decl {
   const char* name;
   int32_t index;
   int32_t runtime_var_index;
+  int32_t arg_stack_index;
   int8_t is_arg;
 };
 

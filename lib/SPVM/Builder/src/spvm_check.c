@@ -442,7 +442,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       int32_t found_optional_arg = 0;
       for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
         SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
-
+        
         SPVM_TYPE* arg_type = arg_var_decl->type;
         
         int32_t is_arg_type_is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
@@ -490,6 +490,8 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
             return;
           }
         }
+        
+        arg_var_decl->arg_stack_index = args_width;
         
         if (is_arg_type_is_mulnum_type) {
           args_width += arg_type->basic_type->unmerged_fields->length;
