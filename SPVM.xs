@@ -1259,13 +1259,20 @@ _xs_call_method(...)
   // 0-255 are used as arguments and return values. 256 is used as exception variable. 257 is used as mortal native_stack.
   int32_t stack_index = 0;
   
-  // Arguments have reference type
-  int32_t args_have_ref = 0;
-  
   // Reference native_stack.
   int32_t ref_stack_index = 0;
   SPVM_VALUE ref_stack[256];
   int32_t ref_stack_indexes[256];
+  
+  int32_t has_ref_arg = 0;
+  for (int32_t arg_index = 0; arg_index < method_args_length; arg_index++) {
+    void* arg = env->api->method->get_arg_by_index(env->runtime, method, arg_index);
+    int32_t arg_type_flag = env->api->arg->get_type_flag(env->runtime, arg);
+    if (arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
+      has_ref_arg = 1;
+      break;
+    }
+  }
   
   // Arguments conversion
   for (int32_t arg_index = 0; arg_index < method_args_length; arg_index++) {
@@ -1484,7 +1491,6 @@ _xs_call_method(...)
       }
       // Reference argument
       else {
-        args_have_ref = 1;
         
         switch (arg_basic_type_category) {
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
@@ -1954,7 +1960,7 @@ _xs_call_method(...)
   }
   
   // Restore reference
-  if (args_have_ref) {
+  if (has_ref_arg) {
     for (int32_t arg_index = 0; arg_index < method_args_length; arg_index++) {
       SV* sv_value = ST(spvm_args_base + arg_index);
       
