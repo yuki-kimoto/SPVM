@@ -107,6 +107,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_can_assign,
     SPVM_API_RUNTIME_build_precompile_module_source,
     SPVM_API_RUNTIME_build_precompile_method_source,
+    SPVM_API_RUNTIME_get_type_width,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -252,3 +253,17 @@ void SPVM_API_RUNTIME_build_precompile_method_source(SPVM_RUNTIME* runtime, SPVM
   SPVM_PRECOMPILE_free(precompile);
 }
 
+int32_t SPVM_API_RUNTIME_get_type_width(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t dimension, int32_t flag) {
+  
+  int32_t basic_type_category = basic_type->category;
+  
+  int32_t type_width = -1;
+  if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+    type_width = basic_type->fields_length;
+  }
+  else {
+    type_width = 1;
+  }
+  
+  return type_width;
+}

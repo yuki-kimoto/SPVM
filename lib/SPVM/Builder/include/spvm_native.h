@@ -378,6 +378,7 @@ struct spvm_api_runtime {
   int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
   void (*build_precompile_module_source)(void* runtime, void* string_buffer, void* module_basic_type);
   void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
+  int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
 };
 
 struct spvm_api_basic_type {

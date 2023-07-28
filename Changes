@@ -4,6 +4,11 @@
       -  int32_t (*items)(SPVM_ENV* env, SPVM_VALUE* stack);
       +  int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);
 
+  [New Features]
+    * The following runtime native APIs were added.
+    
+      +  int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
+    
 0.989029 2023-07-27
   [New Features]
     * The following native APIs were added.
