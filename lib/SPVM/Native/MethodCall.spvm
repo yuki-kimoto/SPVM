@@ -3,6 +3,7 @@
 
 class Native::MethodCall {
   use Native::Runtime;
+  use Native::Method;
   
   private enum {
     METHOD_CALL_CATEGORY_CLASS_METHOD,
@@ -33,6 +34,8 @@ class Native::MethodCall {
   }
   
   has runtime : Native::Runtime;
+  
+  has method : Native::Method;
   
   has initialized : byte;
   
