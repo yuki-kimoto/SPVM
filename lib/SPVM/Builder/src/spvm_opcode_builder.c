@@ -1119,7 +1119,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                         
                         // Argument type
                         SPVM_TYPE* arg_type = arg_var_decl->type;
-                        int32_t arg_args_width = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+                        int32_t arg_width = SPVM_TYPE_get_width(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
                         
                         // Term argment type
                         op_term_arg = SPVM_OP_sibling(compiler, op_term_arg);
@@ -1259,7 +1259,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                         }
-                        args_width += arg_args_width;
+                        args_width += arg_width;
                       }
                       
                       int32_t runtime_var_index_out;
