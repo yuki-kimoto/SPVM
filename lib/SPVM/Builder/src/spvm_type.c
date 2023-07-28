@@ -921,19 +921,19 @@ int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int3
   
   int32_t is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, basic_type_id, dimension, flag);
   
-  int32_t args_width;
+  int32_t type_width;
   if (is_mulnum_type) {
     
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     assert(basic_type);
     
-    args_width = basic_type->fields->length;
+    type_width = basic_type->fields->length;
   }
   else {
-    args_width = 1;
+    type_width = 1;
   }
   
-  return args_width;
+  return type_width;
 }
 
 int32_t SPVM_TYPE_get_mulnum_field_basic_type_id(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
