@@ -2115,8 +2115,6 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
                 // Restore reference - byte
                 SV* sv_value_deref = SvRV(sv_value);
-                sv_setiv(sv_value_deref, ref_stack[ref_stack_index].bval);
-                
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
@@ -2127,8 +2125,6 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
                 // Restore reference - short
                 SV* sv_value_deref = SvRV(sv_value);
-                sv_setiv(sv_value_deref, ref_stack[ref_stack_index].sval);
-                
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
@@ -2139,8 +2135,6 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
                 // Restore reference - int
                 SV* sv_value_deref = SvRV(sv_value);
-                sv_setiv(sv_value_deref, ref_stack[ref_stack_index].ival);
-                
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
@@ -2151,8 +2145,6 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
                 // Restore reference - long
                 SV* sv_value_deref = SvRV(sv_value);
-                sv_setiv(sv_value_deref, ref_stack[ref_stack_index].lval);
-                
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
@@ -2163,8 +2155,6 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
                 // Restore reference - float
                 SV* sv_value_deref = SvRV(sv_value);
-                sv_setnv(sv_value_deref, ref_stack[ref_stack_index].fval);
-                
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 float* ref = (float*)SvPV_nolen(sv_ref);
@@ -2175,8 +2165,6 @@ _xs_call_method(...)
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
                 // Restore reference - double
                 SV* sv_value_deref = SvRV(sv_value);
-                sv_setnv(sv_value_deref, ref_stack[ref_stack_index].dval);
-                
                 SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
                 SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
                 double* ref = (double*)SvPV_nolen(sv_ref);
