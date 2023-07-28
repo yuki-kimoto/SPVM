@@ -1509,10 +1509,11 @@ _xs_call_method(...)
                 int8_t value = (int8_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].bval = value;
                 
-                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(int8_t)));
-                char* binary = SvPV_nolen(sv_binary);
-                memcpy(binary, &value, sizeof(int8_t));
-                av_store(av_refs, arg_index, sv_binary);
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int8_t)));
+                int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
+                memcpy((void*)ref, &value, sizeof(int8_t));
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].bref = ref;
                 
                 break;
               }
@@ -1521,10 +1522,11 @@ _xs_call_method(...)
                 int16_t value = (int16_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].sval = value;
                 
-                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(int16_t)));
-                char* binary = SvPV_nolen(sv_binary);
-                memcpy(binary, &value, sizeof(int16_t));
-                av_store(av_refs, arg_index, sv_binary);
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int16_t)));
+                int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
+                memcpy((void*)ref, &value, sizeof(int16_t));
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].sref = ref;
                 
                 break;
               }
@@ -1533,10 +1535,11 @@ _xs_call_method(...)
                 int32_t value = (int32_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].ival = value;
                 
-                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(int32_t)));
-                char* binary = SvPV_nolen(sv_binary);
-                memcpy(binary, &value, sizeof(int32_t));
-                av_store(av_refs, arg_index, sv_binary);
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int32_t)));
+                int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
+                memcpy((void*)ref, &value, sizeof(int32_t));
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].iref = ref;
                 
                 break;
               }
@@ -1545,10 +1548,11 @@ _xs_call_method(...)
                 int64_t value = (int64_t)SvIV(sv_value_deref);
                 ref_stack[ref_stack_index].lval = value;
                 
-                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(int64_t)));
-                char* binary = SvPV_nolen(sv_binary);
-                memcpy(binary, &value, sizeof(int64_t));
-                av_store(av_refs, arg_index, sv_binary);
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int64_t)));
+                int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
+                memcpy((void*)ref, &value, sizeof(int64_t));
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].lref = ref;
                 
                 break;
               }
@@ -1557,10 +1561,11 @@ _xs_call_method(...)
                 float value = (float)SvNV(sv_value_deref);
                 ref_stack[ref_stack_index].fval = value;
                 
-                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(float)));
-                char* binary = SvPV_nolen(sv_binary);
-                memcpy(binary, &value, sizeof(float));
-                av_store(av_refs, arg_index, sv_binary);
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(float)));
+                float* ref = (float*)SvPV_nolen(sv_ref);
+                memcpy((void*)ref, &value, sizeof(float));
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].fref = ref;
                 
                 break;
               }
@@ -1569,10 +1574,11 @@ _xs_call_method(...)
                 double value = (double)SvNV(sv_value_deref);
                 ref_stack[ref_stack_index].dval = value;
                 
-                SV* sv_binary = sv_2mortal(newSVpv("", sizeof(double)));
-                char* binary = SvPV_nolen(sv_binary);
-                memcpy(binary, &value, sizeof(double));
-                av_store(av_refs, arg_index, sv_binary);
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(double)));
+                double* ref = (double*)SvPV_nolen(sv_ref);
+                memcpy((void*)ref, &value, sizeof(double));
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].dref = ref;
                 
                 break;
               }
