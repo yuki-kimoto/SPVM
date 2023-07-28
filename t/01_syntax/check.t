@@ -1160,8 +1160,8 @@ use Test::More;
     my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int = 0, $arg2 : int) { } }';
     compile_not_ok($source, q|Arguments after optional arguments must be optional arguments|);
   }
-  compile_not_ok_file('CompileError::Method::TooManyArguments', qr/The stack length of arguments must be less than or equal to 255/);
-  compile_not_ok_file('CompileError::Method::TooManyArgumentsMulnum', qr/The stack length of arguments must be less than or equal to 255/);
+  compile_not_ok_file('CompileError::Method::TooManyArguments', qr/The width of the arguments must be less than or equal to 255/);
+  compile_not_ok_file('CompileError::Method::TooManyArgumentsMulnum', qr/The width of the arguments must be less than or equal to 255/);
 }
 
 # Return type

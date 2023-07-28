@@ -446,7 +446,6 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         SPVM_TYPE* arg_type = arg_var_decl->type;
         
         int32_t is_arg_type_is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
-        int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_mulnum_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         // Optional argument
         SPVM_OP* op_optional_arg_default = arg_var_decl->op_optional_arg_default;
@@ -492,7 +491,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
           }
         }
         
-        if (is_arg_type_is_mulnum_type || is_arg_type_is_value_ref_type) {
+        if (is_arg_type_is_mulnum_type) {
           args_width += arg_type->basic_type->unmerged_fields->length;
         }
         else {
@@ -505,7 +504,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       }
       
       if (!(args_width <= 255)) {
-        SPVM_COMPILER_error(compiler, "The stack length of arguments must be less than or equal to 255.\n  at %s line %d", method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "The width of the arguments must be less than or equal to 255.\n  at %s line %d", method->op_method->file, method->op_method->line);
         return;
       }
       

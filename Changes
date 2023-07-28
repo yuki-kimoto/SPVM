@@ -8,7 +8,8 @@
     * The following runtime native APIs were added.
     
       +  int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
-    
+  [Changes]
+    * The width of the arguments must be less than or equal to 255.
 0.989029 2023-07-27
   [New Features]
     * The following native APIs were added.
