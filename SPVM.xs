@@ -1606,6 +1606,61 @@ _xs_call_method(...)
             void* arg_basic_type_field_basic_type = env->api->field->get_basic_type(env->runtime, arg_basic_type_field_first);
             int32_t arg_basic_type_field_basic_type_id = env->api->basic_type->get_id(env->runtime, arg_basic_type_field_basic_type);
             assert(arg_basic_type_field_basic_type_id >= 0);
+
+            switch(arg_basic_type_field_basic_type_id) {
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int8_t) * arg_basic_type_fields_length));
+                int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].bref = ref;
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int16_t) * arg_basic_type_fields_length));
+                int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].sref = ref;
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int32_t) * arg_basic_type_fields_length));
+                int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].iref = ref;
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(int64_t) * arg_basic_type_fields_length));
+                int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].lref = ref;
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(float) * arg_basic_type_fields_length));
+                float* ref = (float*)SvPV_nolen(sv_ref);
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].fref = ref;
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                SV* sv_ref = sv_2mortal(newSVpv("", sizeof(double) * arg_basic_type_fields_length));
+                double* ref = (double*)SvPV_nolen(sv_ref);
+                av_store(av_refs, arg_index, sv_ref);
+                stack[stack_index].dref = ref;
+                
+                break;
+              }
+              default: {
+                assert(0);
+              }
+            }
+            
             for (int32_t field_index = 0; field_index < arg_basic_type_fields_length; field_index++) {
               void* mulnum_field = env->api->basic_type->get_field_by_index(runtime, arg_basic_type, field_index);
               const char* mulnum_field_name = env->api->field->get_name(env->runtime, mulnum_field);
@@ -1623,36 +1678,72 @@ _xs_call_method(...)
                   // Argument conversion - multi-numeric byte reference
                   int8_t value = (int8_t)SvIV(sv_field_value);
                   ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
+                  
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
+                  memcpy((void*)(ref + field_index), &value, sizeof(int8_t));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                   // Argument conversion - multi-numeric short reference
                   int16_t value = (int16_t)SvIV(sv_field_value);
                   ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
+                  
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
+                  memcpy((void*)(ref + field_index), &value, sizeof(int16_t));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                   // Argument conversion - multi-numeric int reference
                   int32_t value = (int32_t)SvIV(sv_field_value);
                   ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
+                  
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
+                  memcpy((void*)(ref + field_index), &value, sizeof(int32_t));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                   // Argument conversion - multi-numeric long reference
                   int64_t value = (int64_t)SvIV(sv_field_value);
                   ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
+                  
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
+                  memcpy((void*)(ref + field_index), &value, sizeof(int64_t));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                   // Argument conversion - multi-numeric float reference
                   float value = (float)SvNV(sv_field_value);
                   ((float*)&ref_stack[ref_stack_index])[field_index] = value;
+                  
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  float* ref = (float*)SvPV_nolen(sv_ref);
+                  memcpy((void*)(ref + field_index), &value, sizeof(float));
+                  
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                   // Argument conversion - multi-numeric double reference
                   double value = (double)SvNV(sv_field_value);
                   ((double*)&ref_stack[ref_stack_index])[field_index] = value;
+                  
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  double* ref = (double*)SvPV_nolen(sv_ref);
+                  memcpy((void*)(ref + field_index), &value, sizeof(double));
+                  
                   break;
                 }
                 default: {
