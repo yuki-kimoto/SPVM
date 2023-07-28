@@ -4028,7 +4028,7 @@ int32_t SPVM_CHECK_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_LIST* run
   
   SPVM_TYPE* my_type = var_decl->type;
 
-  int32_t items = SPVM_TYPE_get_items(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+  int32_t items = SPVM_TYPE_get_width(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
   
   // Search free memory
   int32_t found = 0;
