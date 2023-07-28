@@ -1620,6 +1620,7 @@ _xs_call_method(...)
                 int16_t* ref = (int16_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].sref = ref;
+                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1628,6 +1629,7 @@ _xs_call_method(...)
                 int32_t* ref = (int32_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].iref = ref;
+                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1636,6 +1638,7 @@ _xs_call_method(...)
                 int64_t* ref = (int64_t*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].lref = ref;
+                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1644,6 +1647,7 @@ _xs_call_method(...)
                 float* ref = (float*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].fref = ref;
+                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1652,6 +1656,7 @@ _xs_call_method(...)
                 double* ref = (double*)SvPV_nolen(sv_ref);
                 av_store(av_refs, arg_index, sv_ref);
                 stack[stack_index].dref = ref;
+                stack[stack_index].oval = &ref_stack[ref_stack_index];
                 
                 break;
               }
@@ -1750,7 +1755,6 @@ _xs_call_method(...)
                 }
               }
             }
-            stack[stack_index].oval = &ref_stack[ref_stack_index];
             ref_stack_indexes[arg_index] = ref_stack_index;
             ref_stack_index += arg_basic_type_fields_length;
             stack_index++;
@@ -2193,7 +2197,11 @@ _xs_call_method(...)
               switch (arg_basic_type_field_basic_type_id) {
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                   // Restore reference value - multi-numeric byte
-                  sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
+                  SV** sv_ref_ptr = av_fetch(av_refs, arg_index, 0);
+                  SV* sv_ref = sv_ref_ptr ? *sv_ref_ptr : &PL_sv_undef;
+                  int8_t* ref = (int8_t*)SvPV_nolen(sv_ref);
+                  
+                  sv_field_value = sv_2mortal(newSViv(*(ref + field_index)));
                   break;
                 }
                 case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
