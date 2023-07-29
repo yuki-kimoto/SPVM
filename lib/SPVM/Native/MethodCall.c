@@ -151,3 +151,46 @@ int32_t SPVM__Native__MethodCall__new_instance_method(SPVM_ENV* env, SPVM_VALUE*
   
   return 0;
 }
+
+int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_args = stack[1].oval;
+  
+  if (!obj_args) {
+    return env->die(env, stack, "The $args must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t args_length = env->length(env, stack, obj_args);
+  
+  void* obj_method = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "method", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* method = env->get_pointer(env, stack, obj_method);
+  
+  void* obj_runtime = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  int32_t method_required_args_length = env->api->method->get_required_args_length(runtime, method);
+  
+  if (!(args_length >= method_required_args_length)) {
+    return env->die(env, stack, "Too few arguments.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t method_args_length = env->api->method->get_args_length(runtime, method);
+  
+  if (!(args_length <= method_args_length)) {
+    return env->die(env, stack, "Too many arguments.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
+    void* obj_arg = env->get_elem_object(env, stack, obj_args, arg_index);
+    
+  }
+  
+}
