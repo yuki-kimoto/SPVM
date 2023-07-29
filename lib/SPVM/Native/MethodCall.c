@@ -3,7 +3,7 @@
 
 #include "spvm_native.h"
 
-
+#include <assert.h>
 
 static const char* FILE_NAME = "Native/MethodCall.c";
 
@@ -191,6 +191,274 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
     void* obj_arg = env->get_elem_object(env, stack, obj_args, arg_index);
     
+    void* method_arg = env->api->method->get_arg_by_index(runtime, method, arg_index);
+    
+    void* method_arg_basic_type = env->api->arg->get_basic_type(env->runtime, method_arg);
+    int32_t method_arg_basic_type_id = env->api->basic_type->get_id(env->runtime, method_arg_basic_type);
+    int32_t method_arg_type_dimension = env->api->arg->get_type_dimension(env->runtime, method_arg);
+    int32_t method_arg_type_flag = env->api->arg->get_type_flag(env->runtime, method_arg);
+    int32_t method_arg_basic_type_category = env->api->basic_type->get_category(env->runtime, method_arg_basic_type);
+    
+    int32_t method_arg_is_object_type = env->api->runtime->is_object_type(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
+    
+    if (method_arg_is_object_type) {
+      if (obj_arg) {
+        void* arg_basic_type = env->get_object_basic_type(env, stack, obj_arg);
+        int32_t arg_type_dimension = env->get_object_type_dimension(env, stack, obj_arg);
+        
+        int32_t can_assign = env->api->runtime->can_assign(
+          runtime,
+          method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag,
+          arg_basic_type, method_arg_type_dimension, 0
+        );
+        
+        if (!can_assign) {
+          return env->die(env, stack, "The %dth argument cannot be assigned.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+        }
+      }
+      
+      stack[0].oval = obj_arg;
+    }
+    else {
+      if (!obj_arg) {
+        return env->die(env, stack, "The %dth argument must be defined.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+      }
+      
+      int32_t method_arg_type_is_ref = method_arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF;
+      
+      int32_t stack_index = arg_index;
+      
+      if (!method_arg_type_is_ref) {
+        if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC) {
+          switch (method_arg_basic_type_id) {
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "Byte", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the Byte class.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              int8_t value = env->get_field_byte_by_name(env, stack, obj_arg, "value", &error_id, __func__, FILE_NAME, __LINE__);
+              if (error_id) { return error_id; }
+              
+              stack[stack_index].bval = value;
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "Short", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the Short class.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              int16_t value = env->get_field_short_by_name(env, stack, obj_arg, "value", &error_id, __func__, FILE_NAME, __LINE__);
+              if (error_id) { return error_id; }
+              
+              stack[stack_index].sval = value;
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "Int", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the Int class.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              int32_t value = env->get_field_int_by_name(env, stack, obj_arg, "value", &error_id, __func__, FILE_NAME, __LINE__);
+              if (error_id) { return error_id; }
+              
+              stack[stack_index].ival = value;
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "Long", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the Long class.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              int64_t value = env->get_field_long_by_name(env, stack, obj_arg, "value", &error_id, __func__, FILE_NAME, __LINE__);
+              if (error_id) { return error_id; }
+              
+              stack[stack_index].lval = value;
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "Float", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the Float class.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              float value = env->get_field_float_by_name(env, stack, obj_arg, "value", &error_id, __func__, FILE_NAME, __LINE__);
+              if (error_id) { return error_id; }
+              
+              stack[stack_index].fval = value;
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "Double", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the Double class.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              double value = env->get_field_double_by_name(env, stack, obj_arg, "value", &error_id, __func__, FILE_NAME, __LINE__);
+              if (error_id) { return error_id; }
+              
+              stack[stack_index].dval = value;
+              break;
+            }
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+          switch(method_arg_basic_type_id) {
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "byte[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the byte[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "short[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the short[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "int[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the int[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "long[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the long[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "float[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the float[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "double[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the double[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else {
+          assert(0);
+        }
+      }
+      else {
+        if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC) {
+          switch(method_arg_basic_type_id) {
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "byte[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the byte[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "short[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the short[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "int[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the int[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "long[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the long[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "float[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the float[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "double[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the double[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+          switch(method_arg_basic_type_id) {
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "byte[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the byte[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "short[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the short[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "int[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the int[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "long[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the long[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "float[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the float[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+              if (!env->is_type_by_name(env, stack, obj_arg, "double[]", 0)) {
+                return env->die(env, stack, "The type of the %dth argument must be the double[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              break;
+            }
+            default: {
+              assert(0);
+            }
+          }
+        }
+        else {
+          assert(0);
+        }
+      }
+    }
   }
   
 }
