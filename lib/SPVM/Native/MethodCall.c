@@ -501,4 +501,11 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
   }
   
+  int32_t stack_length = stack_index;
+  
+  error_id = env->call_method(env, stack, method, stack_length);
+  if (error_id) { return error_id; }
+  
+  
+  
 }
