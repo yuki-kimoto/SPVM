@@ -336,7 +336,9 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               
               int16_t* value_ref = env->get_elems_short(env, stack, obj_arg);
               
-              stack[stack_index].sref = value_ref;
+              for (int32_t i = 0; i < method_arg_width; i++) {
+                stack[stack_index + i].sval = value_ref[i];
+              }
               
               break;
             }
@@ -347,7 +349,9 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               
               int32_t* value_ref = env->get_elems_int(env, stack, obj_arg);
               
-              stack[stack_index].iref = value_ref;
+              for (int32_t i = 0; i < method_arg_width; i++) {
+                stack[stack_index + i].ival = value_ref[i];
+              }
               
               break;
             }
@@ -358,7 +362,9 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               
               int64_t* value_ref = env->get_elems_long(env, stack, obj_arg);
               
-              stack[stack_index].lref = value_ref;
+              for (int32_t i = 0; i < method_arg_width; i++) {
+                stack[stack_index + i].lval = value_ref[i];
+              }
               
               break;
             }
@@ -369,7 +375,9 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               
               float* value_ref = env->get_elems_float(env, stack, obj_arg);
               
-              stack[stack_index].fref = value_ref;
+              for (int32_t i = 0; i < method_arg_width; i++) {
+                stack[stack_index + i].fval = value_ref[i];
+              }
               
               break;
             }
@@ -380,7 +388,9 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               
               double* value_ref = env->get_elems_double(env, stack, obj_arg);
               
-              stack[stack_index].dref = value_ref;
+              for (int32_t i = 0; i < method_arg_width; i++) {
+                stack[stack_index + i].dval = value_ref[i];
+              }
               
               break;
             }
