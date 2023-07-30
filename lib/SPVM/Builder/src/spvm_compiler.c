@@ -235,7 +235,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
   return error_id;
 }
 
-int32_t SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler) {
+void SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler) {
   
   SPVM_LIST* error_messages = compiler->error_messages;
   
