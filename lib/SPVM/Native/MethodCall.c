@@ -309,6 +309,16 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
                 return env->die(env, stack, "The type of the %dth argument must be the byte[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
               }
               
+              int32_t arg_array_length = env->length(env, stack, obj_arg);
+              
+              if (!(arg_array_length == 1)) {
+                return env->die(env, stack, "The array length of the %dth argument must be 1.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+              }
+              
+              int8_t* value_ref = env->get_elems_byte(env, stack, obj_arg);
+              
+              stack[stack_index].bref = value_ref;
+              
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
