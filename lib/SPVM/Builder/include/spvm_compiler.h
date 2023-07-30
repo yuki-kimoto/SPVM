@@ -198,6 +198,6 @@ void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* basic_type_name, con
 
 void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler);
 
-int32_t SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler);
 
 #endif
