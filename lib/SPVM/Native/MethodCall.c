@@ -188,6 +188,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, stack, "Too many arguments.", __func__, FILE_NAME, __LINE__);
   }
   
+  int32_t stack_index = 0;
   for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
     void* obj_arg = env->get_elem_object(env, stack, obj_args, arg_index);
     
@@ -218,6 +219,8 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
       }
       
       stack[0].oval = obj_arg;
+      
+      stack_index++;
     }
     else {
       if (!obj_arg) {
@@ -301,12 +304,15 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               assert(0);
             }
           }
+          stack_index++;
         }
         else if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+          int32_t method_arg_width = env->api->runtime->get_type_width(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
+          
           int32_t arg_array_length = env->length(env, stack, obj_arg);
           
-          if (!(arg_array_length == 1)) {
-            return env->die(env, stack, "The array length of the %dth argument must be 1.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+          if (!(arg_array_length == method_arg_width)) {
+            return env->die(env, stack, "The array length of the %dth argument must be %d.", arg_index + 1, method_arg_width, __func__, FILE_NAME, __LINE__);
           }
           
           switch(method_arg_basic_type_id) {
@@ -317,7 +323,9 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               
               int8_t* value_ref = env->get_elems_byte(env, stack, obj_arg);
               
-              stack[stack_index].bref = value_ref;
+              for (int32_t i = 0; i < method_arg_width; i++) {
+                stack[stack_index + i].bval = value_ref[i];
+              }
               
               break;
             }
@@ -380,6 +388,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               assert(0);
             }
           }
+          stack_index += method_arg_width;
         }
         else {
           assert(0);
@@ -464,6 +473,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               assert(0);
             }
           }
+          stack_index++;
         }
         else if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
           switch(method_arg_basic_type_id) {
@@ -513,6 +523,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               assert(0);
             }
           }
+          stack_index++;
         }
         else {
           assert(0);
