@@ -28,14 +28,6 @@ The C<Native::Stack> class is a L<pointer class|SPVM::Document::Language/"Pointe
 
 Its insntace has a pointer to an object of the L<SPVM_VALUE|SPVM::Document::NativeAPI/"Call Native::Stack"> type.
 
-=head1 Fields
-
-=head2 env
-
-  has env : ro Native::Env;
-
-An executable environemnt. The field type is the L<Native::Env|SPVM::Native::Env> class.
-
 =head1 Instance Methods
 
 =head2 DESTROY

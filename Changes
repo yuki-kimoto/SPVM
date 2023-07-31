@@ -4,6 +4,14 @@
       -  has env : ro Native::Env;
       +  has env : Native::Env;
 
+    * The definitions of the following fields in the Env class are changed.
+    
+      -  has compiler : ro Native::Compiler;
+      +  has compiler : Native::Compiler;
+
+      -  has runtime : ro Native::Runtime;
+      +  has runtime : Native::Runtime;
+
 0.989030 2023-07-28
   [Incompatible Changes]
     * The following native APIs are renamed.
