@@ -1,3 +1,9 @@
+0.989031 2023-07-31
+  [Incompatibe Changes]
+    * The definitions of the following fields in the Stack class are changed.
+      -  has env : ro Native::Env;
+      +  has env : Native::Env;
+
 0.989030 2023-07-28
   [Incompatible Changes]
     * The following native APIs are renamed.
