@@ -171,10 +171,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* method = env->get_pointer(env, stack, obj_method);
   
-  void* obj_runtime = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  void* runtime = env->runtime;
   
   int32_t method_required_args_length = env->api->method->get_required_args_length(runtime, method);
   
@@ -194,11 +191,11 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     
     void* method_arg = env->api->method->get_arg_by_index(runtime, method, arg_index);
     
-    void* method_arg_basic_type = env->api->arg->get_basic_type(env->runtime, method_arg);
-    int32_t method_arg_basic_type_id = env->api->basic_type->get_id(env->runtime, method_arg_basic_type);
-    int32_t method_arg_type_dimension = env->api->arg->get_type_dimension(env->runtime, method_arg);
-    int32_t method_arg_type_flag = env->api->arg->get_type_flag(env->runtime, method_arg);
-    int32_t method_arg_basic_type_category = env->api->basic_type->get_category(env->runtime, method_arg_basic_type);
+    void* method_arg_basic_type = env->api->arg->get_basic_type(runtime, method_arg);
+    int32_t method_arg_basic_type_id = env->api->basic_type->get_id(runtime, method_arg_basic_type);
+    int32_t method_arg_type_dimension = env->api->arg->get_type_dimension(runtime, method_arg);
+    int32_t method_arg_type_flag = env->api->arg->get_type_flag(runtime, method_arg);
+    int32_t method_arg_basic_type_category = env->api->basic_type->get_category(runtime, method_arg_basic_type);
     
     int32_t method_arg_is_object_type = env->api->runtime->is_object_type(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
     
@@ -506,6 +503,191 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   error_id = env->call_method(env, stack, method, stack_length);
   if (error_id) { return error_id; }
   
+  void* method_return_basic_type = env->api->method->get_return_basic_type(runtime, method);
+  int32_t method_return_basic_type_id = env->api->basic_type->get_id(runtime, method_return_basic_type);
+  int32_t method_return_type_dimension = env->api->method->get_return_type_dimension(runtime, method);
+  int32_t method_return_type_flag = env->api->method->get_return_type_flag(runtime, method);
+  int32_t method_return_basic_type_category = env->api->basic_type->get_category(runtime, method_return_basic_type);
   
+  int32_t method_return_is_object_type = env->api->runtime->is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
   
+  if (method_return_is_object_type) {
+    // Nothing to do
+  }
+  else {
+    
+    int32_t method_return_type_is_ref = method_return_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF;
+    
+    assert(!method_return_type_is_ref);
+    
+    if (method_return_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC) {
+      switch (method_return_basic_type_id) {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+          
+          int8_t return_value = stack[0].bval;
+          
+          void* obj_return_value = env->new_object_by_name(env, stack, "Byte", &error_id, __func__, FILE_NAME, __LINE__);
+          if (error_id) { return error_id; }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+          
+          int16_t return_value = stack[0].sval;
+          
+          void* obj_return_value = env->new_object_by_name(env, stack, "Short", &error_id, __func__, FILE_NAME, __LINE__);
+          if (error_id) { return error_id; }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+          
+          int32_t return_value = stack[0].ival;
+          
+          void* obj_return_value = env->new_object_by_name(env, stack, "Int", &error_id, __func__, FILE_NAME, __LINE__);
+          if (error_id) { return error_id; }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+          
+          int64_t return_value = stack[0].lval;
+          
+          void* obj_return_value = env->new_object_by_name(env, stack, "Long", &error_id, __func__, FILE_NAME, __LINE__);
+          if (error_id) { return error_id; }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+          
+          float return_value = stack[0].fval;
+          
+          void* obj_return_value = env->new_object_by_name(env, stack, "Float", &error_id, __func__, FILE_NAME, __LINE__);
+          if (error_id) { return error_id; }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+          
+          double return_value = stack[0].dval;
+          
+          void* obj_return_value = env->new_object_by_name(env, stack, "Double", &error_id, __func__, FILE_NAME, __LINE__);
+          if (error_id) { return error_id; }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        default: {
+          assert(0);
+        }
+      }
+    }
+    else if (method_return_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+      int32_t method_return_width = env->api->runtime->get_type_width(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+      
+      switch(method_return_basic_type_id) {
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
+          void* obj_return_value = env->new_byte_array(env, stack, method_return_width);
+          if (error_id) { return error_id; }
+          
+          int8_t* return_value_ref = env->get_elems_byte(env, stack, obj_return_value);
+          
+          for (int32_t i = 0; i < method_return_width; i++) {
+            return_value_ref[i] = stack[i].bval;
+          }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
+          void* obj_return_value = env->new_short_array(env, stack, method_return_width);
+          if (error_id) { return error_id; }
+          
+          int16_t* return_value_ref = env->get_elems_short(env, stack, obj_return_value);
+          
+          for (int32_t i = 0; i < method_return_width; i++) {
+            return_value_ref[i] = stack[i].sval;
+          }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
+          void* obj_return_value = env->new_int_array(env, stack, method_return_width);
+          if (error_id) { return error_id; }
+          
+          int32_t* return_value_ref = env->get_elems_int(env, stack, obj_return_value);
+          
+          for (int32_t i = 0; i < method_return_width; i++) {
+            return_value_ref[i] = stack[i].ival;
+          }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
+          void* obj_return_value = env->new_long_array(env, stack, method_return_width);
+          if (error_id) { return error_id; }
+          
+          int64_t* return_value_ref = env->get_elems_long(env, stack, obj_return_value);
+          
+          for (int32_t i = 0; i < method_return_width; i++) {
+            return_value_ref[i] = stack[i].lval;
+          }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
+          void* obj_return_value = env->new_float_array(env, stack, method_return_width);
+          if (error_id) { return error_id; }
+          
+          float* return_value_ref = env->get_elems_float(env, stack, obj_return_value);
+          
+          for (int32_t i = 0; i < method_return_width; i++) {
+            return_value_ref[i] = stack[i].fval;
+          }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
+          void* obj_return_value = env->new_double_array(env, stack, method_return_width);
+          if (error_id) { return error_id; }
+          
+          double* return_value_ref = env->get_elems_double(env, stack, obj_return_value);
+          
+          for (int32_t i = 0; i < method_return_width; i++) {
+            return_value_ref[i] = stack[i].dval;
+          }
+          
+          stack[0].oval = obj_return_value;
+          
+          break;
+        }
+        default: {
+          assert(0);
+        }
+      }
+    }
+    else {
+      assert(0);
+    }
+  }
 }
