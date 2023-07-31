@@ -2,18 +2,19 @@
 # MIT License
 
 class Native::MethodCall {
-  use Native::Runtime;
+  use Native::Env;
+  use Native::Stack;
   use Native::Method;
   
   has runtime : Native::Runtime;
   
   has method : Native::Method;
   
-  native static method new_class_method : Native::MethodCall ($runtime : Native::Runtime, $basic_type_name : string, $method_name : string);
+  native static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string, $env : Native::Env = undef, $stack : Native::Stack = undef);
   
-  native static method new_instance_method_static : Native::MethodCall($runtime : Native::Runtime, $basic_type_name : string, $method_name : string);
+  native static method new_instance_method_static : Native::MethodCall($basic_type_name : string, $method_name : string, $env : Native::Env = undef, $stack : Native::Stack = undef);
   
-  native static method new_instance_method : Native::MethodCall($runtime : Native::Runtime, $invocant : object, $method_name : string);
+  native static method new_instance_method : Native::MethodCall($invocant : object, $method_name : string, $env : Native::Env = undef, $stack : Native::Stack = undef);
   
   native method call : object ($args : object[]);
 }
