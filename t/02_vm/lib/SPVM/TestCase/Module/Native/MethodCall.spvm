@@ -1,0 +1,8 @@
+class TestCase::Module::Native::MethodCall {
+  use Native::MethodCall;
+  
+  static method call : int () {
+    
+    return 1;
+  }
+}
