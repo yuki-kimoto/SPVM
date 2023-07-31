@@ -5,17 +5,9 @@ class Native::MethodCall {
   use Native::Runtime;
   use Native::Method;
   
-  private enum {
-    METHOD_CALL_CATEGORY_CLASS_METHOD,
-    METHOD_CALL_CATEGORY_INSTANCE_METHOD_STATIC,
-    METHOD_CALL_CATEGORY_INSTANCE_METHOD,
-  }
-  
   has runtime : Native::Runtime;
   
   has method : Native::Method;
-  
-  has method_call_category : int;
   
   native static method new_class_method : Native::MethodCall ($runtime : Native::Runtime, $basic_type_name : string, $method_name : string);
   
