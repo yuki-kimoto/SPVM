@@ -7,6 +7,7 @@ class TestCase::Module::Native::MethodCall {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
+  use Point;
   
   static method call : int () {
     
@@ -466,6 +467,27 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_point");
+      
+      {
+        my $ret = (Point)$class_method_call->call([(object)Point->new(Fn->INT_MIN, 2), Point->new(1, 4)]);
+        
+        unless ($ret is_type Point) {
+          return 0;
+        }
+        
+        unless ($ret->x == Fn->INT_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($ret->y == 6) {
+          return 0;
+        }
+        
+      }
+    }
+    
     return 1;
   }
   
@@ -641,6 +663,17 @@ class TestCase::Module::Native::MethodCall {
     $out->{x} = (double)($arg0->{x} + $arg1->{x});
     $out->{y} = (double)($arg0->{y} + $arg1->{y});
     $out->{z} = (double)($arg0->{z} + $arg1->{z});
+  }
+  
+  static method add_point : Point ($arg0 : Point, $arg1 : Point) {
+    
+    my $x_total = $arg0->x + $arg1->x;
+    
+    my $y_total = $arg0->y + $arg1->y;
+    
+    my $ret = Point->new($x_total, $y_total);
+    
+    return $ret;
   }
   
 }

@@ -170,8 +170,11 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     int32_t method_arg_is_object_type = env->api->runtime->is_object_type(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
     
     if (method_arg_is_object_type) {
+      
       if (obj_arg) {
         void* arg_basic_type = env->get_object_basic_type(env, stack, obj_arg);
+        const char* arg_basic_type_name = env->api->basic_type->get_name(runtime, arg_basic_type);
+        
         int32_t arg_type_dimension = env->get_object_type_dimension(env, stack, obj_arg);
         
         int32_t can_assign = env->api->runtime->can_assign(
@@ -185,7 +188,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
         }
       }
       
-      stack[0].oval = obj_arg;
+      stack[stack_index].oval = obj_arg;
       
       stack_index++;
     }
