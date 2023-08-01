@@ -36,6 +36,70 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_int");
+      
+      {
+        my $ret = $class_method_call->call([(object)(int)Fn->INT_MIN, (int)1]);
+        
+        unless ($ret is_type Int) {
+          return 0;
+        }
+        
+        unless ((int)$ret == Fn->INT_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_long");
+      
+      {
+        my $ret = $class_method_call->call([(object)(long)Fn->LONG_MIN, (long)1]);
+        
+        unless ($ret is_type Long) {
+          return 0;
+        }
+        
+        unless ((long)$ret == Fn->LONG_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_float");
+      
+      {
+        my $ret = $class_method_call->call([(object)(float)Fn->FLOAT_MIN, (float)1]);
+        
+        unless ($ret is_type Float) {
+          return 0;
+        }
+        
+        unless ((float)$ret == Fn->FLOAT_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_double");
+      
+      {
+        my $ret = $class_method_call->call([(object)(double)Fn->DOUBLE_MIN, (double)1]);
+        
+        unless ($ret is_type Double) {
+          return 0;
+        }
+        
+        unless ((double)$ret == Fn->DOUBLE_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   
@@ -49,6 +113,34 @@ class TestCase::Module::Native::MethodCall {
   static method add_short : short ($arg0 : short, $arg1 : short) {
     
     my $ret = (short)($arg0 + $arg1);
+    
+    return $ret;
+  }
+  
+  static method add_int : int ($arg0 : int, $arg1 : int) {
+    
+    my $ret = (int)($arg0 + $arg1);
+    
+    return $ret;
+  }
+  
+  static method add_long : long ($arg0 : long, $arg1 : long) {
+    
+    my $ret = (long)($arg0 + $arg1);
+    
+    return $ret;
+  }
+  
+  static method add_float : float ($arg0 : float, $arg1 : float) {
+    
+    my $ret = (float)($arg0 + $arg1);
+    
+    return $ret;
+  }
+  
+  static method add_double : double ($arg0 : double, $arg1 : double) {
+    
+    my $ret = (double)($arg0 + $arg1);
     
     return $ret;
   }
