@@ -356,6 +356,116 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_short_ref");
+      
+      {
+        my $out = new short[3];
+        $class_method_call->call([(object)[(short)Fn->SHORT_MIN, 2, 3], [(short)1, 4, 5], $out]);
+        
+        unless ($out->[0] == Fn->SHORT_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($out->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($out->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_int_ref");
+      
+      {
+        my $out = new int[3];
+        $class_method_call->call([(object)[(int)Fn->INT_MIN, 2, 3], [(int)1, 4, 5], $out]);
+        
+        unless ($out->[0] == Fn->INT_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($out->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($out->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_long_ref");
+      
+      {
+        my $out = new long[3];
+        $class_method_call->call([(object)[(long)Fn->LONG_MIN, 2, 3], [(long)1, 4, 5], $out]);
+        
+        unless ($out->[0] == Fn->LONG_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($out->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($out->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_float_ref");
+      
+      {
+        my $out = new float[3];
+        $class_method_call->call([(object)[(float)Fn->FLOAT_MIN, 2, 3], [(float)1, 4, 5], $out]);
+        
+        unless ($out->[0] == Fn->FLOAT_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($out->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($out->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_double_ref");
+      
+      {
+        my $out = new double[3];
+        $class_method_call->call([(object)[(double)Fn->DOUBLE_MIN, 2, 3], [(double)1, 4, 5], $out]);
+        
+        unless ($out->[0] == Fn->DOUBLE_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($out->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($out->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
     return 1;
   }
   
@@ -496,6 +606,41 @@ class TestCase::Module::Native::MethodCall {
     $out->{x} = (byte)($arg0->{x} + $arg1->{x});
     $out->{y} = (byte)($arg0->{y} + $arg1->{y});
     $out->{z} = (byte)($arg0->{z} + $arg1->{z});
+  }
+  
+  static method add_mulnum_short_ref : void ($arg0 : TestCase::Point_3s, $arg1 : TestCase::Point_3s, $out : TestCase::Point_3s*) {
+    
+    $out->{x} = (short)($arg0->{x} + $arg1->{x});
+    $out->{y} = (short)($arg0->{y} + $arg1->{y});
+    $out->{z} = (short)($arg0->{z} + $arg1->{z});
+  }
+  
+  static method add_mulnum_int_ref : void ($arg0 : TestCase::Point_3i, $arg1 : TestCase::Point_3i, $out : TestCase::Point_3i*) {
+    
+    $out->{x} = (int)($arg0->{x} + $arg1->{x});
+    $out->{y} = (int)($arg0->{y} + $arg1->{y});
+    $out->{z} = (int)($arg0->{z} + $arg1->{z});
+  }
+  
+  static method add_mulnum_long_ref : void ($arg0 : TestCase::Point_3l, $arg1 : TestCase::Point_3l, $out : TestCase::Point_3l*) {
+    
+    $out->{x} = (long)($arg0->{x} + $arg1->{x});
+    $out->{y} = (long)($arg0->{y} + $arg1->{y});
+    $out->{z} = (long)($arg0->{z} + $arg1->{z});
+  }
+  
+  static method add_mulnum_float_ref : void ($arg0 : TestCase::Point_3f, $arg1 : TestCase::Point_3f, $out : TestCase::Point_3f*) {
+    
+    $out->{x} = (float)($arg0->{x} + $arg1->{x});
+    $out->{y} = (float)($arg0->{y} + $arg1->{y});
+    $out->{z} = (float)($arg0->{z} + $arg1->{z});
+  }
+  
+  static method add_mulnum_double_ref : void ($arg0 : TestCase::Point_3d, $arg1 : TestCase::Point_3d, $out : TestCase::Point_3d*) {
+    
+    $out->{x} = (double)($arg0->{x} + $arg1->{x});
+    $out->{y} = (double)($arg0->{y} + $arg1->{y});
+    $out->{z} = (double)($arg0->{z} + $arg1->{z});
   }
   
 }
