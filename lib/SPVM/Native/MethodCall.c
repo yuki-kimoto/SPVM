@@ -479,6 +479,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t method_return_basic_type_id = env->api->basic_type->get_id(runtime, method_return_basic_type);
   int32_t method_return_type_dimension = env->api->method->get_return_type_dimension(runtime, method);
   int32_t method_return_type_flag = env->api->method->get_return_type_flag(runtime, method);
+  
   int32_t method_return_basic_type_category = env->api->basic_type->get_category(runtime, method_return_basic_type);
   
   int32_t method_return_is_object_type = env->api->runtime->is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
@@ -487,7 +488,6 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     // Nothing to do
   }
   else {
-    
     int32_t method_return_type_is_ref = method_return_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF;
     
     assert(!method_return_type_is_ref);
@@ -639,6 +639,9 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           assert(0);
         }
       }
+    }
+    else if (method_return_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID) {
+      stack[0].oval = NULL;
     }
     else {
       assert(0);

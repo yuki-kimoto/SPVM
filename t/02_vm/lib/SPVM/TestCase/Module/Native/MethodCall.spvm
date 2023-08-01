@@ -256,6 +256,19 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_byte_ref");
+      
+      {
+        my $out = new byte[1];
+        (byte[])$class_method_call->call([(object)(byte)Fn->BYTE_MIN, (byte)1, $out]);
+        
+        unless ($out->[0] == Fn->BYTE_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   
@@ -359,6 +372,11 @@ class TestCase::Module::Native::MethodCall {
     $ret->{z} = (double)($arg0->{z} + $arg1->{z});
     
     return $ret;
+  }
+  
+  static method add_byte_ref : void ($arg0 : byte, $arg1 : byte, $arg_out : byte*) {
+    
+    $$arg_out = (byte)($arg0 + $arg1);
   }
   
 }
