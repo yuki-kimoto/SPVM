@@ -131,6 +131,131 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_short");
+      
+      {
+        my $ret = (short[])$class_method_call->call([(object)[(short)Fn->SHORT_MIN, 2, 3], [(short)1, 4, 5]]);
+        
+        unless ($ret is_type short[]) {
+          return 0;
+        }
+        
+        unless ($ret->[0] == Fn->SHORT_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($ret->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($ret->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_int");
+      
+      {
+        my $ret = (int[])$class_method_call->call([(object)[(int)Fn->INT_MIN, 2, 3], [(int)1, 4, 5]]);
+        
+        unless ($ret is_type int[]) {
+          return 0;
+        }
+        
+        unless ($ret->[0] == Fn->INT_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($ret->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($ret->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_long");
+      
+      {
+        my $ret = (long[])$class_method_call->call([(object)[(long)Fn->LONG_MIN, 2, 3], [(long)1, 4, 5]]);
+        
+        unless ($ret is_type long[]) {
+          return 0;
+        }
+        
+        unless ($ret->[0] == Fn->LONG_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($ret->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($ret->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_float");
+      
+      {
+        my $ret = (float[])$class_method_call->call([(object)[(float)Fn->FLOAT_MIN, 2, 3], [(float)1, 4, 5]]);
+        
+        unless ($ret is_type float[]) {
+          return 0;
+        }
+        
+        unless ($ret->[0] == Fn->FLOAT_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($ret->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($ret->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_double");
+      
+      {
+        my $ret = (double[])$class_method_call->call([(object)[(double)Fn->DOUBLE_MIN, 2, 3], [(double)1, 4, 5]]);
+        
+        unless ($ret is_type double[]) {
+          return 0;
+        }
+        
+        unless ($ret->[0] == Fn->DOUBLE_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($ret->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($ret->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
     return 1;
   }
   
@@ -182,6 +307,56 @@ class TestCase::Module::Native::MethodCall {
     $ret->{x} = (byte)($arg0->{x} + $arg1->{x});
     $ret->{y} = (byte)($arg0->{y} + $arg1->{y});
     $ret->{z} = (byte)($arg0->{z} + $arg1->{z});
+    
+    return $ret;
+  }
+  
+  static method add_mulnum_short : TestCase::Point_3s ($arg0 : TestCase::Point_3s, $arg1 : TestCase::Point_3s) {
+    
+    my $ret : TestCase::Point_3s;
+    $ret->{x} = (short)($arg0->{x} + $arg1->{x});
+    $ret->{y} = (short)($arg0->{y} + $arg1->{y});
+    $ret->{z} = (short)($arg0->{z} + $arg1->{z});
+    
+    return $ret;
+  }
+  
+  static method add_mulnum_int : TestCase::Point_3i ($arg0 : TestCase::Point_3i, $arg1 : TestCase::Point_3i) {
+    
+    my $ret : TestCase::Point_3i;
+    $ret->{x} = (int)($arg0->{x} + $arg1->{x});
+    $ret->{y} = (int)($arg0->{y} + $arg1->{y});
+    $ret->{z} = (int)($arg0->{z} + $arg1->{z});
+    
+    return $ret;
+  }
+  
+  static method add_mulnum_long : TestCase::Point_3l ($arg0 : TestCase::Point_3l, $arg1 : TestCase::Point_3l) {
+    
+    my $ret : TestCase::Point_3l;
+    $ret->{x} = (long)($arg0->{x} + $arg1->{x});
+    $ret->{y} = (long)($arg0->{y} + $arg1->{y});
+    $ret->{z} = (long)($arg0->{z} + $arg1->{z});
+    
+    return $ret;
+  }
+  
+  static method add_mulnum_float : TestCase::Point_3f ($arg0 : TestCase::Point_3f, $arg1 : TestCase::Point_3f) {
+    
+    my $ret : TestCase::Point_3f;
+    $ret->{x} = (float)($arg0->{x} + $arg1->{x});
+    $ret->{y} = (float)($arg0->{y} + $arg1->{y});
+    $ret->{z} = (float)($arg0->{z} + $arg1->{z});
+    
+    return $ret;
+  }
+  
+  static method add_mulnum_double : TestCase::Point_3d ($arg0 : TestCase::Point_3d, $arg1 : TestCase::Point_3d) {
+    
+    my $ret : TestCase::Point_3d;
+    $ret->{x} = (double)($arg0->{x} + $arg1->{x});
+    $ret->{y} = (double)($arg0->{y} + $arg1->{y});
+    $ret->{z} = (double)($arg0->{z} + $arg1->{z});
     
     return $ret;
   }
