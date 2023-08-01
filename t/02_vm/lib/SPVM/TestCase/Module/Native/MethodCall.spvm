@@ -334,6 +334,28 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_byte_ref");
+      
+      {
+        my $out = new byte[3];
+        $class_method_call->call([(object)[(byte)Fn->BYTE_MIN, 2, 3], [(byte)1, 4, 5], $out]);
+        
+        unless ($out->[0] == Fn->BYTE_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($out->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($out->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
     return 1;
   }
   
@@ -467,6 +489,13 @@ class TestCase::Module::Native::MethodCall {
   static method add_double_ref : void ($arg0 : double, $arg1 : double, $arg_out : double*) {
     
     $$arg_out = (double)($arg0 + $arg1);
+  }
+  
+  static method add_mulnum_byte_ref : void ($arg0 : TestCase::Point_3b, $arg1 : TestCase::Point_3b, $out : TestCase::Point_3b*) {
+    
+    $out->{x} = (byte)($arg0->{x} + $arg1->{x});
+    $out->{y} = (byte)($arg0->{y} + $arg1->{y});
+    $out->{z} = (byte)($arg0->{z} + $arg1->{z});
   }
   
 }
