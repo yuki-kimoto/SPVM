@@ -1,35 +1,36 @@
 class TestCase::Module::Native::MethodCall {
   use Native::MethodCall;
+  use Fn;
   
   static method call : int () {
     
     {
-      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "test_byte");
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_byte");
       
       {
-        my $ret = $class_method_call->call([(object)(byte)1, (byte)2]);
+        my $ret = $class_method_call->call([(object)(byte)Fn->BYTE_MIN, (byte)1]);
         
         unless ($ret is_type Byte) {
           return 0;
         }
         
-        unless ((byte)$ret == 3) {
+        unless ((byte)$ret == Fn->BYTE_MIN + 1) {
           return 0;
         }
       }
     }
     
     {
-      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "test_short");
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_short");
       
       {
-        my $ret = $class_method_call->call([(object)(short)1, (short)2]);
+        my $ret = $class_method_call->call([(object)(short)Fn->SHORT_MIN, (short)1]);
         
         unless ($ret is_type Short) {
           return 0;
         }
         
-        unless ((short)$ret == 3) {
+        unless ((short)$ret ==Fn->SHORT_MIN + 1) {
           return 0;
         }
       }
@@ -38,14 +39,14 @@ class TestCase::Module::Native::MethodCall {
     return 1;
   }
   
-  static method test_byte : byte ($arg0 : byte, $arg1 : byte) {
+  static method add_byte : byte ($arg0 : byte, $arg1 : byte) {
     
     my $ret = (byte)($arg0 + $arg1);
     
     return $ret;
   }
   
-  static method test_short : short ($arg0 : short, $arg1 : short) {
+  static method add_short : short ($arg0 : short, $arg1 : short) {
     
     my $ret = (short)($arg0 + $arg1);
     
