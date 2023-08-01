@@ -196,8 +196,6 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
       
       int32_t method_arg_type_is_ref = method_arg_type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF;
       
-      int32_t stack_index = arg_index;
-      
       if (!method_arg_type_is_ref) {
         if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC) {
           switch (method_arg_basic_type_id) {
@@ -282,9 +280,13 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
             return env->die(env, stack, "The array length of the %dth argument must be %d.", arg_index + 1, method_arg_width, __func__, FILE_NAME, __LINE__);
           }
           
-          switch(method_arg_basic_type_id) {
+          void* method_arg_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_arg_basic_type, 0);
+          void* method_arg_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_arg_mulnum_field);
+          int32_t method_arg_mulnum_field_basic_type_id = env->api->basic_type->get_id(runtime, method_arg_mulnum_field_basic_type);
+          
+          switch (method_arg_mulnum_field_basic_type_id) {
             case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
-              if (!env->is_type_by_name(env, stack, obj_arg, "byte[]", 0)) {
+              if (!env->is_type_by_name(env, stack, obj_arg, "byte", 1)) {
                 return env->die(env, stack, "The type of the %dth argument must be the byte[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
               }
               
@@ -297,7 +299,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
-              if (!env->is_type_by_name(env, stack, obj_arg, "short[]", 0)) {
+              if (!env->is_type_by_name(env, stack, obj_arg, "short", 1)) {
                 return env->die(env, stack, "The type of the %dth argument must be the short[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
               }
               
@@ -310,7 +312,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
-              if (!env->is_type_by_name(env, stack, obj_arg, "int[]", 0)) {
+              if (!env->is_type_by_name(env, stack, obj_arg, "int", 1)) {
                 return env->die(env, stack, "The type of the %dth argument must be the int[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
               }
               
@@ -323,7 +325,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
-              if (!env->is_type_by_name(env, stack, obj_arg, "long[]", 0)) {
+              if (!env->is_type_by_name(env, stack, obj_arg, "long", 1)) {
                 return env->die(env, stack, "The type of the %dth argument must be the long[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
               }
               
@@ -336,7 +338,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
-              if (!env->is_type_by_name(env, stack, obj_arg, "float[]", 0)) {
+              if (!env->is_type_by_name(env, stack, obj_arg, "float", 1)) {
                 return env->die(env, stack, "The type of the %dth argument must be the float[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
               }
               
@@ -349,7 +351,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
-              if (!env->is_type_by_name(env, stack, obj_arg, "double[]", 0)) {
+              if (!env->is_type_by_name(env, stack, obj_arg, "double", 1)) {
                 return env->die(env, stack, "The type of the %dth argument must be the double[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
               }
               
@@ -394,7 +396,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
         
         switch(method_arg_basic_type_id) {
           case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
-            if (!env->is_type_by_name(env, stack, obj_arg, "byte[]", 0)) {
+            if (!env->is_type_by_name(env, stack, obj_arg, "byte", 1)) {
               return env->die(env, stack, "The type of the %dth argument must be the byte[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
             }
             
@@ -405,7 +407,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
-            if (!env->is_type_by_name(env, stack, obj_arg, "short[]", 0)) {
+            if (!env->is_type_by_name(env, stack, obj_arg, "short", 1)) {
               return env->die(env, stack, "The type of the %dth argument must be the short[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
             }
             
@@ -416,7 +418,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
-            if (!env->is_type_by_name(env, stack, obj_arg, "int[]", 0)) {
+            if (!env->is_type_by_name(env, stack, obj_arg, "int", 1)) {
               return env->die(env, stack, "The type of the %dth argument must be the int[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
             }
             
@@ -427,7 +429,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
-            if (!env->is_type_by_name(env, stack, obj_arg, "long[]", 0)) {
+            if (!env->is_type_by_name(env, stack, obj_arg, "long", 1)) {
               return env->die(env, stack, "The type of the %dth argument must be the long[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
             }
             
@@ -438,7 +440,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
-            if (!env->is_type_by_name(env, stack, obj_arg, "float[]", 0)) {
+            if (!env->is_type_by_name(env, stack, obj_arg, "float", 1)) {
               return env->die(env, stack, "The type of the %dth argument must be the float[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
             }
             
@@ -449,7 +451,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
             break;
           }
           case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
-            if (!env->is_type_by_name(env, stack, obj_arg, "double[]", 0)) {
+            if (!env->is_type_by_name(env, stack, obj_arg, "double", 1)) {
               return env->die(env, stack, "The type of the %dth argument must be the double[] type.", arg_index + 1, __func__, FILE_NAME, __LINE__);
             }
             
@@ -544,7 +546,11 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     else if (method_return_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
       int32_t method_return_width = env->api->runtime->get_type_width(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
       
-      switch(method_return_basic_type_id) {
+      void* method_return_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_return_basic_type, 0);
+      void* method_return_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_return_mulnum_field);
+      int32_t method_return_mulnum_field_basic_type_id = env->api->basic_type->get_id(runtime, method_return_mulnum_field_basic_type);
+      
+      switch (method_return_mulnum_field_basic_type_id) {
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
           void* obj_return_value = env->new_byte_array(env, stack, method_return_width);
           if (error_id) { return error_id; }
@@ -638,4 +644,6 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
       assert(0);
     }
   }
+  
+  return 0;
 }

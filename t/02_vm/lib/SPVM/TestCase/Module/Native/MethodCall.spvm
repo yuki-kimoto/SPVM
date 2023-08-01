@@ -1,6 +1,12 @@
 class TestCase::Module::Native::MethodCall {
   use Native::MethodCall;
   use Fn;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
   
   static method call : int () {
     
@@ -100,6 +106,31 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_mulnum_byte");
+      
+      {
+        my $ret = (byte[])$class_method_call->call([(object)[(byte)Fn->BYTE_MIN, 2, 3], [(byte)1, 4, 5]]);
+        
+        unless ($ret is_type byte[]) {
+          return 0;
+        }
+        
+        unless ($ret->[0] == Fn->BYTE_MIN + 1) {
+          return 0;
+        }
+        
+        unless ($ret->[1] == 6) {
+          return 0;
+        }
+        
+        unless ($ret->[2] == 8) {
+          return 0;
+        }
+        
+      }
+    }
+    
     return 1;
   }
   
@@ -141,6 +172,16 @@ class TestCase::Module::Native::MethodCall {
   static method add_double : double ($arg0 : double, $arg1 : double) {
     
     my $ret = (double)($arg0 + $arg1);
+    
+    return $ret;
+  }
+  
+  static method add_mulnum_byte : TestCase::Point_3b ($arg0 : TestCase::Point_3b, $arg1 : TestCase::Point_3b) {
+    
+    my $ret : TestCase::Point_3b;
+    $ret->{x} = (byte)($arg0->{x} + $arg1->{x});
+    $ret->{y} = (byte)($arg0->{y} + $arg1->{y});
+    $ret->{z} = (byte)($arg0->{z} + $arg1->{z});
     
     return $ret;
   }
