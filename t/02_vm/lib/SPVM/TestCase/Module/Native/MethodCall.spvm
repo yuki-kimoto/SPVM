@@ -19,6 +19,22 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "test_short");
+      
+      {
+        my $ret = $class_method_call->call([(object)(short)1, (short)2]);
+        
+        unless ($ret is_type Short) {
+          return 0;
+        }
+        
+        unless ((short)$ret == 3) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   
@@ -28,4 +44,12 @@ class TestCase::Module::Native::MethodCall {
     
     return $ret;
   }
+  
+  static method test_short : short ($arg0 : short, $arg1 : short) {
+    
+    my $ret = (short)($arg0 + $arg1);
+    
+    return $ret;
+  }
+  
 }
