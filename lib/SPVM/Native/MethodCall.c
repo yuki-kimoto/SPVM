@@ -494,67 +494,45 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
       switch (method_return_basic_type_id) {
         case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE : {
           
-          int8_t return_value = stack[0].bval;
-          
-          void* obj_return_value = env->new_object_by_name(env, stack, "Byte", &error_id, __func__, FILE_NAME, __LINE__);
+          stack[0].ival = stack[0].bval;
+          env->call_class_method_by_name(env, stack, "Byte", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
           if (error_id) { return error_id; }
-          
-          stack[0].oval = obj_return_value;
           
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT : {
           
-          int16_t return_value = stack[0].sval;
-          
-          void* obj_return_value = env->new_object_by_name(env, stack, "Short", &error_id, __func__, FILE_NAME, __LINE__);
+          stack[0].ival = stack[0].sval;
+          env->call_class_method_by_name(env, stack, "Short", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
           if (error_id) { return error_id; }
-          
-          stack[0].oval = obj_return_value;
           
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT : {
           
-          int32_t return_value = stack[0].ival;
-          
-          void* obj_return_value = env->new_object_by_name(env, stack, "Int", &error_id, __func__, FILE_NAME, __LINE__);
+          env->call_class_method_by_name(env, stack, "Int", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
           if (error_id) { return error_id; }
-          
-          stack[0].oval = obj_return_value;
           
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG : {
           
-          int64_t return_value = stack[0].lval;
-          
-          void* obj_return_value = env->new_object_by_name(env, stack, "Long", &error_id, __func__, FILE_NAME, __LINE__);
+          env->call_class_method_by_name(env, stack, "Long", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
           if (error_id) { return error_id; }
-          
-          stack[0].oval = obj_return_value;
           
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT : {
           
-          float return_value = stack[0].fval;
-          
-          void* obj_return_value = env->new_object_by_name(env, stack, "Float", &error_id, __func__, FILE_NAME, __LINE__);
+          env->call_class_method_by_name(env, stack, "Float", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
           if (error_id) { return error_id; }
-          
-          stack[0].oval = obj_return_value;
           
           break;
         }
         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE : {
           
-          double return_value = stack[0].dval;
-          
-          void* obj_return_value = env->new_object_by_name(env, stack, "Double", &error_id, __func__, FILE_NAME, __LINE__);
+          env->call_class_method_by_name(env, stack, "Double", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
           if (error_id) { return error_id; }
-          
-          stack[0].oval = obj_return_value;
           
           break;
         }

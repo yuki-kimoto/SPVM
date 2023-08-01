@@ -8,6 +8,14 @@ class TestCase::Module::Native::MethodCall {
       
       {
         my $ret = $class_method_call->call([(object)(byte)1, (byte)2]);
+        
+        unless ($ret is_type Byte) {
+          return 0;
+        }
+        
+        unless ((byte)$ret == 3) {
+          return 0;
+        }
       }
     }
     
