@@ -10,11 +10,11 @@ class Native::MethodCall {
   
   has method : Native::Method;
   
-  native static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string, $env : Native::Env = undef, $stack : Native::Stack = undef);
+  native static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
   
-  native static method new_instance_method_static : Native::MethodCall($basic_type_name : string, $method_name : string, $env : Native::Env = undef, $stack : Native::Stack = undef);
+  native static method new_instance_method_static : Native::MethodCall($basic_type_name : string, $method_name : string);
   
-  native static method new_instance_method : Native::MethodCall($invocant : object, $method_name : string, $env : Native::Env = undef, $stack : Native::Stack = undef);
+  native static method new_instance_method : Native::MethodCall($invocant : object, $method_name : string);
   
   native method call : object ($args : object[]);
 }

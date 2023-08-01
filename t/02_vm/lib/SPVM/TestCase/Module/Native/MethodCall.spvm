@@ -3,6 +3,21 @@ class TestCase::Module::Native::MethodCall {
   
   static method call : int () {
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "test_byte");
+      
+      {
+        my $ret = $class_method_call->call([(object)(byte)1, (byte)2]);
+      }
+    }
+    
     return 1;
+  }
+  
+  static method test_byte : byte ($arg0 : byte, $arg1 : byte) {
+    
+    my $ret = (byte)($arg0 + $arg1);
+    
+    return $ret;
   }
 }
