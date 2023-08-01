@@ -269,6 +269,71 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_short_ref");
+      
+      {
+        my $out = new short[1];
+        (short[])$class_method_call->call([(object)(short)Fn->SHORT_MIN, (short)1, $out]);
+        
+        unless ($out->[0] == Fn->SHORT_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_int_ref");
+      
+      {
+        my $out = new int[1];
+        (int[])$class_method_call->call([(object)(int)Fn->INT_MIN, (int)1, $out]);
+        
+        unless ($out->[0] == Fn->INT_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_long_ref");
+      
+      {
+        my $out = new long[1];
+        (long[])$class_method_call->call([(object)(long)Fn->LONG_MIN, (long)1, $out]);
+        
+        unless ($out->[0] == Fn->LONG_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_float_ref");
+      
+      {
+        my $out = new float[1];
+        (float[])$class_method_call->call([(object)(float)Fn->FLOAT_MIN, (float)1, $out]);
+        
+        unless ($out->[0] == Fn->FLOAT_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_double_ref");
+      
+      {
+        my $out = new double[1];
+        (double[])$class_method_call->call([(object)(double)Fn->DOUBLE_MIN, (double)1, $out]);
+        
+        unless ($out->[0] == Fn->DOUBLE_MIN + 1) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   
@@ -377,6 +442,31 @@ class TestCase::Module::Native::MethodCall {
   static method add_byte_ref : void ($arg0 : byte, $arg1 : byte, $arg_out : byte*) {
     
     $$arg_out = (byte)($arg0 + $arg1);
+  }
+  
+  static method add_short_ref : void ($arg0 : short, $arg1 : short, $arg_out : short*) {
+    
+    $$arg_out = (short)($arg0 + $arg1);
+  }
+  
+  static method add_int_ref : void ($arg0 : int, $arg1 : int, $arg_out : int*) {
+    
+    $$arg_out = (int)($arg0 + $arg1);
+  }
+  
+  static method add_long_ref : void ($arg0 : long, $arg1 : long, $arg_out : long*) {
+    
+    $$arg_out = (long)($arg0 + $arg1);
+  }
+  
+  static method add_float_ref : void ($arg0 : float, $arg1 : float, $arg_out : float*) {
+    
+    $$arg_out = (float)($arg0 + $arg1);
+  }
+  
+  static method add_double_ref : void ($arg0 : double, $arg1 : double, $arg_out : double*) {
+    
+    $$arg_out = (double)($arg0 + $arg1);
   }
   
 }
