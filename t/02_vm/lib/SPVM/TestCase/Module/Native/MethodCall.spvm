@@ -488,6 +488,27 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("Point", "new");
+      
+      {
+        my $point = (Point)$class_method_call->call([(object)1, 2]);
+        
+        unless ($point is_type Point) {
+          return 0;
+        }
+        
+        unless ($point->x == 1) {
+          return 0;
+        }
+        
+        unless ($point->y == 2) {
+          return 0;
+        }
+        
+      }
+    }
+    
     return 1;
   }
   
