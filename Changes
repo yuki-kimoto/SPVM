@@ -1,4 +1,6 @@
-0.989031 2023-07-31
+0.989031 2023-08-02
+  [New Features]
+    * The Native::MethodCall class is added.
   [Incompatibe Changes]
     * The definitions of the following fields in the Stack class are changed.
       -  has env : ro Native::Env;
