@@ -2,8 +2,6 @@
 # MIT License
 
 class Native::MethodCall {
-  use Native::Env;
-  use Native::Stack;
   use Native::Method;
   
   has method : Native::Method;
