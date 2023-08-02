@@ -6,8 +6,6 @@ class Native::MethodCall {
   use Native::Stack;
   use Native::Method;
   
-  has runtime : Native::Runtime;
-  
   has method : Native::Method;
   
   native static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
