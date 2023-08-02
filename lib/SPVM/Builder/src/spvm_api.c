@@ -440,7 +440,7 @@ void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
 }
 
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack) {
-  int32_t args_length = stack[STACK_INDEX_ARGS_STACK_LENGTH].ival;
+  int32_t args_length = stack[STACK_INDEX_ARGS_WIDTH].ival;
   
   return args_length;
 }
@@ -1750,7 +1750,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   SPVM_RUNTIME* runtime = env->runtime;
   
   int32_t error_id = 0;
-  stack[STACK_INDEX_ARGS_STACK_LENGTH].ival = args_width;
+  stack[STACK_INDEX_ARGS_WIDTH].ival = args_width;
   stack[STACK_INDEX_CALL_DEPTH].ival++;
   
   int32_t max_call_depth = 10000;
