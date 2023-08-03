@@ -56,7 +56,10 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, void* spvm_object, cons
   SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
   
   (void)hv_store(hv_blessed_object, "spvm_object", strlen("spvm_object"), SvREFCNT_inc(sv_spvm_object), 0);
-  (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
+  
+  if (SvOK(sv_api)) {
+    (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
+  }
   
   HV* hv_class = gv_stashpv(class, 0);
   sv_bless(sv_blessed_object, hv_class);
@@ -4740,92 +4743,15 @@ build_env(...)
   PPCODE:
 {
   
-  /*
-    my $builder_compiler = SPVM::Builder::Compiler->new(
-      include_dirs => $BUILDER->include_dirs
-    );
-    
-    my @native_compiler_basic_type_names = qw(
-      Native::Compiler
-      Native::Method
-      Native::Runtime
-      Native::BasicType
-      Native::Stack
-      Native::Env
-    );
-    
-    for my $native_compiler_basic_type_name (@native_compiler_basic_type_names) {
-      $builder_compiler->compile_with_exit($native_compiler_basic_type_name, __FILE__, __LINE__);
-      my $builder_runtime = $builder_compiler->get_runtime;
-      $builder_runtime->load_dynamic_lib_native($native_compiler_basic_type_name, __FILE__, __LINE__);
-    }
-    
-    my $builder_env = SPVM::Builder::Env->new($builder_compiler);
-    
-    my $builder_stack = $builder_env->new_stack;
-    
-    my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
-    
-    my $compiler = $builder_api->class("Native::Compiler")->new;
-    for my $include_dir (@{$BUILDER->include_dirs}) {
-      $compiler->add_include_dir($include_dir);
-    }
-    $compiler->compile(undef);
-    
-    $ENV = $builder_api->class("Native::Env")->new($compiler);
-  */
-  
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
+  SV* sv_compiler = ST(1);
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
+  
   SPVM_ENV* env = SPVM_API_new_env();
   
-  void* compiler = env->api->compiler->new_instance();
-  
-  const char* basic_type_name = "Native::Env";
-  
-  const char* start_file = FILE_NAME;
-  
-  int32_t start_line = __LINE__ + 1;
-  
-  env->api->compiler->set_start_file(compiler, start_file);
-  
-  env->api->compiler->set_start_line(compiler, start_line);
-  
-  SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
-  SV* sv_include_dirs = sv_include_dirs_ptr ? *sv_include_dirs_ptr : &PL_sv_undef;
-  
-  AV* av_include_dirs;
-  if (SvOK(sv_include_dirs)) {
-    av_include_dirs = (AV*)SvRV(sv_include_dirs);
-  }
-  else {
-    av_include_dirs = (AV*)sv_2mortal((SV*)newAV());
-  }
-  int32_t av_include_dirs_length = (int32_t)av_len(av_include_dirs) + 1;
-  for (int32_t i = 0; i < av_include_dirs_length; i++) {
-    SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
-    SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
-    char* include_dir = SvPV_nolen(sv_include_dir);
-    env->api->compiler->add_include_dir(compiler, include_dir);
-  }
-  
-  int32_t compile_error_id = env->api->compiler->compile(compiler, "Native::Env");
-  
-  int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
-  
-  for (int32_t i = 0; i < error_messages_length; i++) {
-    const char* error_message = env->api->compiler->get_error_message(compiler, i);
-    fprintf(stderr, "%s\n", error_message);
-  }
-  
   void* runtime = env->api->compiler->get_runtime(compiler);
-  
-  if (compile_error_id) {
-    env->api->compiler->free_instance(compiler);
-    env->free_env(env);
-    croak("A compilation failed.");
-  }
   
   env->compiler = compiler;
   
@@ -4840,9 +4766,18 @@ build_env(...)
     croak("A Native::Env object cannot be created.");
   }
   
-  // SV* sv_env = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, elem, "SPVM::BlessedObject::Array");
+  void* obj_stack = env->new_pointer_object_by_name(env, stack, "Native::Stack", stack, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) {
+    croak("A Native::Stack object cannot be created.");
+  }
   
-  XSRETURN(0);
+  SV* sv_env = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ NULL, obj_env, "SPVM::BlessedObject::Class");
+  
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ NULL, obj_stack, "SPVM::BlessedObject::Class");
+  
+  XPUSHs(sv_env);
+  XPUSHs(sv_stack);
+  XSRETURN(2);
 }
 
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
