@@ -222,7 +222,9 @@ my $BIND_TO_PERL_BASIC_TYPE_NAME_H = {};
 sub bind_to_perl {
   my ($basic_type_name) = @_;
   
-  my $runtime = $COMPILER->get_runtime;
+  my $compiler = $ENV->compiler;
+  
+  my $runtime = $compiler->get_runtime;
     
   my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
   
