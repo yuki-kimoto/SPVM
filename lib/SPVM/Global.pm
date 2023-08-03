@@ -18,7 +18,6 @@ use SPVM 'Native::Env';
 use SPVM 'Native::Stack';
 
 our $BUILDER;
-our $COMPILER;
 our $ENV;
 our $STACK;
 our $API;
@@ -30,7 +29,6 @@ END {
   }
   $STACK = undef;
   $ENV = undef;
-  $COMPILER = undef;
   $BUILDER = undef;
 }
 
