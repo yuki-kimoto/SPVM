@@ -4794,6 +4794,73 @@ build_env(...)
     $ENV = $builder_api->class("Native::Env")->new($compiler);
   */
   
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SPVM_ENV* env = SPVM_API_new_env();
+  
+  void* compiler = env->api->compiler->new_instance();
+  
+  const char* basic_type_name = "Native::Env";
+  
+  const char* start_file = FILE_NAME;
+  
+  int32_t start_line = __LINE__ + 1;
+  
+  env->api->compiler->set_start_file(compiler, start_file);
+  
+  env->api->compiler->set_start_line(compiler, start_line);
+  
+  SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
+  SV* sv_include_dirs = sv_include_dirs_ptr ? *sv_include_dirs_ptr : &PL_sv_undef;
+  
+  AV* av_include_dirs;
+  if (SvOK(sv_include_dirs)) {
+    av_include_dirs = (AV*)SvRV(sv_include_dirs);
+  }
+  else {
+    av_include_dirs = (AV*)sv_2mortal((SV*)newAV());
+  }
+  int32_t av_include_dirs_length = (int32_t)av_len(av_include_dirs) + 1;
+  for (int32_t i = 0; i < av_include_dirs_length; i++) {
+    SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
+    SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
+    char* include_dir = SvPV_nolen(sv_include_dir);
+    env->api->compiler->add_include_dir(compiler, include_dir);
+  }
+  
+  int32_t compile_error_id = env->api->compiler->compile(compiler, "Native::Env");
+  
+  int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
+  
+  for (int32_t i = 0; i < error_messages_length; i++) {
+    const char* error_message = env->api->compiler->get_error_message(compiler, i);
+    fprintf(stderr, "%s\n", error_message);
+  }
+  
+  void* runtime = env->api->compiler->get_runtime(compiler);
+  
+  if (compile_error_id) {
+    env->api->compiler->free_instance(compiler);
+    env->free_env(env);
+    croak("A compilation failed.");
+  }
+  
+  env->compiler = compiler;
+  
+  env->runtime = runtime;
+  
+  SPVM_VALUE* stack = env->new_stack(env);
+  
+  int32_t error_id = 0;
+  
+  void* obj_env = env->new_pointer_object_by_name(env, stack, "Native::Env", env, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) {
+    croak("A Native::Env object cannot be created.");
+  }
+  
+  // SV* sv_env = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, sv_env, sv_stack, elem, "SPVM::BlessedObject::Array");
+  
   XSRETURN(0);
 }
 
