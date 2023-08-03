@@ -4550,6 +4550,26 @@ get_basic_type_name(...)
 MODULE = SPVM::Builder::Compiler		PACKAGE = SPVM::Builder::Compiler
 
 SV*
+DESTROY(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  // Free compiler
+  env_api->api->compiler->free_instance(compiler);
+  
+  XSRETURN(0);
+}
+
+SV*
 create_native_compiler(...)
   PPCODE:
 {
@@ -4634,26 +4654,6 @@ get_module_file(...)
   XPUSHs(sv_module_file);
   
   XSRETURN(1);
-}
-
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
-  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  // Free compiler
-  env_api->api->compiler->free_instance(compiler);
-  
-  XSRETURN(0);
 }
 
 SV*
@@ -4981,6 +4981,22 @@ new(...)
 }
 
 SV*
+DESTROY(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Env
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_self);
+  
+  env->free_env(env);
+  
+  XSRETURN(0);
+}
+
+SV*
 set_command_info_program_name(...)
   PPCODE:
 {
@@ -5140,22 +5156,6 @@ new_stack(...)
 
   XPUSHs(sv_stack);
   XSRETURN(1);
-}
-
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Env
-  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_self);
-  
-  env->free_env(env);
-  
-  XSRETURN(0);
 }
 
 MODULE = SPVM::Builder::Stack		PACKAGE = SPVM::Builder::Stack
