@@ -68,6 +68,8 @@ sub build_module {
     }
     
     &bind_to_perl($basic_type_name);
+    
+    $ENV->call_init_methods($STACK);
   }
 }
 
@@ -130,8 +132,6 @@ sub init_api {
   &init_global();
   
   $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
-  
-  $ENV->call_init_methods($STACK);
 }
 
 sub load_dynamic_lib {
