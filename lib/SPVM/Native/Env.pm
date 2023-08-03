@@ -32,6 +32,14 @@ The C<Native::Env> class is a L<pointer class|SPVM::Document::Language/"Pointer 
 
 Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::NativeAPI/"Execution Native::Environment"> type.
 
+=head1 Fields
+
+=head2 compiler
+
+  has compiler : ro Native::Compiler;
+
+A compiler. The field type is the L<Native::Compiler|SPVM::Native::Compiler> class.
+
 =head1 Class Methods
 
   static method new : Native::Env ($compiler : Native::Compiler = undef);
