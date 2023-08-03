@@ -4997,22 +4997,6 @@ DESTROY(...)
 }
 
 SV*
-destroy_class_vars(...)
-  PPCODE:
-{
-  
-  SV* sv_env = ST(0);
-  SV* sv_stack = ST(1);
-  
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
-  SPVM_VALUE* stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
-  
-  env->destroy_class_vars(env, stack);
-  
-  XSRETURN(0);
-}
-
-SV*
 new_stack(...)
   PPCODE:
 {
