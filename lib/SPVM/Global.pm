@@ -85,7 +85,7 @@ sub init_global {
       include_dirs => $BUILDER->include_dirs
     );
     
-    my @native_compiler_modules = qw(
+    my @native_compiler_basic_type_names = qw(
       Native::Compiler
       Native::Method
       Native::Runtime
@@ -94,10 +94,10 @@ sub init_global {
       Native::Env
     );
     
-    for my $native_compiler_module (@native_compiler_modules) {
-      $builder_compiler->compile_with_exit($native_compiler_module, __FILE__, __LINE__);
+    for my $native_compiler_basic_type_name (@native_compiler_basic_type_names) {
+      $builder_compiler->compile_with_exit($native_compiler_basic_type_name, __FILE__, __LINE__);
       my $builder_runtime = $builder_compiler->get_runtime;
-      $builder_runtime->load_dynamic_lib_native($native_compiler_module, __FILE__, __LINE__);
+      $builder_runtime->load_dynamic_lib_native($native_compiler_basic_type_name, __FILE__, __LINE__);
     }
     
     my $builder_env = SPVM::Builder::Env->new($builder_compiler);
