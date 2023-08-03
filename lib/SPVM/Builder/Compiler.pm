@@ -7,6 +7,17 @@ use warnings;
 
 sub get_runtime { shift->{runtime} }
 
+sub env_api {
+  my $self = shift;
+  if (@_) {
+    $self->{env_api} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env_api};
+  }
+}
+
 sub pointer {
   my $self = shift;
   if (@_) {
@@ -45,11 +56,13 @@ sub new {
   
   bless $self, $class;
   
+  my $env_api = SPVM::Builder::Env->new;
+  
+  $self->env_api($env_api);
+  
   $self->create_native_compiler;
   
   my $runtime = $self->get_runtime;
-  
-  my $env_api = SPVM::Builder::Env->new;
   
   $runtime->env_api($env_api);
   
