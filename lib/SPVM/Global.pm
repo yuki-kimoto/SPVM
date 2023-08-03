@@ -111,7 +111,6 @@ sub init_global {
       $compiler->add_include_dir($include_dir);
     }
     $compiler->compile(undef);
-    my $runtime = $compiler->get_runtime;
     
     $ENV = $builder_api->class("Native::Env")->new($compiler);
     
