@@ -4767,6 +4767,7 @@ get_method_names(...)
 {
   
   SV* sv_runtime = ST(0);
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SV* sv_basic_type_name = ST(1);
@@ -4813,6 +4814,7 @@ get_basic_type_names(...)
 {
   
   SV* sv_runtime = ST(0);
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SPVM_ENV* env_api = SPVM_API_new_env();
@@ -4841,6 +4843,7 @@ get_module_file(...)
 {
   
   SV* sv_runtime = ST(0);
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SV* sv_basic_type_name = ST(1);
@@ -4888,13 +4891,16 @@ set_native_method_address(...)
 {
   
   SV* sv_runtime = ST(0);
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
 
   SV* sv_basic_type_name = ST(1);
   SV* sv_method_name = ST(2);
   SV* sv_native_address = ST(3);
   
-  SPVM_ENV* env_api = SPVM_API_new_env();
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   // Basic type name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -4913,9 +4919,6 @@ set_native_method_address(...)
   env_api->api->method->set_native_address(runtime, method, native_address);
   
   assert(native_address == env_api->api->method->get_native_address(runtime, method));
-  
-  // Free native_env
-  env_api->free_env(env_api);
   
   XSRETURN(0);
 }
