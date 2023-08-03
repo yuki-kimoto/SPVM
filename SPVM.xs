@@ -4776,7 +4776,9 @@ get_method_names(...)
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_ENV* env_api = SPVM_API_new_env();
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
@@ -4801,8 +4803,6 @@ get_method_names(...)
       av_push(av_method_names, SvREFCNT_inc(sv_method_name));
     }
   }
-
-  env_api->free_env(env_api);
   
   XPUSHs(sv_method_names);
   XSRETURN(1);
@@ -4817,7 +4817,9 @@ get_basic_type_names(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SPVM_ENV* env_api = SPVM_API_new_env();
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
@@ -4830,8 +4832,6 @@ get_basic_type_names(...)
     SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
     av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
   }
-  
-  env_api->free_env(env_api);
   
   XPUSHs(sv_basic_type_names);
   XSRETURN(1);
@@ -4851,8 +4851,9 @@ get_module_file(...)
   // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_ENV* env_api = SPVM_API_new_env();
-  
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
@@ -4878,8 +4879,6 @@ get_module_file(...)
       sv_catpv(sv_module_file, module_rel_file);
     }
   }
-  
-  env_api->free_env(env_api);
   
   XPUSHs(sv_module_file);
   XSRETURN(1);
