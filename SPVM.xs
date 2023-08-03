@@ -4752,6 +4752,51 @@ get_error_messages(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
+
+SV*
+build_env(...)
+  PPCODE:
+{
+  
+  /*
+    my $builder_compiler = SPVM::Builder::Compiler->new(
+      include_dirs => $BUILDER->include_dirs
+    );
+    
+    my @native_compiler_basic_type_names = qw(
+      Native::Compiler
+      Native::Method
+      Native::Runtime
+      Native::BasicType
+      Native::Stack
+      Native::Env
+    );
+    
+    for my $native_compiler_basic_type_name (@native_compiler_basic_type_names) {
+      $builder_compiler->compile_with_exit($native_compiler_basic_type_name, __FILE__, __LINE__);
+      my $builder_runtime = $builder_compiler->get_runtime;
+      $builder_runtime->load_dynamic_lib_native($native_compiler_basic_type_name, __FILE__, __LINE__);
+    }
+    
+    my $builder_env = SPVM::Builder::Env->new($builder_compiler);
+    
+    my $builder_stack = $builder_env->new_stack;
+    
+    my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
+    
+    my $compiler = $builder_api->class("Native::Compiler")->new;
+    for my $include_dir (@{$BUILDER->include_dirs}) {
+      $compiler->add_include_dir($include_dir);
+    }
+    $compiler->compile(undef);
+    
+    $ENV = $builder_api->class("Native::Env")->new($compiler);
+  */
+  
+  XSRETURN(0);
+}
+
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
