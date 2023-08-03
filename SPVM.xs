@@ -64,6 +64,25 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object_v2(pTHX_ SV* sv_api, SV* sv_env, void* sp
   return sv_blessed_object;
 }
 
+SV* SPVM_XS_UTIL_new_sv_blessed_object_v3(pTHX_ SV* sv_api, void* spvm_object, const char* class) {
+  
+  // Create spvm_object
+  size_t iv_spvm_object = PTR2IV(spvm_object);
+  SV* sviv_spvm_object = sv_2mortal(newSViv(iv_spvm_object));
+  SV* sv_spvm_object = sv_2mortal(newRV_inc(sviv_spvm_object));
+  
+  HV* hv_blessed_object = (HV*)sv_2mortal((SV*)newHV());
+  SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
+  
+  (void)hv_store(hv_blessed_object, "spvm_object", strlen("spvm_object"), SvREFCNT_inc(sv_spvm_object), 0);
+  (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
+  
+  HV* hv_class = gv_stashpv(class, 0);
+  sv_bless(sv_blessed_object, hv_class);
+  
+  return sv_blessed_object;
+}
+
 void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_blessed_object) {
   
   if (SvOK(sv_blessed_object)) {
