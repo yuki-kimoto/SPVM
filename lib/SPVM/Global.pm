@@ -110,7 +110,6 @@ sub init_global {
     for my $include_dir (@{$BUILDER->include_dirs}) {
       $compiler->add_include_dir($include_dir);
     }
-    
     $compiler->compile(undef);
     
     $ENV = $builder_api->class("Native::Env")->new($compiler);
@@ -131,7 +130,7 @@ sub init_api {
   
   &init_global();
   
-  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK->__api->stack);
+  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
 }
 
 sub load_dynamic_lib {
