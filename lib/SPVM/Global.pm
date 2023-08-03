@@ -108,14 +108,14 @@ sub init_global {
     
     my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
     
-    $COMPILER = $builder_api->class("Native::Compiler")->new;
+    my $compiler = $builder_api->class("Native::Compiler")->new;
     for my $include_dir (@{$BUILDER->include_dirs}) {
-      $COMPILER->add_include_dir($include_dir);
+      $compiler->add_include_dir($include_dir);
     }
-    $COMPILER->compile(undef);
-    my $runtime = $COMPILER->get_runtime;
+    $compiler->compile(undef);
+    my $runtime = $compiler->get_runtime;
     
-    $ENV = $builder_api->class("Native::Env")->new($COMPILER);
+    $ENV = $builder_api->class("Native::Env")->new($compiler);
     
     $STACK = $ENV->new_stack;
     
