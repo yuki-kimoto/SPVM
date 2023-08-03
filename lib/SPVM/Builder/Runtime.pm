@@ -14,6 +14,17 @@ sub pointer {
   }
 }
 
+sub env_api {
+  my $self = shift;
+  if (@_) {
+    $self->{env_api} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env_api};
+  }
+}
+
 sub load_dynamic_lib_native {
   my ($self, $basic_type_name) = @_;
   

@@ -47,6 +47,12 @@ sub new {
   
   $self->create_native_compiler;
   
+  my $runtime = $self->get_runtime;
+  
+  my $env_api = SPVM::Builder::Env->new;
+  
+  $runtime->env_api($env_api);
+  
   return $self;
 }
 
