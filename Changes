@@ -1,3 +1,15 @@
+0.989032 2023-08-02
+  [Revertion]
+    * The following change is reverted.
+    
+      The definitions of the following fields in the Env class are changed.
+      
+      -  has compiler : ro Native::Compiler;
+      +  has compiler : Native::Compiler;
+
+      -  has runtime : ro Native::Runtime;
+      +  has runtime : Native::Runtime;
+
 0.989031 2023-08-02
   [New Features]
     * The Native::MethodCall class is added.
@@ -5,6 +17,14 @@
     * The definitions of the following fields in the Stack class are changed.
       -  has env : ro Native::Env;
       +  has env : Native::Env;
+
+    * The definitions of the following fields in the Env class are changed.
+    
+      -  has compiler : ro Native::Compiler;
+      +  has compiler : Native::Compiler;
+
+      -  has runtime : ro Native::Runtime;
+      +  has runtime : Native::Runtime;
 
 0.989030 2023-07-28
   [Incompatible Changes]

@@ -43,22 +43,24 @@ sub build_module {
   my $build_success;
   if (defined $basic_type_name) {
     
-    my $start_runtime = $COMPILER->get_runtime;
+    my $compiler = $ENV->compiler;
+    
+    my $start_runtime = $compiler->get_runtime;
     my $start_basic_types_length = $start_runtime->get_basic_types_length;
     
-    $COMPILER->set_start_file($file);
-    $COMPILER->set_start_line($line);
-    my $success = $COMPILER->compile($basic_type_name);
+    $compiler->set_start_file($file);
+    $compiler->set_start_line($line);
+    my $success = $compiler->compile($basic_type_name);
     unless ($success) {
-      my $error_messages = $COMPILER->get_error_messages;
+      my $error_messages = $compiler->get_error_messages;
       for my $error_message (@$error_messages) {
         printf STDERR "[CompileError]$error_message\n";
       }
-      $COMPILER = undef;
+      $compiler = undef;
       exit(255);
     }
     
-    my $runtime = $COMPILER->get_runtime;
+    my $runtime = $compiler->get_runtime;
     
     my $basic_types_length = $runtime->get_basic_types_length;
     
