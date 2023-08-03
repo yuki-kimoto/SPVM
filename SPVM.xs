@@ -4925,13 +4925,15 @@ build_precompile_module_source(...)
   PPCODE:
 {
   SV* sv_runtime = ST(0);
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   SV* sv_basic_type_name = ST(1);
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  // Create precompile source
-  SPVM_ENV* env_api = SPVM_API_new_env();
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   // New allocator
   void* allocator = env_api->api->allocator->new_instance();
@@ -4952,9 +4954,6 @@ build_precompile_module_source(...)
   
   // Free allocator
   env_api->api->allocator->free_instance(allocator);
-  
-  // Free native_env_api
-  env_api->free_env(env_api);
   
   XPUSHs(sv_precompile_source);
   XSRETURN(1);
