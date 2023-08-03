@@ -3,6 +3,10 @@ package SPVM::Builder::Compiler;
 use strict;
 use warnings;
 
+### Fields
+
+sub get_runtime { shift->{runtime} }
+
 sub pointer {
   my $self = shift;
   if (@_) {

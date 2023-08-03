@@ -4556,22 +4556,27 @@ create_native_compiler(...)
   
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   // Create compiler native_env
   SPVM_ENV* env_api = SPVM_API_new_env();
   size_t iv_env_api = PTR2IV(env_api);
   SV* sviv_env_api = sv_2mortal(newSViv(iv_env_api));
   SV* sv_env_api = sv_2mortal(newRV_inc(sviv_env_api));
   (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
-
+  
   // Create compiler
   void* compiler = env_api->api->compiler->new_instance();
-
+  
   size_t iv_compiler = PTR2IV(compiler);
   SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
   SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
   (void)hv_store(hv_self, "pointer", strlen("pointer"), SvREFCNT_inc(sv_compiler), 0);
-
+  
+  void* runtime = env_api->api->compiler->get_runtime(compiler);
+  
+  SV* sv_runtime = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ runtime, "SPVM::Builder::Runtime");
+  (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  
   XSRETURN(0);
 }
 
@@ -4719,33 +4724,6 @@ compile(...)
   }
   
   XPUSHs(sv_success);
-  
-  XSRETURN(1);
-}
-
-SV*
-get_runtime(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  SV* sv_basic_type_name = ST(1);
-  SV* sv_start_file = ST(2);
-  SV* sv_start_line = ST(3);
-  
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* env_api = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
-  
-  void* runtime = env_api->api->compiler->get_runtime(compiler);
-  
-  SV* sv_runtime = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ runtime, "SPVM::Builder::Runtime");
-  
-  XPUSHs(sv_runtime);
   
   XSRETURN(1);
 }
