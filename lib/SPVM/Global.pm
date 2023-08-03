@@ -115,6 +115,8 @@ sub init_global {
     
     $STACK = $ENV->new_stack;
     
+    $ENV->set_command_info_program_name($STACK, $0);
+    
     $INIT_GLOBAL = 1;
   }
 }
@@ -124,8 +126,6 @@ sub init_api {
   &init_global();
   
   $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
-  
-  $ENV->set_command_info_program_name($STACK, $0);
   
   $ENV->set_command_info_argv($STACK, \@ARGV);
   my $base_time = $^T + 0; # For Perl 5.8.9
