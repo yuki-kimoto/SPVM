@@ -4744,16 +4744,6 @@ build_env_stack(...)
   
   void* compiler = env->api->compiler->new_instance();
   
-  const char* basic_type_name = "Native::Env";
-  
-  const char* start_file = FILE_NAME;
-  
-  int32_t start_line = __LINE__ + 1;
-  
-  env->api->compiler->set_start_file(compiler, start_file);
-  
-  env->api->compiler->set_start_line(compiler, start_line);
-  
   SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
   SV* sv_include_dirs = sv_include_dirs_ptr ? *sv_include_dirs_ptr : &PL_sv_undef;
   
@@ -4772,21 +4762,38 @@ build_env_stack(...)
     env->api->compiler->add_include_dir(compiler, include_dir);
   }
   
-  int32_t compile_error_id = env->api->compiler->compile(compiler, "Native::Env");
+  int32_t basic_type_names_length = 6;
+  const char* basic_type_names[] = {
+    "Native::Compiler",
+    "Native::Method",
+    "Native::Runtime",
+    "Native::BasicType",
+    "Native::Stack",
+    "Native::Env",
+  };
   
-  int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
-  
-  for (int32_t i = 0; i < error_messages_length; i++) {
-    const char* error_message = env->api->compiler->get_error_message(compiler, i);
-    fprintf(stderr, "%s\n", error_message);
+  for (int32_t i = 0; i < basic_type_names_length; i++) {
+    const char* basic_type_name = basic_type_names[i];
+    
+    env->api->compiler->set_start_file(compiler, FILE_NAME);
+    env->api->compiler->set_start_line(compiler, __LINE__ + 1);
+    int32_t compile_error_id = env->api->compiler->compile(compiler, basic_type_name);
+    
+    int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
+    
+    for (int32_t i = 0; i < error_messages_length; i++) {
+      const char* error_message = env->api->compiler->get_error_message(compiler, i);
+      fprintf(stderr, "%s\n", error_message);
+    }
+    
+    if (compile_error_id) {
+      env->api->compiler->free_instance(compiler);
+      env->free_env(env);
+      croak("A compilation failed.");
+    }
   }
+  
   void* runtime = env->api->compiler->get_runtime(compiler);
-  
-  if (compile_error_id) {
-    env->api->compiler->free_instance(compiler);
-    env->free_env(env);
-    croak("A compilation failed.");
-  }
   
   env->compiler = compiler;
   
