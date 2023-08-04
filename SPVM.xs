@@ -4819,27 +4819,25 @@ build_env_stack(...)
         const char* module_file;
         SV* sv_module_file = &PL_sv_undef;
         
-        if (basic_type) {
-          int32_t basic_type_category = env->api->basic_type->get_category(runtime, basic_type);
-          if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-            const char* module_dir = env->api->basic_type->get_module_dir(runtime, basic_type);
-            const char* module_dir_sep;
-            if (module_dir) {
-              module_dir_sep = "/";
-            }
-            else {
-              module_dir_sep = "";
-              module_dir = "";
-            }
-            const char* module_rel_file = env->api->basic_type->get_module_rel_file(runtime, basic_type);
-            
-            sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
-            sv_catpv(sv_module_file, module_dir_sep);
-            sv_catpv(sv_module_file, module_rel_file);
+        int32_t basic_type_category = env->api->basic_type->get_category(runtime, basic_type);
+        if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+          const char* module_dir = env->api->basic_type->get_module_dir(runtime, basic_type);
+          const char* module_dir_sep;
+          if (module_dir) {
+            module_dir_sep = "/";
           }
+          else {
+            module_dir_sep = "";
+            module_dir = "";
+          }
+          const char* module_rel_file = env->api->basic_type->get_module_rel_file(runtime, basic_type);
+          
+          sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
+          sv_catpv(sv_module_file, module_dir_sep);
+          sv_catpv(sv_module_file, module_rel_file);
         }
         
-        SV* sv_dynamic_lib_file = &PL_sv_undef;
+        SV* sv_dynamic_lib_file = sv_2mortal(newSVpv("", 0));
         {
           dSP;
           int count;
@@ -4853,7 +4851,11 @@ build_env_stack(...)
           SPAGAIN;
           if (count != 1)
               croak("Big trouble\n");
-          sv_dynamic_lib_file = POPs;
+          
+          SV* sv_return_sv_dynamic_lib_file = POPs;
+          
+          sv_setsv(sv_dynamic_lib_file, sv_return_sv_dynamic_lib_file);
+          
           PUTBACK;
           FREETMPS;
           LEAVE;
@@ -4867,7 +4869,7 @@ build_env_stack(...)
         }
         
         if (file_exists) {
-          SV* sv_method_addresses = &PL_sv_undef;
+          SV* sv_method_addresses = sv_2mortal(newSVpv("", 0));
           SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
           {
             dSP;
@@ -4884,7 +4886,10 @@ build_env_stack(...)
             SPAGAIN;
             if (count != 1)
                 croak("Big trouble\n");
-            sv_method_addresses = POPs;
+            SV* return_sv_method_addresses = POPs;
+            
+            sv_setsv(sv_method_addresses, return_sv_method_addresses);
+            
             PUTBACK;
             FREETMPS;
             LEAVE;
