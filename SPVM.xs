@@ -4739,7 +4739,6 @@ build_env_stack(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  
   SPVM_ENV* env = SPVM_API_new_env();
   
   void* compiler = env->api->compiler->new_instance();
@@ -4790,6 +4789,121 @@ build_env_stack(...)
       env->api->compiler->free_instance(compiler);
       env->free_env(env);
       croak("A compilation failed.");
+    }
+    
+    # Load dinamic libnaray - native only
+    {
+      void* runtime = env->api->compiler->get_runtime(compiler);
+      
+      AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
+      SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
+      
+      SV* sv_category = sv_2mortal(newSVpv("native", 0));
+      
+      void* basic_type = env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+      
+      int32_t methods_length = env->api->basic_type->get_methods_length(runtime, basic_type);
+      int32_t native_methods_length = 0;
+      for (int32_t method_index = 0; method_index < methods_length; method_index++) {
+        void* method = env->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
+        const char* method_name = env->api->method->get_name(runtime, method);
+        SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
+        int32_t is_push = 0;
+        if(env->api->method->is_native(runtime, method)) {
+          av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+          native_methods_length++;
+        }
+      }
+      
+      if (native_methods_length) {
+        const char* module_file;
+        SV* sv_module_file = &PL_sv_undef;
+        
+        if (basic_type) {
+          int32_t basic_type_category = env->api->basic_type->get_category(runtime, basic_type);
+          if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
+            const char* module_dir = env->api->basic_type->get_module_dir(runtime, basic_type);
+            const char* module_dir_sep;
+            if (module_dir) {
+              module_dir_sep = "/";
+            }
+            else {
+              module_dir_sep = "";
+              module_dir = "";
+            }
+            const char* module_rel_file = env->api->basic_type->get_module_rel_file(runtime, basic_type);
+            
+            sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
+            sv_catpv(sv_module_file, module_dir_sep);
+            sv_catpv(sv_module_file, module_rel_file);
+          }
+        }
+        
+        SV* sv_dynamic_lib_file = &PL_sv_undef;
+        {
+          dSP;
+          int count;
+          ENTER;
+          SAVETMPS;
+          PUSHMARK(SP);
+          XPUSHs(sv_module_file);
+          XPUSHs(sv_category);
+          PUTBACK;
+          count = call_pv("SPVM::Builder::Util::get_dynamic_lib_file_dist", G_SCALAR);
+          SPAGAIN;
+          if (count != 1)
+              croak("Big trouble\n");
+          sv_dynamic_lib_file = POPs;
+          PUTBACK;
+          FREETMPS;
+          LEAVE;
+        }
+        
+        int32_t file_exists = 0;
+        FILE *file;
+        if ((file = fopen(SvPV_nolen(sv_dynamic_lib_file), "r"))) {
+          fclose(file);
+          file_exists = 1;
+        }
+        
+        if (file_exists) {
+          SV* sv_method_addresses = &PL_sv_undef;
+          SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+          {
+            dSP;
+            int count;
+            ENTER;
+            SAVETMPS;
+            PUSHMARK(SP);
+            XPUSHs(sv_dynamic_lib_file);
+            XPUSHs(sv_basic_type_name);
+            XPUSHs(sv_method_names);
+            XPUSHs(sv_category);
+            PUTBACK;
+            count = call_pv("SPVM::Builder::Util::get_method_addresses", G_SCALAR);
+            SPAGAIN;
+            if (count != 1)
+                croak("Big trouble\n");
+            sv_method_addresses = POPs;
+            PUTBACK;
+            FREETMPS;
+            LEAVE;
+          }
+          
+          HV* hv_method_addresses = (HV*)SvRV(sv_method_addresses);
+          
+          char* method_name;
+          I32 method_name_length;
+          SV* sv_native_address;
+          
+          hv_iterinit(hv_method_addresses);
+          while (sv_native_address = hv_iternextsv(hv_method_addresses, &method_name, &method_name_length)) {
+            void* method = env->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
+            void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+            env->api->method->set_native_address(runtime, method, native_address);
+          }
+        }
+      }
     }
   }
   
