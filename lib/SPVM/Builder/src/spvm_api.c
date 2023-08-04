@@ -306,6 +306,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_inc_ref_count,
     SPVM_API_dec_ref_count,
     SPVM_API_get_field_object_defined_and_has_pointer_by_name,
+    SPVM_API_get_field_object_address,
     NULL, // env_object
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -1192,6 +1193,14 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   SPVM_OBJECT* value = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, value_maybe_weaken);
   
   return value;
+}
+
+SPVM_OBJECT** SPVM_API_get_field_object_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+
+  // Get field value
+  SPVM_OBJECT** value_address = (SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+  
+  return value_address;
 }
 
 SPVM_OBJECT* SPVM_API_get_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
