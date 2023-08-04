@@ -9,7 +9,11 @@
 
       -  has runtime : ro Native::Runtime;
       +  has runtime : Native::Runtime;
-
+  [New Features]
+    The following fields are added to the Native::Compiler class.
+    
+      has runtime : Native::Runtime;
+  
 0.989031 2023-08-02
   [New Features]
     * The Native::MethodCall class is added.

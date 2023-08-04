@@ -15,6 +15,14 @@ int32_t SPVM__Native__Compiler__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = env->new_pointer_object_by_name(env, stack, "Native::Compiler", compiler, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
+  void* runtime = env->api->compiler->get_runtime(compiler);
+  
+  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Native::Runtime", runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   stack[0].oval = obj_self;
   
   return 0;
@@ -25,6 +33,9 @@ int32_t SPVM__Native__Compiler__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_id = 0;
   
   void* obj_self = stack[0].oval;
+  
+  env->set_field_object_by_name(env, stack, obj_self, "runtime", NULL, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
   
   void* compiler = env->get_pointer(env, stack, obj_self);
   
@@ -66,14 +77,7 @@ int32_t SPVM__Native__Compiler__get_runtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
-  void* compiler = env->get_pointer(env, stack, obj_self);
-  
-  void* runtime = env->api->compiler->get_runtime(compiler);
-  
-  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Native::Runtime", runtime, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  env->set_field_object_by_name(env, stack, obj_runtime, "compiler", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_runtime = env->get_field_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   stack[0].oval = obj_runtime;

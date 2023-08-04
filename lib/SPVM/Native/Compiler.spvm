@@ -5,6 +5,10 @@ class Native::Compiler : pointer {
   use Native::Runtime;
   use Native::ModuleFile;
   
+  # Fields
+  
+  has runtime : Native::Runtime;
+  
   # Class Methods
   native static method new : Native::Compiler ();
   
