@@ -129,83 +129,83 @@ sub init_global {
 sub load_dynamic_lib {
   my ($runtime, $basic_type) = @_;
     
-    my $basic_type_name = $basic_type->get_name->to_string;
+  my $basic_type_name = $basic_type->get_name->to_string;
+  
+  my $spvm_module_dir = $basic_type->get_module_dir;
+  my $spvm_module_rel_file = $basic_type->get_module_rel_file;
+  
+  for my $category ('precompile', 'native') {
     
-    my $spvm_module_dir = $basic_type->get_module_dir;
-    my $spvm_module_rel_file = $basic_type->get_module_rel_file;
+    my $get_method_names_options = $runtime->__api->new_options({
+      $category => $runtime->__api->class('Int')->new(1)
+    });
     
-    for my $category ('precompile', 'native') {
+    my $category_method_names;
+    
+    if ($category eq 'native') {
+      $category_method_names = $basic_type->_get_native_method_names;
+    }
+    elsif ($category eq 'precompile') {
+      $category_method_names = $basic_type->_get_precompile_method_names;
+    }
+    
+    if (@$category_method_names) {
+      # Build modules - Compile C source codes and link them to SPVM precompile method
+      # Shared library which is already installed in distribution directory
       
-      my $get_method_names_options = $runtime->__api->new_options({
-        $category => $runtime->__api->class('Int')->new(1)
-      });
-      
-      my $category_method_names;
-      
-      if ($category eq 'native') {
-        $category_method_names = $basic_type->_get_native_method_names;
-      }
-      elsif ($category eq 'precompile') {
-        $category_method_names = $basic_type->_get_precompile_method_names;
-      }
-      
-      if (@$category_method_names) {
-        # Build modules - Compile C source codes and link them to SPVM precompile method
-        # Shared library which is already installed in distribution directory
+      if ($spvm_module_dir) {
         
-        if ($spvm_module_dir) {
+        my $module_file = "$spvm_module_dir/$spvm_module_rel_file";
+        my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
+        
+        # Try to build the shared library at runtime if shared library is not found
+        unless (-f $dynamic_lib_file) {
+          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
+            $basic_type_name,
+            $category_method_names,
+            {category => $category}
+          );
           
-          my $module_file = "$spvm_module_dir/$spvm_module_rel_file";
-          my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
+          my $precompile_source = $runtime->build_precompile_module_source($basic_type)->to_string;
           
-          # Try to build the shared library at runtime if shared library is not found
-          unless (-f $dynamic_lib_file) {
-            my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
-              $basic_type_name,
-              $category_method_names,
-              {category => $category}
-            );
-            
-            my $precompile_source = $runtime->build_precompile_module_source($basic_type)->to_string;
-            
-            $dynamic_lib_file = $BUILDER->build_at_runtime(
-              $basic_type_name,
-              {
-                module_file => $module_file,
-                category => $category,
-                dl_func_list => $dl_func_list,
-                precompile_source => $precompile_source
-              }
-            );
-          }
+          $dynamic_lib_file = $BUILDER->build_at_runtime(
+            $basic_type_name,
+            {
+              module_file => $module_file,
+              category => $category,
+              dl_func_list => $dl_func_list,
+              precompile_source => $precompile_source
+            }
+          );
+        }
+        
+        if (-f $dynamic_lib_file) {
+          my $method_addresses = SPVM::Builder::Util::get_method_addresses(
+            $dynamic_lib_file,
+            $basic_type_name,
+            $category_method_names,
+            $category
+          );
           
-          if (-f $dynamic_lib_file) {
-            my $method_addresses = SPVM::Builder::Util::get_method_addresses(
-              $dynamic_lib_file,
-              $basic_type_name,
-              $category_method_names,
-              $category
-            );
+          for my $method_name (sort keys %$method_addresses) {
+            my $method = $basic_type->get_method_by_name($method_name);
             
-            for my $method_name (sort keys %$method_addresses) {
-              my $method = $basic_type->get_method_by_name($method_name);
-              
-              my $cfunc_address = $method_addresses->{$method_name};
-              if ($category eq 'native') {
-                $method->set_native_address(
-                  $runtime->__api->new_address_object($cfunc_address)
-                );
-              }
-              elsif ($category eq 'precompile') {
-                $method->set_precompile_address(
-                  $runtime->__api->new_address_object($cfunc_address)
-                );
-              }
+            my $cfunc_address = $method_addresses->{$method_name};
+            if ($category eq 'native') {
+              $method->set_native_address(
+                $runtime->__api->new_address_object($cfunc_address)
+              );
+            }
+            elsif ($category eq 'precompile') {
+              $method->set_precompile_address(
+                $runtime->__api->new_address_object($cfunc_address)
+              );
             }
           }
         }
       }
     }
+  }
 }
 
 my $BIND_TO_PERL_BASIC_TYPE_NAME_H = {};
