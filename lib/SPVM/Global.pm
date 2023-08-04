@@ -64,7 +64,7 @@ sub build_module {
     
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-      &load_dynamic_lib($runtime, $basic_type);
+      &load_dynamic_lib($runtime, $basic_type->get_name);
     }
     
     &bind_to_perl($basic_type_name);
@@ -95,7 +95,29 @@ sub init_global {
     for my $native_compiler_basic_type_name (@native_compiler_basic_type_names) {
       $builder_compiler->compile_with_exit($native_compiler_basic_type_name, __FILE__, __LINE__);
       my $builder_runtime = $builder_compiler->get_runtime;
-      $builder_runtime->load_dynamic_lib_native($native_compiler_basic_type_name, __FILE__, __LINE__);
+      
+      # Load dinamic libnaray - native only
+      {
+        my $basic_type_name = $native_compiler_basic_type_name;
+        my $category = 'native';
+        my $method_names = $builder_runtime->get_method_names($basic_type_name, $category);
+        
+        if (@$method_names) {
+          # Build classs - Compile C source codes and link them to SPVM precompile method
+          # Shared library which is already installed in distribution directory
+          my $module_file = $builder_runtime->get_module_file($basic_type_name);
+          my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
+          
+          if (-f $dynamic_lib_file) {
+            my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $category);
+            
+            for my $method_name (sort keys %$method_addresses) {
+              my $cfunc_address = $method_addresses->{$method_name};
+              $builder_runtime->set_native_method_address($basic_type_name, $method_name, $cfunc_address);
+            }
+          }
+        }
+      }
     }
     
     my $builder_env = SPVM::Builder::Env->new($builder_compiler);
@@ -127,9 +149,9 @@ sub init_global {
 }
 
 sub load_dynamic_lib {
-  my ($runtime, $basic_type) = @_;
+  my ($runtime, $basic_type_name) = @_;
     
-  my $basic_type_name = $basic_type->get_name->to_string;
+  my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
   
   my $spvm_module_dir = $basic_type->get_module_dir;
   my $spvm_module_rel_file = $basic_type->get_module_rel_file;
