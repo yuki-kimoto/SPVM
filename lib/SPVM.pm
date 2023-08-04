@@ -21,8 +21,8 @@ sub import {
 }
 
 sub api {
-  unless ($SPVM::Global::API) {
-    SPVM::Global::init_api();
+  unless ($SPVM::Global::INIT_GLOBAL) {
+    SPVM::Global::init_global();
   }
   return $SPVM::Global::API;
 }

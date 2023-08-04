@@ -128,11 +128,6 @@ sub init_global {
   }
 }
 
-sub init_api {
-  
-  &init_global();
-}
-
 sub load_dynamic_lib {
   my ($runtime, $basic_type) = @_;
     
