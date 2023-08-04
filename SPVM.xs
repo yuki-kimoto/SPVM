@@ -4922,12 +4922,12 @@ build_env_stack(...)
   
   int32_t error_id = 0;
   
-  void* obj_compiler = env->new_pointer_object_by_name(env, compiler, "Native::Compiler", compiler, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_compiler = env->new_pointer_object_by_name(env, stack, "Native::Compiler", compiler, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) {
     croak("A Native::Stack object cannot be created.");
   }
   
-  void* obj_runtime = env->new_pointer_object_by_name(env, runtime, "Native::Runtime", runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Native::Runtime", runtime, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) {
     croak("A Native::Stack object cannot be created.");
   }
