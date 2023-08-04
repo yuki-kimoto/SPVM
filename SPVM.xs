@@ -4764,9 +4764,9 @@ build_env_stack(...)
     croak("A Native::Stack object cannot be created.");
   }
   
-  SV* sv_env = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ NULL, obj_env, "SPVM::BlessedObject::Class");
+  SV* sv_env = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ &PL_sv_undef, obj_env, "SPVM::BlessedObject::Class");
   
-  SV* sv_stack = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ NULL, obj_stack, "SPVM::BlessedObject::Class");
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ &PL_sv_undef, obj_stack, "SPVM::BlessedObject::Class");
   
   XPUSHs(sv_env);
   XPUSHs(sv_stack);
