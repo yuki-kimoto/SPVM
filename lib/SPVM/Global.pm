@@ -116,6 +116,8 @@ sub init_global {
     
     $STACK = $ENV->new_stack;
     
+    $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
+    
     $ENV->set_command_info_program_name($STACK, $0);
     
     $ENV->set_command_info_argv($STACK, \@ARGV);
@@ -129,8 +131,6 @@ sub init_global {
 sub init_api {
   
   &init_global();
-  
-  $API = SPVM::ExchangeAPI->new(env => $ENV, stack => $STACK);
 }
 
 sub load_dynamic_lib {
