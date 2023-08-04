@@ -76,10 +76,8 @@ sub build_module {
 my $INIT_GLOBAL;
 sub init_global {
   unless ($INIT_GLOBAL) {
-    unless ($BUILDER) {
-      my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-      $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
-    }
+    my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
     
     my $builder_compiler = SPVM::Builder::Compiler->new(
       include_dirs => $BUILDER->include_dirs
