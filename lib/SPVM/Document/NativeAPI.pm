@@ -1967,6 +1967,14 @@ Gets the address of the value of a field of the object type.
 
 The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
 
+=head2 get_field_object_address_by_name
+
+  void** (*get_field_object_address_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+
+Gets the address of the value of a field of the object type by its basic type name of the object and field name.
+
+If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.

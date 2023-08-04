@@ -4,7 +4,8 @@
     * The following native APIs are added.
 
       void** (*get_field_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
-
+      void** (*get_field_object_address_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+      
 0.989032 2023-08-04
   [Revertion]
     * The following change is reverted.

@@ -307,6 +307,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_dec_ref_count,
     SPVM_API_get_field_object_defined_and_has_pointer_by_name,
     SPVM_API_get_field_object_address,
+    SPVM_API_get_field_object_address_by_name,
     NULL, // env_object
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
@@ -1423,6 +1424,30 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   };
   SPVM_OBJECT* value = SPVM_API_get_field_object(env, stack, object, field);
   return value;
+}
+
+SPVM_OBJECT** SPVM_API_get_field_object_address_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+  *error_id = 0;
+  
+  if (object == NULL) {
+    SPVM_API_die(env, stack, "The object must be defined", func_name, file, line);
+    return NULL;
+  };
+  
+  if (object->type_dimension > 0) {
+    SPVM_API_die(env, stack, "The type dimension of the object must be equal to 0", func_name, file, line);
+    return NULL;
+  };
+  
+  SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, stack, object, field_name);
+  if (!field) {
+    *error_id = 1;
+    const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
+    SPVM_API_die(env, stack, "The %s field is not found in the %s class or its super class", field_name, basic_type_name, func_name, file, line);
+    return NULL;
+  };
+  SPVM_OBJECT** value_address = SPVM_API_get_field_object_address(env, stack, object, field);
+  return value_address;
 }
 
 SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
