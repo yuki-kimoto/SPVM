@@ -4732,7 +4732,7 @@ get_error_messages(...)
 MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
 
 SV*
-build_env(...)
+build_env_stack(...)
   PPCODE:
 {
   
