@@ -2,5 +2,11 @@
 # MIT License
 
 class Native {
+  use Native::Env;
+  use Native::Stack;
   
+  # Class methods
+  native static method get_current_env : Native::Env ();
+  
+  native static method get_current_stack : Native::Stack ();
 }
