@@ -60,19 +60,21 @@ int32_t SPVM__Native__MethodCall__new_class_method(SPVM_ENV* env, SPVM_VALUE* st
   return 0;
 }
 
-int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__MethodCall__call(SPVM_ENV* arg_env, SPVM_VALUE* arg_stack) {
 
   int32_t error_id = 0;
   
-  void* obj_self = stack[0].oval;
+  void* obj_self = arg_stack[0].oval;
   
-  void* obj_args = stack[1].oval;
+  void* obj_args = arg_stack[1].oval;
 
-  void* current_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_current_env = arg_env->get_field_object_by_name(arg_env, arg_stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  SPVM_ENV* env = arg_env->get_pointer(arg_env, arg_stack, obj_current_env);
   
-  void* current_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_current_stack = arg_env->get_field_object_by_name(arg_env, arg_stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  SPVM_VALUE* stack = arg_env->get_pointer(arg_env, arg_stack, obj_current_stack);
   
   if (!obj_args) {
     return env->die(env, stack, "The $args must be defined.", __func__, FILE_NAME, __LINE__);
