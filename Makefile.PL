@@ -175,6 +175,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Format');
     
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Compiler');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::ModuleFile');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Runtime');

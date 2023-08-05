@@ -38,6 +38,8 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<Comparator::String|SPVM::Comparator::String>
 
+=item * L<Compiler|SPVM::Compiler>
+
 =item * L<Complex_2d|SPVM::Complex_2d>
 
 =item * L<Complex_2f|SPVM::Complex_2f>
@@ -45,6 +47,8 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 =item * L<Double|SPVM::Double>
 
 =item * L<DoubleList|SPVM::DoubleList>
+
+=item * L<Env|SPVM::Env>
 
 =item * L<EqualityChecker|SPVM::EqualityChecker>
 
@@ -63,6 +67,8 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 =item * L<Fn|SPVM::Fn>
 
 =item * L<Format|SPVM::Format>
+
+=item * L<Global|SPVM::Global>
 
 =item * L<Hash|SPVM::Hash>
 
@@ -92,6 +98,8 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<LongList|SPVM::LongList>
 
+=item * L<Native|SPVM::Native>
+
 =item * L<Native::Arg|SPVM::Native::Arg>
 
 =item * L<Native::BasicType|SPVM::Native::BasicType>
@@ -106,6 +114,8 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<Native::Method|SPVM::Native::Method>
 
+=item * L<Native::MethodCall|SPVM::Native::MethodCall>
+
 =item * L<Native::ModuleFile|SPVM::Native::ModuleFile>
 
 =item * L<Native::Runtime|SPVM::Native::Runtime>
@@ -115,6 +125,8 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 =item * L<Point|SPVM::Point>
 
 =item * L<Point3D|SPVM::Point3D>
+
+=item * L<Runtime|SPVM::Runtime>
 
 =item * L<Scope::Guard|SPVM::Scope::Guard>
 
@@ -126,6 +138,8 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<Sort|SPVM::Sort>
 
+=item * L<Stack|SPVM::Stack>
+
 =item * L<Stringable|SPVM::Stringable>
 
 =item * L<StringBuffer|SPVM::StringBuffer>
@@ -133,6 +147,10 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 =item * L<Stringer|SPVM::Stringer>
 
 =item * L<StringList|SPVM::StringList>
+
+=item * L<Time|SPVM::Time>
+
+=item * L<Time::Info|SPVM::Time::Info>
 
 =back
 

@@ -555,6 +555,7 @@ sub get_spvm_compiler_and_runtime_module_file_names {
     SPVM/Native/Arg.spvm
     SPVM/Native/BasicType.c
     SPVM/Native/BasicType.spvm
+    SPVM/Native.c
     SPVM/Native/ClassVar.c
     SPVM/Native/ClassVar.spvm
     SPVM/Native/Compiler.c
@@ -564,11 +565,14 @@ sub get_spvm_compiler_and_runtime_module_file_names {
     SPVM/Native/Field.c
     SPVM/Native/Field.spvm
     SPVM/Native/Method.c
+    SPVM/Native/MethodCall.c
+    SPVM/Native/MethodCall.spvm
     SPVM/Native/Method.spvm
     SPVM/Native/ModuleFile.c
     SPVM/Native/ModuleFile.spvm
     SPVM/Native/Runtime.c
     SPVM/Native/Runtime.spvm
+    SPVM/Native.spvm
     SPVM/Native/Stack.c
     SPVM/Native/Stack.spvm
   );

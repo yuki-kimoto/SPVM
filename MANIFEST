@@ -287,6 +287,10 @@ lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
+lib/SPVM/Native.c
+lib/SPVM/Native.config
+lib/SPVM/Native.pm
+lib/SPVM/Native.spvm
 lib/SPVM/Native/Arg.c
 lib/SPVM/Native/Arg.config
 lib/SPVM/Native/Arg.pm
