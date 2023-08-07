@@ -18,21 +18,23 @@ The Native::MethodCall::Stack class of L<SPVM> has methods to call methods on a 
 
 =head1 Class Methods
 
-  static method new_class_method : Native::MethodCall::Stack ($basic_type_name : string, $method_name : string);
+  static method call_callback : void ($stack : Native::Stack, $error_id : int*, $callback : Native::MethodCall::Callback);
 
-Create a class method call and returns it. It is a L<Native::MethodCall>.
+Calls a callback with a stack.
 
-Exceptions:
+The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
-The length of the arguments of the \"%s\" method in the \"%s\" class must be 0. Otherwise an exception is thrown.
+The callback is a L<Native::MethodCall::Callback|SPVM::Native::MethodCall::Callback> object.
 
-The return type of the \"%s\" method in the \"%s\" must be the void type. Otherwise an exception is thrown.
+If the callback throw exception, the error id is set to $error_id. Otherwise 0 is set to $error_id.
 
 =head1 Instance Methods
 
-  method call : void ($stack : Native::Stack);
+  static method get_exception : void ($stack : Native::Stack);
 
-Calls a method with a stack. The stack is a L<Native::Stack|SPVM::Native::Stack> object.
+Gets an excetpion that is set to a stack.
+
+The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
 =head1 Copyright & License
 
