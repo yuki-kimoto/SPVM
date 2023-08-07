@@ -2,5 +2,13 @@
 # MIT License
 
 class Native::MethodCall::Stack {
+  use Native::Method;
+  use Native::Stack;
+  
+  has method : Native::Method;
+  
+  native static method new_class_method : Native::MethodCall::Stack ($basic_type_name : string, $method_name : string);
+  
+  native method call : void ($stack : Native::Stack);
   
 }
