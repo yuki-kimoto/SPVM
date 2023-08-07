@@ -323,6 +323,8 @@ lib/SPVM/Native/MethodCall.c
 lib/SPVM/Native/MethodCall.config
 lib/SPVM/Native/MethodCall.pm
 lib/SPVM/Native/MethodCall.spvm
+lib/SPVM/Native/MethodCall/Callback.pm
+lib/SPVM/Native/MethodCall/Callback.spvm
 lib/SPVM/Native/MethodCall/EnvStack.c
 lib/SPVM/Native/MethodCall/EnvStack.config
 lib/SPVM/Native/MethodCall/EnvStack.pm
