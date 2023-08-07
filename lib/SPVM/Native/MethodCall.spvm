@@ -3,13 +3,6 @@
 
 class Native::MethodCall {
   use Native::Method;
-  use Native;
-  use Native::Env;
-  use Native::Stack;
-  
-  has env : Native::Env;
-  
-  has stack : Native::Stack;
   
   has method : Native::Method;
   

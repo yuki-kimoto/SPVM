@@ -41,40 +41,18 @@ int32_t SPVM__Native__MethodCall__new_class_method(SPVM_ENV* env, SPVM_VALUE* st
   env->set_field_object_by_name(env, stack, obj_self, "method", obj_method, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  env->call_class_method_by_name(env, stack, "Native", "get_current_env", 0, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  void* obj_current_env = stack[0].oval;
-  
-  env->set_field_object_by_name(env, stack, obj_self, "env", obj_current_env, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  env->call_class_method_by_name(env, stack, "Native", "get_current_stack", 0, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  void* obj_current_stack = stack[0].oval;
-  
-  env->set_field_object_by_name(env, stack, obj_self, "stack", obj_current_stack, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
   stack[0].oval = obj_self;
   
   return 0;
 }
 
-int32_t SPVM__Native__MethodCall__call(SPVM_ENV* arg_env, SPVM_VALUE* arg_stack) {
+int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t error_id = 0;
   
-  void* obj_self = arg_stack[0].oval;
+  void* obj_self = stack[0].oval;
   
-  void* obj_args = arg_stack[1].oval;
-
-  void* obj_current_env = arg_env->get_field_object_by_name(arg_env, arg_stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  SPVM_ENV* env = arg_env->get_pointer(arg_env, arg_stack, obj_current_env);
-  
-  void* obj_current_stack = arg_env->get_field_object_by_name(arg_env, arg_stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  SPVM_VALUE* stack = arg_env->get_pointer(arg_env, arg_stack, obj_current_stack);
+  void* obj_args = stack[1].oval;
   
   if (!obj_args) {
     return env->die(env, stack, "The $args must be defined.", __func__, FILE_NAME, __LINE__);
@@ -676,3 +654,4 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* arg_env, SPVM_VALUE* arg_stack)
   
   return 0;
 }
+
