@@ -5,7 +5,7 @@ class Native::MethodCall::Stack {
   use Native::Stack;
   use Native::MethodCall::Callback;
   
-  native static method call_callback : void ($stack : Native::Stack, $error_id : int*, $callback : Native::MethodCall::Callback);
+  native static method call_callback : void ($stack : Native::Stack, $callback : Native::MethodCall::Callback, $error_id : int*);
   
   native static method get_exception : void ($stack : Native::Stack);
 }

@@ -18,7 +18,7 @@ The Native::MethodCall::Stack class of L<SPVM> has methods to call methods on a 
 
 =head1 Class Methods
 
-  static method call_callback : void ($stack : Native::Stack, $error_id : int*, $callback : Native::MethodCall::Callback);
+  static method call_callback : void ($stack : Native::Stack, $callback : Native::MethodCall::Callback, $error_id : int*);
 
 Calls a callback with a stack.
 
