@@ -18,13 +18,25 @@ The Native::MethodCall::EnvStack class of L<SPVM> has methods to call methods on
 
 =head1 Class Methods
 
-  static method call_class_method : Native::MethodCall::EnvStack ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string);
+=head2 call_class_method
+
+  static method call_class_method : void ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string, $error_id : int*);
   
 Calls a class method with an execution environment and an execution stack.
 
-The execution environment is a L<Native::Env|SPVM::Native::Env> object.
+The environment is a L<Native::Env|SPVM::Native::Env> object.
 
-The execution stack is a L<Native::Stack|SPVM::Native::Stack> object.
+The stack is a L<Native::Stack|SPVM::Native::Stack> object.
+
+=head2 get_exception
+
+  static method get_exception : void ($env : Native::Env, $stack : Native::Stack);
+
+Copies an excetpion that is set to a stack on an environment, and returns it.
+
+The environment is a L<Native::Env|SPVM::Native::Env> object.
+
+The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
 =head1 Copyright & License
 
