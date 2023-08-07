@@ -5,7 +5,7 @@
 
 #include <assert.h>
 
-static const char* FILE_NAME = "Native/MethodCall/Stack/Stack.c";
+static const char* FILE_NAME = "Native/MethodCall/Stack.c";
 
 int32_t SPVM__Native__MethodCall__Stack__new_class_method(SPVM_ENV* env, SPVM_VALUE* stack) {
   
@@ -59,17 +59,17 @@ int32_t SPVM__Native__MethodCall__Stack__new_class_method(SPVM_ENV* env, SPVM_VA
   return 0;
 }
 
-int32_t SPVM__Native__MethodCall__Stack__call(SPVM_ENV* arg_env, SPVM_VALUE* arg_stack) {
+int32_t SPVM__Native__MethodCall__Stack__call(SPVM_ENV* current_env, SPVM_VALUE* current_stack) {
 
   int32_t error_id = 0;
   
-  void* obj_self = arg_stack[0].oval;
+  void* obj_self = current_stack[0].oval;
   
-  void* obj_stack = arg_stack[1].oval;
+  void* obj_stack = current_stack[1].oval;
   
-  SPVM_VALUE* stack = arg_env->get_pointer(arg_env, arg_stack, obj_stack);
+  SPVM_VALUE* stack = current_env->get_pointer(current_env, current_stack, obj_stack);
   
-  SPVM_ENV* env = arg_env;
+  SPVM_ENV* env = current_env;
   
   void* obj_method = env->get_field_object_defined_and_has_pointer_by_name(env, stack, obj_self, "method", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
