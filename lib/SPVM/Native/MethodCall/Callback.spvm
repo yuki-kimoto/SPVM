@@ -2,5 +2,5 @@
 # MIT License
 
 class Native::MethodCall::Callback : interface_t {
-  required method callback : void ();
+  required method : void ();
 }

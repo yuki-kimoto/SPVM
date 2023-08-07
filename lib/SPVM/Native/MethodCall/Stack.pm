@@ -38,6 +38,14 @@ Gets an excetpion that is set to a stack.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
+=head2 set_exception
+
+  static method set_exception : void ($stack : Native::Stack, $exception : string);
+
+Sets an excetpion that is set to a stack.
+
+The stack is a L<Native::Stack|SPVM::Native::Stack> object.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
