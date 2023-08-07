@@ -40,6 +40,39 @@ class TestCase::Module::Native::MethodCall::Stack {
       TestCase::Module::Native::MethodCall::Stack->SET_CALL_CALLBACK_VALUE(0);
     }
     
+    {
+      my $current_env = Native->get_current_env;
+      
+      my $stack = $current_env->new_stack;
+      
+      $@ = "Current Stack Error";
+      
+      my $error_id = -1;
+      Native::MethodCall::Stack->call_callback(
+        $stack,
+        [has value : int = 2] method : void () {
+          TestCase::Module::Native::MethodCall::Stack->SET_CALL_CALLBACK_VALUE($self->{value});
+        },
+        \$error_id,
+      );
+      
+      unless ($error_id == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 2) {
+        return 0;
+      }
+      
+      unless ($@ eq "Current Stack Error") {
+        return 0;
+      }
+      
+      $@ = undef;
+      
+      TestCase::Module::Native::MethodCall::Stack->SET_CALL_CALLBACK_VALUE(0);
+    }
+    
     # Exceptions
     {
       my $current_env = Native->get_current_env;
