@@ -18,6 +18,8 @@ The Native::MethodCall::Stack class of L<SPVM> has methods to call methods on a 
 
 =head1 Class Methods
 
+=head2 call_callback
+
   static method call_callback : void ($stack : Native::Stack, $callback : Native::MethodCall::Callback, $error_id : int*);
 
 Calls a callback with a stack.
@@ -28,9 +30,9 @@ The callback is a L<Native::MethodCall::Callback|SPVM::Native::MethodCall::Callb
 
 If the callback throw exception, the error id is set to $error_id. Otherwise 0 is set to $error_id.
 
-=head1 Instance Methods
+=head2 get_exception
 
-  static method get_exception : void ($stack : Native::Stack);
+  static method get_exception : string ($stack : Native::Stack);
 
 Gets an excetpion that is set to a stack.
 
