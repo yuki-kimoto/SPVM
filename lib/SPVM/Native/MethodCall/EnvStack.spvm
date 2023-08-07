@@ -2,5 +2,12 @@
 # MIT License
 
 class Native::MethodCall::EnvStack {
+  use Native::Method;
+  use Native::Env;
+  use Native::Stack;
+  
+  has env : Native::Env;
+  
+  native static method call_class_method : Native::MethodCall::EnvStack ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string);
   
 }
