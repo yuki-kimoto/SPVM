@@ -8,6 +8,9 @@ class TestCase::Module::Native::MethodCall {
   use TestCase::Point_3f;
   use TestCase::Point_3d;
   use Point;
+  use Native;
+  
+  our $CALL_CALLBACK_VALUE : rw int;
   
   static method call : int () {
     
@@ -697,4 +700,119 @@ class TestCase::Module::Native::MethodCall {
     return $ret;
   }
   
+  static method call_callback : int () {
+    
+    {
+      my $current_env = Native->get_current_env;
+      
+      my $stack = $current_env->new_stack;
+      
+      $@ = "Current Stack Error";
+      
+      my $error_id = -1;
+      Native::MethodCall->call_callback(
+        $stack,
+        method : void () {
+          TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+        },
+        \$error_id,
+      );
+      
+      unless ($error_id == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 1) {
+        return 0;
+      }
+      
+      unless ($@ eq "Current Stack Error") {
+        return 0;
+      }
+      
+      $@ = undef;
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
+    }
+    
+    {
+      my $current_env = Native->get_current_env;
+      
+      my $stack = $current_env->new_stack;
+      
+      $@ = "Current Stack Error";
+      
+      my $error_id = -1;
+      Native::MethodCall->call_callback(
+        $stack,
+        [has value : int = 2] method : void () {
+          TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE($self->{value});
+        },
+        \$error_id,
+      );
+      
+      unless ($error_id == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 2) {
+        return 0;
+      }
+      
+      unless ($@ eq "Current Stack Error") {
+        return 0;
+      }
+      
+      $@ = undef;
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
+    }
+    
+    # Exceptions
+    {
+      my $current_env = Native->get_current_env;
+      
+      my $stack = $current_env->new_stack;
+      
+      $@ = "Current Stack Error";
+      
+      my $error_id = -1;
+      Native::MethodCall->call_callback(
+        $stack,
+        method : void () {
+          die "Call Back Error";
+          TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+        },
+        \$error_id,
+      );
+      
+      if ($error_id == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 0) {
+        return 0;
+      }
+      
+      unless ($@ eq "Current Stack Error") {
+        return 0;
+      }
+      
+      my $stack_exception = Native::MethodCall->get_exception($stack);
+      
+      unless (Fn->contains($stack_exception, "Call Back Error")) {
+        return 0;
+      }
+      
+      Native::MethodCall->set_exception($stack, undef);
+      
+      if (Native::MethodCall->get_exception($stack)) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
 }

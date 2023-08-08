@@ -13,6 +13,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
   ok(SPVM::TestCase::Module::Native::MethodCall->call);
+  ok(SPVM::TestCase::Module::Native::MethodCall->call_callback);
 }
 
 # All object is freed

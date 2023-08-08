@@ -3,10 +3,20 @@
 
 class Native::MethodCall {
   use Native::Method;
+  use Native::MethodCall::Callback;
   
   has method : Native::Method;
   
+  # Class Methods
+  native static method call_callback : void ($stack : Native::Stack, $callback : Native::MethodCall::Callback, $error_id : int*);
+  
+  native static method get_exception : string ($stack : Native::Stack);
+  
+  native static method set_exception : void ($stack : Native::Stack, $exception : string);
+  
   native static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
   
+  # Instance Methods
   native method call : object ($args : object[]);
+  
 }
