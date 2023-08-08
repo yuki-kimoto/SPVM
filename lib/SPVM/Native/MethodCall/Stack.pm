@@ -34,7 +34,7 @@ If the callback throw exception, the error id is set to $error_id. Otherwise 0 i
 
   static method get_exception : string ($stack : Native::Stack);
 
-Gets an excetpion that is set to a stack.
+Copies an excetpion on a stack, and returns it.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
@@ -42,7 +42,7 @@ The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
   static method set_exception : void ($stack : Native::Stack, $exception : string);
 
-Sets an excetpion that is set to a stack.
+Copies an excetpion on a stack, and sets it to a stack.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 

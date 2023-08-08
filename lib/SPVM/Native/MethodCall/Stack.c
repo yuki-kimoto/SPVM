@@ -55,7 +55,16 @@ int32_t SPVM__Native__MethodCall__Stack__get_exception(SPVM_ENV* current_env, SP
   
   void* obj_exception = env->get_exception(env, stack);
   
-  current_stack[0].oval = obj_exception;
+  void* obj_exception_clone = NULL;
+  if (obj_exception) {
+    const char* exception = env->get_chars(env, stack, obj_exception);
+    
+    int32_t exception_length = env->length(env, stack, obj_exception);
+    
+    obj_exception_clone = current_env->new_string(current_env, current_stack, exception, exception_length);
+  }
+  
+  current_stack[0].oval = obj_exception_clone;
   
   return 0;
 }
@@ -76,7 +85,16 @@ int32_t SPVM__Native__MethodCall__Stack__set_exception(SPVM_ENV* current_env, SP
   
   SPVM_ENV* env = current_env;
   
-  env->set_exception(env, stack, obj_exception);
+  void* obj_exception_clone = NULL;
+  if (obj_exception) {
+    const char* exception = current_env->get_chars(current_env, current_stack, obj_exception);
+    
+    int32_t exception_length = current_env->length(current_env, current_stack, obj_exception);
+    
+    obj_exception_clone = env->new_string(env, stack, exception, exception_length);
+  }
+  
+  env->set_exception(env, stack, obj_exception_clone);
   
   return 0;
 }
