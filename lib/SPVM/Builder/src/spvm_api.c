@@ -442,7 +442,7 @@ void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
 }
 
 int32_t SPVM_API_args_width(SPVM_ENV* env, SPVM_VALUE* stack) {
-  int32_t args_length = stack[STACK_INDEX_ARGS_WIDTH].ival;
+  int32_t args_length = stack[SPVM_API_C_STACK_INDEX_ARGS_WIDTH].ival;
   
   return args_length;
 }
@@ -1695,9 +1695,9 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
 int32_t SPVM_API_remove_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {
   
 
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[STACK_INDEX_MORTAL_STACK_CAPACITY];
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
 
   int32_t remove_count = 0;
   if (remove_object != NULL) {
@@ -1739,8 +1739,8 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   if (native_mortal_stack == NULL) {
     return NULL;
   }
-  stack[STACK_INDEX_MORTAL_STACK_CAPACITY].ival = native_mortal_stack_capacity;
-  stack[STACK_INDEX_MORTAL_STACK].oval = native_mortal_stack;
+  stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival = native_mortal_stack_capacity;
+  stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval = native_mortal_stack;
   
   return stack;
 }
@@ -1751,7 +1751,7 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_API_set_exception(env, stack, NULL);
   
   // Free mortal stack
-  SPVM_OBJECT** mortal_stack = stack[STACK_INDEX_MORTAL_STACK].oval;
+  SPVM_OBJECT** mortal_stack = stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval;
   
   if (mortal_stack != NULL) {
     SPVM_API_free_memory_stack(env, stack, mortal_stack);
@@ -1784,11 +1784,11 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   SPVM_RUNTIME* runtime = env->runtime;
   
   int32_t error_id = 0;
-  stack[STACK_INDEX_ARGS_WIDTH].ival = args_width;
-  stack[STACK_INDEX_CALL_DEPTH].ival++;
+  stack[SPVM_API_C_STACK_INDEX_ARGS_WIDTH].ival = args_width;
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival++;
   
   int32_t max_call_depth = 10000;
-  if (stack[STACK_INDEX_CALL_DEPTH].ival > max_call_depth) {
+  if (stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > max_call_depth) {
     error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
@@ -1944,7 +1944,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
-  stack[STACK_INDEX_CALL_DEPTH].ival--;
+  stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
   
   return error_id;
 }
@@ -2226,9 +2226,9 @@ int32_t SPVM_API_get_elem_size(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ar
 int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
   
 
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[STACK_INDEX_MORTAL_STACK_CAPACITY];
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
   
   int32_t mortal_stack_top = *current_mortal_stack_top_ptr ;
   
@@ -2238,9 +2238,9 @@ int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
 int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[STACK_INDEX_MORTAL_STACK_CAPACITY];
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
   
   if (object != NULL) {
     // Extend mortal stack
@@ -2379,9 +2379,9 @@ SPVM_OBJECT* SPVM_API_get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack, co
 void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top) {
   
 
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[STACK_INDEX_MORTAL_STACK_CAPACITY];
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
 
   int32_t mortal_stack_index;
   for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
@@ -2404,7 +2404,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
 
 SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, SPVM_RUNTIME_METHOD* method, int32_t line) {
 
-  if (stack[STACK_INDEX_CALL_DEPTH].ival > 100) {
+  if (stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > 100) {
     return exception;
   }
 
@@ -3025,7 +3025,7 @@ void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKE
 
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception) {
   
-  SPVM_OBJECT** current_excetpion_ptr = (SPVM_OBJECT**)&stack[STACK_INDEX_EXCEPTION];
+  SPVM_OBJECT** current_excetpion_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
   
   if (*current_excetpion_ptr != NULL) {
     SPVM_API_dec_ref_count(env, stack, *current_excetpion_ptr);
@@ -3042,7 +3042,7 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
 
 SPVM_OBJECT* SPVM_API_get_exception(SPVM_ENV* env, SPVM_VALUE* stack){
 
-  SPVM_OBJECT** current_excetpion_ptr = (SPVM_OBJECT**)&stack[STACK_INDEX_EXCEPTION];
+  SPVM_OBJECT** current_excetpion_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
   SPVM_OBJECT* current_excetpion = *current_excetpion_ptr;
   
   return current_excetpion;
@@ -3851,12 +3851,12 @@ void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   
   void* block = SPVM_ALLOCATOR_alloc_memory_block_tmp(env->allocator, (size_t)size);
   
-  stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival++;
+  stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival++;
   
 #ifdef SPVM_DEBUG_MEMORY
     SPVM_ALLOCATOR* allocator = env->allocator;
     assert(allocator->memory_blocks_count_permanent == 0);
-    fprintf(stderr, "[Debug]new_memory_stack Mem, %p Env(%p):%d, Stack(%p):%d\n", block, env, allocator->memory_blocks_count_tmp, stack, stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    fprintf(stderr, "[Debug]new_memory_stack Mem, %p Env(%p):%d, Stack(%p):%d\n", block, env, allocator->memory_blocks_count_tmp, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
 #endif
   
   return block;
@@ -3866,11 +3866,11 @@ void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
 
   if (block) {
     SPVM_ALLOCATOR_free_memory_block_tmp(env->allocator, block);
-    stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival--;
+    stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival--;
 #ifdef SPVM_DEBUG_MEMORY
     SPVM_ALLOCATOR* allocator = env->allocator;
     assert(allocator->memory_blocks_count_permanent == 0);
-    fprintf(stderr, "[Debug]free_memory_stack Mem %p, Env(%p):%d, Stack(%p):%d\n", block, env, allocator->memory_blocks_count_tmp, stack, stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    fprintf(stderr, "[Debug]free_memory_stack Mem %p, Env(%p):%d, Stack(%p):%d\n", block, env, allocator->memory_blocks_count_tmp, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
 #endif
   }
 }
@@ -3878,7 +3878,7 @@ void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
 int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   
-  int32_t memory_blocks_count_stack = stack[STACK_INDEX_MEMORY_BLOCKS_COUNT].ival;
+  int32_t memory_blocks_count_stack = stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival;
   
   return memory_blocks_count_stack;
 }
