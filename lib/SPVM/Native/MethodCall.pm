@@ -54,6 +54,16 @@ Copies an excetpion on a stack, and sets it to a stack.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
+=head2 call_class_method
+
+  static method call_class_method : void ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string, $error_id : int*);
+  
+Calls a class method with an execution environment and an execution stack.
+
+The environment is a L<Native::Env|SPVM::Native::Env> object.
+
+The stack is a L<Native::Stack|SPVM::Native::Stack> object.
+
 =head2 new_class_method
 
   static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
