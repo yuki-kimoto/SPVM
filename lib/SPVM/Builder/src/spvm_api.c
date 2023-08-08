@@ -3467,7 +3467,6 @@ int32_t SPVM_API_get_object_type_dimension(SPVM_ENV* env, SPVM_VALUE* stack, SPV
 
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  
   int32_t length = object->length;
   
   return length;
@@ -3475,48 +3474,40 @@ int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
 
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-
   return (int8_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
 }
 
 const char* SPVM_API_get_chars(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   
-
   return (const char*)((intptr_t)string + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
 }
 
 int16_t* SPVM_API_get_elems_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
   
   return (int16_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
 }
 
 int32_t* SPVM_API_get_elems_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  
   return (int32_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
 }
 
 int64_t* SPVM_API_get_elems_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
   
   return (int64_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
 }
 
 float* SPVM_API_get_elems_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  
   return (float*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
 }
 
 double* SPVM_API_get_elems_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  
   return (double*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
 }
 
 SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
-  
   
   SPVM_OBJECT* object_maybe_weaken = ((SPVM_OBJECT**)((intptr_t)array + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index];
   SPVM_OBJECT* object = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object_maybe_weaken);
@@ -3526,7 +3517,6 @@ SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 
 void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* object) {
   
-  
   void* object_address = &((void**)((intptr_t)array + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index];
   
   SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, object, SPVM_API_RUNTIME_get_object_ref_count_offset(env->runtime));
@@ -3534,24 +3524,20 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
 
 SPVM_OBJECT* SPVM_API_get_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
   
-  
   return SPVM_API_get_elem_object(env, stack, array, index);
 }
 
 void SPVM_API_set_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* string) {
-  
   
   SPVM_API_set_elem_object(env, stack, array, index, string);
 }
 
 void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  
   return object->pointer;
 }
 
 void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* pointer) {
-  
   
   object->pointer = pointer;
 }

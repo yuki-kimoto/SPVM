@@ -729,7 +729,7 @@ int32_t SPVM__Native__MethodCall__call_class_method(SPVM_ENV* current_env, SPVM_
   
   SPVM_ENV* env = NULL;
   if (obj_env) {
-    env = env->get_pointer(current_env, current_stack, obj_env);
+    env = current_env->get_pointer(current_env, current_stack, obj_env);
   }
   else {
     env = current_env;
