@@ -197,11 +197,7 @@ sub get_spvm_compiler_and_runtime_module_file_names {
     SPVM/Native/Method.c
     SPVM/Native/MethodCall.c
     SPVM/Native/MethodCall/Callback.spvm
-    SPVM/Native/MethodCall/EnvStack.c
-    SPVM/Native/MethodCall/EnvStack.spvm
     SPVM/Native/MethodCall.spvm
-    SPVM/Native/MethodCall/Stack.c
-    SPVM/Native/MethodCall/Stack.spvm
     SPVM/Native/Method.spvm
     SPVM/Native/ModuleFile.c
     SPVM/Native/ModuleFile.spvm

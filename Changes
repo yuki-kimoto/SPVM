@@ -8,9 +8,6 @@
       int32_t (*check_stack_env)(SPVM_ENV* env, SPVM_VALUE* stack);
 
     * The Native class is added.
-    
-    * The Native::MethodCall::Stack class is added.
-    * The Native::MethodCall::EnvStack class is added.
     * The Native::MethodCall::Callback class is added.
     
 0.989032 2023-08-04
