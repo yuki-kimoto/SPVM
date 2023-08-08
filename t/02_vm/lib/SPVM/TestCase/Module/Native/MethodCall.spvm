@@ -11,6 +11,7 @@ class TestCase::Module::Native::MethodCall {
   use Native;
   
   our $CALL_CALLBACK_VALUE : rw int;
+  our $CALL_CLASS_METHOD_VALUE : rw int;
   
   static method call : int () {
     
@@ -835,4 +836,45 @@ class TestCase::Module::Native::MethodCall {
     
     return 1;
   }
+  
+  static method call_class_method : int () {
+    
+    {
+      my $error_id = -1;
+      Native::MethodCall->call_class_method("TestCase::Module::Native::MethodCall", "set_class_var", \$error_id);
+      
+      unless ($error_id == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CLASS_METHOD_VALUE == 1) {
+        return 0;
+      }
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
+    }
+    
+    {
+      my $error_id = -1;
+      my $stack = Native->get_current_stack;
+      Native::MethodCall->call_class_method("TestCase::Module::Native::MethodCall", "set_class_var", \$error_id, $stack);
+      
+      unless ($error_id == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CLASS_METHOD_VALUE == 1) {
+        return 0;
+      }
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
+    }
+    
+    return 1;
+  }
+  
+  static method set_class_var : void () {
+    $CALL_CLASS_METHOD_VALUE = 1;
+  }
+  
 }

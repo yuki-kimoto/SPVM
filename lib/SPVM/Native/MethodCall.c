@@ -715,17 +715,7 @@ int32_t SPVM__Native__MethodCall__call_class_method(SPVM_ENV* current_env, SPVM_
   
   const char* method_name = current_env->get_chars(current_env, current_stack, obj_method_name);
   
-  void* obj_env = current_stack[3].oval;
-  
-  SPVM_ENV* env = NULL;
-  if (obj_env) {
-    env = env->get_pointer(current_env, current_stack, obj_env);
-  }
-  else {
-    env = current_env;
-  }
-  
-  void* obj_stack = current_stack[4].oval;
+  void* obj_stack = current_stack[3].oval;
   
   SPVM_VALUE* stack = NULL;
   if (obj_stack) {
@@ -733,6 +723,16 @@ int32_t SPVM__Native__MethodCall__call_class_method(SPVM_ENV* current_env, SPVM_
   }
   else {
     stack = current_stack;
+  }
+  
+  void* obj_env = current_stack[4].oval;
+  
+  SPVM_ENV* env = NULL;
+  if (obj_env) {
+    env = env->get_pointer(current_env, current_stack, obj_env);
+  }
+  else {
+    env = current_env;
   }
   
   int32_t is_valid_env = env->check_stack_env(env, stack);
