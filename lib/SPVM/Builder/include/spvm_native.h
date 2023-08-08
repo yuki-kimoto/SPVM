@@ -308,7 +308,6 @@ struct spvm_env {
   void* (*get_field_object_defined_and_has_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);
   void** (*get_field_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
   void** (*get_field_object_address_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
-  void* env_object;
   int32_t (*check_stack_env)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
