@@ -711,11 +711,11 @@ class TestCase::Module::Native::MethodCall {
       
       my $error_id = -1;
       Native::MethodCall->call_callback(
-        $stack,
         method : void () {
           TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
         },
         \$error_id,
+        $stack,
       );
       
       unless ($error_id == 0) {
@@ -744,11 +744,11 @@ class TestCase::Module::Native::MethodCall {
       
       my $error_id = -1;
       Native::MethodCall->call_callback(
-        $stack,
         [has value : int = 2] method : void () {
           TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE($self->{value});
         },
         \$error_id,
+        $stack,
       );
       
       unless ($error_id == 0) {
@@ -778,12 +778,12 @@ class TestCase::Module::Native::MethodCall {
       
       my $error_id = -1;
       Native::MethodCall->call_callback(
-        $stack,
         method : void () {
           die "Call Back Error";
           TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
         },
         \$error_id,
+        $stack,
       );
       
       if ($error_id == 0) {
