@@ -840,6 +840,8 @@ class TestCase::Module::Native::MethodCall {
   static method call_class_method : int () {
     
     {
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
+      
       my $error_id = -1;
       Native::MethodCall->call_class_method("TestCase::Module::Native::MethodCall", "set_class_var", \$error_id);
       
@@ -850,11 +852,10 @@ class TestCase::Module::Native::MethodCall {
       unless ($CALL_CLASS_METHOD_VALUE == 1) {
         return 0;
       }
-      
-      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
     }
     
     {
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
       my $error_id = -1;
       my $stack = Native->get_current_stack;
       Native::MethodCall->call_class_method("TestCase::Module::Native::MethodCall", "set_class_var", \$error_id, $stack);
@@ -866,11 +867,11 @@ class TestCase::Module::Native::MethodCall {
       unless ($CALL_CLASS_METHOD_VALUE == 1) {
         return 0;
       }
-      
-      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
     }
     
     {
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
+      
       my $error_id = -1;
       my $stack = Native->get_current_stack;
       my $env = Native->get_current_env;
