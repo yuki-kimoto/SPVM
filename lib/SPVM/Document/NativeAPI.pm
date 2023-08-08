@@ -1975,6 +1975,12 @@ Gets the address of the value of a field of the object type by its basic type na
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
+=head2 check_stack_env
+
+  int32_t (*check_stack_env)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+If the env of the stack is equal to the env, returns 1. Otherwise returns 0.
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.

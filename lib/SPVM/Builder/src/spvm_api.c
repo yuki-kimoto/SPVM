@@ -309,6 +309,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_field_object_address,
     SPVM_API_get_field_object_address_by_name,
     NULL, // env_object
+    SPVM_API_check_stack_env,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4178,4 +4179,14 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
   }
   
   return object;
+}
+
+int32_t SPVM_API_check_stack_env(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t is_valid = 0;
+  if (stack[SPVM_API_C_STACK_INDEX_ENV].oval == env) {
+    is_valid = 1;
+  }
+  
+  return is_valid;
 }

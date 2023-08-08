@@ -316,4 +316,6 @@ void* SPVM_API_strerror_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, int32_t e
 
 int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width);
 
+int32_t SPVM_API_check_stack_env(SPVM_ENV* env, SPVM_VALUE* stack);
+
 #endif
