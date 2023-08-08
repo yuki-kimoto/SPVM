@@ -703,6 +703,26 @@ class TestCase::Module::Native::MethodCall {
   static method call_callback : int () {
     
     {
+      my $error_id = -1;
+      Native::MethodCall->call_callback(
+        method : void () {
+          TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+        },
+        \$error_id,
+      );
+      
+      unless ($error_id == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 1) {
+        return 0;
+      }
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
+    }
+    
+    {
       my $current_env = Native->get_current_env;
       
       my $stack = $current_env->new_stack;
