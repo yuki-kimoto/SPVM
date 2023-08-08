@@ -12,7 +12,7 @@ class Native::MethodCall {
   
   native static method call_callback : void ($callback : Native::MethodCall::Callback, $error_id : int*, $stack : Native::Stack = undef);
   
-  native static method call_class_method : void ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string, $error_id : int*);
+  native static method call_class_method : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : Native::Stack = undef, $env : Native::Env = undef);
   
   native static method get_exception : string ($stack : Native::Stack);
   

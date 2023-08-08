@@ -26,17 +26,37 @@ The Native::MethodCall class of L<SPVM> has methods to call methods.
 
 =head1 Class Methods
 
+=head2 new_class_method
+
+  static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
+
+Create a class method call and returns it. It is a L<Native::MethodCall>.
+
 =head2 call_callback
 
   static method call_callback : void ($callback : Native::MethodCall::Callback, $error_id : int*, $stack = undef : Native::Stack);
 
-Calls a callback with a stack. If a stack is not given, the current stack is used.
+Calls a callback with a stack. If the $stack is not defined, the current stack is used.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
 The callback is a L<Native::MethodCall::Callback|SPVM::Native::MethodCall::Callback> object.
 
 If the callback throw exception, the error id is set to $error_id. Otherwise 0 is set to $error_id.
+
+=head2 call_class_method
+
+  static method call_class_method : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : Native::Stack = undef, $env : Native::Env = undef);
+  
+Calls a class method with an environment and a stack without arguments. If the environment is not given, the current environment is used.
+
+The environment is a L<Native::Env|SPVM::Native::Env> object.
+
+The stack is a L<Native::Stack|SPVM::Native::Stack> object.
+
+If the $stack is not defined, the current stackt is used.
+
+If the $environment is not defined, the current environment is used.
 
 =head2 get_exception
 
@@ -53,22 +73,6 @@ The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 Copies an excetpion on a stack, and sets it to a stack.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
-
-=head2 call_class_method
-
-  static method call_class_method : void ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string, $error_id : int*);
-  
-Calls a class method with an execution environment and an execution stack.
-
-The environment is a L<Native::Env|SPVM::Native::Env> object.
-
-The stack is a L<Native::Stack|SPVM::Native::Stack> object.
-
-=head2 new_class_method
-
-  static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
-
-Create a class method call and returns it. It is a L<Native::MethodCall>.
 
 =head1 Instance Methods
 
