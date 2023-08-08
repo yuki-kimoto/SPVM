@@ -1732,7 +1732,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   //   Motal stack capacity 508
   
   SPVM_VALUE* stack = SPVM_API_new_memory_env(env, sizeof(SPVM_VALUE) * 512);
-
+  
   // Mortal stack
   int32_t native_mortal_stack_capacity = 1;
   void* native_mortal_stack = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
@@ -1741,6 +1741,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   }
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY].ival = native_mortal_stack_capacity;
   stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval = native_mortal_stack;
+  stack[SPVM_API_C_STACK_INDEX_ENV].oval = env;
   
   return stack;
 }
