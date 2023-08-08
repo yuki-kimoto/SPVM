@@ -30,7 +30,7 @@ The Native::MethodCall class of L<SPVM> has methods to call methods.
 
   static method call_callback : void ($callback : Native::MethodCall::Callback, $error_id : int*, $stack = undef : Native::Stack);
 
-Calls a callback with a stack.
+Calls a callback with a stack. If a stack is not given, the current stack is used.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
