@@ -9,6 +9,15 @@
 
     * The Native class is added.
     * The Native::MethodCall::Callback class is added.
+    * The following methods are added to the Native::MethodCall class.
+    
+      static method call_callback : void ($callback : Native::MethodCall::Callback, $error_id : int*, $stack = undef : Native::Stack);
+
+      static method call_class_method : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : Native::Stack = undef, $env : Native::Env = undef);
+      
+      static method get_exception : string ($stack : Native::Stack = undef, $env : Native::Env = undef);
+
+      static method set_exception : void ($exception : string, $stack : Native::Stack = undef, $env : Native::Env = undef);
     
 0.989032 2023-08-04
   [Revertion]
