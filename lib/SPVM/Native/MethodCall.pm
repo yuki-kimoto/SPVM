@@ -50,9 +50,9 @@ If the callback throw exception, the error id is set to $error_id. Otherwise 0 i
   
 Calls a class method with an environment and a stack without arguments. If the environment is not given, the current environment is used.
 
-The environment is a L<Native::Env|SPVM::Native::Env> object.
-
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
+
+The environment is a L<Native::Env|SPVM::Native::Env> object.
 
 If the $stack is not defined, the current stackt is used.
 
@@ -60,19 +60,31 @@ If the $environment is not defined, the current environment is used.
 
 =head2 get_exception
 
-  static method get_exception : string ($stack : Native::Stack);
+  static method get_exception : string ($stack : Native::Stack = undef, $env : Native::Env = undef);
 
 Copies an excetpion on a stack, and returns it.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
+The environment is a L<Native::Env|SPVM::Native::Env> object.
+
+If the $stack is not defined, the current stackt is used.
+
+If the $environment is not defined, the current environment is used.
+
 =head2 set_exception
 
-  static method set_exception : void ($stack : Native::Stack, $exception : string);
+  static method set_exception : void ($exception : string, $stack : Native::Stack = undef, $env : Native::Env = undef);
 
-Copies an excetpion on a stack, and sets it to a stack.
+Copies an excetpion on a stack using an enviroment, and sets it to the stack.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
+
+The environment is a L<Native::Env|SPVM::Native::Env> object.
+
+If the $stack is not defined, the current stackt is used.
+
+If the $environment is not defined, the current environment is used.
 
 =head1 Instance Methods
 
