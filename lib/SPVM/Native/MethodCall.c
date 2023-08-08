@@ -784,13 +784,29 @@ int32_t SPVM__Native__MethodCall__get_exception(SPVM_ENV* current_env, SPVM_VALU
   
   void* obj_stack = current_stack[0].oval;
   
-  if (!obj_stack) {
-    return current_env->die(current_env, current_stack, "The $stack must be defined.", __func__, FILE_NAME, __LINE__);
+  SPVM_VALUE* stack = NULL;
+  if (obj_stack) {
+    stack = current_env->get_pointer(current_env, current_stack, obj_stack);
+  }
+  else {
+    stack = current_stack;
   }
   
-  SPVM_VALUE* stack = current_env->get_pointer(current_env, current_stack, obj_stack);
+  void* obj_env = current_stack[1].oval;
   
-  SPVM_ENV* env = current_env;
+  SPVM_ENV* env = NULL;
+  if (obj_env) {
+    env = current_env->get_pointer(current_env, current_stack, obj_env);
+  }
+  else {
+    env = current_env;
+  }
+  
+  int32_t is_valid_env = env->check_stack_env(env, stack);
+  
+  if (!is_valid_env) {
+    return current_env->die(current_env, current_stack, "The environment of the $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
+  }
   
   void* obj_exception = env->get_exception(env, stack);
   
@@ -812,17 +828,33 @@ int32_t SPVM__Native__MethodCall__set_exception(SPVM_ENV* current_env, SPVM_VALU
   
   int32_t current_error_id = 0;
   
-  void* obj_stack = current_stack[0].oval;
+  void* obj_exception = current_stack[0].oval;
   
-  if (!obj_stack) {
-    return current_env->die(current_env, current_stack, "The $stack must be defined.", __func__, FILE_NAME, __LINE__);
+  void* obj_stack = current_stack[1].oval;
+  
+  SPVM_VALUE* stack = NULL;
+  if (obj_stack) {
+    stack = current_env->get_pointer(current_env, current_stack, obj_stack);
+  }
+  else {
+    stack = current_stack;
   }
   
-  void* obj_exception = current_stack[1].oval;
+  void* obj_env = current_stack[2].oval;
   
-  SPVM_VALUE* stack = current_env->get_pointer(current_env, current_stack, obj_stack);
+  SPVM_ENV* env = NULL;
+  if (obj_env) {
+    env = current_env->get_pointer(current_env, current_stack, obj_env);
+  }
+  else {
+    env = current_env;
+  }
   
-  SPVM_ENV* env = current_env;
+  int32_t is_valid_env = env->check_stack_env(env, stack);
+  
+  if (!is_valid_env) {
+    return current_env->die(current_env, current_stack, "The environment of the $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
+  }
   
   void* obj_exception_clone = NULL;
   if (obj_exception) {

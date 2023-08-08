@@ -825,7 +825,7 @@ class TestCase::Module::Native::MethodCall {
         return 0;
       }
       
-      Native::MethodCall->set_exception($stack, undef);
+      Native::MethodCall->set_exception(undef, $stack);
       
       if (Native::MethodCall->get_exception($stack)) {
         return 0;
