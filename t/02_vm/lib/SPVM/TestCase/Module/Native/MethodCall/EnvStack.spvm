@@ -1,0 +1,17 @@
+class TestCase::Module::Native::MethodCall::EnvStack {
+  use Native::Compiler;
+  use Native::Runtime;
+  use Native::Env;
+  use Native::Stack;
+  use Native::MethodCall::EnvStack;
+  use Native;
+  use Fn;
+  
+  static method call_class_method : int () {
+    
+    my $compiler = Native::Compiler->new;
+    
+    
+    return 1;
+  }
+}
