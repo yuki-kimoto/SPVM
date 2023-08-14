@@ -127,7 +127,7 @@ struct spvm_compiler {
   // Basic type symbol table
   SPVM_HASH* basic_type_symtable;
   
-  // The key is dist-source
+  // The key is dist-source. the value: 1 is ok, -1 is not ok, 0 is not resolved.
   SPVM_HASH* assignability_symtable;
   
   SPVM_RUNTIME* runtime;

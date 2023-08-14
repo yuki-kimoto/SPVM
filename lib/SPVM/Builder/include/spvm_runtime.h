@@ -15,6 +15,8 @@ struct spvm_runtime {
   SPVM_HASH* basic_type_symtable;
   
   int32_t basic_types_length;
+  
+  SPVM_HASH* assignability_symtable;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
