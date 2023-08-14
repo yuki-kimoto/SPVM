@@ -124,7 +124,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
       }
       
       SPVM_LIST_push(basic_type->interface_basic_types, interface_basic_type);
-      SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
+      SPVM_HASH_set(basic_type->interface_basic_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
     }
   }
   
@@ -180,10 +180,10 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
     basic_type->interface_basic_types = merged_interface_basic_types;
     for (int32_t i = 0; i < merged_interface_basic_types->length; i++) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(merged_interface_basic_types, i);
-      SPVM_BASIC_TYPE* found_interface_basic_type = SPVM_HASH_get(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name));
+      SPVM_BASIC_TYPE* found_interface_basic_type = SPVM_HASH_get(basic_type->interface_basic_symtable, interface_basic_type->name, strlen(interface_basic_type->name));
       if (!found_interface_basic_type) {
         SPVM_LIST_push(basic_type->interface_basic_types, interface_basic_type);
-        SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
+        SPVM_HASH_set(basic_type->interface_basic_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
       }
     }
     

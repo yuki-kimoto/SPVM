@@ -85,7 +85,7 @@ SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler) {
   
   // Interfaces
   basic_type->interface_basic_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
-  basic_type->interface_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
+  basic_type->interface_basic_symtable = SPVM_HASH_new_hash_permanent(compiler->current_each_compile_allocator, 0);
   
   basic_type->allows = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
   basic_type->interface_decls = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
