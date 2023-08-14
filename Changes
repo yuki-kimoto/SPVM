@@ -2,6 +2,7 @@
 
   [Bug Fix]
     * A bug is fixed: the interface checking has not worked well in compilation time.
+    * A bug is fixed: the has_interface basic type native APIhas not worked well.
     
 0.989033 2023-08-08
 

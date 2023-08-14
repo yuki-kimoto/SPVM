@@ -20,6 +20,7 @@ struct spvm_runtime_basic_type {
   SPVM_RUNTIME_METHOD* init_method;
   SPVM_RUNTIME_METHOD* destructor_method;
   SPVM_RUNTIME_METHOD* required_method;
+  SPVM_RUNTIME_BASIC_TYPE** interface_basic_types;
   SPVM_RUNTIME_BASIC_TYPE** anon_basic_types;
   int32_t id;
   int32_t category;
@@ -29,6 +30,7 @@ struct spvm_runtime_basic_type {
   int32_t fields_length;
   int32_t fields_size;
   int32_t methods_length;
+  int32_t interface_basic_types_length;
   int32_t anon_basic_types_length;
   int8_t is_anon;
   int8_t is_pointer;
