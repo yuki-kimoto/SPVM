@@ -856,14 +856,14 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
       runtime_basic_type->anon_basic_types_length = basic_type->anon_basic_types->length;
     }
     
-    if (basic_type->interfaces->length > 0) {
-      SPVM_RUNTIME_BASIC_TYPE** runtime_interface_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * basic_type->interfaces->length);           
-      for (int32_t interface_basic_type_index = 0; interface_basic_type_index < basic_type->interfaces->length; interface_basic_type_index++) {
-        SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interfaces, interface_basic_type_index);
+    if (basic_type->interface_basic_types->length > 0) {
+      SPVM_RUNTIME_BASIC_TYPE** runtime_interface_basic_types = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, sizeof(SPVM_RUNTIME_BASIC_TYPE*) * basic_type->interface_basic_types->length);           
+      for (int32_t interface_basic_type_index = 0; interface_basic_type_index < basic_type->interface_basic_types->length; interface_basic_type_index++) {
+        SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_basic_type_index);
         runtime_interface_basic_types[interface_basic_type_index] = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, interface_basic_type->id);
       }
       runtime_basic_type->interface_basic_types = runtime_interface_basic_types;
-      runtime_basic_type->interface_basic_types_length = basic_type->interfaces->length;
+      runtime_basic_type->interface_basic_types_length = basic_type->interface_basic_types->length;
     }
     
     runtime_basic_type->id = basic_type->id;

@@ -113,7 +113,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
       basic_type->parent = parent_basic_type;
     }
     
-    // Add interfaces
+    // Add interface_basic_types
     for (int32_t i = 0; i < basic_type->interface_decls->length; i++) {
       SPVM_INTERFACE* interface_decl = SPVM_LIST_get(basic_type->interface_decls, i);
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, interface_decl->op_type->uv.type->unresolved_basic_type_name, strlen(interface_decl->op_type->uv.type->unresolved_basic_type_name));
@@ -123,7 +123,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
         return;
       }
       
-      SPVM_LIST_push(basic_type->interfaces, interface_basic_type);
+      SPVM_LIST_push(basic_type->interface_basic_types, interface_basic_type);
       SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
     }
   }
@@ -151,7 +151,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
     SPVM_LIST* basic_type_merge_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
     SPVM_LIST_push(basic_type_merge_stack, basic_type);
     
-    SPVM_LIST* merged_interfaces = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+    SPVM_LIST* merged_interface_basic_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
     
     SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
     while (1) {
@@ -168,21 +168,21 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
     for (int32_t basic_type_id = basic_type_merge_stack->length - 1; basic_type_id >= 0; basic_type_id--) {
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(basic_type_merge_stack, basic_type_id);
       
-      // All interfaces
-      SPVM_LIST* interfaces = basic_type->interfaces;
-      for (int32_t interface_index = 0; interface_index < interfaces->length; interface_index++) {
-        SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(interfaces, interface_index);
-        SPVM_LIST_push(merged_interfaces, interface_basic_type);
+      // All interface_basic_types
+      SPVM_LIST* interface_basic_types = basic_type->interface_basic_types;
+      for (int32_t interface_index = 0; interface_index < interface_basic_types->length; interface_index++) {
+        SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(interface_basic_types, interface_index);
+        SPVM_LIST_push(merged_interface_basic_types, interface_basic_type);
       }
     }
     
-    // Add parent interfaces
-    basic_type->interfaces = merged_interfaces;
-    for (int32_t i = 0; i < merged_interfaces->length; i++) {
-      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(merged_interfaces, i);
+    // Add parent interface_basic_types
+    basic_type->interface_basic_types = merged_interface_basic_types;
+    for (int32_t i = 0; i < merged_interface_basic_types->length; i++) {
+      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(merged_interface_basic_types, i);
       SPVM_BASIC_TYPE* found_interface_basic_type = SPVM_HASH_get(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name));
       if (!found_interface_basic_type) {
-        SPVM_LIST_push(basic_type->interfaces, interface_basic_type);
+        SPVM_LIST_push(basic_type->interface_basic_types, interface_basic_type);
         SPVM_HASH_set(basic_type->interface_symtable, interface_basic_type->name, strlen(interface_basic_type->name), interface_basic_type);
       }
     }
@@ -558,8 +558,8 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
     }
     
     // Check required method
-    for (int32_t interface_index = 0; interface_index < basic_type->interfaces->length; interface_index++) {
-      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interfaces, interface_index);
+    for (int32_t interface_index = 0; interface_index < basic_type->interface_basic_types->length; interface_index++) {
+      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_index);
       assert(interface_basic_type);
       
       SPVM_METHOD* interface_required_method = interface_basic_type->required_method;
@@ -579,13 +579,13 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
       // Interface methods and the method of the super class
-      for (int32_t interface_or_super_class_index = 0; interface_or_super_class_index < basic_type->interfaces->length + 1; interface_or_super_class_index++) {
+      for (int32_t interface_or_super_class_index = 0; interface_or_super_class_index < basic_type->interface_basic_types->length + 1; interface_or_super_class_index++) {
         
         SPVM_BASIC_TYPE* interface_or_super_class_basic_type = NULL;
         
         const char* basic_type_desc = NULL;
         // Super class
-        if (interface_or_super_class_index == basic_type->interfaces->length) {
+        if (interface_or_super_class_index == basic_type->interface_basic_types->length) {
           if (basic_type->parent) {
             SPVM_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type->parent, method->name);
             if (found_method) {
@@ -596,7 +596,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         }
         // Interface
         else {
-          interface_or_super_class_basic_type = SPVM_LIST_get(basic_type->interfaces, interface_or_super_class_index);
+          interface_or_super_class_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_or_super_class_index);
           assert(interface_or_super_class_basic_type);
           basic_type_desc = "interface";
         }
