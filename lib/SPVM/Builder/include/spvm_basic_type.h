@@ -85,6 +85,10 @@ int32_t SPVM_BASIC_TYPE_is_integer_type_within_int(SPVM_COMPILER* compiler, int3
 
 int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id);
 
+int32_t SPVM_BASIC_TYPE_has_interface_v2(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id);
+
+int32_t SPVM_BASIC_TYPE_check_interface_method_compatibility(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method, SPVM_BASIC_TYPE* interface_basic_type, SPVM_METHOD* interface_method);
+
 int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_basic_type_id, int32_t child_basic_type_id);
 
 SPVM_STRING* SPVM_BASIC_TYPE_add_constant_string(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, const char* value, int32_t length);
