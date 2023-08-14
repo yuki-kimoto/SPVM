@@ -635,7 +635,9 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* method_var_decl_type = method_var_decl->type;
                   SPVM_TYPE* interface_or_super_class_method_var_decl_type = interface_or_super_class_method_var_decl->type;
                   
-                  if (!SPVM_TYPE_can_assign_for_method_definition(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_or_super_class_method_var_decl_type->basic_type->id, interface_or_super_class_method_var_decl_type->dimension, interface_or_super_class_method_var_decl_type->flag)) {
+                  int32_t assignability_for_method = SPVM_TYPE_can_assign_for_method_definition(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_or_super_class_method_var_decl_type->basic_type->id, interface_or_super_class_method_var_decl_type->dimension, interface_or_super_class_method_var_decl_type->flag);
+                  
+                  if (!assignability_for_method) {
                     SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, basic_type->name, arg_index, interface_or_super_class_method->name, interface_or_super_class_basic_type->name, basic_type_desc, basic_type->op_module->file, basic_type->op_module->line);
                     return;
                   }
