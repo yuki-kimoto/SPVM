@@ -7,8 +7,7 @@ use warnings;
 use Test::More;
 
 use SPVM 'TestCase::Interface';
-
-
+use SPVM 'TestCase::InterfaceNoRequiredMethodTest';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -18,6 +17,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Interface->interface_array);
   ok(SPVM::TestCase::Interface->interface_muldim_array);
   ok(SPVM::TestCase::Interface->can);
+  ok(SPVM::TestCase::InterfaceNoRequiredMethodTest->basic);
 }
 
 # All object is freed

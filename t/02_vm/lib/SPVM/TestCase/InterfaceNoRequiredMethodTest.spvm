@@ -1,0 +1,39 @@
+class TestCase::InterfaceNoRequiredMethodTest {
+  
+  interface TestCase::InterfaceNoRequiredMethod;
+  
+  static method new : TestCase::InterfaceNoRequiredMethodTest () {
+    return new TestCase::InterfaceNoRequiredMethodTest;
+  }
+  
+  method interface_shared1 : string ($num : int) {
+    return "interface_shared1_$num";
+  }
+  
+  method interface_shared2 : string ($num : int) {
+    return "interface_shared2_$num";
+  }
+  
+  static method basic : int () {
+    
+    {
+      my $test_interface = (TestCase::InterfaceNoRequiredMethod)TestCase::InterfaceNoRequiredMethodTest->new;
+      
+      {
+        my $value1 = $test_interface->interface_shared1(3);
+        unless ($value1 eq "interface_shared1_3") {
+          return 0;
+        }
+      }
+      
+      {
+        my $value1 = $test_interface->interface_shared2(3);
+        unless ($value1 eq "interface_shared2_3") {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+}

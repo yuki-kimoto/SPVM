@@ -736,6 +736,8 @@ t/02_vm/lib/SPVM/TestCase/Init.spvm
 t/02_vm/lib/SPVM/TestCase/InitStatement.spvm
 t/02_vm/lib/SPVM/TestCase/Inline.spvm
 t/02_vm/lib/SPVM/TestCase/Interface.spvm
+t/02_vm/lib/SPVM/TestCase/InterfaceNoRequiredMethod.spvm
+t/02_vm/lib/SPVM/TestCase/InterfaceNoRequiredMethodTest.spvm
 t/02_vm/lib/SPVM/TestCase/InterfaceType.spvm
 t/02_vm/lib/SPVM/TestCase/Isa.spvm
 t/02_vm/lib/SPVM/TestCase/IsCompileType.spvm
