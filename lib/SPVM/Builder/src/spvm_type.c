@@ -1350,7 +1350,7 @@ int32_t SPVM_TYPE_can_assign(
   return assignability;
 }
 
-int32_t SPVM_TYPE_can_assign_for_method (
+int32_t SPVM_TYPE_can_assign_for_method_definition (
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag)
