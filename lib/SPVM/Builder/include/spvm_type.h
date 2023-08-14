@@ -179,6 +179,12 @@ int32_t SPVM_TYPE_can_assign(
   int32_t* need_implicite_conversion, int32_t allow_narrowing_conversion
 );
 
+int32_t SPVM_TYPE_can_assign_for_method (
+  SPVM_COMPILER* compiler,
+  int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
+  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag
+);
+
 int32_t SPVM_TYPE_can_cast(
   SPVM_COMPILER* compiler,
   int32_t cast_type_basic_type_id, int32_t cast_type_dimension, int32_t cast_type_flag,
