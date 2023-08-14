@@ -1262,7 +1262,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : int () {} }',
       'class MyInterface : interface_t { required method foo : long  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class must be able to be assigned without an implicite type conversion to the return type of the "foo" method in the "MyInterface" interface|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
   }
   {
     {

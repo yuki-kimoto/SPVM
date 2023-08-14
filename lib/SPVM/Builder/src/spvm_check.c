@@ -654,20 +654,13 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
                 else {
                   int32_t need_implicite_conversion = 0;
                   int32_t allow_narrowing_conversion = 0;
-                  int32_t assignability = SPVM_TYPE_can_assign(
+                  int32_t assignability_for_method = SPVM_TYPE_can_assign_for_method(
                     compiler,
                     interface_or_super_class_method_return_type->basic_type->id, interface_or_super_class_method_return_type->dimension, interface_or_super_class_method_return_type->flag,
-                    method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag,
-                    &need_implicite_conversion, allow_narrowing_conversion
+                    method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag
                   );
                   
-                  if (assignability) {
-                    if (need_implicite_conversion) {
-                      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned without an implicite type conversion to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, interface_or_super_class_method->name, interface_or_super_class_basic_type->name, basic_type_desc, basic_type->op_module->file, basic_type->op_module->line);
-                      return;
-                    }
-                  }
-                  else {
+                  if (!assignability_for_method) {
                     SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, interface_or_super_class_method->name, interface_or_super_class_basic_type->name, basic_type_desc, basic_type->op_module->file, basic_type->op_module->line);
                     return;
                   }
