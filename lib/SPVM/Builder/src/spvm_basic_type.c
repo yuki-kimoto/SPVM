@@ -300,9 +300,6 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
     SPVM_TYPE* method_return_type = method->return_type;
     SPVM_TYPE* dist_method_return_type = dist_method->return_type;
     
-    int32_t method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag);
-    int32_t dist_method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag);
-    
     int32_t assignability_for_method_definition = SPVM_TYPE_can_assign_for_method_definition(
       compiler,
       dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag,
