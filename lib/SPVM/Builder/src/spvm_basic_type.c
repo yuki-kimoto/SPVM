@@ -219,7 +219,7 @@ int32_t SPVM_BASIC_TYPE_is_integer_type_within_int(SPVM_COMPILER* compiler, int3
   }
 }
 
-int32_t SPVM_BASIC_TYPE_has_interface_v2(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id) {
+int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id) {
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   
