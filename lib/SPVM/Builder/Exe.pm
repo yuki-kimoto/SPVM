@@ -20,7 +20,6 @@ use File::Find 'find';
 
 use Getopt::Long 'GetOptions';
 
-use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use DynaLoader;
