@@ -528,7 +528,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
     // Sort methods by name
     qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_CHECK_method_name_compare_cb);
     
-    // Create method ids
+    // Create method IDs
     for (int32_t i = 0; i < basic_type->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
       
@@ -555,23 +555,6 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       }
       
       method->index = i;
-    }
-    
-    // Check required method
-    for (int32_t interface_index = 0; interface_index < basic_type->interface_basic_types->length; interface_index++) {
-      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_index);
-      assert(interface_basic_type);
-      
-      SPVM_METHOD* interface_required_method = interface_basic_type->required_method;
-      
-      if (interface_required_method) {
-        SPVM_METHOD* found_required_method = SPVM_CHECK_search_method(compiler, basic_type, interface_required_method->name);
-        
-        if (!found_required_method) {
-          SPVM_COMPILER_error(compiler, "The \"%s\" class must implement the \"%s\" method. This is defined as an interface method in the \"%s\" interface.\n  at %s line %d", basic_type->name, interface_required_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
-          return;
-        }
-      }
     }
     
     // Check method compatibility

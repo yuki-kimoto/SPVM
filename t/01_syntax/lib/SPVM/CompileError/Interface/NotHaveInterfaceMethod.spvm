@@ -1,3 +1,0 @@
-class CompileError::Interface::NotHaveInterfaceMethod {
-  interface Stringable;
-}

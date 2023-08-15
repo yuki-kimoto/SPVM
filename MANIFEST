@@ -487,7 +487,6 @@ t/01_syntax/lib/SPVM/CompileError/Interface/HaveBlock.spvm
 t/01_syntax/lib/SPVM/CompileError/Interface/MultiRequiredMethods.spvm
 t/01_syntax/lib/SPVM/CompileError/Interface/NativeMethod.spvm
 t/01_syntax/lib/SPVM/CompileError/Interface/NoMethods.spvm
-t/01_syntax/lib/SPVM/CompileError/Interface/NotHaveInterfaceMethod.spvm
 t/01_syntax/lib/SPVM/CompileError/Interface/StaticMethod.spvm
 t/01_syntax/lib/SPVM/CompileError/InvalidType.spvm
 t/01_syntax/lib/SPVM/CompileError/Isa/LeftIsNotObject.spvm
