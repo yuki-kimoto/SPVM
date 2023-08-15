@@ -561,22 +561,24 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
       // Check super class method compatibility
-      SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
-      while (1) {
-        if (!parent_basic_type) {
-          break;
-        }
-        
-        SPVM_METHOD* parent_method = SPVM_HASH_get(parent_basic_type->method_symtable, method->name, strlen(method->name));
-        
-        if (parent_method) {
-          int32_t method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, basic_type, method, parent_basic_type, parent_method, "class");
-          
-          if (method_compatibility == 0) {
-            return;
+      if (!method->is_class_method) {
+        SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
+        while (1) {
+          if (!parent_basic_type) {
+            break;
           }
+          
+          SPVM_METHOD* parent_method = SPVM_HASH_get(parent_basic_type->method_symtable, method->name, strlen(method->name));
+          
+          if (parent_method) {
+            int32_t method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, basic_type, method, parent_basic_type, parent_method, "class");
+            
+            if (method_compatibility == 0) {
+              return;
+            }
+          }
+          parent_basic_type = parent_basic_type->parent;
         }
-        parent_basic_type = parent_basic_type->parent;
       }
       
       assert(method->current_basic_type->module_file);

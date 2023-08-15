@@ -1201,6 +1201,20 @@ use Test::More;
     my $source = 'class MyClass : interface_t { method foo : void (); }';
     compile_ok($source);
   }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { static method new : void ($arg1 : int) {} }',
+      'class MyClass2 { method new : void () {} }'
+    ];
+    compile_ok($source);
+  }
+  {
+    my $source = [
+      'class MyClass extends MyClass2 { static method new : void ($arg1 : int) {} }',
+      'class MyClass2 { static method new : void () {} }'
+    ];
+    compile_ok($source);
+  }
 }
 
 # interface Statement
