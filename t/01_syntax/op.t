@@ -90,16 +90,39 @@ use Test::More;
     my $source = 'class MyClass : interface_t {}';
     compile_ok($source);
   }
+  
   {
     my $source = 'class MyClass : interface_t { our $FOO : int; }';
     compile_not_ok($source, qr/The interface cannnot have class variables/);
   }
+  
   {
     my $source = 'class MyClass : interface_t { has foo : int; }';
     compile_not_ok($source, qr/The interface cannnot have fields/);
   }
+  
   {
     my $source = 'class MyClass : interface_t  { interface MyClass; required method foo : void (); }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { static method foo : void (); }';
+    compile_not_ok($source, qr/The method defined in the interface must be an instance method/);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { required method foo : void (); required method bar : void (); }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t {}';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { method foo : void (); }';
     compile_ok($source);
   }
 }
@@ -123,28 +146,12 @@ use Test::More;
     compile_not_ok($source, qr/The anon method must be an instance method/);
   }
   {
-    my $source = 'class MyClass :interface_t { static method foo : void (); }';
-    compile_not_ok($source, qr/The method defined in the interface must be an instance method/);
-  }
-  {
     my $source = 'class MyClass { required method foo : void () { } }';
     compile_not_ok($source, qr/The method defined in the class cannnot have the method attribute "required"/);
   }
   {
     my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
     compile_not_ok($source, qr/Redeclaration of the "foo" method in the "MyClass" class/);
-  }
-  {
-    my $source = 'class MyClass : interface_t { required method foo : void (); required method bar : void (); }';
-    compile_ok($source);
-  }
-  {
-    my $source = 'class MyClass : interface_t {}';
-    compile_ok($source);
-  }
-  {
-    my $source = 'class MyClass : interface_t { method foo : void (); }';
-    compile_ok($source);
   }
   {
     my $source = 'class MyClass : mulnum_t { method foo : void () { } }';
