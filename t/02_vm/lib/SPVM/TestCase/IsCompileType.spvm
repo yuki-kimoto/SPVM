@@ -36,7 +36,7 @@ class TestCase::IsCompileType {
     }
     
     {
-      my $value : Stringer = method : string () { return "aaa"; };
+      my $value : Stringer = method : string ($object : object) { return "aaa"; };
       unless ($value is_compile_type Stringer) {
         return 0;
       }

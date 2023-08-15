@@ -17,7 +17,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(byte)2, 3, 1];
       
-      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+      Sort->sort_byte($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -30,7 +30,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(byte)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+      Sort->sort_byte($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -43,7 +43,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(byte)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+      Sort->sort_byte($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -56,7 +56,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(byte)2, 3, 1];
       
-      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+      Sort->sort_byte($array, method : int ($a : int, $b : int) {
         return $b <=> $a;
       });
       
@@ -69,7 +69,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(byte)2, 3, 1];
       
-      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+      Sort->sort_byte($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       }, 0, 0);
       
@@ -82,7 +82,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(byte)5, 2, 3, 1, -10];
       
-      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+      Sort->sort_byte($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       }, 1, 3);
       
@@ -93,7 +93,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(byte)5, 2, 3, 1];
       
-      Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+      Sort->sort_byte($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       }, 1);
       
@@ -106,7 +106,7 @@ class TestCase::Module::Sort {
     {
       {
         eval {
-          Sort->sort_byte(undef, method : int ($a : byte, $b : byte) {
+          Sort->sort_byte(undef, method : int ($a : int, $b : int) {
             return $a <=> $b;
           }, 0, 3);
         };
@@ -119,7 +119,7 @@ class TestCase::Module::Sort {
         my $array = [(byte)5, 2, 3, 1, -10];
         
         eval {
-          Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+          Sort->sort_byte($array, method : int ($a : int, $b : int) {
             return $a <=> $b;
           }, -1, 3);
         };
@@ -143,7 +143,7 @@ class TestCase::Module::Sort {
         my $array = [(byte)5, 2, 3, 1, -10];
         
         eval {
-          Sort->sort_byte($array, method : int ($a : byte, $b : byte) {
+          Sort->sort_byte($array, method : int ($a : int, $b : int) {
             return $a <=> $b;
           }, 3, 3);
         };
@@ -1044,7 +1044,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(short)2, 3, 1];
       
-      Sort->sort_short($array, method : int ($a : short, $b : short) {
+      Sort->sort_short($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -1057,7 +1057,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(short)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Sort->sort_short($array, method : int ($a : short, $b : short) {
+      Sort->sort_short($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -1070,7 +1070,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(short)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Sort->sort_short($array, method : int ($a : short, $b : short) {
+      Sort->sort_short($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -1083,7 +1083,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(short)2, 3, 1];
       
-      Sort->sort_short($array, method : int ($a : short, $b : short) {
+      Sort->sort_short($array, method : int ($a : int, $b : int) {
         return $b <=> $a;
       });
       
@@ -1096,7 +1096,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(short)2, 3, 1];
       
-      Sort->sort_short($array, method : int ($a : short, $b : short) {
+      Sort->sort_short($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       }, 0, 0);
       
@@ -1109,7 +1109,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(short)5, 2, 3, 1, -10];
       
-      Sort->sort_short($array, method : int ($a : short, $b : short) {
+      Sort->sort_short($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       }, 1, 3);
       
@@ -1120,7 +1120,7 @@ class TestCase::Module::Sort {
     {
       my $array = [(short)5, 2, 3, 1];
       
-      Sort->sort_short($array, method : int ($a : short, $b : short) {
+      Sort->sort_short($array, method : int ($a : int, $b : int) {
         return $a <=> $b;
       }, 1);
       
@@ -1133,7 +1133,7 @@ class TestCase::Module::Sort {
     {
       {
         eval {
-          Sort->sort_short(undef, method : int ($a : short, $b : short) {
+          Sort->sort_short(undef, method : int ($a : int, $b : int) {
             return $a <=> $b;
           }, 0, 3);
         };
@@ -1146,7 +1146,7 @@ class TestCase::Module::Sort {
         my $array = [(short)5, 2, 3, 1, -10];
         
         eval {
-          Sort->sort_short($array, method : int ($a : short, $b : short) {
+          Sort->sort_short($array, method : int ($a : int, $b : int) {
             return $a <=> $b;
           }, -1, 3);
         };
@@ -1170,7 +1170,7 @@ class TestCase::Module::Sort {
         my $array = [(short)5, 2, 3, 1, -10];
         
         eval {
-          Sort->sort_short($array, method : int ($a : short, $b : short) {
+          Sort->sort_short($array, method : int ($a : int, $b : int) {
             return $a <=> $b;
           }, 3, 3);
         };

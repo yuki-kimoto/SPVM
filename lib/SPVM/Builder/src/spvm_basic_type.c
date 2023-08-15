@@ -300,6 +300,7 @@ int32_t SPVM_BASIC_TYPE_check_interface_method_compatibility(SPVM_COMPILER* comp
     SPVM_LIST* interface_method_var_decls = interface_method->var_decls;
     
     if (!(method->required_args_length == interface_method->required_args_length)) {
+      
       SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" interface.\n  at %s line %d", method->name, basic_type->name, interface_method->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
       return 0;
     }

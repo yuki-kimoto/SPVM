@@ -3,7 +3,9 @@
   [Bug Fix]
     * A bug is fixed: the interface checking has not worked well in compilation time.
     * A bug is fixed: the has_interface basic type native APIhas not worked well.
-    
+    * A bug is fixed: The checking of interface compatibility has not worked well in required interface methods.
+  [Changes]
+    * The checking of interface compatibility is performed when a type conversion is performed.
 0.989033 2023-08-08
 
   [New Features]
