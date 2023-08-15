@@ -2,7 +2,11 @@
 
   [Changes]
     * An interface can have multiple required methods.
-
+    * An interface can define an interface of itself.
+      class MyClass : interface_t {
+        interface MyClass;
+      }
+    
 0.989034 2023-08-14
 
   [Bug Fix]

@@ -505,10 +505,6 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         }
         const char* interface_name = op_decl->uv.interface->op_type->uv.type->unresolved_basic_type_name;
         
-        if (strcmp(type->unresolved_basic_type_name, interface_name) == 0) {
-          SPVM_COMPILER_error(compiler, "The interface name specified by the interface statement must be different from the name of the current interface.\n  at %s line %d", op_decl->file, op_decl->line);
-        }
-        
         SPVM_LIST_push(type->basic_type->interface_decls, op_decl->uv.interface);
       }
       // Class var declarations

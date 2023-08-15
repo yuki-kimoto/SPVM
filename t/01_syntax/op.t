@@ -100,7 +100,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass : interface_t  { interface MyClass; required method foo : void (); }';
-    compile_not_ok($source, q|The interface name specified by the interface statement must be different from the name of the current interface|);
+    compile_ok($source);
   }
 }
 
