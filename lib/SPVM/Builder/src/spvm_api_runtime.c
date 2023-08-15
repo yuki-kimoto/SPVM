@@ -289,7 +289,7 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TY
   }
   else if (dist_type_dimension == src_type_dimension) {
     if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-      isa = SPVM_API_BASIC_TYPE_has_interface_v2(runtime, src_basic_type, dist_basic_type);
+      isa = SPVM_API_BASIC_TYPE_has_interface(runtime, src_basic_type, dist_basic_type);
     }
     else if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
       isa = SPVM_API_BASIC_TYPE_is_super_class(runtime, dist_basic_type, src_basic_type);

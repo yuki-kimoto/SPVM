@@ -40,7 +40,7 @@ SPVM_API_BASIC_TYPE* SPVM_API_BASIC_TYPE_new_api() {
     SPVM_API_BASIC_TYPE_get_methods_length,
     SPVM_API_BASIC_TYPE_get_anon_basic_type_by_index,
     SPVM_API_BASIC_TYPE_get_anon_basic_types_length,
-    SPVM_API_BASIC_TYPE_has_interface_v2,
+    SPVM_API_BASIC_TYPE_has_interface,
     SPVM_API_BASIC_TYPE_is_super_class,
   };
   
@@ -251,7 +251,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_BASIC_TYPE_get_anon_basic_type_by_index(SPVM_R
   return anon_basic_type;
 }
 
-int32_t SPVM_API_BASIC_TYPE_has_interface_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
+int32_t SPVM_API_BASIC_TYPE_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
   
   if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     return 0;
