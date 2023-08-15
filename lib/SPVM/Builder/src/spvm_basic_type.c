@@ -267,7 +267,7 @@ int32_t SPVM_BASIC_TYPE_has_interface_v2(SPVM_COMPILER* compiler, int32_t basic_
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_HASH_get(basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
       
-      int32_t interface_method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, basic_type, method, interface_basic_type, interface_method);
+      int32_t interface_method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, basic_type, method, interface_basic_type, interface_method, "interface");
       
       if (interface_method_compatibility == 0) {
         return 0;
@@ -278,11 +278,11 @@ int32_t SPVM_BASIC_TYPE_has_interface_v2(SPVM_COMPILER* compiler, int32_t basic_
   return 1;
 }
 
-int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method, SPVM_BASIC_TYPE* dist_basic_type, SPVM_METHOD* dist_method) {
+int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method, SPVM_BASIC_TYPE* dist_basic_type, SPVM_METHOD* dist_method, const char* type_desc) {
   
   if (dist_method->is_required && !method) {
     if (!dist_method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" class must implement the \"%s\" method. This is defined as a required interface method in the \"%s\" interface.\n  at %s line %d", dist_method->name, basic_type->name, dist_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" class must implement the \"%s\" method. This is defined as a required interface method in the \"%s\" %s.\n  at %s line %d", dist_method->name, basic_type->name, dist_basic_type->name, type_desc, basic_type->op_module->file, basic_type->op_module->line);
       return 0;
     }
   }
@@ -290,7 +290,7 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
   if (method) {
     if (method->is_class_method) {
       if (!dist_method->is_class_method) {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must be an instance method. This is defined as an interface method in the \"%s\" interface.\n  at %s line %d", method->name, basic_type->name, dist_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+        SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must be an instance method. This is defined as an interface method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, dist_basic_type->name, type_desc, basic_type->op_module->file, basic_type->op_module->line);
         return 0;
       }
     }
@@ -301,12 +301,12 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
     
     if (!(method->required_args_length == dist_method->required_args_length)) {
       
-      SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" interface.\n  at %s line %d", method->name, basic_type->name, dist_method->name, dist_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+      SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_module->file, basic_type->op_module->line);
       return 0;
     }
 
     if (!(method->args_length >= dist_method->args_length)) {
-      SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" interface.\n  at %s line %d", method->name, basic_type->name, dist_method->name, dist_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+      SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_module->file, basic_type->op_module->line);
       return 0;
     }
     
@@ -320,7 +320,7 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
       int32_t assignability_for_method = SPVM_TYPE_can_assign_for_method_definition(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag);
       
       if (!assignability_for_method) {
-        SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" interface.\n  at %s line %d", arg_index, method->name, basic_type->name, arg_index, dist_method->name, dist_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+        SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, basic_type->name, arg_index, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_module->file, basic_type->op_module->line);
         return 0;
       }
     }
@@ -338,7 +338,7 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
     );
     
     if (!assignability_for_method_definition) {
-      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" interface.\n  at %s line %d", method->name, basic_type->name, dist_method->name, dist_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_module->file, basic_type->op_module->line);
       return 0;
     }
   }
