@@ -557,103 +557,27 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       method->index = i;
     }
     
-    // Check method compatibility
+    // Check super class method compatibility
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
-      // Interface methods and the method of the super class
-      for (int32_t interface_or_super_class_index = 0; interface_or_super_class_index < basic_type->interface_basic_types->length + 1; interface_or_super_class_index++) {
-        
-        SPVM_BASIC_TYPE* interface_or_super_class_basic_type = NULL;
-        
-        const char* basic_type_desc = NULL;
-        // Super class
-        if (interface_or_super_class_index == basic_type->interface_basic_types->length) {
-          if (basic_type->parent) {
-            SPVM_METHOD* found_method = SPVM_CHECK_search_method(compiler, basic_type->parent, method->name);
-            if (found_method) {
-              interface_or_super_class_basic_type = found_method->current_basic_type;
-            }
-          }
-          basic_type_desc = "class";
-        }
-        // Interface
-        else {
-          interface_or_super_class_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_or_super_class_index);
-          assert(interface_or_super_class_basic_type);
-          basic_type_desc = "interface";
+      SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
+      
+      while (1) {
+        if (!parent_basic_type) {
+          break;
         }
         
-        if (interface_or_super_class_basic_type) {
-          for (int32_t interface_or_super_class_method_index = 0; interface_or_super_class_method_index < interface_or_super_class_basic_type->methods->length; interface_or_super_class_method_index++) {
-            SPVM_METHOD* interface_or_super_class_method = SPVM_LIST_get(interface_or_super_class_basic_type->methods, interface_or_super_class_method_index);
-            
-            if (strcmp(method->name, interface_or_super_class_method->name) == 0) {
-              if (method->is_class_method) {
-                if (!interface_or_super_class_method->is_class_method) {
-                  SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must be an instance method. This is defined as an instance method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, interface_or_super_class_basic_type->name, basic_type_desc, basic_type->op_module->file, basic_type->op_module->line);
-                  return;
-                }
-              }
-              else {
-                // Check the equality of the arguments
-                SPVM_LIST* method_var_decls = method->var_decls;
-                
-                SPVM_LIST* interface_or_super_class_method_var_decls = interface_or_super_class_method->var_decls;
-                
-                if (!(method->required_args_length == interface_or_super_class_method->required_args_length)) {
-                  SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, interface_or_super_class_method->name, interface_or_super_class_basic_type->name, basic_type_desc, basic_type->op_module->file, basic_type->op_module->line);
-                  return;
-                }
-
-                if (!(method->args_length >= interface_or_super_class_method->args_length)) {
-                  SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, interface_or_super_class_method->name, interface_or_super_class_basic_type->name, basic_type_desc, basic_type->op_module->file, basic_type->op_module->line);
-                  return;
-                }
-                
-                for (int32_t arg_index = 1; arg_index < interface_or_super_class_method->args_length; arg_index++) {
-                  SPVM_VAR_DECL* method_var_decl = SPVM_LIST_get(method_var_decls, arg_index);
-                  SPVM_VAR_DECL* interface_or_super_class_method_var_decl = SPVM_LIST_get(interface_or_super_class_method_var_decls, arg_index);
-                  
-                  SPVM_TYPE* method_var_decl_type = method_var_decl->type;
-                  SPVM_TYPE* interface_or_super_class_method_var_decl_type = interface_or_super_class_method_var_decl->type;
-                  
-                  int32_t assignability_for_method = SPVM_TYPE_can_assign_for_method_definition(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, interface_or_super_class_method_var_decl_type->basic_type->id, interface_or_super_class_method_var_decl_type->dimension, interface_or_super_class_method_var_decl_type->flag);
-                  
-                  if (!assignability_for_method) {
-                    SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, basic_type->name, arg_index, interface_or_super_class_method->name, interface_or_super_class_basic_type->name, basic_type_desc, basic_type->op_module->file, basic_type->op_module->line);
-                    return;
-                  }
-                }
-                
-                // Check the assignability of the return value
-                SPVM_TYPE* method_return_type = method->return_type;
-                SPVM_TYPE* interface_or_super_class_method_return_type = interface_or_super_class_method->return_type;
-                
-                int32_t method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag);
-                int32_t interface_or_super_class_method_return_type_is_void = SPVM_TYPE_is_void_type(compiler, interface_or_super_class_method_return_type->basic_type->id, interface_or_super_class_method_return_type->dimension, interface_or_super_class_method_return_type->flag);
-                
-                if (method_return_type_is_void && interface_or_super_class_method_return_type_is_void) {
-                  // OK
-                }
-                else {
-                  int32_t need_implicite_conversion = 0;
-                  int32_t allow_narrowing_conversion = 0;
-                  int32_t assignability_for_method = SPVM_TYPE_can_assign_for_method_definition(
-                    compiler,
-                    interface_or_super_class_method_return_type->basic_type->id, interface_or_super_class_method_return_type->dimension, interface_or_super_class_method_return_type->flag,
-                    method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag
-                  );
-                  
-                  if (!assignability_for_method) {
-                    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, interface_or_super_class_method->name, interface_or_super_class_basic_type->name, basic_type_desc, basic_type->op_module->file, basic_type->op_module->line);
-                    return;
-                  }
-                }
-              }
-            }
+        SPVM_METHOD* parent_method = SPVM_HASH_get(parent_basic_type->method_symtable, method->name, strlen(method->name));
+        
+        if (parent_method) {
+          int32_t method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, basic_type, method, parent_basic_type, parent_method, "class");
+          
+          if (method_compatibility == 0) {
+            return;
           }
         }
+        parent_basic_type = parent_basic_type->parent;
       }
       
       assert(method->current_basic_type->module_file);

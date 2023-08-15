@@ -267,9 +267,9 @@ int32_t SPVM_BASIC_TYPE_has_interface_v2(SPVM_COMPILER* compiler, int32_t basic_
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_HASH_get(basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
       
-      int32_t interface_method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, basic_type, method, interface_basic_type, interface_method, "interface");
+      int32_t method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, basic_type, method, interface_basic_type, interface_method, "interface");
       
-      if (interface_method_compatibility == 0) {
+      if (method_compatibility == 0) {
         return 0;
       }
     }
