@@ -2613,6 +2613,32 @@ This method is called by the static instance method call.
 
   $self->Stringable::call_to_string;
 
+=head1 Duck Typing
+
+The duck typing is supported.
+
+  class Stringable: interface_t {
+    required method to_string : string ();
+  }
+
+  class Point {
+    
+    method to_string : string () {
+      my $x = $self->x;
+      my $y = $self->y;
+      
+      my $string = "($x,$y)";
+      
+      return $string;
+    }
+  }
+  
+  my $stringable = (Stringable)Point->new(1, 2);
+  my $string = $stringable->to_string;
+
+The Point class have no interfaces, but A object of the Point class can be assigned to a Stringable interface
+because the to_string method in the Point class has the method compatibility of the to_string method in the Strigable interface.
+
 =head2 Class File Name
 
 A class must be written in the following module file.
