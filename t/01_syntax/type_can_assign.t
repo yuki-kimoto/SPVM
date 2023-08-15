@@ -549,7 +549,7 @@ use Test::More;
         'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
         'class MyInterface : interface_t { required method foo : string (); }',
       ];
-      compile_not_ok($source, q|The implicite type conversion from "MyInterface" to "Stringable" in the assignment operator is not allowed|);
+      compile_not_ok($source, q|The "to_string" class must implement the "MyInterface" method. This is defined as an interface method in the "Stringable" interface.|);
     }
   }
 }

@@ -1135,7 +1135,7 @@ int32_t SPVM_TYPE_can_assign(
         assignability = 1;
       }
       else {
-        assignability = SPVM_BASIC_TYPE_has_interface(compiler, src_type_basic_type_id, dist_type_basic_type_id);
+        assignability = SPVM_BASIC_TYPE_has_interface_v2(compiler, src_type_basic_type_id, dist_type_basic_type_id);
       }
     }
     // Source type is class type
