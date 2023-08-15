@@ -251,39 +251,6 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_BASIC_TYPE_get_anon_basic_type_by_index(SPVM_R
   return anon_basic_type;
 }
 
-int32_t SPVM_API_BASIC_TYPE_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
-
-  if (!(basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
-    return 0;
-  }
-  
-  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
-    return 0;
-  }
-  
-  int32_t has_interface = 0;
-  
-  SPVM_RUNTIME_METHOD* interface_required_method = interface_basic_type->required_method;
-  if (interface_required_method) {
-    SPVM_RUNTIME_METHOD* found_method = SPVM_API_BASIC_TYPE_get_method_by_name(runtime, basic_type, interface_required_method->name);
-    if (found_method) {
-      has_interface = 1;
-    }
-  }
-  
-  if (!has_interface) {
-    for (int32_t basic_type_interface_index = 0; basic_type_interface_index < basic_type->interface_basic_types_length; basic_type_interface_index++) {
-      SPVM_RUNTIME_BASIC_TYPE* basic_type_interface = basic_type->interface_basic_types[basic_type_interface_index];
-      if (strcmp(basic_type_interface->name, interface_basic_type->name) == 0) {
-        has_interface = 1;
-        break;
-      }
-    }
-  }
-  
-  return has_interface;
-}
-
 int32_t SPVM_API_BASIC_TYPE_has_interface_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
   
   if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
