@@ -282,7 +282,7 @@ int32_t SPVM_BASIC_TYPE_check_interface_method_compatibility(SPVM_COMPILER* comp
   
   if (interface_method->is_required && !method) {
     if (!interface_method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" class must implement the \"%s\" method. This is defined as an interface method in the \"%s\" interface.\n  at %s line %d", interface_method->name, basic_type->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" class must implement the \"%s\" method. This is defined as a required interface method in the \"%s\" interface.\n  at %s line %d", interface_method->name, basic_type->name, interface_basic_type->name, basic_type->op_module->file, basic_type->op_module->line);
       return 0;
     }
   }

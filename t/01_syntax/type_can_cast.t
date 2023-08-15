@@ -340,7 +340,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Fn;use Stringable; use Point; use Point3D; static method main : void () { my $source : Stringable; my $dist = (Fn)$source; } }';
-      compile_not_ok($source, q|The "to_string" class must implement the "Fn" method. This is defined as an interface method in the "Stringable" interface.|);
+      compile_not_ok($source, q|The "to_string" class must implement the "Fn" method. This is defined as a required interface method in the "Stringable" interface.|);
     }
   }
 
@@ -348,7 +348,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : object; my $dist = (Point)$source; } }';
-      compile_ok($source, q|The "to_string" class must implement the "Fn" method. This is defined as an interface method in the "Stringable" interface.|);
+      compile_ok($source, q|The "to_string" class must implement the "Fn" method. This is defined as a required interface method in the "Stringable" interface.|);
     }
   }
   
@@ -410,7 +410,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Fn; use Stringable; static method main : void () { my $source : Fn; my $dist = (Stringable)$source; } }';
-      compile_not_ok($source, q|The "to_string" class must implement the "Fn" method. This is defined as an interface method in the "Stringable" interface.|);
+      compile_not_ok($source, q|The "to_string" class must implement the "Fn" method. This is defined as a required interface method in the "Stringable" interface.|);
     }
     {
       my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable[]; my $dist = (Stringable)$source; } }';
@@ -741,7 +741,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Int[]; my $dist = (Stringable[])$source; } }';
-      compile_not_ok($source, q|The "to_string" class must implement the "Int" method. This is defined as an interface method in the "Stringable" interface.|);
+      compile_not_ok($source, q|The "to_string" class must implement the "Int" method. This is defined as a required interface method in the "Stringable" interface.|);
     }
   }
 }

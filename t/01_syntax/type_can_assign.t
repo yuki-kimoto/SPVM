@@ -549,7 +549,7 @@ use Test::More;
         'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
         'class MyInterface : interface_t { required method foo : string (); }',
       ];
-      compile_not_ok($source, q|The "to_string" class must implement the "MyInterface" method. This is defined as an interface method in the "Stringable" interface.|);
+      compile_not_ok($source, q|The "to_string" class must implement the "MyInterface" method. This is defined as a required interface method in the "Stringable" interface.|);
     }
   }
 }
@@ -733,7 +733,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Stringable; use Cloneable; static method main : void () { my $source : Stringable[]; my $dist : Cloneable[] = $source; } }';
-      compile_not_ok($source, , q|The "clone" class must implement the "Stringable" method. This is defined as an interface method in the "Cloneable" interface.|);
+      compile_not_ok($source, , q|The "clone" class must implement the "Stringable" method. This is defined as a required interface method in the "Cloneable" interface.|);
     }
     {
       my $source = [
@@ -752,7 +752,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Cloneable; static method main : void () { my $source : Int[]; my $dist : Cloneable[] = $source; } }';
-      compile_not_ok($source, , q|The "clone" class must implement the "Int" method. This is defined as an interface method in the "Cloneable" interface.|);
+      compile_not_ok($source, , q|The "clone" class must implement the "Int" method. This is defined as a required interface method in the "Cloneable" interface.|);
     }
   }
   
@@ -767,7 +767,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Int[]; my $dist : Stringable[] = $source; } }';
-      compile_not_ok($source, , q|The "to_string" class must implement the "Int" method. This is defined as an interface method in the "Stringable" interface.|);
+      compile_not_ok($source, , q|The "to_string" class must implement the "Int" method. This is defined as a required interface method in the "Stringable" interface.|);
     }
   }
 }
