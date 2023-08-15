@@ -199,6 +199,72 @@ int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASI
   return is_object_type;
 }
 
+int32_t SPVM_API_RUNTIME_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t flag) {
+  
+  int32_t is_any_object_type;
+  if (type_dimension == 0) {
+    int32_t basic_type_category = basic_type->category;
+    
+    switch (basic_type_category) {
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
+      {
+        is_any_object_type = 1;
+        break;
+      }
+      default: {
+        is_any_object_type = 0;
+      }
+    }
+  }
+  else if (type_dimension >= 1) {
+    is_any_object_type = 1;
+  }
+  else {
+    assert(0);
+  }
+  
+  return is_any_object_type;
+}
+
+int32_t SPVM_API_RUNTIME_is_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t dimension, int32_t flag) {
+  
+  if (dimension > 0) {
+    if (SPVM_API_RUNTIME_is_object_type(runtime, basic_type, dimension - 1, flag)) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_API_RUNTIME_is_any_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t flag) {
+  
+  int32_t is_any_object_array_type;
+  if (type_dimension == 1) {
+    int32_t basic_type_category = basic_type->category;
+    
+    switch (basic_type_category) {
+      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
+      {
+        is_any_object_array_type = 1;
+        break;
+      }
+      default: {
+        is_any_object_array_type = 0;
+      }
+    }
+  }
+  else {
+    is_any_object_array_type = 0;
+  }
+  
+  return is_any_object_array_type;
+}
+
 int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, SPVM_RUNTIME_BASIC_TYPE* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag) {
   
   int32_t isa = 0;

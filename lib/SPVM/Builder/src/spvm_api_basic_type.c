@@ -7,12 +7,15 @@
 
 #include "spvm_api_runtime.h"
 #include "spvm_api_basic_type.h"
+#include "spvm_api_method.h"
+#include "spvm_api_arg.h"
 
 #include "spvm_allocator.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_method.h"
+#include "spvm_runtime_arg.h"
 
 SPVM_API_BASIC_TYPE* SPVM_API_BASIC_TYPE_new_api() {
   
@@ -279,6 +282,167 @@ int32_t SPVM_API_BASIC_TYPE_has_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BA
   }
   
   return has_interface;
+}
+
+int32_t SPVM_API_BASIC_TYPE_has_interface_v2(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
+  
+  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+    return 0;
+  }
+  
+  if (!(basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+    return 0;
+  }
+  
+  for (int32_t interface_method_index = 0; interface_method_index < interface_basic_type->methods_length; interface_method_index++) {
+    SPVM_RUNTIME_METHOD* interface_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, interface_basic_type, interface_method_index);
+    
+    for (int32_t method_index = 0; method_index < basic_type->methods_length; method_index++) {
+      SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(runtime, interface_basic_type, interface_method->name);
+      
+      int32_t method_compatibility = SPVM_API_BASIC_TYPE_check_method_compatibility(runtime, basic_type, method, interface_basic_type, interface_method);
+      
+      if (method_compatibility == 0) {
+        return 0;
+      }
+    }
+  }
+  
+  return 1;
+}
+
+int32_t SPVM_API_BASIC_TYPE_check_method_compatibility(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_METHOD* method, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, SPVM_RUNTIME_METHOD* dist_method) {
+  
+  if (dist_method->is_required && !method) {
+    if (!dist_method->is_class_method) {
+      return 0;
+    }
+  }
+  
+  if (method) {
+    if (method->is_class_method) {
+      if (!dist_method->is_class_method) {
+        return 0;
+      }
+    }
+    
+    if (!(method->required_args_length == dist_method->required_args_length)) {
+      return 0;
+    }
+    
+    if (!(method->args_length >= dist_method->args_length)) {
+      return 0;
+    }
+    
+    for (int32_t arg_index = 1; arg_index < dist_method->args_length; arg_index++) {
+      SPVM_RUNTIME_ARG* method_arg = SPVM_API_METHOD_get_arg_by_index(runtime, method, arg_index);
+      SPVM_RUNTIME_ARG* dist_method_arg = SPVM_API_METHOD_get_arg_by_index(runtime, dist_method, arg_index);
+      
+      SPVM_RUNTIME_BASIC_TYPE* method_arg_basic_type = method_arg->basic_type;
+      int32_t method_arg_type_dimension = method_arg->type_dimension;
+      int32_t method_arg_type_flag = method_arg->type_flag;
+      
+      SPVM_RUNTIME_BASIC_TYPE* dist_method_arg_basic_type = dist_method_arg->basic_type;
+      int32_t dist_method_arg_type_dimension = dist_method_arg->type_dimension;
+      int32_t dist_method_arg_type_flag = dist_method_arg->type_flag;
+      
+      int32_t assignability_for_method = SPVM_API_BASIC_TYPE_can_assign_for_method_definition(runtime, method_arg->basic_type, method_arg->type_dimension, method_arg->type_flag, dist_method_arg->basic_type, dist_method_arg->type_dimension, dist_method_arg->type_flag);
+      
+      if (!assignability_for_method) {
+        return 0;
+      }
+    }
+    
+    SPVM_RUNTIME_BASIC_TYPE* method_return_basic_type = method->return_basic_type;
+    int32_t method_return_type_dimension = method->return_type_dimension;
+    int32_t method_return_type_flag = method->return_type_flag;
+    
+    SPVM_RUNTIME_BASIC_TYPE* dist_method_return_basic_type = dist_method->return_basic_type;
+    int32_t dist_method_return_type_dimension = dist_method->return_type_dimension;
+    int32_t dist_method_return_type_flag = dist_method->return_type_flag;
+    
+    int32_t assignability_for_method_definition = SPVM_API_BASIC_TYPE_can_assign_for_method_definition(
+      runtime,
+      dist_method_return_basic_type, dist_method_return_type_dimension, dist_method_return_type_flag,
+      method_return_basic_type, method_return_type_dimension, method_return_type_flag
+    );
+    
+    if (!assignability_for_method_definition) {
+      return 0;
+    }
+  }
+  
+  return 1;
+}
+
+int32_t SPVM_API_BASIC_TYPE_can_assign_for_method_definition (
+  SPVM_RUNTIME* runtime,
+  SPVM_RUNTIME_BASIC_TYPE* dist_type_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag,
+  SPVM_RUNTIME_BASIC_TYPE* src_type_basic_type, int32_t src_type_dimension, int32_t src_type_flag)
+{
+  int32_t assignability = 0;
+  
+  if (SPVM_API_RUNTIME_is_any_object_type(runtime, dist_type_basic_type, dist_type_dimension, dist_type_flag)) {
+    if (SPVM_API_RUNTIME_is_object_type(runtime, src_type_basic_type, src_type_dimension, src_type_flag)) {
+      assignability = 1;
+    }
+    else {
+      assignability = 0;
+    }
+  }
+  else if (SPVM_API_RUNTIME_is_any_object_array_type(runtime, dist_type_basic_type, dist_type_dimension, dist_type_flag)) {
+    if (SPVM_API_RUNTIME_is_object_array_type(runtime, src_type_basic_type, src_type_dimension, src_type_flag)) {
+      assignability = 1;
+    }
+    else {
+      assignability = 0;
+    }
+  }
+  else {
+    if (dist_type_dimension == src_type_dimension && dist_type_flag == src_type_flag) {
+      if (SPVM_API_BASIC_TYPE_is_class_type(runtime, dist_type_basic_type)) {
+        if (dist_type_basic_type->id == src_type_basic_type->id) {
+          assignability = 1;
+        }
+        else {
+          assignability = SPVM_API_BASIC_TYPE_is_super_class(runtime, dist_type_basic_type, src_type_basic_type);
+        }
+      }
+      else {
+        if (dist_type_basic_type->id == src_type_basic_type->id) {
+          assignability = 1;
+        }
+        else {
+          assignability = 0;
+        }
+      }
+    }
+    else {
+      assignability = 0;
+    }
+  }
+  
+  return assignability;
+}
+
+int32_t SPVM_API_BASIC_TYPE_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+  
+  int32_t is_class_type;
+  
+  int32_t basic_type_category = basic_type->category;
+  
+  switch (basic_type_category) {
+    case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
+    {
+      is_class_type = 1;
+      break;
+    }
+    default: {
+      is_class_type = 0;
+    }
+  }
+  
+  return is_class_type;
 }
 
 int32_t SPVM_API_BASIC_TYPE_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* super_basic_type, SPVM_RUNTIME_BASIC_TYPE* child_basic_type) {
