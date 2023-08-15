@@ -2195,42 +2195,6 @@ Examples:
   
   }
 
-In a class block, L<use statements|/"use Statement">, L<class variable definitions|/"Class Variable Definition">, L<field definitions|/"Field Definition">, L<enumeration definitions|/"Enumeration Definition">, L<method definitions|/"Method Definition">, a L<INIT block|/"INIT Block">, L<allow statements|/"allow Statement">, and L<interface statements|/"interface Statement"> can be defined.
-
-  class Foo {
-    
-    # allow statements
-    allow Bar;
-    
-    # INIT block
-    INIT {
-      # ...
-    }
-    
-    # Loading classes
-    use Point;
-    
-    # Interface guarantees
-    interface Stringable;
-    
-    # Class variables
-    our $VAR : int;
-    
-    # Fields
-    has var : int;
-    
-    # Enumerations
-    enum {
-      CONST_VAL1,
-      CONST_VAL2,
-    }
-    
-    # Methods
-    method foo : int ($num : int) {
-      # ...
-    }
-  }
-
 If more than one class is defined in a module file, a compilation error occurs.
 
 =head2 Version Declaration
@@ -2430,25 +2394,37 @@ Examples:
 
 =head2 interface Statement
 
-The C<interface> statement guarantees that the class has the required method defined in the L<interface definition|/"Interface Definition">.
+The C<interface> statement guarantees the following things.
 
   interface INTERFACE_NAME;
 
-The C<interface> statement must be defined directory under the L<class definition|/"Class Definition">.
+1. If the class has methods that are definied the the L<interface|/"Interface Definition">, each method must have the L<Method Compatibility|method compatibility> of each interface method in the L<interface definition|/"Interface Definition">.
 
-If the required method of the interface is not defined in the current class, a compilation error occurs.
+2. The class must have methods that defined as required interface methods in the the L<interface|/"Interface Definition">.
 
-If a method defined in the interface is defined, the method must have the same type of arguments as the method defined in the interface, and the return value must be able to be assigned without an implicite conversion to the method defined in the interface. Otherwise a compilation error occurs.
-
-The current class B<is expected to> have all methods defined in the interface.
+If not, a compilation error occurs.
 
 Examples:
 
-  # The interface statemenet
-  class Foo {
+  class Point {
     interface Stringable;
-    interface Cloneable;
+    
+    method to_string : string () {
+      my $x = $self->x;
+      my $y = $self->y;
+      
+      my $string = "($x,$y)";
+      
+      return $string;
+    }
   }
+  
+  my $stringable = (Stringable)Point->new(1, 2);
+  my $string = $stringable->to_string;
+
+=head2 Method Compatibility
+
+(TODO)
 
 =head2 Anon Class
 
@@ -2549,67 +2525,47 @@ Examples:
 
 =head1 Interface
 
-Explains interfaces.
+The interface syntax is described.
 
 =head2 Interface Definition
 
-A interface is defined using a L<class definition|/"Class Definition"> with a L<module attribute/"Module Attribute"> C<interface_t>.
+An interface is defined using a L<class definition|/"Class Definition"> with a L<module attribute/"Module Attribute"> C<interface_t>.
 
   class Stringable: interface_t {
     required method to_string : string ();
     method foo : int ($num : long);
   }
 
-A interface must have only one required method. The required method is the method that has the L<method attribute|/"Method Attributes"> C<required>.
+An interface can have interface methods. An interface method does not need its method block.
+
+An interface can have required interface methods by using the L<method attribute|/"Method Attributes"> C<required>.
 
 The type of the interface is the L<interface type|/"Interface Type">.
 
-The class that has L<interface Guarantees|/"interface Statement"> must have the required method that is declared in the interface. Otherwise a compilation error occurs.
+An interface cannnot have L<field definitions|/"Field Definition">. If so, an compilation error occurs.
 
-  class Point {
-    interface Stringable;
-    
-    method to_string : string () {
-      my $x = $self->x;
-      my $y = $self->y;
-      
-      my $string = "($x,$y)";
-      
-      return $string;
-    }
-  }
-  
-  my $stringable = (Stringable)Point->new(1, 2);
-  my $string = $stringable->to_string;
+An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, an compilation error occurs.
 
-A interface cannnot have L<field definitions|/"Field Definition">.
-
-A interface cannnot have L<class variable definitions|/"Class Variable Definition">.
-
-A interface can have L<interface Guarantees|/"interface Statement">.
+An interface can have L<interface statements|/"interface Statement">.
 
   class TestCase::Pointable : interface_t {
     interface Stringable;
     
-    required method x : int ();
+    method x : int ();
     method y : int();
     method to_string : string ();
   }
 
-If the interface definition is invalid, a compilation error occurs.
-
-C<new> operator cannnot create the objects from interfaces.
-
-The interface can have the method implementation.
+An interface method can have its method block.
 
   class Stringable: interface_t {
-    required method to_string : string ();
+    method to_string : string ();
     method call_to_string : string () {
       return "foo " . $self->to_string;
     }
   }
 
-This method is called by the static instance method call.
+This method is only called by the static instance method call.
 
   $self->Stringable::call_to_string;
 
@@ -2618,7 +2574,7 @@ This method is called by the static instance method call.
 The duck typing is supported.
 
   class Stringable: interface_t {
-    required method to_string : string ();
+    method to_string : string ();
   }
 
   class Point {
@@ -4447,7 +4403,7 @@ The undef type is the type of L<undef|/"Undefined Value"> value.
 The interface type is a type that is defined using a C<class> keyword and a L<module attribute|/"Module Attribute"> C<interface_t>.
 
   class Stringable : interface_t {
-    required method to_string : string ();
+    method to_string : string ();
   }
 
 See also L</"Interface">.
