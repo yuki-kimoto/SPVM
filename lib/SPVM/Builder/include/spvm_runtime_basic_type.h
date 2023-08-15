@@ -19,7 +19,6 @@ struct spvm_runtime_basic_type {
   SPVM_RUNTIME_METHOD* methods;
   SPVM_RUNTIME_METHOD* init_method;
   SPVM_RUNTIME_METHOD* destructor_method;
-  SPVM_RUNTIME_METHOD* required_method;
   SPVM_RUNTIME_BASIC_TYPE** anon_basic_types;
   int32_t id;
   int32_t category;
