@@ -6,6 +6,9 @@
     * A bug is fixed: The checking of interface compatibility has not worked well in required interface methods.
   [Changes]
     * The checking of interface compatibility is performed when a type conversion is performed.
+  [New Feature]
+    * The duck typing is supported.
+    
 0.989033 2023-08-08
 
   [New Features]
