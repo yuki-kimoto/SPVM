@@ -18,4 +18,8 @@ class TestCase::MinimalExtend extends TestCase::Minimal : public {
     $self->SUPER::clear;
     $self->{z} = 0;
   }
+  
+  method shared1 : string () {
+    return undef;
+  }
 }
