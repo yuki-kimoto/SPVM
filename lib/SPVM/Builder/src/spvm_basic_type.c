@@ -219,34 +219,6 @@ int32_t SPVM_BASIC_TYPE_is_integer_type_within_int(SPVM_COMPILER* compiler, int3
   }
 }
 
-int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id) {
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-  
-  SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
-  int32_t has_interface = 0;
-  
-  SPVM_METHOD* interface_required_method = interface_basic_type->required_method;
-  if (interface_required_method) {
-    SPVM_METHOD* found_method = SPVM_HASH_get(basic_type->method_symtable, interface_required_method->name, strlen(interface_required_method->name));
-    if (found_method) {
-      has_interface = 1;
-    }
-  }
-  
-  if (!has_interface) {
-    for (int32_t basic_type_interface_index = 0; basic_type_interface_index < basic_type->interface_basic_types->length; basic_type_interface_index++) {
-      SPVM_BASIC_TYPE* basic_type_interface = SPVM_LIST_get(basic_type->interface_basic_types, basic_type_interface_index);
-      if (strcmp(basic_type_interface->name, interface_basic_type->name) == 0) {
-        has_interface = 1;
-        break;
-      }
-    }
-  }
-  
-  return has_interface;
-}
-
 int32_t SPVM_BASIC_TYPE_has_interface_v2(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id) {
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
