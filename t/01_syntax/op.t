@@ -87,6 +87,10 @@ use Test::More;
 # Interface Definition
 {
   {
+    my $source = 'class MyClass : interface_t {}';
+    compile_ok($source);
+  }
+  {
     my $source = 'class MyClass : interface_t { our $FOO : int; }';
     compile_not_ok($source, qr/The interface cannnot have class variables/);
   }
