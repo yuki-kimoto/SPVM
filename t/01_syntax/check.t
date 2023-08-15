@@ -1316,6 +1316,16 @@ use Test::More;
   }
 }
 
+# Duck Typing
+{
+  {
+    my $source = [
+      'class MyClass  { use Stringable; method to_string : string () {} static method main : void () { my $stringable : Stringable = new MyClass; } }',
+    ];
+    compile_ok($source);
+  }
+}
+
 # Inheritance
 {
   {
