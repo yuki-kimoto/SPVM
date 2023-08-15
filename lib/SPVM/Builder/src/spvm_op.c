@@ -976,13 +976,6 @@ SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_
         if (method->is_init) {
           basic_type->init_method = method;
         }
-
-        if (method->is_required) {
-          if (basic_type->required_method) {
-            SPVM_COMPILER_error(compiler, "The interface cannnot have multiple required methods \"%s\".\n  at %s line %d", method_name, method->op_method->file, method->op_method->line);
-          }
-          basic_type->required_method = method;
-        }
         
         assert(method->op_method->file);
         

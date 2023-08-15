@@ -48,7 +48,6 @@ use Test::More;
     compile_not_ok_file('CompileError::Interface::StaticMethod');
     compile_not_ok_file('CompileError::Interface::ArrayElementCantAssign');
     compile_ok_file('CompileError::Interface::NoMethods');
-    compile_not_ok_file('CompileError::Interface::MultiRequiredMethods');
     compile_not_ok_file('CompileError::Interface::HasImplNotFound');
   }
   # Class variable difinition
