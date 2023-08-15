@@ -6,7 +6,9 @@
       class MyClass : interface_t {
         interface MyClass;
       }
-    
+  [Document Changes]
+    * Module Attribute is renamed to Class Attribute
+
 0.989034 2023-08-14
 
   [Bug Fix]

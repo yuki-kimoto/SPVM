@@ -2174,7 +2174,7 @@ Examples:
   
   }
 
-L<Module attributes|/"Module Attribute"> can be written after C<:>.
+L<Class attributes|/"Class Attribute"> are written after C<:>.
 
   class CLASS_NAME : CLASS_ATTRIBUTE {
   
@@ -2186,7 +2186,7 @@ L<Module attributes|/"Module Attribute"> can be written after C<:>.
 
 Examples:
 
-  # Module attributes
+  # Class attributes
   class Point : public {
   
   }
@@ -2259,16 +2259,16 @@ The version number is a floating point number created by the following way.
 
 A L<version string/"Version Declaration"> is converted to a floating point number by the C<strtod> C function.
 
-=head2 Module Attribute
+=head2 Class Attribute
 
-The list of module attributes.
+The list of class attributes.
 
 =begin html
 
 <table>
   <tr>
     <th>
-      Module attributes
+      Class attributes
    </th>
     <th>
       Descriptions
@@ -2334,7 +2334,7 @@ The list of module attributes.
 
 =end html
 
-Only one of module attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
+Only one of class attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
 
 If more than one of C<interface_t>, C<mulnum_t>, and C<pointer> are specified, a compilation error occurs.
 
@@ -2448,7 +2448,7 @@ L<Examples:>
 
 =head2 Pointer Class
 
-The pointer class is the L<class|/"Class"> that has the L<module attribute|/"Module Attribute"> C<pointer>.
+The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Class Attribute"> C<pointer>.
 
   # Pointer Class
   class Foo : pointer {
@@ -2529,7 +2529,7 @@ The interface syntax is described.
 
 =head2 Interface Definition
 
-An interface is defined using a L<class definition|/"Class Definition"> with a L<module attribute/"Module Attribute"> C<interface_t>.
+An interface is defined using a L<class definition|/"Class Definition"> with a L<class attribute/"Class Attribute"> C<interface_t>.
 
   class Stringable: interface_t {
     required method to_string : string ();
@@ -3272,7 +3272,7 @@ About the way to write native methods, please see L<SPVM Native Class|SPVM::Docu
 
 =head2 Precompiled Method
 
-If the class has the C<precompile> L<module attribute|/"Module Attribute">, the methods of the class are precompiled.
+If the class has the C<precompile> L<class attribute|/"Class Attribute">, the methods of the class are precompiled.
 
 The source code of each precompiled method is translated to C source code and is compiled to the machine code such as C<MyMath.o>.
 
@@ -3884,7 +3884,7 @@ A multi-numeric value is a value that represents continuous multiple numeric val
 
 =head2 Multi-Numeric Type Definition
 
-A L<multi-numeric type|/"Multi-Numeric Type"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<module attribute|/"Module Attribute">.
+A L<multi-numeric type|/"Multi-Numeric Type"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
 
   # Continuous two 64bit floating point
   class Complex_2d : mulnum_t {
@@ -4400,7 +4400,7 @@ The undef type is the type of L<undef|/"Undefined Value"> value.
 
 =head2 Interface Type
 
-The interface type is a type that is defined using a C<class> keyword and a L<module attribute|/"Module Attribute"> C<interface_t>.
+The interface type is a type that is defined using a C<class> keyword and a L<class attribute|/"Class Attribute"> C<interface_t>.
 
   class Stringable : interface_t {
     method to_string : string ();
