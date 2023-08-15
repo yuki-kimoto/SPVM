@@ -269,37 +269,52 @@ int32_t SPVM_API_RUNTIME_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TY
   
   int32_t isa = 0;
   
-  int32_t dist_basic_type_category = dist_basic_type->category;
-  int32_t src_basic_type_category = src_basic_type->category;
+  char assinability_key[256] = {0};
+  snprintf(assinability_key, 255, "%d-%d-%d-%d-%d-%d", dist_basic_type->id, dist_type_dimension, dist_type_flag, src_basic_type->id, src_type_dimension, src_type_flag);
   
-  if (dist_basic_type->id == src_basic_type->id && dist_type_dimension == src_type_dimension) {
+  int32_t assignability = (intptr_t)SPVM_HASH_get(runtime->assignability_symtable, assinability_key, strlen(assinability_key));
+  if (assignability > 0) {
     isa = 1;
   }
-  else if (dist_type_dimension == 0 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
-    assert(src_type_dimension >= 0);
-    isa = 1;
-  }
-  else if (dist_type_dimension == 1 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
-    if (src_type_dimension >= 1) {
-      isa = 1;
-    }
-    else {
-      isa = 0;
-    }
-  }
-  else if (dist_type_dimension == src_type_dimension) {
-    if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-      isa = SPVM_API_BASIC_TYPE_has_interface(runtime, src_basic_type, dist_basic_type);
-    }
-    else if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-      isa = SPVM_API_BASIC_TYPE_is_super_class(runtime, dist_basic_type, src_basic_type);
-    }
-    else {
-      isa = 0;
-    }
+  else if (assignability < 0) {
+    isa = 0;
   }
   else {
-    isa = 0;
+    
+    int32_t dist_basic_type_category = dist_basic_type->category;
+    int32_t src_basic_type_category = src_basic_type->category;
+    
+    if (dist_basic_type->id == src_basic_type->id && dist_type_dimension == src_type_dimension) {
+      isa = 1;
+    }
+    else if (dist_type_dimension == 0 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+      assert(src_type_dimension >= 0);
+      isa = 1;
+    }
+    else if (dist_type_dimension == 1 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
+      if (src_type_dimension >= 1) {
+        isa = 1;
+      }
+      else {
+        isa = 0;
+      }
+    }
+    else if (dist_type_dimension == src_type_dimension) {
+      if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+        isa = SPVM_API_BASIC_TYPE_has_interface(runtime, src_basic_type, dist_basic_type);
+      }
+      else if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+        isa = SPVM_API_BASIC_TYPE_is_super_class(runtime, dist_basic_type, src_basic_type);
+      }
+      else {
+        isa = 0;
+      }
+    }
+    else {
+      isa = 0;
+    }
+    
+    SPVM_HASH_set(runtime->assignability_symtable, assinability_key, strlen(assinability_key), (void*)(intptr_t)(isa ? 1 : -1));
   }
   
   return isa;

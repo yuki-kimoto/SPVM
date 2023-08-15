@@ -172,4 +172,36 @@ class TestCase::Isa {
     
     return 1;
   }
+  
+  static method isa_extra : int () {
+    
+    # Assignability cached
+    {
+      my $object = Int->new(1);
+      
+      # True first
+      unless ($object isa Int) {
+        return 0;
+      }
+      
+      # True second
+      unless ($object isa Int) {
+        return 0;
+      }
+      
+      # False first
+      if ($object isa Short) {
+        return 0;
+      }
+      
+      # False second
+      if ($object isa Short) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

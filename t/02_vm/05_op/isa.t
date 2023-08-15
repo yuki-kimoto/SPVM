@@ -25,6 +25,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Isa->isa_match_callback);
   ok(SPVM::TestCase::Isa->isa_not_match_callback_undef);
   ok(SPVM::TestCase::Isa->isa_error);
+  ok(SPVM::TestCase::Isa->isa_extra);
 }
 
 # All object is freed
