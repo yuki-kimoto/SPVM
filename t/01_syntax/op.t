@@ -92,6 +92,21 @@ use Test::More;
   }
   
   {
+    my $source = 'class MyClass : interface_t { method foo : void (); }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { method foo : void (); method bar : void (); }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { method foo : void () {} }';
+    compile_ok($source);
+  }
+  
+  {
     my $source = 'class MyClass : interface_t { our $FOO : int; }';
     compile_not_ok($source, qr/The interface cannnot have class variables/);
   }
@@ -102,13 +117,28 @@ use Test::More;
   }
   
   {
-    my $source = 'class MyClass : interface_t  { interface MyClass; required method foo : void (); }';
+    my $source = 'class MyClass : interface_t { static method foo : void (); }';
+    compile_not_ok($source, qr/The method defined in the interface must be an instance method/);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { enum { FOO } }';
+    compile_not_ok($source, q|The method defined in the interface must be an instance method.|);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { INIT { } }';
+    compile_not_ok($source, q|The method defined in the interface must be an instance method.|);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { method DESTROY : void (); }';
     compile_ok($source);
   }
   
   {
-    my $source = 'class MyClass : interface_t { static method foo : void (); }';
-    compile_not_ok($source, qr/The method defined in the interface must be an instance method/);
+    my $source = 'class MyClass : interface_t  { interface MyClass; required method foo : void (); }';
+    compile_ok($source);
   }
   
   {
@@ -116,15 +146,6 @@ use Test::More;
     compile_ok($source);
   }
   
-  {
-    my $source = 'class MyClass : interface_t {}';
-    compile_ok($source);
-  }
-  
-  {
-    my $source = 'class MyClass : interface_t { method foo : void (); }';
-    compile_ok($source);
-  }
 }
 
 # Pointer Class
