@@ -557,12 +557,11 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       method->index = i;
     }
     
-    // Check super class method compatibility
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
+      // Check super class method compatibility
       SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
-      
       while (1) {
         if (!parent_basic_type) {
           break;
@@ -591,6 +590,33 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       }
     }
     
+    // Check interface method compatibility
+    for (int32_t interface_basic_type_index = 0; interface_basic_type_index < basic_type->interface_basic_types->length; interface_basic_type_index++) {
+      
+      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_basic_type_index);
+      for (int32_t interface_method_index = 0; interface_method_index < interface_basic_type->methods->length; interface_method_index++) {
+        SPVM_METHOD* interface_method = SPVM_LIST_get(interface_basic_type->methods, interface_method_index);
+        
+        // Check super class method compatibility
+        SPVM_BASIC_TYPE* parent_basic_type = basic_type;
+        while (1) {
+          if (!parent_basic_type) {
+            break;
+          }
+          
+          SPVM_METHOD* parent_method = SPVM_HASH_get(parent_basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
+          
+          if (parent_method) {
+            int32_t method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, parent_basic_type, parent_method, interface_basic_type, interface_method, "interface");
+            
+            if (method_compatibility == 0) {
+              return;
+            }
+          }
+          parent_basic_type = parent_basic_type->parent;
+        }
+      }
+    }
   }
 }
 
