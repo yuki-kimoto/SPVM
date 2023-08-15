@@ -26,6 +26,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
   
+  runtime->assignability_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
+  
   return runtime;
 }
 
