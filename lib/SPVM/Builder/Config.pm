@@ -822,7 +822,7 @@ The SPVM::Builder::Config class has methods to manipulate a config to compile so
 
 Gets and sets the C<ext> field.
 
-This field is the extension of a native module.
+This field is the extension of a native class.
 
 Examples:
   

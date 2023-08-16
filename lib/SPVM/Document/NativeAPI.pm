@@ -6,7 +6,7 @@ SPVM::Document::NativeAPI - Native APIs
 
 The native APIs of L<SPVM> are the APIs written by the C language for various operations.
 
-These APIs are used in L<native modules|SPVM::Document::NativeModule>.
+These APIs are used in L<native classes|SPVM::Document::NativeClass>.
 
 =head1 Native APIs
 

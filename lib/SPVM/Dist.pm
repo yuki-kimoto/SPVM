@@ -1112,10 +1112,10 @@ sub generate_dist {
       $self->generate_native_class_file;
     }
     
-    # Generate ".gitkeep" file for native module include directory
+    # Generate ".gitkeep" file for native class include directory
     $self->generate_gitkeep_file_for_native_module_include_dir;
     
-    # Generate ".gitkeep" file for native module src directory
+    # Generate ".gitkeep" file for native class src directory
     $self->generate_gitkeep_file_for_native_module_src_dir;
   }
   

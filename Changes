@@ -8,6 +8,7 @@
       }
   [Document Changes]
     * Module Attribute is renamed to Class Attribute
+    * SPVM::Document::NativeModule is renamed to SPVM::Document::NativeClass
   
   [Incompatible Changes]
     * All methods and fields and native APIs that names are "module_name" are renamed to "class_name".

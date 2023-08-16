@@ -273,7 +273,7 @@ sub get_required_resources {
 
   my $build_dir = $self->builder->build_dir;
   
-  # Compiler for native module
+  # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -525,10 +525,10 @@ EOS
     }
   }
 
-  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
+  $source .= "static void SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
 
   $source .= <<"EOS";
-static int32_t* SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address) {
+static void SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address) {
 void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
 void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, method_name);
 env->api->method->set_precompile_address(env->runtime, method, precompile_address);
@@ -548,12 +548,12 @@ EOS
     }
   }
 
-  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n\n";
+  $source .= "static void SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env);\n\n";
 
   $source .= "static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
-static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
+static void SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
   void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
   void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, method_name);
   env->api->method->set_native_address(env->runtime, method, native_address);
@@ -789,7 +789,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
 
   my $source = '';
 
-  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env){\n";
+  $source .= "static void SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env){\n";
 
   for my $basic_type_name (@$basic_type_names) {
     my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
@@ -821,7 +821,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
 
   my $source = '';
 
-  $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env){\n";
+  $source .= "static void SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(SPVM_ENV* env){\n";
 
   for my $basic_type_name (@$basic_type_names) {
     my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
@@ -1055,7 +1055,7 @@ sub compile_module_native_source_files {
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
 
-  # Compiler for native module
+  # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,

@@ -81,7 +81,7 @@ Calling a SPVM method from Perl:
 
 =item * L<ExchangeAPI|SPVM::ExchangeAPI> - Exchange APIs
 
-=item * L<Native Module|SPVM::Document::NativeModule> - Native Module
+=item * L<Native Class|SPVM::Document::NativeClass> - Native Class
 
 =item * L<Native APIs|SPVM::Document::NativeAPI> - Native APIs
 
@@ -148,11 +148,11 @@ Examples:
 
 =head2 SPVM_CC_DEBUG
 
-If the C<SPVM_CC_DEBUG> environement variable is a true value of Perl, debug messages and messages from the L<SPVM native module|SPVM::Document::NativeModule> compiler and linker are printed to stderr.
+If the C<SPVM_CC_DEBUG> environement variable is a true value of Perl, debug messages and messages from the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are printed to stderr.
 
 =head2 SPVM_CC_QUIET
 
-If the C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages the L<SPVM native module|SPVM::Document::NativeModule> compiler and linker are not printed to stderr.
+If the C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.
 
 If it is defined and a false value of Perl, the messages are printed.
 
@@ -160,7 +160,7 @@ This setting has a higher priority than the L<quiet|SPVM::Builder::Config/"quiet
 
 =head2 SPVM_CC_FORCE
 
-If the C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilation and link by the L<SPVM native module|SPVM::Document::NativeModule> compiler and linker are forced.
+If the C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilation and link by the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are forced.
 
 This setting has a higher priority than the L<force|SPVM::Builder::Config/"force"> field of the L<SPVM::Builder::Config> module.
 

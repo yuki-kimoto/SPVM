@@ -6,11 +6,11 @@ package SPVM::Native;
 
 =head1 Name
 
-SPVM::Native - Native Module Utilities
+SPVM::Native - Native Class Utilities
 
 =head1 Description
 
-The Native class of L<SPVM> has methods for native module utilities.
+The Native class of L<SPVM> has methods for native class utilities.
 
 =head1 Usage
 

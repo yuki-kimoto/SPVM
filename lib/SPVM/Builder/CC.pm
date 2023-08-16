@@ -295,7 +295,7 @@ sub compile_source_files {
     
     my $object_file_name;
     
-    # Object file of native module
+    # Object file of native class
     if ($current_is_native_module) {
       my $object_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_category_rel_file($basic_type_name, $category, 'o');
       $object_file_name = "$output_dir/$object_rel_file";
@@ -476,7 +476,7 @@ sub create_link_info {
   for my $resource_name (@$resource_names) {
     my $resource = $config->get_resource($resource_name);
     
-    # Build native modules
+    # Build native classes
     my $builder_cc_resource = SPVM::Builder::CC->new(
       build_dir => $self->build_dir,
     );
@@ -572,7 +572,7 @@ sub link {
     mkpath $build_dir;
   }
   else {
-    confess "The \"build_dir\" field must be defined to build the native module for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+    confess "The \"build_dir\" field must be defined to build the native class for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
   # Config
@@ -720,11 +720,11 @@ sub link {
 
 =head1 Name
 
-SPVM::Builder::CC - Compilation and Link of Native Module
+SPVM::Builder::CC - Compilation and Link of Native Class
 
 =head1 Description
 
-The SPVM::Builder::CC class has methods to compile and link a SPVM native module.
+The SPVM::Builder::CC class has methods to compile and link a SPVM native class.
 
 =head1 Copyright & License
 
