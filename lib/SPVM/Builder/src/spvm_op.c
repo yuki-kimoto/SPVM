@@ -256,7 +256,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
-SPVM_OP* SPVM_OP_build_module(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
+SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
   const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   
@@ -1612,7 +1612,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   op_method->uv.method->anon_method_defined_basic_type_name = anon_method_defined_rel_file_basic_type_name;
   
   // Build module
-  SPVM_OP_build_module(compiler, op_module, op_type, op_module_block, NULL, NULL);
+  SPVM_OP_build_class(compiler, op_module, op_type, op_module_block, NULL, NULL);
   
   // Type
   SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_basic_type, op_method->file, op_method->line);

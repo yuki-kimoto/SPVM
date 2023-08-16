@@ -30,7 +30,7 @@
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_modules modules module module_block version_decl
+%type <opval> opt_classs classs class class_block version_decl
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> method anon_method opt_args args arg has use require alias our anon_method_has_list anon_method_has
@@ -47,7 +47,7 @@
 %type <opval> var_decl var interface union_type
 %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
 %type <opval> field_name method_name alias_name is_read_only
-%type <opval> type qualified_type basic_type array_type module_type
+%type <opval> type qualified_type basic_type array_type class_type
 %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -67,14 +67,14 @@
 %%
 
 grammar
-  : opt_modules
+  : opt_classs
 
-opt_modules
+opt_classs
   : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
     }
-  | modules
+  | classs
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -86,8 +86,8 @@ opt_modules
       }
     }
   
-modules
-  : modules module
+classs
+  : classs class
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -101,24 +101,24 @@ modules
       
       $$ = op_list;
     }
-  | module
+  | class
 
-module
-  : CLASS module_type opt_extends module_block END_OF_FILE
+class
+  : CLASS class_type opt_extends class_block END_OF_FILE
     {
-      $$ = SPVM_OP_build_module(compiler, $1, $2, $4, NULL, $3);
+      $$ = SPVM_OP_build_class(compiler, $1, $2, $4, NULL, $3);
     }
-  | CLASS module_type opt_extends ':' opt_attributes module_block END_OF_FILE
+  | CLASS class_type opt_extends ':' opt_attributes class_block END_OF_FILE
     {
-      $$ = SPVM_OP_build_module(compiler, $1, $2, $6, $5, $3);
+      $$ = SPVM_OP_build_class(compiler, $1, $2, $6, $5, $3);
     }
-  | CLASS module_type opt_extends ';' END_OF_FILE
+  | CLASS class_type opt_extends ';' END_OF_FILE
     {
-      $$ = SPVM_OP_build_module(compiler, $1, $2, NULL, NULL, $3);
+      $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, NULL, $3);
     }
-  | CLASS module_type opt_extends ':' opt_attributes ';' END_OF_FILE
+  | CLASS class_type opt_extends ':' opt_attributes ';' END_OF_FILE
     {
-      $$ = SPVM_OP_build_module(compiler, $1, $2, NULL, $5, $3);
+      $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $5, $3);
     }
 
 opt_extends
@@ -131,12 +131,12 @@ opt_extends
       $$ = SPVM_OP_build_extends(compiler, $1, $2);
     }
 
-module_block
+class_block
   : '{' opt_definitions '}'
     {
-      SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
-      SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, $2);
-      $$ = op_module_block;
+      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
+      SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, $2);
+      $$ = op_class_block;
     }
 
 opt_definitions
@@ -1302,7 +1302,7 @@ type
   | array_type
   | ref_type
 
-module_type
+class_type
   : basic_type
 
 basic_type
