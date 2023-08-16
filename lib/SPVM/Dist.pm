@@ -153,10 +153,9 @@ sub new {
   
   bless $self, $class;
 
-  # Module name
   my $basic_type_name = $self->class_name;
   unless (defined $self->class_name) {
-    confess "A module name must be specified";
+    confess "A class name must be specified";
   }
   
   if (defined $self->output_dir) {
@@ -247,7 +246,6 @@ sub generate_dir {
 sub generate_spvm_module_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # User name
@@ -292,7 +290,6 @@ EOS
 sub generate_perl_module_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # Year
@@ -520,7 +517,6 @@ EOS
 sub generate_native_config_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # C or C++
@@ -565,7 +561,6 @@ EOS
 sub generate_native_module_file {
   my ($self) = @_;
 
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # extern C for C++
@@ -634,7 +629,6 @@ EOS
 sub generate_gitkeep_file_for_native_module_include_dir {
   my ($self) = @_;
 
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # Generate file
@@ -647,7 +641,6 @@ sub generate_gitkeep_file_for_native_module_include_dir {
 sub generate_gitkeep_file_for_native_module_src_dir {
   my ($self) = @_;
 
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # Generate file
@@ -737,7 +730,6 @@ EOS
 sub generate_readme_markdown_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # Content
@@ -756,7 +748,6 @@ EOS
 sub generate_makefile_pl_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # Resource
@@ -868,7 +859,6 @@ EOS
 sub generate_basic_test_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
@@ -909,7 +899,6 @@ EOS
 sub generate_license_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # User name
@@ -954,7 +943,6 @@ EOS
 sub generate_basic_test_spvm_module_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # Resource
@@ -991,7 +979,6 @@ EOS
 sub generate_basic_test_native_config_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # Resource
@@ -1028,7 +1015,6 @@ EOS
 sub generate_basic_test_native_module_file {
   my ($self) = @_;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
   # Resource
@@ -1086,11 +1072,11 @@ sub generate_dist {
   my $basic_type_name = $self->class_name;
   
   unless (length $basic_type_name) {
-    confess "The module name must be specified";
+    confess "The class name must be specified";
   }
   
   if ($basic_type_name =~ /-/) {
-    confess "The module name cannnot contain \"-\"";
+    confess "The class name cannnot contain \"-\"";
   }
   
   my $native = $self->native;
