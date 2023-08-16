@@ -153,7 +153,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     SPVM_COMPILER_set_default_loaded_class_files(compiler);
   }
   
-  SPVM_COMPILER_use_default_loaded_modules(compiler);
+  SPVM_COMPILER_use_default_loaded_classes(compiler);
   
   if (basic_type_name) {
     SPVM_STRING* basic_type_name_string = SPVM_STRING_new(compiler, basic_type_name, strlen(basic_type_name));
@@ -425,7 +425,7 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_constant_string_sy
   return new_name;
 }
 
-void SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
+void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   // Use automatically loaded classes
   SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
   SPVM_COMPILER_use(compiler, "Short", "Short", 0);
