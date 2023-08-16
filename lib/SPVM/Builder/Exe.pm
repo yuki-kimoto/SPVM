@@ -369,7 +369,6 @@ sub compile {
   # Builder
   my $builder = $self->builder;
   
-  # Module name
   my $basic_type_name = $self->{class_name};
   
   my $compiler = $self->compiler;
@@ -491,10 +490,8 @@ sub create_bootstrap_header_source {
   # Builder
   my $builder = $self->builder;
 
-  # Module name
   my $basic_type_name = $self->class_name;
 
-  # Module names
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
   
   my $source = '';
@@ -572,10 +569,8 @@ sub create_bootstrap_main_func_source {
   # Builder
   my $builder = $self->builder;
 
-  # Module name
   my $basic_type_name = $self->class_name;
 
-  # Module names
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
 
   my $source = '';
@@ -657,7 +652,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   }
   else {
     
-    // Module name
+    // Class name
     const char* class_name = "$basic_type_name";
     
     // Class
@@ -790,7 +785,6 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  # Module names
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
 
   my $source = '';
@@ -823,7 +817,6 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  # Module names
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
 
   my $source = '';
@@ -856,10 +849,8 @@ sub create_bootstrap_source {
   # Builder
   my $builder = $self->builder;
   
-  # Module name
   my $basic_type_name = $self->class_name;
   
-  # Module names
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
   
   my $module_files = [];

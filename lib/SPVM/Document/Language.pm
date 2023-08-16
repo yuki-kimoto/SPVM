@@ -74,7 +74,7 @@ If class names are invalid, a compilation error occurs.
 
 Examples:
   
-  # Module names
+  # Class names
   Foo
   Foo::Bar
   Foo::Bar::Baz3
