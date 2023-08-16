@@ -709,7 +709,7 @@ t/02_vm/lib/SPVM/TestCase/CompileTypeName.spvm
 t/02_vm/lib/SPVM/TestCase/Concat.spvm
 t/02_vm/lib/SPVM/TestCase/Constant.spvm
 t/02_vm/lib/SPVM/TestCase/Copy.spvm
-t/02_vm/lib/SPVM/TestCase/CURRENT_MODULE_NAME.spvm
+t/02_vm/lib/SPVM/TestCase/CURRENT_CLASS_NAME.spvm
 t/02_vm/lib/SPVM/TestCase/Data/Weaken.spvm
 t/02_vm/lib/SPVM/TestCase/Destructor.spvm
 t/02_vm/lib/SPVM/TestCase/Destructor/ExceptionNotOverride.spvm
