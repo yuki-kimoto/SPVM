@@ -1,8 +1,8 @@
-class TestCase::CURRENT_MODULE_NAME {
+class TestCase::CURRENT_CLASS_NAME {
   static method current_class_name : int () {
     my $current_basic_type_name = __PACKAGE__;
     
-    unless ($current_basic_type_name eq "TestCase::CURRENT_MODULE_NAME") {
+    unless ($current_basic_type_name eq "TestCase::CURRENT_CLASS_NAME") {
       return 0;
     }
     return 1;

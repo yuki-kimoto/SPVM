@@ -184,7 +184,7 @@ extern int SPVM_yydebug;
     WARN = 320,
     PRINT = 321,
     SAY = 322,
-    CURRENT_MODULE_NAME = 323,
+    CURRENT_CLASS_NAME = 323,
     UNWEAKEN = 324,
     ASSIGN = 325,
     SPECIAL_ASSIGN = 326,
@@ -608,7 +608,7 @@ static const char *const yytname[] =
   "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "STRING", "OBJECT",
   "TRUE", "FALSE", "END_OF_FILE", "FATCAMMA", "RW", "RO", "WO", "INIT",
   "NEW", "OF", "BASIC_TYPE_ID", "EXTENDS", "SUPER", "RETURN", "WEAKEN",
-  "DIE", "WARN", "PRINT", "SAY", "CURRENT_MODULE_NAME", "UNWEAKEN", "'['",
+  "DIE", "WARN", "PRINT", "SAY", "CURRENT_CLASS_NAME", "UNWEAKEN", "'['",
   "'{'", "'('", "ASSIGN", "SPECIAL_ASSIGN", "LOGICAL_OR", "LOGICAL_AND",
   "BIT_OR", "BIT_XOR", "BIT_AND", "NUMEQ", "NUMNE", "STREQ", "STRNE",
   "NUMGT", "NUMGE", "NUMLT", "NUMLE", "STRGT", "STRGE", "STRLT", "STRLE",
@@ -2695,7 +2695,7 @@ yyreduce:
   case 13:
 #line 136 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, (yyvsp[-2].opval)->file, (yyvsp[-2].opval)->line);
+      SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, (yyvsp[-2].opval)->file, (yyvsp[-2].opval)->line);
       SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, (yyvsp[-1].opval));
       (yyval.opval) = op_module_block;
     }

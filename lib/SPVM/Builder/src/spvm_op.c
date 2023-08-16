@@ -105,7 +105,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CURRENT_CLASS",
     "CLASS",
     "EXTENDS",
-    "MODULE_BLOCK",
+    "CLASS_BLOCK",
     "END_OF_FILE",
     "IF",
     "UNLESS",
@@ -226,7 +226,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "REFERENCE",
     "DEREF",
     "STRING_LENGTH",
-    "CURRENT_MODULE_NAME",
+    "CURRENT_CLASS_NAME",
     "ALLOW",
     "WARN",
     "PRINT",
@@ -1581,10 +1581,10 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) {
   
   // Class
-  SPVM_OP* op_module = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE, op_method->file, op_method->line);
+  SPVM_OP* op_module = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
   
   // Create module block
-  SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, op_method->file, op_method->line);
+  SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
   SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
   SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
   SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, op_list_definitions);

@@ -27,7 +27,7 @@
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
 %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
-%token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_MODULE_NAME UNWEAKEN '[' '{' '('
+%token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
 %type <opval> opt_modules modules module module_block version_decl
@@ -134,7 +134,7 @@ opt_extends
 module_block
   : '{' opt_definitions '}'
     {
-      SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MODULE_BLOCK, $1->file, $1->line);
+      SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, $2);
       $$ = op_module_block;
     }
@@ -789,7 +789,7 @@ operator
         $$ = $2;
       }
     }
-  | CURRENT_MODULE_NAME
+  | CURRENT_CLASS_NAME
   | isweak_field
   | comparison_operator
   | isa

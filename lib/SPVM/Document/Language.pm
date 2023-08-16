@@ -215,7 +215,7 @@ Examples:
 
 =head2 Current Class
 
-C<&> before method name means the current class. C<&> is replaced with C<CURRENT_MODULE_NAME-E<gt>>.
+C<&> before method name means the current class. C<&> is replaced with C<CURRENT_CLASS_NAME-E<gt>>.
 
 Examples:
 
@@ -1237,7 +1237,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
-  %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_MODULE_NAME UNWEAKEN '[' '{' '('
+  %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> opt_modules modules module module_block version_decl
   %type <opval> opt_definitions definitions definition
@@ -1529,7 +1529,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | inc
     | dec
     | '(' operators ')'
-    | CURRENT_MODULE_NAME
+    | CURRENT_CLASS_NAME
     | isweak_field
     | comparison_operator
     | isa
@@ -1820,7 +1820,7 @@ The list of syntax parsing tokens:
     <td>CURRENT_CLASS</td><td>&</td>
   </tr>
   <tr>
-    <td>CURRENT_MODULE_NAME</td><td>__PACKAGE__</td>
+    <td>CURRENT_CLASS_NAME</td><td>__PACKAGE__</td>
   </tr>
   <tr>
     <td>DEC</td><td>--</td>
