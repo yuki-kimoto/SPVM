@@ -1206,7 +1206,9 @@ SPVM_OBJECT** SPVM_API_get_field_object_address(SPVM_ENV* env, SPVM_VALUE* stack
 
 SPVM_OBJECT* SPVM_API_get_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
   
-  SPVM_API_get_field_object(env, stack, object, field);
+  SPVM_OBJECT* value = SPVM_API_get_field_object(env, stack, object, field);
+  
+  return value;
 }
 
 void SPVM_API_set_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int8_t value) {
@@ -1487,7 +1489,7 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* s
     SPVM_API_die(env, stack, "The %s field is not found", field_name, func_name, file, line);
     return NULL;
   };
-  SPVM_OBJECT* value = SPVM_API_get_field_object(env, stack, object, field);
+  SPVM_OBJECT* value = SPVM_API_get_field_string(env, stack, object, field);
   if (value == NULL) {
     return NULL;
   }
