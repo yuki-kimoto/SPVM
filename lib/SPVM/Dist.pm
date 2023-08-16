@@ -271,7 +271,7 @@ sub generate_spvm_class_file {
     $version_decl = '';
   }
   
-  my $spvm_module_content = <<"EOS";
+  my $spvm_class_content = <<"EOS";
 # Copyright (c) $year $user_name
 # MIT License
 
@@ -284,7 +284,7 @@ EOS
   my $spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
   my $lib_dir = $self->lib_dir;
   $spvm_class_rel_file = $self->create_lib_rel_file($spvm_class_rel_file);
-  $self->generate_file($spvm_class_rel_file, $spvm_module_content);
+  $self->generate_file($spvm_class_rel_file, $spvm_class_content);
 }
 
 sub generate_perl_class_file {
@@ -475,8 +475,8 @@ EOS
   }
   
   # Content
-  my $perl_module_content = "";
-  $perl_module_content = <<"EOS";
+  my $perl_class_content = "";
+  $perl_class_content = <<"EOS";
 package SPVM::$basic_type_name;
 
 $version_decl
@@ -511,7 +511,7 @@ EOS
   # Generate file
   my $perl_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'pm');
   $perl_class_rel_file =  $self->create_lib_rel_file($perl_class_rel_file);
-  $self->generate_file($perl_class_rel_file, $perl_module_content);
+  $self->generate_file($perl_class_rel_file, $perl_class_content);
 }
 
 sub generate_native_config_file {
@@ -603,7 +603,7 @@ sub generate_native_class_file {
   # Year
   my $year = $self->_year;
   
-  my $native_module_content = <<"EOS";
+  my $native_class_content = <<"EOS";
 // Copyright (c) $year $user_name
 // MIT License
 
@@ -623,7 +623,7 @@ EOS
   
   my $native_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, $native_module_ext);
   $native_class_rel_file =  $self->create_lib_rel_file($native_class_rel_file);
-  $self->generate_file($native_class_rel_file, $native_module_content);
+  $self->generate_file($native_class_rel_file, $native_class_content);
 }
 
 sub generate_gitkeep_file_for_native_module_include_dir {
@@ -949,17 +949,17 @@ sub generate_basic_test_spvm_class_file {
   my $resource = $self->resource;
   
   # Content
-  my $basic_test_spvm_module_content;
+  my $basic_test_spvm_class_content;
   
   if ($resource) {
-    $basic_test_spvm_module_content = <<"EOS";
+    $basic_test_spvm_class_content = <<"EOS";
 class TestCase::$basic_type_name {
   native static method test : int ();
 }
 EOS
   }
   else {
-    $basic_test_spvm_module_content = <<"EOS";
+    $basic_test_spvm_class_content = <<"EOS";
 class TestCase::$basic_type_name {
   use $basic_type_name;
   static method test : int () {
@@ -973,7 +973,7 @@ EOS
   # Generate file
   my $basic_test_spvm_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", 'spvm');
   $basic_test_spvm_class_rel_file = "t/lib/$basic_test_spvm_class_rel_file";
-  $self->generate_file($basic_test_spvm_class_rel_file, $basic_test_spvm_module_content);
+  $self->generate_file($basic_test_spvm_class_rel_file, $basic_test_spvm_class_content);
 }
 
 sub generate_basic_test_native_config_file {
@@ -1036,7 +1036,7 @@ sub generate_basic_test_native_class_file {
   # Content
   my $native_basic_type_name = $basic_type_name;
   $native_basic_type_name =~ s/::/__/g;
-  my $basic_test_native_module_content = <<"EOS";
+  my $basic_test_native_class_content = <<"EOS";
 #include "spvm_native.h"
 
 $extern_c_start
@@ -1063,7 +1063,7 @@ EOS
   }
   my $basic_test_native_class_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file("TestCase::$basic_type_name", $native_module_ext);
   $basic_test_native_class_rel_file = "t/lib/$basic_test_native_class_rel_file";
-  $self->generate_file($basic_test_native_class_rel_file, $basic_test_native_module_content);
+  $self->generate_file($basic_test_native_class_rel_file, $basic_test_native_class_content);
 }
 
 sub generate_dist {

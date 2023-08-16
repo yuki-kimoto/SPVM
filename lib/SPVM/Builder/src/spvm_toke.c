@@ -65,8 +65,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   while(1) {
     
     // Load class file
-    int32_t source_index = compiler->ch_ptr - compiler->current_module_content;
-    if (!compiler->current_module_content || source_index >= compiler->current_module_content_length) {
+    int32_t source_index = compiler->ch_ptr - compiler->current_class_content;
+    if (!compiler->current_class_content || source_index >= compiler->current_class_content_length) {
       
       // End of file
       if (!end_of_file) {
@@ -83,7 +83,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return success;
       }
       
-      if (compiler->current_module_content) {
+      if (compiler->current_class_content) {
         continue;
       }
       else {
@@ -401,7 +401,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       case '=': {
         // POD
-        if (compiler->ch_ptr == compiler->current_module_content || *(compiler->ch_ptr - 1) == '\n') {
+        if (compiler->ch_ptr == compiler->current_class_content || *(compiler->ch_ptr - 1) == '\n') {
           while (1) {
             compiler->ch_ptr++;
             if (*compiler->ch_ptr == '\n') {
@@ -2099,7 +2099,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               case '_': {
                 if (strcmp(symbol_name, "__END__") == 0) {
-                  compiler->ch_ptr = compiler->current_module_content + compiler->current_module_content_length;
+                  compiler->ch_ptr = compiler->current_class_content + compiler->current_class_content_length;
                   compiler->before_ch_ptr = compiler->ch_ptr;
                   compiler->end_of_file = 1;
                   SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END_OF_FILE);
@@ -2193,7 +2193,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
 
   // Start parsing a source code
   compiler->current_file = NULL;
-  compiler->current_module_content = NULL;
+  compiler->current_class_content = NULL;
   compiler->current_tmp_vars_length = 0;
   compiler->ch_ptr = NULL;
   compiler->before_ch_ptr = NULL;
@@ -2397,14 +2397,14 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
             return 0;
           }
           
-          compiler->current_module_content = (char*)class_file->content;
+          compiler->current_class_content = (char*)class_file->content;
           
           if (!(class_file->content_length >= 0)) {
             SPVM_COMPILER_error(compiler, "The content length of the class file in the \"%s\" must be greater than 0.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
             return 0;
           }
           
-          compiler->current_module_content_length = class_file->content_length;
+          compiler->current_class_content_length = class_file->content_length;
           
           compiler->current_class_dir = class_file->dir;
           
@@ -2426,9 +2426,9 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           }
           
           // Set initial information for tokenization
-          compiler->ch_ptr = compiler->current_module_content;
-          compiler->before_ch_ptr = compiler->current_module_content;
-          compiler->line_begin_ptr = compiler->current_module_content;
+          compiler->ch_ptr = compiler->current_class_content;
+          compiler->before_ch_ptr = compiler->current_class_content;
+          compiler->line_begin_ptr = compiler->current_class_content;
           compiler->current_line = 1;
         }
         else {
