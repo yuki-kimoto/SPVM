@@ -144,10 +144,10 @@ sub new {
   
   my $self = {@_};
   
-  # Target module name
+  # Target class name
   my $basic_type_name = $self->{class_name};
   unless (defined $basic_type_name) {
-    confess "A module name not specified";
+    confess "A class name not specified";
   }
   
   # Excutable file name
@@ -922,7 +922,7 @@ sub compile_bootstrap_source_file {
   
   my $config_exe = $self->config;
   
-  # Target module name
+  # Target class name
   my $basic_type_name = $self->class_name;
   
   my $target_perl_basic_type_name = "SPVM::$basic_type_name";

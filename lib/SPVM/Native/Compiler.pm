@@ -114,7 +114,7 @@ The return value is a L<Native::Runtime|SPVM::Native::Runtime> object.
 
   method get_module_file : Native::ModuleFile ($class_name : string);
 
-Gets a L<Native::ModuleFile> object by a module name, and returns it.
+Gets a L<Native::ModuleFile> object by a class name, and returns it.
 
 =head1 See Also
 

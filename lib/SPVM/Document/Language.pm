@@ -54,23 +54,23 @@ A symbol name cannnot contains C<::::>, and cannnot begin with a number 0-9.
 
 =head2 Module Name
 
-A module name is a L<symbol name|/"Symbol Name">.
+A class name is a L<symbol name|/"Symbol Name">.
 
-The part names of a module name must begin uppercase letter. If the module name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
+The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A module name must be the name that the relative module file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the module name must be C<Foo::Bar::Baz>.
+A class name must be the name that the relative module file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
 
-  # Valid module name in the module file "Foo/Bar/Baz.spvm"
+  # Valid class name in the module file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
     
   }
 
-  # Invalid module name in the module file "Foo/Bar/Baz.spvm"
+  # Invalid class name in the module file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Hello {
     
   }
 
-If module names are invalid, a compilation error occurs.
+If class names are invalid, a compilation error occurs.
 
 Examples:
   
@@ -81,7 +81,7 @@ Examples:
   Foo::bar
   Foo_Bar::Baz_Baz
 
-  # Invalid module names
+  # Invalid class names
   Foo
   Foo::::Bar
   Foo::Bar::
@@ -2165,7 +2165,7 @@ The C<class> keyword defines a class. A class has a L<class block|/"Class Block"
   
   }
 
-The module name must follow the naming rule of the L<module name|/"Module Name">.
+The class name must follow the naming rule of the L<class name|/"Module Name">.
 
 Examples:
 
@@ -2430,7 +2430,7 @@ Examples:
 
 The anon class is the class that is defined by the L<anon method|/"Anon Method"> syntax.
 
-A anon class has its unique L<module name|/"Module Name"> corresponding to the module name, the line number and the position of columns the anon class is defined.
+A anon class has its unique L<class name|/"Module Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
 
 L<Examples:>
 
@@ -2623,7 +2623,7 @@ The C<use> statemenet must be defined directly under the L<class definition|/"Cl
 
 =head2 alias Statement
 
-The C<alias> statemenet creates an alias name for a module name.
+The C<alias> statemenet creates an alias name for a class name.
   
   # Create alias
   alias Foo::Bar as FB;
@@ -2726,7 +2726,7 @@ The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object 
 
 The class variable mame must follow the rule defined in the L<class variable name|/"Class Variable Name">, and must not contain C<::>. Otherwise a compilation error occurs.
 
-If a module name with the same name is defined, a compilation error occurs.
+If a class name with the same name is defined, a compilation error occurs.
 
 L<Class variable attributes|/"Class Variable Attribute"> can be specified.
 
@@ -3144,7 +3144,7 @@ A class method is defined with the C<static> keyword.
     # ...
   }
 
-A class method can be called from the L<module name|/"Module Name">.
+A class method can be called from the L<class name|/"Module Name">.
   
   # Call a class method
   my $total = Foo->sum(1, 2);
@@ -6903,7 +6903,7 @@ If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Val
 
 The return type is the L<void type|/"void Type">.
 
-The following one is an example of a stack trace. Each line of the stack trace constains the module name, the method name, the file name and the line number of the caller.
+The following one is an example of a stack trace. Each line of the stack trace constains the class name, the method name, the file name and the line number of the caller.
 
   Error
     TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
@@ -8480,7 +8480,7 @@ The creating object is an L<operator|/"Operator"> to create an object using the 
 
   new CLASS_NAME;
 
-The module name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
+The class name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
 
 The fields of the created object are initialized by the L<initial value|/"Initial Value">.
 
@@ -8700,7 +8700,7 @@ Examples:
 
 =head2 Getting Current Module Name
 
-The C<__PACKAGE__> operator gets the current module name.
+The C<__PACKAGE__> operator gets the current class name.
 
   __PACKAGE__
 
@@ -8719,7 +8719,7 @@ The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get t
 
   __FILE__
 
-The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the module name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
+The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
 
 Examples:
 

@@ -17,7 +17,7 @@ The module file native APIs of L<SPVM> are the APIs to manipulate module files.
 
   const char* (*get_class_name)(void* compiler, void* module_file);
 
-Returns the module name.
+Returns the class name.
 
 =head2 get_file
 

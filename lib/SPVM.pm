@@ -102,9 +102,9 @@ Calling a SPVM method from Perl:
 
 Loads the L<SPVM> module.
 
-If a module name of SPVM is given as the first argument, the SPVM module is loaded and is bound to a Perl module.
+If a class name of SPVM is given as the first argument, the SPVM module is loaded and is bound to a Perl module.
 
-The bound Perl module name is prefixed with C<SPVM::>.
+The bound Perl class name is prefixed with C<SPVM::>.
 
 Exceptions:
 

@@ -1089,7 +1089,7 @@ If this field is undef, whether the messages are output or not is determined by 
 
 Gets and sets the C<class_name> field.
 
-This field is the module name of this config.
+This field is the class name of this config.
 
 =head2 file
 

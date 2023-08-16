@@ -101,7 +101,7 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
 
 Gets and sets the C<class_name> field.
 
-This field is a module name of a resource.
+This field is a class name of a resource.
 
 =head2 mode
 

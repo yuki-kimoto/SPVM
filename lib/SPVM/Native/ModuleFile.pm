@@ -22,7 +22,7 @@ The Native::ModuleFile class of L<SPVM> has methods to manipulate information of
 
   method get_class_name : string ();
 
-Returns the module name.
+Returns the class name.
 
 If a memory error occurs, an exception is thrown.
 

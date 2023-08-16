@@ -13,7 +13,7 @@ use SPVM::Dist;
     );
     
     eval { $dist->generate_dist };
-    like($@, qr/The module name must be specified/);
+    like($@, qr/The class name must be specified/);
   }
 
   {
@@ -22,7 +22,7 @@ use SPVM::Dist;
     );
     
     eval { $dist->generate_dist };
-    like($@, qr/The module name cannnot contain \"-\"/);
+    like($@, qr/The class name cannnot contain \"-\"/);
   }
 }
 
