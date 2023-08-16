@@ -51,6 +51,9 @@ typedef struct spvm_api_class_var SPVM_API_CLASS_VAR;
 struct spvm_api_field;
 typedef struct spvm_api_field SPVM_API_FIELD;
 
+struct spvm_api_type;
+typedef struct spvm_api_type SPVM_API_TYPE;
+
 struct spvm_api_method;
 typedef struct spvm_api_method SPVM_API_METHOD;
 
@@ -322,6 +325,7 @@ struct spvm_env_api {
   SPVM_API_FIELD* field;
   SPVM_API_METHOD* method;
   SPVM_API_ARG* arg;
+  SPVM_API_TYPE* type;
 };
 
 struct spvm_api_allocator {
@@ -426,6 +430,10 @@ struct spvm_api_field {
   int32_t (*get_type_dimension)(void* runtime, void* field);
   int32_t (*get_type_flag)(void* runtime, void* field);
   void* (*get_current_basic_type)(void* runtime, void* field);
+};
+
+struct spvm_api_type {
+  const char* (*get_name)(void* runtime, void* field);
 };
 
 struct spvm_api_method {

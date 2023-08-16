@@ -92,6 +92,12 @@ L<SPVM::Document::NativeAPI::Method>
 
 L<SPVM::Document::NativeAPI::Argument>
 
+=head3 Type Native API
+
+  env->api->type;
+
+L<SPVM::Document::NativeAPI::Type>
+
 =head2 allocator
 
   void* allocator;

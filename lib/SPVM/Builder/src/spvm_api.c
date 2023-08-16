@@ -40,6 +40,7 @@
 #include "spvm_api_field.h"
 #include "spvm_api_method.h"
 #include "spvm_api_arg.h"
+#include "spvm_api_type.h"
 
 static const char* FILE_NAME = "spvm_api.c";
 
@@ -61,6 +62,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
   
   SPVM_API_FIELD* api_field = SPVM_API_FIELD_new_api();
   
+  SPVM_API_TYPE* api_type = SPVM_API_TYPE_new_api();
+  
   SPVM_API_METHOD* api_method = SPVM_API_METHOD_new_api();
   
   SPVM_API_ARG* api_arg = SPVM_API_ARG_new_api();
@@ -76,6 +79,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     api_field,
     api_method,
     api_arg,
+    api_type,
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
@@ -330,6 +334,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   SPVM_API_BASIC_TYPE_free_api(env->api->basic_type);
   SPVM_API_CLASS_VAR_free_api(env->api->class_var);
   SPVM_API_FIELD_free_api(env->api->field);
+  SPVM_API_TYPE_free_api(env->api->type);
   SPVM_API_METHOD_free_api(env->api->method);
   SPVM_API_ARG_free_api(env->api->arg);
   

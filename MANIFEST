@@ -77,6 +77,7 @@ lib/SPVM/Builder/include/spvm_api_field.h
 lib/SPVM/Builder/include/spvm_api_method.h
 lib/SPVM/Builder/include/spvm_api_runtime.h
 lib/SPVM/Builder/include/spvm_api_string_buffer.h
+lib/SPVM/Builder/include/spvm_api_type.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
 lib/SPVM/Builder/include/spvm_attribute.h
 lib/SPVM/Builder/include/spvm_basic_type.h
@@ -145,6 +146,7 @@ lib/SPVM/Builder/src/spvm_api_field.c
 lib/SPVM/Builder/src/spvm_api_method.c
 lib/SPVM/Builder/src/spvm_api_runtime.c
 lib/SPVM/Builder/src/spvm_api_string_buffer.c
+lib/SPVM/Builder/src/spvm_api_type.c
 lib/SPVM/Builder/src/spvm_array_field_access.c
 lib/SPVM/Builder/src/spvm_attribute.c
 lib/SPVM/Builder/src/spvm_basic_type.c
@@ -228,6 +230,7 @@ lib/SPVM/Document/NativeAPI/Method.pm
 lib/SPVM/Document/NativeAPI/ModuleFile.pm
 lib/SPVM/Document/NativeAPI/Runtime.pm
 lib/SPVM/Document/NativeAPI/StringBuffer.pm
+lib/SPVM/Document/NativeAPI/Type.pm
 lib/SPVM/Document/NativeClass.pm
 lib/SPVM/Document/NativeModule.pm
 lib/SPVM/Document/Resource.pm
