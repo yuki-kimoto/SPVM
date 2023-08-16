@@ -256,7 +256,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
-SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
+SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
   const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   
@@ -269,7 +269,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_O
   
   type->basic_type = basic_type;
   
-  type->basic_type->op_module = op_module;
+  type->basic_type->op_class = op_class;
   type->basic_type->op_extends = op_extends;
   
   type->basic_type->module_dir = compiler->current_module_dir;
@@ -309,8 +309,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_O
     
     // If class name is different from the class name corresponding to the module file, compile error occur.
     if (strcmp(basic_type_name, compiler->current_class_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_class_name, op_module->file, op_module->line);
-      return op_module;
+      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_class_name, op_class->file, op_class->line);
+      return op_class;
     }
     
     SPVM_LIST* anon_op_types = compiler->current_anon_op_types;
@@ -369,7 +369,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_O
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid module attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_module->file, op_module->line);
+          SPVM_COMPILER_error(compiler, "Invalid module attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_class->file, op_class->line);
         }
       }
     }
@@ -857,13 +857,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_O
     
     // Add an default INIT block
     if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS && !has_init_block) {
-      SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_module->file, op_module->line);
+      SPVM_OP* op_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_INIT, op_class->file, op_class->line);
       
       // Statements
-      SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_module->file, op_module->line);
+      SPVM_OP* op_list_statements = SPVM_OP_new_op_list(compiler, op_class->file, op_class->line);
       
       // Block
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_module->file, op_module->line);
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_class->file, op_class->line);
       SPVM_OP_insert_child(compiler, op_block, op_block->last, op_list_statements);
       
       SPVM_OP* op_method = SPVM_OP_build_init_block(compiler, op_init, op_block);
@@ -992,20 +992,20 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_module, SPVM_O
   // mulnum_t
   if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
     if (type->basic_type->methods->length > 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_module->file, op_module->line);
+      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
     }
     if (type->basic_type->class_vars->length > 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_module->file, op_module->line);
+      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
     }
     if (type->basic_type->unmerged_fields->length == 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", op_module->file, op_module->line);
+      SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", op_class->file, op_class->line);
     }
     else if (type->basic_type->unmerged_fields->length > 255) {
-      SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", op_module->file, op_module->line);
+      SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", op_class->file, op_class->line);
     }
   }
 
-  return op_module;
+  return op_class;
 }
 
 SPVM_OP* SPVM_OP_build_extends(SPVM_COMPILER* compiler, SPVM_OP* op_extends, SPVM_OP* op_type_parent_basic_type) {
@@ -1581,13 +1581,13 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) {
   
   // Class
-  SPVM_OP* op_module = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
+  SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
   
   // Create module block
-  SPVM_OP* op_module_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
+  SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
   SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
   SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
-  SPVM_OP_insert_child(compiler, op_module_block, op_module_block->last, op_list_definitions);
+  SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_definitions);
 
   // int32_t max length is 10(2147483647)
   int32_t int32_max_length = 10;
@@ -1612,7 +1612,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   op_method->uv.method->anon_method_defined_basic_type_name = anon_method_defined_rel_file_basic_type_name;
   
   // Build module
-  SPVM_OP_build_class(compiler, op_module, op_type, op_module_block, NULL, NULL);
+  SPVM_OP_build_class(compiler, op_class, op_type, op_class_block, NULL, NULL);
   
   // Type
   SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, name_basic_type, op_method->file, op_method->line);
