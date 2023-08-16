@@ -66,9 +66,9 @@ The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> objec
 
 The C<basic_type> argument is a basic type object.
 
-=head2 get_module_dir
+=head2 get_class_dir
 
-  const void* (*get_module_dir)(void* runtime, void* basic_type);
+  const void* (*get_class_dir)(void* runtime, void* basic_type);
 
 Returns the module directory of the basic type.
 
@@ -76,9 +76,9 @@ The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> objec
 
 The C<basic_type> argument is a basic type object.
 
-=head2 get_module_rel_file
+=head2 get_class_rel_file
 
-  const void* (*get_module_rel_file)(void* runtime, void* basic_type);
+  const void* (*get_class_rel_file)(void* runtime, void* basic_type);
 
 Returns the module relative file of the basic type.
 

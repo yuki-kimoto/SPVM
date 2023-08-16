@@ -3,7 +3,7 @@
 
 class Native::Compiler : pointer {
   use Native::Runtime;
-  use Native::ModuleFile;
+  use Native::ClassFile;
   
   # Fields
   
@@ -25,6 +25,6 @@ class Native::Compiler : pointer {
   
   native method get_error_messages : string[] ();
   
-  native method get_module_file : Native::ModuleFile ($class_name : string);
+  native method get_class_file : Native::ClassFile ($class_name : string);
   
 }

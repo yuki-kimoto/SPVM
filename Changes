@@ -11,7 +11,7 @@
   
   [Incompatible Changes]
     * All methods and fields and native APIs that names are "module_name" are renamed to "class_name".
-    
+    * The module file native API is renamed to the class file native API.
 0.989034 2023-08-14
 
   [Bug Fix]

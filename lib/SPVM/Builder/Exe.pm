@@ -219,7 +219,7 @@ sub build_exe_file {
   
   my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
   
-  my $module_file = $basic_type->_get_module_file;
+  my $class_file = $basic_type->_get_class_file;
   
   # Object files
   my $object_files = [];
@@ -290,26 +290,26 @@ sub get_required_resources {
     
     my $native_method_names = $basic_type->_get_native_method_names;
     if (@$native_method_names) {
-      my $module_file = $basic_type->_get_module_file;
-      my $native_dir = $module_file;
+      my $class_file = $basic_type->_get_class_file;
+      my $native_dir = $class_file;
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
-      my $input_dir = SPVM::Builder::Util::remove_basic_type_name_part_from_file($module_file, $perl_basic_type_name);
+      my $input_dir = SPVM::Builder::Util::remove_basic_type_name_part_from_file($class_file, $perl_basic_type_name);
       my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
       
-      unless (defined $module_file) {
+      unless (defined $class_file) {
         my $config_exe_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
         if ($config_exe_file) {
-          $module_file = $config_exe_file;
-          $module_file =~ s/\.config$/\.spvm/;
+          $class_file = $config_exe_file;
+          $class_file =~ s/\.config$/\.spvm/;
         }
         else {
-          confess "The module file \"$module_file\" is not found";
+          confess "The class file \"$class_file\" is not found";
         }
       }
-      my $config_exe = $builder->create_native_config_from_module_file($module_file);
+      my $config_exe = $builder->create_native_config_from_class_file($class_file);
       
       my $resource_names = $config_exe->get_resource_names;
       for my $resource_name (@$resource_names) {
@@ -715,28 +715,28 @@ EOS
   for my $basic_type_name (@$basic_type_names) {
     my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
     
-    my $module_file = $compiler->get_module_file($basic_type_name);
+    my $class_file = $compiler->get_class_file($basic_type_name);
     
-    my $module_file_rel_file = $module_file->get_rel_file;
+    my $class_file_rel_file = $class_file->get_rel_file;
     
-    my $module_file_content = $module_file->get_content;
+    my $class_file_content = $class_file->get_content;
     
-    my $module_file_content_length = $module_file->get_content_length;
+    my $class_file_content_length = $class_file->get_content_length;
     
-    my $source_module_file = '';
+    my $source_class_file = '';
     
-    $source_module_file .= qq|  {\n|;
+    $source_class_file .= qq|  {\n|;
     
-    $source_module_file .= qq|    env->api->compiler->add_module_file(compiler, "$basic_type_name");\n|;
+    $source_class_file .= qq|    env->api->compiler->add_class_file(compiler, "$basic_type_name");\n|;
     
-    $source_module_file .= qq|    void* module_file = env->api->compiler->get_module_file(compiler, "$basic_type_name");\n|;
+    $source_class_file .= qq|    void* class_file = env->api->compiler->get_class_file(compiler, "$basic_type_name");\n|;
     
-    if (defined $module_file_rel_file) {
-      $source_module_file .= qq|    env->api->module_file->set_rel_file(compiler, module_file, "$module_file_rel_file");\n|;
+    if (defined $class_file_rel_file) {
+      $source_class_file .= qq|    env->api->class_file->set_rel_file(compiler, class_file, "$class_file_rel_file");\n|;
     }
     
-    if (defined $module_file_content) {
-      my $content_espcaped = $module_file_content;
+    if (defined $class_file_content) {
+      my $content_espcaped = $class_file_content;
       
       {
         use bytes;
@@ -745,14 +745,14 @@ EOS
         $content_espcaped =~ s/([^[:print:]])/sprintf("\\%03o", ord($1))/ge;
       }
       
-      $source_module_file .= qq|    env->api->module_file->set_content(compiler, module_file, "$content_espcaped");\n|;
+      $source_class_file .= qq|    env->api->class_file->set_content(compiler, class_file, "$content_espcaped");\n|;
     }
     
-    $source_module_file .= qq|    env->api->module_file->set_content_length(compiler, module_file, $module_file_content_length);\n|;
+    $source_class_file .= qq|    env->api->class_file->set_content_length(compiler, class_file, $class_file_content_length);\n|;
       
-    $source_module_file .= qq|  }\n|;
+    $source_class_file .= qq|  }\n|;
     
-    $source .= $source_module_file;
+    $source .= $source_class_file;
   }
   
   $source .= qq|  env->api->compiler->set_start_file(compiler, __FILE__);\n|;
@@ -853,12 +853,12 @@ sub create_bootstrap_source {
   
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
   
-  my $module_files = [];
+  my $class_files = [];
   for my $basic_type_name (@$basic_type_names) {
     my $basic_type = $self->runtime->get_basic_type_by_name($basic_type_name);
-    if ($basic_type->get_module_dir) {
-      my $module_file = $basic_type->_get_module_file;
-      push @$module_files, $module_file;
+    if ($basic_type->get_class_dir) {
+      my $class_file = $basic_type->_get_class_file;
+      push @$class_files, $class_file;
     }
   }
   
@@ -902,7 +902,7 @@ sub create_bootstrap_source {
   
   # Create source file
   $self->create_source_file({
-    input_files => [@$module_files, __FILE__],
+    input_files => [@$class_files, __FILE__],
     output_file => $bootstrap_source_file,
     create_cb => $create_cb,
   });
@@ -1011,7 +1011,7 @@ sub compile_module_precompile_source_file {
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
     mkpath $build_src_dir;
     
-    my $module_file = $basic_type->_get_module_file;
+    my $class_file = $basic_type->_get_class_file;
     my $precompile_source = $self->runtime->build_precompile_module_source($basic_type);
     
     $builder_cc->build_precompile_module_source_file(
@@ -1019,7 +1019,7 @@ sub compile_module_precompile_source_file {
       {
         output_dir => $build_src_dir,
         precompile_source => $precompile_source,
-        module_file => $module_file,
+        class_file => $class_file,
       }
     );
     
@@ -1070,26 +1070,26 @@ sub compile_module_native_source_files {
   
   my $native_method_names = $basic_type->_get_native_method_names;
   if (@$native_method_names) {
-    my $module_file = $basic_type->_get_module_file;
-    my $native_dir = $module_file;
+    my $class_file = $basic_type->_get_class_file;
+    my $native_dir = $class_file;
     
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir = SPVM::Builder::Util::remove_basic_type_name_part_from_file($module_file, $perl_basic_type_name);
+    my $input_dir = SPVM::Builder::Util::remove_basic_type_name_part_from_file($class_file, $perl_basic_type_name);
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
 
-    unless (defined $module_file) {
+    unless (defined $class_file) {
       my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($basic_type_name);
       if ($config_file) {
-        $module_file = $config_file;
-        $module_file =~ s/\.config$/\.spvm/;
+        $class_file = $config_file;
+        $class_file =~ s/\.config$/\.spvm/;
       }
       else {
-        confess "The module file \"$module_file\" is not loaded";
+        confess "The class file \"$class_file\" is not loaded";
       }
     }
-    my $config = $builder->create_native_config_from_module_file($module_file);
+    my $config = $builder->create_native_config_from_class_file($class_file);
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
     

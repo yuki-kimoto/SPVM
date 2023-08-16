@@ -24,13 +24,13 @@ struct spvm_compiler {
   SPVM_LIST* op_types;
   
   // Directory of curreparsed file
-  const char* current_module_dir;
+  const char* current_class_dir;
   
   // Current parsed file name
   const char* current_file;
   
   // Current parsed file relative name
-  const char* current_module_rel_file;
+  const char* current_class_rel_file;
   
   // Current parsed basic type name
   const char* current_class_name;
@@ -56,7 +56,7 @@ struct spvm_compiler {
   
   SPVM_ALLOCATOR* error_message_allocator;
   
-  SPVM_ALLOCATOR* module_file_allocator;
+  SPVM_ALLOCATOR* class_file_allocator;
   
   // Line start position
   char* line_begin_ptr;
@@ -102,9 +102,9 @@ struct spvm_compiler {
   // Syntax error count
   SPVM_LIST* error_messages;
   
-  SPVM_LIST* module_files;
+  SPVM_LIST* class_files;
   
-  SPVM_LIST* module_file_class_names;
+  SPVM_LIST* class_file_class_names;
   
   SPVM_LIST* constant_strings;
   
@@ -134,15 +134,15 @@ SPVM_COMPILER* SPVM_COMPILER_new();
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler);
 
-SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* basic_type_name);
+SPVM_CLASS_FILE* SPVM_COMPILER_get_class_file(SPVM_COMPILER* compiler, const char* basic_type_name);
 
-void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* basic_type_name, SPVM_MODULE_FILE* module_file);
+void SPVM_COMPILER_set_class_file(SPVM_COMPILER* compiler, const char* basic_type_name, SPVM_CLASS_FILE* class_file);
 
-void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* class_name);
+void SPVM_COMPILER_add_class_file(SPVM_COMPILER* compiler, const char* class_name);
 
-void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* class_name);
+void SPVM_COMPILER_delete_class_file(SPVM_COMPILER* compiler, const char* class_name);
 
-void SPVM_COMPILER_free_module_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
+void SPVM_COMPILER_free_class_file(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file);
 
 void SPVM_COMPILER_add_basic_type_core(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t basic_type_category);
 
@@ -184,9 +184,9 @@ SPVM_RUNTIME* SPVM_COMPILER_get_runtime(SPVM_COMPILER* compiler);
 
 int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler);
 
-void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler);
 
-void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content);
+void SPVM_COMPILER_set_default_loaded_class_file(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content);
 
 void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler);
 

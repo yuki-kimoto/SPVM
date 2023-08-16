@@ -27,13 +27,13 @@ const char* SPVM_API_COMPILER_get_include_dir (SPVM_COMPILER* compiler, int32_t 
 
 void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler);
 
-void SPVM_API_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* class_name);
+void SPVM_API_COMPILER_add_class_file(SPVM_COMPILER* compiler, const char* class_name);
 
-SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* class_name);
+SPVM_CLASS_FILE* SPVM_API_COMPILER_get_class_file(SPVM_COMPILER* compiler, const char* class_name);
 
-void SPVM_API_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* class_name, SPVM_MODULE_FILE* module_file);
+void SPVM_API_COMPILER_set_class_file(SPVM_COMPILER* compiler, const char* class_name, SPVM_CLASS_FILE* class_file);
 
-void SPVM_API_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* class_name);
+void SPVM_API_COMPILER_delete_class_file(SPVM_COMPILER* compiler, const char* class_name);
 
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name);
 

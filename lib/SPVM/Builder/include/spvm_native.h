@@ -36,8 +36,8 @@ typedef struct spvm_api_string_buffer SPVM_API_STRING_BUFFER;
 struct spvm_api_compiler;
 typedef struct spvm_api_compiler SPVM_API_COMPILER;
 
-struct spvm_api_module_file;
-typedef struct spvm_api_module_file SPVM_API_MODULE_FILE;
+struct spvm_api_class_file;
+typedef struct spvm_api_class_file SPVM_API_CLASS_FILE;
 
 struct spvm_api_runtime;
 typedef struct spvm_api_runtime SPVM_API_RUNTIME;
@@ -315,7 +315,7 @@ struct spvm_env_api {
   SPVM_API_ALLOCATOR* allocator;
   SPVM_API_STRING_BUFFER* string_buffer;
   SPVM_API_COMPILER* compiler;
-  SPVM_API_MODULE_FILE* module_file;
+  SPVM_API_CLASS_FILE* class_file;
   SPVM_API_RUNTIME* runtime;
   SPVM_API_BASIC_TYPE* basic_type;
   SPVM_API_CLASS_VAR* class_var;
@@ -347,27 +347,27 @@ struct spvm_api_compiler {
   const char* (*get_include_dir )(void* compiler, int32_t index);
   void (*add_include_dir)(void* compiler, const char* include_dir);
   void (*clear_include_dirs)(void* compiler);
-  void (*add_module_file)(void* compiler, const char* class_name);
-  void (*delete_module_file)(void* compiler, const char* class_name);
-  void* (*get_module_file)(void* compiler, const char* class_name);
+  void (*add_class_file)(void* compiler, const char* class_name);
+  void (*delete_class_file)(void* compiler, const char* class_name);
+  void* (*get_class_file)(void* compiler, const char* class_name);
   int32_t (*compile)(void* compiler, const char* basic_type_name);
   const char* (*get_error_message)(void* compiler, int32_t index);
   int32_t (*get_error_messages_length)(void* compiler);
   void* (*get_runtime)(void* compiler);
 };
 
-struct spvm_api_module_file {
-  const char* (*get_class_name)(void* compiler, void* module_file);
-  const char* (*get_file)(void* compiler, void* module_file);
-  void (*set_file)(void* compiler, void* module_file, const char* file);
-  const char* (*get_dir)(void* compiler, void* module_file);
-  void (*set_dir)(void* compiler, void* module_file, const char* dir);
-  const char* (*get_rel_file)(void* compiler, void* module_file);
-  void (*set_rel_file)(void* compiler, void* module_file, const char* rel_file);
-  const char* (*get_content)(void* compiler, void* module_file);
-  void (*set_content)(void* compiler, void* module_file, const char* content);
-  int32_t (*get_content_length)(void* compiler, void* module_file);
-  void (*set_content_length)(void* compiler, void* module_file, int32_t content_length);
+struct spvm_api_class_file {
+  const char* (*get_class_name)(void* compiler, void* class_file);
+  const char* (*get_file)(void* compiler, void* class_file);
+  void (*set_file)(void* compiler, void* class_file, const char* file);
+  const char* (*get_dir)(void* compiler, void* class_file);
+  void (*set_dir)(void* compiler, void* class_file, const char* dir);
+  const char* (*get_rel_file)(void* compiler, void* class_file);
+  void (*set_rel_file)(void* compiler, void* class_file, const char* rel_file);
+  const char* (*get_content)(void* compiler, void* class_file);
+  void (*set_content)(void* compiler, void* class_file, const char* content);
+  int32_t (*get_content_length)(void* compiler, void* class_file);
+  void (*set_content_length)(void* compiler, void* class_file, int32_t content_length);
 };
 
 struct spvm_api_runtime {
@@ -390,8 +390,8 @@ struct spvm_api_basic_type {
   int32_t (*get_category)(void* runtime, void* basic_type);
   void* (*get_parent)(void* runtime, void* basic_type);
   const void* (*get_version_string)(void* runtime, void* basic_type);
-  const void* (*get_module_dir)(void* runtime, void* basic_type);
-  const void* (*get_module_rel_file)(void* runtime, void* basic_type);
+  const void* (*get_class_dir)(void* runtime, void* basic_type);
+  const void* (*get_class_rel_file)(void* runtime, void* basic_type);
   int32_t (*is_pointer)(void* runtime, void* basic_type);
   int32_t (*is_anon)(void* runtime, void* basic_type);
   void* (*get_class_var_by_index)(void* runtime, void* basic_type, int32_t class_var_index);

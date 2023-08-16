@@ -1,4 +1,4 @@
-package SPVM::Native::ModuleFile;
+package SPVM::Native::ClassFile;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::Native::ModuleFile;
 
 =head1 Name
 
-SPVM::Native::ModuleFile - Information of Module Files
+SPVM::Native::ClassFile - Information of Class Files
 
 =head1 Description
 
-The Native::ModuleFile class of L<SPVM> has methods to manipulate information of module files
+The Native::ClassFile class of L<SPVM> has methods to manipulate information of class files
 
 =head1 Usage
 
-  use Native::ModuleFile;
+  use Native::ClassFile;
 
 =head1 Instance Methods
 

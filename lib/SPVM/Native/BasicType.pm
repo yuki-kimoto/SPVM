@@ -34,9 +34,9 @@ Returns the basic type name.
 
 If a memory error occurs, an exception is thrown.
 
-=head2 get_module_dir
+=head2 get_class_dir
 
-  method get_module_dir : string ();
+  method get_class_dir : string ();
 
 Returns the module directory.
 

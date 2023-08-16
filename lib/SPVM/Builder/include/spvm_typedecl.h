@@ -7,9 +7,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
-// spvm_module_file.h
-struct spvm_module_file;
-typedef struct spvm_module_file SPVM_MODULE_FILE;
+// spvm_class_file.h
+struct spvm_class_file;
+typedef struct spvm_class_file SPVM_CLASS_FILE;
 
 // spvm_runtime_arg.h
 struct spvm_runtime_arg;

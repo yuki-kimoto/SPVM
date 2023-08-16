@@ -4569,7 +4569,7 @@ create_native_compiler(...)
 }
 
 SV*
-get_module_file(...)
+get_class_file(...)
   PPCODE:
 {
   
@@ -4585,45 +4585,45 @@ get_module_file(...)
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  void* module_file = env_api->api->compiler->get_module_file(compiler, class_name);
-  SV* sv_module_file = &PL_sv_undef;
-  if (module_file) {
-    HV* hv_module_file = (HV*)sv_2mortal((SV*)newHV());
+  void* class_file = env_api->api->compiler->get_class_file(compiler, class_name);
+  SV* sv_class_file = &PL_sv_undef;
+  if (class_file) {
+    HV* hv_class_file = (HV*)sv_2mortal((SV*)newHV());
     
-    (void)hv_store(hv_module_file, "class_name", strlen("class_name"), SvREFCNT_inc(sv_class_name), 0);
+    (void)hv_store(hv_class_file, "class_name", strlen("class_name"), SvREFCNT_inc(sv_class_name), 0);
     
-    const char* file = env_api->api->module_file->get_file(compiler, module_file);
+    const char* file = env_api->api->class_file->get_file(compiler, class_file);
     if (file) {
       SV* sv_file = sv_2mortal(newSVpv(file, 0));
-      (void)hv_store(hv_module_file, "file", strlen("file"), SvREFCNT_inc(sv_file), 0);
+      (void)hv_store(hv_class_file, "file", strlen("file"), SvREFCNT_inc(sv_file), 0);
     }
     
-    const char* dir = env_api->api->module_file->get_dir(compiler, module_file);
+    const char* dir = env_api->api->class_file->get_dir(compiler, class_file);
     if (dir) {
       SV* sv_dir = sv_2mortal(newSVpv(dir, 0));
-      (void)hv_store(hv_module_file, "dir", strlen("dir"), SvREFCNT_inc(sv_dir), 0);
+      (void)hv_store(hv_class_file, "dir", strlen("dir"), SvREFCNT_inc(sv_dir), 0);
     }
     
-    const char* rel_file = env_api->api->module_file->get_rel_file(compiler, module_file);
+    const char* rel_file = env_api->api->class_file->get_rel_file(compiler, class_file);
     if (rel_file) {
       SV* sv_rel_file = sv_2mortal(newSVpv(rel_file, 0));
-      (void)hv_store(hv_module_file, "rel_file", strlen("rel_file"), SvREFCNT_inc(sv_rel_file), 0);
+      (void)hv_store(hv_class_file, "rel_file", strlen("rel_file"), SvREFCNT_inc(sv_rel_file), 0);
     }
     
-    const char* content = env_api->api->module_file->get_content(compiler, module_file);
+    const char* content = env_api->api->class_file->get_content(compiler, class_file);
     if (content) {
       SV* sv_content = sv_2mortal(newSVpv(content, 0));
-      (void)hv_store(hv_module_file, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
+      (void)hv_store(hv_class_file, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
     }
     
-    int32_t content_length = env_api->api->module_file->get_content_length(compiler, module_file);
+    int32_t content_length = env_api->api->class_file->get_content_length(compiler, class_file);
     SV* sv_content_length = sv_2mortal(newSViv(content_length));
-    (void)hv_store(hv_module_file, "content_length", strlen("content_length"), SvREFCNT_inc(sv_content_length), 0);
+    (void)hv_store(hv_class_file, "content_length", strlen("content_length"), SvREFCNT_inc(sv_content_length), 0);
     
-    sv_module_file = sv_2mortal(newRV_inc((SV*)hv_module_file));
+    sv_class_file = sv_2mortal(newRV_inc((SV*)hv_class_file));
   }
   
-  XPUSHs(sv_module_file);
+  XPUSHs(sv_class_file);
   
   XSRETURN(1);
 }
@@ -4805,7 +4805,7 @@ get_basic_type_names(...)
 }
 
 SV*
-get_module_file(...)
+get_class_file(...)
   PPCODE:
 {
   
@@ -4824,30 +4824,30 @@ get_module_file(...)
   
   void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  const char* module_file;
-  SV* sv_module_file = &PL_sv_undef;
+  const char* class_file;
+  SV* sv_class_file = &PL_sv_undef;
   
   if (basic_type) {
     int32_t basic_type_category = env_api->api->basic_type->get_category(runtime, basic_type);
     if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-      const char* module_dir = env_api->api->basic_type->get_module_dir(runtime, basic_type);
-      const char* module_dir_sep;
-      if (module_dir) {
-        module_dir_sep = "/";
+      const char* class_dir = env_api->api->basic_type->get_class_dir(runtime, basic_type);
+      const char* class_dir_sep;
+      if (class_dir) {
+        class_dir_sep = "/";
       }
       else {
-        module_dir_sep = "";
-        module_dir = "";
+        class_dir_sep = "";
+        class_dir = "";
       }
-      const char* module_rel_file = env_api->api->basic_type->get_module_rel_file(runtime, basic_type);
+      const char* class_rel_file = env_api->api->basic_type->get_class_rel_file(runtime, basic_type);
       
-      sv_module_file = sv_2mortal(newSVpv(module_dir, 0));
-      sv_catpv(sv_module_file, module_dir_sep);
-      sv_catpv(sv_module_file, module_rel_file);
+      sv_class_file = sv_2mortal(newSVpv(class_dir, 0));
+      sv_catpv(sv_class_file, class_dir_sep);
+      sv_catpv(sv_class_file, class_rel_file);
     }
   }
   
-  XPUSHs(sv_module_file);
+  XPUSHs(sv_class_file);
   XSRETURN(1);
 }
 

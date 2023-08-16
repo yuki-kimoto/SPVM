@@ -105,8 +105,8 @@ sub init_global {
         if (@$method_names) {
           # Build classs - Compile C source codes and link them to SPVM precompile method
           # Shared library which is already installed in distribution directory
-          my $module_file = $builder_runtime->get_module_file($basic_type_name);
-          my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
+          my $class_file = $builder_runtime->get_class_file($basic_type_name);
+          my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
           
           if (-f $dynamic_lib_file) {
             my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $category);
@@ -153,8 +153,8 @@ sub load_dynamic_lib {
     
   my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
   
-  my $spvm_module_dir = $basic_type->get_module_dir;
-  my $spvm_module_rel_file = $basic_type->get_module_rel_file;
+  my $spvm_class_dir = $basic_type->get_class_dir;
+  my $spvm_class_rel_file = $basic_type->get_class_rel_file;
   
   for my $category ('precompile', 'native') {
     
@@ -175,10 +175,10 @@ sub load_dynamic_lib {
       # Build modules - Compile C source codes and link them to SPVM precompile method
       # Shared library which is already installed in distribution directory
       
-      if ($spvm_module_dir) {
+      if ($spvm_class_dir) {
         
-        my $module_file = "$spvm_module_dir/$spvm_module_rel_file";
-        my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($module_file, $category);
+        my $class_file = "$spvm_class_dir/$spvm_class_rel_file";
+        my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
         
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
@@ -193,7 +193,7 @@ sub load_dynamic_lib {
           $dynamic_lib_file = $BUILDER->build_at_runtime(
             $basic_type_name,
             {
-              module_file => $module_file,
+              class_file => $class_file,
               category => $category,
               dl_func_list => $dl_func_list,
               precompile_source => $precompile_source

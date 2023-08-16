@@ -58,14 +58,14 @@ A class name is a L<symbol name|/"Symbol Name">.
 
 The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
 
-A class name must be the name that the relative module file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative module file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
+A class name must be the name that the relative class file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative class file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
 
-  # Valid class name in the module file "Foo/Bar/Baz.spvm"
+  # Valid class name in the class file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Baz {
     
   }
 
-  # Invalid class name in the module file "Foo/Bar/Baz.spvm"
+  # Invalid class name in the class file "Foo/Bar/Baz.spvm"
   class Foo::Bar::Hello {
     
   }
@@ -2195,7 +2195,7 @@ Examples:
   
   }
 
-If more than one class is defined in a module file, a compilation error occurs.
+If more than one class is defined in a class file, a compilation error occurs.
 
 =head2 Version Declaration
 
@@ -2597,7 +2597,7 @@ because the to_string method in the Point class has the method compatibility of 
 
 =head2 Class File Name
 
-A class must be written in the following module file.
+A class must be written in the following class file.
 
 Change C<::> to C</>. Add ".spvm" at the end.
 
@@ -8719,7 +8719,7 @@ The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get t
 
   __FILE__
 
-The current file name means the relative path from the base path of the module file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
+The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
 
 Examples:
 

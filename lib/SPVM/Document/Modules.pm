@@ -116,7 +116,7 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<Native::MethodCall|SPVM::Native::MethodCall>
 
-=item * L<Native::ModuleFile|SPVM::Native::ModuleFile>
+=item * L<Native::ClassFile|SPVM::Native::ClassFile>
 
 =item * L<Native::Runtime|SPVM::Native::Runtime>
 

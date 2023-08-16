@@ -110,11 +110,11 @@ Returns the runtime.
 
 The return value is a L<Native::Runtime|SPVM::Native::Runtime> object.
 
-=head2 get_module_file
+=head2 get_class_file
 
-  method get_module_file : Native::ModuleFile ($class_name : string);
+  method get_class_file : Native::ClassFile ($class_name : string);
 
-Gets a L<Native::ModuleFile> object by a class name, and returns it.
+Gets a L<Native::ClassFile> object by a class name, and returns it.
 
 =head1 See Also
 

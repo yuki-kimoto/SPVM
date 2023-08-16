@@ -27,7 +27,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_method.h"
 #include "spvm_string.h"
-#include "spvm_module_file.h"
+#include "spvm_class_file.h"
 
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
@@ -64,7 +64,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
   while(1) {
     
-    // Load module file
+    // Load class file
     int32_t source_index = compiler->ch_ptr - compiler->current_module_content;
     if (!compiler->current_module_content || source_index >= compiler->current_module_content_length) {
       
@@ -76,8 +76,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return END_OF_FILE;
       }
       
-      // Load module file
-      int32_t success = SPVM_TOKE_load_module_file(compiler);
+      // Load class file
+      int32_t success = SPVM_TOKE_load_class_file(compiler);
       
       if (!success) {
         return success;
@@ -2111,7 +2111,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = CURRENT_CLASS_NAME;
                 }
                 else if (strcmp(symbol_name, "__FILE__") == 0) {
-                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->current_module_rel_file, strlen(compiler->current_module_rel_file), compiler->current_file, compiler->current_line);
+                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->current_class_rel_file, strlen(compiler->current_class_rel_file), compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_constant;
                   keyword_token = CONSTANT;
                 }
@@ -2189,7 +2189,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   }
 }
 
-int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
+int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
 
   // Start parsing a source code
   compiler->current_file = NULL;
@@ -2273,10 +2273,10 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
       }
       else {
         // Create moudle relative file name from class name by changing :: to / and add ".spvm"
-        int32_t current_module_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
-        char* current_module_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, current_module_rel_file_length + 1);
+        int32_t current_class_rel_file_length = (int32_t)(strlen(basic_type_name) + 6);
+        char* current_class_rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, current_class_rel_file_length + 1);
         const char* ch_ptr_orig = basic_type_name;
-        char* ch_ptr_to = current_module_rel_file;
+        char* ch_ptr_to = current_class_rel_file;
         while (*ch_ptr_orig) {
           if (*ch_ptr_orig == ':' && *(ch_ptr_orig + 1) == ':') {
             *ch_ptr_to = '/';
@@ -2295,21 +2295,21 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
         
         char* current_file = NULL;
         
-        SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
+        SPVM_CLASS_FILE* class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
         
         const char* include_dir = NULL;
-        if (!module_file) {
+        if (!class_file) {
           
-          // Search module file
+          // Search class file
           FILE* fh = NULL;
           int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
           for (int32_t i = 0; i < include_dirs_length; i++) {
             include_dir = SPVM_COMPILER_get_include_dir(compiler, i);
             
             // File name
-            int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(current_module_rel_file));
+            int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(current_class_rel_file));
             current_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, file_name_length + 1);
-            sprintf(current_file, "%s/%s", include_dir, current_module_rel_file);
+            sprintf(current_file, "%s/%s", include_dir, current_class_rel_file);
             current_file[file_name_length] = '\0';
             
             // \ is replaced to /
@@ -2347,7 +2347,7 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
                 }
               }
               
-              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" module. The module file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, current_module_rel_file, include_dirs_str, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "Failed to load the \"%s\" module. The class file \"%s\" is not found in (%s).\n  at %s line %d", basic_type_name, current_class_rel_file, include_dirs_str, op_use->file, op_use->line);
               
               return 0;
             }
@@ -2358,14 +2358,14 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
             fseek(fh, 0, SEEK_END);
             int32_t source_length = (int32_t)ftell(fh);
             if (source_length < 0) {
-              SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the module file \"%s\".\n  at %s line %d", current_file, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "[System Error]Failed to tell the class file \"%s\".\n  at %s line %d", current_file, op_use->file, op_use->line);
               return 0;
             }
             fseek(fh, 0, SEEK_SET);
             char* source = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, source_length + 1);
             int32_t read_error = 0;
             if ((int32_t)fread(source, 1, source_length, fh) < source_length) {
-              SPVM_COMPILER_error(compiler, "[System Error]Failed to read the module file \"%s\".\n  at %s line %d", current_file, op_use->file, op_use->line);
+              SPVM_COMPILER_error(compiler, "[System Error]Failed to read the class file \"%s\".\n  at %s line %d", current_file, op_use->file, op_use->line);
               SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, source);
               read_error = 1;
             }
@@ -2374,55 +2374,55 @@ int32_t SPVM_TOKE_load_module_file(SPVM_COMPILER* compiler) {
               fclose(fh);
               source[source_length] = '\0';
               
-              SPVM_MODULE_FILE* found_module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
+              SPVM_CLASS_FILE* found_class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
               
-              if (!found_module_file) {
-                SPVM_COMPILER_add_module_file(compiler, basic_type_name);
-                SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
-                SPVM_MODULE_FILE_set_file(compiler, module_file, current_file);
-                SPVM_MODULE_FILE_set_rel_file(compiler, module_file, current_module_rel_file);
-                SPVM_MODULE_FILE_set_dir(compiler, module_file, include_dir);
-                SPVM_MODULE_FILE_set_content(compiler, module_file, source);
-                SPVM_MODULE_FILE_set_content_length(compiler, module_file, source_length);
+              if (!found_class_file) {
+                SPVM_COMPILER_add_class_file(compiler, basic_type_name);
+                SPVM_CLASS_FILE* class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
+                SPVM_CLASS_FILE_set_file(compiler, class_file, current_file);
+                SPVM_CLASS_FILE_set_rel_file(compiler, class_file, current_class_rel_file);
+                SPVM_CLASS_FILE_set_dir(compiler, class_file, include_dir);
+                SPVM_CLASS_FILE_set_content(compiler, class_file, source);
+                SPVM_CLASS_FILE_set_content_length(compiler, class_file, source_length);
               }
             }
           }
         }
         
-        module_file = SPVM_COMPILER_get_module_file(compiler, basic_type_name);
+        class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
         
-        if (module_file) {
-          if (!module_file->content) {
-            SPVM_COMPILER_error(compiler, "The content of the module file in the \"%s\" module must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+        if (class_file) {
+          if (!class_file->content) {
+            SPVM_COMPILER_error(compiler, "The content of the class file in the \"%s\" module must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
             return 0;
           }
           
-          compiler->current_module_content = (char*)module_file->content;
+          compiler->current_module_content = (char*)class_file->content;
           
-          if (!(module_file->content_length >= 0)) {
-            SPVM_COMPILER_error(compiler, "The content length of the module file in the \"%s\" must be greater than 0.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+          if (!(class_file->content_length >= 0)) {
+            SPVM_COMPILER_error(compiler, "The content length of the class file in the \"%s\" must be greater than 0.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
             return 0;
           }
           
-          compiler->current_module_content_length = module_file->content_length;
+          compiler->current_module_content_length = class_file->content_length;
           
-          compiler->current_module_dir = module_file->dir;
+          compiler->current_class_dir = class_file->dir;
           
-          if (!module_file->rel_file) {
-            SPVM_COMPILER_error(compiler, "The relative file path of the module file in the \"%s\" must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
+          if (!class_file->rel_file) {
+            SPVM_COMPILER_error(compiler, "The relative file path of the class file in the \"%s\" must be defined.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
             return 0;
           }
           
-          compiler->current_module_rel_file = module_file->rel_file;
+          compiler->current_class_rel_file = class_file->rel_file;
           
-          compiler->current_class_name = module_file->class_name;
+          compiler->current_class_name = class_file->class_name;
           
-          // If we get current module file path, set it, otherwise set module relative file path
-          if (module_file->file) {
-            compiler->current_file = module_file->file;
+          // If we get current class file path, set it, otherwise set module relative file path
+          if (class_file->file) {
+            compiler->current_file = class_file->file;
           }
           else {
-            compiler->current_file = module_file->rel_file;
+            compiler->current_file = class_file->rel_file;
           }
           
           // Set initial information for tokenization

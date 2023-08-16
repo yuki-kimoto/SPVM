@@ -34,7 +34,7 @@
 #include "spvm_api_string_buffer.h"
 #include "spvm_api_compiler.h"
 #include "spvm_api_runtime.h"
-#include "spvm_api_module_file.h"
+#include "spvm_api_class_file.h"
 #include "spvm_api_basic_type.h"
 #include "spvm_api_class_var.h"
 #include "spvm_api_field.h"
@@ -53,7 +53,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
   
   SPVM_API_RUNTIME* api_runtime = SPVM_API_RUNTIME_new_api();
   
-  SPVM_API_MODULE_FILE* api_module_file = SPVM_API_MODULE_FILE_new_api();
+  SPVM_API_CLASS_FILE* api_class_file = SPVM_API_CLASS_FILE_new_api();
   
   SPVM_API_BASIC_TYPE* api_basic_type = SPVM_API_BASIC_TYPE_new_api();
   
@@ -69,7 +69,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     api_allocator,
     api_string_buffer,
     api_compiler,
-    api_module_file,
+    api_class_file,
     api_runtime,
     api_basic_type,
     api_class_var,
@@ -326,7 +326,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   SPVM_API_STRING_BUFFER_free_api(env->api->string_buffer);
   SPVM_API_COMPILER_free_api(env->api->compiler);
   SPVM_API_RUNTIME_free_api(env->api->runtime);
-  SPVM_API_MODULE_FILE_free_api(env->api->module_file);
+  SPVM_API_CLASS_FILE_free_api(env->api->class_file);
   SPVM_API_BASIC_TYPE_free_api(env->api->basic_type);
   SPVM_API_CLASS_VAR_free_api(env->api->class_var);
   SPVM_API_FIELD_free_api(env->api->field);
@@ -2415,17 +2415,17 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   const char* basic_type_name = basic_type->name;
   const char* method_name = method->name;
 
-  const char* module_dir = basic_type->module_dir;
-  const char* module_dir_sep;
-  if (module_dir) {
-    module_dir_sep = "/";
+  const char* class_dir = basic_type->class_dir;
+  const char* class_dir_sep;
+  if (class_dir) {
+    class_dir_sep = "/";
   }
   else {
-    module_dir = "";
-    module_dir_sep = "";
+    class_dir = "";
+    class_dir_sep = "";
   }
   
-  const char* module_rel_file = basic_type->module_rel_file;
+  const char* class_rel_file = basic_type->class_rel_file;
   
   // Basic type name and method name
   const char* new_line_part = "\n  ";
@@ -2444,9 +2444,9 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   total_length += strlen(arrow_part);
   total_length += strlen(method_name);
   total_length += strlen(at_part);
-  total_length += strlen(module_dir);
-  total_length += strlen(module_dir_sep);
-  total_length += strlen(module_rel_file);
+  total_length += strlen(class_dir);
+  total_length += strlen(class_dir_sep);
+  total_length += strlen(class_rel_file);
 
   const char* line_part = " line ";
   char line_str[20];
@@ -2473,9 +2473,9 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
     arrow_part,
     method_name,
     at_part,
-    module_dir,
-    module_dir_sep,
-    module_rel_file,
+    class_dir,
+    class_dir_sep,
+    class_rel_file,
     line_part,
     line
   );

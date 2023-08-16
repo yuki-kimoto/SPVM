@@ -50,11 +50,11 @@ L<SPVM::Document::NativeAPI::StringBuffer>
 
 L<SPVM::Document::NativeAPI::Compiler>
 
-=head3 Module File Native API
+=head3 Class File Native API
 
-  env->api->module_file;
+  env->api->class_file;
 
-L<SPVM::Document::NativeAPI::ModuleFile>
+L<SPVM::Document::NativeAPI::ClassFile>
 
 =head3 Runtime Native API
 

@@ -1402,18 +1402,18 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* string = object_vars[opcode->operand0];
         int32_t line = opcode->operand1;
         
-        const char* module_dir = current_basic_type->module_dir;
-        const char* module_dir_sep;
-        if (module_dir) {
-          module_dir_sep = "/";
+        const char* class_dir = current_basic_type->class_dir;
+        const char* class_dir_sep;
+        if (class_dir) {
+          class_dir_sep = "/";
         }
         else {
-          module_dir_sep = "";
-          module_dir = "";
+          class_dir_sep = "";
+          class_dir = "";
         }
-        const char* module_rel_file = current_basic_type->module_rel_file;
+        const char* class_rel_file = current_basic_type->class_rel_file;
         
-        SPVM_IMPLEMENT_WARN(env, stack, string, module_dir, module_dir_sep, module_rel_file, line);
+        SPVM_IMPLEMENT_WARN(env, stack, string, class_dir, class_dir_sep, class_rel_file, line);
         
         break;
       }

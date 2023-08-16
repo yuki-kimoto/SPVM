@@ -581,7 +581,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         }
       }
       
-      assert(method->current_basic_type->module_file);
+      assert(method->current_basic_type->class_file);
       
       // Add variable declarations if the block does not exist
       if (!method->op_block) {
@@ -629,11 +629,11 @@ void SPVM_CHECK_check_basic_types_ast(SPVM_COMPILER* compiler) {
     
     SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->name, strlen(basic_type->name));
     
-    if (basic_type->module_dir) {
-      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->module_dir, strlen(basic_type->module_dir));
+    if (basic_type->class_dir) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_dir, strlen(basic_type->class_dir));
     }
-    if (basic_type->module_rel_file) {
-      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->module_rel_file, strlen(basic_type->module_rel_file));
+    if (basic_type->class_rel_file) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_rel_file, strlen(basic_type->class_rel_file));
     }
     if (basic_type->version_string) {
       SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->version_string, strlen(basic_type->version_string));

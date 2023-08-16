@@ -166,7 +166,7 @@ int32_t SPVM__Native__Compiler__add_include_dir(SPVM_ENV* env, SPVM_VALUE* stack
   return 0;
 }
 
-int32_t SPVM__Native__Compiler__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -181,18 +181,18 @@ int32_t SPVM__Native__Compiler__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack
   
   void* compiler = env->get_pointer(env, stack, obj_self);
   
-  void* module_file = env->api->compiler->get_module_file(compiler, class_name);
+  void* class_file = env->api->compiler->get_class_file(compiler, class_name);
   
-  void* obj_module_file = NULL;
-  if (module_file) {
-    obj_module_file = env->new_pointer_object_by_name(env, stack, "Native::ModuleFile", module_file, &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_class_file = NULL;
+  if (class_file) {
+    obj_class_file = env->new_pointer_object_by_name(env, stack, "Native::ClassFile", class_file, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     
-    env->set_field_object_by_name(env, stack, obj_module_file, "compiler", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
+    env->set_field_object_by_name(env, stack, obj_class_file, "compiler", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
   }
   
-  stack[0].oval = obj_module_file;
+  stack[0].oval = obj_class_file;
   
   return 0;
 }

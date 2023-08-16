@@ -16,7 +16,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_allocator.h"
 #include "spvm_string.h"
-#include "spvm_module_file.h"
+#include "spvm_class_file.h"
 
 SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
   void* env_compiler_init[]  = {
@@ -30,9 +30,9 @@ SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
     SPVM_API_COMPILER_get_include_dir,
     SPVM_API_COMPILER_add_include_dir,
     SPVM_API_COMPILER_clear_include_dirs,
-    SPVM_API_COMPILER_add_module_file,
-    SPVM_API_COMPILER_delete_module_file,
-    SPVM_API_COMPILER_get_module_file,
+    SPVM_API_COMPILER_add_class_file,
+    SPVM_API_COMPILER_delete_class_file,
+    SPVM_API_COMPILER_get_class_file,
     SPVM_API_COMPILER_compile,
     SPVM_API_COMPILER_get_error_message,
     SPVM_API_COMPILER_get_error_messages_length,
@@ -84,16 +84,16 @@ void SPVM_API_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_clear_include_dirs(compiler);
 }
 
-void SPVM_API_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* class_name) {
-  SPVM_COMPILER_add_module_file(compiler, class_name);
+void SPVM_API_COMPILER_add_class_file(SPVM_COMPILER* compiler, const char* class_name) {
+  SPVM_COMPILER_add_class_file(compiler, class_name);
 }
 
-SPVM_MODULE_FILE* SPVM_API_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* class_name) {
-  return SPVM_COMPILER_get_module_file(compiler, class_name);
+SPVM_CLASS_FILE* SPVM_API_COMPILER_get_class_file(SPVM_COMPILER* compiler, const char* class_name) {
+  return SPVM_COMPILER_get_class_file(compiler, class_name);
 }
 
-void SPVM_API_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* class_name) {
-  SPVM_COMPILER_delete_module_file(compiler, class_name);
+void SPVM_API_COMPILER_delete_class_file(SPVM_COMPILER* compiler, const char* class_name) {
+  SPVM_COMPILER_delete_class_file(compiler, class_name);
 }
 
 int32_t SPVM_API_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {

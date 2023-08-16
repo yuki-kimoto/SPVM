@@ -49,7 +49,7 @@ int32_t SPVM__Native__BasicType__get_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__BasicType__get_module_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__BasicType__get_class_dir(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -62,19 +62,19 @@ int32_t SPVM__Native__BasicType__get_module_dir(SPVM_ENV* env, SPVM_VALUE* stack
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  const char* module_dir = env->api->basic_type->get_module_dir(runtime, basic_type);
+  const char* class_dir = env->api->basic_type->get_class_dir(runtime, basic_type);
   
-  void* obj_module_dir = NULL;
-  if (module_dir) {
-    obj_module_dir = env->new_string_nolen(env, stack, module_dir);
+  void* obj_class_dir = NULL;
+  if (class_dir) {
+    obj_class_dir = env->new_string_nolen(env, stack, class_dir);
   }
   
-  stack[0].oval = obj_module_dir;
+  stack[0].oval = obj_class_dir;
   
   return 0;
 }
 
-int32_t SPVM__Native__BasicType__get_module_rel_file(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__BasicType__get_class_rel_file(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -87,14 +87,14 @@ int32_t SPVM__Native__BasicType__get_module_rel_file(SPVM_ENV* env, SPVM_VALUE* 
   
   void* runtime = env->get_pointer(env, stack, obj_runtime);
   
-  const char* module_rel_file = env->api->basic_type->get_module_rel_file(runtime, basic_type);
+  const char* class_rel_file = env->api->basic_type->get_class_rel_file(runtime, basic_type);
   
-  void* obj_module_rel_file = NULL;
-  if (module_rel_file) {
-    obj_module_rel_file = env->new_string_nolen(env, stack, module_rel_file);
+  void* obj_class_rel_file = NULL;
+  if (class_rel_file) {
+    obj_class_rel_file = env->new_string_nolen(env, stack, class_rel_file);
   }
   
-  stack[0].oval = obj_module_rel_file;
+  stack[0].oval = obj_class_rel_file;
   
   return 0;
 }

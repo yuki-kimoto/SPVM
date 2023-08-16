@@ -70,11 +70,11 @@ lib/SPVM/Builder/include/spvm_api.h
 lib/SPVM/Builder/include/spvm_api_allocator.h
 lib/SPVM/Builder/include/spvm_api_arg.h
 lib/SPVM/Builder/include/spvm_api_basic_type.h
+lib/SPVM/Builder/include/spvm_api_class_file.h
 lib/SPVM/Builder/include/spvm_api_class_var.h
 lib/SPVM/Builder/include/spvm_api_compiler.h
 lib/SPVM/Builder/include/spvm_api_field.h
 lib/SPVM/Builder/include/spvm_api_method.h
-lib/SPVM/Builder/include/spvm_api_module_file.h
 lib/SPVM/Builder/include/spvm_api_runtime.h
 lib/SPVM/Builder/include/spvm_api_string_buffer.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
@@ -84,6 +84,7 @@ lib/SPVM/Builder/include/spvm_block.h
 lib/SPVM/Builder/include/spvm_call_method.h
 lib/SPVM/Builder/include/spvm_case_info.h
 lib/SPVM/Builder/include/spvm_check.h
+lib/SPVM/Builder/include/spvm_class_file.h
 lib/SPVM/Builder/include/spvm_class_var.h
 lib/SPVM/Builder/include/spvm_class_var_access.h
 lib/SPVM/Builder/include/spvm_compiler.h
@@ -137,11 +138,11 @@ lib/SPVM/Builder/src/spvm_api.c
 lib/SPVM/Builder/src/spvm_api_allocator.c
 lib/SPVM/Builder/src/spvm_api_arg.c
 lib/SPVM/Builder/src/spvm_api_basic_type.c
+lib/SPVM/Builder/src/spvm_api_class_file.c
 lib/SPVM/Builder/src/spvm_api_class_var.c
 lib/SPVM/Builder/src/spvm_api_compiler.c
 lib/SPVM/Builder/src/spvm_api_field.c
 lib/SPVM/Builder/src/spvm_api_method.c
-lib/SPVM/Builder/src/spvm_api_module_file.c
 lib/SPVM/Builder/src/spvm_api_runtime.c
 lib/SPVM/Builder/src/spvm_api_string_buffer.c
 lib/SPVM/Builder/src/spvm_array_field_access.c
@@ -151,6 +152,7 @@ lib/SPVM/Builder/src/spvm_block.c
 lib/SPVM/Builder/src/spvm_call_method.c
 lib/SPVM/Builder/src/spvm_case_info.c
 lib/SPVM/Builder/src/spvm_check.c
+lib/SPVM/Builder/src/spvm_class_file.c
 lib/SPVM/Builder/src/spvm_class_var.c
 lib/SPVM/Builder/src/spvm_class_var_access.c
 lib/SPVM/Builder/src/spvm_compiler.c
@@ -162,7 +164,6 @@ lib/SPVM/Builder/src/spvm_hash.c
 lib/SPVM/Builder/src/spvm_interface.c
 lib/SPVM/Builder/src/spvm_list.c
 lib/SPVM/Builder/src/spvm_method.c
-lib/SPVM/Builder/src/spvm_module_file.c
 lib/SPVM/Builder/src/spvm_op.c
 lib/SPVM/Builder/src/spvm_opcode.c
 lib/SPVM/Builder/src/spvm_opcode_builder.c
@@ -219,6 +220,7 @@ lib/SPVM/Document/NativeAPI.pm
 lib/SPVM/Document/NativeAPI/Allocator.pm
 lib/SPVM/Document/NativeAPI/Argument.pm
 lib/SPVM/Document/NativeAPI/BasicType.pm
+lib/SPVM/Document/NativeAPI/ClassFile.pm
 lib/SPVM/Document/NativeAPI/ClassVariable.pm
 lib/SPVM/Document/NativeAPI/Compiler.pm
 lib/SPVM/Document/NativeAPI/Field.pm
@@ -299,6 +301,10 @@ lib/SPVM/Native/BasicType.c
 lib/SPVM/Native/BasicType.config
 lib/SPVM/Native/BasicType.pm
 lib/SPVM/Native/BasicType.spvm
+lib/SPVM/Native/ClassFile.c
+lib/SPVM/Native/ClassFile.config
+lib/SPVM/Native/ClassFile.pm
+lib/SPVM/Native/ClassFile.spvm
 lib/SPVM/Native/ClassVar.c
 lib/SPVM/Native/ClassVar.config
 lib/SPVM/Native/ClassVar.pm
@@ -325,10 +331,6 @@ lib/SPVM/Native/MethodCall.pm
 lib/SPVM/Native/MethodCall.spvm
 lib/SPVM/Native/MethodCall/Callback.pm
 lib/SPVM/Native/MethodCall/Callback.spvm
-lib/SPVM/Native/ModuleFile.c
-lib/SPVM/Native/ModuleFile.config
-lib/SPVM/Native/ModuleFile.pm
-lib/SPVM/Native/ModuleFile.spvm
 lib/SPVM/Native/Runtime.c
 lib/SPVM/Native/Runtime.config
 lib/SPVM/Native/Runtime.pm

@@ -80,25 +80,25 @@ Adds a directory for searching modules.
 
 Clears the directories for searching modules.
 
-=head2 add_module_file
+=head2 add_class_file
 
-  void (*add_module_file)(void* compiler, const char* class_name);
+  void (*add_class_file)(void* compiler, const char* class_name);
 
-Adds a L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
+Adds a L<class file|SPVM::Document::NativeAPI::ClassFile> object for a module.
 
-If the module file already exists, nothing is performed.
+If the class file already exists, nothing is performed.
 
-=head2 delete_module_file
+=head2 delete_class_file
 
-  void (*delete_module_file)(void* compiler, const char* class_name);
+  void (*delete_class_file)(void* compiler, const char* class_name);
   
-Deletes a L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
+Deletes a L<class file|SPVM::Document::NativeAPI::ClassFile> object for a module.
 
-=head2 get_module_file
+=head2 get_class_file
 
-  void* (*get_module_file)(void* compiler, const char* class_name);
+  void* (*get_class_file)(void* compiler, const char* class_name);
 
-Gets the L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
+Gets the L<class file|SPVM::Document::NativeAPI::ClassFile> object for a module.
 
 =head2 compile
   
@@ -136,9 +136,9 @@ Gets the runtime.
   7 get_include_dir
   8 add_include_dir
   9 clear_include_dirs
-  10 add_module_file
-  11 delete_module_file
-  12 get_module_file
+  10 add_class_file
+  11 delete_class_file
+  12 get_class_file
   13 compile
   14 get_error_message
   15 get_error_messages_length

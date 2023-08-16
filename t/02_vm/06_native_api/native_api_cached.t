@@ -18,8 +18,8 @@ my $wait_time = 1.1;
 
 my $compile_native_api_prgoram = "$^X -Mblib $FindBin::Bin/compile_native_api.pl";
 
-my $module_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.spvm";
-unless (-f $module_file) {
+my $class_file = "$test_dir/lib/SPVM/TestCase/NativeAPI.spvm";
+unless (-f $class_file) {
   die 'Unexpected error';
 }
 
@@ -28,8 +28,8 @@ unless (-f $config_file) {
   die 'Unexpected error';
 }
 
-my $native_module_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.c";
-unless (-f $native_module_file) {
+my $native_class_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.c";
+unless (-f $native_class_file) {
   die 'Unexpected error';
 }
 
@@ -121,7 +121,7 @@ system($compile_native_api_prgoram) == 0 or die;
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
 
-# Update module file
+# Update class file
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
@@ -149,10 +149,10 @@ system($compile_native_api_prgoram) == 0 or die;
      $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
    }
 
-  # Update module file
+  # Update class file
   sleep $wait_time;
   my $now = time;
-  utime $now, $now, $module_file;
+  utime $now, $now, $class_file;
   system($compile_native_api_prgoram) == 0 or die;
 
   # Naative object file is cached
@@ -174,7 +174,7 @@ system($compile_native_api_prgoram) == 0 or die;
   }
 }
 
-# Update native module file
+# Update native class file
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
@@ -189,7 +189,7 @@ system($compile_native_api_prgoram) == 0 or die;
   # Update src file
   sleep $wait_time;
   my $now = time;
-  utime $now, $now, $native_module_file;
+  utime $now, $now, $native_class_file;
   system($compile_native_api_prgoram) == 0 or die;
 
   # Native object file is cached

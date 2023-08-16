@@ -272,9 +272,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   type->basic_type->op_class = op_class;
   type->basic_type->op_extends = op_extends;
   
-  type->basic_type->module_dir = compiler->current_module_dir;
-  type->basic_type->module_rel_file = compiler->current_module_rel_file;
-  type->basic_type->module_file = compiler->current_file;
+  type->basic_type->class_dir = compiler->current_class_dir;
+  type->basic_type->class_rel_file = compiler->current_class_rel_file;
+  type->basic_type->class_file = compiler->current_file;
   
   if (op_extends) {
     SPVM_OP* op_type_parent_basic_type = op_extends->first;
@@ -290,11 +290,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_OP_build_use(compiler, op_use, op_type_parent_basic_type, op_name_alias, is_require);
   }
   
-  if (type->basic_type->module_dir) {
-    SPVM_STRING_new(compiler, type->basic_type->module_dir, strlen(type->basic_type->module_dir));
+  if (type->basic_type->class_dir) {
+    SPVM_STRING_new(compiler, type->basic_type->class_dir, strlen(type->basic_type->class_dir));
   }
-  SPVM_STRING_new(compiler, type->basic_type->module_rel_file, strlen(type->basic_type->module_rel_file));
-  SPVM_STRING_new(compiler, type->basic_type->module_file, strlen(type->basic_type->module_file));
+  SPVM_STRING_new(compiler, type->basic_type->class_rel_file, strlen(type->basic_type->class_rel_file));
+  SPVM_STRING_new(compiler, type->basic_type->class_file, strlen(type->basic_type->class_file));
   
   // Assert
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
@@ -307,7 +307,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   if (!basic_type->is_anon) {
     assert(!islower(basic_type_name[0]));
     
-    // If class name is different from the class name corresponding to the module file, compile error occur.
+    // If class name is different from the class name corresponding to the class file, compile error occur.
     if (strcmp(basic_type_name, compiler->current_class_name) != 0) {
       SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_class_name, op_class->file, op_class->line);
       return op_class;
