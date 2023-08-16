@@ -182,7 +182,7 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler);
 
 SPVM_RUNTIME* SPVM_COMPILER_get_runtime(SPVM_COMPILER* compiler);
 
-int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler);
+void SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler);
 

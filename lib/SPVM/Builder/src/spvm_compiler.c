@@ -425,7 +425,7 @@ const char* SPVM_COMPILER_get_runtime_name(SPVM_HASH* runtime_constant_string_sy
   return new_name;
 }
 
-int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
+void SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
   // Use automatically loaded classes
   SPVM_COMPILER_use(compiler, "Byte", "Byte", 0);
   SPVM_COMPILER_use(compiler, "Short", "Short", 0);
