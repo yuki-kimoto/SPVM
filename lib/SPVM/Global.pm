@@ -103,7 +103,7 @@ sub init_global {
         my $method_names = $builder_runtime->get_method_names($basic_type_name, $category);
         
         if (@$method_names) {
-          # Build classs - Compile C source codes and link them to SPVM precompile method
+          # Build classes - Compile C source codes and link them to SPVM precompile method
           # Shared library which is already installed in distribution directory
           my $class_file = $builder_runtime->get_class_file($basic_type_name);
           my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
