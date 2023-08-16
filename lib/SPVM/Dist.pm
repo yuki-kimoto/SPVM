@@ -24,14 +24,14 @@ sub force {
   }
 }
 
-sub module_name {
+sub class_name {
   my $self = shift;
   if (@_) {
-    $self->{module_name} = $_[0];
+    $self->{class_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{module_name};
+    return $self->{class_name};
   }
 }
 
@@ -154,8 +154,8 @@ sub new {
   bless $self, $class;
 
   # Module name
-  my $basic_type_name = $self->module_name;
-  unless (defined $self->module_name) {
+  my $basic_type_name = $self->class_name;
+  unless (defined $self->class_name) {
     confess "A module name must be specified";
   }
   
@@ -248,7 +248,7 @@ sub generate_spvm_module_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # User name
   my $user_name = $self->user_name;
@@ -293,7 +293,7 @@ sub generate_perl_module_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Year
   my $year = $self->_year;
@@ -521,7 +521,7 @@ sub generate_native_config_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # C or C++
   my $native = $self->native;
@@ -566,7 +566,7 @@ sub generate_native_module_file {
   my ($self) = @_;
 
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # extern C for C++
   my $native = $self->native;
@@ -635,7 +635,7 @@ sub generate_gitkeep_file_for_native_module_include_dir {
   my ($self) = @_;
 
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Generate file
   my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'native');
@@ -648,7 +648,7 @@ sub generate_gitkeep_file_for_native_module_src_dir {
   my ($self) = @_;
 
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Generate file
   my $gitkeep_rel_file_for_native_module_include_dir = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'native');
@@ -738,7 +738,7 @@ sub generate_readme_markdown_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Content
   my $readme_markdown_content = <<"EOS";
@@ -757,7 +757,7 @@ sub generate_makefile_pl_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Resource
   my $resource = $self->resource;
@@ -869,7 +869,7 @@ sub generate_basic_test_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   my $spvm_module_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, 'spvm');
   $spvm_module_rel_file =  $self->create_lib_rel_file($spvm_module_rel_file);
@@ -910,7 +910,7 @@ sub generate_license_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # User name
   my $user_name = $self->user_name;
@@ -955,7 +955,7 @@ sub generate_basic_test_spvm_module_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Resource
   my $resource = $self->resource;
@@ -992,7 +992,7 @@ sub generate_basic_test_native_config_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Resource
   my $resource = $self->resource;
@@ -1029,7 +1029,7 @@ sub generate_basic_test_native_module_file {
   my ($self) = @_;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Resource
   my $resource = $self->resource;
@@ -1083,7 +1083,7 @@ EOS
 sub generate_dist {
   my ($self) = @_;
   
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   unless (length $basic_type_name) {
     confess "The module name must be specified";
@@ -1192,7 +1192,7 @@ The SPVM::Dist class has methods to generate a SPVM Distrubution.
 =head2 Usage
 
   my $dist = SPVM::Dist->new(
-    module_name => 'Math',
+    class_name => 'Math',
   );
   
   $dist->generate_dist;

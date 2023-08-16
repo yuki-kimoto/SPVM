@@ -172,16 +172,16 @@ int32_t SPVM__Native__Compiler__get_module_file(SPVM_ENV* env, SPVM_VALUE* stack
   
   void* obj_self = stack[0].oval;
   
-  void* obj_module_name = stack[1].oval;
+  void* obj_class_name = stack[1].oval;
   
-  if (!obj_module_name) {
-    return env->die(env, stack, "The $module_name must be defined.", __func__, FILE_NAME, __LINE__);
+  if (!obj_class_name) {
+    return env->die(env, stack, "The $class_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
-  const char* module_name = env->get_chars(env, stack, obj_module_name);
+  const char* class_name = env->get_chars(env, stack, obj_class_name);
   
   void* compiler = env->get_pointer(env, stack, obj_self);
   
-  void* module_file = env->api->compiler->get_module_file(compiler, module_name);
+  void* module_file = env->api->compiler->get_module_file(compiler, class_name);
   
   void* obj_module_file = NULL;
   if (module_file) {

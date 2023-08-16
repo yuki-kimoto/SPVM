@@ -7,7 +7,7 @@
 
 static const char* FILE_NAME = "Native/ModuleFile.c";
 
-int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__ModuleFile__get_class_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -20,11 +20,11 @@ int32_t SPVM__Native__ModuleFile__get_module_name(SPVM_ENV* env, SPVM_VALUE* sta
   
   void* compiler = env->get_pointer(env, stack, obj_compiler);
   
-  const char* module_name = env->api->module_file->get_module_name(compiler, module_file);
+  const char* class_name = env->api->module_file->get_class_name(compiler, module_file);
   
-  void* obj_module_name = env->new_string_nolen(env, stack, module_name);
+  void* obj_class_name = env->new_string_nolen(env, stack, class_name);
   
-  stack[0].oval = obj_module_name;
+  stack[0].oval = obj_class_name;
   
   return 0;
 }

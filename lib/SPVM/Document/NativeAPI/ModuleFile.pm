@@ -9,13 +9,13 @@ The module file native APIs of L<SPVM> are the APIs to manipulate module files.
 =head1 Usage
   
   void* module_file = env->api->compiler->get_module_file(compiler, "MyClass");
-  const char* module_name = env->api->module_file->get_module_name(compiler, module_file);
+  const char* class_name = env->api->module_file->get_class_name(compiler, module_file);
 
 =head1 Native APIs
 
-=head2 get_module_name
+=head2 get_class_name
 
-  const char* (*get_module_name)(void* compiler, void* module_file);
+  const char* (*get_class_name)(void* compiler, void* module_file);
 
 Returns the module name.
 
@@ -81,7 +81,7 @@ Sets the length of a content.
 
 =head1 Native API IDs
 
-  0 get_module_name
+  0 get_class_name
   1 get_file
   2 set_file
   3 get_dir

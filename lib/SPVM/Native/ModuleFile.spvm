@@ -6,7 +6,7 @@ class Native::ModuleFile {
   
   has compiler : Native::Compiler;
   
-  native method get_module_name : string ();
+  native method get_class_name : string ();
   
   native method get_file : string ();
   

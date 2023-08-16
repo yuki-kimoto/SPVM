@@ -7,7 +7,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_module_file {
-  const char* module_name;
+  const char* class_name;
   const char* file;
   const char* dir;
   const char* rel_file;
@@ -17,7 +17,7 @@ struct spvm_module_file {
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_new(SPVM_COMPILER* compiler);
 
-const char* SPVM_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
+const char* SPVM_MODULE_FILE_get_class_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
 const char* SPVM_MODULE_FILE_get_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 

@@ -82,7 +82,7 @@ Clears the directories for searching modules.
 
 =head2 add_module_file
 
-  void (*add_module_file)(void* compiler, const char* module_name);
+  void (*add_module_file)(void* compiler, const char* class_name);
 
 Adds a L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
 
@@ -90,19 +90,19 @@ If the module file already exists, nothing is performed.
 
 =head2 delete_module_file
 
-  void (*delete_module_file)(void* compiler, const char* module_name);
+  void (*delete_module_file)(void* compiler, const char* class_name);
   
 Deletes a L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
 
 =head2 get_module_file
 
-  void* (*get_module_file)(void* compiler, const char* module_name);
+  void* (*get_module_file)(void* compiler, const char* class_name);
 
 Gets the L<module file|SPVM::Document::NativeAPI::ModuleFile> object for a module.
 
 =head2 compile
   
-  int32_t (*compile)(void* compiler, const char* module_name);
+  int32_t (*compile)(void* compiler, const char* class_name);
 
 Compiles SPVM modules.
 

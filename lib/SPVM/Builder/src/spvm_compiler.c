@@ -70,7 +70,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->basic_type_symtable = SPVM_HASH_new_hash_permanent(compiler->global_allocator, 0);
   
   compiler->module_files = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
-  compiler->module_file_module_names = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
+  compiler->module_file_class_names = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
   compiler->include_dirs = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
@@ -107,11 +107,11 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   compiler->error_message_allocator = NULL;
   
   int32_t found = 0;
-  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
-    SPVM_MODULE_FILE* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
-    if (module_file_module_name) {
-      SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, compiler->module_file_module_names->values[i]);
-      compiler->module_file_module_names->values[i] = NULL;
+  for (int32_t i = 0; i < compiler->module_file_class_names->length; i++) {
+    SPVM_MODULE_FILE* module_file_class_name = SPVM_LIST_get(compiler->module_file_class_names, i);
+    if (module_file_class_name) {
+      SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, compiler->module_file_class_names->values[i]);
+      compiler->module_file_class_names->values[i] = NULL;
     }
   }
   for (int32_t i = 0; i < compiler->module_files->length; i++) {
@@ -249,28 +249,28 @@ void SPVM_COMPILER_clear_error_messages(SPVM_COMPILER* compiler) {
   error_messages->length = 0;
 }
 
-void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* class_name) {
   
-  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
+  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, class_name);
   
   if (!module_file) {
     module_file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, sizeof(SPVM_MODULE_FILE));
-    module_file->module_name = module_name;
-    SPVM_COMPILER_set_module_file(compiler, module_name, module_file);
+    module_file->class_name = class_name;
+    SPVM_COMPILER_set_module_file(compiler, class_name, module_file);
   }
 }
 
-void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* class_name) {
   
   int32_t found = 0;
   int32_t found_index = -1;
-  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
-    const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
-    if (strcmp(module_name, module_file_module_name) == 0) {
+  for (int32_t i = 0; i < compiler->module_file_class_names->length; i++) {
+    const char* module_file_class_name = SPVM_LIST_get(compiler->module_file_class_names, i);
+    if (strcmp(class_name, module_file_class_name) == 0) {
       if (compiler->module_files->values[i]) {
         
-        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, compiler->module_file_module_names->values[i]);
-        compiler->module_file_module_names->values[i] = NULL;
+        SPVM_ALLOCATOR_free_memory_block_tmp(compiler->module_file_allocator, compiler->module_file_class_names->values[i]);
+        compiler->module_file_class_names->values[i] = NULL;
         
         SPVM_COMPILER_free_module_file(compiler, compiler->module_files->values[i]);
         compiler->module_files->values[i] = NULL;
@@ -282,23 +282,23 @@ void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* modul
   }
   
   if (found_index >= 0) {
-    if (found_index < compiler->module_file_module_names->length - 1) {
-      int32_t move_length = compiler->module_file_module_names->length - 1 - found_index;
-      memmove(compiler->module_file_module_names->values + found_index, compiler->module_file_module_names->values + found_index + 1, sizeof(void*) * move_length);
+    if (found_index < compiler->module_file_class_names->length - 1) {
+      int32_t move_length = compiler->module_file_class_names->length - 1 - found_index;
+      memmove(compiler->module_file_class_names->values + found_index, compiler->module_file_class_names->values + found_index + 1, sizeof(void*) * move_length);
       memmove(compiler->module_files->values + found_index, compiler->module_files->values + found_index + 1, sizeof(void*) * move_length);
     }
     
-    compiler->module_file_module_names->length--;
+    compiler->module_file_class_names->length--;
     compiler->module_files->length--;
   }
 }
 
-void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_name, SPVM_MODULE_FILE* module_file) {
+void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* class_name, SPVM_MODULE_FILE* module_file) {
   
   int32_t found = 0;
-  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
-    const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
-    if (strcmp(module_name, module_file_module_name) == 0) {
+  for (int32_t i = 0; i < compiler->module_file_class_names->length; i++) {
+    const char* module_file_class_name = SPVM_LIST_get(compiler->module_file_class_names, i);
+    if (strcmp(class_name, module_file_class_name) == 0) {
       if (compiler->module_files->values[i]) {
         
         SPVM_COMPILER_free_module_file(compiler, compiler->module_files->values[i]);
@@ -311,20 +311,20 @@ void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* module_n
   }
   
   if (!found) {
-    const char* module_name_clone = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, strlen(module_name) + 1);
-    memcpy((void*)module_name_clone, module_name, strlen(module_name));
-    SPVM_LIST_push(compiler->module_file_module_names, (void*)module_name_clone);
+    const char* class_name_clone = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->module_file_allocator, strlen(class_name) + 1);
+    memcpy((void*)class_name_clone, class_name, strlen(class_name));
+    SPVM_LIST_push(compiler->module_file_class_names, (void*)class_name_clone);
     SPVM_LIST_push(compiler->module_files, (void*)module_file);
   }
 }
 
-SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* module_name) {
+SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const char* class_name) {
   
   SPVM_MODULE_FILE* found_module_file = NULL;
-  for (int32_t i = 0; i < compiler->module_file_module_names->length; i++) {
-    const char* module_file_module_name = SPVM_LIST_get(compiler->module_file_module_names, i);
+  for (int32_t i = 0; i < compiler->module_file_class_names->length; i++) {
+    const char* module_file_class_name = SPVM_LIST_get(compiler->module_file_class_names, i);
     
-    if (strcmp(module_name, module_file_module_name) == 0) {
+    if (strcmp(class_name, module_file_class_name) == 0) {
       found_module_file = SPVM_LIST_get(compiler->module_files, i);
       break;
     }
@@ -444,105 +444,105 @@ int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler) {
 void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler) {
   // Add Bool module file
   {
-    const char* module_name = "Bool";
+    const char* class_name = "Bool";
     const char* rel_file = "Bool.spvm";
     const char* content = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Error module file
   {
-    const char* module_name = "Error";
+    const char* class_name = "Error";
     const char* rel_file = "Error.spvm";
     const char* content = "class Error;";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Error::System module file
   {
-    const char* module_name = "Error::System";
+    const char* class_name = "Error::System";
     const char* rel_file = "Error/System.spvm";
     const char* content = "class Error::System extends Error;";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Error::NotSupported module file
   {
-    const char* module_name = "Error::NotSupported";
+    const char* class_name = "Error::NotSupported";
     const char* rel_file = "Error/NotSupported.spvm";
     const char* content = "class Error::NotSupported extends Error;";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Byte module file
   {
-    const char* module_name = "Byte";
+    const char* class_name = "Byte";
     const char* rel_file = "Byte.spvm";
     const char* content = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Short module file
   {
-    const char* module_name = "Short";
+    const char* class_name = "Short";
     const char* rel_file = "Short.spvm";
     const char* content = "class Short {\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Int module file
   {
-    const char* module_name = "Int";
+    const char* class_name = "Int";
     const char* rel_file = "Int.spvm";
     const char* content = "class Int {\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Long module file
   {
-    const char* module_name = "Long";
+    const char* class_name = "Long";
     const char* rel_file = "Long.spvm";
     const char* content = "class Long {\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Float module file
   {
-    const char* module_name = "Float";
+    const char* class_name = "Float";
     const char* rel_file = "Float.spvm";
     const char* content = "class Float {\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Double module file
   {
-    const char* module_name = "Double";
+    const char* class_name = "Double";
     const char* rel_file = "Double.spvm";
     const char* content = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add CommandInfo module file
   {
-    const char* module_name = "CommandInfo";
+    const char* class_name = "CommandInfo";
     const char* rel_file = "CommandInfo.spvm";
     const char* content = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
   
   // Add Address module file
   {
-    const char* module_name = "Address";
+    const char* class_name = "Address";
     const char* rel_file = "Address.spvm";
     const char* content = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_module_file(compiler, module_name, rel_file, content);
+    SPVM_COMPILER_set_default_loaded_module_file(compiler, class_name, rel_file, content);
   }
 }
 
-void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* module_name, const char* rel_file, const char* content) {
-  SPVM_COMPILER_add_module_file(compiler, module_name);
+void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content) {
+  SPVM_COMPILER_add_module_file(compiler, class_name);
   
-  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, module_name);
+  SPVM_MODULE_FILE* module_file = SPVM_COMPILER_get_module_file(compiler, class_name);
   SPVM_MODULE_FILE_set_rel_file(compiler, module_file, rel_file);
   SPVM_MODULE_FILE_set_content(compiler, module_file, content);
   SPVM_MODULE_FILE_set_content_length(compiler, module_file, strlen(content));

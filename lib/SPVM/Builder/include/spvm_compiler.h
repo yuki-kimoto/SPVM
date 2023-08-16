@@ -33,7 +33,7 @@ struct spvm_compiler {
   const char* current_module_rel_file;
   
   // Current parsed basic type name
-  const char* current_module_name;
+  const char* current_class_name;
   
   // Current parsed source
   char* current_module_content;
@@ -104,7 +104,7 @@ struct spvm_compiler {
   
   SPVM_LIST* module_files;
   
-  SPVM_LIST* module_file_module_names;
+  SPVM_LIST* module_file_class_names;
   
   SPVM_LIST* constant_strings;
   
@@ -138,9 +138,9 @@ SPVM_MODULE_FILE* SPVM_COMPILER_get_module_file(SPVM_COMPILER* compiler, const c
 
 void SPVM_COMPILER_set_module_file(SPVM_COMPILER* compiler, const char* basic_type_name, SPVM_MODULE_FILE* module_file);
 
-void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* module_name);
+void SPVM_COMPILER_add_module_file(SPVM_COMPILER* compiler, const char* class_name);
 
-void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* module_name);
+void SPVM_COMPILER_delete_module_file(SPVM_COMPILER* compiler, const char* class_name);
 
 void SPVM_COMPILER_free_module_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
@@ -186,7 +186,7 @@ int32_t SPVM_COMPILER_use_default_loaded_modules(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_set_default_loaded_module_files(SPVM_COMPILER* compiler);
 
-void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* module_name, const char* rel_file, const char* content);
+void SPVM_COMPILER_set_default_loaded_module_file(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content);
 
 void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler);
 

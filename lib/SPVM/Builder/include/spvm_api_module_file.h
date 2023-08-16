@@ -13,7 +13,7 @@ void SPVM_API_MODULE_FILE_free_api(SPVM_API_MODULE_FILE* api);
 
 SPVM_MODULE_FILE* SPVM_MODULE_FILE_clone(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
-const char* SPVM_API_MODULE_FILE_get_module_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
+const char* SPVM_API_MODULE_FILE_get_class_name(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 
 const char* SPVM_API_MODULE_FILE_get_file(SPVM_COMPILER* compiler, SPVM_MODULE_FILE* module_file);
 

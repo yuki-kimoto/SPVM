@@ -4576,8 +4576,8 @@ get_module_file(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV* sv_module_name = ST(1);
-  const char* module_name = SvPV_nolen(sv_module_name);
+  SV* sv_class_name = ST(1);
+  const char* class_name = SvPV_nolen(sv_class_name);
   
   SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
@@ -4585,12 +4585,12 @@ get_module_file(...)
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  void* module_file = env_api->api->compiler->get_module_file(compiler, module_name);
+  void* module_file = env_api->api->compiler->get_module_file(compiler, class_name);
   SV* sv_module_file = &PL_sv_undef;
   if (module_file) {
     HV* hv_module_file = (HV*)sv_2mortal((SV*)newHV());
     
-    (void)hv_store(hv_module_file, "module_name", strlen("module_name"), SvREFCNT_inc(sv_module_name), 0);
+    (void)hv_store(hv_module_file, "class_name", strlen("class_name"), SvREFCNT_inc(sv_class_name), 0);
     
     const char* file = env_api->api->module_file->get_file(compiler, module_file);
     if (file) {

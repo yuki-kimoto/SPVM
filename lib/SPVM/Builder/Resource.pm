@@ -9,14 +9,14 @@ use File::Basename 'dirname';
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
 # Fields
-sub module_name {
+sub class_name {
   my $self = shift;
   if (@_) {
-    $self->{module_name} = $_[0];
+    $self->{class_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{module_name};
+    return $self->{class_name};
   }
 }
 
@@ -71,7 +71,7 @@ sub new {
 sub to_string {
   my ($self) = @_;
   
-  return $self->module_name;
+  return $self->class_name;
 }
 
 1;
@@ -87,19 +87,19 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
 =head1 Usage
 
   my $resource = SPVM::Builder::Resource->new(
-    module_name => 'Resource::Zlib',
+    class_name => 'Resource::Zlib',
     mode => 'high_performance',
     argv => ['foo', 'bar'],
   );
 
 =head1 Fields
 
-=head2 module_name
+=head2 class_name
 
-  my $basic_type_name = $resource->module_name;
-  $resource->module_name($basic_type_name);
+  my $basic_type_name = $resource->class_name;
+  $resource->class_name($basic_type_name);
 
-Gets and sets the C<module_name> field.
+Gets and sets the C<class_name> field.
 
 This field is a module name of a resource.
 
@@ -144,7 +144,7 @@ If a field is not defined, the field is set to the following default value.
 
 =over 2
 
-=item * L</"module_name">
+=item * L</"class_name">
 
 undef
 
@@ -168,7 +168,7 @@ undef
 
   my $string = $resource->to_string;
 
-Returns the L</"module_name"> field.
+Returns the L</"class_name"> field.
 
 =head1 Operators
 

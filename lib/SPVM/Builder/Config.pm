@@ -10,14 +10,14 @@ use SPVM::Builder::LibInfo;
 use SPVM::Builder::Resource;
 
 # Fields
-sub module_name {
+sub class_name {
   my $self = shift;
   if (@_) {
-    $self->{module_name} = $_[0];
+    $self->{class_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{module_name};
+    return $self->{class_name};
   }
 }
 
@@ -676,13 +676,13 @@ sub use_resource {
   else {
     my $basic_type_name = $first_arg;
     my %args = @args;
-    if (exists $args{module_name}) {
-      $basic_type_name = delete $args{module_name};
+    if (exists $args{class_name}) {
+      $basic_type_name = delete $args{class_name};
     }
-    $resource = SPVM::Builder::Resource->new(module_name => $basic_type_name, %args);
+    $resource = SPVM::Builder::Resource->new(class_name => $basic_type_name, %args);
   }
   
-  my $resource_basic_type_name = $resource->module_name;
+  my $resource_basic_type_name = $resource->class_name;
   my $resource_mode = $resource->mode;
   my $resource_argv = $resource->argv;
   
@@ -1082,12 +1082,12 @@ If this field is a false value, the messages are not output.
 
 If this field is undef, whether the messages are output or not is determined by other conditions.
 
-=head2 module_name
+=head2 class_name
 
-  my $basic_type_name = $config->module_name;
-  $config->module_name($basic_type_name);
+  my $basic_type_name = $config->class_name;
+  $config->class_name($basic_type_name);
 
-Gets and sets the C<module_name> field.
+Gets and sets the C<class_name> field.
 
 This field is the module name of this config.
 
@@ -1145,7 +1145,7 @@ If a field is not defined, the field is set to the following default value.
 
 =over 2
 
-=item * L</"module_name">
+=item * L</"class_name">
 
 undef
 
@@ -1407,13 +1407,13 @@ Examples:
   my $resource = $config->use_resource($resource_name, %options);
 
 Loads a resource by the resource name $resource_name using the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class, and returns a L<SPVM::Builder::Resource> object.
-  my $resource = SPVM::Builder::Resource->new(module_name => $resource_name);
+  my $resource = SPVM::Builder::Resource->new(class_name => $resource_name);
   $config->use_resource($resource);
 
 If the options %options are given, they are used as the options of the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class.
 
   my $resource = SPVM::Builder::Resource->new(
-    module_name => 'Resource::Zlib',
+    class_name => 'Resource::Zlib',
     mode => 'production',
     argv => ['foo', 'bar'],
   );

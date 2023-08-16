@@ -50,14 +50,14 @@ sub include_dirs {
   }
 }
 
-sub module_name {
+sub class_name {
   my $self = shift;
   if (@_) {
-    $self->{module_name} = $_[0];
+    $self->{class_name} = $_[0];
     return $self;
   }
   else {
-    return $self->{module_name};
+    return $self->{class_name};
   }
 }
 
@@ -145,7 +145,7 @@ sub new {
   my $self = {@_};
   
   # Target module name
-  my $basic_type_name = $self->{module_name};
+  my $basic_type_name = $self->{class_name};
   unless (defined $basic_type_name) {
     confess "A module name not specified";
   }
@@ -191,7 +191,7 @@ sub new {
   else {
     $config = SPVM::Builder::Config::Exe->new_c99(file_optional => 1);
   }
-  $config->module_name($basic_type_name);
+  $config->class_name($basic_type_name);
   
   $self->{config} = $config;
   
@@ -210,7 +210,7 @@ sub build_exe_file {
   # Builder
   my $builder = $self->builder;
   
-  my $basic_type_name = $self->{module_name};
+  my $basic_type_name = $self->{class_name};
   
   # Build runtime
   unless ($self->{finish_compile}) {
@@ -316,7 +316,7 @@ sub get_required_resources {
         my $resource = $config_exe->get_resource($resource_name);
         
         my $resource_info = {
-          module_name => $basic_type_name,
+          class_name => $basic_type_name,
           resource => $resource
         };
         
@@ -335,16 +335,16 @@ sub get_required_resource_json_lines {
   
   my @json_lines;
   for my $required_resource (@$required_resources) {
-    my $basic_type_name = $required_resource->{module_name};
+    my $basic_type_name = $required_resource->{class_name};
     my $resource = $required_resource->{resource};
-    my $resource_basic_type_name = $resource->module_name;
+    my $resource_basic_type_name = $resource->class_name;
     my $resource_mode = $resource->mode;
     my $resource_argv = $resource->argv || [];
     
     my $line = {
-      caller_module_name => "$basic_type_name",
+      caller_class_name => "$basic_type_name",
       resource => {
-        module_name => $resource_basic_type_name,
+        class_name => $resource_basic_type_name,
       }
     };
     if (defined $resource_mode) {
@@ -370,7 +370,7 @@ sub compile {
   my $builder = $self->builder;
   
   # Module name
-  my $basic_type_name = $self->{module_name};
+  my $basic_type_name = $self->{class_name};
   
   my $compiler = $self->compiler;
   
@@ -492,7 +492,7 @@ sub create_bootstrap_header_source {
   my $builder = $self->builder;
 
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
 
   # Module names
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
@@ -531,8 +531,8 @@ EOS
   $source .= "static int32_t* SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(SPVM_ENV* env);\n";
 
   $source .= <<"EOS";
-static int32_t* SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* precompile_address) {
-void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, module_name);
+static int32_t* SPVM_BOOTSTRAP_set_precompile_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* precompile_address) {
+void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
 void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, method_name);
 env->api->method->set_precompile_address(env->runtime, method, precompile_address);
 }
@@ -556,8 +556,8 @@ EOS
   $source .= "static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler);\n\n";
 
   $source .= <<"EOS";
-static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* module_name, const char* method_name, void* native_address) {
-  void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, module_name);
+static int32_t* SPVM_BOOTSTRAP_set_native_method_address(SPVM_ENV* env, const char* class_name, const char* method_name, void* native_address) {
+  void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
   void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, method_name);
   env->api->method->set_native_address(env->runtime, method, native_address);
 }
@@ -573,7 +573,7 @@ sub create_bootstrap_main_func_source {
   my $builder = $self->builder;
 
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
 
   # Module names
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
@@ -658,14 +658,14 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   else {
     
     // Module name
-    const char* module_name = "$basic_type_name";
+    const char* class_name = "$basic_type_name";
     
     // Class
-    void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, module_name);
+    void* module_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
     void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, "main");
     
     if (!method) {
-      fprintf(stderr, "The class method %s->main is not defined\\n", module_name);
+      fprintf(stderr, "The class method %s->main is not defined\\n", class_name);
       return -1;
     }
     
@@ -764,7 +764,7 @@ EOS
   
   $source .= qq|  env->api->compiler->set_start_line(compiler, __LINE__ + 1);\n|;
   
-  my $start_basic_type_name = $self->{module_name};
+  my $start_basic_type_name = $self->{class_name};
   
   $source .= qq|  int32_t error_id = env->api->compiler->compile(compiler, \"$start_basic_type_name\");\n|;
   
@@ -857,7 +857,7 @@ sub create_bootstrap_source {
   my $builder = $self->builder;
   
   # Module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   # Module names
   my $basic_type_names = $self->runtime->_get_user_defined_basic_type_names;
@@ -923,7 +923,7 @@ sub compile_bootstrap_source_file {
   my $config_exe = $self->config;
   
   # Target module name
-  my $basic_type_name = $self->module_name;
+  my $basic_type_name = $self->class_name;
   
   my $target_perl_basic_type_name = "SPVM::$basic_type_name";
   

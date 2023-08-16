@@ -13,7 +13,7 @@ use SPVM 'TestCase::CURRENT_MODULE_NAME';
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
-ok(SPVM::TestCase::CURRENT_MODULE_NAME->current_module_name);
+ok(SPVM::TestCase::CURRENT_MODULE_NAME->current_class_name);
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();

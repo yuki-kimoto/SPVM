@@ -18,9 +18,9 @@ The Native::ModuleFile class of L<SPVM> has methods to manipulate information of
 
 =head1 Instance Methods
 
-=head2 get_module_name
+=head2 get_class_name
 
-  method get_module_name : string ();
+  method get_class_name : string ();
 
 Returns the module name.
 
