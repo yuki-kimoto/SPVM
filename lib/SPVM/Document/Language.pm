@@ -52,7 +52,7 @@ A symbol name cannnot contains C<::::>, and cannnot begin with a number 0-9.
   Foo::
   Foo::::Bar
 
-=head2 Module Name
+=head2 Class Name
 
 A class name is a L<symbol name|/"Symbol Name">.
 
@@ -2165,7 +2165,7 @@ The C<class> keyword defines a class. A class has a L<class block|/"Class Block"
   
   }
 
-The class name must follow the naming rule of the L<class name|/"Module Name">.
+The class name must follow the naming rule of the L<class name|/"Class Name">.
 
 Examples:
 
@@ -2430,7 +2430,7 @@ Examples:
 
 The anon class is the class that is defined by the L<anon method|/"Anon Method"> syntax.
 
-A anon class has its unique L<class name|/"Module Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
+A anon class has its unique L<class name|/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
 
 L<Examples:>
 
@@ -3144,7 +3144,7 @@ A class method is defined with the C<static> keyword.
     # ...
   }
 
-A class method can be called from the L<class name|/"Module Name">.
+A class method can be called from the L<class name|/"Class Name">.
   
   # Call a class method
   my $total = Foo->sum(1, 2);
@@ -8698,7 +8698,7 @@ Examples:
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
 
-=head2 Getting Current Module Name
+=head2 Getting Current Class Name
 
 The C<__PACKAGE__> operator gets the current class name.
 
