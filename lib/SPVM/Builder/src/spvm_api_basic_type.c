@@ -9,6 +9,7 @@
 #include "spvm_api_basic_type.h"
 #include "spvm_api_method.h"
 #include "spvm_api_arg.h"
+#include "spvm_api_type.h"
 
 #include "spvm_allocator.h"
 #include "spvm_runtime_basic_type.h"
@@ -350,7 +351,7 @@ int32_t SPVM_API_BASIC_TYPE_can_assign_for_method_definition (
   int32_t assignability = 0;
   
   if (SPVM_API_RUNTIME_is_any_object_type(runtime, dist_type_basic_type, dist_type_dimension, dist_type_flag)) {
-    if (SPVM_API_RUNTIME_is_object_type(runtime, src_type_basic_type, src_type_dimension, src_type_flag)) {
+    if (SPVM_API_TYPE_is_object_type(runtime, src_type_basic_type, src_type_dimension, src_type_flag)) {
       assignability = 1;
     }
     else {

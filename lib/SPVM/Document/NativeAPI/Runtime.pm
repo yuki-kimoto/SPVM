@@ -116,10 +116,8 @@ The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
   3 get_basic_type_by_id
   4 get_basic_type_by_name
   5 get_basic_types_length
-  6 is_object_type
-  7 can_assign
-  8 build_precompile_module_source
-  9 build_precompile_method_source
+  6 build_precompile_module_source
+  7 build_precompile_method_source
 
 =head1 Copyright & License
 

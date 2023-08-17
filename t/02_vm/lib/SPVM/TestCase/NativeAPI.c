@@ -2213,9 +2213,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->get_basic_type_by_id != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_type_by_name != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_types_length != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->is_object_type != &env_array[6]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->build_precompile_module_source != &env_array[8]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->build_precompile_method_source != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->build_precompile_module_source != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->build_precompile_method_source != &env_array[7]) { stack[0].ival = 0; return 0; }
   
   spvm_warn("Foo %s %d", "aaa", 3);
   spvm_warn("Foo");

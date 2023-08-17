@@ -39,6 +39,7 @@
 #include "spvm_api_field.h"
 #include "spvm_api_method.h"
 #include "spvm_api_arg.h"
+#include "spvm_api_type.h"
 
 #include "spvm_implement.h"
 
@@ -2406,7 +2407,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       SPVM_RUNTIME_BASIC_TYPE* current_method_return_basic_type = current_method->return_basic_type;
       int32_t current_method_return_type_dimension = current_method->return_type_dimension;
       int32_t current_method_return_type_flag =current_method->return_type_flag;
-      int32_t method_return_type_is_object = SPVM_API_RUNTIME_is_object_type(runtime, current_method_return_basic_type, current_method_return_type_dimension, current_method_return_type_flag);
+      int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, current_method_return_basic_type, current_method_return_type_dimension, current_method_return_type_flag);
       if (method_return_type_is_object) {
         if (*(void**)&stack[0] != NULL) {
           SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *(void**)&stack[0], object_ref_count_offset);

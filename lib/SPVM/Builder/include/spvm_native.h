@@ -381,7 +381,6 @@ struct spvm_api_runtime {
   void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
   void* (*get_basic_type_by_name)(void* runtime, const char* basic_type_name);
   int32_t (*get_basic_types_length)(void* runtime);
-  int32_t (*is_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
   void (*build_precompile_module_source)(void* runtime, void* string_buffer, void* module_basic_type);
   void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
 };

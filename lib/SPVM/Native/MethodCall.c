@@ -91,7 +91,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
     int32_t method_arg_type_flag = env->api->arg->get_type_flag(runtime, method_arg);
     int32_t method_arg_basic_type_category = env->api->basic_type->get_category(runtime, method_arg_basic_type);
     
-    int32_t method_arg_is_object_type = env->api->runtime->is_object_type(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
+    int32_t method_arg_is_object_type = env->api->type->is_object_type(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
     
     if (method_arg_is_object_type) {
       
@@ -486,7 +486,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t method_return_basic_type_category = env->api->basic_type->get_category(runtime, method_return_basic_type);
   
-  int32_t method_return_is_object_type = env->api->runtime->is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+  int32_t method_return_is_object_type = env->api->type->is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
   
   if (method_return_is_object_type) {
     // Nothing to do

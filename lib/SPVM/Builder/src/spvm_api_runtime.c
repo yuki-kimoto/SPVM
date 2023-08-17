@@ -31,9 +31,9 @@
 #include "spvm_runtime_arg.h"
 #include "spvm_precompile.h"
 #include "spvm_api.h"
+#include "spvm_api_type.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_api_basic_type.h"
-
 
 
 
@@ -103,7 +103,6 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_basic_type_by_id,
     SPVM_API_RUNTIME_get_basic_type_by_name,
     SPVM_API_RUNTIME_get_basic_types_length,
-    SPVM_API_RUNTIME_is_object_type,
     SPVM_API_RUNTIME_build_precompile_module_source,
     SPVM_API_RUNTIME_build_precompile_method_source,
   };
@@ -167,36 +166,6 @@ int32_t SPVM_API_RUNTIME_get_basic_types_length(SPVM_RUNTIME* runtime) {
   return runtime->basic_types_length;
 }
 
-int32_t SPVM_API_RUNTIME_is_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t flag) {
-  
-  int32_t is_object_type;
-  if (type_dimension == 0) {
-    int32_t basic_type_category = basic_type->category;
-    
-    switch (basic_type_category) {
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING:
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS:
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
-      case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
-      {
-        is_object_type = 1;
-        break;
-      }
-      default: {
-        is_object_type = 0;
-      }
-    }
-  }
-  else if (type_dimension >= 1) {
-    is_object_type = 1;
-  }
-  else {
-    assert(0);
-  }
-  
-  return is_object_type;
-}
-
 int32_t SPVM_API_RUNTIME_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t flag) {
   
   int32_t is_any_object_type;
@@ -227,7 +196,7 @@ int32_t SPVM_API_RUNTIME_is_any_object_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_
 int32_t SPVM_API_RUNTIME_is_object_array_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t dimension, int32_t flag) {
   
   if (dimension > 0) {
-    if (SPVM_API_RUNTIME_is_object_type(runtime, basic_type, dimension - 1, flag)) {
+    if (SPVM_API_TYPE_is_object_type(runtime, basic_type, dimension - 1, flag)) {
       return 1;
     }
     else {
