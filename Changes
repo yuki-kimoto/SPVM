@@ -6,6 +6,7 @@
     * The following runtime nataive APIs are removed and moved to the type native APIs.
     
       int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
+      int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
     
 0.989035 2023-08-14
 

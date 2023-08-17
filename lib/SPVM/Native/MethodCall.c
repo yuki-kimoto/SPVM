@@ -101,7 +101,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
         
         int32_t arg_type_dimension = env->get_object_type_dimension(env, stack, obj_arg);
         
-        int32_t can_assign = env->api->runtime->can_assign(
+        int32_t can_assign = env->api->type->can_assign(
           runtime,
           method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag,
           arg_basic_type, method_arg_type_dimension, 0
