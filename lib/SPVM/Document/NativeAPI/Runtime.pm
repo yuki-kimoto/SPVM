@@ -62,28 +62,6 @@ Gets the length of the basic types.
 
 The C<runtime> argument is a runtime object.
 
-=head2 is_object_type
-
-  int32_t (*is_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
-
-If the type is object type, returns 1. Otherwise returns 0.
-
-The C<runtime> argument is a runtime object.
-
-The C<basic_type> argument is a L<basic type|SPVM::Document::NativeAPI::BasicType> object.
-
-=head2 can_assign
-
-  int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
-
-If a source type can be assigned to a dist type, returns 1. Otherwise returns 0.
-
-The C<runtime> argument is a runtime object.
-
-The C<dist_basic_type> argument is a L<basic type|SPVM::Document::NativeAPI::BasicType> object.
-
-The C<src_basic_type> argument is a L<basic type|SPVM::Document::NativeAPI::BasicType> object.
-
 =head2 build_precompile_module_source
 
   void (*build_precompile_module_source)(void* runtime, void* string_buffer, void* module_basic_type);
