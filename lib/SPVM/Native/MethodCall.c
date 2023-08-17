@@ -199,7 +199,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           stack_index++;
         }
         else if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-          int32_t method_arg_width = env->api->runtime->get_type_width(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
+          int32_t method_arg_width = env->api->type->get_type_width(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
           
           int32_t arg_array_length = env->length(env, stack, obj_arg);
           
@@ -381,7 +381,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
           }
         }
         else if (method_arg_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-          int32_t method_arg_width = env->api->runtime->get_type_width(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
+          int32_t method_arg_width = env->api->type->get_type_width(runtime, method_arg_basic_type, method_arg_type_dimension, method_arg_type_flag);
           
           int32_t arg_array_length = env->length(env, stack, obj_arg);
           
@@ -548,7 +548,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
       }
     }
     else if (method_return_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-      int32_t method_return_width = env->api->runtime->get_type_width(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+      int32_t method_return_width = env->api->type->get_type_width(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
       
       void* method_return_mulnum_field = env->api->basic_type->get_field_by_index(runtime, method_return_basic_type, 0);
       void* method_return_mulnum_field_basic_type = env->api->field->get_basic_type(runtime, method_return_mulnum_field);
