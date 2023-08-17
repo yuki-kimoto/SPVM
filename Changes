@@ -8,7 +8,18 @@
       int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
       int32_t (*can_assign)(void* runtime, void* dist_basic_type, int32_t dist_type_dimension, int32_t dist_type_flag, void* src_basic_type, int32_t src_type_dimension, int32_t src_type_flag);
       int32_t (*is_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);
-    
+      
+    * Native API IDs of runtime nataive API are changed.
+      
+      0 get_object_data_offset
+      1 get_object_ref_count_offset
+      2 get_object_length_offset
+      3 get_basic_type_by_id
+      4 get_basic_type_by_name
+      5 get_basic_types_length
+      6 build_precompile_module_source
+      7 build_precompile_method_source
+      
 0.989035 2023-08-14
 
   [Changes]
