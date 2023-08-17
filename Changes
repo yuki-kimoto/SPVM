@@ -2,6 +2,10 @@
 
   [New Features]
     * The type native APIs are added.
+  [Incompatible Changes]
+    * The following runtime nataive APIs are removed and moved to the type native APIs.
+    
+      int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
     
 0.989035 2023-08-14
 

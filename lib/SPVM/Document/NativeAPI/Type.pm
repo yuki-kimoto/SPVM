@@ -20,6 +20,12 @@ The type native APIs of L<SPVM> are the APIs to manipulate types.
 
   int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
 
+=head2 get_type_width
+
+  int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
+
+Gets the width of a type.
+
 =head2 is_object_type
 
   int32_t (*is_object_type)(void* runtime, void* basic_type, int32_t type_dimension, int32_t flag);

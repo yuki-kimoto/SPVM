@@ -108,12 +108,6 @@ The C<string_buffer> argument is a L<string buffer|SPVM::Document::NativeAPI::St
 
 The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
 
-=head2 get_type_width
-
-  int32_t (*get_type_width)(void* runtime, void* basic_type, int32_t dimension, int32_t flag);
-
-Gets the width of a type.
-
 =head1 Native API IDs
 
   0 get_object_data_offset
@@ -126,7 +120,6 @@ Gets the width of a type.
   7 can_assign
   8 build_precompile_module_source
   9 build_precompile_method_source
-  10 get_type_width
 
 =head1 Copyright & License
 
