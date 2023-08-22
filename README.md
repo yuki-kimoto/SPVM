@@ -53,6 +53,7 @@
 ## Highly Experimental CPAN Modules
 
 * <a href="https://github.com/yuki-kimoto/SPVM-Numpy">SPVM::Numpy</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-HTTP-Minimal">SPVM::HTTP::Minimal</a>
 
 ## Examples
 
