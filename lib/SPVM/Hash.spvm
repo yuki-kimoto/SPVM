@@ -9,17 +9,17 @@ class Hash {
   use Array;
   use Sort;
   use Format;
-
+  
   has bucket_count : int;
   has count : ro int;
   has entries : Hash::Entry[];
   has seed128 : private mutable string;
-
+  
   private enum {
     _DEFALUT_HASH_TABLE_LENGTH = 16,
   }
   private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
-
+  
   precompile static method new : Hash ($key_values : object[] = undef) {
     my $self = new Hash;
     
@@ -52,16 +52,16 @@ class Hash {
         unless ($key isa string) {
           die "The key in the \$key_values must be string.";
         }
-
+        
         $self->set($key => $value);
       }
     }
     
     return $self;
   }
-
+  
   native private method build_seed128 : void ($seed_int32 : int, $seed128 : mutable string);
-
+  
   method set : void ($key : string, $val : object) {
     unless ($key) {
       die "The \$key must be defined.";
@@ -75,7 +75,7 @@ class Hash {
     
     $self->{count} = $count;
   }
-
+  
   precompile method get : object ($key : string) {
     my $index = $self->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
@@ -110,7 +110,7 @@ class Hash {
       $ref = $ref->{next_entry};
     }
   }
-
+  
   precompile method delete : object ($key : string) {
     my $index = $self->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
@@ -137,7 +137,7 @@ class Hash {
       $ref = $ref->{next_entry};
     }
   }
-
+  
   precompile method keys : string[] () {
     my $keys = new string[$self->{count}];
     # iterate entries
@@ -151,7 +151,7 @@ class Hash {
     }
     return $keys;
   }
-
+  
   precompile method has_keys : int () {
     
     my $has_keys = 0;
@@ -161,7 +161,7 @@ class Hash {
     
     return $has_keys;
   }
-
+  
   precompile method values : object[] () {
     my $retval = new object[$self->{count}];
     # iterate entries
@@ -175,7 +175,7 @@ class Hash {
     }
     return $retval;
   }
-
+  
   precompile method copy : Hash () {
     my $ret = Hash->new({});
     my $keys = $self->keys;
@@ -184,7 +184,7 @@ class Hash {
     }
     return $ret;
   }
-
+  
   precompile method to_array : object[] ($sort : int = 0) {
     my $keys = $self->keys;
     my $keys_length = @$keys;
@@ -203,15 +203,15 @@ class Hash {
     
     return $array;
   }
-
+  
   method clone : Hash () {
     return $self->copy;
   }
-
+  
   native static method _murmur_hash : long ($string : string, $seed : int);
-
+  
   private native static method _siphash13 : long ($string : string, $seed : string);
-
+  
   method set_byte : void ($key : string, $value : int) {
     $self->set($key => Byte->new($value));
   }
@@ -233,37 +233,81 @@ class Hash {
   method set_double : void ($key : string, $value : double) {
     $self->set($key => Double->new($value));
   }
-
+  
   method get_byte : int ($key : string) {
-    return (byte)$self->get($key);
+    my $object = $self->get($key);
+    
+    unless ($object is_type Byte) {
+      die "The value of the \$key must be a Byte object.";
+    }
+    
+    return (byte)$object;
   }
+  
   method get_short : int ($key : string) {
-    return (short)$self->get($key);
+    my $object = $self->get($key);
+    
+    unless ($object is_type Short) {
+      die "The value of the \$key must be a Short object.";
+    }
+    
+    return (short)$object;
   }
+  
   method get_int : int ($key : string) {
-    return (int)$self->get($key);
+    my $object = $self->get($key);
+    
+    unless ($object is_type Int) {
+      die "The value of the \$key must be a Int object.";
+    }
+    
+    return (int)$object;
   }
   method get_string : string ($key : string) {
-    return (string)$self->get($key);
+    my $object = $self->get($key);
+    
+    unless ($object is_type string) {
+      die "The value of the \$key must be a string.";
+    }
+    
+    return (string)$object;
   }
   method get_long : long ($key : string) {
-    return (long)$self->get($key);
+    my $object = $self->get($key);
+    
+    unless ($object is_type Long) {
+      die "The value of the \$key must be a Byte object.";
+    }
+    
+    return (long)$object;
   }
   method get_float : float ($key : string) {
-    return (float)$self->get($key);
+    my $object = $self->get($key);
+    
+    unless ($object is_type Float) {
+      die "The value of the \$key must be a Byte object.";
+    }
+    
+    return (float)$object;
   }
   method get_double : double ($key : string) {
-    return (double)$self->get($key);
+    my $object = $self->get($key);
+    
+    unless ($object is_type Double) {
+      die "The value of the \$key must be a Byte object.";
+    }
+    
+    return (double)$object;
   }
-
+  
   method _bucket_count : int () {
     return $self->{bucket_count};
   }
-
+  
   method _entries : Hash::Entry [] () {
     return $self->{entries};
   }
-
+  
   method _index_by_key : int ($key : string, $bucket_count : int) {
     my $default_seed = $self->{seed128};
     
@@ -272,7 +316,7 @@ class Hash {
     
     return $index_by_key;
   }
-
+  
   precompile method _set_to_container : void (
     $entries : Hash::Entry[],
     $bucket_count : int,
@@ -314,7 +358,7 @@ class Hash {
           $new_key = Fn->copy_string($key);
           make_read_only $new_key;
         }
-
+        
         $ref->{next_entry} = new Hash::Entry;
         $ref->{next_entry}->{key} = $new_key;
         $ref->{next_entry}->{val} = $val;
@@ -325,7 +369,7 @@ class Hash {
       $ref = $ref->{next_entry};
     }
   }
-
+  
   precompile method _rehash : void () {
     my $new_bucket_count : int;
     $new_bucket_count = $self->{bucket_count} * 2;
@@ -342,7 +386,7 @@ class Hash {
     $self->{bucket_count} = $new_bucket_count;
     $self->{entries} = $new_entries;
   }
-
+  
   method delete_or_default_byte : int ($key : string, $default : int) {
     
     unless ($key) {
@@ -360,7 +404,7 @@ class Hash {
     
     return $value;
   }
-
+  
   method delete_or_default_short : int ($key : string, $default : int) {
     
     unless ($key) {
@@ -378,7 +422,7 @@ class Hash {
     
     return $value;
   }
-
+  
   method delete_or_default_int : int ($key : string, $default : int) {
     
     unless ($key) {
@@ -396,7 +440,7 @@ class Hash {
     
     return $value;
   }
-
+  
   method delete_or_default_long : long ($key : string, $default : long) {
     
     unless ($key) {
@@ -414,7 +458,7 @@ class Hash {
     
     return $value;
   }
-
+  
   method delete_or_default_float : float ($key : string, $default : float) {
     
     unless ($key) {
@@ -432,7 +476,7 @@ class Hash {
     
     return $value;
   }
-
+  
   method delete_or_default_double : double ($key : string, $default : double) {
     
     unless ($key) {
@@ -450,7 +494,7 @@ class Hash {
     
     return $value;
   }
-
+  
   method delete_or_default_string : string ($key : string, $default : string) {
     
     unless ($key) {
@@ -468,7 +512,7 @@ class Hash {
     
     return $value;
   }
-
+  
   method delete_or_default : object ($key : string, $default : object) {
     
     unless ($key) {
