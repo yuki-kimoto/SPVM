@@ -416,7 +416,7 @@ sub create_link_info {
     my $lib_name;
     my $is_abs;
     if (ref $lib) {
-      $static = $lib->is_class_method;
+      $static = $lib->is_static;
       $lib_name = $lib->name;
       $is_abs = $lib->is_abs;
       $lib_info = $lib;
