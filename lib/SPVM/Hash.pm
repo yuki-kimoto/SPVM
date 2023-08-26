@@ -76,43 +76,45 @@ This is not deep copy. The keys are got by the L</"keys"> method. The values are
 
    method clone : Hash ();
 
-The alias for the L</"copy">.
+The alias for the L</"copy"> method.
 
 =head2 delete
 
   method delete : object ($key : string);
 
-Deletes a key value pair. Deleted value is returned.
+Deletes the key and value given by the key $key.
+
+The deleted value is returned.
 
 =head2 exists
 
   method exists : int ($key : string);
 
-Specify the key and check if the value exists. If exists, return 1, otherwise 0.
+Checks if the value specified by the key $key exists. If it exists, returns 1. Otherwise returns 0.
 
 =head2 keys
 
   method keys : string[] ();
 
-Gets keys. This method do not copy the strings.
+Gets the keys in the hash. This method does not copy the strings.
 
 =head2 values
 
   method values : object[] ();
 
-Gets all the values contained in this hash.
+Gets all the values in the hash.
 
 =head2 get
 
   method get : object ($key : string);
 
-Gets the value corresponding to key $key, and returns it.
+Gets a value specifed by the key $key, and returns it.
 
 =head2 get_byte
 
   method get_byte : int ($key : string);
 
-Gets the value corresponding to key $key, and casts it to the byte type, and returns it as the int type.
+Gets the value specifed by the key $key, and casts it to the byte type, and casts it to the int type, and returns it.
 
 Exceptions:
 
@@ -122,7 +124,7 @@ The value of the $key must be a L<Byte|SPVM::Byte> object. Otherwise an exceptio
 
   method get_short : int ($key : string);
 
-Gets the value corresponding to key $key, and casts it to the short type, and returns it as the int type.
+Gets the value specifed by the key $key, and casts it to the short type, and casts it to the int type, and returns it.
 
 Exceptions:
 
@@ -132,7 +134,7 @@ The value of the $key must be a L<Short|SPVM::Short> object. Otherwise an except
 
   method get_string : string ($key : string)
 
-Gets the value corresponding to key $key, and casts it to the string type, and returns it.
+Gets the value specifed by the key $key, and casts it to the string type, and returns it.
 
 Exceptions:
 
@@ -142,7 +144,7 @@ The value of the $key must be a string. Otherwise an exception is thrown.
 
   method get_int : int ($key : string);
 
-Gets the value corresponding to key $key, and casts it to the int type, and returns it.
+Gets the value specifed by the key $key, and casts it to the int type, and returns it.
 
 Exceptions:
 
@@ -152,7 +154,7 @@ The value of the $key must be a L<Int|SPVM::Int> object. Otherwise an exception 
 
   method get_long : long ($key : string);
 
-Gets the value corresponding to key $key, and casts it to the long type, and returns it.
+Gets the value specifed by the key $key, and casts it to the long type, and returns it.
 
 Exceptions:
 
@@ -162,7 +164,7 @@ The value of the $key must be a L<Long|SPVM::Long> object. Otherwise an exceptio
 
   method get_float : float ($key : string);
 
-Gets the value corresponding to key $key, and casts it to the float type, and returns it.
+Gets the value specifed by the key $key, and casts it to the float type, and returns it.
 
 Exceptions:
 
@@ -172,7 +174,7 @@ The value of the $key must be a L<Float|SPVM::Float> object. Otherwise an except
 
   method get_double : double ($key : string);
 
-Gets the value corresponding to key $key, and casts it to the double type, and returns it.
+Gets the value specifed by the key $key, and casts it to the double type, and returns it.
 
 Exceptions:
 
@@ -180,7 +182,7 @@ The value of the $key must be a L<Double|SPVM::Double> object. Otherwise an exce
 
 =head2 set
   
-  method set : void ($key : string, $val : object);
+  method set : void ($key : string, $value : object);
 
 Sets the object $value with the $key.
 

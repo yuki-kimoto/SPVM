@@ -79,7 +79,11 @@ class Hash {
     return $ret;
   }
   
-  method set : void ($key : string, $val : object) {
+  method clone : Hash () {
+    return $self->copy;
+  }
+  
+  method set : void ($key : string, $value : object) {
     unless ($key) {
       die "The \$key must be defined.";
     }
@@ -88,7 +92,7 @@ class Hash {
       $self->_rehash;
     }
     my $keys_length = $self->{keys_length};
-    $self->_set_to_container($self->{entries}, @{$self->{entries}}, \$keys_length, $key, $val);
+    $self->_set_to_container($self->{entries}, @{$self->{entries}}, \$keys_length, $key, $value);
     
     $self->{keys_length} = $keys_length;
   }
@@ -214,10 +218,6 @@ class Hash {
     return $array;
   }
   
-  method clone : Hash () {
-    return $self->copy;
-  }
-  
   native static method _murmur_hash : long ($string : string, $seed : int);
   
   method set_byte : void ($key : string, $value : int) {
@@ -330,7 +330,7 @@ class Hash {
     $entries_length : int,
     $keys_length_ref : int*,
     $key : string,
-    $val : object)
+    $value : object)
   {
     my $index = $self->_index_by_key($key, $entries_length);
     
@@ -347,14 +347,14 @@ class Hash {
       }
       
       $entries->[$index]->{key} = $new_key;
-      $entries->[$index]->{val} = $val;
+      $entries->[$index]->{val} = $value;
       $entries->[$index]->{next_entry} = undef;
       ++$$keys_length_ref;
       return;
     }
     while (1) {
       if ($ref->{key} eq $key) {
-        $ref->{val} = $val;
+        $ref->{val} = $value;
         return;
       }
       unless ($ref->{next_entry}) {
@@ -369,7 +369,7 @@ class Hash {
         
         $ref->{next_entry} = new Hash::Entry;
         $ref->{next_entry}->{key} = $new_key;
-        $ref->{next_entry}->{val} = $val;
+        $ref->{next_entry}->{val} = $value;
         $ref->{next_entry}->{next_entry} = undef;
         ++$$keys_length_ref;
         return;
