@@ -12,7 +12,7 @@ class Hash {
   interface Cloneable;
   
   # Fields
-  has count : ro int;
+  has keys_length : ro int;
   
   # Private Fields
   has entries : Hash::Entry[];
@@ -30,7 +30,7 @@ class Hash {
     
     my $default_entries_length = &DEFALUT_ENTRIES_LENGTH();
     $self->{entries} = new Hash::Entry[$default_entries_length];
-    $self->{count} = 0;
+    $self->{keys_length} = 0;
     
     my $seed_int32 = Fn->object_to_int($self);
     
@@ -75,13 +75,13 @@ class Hash {
       die "The \$key must be defined.";
     }
     # Rehash
-    if (((double)$self->{count} / @{$self->{entries}}) > Hash->_MAX_LOAD_FACTOR()) {
+    if (((double)$self->{keys_length} / @{$self->{entries}}) > Hash->_MAX_LOAD_FACTOR()) {
       $self->_rehash;
     }
-    my $count = $self->{count};
-    $self->_set_to_container($self->{entries}, @{$self->{entries}}, \$count, $key, $val);
+    my $keys_length = $self->{keys_length};
+    $self->_set_to_container($self->{entries}, @{$self->{entries}}, \$keys_length, $key, $val);
     
-    $self->{count} = $count;
+    $self->{keys_length} = $keys_length;
   }
   
   precompile method get : object ($key : string) {
@@ -135,7 +135,7 @@ class Hash {
         else {
           $self->{entries}->[$index] = $ref->{next_entry};
         }
-        $self->{count}--;
+        $self->{keys_length}--;
         return $ret;
       }
       unless ($ref->{next_entry}) {
@@ -147,14 +147,14 @@ class Hash {
   }
   
   precompile method keys : string[] () {
-    my $keys = new string[$self->{count}];
+    my $keys = new string[$self->{keys_length}];
     # iterate entries
-    my $count = 0;
+    my $keys_length = 0;
     my $entries_length = @{$self->{entries}};
     for (my $i = 0; $i < $entries_length; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $keys->[$count++] = $ref->{key};
+        $keys->[$keys_length++] = $ref->{key};
         $ref = $ref->{next_entry};
       }
     }
@@ -164,7 +164,7 @@ class Hash {
   precompile method has_keys : int () {
     
     my $has_keys = 0;
-    if ($self->{count} > 0) {
+    if ($self->{keys_length} > 0) {
       $has_keys = 1;
     }
     
@@ -172,14 +172,14 @@ class Hash {
   }
   
   precompile method values : object[] () {
-    my $retval = new object[$self->{count}];
+    my $retval = new object[$self->{keys_length}];
     # iterate entries
-    my $count = 0;
+    my $keys_length = 0;
     my $entries_length = @{$self->{entries}};
     for (my $i = 0; $i < $entries_length; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $retval->[$count++] = $ref->{val};
+        $retval->[$keys_length++] = $ref->{val};
         $ref = $ref->{next_entry};
       }
     }
@@ -328,7 +328,7 @@ class Hash {
   precompile method _set_to_container : void (
     $entries : Hash::Entry[],
     $entries_length : int,
-    $count_ref : int*,
+    $keys_length_ref : int*,
     $key : string,
     $val : object)
   {
@@ -349,7 +349,7 @@ class Hash {
       $entries->[$index]->{key} = $new_key;
       $entries->[$index]->{val} = $val;
       $entries->[$index]->{next_entry} = undef;
-      ++$$count_ref;
+      ++$$keys_length_ref;
       return;
     }
     while (1) {
@@ -371,7 +371,7 @@ class Hash {
         $ref->{next_entry}->{key} = $new_key;
         $ref->{next_entry}->{val} = $val;
         $ref->{next_entry}->{next_entry} = undef;
-        ++$$count_ref;
+        ++$$keys_length_ref;
         return;
       }
       $ref = $ref->{next_entry};
@@ -383,12 +383,12 @@ class Hash {
     my $entries_length = @{$self->{entries}};
     $new_entries_length = @{$self->{entries}} * 2;
     my $new_entries = new Hash::Entry [$new_entries_length];
-    my $new_count = 0;
+    my $new_keys_length = 0;
     # iterate entries
     for (my $i = 0; $i < $entries_length; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $self->_set_to_container($new_entries, $new_entries_length, \$new_count, $ref->{key}, $ref->{val});
+        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $ref->{key}, $ref->{val});
         $ref = $ref->{next_entry};
       }
     }

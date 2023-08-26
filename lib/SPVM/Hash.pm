@@ -56,17 +56,17 @@ Examples:
 
 =head1 Instance Methods
 
-=head2 count
+=head2 keys_length
 
-  method count : int ();
+  has keys_length : ro int;
 
-Counts keys in the hash.
+The length of the keys in the hash.
 
 =head2 copy
 
   method copy : Hash ();
 
-Copies hash.
+Copies the hash.
 
 This is not deep copy. Address of keys and values is copied into new hash.
 
