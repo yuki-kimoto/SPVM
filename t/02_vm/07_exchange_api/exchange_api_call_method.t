@@ -1355,7 +1355,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     {
       {
         my $hash = SPVM::Hash->new($api->new_object_array("object[]", []));
-        is_deeply($hash->count, 0);
+        is_deeply($hash->keys_length, 0);
       }
     }
 
