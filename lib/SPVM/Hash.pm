@@ -46,7 +46,7 @@ The hash function is C<siphash-1-3>.
 
   static method new : Hash ($key_values : object[] = undef);
 
-Creates a new L<Hash|SPVM::Hash> object with key value pairs.
+Creates a new L<Hash|SPVM::Hash> object given key-value pairs $key_values.
 
 Examples:
 
