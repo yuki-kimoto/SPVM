@@ -70,6 +70,15 @@ class Hash {
   private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
   
   # Instance Methods
+  precompile method copy : Hash () {
+    my $ret = Hash->new;
+    my $keys = $self->keys;
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $ret->set($keys->[$i], $self->get($keys->[$i]));
+    }
+    return $ret;
+  }
+  
   method set : void ($key : string, $val : object) {
     unless ($key) {
       die "The \$key must be defined.";
@@ -184,15 +193,6 @@ class Hash {
       }
     }
     return $retval;
-  }
-  
-  precompile method copy : Hash () {
-    my $ret = Hash->new({});
-    my $keys = $self->keys;
-    for (my $i = 0; $i < @$keys; ++$i) {
-      $ret->set($keys->[$i], $self->get($keys->[$i]));
-    }
-    return $ret;
   }
   
   precompile method to_array : object[] ($sort : int = 0) {

@@ -40,6 +40,14 @@ The hash function is C<siphash-1-3>.
 
 =back
 
+=hdead1 Fields
+
+=head2 keys_length
+
+  has keys_length : ro int;
+
+The length of the keys in the hash.
+
 =head1 Class Methods
 
 =head2 new
@@ -56,19 +64,13 @@ Examples:
 
 =head1 Instance Methods
 
-=head2 keys_length
-
-  has keys_length : ro int;
-
-The length of the keys in the hash.
-
 =head2 copy
 
   method copy : Hash ();
 
-Copies the hash.
+Creates a new L<Hash|SPVM::Hash> object, and copies the keys and values of the current hash to the new hash, and returns it.
 
-This is not deep copy. Address of keys and values is copied into new hash.
+This is not deep copy. The keys are got by the L</"keys"> method. The values are got by the L</"get"> method.
 
 =head2 clone
 
