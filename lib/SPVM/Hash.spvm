@@ -2,18 +2,29 @@
 # MIT License
 
 class Hash {
-  interface Cloneable;
-  
   use Hash::Entry;
   use Fn;
   use Array;
   use Sort;
   use Format;
   
+  # Interfaces
+  interface Cloneable;
+  
+  # Fields
   has count : ro int;
+  
+  # Private Fields
   has entries : Hash::Entry[];
+  
   has seed : mutable string;
   
+  # Private Enumerations
+  private enum {
+    DEFALUT_ENTRIES_LENGTH = 1,
+  }
+  
+  # Class Methods
   precompile static method new : Hash ($key_values : object[] = undef) {
     my $self = new Hash;
     
@@ -53,8 +64,12 @@ class Hash {
     return $self;
   }
   
-  native private method build_seed : void ($seed_int32 : int, $seed : mutable string);
+  # Private Class Methods
+  private native static method _siphash13 : long ($string : string, $seed : string);
   
+  private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
+  
+  # Instance Methods
   method set : void ($key : string, $val : object) {
     unless ($key) {
       die "The \$key must be defined.";
@@ -524,12 +539,6 @@ class Hash {
     return $value;
   }
   
-  private native static method _siphash13 : long ($string : string, $seed : string);
-  
-  private enum {
-    DEFALUT_ENTRIES_LENGTH = 1,
-  }
-  
-  private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
+  native private method build_seed : void ($seed_int32 : int, $seed : mutable string);
   
 }
