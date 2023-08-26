@@ -389,7 +389,7 @@ class TestCase::Module::Hash {
       $hash->set_int($key => $i);
     }
 
-    unless ($hash->_bucket_count == $initial_capacity * 2) {
+    unless ($hash->_entries_length == $initial_capacity * 2) {
       return 0;
     }
     unless (@{$hash->_entries} == $initial_capacity * 2) {

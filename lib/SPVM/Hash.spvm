@@ -10,9 +10,9 @@ class Hash {
   use Sort;
   use Format;
   
-  has bucket_count : int;
   has count : ro int;
   has entries : Hash::Entry[];
+  has entries_length : int;
   has seed128 : private mutable string;
   
   private enum {
@@ -24,7 +24,7 @@ class Hash {
     my $self = new Hash;
     
     my $default_capacity = 32;
-    $self->{bucket_count} = Hash->_DEFALUT_HASH_TABLE_LENGTH();
+    $self->{entries_length} = Hash->_DEFALUT_HASH_TABLE_LENGTH();
     $self->{entries} = new Hash::Entry[Hash->_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
     
@@ -67,17 +67,17 @@ class Hash {
       die "The \$key must be defined.";
     }
     # Rehash
-    if (((double)$self->{count} / $self->{bucket_count}) > Hash->_MAX_LOAD_FACTOR()) {
+    if (((double)$self->{count} / $self->{entries_length}) > Hash->_MAX_LOAD_FACTOR()) {
       $self->_rehash;
     }
     my $count = $self->{count};
-    $self->_set_to_container($self->{entries}, $self->{bucket_count}, \$count, $key, $val);
+    $self->_set_to_container($self->{entries}, $self->{entries_length}, \$count, $key, $val);
     
     $self->{count} = $count;
   }
   
   precompile method get : object ($key : string) {
-    my $index = $self->_index_by_key($key, $self->{bucket_count});
+    my $index = $self->_index_by_key($key, $self->{entries_length});
     my $ref = $self->{entries}->[$index];
     unless ($ref) {
       return undef;
@@ -94,7 +94,7 @@ class Hash {
   }
 
   precompile method exists : int ($key : string) {
-    my $index = $self->_index_by_key($key, $self->{bucket_count});
+    my $index = $self->_index_by_key($key, $self->{entries_length});
     my $ref = $self->{entries}->[$index];
 
     unless ($ref) {
@@ -112,7 +112,7 @@ class Hash {
   }
   
   precompile method delete : object ($key : string) {
-    my $index = $self->_index_by_key($key, $self->{bucket_count});
+    my $index = $self->_index_by_key($key, $self->{entries_length});
     my $ref = $self->{entries}->[$index];
     my $prev : Hash::Entry = undef;
     unless ($ref) {
@@ -142,7 +142,7 @@ class Hash {
     my $keys = new string[$self->{count}];
     # iterate entries
     my $count = 0;
-    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+    for (my $i = 0; $i < $self->{entries_length}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
         $keys->[$count++] = $ref->{key};
@@ -166,7 +166,7 @@ class Hash {
     my $retval = new object[$self->{count}];
     # iterate entries
     my $count = 0;
-    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+    for (my $i = 0; $i < $self->{entries_length}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
         $retval->[$count++] = $ref->{val};
@@ -300,31 +300,31 @@ class Hash {
     return (double)$object;
   }
   
-  method _bucket_count : int () {
-    return $self->{bucket_count};
+  method _entries_length : int () {
+    return $self->{entries_length};
   }
   
   method _entries : Hash::Entry [] () {
     return $self->{entries};
   }
   
-  method _index_by_key : int ($key : string, $bucket_count : int) {
+  method _index_by_key : int ($key : string, $entries_length : int) {
     my $default_seed = $self->{seed128};
     
     my $hash = Hash->_siphash13($key, $default_seed);
-    my $index_by_key = (int)($hash remul (long)$bucket_count);
+    my $index_by_key = (int)($hash remul (long)$entries_length);
     
     return $index_by_key;
   }
   
   precompile method _set_to_container : void (
     $entries : Hash::Entry[],
-    $bucket_count : int,
+    $entries_length : int,
     $count_ref : int*,
     $key : string,
     $val : object)
   {
-    my $index = $self->_index_by_key($key, $bucket_count);
+    my $index = $self->_index_by_key($key, $entries_length);
     
     my $ref = $entries->[$index];
     unless ($ref) {
@@ -371,19 +371,19 @@ class Hash {
   }
   
   precompile method _rehash : void () {
-    my $new_bucket_count : int;
-    $new_bucket_count = $self->{bucket_count} * 2;
-    my $new_entries = new Hash::Entry [$new_bucket_count];
+    my $new_entries_length : int;
+    $new_entries_length = $self->{entries_length} * 2;
+    my $new_entries = new Hash::Entry [$new_entries_length];
     my $new_count = 0;
     # iterate entries
-    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+    for (my $i = 0; $i < $self->{entries_length}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $self->_set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->{key}, $ref->{val});
+        $self->_set_to_container($new_entries, $new_entries_length, \$new_count, $ref->{key}, $ref->{val});
         $ref = $ref->{next_entry};
       }
     }
-    $self->{bucket_count} = $new_bucket_count;
+    $self->{entries_length} = $new_entries_length;
     $self->{entries} = $new_entries;
   }
   
