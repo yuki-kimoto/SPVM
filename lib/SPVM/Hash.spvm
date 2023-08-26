@@ -14,11 +14,6 @@ class Hash {
   has entries : Hash::Entry[];
   has seed : mutable string;
   
-  private enum {
-    DEFALUT_ENTRIES_LENGTH = 1,
-  }
-  private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
-  
   precompile static method new : Hash ($key_values : object[] = undef) {
     my $self = new Hash;
     
@@ -209,8 +204,6 @@ class Hash {
   }
   
   native static method _murmur_hash : long ($string : string, $seed : int);
-  
-  private native static method _siphash13 : long ($string : string, $seed : string);
   
   method set_byte : void ($key : string, $value : int) {
     $self->set($key => Byte->new($value));
@@ -530,4 +523,13 @@ class Hash {
     
     return $value;
   }
+  
+  private native static method _siphash13 : long ($string : string, $seed : string);
+  
+  private enum {
+    DEFALUT_ENTRIES_LENGTH = 1,
+  }
+  
+  private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
+  
 }
