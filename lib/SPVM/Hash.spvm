@@ -12,7 +12,6 @@ class Hash {
   
   has count : ro int;
   has entries : Hash::Entry[];
-  has entries_length : int;
   has seed128 : private mutable string;
   
   private enum {
@@ -24,7 +23,6 @@ class Hash {
     my $self = new Hash;
     
     my $default_entries_length = &DEFALUT_ENTRIES_LENGTH();
-    $self->{entries_length} = $default_entries_length;
     $self->{entries} = new Hash::Entry[$default_entries_length];
     $self->{count} = 0;
     
@@ -67,17 +65,17 @@ class Hash {
       die "The \$key must be defined.";
     }
     # Rehash
-    if (((double)$self->{count} / $self->{entries_length}) > Hash->_MAX_LOAD_FACTOR()) {
+    if (((double)$self->{count} / @{$self->{entries}}) > Hash->_MAX_LOAD_FACTOR()) {
       $self->_rehash;
     }
     my $count = $self->{count};
-    $self->_set_to_container($self->{entries}, $self->{entries_length}, \$count, $key, $val);
+    $self->_set_to_container($self->{entries}, @{$self->{entries}}, \$count, $key, $val);
     
     $self->{count} = $count;
   }
   
   precompile method get : object ($key : string) {
-    my $index = $self->_index_by_key($key, $self->{entries_length});
+    my $index = $self->_index_by_key($key, @{$self->{entries}});
     my $ref = $self->{entries}->[$index];
     unless ($ref) {
       return undef;
@@ -94,7 +92,7 @@ class Hash {
   }
 
   precompile method exists : int ($key : string) {
-    my $index = $self->_index_by_key($key, $self->{entries_length});
+    my $index = $self->_index_by_key($key, @{$self->{entries}});
     my $ref = $self->{entries}->[$index];
 
     unless ($ref) {
@@ -112,7 +110,7 @@ class Hash {
   }
   
   precompile method delete : object ($key : string) {
-    my $index = $self->_index_by_key($key, $self->{entries_length});
+    my $index = $self->_index_by_key($key, @{$self->{entries}});
     my $ref = $self->{entries}->[$index];
     my $prev : Hash::Entry = undef;
     unless ($ref) {
@@ -142,7 +140,8 @@ class Hash {
     my $keys = new string[$self->{count}];
     # iterate entries
     my $count = 0;
-    for (my $i = 0; $i < $self->{entries_length}; ++$i) {
+    my $entries_length = @{$self->{entries}};
+    for (my $i = 0; $i < $entries_length; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
         $keys->[$count++] = $ref->{key};
@@ -166,7 +165,8 @@ class Hash {
     my $retval = new object[$self->{count}];
     # iterate entries
     my $count = 0;
-    for (my $i = 0; $i < $self->{entries_length}; ++$i) {
+    my $entries_length = @{$self->{entries}};
+    for (my $i = 0; $i < $entries_length; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
         $retval->[$count++] = $ref->{val};
@@ -301,7 +301,7 @@ class Hash {
   }
   
   method _entries_length : int () {
-    return $self->{entries_length};
+    return @{$self->{entries}};
   }
   
   method _entries : Hash::Entry [] () {
@@ -372,18 +372,18 @@ class Hash {
   
   precompile method _rehash : void () {
     my $new_entries_length : int;
-    $new_entries_length = $self->{entries_length} * 2;
+    my $entries_length = @{$self->{entries}};
+    $new_entries_length = @{$self->{entries}} * 2;
     my $new_entries = new Hash::Entry [$new_entries_length];
     my $new_count = 0;
     # iterate entries
-    for (my $i = 0; $i < $self->{entries_length}; ++$i) {
+    for (my $i = 0; $i < $entries_length; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
         $self->_set_to_container($new_entries, $new_entries_length, \$new_count, $ref->{key}, $ref->{val});
         $ref = $ref->{next_entry};
       }
     }
-    $self->{entries_length} = $new_entries_length;
     $self->{entries} = $new_entries;
   }
   
