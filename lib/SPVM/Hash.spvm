@@ -16,16 +16,16 @@ class Hash {
   has seed128 : private mutable string;
   
   private enum {
-    _DEFALUT_HASH_TABLE_LENGTH = 1,
+    DEFALUT_ENTRIES_LENGTH = 1,
   }
   private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
   
   precompile static method new : Hash ($key_values : object[] = undef) {
     my $self = new Hash;
     
-    my $default_capacity = 32;
-    $self->{entries_length} = Hash->_DEFALUT_HASH_TABLE_LENGTH();
-    $self->{entries} = new Hash::Entry[Hash->_DEFALUT_HASH_TABLE_LENGTH()];
+    my $default_entries_length = &DEFALUT_ENTRIES_LENGTH();
+    $self->{entries_length} = $default_entries_length;
+    $self->{entries} = new Hash::Entry[$default_entries_length];
     $self->{count} = 0;
     
     my $seed_int32 = Fn->object_to_int($self);
