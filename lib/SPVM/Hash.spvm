@@ -12,7 +12,7 @@ class Hash {
   
   has count : ro int;
   has entries : Hash::Entry[];
-  has seed128 : private mutable string;
+  has seed : mutable string;
   
   private enum {
     DEFALUT_ENTRIES_LENGTH = 1,
@@ -28,8 +28,8 @@ class Hash {
     
     my $seed_int32 = Fn->object_to_int($self);
     
-    $self->{seed128} = (mutable string)new_string_len 16;
-    $self->build_seed128($seed_int32, $self->{seed128});
+    $self->{seed} = (mutable string)new_string_len 16;
+    $self->build_seed($seed_int32, $self->{seed});
     
     my $length : int;
     if ($key_values) {
@@ -58,7 +58,7 @@ class Hash {
     return $self;
   }
   
-  native private method build_seed128 : void ($seed_int32 : int, $seed128 : mutable string);
+  native private method build_seed : void ($seed_int32 : int, $seed : mutable string);
   
   method set : void ($key : string, $val : object) {
     unless ($key) {
@@ -309,7 +309,7 @@ class Hash {
   }
   
   method _index_by_key : int ($key : string, $entries_length : int) {
-    my $default_seed = $self->{seed128};
+    my $default_seed = $self->{seed};
     
     my $hash = Hash->_siphash13($key, $default_seed);
     my $index_by_key = (int)($hash remul (long)$entries_length);

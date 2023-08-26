@@ -134,20 +134,20 @@ siphash13(uint64_t k0, uint64_t k1, const void *src, Py_ssize_t src_sz) {
     return t;
 }
 
-int32_t SPVM__Hash__build_seed128(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Hash__build_seed(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_self = stack[0].oval;
   
   int32_t seed_int32 = stack[1].ival;
   
-  void* obj_seed128 = stack[2].oval;
+  void* obj_seed = stack[2].oval;
   
-  assert(obj_seed128);
+  assert(obj_seed);
   
-  char* seed128 = (char*)env->get_chars(env, stack, obj_seed128);
-  int32_t seed128_length = env->length(env, stack, obj_seed128);
+  char* seed = (char*)env->get_chars(env, stack, obj_seed);
+  int32_t seed_length = env->length(env, stack, obj_seed);
   
-  lcg_urandom((unsigned int)seed_int32, (unsigned char*)seed128, seed128_length);
+  lcg_urandom((unsigned int)seed_int32, (unsigned char*)seed, seed_length);
   
   return 0;
 }
