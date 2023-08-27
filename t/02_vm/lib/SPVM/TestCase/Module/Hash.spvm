@@ -317,7 +317,28 @@ class TestCase::Module::Hash {
     }
     return 1;
   }
-
+  
+  static method delete : int () {
+    
+    {
+      my $success = &delete_with_no_hash_collision;
+      
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    {
+      my $success = &delete_with_hash_collision;
+      
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   static method delete_with_no_hash_collision : int () {
     my $hash = Hash->new({});
     $hash->set("alice", Int->new(1));
@@ -345,7 +366,7 @@ class TestCase::Module::Hash {
     }
     return 1;
   }
-
+  
   static method delete_with_hash_collision : int () {
     my $hash = Hash->new({});
     $hash->set("alice", Int->new(1));
