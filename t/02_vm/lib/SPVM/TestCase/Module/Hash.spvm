@@ -134,7 +134,7 @@ class TestCase::Module::Hash {
 
   static method set_get_numeric : int () {
 
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
 
     # set_byte, get_byte
     {
@@ -250,7 +250,7 @@ class TestCase::Module::Hash {
   static method set : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [Int->new(1), Int->new(2), undef, Int->new(3)];
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set($keys->[$i], $vals->[$i]);
     }
@@ -266,7 +266,7 @@ class TestCase::Module::Hash {
   }
 
   static method set_do_not_refer_caller_key : int () {
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     my $key = "a";
     $hash->set($key, Int->new(1));
     $key = "b";
@@ -280,7 +280,7 @@ class TestCase::Module::Hash {
   }
 
   static method get : int () {
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     $hash->set_int("a" => 1);
     $hash->set("b" => undef);
     $hash->set("c" => "str");
@@ -303,7 +303,7 @@ class TestCase::Module::Hash {
   static method exists : int () {
     my $keys = ["alice", "bob"];
     my $vals = [Int->new(1), Int->new(2)];
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set($keys->[$i], $vals->[$i]);
     }
@@ -336,11 +336,13 @@ class TestCase::Module::Hash {
       }
     }
     
+    # Exceptions
+    
     return 1;
   }
   
   static method delete_with_no_hash_collision : int () {
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     $hash->set("alice", Int->new(1));
     $hash->set("bob", Int->new(2));
     unless (((Int)($hash->delete("alice")))->value == 1) {
@@ -368,7 +370,7 @@ class TestCase::Module::Hash {
   }
   
   static method delete_with_hash_collision : int () {
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     $hash->set("alice", Int->new(1));
     $hash->set("bob", Int->new(2));
     unless (((Int)$hash->delete("alice"))->value == 1) {
@@ -404,7 +406,7 @@ class TestCase::Module::Hash {
 
   static method rehash : int () {
     my $initial_capacity = 16;
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     for (my $i = 0; $i < 14; ++$i) {
       my $key = "key" . $i;
       $hash->set_int($key => $i);
@@ -422,7 +424,7 @@ class TestCase::Module::Hash {
   }
 
   static method keys : int () {
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     my $key0 = "a";
     my $key1 = "b";
     
@@ -476,7 +478,7 @@ class TestCase::Module::Hash {
   }
   
   static method values : int () {
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     my $key0 = "a";
     my $key1 = "b";
     my $key2 = "c";
@@ -514,7 +516,7 @@ class TestCase::Module::Hash {
   }
 
   static method copy : int () {
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     for (my $i = 0; $i < 3; ++$i) {
       $hash->set("key$i", $i);
     }
@@ -535,7 +537,7 @@ class TestCase::Module::Hash {
   }
 
   static method clone : int () {
-    my $hash = Hash->new({});
+    my $hash = Hash->new;
     for (my $i = 0; $i < 3; ++$i) {
       $hash->set("key$i", $i);
     }
