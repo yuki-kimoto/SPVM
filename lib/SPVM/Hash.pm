@@ -246,7 +246,7 @@ If the option $sort is a negative value, the keys are sorted by decendant order.
 
   method delete_or_default_byte : int ($key : string, $default : int) {
 
-If the $key exists, the value is deleted and returned with the type cast to C<byte> type.
+If the value given the key $key exists, the value is deleted and returned with the type cast to C<byte> type.
 
 If not, the $default value with the type cast to C<byte> type is returned.
 

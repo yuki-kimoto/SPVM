@@ -64,10 +64,12 @@ class Hash {
     return $self;
   }
   
-  # Private Class Methods
+  # Private or Internal Class Methods
   private native static method _siphash13 : long ($string : string, $seed : string);
   
   private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
+  
+  native static method _murmur_hash : long ($string : string, $seed : int);
   
   # Instance Methods
   precompile method copy : Hash () {
@@ -221,8 +223,6 @@ class Hash {
     return $array;
   }
   
-  native static method _murmur_hash : long ($string : string, $seed : int);
-  
   method set_byte : void ($key : string, $value : int) {
     $self->set($key => Byte->new($value));
   }
@@ -252,7 +252,7 @@ class Hash {
       die "The value of the \$key must be a Byte object.";
     }
     
-    return (byte)$object;
+    return (int)(byte)$object;
   }
   
   method get_short : int ($key : string) {
@@ -262,7 +262,7 @@ class Hash {
       die "The value of the \$key must be a Short object.";
     }
     
-    return (short)$object;
+    return (int)(short)$object;
   }
   
   method get_int : int ($key : string) {
@@ -309,93 +309,6 @@ class Hash {
     }
     
     return (double)$object;
-  }
-  
-  method _entries_length : int () {
-    return @{$self->{entries}};
-  }
-  
-  method _entries : Hash::Entry [] () {
-    return $self->{entries};
-  }
-  
-  method _index_by_key : int ($key : string, $entries_length : int) {
-    my $default_seed = $self->{seed};
-    
-    my $hash = Hash->_siphash13($key, $default_seed);
-    my $index_by_key = (int)($hash remul (long)$entries_length);
-    
-    return $index_by_key;
-  }
-  
-  precompile method _set_to_container : void (
-    $entries : Hash::Entry[],
-    $entries_length : int,
-    $keys_length_ref : int*,
-    $key : string,
-    $value : object)
-  {
-    my $index = $self->_index_by_key($key, $entries_length);
-    
-    my $ref = $entries->[$index];
-    unless ($ref) {
-      $entries->[$index] = new Hash::Entry;
-      my $new_key : string;
-      if (is_read_only $key) {
-        $new_key = $key;
-      }
-      else {
-        $new_key = Fn->copy_string($key);
-        make_read_only $new_key;
-      }
-      
-      $entries->[$index]->{key} = $new_key;
-      $entries->[$index]->{val} = $value;
-      $entries->[$index]->{next_entry} = undef;
-      ++$$keys_length_ref;
-      return;
-    }
-    while (1) {
-      if ($ref->{key} eq $key) {
-        $ref->{val} = $value;
-        return;
-      }
-      unless ($ref->{next_entry}) {
-        my $new_key : string;
-        if (is_read_only $key) {
-          $new_key = $key;
-        }
-        else {
-          $new_key = Fn->copy_string($key);
-          make_read_only $new_key;
-        }
-        
-        $ref->{next_entry} = new Hash::Entry;
-        $ref->{next_entry}->{key} = $new_key;
-        $ref->{next_entry}->{val} = $value;
-        $ref->{next_entry}->{next_entry} = undef;
-        ++$$keys_length_ref;
-        return;
-      }
-      $ref = $ref->{next_entry};
-    }
-  }
-  
-  precompile method _rehash : void () {
-    my $new_entries_length : int;
-    my $entries_length = @{$self->{entries}};
-    $new_entries_length = @{$self->{entries}} * 2;
-    my $new_entries = new Hash::Entry [$new_entries_length];
-    my $new_keys_length = 0;
-    # iterate entries
-    for (my $i = 0; $i < $entries_length; ++$i) {
-      my $ref = $self->{entries}->[$i];
-      while ($ref) {
-        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $ref->{key}, $ref->{val});
-        $ref = $ref->{next_entry};
-      }
-    }
-    $self->{entries} = $new_entries;
   }
   
   method delete_or_default_byte : int ($key : string, $default : int) {
@@ -542,6 +455,89 @@ class Hash {
     return $value;
   }
   
+  # Private or Internal Instance Methods
   native private method build_seed : void ($seed_int32 : int, $seed : mutable string);
   
+  method _entries : Hash::Entry [] () {
+    return $self->{entries};
+  }
+  
+  private method _index_by_key : int ($key : string, $entries_length : int) {
+    my $default_seed = $self->{seed};
+    
+    my $hash = Hash->_siphash13($key, $default_seed);
+    my $index_by_key = (int)($hash remul (long)$entries_length);
+    
+    return $index_by_key;
+  }
+  
+  precompile private method _set_to_container : void (
+    $entries : Hash::Entry[],
+    $entries_length : int,
+    $keys_length_ref : int*,
+    $key : string,
+    $value : object)
+  {
+    my $index = $self->_index_by_key($key, $entries_length);
+    
+    my $ref = $entries->[$index];
+    unless ($ref) {
+      $entries->[$index] = new Hash::Entry;
+      my $new_key : string;
+      if (is_read_only $key) {
+        $new_key = $key;
+      }
+      else {
+        $new_key = Fn->copy_string($key);
+        make_read_only $new_key;
+      }
+      
+      $entries->[$index]->{key} = $new_key;
+      $entries->[$index]->{val} = $value;
+      $entries->[$index]->{next_entry} = undef;
+      ++$$keys_length_ref;
+      return;
+    }
+    while (1) {
+      if ($ref->{key} eq $key) {
+        $ref->{val} = $value;
+        return;
+      }
+      unless ($ref->{next_entry}) {
+        my $new_key : string;
+        if (is_read_only $key) {
+          $new_key = $key;
+        }
+        else {
+          $new_key = Fn->copy_string($key);
+          make_read_only $new_key;
+        }
+        
+        $ref->{next_entry} = new Hash::Entry;
+        $ref->{next_entry}->{key} = $new_key;
+        $ref->{next_entry}->{val} = $value;
+        $ref->{next_entry}->{next_entry} = undef;
+        ++$$keys_length_ref;
+        return;
+      }
+      $ref = $ref->{next_entry};
+    }
+  }
+  
+  precompile private method _rehash : void () {
+    my $new_entries_length : int;
+    my $entries_length = @{$self->{entries}};
+    $new_entries_length = @{$self->{entries}} * 2;
+    my $new_entries = new Hash::Entry [$new_entries_length];
+    my $new_keys_length = 0;
+    # iterate entries
+    for (my $i = 0; $i < $entries_length; ++$i) {
+      my $ref = $self->{entries}->[$i];
+      while ($ref) {
+        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $ref->{key}, $ref->{val});
+        $ref = $ref->{next_entry};
+      }
+    }
+    $self->{entries} = $new_entries;
+  }
 }
