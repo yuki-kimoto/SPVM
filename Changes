@@ -8,7 +8,8 @@
     * The is_class_method field in the SPVM::Builder::LibInfo is renamed to is_static.
       This is wrongly changed.
     * The count field in the Hash class is renamed to the keys_length method.
-
+    * The the to_array method in the Hash class support decendent order.
+    
 0.989036 2023-08-17
 
   [New Features]

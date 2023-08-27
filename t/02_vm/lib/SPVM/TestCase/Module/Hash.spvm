@@ -565,28 +565,53 @@ class TestCase::Module::Hash {
         $hash->set("key$i", $i);
       }
       
-      my $sort = 1;
-      my $array = $hash->to_array($sort);
+      {
+        my $sort = 1;
+        my $array = $hash->to_array($sort);
+        
+        unless ($array->[0]->(string) eq "key0") {
+          return 0;
+        }
+        unless ($array->[1]->(int) == 0) {
+          return 0;
+        }
+        unless ($array->[2]->(string) eq "key1") {
+          return 0;
+        }
+        unless ($array->[3]->(int) == 1) {
+          return 0;
+        }
+        unless ($array->[4]->(string) eq "key2") {
+          return 0;
+        }
+        unless ($array->[5]->(int) == 2) {
+          return 0;
+        }
+      }
       
-      unless ($array->[0]->(string) eq "key0") {
-        return 0;
+      {
+        my $sort = -1;
+        my $array = $hash->to_array($sort);
+        
+        unless ($array->[4]->(string) eq "key0") {
+          return 0;
+        }
+        unless ($array->[5]->(int) == 0) {
+          return 0;
+        }
+        unless ($array->[2]->(string) eq "key1") {
+          return 0;
+        }
+        unless ($array->[3]->(int) == 1) {
+          return 0;
+        }
+        unless ($array->[0]->(string) eq "key2") {
+          return 0;
+        }
+        unless ($array->[1]->(int) == 2) {
+          return 0;
+        }
       }
-      unless ($array->[1]->(int) == 0) {
-        return 0;
-      }
-      unless ($array->[2]->(string) eq "key1") {
-        return 0;
-      }
-      unless ($array->[3]->(int) == 1) {
-        return 0;
-      }
-      unless ($array->[4]->(string) eq "key2") {
-        return 0;
-      }
-      unless ($array->[5]->(int) == 2) {
-        return 0;
-      }
-      
     }
     
     

@@ -184,57 +184,63 @@ The value of the $key must be a L<Double|SPVM::Double> object. Otherwise an exce
   
   method set : void ($key : string, $value : object);
 
-Sets the object $value with the $key.
+Sets the object $value to the hash given the key $key.
+
+Exceptions:
+
+The $key must be defined. Otherwise an exception is thrown.
 
 =head2 set_byte
 
   method set_byte : void ($key : string, $value : int);
 
-Sets the C<byte> $value with the $key. the $value is converted to L<Byte|SPVM::Byte> object.
+Sets the C<byte> $value to the hash given the key $key. the $value is converted to a L<Byte|SPVM::Byte> object.
 
 =head2 set_short
 
   method set_short : void ($key : string, $value : int);
 
-Sets the C<short> $value with the $key. the $value is converted to L<Short|SPVM::Short> object.
+Sets the C<short> $value to the hash given the key $key. the $value is converted to a L<Short|SPVM::Short> object.
 
 =head2 set_int
 
   method set_int : void ($key : string, $value : int);
 
-Sets the C<int> $value with the $key. the $value is converted to L<Int|SPVM::Int> object.
+Sets the C<int> $value to the hash given the key $key. the $value is converted to a L<Int|SPVM::Int> object.
 
 =head2 set_long
 
   method set_long : void ($key : string, $value : long);
 
-Sets the C<long> $value with the $key. the $value is converted to L<Long|SPVM::Long> object.
+Sets the C<long> $value to the hash given the key $key. the $value is converted to a L<Long|SPVM::Long> object.
 
 =head2 set_float
 
   method set_float : void ($key : string, $value : float);
 
-Sets the C<float> $value with the $key. the $value is converted to L<Float|SPVM::Float> object.
+Sets the C<float> $value to the hash given the key $key. the $value is converted to a L<Float|SPVM::Float> object.
 
 =head2 set_double
 
   method set_double : void ($key : string, $value : double);
 
-Sets the C<double> $value with the $key. the $value is converted to L<Double|SPVM::Double> object.
+Sets the C<double> $value to the hash given the key $key. the $value is converted to a L<Double|SPVM::Double> object.
 
 =head2 set_string
 
   method set_string : void ($key : string, $value : string);
 
-Sets the string $value with the $key.
+Sets the string $value to the hash given the key $key.
 
 =head2 to_array
 
   method to_array : object[] ($sort : int = 0);
 
-Converts the hash to an array.
+Converts all the key-value pairs in the hash to an array, and returns it.
 
-If $sort is a true value, the keys are sorted by the asc order.
+If the option $sort is a positive value, the keys are sorted by ascendant order.
+
+If the option $sort is a negative value, the keys are sorted by decendant order.
 
 =head2 delete_or_default_byte
 

@@ -203,8 +203,11 @@ class Hash {
     my $keys = $self->keys;
     my $keys_length = @$keys;
     
-    if ($sort) {
+    if ($sort > 0) {
       Sort->sort_string_asc($keys);
+    }
+    elsif ($sort < 0) {
+      Sort->sort_string_desc($keys);
     }
     
     my $array = new object[$keys_length * 2];
