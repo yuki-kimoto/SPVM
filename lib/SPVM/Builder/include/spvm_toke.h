@@ -28,7 +28,7 @@ int32_t SPVM_TOKE_is_octal_number(SPVM_COMPILER* compiler, char ch);
 
 int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch);
 
-void SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** char_ptr_ptr);
+int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** char_ptr_ptr);
 
 char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** char_ptr_ptr);
 

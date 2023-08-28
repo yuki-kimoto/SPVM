@@ -2643,15 +2643,24 @@ int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_
   }
 }
 
-void SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
+int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
+  
+  int32_t is_line_terminator = 0;
   
   if (**char_ptr_ptr == '\r' && *(*char_ptr_ptr + 1) == '\n') {
+    is_line_terminator = 1;
+    (*char_ptr_ptr) += 2;
+  }
+  else if (**char_ptr_ptr == '\n' || **char_ptr_ptr == '\r') {
+    is_line_terminator = 1;
     (*char_ptr_ptr)++;
   }
   
-  (*char_ptr_ptr)++;
+  if (is_line_terminator) {
+    compiler->current_line++;
+    compiler->line_begin_ptr = *char_ptr_ptr;
+    compiler->before_ch_ptr = *char_ptr_ptr;
+  }
   
-  compiler->current_line++;
-  compiler->line_begin_ptr = *char_ptr_ptr;
-  compiler->before_ch_ptr = *char_ptr_ptr;
+  return is_line_terminator;
 }
