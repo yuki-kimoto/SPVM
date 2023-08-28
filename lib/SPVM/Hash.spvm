@@ -328,11 +328,11 @@ class Hash {
     
     my $value = 0;
     if ($self->exists($key)) {
-      $value = (byte)$self->get_byte($key);
+      $value = $self->get_byte($key);
       $self->delete($key);
     }
     else {
-      $value = (byte)$default;
+      $value = $default;
     }
     
     return $value;
@@ -342,11 +342,11 @@ class Hash {
     
     my $value = 0;
     if ($self->exists($key)) {
-      $value = (short)$self->get_short($key);
+      $value = $self->get_short($key);
       $self->delete($key);
     }
     else {
-      $value = (short)$default;
+      $value = $default;
     }
     
     return $value;
@@ -370,7 +370,7 @@ class Hash {
     
     my $value = 0L;
     if ($self->exists($key)) {
-      $value = (long)$self->get_long($key);
+      $value = $self->get_long($key);
       $self->delete($key);
     }
     else {
