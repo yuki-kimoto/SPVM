@@ -2426,8 +2426,8 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           
           // Set initial information for tokenization
           compiler->ch_ptr = compiler->current_class_content;
-          compiler->before_ch_ptr = compiler->current_class_content;
-          compiler->line_begin_ptr = compiler->current_class_content;
+          compiler->before_ch_ptr = compiler->ch_ptr;
+          compiler->line_begin_ptr = compiler->ch_ptr;
           compiler->current_line = 1;
         }
         else {
