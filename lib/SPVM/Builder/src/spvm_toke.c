@@ -1046,17 +1046,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               else {
+                int32_t is_line_terminator = 0;
+                
                 if (*string_literal_ch_ptr == '\r' && *(string_literal_ch_ptr + 1) == '\n') {
+                  is_line_terminator = 1;
+                  string_literal_ch_ptr += 2;
+                }
+                else if (*string_literal_ch_ptr == '\n' || *string_literal_ch_ptr == '\r') {
+                  is_line_terminator = 1;
                   string_literal_ch_ptr++;
                 }
-                if (*string_literal_ch_ptr == '\n' || *string_literal_ch_ptr == '\r') {
-                  compiler->current_line++;
-                  compiler->line_begin_ch_ptr = compiler->ch_ptr;
-                }
                 
-                string_literal_tmp[string_literal_length] = *string_literal_ch_ptr;
-                string_literal_length++;
-                string_literal_ch_ptr++;
+                if (is_line_terminator) {
+                  string_literal_tmp[string_literal_length] = '\n';
+                  string_literal_length++;
+                  compiler->line_begin_ch_ptr = string_literal_ch_ptr;
+                  compiler->current_line++;
+                }
+                else {
+                  string_literal_tmp[string_literal_length] = *string_literal_ch_ptr;
+                  string_literal_length++;
+                  string_literal_ch_ptr++;
+                }
               }
             }
           }
