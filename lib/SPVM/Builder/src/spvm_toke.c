@@ -669,7 +669,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         
         // Save current position
-        const char* current_token_ptr = compiler->ch_ptr;
+        const char* string_literal_begin_ch_ptr = compiler->ch_ptr;
         
         int8_t next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
         
@@ -846,13 +846,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             return 0;
           }
           
-          int32_t string_literal_tmp_len = (int32_t)(compiler->ch_ptr - current_token_ptr) * 4;
+          int32_t string_literal_tmp_len = (int32_t)(compiler->ch_ptr - string_literal_begin_ch_ptr) * 4;
           
           compiler->ch_ptr++;
           
           string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, string_literal_tmp_len + 1);
           {
-            char* char_ptr = (char*)current_token_ptr;
+            char* char_ptr = (char*)string_literal_begin_ch_ptr;
             while (char_ptr != compiler->ch_ptr - 1) {
               if (*char_ptr == '\\') {
                 char_ptr++;
