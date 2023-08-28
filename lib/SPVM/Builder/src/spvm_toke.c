@@ -628,19 +628,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             // Octal escape character
             else if (SPVM_TOKE_is_octal_number(compiler, *compiler->ch_ptr) || *compiler->ch_ptr == 'o') {
-              char* char_ptr = compiler->ch_ptr;
-              
-              ch = SPVM_TOKE_parse_octal_escape(compiler, &char_ptr);
-              
-              compiler->ch_ptr = char_ptr;
+              ch = SPVM_TOKE_parse_octal_escape(compiler, &compiler->ch_ptr);
             }
             // Hex escape character
             else if (*compiler->ch_ptr == 'x') {
-              char* char_ptr = compiler->ch_ptr;
-              
-              ch = SPVM_TOKE_parse_hex_escape(compiler, &char_ptr);
-              
-              compiler->ch_ptr = char_ptr;
+              ch = SPVM_TOKE_parse_hex_escape(compiler, &compiler->ch_ptr);
             }
             else {
               SPVM_COMPILER_error(compiler, "\"\\%c\" is the invalid charater literal escape character.\n  at %s line %d", *compiler->ch_ptr, compiler->current_file, compiler->current_line);
