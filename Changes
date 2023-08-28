@@ -9,6 +9,17 @@
       This is wrongly changed.
     * The count field in the Hash class is renamed to the keys_length method.
     * The the to_array method in the Hash class support decendent order.
+    * The delete method in the Hash class throws an excetpion.
+    
+      The $key must be defined.
+    
+    * The exists method in the Hash class throws an excetpion.
+    
+      The $key must be defined.
+    
+    * The get method in the Hash class throws an excetpion.
+    
+      The $key must be defined.
     
 0.989036 2023-08-17
 

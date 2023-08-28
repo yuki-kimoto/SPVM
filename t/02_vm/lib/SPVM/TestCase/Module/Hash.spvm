@@ -297,6 +297,19 @@ class TestCase::Module::Hash {
     unless ($hash->get("no_key") == undef) {
       return 0;
     }
+    
+    # Exceptions
+    {
+      my $hash = Hash->new;
+      eval { $hash->get(undef); }
+      
+      unless (Fn->contains($@, "The \$key must be defined.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
 
@@ -315,6 +328,19 @@ class TestCase::Module::Hash {
     unless ($hash->exists("carol") == 0) {
       return 0;
     }
+    
+    # Exceptions
+    {
+      my $hash = Hash->new;
+      eval { $hash->exists(undef); }
+      
+      unless (Fn->contains($@, "The \$key must be defined.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   
@@ -337,6 +363,16 @@ class TestCase::Module::Hash {
     }
     
     # Exceptions
+    {
+      my $hash = Hash->new;
+      eval { $hash->delete(undef); }
+      
+      unless (Fn->contains($@, "The \$key must be defined.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
     
     return 1;
   }

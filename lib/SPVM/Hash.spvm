@@ -89,6 +89,7 @@ class Hash {
     unless ($key) {
       die "The \$key must be defined.";
     }
+    
     # Rehash
     if (((double)$self->{keys_length} / @{$self->{entries}}) > Hash->_MAX_LOAD_FACTOR()) {
       $self->_rehash;
@@ -100,6 +101,10 @@ class Hash {
   }
   
   precompile method get : object ($key : string) {
+    unless ($key) {
+      die "The \$key must be defined.";
+    }
+    
     my $index = $self->_index_by_key($key, @{$self->{entries}});
     my $ref = $self->{entries}->[$index];
     unless ($ref) {

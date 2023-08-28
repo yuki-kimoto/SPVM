@@ -86,6 +86,10 @@ Deletes the key and value given by the key $key.
 
 The deleted value is returned.
 
+Exceptions:
+
+The $key must be defined. Otherwise an exception is thrown.
+
 =head2 exists
 
   method exists : int ($key : string);
@@ -109,6 +113,10 @@ Gets all the values in the hash.
   method get : object ($key : string);
 
 Gets a value specifed by the key $key, and returns it.
+
+Exceptions:
+
+The $key must be defined. Otherwise an exception is thrown.
 
 =head2 get_byte
 
@@ -246,7 +254,7 @@ If the option $sort is a negative value, the keys are sorted by decendant order.
 
   method delete_or_default_byte : int ($key : string, $default : int) {
 
-If the value given the key $key exists, the value is deleted and returned with the type cast to C<byte> type.
+If the value given the key $key exists, this method calls L</"the value is deleted and returned with the type cast to C<byte> type.
 
 If not, the $default value with the type cast to C<byte> type is returned.
 
