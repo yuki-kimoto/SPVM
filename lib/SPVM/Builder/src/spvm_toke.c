@@ -146,7 +146,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\r':
       case '\n':
       {
-        SPVM_TOKE_parse_line_terminator(compiler);
+        SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
         
         SPVM_TOKE_increment_current_line(compiler);
         
@@ -382,7 +382,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '#': {
         compiler->ch_ptr++;
         while(1) {
-          int32_t is_line_terminator = SPVM_TOKE_parse_line_terminator(compiler);
+          int32_t is_line_terminator = SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
           
           if (is_line_terminator) {
             SPVM_TOKE_increment_current_line(compiler);
@@ -2663,17 +2663,17 @@ int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch) {
   return is_line_terminator;
 }
 
-int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler) {
+int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** ch_ptr_ptr) {
   
   int32_t is_line_terminator = 0;
   
-  if (*compiler->ch_ptr == '\r' && *(compiler->ch_ptr + 1) == '\n') {
+  if (*(*ch_ptr_ptr) == '\r' && *((*ch_ptr_ptr) + 1) == '\n') {
     is_line_terminator = 1;
-    compiler->ch_ptr += 2;
+    (*ch_ptr_ptr) += 2;
   }
   else if (*compiler->ch_ptr == '\n' || *compiler->ch_ptr == '\r') {
     is_line_terminator = 1;
-    compiler->ch_ptr++;
+    (*ch_ptr_ptr)++;
   }
   
   return is_line_terminator;
