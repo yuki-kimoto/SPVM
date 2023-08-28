@@ -2647,3 +2647,24 @@ int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_
     return 0;
   }
 }
+
+int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler) {
+  
+  int32_t is_line_terminator = 0;
+  
+  if (*compiler->ch_ptr == '\r' && *(compiler->ch_ptr + 1) == '\n') {
+    is_line_terminator = 1;
+    compiler->ch_ptr += 2;
+  }
+  else if (*compiler->ch_ptr == '\n' || *compiler->ch_ptr == '\r') {
+    is_line_terminator = 1;
+    compiler->ch_ptr++;
+  }
+  
+  if (is_line_terminator) {
+    compiler->current_line++;
+    compiler->line_begin_ptr = compiler->ch_ptr;
+  }
+  
+  return is_line_terminator;
+}
