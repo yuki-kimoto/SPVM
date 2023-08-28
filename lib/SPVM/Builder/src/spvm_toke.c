@@ -148,6 +148,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       {
         SPVM_TOKE_parse_line_terminator(compiler);
         
+        SPVM_TOKE_increment_current_line(compiler);
+        
         compiler->token_begin_ch_ptr = compiler->ch_ptr;
         continue;
         break;
@@ -381,6 +383,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->ch_ptr++;
         while(1) {
           int32_t is_line_terminator = SPVM_TOKE_parse_line_terminator(compiler);
+          
+          if (is_line_terminator) {
+            SPVM_TOKE_increment_current_line(compiler);
+          }
           
           if (is_line_terminator || *compiler->ch_ptr == '\0') {
             break;
@@ -853,7 +859,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, string_literal_tmp_len + 1);
           {
             char* string_literal_ch_ptr = (char*)string_literal_begin_ch_ptr;
-            while (string_literal_ch_ptr != compiler->ch_ptr - 1) {
+            const char* string_literal_end_ch_ptr = compiler->ch_ptr - 1;
+            while (string_literal_ch_ptr != string_literal_end_ch_ptr) {
               if (*string_literal_ch_ptr == '\\') {
                 string_literal_ch_ptr++;
                 if (*string_literal_ch_ptr == 'a') {
@@ -2669,10 +2676,11 @@ int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler) {
     compiler->ch_ptr++;
   }
   
-  if (is_line_terminator) {
-    compiler->current_line++;
-    compiler->line_begin_ch_ptr = compiler->ch_ptr;
-  }
-  
   return is_line_terminator;
+}
+
+void SPVM_TOKE_increment_current_line(SPVM_COMPILER* compiler) {
+  
+  compiler->current_line++;
+  compiler->line_begin_ch_ptr = compiler->ch_ptr;
 }

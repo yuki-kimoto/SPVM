@@ -42,4 +42,6 @@ int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler);
 
 int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch);
 
+void SPVM_TOKE_increment_current_line(SPVM_COMPILER* compiler);
+
 #endif
