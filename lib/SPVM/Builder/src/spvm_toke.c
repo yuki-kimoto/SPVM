@@ -153,8 +153,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->ch_ptr++;
         compiler->current_line++;
         compiler->line_begin_ch_ptr = compiler->ch_ptr;
-        compiler->yylex_begin_ch_ptr = compiler->ch_ptr;
-        continue;
         break;
       }
       // Cancat
