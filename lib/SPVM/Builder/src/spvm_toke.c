@@ -524,6 +524,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t heredoc_length = 0;
             int32_t previous_is_line_terminator = 1;
             char* heredoc_begin_ch_ptr = compiler->ch_ptr;
+            int32_t heredoc_begin_line = compiler->current_line;
             while (1) {
               if (previous_is_line_terminator) {
                 int32_t end_of_heredoc = 0;
@@ -545,7 +546,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 previous_is_line_terminator = 1;
               }
               else if (*compiler->ch_ptr == '\0') {
-                SPVM_COMPILER_error(compiler, "A here document must end with its here document name + a line terminator.\n  at %s line %d", compiler->current_file, compiler->current_line);
+                SPVM_COMPILER_error(compiler, "A here document must end with its here document name + a line terminator.\n  at %s line %d", compiler->current_file, heredoc_begin_line);
                 return 0;
               }
               else {
