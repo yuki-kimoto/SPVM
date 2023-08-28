@@ -147,6 +147,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\r':
       case '\n':
       {
+        assert(SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr));
+        
         SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
         
         continue;
@@ -2640,6 +2642,17 @@ int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_
   else {
     return 0;
   }
+}
+
+int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* char_ptr) {
+  
+  int32_t is_line_terminator = 0;
+  
+  if (*char_ptr == '\n' || *char_ptr == '\r') {
+    is_line_terminator = 1;
+  }
+  
+  return is_line_terminator;
 }
 
 int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** char_ptr_ptr) {
