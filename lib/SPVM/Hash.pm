@@ -15,7 +15,6 @@ The Hash class of L<SPVM> has methods to manipulate hashes(associative arrays).
   use Hash;
   
   my $book = Hash->new;
-  my $book = Hash->new({});
   my $book = Hash->new({id => 4, name => "Perl", price => 3000.0});
   
   $book->set_int(id => 4);
@@ -26,9 +25,9 @@ The Hash class of L<SPVM> has methods to manipulate hashes(associative arrays).
   my $id = $book->get_int("id");
   my $name = $book->get_string("name");
   my $price = $book->get_double("price");
-  my $point = $book->get("point");
+  my $point = (Point)$book->get("point");
 
-=head2 Details
+=head1 Details
 
 The hash function is C<siphash-1-3>.
 
@@ -40,7 +39,7 @@ The hash function is C<siphash-1-3>.
 
 =back
 
-=hdead1 Fields
+=head1 Fields
 
 =head2 keys_length
 
@@ -122,7 +121,7 @@ The $key must be defined. Otherwise an exception is thrown.
 
   method get_byte : int ($key : string);
 
-Gets the value specifed by the key $key, and casts it to the byte type, and casts it to the int type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to the byte type, and casts it to the int type, and returns it.
 
 Exceptions:
 
@@ -132,7 +131,7 @@ The value of the $key must be a L<Byte|SPVM::Byte> object. Otherwise an exceptio
 
   method get_short : int ($key : string);
 
-Gets the value specifed by the key $key, and casts it to the short type, and casts it to the int type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to the short type, and casts it to the int type, and returns it.
 
 Exceptions:
 
@@ -142,7 +141,7 @@ The value of the $key must be a L<Short|SPVM::Short> object. Otherwise an except
 
   method get_string : string ($key : string)
 
-Gets the value specifed by the key $key, and casts it to the string type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to the string type, and returns it.
 
 Exceptions:
 
@@ -152,7 +151,7 @@ The value of the $key must be a string. Otherwise an exception is thrown.
 
   method get_int : int ($key : string);
 
-Gets the value specifed by the key $key, and casts it to the int type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to the int type, and returns it.
 
 Exceptions:
 
@@ -162,7 +161,7 @@ The value of the $key must be a L<Int|SPVM::Int> object. Otherwise an exception 
 
   method get_long : long ($key : string);
 
-Gets the value specifed by the key $key, and casts it to the long type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to the long type, and returns it.
 
 Exceptions:
 
@@ -172,7 +171,7 @@ The value of the $key must be a L<Long|SPVM::Long> object. Otherwise an exceptio
 
   method get_float : float ($key : string);
 
-Gets the value specifed by the key $key, and casts it to the float type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to the float type, and returns it.
 
 Exceptions:
 
@@ -182,7 +181,7 @@ The value of the $key must be a L<Float|SPVM::Float> object. Otherwise an except
 
   method get_double : double ($key : string);
 
-Gets the value specifed by the key $key, and casts it to the double type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to the double type, and returns it.
 
 Exceptions:
 
@@ -192,7 +191,7 @@ The value of the $key must be a L<Double|SPVM::Double> object. Otherwise an exce
   
   method set : void ($key : string, $value : object);
 
-Sets the object $value to the hash given the key $key.
+Sets the $value to the hash by the key $key.
 
 Exceptions:
 
@@ -202,43 +201,43 @@ The $key must be defined. Otherwise an exception is thrown.
 
   method set_byte : void ($key : string, $value : int);
 
-Sets the C<byte> $value to the hash given the key $key. the $value is converted to a L<Byte|SPVM::Byte> object.
+The value $value is converted to a L<Byte|SPVM::Byte> object, and sets it to the hash by the key $key using the L<"set"> method. 
 
 =head2 set_short
 
   method set_short : void ($key : string, $value : int);
 
-Sets the C<short> $value to the hash given the key $key. the $value is converted to a L<Short|SPVM::Short> object.
+The value $value is converted to a L<Short|SPVM::Short> object, and sets it to the hash by the key $key using the L<"set"> method. 
 
 =head2 set_int
 
   method set_int : void ($key : string, $value : int);
 
-Sets the C<int> $value to the hash given the key $key. the $value is converted to a L<Int|SPVM::Int> object.
+The value $value is converted to an L<Int|SPVM::Int> object, and sets it to the hash by the key $key using the L<"set"> method.  
 
 =head2 set_long
 
   method set_long : void ($key : string, $value : long);
 
-Sets the C<long> $value to the hash given the key $key. the $value is converted to a L<Long|SPVM::Long> object.
+The value $value is converted to a L<Long|SPVM::Long> object, and sets it to the hash by the key $key using the L<"set"> method. 
 
 =head2 set_float
 
   method set_float : void ($key : string, $value : float);
 
-Sets the C<float> $value to the hash given the key $key. the $value is converted to a L<Float|SPVM::Float> object.
+The value $value is converted to a L<Float|SPVM::Float> object, and sets it to the hash by the key $key using the L<"set"> method. 
 
 =head2 set_double
 
   method set_double : void ($key : string, $value : double);
 
-Sets the C<double> $value to the hash given the key $key. the $value is converted to a L<Double|SPVM::Double> object.
+The value $value is converted to a L<Double|SPVM::Double> object, and sets it to the hash by the key $key using the L<"set"> method. 
 
 =head2 set_string
 
   method set_string : void ($key : string, $value : string);
 
-Sets the string $value to the hash given the key $key.
+Sets the string $value to the hash by the key $key using the L<"set"> method. 
 
 =head2 to_array
 
@@ -252,67 +251,75 @@ If the option $sort is a negative value, the keys are sorted by decendant order.
 
 =head2 delete_or_default_byte
 
-  method delete_or_default_byte : int ($key : string, $default : int) {
+  method delete_or_default_byte : int ($key : string, $default : int;
 
-If the value given the key $key exists, this method calls L</"the value is deleted and returned with the type cast to C<byte> type.
+If the value specified by the key $key exists, this method calls the L</"get_byte"> method
+and the L</"delete"> method, and returns the return value of the the L</"get_byte"> method.
 
-If not, the $default value with the type cast to C<byte> type is returned.
+If the value specified by the key $key does not exists, returns the default value $default.
 
 =head2 delete_or_default_short
 
-  method delete_or_default_short : int ($key : string, $default : int) {
+  method delete_or_default_short : int ($key : string, $default : int;
 
-If the $key exists, the value is deleted and returned with the type cast to C<short> type.
+If the value specified by the key $key exists, this method calls the L</"get_short"> method
+and the L</"delete"> method, and returns the return value of the the L</"get_short"> method.
 
-If not, the $default value with the type cast to C<short> type is returned.
+If the value specified by the key $key does not exists, returns the default value $default.
 
 =head2 delete_or_default_int
 
-  method delete_or_default_int : int ($key : string, $default : int) {
+  method delete_or_default_int : int ($key : string, $default : int;
 
-If the $key exists, the value is deleted and returned with the type cast to C<int> type.
+If the value specified by the key $key exists, this method calls the L</"get_int"> method
+and the L</"delete"> method, and returns the return value of the the L</"get_int"> method.
 
-If not, the $default value is returned.
+If the value specified by the key $key does not exists, returns the default value $default.
 
 =head2 delete_or_default_long
 
-  method delete_or_default_long : long ($key : string, $default : long) {
+  method delete_or_default_long : long ($key : string, $default : long;
 
-If the $key exists, the value is deleted and returned with the type cast to C<long> type.
+If the value specified by the key $key exists, this method calls the L</"get_long"> method
+and the L</"delete"> method, and returns the return value of the the L</"get_long"> method.
 
-If not, the $default value is returned.
+If the value specified by the key $key does not exists, returns the default value $default.
 
 =head2 delete_or_default_float
 
-  method delete_or_default_float : float ($key : string, $default : float) {
+  method delete_or_default_float : float ($key : string, $default : float;
 
-If the $key exists, the value is deleted and returned with the type cast to C<float> type.
+If the value specified by the key $key exists, this method calls the L</"get_float"> method
+and the L</"delete"> method, and returns the return value of the the L</"get_float"> method.
 
-If not, the $default value is returned.
+If the value specified by the key $key does not exists, returns the default value $default.
 
 =head2 delete_or_default_double
 
-  method delete_or_default_double : double ($key : string, $default : double) {
+  method delete_or_default_double : double ($key : string, $default : double;
 
-If the $key exists, the value is deleted and returned with the type cast to C<double> type.
+If the value specified by the key $key exists, this method calls the L</"get_double"> method
+and the L</"delete"> method, and returns the return value of the the L</"get_double"> method.
 
-If not, the $default value is returned.
+If the value specified by the key $key does not exists, returns the default value $default.
 
 =head2 delete_or_default_string
 
-  method delete_or_default_string : string ($key : string, $default : string) {
+  method delete_or_default_string : string ($key : string, $default : string;
 
-If the $key exists, the value is deleted and returned with the type cast to C<string> type.
+If the value specified by the key $key exists, this method calls the L</"get_string"> method
+and the L</"delete"> method, and returns the return value of the the L</"get_string"> method.
 
-If not, the $default value is returned.
+If the value specified by the key $key does not exists, returns the default value $default.
 
 =head2 delete_or_default
 
-  method delete_or_default : object ($key : string, $default : object) {
+  method delete_or_default : object ($key : string, $default : object;
 
-If the $key exists, the value is deleted and returned.
+If the value specified by the key $key exists, this method calls the L</"get"> method
+and the L</"delete"> method, and returns the return value of the the L</"get"> method.
 
-If not, the $default value is returned.
+If the value specified by the key $key does not exists, returns the default value $default.
 
 =head1 Copyright & License
 

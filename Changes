@@ -1,5 +1,7 @@
 0.989037 2023-08-17
-
+  
+  [Document Changes]
+    * The doc of the Hash class is improved.
   [Internal Changes]
     * ppport.h is upgraded to 3.68
     * The default entries length of a hash become 1.
