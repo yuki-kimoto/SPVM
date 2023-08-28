@@ -65,7 +65,7 @@ struct spvm_compiler {
   char* ch_ptr;
   
   // Char pointer of current source just before
-  char* before_ch_ptr;
+  char* yylex_begin_ch_ptr;
   
   // Next double quote start position
   char* next_string_literal_ch_ptr;

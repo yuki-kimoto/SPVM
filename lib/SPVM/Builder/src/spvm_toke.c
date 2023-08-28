@@ -38,7 +38,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   }
   
   // Save buf pointer
-  compiler->before_ch_ptr = compiler->ch_ptr;
+  compiler->yylex_begin_ch_ptr = compiler->ch_ptr;
   
   // Before character is "-". This is used by the numeric literal that has "-".
   int32_t before_char_is_minus = 0;
@@ -139,7 +139,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\f':
       {
         compiler->ch_ptr++;
-        compiler->before_ch_ptr = compiler->ch_ptr;
+        compiler->yylex_begin_ch_ptr = compiler->ch_ptr;
         continue;
         break;
       }
@@ -153,7 +153,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->ch_ptr++;
         compiler->current_line++;
         compiler->line_begin_ch_ptr = compiler->ch_ptr;
-        compiler->before_ch_ptr = compiler->ch_ptr;
+        compiler->yylex_begin_ch_ptr = compiler->ch_ptr;
         continue;
         break;
       }
@@ -2099,7 +2099,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               case '_': {
                 if (strcmp(symbol_name, "__END__") == 0) {
                   compiler->ch_ptr = compiler->current_class_content + compiler->current_class_content_length;
-                  compiler->before_ch_ptr = compiler->ch_ptr;
+                  compiler->yylex_begin_ch_ptr = compiler->ch_ptr;
                   compiler->end_of_file = 1;
                   SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_END_OF_FILE);
                   yylvalp->opval = op;
@@ -2195,7 +2195,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
   compiler->current_class_content = NULL;
   compiler->current_tmp_vars_length = 0;
   compiler->ch_ptr = NULL;
-  compiler->before_ch_ptr = NULL;
+  compiler->yylex_begin_ch_ptr = NULL;
   compiler->line_begin_ch_ptr = NULL;
   compiler->current_anon_op_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 128);
   
@@ -2426,7 +2426,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           
           // Set initial information for tokenization
           compiler->ch_ptr = compiler->current_class_content;
-          compiler->before_ch_ptr = compiler->ch_ptr;
+          compiler->yylex_begin_ch_ptr = compiler->ch_ptr;
           compiler->line_begin_ch_ptr = compiler->ch_ptr;
           compiler->current_line = 1;
         }
