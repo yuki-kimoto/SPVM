@@ -40,4 +40,6 @@ int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_
 
 int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler);
 
+int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch);
+
 #endif
