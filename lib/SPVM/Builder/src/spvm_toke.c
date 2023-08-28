@@ -143,17 +143,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         continue;
         break;
       }
+      // Line Terminaters
       case '\r':
       case '\n':
       {
-        if (*compiler->ch_ptr == '\r' && *(compiler->ch_ptr + 1) == '\n') {
-          compiler->ch_ptr++;
-        }
+        SPVM_TOKE_parse_line_terminator(compiler);
         
-        compiler->ch_ptr++;
-        compiler->current_line++;
-        compiler->line_begin_ptr = compiler->ch_ptr;
-        compiler->before_ch_ptr = compiler->ch_ptr;
         continue;
         break;
       }
@@ -2646,4 +2641,15 @@ int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_
   else {
     return 0;
   }
+}
+
+void SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler) {
+  if (*compiler->ch_ptr == '\r' && *(compiler->ch_ptr + 1) == '\n') {
+    compiler->ch_ptr++;
+  }
+  
+  compiler->ch_ptr++;
+  compiler->current_line++;
+  compiler->line_begin_ptr = compiler->ch_ptr;
+  compiler->before_ch_ptr = compiler->ch_ptr;
 }
