@@ -59,7 +59,7 @@ struct spvm_compiler {
   SPVM_ALLOCATOR* class_file_allocator;
   
   // Line start position
-  char* line_begin_ptr;
+  char* line_begin_ch_ptr;
   
   // Char pointer of current source
   char* ch_ptr;

@@ -152,7 +152,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         compiler->ch_ptr++;
         compiler->current_line++;
-        compiler->line_begin_ptr = compiler->ch_ptr;
+        compiler->line_begin_ch_ptr = compiler->ch_ptr;
         compiler->before_ch_ptr = compiler->ch_ptr;
         continue;
         break;
@@ -1064,7 +1064,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 if (*char_ptr == '\n' || *char_ptr == '\r') {
                   compiler->current_line++;
-                  compiler->line_begin_ptr = compiler->ch_ptr;
+                  compiler->line_begin_ch_ptr = compiler->ch_ptr;
                 }
                 
                 string_literal_tmp[string_literal_length] = *char_ptr;
@@ -1574,7 +1574,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // A symbol name
         else if (isalpha(ch) || ch == '_') {
           // Column
-          int32_t column = compiler->ch_ptr - compiler->line_begin_ptr;
+          int32_t column = compiler->ch_ptr - compiler->line_begin_ch_ptr;
           
           // The staring position of the symbol name
           const char* symbol_name_start_ptr = compiler->ch_ptr;
@@ -2196,7 +2196,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
   compiler->current_tmp_vars_length = 0;
   compiler->ch_ptr = NULL;
   compiler->before_ch_ptr = NULL;
-  compiler->line_begin_ptr = NULL;
+  compiler->line_begin_ch_ptr = NULL;
   compiler->current_anon_op_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 128);
   
   // If there are more module, load it
@@ -2427,7 +2427,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           // Set initial information for tokenization
           compiler->ch_ptr = compiler->current_class_content;
           compiler->before_ch_ptr = compiler->ch_ptr;
-          compiler->line_begin_ptr = compiler->ch_ptr;
+          compiler->line_begin_ch_ptr = compiler->ch_ptr;
           compiler->current_line = 1;
         }
         else {
@@ -2673,7 +2673,7 @@ int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler) {
   
   if (is_line_terminator) {
     compiler->current_line++;
-    compiler->line_begin_ptr = compiler->ch_ptr;
+    compiler->line_begin_ch_ptr = compiler->ch_ptr;
   }
   
   return is_line_terminator;

@@ -40,7 +40,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message_not_used) {
   memcpy(token, compiler->before_ch_ptr + empty_count, length);
   token[length] = '\0';
   
-  int32_t char_pos = (int32_t)(compiler->before_ch_ptr + empty_count + 1 - compiler->line_begin_ptr);
+  int32_t char_pos = (int32_t)(compiler->before_ch_ptr + empty_count + 1 - compiler->line_begin_ch_ptr);
   
   SPVM_COMPILER_error(compiler, "Unexpected token \"%s\"\n  at %s line %d:%d", token, compiler->current_file, compiler->current_line, char_pos);
 
