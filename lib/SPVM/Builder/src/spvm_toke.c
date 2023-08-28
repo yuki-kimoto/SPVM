@@ -475,6 +475,118 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             return SPECIAL_ASSIGN;
           }
+          // Here document
+          // <<'
+          else if (*compiler->ch_ptr == '\'') {
+            compiler->ch_ptr++;
+            
+            const char* heredoc_name_start_ptr = compiler->ch_ptr;
+            
+            compiler->ch_ptr++;
+            
+            while(isalnum(*compiler->ch_ptr)) {
+              compiler->ch_ptr++;
+            }
+            
+            int32_t heredoc_name_length = (compiler->ch_ptr - heredoc_name_start_ptr);
+            
+            if (heredoc_name_length == 0) {
+              SPVM_COMPILER_error(compiler, "The length of a here document name must be greater than or equal to 0.\n  at %s line %d", compiler->current_file, compiler->current_line);
+              return 0;
+            }
+            
+            char* heredoc_name = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, heredoc_name_length + 1);
+            memcpy(heredoc_name, heredoc_name_start_ptr, heredoc_name_length);
+            heredoc_name[heredoc_name_length] = '\0';
+            
+            if (isdigit(heredoc_name[0])) {
+              SPVM_COMPILER_error(compiler, "A here document name cannot start with a number.\n  at %s line %d", compiler->current_file, compiler->current_line);
+              return 0;
+            }
+            
+            if (strstr(heredoc_name, "__")) {
+              SPVM_COMPILER_error(compiler, "A here document name cannot contain \"__\".\n  at %s line %d", compiler->current_file, compiler->current_line);
+              return 0;
+            }
+            
+            compiler->ch_ptr++;
+            
+            if (!(*(compiler->ch_ptr) == '\'' && *(compiler->ch_ptr + 1) == ';') && SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr + 2)) {
+              SPVM_COMPILER_error(compiler, "The first line of the here document must end with \"';\" + a line terminator.\n  at %s line %d", compiler->current_file, compiler->current_line);
+              return 0;
+            }
+            
+            compiler->ch_ptr += 2;
+            
+            SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
+            SPVM_TOKE_increment_current_line(compiler);
+            
+            int32_t heredoc_length = 0;
+            int32_t previous_is_line_terminator = 1;
+            char* heredoc_begin_ch_ptr = compiler->ch_ptr;
+            while (1) {
+              if (previous_is_line_terminator) {
+                int32_t end_of_heredoc = 0;
+                if (strncmp(compiler->ch_ptr, heredoc_name, heredoc_name_length) == 0 && SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr + heredoc_name_length)) {
+                  compiler->ch_ptr += heredoc_name_length;
+                  SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
+                  SPVM_TOKE_increment_current_line(compiler);
+                  break;
+                }
+              }
+              
+              int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr);
+              
+              if (is_line_terminator) {
+                SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
+                SPVM_TOKE_increment_current_line(compiler);
+                
+                heredoc_length++;
+                previous_is_line_terminator = 1;
+              }
+              else if (*compiler->ch_ptr == '\0') {
+                SPVM_COMPILER_error(compiler, "A here document must end with its here document name + a line terminator.\n  at %s line %d", compiler->current_file, compiler->current_line);
+                return 0;
+              }
+              else {
+                heredoc_length++;
+                previous_is_line_terminator = 0;
+              }
+            }
+            
+            char* heredoc = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, heredoc_length + 1);
+            
+            compiler->ch_ptr = heredoc_begin_ch_ptr;
+            
+            int32_t heredoc_index = 0;
+            while (heredoc_index < heredoc_length) {
+              int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr);
+              
+              if (is_line_terminator) {
+                heredoc[heredoc_index] = '\n';
+                
+                SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
+                
+                heredoc_index++;
+              }
+              else if (*compiler->ch_ptr == '\0') {
+                assert(0);
+              }
+              else {
+                heredoc[heredoc_index] = *compiler->ch_ptr;
+                compiler->ch_ptr++;
+                heredoc_index++;
+              }
+            }
+            
+            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, heredoc, heredoc_length, compiler->current_file, compiler->current_line);
+            
+            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, heredoc);
+            
+            yylvalp->opval = op_constant;
+            
+            return CONSTANT;
+          }
           // <<
           else {
             SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_LEFT_SHIFT);
