@@ -1055,17 +1055,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               else {
-                if (*char_ptr == '\r' && *(char_ptr + 1) == '\n') {
+                int32_t is_line_terminator = SPVM_TOKE_parse_line_terminator(compiler, &char_ptr);
+                
+                if (is_line_terminator) {
+                  string_literal_tmp[string_literal_length] = '\n';
+                }
+                else {
+                  string_literal_tmp[string_literal_length] = *char_ptr;
                   char_ptr++;
                 }
-                if (*char_ptr == '\n' || *char_ptr == '\r') {
-                  compiler->current_line++;
-                  compiler->line_begin_ptr = compiler->ch_ptr;
-                }
                 
-                string_literal_tmp[string_literal_length] = *char_ptr;
                 string_literal_length++;
-                char_ptr++;
               }
             }
           }
