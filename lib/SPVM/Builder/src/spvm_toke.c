@@ -146,13 +146,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\r':
       case '\n':
       {
-        if (*compiler->ch_ptr == '\r' && *(compiler->ch_ptr + 1) == '\n') {
-          compiler->ch_ptr++;
-        }
+        SPVM_TOKE_parse_line_terminator(compiler);
         
-        compiler->ch_ptr++;
-        compiler->current_line++;
-        compiler->line_begin_ch_ptr = compiler->ch_ptr;
         compiler->token_begin_ch_ptr = compiler->ch_ptr;
         continue;
         break;
