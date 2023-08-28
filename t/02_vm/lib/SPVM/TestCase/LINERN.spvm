@@ -13,7 +13,7 @@ b";
         return 0;
       }
     }
-    
+    # Comment
     my $line2 : int = __LINE__;
     
     unless ($line2 == 17) {

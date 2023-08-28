@@ -380,10 +380,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '#': {
         compiler->ch_ptr++;
         while(1) {
-          if (*compiler->ch_ptr == '\r' && *(compiler->ch_ptr + 1) == '\n') {
-            compiler->ch_ptr++;
-          }
-          if (*compiler->ch_ptr == '\n' || *compiler->ch_ptr == '\r' || *compiler->ch_ptr == '\0') {
+          int32_t is_line_terminator = SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
+          
+          if (is_line_terminator || *compiler->ch_ptr == '\0') {
             break;
           }
           else {
