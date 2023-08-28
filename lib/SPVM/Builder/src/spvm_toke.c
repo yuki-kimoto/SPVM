@@ -852,85 +852,85 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, string_literal_tmp_len + 1);
           {
-            char* char_ptr = (char*)string_literal_begin_ch_ptr;
-            while (char_ptr != compiler->ch_ptr - 1) {
-              if (*char_ptr == '\\') {
-                char_ptr++;
-                if (*char_ptr == 'a') {
+            char* string_literal_ch_ptr = (char*)string_literal_begin_ch_ptr;
+            while (string_literal_ch_ptr != compiler->ch_ptr - 1) {
+              if (*string_literal_ch_ptr == '\\') {
+                string_literal_ch_ptr++;
+                if (*string_literal_ch_ptr == 'a') {
                   string_literal_tmp[string_literal_length] = 0x07;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
-                else if (*char_ptr == 't') {
+                else if (*string_literal_ch_ptr == 't') {
                   string_literal_tmp[string_literal_length] = 0x09;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
-                else if (*char_ptr == 'n') {
+                else if (*string_literal_ch_ptr == 'n') {
                   string_literal_tmp[string_literal_length] = 0x0a;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
-                else if (*char_ptr == 'f') {
+                else if (*string_literal_ch_ptr == 'f') {
                   string_literal_tmp[string_literal_length] = 0x0c;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
-                else if (*char_ptr == 'r') {
+                else if (*string_literal_ch_ptr == 'r') {
                   string_literal_tmp[string_literal_length] = 0x0d;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
-                else if (*char_ptr == '"') {
+                else if (*string_literal_ch_ptr == '"') {
                   string_literal_tmp[string_literal_length] = 0x22;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
-                else if (*char_ptr == '$') {
+                else if (*string_literal_ch_ptr == '$') {
                   string_literal_tmp[string_literal_length] = 0x24;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
-                else if (*char_ptr == '\'') {
+                else if (*string_literal_ch_ptr == '\'') {
                   string_literal_tmp[string_literal_length] = 0x27;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
-                else if (*char_ptr == '\\') {
+                else if (*string_literal_ch_ptr == '\\') {
                   string_literal_tmp[string_literal_length] = 0x5c;
                   string_literal_length++;
-                  char_ptr++;
+                  string_literal_ch_ptr++;
                 }
                 // Octal escape character
-                else if (SPVM_TOKE_is_octal_number(compiler, *char_ptr) || *char_ptr == 'o') {
-                  ch = SPVM_TOKE_parse_octal_escape(compiler, &char_ptr);
+                else if (SPVM_TOKE_is_octal_number(compiler, *string_literal_ch_ptr) || *string_literal_ch_ptr == 'o') {
+                  ch = SPVM_TOKE_parse_octal_escape(compiler, &string_literal_ch_ptr);
                   
                   string_literal_tmp[string_literal_length] = ch;
                   string_literal_length++;
                 }
                 // A hexadecimal escape character
-                else if (*char_ptr == 'x') {
-                  ch = SPVM_TOKE_parse_hex_escape(compiler, &char_ptr);
+                else if (*string_literal_ch_ptr == 'x') {
+                  ch = SPVM_TOKE_parse_hex_escape(compiler, &string_literal_ch_ptr);
                   
                   string_literal_tmp[string_literal_length] = ch;
                   string_literal_length++;
                 }
                 // Unicode escape character
                 // Note: "\N" is raw escape character, "\N{" is Unicode escape character
-                else if (*char_ptr == 'N' && *(char_ptr + 1) == '{') {
-                  char_ptr++;
+                else if (*string_literal_ch_ptr == 'N' && *(string_literal_ch_ptr + 1) == '{') {
+                  string_literal_ch_ptr++;
                   
-                  if (*char_ptr == '{' && *(char_ptr + 1) == 'U' && *(char_ptr + 2) == '+') {
-                    char_ptr += 3;
-                    char* char_start_ptr = char_ptr;
+                  if (*string_literal_ch_ptr == '{' && *(string_literal_ch_ptr + 1) == 'U' && *(string_literal_ch_ptr + 2) == '+') {
+                    string_literal_ch_ptr += 3;
+                    char* char_start_ptr = string_literal_ch_ptr;
                     int32_t unicode_chars_length = 0;
                     
-                    while (SPVM_TOKE_is_hex_number(compiler, *char_ptr)) {
-                      char_ptr++;
+                    while (SPVM_TOKE_is_hex_number(compiler, *string_literal_ch_ptr)) {
+                      string_literal_ch_ptr++;
                       unicode_chars_length++;
                     }
-                    if (*char_ptr == '}') {
-                      char_ptr++;
+                    if (*string_literal_ch_ptr == '}') {
+                      string_literal_ch_ptr++;
                       if (unicode_chars_length < 1) {
                         SPVM_COMPILER_error(compiler, "One or more than one hexadecimal numbers must be followed by \"\\N{U+\" of the Unicode escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
                       }
@@ -969,7 +969,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
                 else {
-                  switch(*char_ptr) {
+                  switch(*string_literal_ch_ptr) {
                     case '!':
                     case '#':
                     case '%':
@@ -1034,29 +1034,29 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     {
                       string_literal_tmp[string_literal_length] = '\\';
                       string_literal_length++;
-                      string_literal_tmp[string_literal_length] = *char_ptr;
+                      string_literal_tmp[string_literal_length] = *string_literal_ch_ptr;
                       string_literal_length++;
-                      char_ptr++;
+                      string_literal_ch_ptr++;
                       break;
                     }
                     default: {
-                      SPVM_COMPILER_error(compiler, "Invalid string literal escape character \"\\%c\".\n  at %s line %d", *char_ptr, compiler->current_file, compiler->current_line);
+                      SPVM_COMPILER_error(compiler, "Invalid string literal escape character \"\\%c\".\n  at %s line %d", *string_literal_ch_ptr, compiler->current_file, compiler->current_line);
                     }
                   }
                 }
               }
               else {
-                if (*char_ptr == '\r' && *(char_ptr + 1) == '\n') {
-                  char_ptr++;
+                if (*string_literal_ch_ptr == '\r' && *(string_literal_ch_ptr + 1) == '\n') {
+                  string_literal_ch_ptr++;
                 }
-                if (*char_ptr == '\n' || *char_ptr == '\r') {
+                if (*string_literal_ch_ptr == '\n' || *string_literal_ch_ptr == '\r') {
                   compiler->current_line++;
                   compiler->line_begin_ch_ptr = compiler->ch_ptr;
                 }
                 
-                string_literal_tmp[string_literal_length] = *char_ptr;
+                string_literal_tmp[string_literal_length] = *string_literal_ch_ptr;
                 string_literal_length++;
-                char_ptr++;
+                string_literal_ch_ptr++;
               }
             }
           }
