@@ -9,6 +9,7 @@
       This is wrongly changed.
     * The count field in the Hash class is renamed to the keys_length method.
     * The the to_array method in the Hash class support decendent order.
+  [Incompatible Changes]
     * The delete method in the Hash class throws an excetpion.
     
       The $key must be defined.

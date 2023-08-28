@@ -326,10 +326,6 @@ class Hash {
   
   method delete_or_default_byte : int ($key : string, $default : int) {
     
-    unless ($key) {
-      die "The \$key must be defined.";
-    }
-    
     my $value = 0;
     if ($self->exists($key)) {
       $value = (byte)$self->get_byte($key);
@@ -343,10 +339,6 @@ class Hash {
   }
   
   method delete_or_default_short : int ($key : string, $default : int) {
-    
-    unless ($key) {
-      die "The \$key must be defined.";
-    }
     
     my $value = 0;
     if ($self->exists($key)) {
@@ -362,10 +354,6 @@ class Hash {
   
   method delete_or_default_int : int ($key : string, $default : int) {
     
-    unless ($key) {
-      die "The \$key must be defined.";
-    }
-    
     my $value = 0;
     if ($self->exists($key)) {
       $value = $self->get_int($key);
@@ -379,10 +367,6 @@ class Hash {
   }
   
   method delete_or_default_long : long ($key : string, $default : long) {
-    
-    unless ($key) {
-      die "The \$key must be defined.";
-    }
     
     my $value = 0L;
     if ($self->exists($key)) {
@@ -398,10 +382,6 @@ class Hash {
   
   method delete_or_default_float : float ($key : string, $default : float) {
     
-    unless ($key) {
-      die "The \$key must be defined.";
-    }
-    
     my $value = 0f;
     if ($self->exists($key)) {
       $value = $self->get_float($key);
@@ -415,10 +395,6 @@ class Hash {
   }
   
   method delete_or_default_double : double ($key : string, $default : double) {
-    
-    unless ($key) {
-      die "The \$key must be defined.";
-    }
     
     my $value = 0.0;
     if ($self->exists($key)) {
@@ -434,10 +410,6 @@ class Hash {
   
   method delete_or_default_string : string ($key : string, $default : string) {
     
-    unless ($key) {
-      die "The \$key must be defined.";
-    }
-    
     my $value = (string)undef;
     if ($self->exists($key)) {
       $value = $self->get_string($key);
@@ -451,10 +423,6 @@ class Hash {
   }
   
   method delete_or_default : object ($key : string, $default : object) {
-    
-    unless ($key) {
-      die "The \$key must be defined.";
-    }
     
     my $value = (object)undef;
     if ($self->exists($key)) {
