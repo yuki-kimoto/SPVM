@@ -490,8 +490,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             const char* heredoc_name_start_ptr = compiler->ch_ptr;
             
-            compiler->ch_ptr++;
-            
             while(isalnum(*compiler->ch_ptr) || *compiler->ch_ptr == '_') {
               compiler->ch_ptr++;
             }

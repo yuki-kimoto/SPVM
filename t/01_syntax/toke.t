@@ -367,6 +367,33 @@ use Test::More;
       }
     }
   }
+  
+  # Here document
+  {
+    {
+      my $source = qq|class MyClass { static method main : void () { my \$string = <<'EOS';\nHello\nWorld\nEOS\n } }|;
+      compile_ok($source);
+    }
+    
+    {
+      my $source = qq|class MyClass { static method main : void () { my \$string = <<'eos';\nHello\nWorld\neos\n } }|;
+      compile_ok($source);
+    }
+    
+    {
+      my $source = qq|class MyClass { static method main : void () { my \$string = <<'';\nHello\nWorld\n1\n\n } }|;
+      compile_not_ok($source, q|The length of a here document name must be greater than or equal to 0.|);
+    }
+    {
+      my $source = qq|class MyClass { static method main : void () { my \$string = <<'1EOS';\nHello\nWorld\n1EOS\n } }|;
+      compile_not_ok($source, q|A here document name cannot start with a number.|);
+    }
+    
+    {
+      my $source = qq|class MyClass { static method main : void () { my \$string = <<'END__OF';\nHello\nWorld\n1END__OF\n } }|;
+      compile_not_ok($source, q|A here document name cannot contain "__"|);
+    }
+  }
 }
 
 # Symbol Name
