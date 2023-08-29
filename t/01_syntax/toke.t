@@ -393,6 +393,11 @@ use Test::More;
       my $source = qq|class MyClass { static method main : void () { my \$string = <<'END__OF';\nHello\nWorld\n1END__OF\n } }|;
       compile_not_ok($source, q|A here document name cannot contain "__"|);
     }
+    
+    {
+      my $source = qq|class MyClass { static method main : void () { my \$string = <<'EOS' ;\nHello\nWorld\nEOS\n } }|;
+      compile_not_ok($source, q|The first line of the here document must end with "';" + a line terminator.|);
+    }
   }
 }
 
