@@ -47,6 +47,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t before_token_is_arrow = compiler->before_token_is_arrow;
   compiler->before_token_is_arrow = 0;
   
+  int32_t previous_token_is_heredoc = compiler->previous_token_is_heredoc;
+  compiler->previous_token_is_heredoc = 0;
+  
   // Expect method name
   int32_t expect_method_name = compiler->expect_method_name;
   compiler->expect_method_name = 0;
@@ -127,6 +130,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           assert(0);
         }
       }
+    }
+    else if (previous_token_is_heredoc) {
+      yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
+      
+      return (int) (uint8_t) ';';
     }
     else {
       ch = *compiler->ch_ptr;
@@ -509,9 +517,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               return 0;
             }
             
-            compiler->ch_ptr++;
-            
-            if (!(*(compiler->ch_ptr) == '\'' && *(compiler->ch_ptr + 1) == ';') && SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr + 2)) {
+            if (!(*(compiler->ch_ptr) == '\'' && *(compiler->ch_ptr + 1) == ';' && SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr + 2))) {
               SPVM_COMPILER_error(compiler, "The first line of the here document must end with \"';\" + a line terminator.\n  at %s line %d", compiler->current_file, compiler->current_line);
               return 0;
             }
@@ -521,9 +527,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
             SPVM_TOKE_increment_current_line(compiler);
             
+            char* heredoc_end_ch_ptr = compiler->ch_ptr;
+            
             int32_t heredoc_length = 0;
             int32_t previous_is_line_terminator = 1;
-            char* heredoc_begin_ch_ptr = compiler->ch_ptr;
+            char* heredoc_ptr = compiler->ch_ptr;
             int32_t heredoc_begin_line = compiler->current_line;
             while (1) {
               if (previous_is_line_terminator) {
@@ -551,31 +559,32 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               else {
                 heredoc_length++;
+                compiler->ch_ptr++;
                 previous_is_line_terminator = 0;
               }
             }
             
-            char* heredoc = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, heredoc_length + 1);
+            SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, heredoc_name);
             
-            compiler->ch_ptr = heredoc_begin_ch_ptr;
+            char* heredoc = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, heredoc_length + 1);
             
             int32_t heredoc_index = 0;
             while (heredoc_index < heredoc_length) {
-              int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr);
+              int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, heredoc_ptr);
               
               if (is_line_terminator) {
                 heredoc[heredoc_index] = '\n';
                 
-                SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
+                SPVM_TOKE_parse_line_terminator(compiler, &heredoc_ptr);
                 
                 heredoc_index++;
               }
-              else if (*compiler->ch_ptr == '\0') {
+              else if (*heredoc_ptr == '\0') {
                 assert(0);
               }
               else {
-                heredoc[heredoc_index] = *compiler->ch_ptr;
-                compiler->ch_ptr++;
+                heredoc[heredoc_index] = *heredoc_ptr;
+                heredoc_ptr++;
                 heredoc_index++;
               }
             }
@@ -585,6 +594,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, heredoc);
             
             yylvalp->opval = op_constant;
+            
+            compiler->previous_token_is_heredoc = 1;
             
             return CONSTANT;
           }

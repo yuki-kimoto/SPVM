@@ -79,6 +79,9 @@ struct spvm_compiler {
   // Before token is arrow
   int8_t before_token_is_arrow;
   
+  // Before token is arrow
+  int8_t previous_token_is_heredoc;
+  
   // End of file
   int8_t end_of_file;
   

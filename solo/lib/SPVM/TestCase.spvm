@@ -104,6 +104,16 @@ SPVM::Test - SPVM test class
   static method main : int () {
     
     {
+      my $message = <<'EOS';
+Hello
+Good Night
+EOS
+# aaaa
+      
+      print $message;
+    }
+    
+    {
       my $string = "あいう";
     }
     
