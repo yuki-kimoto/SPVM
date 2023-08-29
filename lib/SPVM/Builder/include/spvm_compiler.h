@@ -102,7 +102,6 @@ struct spvm_compiler {
   // Starting line the starting class is loaded
   int32_t start_line;
   
-  // Syntax error count
   SPVM_LIST* error_messages;
   
   SPVM_LIST* class_files;
