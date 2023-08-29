@@ -562,8 +562,10 @@ t/02_vm/00_minimal/002_use_minimal_method_class.t
 t/02_vm/00_minimal/003_call_minimal_method.t
 t/02_vm/01_toke/comment.t
 t/02_vm/01_toke/fat_camma.t
+t/02_vm/01_toke/heredoc.t
 t/02_vm/01_toke/literal_character.t
 t/02_vm/01_toke/literal_floating_point.t
+t/02_vm/01_toke/literal_heredoc.t
 t/02_vm/01_toke/literal_integer.t
 t/02_vm/01_toke/literal_string.t
 t/02_vm/01_toke/literal_undef.t
@@ -750,6 +752,7 @@ t/02_vm/lib/SPVM/TestCase/LINER.spvm
 t/02_vm/lib/SPVM/TestCase/LINERN.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Character.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/FloatingPoint.spvm
+t/02_vm/lib/SPVM/TestCase/Literal/Heredoc.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Integer.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/String.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/StringCRLF.spvm
