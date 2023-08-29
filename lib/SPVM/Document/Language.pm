@@ -1223,6 +1223,49 @@ If the characters of the left operand of the fat camma is not wrapped by C<"> an
 
   ["foo_bar2" => "Mark"]
 
+=head2 Here Document
+
+Here document is syntax to write a string literal in multiple lines without escapes and variable expansions.
+
+  <<'HERE_DOCUMENT_NAME';
+  line1
+  line2
+  line...
+  HERE_DOCUMENT_NAME
+
+Here document syntax begins with C<<<'HERE_DOCUMENT_NAME';> + a line terminator. C<HERE_DOCUMENT_NAME> is a L<here document name|/"Here Document Name">.
+
+A string begins from the next line.
+
+Here document syntax ends with the line that begins C<HERE_DOCUMENT_NAME> + a line terminator.
+
+C<<<'HERE_DOCUMENT_NAME'> cannot contains spaces. If so, a compilation error occurs.
+
+Examples:
+  
+  # Here document
+  my $string = <<'EOS';
+  Hello
+  World
+  EOS
+  
+  # No escapes and variable expaneions are performed.
+  my $string = <<'EOS';
+  $foo
+  \t
+  \
+  EOS
+
+=head3 Here Document Name
+
+Here document name is composed of C<a-z>, C<A-Z>, C<_>, C<0-9>.
+
+The length of a here document name must be greater than or equal to 0. Otherwise a compilation error occurs.
+
+A here document name cannot start with a number. If so, a compilation error occurs.
+
+A here document name cannot contain C<__>. If so, a compilation error occurs.
+
 =head1 Syntax Parsing
 
 The SPVM language is assumed to be parsed by yacc/bison.

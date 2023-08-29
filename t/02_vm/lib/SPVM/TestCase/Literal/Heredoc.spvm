@@ -42,6 +42,18 @@ END_OF_STRING1
         return 0;
       }
     }
+    
+    {
+      my $string = <<'EOS';
+$foo
+\t
+\
+EOS
+      unless ($string eq "\$foo\n\\t\n\\\n") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }

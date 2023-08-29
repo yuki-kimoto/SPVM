@@ -1,4 +1,8 @@
-0.989037 2023-08-17
+0.989038 2023-08-29
+  [New Features]
+    * Here document is supported.
+    
+0.989037 2023-08-28
   
   [Document Changes]
     * The doc of the Hash class is improved.
