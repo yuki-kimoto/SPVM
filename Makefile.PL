@@ -76,29 +76,6 @@ $ccflags =~ s/-D__USE_MINGW_ANSI_STDIO//;
 
 $ccflags .= " -std=$std";
 
-# Fix compile warnings
-{
-  my $compiler_name;
-  my $compiler_major_version;
-  my $compiler_minor_version;
-  
-  my $config_gcc_version = $Config{gccversion};
-  
-  if ($config_gcc_version =~ /clang-(\d{2})(\d{2})\b/) {
-    $compiler_name = 'clang';
-    $compiler_major_version = $1;
-    $compiler_minor_version = $2;
-  }
-  
-  if (defined $compiler_name) {
-    if ($compiler_name eq 'clang') {
-      if ($compiler_major_version >= 12) {
-        $ccflags .= ' -Wno-compound-token-split-by-macro';
-      }
-    }
-  }
-}
-
 # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
 # so I dicide not to print warning in release version
 if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {

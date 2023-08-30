@@ -1,3 +1,7 @@
+0.989039 2023-08-30
+  [Warnings Fix]
+    * Suppress warning: unknown warning option ‘-Wno-compound-token-split-by-macro’ [-Wunknown-warning-option] in Mac.
+    
 0.989038 2023-08-29
   [New Features]
     * Here document is supported.
