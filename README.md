@@ -49,11 +49,14 @@
 ## Not Released CPAN Modules
 
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-HiRes">SPVM::Time::HiRes</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Net-SSLeay">SPVM::Net::SSLeay</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Mozilla-CA">SPVM::Mozilla::CA</a>
 
 ## Highly Experimental CPAN Modules
 
 * <a href="https://github.com/yuki-kimoto/SPVM-Numpy">SPVM::Numpy</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-HTTP-Minimal">SPVM::HTTP::Minimal</a>
+
 
 ## Examples
 
