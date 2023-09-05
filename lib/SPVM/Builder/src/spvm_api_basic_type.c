@@ -314,7 +314,7 @@ int32_t SPVM_API_BASIC_TYPE_check_method_compatibility(SPVM_RUNTIME* runtime, SP
       int32_t dist_method_arg_type_dimension = dist_method_arg->type_dimension;
       int32_t dist_method_arg_type_flag = dist_method_arg->type_flag;
       
-      int32_t assignability_for_method = SPVM_API_BASIC_TYPE_can_assign_for_method_definition(runtime, method_arg->basic_type, method_arg->type_dimension, method_arg->type_flag, dist_method_arg->basic_type, dist_method_arg->type_dimension, dist_method_arg->type_flag);
+      int32_t assignability_for_method = SPVM_API_BASIC_TYPE_can_assign_for_method_definition(runtime, dist_method_arg->basic_type, dist_method_arg->type_dimension, dist_method_arg->type_flag, method_arg->basic_type, method_arg->type_dimension, method_arg->type_flag);
       
       if (!assignability_for_method) {
         return 0;
