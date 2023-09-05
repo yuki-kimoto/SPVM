@@ -4,4 +4,5 @@ class TestCase::NativeAPI2 {
   
   native static method src_bar : int ();
   
+  native static method src_baz : int ();
 }

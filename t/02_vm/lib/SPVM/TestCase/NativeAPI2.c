@@ -6,7 +6,9 @@
 
 int32_t SPVM__TestCase__NativeAPI2__src_foo(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  if (foo() == 3) {
+  int32_t value = foo();
+  
+  if (value == 3) {
     stack[0].ival = 1;
   }
   else {
@@ -18,7 +20,9 @@ int32_t SPVM__TestCase__NativeAPI2__src_foo(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__NativeAPI2__src_bar(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  if (bar() == 4) {
+  int32_t value = bar();
+  
+  if (value == 4) {
     stack[0].ival = 1;
   }
   else {
@@ -30,7 +34,9 @@ int32_t SPVM__TestCase__NativeAPI2__src_bar(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__NativeAPI2__src_baz(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  if (baz() == 5) {
+  int32_t value = baz();
+  
+  if (value == 6) {
     stack[0].ival = 1;
   }
   else {

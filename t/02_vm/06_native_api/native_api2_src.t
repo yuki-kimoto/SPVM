@@ -18,6 +18,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   ok(SPVM::TestCase::NativeAPI2->src_foo);
   ok(SPVM::TestCase::NativeAPI2->src_bar);
+  ok(SPVM::TestCase::NativeAPI2->src_baz);
 }
 
 # Clear exception
