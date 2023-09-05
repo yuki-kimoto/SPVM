@@ -1,3 +1,24 @@
+0.989039 2023-09-05
+  
+  [Bug Fix]
+    * A bug fix: The following tests has not succeeded.
+    
+      {
+        my $source = [
+          'class MyClass2 extends MyClass { use Point; use Point3D; method main : void ($point : Point3D) {} }',
+          'class MyClass { use Point; use Point3D; method main : void ($point : Point) {} }',
+        ];
+        compile_ok($source);
+      }
+      
+      {
+        my $source = [
+          'class MyClass2 extends MyClass { use Point; use Point3D; method main : void ($point : Point) {} }',
+          'class MyClass { use Point; use Point3D; method main : void ($point : Point3D) {} }',
+        ];
+        compile_not_ok($source, q|The type of the 1th argument of the "main" method in the "MyClass2" class must be able to be assigned to the type of the 1th argument of the "main" method in the "MyClass" class.|);
+      }
+
 0.989039 2023-08-30
   [Warnings Fix]
     * Suppress warning: unknown warning option ‘-Wno-compound-token-split-by-macro’ [-Wunknown-warning-option] in Mac.

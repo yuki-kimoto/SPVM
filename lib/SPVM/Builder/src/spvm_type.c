@@ -1306,6 +1306,7 @@ int32_t SPVM_TYPE_can_assign_for_method_definition (
   else {
     if (dist_type_dimension == src_type_dimension && dist_type_flag == src_type_flag) {
       if (SPVM_BASIC_TYPE_is_class_type(compiler, dist_type_basic_type_id)) {
+        
         if (dist_type_basic_type_id == src_type_basic_type_id) {
           assignability = 1;
         }

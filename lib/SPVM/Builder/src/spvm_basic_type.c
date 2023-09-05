@@ -289,10 +289,10 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
       SPVM_TYPE* method_var_decl_type = method_var_decl->type;
       SPVM_TYPE* dist_method_var_decl_type = dist_method_var_decl->type;
       
-      int32_t assignability_for_method = SPVM_TYPE_can_assign_for_method_definition(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag);
+      int32_t assignability_for_method = SPVM_TYPE_can_assign_for_method_definition(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag);
       
       if (!assignability_for_method) {
-        SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be equal to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, basic_type->name, arg_index, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_class->file, basic_type->op_class->line);
+        SPVM_COMPILER_error(compiler, "The type of the %dth argument of the \"%s\" method in the \"%s\" class must be able to be assigned to the type of the %dth argument of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", arg_index, method->name, basic_type->name, arg_index, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_class->file, basic_type->op_class->line);
         return 0;
       }
     }
