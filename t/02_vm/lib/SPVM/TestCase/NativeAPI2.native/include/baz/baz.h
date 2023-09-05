@@ -2,4 +2,4 @@
 
 #include <stdint.h>
 
-int32_t baz();
+int32_t baz (void);

@@ -1,6 +1,6 @@
 #include "foo.h"
 
-int32_t foo() {
+int32_t foo (void) {
   return FOO;
 }
 
