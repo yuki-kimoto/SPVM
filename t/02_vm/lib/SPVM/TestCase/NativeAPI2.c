@@ -4,15 +4,6 @@
 #include "bar.h"
 #include "baz/baz.h"
 
-int32_t SPVM__TestCase__NativeAPI2__mul(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t total = stack[0].ival * stack[1].ival;
-  
-  stack[0].ival = total;
-  
-  return 0;
-}
-
 int32_t SPVM__TestCase__NativeAPI2__src_foo(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   if (foo() == 3) {
