@@ -4487,4 +4487,421 @@ class TestCase::Module::Array {
     
     return 1;
   }
+  
+  static method merge_byte : int () {
+    
+    {
+      my $array1 = [(byte)1, 2];
+      my $array2 = [(byte)3, 4];
+      
+      my $merged_array = Array->merge_byte($array1, $array2);
+      
+      unless (Array->equals_byte($merged_array, [(byte)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array1 = new byte[0];
+      my $array2 = new byte[0];
+      
+      my $merged_array = Array->merge_byte($array1, $array2);
+      
+      unless (Array->equals_byte($merged_array, new byte[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $array1 = [(byte)1, 2];
+        my $array2 = [(byte)3, 4];
+        eval { my $merged_array = Array->merge_byte(undef, $array2); };
+        unless (Fn->contains($@, "The \$array1 must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(byte)1, 2];
+        my $array2 = [(byte)3, 4];
+        eval { my $merged_array = Array->merge_byte($array1, undef); };
+        unless (Fn->contains($@, "The \$array2 must be defined.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method merge_short : int () {
+    
+    {
+      my $array1 = [(short)1, 2];
+      my $array2 = [(short)3, 4];
+      
+      my $merged_array = Array->merge_short($array1, $array2);
+      
+      unless (Array->equals_short($merged_array, [(short)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array1 = new short[0];
+      my $array2 = new short[0];
+      
+      my $merged_array = Array->merge_short($array1, $array2);
+      
+      unless (Array->equals_short($merged_array, new short[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $array1 = [(short)1, 2];
+        my $array2 = [(short)3, 4];
+        eval { my $merged_array = Array->merge_short(undef, $array2); };
+        unless (Fn->contains($@, "The \$array1 must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(short)1, 2];
+        my $array2 = [(short)3, 4];
+        eval { my $merged_array = Array->merge_short($array1, undef); };
+        unless (Fn->contains($@, "The \$array2 must be defined.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method merge_int : int () {
+    
+    {
+      my $array1 = [(int)1, 2];
+      my $array2 = [(int)3, 4];
+      
+      my $merged_array = Array->merge_int($array1, $array2);
+      
+      unless (Array->equals_int($merged_array, [(int)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array1 = new int[0];
+      my $array2 = new int[0];
+      
+      my $merged_array = Array->merge_int($array1, $array2);
+      
+      unless (Array->equals_int($merged_array, new int[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $array1 = [(int)1, 2];
+        my $array2 = [(int)3, 4];
+        eval { my $merged_array = Array->merge_int(undef, $array2); };
+        unless (Fn->contains($@, "The \$array1 must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(int)1, 2];
+        my $array2 = [(int)3, 4];
+        eval { my $merged_array = Array->merge_int($array1, undef); };
+        unless (Fn->contains($@, "The \$array2 must be defined.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method merge_long : int () {
+    
+    {
+      my $array1 = [(long)1, 2];
+      my $array2 = [(long)3, 4];
+      
+      my $merged_array = Array->merge_long($array1, $array2);
+      
+      unless (Array->equals_long($merged_array, [(long)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array1 = new long[0];
+      my $array2 = new long[0];
+      
+      my $merged_array = Array->merge_long($array1, $array2);
+      
+      unless (Array->equals_long($merged_array, new long[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $array1 = [(long)1, 2];
+        my $array2 = [(long)3, 4];
+        eval { my $merged_array = Array->merge_long(undef, $array2); };
+        unless (Fn->contains($@, "The \$array1 must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(long)1, 2];
+        my $array2 = [(long)3, 4];
+        eval { my $merged_array = Array->merge_long($array1, undef); };
+        unless (Fn->contains($@, "The \$array2 must be defined.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method merge_float : int () {
+    
+    {
+      my $array1 = [(float)1, 2];
+      my $array2 = [(float)3, 4];
+      
+      my $merged_array = Array->merge_float($array1, $array2);
+      
+      unless (Array->equals_float($merged_array, [(float)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array1 = new float[0];
+      my $array2 = new float[0];
+      
+      my $merged_array = Array->merge_float($array1, $array2);
+      
+      unless (Array->equals_float($merged_array, new float[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $array1 = [(float)1, 2];
+        my $array2 = [(float)3, 4];
+        eval { my $merged_array = Array->merge_float(undef, $array2); };
+        unless (Fn->contains($@, "The \$array1 must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(float)1, 2];
+        my $array2 = [(float)3, 4];
+        eval { my $merged_array = Array->merge_float($array1, undef); };
+        unless (Fn->contains($@, "The \$array2 must be defined.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method merge_double : int () {
+    
+    {
+      my $array1 = [(double)1, 2];
+      my $array2 = [(double)3, 4];
+      
+      my $merged_array = Array->merge_double($array1, $array2);
+      
+      unless (Array->equals_double($merged_array, [(double)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array1 = new double[0];
+      my $array2 = new double[0];
+      
+      my $merged_array = Array->merge_double($array1, $array2);
+      
+      unless (Array->equals_double($merged_array, new double[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $array1 = [(double)1, 2];
+        my $array2 = [(double)3, 4];
+        eval { my $merged_array = Array->merge_double(undef, $array2); };
+        unless (Fn->contains($@, "The \$array1 must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(double)1, 2];
+        my $array2 = [(double)3, 4];
+        eval { my $merged_array = Array->merge_double($array1, undef); };
+        unless (Fn->contains($@, "The \$array2 must be defined.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method merge_string : int () {
+    
+    {
+      my $array1 = [(string)1, 2];
+      my $array2 = [(string)3, 4];
+      
+      my $merged_array = Array->merge_string($array1, $array2);
+      
+      unless (Array->equals_string($merged_array, [(string)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array1 = new string[0];
+      my $array2 = new string[0];
+      
+      my $merged_array = Array->merge_string($array1, $array2);
+      
+      unless (Array->equals_string($merged_array, new string[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $array1 = [(string)1, 2];
+        my $array2 = [(string)3, 4];
+        eval { my $merged_array = Array->merge_string(undef, $array2); };
+        unless (Fn->contains($@, "The \$array1 must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(string)1, 2];
+        my $array2 = [(string)3, 4];
+        eval { my $merged_array = Array->merge_string($array1, undef); };
+        unless (Fn->contains($@, "The \$array2 must be defined.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  static method merge_object : int () {
+    
+    {
+      my $array1 = [(object)1, 2];
+      my $array2 = [(object)3, 4];
+      
+      my $merged_array = Array->merge_object($array1, $array2);
+      
+      unless (@$merged_array == 4) {
+        return 0;
+      }
+      
+      unless ($merged_array->[0]->(Int)->value == 1) {
+        return 0;
+      }
+      
+      unless ($merged_array->[1]->(Int)->value == 2) {
+        return 0;
+      }
+      
+      unless ($merged_array->[2]->(Int)->value == 3) {
+        return 0;
+      }
+      
+      unless ($merged_array->[3]->(Int)->value == 4) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $array1 = new object[0];
+      my $array2 = new object[0];
+      
+      my $merged_array = Array->merge_object($array1, $array2);
+      
+      unless (@$merged_array == 0) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        my $array1 = [(object)1, 2];
+        my $array2 = [(object)3, 4];
+        eval { my $merged_array = Array->merge_object(undef, $array2); };
+        unless (Fn->contains($@, "The \$array1 must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(object)1, 2];
+        my $array2 = [(object)3, 4];
+        eval { my $merged_array = Array->merge_object($array1, undef); };
+        unless (Fn->contains($@, "The \$array2 must be defined.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

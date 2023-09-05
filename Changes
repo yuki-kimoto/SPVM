@@ -1,5 +1,23 @@
 0.989039 2023-09-05
-  
+  [New Features]
+    * The following methods are added to the Array class.
+
+      static method merge_byte : byte[] ($array1 : byte[], $array2 : byte[]);
+
+      static method merge_short : short[] ($array1 : short[], $array2 : short[]);
+
+      static method merge_int : int[] ($array1 : int[], $array2 : int[]);
+
+      static method merge_long : long[] ($array1 : long[], $array2 : long[]);
+
+      static method merge_float : float[] ($array1 : float[], $array2 : float[]);
+
+      static method merge_double : double[] ($array1 : double[], $array2 : double[]);
+
+      static method merge_string : string[] ($array1 : string[], $array2 : string[]);
+
+      static method merge_object : object[] ($array1 : object[], $array2 : object[]);
+
   [Bug Fix]
     * A bug fix: The following tests has not succeeded.
     

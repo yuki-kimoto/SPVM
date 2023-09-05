@@ -704,6 +704,7 @@ class Array {
       $array->[$offset + $i] = (byte)$element;
     }
   }
+  
   precompile static method memset_double : void ($array : double[], $element : double, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
@@ -726,6 +727,7 @@ class Array {
       $array->[$offset + $i] = $element;
     }
   }
+  
   precompile static method memset_float : void ($array : float[], $element : float, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
@@ -748,6 +750,7 @@ class Array {
       $array->[$offset + $i] = $element;
     }
   }
+  
   precompile static method memset_int : void ($array : int[], $element : int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
@@ -770,6 +773,7 @@ class Array {
       $array->[$offset + $i] = $element;
     }
   }
+  
   precompile static method memset_long : void ($array : long[], $element : long, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
@@ -792,6 +796,7 @@ class Array {
       $array->[$offset + $i] = $element;
     }
   }
+  
   precompile static method memset_object : void ($array : object[], $element : object, $offset : int = 0, $length : int = -1) {
     unless ($array) {
       die "The \$array must be defined.";
@@ -840,6 +845,214 @@ class Array {
   
   static method memset_string : void ($array : string[], $element : string, $offset : int = 0, $length : int = -1) {
     &memset_object($array, $element, $offset, $length);
+  }
+  
+  precompile static method merge_byte : byte[] ($array1 : byte[], $array2 : byte[]) {
+    unless ($array1) {
+      die "The \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The \$array2 must be defined.";
+    }
+    
+    my $array1_length = @$array1;
+    my $array2_length = @$array2;
+    my $merged_array_length = $array1_length + $array2_length;
+    
+    my $merged_array = new byte[$merged_array_length];
+    
+    for (my $i = 0; $i < $array1_length; $i++) {
+      $merged_array->[$i] = $array1->[$i];
+    }
+    
+    for (my $i = 0; $i < $array2_length; $i++) {
+      $merged_array->[$array1_length + $i] = $array2->[$i];
+    }
+    
+    return $merged_array;
+  }
+  
+  precompile static method merge_short : short[] ($array1 : short[], $array2 : short[]) {
+    unless ($array1) {
+      die "The \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The \$array2 must be defined.";
+    }
+    
+    my $array1_length = @$array1;
+    my $array2_length = @$array2;
+    my $merged_array_length = $array1_length + $array2_length;
+    
+    my $merged_array = new short[$merged_array_length];
+    
+    for (my $i = 0; $i < $array1_length; $i++) {
+      $merged_array->[$i] = $array1->[$i];
+    }
+    
+    for (my $i = 0; $i < $array2_length; $i++) {
+      $merged_array->[$array1_length + $i] = $array2->[$i];
+    }
+    
+    return $merged_array;
+  }
+  
+  precompile static method merge_int : int[] ($array1 : int[], $array2 : int[]) {
+    unless ($array1) {
+      die "The \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The \$array2 must be defined.";
+    }
+    
+    my $array1_length = @$array1;
+    my $array2_length = @$array2;
+    my $merged_array_length = $array1_length + $array2_length;
+    
+    my $merged_array = new int[$merged_array_length];
+    
+    for (my $i = 0; $i < $array1_length; $i++) {
+      $merged_array->[$i] = $array1->[$i];
+    }
+    
+    for (my $i = 0; $i < $array2_length; $i++) {
+      $merged_array->[$array1_length + $i] = $array2->[$i];
+    }
+    
+    return $merged_array;
+  }
+  
+  precompile static method merge_long : long[] ($array1 : long[], $array2 : long[]) {
+    unless ($array1) {
+      die "The \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The \$array2 must be defined.";
+    }
+    
+    my $array1_length = @$array1;
+    my $array2_length = @$array2;
+    my $merged_array_length = $array1_length + $array2_length;
+    
+    my $merged_array = new long[$merged_array_length];
+    
+    for (my $i = 0; $i < $array1_length; $i++) {
+      $merged_array->[$i] = $array1->[$i];
+    }
+    
+    for (my $i = 0; $i < $array2_length; $i++) {
+      $merged_array->[$array1_length + $i] = $array2->[$i];
+    }
+    
+    return $merged_array;
+  }
+  
+  precompile static method merge_float : float[] ($array1 : float[], $array2 : float[]) {
+    unless ($array1) {
+      die "The \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The \$array2 must be defined.";
+    }
+    
+    my $array1_length = @$array1;
+    my $array2_length = @$array2;
+    my $merged_array_length = $array1_length + $array2_length;
+    
+    my $merged_array = new float[$merged_array_length];
+    
+    for (my $i = 0; $i < $array1_length; $i++) {
+      $merged_array->[$i] = $array1->[$i];
+    }
+    
+    for (my $i = 0; $i < $array2_length; $i++) {
+      $merged_array->[$array1_length + $i] = $array2->[$i];
+    }
+    
+    return $merged_array;
+  }
+  
+  precompile static method merge_double : double[] ($array1 : double[], $array2 : double[]) {
+    unless ($array1) {
+      die "The \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The \$array2 must be defined.";
+    }
+    
+    my $array1_length = @$array1;
+    my $array2_length = @$array2;
+    my $merged_array_length = $array1_length + $array2_length;
+    
+    my $merged_array = new double[$merged_array_length];
+    
+    for (my $i = 0; $i < $array1_length; $i++) {
+      $merged_array->[$i] = $array1->[$i];
+    }
+    
+    for (my $i = 0; $i < $array2_length; $i++) {
+      $merged_array->[$array1_length + $i] = $array2->[$i];
+    }
+    
+    return $merged_array;
+  }
+  
+  precompile static method merge_string : string[] ($array1 : string[], $array2 : string[]) {
+    unless ($array1) {
+      die "The \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The \$array2 must be defined.";
+    }
+    
+    my $array1_length = @$array1;
+    my $array2_length = @$array2;
+    my $merged_array_length = $array1_length + $array2_length;
+    
+    my $merged_array = new string[$merged_array_length];
+    
+    for (my $i = 0; $i < $array1_length; $i++) {
+      $merged_array->[$i] = $array1->[$i];
+    }
+    
+    for (my $i = 0; $i < $array2_length; $i++) {
+      $merged_array->[$array1_length + $i] = $array2->[$i];
+    }
+    
+    return $merged_array;
+  }
+  
+  precompile static method merge_object : object[] ($array1 : object[], $array2 : object[]) {
+    unless ($array1) {
+      die "The \$array1 must be defined.";
+    }
+    
+    unless ($array2) {
+      die "The \$array2 must be defined.";
+    }
+    
+    my $array1_length = @$array1;
+    my $array2_length = @$array2;
+    my $merged_array_length = $array1_length + $array2_length;
+    
+    my $merged_array = new object[$merged_array_length];
+    
+    for (my $i = 0; $i < $array1_length; $i++) {
+      $merged_array->[$i] = $array1->[$i];
+    }
+    
+    for (my $i = 0; $i < $array2_length; $i++) {
+      $merged_array->[$array1_length + $i] = $array2->[$i];
+    }
+    
+    return $merged_array;
   }
   
   native static method new_proto : object[] ($proto_array : object[], $length : int);

@@ -825,6 +825,102 @@ The alias for the following code using L</"memset_object">.
 
   &memset_object($dest, $element, $dest_offset, $length);
 
+=head2 merge_byte
+
+  static method merge_byte : byte[] ($array1 : byte[], $array2 : byte[]);
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+The \$array1 must be defined. Otherwise an exception is thrown.
+
+The \$array2 must be defined. Otherwise an exception is thrown.
+
+=head2 merge_short
+
+  static method merge_short : short[] ($array1 : short[], $array2 : short[]);
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+The \$array1 must be defined. Otherwise an exception is thrown.
+
+The \$array2 must be defined. Otherwise an exception is thrown.
+
+=head2 merge_int
+
+  static method merge_int : int[] ($array1 : int[], $array2 : int[]);
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+The \$array1 must be defined. Otherwise an exception is thrown.
+
+The \$array2 must be defined. Otherwise an exception is thrown.
+
+=head2 merge_long
+
+  static method merge_long : long[] ($array1 : long[], $array2 : long[]);
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+The \$array1 must be defined. Otherwise an exception is thrown.
+
+The \$array2 must be defined. Otherwise an exception is thrown.
+
+=head2 merge_float
+
+  static method merge_float : float[] ($array1 : float[], $array2 : float[]);
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+The \$array1 must be defined. Otherwise an exception is thrown.
+
+The \$array2 must be defined. Otherwise an exception is thrown.
+
+=head2 merge_double
+
+  static method merge_double : double[] ($array1 : double[], $array2 : double[]);
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+The \$array1 must be defined. Otherwise an exception is thrown.
+
+The \$array2 must be defined. Otherwise an exception is thrown.
+
+=head2 merge_string
+
+  static method merge_string : string[] ($array1 : string[], $array2 : string[]);
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+The \$array1 must be defined. Otherwise an exception is thrown.
+
+The \$array2 must be defined. Otherwise an exception is thrown.
+
+=head2 merge_object
+
+  static method merge_object : object[] ($array1 : object[], $array2 : object[]);
+
+Creates a new array by merging the array $array1 and the array $array2, and returns it.
+
+Exceptions:
+
+The \$array1 must be defined. Otherwise an exception is thrown.
+
+The \$array2 must be defined. Otherwise an exception is thrown.
+
 =head2 new_proto
 
   static method new_proto : object[] ($proto_array : object[], $length : int);

@@ -63,6 +63,14 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->memset_object);
   ok(SPVM::TestCase::Module::Array->memset_short);
   ok(SPVM::TestCase::Module::Array->memset_string);
+  ok(SPVM::TestCase::Module::Array->merge_byte);
+  ok(SPVM::TestCase::Module::Array->merge_double);
+  ok(SPVM::TestCase::Module::Array->merge_float);
+  ok(SPVM::TestCase::Module::Array->merge_int);
+  ok(SPVM::TestCase::Module::Array->merge_long);
+  ok(SPVM::TestCase::Module::Array->merge_object);
+  ok(SPVM::TestCase::Module::Array->merge_short);
+  ok(SPVM::TestCase::Module::Array->merge_string);
   ok(SPVM::TestCase::Module::Array->new_proto);
 }
 
