@@ -14,11 +14,10 @@ use SPVM 'TestCase::NativeAPI2';
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
-
-# Native Exception
+# src and include directory
 {
-  is(SPVM::TestCase::NativeAPI2->mul(2, 3), 6);
-  ok(SPVM::TestCase::NativeAPI2->spvm_extension2);
+  ok(SPVM::TestCase::NativeAPI2->src_foo);
+  ok(SPVM::TestCase::NativeAPI2->src_bar);
 }
 
 # Clear exception
