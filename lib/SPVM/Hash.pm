@@ -87,7 +87,7 @@ The deleted value is returned.
 
 Exceptions:
 
-The $key must be defined. Otherwise an exception is thrown.
+$key must be defined. Otherwise an exception is thrown.
 
 =head2 exists
 
@@ -115,7 +115,7 @@ Gets a value specifed by the key $key, and returns it.
 
 Exceptions:
 
-The $key must be defined. Otherwise an exception is thrown.
+$key must be defined. Otherwise an exception is thrown.
 
 =head2 get_byte
 
@@ -125,7 +125,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The value of the $key must be a L<Byte|SPVM::Byte> object. Otherwise an exception is thrown.
+The value of $key must be a L<Byte|SPVM::Byte> object. Otherwise an exception is thrown.
 
 =head2 get_short
 
@@ -135,7 +135,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The value of the $key must be a L<Short|SPVM::Short> object. Otherwise an exception is thrown.
+The value of $key must be a L<Short|SPVM::Short> object. Otherwise an exception is thrown.
 
 =head2 get_string
 
@@ -145,7 +145,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The value of the $key must be a string. Otherwise an exception is thrown.
+The value of $key must be a string. Otherwise an exception is thrown.
 
 =head2 get_int
 
@@ -155,7 +155,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The value of the $key must be a L<Int|SPVM::Int> object. Otherwise an exception is thrown.
+The value of $key must be a L<Int|SPVM::Int> object. Otherwise an exception is thrown.
 
 =head2 get_long
 
@@ -165,7 +165,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The value of the $key must be a L<Long|SPVM::Long> object. Otherwise an exception is thrown.
+The value of $key must be a L<Long|SPVM::Long> object. Otherwise an exception is thrown.
 
 =head2 get_float
 
@@ -175,7 +175,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The value of the $key must be a L<Float|SPVM::Float> object. Otherwise an exception is thrown.
+The value of $key must be a L<Float|SPVM::Float> object. Otherwise an exception is thrown.
 
 =head2 get_double
 
@@ -185,17 +185,17 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The value of the $key must be a L<Double|SPVM::Double> object. Otherwise an exception is thrown.
+The value of $key must be a L<Double|SPVM::Double> object. Otherwise an exception is thrown.
 
 =head2 set
   
   method set : void ($key : string, $value : object);
 
-Sets the $value to the hash by the key $key.
+Sets $value to the hash by the key $key.
 
 Exceptions:
 
-The $key must be defined. Otherwise an exception is thrown.
+$key must be defined. Otherwise an exception is thrown.
 
 =head2 set_byte
 

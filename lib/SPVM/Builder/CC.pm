@@ -223,7 +223,7 @@ sub compile_source_file {
   }
   
   $cbuilder->do_system(@$cc_cmd)
-    or confess "The $source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
+    or confess "$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
 }
 
 sub compile_source_files {
@@ -572,7 +572,7 @@ sub link {
     mkpath $build_dir;
   }
   else {
-    confess "The \"build_dir\" field must be defined to build the native class for the $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+    confess "The \"build_dir\" field must be defined to build the native class for $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
   # Config

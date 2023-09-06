@@ -175,7 +175,7 @@ int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack)
   void* obj_class_name = stack[1].oval;
   
   if (!obj_class_name) {
-    return env->die(env, stack, "The $class_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "$class_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   const char* class_name = env->get_chars(env, stack, obj_class_name);
   

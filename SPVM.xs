@@ -1144,7 +1144,7 @@ _xs_call_method(...)
   if (sv_isobject(sv_invocant)) {
     class_method_call = 0;
     if (!(sv_isobject(sv_invocant) && sv_derived_from(sv_invocant, "SPVM::BlessedObject::Class"))) {
-      croak("The $invocant must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("$invocant must be a SPVM::BlessedObject::Class object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     HV* hv_invocant = (HV*)SvRV(sv_invocant);
@@ -2251,7 +2251,7 @@ _xs_dump(...)
   // Array must be a SPVM::BlessedObject or SPVM::BlessedObject
   if (SvOK(sv_object)) {
     if (!(SvROK(sv_object) && sv_derived_from(sv_object, "SPVM::BlessedObject"))) {
-      croak("The $object must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("$object must be a SPVM::BlessedObject object\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
   }
   
@@ -2293,7 +2293,7 @@ _xs_new_string(...)
   sv_string = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_string, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $string%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$string%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_string);
@@ -2326,7 +2326,7 @@ _xs_new_address_object(...)
   sv_address = SPVM_XS_UTIL_new_address_object(aTHX_ sv_self, sv_env, sv_stack, sv_address, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $address%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$address%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_address);
@@ -2357,7 +2357,7 @@ _xs_new_byte_array(...)
   sv_array = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2388,7 +2388,7 @@ _xs_new_byte_array_unsigned(...)
   sv_array = SPVM_XS_UTIL_new_byte_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2418,7 +2418,7 @@ _xs_new_byte_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -2452,7 +2452,7 @@ _xs_new_byte_array_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
-    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   STRLEN length = -1;
@@ -2494,7 +2494,7 @@ _xs_new_short_array(...)
   sv_array = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2525,7 +2525,7 @@ _xs_new_short_array_unsigned(...)
   sv_array = SPVM_XS_UTIL_new_short_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2555,7 +2555,7 @@ _xs_new_short_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -2589,14 +2589,14 @@ _xs_new_short_array_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
-    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   STRLEN binary_length = -1;
   int16_t* binary = (int16_t*)SvPV(sv_binary, binary_length);
   
   if (!(binary_length % 2 == 0)) {
-    croak("The length of the $binary must be divisible by 2\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The length of $binary must be divisible by 2\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / sizeof(int16_t);
@@ -2637,7 +2637,7 @@ _xs_new_int_array(...)
   sv_array = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2668,7 +2668,7 @@ _xs_new_int_array_unsigned(...)
   sv_array = SPVM_XS_UTIL_new_int_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2698,7 +2698,7 @@ _xs_new_int_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -2732,14 +2732,14 @@ _xs_new_int_array_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
-    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   STRLEN binary_length = -1;
   int32_t* binary = (int32_t*)SvPV(sv_binary, binary_length);
   
   if (!(binary_length % 4 == 0)) {
-    croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The length of $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / sizeof(int32_t);
@@ -2780,7 +2780,7 @@ _xs_new_long_array(...)
   sv_array = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2811,7 +2811,7 @@ _xs_new_long_array_unsigned(...)
   sv_array = SPVM_XS_UTIL_new_long_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2841,7 +2841,7 @@ _xs_new_long_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -2875,14 +2875,14 @@ _xs_new_long_array_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
-    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   STRLEN binary_length = -1;
   int64_t* binary = (int64_t*)SvPV(sv_binary, binary_length);
   
   if (!(binary_length % 8 == 0)) {
-    croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The length of $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / sizeof(int64_t);
@@ -2923,7 +2923,7 @@ _xs_new_float_array(...)
   sv_array = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -2953,7 +2953,7 @@ _xs_new_float_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -2987,14 +2987,14 @@ _xs_new_float_array_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
-    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   STRLEN binary_length = -1;
   float* binary = (float*)SvPV(sv_binary, binary_length);
   
   if (!(binary_length % 4 == 0)) {
-    croak("The length of the $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The length of $binary must be divisible by 4\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / sizeof(float);
@@ -3035,7 +3035,7 @@ _xs_new_double_array(...)
   sv_array = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3065,7 +3065,7 @@ _xs_new_double_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -3099,14 +3099,14 @@ _xs_new_double_array_from_bin(...)
   SV* sv_binary = ST(1);
   
   if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
-    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   STRLEN binary_length = -1;
   double* binary = (double*)SvPV(sv_binary, binary_length);
   
   if (!(binary_length % 8 == 0)) {
-    croak("The length of the $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("The length of $binary must be divisible by 8\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / sizeof(double);
@@ -3147,7 +3147,7 @@ _xs_new_string_array(...)
   sv_array = SPVM_XS_UTIL_new_string_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3177,7 +3177,7 @@ _xs_new_string_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // New array
@@ -3220,14 +3220,14 @@ _xs_new_object_array(...)
   int32_t elem_type_dimension = 0;
   int32_t is_object_array = env->api->type->is_object_type(env->runtime, basic_type, elem_type_dimension, 0);
   if (!is_object_array) {
-    croak("The $type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   SV* sv_error = &PL_sv_undef;
   sv_array = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, basic_type, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3258,7 +3258,7 @@ _xs_new_object_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   // Element type id
@@ -3272,7 +3272,7 @@ _xs_new_object_array_len(...)
   int32_t elem_type_dimension = 0;
   int32_t is_object_array = env->api->type->is_object_type(env->runtime, basic_type, elem_type_dimension, 0);
   if (!is_object_array) {
-    croak("The $type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$type_name must be an object array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   void* spvm_array = env->new_object_array(env, stack, basic_type, length);
@@ -3314,14 +3314,14 @@ _xs_new_mulnum_array(...)
   int32_t basic_type_category = env->api->basic_type->get_category(env->runtime, basic_type);
   int32_t is_mulnum_array = basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
   if (!is_mulnum_array) {
-    croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   SV* sv_error = &PL_sv_undef;
   sv_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, basic_type, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3352,7 +3352,7 @@ _xs_new_mulnum_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -3366,7 +3366,7 @@ _xs_new_mulnum_array_len(...)
   int32_t basic_type_category = env->api->basic_type->get_category(env->runtime, basic_type);
   int32_t is_mulnum_array = basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
   if (!is_mulnum_array) {
-    croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   void* spvm_array = env->new_mulnum_array(env, stack, basic_type, length);
@@ -3399,7 +3399,7 @@ _xs_new_mulnum_array_from_bin(...)
   SV* sv_binary = ST(2);
   
   if (!(SvOK(sv_binary) && !SvROK(sv_binary))) {
-    croak("The $binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$binary must be a defined non-reference scalar\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
@@ -3420,7 +3420,7 @@ _xs_new_mulnum_array_from_bin(...)
   int32_t basic_type_category = env->api->basic_type->get_category(env->runtime, basic_type);
   int32_t is_mulnum_array = basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM;
   if (!is_mulnum_array) {
-    croak("The $type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$type_name must be a multi-numeric array type\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t basic_type_fields_length = env->api->basic_type->get_fields_length(env->runtime, basic_type);
@@ -3462,7 +3462,7 @@ _xs_new_mulnum_array_from_bin(...)
   }
   
   if (binary_length % (field_size * fields_length) != 0) {
-    croak("The length of the $binary must be divisible by %d * %d\n    %s at %s line %d", field_size, fields_length, __func__, FILE_NAME, __LINE__);
+    croak("The length of $binary must be divisible by %d * %d\n    %s at %s line %d", field_size, fields_length, __func__, FILE_NAME, __LINE__);
   }
   
   int32_t array_length = binary_length / fields_length / field_size;
@@ -3560,7 +3560,7 @@ _xs_new_muldim_array(...)
   sv_array = SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, sv_env, sv_stack, basic_type, type_dimension, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   XPUSHs(sv_array);
@@ -3600,7 +3600,7 @@ _xs_new_muldim_array_len(...)
   int32_t length = (int32_t)SvIV(sv_length);
   
   if (length < 0) {
-    croak("The $length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   void* spvm_array = env->new_muldim_array(env, stack, basic_type, type_dimension, length);
@@ -3668,7 +3668,7 @@ _xs_set_exception(...)
   sv_message = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_message, &sv_error);
   
   if (SvOK(sv_error)) {
-    croak("The $message%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
+    croak("$message%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
   }
   
   void* spvm_message = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_message);
@@ -4255,7 +4255,7 @@ _xs_set(...)
   
   // Check range
   if (!(index >= 0 && index < length)) {
-    croak("The $index must be greatr than or equal to 0 and less than the length of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$index must be greatr than or equal to 0 and less than the length of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);
@@ -4344,7 +4344,7 @@ _xs_set(...)
     
     int32_t elem_isa = env->elem_isa(env, stack, spvm_array, elem);
     if (!elem_isa) {
-      croak("The $elem must be assigned to the element of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+      croak("$elem must be assigned to the element of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
     }
     
     env->set_elem_object(env, stack, spvm_array, index, elem);
@@ -4392,7 +4392,7 @@ _xs_get(...)
   
   // Check range
   if (!(index >= 0 && index < length)) {
-    croak("The $index must be greater than or equal to 0 and less than the length of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+    croak("$index must be greater than or equal to 0 and less than the length of the array\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_object_basic_type_name(env, stack, spvm_array);

@@ -48,9 +48,9 @@ This field is the length of the elements of the list.
 
 Creates a new L<Immutable::ByteList|SPVM::Immutable::ByteList> object using L</"new_len">.
 
-The passed length to L</"new_len"> is the length of the $array. If the array is undef, the length is 0.
+The passed length to L</"new_len"> is the length of $array. If the array is undef, the length is 0.
 
-The elements of the $array are copied to the elements of the the created array.
+The elements of $array are copied to the elements of the the created array.
 
 Examples:
 
@@ -61,11 +61,11 @@ Examples:
 
   static method new_len : Immutable::ByteList ($length : int);
 
-Creates a new L<Immutable::ByteList|SPVM::Immutable::ByteList> object with the $length.
+Creates a new L<Immutable::ByteList|SPVM::Immutable::ByteList> object with $length.
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 
@@ -73,13 +73,13 @@ The $length must be greater than or equal to 0. Otherwise an exception is thrown
 
   method get : int ($index : int);
 
-Gets the element of the position of the $index.
+Gets the element of the position of $index.
 
 Exceptions:
 
-The $index must be greater than or equal to 0. Otherwise an exception is thrown.
+$index must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The $index must be less than the length of the $list. Otherwise an exception is thrown.
+$index must be less than the length of $list. Otherwise an exception is thrown.
 
 =head2 to_array
 

@@ -101,13 +101,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # new_string - reference
     {
       eval { $api->new_string([]); };
-      like($@, qr/The \$string cannnot be a reference/);
+      like($@, qr/\$string cannnot be a reference/);
       like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
     }
     # new_string - non-assignable
     {
       eval { $api->new_string($api->new_byte_array([1, 2, 3])); };
-      like($@, qr/The \$string cannnot be a reference/);
+      like($@, qr/\$string cannnot be a reference/);
       like($@, qr|XS_SPVM__ExchangeAPI__xs_new_string at SPVM\.xs line \d+|);
     }
   }
@@ -175,11 +175,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_byte_array({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_byte_array($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type') >= 0);
     }
   }
 }
@@ -217,11 +217,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_byte_array_unsigned({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_byte_array_unsigned($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type') >= 0);
     }
   }
 }
@@ -252,7 +252,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # Exceptions
   {
     eval { $api->new_byte_array_len(-1); };
-    ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    ok(index($@, '$length must be greater than or equal to 0') >= 0);
   }
 }
 
@@ -286,11 +286,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { my $spvm_array = $api->new_byte_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     {
       eval { my $spvm_array = $api->new_byte_array_from_bin({}); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
   }
   
@@ -352,11 +352,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_short_array({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_short_array($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the short[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the short[] type') >= 0);
     }
   }
 }
@@ -394,11 +394,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_short_array_unsigned({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_short_array_unsigned($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the short[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the short[] type') >= 0);
     }
   }
 }
@@ -429,7 +429,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # Exceptions
   {
     eval { $api->new_short_array_len(-1); };
-    ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    ok(index($@, '$length must be greater than or equal to 0') >= 0);
   }
 }
 
@@ -464,19 +464,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_short_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # {}
     {
       eval { $api->new_short_array_from_bin({}); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
     {
       eval { $api->new_short_array_from_bin("abc"); };
-      ok(index($@, 'The length of the $binary must be divisible by 2') >= 0);
+      ok(index($@, 'The length of $binary must be divisible by 2') >= 0);
     }
   }
 }
@@ -514,11 +514,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_int_array({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_int_array($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the int[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the int[] type') >= 0);
     }
   }
 }
@@ -556,11 +556,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_int_array_unsigned({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_int_array_unsigned($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the int[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the int[] type') >= 0);
     }
   }
 }
@@ -591,7 +591,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # Exceptions
   {
     eval { $api->new_int_array_len(-1); };
-    ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    ok(index($@, '$length must be greater than or equal to 0') >= 0);
   }
 }
 
@@ -626,18 +626,18 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_int_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     {
       eval { $api->new_int_array_from_bin({}); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
     {
       eval { $api->new_int_array_from_bin("abcde"); };
-      ok(index($@, 'The length of the $binary must be divisible by 4') >= 0);
+      ok(index($@, 'The length of $binary must be divisible by 4') >= 0);
     }
   }
 }
@@ -675,11 +675,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_long_array({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_long_array($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the long[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the long[] type') >= 0);
     }
   }
 }
@@ -717,11 +717,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_long_array_unsigned({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_long_array_unsigned($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the long[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the long[] type') >= 0);
     }
   }
 }
@@ -752,7 +752,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # Exceptions
   {
     eval { $api->new_long_array_len(-1); };
-    ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    ok(index($@, '$length must be greater than or equal to 0') >= 0);
   }
 }
 
@@ -787,19 +787,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_long_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # {}
     {
       eval { $api->new_long_array_from_bin({}); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
     {
       eval { $api->new_long_array_from_bin("abcde"); };
-      ok(index($@, 'The length of the $binary must be divisible by 8') >= 0);
+      ok(index($@, 'The length of $binary must be divisible by 8') >= 0);
     }
   }
 }
@@ -837,11 +837,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_float_array({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_float_array($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the float[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the float[] type') >= 0);
     }
   }
 }
@@ -872,7 +872,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # Exceptions
   {
     eval { $api->new_float_array_len(-1); };
-    ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    ok(index($@, '$length must be greater than or equal to 0') >= 0);
   }
 }
 
@@ -899,19 +899,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_float_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # {}
     {
       eval { $api->new_float_array_from_bin({}); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
     {
       eval { $api->new_float_array_from_bin("abcde"); };
-      ok(index($@, 'The length of the $binary must be divisible by 4') >= 0);
+      ok(index($@, 'The length of $binary must be divisible by 4') >= 0);
     }
   }
 }
@@ -949,11 +949,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_double_array({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_double_array($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the double[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the double[] type') >= 0);
     }
   }
 }
@@ -984,7 +984,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # Exceptions
   {
     eval { $api->new_double_array_len(-1); };
-    ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    ok(index($@, '$length must be greater than or equal to 0') >= 0);
   }
 }
 
@@ -1011,19 +1011,19 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     # undef
     {
       eval { $api->new_double_array_from_bin(undef); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # {}
     {
       eval { $api->new_double_array_from_bin({}); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     
     # Non-divisible
     {
       eval { $api->new_double_array_from_bin("abcde"); };
-      ok(index($@, 'The length of the $binary must be divisible by 8') >= 0);
+      ok(index($@, 'The length of $binary must be divisible by 8') >= 0);
     }
   }
 }
@@ -1061,11 +1061,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_string_array({}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_string_array($api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be the string[] type') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be the string[] type') >= 0);
     }
   }
 }
@@ -1096,7 +1096,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   # Exceptions
   {
     eval { $api->new_string_array_len(-1); };
-    ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+    ok(index($@, '$length must be greater than or equal to 0') >= 0);
   }
 }
 
@@ -1140,11 +1140,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array("Point[]", {}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_object_array("Point[]", $api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
     }
     {
       eval { $api->new_object_array("Point[][]", []); };
@@ -1156,7 +1156,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array("byte[]", []); };
-      ok(index($@, 'The $type_name must be an object array type') >= 0);
+      ok(index($@, '$type_name must be an object array type') >= 0);
     }
   }
 }
@@ -1192,7 +1192,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array_len("Point[]", -1); };
-      ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+      ok(index($@, '$length must be greater than or equal to 0') >= 0);
     }
     {
       eval { $api->new_object_array_len("Point[][]", 0); };
@@ -1204,7 +1204,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_object_array_len("byte[]", 0); };
-      ok(index($@, 'The $type_name must be an object array type') >= 0);
+      ok(index($@, '$type_name must be an object array type') >= 0);
     }
   }
 }
@@ -1277,15 +1277,15 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     {
       eval { $api->new_options([]); };
-      ok(index($@, 'The $options must be a hash reference') >= 0);
+      ok(index($@, '$options must be a hash reference') >= 0);
     }
     {
       eval { $api->new_options(undef); };
-      ok(index($@, 'The $options must be a hash reference') >= 0);
+      ok(index($@, '$options must be a hash reference') >= 0);
     }
     {
       eval { $api->new_options({x => 1}); };
-      ok(index($@, 'The value of the $options must be a SPVM::BlessedObject object') >= 0);
+      ok(index($@, 'The value of $options must be a SPVM::BlessedObject object') >= 0);
     }
   }
   
@@ -1401,11 +1401,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array("TestCase::Point_3b[]", {}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_mulnum_array("TestCase::Point_3b[]", $api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
     }
     {
       eval { $api->new_mulnum_array("TestCase::Point_3b[][]", []); };
@@ -1417,7 +1417,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array("byte[]", []); };
-      ok(index($@, 'The $type_name must be a multi-numeric array type') >= 0);
+      ok(index($@, '$type_name must be a multi-numeric array type') >= 0);
     }
   }
 }
@@ -1453,7 +1453,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array_len("TestCase::Point_3b[]", -1); };
-      ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+      ok(index($@, '$length must be greater than or equal to 0') >= 0);
     }
     {
       eval { $api->new_mulnum_array_len("TestCase::Point_3b[][]", 0); };
@@ -1465,7 +1465,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array_len("byte[]", 0); };
-      ok(index($@, 'The $type_name must be a multi-numeric array type') >= 0);
+      ok(index($@, '$type_name must be a multi-numeric array type') >= 0);
     }
   }
 }
@@ -1548,11 +1548,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", undef); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     {
       eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[]", {}); };
-      ok(index($@, 'The $binary must be a defined non-reference scalar') >= 0);
+      ok(index($@, '$binary must be a defined non-reference scalar') >= 0);
     }
     {
       eval { $api->new_mulnum_array_from_bin("TestCase::Point_3b[][]", []); };
@@ -1564,7 +1564,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_mulnum_array_from_bin("byte[]", ""); };
-      ok(index($@, 'The $type_name must be a multi-numeric array type') >= 0);
+      ok(index($@, '$type_name must be a multi-numeric array type') >= 0);
     }
   }
 }
@@ -1668,11 +1668,11 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_muldim_array("byte[][]", {}); };
-      ok(index($@, 'The $array: If it is a reference, it must be an array reference') >= 0);
+      ok(index($@, '$array: If it is a reference, it must be an array reference') >= 0);
     }
     {
       eval { $api->new_muldim_array("byte[][]", $api->new_any_object_array([])); };
-      ok(index($@, 'The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
+      ok(index($@, '$array: If it is a SPVM::BlessedObject::Array object, the type must be assignable') >= 0);
     }
     {
       eval { $api->new_muldim_array("Point[]", []); };
@@ -1716,7 +1716,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     }
     {
       eval { $api->new_muldim_array_len("byte[][]", -1); };
-      ok(index($@, 'The $length must be greater than or equal to 0') >= 0);
+      ok(index($@, '$length must be greater than or equal to 0') >= 0);
     }
     {
       eval { $api->new_muldim_array_len("byte[]", 0); };
@@ -1801,7 +1801,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     eval { $api->dump("string"); };
     
-    like($@, qr|The \$object must be a SPVM::BlessedObject object|);
+    like($@, qr|\$object must be a SPVM::BlessedObject object|);
   }
 }
 

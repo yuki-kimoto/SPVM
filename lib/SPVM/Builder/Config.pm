@@ -1451,7 +1451,7 @@ Loads a mode config file like C<Foo.mode.config>.
 
 At first, removes the string matching the regex C<(\.[^\.]+)?\.config$> from the base name of the config file $config_file.
 
-Next, if the mode $mode is defined, C<.$mode.config> is added to the $config_file. Otherwise C<.config> is added.
+Next, if the mode $mode is defined, C<.$mode.config> is added to $config_file. Otherwise C<.config> is added.
 
 Last, L</"load_config"> is called with the modified name of the config file.
 

@@ -303,7 +303,7 @@ class TestCase::Module::Hash {
       my $hash = Hash->new;
       eval { $hash->get(undef); }
       
-      unless (Fn->contains($@, "The \$key must be defined.")) {
+      unless (Fn->contains($@, "\$key must be defined.")) {
         return 0;
       }
     }
@@ -334,7 +334,7 @@ class TestCase::Module::Hash {
       my $hash = Hash->new;
       eval { $hash->exists(undef); }
       
-      unless (Fn->contains($@, "The \$key must be defined.")) {
+      unless (Fn->contains($@, "\$key must be defined.")) {
         return 0;
       }
     }
@@ -367,7 +367,7 @@ class TestCase::Module::Hash {
       my $hash = Hash->new;
       eval { $hash->delete(undef); }
       
-      unless (Fn->contains($@, "The \$key must be defined.")) {
+      unless (Fn->contains($@, "\$key must be defined.")) {
         return 0;
       }
     }

@@ -36,7 +36,7 @@ Create a class method call and returns it. It is a L<Native::MethodCall>.
 
   static method call_callback : void ($callback : Native::MethodCall::Callback, $error_id : int*, $stack = undef : Native::Stack);
 
-Calls a callback with a stack. If the $stack is not defined, the current stack is used.
+Calls a callback with a stack. If $stack is not defined, the current stack is used.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
@@ -54,9 +54,9 @@ The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
 The environment is a L<Native::Env|SPVM::Native::Env> object.
 
-If the $stack is not defined, the current stackt is used.
+If $stack is not defined, the current stackt is used.
 
-If the $environment is not defined, the current environment is used.
+If $environment is not defined, the current environment is used.
 
 =head2 get_exception
 
@@ -68,9 +68,9 @@ The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
 The environment is a L<Native::Env|SPVM::Native::Env> object.
 
-If the $stack is not defined, the current stackt is used.
+If $stack is not defined, the current stackt is used.
 
-If the $environment is not defined, the current environment is used.
+If $environment is not defined, the current environment is used.
 
 =head2 set_exception
 
@@ -82,9 +82,9 @@ The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
 The environment is a L<Native::Env|SPVM::Native::Env> object.
 
-If the $stack is not defined, the current stackt is used.
+If $stack is not defined, the current stackt is used.
 
-If the $environment is not defined, the current environment is used.
+If $environment is not defined, the current environment is used.
 
 =head1 Instance Methods
 

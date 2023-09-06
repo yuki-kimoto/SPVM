@@ -61,11 +61,11 @@ Examples:
 
   static method new_len : Immutable::ShortList ($length : int);
 
-Creates a new L<Immutable::ShortList|SPVM::Immutable::ShortList> object with the $length.
+Creates a new L<Immutable::ShortList|SPVM::Immutable::ShortList> object with $length.
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 
@@ -73,13 +73,13 @@ The $length must be greater than or equal to 0. Otherwise an exception is thrown
 
   method get : int ($index : int);
 
-Gets the element of the position of the $index.
+Gets the element of the position of $index.
 
 Exceptions:
 
-The $index must be greater than or equal to 0. Otherwise an exception is thrown.
+$index must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The $index must be less than the length of the $list. Otherwise an exception is thrown.
+$index must be less than the length of $list. Otherwise an exception is thrown.
 
 =head2 to_array
 

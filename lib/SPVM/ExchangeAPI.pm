@@ -125,7 +125,7 @@ sub new_options {
   my ($self, $options) = @_;
   
   unless (ref $options eq 'HASH') {
-    confess "The \$options must be a hash reference";
+    confess "\$options must be a hash reference";
   }
   
   my $array_ref = [];
@@ -134,7 +134,7 @@ sub new_options {
     my $value = $options->{$name};
     if (defined $value) {
       unless (blessed $value && $value->isa('SPVM::BlessedObject')) {
-        confess "The value of the \$options must be a SPVM::BlessedObject object";
+        confess "The value of \$options must be a SPVM::BlessedObject object";
       }
     }
     push @$array_ref, $obj_name, $value;
@@ -364,13 +364,13 @@ C<stack> must be a L<SPVM::Bulder::Stack> or L<SPVM::BlessedObject::Class> objec
 
 Converts the Perl scalar $string to a SPVM string using perlapi L<SvPV|https://perldoc.perl.org/perlapi#SvPV>, and returns the object that converts it to a L<SPVM::BlessedObject::String> object.
 
-If the $string is undef, returns undef.
+If $string is undef, returns undef.
 
-If the $string is a L<SPVM::BlessedObject::String> object, returns itself.
+If $string is a L<SPVM::BlessedObject::String> object, returns itself.
 
 Exceptions:
 
-The $string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef. Otherwise an exception is thrown.
+$string must be a non-reference scalar or a SPVM::BlessedObject::String object or undef. Otherwise an exception is thrown.
 
 Examples:
 
@@ -386,15 +386,15 @@ Converts the Perl array reference $array to a SPVM byte array, and returns the o
 
 Each element is converted by the conversion of L</"byte Type Argument">.
 
-If the $array is undef, returns undef.
+If $array is undef, returns undef.
 
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+If $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be the byte[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -416,7 +416,7 @@ Creates a SPVM byte array with the length $length, and returns the object that c
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Examples:
   
@@ -429,11 +429,11 @@ Examples:
 
 Converts the binary date $binary to a SPVM byte array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+$binary is copied to a SPVM byte array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from $binary.
 
 Exceptions:
 
-The $binary must be a defined non-reference scalar. Otherwise an exception is thrown.
+$binary must be a defined non-reference scalar. Otherwise an exception is thrown.
 
 Examples:
 
@@ -454,15 +454,15 @@ Converts the Perl array reference $array to a SPVM short array, and returns the 
 
 Each element is converted by the conversion of L</"short Type Argument">.
 
-If the $array is undef, returns undef.
+If $array is undef, returns undef.
 
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+If $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be the short[] type. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be the short[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -484,7 +484,7 @@ Creates a SPVM short array with the length $length, and returns the object that 
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Examples:
   
@@ -497,13 +497,13 @@ Examples:
 
 Converts the binary date $binary to a SPVM short array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM short array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+$binary is copied to a SPVM short array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from $binary.
 
 Exceptions:
 
-The $binary must be a defined non-reference scalar. Otherwise an exception is thrown.
+$binary must be a defined non-reference scalar. Otherwise an exception is thrown.
 
-The length of the $binary must be divisible by 2. Otherwise an exception is thrown.
+The length of $binary must be divisible by 2. Otherwise an exception is thrown.
 
 Examples:
 
@@ -518,15 +518,15 @@ Converts the Perl array reference $array to a SPVM int array, and returns the ob
 
 Each element is converted by the conversion of L</"int Type Argument">.
 
-If the $array is undef, returns undef.
+If $array is undef, returns undef.
 
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+If $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be the int[] type. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be the int[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -548,7 +548,7 @@ Creates a SPVM int array with the length $length, and returns the object that co
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Examples:
   
@@ -561,13 +561,13 @@ Examples:
 
 Converts the binary date $binary to a SPVM int array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM int array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+$binary is copied to a SPVM int array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from $binary.
 
 Exceptions:
 
-The $binary must be defined. Otherwise an exception is thrown.
+$binary must be defined. Otherwise an exception is thrown.
 
-The length of the $binary must be divisible by 4. Otherwise an exception is thrown.
+The length of $binary must be divisible by 4. Otherwise an exception is thrown.
 
 Examples:
 
@@ -580,13 +580,13 @@ Examples:
 
 Converts the Perl array reference $array to a SPVM long array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the conversion of L</"long Type Argument">.
 
-If the $array is undef, returns undef.
+If $array is undef, returns undef.
 
 Exceptions:
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be the long[] type. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be the long[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -608,7 +608,7 @@ Creates a SPVM long array with the length $length, and returns the object that c
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Examples:
   
@@ -621,13 +621,13 @@ Examples:
 
 Converts the binary date $binary to a SPVM long array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM long array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+$binary is copied to a SPVM long array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from $binary.
 
 Exceptions:
 
-The $binary must be defined. Otherwise an exception is thrown.
+$binary must be defined. Otherwise an exception is thrown.
 
-The length of the $binary must be divisible by 8. Otherwise an exception is thrown.
+The length of $binary must be divisible by 8. Otherwise an exception is thrown.
 
 Examples:
 
@@ -642,15 +642,15 @@ Converts the Perl array reference $array to a SPVM float array, and returns the 
 
 Each element is converted by the conversion of L</"float Type Argument">.
 
-If the $array is undef, returns undef.
+If $array is undef, returns undef.
 
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+If $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be the float[] type. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be the float[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -664,7 +664,7 @@ Creates a SPVM float array with the length $length, and returns the object that 
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Examples:
   
@@ -677,13 +677,13 @@ Examples:
 
 Converts the binary date $binary to a SPVM float array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM float array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+$binary is copied to a SPVM float array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from $binary.
 
 Exceptions:
 
-The $binary must be defined. Otherwise an exception is thrown.
+$binary must be defined. Otherwise an exception is thrown.
 
-The length of the $binary must be divisible by 4. Otherwise an exception is thrown.
+The length of $binary must be divisible by 4. Otherwise an exception is thrown.
 
 Examples:
 
@@ -700,9 +700,9 @@ Each element is converted by the conversion of L</"double Type Argument">.
 
 Exceptions:
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be the double[] type. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be the double[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -716,7 +716,7 @@ Creates a SPVM double array with the length $length, and returns the object that
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Examples:
   
@@ -729,13 +729,13 @@ Examples:
 
 Converts the binary date $binary to a SPVM double array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM double array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+$binary is copied to a SPVM double array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from $binary.
 
 Exceptions:
 
-The $binary must be defined. Otherwise an exception is thrown.
+$binary must be defined. Otherwise an exception is thrown.
 
-The length of the $binary must be divisible by 8. Otherwise an exception is thrown.
+The length of $binary must be divisible by 8. Otherwise an exception is thrown.
 
 Examples:
 
@@ -748,15 +748,15 @@ Examples:
 
 Converts the Perl array reference $array to a SPVM string array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the L</"new_string"> method.
 
-If the $array is undef, returns undef.
+If $array is undef, returns undef.
 
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+If $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be the string[] type. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be the string[] type. Otherwise an exception is thrown.
 
 Examples:
 
@@ -772,7 +772,7 @@ Creates a SPVM string array with the length $length, and returns the object that
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Examples:
   
@@ -783,25 +783,25 @@ Examples:
 
   my $spvm_object_array = $api->new_object_array($type_name, $array);
 
-Converts the Perl array reference $array to a value of the SPVM object array(1-dimensional) type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name type.
+Converts the Perl array reference $array to a value of the SPVM object array(1-dimensional) type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of $type_name type.
 
-If the $array is undef, it is converted to SPVM undef.
+If $array is undef, it is converted to SPVM undef.
 
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+If $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
 If the type name $type_name was parsed, but the class name could not be extracted, an exception is thrown.
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
 The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
-The $type_name must be an object array type. Otherwise an exception is thrown.
+$type_name must be an object array type. Otherwise an exception is thrown.
 
 Examples:
   
@@ -813,19 +813,19 @@ Examples:
 
   my $spvm_array = $api->new_object_array_len($type_name, $length);
 
-Creates a SPVM object array(1-dimensional) with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name type.
+Creates a SPVM object array(1-dimensional) with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of $type_name type.
 
 Exceptions:
 
 If the type name $type_name was parsed, but the class name could not be extracted, an exception is thrown.
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
 The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
-The $type_name must be an object array type. Otherwise an exception is thrown.
+$type_name must be an object array type. Otherwise an exception is thrown.
 
 Examples:
   
@@ -846,11 +846,11 @@ The alias for the following code using the L</"new_object_array"> method.
 
   my $spvm_array = $api->new_any_object_array_len($length);
 
-Creates a SPVM object array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
+Creates a SPVM object array with the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of $type_name.
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Examples:
   
@@ -863,13 +863,13 @@ Examples:
 
 Converts the Perl hash reference $options to a value of the SPVM C<object[]> type, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-Each key of the $options is converted to a L<SPVM::BlessedObject::String> object using the L</"new_string"> method.
+Each key of $options is converted to a L<SPVM::BlessedObject::String> object using the L</"new_string"> method.
 
 Exceptions:
 
-The value of the $options must be a L<SPVM::BlessedObject> object. Otherwise an exception is thrown.
+The value of $options must be a L<SPVM::BlessedObject> object. Otherwise an exception is thrown.
 
-The $options must be a hash reference. Otherwise an exception is thrown.
+$options must be a hash reference. Otherwise an exception is thrown.
 
 Examples:
 
@@ -884,21 +884,21 @@ Examples:
 
 Converts the Perl array reference of a hash references $array to the SPVM multi-numeric array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-Each value of the hash reference is coverted by the conversion of L</"byte Type Argument">, L</"short Type Argument">, L</"int Type Argument">, L</"long Type Argument">, L</"float Type Argument">, L</"double Type Argument"> corresponding to the numeric type of the the element of the $type.
+Each value of the hash reference is coverted by the conversion of L</"byte Type Argument">, L</"short Type Argument">, L</"int Type Argument">, L</"long Type Argument">, L</"float Type Argument">, L</"double Type Argument"> corresponding to the numeric type of the the element of $type.
 
 Exceptions:
 
 If the type name $type_name was parsed, but the class name could not be extracted, an exception is thrown.
 
-All fields of the element type of the $type_name must be defined. Otherwise an exception is thrown.
+All fields of the element type of $type_name must be defined. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
 The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
 
 Examples:
 
@@ -913,15 +913,15 @@ Examples:
 
   my $spvm_array = $api->new_mulnum_array_len($type_name, $length);
 
-Creates a SPVM object array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
+Creates a SPVM object array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of $type_name.
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
-The dimension of the $type_name must be 1. Otherwise an exception is thrown.
+The dimension of $type_name must be 1. Otherwise an exception is thrown.
 
 Examples:
   
@@ -934,7 +934,7 @@ Examples:
 
 Converts the binary data $binary to a SPVM multi-numeric array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-The $binary is copied to a SPVM multi-numeric array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from the $binary.
+$binary is copied to a SPVM multi-numeric array by the C<memcpy> function in the C laugnage. The length of the array is calcurated from $binary.
 
 Exceptions:
 
@@ -942,9 +942,9 @@ If the bacic type of the type $type_name is not found, an exception is thrown.
 
 The dimension of the type $type_name must be 1. Otherwise an exception is thrown.
 
-The $binary must be an array reference. Otherwise an exception is thrown.
+$binary must be an array reference. Otherwise an exception is thrown.
 
-The length of the $binary must be divisible by the length of fields * the byte size of the element type. Otherwise an exception is thrown.
+The length of $binary must be divisible by the length of fields * the byte size of the element type. Otherwise an exception is thrown.
 
 Examples:
   
@@ -990,23 +990,23 @@ Examples:
 
 Converts the Perl array reference $array to a value of the SPVM multi-dimensional array type $type_name, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-If the $array is undef, it is converted to SPVM undef.
+If $array is undef, it is converted to SPVM undef.
 
-If the $array is a L<SPVM::BlessedObject::Array> object, returns itself.
+If $array is a L<SPVM::BlessedObject::Array> object, returns itself.
 
 Exceptions:
 
-If the $array is a reference other than the array reference, an exception is thrown.
+If $array is a reference other than the array reference, an exception is thrown.
 
-The $array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
+$array: If it is a reference, it must be an array reference. Otherwise an exception is thrown.
 
-The $array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
+$array: If it is a SPVM::BlessedObject::Array object, the type must be assignable. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
-The dimension of the $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
+The dimension of $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
 
-The assignability of the element to the element type of the $type_name is checked. If it is not assignable, an exception is thrown.
+The assignability of the element to the element type of $type_name is checked. If it is not assignable, an exception is thrown.
 
 Examples:
 
@@ -1018,15 +1018,15 @@ Examples:
 
   my $spvm_array = $api->new_muldim_array_len($type_name, $length);
 
-Creates a SPVM multi-dimentional array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of the $type_name.
+Creates a SPVM multi-dimentional array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of $type_name.
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 If the bacic type of the type $type_name is not found, an exception is thrown.
 
-The dimension of the $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
+The dimension of $type_name must be greater than or equal to 2 and less than or equal to 255. Otherwise an exception is thrown.
 
 Examples:
   
@@ -1045,9 +1045,9 @@ If the exception is not set, undef is returned.
 
   $api->set_exception($message);
 
-Sets a message given by the $message to the exception of the current thread variables.
+Sets a message given by $message to the exception of the current thread variables.
 
-The $message is converted to the SPVM string using the L</"new_string"> method.
+$message is converted to the SPVM string using the L</"new_string"> method.
 
 Exceptions:
 
@@ -1098,7 +1098,7 @@ Converts the SPVM object $object to a dumped string using the L<dump|SPVM::Docum
 
 Exceptions:
 
-The $object must be a SPVM::BlessedObject object. Otherwise an exception is thrown.
+$object must be a SPVM::BlessedObject object. Otherwise an exception is thrown.
 
 =head2 error
 
@@ -1126,7 +1126,7 @@ If a L<SPVM::ExchangeAPI::Error> object is passed to the last of the arguments, 
 
 Exceptions:
 
-If the $invocant is a SPVM::BlessedObject, the $invocant must be a SPVM::BlessedObject::Class object. Otherwise an exception is thrown.
+If $invocant is a SPVM::BlessedObject, $invocant must be a SPVM::BlessedObject::Class object. Otherwise an exception is thrown.
 
 The static method call must be valid. Otherwise an exception is thrown.
 

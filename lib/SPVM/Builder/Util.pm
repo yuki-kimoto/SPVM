@@ -736,7 +736,7 @@ EOS
         }
         else {
           my $dl_error = DynaLoader::dl_error();
-          confess "The DynaLoader::dl_load_file function failed:Can't load the \"$dynamic_lib_file\" file for the $category methods in the $basic_type_name class: $dl_error";
+          confess "The DynaLoader::dl_load_file function failed:Can't load the \"$dynamic_lib_file\" file for $category methods in $basic_type_name class: $dl_error";
         }
       }
       else {
@@ -781,7 +781,7 @@ sub get_version_string {
   }
 
   unless (defined $version_string) {
-    confess "The version string can't be find in the $spvm_class_file file";
+    confess "The version string can't be find in $spvm_class_file file";
   }
   
   return $version_string;
@@ -801,7 +801,7 @@ sub get_spvm_version_string {
   }
   
   unless (defined $version_string) {
-    confess "The version string can't be find in the $spvm_api_header_file file";
+    confess "The version string can't be find in $spvm_api_header_file file";
   }
   
   return $version_string;

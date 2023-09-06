@@ -251,35 +251,35 @@ The same as L</"UINT16_MAX">.
 
   static method abs : int ($value : int);
 
-Returns the absolute value of the $value.
+Returns the absolute value of $value.
 
 =head2 chomp
 
   static method chomp : void ($string : mutable string);
 
-Removes C<\r\n> or C<\n> at the end of the $string.
+Removes C<\r\n> or C<\n> at the end of $string.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
 =head2 chompr
 
   static method chompr : string ($string : string);
 
-Copies the $string and removes C<\r\n> or C<\n> at the end of the copied string and returns it.
+Copies $string and removes C<\r\n> or C<\n> at the end of the copied string and returns it.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
 =head2 chr
 
   static method chr : string ($code_point : int);
 
-Converts the $code_point to the UTF-8 character and return it.
+Converts $code_point to the UTF-8 character and return it.
 
-If the $code_point is not a Unicode scalar value, return undef.
+If $code_point is not a Unicode scalar value, return undef.
 
 =head2 contains
 
@@ -301,9 +301,9 @@ The alias for the following code using the L<copy operator|SPVM::Document::Langu
 
   static method crand : int ($seed : int*);
 
-Create a random number from 0 to L</"RAND_MAX"> using the $seed and return it.
+Create a random number from 0 to L</"RAND_MAX"> using $seed and return it.
 
-The $seed is updated.
+$seed is updated.
 
 This method is thread safe.
 
@@ -318,25 +318,25 @@ Examples:
 
   static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int);
 
-Compares $string1 + $string1_offset with $string2 + $string2_offset by the $length. If they are euqal, returns 1, otherwise returns 0.
+Compares $string1 + $string1_offset with $string2 + $string2_offset by $length. If they are euqal, returns 1, otherwise returns 0.
 
-If the $length is 0, returns 1.
+If $length is 0, returns 1.
 
 Exceptions:
 
-The $string1 must be defined. Otherwise an exception is thrown.
+$string1 must be defined. Otherwise an exception is thrown.
 
-The $string2 must be defined. Otherwise an exception is thrown.
+$string2 must be defined. Otherwise an exception is thrown.
 
-The $string1_offset must be greater than or equal to 0. Otherwise an exception is thrown.
+$string1_offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The $string2_offset must be greater than or equal to 0. Otherwise an exception is thrown.
+$string2_offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 get_code_point
 
   static method get_code_point : int ($string : string, $offset_ref : int*);
 
-Parses the UTF-8 character at the value reffered by $offset_ref of the $string and return its Unicode code point.
+Parses the UTF-8 character at the value reffered by $offset_ref of $string and return its Unicode code point.
 
 The offset is updated to the position of the next UTF-8 character.
 
@@ -346,59 +346,59 @@ If the UTF-8 character is invalid, return the value of L</"GET_CODE_POINT_ERROR_
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $offset must be greater than or equal to 0. Otherwise an exception is thrown.
+$offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 hex
 
   static method hex : int ($hex_string : string);
 
-Converts the $hex_string to the C<int> value and return it.
+Converts $hex_string to the C<int> value and return it.
 
 Exceptions:
 
-The $hex string must be defined. Otherwise an exception is thrown.
+$hex string must be defined. Otherwise an exception is thrown.
 
-The length of the $hex string must be 1 to 8. Otherwise an exception is thrown.
+The length of $hex string must be 1 to 8. Otherwise an exception is thrown.
 
-The $hex string must contain only hex characters C<0-9a-zA-Z>. Otherwise an exception is thrown.
+$hex string must contain only hex characters C<0-9a-zA-Z>. Otherwise an exception is thrown.
 
 =head2 index
 
   static method index : int ($string : string, $substring : string, $begin : int = 0, $end : int = -1);
 
-Searches for the $substring in the range of the $string from the $begin to the $end.
+Searches for $substring in the range of $string from $begin to $end.
 
-The search is performed from the beginning of the range of the $string.
+The search is performed from the beginning of the range of $string.
 
-If the $substring is found, returns the found offset, otherwise returns -1.
+If $substring is found, returns the found offset, otherwise returns -1.
 
-If the $end is less than 0, the $end is set to the length of the $string minus 1.
+If $end is less than 0, $end is set to the length of $string minus 1.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $substring must be defined. Otherwise an exception is thrown.
+$substring must be defined. Otherwise an exception is thrown.
 
-The $begin must be greater than or equal to 0. Otherwise an exception is thrown.
+$begin must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The $end must be less than the length of the $string.
+$end must be less than the length of $string.
 
 =head2 init_string
 
   static method init_string : void ($string : mutable string, $ascii_code : int = 0, $offset = 0 int, $length = -1);
 
-Sets the characters in the $string from the $offset to the position proceeded by the $length to the $ascii_code.
+Sets the characters in $string from $offset to the position proceeded by $length to $ascii_code.
 
-If the $length is less than 0, the $length is set to the length of the $string - the $offset.
+If $length is less than 0, $length is set to the length of $string - $offset.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $offset + the $length must be less than or equal to the length of the $string.
+$offset + $length must be less than or equal to the length of $string.
 
 =head2 is_alnum
 
@@ -416,7 +416,7 @@ If the Unicode $code_point is an ASCII alphabetic C<A-Za-z>, return 1. Otherwise
 
   static method is_array : int ($object : object);
 
-If the $object is defined and the type of the $object is the L<array type|SPVM::Document::Language/"Array Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is the L<array type|SPVM::Document::Language/"Array Type">, return 1. Otherwise return 0.
 
 L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
 
@@ -430,7 +430,7 @@ If the Unicode $code_point is an ASCII blank C<0x20(SP, ' ')>, C<0x09(HT, '\t')>
 
   static method is_class : int ($object : object);
 
-If the $object is defined and the type of the $object is the L<class type|SPVM::Document::Language/"Class Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is the L<class type|SPVM::Document::Language/"Class Type">, return 1. Otherwise return 0.
 
 L<SPVM::Document::NativeAPI/"is_class"> is used to check the type.
 
@@ -450,13 +450,13 @@ If the Unicode $code_point is an ASCII decimal digit 0-9, return 1. Otherwise re
 
   static method is_graph : int ($code_point : int);
 
-If the $character is an ASCII graphical character C<0x21-0x7E>, return 1. Otherwise return 0.
+If $character is an ASCII graphical character C<0x21-0x7E>, return 1. Otherwise return 0.
 
 =head2 is_hex_digit
 
   static method is_hex_digit : int ($code_point : int);
 
-If the $character is a hexadecimal digit C<0-9a-fA-F>, return 1. Otherwise return 0.
+If $character is a hexadecimal digit C<0-9a-fA-F>, return 1. Otherwise return 0.
 
 =head2 is_lower
 
@@ -468,7 +468,7 @@ If the Unicode $code_point is an ASCII lowercase character C<a-z>, return 1. Oth
 
   static method is_mulnum_array : int ($object : object);
 
-If the $object is defined and the type of the $object is the L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is the L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">, return 1. Otherwise return 0.
 
 L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
@@ -476,7 +476,7 @@ L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
   static method is_numeric_array : int ($object : object);
 
-If the $object is defined and the type of the $object is the L<numeric array type|SPVM::Document::Language/"Numeric Array Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is the L<numeric array type|SPVM::Document::Language/"Numeric Array Type">, return 1. Otherwise return 0.
 
 L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
@@ -484,7 +484,7 @@ L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
   static method is_object_array : int ($object : object);
 
-If the $object is defined and the type of the $object is an L<object array type|SPVM::Document::Language/"Object Array Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is an L<object array type|SPVM::Document::Language/"Object Array Type">, return 1. Otherwise return 0.
 
 L<SPVM::Document::NativeAPI/"is_object_array"> is used to check the type.
 
@@ -508,7 +508,7 @@ If the Unicode $code_point is an Perl ASCII word character C<a-zA-Z0-9_>, return
 
   static method is_pointer_class : int ($object : object);
 
-If the $object is defined and the $object is a L<pointer class|SPVM::Document::Language/"Pointer Class">, return 1. Otherwise return 0.
+If $object is defined and $object is a L<pointer class|SPVM::Document::Language/"Pointer Class">, return 1. Otherwise return 0.
 
 L<SPVM::Document::NativeAPI/"is_pointer_class"> is used to check the type.
 
@@ -534,51 +534,51 @@ If the Unicode $code_point is an ASCII a white-space C<0x09(HT, '\t')>, C<0x0A(L
 
   static method is_upper : int ($code_point : int);
 
-If the $code_point is an ASCII uppercase character C<A-Z>, return 1. Otherwise return 0.
+If $code_point is an ASCII uppercase character C<A-Z>, return 1. Otherwise return 0.
 
 =head2 is_xdigit
 
   static method is_xdigit : int ($code_point : int);
 
-If the $code_point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return 1. Otherwise return 0.
+If $code_point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return 1. Otherwise return 0.
 
 =head2 join
 
   static method join : string ($separator : string, $strings : string[]);
 
-Concatenates the $strings with the $separater and return it.
+Concatenates $strings with $separater and return it.
 
 Exceptions:
 
-The $strings must be defined. Otherwise an exception is thrown.
+$strings must be defined. Otherwise an exception is thrown.
 
-The $separator must be defined. Otherwise an exception is thrown.
+$separator must be defined. Otherwise an exception is thrown.
 
 =head2 labs
 
   static method labs : long ($value : long);
 
-Returns the absolute value of the $value.
+Returns the absolute value of $value.
 
 =head2 lc
 
   static method lc : string ($string : string);
 
-Converts the ASCII uppercase characters C<A-Z> in the $string to the corresponding ASCII lowercase characters C<a-z>. And return it.
+Converts the ASCII uppercase characters C<A-Z> in $string to the corresponding ASCII lowercase characters C<a-z>. And return it.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
 =head2 lcfirst
 
   static method lcfirst : string ($string : string);
 
-If the first character of the $string is an ASCII uppercase character C<A-Z>, it is converted to the corresponding ASCII lowercase characters C<a-z>. And return the converted string.
+If the first character of $string is an ASCII uppercase character C<A-Z>, it is converted to the corresponding ASCII lowercase characters C<a-z>. And return the converted string.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
 =head2 look_code_point
 
@@ -590,39 +590,39 @@ The same as L</"get_code_point">, but the offset is not updated.
 
   static method memcpy : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
 
-Copies the range of the $source to the the range of the $dest.
+Copies the range of $source to the the range of $dest.
 
-The range of the $dest is from the $offset to the position proceeded by the $length of the destination.
+The range of $dest is from $offset to the position proceeded by $length of the destination.
 
-The range of the $source is from the $offset to the position proceeded by the $length of the source.
+The range of $source is from $offset to the position proceeded by $length of the source.
 
-The unit of the $offset and the $length is C<byte> size.
+The unit of $offset and $length is C<byte> size.
 
-If the range of the $source and the range of the $dest overlap, the result is B<not> guaranteed.
+If the range of $source and the range of $dest overlap, the result is B<not> guaranteed.
 
 Exceptions:
 
-The $dest must be defined. Otherwise an exception is thrown.
+$dest must be defined. Otherwise an exception is thrown.
 
-The type of the $dest must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwise an exception is thrown.
+The type of $dest must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwise an exception is thrown.
 
-The $source must be defined. Otherwise an exception is thrown.
+$source must be defined. Otherwise an exception is thrown.
 
-The type of the $source must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwise an exception is thrown.
+The type of $source must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwise an exception is thrown.
 
-The $dest must not be a read-only string. Otherwise an exception is thrown.
+$dest must not be a read-only string. Otherwise an exception is thrown.
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The $dest_offset + the $length must be less than or equal to the length of the $dest. Otherwise an exception is thrown.
+$dest_offset + $length must be less than or equal to the length of $dest. Otherwise an exception is thrown.
 
-The $source_offset + the $length must be less than or equal to the length of the $source. Otherwise an exception is thrown.
+$source_offset + $length must be less than or equal to the length of $source. Otherwise an exception is thrown.
 
 =head2 memmove
 
   static method memmove : void ($dest : object, $dest_offset : int, $source : object, $source_offset : int, $length : int);
 
-The same as L</"memcpy">, but even if the range of the $source and the range of the $dest overlap, the result is guaranteed.
+The same as L</"memcpy">, but even if the range of $source and the range of $dest overlap, the result is guaranteed.
 
 =head2 ord
 
@@ -637,33 +637,33 @@ The alias for the following code using L</"get_code_point">.
 
   static method powi : int ($base : int, $exponant : int);
 
-Calculates the exponentiation from the $base number and the $exponant number.
+Calculates the exponentiation from $base number and $exponant number.
 
 Exceptions:
 
-The $exponant number must be greater than or equal to 0. Otherwise an exception is thrown.
+$exponant number must be greater than or equal to 0. Otherwise an exception is thrown.
 
-If the $base number is 0, the $exponant number cannnot be 0.
+If $base number is 0, $exponant number cannnot be 0.
 
 =head2 powl
 
   static method powl : long ($base : long, $exponant : long);
 
-Calculates the exponentiation from the $base number and the $exponant number.
+Calculates the exponentiation from $base number and $exponant number.
 
 Exceptions:
 
-The $exponant number must be greater than or equal to 0. Otherwise an exception is thrown.
+$exponant number must be greater than or equal to 0. Otherwise an exception is thrown.
 
-If the $base number is 0, the $exponant number cannnot be 0.
+If $base number is 0, $exponant number cannnot be 0.
 
 =head2 rand
 
   static method rand : double ($seed : int*, $max : int = 1);
 
-Gets a 64bit floating point random number that is greater than or equal to 0 and less than 1 using the $seed.
+Gets a 64bit floating point random number that is greater than or equal to 0 and less than 1 using $seed.
 
-If the $max is specified, the $max is multiplied to the return value.
+If $max is specified, $max is multiplied to the return value.
 
 The seed is updated.
 
@@ -680,13 +680,13 @@ Examples:
 
   static method repeat : double ($string : string, $count : int);
 
-Concatenates the $string the number of times specified in the $count and return it.
+Concatenates $string the number of times specified in $count and return it.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $repeat count must be greater than or equal to 0.
+$repeat count must be greater than or equal to 0.
 
 Examples:
   
@@ -697,33 +697,33 @@ Examples:
 
   static method replace_chars : void ($string : mutable string, $from_ch : int, $to_ch : int);
 
-Replaces all characters specified by the second argument in the $string with the characters specified by the third argument.
+Replaces all characters specified by the second argument in $string with the characters specified by the third argument.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
 =head2 rindex
 
   static method rindex : int ($string : string, $substring : string, $end : int = -1, $begin : int = 0);
 
-Searches for the $substring in the range of the $string from the $begin to the $end.
+Searches for $substring in the range of $string from $begin to $end.
 
-The search is performed from the end of the range of the $string.
+The search is performed from the end of the range of $string.
 
-If the $substring is found, returns the found offset, otherwise returns -1.
+If $substring is found, returns the found offset, otherwise returns -1.
 
-If the $end is less than 0, the $end is set to the length of the $string minus 1.
+If $end is less than 0, $end is set to the length of $string minus 1.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $substring must be defined. Otherwise an exception is thrown.
+$substring must be defined. Otherwise an exception is thrown.
 
-The $begin must be greater than or equal to 0. Otherwise an exception is thrown.
+$begin must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The $end must be less than the length of the $string.
+$end must be less than the length of $string.
 
 =head2 sizeof_native_int
 
@@ -741,27 +741,27 @@ Returns the native pointer size. This is the same value as C<sizeof(void*)> in t
 
     static method shorten : void ($string : mutable string, $length : int32_t);
 
-Shortens the $string to the $length specified by the argument using L<SPVM::Document::NativeAPI/"shorten">.
+Shortens $string to $length specified by the argument using L<SPVM::Document::NativeAPI/"shorten">.
 
 If the length specified by the argument is greater than or equal to the length of the string, nothing is performed.
 
 Exceptions:
 
-The $string must be defined.
+$string must be defined.
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 shorten_null_char
 
   static method shorten_null_char : void ($string : mutable string);
 
-Shortens the $string just before the first null character C<\0>.
+Shortens $string just before the first null character C<\0>.
 
 If null characters is not found, do nothing.
 
 Exceptions:
 
-The $string must be defined.  Otherwise an exception is thrown.
+$string must be defined.  Otherwise an exception is thrown.
 
 B<Example:>
   
@@ -774,65 +774,65 @@ B<Example:>
 
   static method split : string[] ($separator : string, $string : string, $limit : int = -1);
 
-If the $limit is less than 0, split the $string by the specific $separator and convert them to an string array and return it.
+If $limit is less than 0, split $string by the specific $separator and convert them to an string array and return it.
 
-If the $limit is greater than than 0, the limit becomes the length of the maximam separated elements.
+If $limit is greater than than 0, the limit becomes the length of the maximam separated elements.
 
 Exceptions:
 
-The $separator must be defined. Otherwise an exception is thrown.
+$separator must be defined. Otherwise an exception is thrown.
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $limit cannnot be 0. Otherwise an exception is thrown.
+$limit cannnot be 0. Otherwise an exception is thrown.
 
 =head2 substr
 
   static method substr : string ($string : string, $offset : int, $length : int = -1, $replacement : string = undef);
 
-Cuts a substring of the $length from the $offset of the $string, and returns it.
+Cuts a substring of $length from $offset of $string, and returns it.
 
-If the $length is ommited, the $length is the length of the $string minus $offset.
+If $length is ommited, $length is the length of $string minus $offset.
 
-If the length is less than 0, the length to the end of the string is calculated from the length of the $string and the $offset.
+If the length is less than 0, the length to the end of the string is calculated from the length of $string and $offset.
 
 Replacement:
 
-If The $replacement is given, returns a string that is the replacement string $replacement of the $string from the $offset to the $length.
+If $replacement is given, returns a string that is the replacement string $replacement of $string from $offset to $length.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $offset must be greater than or equal to 0. Otherwise an exception is thrown.
+$offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The $offset + the $length must be less than or equal to the length of the $string. Otherwise an exception is thrown.
+$offset + $length must be less than or equal to the length of $string. Otherwise an exception is thrown.
 
 =head2 to_code_points
 
   static method to_code_points : int[] ($string : string)
 
-Converts the $string to the Unicode code points, and returns it.
+Converts $string to the Unicode code points, and returns it.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $string contains an invalid Unicode code point. Otherwise an exception is thrown.
+$string contains an invalid Unicode code point. Otherwise an exception is thrown.
 
 =head2 to_double
 
   static method to_double : double ($string : string);
 
-Converts the $string to the C<double> value using C<strtod> in the C language.
+Converts $string to the C<double> value using C<strtod> in the C language.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $string must be the string that can be parsed as a double number. Otherwise an exception is thrown.
+$string must be the string that can be parsed as a double number. Otherwise an exception is thrown.
 
-The $string must be a double number in the $correct range. Otherwise an exception is thrown.
+$string must be a double number in $correct range. Otherwise an exception is thrown.
 
 Examples:
 
@@ -843,15 +843,15 @@ Examples:
 
   static method to_float : float ($string : string);
 
-Converts the $string to the C<double> value using C<strtof> in the C language.
+Converts $string to the C<double> value using C<strtof> in the C language.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $string must be the string that can be parsed as a float number. Otherwise an exception is thrown.
+$string must be the string that can be parsed as a float number. Otherwise an exception is thrown.
 
-The $string must be a float number in the $correct range. Otherwise an exception is thrown.
+$string must be a float number in $correct range. Otherwise an exception is thrown.
 
 Examples:
 
@@ -868,15 +868,15 @@ The alias for the following code using L</"to_int_with_base">.
 
 =head2 to_int_with_base
 
-Converts the $string to the C<int> value with $digit using C<strtol> in the C language.
+Converts $string to the C<int> value with $digit using C<strtol> in the C language.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $string must be the string that can be parsed as an int number. Otherwise an exception is thrown.
+$string must be the string that can be parsed as an int number. Otherwise an exception is thrown.
 
-The $string must be an int number in the $correct range. Otherwise an exception is thrown.
+$string must be an int number in $correct range. Otherwise an exception is thrown.
 
 Examples:
 
@@ -895,17 +895,17 @@ The alias for the following code using L</"to_long_with_base">.
 
   static method to_long_with_base : long ($string : string, $digit : int);
 
-Converts the $string to the C<long> value with $digit using C<strtoll> in the C language.
+Converts $string to the C<long> value with $digit using C<strtoll> in the C language.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $digit must be one of 2, 8, 10, or 16. Otherwise an exception is thrown.
+$digit must be one of 2, 8, 10, or 16. Otherwise an exception is thrown.
 
-The $string must be the string that can be parsed as a long number. Otherwise an exception is thrown.
+$string must be the string that can be parsed as a long number. Otherwise an exception is thrown.
 
-The $string must be a long number in the $correct range. Otherwise an exception is thrown.
+$string must be a long number in $correct range. Otherwise an exception is thrown.
 
 Examples:
 
@@ -916,29 +916,29 @@ Examples:
 
   static method to_lower : int ($code_point : int);
 
-If the $code_point is the ASCII uppercase character C<A-Z>, it is converted to the corresponding ASCII lowercase character C<a-z>.
+If $code_point is the ASCII uppercase character C<A-Z>, it is converted to the corresponding ASCII lowercase character C<a-z>.
 
-If the $code_point is not an ASCII uppercase character, return itself.
+If $code_point is not an ASCII uppercase character, return itself.
 
 =head2 to_upper
 
   static method to_upper : int ($code_point : int);
 
-If the $code_point is the ASCII lowercase character C<a-z>, it is converted to the corresponding ASCII uppercase character C<A-Z>.
+If $code_point is the ASCII lowercase character C<a-z>, it is converted to the corresponding ASCII uppercase character C<A-Z>.
 
-If the $code_point is not an ASCII lowercase character, return itself.
+If $code_point is not an ASCII lowercase character, return itself.
 
 =head2 to_utf8_chars
 
   static method to_utf8_chars : string[] ($string : string);
 
-Converts the $string to UTF-8 characters, and returns it.
+Converts $string to UTF-8 characters, and returns it.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $string contains an invalid Unicode code point. Otherwise an exception is thrown.
+$string contains an invalid Unicode code point. Otherwise an exception is thrown.
 
 Examples:
 
@@ -965,13 +965,13 @@ The range must be the format C<a-z> or C<a>. If the format is C<a>, it is conver
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-The $pattern must be defined. Otherwise an exception is thrown.
+$pattern must be defined. Otherwise an exception is thrown.
 
-The $replace must be defined. Otherwise an exception is thrown.
+$replace must be defined. Otherwise an exception is thrown.
 
-If the $string contains an invalid Unicode code point, an exception is thrown.
+If $string contains an invalid Unicode code point, an exception is thrown.
 
 The range format of the (pattern|replace) cannnot be contain an invalid Unicode code point. If so, an exception is thrown. If so, an exception is thrown.
 
@@ -1006,45 +1006,45 @@ C<Examples:>
 
   static method trim : string ($string : string);
 
-Removes the right and left spaces of the $string and return it.
+Removes the right and left spaces of $string and return it.
 
 The removed spaces is the same as the spaces L</"is_space"> method returns 1.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
 =head2 uc
 
   static method uc : string ($string : string);
 
-Converts the ASCII lowercase characters C<a-z> in the $string to the corresponding ASCII uppercase characters C<A-Z>. And return it.
+Converts the ASCII lowercase characters C<a-z> in $string to the corresponding ASCII uppercase characters C<A-Z>. And return it.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
 =head2 ucfirst
 
   static method ucfirst : string ($string : string);
 
-If the first character of the $string is an ASCII lowercase characters C<a-z>, it is converted to the corresponding ASCII uppercase character C<A-Z>. And return the converted string.
+If the first character of $string is an ASCII lowercase characters C<a-z>, it is converted to the corresponding ASCII uppercase character C<A-Z>. And return the converted string.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
 =head2 utf8_length
 
   static method utf8_length : int ($string : string)
 
-Gets the length as a UTF-8 string from the $string, and returns it.
+Gets the length as a UTF-8 string from $string, and returns it.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-If the $string contains an invalid Unicode code point, an exception is thrown.
+If $string contains an invalid Unicode code point, an exception is thrown.
 
 Examples:
 
@@ -1055,17 +1055,17 @@ Examples:
 
   static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length : int = -1);
 
-Gets the substring from the $string. The extracting range of the string is from the $utf8_offset to the position proceeded by the $utf8_length, and returns it.
+Gets the substring from $string. The extracting range of the string is from $utf8_offset to the position proceeded by $utf8_length, and returns it.
 
-If the length is less than 0, the length to the end of the string is calculated from the length of the $string and the $utf8_offset.
+If the length is less than 0, the length to the end of the string is calculated from the length of $string and $utf8_offset.
 
 Exceptions:
 
-The $string must be defined. Otherwise an exception is thrown.
+$string must be defined. Otherwise an exception is thrown.
 
-If the $string contains an invalid Unicode code point, an exception is thrown.
+If $string contains an invalid Unicode code point, an exception is thrown.
 
-The $utf8_offset + the $utf8_length must be less than or equal to the UTF-8 length of the $string. Otherwise an exception is thrown.
+$utf8_offset + $utf8_length must be less than or equal to the UTF-8 length of $string. Otherwise an exception is thrown.
 
 Examples:
 
@@ -1076,27 +1076,27 @@ Examples:
 
   static method merge_options : object[] ($options1 : object[], $options2 : object[]);
 
-Creates a new any object array merging the $options1 and the $options2, and returns it.
+Creates a new any object array merging $options1 and $options2, and returns it.
 
-If the $options2 contains the same key of the $options1, the key of the $options1 is overwritten by the key of $options2.
+If $options2 contains the same key of $options1, the key of $options1 is overwritten by the key of $options2.
 
 Exceptions:
 
-The $options1 must be defined. Otherwise an exception is thrown.
+$options1 must be defined. Otherwise an exception is thrown.
 
-The $options2 must be defined. Otherwise an exception is thrown.
+$options2 must be defined. Otherwise an exception is thrown.
 
-The length of the $options1 must be an even number. Otherwise an exception is thrown.
+The length of $options1 must be an even number. Otherwise an exception is thrown.
 
-The length of the $options2 must be an even number. Otherwise an exception is thrown.
+The length of $options2 must be an even number. Otherwise an exception is thrown.
 
-The key of the $options1 must be defined. Otherwise an exception is thrown.
+The key of $options1 must be defined. Otherwise an exception is thrown.
 
-The key of the $options1 must be the string type. Otherwise an exception is thrown.
+The key of $options1 must be the string type. Otherwise an exception is thrown.
 
-The key of the $options2 must be defined. Otherwise an exception is thrown.
+The key of $options2 must be defined. Otherwise an exception is thrown.
 
-The key of the $options2 must be the string type. Otherwise an exception is thrown.
+The key of $options2 must be the string type. Otherwise an exception is thrown.
 
 Exceptions of the L<Hash|SPVM::Hash> class can be thrown.
 
@@ -1108,7 +1108,7 @@ Examples:
 
   static method object_to_int : int ($object : object);
 
-Converts the address of the $object to a value of the int type, and returns it.
+Converts the address of $object to a value of the int type, and returns it.
 
 =head2 get_spvm_version_string
 
@@ -1136,9 +1136,9 @@ Returns the L<version number|SPVM::Document::Language/"Version Number"> of a cla
 
 Exceptions:
 
-The $basic_type_name must be defined. Otherwise an exception is thrown.
+$basic_type_name must be defined. Otherwise an exception is thrown.
 
-The class specified by the $basic_type_name must be loaded. Otherwise an exception is thrown.
+The class specified by $basic_type_name must be loaded. Otherwise an exception is thrown.
 
 =head1 Copyright & License
 

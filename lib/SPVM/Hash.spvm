@@ -46,7 +46,7 @@ class Hash {
     }
     
     if ($length % 2 != 0) {
-      die "The length of the elements in the \$key_values must be an even number.";
+      die "The length of the elements in \$key_values must be an even number.";
     }
     
     if ($key_values) {
@@ -54,7 +54,7 @@ class Hash {
         my $key = (string)$key_values->[$i];
         my $value = $key_values->[$i + 1];
         unless ($key isa string) {
-          die "The key in the \$key_values must be string.";
+          die "The key in \$key_values must be string.";
         }
         
         $self->set($key => $value);
@@ -87,7 +87,7 @@ class Hash {
   
   method set : void ($key : string, $value : object) {
     unless ($key) {
-      die "The \$key must be defined.";
+      die "\$key must be defined.";
     }
     
     # Rehash
@@ -102,7 +102,7 @@ class Hash {
   
   precompile method get : object ($key : string) {
     unless ($key) {
-      die "The \$key must be defined.";
+      die "\$key must be defined.";
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});
@@ -123,7 +123,7 @@ class Hash {
   
   precompile method exists : int ($key : string) {
     unless ($key) {
-      die "The \$key must be defined.";
+      die "\$key must be defined.";
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});
@@ -145,7 +145,7 @@ class Hash {
   
   precompile method delete : object ($key : string) {
     unless ($key) {
-      die "The \$key must be defined.";
+      die "\$key must be defined.";
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});
@@ -262,7 +262,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Byte) {
-      die "The value of the \$key must be a Byte object.";
+      die "The value of \$key must be a Byte object.";
     }
     
     return (int)(byte)$object;
@@ -272,7 +272,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Short) {
-      die "The value of the \$key must be a Short object.";
+      die "The value of \$key must be a Short object.";
     }
     
     return (int)(short)$object;
@@ -282,7 +282,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Int) {
-      die "The value of the \$key must be a Int object.";
+      die "The value of \$key must be a Int object.";
     }
     
     return (int)$object;
@@ -291,7 +291,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type string) {
-      die "The value of the \$key must be a string.";
+      die "The value of \$key must be a string.";
     }
     
     return (string)$object;
@@ -300,7 +300,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Long) {
-      die "The value of the \$key must be a Byte object.";
+      die "The value of \$key must be a Byte object.";
     }
     
     return (long)$object;
@@ -309,7 +309,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Float) {
-      die "The value of the \$key must be a Byte object.";
+      die "The value of \$key must be a Byte object.";
     }
     
     return (float)$object;
@@ -318,7 +318,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Double) {
-      die "The value of the \$key must be a Byte object.";
+      die "The value of \$key must be a Byte object.";
     }
     
     return (double)$object;

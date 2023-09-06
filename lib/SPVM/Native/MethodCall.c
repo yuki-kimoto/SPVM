@@ -14,7 +14,7 @@ int32_t SPVM__Native__MethodCall__new_class_method(SPVM_ENV* env, SPVM_VALUE* st
   void* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return env->die(env, stack, "The $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "$basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
@@ -22,7 +22,7 @@ int32_t SPVM__Native__MethodCall__new_class_method(SPVM_ENV* env, SPVM_VALUE* st
   void* obj_method_name = stack[1].oval;
   
   if (!obj_method_name) {
-    return env->die(env, stack, "The $method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "$method_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* method_name = env->get_chars(env, stack, obj_method_name);
@@ -55,7 +55,7 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_args = stack[1].oval;
   
   if (!obj_args) {
-    return env->die(env, stack, "The $args must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "$args must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t args_length = env->length(env, stack, obj_args);
@@ -662,7 +662,7 @@ int32_t SPVM__Native__MethodCall__call_callback(SPVM_ENV* current_env, SPVM_VALU
   void* obj_callback = current_stack[0].oval;
   
   if (!obj_callback) {
-    return current_env->die(current_env, current_stack, "The $callback must be defined.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "$callback must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t* error_id_ref = current_stack[1].iref;
@@ -682,7 +682,7 @@ int32_t SPVM__Native__MethodCall__call_callback(SPVM_ENV* current_env, SPVM_VALU
   int32_t is_valid_env = env->check_stack_env(env, stack);
   
   if (!is_valid_env) {
-    return current_env->die(current_env, current_stack, "The environment of the $stack is not equal to the current environment.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the current environment.", __func__, FILE_NAME, __LINE__);
   }
   
   *error_id_ref = 0;
@@ -700,7 +700,7 @@ int32_t SPVM__Native__MethodCall__call_class_method(SPVM_ENV* current_env, SPVM_
   void* obj_basic_type_name = current_stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return current_env->die(current_env, current_stack, "The $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "$basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = current_env->get_chars(current_env, current_stack, obj_basic_type_name);
@@ -708,7 +708,7 @@ int32_t SPVM__Native__MethodCall__call_class_method(SPVM_ENV* current_env, SPVM_
   void* obj_method_name = current_stack[1].oval;
   
   if (!obj_method_name) {
-    return current_env->die(current_env, current_stack, "The $method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "$method_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t* error_id_ref = current_stack[2].iref;
@@ -738,7 +738,7 @@ int32_t SPVM__Native__MethodCall__call_class_method(SPVM_ENV* current_env, SPVM_
   int32_t is_valid_env = env->check_stack_env(env, stack);
   
   if (!is_valid_env) {
-    return current_env->die(current_env, current_stack, "The environment of the $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
   }
   
   void* method = env->get_class_method(env, stack, basic_type_name, method_name);
@@ -805,7 +805,7 @@ int32_t SPVM__Native__MethodCall__get_exception(SPVM_ENV* current_env, SPVM_VALU
   int32_t is_valid_env = env->check_stack_env(env, stack);
   
   if (!is_valid_env) {
-    return current_env->die(current_env, current_stack, "The environment of the $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_exception = env->get_exception(env, stack);
@@ -853,7 +853,7 @@ int32_t SPVM__Native__MethodCall__set_exception(SPVM_ENV* current_env, SPVM_VALU
   int32_t is_valid_env = env->check_stack_env(env, stack);
   
   if (!is_valid_env) {
-    return current_env->die(current_env, current_stack, "The environment of the $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_exception_clone = NULL;

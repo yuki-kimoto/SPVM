@@ -61,11 +61,11 @@ Examples:
 
   static method new_len : Immutable::DoubleList ($length : int);
 
-Creates a new L<Immutable::DoubleList|SPVM::Immutable::DoubleList> object with the $length and the $capacity.
+Creates a new L<Immutable::DoubleList|SPVM::Immutable::DoubleList> object with $length and $capacity.
 
 Exceptions:
 
-The $length must be greater than or equal to 0. Otherwise an exception is thrown.
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 
@@ -73,13 +73,13 @@ The $length must be greater than or equal to 0. Otherwise an exception is thrown
 
   method get : double ($index : int);
 
-Gets the element of the position of the $index.
+Gets the element of the position of $index.
 
 Exceptions:
 
-The $index must be greater than or equal to 0. Otherwise an exception is thrown.
+$index must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The $index must be less than the length of the $list.
+$index must be less than the length of $list.
 
 =head2 to_array
 

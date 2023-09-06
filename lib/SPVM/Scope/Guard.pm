@@ -49,13 +49,13 @@ A handler. The type is L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler>.
 
 Creates a new C<Scope::Guard> object and returns it.
 
-The $handler is set to the L</"handler"> field.
+$handler is set to the L</"handler"> field.
 
-The $handler is a L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler> object.
+$handler is a L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler> object.
 
 Exceptions:
 
-The $handler must be defined. Otherwise an exception is thrown.
+$handler must be defined. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 
