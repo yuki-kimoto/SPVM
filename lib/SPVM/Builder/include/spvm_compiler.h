@@ -33,7 +33,7 @@ struct spvm_compiler {
   const char* current_class_rel_file;
   
   // Current parsed basic type name
-  const char* current_class_name;
+  const char* current_outer_class_name;
   
   // Current parsed source
   char* current_class_content;
