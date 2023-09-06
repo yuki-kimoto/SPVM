@@ -710,7 +710,7 @@ class TestCase::Module::DoubleList {
     {
       my $list = DoubleList->new([(double)1, 2, 3]);
       eval { $list->set_array([(double)1, 2, 3, 4]); };
-      unless (Fn->contains($@, "The length of \$array must be \$same as the length of \$list")) {
+      unless (Fn->contains($@, "The length of \$array must be equal to the length of \$list")) {
         return 0;
       }
     }
