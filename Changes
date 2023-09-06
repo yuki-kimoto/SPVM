@@ -2,7 +2,8 @@
   [Changes]
     * Anon class has the same access constrol as the outer class.
     * Anon class has the same alias names as the outer class.
-    
+  [Test Bug Fix]
+    * Tests of the add_before_link_cb in the SPVM::Builder::Config are fixed.
 0.989039 2023-09-05
   [New Features]
     * The following methods are added to the Array class.
