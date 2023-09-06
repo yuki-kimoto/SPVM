@@ -1,0 +1,8 @@
+class TestCase::NativeAPISrc {
+  
+  native static method src_foo : int ();
+  
+  native static method src_bar : int ();
+  
+  native static method src_baz : int ();
+}
