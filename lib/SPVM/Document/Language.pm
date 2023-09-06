@@ -2477,6 +2477,8 @@ A anon class has its unique L<class name|/"Class Name"> corresponding to the cla
 
 A anon class has the same access control as its outer class.
 
+A anon class has the same alias names as its outer class.
+
 L<Examples:>
 
     123456789...
