@@ -190,6 +190,10 @@ use Test::More;
     my $source = 'class MyClass : mulnum_t { }';
     compile_not_ok_file('CompileError::MultiNumeric::Fields256', qr/The length of the fields defined in the multi-numeric type must be less than or equal to 255/);
   }
+  {
+    my $source = 'class MyClass { static method foo : void () { method : void () { method : void () {}; }; } }';
+    compile_ok($source);
+  }
 }
 
 # Class Variable Name
