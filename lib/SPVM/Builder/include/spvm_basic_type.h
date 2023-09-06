@@ -45,6 +45,7 @@ struct spvm_basic_type {
   SPVM_METHOD* init_method;
   const char* parent_name;
   SPVM_BASIC_TYPE* parent;
+  SPVM_BASIC_TYPE* outer;
   int32_t fields_size;
   int8_t has_init_block;
   int8_t is_anon;
