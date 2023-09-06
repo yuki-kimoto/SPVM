@@ -5,4 +5,4 @@ use strict;
 use warnings;
 
 use SPVM 'TestCase::NativeAPI';
-use SPVM 'TestCase::NativeAPI2';
+use SPVM 'TestCase::NativeAPISrc';

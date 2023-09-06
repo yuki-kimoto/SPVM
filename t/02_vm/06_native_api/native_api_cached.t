@@ -28,17 +28,17 @@ unless (-f $config_file) {
   die 'Unexpected error';
 }
 
-my $native_class_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.c";
+my $native_class_file = "$test_dir/lib/SPVM/TestCase/NativeAPISrc.c";
 unless (-f $native_class_file) {
   die 'Unexpected error';
 }
 
-my $native_header_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.native/include/baz/baz.h";
+my $native_header_file = "$test_dir/lib/SPVM/TestCase/NativeAPISrc.native/include/baz/baz.h";
 unless (-f $native_header_file) {
   die 'Unexpected error';
 }
 
-my $native_src_file = "$test_dir/lib/SPVM/TestCase/NativeAPI2.native/src/baz/baz.c";
+my $native_src_file = "$test_dir/lib/SPVM/TestCase/NativeAPISrc.native/src/baz/baz.c";
 unless (-f $native_src_file) {
   die 'Unexpected error';
 }
@@ -178,12 +178,12 @@ system($compile_native_api_prgoram) == 0 or die;
 {
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
@@ -205,12 +205,12 @@ system($compile_native_api_prgoram) == 0 or die;
 {
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
@@ -233,17 +233,17 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
@@ -270,17 +270,17 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
@@ -306,17 +306,17 @@ system($compile_native_api_prgoram) == 0 or die;
 
   my $native_object_file;
   my $start_native_object_file_mtime;
-  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.o";
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
-  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
+   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update src file
