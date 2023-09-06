@@ -966,6 +966,11 @@ use Test::More;
     my $source = 'class MyClass { has x : int; method foo : void () { [has this : MyClass = $self] method : void () { $self->{this}->{x}; }; } }';
     compile_ok($source);
   }
+  
+  {
+    my $source = 'class MyClass { has x : int; method foo : void () { [has this : MyClass = $self] method : void () { $self->{this}->{x}; [has this : MyClass = $self->{this}] method : void () { $self->{this}->{x}; }; }; } }';
+    compile_ok($source);
+  }
 }
 
 # Field Definition
