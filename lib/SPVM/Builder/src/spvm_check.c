@@ -3698,6 +3698,10 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_ty
   
   int32_t can_access = 0;
   
+  if (basic_type_from->is_anon) {
+    basic_type_from = basic_type_from->outer;
+  }
+  
   if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
     if (strcmp(basic_type_from->name, basic_type_to->name) == 0) {
       can_access = 1;
