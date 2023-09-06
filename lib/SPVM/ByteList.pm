@@ -218,7 +218,7 @@ Exceptions:
 
 $array must be defined. Otherwise an exception is thrown.
 
-The length of $array must be $same as the length of $list.
+The length of $array must be equal to the length of $list.
 
 =head2 shift
 
