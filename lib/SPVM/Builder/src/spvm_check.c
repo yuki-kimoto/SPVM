@@ -189,6 +189,22 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
     
     SPVM_LIST_free(basic_type_merge_stack);
   }
+  
+  // Outer class
+  for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
+    if (basic_type->is_anon) {
+      
+      char* found_ptr = strstr(basic_type->name, "::anon::");
+      assert(found_ptr);
+      int32_t outer_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
+      
+      SPVM_BASIC_TYPE* outer_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->name, outer_basic_type_name_length);
+      assert(outer_basic_type);
+      
+      basic_type->outer = outer_basic_type;
+    }
+  }
 }
 
 void SPVM_CHECK_check_basic_types_class_var(SPVM_COMPILER* compiler) {
