@@ -17,7 +17,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
-  my $link_info = $main::NATIVE_API2_LINK_INFO;
+  my $link_info = $main::NATIVE_API_LINK_INFO;
   
   my $config = SPVM::Builder::Config->new_c99(file_optional => 1);
   
