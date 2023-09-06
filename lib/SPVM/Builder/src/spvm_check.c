@@ -1091,7 +1091,15 @@ void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYP
             if (op_type->uv.type->resolved_in_ast) {
               const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
               
-              const char* unresolved_basic_type_name = SPVM_HASH_get(basic_type->alias_symtable, unresolved_basic_type_name_maybe_alias, strlen(unresolved_basic_type_name_maybe_alias));
+              SPVM_HASH* alias_symtable = NULL;
+              if (basic_type->is_anon) {
+                alias_symtable = basic_type->outer->alias_symtable;
+              }
+              else {
+                alias_symtable = basic_type->alias_symtable;
+              }
+              
+              const char* unresolved_basic_type_name = SPVM_HASH_get(alias_symtable, unresolved_basic_type_name_maybe_alias, strlen(unresolved_basic_type_name_maybe_alias));
               if (unresolved_basic_type_name) {
                 op_type->uv.type->unresolved_basic_type_name = unresolved_basic_type_name;
                 op_type->uv.type->basic_type = SPVM_LIST_get(compiler->basic_types, 0);

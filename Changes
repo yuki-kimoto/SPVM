@@ -1,6 +1,7 @@
 0.989040 2023-09-06
   [Changes]
     * Anon class has the same access constrol as the outer class.
+    * Anon class has the same alias names as the outer class.
     
 0.989039 2023-09-05
   [New Features]

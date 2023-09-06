@@ -980,6 +980,11 @@ use Test::More;
     compile_ok($source);
   }
   
+  {
+    my $source = 'class MyClass { use Fn as FUNC; method foo : void () { method : void () { FUNC->INT_MAX; }; } }';
+    compile_ok($source);
+  }
+  
 }
 
 # Field Definition
