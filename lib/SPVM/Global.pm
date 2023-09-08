@@ -12,11 +12,6 @@ use SPVM ();
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
 
-use SPVM 'Native::Compiler';
-use SPVM 'Native::Runtime';
-use SPVM 'Native::Env';
-use SPVM 'Native::Stack';
-
 my $INIT_GLOBAL;
 my $API;
 
