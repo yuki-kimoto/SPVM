@@ -18,7 +18,6 @@ use SPVM 'Native::Env';
 use SPVM 'Native::Stack';
 
 my $INIT_GLOBAL;
-my $BUILDER;
 my $API;
 
 END {
@@ -35,8 +34,6 @@ END {
   }
   
   $API = undef;
-  
-  $BUILDER = undef;
 }
 
 sub api {
@@ -94,10 +91,10 @@ sub build_module {
 sub init_global {
   unless ($INIT_GLOBAL) {
     my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
-    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+    my $builder = SPVM::Builder->new(build_dir => $build_dir);
     
     my $builder_compiler = SPVM::Builder::Compiler->new(
-      include_dirs => $BUILDER->include_dirs
+      include_dirs => $builder->include_dirs
     );
     
     my @native_compiler_basic_type_names = qw(
@@ -144,7 +141,7 @@ sub init_global {
     my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
     
     my $compiler = $builder_api->class("Native::Compiler")->new;
-    for my $include_dir (@{$BUILDER->include_dirs}) {
+    for my $include_dir (@{$builder->include_dirs}) {
       $compiler->add_include_dir($include_dir);
     }
     $compiler->compile(undef);
@@ -207,7 +204,9 @@ sub load_dynamic_lib {
           
           my $precompile_source = $runtime->build_precompile_module_source($basic_type)->to_string;
           
-          $dynamic_lib_file = $BUILDER->build_at_runtime(
+          my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+          my $builder = SPVM::Builder->new(build_dir => $build_dir);
+          $dynamic_lib_file = $builder->build_at_runtime(
             $basic_type_name,
             {
               class_file => $class_file,
