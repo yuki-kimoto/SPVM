@@ -18,19 +18,23 @@ use SPVM 'Native::Env';
 use SPVM 'Native::Stack';
 
 our $BUILDER;
-our $STACK;
 our $API;
 
 END {
   my $env;
+  my $stack;
+  
   if ($API) {
     $env = $API->env;
+    $stack = $API->stack;
   }
+  
+  if ($env && $stack) {
+    $env->destroy_class_vars($stack);
+  }
+  
   $API = undef;
-  if ($env) {
-    $env->destroy_class_vars($STACK);
-  }
-  $STACK = undef;
+  
   $BUILDER = undef;
 }
 
@@ -73,7 +77,9 @@ sub build_module {
     
     &bind_to_perl($basic_type_name);
     
-    $env->call_init_methods($STACK);
+    my $stack = $API->stack;
+    
+    $env->call_init_methods($stack);
   }
 }
 
@@ -138,15 +144,15 @@ sub init_global {
     
     my $env = $builder_api->class("Native::Env")->new($compiler);
     
-    $STACK = $env->new_stack;
+    my $stack = $env->new_stack;
     
-    $API = SPVM::ExchangeAPI->new(env => $env, stack => $STACK);
+    $API = SPVM::ExchangeAPI->new(env => $env, stack => $stack);
     
-    $env->set_command_info_program_name($STACK, $0);
+    $env->set_command_info_program_name($stack, $0);
     
-    $env->set_command_info_argv($STACK, \@ARGV);
+    $env->set_command_info_argv($stack, \@ARGV);
     my $base_time = $^T + 0; # For Perl 5.8.9
-    $env->set_command_info_base_time($STACK, $base_time);
+    $env->set_command_info_base_time($stack, $base_time);
     
     $INIT_GLOBAL = 1;
   }
