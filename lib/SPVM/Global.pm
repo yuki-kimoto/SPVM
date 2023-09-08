@@ -18,8 +18,8 @@ use SPVM 'Native::Env';
 use SPVM 'Native::Stack';
 
 my $INIT_GLOBAL;
-our $BUILDER;
-our $API;
+my $BUILDER;
+my $API;
 
 END {
   my $env;
