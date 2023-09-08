@@ -17,6 +17,7 @@ use SPVM 'Native::Runtime';
 use SPVM 'Native::Env';
 use SPVM 'Native::Stack';
 
+my $INIT_GLOBAL;
 our $BUILDER;
 our $API;
 
@@ -83,7 +84,6 @@ sub build_module {
   }
 }
 
-my $INIT_GLOBAL;
 sub init_global {
   unless ($INIT_GLOBAL) {
     my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
