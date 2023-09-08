@@ -39,6 +39,13 @@ END {
   $BUILDER = undef;
 }
 
+sub api {
+  unless ($INIT_GLOBAL) {
+    &init_global();
+  }
+  return $API;
+}
+
 sub build_module {
   my ($basic_type_name, $file, $line) = @_;
   
