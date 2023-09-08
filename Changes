@@ -1,6 +1,7 @@
 0.989041 2023-09-06
   [Exception Messages Changes]
     * English syntax is improved. "the $arg" is changeded to "$arg".
+    * SPVM.xs: Exception messages are improved.
     
 0.989040 2023-09-06
   [Changes]

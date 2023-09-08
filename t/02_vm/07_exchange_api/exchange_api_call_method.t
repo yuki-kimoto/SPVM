@@ -135,7 +135,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       eval {
         SPVM::Int->new;
       };
-      like($@, qr/Too few arguments are passed to the "new" method in the "Int" basic type/);
+      like($@, qr/Too few arguments are passed to the "new" method in the "Int" class/);
     }
     
     # Argument conversiongeneral exception - too many arguments
@@ -143,7 +143,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       eval {
         SPVM::Int->new(1, 2);
       };
-      like($@, qr/Too many arguments are passed to the "new" method in the "Int" basic type/);
+      like($@, qr/Too many arguments are passed to the "new" method in the "Int" class/);
     }
   }
 
