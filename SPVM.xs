@@ -10,6 +10,10 @@
 
 #include "spvm_native.h"
 
+#if !defined(SvIsBOOL)
+  #define SvIsBOOL(value) 0
+#endif
+
 static const char* FILE_NAME = "SPVM.xs";
 
 SV* SPVM_XS_UTIL_new_sv_pointer_object(pTHX_ void* pointer, const char* class) {
