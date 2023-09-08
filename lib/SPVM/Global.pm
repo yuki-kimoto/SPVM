@@ -12,7 +12,6 @@ use SPVM ();
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
 
-my $INIT_GLOBAL;
 my $API;
 
 END {
@@ -32,8 +31,8 @@ END {
 }
 
 sub api {
-  unless ($INIT_GLOBAL) {
-    &init_global();
+  unless ($API) {
+    &init_api();
   }
   return $API;
 }
@@ -41,7 +40,7 @@ sub api {
 sub build_module {
   my ($basic_type_name, $file, $line) = @_;
   
-  &init_global();
+  &init_api();
   
   # Add module informations
   my $build_success;
@@ -83,8 +82,8 @@ sub build_module {
   }
 }
 
-sub init_global {
-  unless ($INIT_GLOBAL) {
+sub init_api {
+  unless ($API) {
     my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
     my $builder = SPVM::Builder->new(build_dir => $build_dir);
     
@@ -152,8 +151,6 @@ sub init_global {
     $env->set_command_info_argv($stack, \@ARGV);
     my $base_time = $^T + 0; # For Perl 5.8.9
     $env->set_command_info_base_time($stack, $base_time);
-    
-    $INIT_GLOBAL = 1;
   }
 }
 
