@@ -1342,11 +1342,22 @@ _xs_call_method(...)
             if (!SvOK(sv_value)) {
               spvm_value = NULL;
             }
-            else if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-              spvm_value = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
-            }
             else {
-              croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object or undef\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
+              int32_t created_as_string = SvPOK(sv_value) && !SvIsBOOL(sv_value);
+              
+              if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+                spvm_value = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
+              }
+              else if (created_as_string) {
+                warn("AAA");
+                STRLEN length = -1;
+                const char* string = SvPV(sv_value, length);
+                spvm_value = env->new_string(env, stack, string, (int32_t)length);
+                SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, spvm_value, "SPVM::BlessedObject::String");
+              }
+              else {
+                croak("The %dth argument of the \"%s\" method in the \"%s\" class must be a SPVM::BlessedObject object or a string or undef\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
+              }
             }
             stack[stack_index].oval = spvm_value;
             

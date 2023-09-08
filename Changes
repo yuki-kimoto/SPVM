@@ -1,8 +1,12 @@
 0.989041 2023-09-06
+  [New Features]
+    * The call_method method in the SPVM::ExchangeAPI class: any object argument can receive a value of string type.
+    
   [Exception Messages Changes]
     * English syntax is improved. "the $arg" is changeded to "$arg".
     * SPVM.xs: Exception messages are improved.
-    
+  [Bug Fix]
+    * Fix a bug that when the global Exchange API object is refered from sub routnie, a segfault occur.
 0.989040 2023-09-06
   [Changes]
     * Anon class has the same access constrol as the outer class.

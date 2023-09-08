@@ -429,11 +429,21 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     
     # Argument conversion - any object - string
     {
-      my $spvm_string = $api->new_string("abc");
-      my $spvm_string_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_string);
-      ok(ref $spvm_string_ret, "SPVM::BlessedObject::String");
-      is($spvm_string_ret->__get_type_name, "string");
-      is("$spvm_string", "$spvm_string_ret");
+      {
+        my $spvm_string = $api->new_string("abc");
+        my $spvm_string_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_string);
+        ok(ref $spvm_string_ret, "SPVM::BlessedObject::String");
+        is($spvm_string_ret->__get_type_name, "string");
+        is("$spvm_string", "$spvm_string_ret");
+      }
+      
+      {
+        my $string = "abc";
+        my $spvm_string_ret = SPVM::TestCase::ExchangeAPI->return_any_object_only($string);
+        ok(ref $spvm_string_ret, "SPVM::BlessedObject::String");
+        is($spvm_string_ret->__get_type_name, "string");
+        is($string, "$spvm_string_ret");
+      }
     }
 
     # Argument conversion - any object - class
@@ -444,6 +454,13 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
       is($spvm_object_ret->__get_type_name, "Point");
       is($spvm_object->x, $spvm_object_ret->x);
       is($spvm_object->y, $spvm_object_ret->y);
+    }
+    
+    # Exceptions
+    {
+      my $spvm_value = 1;
+      eval { SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_value) };
+      like($@, qr|The 1th argument of the "return_any_object_only" method in the "TestCase::ExchangeAPI" class must be a SPVM::BlessedObject object or a string or undef|);
     }
   }
   
