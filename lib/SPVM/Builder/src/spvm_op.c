@@ -2301,8 +2301,13 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
   
   op_type_cast->file = op_type->file;
   op_type_cast->line = op_type->line;
-
+  
   return op_type_cast;
+}
+
+SPVM_OP* SPVM_OP_build_qualified_type_with_hint(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_type_hint) {
+  
+  return op_type;
 }
 
 SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_type) {
