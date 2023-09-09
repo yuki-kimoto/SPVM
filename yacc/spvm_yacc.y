@@ -47,8 +47,8 @@
 %type <opval> var_decl var interface union_type
 %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
 %type <opval> field_name method_name alias_name is_read_only
-%type <opval> type qualified_type basic_type array_type class_type
-%type <opval> array_type_with_length ref_type  return_type type_hint opt_type_hint type_comment type_limit
+%type <opval> type qualified_type opt_type_hint qualified_type_with_hint basic_type array_type class_type
+%type <opval> array_type_with_length ref_type  return_type type_hint type_comment type_limit
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> LOGICAL_OR
@@ -296,13 +296,13 @@ enumeration_value
     }
 
 our
-  : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_hint ';'
+  : OUR VAR_NAME ':' opt_attributes qualified_type_with_hint ';'
     {
       $$ = SPVM_OP_build_class_var_definition(compiler, $1, $2, $4, $5);
     }
 
 has
-  : HAS field_name ':' opt_attributes qualified_type opt_type_hint
+  : HAS field_name ':' opt_attributes qualified_type_with_hint
     {
       $$ = SPVM_OP_build_field_definition(compiler, $1, $2, $4, $5);
     }
@@ -384,13 +384,13 @@ args
   | arg
 
 arg
-  : var ':' qualified_type opt_type_hint
+  : var ':' qualified_type_with_hint
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
     }
-  | var ':' qualified_type opt_type_hint ASSIGN operator
+  | var ':' qualified_type_with_hint ASSIGN operator
     {
-      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $6);
+      $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $5);
     }
 
 anon_method_has_list
@@ -1276,7 +1276,7 @@ array_length
     }
 
 var_decl
-  : MY var ':' qualified_type opt_type_hint
+  : MY var ':' qualified_type_with_hint
     {
       $$ = SPVM_OP_build_var_decl(compiler, $1, $2, $4, NULL);
     }
@@ -1291,11 +1291,57 @@ var
       $$ = SPVM_OP_build_var(compiler, $1);
     }
 
+qualified_type_with_hint
+  : qualified_type opt_type_hint
+
 qualified_type
   : type
   | MUTABLE type {
     $$ = SPVM_OP_build_mutable_type(compiler, $2);
   }
+
+opt_type_hint
+  : /* Empty */
+    {
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
+    }
+  | type_hint
+
+type_hint
+  : type_comment
+  | type_limit
+
+type_comment
+  : OF union_type
+    {
+      $$ = $2;
+    }
+
+type_limit
+  : ISA union_type
+    {
+      $$ = $2;
+    }
+
+union_type
+  : union_type BIT_OR type
+    {
+      SPVM_OP* op_list;
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
+    }
+  | type
+    {
+      $$ = $1;
+    }
 
 type
   : basic_type
@@ -1385,53 +1431,10 @@ array_type_with_length
     }
 
 return_type
-  : qualified_type opt_type_hint
+  : qualified_type_with_hint
   | VOID
     {
       $$ = SPVM_OP_new_op_void_type(compiler, compiler->current_file, compiler->current_line);
-    }
-
-opt_type_hint
-  : /* Empty */
-    {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
-    }
-  | type_hint
-
-type_hint
-  : type_comment
-  | type_limit
-
-type_comment
-  : OF union_type
-    {
-      $$ = $2;
-    }
-
-type_limit
-  : ISA union_type
-    {
-      $$ = $2;
-    }
-
-union_type
-  : union_type BIT_OR type
-    {
-      SPVM_OP* op_list;
-      if ($1->id == SPVM_OP_C_ID_LIST) {
-        op_list = $1;
-      }
-      else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
-      }
-      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
-      
-      $$ = op_list;
-    }
-  | type
-    {
-      $$ = $1;
     }
 
 field_name
