@@ -1314,13 +1314,19 @@ type_hint
 type_comment
   : OF union_type
     {
-      $$ = $2;
+      SPVM_OP* op_type_hint = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_HINT, compiler->current_file, compiler->current_line);
+      
+      $$ = op_type_hint;
     }
 
 type_limit
   : ISA union_type
     {
-      $$ = $2;
+      SPVM_OP* op_type_hint = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_HINT, compiler->current_file, compiler->current_line);
+      
+      op_type_hint->flag |= SPVM_OP_C_FLAG_TYPE_HINT_LIMIT;
+      
+      $$ = op_type_hint;
     }
 
 union_type

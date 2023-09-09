@@ -251,6 +251,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "EVAL_ERROR_ID",
     "ARGS_WIDTH",
     "VERSION",
+    "TYPE_HINT",
   };
   
   return id_names;
