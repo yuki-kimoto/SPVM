@@ -93,6 +93,7 @@
 
 
 
+
 const char* const* SPVM_OP_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
@@ -246,11 +247,9 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "COPY",
     "CAN",
     "BASIC_TYPE_ID",
-    "DIE_ERROR_ID",
-    "SET_DIE_ERROR_ID",
     "EVAL_ERROR_ID",
     "ARGS_WIDTH",
-    "VERSION",
+    "VERSION_DECL",
     "TYPE_HINT",
   };
   

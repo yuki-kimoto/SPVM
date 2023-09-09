@@ -95,7 +95,7 @@
 
 
 
-/* Operation id */
+// Operation IDs
 enum {
   SPVM_OP_C_ID_GRAMMAR,
   SPVM_OP_C_ID_LIST,
