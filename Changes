@@ -7,6 +7,9 @@
     * SPVM.xs: Exception messages are improved.
   [Bug Fix]
     * Fix a bug that when the global Exchange API object is refered from sub routnie, a segfault occur.
+    * Fix a bug that the plcae that needs only a basic type name uses SPVM::BlessedObject::String.
+      Segfault occured in some places.
+      
 0.989040 2023-09-06
   [Changes]
     * Anon class has the same access constrol as the outer class.

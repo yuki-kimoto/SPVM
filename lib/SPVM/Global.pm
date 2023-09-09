@@ -65,7 +65,7 @@ sub build_module {
     
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-      &load_dynamic_lib($runtime, $basic_type->get_name);
+      &load_dynamic_lib($runtime, $basic_type->get_name->to_string);
     }
     
     &bind_to_perl($basic_type_name);
@@ -150,7 +150,7 @@ sub init_api {
 
 sub load_dynamic_lib {
   my ($runtime, $basic_type_name) = @_;
-    
+  
   my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
   
   my $spvm_class_dir = $basic_type->get_class_dir;
@@ -254,7 +254,7 @@ sub bind_to_perl {
     # The inheritance
     my @isa;
     if (defined $parent_basic_type) {
-      my $parent_basic_type_name = $parent_basic_type->get_name;
+      my $parent_basic_type_name = $parent_basic_type->get_name->to_string;
       push @isa, "$perl_basic_type_name_base$parent_basic_type_name";
     }
     push @isa, 'SPVM::BlessedObject::Class';
@@ -271,7 +271,7 @@ sub bind_to_perl {
     for (my $method_index = 0; $method_index < $methods_length; $method_index++) {
       my $method = $basic_type->get_method_by_index($method_index);
       
-      my $method_name = $method->get_name;
+      my $method_name = $method->get_name->to_string;
       
       # Destrutor is skip
       if ($method_name eq 'DESTROY') {

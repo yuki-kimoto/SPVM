@@ -32,9 +32,6 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     }
   }
   ok($is_object_files);
-  
-  # TODO: If this does not exists, a segfault occurs.
-  $main::NATIVE_API_LINK_INFO = undef;
 }
 
 # Clear exception
