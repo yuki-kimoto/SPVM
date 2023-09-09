@@ -15,19 +15,13 @@ use SPVM::ExchangeAPI;
 my $API;
 
 END {
-  my $env;
-  my $stack;
-  
   if ($API) {
-    $env = $API->env;
-    $stack = $API->stack;
-  }
-  
-  if ($env && $stack) {
+    # Remove circular reference
+    my $env = delete $API->{env};
+    my $stack = delete $API->{stack};
+    
     $env->destroy_class_vars($stack);
   }
-  
-  $API = undef;
 }
 
 sub api {

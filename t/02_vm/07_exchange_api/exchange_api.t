@@ -2367,6 +2367,10 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   {
     ok(SPVM::TestCase->new_near_small_base_object_max_size_use_memory_pool());
   }
+  
+  sub refer_api {
+    $api;
+  }
 }
 
 # All object is freed
