@@ -1319,7 +1319,8 @@ type_comment
     {
       SPVM_OP* op_type_hint = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_HINT, compiler->current_file, compiler->current_line);
       
-      $$ = op_type_hint;
+      int32_t is_limit = 0;
+      $$ = SPVM_OP_build_type_hint(compiler, op_type_hint, $2, is_limit);
     }
 
 type_limit
@@ -1327,9 +1328,8 @@ type_limit
     {
       SPVM_OP* op_type_hint = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_HINT, compiler->current_file, compiler->current_line);
       
-      op_type_hint->flag |= SPVM_OP_C_FLAG_TYPE_HINT_LIMIT;
-      
-      $$ = op_type_hint;
+      int32_t is_limit = 1;
+      $$ = SPVM_OP_build_type_hint(compiler, op_type_hint, $2, is_limit);
     }
 
 union_type

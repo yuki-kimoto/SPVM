@@ -588,7 +588,7 @@ static const yytype_uint16 yyrline[] =
     1135,  1140,  1147,  1152,  1158,  1163,  1169,  1174,  1180,  1188,
     1193,  1198,  1205,  1210,  1215,  1223,  1231,  1239,  1247,  1251,
     1257,  1262,  1267,  1272,  1279,  1283,  1289,  1295,  1301,  1302,
-    1308,  1311,  1314,  1315,  1318,  1326,  1336,  1350,  1356,  1357,
+    1308,  1311,  1314,  1315,  1318,  1327,  1336,  1350,  1356,  1357,
     1358,  1361,  1364,  1368,  1374,  1380,  1386,  1392,  1398,  1404,
     1409,  1417,  1423,  1427,  1433,  1437,  1443,  1444,  1450,  1453,
     1456
@@ -4370,19 +4370,19 @@ yyreduce:
     {
       SPVM_OP* op_type_hint = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_HINT, compiler->current_file, compiler->current_line);
       
-      (yyval.opval) = op_type_hint;
+      int32_t is_limit = 0;
+      (yyval.opval) = SPVM_OP_build_type_hint(compiler, op_type_hint, (yyvsp[0].opval), is_limit);
     }
-#line 4376 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
+#line 4377 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
 
   case 265:
-#line 1327 "yacc/spvm_yacc.y" /* yacc.c:1646  */
+#line 1328 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
       SPVM_OP* op_type_hint = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_HINT, compiler->current_file, compiler->current_line);
       
-      op_type_hint->flag |= SPVM_OP_C_FLAG_TYPE_HINT_LIMIT;
-      
-      (yyval.opval) = op_type_hint;
+      int32_t is_limit = 1;
+      (yyval.opval) = SPVM_OP_build_type_hint(compiler, op_type_hint, (yyvsp[0].opval), is_limit);
     }
 #line 4388 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;

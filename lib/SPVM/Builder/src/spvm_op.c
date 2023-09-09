@@ -2304,6 +2304,17 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
   return op_type_cast;
 }
 
+SPVM_OP* SPVM_OP_build_type_hint(SPVM_COMPILER* compiler, SPVM_OP* op_type_hint, SPVM_OP* op_type, int32_t is_limit) {
+  
+  SPVM_OP_insert_child(compiler, op_type_hint, op_type_hint->last, op_type);
+  
+  if (is_limit) {
+    op_type_hint->flag |= SPVM_OP_C_FLAG_TYPE_HINT_LIMIT;
+  }
+  
+  return op_type_hint;
+}
+
 SPVM_OP* SPVM_OP_build_qualified_type_with_hint(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_type_hint) {
   
   return op_type;
