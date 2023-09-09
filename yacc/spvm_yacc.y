@@ -48,7 +48,7 @@
 %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
 %type <opval> field_name method_name alias_name is_read_only
 %type <opval> type qualified_type basic_type array_type class_type
-%type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
+%type <opval> array_type_with_length ref_type  return_type type_hint opt_type_hint type_comment type_limit
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> LOGICAL_OR
@@ -296,13 +296,13 @@ enumeration_value
     }
 
 our
-  : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_comment ';'
+  : OUR VAR_NAME ':' opt_attributes qualified_type opt_type_hint ';'
     {
       $$ = SPVM_OP_build_class_var_definition(compiler, $1, $2, $4, $5);
     }
 
 has
-  : HAS field_name ':' opt_attributes qualified_type opt_type_comment
+  : HAS field_name ':' opt_attributes qualified_type opt_type_hint
     {
       $$ = SPVM_OP_build_field_definition(compiler, $1, $2, $4, $5);
     }
@@ -384,11 +384,11 @@ args
   | arg
 
 arg
-  : var ':' qualified_type opt_type_comment
+  : var ':' qualified_type opt_type_hint
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, NULL);
     }
-  | var ':' qualified_type opt_type_comment ASSIGN operator
+  | var ':' qualified_type opt_type_hint ASSIGN operator
     {
       $$ = SPVM_OP_build_arg(compiler, $1, $3, NULL, $6);
     }
@@ -1276,7 +1276,7 @@ array_length
     }
 
 var_decl
-  : MY var ':' qualified_type opt_type_comment
+  : MY var ':' qualified_type opt_type_hint
     {
       $$ = SPVM_OP_build_var_decl(compiler, $1, $2, $4, NULL);
     }
@@ -1385,21 +1385,31 @@ array_type_with_length
     }
 
 return_type
-  : qualified_type opt_type_comment
+  : qualified_type opt_type_hint
   | VOID
     {
       $$ = SPVM_OP_new_op_void_type(compiler, compiler->current_file, compiler->current_line);
     }
 
-opt_type_comment
+opt_type_hint
   : /* Empty */
     {
       $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
     }
-  | type_comment
+  | type_hint
+
+type_hint
+  : type_comment
+  | type_limit
 
 type_comment
   : OF union_type
+    {
+      $$ = $2;
+    }
+
+type_limit
+  : ISA union_type
     {
       $$ = $2;
     }
