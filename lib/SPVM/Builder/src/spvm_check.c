@@ -738,20 +738,27 @@ void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
   if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
     if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_mulnum_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
       SPVM_COMPILER_error(compiler, "The reference type must be a numeric refernce type or a multi-numeric reference type.\n  at %s line %d", op_type->file, op_type->line);
+      return;
     }
   }
-
+  
   // mutable only allow string type
   if (type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE && !(type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_STRING && type->dimension == 0)) {
     SPVM_COMPILER_error(compiler, "The type qualifier \"mutable\" is only allowed in the string type.\n  at %s line %d", op_type->file, op_type->line);
+    return;
   }
   
   if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
     const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
     SPVM_COMPILER_error(compiler, "The multi dimensional array of any object is not allowed.\n  at %s line %d", op_type->file, op_type->line);
+    return;
   }
   
-
+  if (type->type_hint_is_limit && type->basic_type->id != SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT) {
+    SPVM_COMPILER_error(compiler, "The type limitation must be defined to the any object type or the any object array type.\n  at %s line %d", op_type->file, op_type->line);
+    return;
+  }
+  
 }
 
 void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
