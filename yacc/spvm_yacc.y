@@ -1294,7 +1294,7 @@ var
 qualified_type_with_hint
   : qualified_type opt_type_hint
      {
-       SPVM_OP_build_qualified_type_with_hint(compiler, $1, $2);
+       $$ = SPVM_OP_build_qualified_type_with_hint(compiler, $1, $2);
      }
 
 qualified_type

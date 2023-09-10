@@ -2317,6 +2317,35 @@ SPVM_OP* SPVM_OP_build_type_hint(SPVM_COMPILER* compiler, SPVM_OP* op_type_hint,
 
 SPVM_OP* SPVM_OP_build_qualified_type_with_hint(SPVM_COMPILER* compiler, SPVM_OP* op_type, SPVM_OP* op_type_hint) {
   
+  SPVM_TYPE* type = op_type->uv.type;
+  
+  assert(op_type_hint);
+  
+  if (op_type_hint->id == SPVM_OP_C_ID_TYPE_HINT) {
+    SPVM_OP* op_list_hint_types = op_type_hint->first;
+    
+    type->type_hint_types = SPVM_LIST_new_list_permanent(compiler->current_each_compile_allocator, 0);
+    
+    if (op_list_hint_types->id == SPVM_OP_C_ID_TYPE) {
+      SPVM_TYPE* hint_type = op_list_hint_types->uv.type;
+      SPVM_LIST_push(type->type_hint_types, hint_type);
+    }
+    else if (op_list_hint_types->id == SPVM_OP_C_ID_LIST) {
+      SPVM_OP* op_list_hint_type = op_list_hint_types->first;
+      while ((op_list_hint_type = SPVM_OP_sibling(compiler, op_list_hint_type))) {
+        SPVM_TYPE* hint_type = op_list_hint_type->uv.type;
+        SPVM_LIST_push(type->type_hint_types, hint_type);
+      }
+    }
+    else {
+      assert(0);
+    }
+    
+    if (op_type_hint->flag & SPVM_OP_C_FLAG_TYPE_HINT_LIMIT) {
+      type->type_hint_is_limit = 1;
+    }
+  }
+  
   return op_type;
 }
 
