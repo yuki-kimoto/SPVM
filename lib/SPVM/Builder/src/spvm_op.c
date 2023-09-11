@@ -251,6 +251,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "ARGS_WIDTH",
     "VERSION_DECL",
     "TYPE_HINT",
+    "IN",
   };
   
   return id_names;

@@ -251,6 +251,7 @@ enum {
   SPVM_OP_C_ID_ARGS_WIDTH,
   SPVM_OP_C_ID_VERSION_DECL,
   SPVM_OP_C_ID_TYPE_HINT,
+  SPVM_OP_C_ID_IN,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

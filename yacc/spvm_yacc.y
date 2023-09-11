@@ -26,7 +26,7 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
-%token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
+%token <opval> FATCAMMA RW RO WO INIT NEW OF IN BASIC_TYPE_ID EXTENDS SUPER
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
@@ -1324,7 +1324,7 @@ type_comment
     }
 
 type_limit
-  : ISA union_type
+  : IN union_type
     {
       SPVM_OP* op_type_hint = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_HINT, compiler->current_file, compiler->current_line);
       

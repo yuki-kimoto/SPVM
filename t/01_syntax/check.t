@@ -1055,7 +1055,7 @@ use Test::More;
   }
 }
 
-# Resove types
+# Resove type
 {
   {
     my $source = 'class MyClass { static method main : void () { new NotFound; } }';
@@ -1072,6 +1072,22 @@ use Test::More;
   {
     my $source = 'class MyClass { static method main : void () { my $var : object[][];} }';
     compile_not_ok($source, q|The multi dimensional array of any object is not allowed|);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : object in string|Int;} }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : object in string;} }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : object[] in string[];} }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : string in string;} }';
+    compile_not_ok($source, q|The type limitation must be defined to the any object type or the any object array type.|);
   }
 }
 
