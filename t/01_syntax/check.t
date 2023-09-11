@@ -1086,6 +1086,14 @@ use Test::More;
     compile_ok($source);
   }
   {
+    my $source = 'class MyClass { static method main : void () { my $var : object[] in string[][];} }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass { static method main : void () { my $var : object[] in string[]|Int[];} }';
+    compile_ok($source);
+  }
+  {
     my $source = 'class MyClass { static method main : void () { my $var : string in string;} }';
     compile_not_ok($source, q|The type limitation must be defined to the any object type or the any object array type.|);
   }
