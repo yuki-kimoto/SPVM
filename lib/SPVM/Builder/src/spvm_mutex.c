@@ -9,10 +9,10 @@
 
 void SPVM_MUTEX_init(SPVM_MUTEX* mutex) { InitializeSRWLock((SRWLOCK*)mutex->mutex); }
 void SPVM_MUTEX_destroy(SPVM_MUTEX* mutex) { }
-void SPVM_MUTEX_lock(SPVM_MUTEX* mutex) { AcquireSRWlockExclusive((SRWLOCK*)mutex->mutex); }
-void SPVM_MUTEX_unlock(SPVM_MUTEX* mutex) { ReleaseSRWlockExclusive((SRWLOCK*)mutex->mutex); }
-void SPVM_MUTEX_reader_lock(SPVM_MUTEX* mutex) { AcquireSRWlockShared((SRWLOCK*)mutex->mutex); }
-void SPVM_MUTEX_reader_unlock(SPVM_MUTEX* mutex) { ReleaseSRWlockShared((SRWLOCK*)mutex->mutex); }
+void SPVM_MUTEX_lock(SPVM_MUTEX* mutex) { AcquireSRWLockExclusive((SRWLOCK*)mutex->mutex); }
+void SPVM_MUTEX_unlock(SPVM_MUTEX* mutex) { ReleaseSRWLockExclusive((SRWLOCK*)mutex->mutex); }
+void SPVM_MUTEX_reader_lock(SPVM_MUTEX* mutex) { AcquireSRWLockShared((SRWLOCK*)mutex->mutex); }
+void SPVM_MUTEX_reader_unlock(SPVM_MUTEX* mutex) { ReleaseSRWLockShared((SRWLOCK*)mutex->mutex); }
 
 #else
 
