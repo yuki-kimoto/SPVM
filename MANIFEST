@@ -167,6 +167,7 @@ lib/SPVM/Builder/src/spvm_hash.c
 lib/SPVM/Builder/src/spvm_interface.c
 lib/SPVM/Builder/src/spvm_list.c
 lib/SPVM/Builder/src/spvm_method.c
+lib/SPVM/Builder/src/spvm_mutex.c
 lib/SPVM/Builder/src/spvm_op.c
 lib/SPVM/Builder/src/spvm_opcode.c
 lib/SPVM/Builder/src/spvm_opcode_builder.c
