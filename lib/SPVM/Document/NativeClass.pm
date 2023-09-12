@@ -78,7 +78,7 @@ CUDA/nvcc:
 
 Outputting messages of the compiler and the linker:
 
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
   $config->quiet(0);
 
@@ -86,7 +86,7 @@ Outputting messages of the compiler and the linker:
 
 Forcing the compilation and the link:
 
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
   
   $config->force(1);
   

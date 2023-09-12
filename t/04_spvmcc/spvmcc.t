@@ -100,7 +100,7 @@ my $dev_null = File::Spec->devnull;
     like($spvmcc_output, qr/\Q-O0 -g/);
     like($spvmcc_output, qr/-L\./);
     like($spvmcc_output, qr/-lm\b/);
-    like($spvmcc_output, qr/-std=c99/);
+    like($spvmcc_output, qr/-std=gnu99/);
     
     # Note: Arguments of the link command(these contain -l flags) must be
     # after object file names for resolving symbol names properly

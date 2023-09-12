@@ -189,7 +189,7 @@ sub new {
     }
   }
   else {
-    $config = SPVM::Builder::Config::Exe->new_c99(file_optional => 1);
+    $config = SPVM::Builder::Config::Exe->new_gnu99(file_optional => 1);
   }
   $config->class_name($basic_type_name);
   
