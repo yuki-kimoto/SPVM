@@ -2,6 +2,22 @@
   [Incompatible Changes]
     * The create_default_config function in the SPVM::Builder::Util module return gnu99 instead of c99.
     * The default config become gnu99 instead of c99 in all places.
+    * The default value of the dynamic_lib_ccflags in the SPVM::Builder::Config module.
+      [Before]
+        if ($Config{cccdlflags} =~ /-fPIC\b/) {
+          $self->dynamic_lib_ccflags(['-fPIC']);
+        }
+        else {
+          $self->dynamic_lib_ccflags([]);
+        }
+      [After]
+        if ($^O eq 'MSWin32') {
+          $self->dynamic_lib_ccflags([]);
+        }
+        else {
+          $self->dynamic_lib_ccflags(['-fPIC']);
+        }
+      
 0.989041 2023-09-09
   [New Features]
     * The call_method method in the SPVM::ExchangeAPI class: any object argument can receive a value of string type.

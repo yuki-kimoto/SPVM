@@ -312,11 +312,11 @@ sub new {
   
   # dynamic_lib_ccflags
   unless (defined $self->{dynamic_lib_ccflags}) {
-    if ($Config{cccdlflags} =~ /-fPIC\b/) {
-      $self->dynamic_lib_ccflags(['-fPIC']);
+    if ($^O eq 'MSWin32') {
+      $self->dynamic_lib_ccflags([]);
     }
     else {
-      $self->dynamic_lib_ccflags([]);
+      $self->dynamic_lib_ccflags(['-fPIC']);
     }
   }
   
@@ -1179,13 +1179,13 @@ The C<$Config{cc}> of the L<Config> class.
 
 =item * L</"dynamic_lib_ccflags">
 
-If C<$Config{cccdlflags}> contains C<-fPIC>, the following value is its default value.
+Windows:
 
-["-fPIC"]
+  []
 
-Otherwise the following value is its default value.
+Others:
 
-[]
+  ['-fPIC']
 
 =item * L</"std">
 
