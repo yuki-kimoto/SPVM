@@ -116,7 +116,7 @@ class TestCase::If {
       # Undefined object
       {
         my $pass = 0;
-        my $point : Point = undef;;
+        my $point : Point = undef;
         if ($point) {
           $pass = 1;
         }

@@ -252,7 +252,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         else {
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);;
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING);
           return '-';
         }
         break;

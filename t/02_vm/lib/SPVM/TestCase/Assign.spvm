@@ -176,7 +176,7 @@ class TestCase::Assign {
     my $v1 : TestCase::Minimal;
     my $v2 : TestCase::Minimal;
     
-    $v2 = $v1 = TestCase::Minimal->new;;
+    $v2 = $v1 = TestCase::Minimal->new;
     
     if ($v2 isa TestCase::Minimal) {
       return 1;
