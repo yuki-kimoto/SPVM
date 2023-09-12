@@ -16,7 +16,7 @@ B<SPVM/Resource/Zlib/V1_2_11.config>
   use warnings;
    
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
    
   # C souce files
   my @source_files = qw(
@@ -119,7 +119,7 @@ B<lib/SPVM/MyZlib.config>
   use strict;
   use warnings;
   
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
   
   $config->use_resource('Resource::Zlib');
   

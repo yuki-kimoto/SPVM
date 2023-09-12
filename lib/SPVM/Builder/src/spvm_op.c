@@ -1182,7 +1182,7 @@ SPVM_OP* SPVM_OP_build_class_var_definition(SPVM_COMPILER* compiler, SPVM_OP* op
   
   SPVM_CLASS_VAR* class_var = SPVM_CLASS_VAR_new(compiler);
   
-  const char* name = op_name->uv.name;;
+  const char* name = op_name->uv.name;
   class_var->name = op_name->uv.name;
   
   if (strstr(name, "::")) {

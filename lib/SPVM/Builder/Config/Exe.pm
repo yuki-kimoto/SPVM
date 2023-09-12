@@ -90,7 +90,7 @@ The SPVM::Builder::Config::Exe class has methods to manipulate a config to gener
 
   use SPVM::Builder::Config::Exe;
   
-  my $config_exe = SPVM::Builder::Config::Exe->new_c99;
+  my $config_exe = SPVM::Builder::Config::Exe->new_gnu99;
 
 =head1 Inheritance
 

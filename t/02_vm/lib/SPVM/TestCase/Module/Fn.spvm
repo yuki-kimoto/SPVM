@@ -651,7 +651,7 @@ class TestCase::Module::Fn {
       {
         {
         my $string = "abcde";
-        my $substring = (string)undef;;
+        my $substring = (string)undef;
           eval {Fn->contains($string, $substring); };
           unless (Fn->contains($@, "\$substring must be defined")) {
             return 0;

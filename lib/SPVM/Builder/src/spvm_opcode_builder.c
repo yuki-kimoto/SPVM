@@ -638,7 +638,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
               case SPVM_OP_C_ID_SWITCH_CONDITION: {
                 assert(switch_stack_switch_info->length > 0);
                 
-                SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_stack_switch_info, switch_stack_switch_info->length - 1);;
+                SPVM_SWITCH_INFO* switch_info = SPVM_LIST_get(switch_stack_switch_info, switch_stack_switch_info->length - 1);
 
                 int32_t runtime_var_index_in = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_cur->first);
                 

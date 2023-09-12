@@ -956,7 +956,7 @@ Examples:
 
   # new_mulnum_array_from_bin - short
   {
-    my $binary = pack('s9', (0, 1, 2), (3, 4, 5), (6, 7, 8);;
+    my $binary = pack('s9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
     my $spvm_mulnum_array = $api->new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
   }
 

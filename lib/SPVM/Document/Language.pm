@@ -4070,7 +4070,7 @@ The operand of a reference operator must be the variable of a L<numeric type|/"N
   my $num_ref : int* = \$num;
   
   # The reference of multi-numeric type
-  my $z : Complex_2d;;
+  my $z : Complex_2d;
   my $z_ref : Complex_2d* = \$z;
 
 The L<reference type|/"Reference Type"> can be used as the types of the arguments of a method.

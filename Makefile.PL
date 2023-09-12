@@ -70,10 +70,6 @@ unless ($optimize) {
 # CCFLAGS
 my $ccflags = $Config{ccflags};
 
-# Removed  -D__USE_MINGW_ANSI_STDIO because MinGW maybe changes the beheivior of functions in stdio.h.
-# -std=c99 defines this definition automatically.
-$ccflags =~ s/-D__USE_MINGW_ANSI_STDIO//;
-
 $ccflags .= " -std=$std";
 
 # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
@@ -142,7 +138,7 @@ sub MY::postamble {
   
   # The content of Makefile
   my $make_rule = '';
-
+  
   unless ($no_build_spvm_modules) {
     require SPVM::Builder::Util::API;
     
