@@ -312,11 +312,11 @@ sub new {
   
   # dynamic_lib_ccflags
   unless (defined $self->{dynamic_lib_ccflags}) {
-    if ($Config{cccdlflags} =~ /-fPIC\b/) {
-      $self->dynamic_lib_ccflags(['-fPIC']);
+    if ($^O eq 'MSWin32') {
+      $self->dynamic_lib_ccflags([]);
     }
     else {
-      $self->dynamic_lib_ccflags([]);
+      $self->dynamic_lib_ccflags(['-fPIC', '-pthread']);
     }
   }
   
@@ -396,7 +396,7 @@ sub new {
       $self->dynamic_lib_ldflags(['-mdll', '-s']);
     }
     else {
-      $self->dynamic_lib_ldflags(['-shared']);
+      $self->dynamic_lib_ldflags(['-shared', '-pthread']);
     }
   }
   
@@ -1181,11 +1181,11 @@ The C<$Config{cc}> of the L<Config> class.
 
 If C<$Config{cccdlflags}> contains C<-fPIC>, the following value is its default value.
 
-["-fPIC"]
+["-fPIC", '-pthread']
 
 Otherwise the following value is its default value.
 
-[]
+['-pthread']
 
 =item * L</"std">
 
@@ -1235,11 +1235,11 @@ The C<$Config{ld}> of the L<Config> class.
 
 Windows:
 
-["-mdll", "-s"]
+["-mdll", "-s", '-pthread']
   
 Other OSs:
 
-['-shared']
+['-shared', '-pthread']
 
 =item * L</"ld_optimize">
 
