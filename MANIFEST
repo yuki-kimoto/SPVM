@@ -99,6 +99,7 @@ lib/SPVM/Builder/include/spvm_interface.h
 lib/SPVM/Builder/include/spvm_list.h
 lib/SPVM/Builder/include/spvm_method.h
 lib/SPVM/Builder/include/spvm_module_file.h
+lib/SPVM/Builder/include/spvm_mutex.h
 lib/SPVM/Builder/include/spvm_native.h
 lib/SPVM/Builder/include/spvm_object.h
 lib/SPVM/Builder/include/spvm_op.h

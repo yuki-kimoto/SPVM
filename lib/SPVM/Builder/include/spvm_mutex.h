@@ -1,16 +1,16 @@
-// Copyright 2007 The RE2 Authors.  All Rights Reserved.
+// Copyright 2007 The SPVM_MUTEX Authors.  All Rights Reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-#ifndef UTIL_MUTEX_H_
-#define UTIL_MUTEX_H_
+#ifndef SPVM_MUTEX_H
+#define SPVM_MUTEX_H
 
 /*
  * A simple mutex wrapper, supporting locks and read-write locks.
  * You should assume the locks are *not* re-entrant.
  */
 
-#ifdef RE2_NO_THREADS
+#ifdef SPVM_MUTEX_NO_THREADS
 #include <assert.h>
 #define MUTEX_IS_LOCK_COUNTER
 #else
@@ -161,4 +161,4 @@ class WriterMutexLock {
 
 }  // namespace re2
 
-#endif  // UTIL_MUTEX_H_
+#endif  // SPVM_MUTEX_H
