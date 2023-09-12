@@ -17,7 +17,12 @@
         else {
           $self->dynamic_lib_ccflags(['-fPIC']);
         }
-      
+  [New Features]
+    * The following fidlds are added to the SPVM::Builder::Config module.
+    
+      thread_ccflags
+      thread_ldflags
+    
 0.989041 2023-09-09
   [New Features]
     * The call_method method in the SPVM::ExchangeAPI class: any object argument can receive a value of string type.

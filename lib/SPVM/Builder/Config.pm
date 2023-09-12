@@ -109,6 +109,17 @@ sub dynamic_lib_ccflags {
   }
 }
 
+sub thread_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{thread_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{thread_ccflags};
+  }
+}
+
 sub std {
   my $self = shift;
   if (@_) {
@@ -230,6 +241,17 @@ sub dynamic_lib_ldflags {
   }
 }
 
+sub thread_ldflags {
+  my $self = shift;
+  if (@_) {
+    $self->{thread_ldflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{thread_ldflags};
+  }
+}
+
 sub ld_optimize {
   my $self = shift;
   if (@_) {
@@ -320,6 +342,16 @@ sub new {
     }
   }
   
+  # thread_ccflags
+  unless (defined $self->{thread_ccflags}) {
+    if ($^O eq 'MSWin32') {
+      $self->thread_ccflags([]);
+    }
+    else {
+      $self->thread_ccflags(['-pthread']);
+    }
+  }
+  
   # optimize
   unless (defined $self->{optimize}) {
     $self->optimize('-O3');
@@ -397,6 +429,16 @@ sub new {
     }
     else {
       $self->dynamic_lib_ldflags(['-shared']);
+    }
+  }
+  
+  # thread_ldflags
+  unless (defined $self->{thread_ldflags}) {
+    if ($^O eq 'MSWin32') {
+      $self->thread_ldflags([]);
+    }
+    else {
+      $self->thread_ldflags(['-pthread']);
     }
   }
   
@@ -912,6 +954,15 @@ Gets and sets the C<dynamic_lib_ccflags> field.
 
 This field is an array reference that contains compiler flags for information when the linker generates a dynamic link.
 
+=head2 thread_ccflags
+
+  my $thread_ccflags = $config->thread_ccflags;
+  $config->thread_ccflags($thread_ccflags);
+
+Gets and sets the C<thread_ccflags> field.
+
+This field is an array reference that contains compiler flags for thread setting.
+
 =head2 std
 
   my $std = $config->std;
@@ -1043,6 +1094,15 @@ Gets and sets the C<dynamic_lib_ldflags> field.
 
 This field is an array reference that contains linker flags for a dynamic link.
 
+=head2 thread_ldflags
+
+  my thread_ldflags = $config->thread_ldflags;
+  $config->thread_ldflags(thread_ldflags);
+
+Gets and sets the C<thread_ldflags> field.
+
+This field is an array reference that contains linker flags for thread setting.
+
 =head2 ld_optimize
 
   my $ld_optimize = $config->ld_optimize;
@@ -1147,27 +1207,27 @@ If a field is not defined, the field is set to the following default value.
 
 =item * L</"class_name">
 
-undef
+  undef
 
 =item * L</"file">
 
-undef
+  undef
 
 =item * L</"file_optional">
 
-0
+  0
 
 =item * L</"ext">
 
-undef
+  undef
 
 =item * L</"quiet">
 
-undef
+  undef
 
 =item * L</"force">
 
-undef
+  undef
 
 =item * L</"cc">
 
@@ -1175,7 +1235,7 @@ The C<$Config{cc}> of the L<Config> class.
 
 =item * L</"ccflags">
 
-[]
+  []
 
 =item * L</"dynamic_lib_ccflags">
 
@@ -1187,17 +1247,27 @@ Others:
 
   ['-fPIC']
 
+=item * L</"thread_ccflags">
+
+Windows:
+
+  []
+
+Others:
+
+  ['-pthread']
+
 =item * L</"std">
 
-undef
+  undef
 
 =item * L</"optimize">
 
-"-O3"
+  "-O3"
 
 =item * L</"include_dirs">
 
-[]
+  []
 
 =item * L</"spvm_core_include_dir">
 
@@ -1219,11 +1289,11 @@ The value looks like C<path/Foo.native/src>.
 
 =item * L</"source_files">
 
-[]
+  []
 
 =item * L</"before_compile_cbs">
 
-[]
+  []
 
 =item * L</"ld">
 
@@ -1235,31 +1305,41 @@ The C<$Config{ld}> of the L<Config> class.
 
 Windows:
 
-["-mdll", "-s"]
-  
+  ["-mdll", "-s"]
+
 Other OSs:
 
-['-shared']
+  ['-shared']
+
+=item * L</"thread_ldflags">
+
+Windows:
+
+  []
+
+Other OSs:
+
+  ['-pthread']
 
 =item * L</"ld_optimize">
 
-"-O2"
+  "-O2"
 
 =item * L</"lib_dirs">
 
-[]
+  []
 
 =item * L</"libs">
 
-[]
+  []
 
 =item * L</"before_link_cbs">
 
-[]
+  []
 
 =item * L</"output_type">
 
-"dynamic_lib"
+  "dynamic_lib"
 
 =back
 
