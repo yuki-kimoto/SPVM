@@ -42,6 +42,8 @@
 #include "spvm_api_arg.h"
 #include "spvm_api_type.h"
 
+#include "spvm_mutex.h"
+
 static const char* FILE_NAME = "spvm_api.c";
 
 SPVM_ENV* SPVM_API_new_env(void) {
