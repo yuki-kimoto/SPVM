@@ -94,6 +94,8 @@ sub create_link_command_args {
   my $ldflags = $config->ldflags;
   push @merged_ldflags, @{$config->ldflags};
   
+  push @merged_ldflags, @{$config->thread_ldflags};
+  
   my $lib_dirs = $config->lib_dirs;
   
   my @lib_dirs_ldflags = map { "-L$_" } @$lib_dirs;

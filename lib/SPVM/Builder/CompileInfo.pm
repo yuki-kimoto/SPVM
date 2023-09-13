@@ -87,6 +87,8 @@ sub create_compile_command_args {
   
   push @compile_command_args, @{$config->ccflags};
   
+  push @compile_command_args, @{$config->thread_ccflags};
+  
   my $output_type = $config->output_type;
   
   if ($output_type eq 'dynamic_lib') {
