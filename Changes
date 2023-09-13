@@ -26,6 +26,8 @@
     * All modules are compiled and linked with "-pthread" option except for Windows.
       This is because of using mutex features.
       
+    * All SPVM source files are compiled and linked with "-pthread" option except for Windows.
+      This is because of using mutex features.
 0.989041 2023-09-09
   [New Features]
     * The call_method method in the SPVM::ExchangeAPI class: any object argument can receive a value of string type.

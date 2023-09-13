@@ -72,6 +72,13 @@ my $ccflags = $Config{ccflags};
 
 $ccflags .= " -std=$std";
 
+$ccflags .= " " . join(' ', @{$default_config->thread_ccflags});
+
+# LDDLFLAGS
+my $lddlflags = $Config{lddlflags};
+
+$lddlflags .= " " . join(' ', @{$default_config->thread_ldflags});
+
 # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
 # so I dicide not to print warning in release version
 if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
@@ -100,6 +107,7 @@ WriteMakefile(
     (ABSTRACT_FROM => 'lib/SPVM.pm', # retrieve abstract from module
      AUTHOR => 'Yuki Kimoto<kimoto.yuki@gmail.com>') : ()),
   CCFLAGS => $ccflags,
+  LDDLFLAGS => $lddlflags,
   OPTIMIZE => $optimize,
   C => [@csource_files],
   H => [@header_files],
