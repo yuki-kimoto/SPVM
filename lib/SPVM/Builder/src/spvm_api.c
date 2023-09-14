@@ -3663,9 +3663,9 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* mutex = runtime->mutex;
+  // SPVM_MUTEX* mutex = runtime->mutex;
   
-  SPVM_MUTEX_lock(mutex);
+  // SPVM_MUTEX_lock(mutex);
   
   if (object != NULL) {
     assert(object->ref_count >= 0);
@@ -3673,7 +3673,7 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     object->ref_count++;
   }
   
-  SPVM_MUTEX_unlock(mutex);
+  // SPVM_MUTEX_unlock(mutex);
   
 }
 
@@ -3681,17 +3681,16 @@ void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* mutex = runtime->mutex;
+  // SPVM_MUTEX* mutex = runtime->mutex;
   
-  SPVM_MUTEX_lock(mutex);
+  // SPVM_MUTEX_lock(mutex);
   
   if (object != NULL) {
-    assert(object->ref_count >= 0);
-    // Increment reference count
+    assert(object->ref_count > 0);
     object->ref_count--;
   }
   
-  SPVM_MUTEX_unlock(mutex);
+  // SPVM_MUTEX_unlock(mutex);
   
 }
 
@@ -3699,13 +3698,13 @@ int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* mutex = runtime->mutex;
+  // SPVM_MUTEX* mutex = runtime->mutex;
   
-  SPVM_MUTEX_reader_lock(mutex);
+  // SPVM_MUTEX_reader_lock(mutex);
   
   int32_t ref_count = object->ref_count;
   
-  SPVM_MUTEX_reader_unlock(mutex);
+  // SPVM_MUTEX_reader_unlock(mutex);
   
   return ref_count;
 }
