@@ -3660,12 +3660,20 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
 
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  SPVM_MUTEX* mutex = runtime->mutex;
+  
+  SPVM_MUTEX_lock(mutex);
   
   if (object != NULL) {
     assert(object->ref_count >= 0);
     // Increment reference count
     object->ref_count++;
   }
+  
+  SPVM_MUTEX_unlock(mutex);
+  
 }
 
 int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
