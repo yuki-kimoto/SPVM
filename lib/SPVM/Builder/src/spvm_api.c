@@ -3678,8 +3678,17 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
 
 int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  return object->ref_count;
+  SPVM_MUTEX* mutex = runtime->mutex;
+  
+  SPVM_MUTEX_reader_lock(mutex);
+  
+  int32_t ref_count = object->ref_count;
+  
+  SPVM_MUTEX_reader_unlock(mutex);
+  
+  return ref_count;
 }
 
 SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name) {
