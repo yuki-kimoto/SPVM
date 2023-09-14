@@ -1911,7 +1911,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           if (method_return_type_is_object) {
             SPVM_OBJECT* return_object = *(void**)&stack[0];
             if (return_object != NULL) {
-              return_object->ref_count++;
+              SPVM_API_inc_ref_count(env, stack, return_object);
             }
           }
         }
@@ -2270,7 +2270,8 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
     (*current_mortal_stack_ptr)[*current_mortal_stack_top_ptr] = object;
     *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr + 1;
     
-    object->ref_count++;
+    SPVM_API_inc_ref_count(env, stack, object);
+    
   }
   
   return 0;
@@ -2998,8 +2999,8 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_ad
   SPVM_OBJECT* object = *object_address;
   
   // Increment reference count
-  object->ref_count++;
-
+  SPVM_API_inc_ref_count(env, stack, object);
+  
   // Remove weaken back ref
   SPVM_WEAKEN_BACKREF** weaken_backref_next_address = &object->weaken_backref_head;
   assert(*weaken_backref_next_address);
@@ -3035,16 +3036,16 @@ void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKE
 
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception) {
   
-  SPVM_OBJECT** current_excetpion_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
+  SPVM_OBJECT** current_exception_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
   
-  if (*current_excetpion_ptr != NULL) {
-    SPVM_API_dec_ref_count(env, stack, *current_excetpion_ptr);
+  if (*current_exception_ptr != NULL) {
+    SPVM_API_dec_ref_count(env, stack, *current_exception_ptr);
   }
   
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)current_excetpion_ptr, exception, SPVM_API_RUNTIME_get_object_ref_count_offset(env->runtime));
+  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)current_exception_ptr, exception, SPVM_API_RUNTIME_get_object_ref_count_offset(env->runtime));
   
-  if (*current_excetpion_ptr != NULL) {
-    (*current_excetpion_ptr)->ref_count++;
+  if (*current_exception_ptr != NULL) {
+    SPVM_API_inc_ref_count(env, stack, *current_exception_ptr);
   }
   
   return 0;
@@ -3052,10 +3053,10 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
 
 SPVM_OBJECT* SPVM_API_get_exception(SPVM_ENV* env, SPVM_VALUE* stack){
 
-  SPVM_OBJECT** current_excetpion_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
-  SPVM_OBJECT* current_excetpion = *current_excetpion_ptr;
+  SPVM_OBJECT** current_exception_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
+  SPVM_OBJECT* current_exception = *current_exception_ptr;
   
-  return current_excetpion;
+  return current_exception;
 }
 
 SPVM_OBJECT* SPVM_API_new_byte_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
@@ -3603,7 +3604,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
             fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
           }
           
-          // Restore stack and excetpion
+          // Restore stack and exception
           stack[0] = save_stack0;
           SPVM_API_set_exception(env, stack, save_exception);
           if (save_exception) {
