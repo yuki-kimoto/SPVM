@@ -8,20 +8,25 @@
 
 #include <windows.h>
 
-void SPVM_MUTEX_lock (SRWLOCK* mutex) {
-  AcquireSRWLockExclusive(mutex);
+void SPVM_MUTEX_init(void* mutex) {
+  
+  InitializeSRWLock((SRWLOCK*)mutex);
 }
 
-void SPVM_MUTEX_unlock (SRWLOCK* mutex) {
-  ReleaseSRWLockExclusive(mutex);
+void SPVM_MUTEX_lock (void* mutex) {
+  AcquireSRWLockExclusive((SRWLOCK*)mutex);
 }
 
-void SPVM_MUTEX_reader_lock (SRWLOCK* mutex) {
-  AcquireSRWLockShared(mutex);
+void SPVM_MUTEX_unlock (void* mutex) {
+  ReleaseSRWLockExclusive((SRWLOCK*)mutex);
 }
 
-void SPVM_MUTEX_reader_unlock (SRWLOCK* mutex) {
-  ReleaseSRWLockShared(mutex);
+void SPVM_MUTEX_reader_lock (void* mutex) {
+  AcquireSRWLockShared((SRWLOCK*)mutex);
+}
+
+void SPVM_MUTEX_reader_unlock (void* mutex) {
+  ReleaseSRWLockShared((SRWLOCK*)mutex);
 }
 
 int32_t SPVM_MUTEX_size () {
@@ -34,20 +39,30 @@ int32_t SPVM_MUTEX_size () {
 #include <pthread.h>
 #include <stdlib.h>
 
-void SPVM_MUTEX_lock (pthread_rwlock_t* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_wrlock(mutex));
+#define SAFE_PTHREAD(fncall)    \
+  do {                          \
+    if ((fncall) != 0) abort(); \
+  } while (0)
+
+void SPVM_MUTEX_init(void* mutex) {
+  
+  SAFE_PTHREAD(pthread_rwlock_init((pthread_rwlock_t*)mutex, NULL));
 }
 
-void SPVM_MUTEX_unlock (pthread_rwlock_t* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_unlock(mutex));
+void SPVM_MUTEX_lock (void* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_wrlock((pthread_rwlock_t*)mutex));
 }
 
-void SPVM_MUTEX_reader_lock (pthread_rwlock_t* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_rdlock(mutex));
+void SPVM_MUTEX_unlock (void* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_unlock((pthread_rwlock_t*)mutex));
 }
 
-void SPVM_MUTEX_reader_unlock (pthread_rwlock_t* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_unlock(mutex));
+void SPVM_MUTEX_reader_lock (void* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_rdlock((pthread_rwlock_t*)mutex));
+}
+
+void SPVM_MUTEX_reader_unlock (void* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_unlock((pthread_rwlock_t*)mutex));
 }
 
 int32_t SPVM_MUTEX_size () {

@@ -903,6 +903,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     int32_t mutex_size = SPVM_MUTEX_size();
     void* mutex = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_size);
     
+    SPVM_MUTEX_init(mutex);
+    
     runtime->mutex = mutex;
   }
   
