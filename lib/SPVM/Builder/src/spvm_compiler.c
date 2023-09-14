@@ -705,6 +705,10 @@ void SPVM_COMPILER_free_memory_tmp_each_compile(SPVM_COMPILER* compiler) {
 
 SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   
+  SPVM_MUTEX* mutex_build_runtime = compiler->mutex_build_runtime;
+  
+  SPVM_MUTEX_lock(mutex_build_runtime);
+  
   SPVM_RUNTIME* current_runtime = compiler->runtime;
   
   int32_t current_runtime_basic_types_length = current_runtime->basic_types_length;
@@ -916,6 +920,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
   }
   
   compiler->runtime = runtime;
+  
+  SPVM_MUTEX_unlock(mutex_build_runtime);
   
   return runtime;
 }
