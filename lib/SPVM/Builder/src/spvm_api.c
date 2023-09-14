@@ -1941,10 +1941,26 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         if (method_precompile_address) {
           int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
           error_id = (*precompile_address)(env, stack);
+          if (!error_id) {
+            if (method_return_type_is_object) {
+              SPVM_OBJECT* return_object = *(void**)&stack[0];
+              if (return_object != NULL) {
+                SPVM_API_dec_ref_count_only(env, stack, return_object);
+              }
+            }
+          }
         }
         // Call sub virtual machine
         else {
           error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+          if (!error_id) {
+            if (method_return_type_is_object) {
+              SPVM_OBJECT* return_object = *(void**)&stack[0];
+              if (return_object != NULL) {
+                SPVM_API_dec_ref_count_only(env, stack, return_object);
+              }
+            }
+          }
         }
       }
       
