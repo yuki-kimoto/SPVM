@@ -185,8 +185,7 @@ static inline void SPVM_IMPLEMENT_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, 
     int32_t var_index = mortal_stack[mortal_stack_index];
     void** object_address = (void**)&object_vars[var_index];
     if (*object_address != NULL) {
-      if (SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, *object_address,object_ref_count_offset) > 1) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, *object_address, object_ref_count_offset); }
-      else { env->dec_ref_count(env, stack, *object_address); }
+      env->dec_ref_count(env, stack, *object_address);
       *object_address = NULL;
     }
   }
