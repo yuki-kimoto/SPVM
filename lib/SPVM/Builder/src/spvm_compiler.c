@@ -899,13 +899,13 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     }
   }
   
-  if (!runtime->mutex) {
-    int32_t mutex_size = SPVM_MUTEX_size();
-    void* mutex = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_size);
+  if (!runtime->mutex_assignability_symtable) {
+    int32_t mutex_assignability_symtable_size = SPVM_MUTEX_size();
+    void* mutex_assignability_symtable = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_assignability_symtable_size);
     
-    SPVM_MUTEX_init(mutex);
+    SPVM_MUTEX_init(mutex_assignability_symtable);
     
-    runtime->mutex = mutex;
+    runtime->mutex_assignability_symtable = mutex_assignability_symtable;
   }
   
   compiler->runtime = runtime;
