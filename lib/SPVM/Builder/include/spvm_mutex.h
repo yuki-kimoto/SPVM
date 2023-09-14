@@ -10,7 +10,7 @@ struct spvm_mutex;
 typedef struct spvm_mutex SPVM_MUTEX;
 
 struct spvm_mutex {
-   void* mutex;
+   void* lock;
 };
 
 #endif  // SPVM_MUTEX_H
