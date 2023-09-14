@@ -8,44 +8,24 @@
 
 #include <windows.h>
 
-SPVM_MUTEX* SPVM_MUTEX_new(SPVM_ALLOCATOR* allocator) {
-  
-  SPVM_MUTEX* mutex = (SPVM_MUTEX*)SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, sizeof(SPVM_MUTEX));
-  
-  mutex->allocator = allocator;
-  
-  SRWLOCK* lock = (SRWLOCK*)SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, sizeof(SRWLOCK));
-  
-  InitializeSRWLock(lock);
-  
-  mutex->lock = lock;
-  
-  return mutex;
+void SPVM_MUTEX_lock (SRWLOCK* mutex) {
+  AcquireSRWLockExclusive(mutex);
 }
 
-void SPVM_MUTEX_free (SPVM_MUTEX* mutex) {
-  
-  SRWLOCK* lock = mutex->lock;
-  
-  SPVM_ALLOCATOR_free_memory_block_tmp(mutex->allocator, lock);
-  
-  SPVM_ALLOCATOR_free_memory_block_tmp(mutex->allocator, mutex);
+void SPVM_MUTEX_unlock (SRWLOCK* mutex) {
+  ReleaseSRWLockExclusive(mutex);
 }
 
-void SPVM_MUTEX_lock (SPVM_MUTEX* mutex) {
-  AcquireSRWLockExclusive((SRWLOCK*)mutex->lock);
+void SPVM_MUTEX_reader_lock (SRWLOCK* mutex) {
+  AcquireSRWLockShared(mutex);
 }
 
-void SPVM_MUTEX_unlock (SPVM_MUTEX* mutex) {
-  ReleaseSRWLockExclusive((SRWLOCK*)mutex->lock);
+void SPVM_MUTEX_reader_unlock (SRWLOCK* mutex) {
+  ReleaseSRWLockShared(mutex);
 }
 
-void SPVM_MUTEX_reader_lock (SPVM_MUTEX* mutex) {
-  AcquireSRWLockShared((SRWLOCK*)mutex->lock);
-}
-
-void SPVM_MUTEX_reader_unlock (SPVM_MUTEX* mutex) {
-  ReleaseSRWLockShared((SRWLOCK*)mutex->lock);
+int32_t SPVM_MUTEX_size () {
+  return sizeof(SRWLOCK);
 }
 
 #else
@@ -54,52 +34,24 @@ void SPVM_MUTEX_reader_unlock (SPVM_MUTEX* mutex) {
 #include <pthread.h>
 #include <stdlib.h>
 
-#define SAFE_PTHREAD(fncall)    \
-  do {                          \
-    if ((fncall) != 0) abort(); \
-  } while (0)
-
-SPVM_MUTEX* SPVM_MUTEX_new (SPVM_ALLOCATOR* allocator) {
-  
-  SPVM_MUTEX* mutex = (SPVM_MUTEX*)SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, sizeof(SPVM_MUTEX));
-  
-  mutex->allocator = allocator;
-  
-  pthread_rwlock_t* lock = (pthread_rwlock_t*)SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, sizeof(pthread_rwlock_t));
-  
-  SAFE_PTHREAD(pthread_rwlock_init((pthread_rwlock_t*)lock, NULL));
-  
-  mutex->lock = lock;
-  
-  return mutex;
+void SPVM_MUTEX_lock (pthread_rwlock_t* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_wrlock(mutex));
 }
 
-void SPVM_MUTEX_free (SPVM_MUTEX* mutex) {
-  
-  pthread_rwlock_t* lock = mutex->lock;
-  
-  SAFE_PTHREAD(pthread_rwlock_destroy((pthread_rwlock_t*)lock));
-  
-  SPVM_ALLOCATOR_free_memory_block_tmp(mutex->allocator, lock);
-  
-  SPVM_ALLOCATOR_free_memory_block_tmp(mutex->allocator, mutex);
-  
+void SPVM_MUTEX_unlock (pthread_rwlock_t* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_unlock(mutex));
 }
 
-void SPVM_MUTEX_lock (SPVM_MUTEX* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_wrlock((pthread_rwlock_t*)mutex->lock));
+void SPVM_MUTEX_reader_lock (pthread_rwlock_t* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_rdlock(mutex));
 }
 
-void SPVM_MUTEX_unlock (SPVM_MUTEX* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_unlock((pthread_rwlock_t*)mutex->lock));
+void SPVM_MUTEX_reader_unlock (pthread_rwlock_t* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_unlock(mutex));
 }
 
-void SPVM_MUTEX_reader_lock (SPVM_MUTEX* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_rdlock((pthread_rwlock_t*)mutex->lock));
-}
-
-void SPVM_MUTEX_reader_unlock (SPVM_MUTEX* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_unlock((pthread_rwlock_t*)mutex->lock));
+int32_t SPVM_MUTEX_size () {
+  return sizeof(pthread_rwlock_t);
 }
 
 #endif

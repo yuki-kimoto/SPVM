@@ -6,24 +6,41 @@
 
 #include "spvm_typedecl.h"
 
-struct spvm_mutex;
-typedef struct spvm_mutex SPVM_MUTEX;
+#if defined(_WIN32)
 
-struct spvm_mutex {
-   void* lock;
-   SPVM_ALLOCATOR* allocator;
-};
+#include <windows.h>
 
-SPVM_MUTEX* SPVM_MUTEX_new (SPVM_ALLOCATOR* allocator);
+void SPVM_MUTEX_lock (SRWLOCK* mutex);
 
-void SPVM_MUTEX_free (SPVM_MUTEX* mutex);
+void SPVM_MUTEX_unlock (SRWLOCK* mutex);
 
-void SPVM_MUTEX_lock (SPVM_MUTEX* mutex);
+void SPVM_MUTEX_reader_lock (SRWLOCK* mutex);
 
-void SPVM_MUTEX_unlock (SPVM_MUTEX* mutex);
+void SPVM_MUTEX_reader_unlock (SRWLOCK* mutex);
 
-void SPVM_MUTEX_reader_lock (SPVM_MUTEX* mutex);
+int32_t SPVM_MUTEX_size ();
 
-void SPVM_MUTEX_reader_unlock (SPVM_MUTEX* mutex);
+#else
 
-#endif  // SPVM_MUTEX_H
+#include <unistd.h>
+#include <pthread.h>
+#include <stdlib.h>
+
+#define SAFE_PTHREAD(fncall)    \
+  do {                          \
+    if ((fncall) != 0) abort(); \
+  } while (0)
+
+void SPVM_MUTEX_lock (pthread_rwlock_t* mutex);
+
+void SPVM_MUTEX_unlock (pthread_rwlock_t* mutex);
+
+void SPVM_MUTEX_reader_lock (pthread_rwlock_t* mutex);
+
+void SPVM_MUTEX_reader_unlock (pthread_rwlock_t* mutex);
+
+int32_t SPVM_MUTEX_size ();
+
+#endif // defined(_WIN32)
+
+#endif // SPVM_MUTEX_H

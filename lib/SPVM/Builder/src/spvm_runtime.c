@@ -38,11 +38,6 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
     SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, runtime->basic_types);
   }
   
-  if (runtime->mutex) {
-    SPVM_MUTEX_free(runtime->mutex);
-    runtime->mutex = NULL;
-  }
-  
   // Free allocator
   SPVM_ALLOCATOR_free(runtime->allocator);
   runtime->allocator = NULL;
