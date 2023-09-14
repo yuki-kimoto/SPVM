@@ -20,7 +20,7 @@ C<SPVM::Address> is a L<SPVM> class to have a address.
 
 =head2 new
 
-  static method new : Address ();
+C<static method new : L<Address|SPVM::Address> ();>
 
 Creates a new L<Address|SPVM::Address> object. The address is C<NULL> of the C language.
 

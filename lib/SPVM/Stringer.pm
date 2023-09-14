@@ -28,7 +28,7 @@ L<Stringer|SPVM::Stringer> is the interface type for the stringing callback.
 
 =head1 Interface Methods
 
-  required method : string ($object : object)
+C<required method : string ($object : object)>
 
 The implementation must receive a object and return the string that represents the object.
 

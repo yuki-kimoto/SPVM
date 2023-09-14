@@ -22,7 +22,7 @@ L<Comparator::String|SPVM::Comparator::String> is the interface type for the str
 
 =head1 Interface Methods
 
-  required method : int ($a : string, $b : string);
+C<required method : int ($a : string, $b : string);>
 
 This method must receive two values that types are C<string> and return the following value.
 

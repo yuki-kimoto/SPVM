@@ -41,7 +41,7 @@ C<z>.
 
 =head2 new
 
-  static method new : Point3D ($x : int = 0, $y : int = 0, $z : int = 0);
+C<static method new : L<Point3D|SPVM::Point3D> ($x : int = 0, $y : int = 0, $z : int = 0);>
 
 Creates a new C<Point3D> object with $x, $y, $z.
 
@@ -57,19 +57,19 @@ Initializes L</"x">, L</"y">, and L</"z">.
 
 =head2 clear
 
-  method clear : void ();
+C<method clear : void ();>
 
 Sets L<x|SPVM::Point/"x">, L<y|SPVM::Point/"y">, and L</"z"> to 0.
 
 =head2 clone
 
-  method clone : Point3D ();
+C<method clone : L<Point3D|SPVM::Point3D> ();>
 
 Creates a new C<Point3D> object that clones myself.
 
 =head2 to_string
 
-  method to_string : string ();
+C<method to_string : string ();>
 
 Stringifies the C<Point3D> object as the following format.
 

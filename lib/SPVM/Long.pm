@@ -31,7 +31,7 @@ The value.
 
 =head2 new
 
-  static method new : Long ($value : long);
+C<static method new : L<Long|SPVM::Long> ($value : long);>
 
 Creates a new L<Long|SPVM::Long> object with a C<long> $value.
 

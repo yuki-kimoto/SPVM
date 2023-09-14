@@ -42,7 +42,7 @@ A class of SPVM:
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
-    static method sum : int ($nums : int[]) {
+C<static method sum : int ($nums : int[])>
       
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {

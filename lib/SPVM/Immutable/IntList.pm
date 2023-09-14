@@ -44,7 +44,7 @@ This field is the length of the elements of the list.
 
 =head2 new
 
-  static method new : Immutable::IntList ($array : int[] = undef);
+C<static method new : L<Immutable::IntList|SPVM::Immutable::IntList> ($array : int[] = undef);>
 
 Create a new L<Immutable::IntList|SPVM::Immutable::IntList> object using L</"new_len">.
 
@@ -59,7 +59,7 @@ Examples:
 
 =head2 new_len
 
-  static method new_len : Immutable::IntList ($length : int);
+C<static method new_len : L<Immutable::IntList|SPVM::Immutable::IntList> ($length : int);>
 
 Creates a new L<Immutable::IntList|SPVM::Immutable::IntList> object with $length.
 
@@ -71,7 +71,7 @@ $length must be greater than or equal to 0.
 
 =head2 get
 
-  method get : int ($index : int);
+C<method get : int ($index : int);>
 
 Gets the element of the position of $index.
 
@@ -83,7 +83,7 @@ $index must be less than the length of $list.
 
 =head2 to_array
 
-  method to_array : int[] ();
+C<method to_array : int[] ();>
 
 Converts the list to an array.
 

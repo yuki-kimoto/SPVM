@@ -31,7 +31,7 @@ The value.
 
 =head2 new
 
-  static method new : Float ($value : float);
+C<static method new : L<Float|SPVM::Float> ($value : float);>
 
 Creates a new L<Float|SPVM::Float> object with a C<float> $value.
 

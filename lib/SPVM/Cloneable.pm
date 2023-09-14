@@ -11,7 +11,7 @@ SPVM::Cloneable - Interface Type to Clone Object
   class Point {
     interface Cloneable;
     
-    method clone : Point () {
+C<method clone : L<Point|SPVM::Point> ()>
       my $new_point = Point->new($self->x, $self->y);
       
       return $new_point;
@@ -28,7 +28,7 @@ Interface methods.
 
 =head2 clone
 
-  required method clone : object ();
+C<required method clone : object ();>
 
 The implementation must return the cloned object.
 

@@ -22,7 +22,7 @@ L<Comparator::Double|SPVM::Comparator::Double> is the interface type for the dou
 
 =head1 Interface Methods
 
-  required method : int ($a : double, $b : double);
+C<required method : int ($a : double, $b : double);>
 
 This method must receive two values that types are C<double> and return the following value.
 
