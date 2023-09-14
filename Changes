@@ -28,6 +28,8 @@
       
     * All SPVM source files are compiled and linked with "-pthread" option except for Windows.
       This is because of using mutex features.
+    
+    * Add spvm_mutex.h and spvm_mutex.c.
   [Document Improvement]
     * Class names in the return value and argument in method definitions in doc are linked.
 0.989041 2023-09-09
