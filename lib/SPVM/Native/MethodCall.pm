@@ -28,13 +28,13 @@ The Native::MethodCall class of L<SPVM> has methods to call methods.
 
 =head2 new_class_method
 
-  static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
+C<static method new_class_method : L<Native::MethodCall|SPVM::Native::MethodCall> ($basic_type_name : string, $method_name : string);>
 
 Create a class method call and returns it. It is a L<Native::MethodCall>.
 
 =head2 call_callback
 
-  static method call_callback : void ($callback : Native::MethodCall::Callback, $error_id : int*, $stack = undef : Native::Stack);
+C<static method call_callback : void ($callback : L<Native::MethodCall::Callback|SPVM::Native::MethodCall::Callback>, $error_id : int*, $stack = undef : L<Native::Stack|SPVM::Native::Stack>);>
 
 Calls a callback with a stack. If $stack is not defined, the current stack is used.
 
@@ -46,7 +46,7 @@ If the callback throw exception, the error id is set to $error_id. Otherwise 0 i
 
 =head2 call_class_method
 
-  static method call_class_method : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : Native::Stack = undef, $env : Native::Env = undef);
+C<static method call_class_method : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : L<Native::Stack|SPVM::Native::Stack> = undef, $env : L<Native::Env|SPVM::Native::Env> = undef);>
   
 Calls a class method with an environment and a stack without arguments. If the environment is not given, the current environment is used.
 
@@ -60,7 +60,7 @@ If $environment is not defined, the current environment is used.
 
 =head2 get_exception
 
-  static method get_exception : string ($stack : Native::Stack = undef, $env : Native::Env = undef);
+C<static method get_exception : string ($stack : L<Native::Stack|SPVM::Native::Stack> = undef, $env : L<Native::Env|SPVM::Native::Env> = undef);>
 
 Copies an excetpion on a stack, and returns it.
 
@@ -74,7 +74,7 @@ If $environment is not defined, the current environment is used.
 
 =head2 set_exception
 
-  static method set_exception : void ($exception : string, $stack : Native::Stack = undef, $env : Native::Env = undef);
+C<static method set_exception : void ($exception : string, $stack : L<Native::Stack|SPVM::Native::Stack> = undef, $env : L<Native::Env|SPVM::Native::Env> = undef);>
 
 Copies an excetpion on a stack using an enviroment, and sets it to the stack.
 
@@ -90,7 +90,7 @@ If $environment is not defined, the current environment is used.
 
 =head2 call
 
-  method call : object ($args : object[]);
+C<method call : object ($args : object[]);>
 
 Calls a method with arguments and returns the return value.
 

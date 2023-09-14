@@ -28,13 +28,13 @@ L<Bool|SPVM::Bool> is automatically loaded just after the program starts.
 
 =head2 TRUE
 
-  static method TRUE : Bool ();
+C<static method TRUE : L<Bool|SPVM::Bool> ();>
 
 A true singleton. This is created by INIT block when the program start.
 
 =head2 FALSE
 
-  static method FALSE : Bool ();
+C<static method FALSE : L<Bool|SPVM::Bool> ();>
 
 A false singleton. This is created by INIT block when the program start.
 
@@ -42,7 +42,7 @@ A false singleton. This is created by INIT block when the program start.
 
 =head2 value
 
-  method value : int ();
+C<method value : int ();>
 
 Returns a C<int> value.
 

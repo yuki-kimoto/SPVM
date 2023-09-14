@@ -79,7 +79,7 @@ The length of the list.
 
 =head2 new
 
-  static method new : FloatList ($array : float[] = undef, $capacity : int = -1);
+C<static method new : L<FloatList|SPVM::FloatList> ($array : float[] = undef, $capacity : int = -1);>
 
 Create a new C<FloatList> object using L</"new_len">.
 
@@ -94,7 +94,7 @@ Examples:
 
 =head2 new_len
 
-  static method new_len : FloatList ($length : int, $capacity : int = -1);
+C<static method new_len : L<FloatList|SPVM::FloatList> ($length : int, $capacity : int = -1);>
 
 Creates a new C<FloatList> object with $length and $capacity.
 
@@ -110,7 +110,7 @@ $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 get
 
-  method get : float ($index : int);
+C<method get : float ($index : int);>
 
 Gets the element of the position of $index.
 
@@ -122,7 +122,7 @@ $index must be less than the length of $list.
 
 =head2 insert
 
-  method insert : void ($index : int, $element : float);
+C<method insert : void ($index : int, $element : float);>
 
 Inserts an $element to the position of $index.
 
@@ -134,7 +134,7 @@ $index must be less than or equal to the length of $list. Otherwise an exception
 
 =head2 pop
 
-  method pop : float ();
+C<method pop : float ();>
 
 Removes the last element and return it.
 
@@ -144,13 +144,13 @@ The length of $list must be greater than 0. Otherwise an exception is thrown.
 
 =head2 push
   
-  method push : void ($element : float);
+C<method push : void ($element : float);>
 
 Adds an $element after the end of the list.
 
 =head2 remove
 
-  method remove : float ($index : int);
+C<method remove : float ($index : int);>
 
 Removes the element at the position of $index and return it.
 
@@ -162,7 +162,7 @@ $index must be less than the length of $list.
 
 =head2 replace
 
-  method replace : void ($offset : int, $remove_length : int, $replace : float[]);
+C<method replace : void ($offset : int, $remove_length : int, $replace : float[]);>
 
 Replaces the elements of the range specified by $offset and $lenght with $replace array.
 
@@ -176,7 +176,7 @@ $offset + $removing lenght must be less than or equal to the length of $list. Ot
 
 =head2 reserve
 
-  method reserve : void ($new_capacity : int);
+C<method reserve : void ($new_capacity : int);>
 
 Reserves the elements with $new_capacity.
 
@@ -188,7 +188,7 @@ $new_capacity must be greater than or equal to 0. Otherwise an exception is thro
 
 =head2 resize
 
-  method resize : void ($new_length : int);
+C<method resize : void ($new_length : int);>
 
 Resize the list with $new_length.
 
@@ -198,7 +198,7 @@ $new_length must be greater than or equal to 0. Otherwise an exception is thrown
 
 =head2 set
 
-  method set : void ($index : int, $element : float);
+C<method set : void ($index : int, $element : float);>
 
 Sets $element at the position of $index.
 
@@ -210,7 +210,7 @@ $index must be less than the length of $list. Otherwise an exception is thrown.
 
 =head2 set_array
 
-  method set_array : void ($array : float[]);
+C<method set_array : void ($array : float[]);>
 
 Sets an $array. Each element of $array is copied to the element of the list.
 
@@ -222,7 +222,7 @@ The length of $array must be equal to the length of $list. Otherwise an exceptio
 
 =head2 shift
 
-  method shift : float ();
+C<method shift : float ();>
 
 Removes the first element and return it.
 
@@ -232,13 +232,13 @@ The length of $list must be greater than 0. Otherwise an exception is thrown.
 
 =head2 to_array
 
-  method to_array : float[] ();
+C<method to_array : float[] ();>
 
 Creates a new array with the length of the list and copies all elements of the list into the new array, and returns it.
 
 =head2 get_array_unsafe
 
-  method get_array_unsafe : float[] ();
+C<method get_array_unsafe : float[] ();>
 
 Gets the internally array.
 
@@ -246,7 +246,7 @@ This array is unsafe because it continues to point to the old array if the inter
 
 =head2 unshift
 
-  method unshift : void ($element : float);
+C<method unshift : void ($element : float);>
 
 Inserts an $element at the beginning of the list.
 

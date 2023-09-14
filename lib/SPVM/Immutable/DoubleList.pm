@@ -44,7 +44,7 @@ This field is the length of the elements of the list.
 
 =head2 new
 
-  static method new : Immutable::DoubleList ($array : double[] = undef);
+C<static method new : L<Immutable::DoubleList|SPVM::Immutable::DoubleList> ($array : double[] = undef);>
 
 Create a new L<Immutable::DoubleList|SPVM::Immutable::DoubleList> object using L</"new_len">.
 
@@ -59,7 +59,7 @@ Examples:
 
 =head2 new_len
 
-  static method new_len : Immutable::DoubleList ($length : int);
+C<static method new_len : L<Immutable::DoubleList|SPVM::Immutable::DoubleList> ($length : int);>
 
 Creates a new L<Immutable::DoubleList|SPVM::Immutable::DoubleList> object with $length and $capacity.
 
@@ -71,7 +71,7 @@ $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 get
 
-  method get : double ($index : int);
+C<method get : double ($index : int);>
 
 Gets the element of the position of $index.
 
@@ -83,7 +83,7 @@ $index must be less than the length of $list.
 
 =head2 to_array
 
-  method to_array : double[] ();
+C<method to_array : double[] ();>
 
 Converts the list to an array.
 

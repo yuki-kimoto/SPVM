@@ -22,7 +22,7 @@ L<Comparator::Float|SPVM::Comparator::Float> is the interface type for the float
 
 =head1 Interface Methods
 
-  required method : int ($a : float, $b : float);
+C<required method : int ($a : float, $b : float);>
 
 This method must receive two values that types are C<float> and return the following value.
 

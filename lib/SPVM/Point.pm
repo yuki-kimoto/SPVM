@@ -52,7 +52,7 @@ C<y>.
 
 =head2 new
 
-  static method new : Point ($x : int = 0, $y : int = 0);
+C<static method new : L<Point|SPVM::Point> ($x : int = 0, $y : int = 0);>
 
 Create a new C<Point> object with $x and $y.
 
@@ -66,19 +66,19 @@ Initializes L</"x"> and L</"y">.
 
 =head2 clear
 
-  method clear : void ();
+C<method clear : void ();>
 
 Sets L</"x"> and L</"y"> to 0.
 
 =head2 clone
 
-  method clone : Point ();
+C<method clone : L<Point|SPVM::Point> ();>
 
 Creates a new C<Point> object that clones myself.
 
 =head2 to_string
 
-  method to_string : string ();
+C<method to_string : string ();>
 
 Stringifies the C<Point> object as the following format.
 

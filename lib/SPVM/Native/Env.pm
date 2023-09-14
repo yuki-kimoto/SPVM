@@ -42,7 +42,7 @@ A compiler. The field type is the L<Native::Compiler|SPVM::Native::Compiler> cla
 
 =head1 Class Methods
 
-  static method new : Native::Env ($compiler : Native::Compiler = undef);
+C<static method new : L<Native::Env|SPVM::Native::Env> ($compiler : L<Native::Compiler|SPVM::Native::Compiler> = undef);>
 
 Creates a new L<Native::Env|SPVM::Native::Env> ojbect, and returns it.
 
@@ -50,19 +50,19 @@ Creates a new L<Native::Env|SPVM::Native::Env> ojbect, and returns it.
 
 =head2 set_command_info
 
-  method set_command_info : void ($program_name : string, $argv : string[]);
+C<method set_command_info : void ($program_name : string, $argv : string[]);>
 
 Sets command line information.
 
 =head2 call_init_methods
 
-  method call_init_methods : void ();
+C<method call_init_methods : void ();>
 
 Calls all L<INIT blocks|SPVM::Document::Language/"INIT Block">.
 
 =head2 new_stack
 
-  method new_stack : Native::Stack ();
+C<method new_stack : L<Native::Stack|SPVM::Native::Stack> ();>
 
 Builds a call stack and returns it.
 
@@ -70,19 +70,19 @@ The return type is the L<Native::Stack|SPVM::Native::Stack> class.
 
 =head2 get_exception
 
-  method get_exception : string ();
+C<method get_exception : string ();>
 
 Gets the excetpion.
 
 =head2 set_exception
 
-  method set_exception : void ($exception : string);
+C<method set_exception : void ($exception : string);>
 
 Sets an excetpion.
 
 =head2 DESTROY
 
-  method DESTROY : void ();
+C<method DESTROY : void ();>
 
 The destructor.
 

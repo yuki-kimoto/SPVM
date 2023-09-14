@@ -31,7 +31,7 @@ The value.
 
 =head2 new
 
-  static method new : Double ($value : double);
+C<static method new : L<Double|SPVM::Double> ($value : double);>
 
 Creates a new L<Double|SPVM::Double> object with a C<double> $value.
 

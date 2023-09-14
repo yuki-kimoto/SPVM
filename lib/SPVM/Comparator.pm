@@ -36,7 +36,7 @@ C<Comparator> is the interface type for the object comparation callback.
 
 =head1 Interface Methods
 
-  required method : int ($object1 : object, $object2 : object);
+C<required method : int ($object1 : object, $object2 : object);>
 
 This method must receive two objects and return the following value.
 

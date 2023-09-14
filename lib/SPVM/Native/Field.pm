@@ -20,7 +20,7 @@ The Native::Field class of L<SPVM> has methods to manipulate information of fiel
 
 =head2 get_index
 
-  method get_index : int ();
+C<method get_index : int ();>
 
 Gets the index.
 
@@ -28,7 +28,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_name
 
-  method get_name : string ();
+C<method get_name : string ();>
 
 Gets the name.
 
@@ -36,7 +36,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_basic_type
 
-  method get_basic_type : Native::BasicType ();
+C<method get_basic_type : L<Native::BasicType|SPVM::Native::BasicType> ();>
 
 Gets the L<Native::BasicType|SPVM::Native::BasicType> object.
 
@@ -44,7 +44,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_type_dimension
 
-  method get_type_dimension : int ();
+C<method get_type_dimension : int ();>
 
 Gets the type dimension.
 
@@ -52,7 +52,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_type_flag
 
-  method get_type_flag : int ();
+C<method get_type_flag : int ();>
 
 Gets the type flag.
 
@@ -60,7 +60,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_current_basic_type
 
-  method get_current_basic_type : Native::BasicType ();
+C<method get_current_basic_type : L<Native::BasicType|SPVM::Native::BasicType> ();>
 
 Gets the current L<Native::BasicType|SPVM::Native::BasicType> object that defines this field.
 

@@ -45,7 +45,7 @@ A handler. The type is L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler>.
 
 =head2 new
 
-  static method new : Scope::Guard ($handler : Scope::Guard::Handler);
+C<static method new : L<Scope::Guard|SPVM::Scope::Guard> ($handler : L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler>);>
 
 Creates a new C<Scope::Guard> object and returns it.
 
@@ -61,7 +61,7 @@ $handler must be defined. Otherwise an exception is thrown.
 
 =head2 DESTROY
 
-  method DESTROY : void ();
+C<method DESTROY : void ();>
 
 Executes the L</"handler">.
 

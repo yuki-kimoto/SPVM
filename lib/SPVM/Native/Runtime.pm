@@ -36,13 +36,13 @@ Its insntace has a pointer to a L<runtime|SPVM::Document::NativeAPI::Native::Run
 
 =head2 get_basic_types_length
 
-  method get_basic_types_length : int ();
+C<method get_basic_types_length : int ();>
 
 Returns the length of the all basic types in the runtime.
 
 =head2 get_basic_type_by_id
 
-  method get_basic_type_by_id : Native::BasicType ($id : int);
+C<method get_basic_type_by_id : L<Native::BasicType|SPVM::Native::BasicType> ($id : int);>
 
 Returns a L<Native::BasicType|SPVM::Native::BasicType> object by a basic type ID.
 
@@ -52,7 +52,7 @@ If The basic type cannot be found, an exception is throen.
 
 =head2 get_basic_type_by_name
 
-  method get_basic_type_by_name : Native::BasicType ($name : string);
+C<method get_basic_type_by_name : L<Native::BasicType|SPVM::Native::BasicType> ($name : string);>
 
 Returns a L<Native::BasicType|SPVM::Native::BasicType> object by a basic type name.
 
@@ -62,13 +62,13 @@ If The basic type cannot be found, an exception is throen.
 
 =head2 build_precompile_module_source
 
-  method build_precompile_module_source : string ($basic_type : Native::BasicType);
+C<method build_precompile_module_source : string ($basic_type : L<Native::BasicType|SPVM::Native::BasicType>);>
 
 Builds the C source code of the class that contains C<precompile> methods and returns it.
 
 =head2 build_precompile_method_source
 
-  method method build_precompile_method_source : string ($method : Native::Method);
+C<method method build_precompile_method_source : string ($method : L<Native::Method|SPVM::Native::Method>);>
 
 Builds the C source code of a C<precompile> method and returns it.
 
