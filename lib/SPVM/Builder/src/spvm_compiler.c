@@ -37,6 +37,7 @@
 #include "spvm_var.h"
 #include "spvm_string.h"
 #include "spvm_class_file.h"
+#include "spvm_mutex.h"
 
 #include "spvm_api.h"
 #include "spvm_api_runtime.h"
@@ -801,9 +802,9 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
         runtime_method->is_class_method = method->is_class_method;
         runtime_method->is_init = method->is_init;
         runtime_method->is_anon = method->is_anon;
-        runtime_method->byte_vars_width  = method->byte_vars_width;
+        runtime_method->byte_vars_width = method->byte_vars_width;
         runtime_method->short_vars_width  = method->short_vars_width;
-        runtime_method->int_vars_width  = method->int_vars_width;
+        runtime_method->int_vars_width = method->int_vars_width;
         runtime_method->long_vars_width  = method->long_vars_width;
         runtime_method->float_vars_width  = method->float_vars_width;
         runtime_method->double_vars_width  = method->double_vars_width;
@@ -896,6 +897,12 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     if (basic_type->destructor_method) {
       runtime_basic_type->destructor_method = &runtime_basic_type->methods[basic_type->destructor_method->index];
     }
+  }
+  
+  if (!runtime->mutex) {
+    SPVM_MUTEX* mutex = SPVM_MUTEX_new(runtime->allocator);
+    
+    runtime->mutex = mutex;
   }
   
   compiler->runtime = runtime;
