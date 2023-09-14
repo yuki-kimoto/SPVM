@@ -30,13 +30,13 @@ L<EqualityChecker::Address|SPVM::EqualityChecker::Address> is a callback impleme
 
 =head2 new
 
-  static method new : EqualityChecker::Address ();
+C<static method new : L<EqualityChecker::Address|SPVM::EqualityChecker::Address> ();>
 
 Create a new L<EqualityChecker::Address|SPVM::EqualityChecker::Address> object.
 
 =head1 Interface Method Implementation
 
-  method : int ($object1 : object, $object2 : object);
+C<method : int ($object1 : object, $object2 : object);>
 
 If the address of the two objects are equal, return 1, otherwise return 0.
 

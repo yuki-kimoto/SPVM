@@ -31,7 +31,7 @@ The value.
 
 =head2 new
 
-  static method new : Byte ($value : int);
+C<static method new : L<Byte|SPVM::Byte> ($value : int);>
 
 Creates a new L<Byte|SPVM::Byte> object with a C<byte> $value.
 

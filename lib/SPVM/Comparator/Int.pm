@@ -22,7 +22,7 @@ L<Comparator::Int|SPVM::Comparator::Int> is the interface type for the int compa
 
 =head1 Interface Methods
 
-  required method : int ($a : int, $b : int);
+C<required method : int ($a : int, $b : int);>
 
 This method must receive two values that types are C<int> and return the following value.
 

@@ -1,3 +1,4 @@
+  * Class names in the return value and argument in method definitions in doc are linked.
 0.989041 2023-09-09
   [New Features]
     * The call_method method in the SPVM::ExchangeAPI class: any object argument can receive a value of string type.

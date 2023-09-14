@@ -40,7 +40,7 @@ An executable environemnt. The field type is the L<Native::Env|SPVM::Native::Env
 
 =head2 DESTROY
 
-  method DESTROY : void ();
+C<method DESTROY : void ();>
 
 The destructor.
 

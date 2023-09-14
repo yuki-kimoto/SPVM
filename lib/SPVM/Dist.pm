@@ -954,7 +954,7 @@ sub generate_basic_test_spvm_class_file {
   if ($resource) {
     $basic_test_spvm_class_content = <<"EOS";
 class TestCase::$basic_type_name {
-  native static method test : int ();
+C<native static method test : int ();>
 }
 EOS
   }
@@ -962,7 +962,7 @@ EOS
     $basic_test_spvm_class_content = <<"EOS";
 class TestCase::$basic_type_name {
   use $basic_type_name;
-  static method test : int () {
+C<static method test : int ()>
     
     return 1;
   }

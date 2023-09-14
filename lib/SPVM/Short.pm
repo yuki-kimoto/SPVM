@@ -31,7 +31,7 @@ The value.
 
 =head2 new
 
-  static method new : Short ($value : int);
+C<static method new : L<Short|SPVM::Short> ($value : int);>
 
 Creates a new L<Short|SPVM::Short> object with a C<short> $value.
 

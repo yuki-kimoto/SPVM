@@ -20,7 +20,7 @@ The Native::Method class of L<SPVM> has methods to manipulate information of met
 
 =head2 get_index
 
-  method get_index : int ();
+C<method get_index : int ();>
 
 Returns the index.
 
@@ -28,7 +28,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_name
 
-  method get_name : string ();
+C<method get_name : string ();>
 
 Returns the name.
 
@@ -36,7 +36,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_return_basic_type
 
-  method get_return_basic_type : Native::BasicType ();
+C<method get_return_basic_type : L<Native::BasicType|SPVM::Native::BasicType> ();>
 
 Returns the L<Native::BasicType|SPVM::Native::BasicType> object of the return value.
 
@@ -44,7 +44,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_return_type_dimension
 
-  method get_return_type_dimension : int ();
+C<method get_return_type_dimension : int ();>
 
 Returns the type dimension of the return value.
 
@@ -52,7 +52,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_return_type_flag
 
-  method get_return_type_flag : int ();
+C<method get_return_type_flag : int ();>
 
 Returns the type flag of the return value.
 
@@ -60,7 +60,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_current_basic_type
 
-  method get_current_basic_type : Native::BasicType ();
+C<method get_current_basic_type : L<Native::BasicType|SPVM::Native::BasicType> ();>
 
 Returns the current L<Native::BasicType|SPVM::Native::BasicType> object that defines this method.
 
@@ -68,7 +68,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_arg_by_index
 
-  method get_arg_by_index : Native::Arg ($arg_index : int);
+C<method get_arg_by_index : L<Native::Arg|SPVM::Native::Arg> ($arg_index : int);>
 
 Gets a L<arg|Native::Arg> object by an index, and returns it.
 
@@ -76,7 +76,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_args_length
 
-  method get_args_length : int ();
+C<method get_args_length : int ();>
 
 Returns the length of the arguments.
 
@@ -84,7 +84,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_required_args_length
 
-  method get_required_args_length : int ();
+C<method get_required_args_length : int ();>
 
 Returns the length of the required arguments.
 
@@ -92,7 +92,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 is_class_method
 
-  method is_class_method : int ();
+C<method is_class_method : int ();>
 
 If the method is class method, returns 1. Otherwise returns 0.
 
@@ -100,7 +100,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 is_anon
 
-  method is_anon : int ();
+C<method is_anon : int ();>
 
 If the method is anon method, returns 1. Otherwise returns 0.
 
@@ -108,7 +108,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 is_native
 
-  method is_native : int ();
+C<method is_native : int ();>
 
 If the method is native method, returns 1. Otherwise returns 0.
 
@@ -116,7 +116,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 is_precompile
 
-  method is_precompile : int ();
+C<method is_precompile : int ();>
 
 If the method is precompiled method, returns 1. Otherwise returns 0.
 
@@ -124,7 +124,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 is_enum
 
-  method is_enum : int ();
+C<method is_enum : int ();>
 
 If the method is enumeration, returns 1. Otherwise returns 0.
 
@@ -132,7 +132,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_native_address
 
-  method get_native_address : Address ();
+C<method get_native_address : L<Address|SPVM::Address> ();>
 
 Gets the native L<address|SPVM::Address>.
 
@@ -140,7 +140,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 set_native_address
 
-  method set_native_address : void ($address : Address);
+C<method set_native_address : void ($address : L<Address|SPVM::Address>);>
 
 Sets the native L<address|SPVM::Address>.
 
@@ -148,7 +148,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 get_precompile_address
 
-  method get_precompile_address : Address ();
+C<method get_precompile_address : L<Address|SPVM::Address> ();>
 
 Gets the precompiled L<address|SPVM::Address>.
 
@@ -156,7 +156,7 @@ If a memory error occurs, an exception is thrown.
 
 =head2 set_precompile_address
 
-  method set_precompile_address : void ($address : Address);
+C<method set_precompile_address : void ($address : L<Address|SPVM::Address>);>
 
 Sets the precompiled L<address|SPVM::Address>.
 

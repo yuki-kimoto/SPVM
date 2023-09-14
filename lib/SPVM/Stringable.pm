@@ -11,7 +11,7 @@ SPVM::Stringable - A Interface Type to Stringify a Object
   class Point {
     interface Stringable;
   
-    method to_string : string ();
+C<method to_string : string ();>
       my $x = $sel->x;
       my $y = $sel->y;
       
@@ -31,7 +31,7 @@ Interface methods.
 
 =head2 to_string
 
-  required method to_string : string ();
+C<required method to_string : string ();>
 
 The implementation must return the string expression.
 

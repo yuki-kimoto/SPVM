@@ -62,7 +62,7 @@ Its insntace has a pointer to a L<compiler|SPVM::Document::NativeAPI::Native::Co
 
 =head2 new
 
-  static method new : Native::Compiler ();
+C<static method new : L<Native::Compiler|SPVM::Native::Compiler> ();>
 
 Creates a new C<Native::Compiler> object and returns it.
 
@@ -70,25 +70,25 @@ Creates a new C<Native::Compiler> object and returns it.
 
 =head2 add_include_dir
 
-  method add_include_dir : void ($include_dir : string);
+C<method add_include_dir : void ($include_dir : string);>
 
 Adds a class directory to search for classes.
 
 =head2 set_start_file
 
-  method set_start_file : void ($start_file : string);
+C<method set_start_file : void ($start_file : string);>
 
 Sets the name of the file to start the compiling by the L</"compile"> method.
 
 =head2 set_start_line
 
-  method set_start_line : void ($start_line : int);
+C<method set_start_line : void ($start_line : int);>
 
 Sets the line to start compiling by the L</"compile"> method.
 
 =head2 compile
 
-  method compile : int ($basic_type_name : string);
+C<method compile : int ($basic_type_name : string);>
 
 Compiles the specified class and the classes that are load in the specified class. 
 
@@ -98,13 +98,13 @@ This method can be called multiple times.
 
 =head2 get_error_messages
 
-  method get_error_messages : string[] ();
+C<method get_error_messages : string[] ();>
 
 Returns compilation error messages in this compiling by the L</"compile"> method.
 
 =head2 get_runtime
 
-  method get_runtime : Native::Runtime ();
+C<method get_runtime : L<Native::Runtime|SPVM::Native::Runtime> ();>
 
 Returns the runtime.
 
@@ -112,7 +112,7 @@ The return value is a L<Native::Runtime|SPVM::Native::Runtime> object.
 
 =head2 get_class_file
 
-  method get_class_file : Native::ClassFile ($class_name : string);
+C<method get_class_file : L<Native::ClassFile|SPVM::Native::ClassFile> ($class_name : string);>
 
 Gets a L<Native::ClassFile> object by a class name, and returns it.
 

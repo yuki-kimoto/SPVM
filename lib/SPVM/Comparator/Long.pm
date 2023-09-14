@@ -22,7 +22,7 @@ L<Comparator::Long|SPVM::Comparator::Long> is the interface type for the long co
 
 =head1 Interface Methods
 
-  required method : int ($a : long, $b : long);
+C<required method : int ($a : long, $b : long);>
 
 This method must receive two values that types are C<long> and return the following value.
 

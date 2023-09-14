@@ -52,7 +52,7 @@ The length of the string buffer.
 
 =head2 new
 
-  static method new : StringBuffer ($string : string = undef, $capacity : int = -1);
+C<static method new : L<StringBuffer|SPVM::StringBuffer> ($string : string = undef, $capacity : int = -1);>
 
 Creates a new C<StringBuffer> object using L</"new_len">.
 
@@ -62,7 +62,7 @@ $string is copied to the value of the the created string buffer.
 
 =head2 new_len
 
-  static method new_len : StringBuffer ($length : int, $capacity : int = -1);
+C<static method new_len : L<StringBuffer|SPVM::StringBuffer> ($length : int, $capacity : int = -1);>
 
 Creates a new C<StringBuffer> object with $length and $capacity.
 
@@ -78,7 +78,7 @@ $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 push
 
-  method push : void ($string : string, $offset : int = 0, $length : int = -1);
+C<method push : void ($string : string, $offset : int = 0, $length : int = -1);>
 
 Adds a $string from $offset to the position proceeded by $length after the end of the string in the string buffer.
 
@@ -92,13 +92,13 @@ $offset + $length must be less than or equal to the length of $string. Otherwise
 
 =head2 push_char
 
-  method push_char : void ($char : int);
+C<method push_char : void ($char : int);>
 
 Adds Ascii $char after the end of the string in the string buffer.
 
 =head2 replace
 
-  method replace : void ($offset : int, $length : int, $replace : string);
+C<method replace : void ($offset : int, $length : int, $replace : string);>
 
 Replace the characters of the range specified by $offset and $length in the buffer with $replace string.
 
@@ -110,7 +110,7 @@ $offset + $length must be less than or equal to the length of the string buffer.
 
 =head2 reserve
 
-  method reserve : void ($new_capacity : int);
+C<method reserve : void ($new_capacity : int);>
 
 Reserves the characters that size is $new_capacity.
 
@@ -122,13 +122,13 @@ $new_capacity must be greater than or equal to 0. Otherwise an exception is thro
 
 =head2 to_string
 
-  method to_string : string ();
+C<method to_string : string ();>
 
 Creates a new string with the length of the buffer and copies all characters in the buffer into the new string, and returns it.
 
 =head2 get_string_unsafe
 
-  method get_string_unsafe : string ();
+C<method get_string_unsafe : string ();>
 
 Gets the internally string. 
 

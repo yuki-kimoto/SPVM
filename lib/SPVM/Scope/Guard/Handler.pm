@@ -18,7 +18,7 @@ C<Scope::Guard::Handler> is an L<interface|SPVM::Document::Language/"Interface">
 
 =head2 Anon Method
 
-  required method : void ();
+C<required method : void ();>
 
 The handler of L<Scope::Guard|SPVM::Scope::Guard>.
 
