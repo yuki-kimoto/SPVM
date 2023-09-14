@@ -83,6 +83,13 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->runtime = SPVM_RUNTIME_new();
   
+  int32_t mutex_build_runtime_size = SPVM_MUTEX_size();
+  void* mutex_build_runtime = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, mutex_build_runtime_size);
+  
+  SPVM_MUTEX_init(mutex_build_runtime);
+  
+  compiler->mutex_build_runtime = mutex_build_runtime;
+  
   return compiler;
 }
 

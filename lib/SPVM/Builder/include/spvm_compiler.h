@@ -130,6 +130,8 @@ struct spvm_compiler {
   SPVM_HASH* basic_type_symtable;
   
   SPVM_RUNTIME* runtime;
+  
+  SPVM_MUTEX* mutex_build_runtime;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
