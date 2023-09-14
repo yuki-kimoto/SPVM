@@ -1924,7 +1924,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           if (method_return_type_is_object) {
             SPVM_OBJECT* return_object = *(void**)&stack[0];
             if (return_object != NULL) {
-              return_object->ref_count--;
+              SPVM_API_dec_ref_count_only(env, stack, return_object);
             }
           }
         }
@@ -2400,7 +2400,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
     
     if (object != NULL) {
       if (object->ref_count > 1) {
-        object->ref_count--;
+        SPVM_API_dec_ref_count_only(env, stack, object);
       }
       else {
         SPVM_API_dec_ref_count(env, stack, object);
@@ -2946,7 +2946,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_a
     return 0;
   }
   else {
-    object->ref_count--;
+    SPVM_API_dec_ref_count_only(env, stack, object);
   }
 
   // Create weaken_backref_head
@@ -3647,15 +3647,15 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     }
     
     // Decrement reference count
-    object->ref_count--;
-  
+    SPVM_API_dec_ref_count_only(env, stack, object);
+    
     // Free object
     SPVM_API_free_memory_stack(env, stack, object);
     object = NULL;
   }
   else {
     // Decrement reference count
-    object->ref_count--;
+    SPVM_API_dec_ref_count_only(env, stack, object);
   }
 }
 

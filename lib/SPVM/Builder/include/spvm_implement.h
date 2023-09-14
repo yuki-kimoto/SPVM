@@ -162,8 +162,7 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
 
 static inline void SPVM_IMPLEMENT_DEC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t object_ref_count_offset) {
   if (object != NULL) {
-    if (SPVM_IMPLEMENT_GET_REF_COUNT(env, stack, object, object_ref_count_offset) > 1) { SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, object, object_ref_count_offset); }
-    else { env->dec_ref_count(env, stack, object); }
+    env->dec_ref_count(env, stack, object);
   }
 }
 
