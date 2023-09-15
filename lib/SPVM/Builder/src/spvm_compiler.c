@@ -133,6 +133,8 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   SPVM_ALLOCATOR_free(compiler->class_file_allocator);
   compiler->class_file_allocator = NULL;
   
+  SPVM_MUTEX_destroy(compiler->mutex_compile);
+  
   SPVM_ALLOCATOR_free(compiler->global_allocator);
   compiler->global_allocator = NULL;
 }
@@ -910,15 +912,6 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     if (basic_type->destructor_method) {
       runtime_basic_type->destructor_method = &runtime_basic_type->methods[basic_type->destructor_method->index];
     }
-  }
-  
-  if (!runtime->mutex_assignability_symtable) {
-    int32_t mutex_assignability_symtable_size = SPVM_MUTEX_size();
-    void* mutex_assignability_symtable = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_assignability_symtable_size);
-    
-    SPVM_MUTEX_init(mutex_assignability_symtable);
-    
-    runtime->mutex_assignability_symtable = mutex_assignability_symtable;
   }
   
   compiler->runtime = runtime;
