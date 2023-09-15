@@ -1999,6 +1999,12 @@ C<void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars
 
 Leave scope using local mortal stack.
 
+=head2 assign_object
+
+C<void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object);>
+
+Assign an object.
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.

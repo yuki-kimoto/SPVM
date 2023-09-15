@@ -321,4 +321,8 @@ int32_t SPVM_API_call_method_vm(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_M
 
 int32_t SPVM_API_check_stack_env(SPVM_ENV* env, SPVM_VALUE* stack);
 
+// Assign
+
+void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist_address, SPVM_OBJECT* src_object);
+
 #endif

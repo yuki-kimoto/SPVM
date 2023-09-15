@@ -317,6 +317,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_check_stack_env,
     SPVM_API_dec_ref_count_only,
     SPVM_API_leave_scope_local,
+    SPVM_API_assign_object,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4236,4 +4237,16 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
   }
   *mortal_stack_top_ptr = original_mortal_stack_top;
   
+}
+
+void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist_address, SPVM_OBJECT* src_object) {
+  SPVM_OBJECT* tmp_object = SPVM_API_get_object_no_weaken_address(env, stack, src_object);
+  if (tmp_object != NULL) {
+    SPVM_API_inc_ref_count(env, stack, tmp_object);
+  }
+  if (*(SPVM_OBJECT**)(dist_address) != NULL) {
+    if (__builtin_expect(env->isweak(env, stack, dist_address), 0)) { env->unweaken(env, stack, (SPVM_OBJECT**)dist_address); }
+    SPVM_API_dec_ref_count(env, stack, *(SPVM_OBJECT**)(dist_address));
+  }
+  *(SPVM_OBJECT**)(dist_address) = tmp_object;
 }
