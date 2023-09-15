@@ -154,8 +154,6 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
 //  "& ~(intptr_t)1" means dropping weaken flag
 #define SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, object) ((void*)((intptr_t)object & ~(intptr_t)1))
 
-#define SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, object, object_ref_count_offset) ((*(int32_t*)((intptr_t)object + object_ref_count_offset))--)
-
 static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object, int32_t object_ref_count_offset) {
   void* tmp_object = (void*)((intptr_t)src_object & ~(intptr_t)1);
   if (tmp_object != NULL) {
