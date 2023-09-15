@@ -1993,6 +1993,12 @@ C<void (*dec_ref_count_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Decrements the reference count of the object, but do not release even if the reference count becomes 0.
 
+=head2 leave_scope_local
+
+  void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
+
+Leave scope using local mortal stack.
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.

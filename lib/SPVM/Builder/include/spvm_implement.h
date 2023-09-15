@@ -166,10 +166,9 @@ static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack
 static inline void SPVM_IMPLEMENT_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top, int32_t object_ref_count_offset) {
   for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
     int32_t var_index = mortal_stack[mortal_stack_index];
-    void** object_address = (void**)&object_vars[var_index];
-    if (*object_address != NULL) {
-      env->dec_ref_count(env, stack, *object_address);
-      *object_address = NULL;
+    if (object_vars[var_index] != NULL) {
+      env->dec_ref_count(env, stack, object_vars[var_index]);
+      object_vars[var_index] = NULL;
     }
   }
   *mortal_stack_top_ptr = original_mortal_stack_top;
