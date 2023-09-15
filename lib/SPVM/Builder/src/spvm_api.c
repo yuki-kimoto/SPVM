@@ -2627,7 +2627,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       SPVM_STRING_BUFFER_add(string_buffer, "\"");
     }
     else if (type_dimension > 0) {
-      int32_t array_length = object->length;
+      int32_t array_length = SPVM_API_length(env, stack, object);
       int32_t element_type_dimension = type_dimension - 1;
       
       SPVM_STRING_BUFFER_add(string_buffer, "[\n");
@@ -3568,7 +3568,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   if (object_ref_count == 1) {
     // Free object array
     if (SPVM_API_is_object_array(env, stack, object)) {
-      int32_t length = object->length;
+      int32_t length = SPVM_API_length(env, stack, object);
       for (int32_t index = 0; index < length; index++) {
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
 
@@ -3946,7 +3946,7 @@ SPVM_OBJECT* SPVM_API_copy_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   SPVM_OBJECT* new_object;
   
-  int32_t length = object->length;
+  int32_t length = SPVM_API_length(env, stack, object);
   
   if (SPVM_API_is_string(env, stack, object)) {
     new_object = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
