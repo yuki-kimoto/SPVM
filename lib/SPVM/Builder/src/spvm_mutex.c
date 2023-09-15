@@ -13,6 +13,10 @@ void SPVM_MUTEX_init(void* mutex) {
   InitializeSRWLock((SRWLOCK*)mutex);
 }
 
+void SPVM_MUTEX_destroy(void* mutex) {
+  
+}
+
 void SPVM_MUTEX_lock (void* mutex) {
   AcquireSRWLockExclusive((SRWLOCK*)mutex);
 }
@@ -47,6 +51,10 @@ int32_t SPVM_MUTEX_size () {
 void SPVM_MUTEX_init(void* mutex) {
   
   SAFE_PTHREAD(pthread_rwlock_init((pthread_rwlock_t*)mutex, NULL));
+}
+
+void SPVM_MUTEX_destroy(void* mutex) {
+  SAFE_PTHREAD(pthread_rwlock_destroy((pthread_rwlock_t*)mutex));
 }
 
 void SPVM_MUTEX_lock (void* mutex) {

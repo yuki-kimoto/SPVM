@@ -8,6 +8,8 @@
 
 void SPVM_MUTEX_init(void* mutex);
 
+void SPVM_MUTEX_destroy(void* mutex);
+
 void SPVM_MUTEX_lock (void* mutex);
 
 void SPVM_MUTEX_unlock (void* mutex);
