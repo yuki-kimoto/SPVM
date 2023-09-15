@@ -161,7 +161,7 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
 static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object, int32_t object_ref_count_offset) {
   void* tmp_object = SPVM_IMPLEMENT_GET_OBJECT_NO_WEAKEN_ADDRESS(env, stack, src_object);
   if (tmp_object != NULL) {
-    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, tmp_object, object_ref_count_offset);
+    env->inc_ref_count(env, stack, tmp_object);
   }
   if (*(void**)(dist_address) != NULL) {
     if (__builtin_expect(SPVM_IMPLEMENT_ISWEAK(dist_address), 0)) { env->unweaken(env, stack, (void**)dist_address); }
@@ -2574,7 +2574,7 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void*
 static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in, int32_t object_ref_count_offset) {
   *(void**)&stack[0] = in;
   if (in != NULL) {
-    SPVM_IMPLEMENT_INC_REF_COUNT_ONLY(env, stack, in, object_ref_count_offset);
+    env->inc_ref_count(env, stack, in);
   }
 }
 
