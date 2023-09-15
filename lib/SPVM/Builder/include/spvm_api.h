@@ -325,4 +325,6 @@ int32_t SPVM_API_check_stack_env(SPVM_ENV* env, SPVM_VALUE* stack);
 
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist_address, SPVM_OBJECT* src_object);
 
+SPVM_MUTEX* SPVM_API_get_object_mutex(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+
 #endif
