@@ -2940,7 +2940,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_a
   
   SPVM_OBJECT* object = *object_address;
   
-  int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+  int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
   
   // Decrelement reference count
   if (object_ref_count == 1) {
@@ -3576,7 +3576,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+  int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
   
   assert(object != NULL);
   assert(object_ref_count > 0);
@@ -3633,7 +3633,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
             SPVM_API_dec_ref_count(env, stack, save_exception);
           }
           
-          int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+          int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
           
           assert(object_ref_count > 0);
         }
@@ -3701,7 +3701,7 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
 void SPVM_API_inc_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   if (object != NULL) {
-    int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+    int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
     assert(object_ref_count >= 0);
     
     object->ref_count++;
@@ -3726,7 +3726,7 @@ void SPVM_API_dec_ref_count_only_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack,
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object != NULL) {
-    int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+    int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
     assert(object_ref_count > 0);
     
     object->ref_count--;
@@ -3735,19 +3735,6 @@ void SPVM_API_dec_ref_count_only_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack,
 }
 
 int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_reader_lock(object_mutex);
-  
-  int32_t ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
-  
-  SPVM_MUTEX_reader_unlock(object_mutex);
-  
-  return ref_count;
-}
-
-int32_t SPVM_API_get_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   int32_t ref_count = object->ref_count;
   
