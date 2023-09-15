@@ -318,7 +318,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_UNDEF: {
-        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, &object_vars[opcode->operand0], NULL, object_ref_count_offset);
+        SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, &object_vars[opcode->operand0], NULL);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_MULNUM_BYTE_ZERO: {
@@ -1239,7 +1239,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_BASIC_TYPE* class_var_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, class_var_current_basic_type_id);
         SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_BASIC_TYPE_get_class_var_by_index(env->runtime, class_var_current_basic_type, class_var_index);
         
-        SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, &object_vars[opcode->operand0], class_var, object_ref_count_offset);
+        SPVM_IMPLEMENT_GET_CLASS_VAR_OBJECT(env, stack, &object_vars[opcode->operand0], class_var);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
@@ -1309,7 +1309,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_BASIC_TYPE* class_var_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, class_var_current_basic_type_id);
         SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_BASIC_TYPE_get_class_var_by_index(env->runtime, class_var_current_basic_type, class_var_index);
         
-        SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var, object_vars[opcode->operand2], object_ref_count_offset);
+        SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var, object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
@@ -1319,11 +1319,11 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_BASIC_TYPE* class_var_current_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, class_var_current_basic_type_id);
         SPVM_RUNTIME_CLASS_VAR* class_var = SPVM_API_BASIC_TYPE_get_class_var_by_index(env->runtime, class_var_current_basic_type, class_var_index);
         
-        SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var, object_ref_count_offset);
+        SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
-        SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, &object_vars[opcode->operand0], object_ref_count_offset);
+        SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, &object_vars[opcode->operand0]);
         break;
       }
       case SPVM_OPCODE_C_ID_SET_EXCEPTION_VAR: {
