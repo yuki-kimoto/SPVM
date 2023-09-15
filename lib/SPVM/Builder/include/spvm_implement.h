@@ -164,7 +164,7 @@ static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack
     env->inc_ref_count(env, stack, tmp_object);
   }
   if (*(void**)(dist_address) != NULL) {
-    if (__builtin_expect(SPVM_IMPLEMENT_ISWEAK(dist_address), 0)) { env->unweaken(env, stack, (void**)dist_address); }
+    if (__builtin_expect(env->isweak(env, stack, dist_address), 0)) { env->unweaken(env, stack, (void**)dist_address); }
     env->dec_ref_count(env, stack, *(void**)(dist_address));
   }
   *(void**)(dist_address) = tmp_object;
