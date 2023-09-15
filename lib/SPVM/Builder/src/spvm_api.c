@@ -843,7 +843,7 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   assert(class_var->index >= 0 && class_var->index < class_vars_length);
   
   void* get_field_object_address = &class_var->data.oval;
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
+  SPVM_IMPLEMENT_ASSIGN_OBJECT(env, stack, get_field_object_address, value);
 }
 
 void SPVM_API_set_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value) {
@@ -1261,7 +1261,7 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   // Get field value
   void* get_field_object_address = (void**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
 
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, get_field_object_address, value);
+  SPVM_IMPLEMENT_ASSIGN_OBJECT(env, stack, get_field_object_address, value);
 }
 
 void SPVM_API_set_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
@@ -3039,7 +3039,7 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
     SPVM_API_dec_ref_count(env, stack, *current_exception_ptr);
   }
   
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, (void**)current_exception_ptr, exception);
+  SPVM_IMPLEMENT_ASSIGN_OBJECT(env, stack, (void**)current_exception_ptr, exception);
   
   if (*current_exception_ptr != NULL) {
     SPVM_API_inc_ref_count(env, stack, *current_exception_ptr);
@@ -3526,7 +3526,7 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
   
   void* object_address = &((void**)((intptr_t)array + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index];
   
-  SPVM_IMPLEMENT_OBJECT_ASSIGN(env, stack, object_address, object);
+  SPVM_IMPLEMENT_ASSIGN_OBJECT(env, stack, object_address, object);
 }
 
 SPVM_OBJECT* SPVM_API_get_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
