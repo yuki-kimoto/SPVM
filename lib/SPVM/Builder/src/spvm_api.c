@@ -3989,7 +3989,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
   if (string != NULL) {
     if (SPVM_API_is_string(env, stack, string)) {
       if (!SPVM_API_is_read_only(env, stack, string)) {
-        int32_t length = string->length;
+        int32_t length = SPVM_API_length(env, stack, string);
         
         if (new_length > length) {
           new_length = length;
