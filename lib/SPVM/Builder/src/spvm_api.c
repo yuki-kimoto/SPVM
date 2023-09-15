@@ -2936,8 +2936,10 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_a
   
   SPVM_OBJECT* object = *object_address;
   
+  int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+  
   // Decrelement reference count
-  if (object->ref_count == 1) {
+  if (object_ref_count == 1) {
     // If reference count is 1, the object is freeed without weaken
     SPVM_API_dec_ref_count(env, stack, *object_address);
     *object_address = NULL;
@@ -3553,15 +3555,17 @@ void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object,
 void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
+  int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+  
   assert(object != NULL);
-  assert(object->ref_count > 0);
+  assert(object_ref_count > 0);
   
   // Not weakened
   assert((((intptr_t)object) & 1) == 0);
   
   // If reference count is zero, free address.
-  if (object->ref_count == 1) {
+  if (object_ref_count == 1) {
     // Free object array
     if (SPVM_API_is_object_array(env, stack, object)) {
       int32_t length = object->length;
@@ -3609,7 +3613,9 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
             SPVM_API_dec_ref_count(env, stack, save_exception);
           }
           
-          assert(object->ref_count > 0);
+          int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+          
+          assert(object_ref_count > 0);
         }
         
         // Free object fields
@@ -3675,7 +3681,9 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
 void SPVM_API_inc_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   if (object != NULL) {
-    assert(object->ref_count >= 0);
+    int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+    assert(object_ref_count >= 0);
+    
     object->ref_count++;
   }
   
@@ -3698,7 +3706,9 @@ void SPVM_API_dec_ref_count_only_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack,
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (object != NULL) {
-    assert(object->ref_count > 0);
+    int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
+    assert(object_ref_count > 0);
+    
     object->ref_count--;
   }
   
