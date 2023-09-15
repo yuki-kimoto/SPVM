@@ -3,6 +3,7 @@
     * Add the following native APIs.
     
       void (*dec_ref_count_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
     
 0.989042 2023-09-12
   [Incompatible Changes]

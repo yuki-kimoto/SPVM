@@ -1995,7 +1995,7 @@ Decrements the reference count of the object, but do not release even if the ref
 
 =head2 leave_scope_local
 
-  void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
+C<void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);>
 
 Leave scope using local mortal stack.
 
