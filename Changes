@@ -1,7 +1,3 @@
-0.989043 2023-09-15
-  [Breaking Binary Compatibility]
-    * Break binary compatility. Move some logic from precompile method to callar.
-    
 0.989042 2023-09-12
   [Incompatible Changes]
     * The create_default_config function in the SPVM::Builder::Util module return gnu99 instead of c99.
