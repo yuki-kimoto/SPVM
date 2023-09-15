@@ -4003,7 +4003,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
           new_length = 0;
         }
         
-        string->length = new_length;
+        SPVM_API_set_length(env, stack, string, new_length);
         char* chars = (char*)SPVM_API_get_chars(env, stack, string);
         if (new_length > length) {
           memset(chars + new_length, 0, new_length - length);
