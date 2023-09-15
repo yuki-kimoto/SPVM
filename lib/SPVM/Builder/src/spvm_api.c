@@ -4215,3 +4215,10 @@ int32_t SPVM_API_check_stack_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return is_valid;
 }
+
+SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  //  Dropping weaken flag
+  void* object_no_weaken_address = (void*)((intptr_t)object & ~(intptr_t)1);
+  
+  return object_no_weaken_address;
+}
