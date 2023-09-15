@@ -444,7 +444,7 @@ void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
       if (class_var_type_is_object) {
         SPVM_OBJECT* object = class_var->data.oval;
         if (object) {
-          SPVM_API_dec_ref_count_thread_unsafe(env, stack, object);
+          SPVM_API_dec_ref_count(env, stack, object);
         }
       }
     }
@@ -1720,7 +1720,7 @@ int32_t SPVM_API_remove_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t origina
       if (remove_object == object) {
         remove_count++;
         match_mortal_stack_index = mortal_stack_index;
-        SPVM_API_dec_ref_count_thread_unsafe(env, stack, object);
+        SPVM_API_dec_ref_count(env, stack, object);
       }
     }
     
@@ -2402,7 +2402,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
     SPVM_OBJECT* object = (*current_mortal_stack_ptr)[mortal_stack_index];
     
     if (object != NULL) {
-      SPVM_API_dec_ref_count_thread_unsafe(env, stack, object);
+      SPVM_API_dec_ref_count(env, stack, object);
     }
     
     (*current_mortal_stack_ptr)[mortal_stack_index] = NULL;
@@ -2941,12 +2941,12 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_a
   // Decrelement reference count
   if (object_ref_count == 1) {
     // If reference count is 1, the object is freeed without weaken
-    SPVM_API_dec_ref_count_thread_unsafe(env, stack, *object_address);
+    SPVM_API_dec_ref_count(env, stack, *object_address);
     *object_address = NULL;
     return 0;
   }
   else {
-    SPVM_API_dec_ref_count_thread_unsafe(env, stack, object);
+    SPVM_API_dec_ref_count(env, stack, object);
   }
 
   // Create weaken_backref_head
@@ -3039,7 +3039,7 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
   SPVM_OBJECT** current_exception_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
   
   if (*current_exception_ptr != NULL) {
-    SPVM_API_dec_ref_count_thread_unsafe(env, stack, *current_exception_ptr);
+    SPVM_API_dec_ref_count(env, stack, *current_exception_ptr);
   }
   
   SPVM_API_assign_object(env, stack, current_exception_ptr, exception);
@@ -3554,18 +3554,6 @@ void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object,
 
 void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
-  
-  SPVM_API_dec_ref_count_thread_unsafe(env, stack, object);
-  
-  SPVM_MUTEX_unlock(object_mutex);
-  
-}
-
-void SPVM_API_dec_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
   SPVM_RUNTIME* runtime = env->runtime;
   
   int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
@@ -3585,7 +3573,7 @@ void SPVM_API_dec_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
 
         if (*get_field_object_address != NULL) {
-          SPVM_API_dec_ref_count_thread_unsafe(env, stack, *get_field_object_address);
+          SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
         }
       }
     }
@@ -3622,7 +3610,7 @@ void SPVM_API_dec_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
           stack[0] = save_stack0;
           SPVM_API_set_exception(env, stack, save_exception);
           if (save_exception) {
-            SPVM_API_dec_ref_count_thread_unsafe(env, stack, save_exception);
+            SPVM_API_dec_ref_count(env, stack, save_exception);
           }
           
           int32_t object_ref_count = SPVM_API_get_ref_count_thread_unsafe(env, stack, object);
@@ -3649,7 +3637,7 @@ void SPVM_API_dec_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
                 SPVM_API_unweaken(env, stack, get_field_object_address);
               }
               
-              SPVM_API_dec_ref_count_thread_unsafe(env, stack, *get_field_object_address);
+              SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
             }
           }
         }
@@ -4274,7 +4262,7 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
     int32_t var_index = mortal_stack[mortal_stack_index];
     SPVM_OBJECT** object_address = (SPVM_OBJECT**)&object_vars[var_index];
     if (*object_address != NULL) {
-      SPVM_API_dec_ref_count_thread_unsafe(env, stack, *object_address);
+      SPVM_API_dec_ref_count(env, stack, *object_address);
       *object_address = NULL;
     }
   }
@@ -4289,7 +4277,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist
   }
   if (*(SPVM_OBJECT**)(dist_address) != NULL) {
     if (__builtin_expect(SPVM_API_isweak(env, stack, dist_address), 0)) { SPVM_API_unweaken(env, stack, dist_address); }
-    SPVM_API_dec_ref_count_thread_unsafe(env, stack, *dist_address);
+    SPVM_API_dec_ref_count(env, stack, *dist_address);
   }
   *dist_address = tmp_object;
 }
