@@ -693,7 +693,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         if (method_mortal_stack_length > 0) {
           SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top = ");
           SPVM_STRING_BUFFER_add_int(string_buffer, original_mortal_stack_top);
-          SPVM_STRING_BUFFER_add(string_buffer, ", object_ref_count_offset);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         }
         break;
       }

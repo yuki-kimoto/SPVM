@@ -290,7 +290,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_LEAVE_SCOPE: {
         int32_t original_mortal_stack_top = opcode->operand0;
-        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top, object_ref_count_offset);
+        SPVM_IMPLEMENT_LEAVE_SCOPE(env, stack, object_vars, mortal_stack, &mortal_stack_top, original_mortal_stack_top);
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_BYTE_ZERO: {
