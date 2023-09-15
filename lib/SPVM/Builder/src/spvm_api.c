@@ -2442,7 +2442,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
 
   // Exception
   const char* exception_bytes = SPVM_API_get_chars(env, stack, exception);
-  int32_t exception_length = SPVM_API_length_thread_unsafe(env, stack, exception);
+  int32_t exception_length = SPVM_API_length(env, stack, exception);
   
   // Total string length
   int32_t total_length = 0;
@@ -2509,7 +2509,7 @@ void SPVM_API_fprint(SPVM_ENV* env, SPVM_VALUE* stack, FILE* fh, SPVM_OBJECT* st
   }
   
   const char* bytes = SPVM_API_get_chars(env, stack, string);
-  int32_t string_length = SPVM_API_length_thread_unsafe(env, stack, string);
+  int32_t string_length = SPVM_API_length(env, stack, string);
   
   {
     int32_t i;
@@ -2533,8 +2533,8 @@ void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string
 
 SPVM_OBJECT* SPVM_API_concat_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
   
-  int32_t string1_length = SPVM_API_length_thread_unsafe(env, stack, string1);
-  int32_t string2_length = SPVM_API_length_thread_unsafe(env, stack, string2);
+  int32_t string1_length = SPVM_API_length(env, stack, string1);
+  int32_t string2_length = SPVM_API_length(env, stack, string2);
   
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_API_new_string_no_mortal(env, stack, NULL, string3_length);
@@ -2621,13 +2621,13 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
     
     if (SPVM_API_is_string(env, stack, object)) {
       const char* chars = SPVM_API_get_chars(env, stack, object);
-      int32_t chars_length  = SPVM_API_length_thread_unsafe(env, stack, object);
+      int32_t chars_length  = SPVM_API_length(env, stack, object);
       SPVM_STRING_BUFFER_add(string_buffer, "\"");
       SPVM_STRING_BUFFER_add_len(string_buffer, (char*)chars, chars_length);
       SPVM_STRING_BUFFER_add(string_buffer, "\"");
     }
     else if (type_dimension > 0) {
-      int32_t array_length = SPVM_API_length_thread_unsafe(env, stack, object);
+      int32_t array_length = SPVM_API_length(env, stack, object);
       int32_t element_type_dimension = type_dimension - 1;
       
       SPVM_STRING_BUFFER_add(string_buffer, "[\n");
@@ -3481,19 +3481,6 @@ int32_t SPVM_API_get_object_type_dimension(SPVM_ENV* env, SPVM_VALUE* stack, SPV
 
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_reader_lock(object_mutex);
-  
-  int32_t length = SPVM_API_length_thread_unsafe(env, stack, object);
-  
-  SPVM_MUTEX_reader_unlock(object_mutex);
-  
-  return length;
-}
-
-int32_t SPVM_API_length_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
   int32_t length = object->length;
   
   return length;
@@ -3601,7 +3588,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   if (object_ref_count == 1) {
     // Free object array
     if (SPVM_API_is_object_array(env, stack, object)) {
-      int32_t length = SPVM_API_length_thread_unsafe(env, stack, object);
+      int32_t length = SPVM_API_length(env, stack, object);
       for (int32_t index = 0; index < length; index++) {
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
 
@@ -3979,7 +3966,7 @@ SPVM_OBJECT* SPVM_API_copy_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   
   SPVM_OBJECT* new_object;
   
-  int32_t length = SPVM_API_length_thread_unsafe(env, stack, object);
+  int32_t length = SPVM_API_length(env, stack, object);
   
   if (SPVM_API_is_string(env, stack, object)) {
     new_object = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
@@ -4022,7 +4009,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
   if (string != NULL) {
     if (SPVM_API_is_string(env, stack, string)) {
       if (!SPVM_API_is_read_only(env, stack, string)) {
-        int32_t length = SPVM_API_length_thread_unsafe(env, stack, string);
+        int32_t length = SPVM_API_length(env, stack, string);
         
         if (new_length > length) {
           new_length = length;
