@@ -160,12 +160,6 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
 
 #define SPVM_IMPLEMENT_DEC_REF_COUNT_ONLY(env, stack, object, object_ref_count_offset) ((*(int32_t*)((intptr_t)object + object_ref_count_offset))--)
 
-static inline void SPVM_IMPLEMENT_DEC_REF_COUNT(SPVM_ENV* env, SPVM_VALUE* stack, void* object, int32_t object_ref_count_offset) {
-  if (object != NULL) {
-    env->dec_ref_count(env, stack, object);
-  }
-}
-
 #define SPVM_IMPLEMENT_ISWEAK(dist_address) (((intptr_t)*(void**)dist_address) & 1)
 
 static inline void SPVM_IMPLEMENT_OBJECT_ASSIGN(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object, int32_t object_ref_count_offset) {
