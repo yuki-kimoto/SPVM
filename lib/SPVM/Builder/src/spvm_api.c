@@ -4233,8 +4233,10 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
   if (object) {
     object->basic_type = basic_type;
     object->type_dimension = type_dimension;
-    object->length = length;
     object->flag = flag;
+    
+    // The length of string can be shorten.
+    SPVM_API_set_length(env, stack, object, length);
   }
   
   SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object);
