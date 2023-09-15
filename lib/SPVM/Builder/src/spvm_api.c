@@ -3488,17 +3488,6 @@ int32_t SPVM_API_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
 
 void SPVM_API_set_length(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
   
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
-  
-  SPVM_API_set_length_thread_unsafe(env, stack, object, length);
-  
-  SPVM_MUTEX_unlock(object_mutex);
-}
-
-void SPVM_API_set_length_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t length) {
-  
   object->length = length;
 }
 
@@ -4005,7 +3994,7 @@ void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int
           new_length = 0;
         }
         
-        SPVM_API_set_length_thread_unsafe(env, stack, string, new_length);
+        SPVM_API_set_length(env, stack, string, new_length);
         char* chars = (char*)SPVM_API_get_chars(env, stack, string);
         if (new_length > length) {
           memset(chars + new_length, 0, new_length - length);
@@ -4238,7 +4227,7 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     object->flag = flag;
     
     // The length of string can be shorten.
-    SPVM_API_set_length_thread_unsafe(env, stack, object, length);
+    SPVM_API_set_length(env, stack, object, length);
   }
   
   SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object);
