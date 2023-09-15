@@ -152,15 +152,7 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
 }
 
 static inline void SPVM_IMPLEMENT_ASSIGN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object) {
-  void* tmp_object = (void*)((intptr_t)src_object & ~(intptr_t)1);
-  if (tmp_object != NULL) {
-    env->inc_ref_count(env, stack, tmp_object);
-  }
-  if (*(void**)(dist_address) != NULL) {
-    if (__builtin_expect(env->isweak(env, stack, dist_address), 0)) { env->unweaken(env, stack, (void**)dist_address); }
-    env->dec_ref_count(env, stack, *(void**)(dist_address));
-  }
-  *(void**)(dist_address) = tmp_object;
+  env->assign_object(env, stack, dist_address, src_object);
 }
 
 static inline void SPVM_IMPLEMENT_LEAVE_SCOPE(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
