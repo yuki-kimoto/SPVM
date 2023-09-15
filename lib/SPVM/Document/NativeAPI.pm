@@ -1987,6 +1987,12 @@ If an excetpion is thrown because the field does not exist or other errors occur
 
 If the env of the stack is equal to the env, returns 1. Otherwise returns 0.
 
+=head2 dec_ref_count_only
+
+C<void (*dec_ref_count_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+Decrements the reference count of the object, but do not release even if the reference count becomes 0.
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
@@ -2200,6 +2206,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   206 inc_ref_count
   207 dec_ref_count
   208 get_field_object_defined_and_has_pointer_by_name
+  209 dec_ref_count_only
   
 =head1 Constant Values
 

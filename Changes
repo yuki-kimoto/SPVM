@@ -1,3 +1,9 @@
+0.989043 2023-09-15
+  [New Features]
+    * Add the following native APIs.
+    
+      void (*dec_ref_count_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+    
 0.989042 2023-09-12
   [Incompatible Changes]
     * The create_default_config function in the SPVM::Builder::Util module return gnu99 instead of c99.

@@ -315,6 +315,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_field_object_address,
     SPVM_API_get_field_object_address_by_name,
     SPVM_API_check_stack_env,
+    SPVM_API_dec_ref_count_only,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
