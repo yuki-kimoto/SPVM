@@ -1927,7 +1927,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           if (method_return_type_is_object) {
             SPVM_OBJECT* return_object = *(void**)&stack[0];
             if (return_object != NULL) {
-              SPVM_API_dec_ref_count_only(env, stack, return_object);
+              SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, return_object);
             }
           }
         }
@@ -3651,7 +3651,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     }
     
     // Decrement reference count
-    SPVM_API_dec_ref_count_only(env, stack, object);
+    SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
     
     SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object);
     SPVM_MUTEX_destroy(mutex);
@@ -3662,7 +3662,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   }
   else {
     // Decrement reference count
-    SPVM_API_dec_ref_count_only(env, stack, object);
+    SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
   }
 }
 
