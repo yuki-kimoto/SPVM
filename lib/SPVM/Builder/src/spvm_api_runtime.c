@@ -34,7 +34,7 @@
 #include "spvm_api_type.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_api_basic_type.h"
-
+#include "spvm_mutex.h"
 
 
 
@@ -117,14 +117,9 @@ void SPVM_API_RUNTIME_free_api(SPVM_API_RUNTIME* api) {
 }
 
 int32_t SPVM_API_RUNTIME_get_object_data_offset(SPVM_RUNTIME* runtime) {
-  // Adjust alignment SPVM_VALUE
-  int32_t object_header_size = sizeof(SPVM_OBJECT);
-  if (object_header_size % sizeof(SPVM_VALUE) != 0) {
-    object_header_size += (sizeof(SPVM_VALUE) - object_header_size % sizeof(SPVM_VALUE));
-  }
-  assert(object_header_size % sizeof(SPVM_VALUE) == 0);
+  int32_t object_data_offset = sizeof(SPVM_OBJECT);
   
-  return object_header_size;
+  return object_data_offset;
 }
 
 int32_t SPVM_API_RUNTIME_get_object_ref_count_offset(SPVM_RUNTIME* runtime) {
