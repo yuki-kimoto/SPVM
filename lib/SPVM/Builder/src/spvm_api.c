@@ -2399,12 +2399,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
     SPVM_OBJECT* object = (*current_mortal_stack_ptr)[mortal_stack_index];
     
     if (object != NULL) {
-      if (object->ref_count > 1) {
-        SPVM_API_dec_ref_count_only(env, stack, object);
-      }
-      else {
-        SPVM_API_dec_ref_count(env, stack, object);
-      }
+      SPVM_API_dec_ref_count(env, stack, object);
     }
     
     (*current_mortal_stack_ptr)[mortal_stack_index] = NULL;
@@ -2946,7 +2941,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_a
     return 0;
   }
   else {
-    SPVM_API_dec_ref_count_only(env, stack, object);
+    SPVM_API_dec_ref_count(env, stack, object);
   }
 
   // Create weaken_backref_head
