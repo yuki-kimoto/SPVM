@@ -2915,8 +2915,11 @@ int32_t SPVM_API_is_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* str
 
 int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_address) {
   
+  int32_t isweak = 0;
   
-  int32_t isweak = (intptr_t)*object_address & 1;
+  if (*object_address) {
+    isweak = (intptr_t)*object_address & 1;
+  }
   
   return isweak;
 }
