@@ -4163,8 +4163,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         for (int32_t field_index = 0; field_index < object_fields_length; field_index++) {
           SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_basic_type, field_index);
           
-          int32_t field_basic_type_id = field->basic_type->id;
-          void* field_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_basic_type_id);
+          void* field_basic_type = field->basic_type;
           int32_t field_type_dimension = field->type_dimension;
           int32_t field_type_flag = field->type_flag;
           int32_t field_type_is_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
