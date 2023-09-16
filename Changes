@@ -7,7 +7,14 @@
       void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object);
   [Changes]
     * SPVM object have a mutex data.
-    
+  
+  [Break Binary Compatibility]
+    * The return value of precompiled method is assigned to stack and cancel the assignment in call_method.
+  
+  [Internal Changes]
+    * Assignability symbol table becomes thread safe.
+    * compile becomes thread safe.
+
 0.989042 2023-09-12
   [Incompatible Changes]
     * The create_default_config function in the SPVM::Builder::Util module return gnu99 instead of c99.
