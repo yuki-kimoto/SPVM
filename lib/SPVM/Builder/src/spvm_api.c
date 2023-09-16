@@ -442,10 +442,8 @@ void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
       
       int32_t class_var_type_is_object = SPVM_API_TYPE_is_object_type(runtime, class_var_basic_type, class_var_type_dimension, class_var_type_flag);
       if (class_var_type_is_object) {
-        SPVM_OBJECT* object = class_var->data.oval;
-        if (object) {
-          SPVM_API_dec_ref_count(env, stack, object);
-        }
+        SPVM_OBJECT** object_address = (SPVM_OBJECT**)&class_var->data;
+        SPVM_API_assign_object(env, stack, object_address, NULL);
       }
     }
   }
