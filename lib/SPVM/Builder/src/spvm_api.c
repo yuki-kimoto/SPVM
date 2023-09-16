@@ -3826,7 +3826,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           if (method_return_type_is_object) {
             SPVM_OBJECT* return_object = *(void**)&stack[0];
             if (return_object != NULL) {
-              SPVM_API_inc_ref_count_thread_unsafe(env, stack, return_object);
+              SPVM_API_inc_ref_count(env, stack, return_object);
             }
           }
         }
@@ -3839,7 +3839,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           if (method_return_type_is_object) {
             SPVM_OBJECT* return_object = *(void**)&stack[0];
             if (return_object != NULL) {
-              SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, return_object);
+              SPVM_API_dec_ref_count_only(env, stack, return_object);
             }
           }
         }
@@ -3971,7 +3971,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_ad
   SPVM_OBJECT* object = *object_address;
   
   // Increment reference count
-  SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
+  SPVM_API_inc_ref_count(env, stack, object);
   
   // Remove weaken back ref
   SPVM_WEAKEN_BACKREF** weaken_backref_next_address = &object->weaken_backref_head;
@@ -4086,7 +4086,7 @@ int32_t SPVM_API_remove_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t origina
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist_address, SPVM_OBJECT* src_object) {
   SPVM_OBJECT* tmp_object = SPVM_API_get_object_no_weaken_address(env, stack, src_object);
   if (tmp_object != NULL) {
-    SPVM_API_inc_ref_count_thread_unsafe(env, stack, tmp_object);
+    SPVM_API_inc_ref_count(env, stack, tmp_object);
   }
   if (*(SPVM_OBJECT**)(dist_address) != NULL) {
     if (__builtin_expect(SPVM_API_isweak(env, stack, dist_address), 0)) { SPVM_API_unweaken(env, stack, dist_address); }
@@ -4134,7 +4134,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           SPVM_VALUE save_stack0 = stack[0];
           void* save_exception = SPVM_API_get_exception(env, stack);
           if (save_exception) {
-            SPVM_API_inc_ref_count_thread_unsafe(env, stack, save_exception);
+            SPVM_API_inc_ref_count(env, stack, save_exception);
           }
           
           stack[0].oval = object;
@@ -4194,7 +4194,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     }
     
     // Decrement reference count
-    SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
+    SPVM_API_dec_ref_count_only(env, stack, object);
     
     SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object);
     SPVM_MUTEX_destroy(mutex);
@@ -4205,23 +4205,11 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   }
   else {
     // Decrement reference count
-    SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
+    SPVM_API_dec_ref_count_only(env, stack, object);
   }
 }
 
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
-  
-  SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
-  
-  SPVM_MUTEX_unlock(object_mutex);
-  
-}
-
-void SPVM_API_inc_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   if (object != NULL) {
     int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
@@ -4233,18 +4221,6 @@ void SPVM_API_inc_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM
 }
 
 void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
-  
-  SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
-  
-  SPVM_MUTEX_unlock(object_mutex);
-  
-}
-
-void SPVM_API_dec_ref_count_only_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
