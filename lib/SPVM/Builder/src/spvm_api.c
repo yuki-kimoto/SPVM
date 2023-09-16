@@ -4171,14 +4171,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           
           if (field_type_is_object) {
             SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-            if (*get_field_object_address != NULL) {
-              // If object is weak, unweaken
-              if (SPVM_API_isweak(env, stack, get_field_object_address)) {
-                SPVM_API_unweaken(env, stack, get_field_object_address);
-              }
-              
-              SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
-            }
+            SPVM_API_assign_object(env, stack, get_field_object_address, NULL);
           }
         }
       }
