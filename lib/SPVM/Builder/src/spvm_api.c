@@ -4027,11 +4027,9 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       *current_mortal_stack_ptr = new_mortal_stack;
     }
     
-    (*current_mortal_stack_ptr)[*current_mortal_stack_top_ptr] = object;
+    SPVM_API_assign_object(env, stack, &(*current_mortal_stack_ptr)[*current_mortal_stack_top_ptr], object);
+    
     *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr + 1;
-    
-    SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
-    
   }
   
   return 0;
