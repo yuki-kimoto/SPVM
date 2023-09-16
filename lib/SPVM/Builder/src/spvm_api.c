@@ -4127,11 +4127,11 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         
         // Call destructor
         if (object_basic_type->destructor_method) {
+          
           SPVM_VALUE save_stack0 = stack[0];
-          void* save_exception = SPVM_API_get_exception(env, stack);
-          if (save_exception) {
-            SPVM_API_inc_ref_count(env, stack, save_exception);
-          }
+          SPVM_OBJECT* save_exception = SPVM_API_get_exception(env, stack);
+          SPVM_OBJECT* save_exceptions[1] = {0};
+          SPVM_API_assign_object(env, stack, &save_exceptions[0], save_exception);
           
           SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
           
@@ -4149,9 +4149,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           // Restore stack and exception
           stack[0] = save_stack0;
           SPVM_API_set_exception(env, stack, save_exception);
-          if (save_exception) {
-            SPVM_API_dec_ref_count(env, stack, save_exception);
-          }
+          SPVM_API_assign_object(env, stack, &save_exceptions[0], NULL);
           
           int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
           
