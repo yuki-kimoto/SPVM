@@ -4127,16 +4127,16 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
         
         // Call destructor
         if (object_basic_type->destructor_method) {
-          int32_t args_width = 1;
           SPVM_VALUE save_stack0 = stack[0];
           void* save_exception = SPVM_API_get_exception(env, stack);
           if (save_exception) {
             SPVM_API_inc_ref_count(env, stack, save_exception);
           }
           
-          stack[0].oval = object;
           SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
           
+          stack[0].oval = object;
+          int32_t args_width = 1;
           int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
           
           // Exception in destructor is changed to warning
