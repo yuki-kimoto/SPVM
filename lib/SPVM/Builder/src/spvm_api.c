@@ -3042,15 +3042,7 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
   
   SPVM_OBJECT** current_exception_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
   
-  if (*current_exception_ptr != NULL) {
-    SPVM_API_dec_ref_count(env, stack, *current_exception_ptr);
-  }
-  
   SPVM_API_assign_object(env, stack, current_exception_ptr, exception);
-  
-  if (*current_exception_ptr != NULL) {
-    SPVM_API_inc_ref_count_thread_unsafe(env, stack, *current_exception_ptr);
-  }
   
   return 0;
 }
