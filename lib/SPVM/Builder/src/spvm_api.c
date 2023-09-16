@@ -4260,8 +4260,7 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
     int32_t var_index = mortal_stack[mortal_stack_index];
     SPVM_OBJECT** object_address = (SPVM_OBJECT**)&object_vars[var_index];
     if (*object_address != NULL) {
-      SPVM_API_dec_ref_count(env, stack, *object_address);
-      *object_address = NULL;
+      SPVM_API_assign_object(env, stack, object_address, NULL);
     }
   }
   *mortal_stack_top_ptr = original_mortal_stack_top;
