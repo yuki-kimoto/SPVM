@@ -4114,10 +4114,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
       int32_t length = SPVM_API_length(env, stack, object);
       for (int32_t index = 0; index < length; index++) {
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
-
-        if (*get_field_object_address != NULL) {
-          SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
-        }
+        SPVM_API_assign_object(env, stack, get_field_object_address, NULL);
       }
     }
     // Free object
