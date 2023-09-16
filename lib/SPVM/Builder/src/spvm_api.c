@@ -2392,20 +2392,17 @@ SPVM_OBJECT* SPVM_API_get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack, co
 
 void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top) {
   
-
   SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
   int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
   int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
-
+  
   int32_t mortal_stack_index;
   for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
-    SPVM_OBJECT* object = (*current_mortal_stack_ptr)[mortal_stack_index];
     
-    if (object != NULL) {
-      SPVM_API_dec_ref_count(env, stack, object);
-    }
+    SPVM_OBJECT** object_address = &(*current_mortal_stack_ptr)[mortal_stack_index];
     
-    (*current_mortal_stack_ptr)[mortal_stack_index] = NULL;
+    SPVM_API_assign_object(env, stack, object_address, NULL);
+    
   }
   
   *current_mortal_stack_top_ptr = original_mortal_stack_top;
