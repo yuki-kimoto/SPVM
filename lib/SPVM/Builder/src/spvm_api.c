@@ -1702,37 +1702,6 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 }
 
-int32_t SPVM_API_remove_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {
-  
-
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
-
-  int32_t remove_count = 0;
-  if (remove_object != NULL) {
-    int32_t match_mortal_stack_index = -1;
-    for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
-      SPVM_OBJECT** object_address = &(*current_mortal_stack_ptr)[mortal_stack_index];
-      SPVM_OBJECT* object = (*current_mortal_stack_ptr)[mortal_stack_index];
-      
-      if (remove_object == object) {
-        remove_count++;
-        match_mortal_stack_index = mortal_stack_index;
-        SPVM_API_assign_object(env, stack, object_address, NULL);
-      }
-    }
-    
-    if (remove_count) {
-      for (int32_t mortal_stack_index = match_mortal_stack_index; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
-        (*current_mortal_stack_ptr)[mortal_stack_index] = (*current_mortal_stack_ptr)[mortal_stack_index + 1];
-      }
-      *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr - remove_count;
-    }
-  }
-  return remove_count;
-}
-
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
   // Arguments and return values : 0-255
@@ -2247,38 +2216,6 @@ int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
   return mortal_stack_top;
 }
 
-int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
-  
-  if (object != NULL) {
-    // Extend mortal stack
-    if (*current_mortal_stack_top_ptr >= *current_mortal_stack_capacity_ptr) {
-      int32_t new_mortal_stack_capacity = *current_mortal_stack_capacity_ptr * 2;
-      SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_stack(env, stack, sizeof(void*) * new_mortal_stack_capacity);
-      if (new_mortal_stack == NULL) {
-        return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-      }
-      memcpy(new_mortal_stack, *current_mortal_stack_ptr, sizeof(void*) * *current_mortal_stack_capacity_ptr);
-      *current_mortal_stack_capacity_ptr = new_mortal_stack_capacity;
-      SPVM_API_free_memory_stack(env, stack, *current_mortal_stack_ptr);
-      *current_mortal_stack_ptr = NULL;
-      *current_mortal_stack_ptr = new_mortal_stack;
-    }
-    
-    (*current_mortal_stack_ptr)[*current_mortal_stack_top_ptr] = object;
-    *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr + 1;
-    
-    SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
-    
-  }
-  
-  return 0;
-}
-
 SPVM_OBJECT* SPVM_API_get_type_name_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   
@@ -2387,24 +2324,6 @@ SPVM_OBJECT* SPVM_API_get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack, co
   SPVM_API_push_mortal(env, stack, obj_compile_type_name);
   
   return obj_compile_type_name;
-}
-
-void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top) {
-  
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
-  
-  int32_t mortal_stack_index;
-  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
-    
-    SPVM_OBJECT** object_address = &(*current_mortal_stack_ptr)[mortal_stack_index];
-    
-    SPVM_API_assign_object(env, stack, object_address, NULL);
-    
-  }
-  
-  *current_mortal_stack_top_ptr = original_mortal_stack_top;
 }
 
 SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, SPVM_RUNTIME_METHOD* method, int32_t line) {
@@ -2907,117 +2826,6 @@ int32_t SPVM_API_is_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* str
   }
   
   return is_read_only;
-}
-
-int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_address) {
-  
-  assert(object_address);
-  
-  if (*object_address == NULL) {
-    return 0;
-  }
-  
-  int32_t isweak = (intptr_t)*object_address & 1;
-  
-  return isweak;
-}
-
-int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_address) {
-  
-  assert(object_address);
-  
-  if (*object_address == NULL) {
-    return 0;
-  }
-  
-  if (SPVM_API_isweak(env, stack, object_address)) {
-    return 0;
-  }
-  
-  SPVM_OBJECT* object = *object_address;
-  
-  int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
-  
-  // Decrelement reference count
-  if (object_ref_count == 1) {
-    // If reference count is 1, the object is freeed without weaken
-    SPVM_API_dec_ref_count(env, stack, *object_address);
-    *object_address = NULL;
-    return 0;
-  }
-  else {
-    SPVM_API_dec_ref_count(env, stack, object);
-  }
-
-  // Create weaken_backref_head
-  if (object->weaken_backref_head == NULL) {
-    SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
-    if (new_weaken_backref == NULL) {
-      return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-    new_weaken_backref->object_address = object_address;
-    object->weaken_backref_head = new_weaken_backref;
-  }
-  // Add weaken_back_ref
-  else {
-    SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
-
-    SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
-    if (new_weaken_backref) {
-      return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-    new_weaken_backref->object_address = object_address;
-    
-    while (weaken_backref_next->next != NULL){
-      weaken_backref_next = weaken_backref_next->next;
-    }
-    weaken_backref_next->next = new_weaken_backref;
-  }
-  
-  // Weaken is implemented by tag pointer.
-  // If pointer most right bit is 1, object is weaken.
-  *object_address = (SPVM_OBJECT*)((intptr_t)*object_address | 1);
-  
-  return 0;
-}
-
-void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_address) {
-
-  assert(object_address);
-  
-  if (*object_address == NULL) {
-    return;
-  }
-  
-  if (!SPVM_API_isweak(env, stack, object_address)) {
-    return;
-  }
-  
-  // Unweaken
-  *object_address = (SPVM_OBJECT*)((intptr_t)*object_address & ~(intptr_t)1);
-  
-  SPVM_OBJECT* object = *object_address;
-  
-  // Increment reference count
-  SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
-  
-  // Remove weaken back ref
-  SPVM_WEAKEN_BACKREF** weaken_backref_next_address = &object->weaken_backref_head;
-  assert(*weaken_backref_next_address);
-  
-  int32_t pass_one = 0;
-  while (*weaken_backref_next_address != NULL){
-    if ((*weaken_backref_next_address)->object_address == object_address) {
-      pass_one++;
-      SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_address)->next;
-      SPVM_API_free_memory_stack(env, stack, *weaken_backref_next_address);
-      *weaken_backref_next_address = NULL;
-      *weaken_backref_next_address = tmp;
-      break;
-    }
-    *weaken_backref_next_address = (*weaken_backref_next_address)->next;
-  }
-  assert(pass_one == 1);
 }
 
 void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
@@ -3549,175 +3357,6 @@ void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object,
   object->pointer = pointer;
 }
 
-void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
-  
-  assert(object != NULL);
-  assert(object_ref_count > 0);
-  
-  // Not weakened
-  assert((((intptr_t)object) & 1) == 0);
-  
-  // If reference count is zero, free address.
-  if (object_ref_count == 1) {
-    // Free object array
-    if (SPVM_API_is_object_array(env, stack, object)) {
-      int32_t length = SPVM_API_length(env, stack, object);
-      for (int32_t index = 0; index < length; index++) {
-        SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
-
-        if (*get_field_object_address != NULL) {
-          SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
-        }
-      }
-    }
-    // Free object
-    else {
-      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
-      int32_t object_basic_type_category = object_basic_type->category;
-      if (object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-        // Class
-        SPVM_RUNTIME* runtime = env->runtime;
-        
-        // Call destructor
-        if (object_basic_type->destructor_method) {
-          int32_t args_width = 1;
-          SPVM_VALUE save_stack0 = stack[0];
-          void* save_exception = SPVM_API_get_exception(env, stack);
-          if (save_exception) {
-            SPVM_API_inc_ref_count_thread_unsafe(env, stack, save_exception);
-          }
-          
-          stack[0].oval = object;
-          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
-          
-          int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
-          
-          // Exception in destructor is changed to warning
-          if (error_id) {
-            void* exception = SPVM_API_get_exception(env, stack);
-            const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
-            fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
-          }
-          
-          // Restore stack and exception
-          stack[0] = save_stack0;
-          SPVM_API_set_exception(env, stack, save_exception);
-          if (save_exception) {
-            SPVM_API_dec_ref_count(env, stack, save_exception);
-          }
-          
-          int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
-          
-          assert(object_ref_count > 0);
-        }
-        
-        // Free object fields
-        int32_t object_fields_length = object_basic_type->fields_length;
-        for (int32_t field_index = 0; field_index < object_fields_length; field_index++) {
-          SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_basic_type, field_index);
-          
-          int32_t field_basic_type_id = field->basic_type->id;
-          void* field_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_basic_type_id);
-          int32_t field_type_dimension = field->type_dimension;
-          int32_t field_type_flag = field->type_flag;
-          int32_t field_type_is_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
-          
-          if (field_type_is_object) {
-            SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-            if (*get_field_object_address != NULL) {
-              // If object is weak, unweaken
-              if (SPVM_API_isweak(env, stack, get_field_object_address)) {
-                SPVM_API_unweaken(env, stack, get_field_object_address);
-              }
-              
-              SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
-            }
-          }
-        }
-      }
-    }
-    
-    // Free weak back refenreces
-    if (object->weaken_backref_head != NULL) {
-      SPVM_API_free_weaken_back_refs(env, stack, object->weaken_backref_head);
-      object->weaken_backref_head = NULL;
-    }
-    
-    // Decrement reference count
-    SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
-    
-    SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object);
-    SPVM_MUTEX_destroy(mutex);
-    
-    // Free object
-    SPVM_API_free_memory_stack(env, stack, object);
-    object = NULL;
-  }
-  else {
-    // Decrement reference count
-    SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
-  }
-}
-
-void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
-  
-  SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
-  
-  SPVM_MUTEX_unlock(object_mutex);
-  
-}
-
-void SPVM_API_inc_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  if (object != NULL) {
-    int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
-    assert(object_ref_count >= 0);
-    
-    object->ref_count++;
-  }
-  
-}
-
-void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
-  
-  SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
-  
-  SPVM_MUTEX_unlock(object_mutex);
-  
-}
-
-void SPVM_API_dec_ref_count_only_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  if (object != NULL) {
-    int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
-    assert(object_ref_count > 0);
-    
-    object->ref_count--;
-  }
-  
-}
-
-int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  int32_t ref_count = object->ref_count;
-  
-  return ref_count;
-}
-
 SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -4242,6 +3881,117 @@ SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* st
   return object_no_weaken_address;
 }
 
+int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_address) {
+  
+  assert(object_address);
+  
+  if (*object_address == NULL) {
+    return 0;
+  }
+  
+  int32_t isweak = (intptr_t)*object_address & 1;
+  
+  return isweak;
+}
+
+int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_address) {
+  
+  assert(object_address);
+  
+  if (*object_address == NULL) {
+    return 0;
+  }
+  
+  if (SPVM_API_isweak(env, stack, object_address)) {
+    return 0;
+  }
+  
+  SPVM_OBJECT* object = *object_address;
+  
+  int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
+  
+  // Decrelement reference count
+  if (object_ref_count == 1) {
+    // If reference count is 1, the object is freeed without weaken
+    SPVM_API_dec_ref_count(env, stack, *object_address);
+    *object_address = NULL;
+    return 0;
+  }
+  else {
+    SPVM_API_dec_ref_count(env, stack, object);
+  }
+
+  // Create weaken_backref_head
+  if (object->weaken_backref_head == NULL) {
+    SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
+    if (new_weaken_backref == NULL) {
+      return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    }
+    new_weaken_backref->object_address = object_address;
+    object->weaken_backref_head = new_weaken_backref;
+  }
+  // Add weaken_back_ref
+  else {
+    SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
+
+    SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
+    if (new_weaken_backref) {
+      return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    }
+    new_weaken_backref->object_address = object_address;
+    
+    while (weaken_backref_next->next != NULL){
+      weaken_backref_next = weaken_backref_next->next;
+    }
+    weaken_backref_next->next = new_weaken_backref;
+  }
+  
+  // Weaken is implemented by tag pointer.
+  // If pointer most right bit is 1, object is weaken.
+  *object_address = (SPVM_OBJECT*)((intptr_t)*object_address | 1);
+  
+  return 0;
+}
+
+void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_address) {
+
+  assert(object_address);
+  
+  if (*object_address == NULL) {
+    return;
+  }
+  
+  if (!SPVM_API_isweak(env, stack, object_address)) {
+    return;
+  }
+  
+  // Unweaken
+  *object_address = (SPVM_OBJECT*)((intptr_t)*object_address & ~(intptr_t)1);
+  
+  SPVM_OBJECT* object = *object_address;
+  
+  // Increment reference count
+  SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
+  
+  // Remove weaken back ref
+  SPVM_WEAKEN_BACKREF** weaken_backref_next_address = &object->weaken_backref_head;
+  assert(*weaken_backref_next_address);
+  
+  int32_t pass_one = 0;
+  while (*weaken_backref_next_address != NULL){
+    if ((*weaken_backref_next_address)->object_address == object_address) {
+      pass_one++;
+      SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_address)->next;
+      SPVM_API_free_memory_stack(env, stack, *weaken_backref_next_address);
+      *weaken_backref_next_address = NULL;
+      *weaken_backref_next_address = tmp;
+      break;
+    }
+    *weaken_backref_next_address = (*weaken_backref_next_address)->next;
+  }
+  assert(pass_one == 1);
+}
+
 void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
   
   for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
@@ -4255,6 +4005,86 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
   
 }
 
+int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
+  
+  if (object != NULL) {
+    // Extend mortal stack
+    if (*current_mortal_stack_top_ptr >= *current_mortal_stack_capacity_ptr) {
+      int32_t new_mortal_stack_capacity = *current_mortal_stack_capacity_ptr * 2;
+      SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_stack(env, stack, sizeof(void*) * new_mortal_stack_capacity);
+      if (new_mortal_stack == NULL) {
+        return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+      }
+      memcpy(new_mortal_stack, *current_mortal_stack_ptr, sizeof(void*) * *current_mortal_stack_capacity_ptr);
+      *current_mortal_stack_capacity_ptr = new_mortal_stack_capacity;
+      SPVM_API_free_memory_stack(env, stack, *current_mortal_stack_ptr);
+      *current_mortal_stack_ptr = NULL;
+      *current_mortal_stack_ptr = new_mortal_stack;
+    }
+    
+    (*current_mortal_stack_ptr)[*current_mortal_stack_top_ptr] = object;
+    *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr + 1;
+    
+    SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
+    
+  }
+  
+  return 0;
+}
+
+void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top) {
+  
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
+  
+  int32_t mortal_stack_index;
+  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
+    
+    SPVM_OBJECT** object_address = &(*current_mortal_stack_ptr)[mortal_stack_index];
+    
+    SPVM_API_assign_object(env, stack, object_address, NULL);
+    
+  }
+  
+  *current_mortal_stack_top_ptr = original_mortal_stack_top;
+}
+
+int32_t SPVM_API_remove_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {
+  
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
+  
+  int32_t remove_count = 0;
+  if (remove_object != NULL) {
+    int32_t match_mortal_stack_index = -1;
+    for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
+      SPVM_OBJECT** object_address = &(*current_mortal_stack_ptr)[mortal_stack_index];
+      SPVM_OBJECT* object = (*current_mortal_stack_ptr)[mortal_stack_index];
+      
+      if (remove_object == object) {
+        remove_count++;
+        match_mortal_stack_index = mortal_stack_index;
+        SPVM_API_assign_object(env, stack, object_address, NULL);
+      }
+    }
+    
+    if (remove_count) {
+      for (int32_t mortal_stack_index = match_mortal_stack_index; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
+        (*current_mortal_stack_ptr)[mortal_stack_index] = (*current_mortal_stack_ptr)[mortal_stack_index + 1];
+      }
+      *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr - remove_count;
+    }
+  }
+  return remove_count;
+}
+
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist_address, SPVM_OBJECT* src_object) {
   SPVM_OBJECT* tmp_object = SPVM_API_get_object_no_weaken_address(env, stack, src_object);
   if (tmp_object != NULL) {
@@ -4265,6 +4095,175 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist
     SPVM_API_dec_ref_count(env, stack, *dist_address);
   }
   *dist_address = tmp_object;
+}
+
+void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
+  
+  assert(object != NULL);
+  assert(object_ref_count > 0);
+  
+  // Not weakened
+  assert((((intptr_t)object) & 1) == 0);
+  
+  // If reference count is zero, free address.
+  if (object_ref_count == 1) {
+    // Free object array
+    if (SPVM_API_is_object_array(env, stack, object)) {
+      int32_t length = SPVM_API_length(env, stack, object);
+      for (int32_t index = 0; index < length; index++) {
+        SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
+
+        if (*get_field_object_address != NULL) {
+          SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
+        }
+      }
+    }
+    // Free object
+    else {
+      SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
+      int32_t object_basic_type_category = object_basic_type->category;
+      if (object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+        // Class
+        SPVM_RUNTIME* runtime = env->runtime;
+        
+        // Call destructor
+        if (object_basic_type->destructor_method) {
+          int32_t args_width = 1;
+          SPVM_VALUE save_stack0 = stack[0];
+          void* save_exception = SPVM_API_get_exception(env, stack);
+          if (save_exception) {
+            SPVM_API_inc_ref_count_thread_unsafe(env, stack, save_exception);
+          }
+          
+          stack[0].oval = object;
+          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_basic_type, object_basic_type->destructor_method->index);
+          
+          int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
+          
+          // Exception in destructor is changed to warning
+          if (error_id) {
+            void* exception = SPVM_API_get_exception(env, stack);
+            const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
+            fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
+          }
+          
+          // Restore stack and exception
+          stack[0] = save_stack0;
+          SPVM_API_set_exception(env, stack, save_exception);
+          if (save_exception) {
+            SPVM_API_dec_ref_count(env, stack, save_exception);
+          }
+          
+          int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
+          
+          assert(object_ref_count > 0);
+        }
+        
+        // Free object fields
+        int32_t object_fields_length = object_basic_type->fields_length;
+        for (int32_t field_index = 0; field_index < object_fields_length; field_index++) {
+          SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_basic_type, field_index);
+          
+          int32_t field_basic_type_id = field->basic_type->id;
+          void* field_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, field_basic_type_id);
+          int32_t field_type_dimension = field->type_dimension;
+          int32_t field_type_flag = field->type_flag;
+          int32_t field_type_is_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
+          
+          if (field_type_is_object) {
+            SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+            if (*get_field_object_address != NULL) {
+              // If object is weak, unweaken
+              if (SPVM_API_isweak(env, stack, get_field_object_address)) {
+                SPVM_API_unweaken(env, stack, get_field_object_address);
+              }
+              
+              SPVM_API_dec_ref_count(env, stack, *get_field_object_address);
+            }
+          }
+        }
+      }
+    }
+    
+    // Free weak back refenreces
+    if (object->weaken_backref_head != NULL) {
+      SPVM_API_free_weaken_back_refs(env, stack, object->weaken_backref_head);
+      object->weaken_backref_head = NULL;
+    }
+    
+    // Decrement reference count
+    SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
+    
+    SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object);
+    SPVM_MUTEX_destroy(mutex);
+    
+    // Free object
+    SPVM_API_free_memory_stack(env, stack, object);
+    object = NULL;
+  }
+  else {
+    // Decrement reference count
+    SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
+  }
+}
+
+void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(object_mutex);
+  
+  SPVM_API_inc_ref_count_thread_unsafe(env, stack, object);
+  
+  SPVM_MUTEX_unlock(object_mutex);
+  
+}
+
+void SPVM_API_inc_ref_count_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  if (object != NULL) {
+    int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
+    assert(object_ref_count >= 0);
+    
+    object->ref_count++;
+  }
+  
+}
+
+void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(object_mutex);
+  
+  SPVM_API_dec_ref_count_only_thread_unsafe(env, stack, object);
+  
+  SPVM_MUTEX_unlock(object_mutex);
+  
+}
+
+void SPVM_API_dec_ref_count_only_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  if (object != NULL) {
+    int32_t object_ref_count = SPVM_API_get_ref_count(env, stack, object);
+    assert(object_ref_count > 0);
+    
+    object->ref_count--;
+  }
+  
+}
+
+int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t ref_count = object->ref_count;
+  
+  return ref_count;
 }
 
 SPVM_MUTEX* SPVM_API_get_object_mutex(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
