@@ -1713,12 +1713,13 @@ int32_t SPVM_API_remove_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t origina
   if (remove_object != NULL) {
     int32_t match_mortal_stack_index = -1;
     for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
+      SPVM_OBJECT** object_address = &(*current_mortal_stack_ptr)[mortal_stack_index];
       SPVM_OBJECT* object = (*current_mortal_stack_ptr)[mortal_stack_index];
       
       if (remove_object == object) {
         remove_count++;
         match_mortal_stack_index = mortal_stack_index;
-        SPVM_API_dec_ref_count(env, stack, object);
+        SPVM_API_assign_object(env, stack, object_address, NULL);
       }
     }
     
