@@ -258,7 +258,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* src_string = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* byte_arra = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void** element_address = NULL;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  void** get_field_object_address = NULL;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  void** get_field_object_ref = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* src_byte_array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* byte_array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t elem_isa = 0;\n");

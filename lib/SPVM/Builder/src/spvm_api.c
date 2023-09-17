@@ -140,7 +140,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_set_class_var_double,
     SPVM_API_set_class_var_object,
     SPVM_API_set_class_var_string,
-    SPVM_API_get_class_var_object_address,
+    SPVM_API_get_class_var_object_ref,
     SPVM_API_get_class_var_byte_by_name,
     SPVM_API_get_class_var_short_by_name,
     SPVM_API_get_class_var_int_by_name,
@@ -312,8 +312,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_inc_ref_count,
     SPVM_API_dec_ref_count,
     SPVM_API_get_field_object_defined_and_has_pointer_by_name,
-    SPVM_API_get_field_object_address,
-    SPVM_API_get_field_object_address_by_name,
+    SPVM_API_get_field_object_ref,
+    SPVM_API_get_field_object_ref_by_name,
     SPVM_API_check_stack_env,
     SPVM_API_dec_ref_count_only,
     SPVM_API_leave_scope_local,
@@ -733,7 +733,7 @@ SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   return value;
 }
 
-SPVM_OBJECT** SPVM_API_get_class_var_object_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
+SPVM_OBJECT** SPVM_API_get_class_var_object_ref(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
   
@@ -841,8 +841,8 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   
   assert(class_var->index >= 0 && class_var->index < class_vars_length);
   
-  void* get_field_object_address = &class_var->data.oval;
-  SPVM_API_assign_object(env, stack, get_field_object_address, value);
+  void* get_field_object_ref = &class_var->data.oval;
+  SPVM_API_assign_object(env, stack, get_field_object_ref, value);
 }
 
 void SPVM_API_set_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value) {
@@ -1204,7 +1204,7 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   return value;
 }
 
-SPVM_OBJECT** SPVM_API_get_field_object_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
+SPVM_OBJECT** SPVM_API_get_field_object_ref(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
 
   // Get field value
   SPVM_OBJECT** value_address = (SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
@@ -1258,9 +1258,9 @@ void SPVM_API_set_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
 void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
 
   // Get field value
-  void* get_field_object_address = (void**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+  void* get_field_object_ref = (void**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
 
-  SPVM_API_assign_object(env, stack, get_field_object_address, value);
+  SPVM_API_assign_object(env, stack, get_field_object_ref, value);
 }
 
 void SPVM_API_set_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
@@ -1436,7 +1436,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   return value;
 }
 
-SPVM_OBJECT** SPVM_API_get_field_object_address_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
+SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
   *error_id = 0;
   
   if (object == NULL) {
@@ -1456,7 +1456,7 @@ SPVM_OBJECT** SPVM_API_get_field_object_address_by_name(SPVM_ENV* env, SPVM_VALU
     SPVM_API_die(env, stack, "The %s field is not found in the %s class or its super class", field_name, basic_type_name, func_name, file, line);
     return NULL;
   };
-  SPVM_OBJECT** value_address = SPVM_API_get_field_object_address(env, stack, object, field);
+  SPVM_OBJECT** value_address = SPVM_API_get_field_object_ref(env, stack, object, field);
   return value_address;
 }
 
@@ -3920,7 +3920,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_a
   else {
     SPVM_API_dec_ref_count(env, stack, object);
   }
-
+  
   // Create weaken_backref_head
   if (object->weaken_backref_head == NULL) {
     SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
@@ -4113,8 +4113,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     if (SPVM_API_is_object_array(env, stack, object)) {
       int32_t length = SPVM_API_length(env, stack, object);
       for (int32_t index = 0; index < length; index++) {
-        SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
-        SPVM_API_assign_object(env, stack, get_field_object_address, NULL);
+        SPVM_OBJECT** get_field_object_ref = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
+        SPVM_API_assign_object(env, stack, get_field_object_ref, NULL);
       }
     }
     // Free object
@@ -4167,8 +4167,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
           int32_t field_type_is_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
           
           if (field_type_is_object) {
-            SPVM_OBJECT** get_field_object_address = (SPVM_OBJECT**)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-            SPVM_API_assign_object(env, stack, get_field_object_address, NULL);
+            SPVM_OBJECT** get_field_object_ref = (SPVM_OBJECT**)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+            SPVM_API_assign_object(env, stack, get_field_object_ref, NULL);
           }
         }
       }

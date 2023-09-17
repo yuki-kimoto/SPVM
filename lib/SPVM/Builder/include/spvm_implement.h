@@ -1323,8 +1323,8 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = 1;
   }
   else {
-    void* get_field_object_address = (void**)((intptr_t)object + object_data_offset + field_offset);
-    env->assign_object(env, stack, get_field_object_address, in);
+    void* get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    env->assign_object(env, stack, get_field_object_ref, in);
   }
 }
 
@@ -1336,8 +1336,8 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = 1;
   }
   else {
-    void* get_field_object_address = (void**)((intptr_t)object + object_data_offset + field_offset);
-    env->assign_object(env, stack, get_field_object_address, NULL);
+    void* get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    env->assign_object(env, stack, get_field_object_ref, NULL);
   }
 }
 
@@ -1348,8 +1348,8 @@ static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
     *error_id = 1;
   }
   else {
-    void** get_field_object_address = (void**)((intptr_t)object + object_data_offset + field_offset);
-    int32_t status = env->weaken(env, stack, get_field_object_address);
+    void** get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    int32_t status = env->weaken(env, stack, get_field_object_ref);
     if (status != 0) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
       env->set_exception(env, stack, exception);
@@ -1365,8 +1365,8 @@ static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = 1;
   }
   else {
-    void** get_field_object_address = (void**)((intptr_t)object + object_data_offset + field_offset);
-    env->unweaken(env, stack, get_field_object_address);
+    void** get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    env->unweaken(env, stack, get_field_object_ref);
   }
 }
 
@@ -1377,8 +1377,8 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
     *error_id = 1;
   }
   else {
-    void** get_field_object_address = (void**)((intptr_t)object + object_data_offset + field_offset);
-    *out = env->isweak(env, stack, get_field_object_address);
+    void** get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    *out = env->isweak(env, stack, get_field_object_ref);
   }
 }
 
@@ -1396,8 +1396,8 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_LONG(env, stack, class_var, in) (env->set_class_var_long(env, stack, class_var, in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_FLOAT(env, stack, class_var, in) (env->set_class_var_float(env, stack, class_var, in))
 #define SPVM_IMPLEMENT_SET_CLASS_VAR_DOUBLE(env, stack, class_var, in) (env->set_class_var_double(env, stack, class_var, in))
-#define SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var, in) (env->assign_object(env, stack, env->get_class_var_object_address(env, stack, class_var), in))
-#define SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var) (env->assign_object(env, stack, env->get_class_var_object_address(env, stack, class_var), NULL))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_OBJECT(env, stack, class_var, in) (env->assign_object(env, stack, env->get_class_var_object_ref(env, stack, class_var), in))
+#define SPVM_IMPLEMENT_SET_CLASS_VAR_UNDEF(env, stack, class_var) (env->assign_object(env, stack, env->get_class_var_object_ref(env, stack, class_var), NULL))
 
 #define SPVM_IMPLEMENT_GET_EXCEPTION_VAR(env, stack, out) (env->assign_object(env, stack, out, env->get_exception(env, stack)))
 #define SPVM_IMPLEMENT_SET_EXCEPTION_VAR(env, stack, in) (env->set_exception(env, stack, in))

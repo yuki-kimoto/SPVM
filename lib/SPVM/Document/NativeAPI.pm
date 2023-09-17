@@ -298,9 +298,9 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 The same as L</"get_class_var_object">.
 
-=head2 get_class_var_object_address
+=head2 get_class_var_object_ref
 
-  void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+  void** (*get_class_var_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
 
 Gets the address of the value of a class variable of the object type.
 
@@ -1965,17 +1965,17 @@ The same as L</"new_stack_trace_raw_by_name">, and push the created object to th
 
   void* (*get_field_object_defined_and_has_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);
 
-=head2 get_field_object_address
+=head2 get_field_object_ref
 
-  void** (*get_field_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+  void** (*get_field_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
 
 Gets the address of the value of a field of the object type.
 
 The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> object.
 
-=head2 get_field_object_address_by_name
+=head2 get_field_object_ref_by_name
 
-  void** (*get_field_object_address_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+  void** (*get_field_object_ref_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
 
 Gets the address of the value of a field of the object type by its basic type name of the object and field name.
 
@@ -2046,7 +2046,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   34 set_class_var_double
   35 set_class_var_object
   36 set_class_var_string
-  37 get_class_var_object_address
+  37 get_class_var_object_ref
   38 get_class_var_byte_by_name
   39 get_class_var_short_by_name
   40 get_class_var_int_by_name
