@@ -2663,7 +2663,7 @@ void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKE
   SPVM_WEAKEN_BACKREF* weaken_backref_head_cur = weaken_backref_head;
   SPVM_WEAKEN_BACKREF* weaken_backref_head_next = NULL;
   while (weaken_backref_head_cur != NULL){
-    *(weaken_backref_head_cur->object_address) = NULL;
+    *(weaken_backref_head_cur->object_ref) = NULL;
     weaken_backref_head_next = weaken_backref_head_cur->next;
     SPVM_API_free_memory_stack(env, stack, weaken_backref_head_cur);
     weaken_backref_head_cur = NULL;
@@ -3927,7 +3927,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_a
     if (new_weaken_backref == NULL) {
       return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
-    new_weaken_backref->object_address = object_address;
+    new_weaken_backref->object_ref = object_address;
     object->weaken_backref_head = new_weaken_backref;
   }
   // Add weaken_back_ref
@@ -3938,7 +3938,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_a
     if (new_weaken_backref) {
       return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
-    new_weaken_backref->object_address = object_address;
+    new_weaken_backref->object_ref = object_address;
     
     while (weaken_backref_next->next != NULL){
       weaken_backref_next = weaken_backref_next->next;
@@ -3979,7 +3979,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_ad
   
   int32_t pass_one = 0;
   while (*weaken_backref_next_address != NULL){
-    if ((*weaken_backref_next_address)->object_address == object_address) {
+    if ((*weaken_backref_next_address)->object_ref == object_address) {
       pass_one++;
       SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_address)->next;
       SPVM_API_free_memory_stack(env, stack, *weaken_backref_next_address);

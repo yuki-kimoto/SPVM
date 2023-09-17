@@ -9,7 +9,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_weaken_backref {
-  SPVM_OBJECT** object_address;
+  SPVM_OBJECT** object_ref;
   SPVM_WEAKEN_BACKREF* next;
 };
 

@@ -15,7 +15,7 @@
     * Assignability symbol table becomes thread safe.
     * compile becomes thread safe.
 
-  [Incompatibe Changes]
+  [Incompatible Changes]
     
     The following native APIs are renamed.
     
