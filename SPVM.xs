@@ -100,11 +100,11 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, void* spvm_object, cons
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  env->inc_ref_count(env, stack, spvm_object);
-  
   SV* sv_spvm_object = sv_2mortal(newSVpv("", sizeof(void*)));
   void** spvm_object_ref = (void**)SvPV_nolen(sv_spvm_object);
-  *spvm_object_ref = spvm_object;
+  *spvm_object_ref = NULL;
+  
+  env->assign_object(env, stack, spvm_object_ref, spvm_object);
   
   HV* hv_blessed_object = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
