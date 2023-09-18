@@ -2010,17 +2010,19 @@ _xs_call_method(...)
         void* return_value = (void*)stack[0].oval;
         sv_return_value = NULL;
         if (return_value != NULL) {
-          env->inc_ref_count(env, stack, return_value);
           const char* return_value_basic_type_name = env->get_object_basic_type_name(env, stack, return_value);
           int32_t return_value_type_dimension = env->get_object_type_dimension(env, stack, return_value);
           if (return_value_type_dimension > 0) {
+            env->inc_ref_count(env, stack, return_value);
             sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, return_value, "SPVM::BlessedObject::Array");
           }
           else {
             if (strcmp(return_value_basic_type_name, "string") == 0) {
+              env->inc_ref_count(env, stack, return_value);
               sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, return_value, "SPVM::BlessedObject::String");
             }
             else {
+              env->inc_ref_count(env, stack, return_value);
               sv_return_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, return_value, "SPVM::BlessedObject::Class");
             }
           }
@@ -4005,13 +4007,14 @@ _xs_to_elems(...)
             av_push(av_values, &PL_sv_undef);
           }
           else {
-            env->inc_ref_count(env, stack, value);
             int32_t elem_type_is_array_type = elem_type_dimension > 0;
             SV* sv_value;
             if (elem_type_is_array_type) {
+              env->inc_ref_count(env, stack, value);
               sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, value, "SPVM::BlessedObject::Array");
             }
             else {
+              env->inc_ref_count(env, stack, value);
               sv_value = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_api, value, "SPVM::BlessedObject::Class");
             }
             av_push(av_values, SvREFCNT_inc(sv_value));
