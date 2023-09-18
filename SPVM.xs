@@ -3739,14 +3739,14 @@ SV*
 DESTROY(...)
   PPCODE:
 {
-  SV* sv_object = ST(0);
-  HV* hv_object = (HV*)SvRV(sv_object);
-
-  assert(SvOK(sv_object));
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
   
-  void* object = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_object);
+  SV** sv_spvm_object_ptr = hv_fetch(hv_self, "spvm_object", strlen("spvm_object"), 0);
+  SV* sv_spvm_object = sv_spvm_object_ptr ? *sv_spvm_object_ptr : &PL_sv_undef;
+  void** spvm_object_ref = (void**)SvPV_nolen(sv_spvm_object);
   
-  SV** sv_api_ptr = hv_fetch(hv_object, "__api", strlen("__api"), 0);
+  SV** sv_api_ptr = hv_fetch(hv_self, "__api", strlen("__api"), 0);
   SV* sv_api = sv_api_ptr ? *sv_api_ptr : &PL_sv_undef;
   HV* hv_api = (HV*)SvRV(sv_api);
   
@@ -3759,9 +3759,7 @@ DESTROY(...)
   SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
   SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
   
-  assert(env->get_ref_count(env, stack, object));
-  
-  env->dec_ref_count(env, stack, object);
+  env->assign_object(env, stack, spvm_object_ref, NULL);
   
   XSRETURN(0);
 }
