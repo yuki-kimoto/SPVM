@@ -204,7 +204,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->enter_scope != &env_array[185]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->leave_scope != &env_array[186]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->push_mortal != &env_array[187]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->remove_mortal != &env_array[188]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->weaken != &env_array[189]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->isweak != &env_array[190]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->unweaken != &env_array[191]) { stack[0].ival = 0; return 0; }

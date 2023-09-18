@@ -477,12 +477,6 @@ Use "leave_scope" to leave the scope. For the argument, it is necessary to speci
 
   env->leave_scope(env, stack, scope_id);
 
-Use "remove_mortal" to remove the object from the mortal stack. For the argument, specify the scope ID obtained by "enter_scope" and the object you want to remove. The object is removed from the mortal stack and the reference count is automatically decremented by 1. When the reference count reaches 0, it is released.
-
-  env->remove_mortal(env, stack, scope_id, object);
-
-Information about the mortal stack is stored in env.
-
 =head1 Exception
 
 In the native method, it is the return value that indicates whether an exception has occurred.

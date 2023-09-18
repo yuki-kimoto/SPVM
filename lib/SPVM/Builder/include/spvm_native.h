@@ -96,9 +96,6 @@ union spvm_value {
 
 
 
-
-
-
 struct spvm_env {
   void* compiler;
   void* runtime;
@@ -288,7 +285,7 @@ struct spvm_env {
   int32_t (*enter_scope)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*leave_scope)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id);
   int32_t (*push_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  int32_t (*remove_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id, void* remove_object);
+  void* *reserved188;
   int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, SPVM_VALUE* stack, void** object);
   void (*unweaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);

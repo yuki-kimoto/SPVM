@@ -1402,12 +1402,6 @@ If this method don't alloc memory for new mortal information, return 1.
 
 Specifies a scope ID to exit that scope and decrement the object's reference count stored in the mortal stack. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
 
-=head2 remove_mortal
-
-  int32_t (*remove_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id, void* remove_object);
-
-Given a scope ID and an object, delete the specified object from the mortal stack.
-
 =head2 isa
 
   int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* cast_basic_type, int32_t cast_type_dimension);
@@ -2197,7 +2191,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   185 enter_scope
   186 leave_scope
   187 push_mortal
-  188 remove_mortal
+  188 reserved188
   189 weaken
   190 isweak
   191 unweaken

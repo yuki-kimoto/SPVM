@@ -17,7 +17,7 @@
 
   [Incompatible Changes]
     
-    The following native APIs are renamed.
+    * The following native APIs are renamed.
     
       -  void** (*get_class_var_object_address)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
       +  void** (*get_class_var_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
@@ -27,6 +27,10 @@
       
       -  void** (*get_field_object_address_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
       +  void** (*get_field_object_ref_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+    
+    * The following native APIs are removed.
+      
+      int32_t (*remove_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id, void* remove_object);
 
 0.989042 2023-09-12
   [Incompatible Changes]
