@@ -8,9 +8,6 @@
   [Changes]
     * SPVM object have a mutex data.
   
-  [Break Binary Compatibility]
-    * The return value of precompiled method is assigned to stack and cancel the assignment in call_method.
-  
   [Internal Changes]
     * Assignability symbol table becomes thread safe.
     * compile becomes thread safe.
