@@ -190,8 +190,11 @@ SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack,
     }
     else {
       void* address = (void*)(intptr_t)SvIV(sv_address);
-      void* spvm_address = env->new_pointer_object_by_name(env, stack, "Address", address, &error_id, __func__, FILE_NAME, __LINE__);
-      assert(error_id == 0);
+      void* basic_type = env->get_basic_type(env, stack, "Address");
+      
+      void* spvm_address = env->new_pointer_object_no_mortal(env, stack, basic_type, address);
+      
+      env->inc_ref_count(env, stack, spvm_address);
       sv_address = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, spvm_address, "SPVM::BlessedObject::Class");
     }
   }
