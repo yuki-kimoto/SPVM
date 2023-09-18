@@ -127,7 +127,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   return stack;
 }
 
-SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_string, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_string, SV** sv_error) {
   
   HV* hv_self = (HV*)SvRV(sv_self);
   
@@ -162,7 +162,7 @@ SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp,
   return sv_string;
 }
 
-SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_address, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_address, SV** sv_error) {
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
@@ -207,7 +207,7 @@ SV* SPVM_XS_UTIL_new_address_object(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_st
   return sv_address;
 }
 
-SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
@@ -267,7 +267,7 @@ SV* SPVM_XS_UTIL_new_byte_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_byte_array_unsigned(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_byte_array_unsigned(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
@@ -327,7 +327,7 @@ SV* SPVM_XS_UTIL_new_byte_array_unsigned(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* 
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
@@ -387,7 +387,7 @@ SV* SPVM_XS_UTIL_new_short_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_short_array_unsigned(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_short_array_unsigned(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
@@ -447,7 +447,7 @@ SV* SPVM_XS_UTIL_new_short_array_unsigned(pTHX_ SV* sv_self, SV* sv_env_tmp, SV*
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
@@ -507,7 +507,7 @@ SV* SPVM_XS_UTIL_new_int_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_t
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_int_array_unsigned(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_int_array_unsigned(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -568,7 +568,7 @@ SV* SPVM_XS_UTIL_new_int_array_unsigned(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* s
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -629,7 +629,7 @@ SV* SPVM_XS_UTIL_new_long_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_long_array_unsigned(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_long_array_unsigned(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -690,7 +690,7 @@ SV* SPVM_XS_UTIL_new_long_array_unsigned(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* 
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -751,7 +751,7 @@ SV* SPVM_XS_UTIL_new_float_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -812,7 +812,7 @@ SV* SPVM_XS_UTIL_new_double_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stac
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -854,7 +854,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stac
         SV** sv_elem_ptr = av_fetch(av_array, i, 0);
         SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
         SV* sv_error_elem = &PL_sv_undef;
-        sv_elem = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_elem, &sv_error_elem);
+        sv_elem = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_elem, &sv_error_elem);
         
         if (SvOK(sv_error_elem)) {
           *sv_error = sv_2mortal(newSVpvf("'s %dth element must be a non-reference scalar", i + 1));
@@ -875,7 +875,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stac
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, void* basic_type, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, void* basic_type, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -950,7 +950,7 @@ SV* SPVM_XS_UTIL_new_object_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stac
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, void* basic_type, int32_t type_dimension, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, void* basic_type, int32_t type_dimension, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -1024,7 +1024,7 @@ SV* SPVM_XS_UTIL_new_muldim_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stac
   return sv_array;
 }
 
-SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, SV* sv_env_tmp, SV* sv_stack_tmp, void* basic_type, SV* sv_array, SV** sv_error) {
+SV* SPVM_XS_UTIL_new_mulnum_array(pTHX_ SV* sv_self, void* basic_type, SV* sv_array, SV** sv_error) {
   
   *sv_error = &PL_sv_undef;
   
@@ -1372,7 +1372,7 @@ _xs_call_method(...)
           case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
             // Argument conversion - string
             SV* sv_error = &PL_sv_undef;
-            sv_value = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+            sv_value = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_value, &sv_error);
             if (SvOK(sv_error)) {
               croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
             }
@@ -1785,32 +1785,32 @@ _xs_call_method(...)
           switch (arg_basic_type_id) {
             // Argument conversion - byte array
             case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-              sv_value = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              sv_value = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_value, &sv_error);
               break;
             }
             // Argument conversion - short array
             case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-              sv_value = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              sv_value = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_value, &sv_error);
               break;
             }
             // Argument conversion - int array
             case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-              sv_value = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              sv_value = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_value, &sv_error);
               break;
             }
             // Argument conversion - long array
             case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-              sv_value = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              sv_value = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_value, &sv_error);
               break;
             }
             // Argument conversion - float array
             case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-              sv_value = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              sv_value = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_value, &sv_error);
               break;
             }
             // Argument conversion - double array
             case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-              sv_value = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+              sv_value = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_value, &sv_error);
               break;
             }
             default: {
@@ -1832,7 +1832,7 @@ _xs_call_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM:
         {
           SV* sv_error = &PL_sv_undef;
-          sv_value = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type, sv_value, &sv_error);
+          sv_value = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, arg_basic_type, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
             croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -1848,7 +1848,7 @@ _xs_call_method(...)
         case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING: {
           SV* sv_error = &PL_sv_undef;
           
-          sv_value = SPVM_XS_UTIL_new_string_array(aTHX_ sv_self, sv_env, sv_stack, sv_value, &sv_error);
+          sv_value = SPVM_XS_UTIL_new_string_array(aTHX_ sv_self, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
             croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -1867,7 +1867,7 @@ _xs_call_method(...)
         {
           SV* sv_error = &PL_sv_undef;
           
-          sv_value = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type, sv_value, &sv_error);
+          sv_value = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, arg_basic_type, sv_value, &sv_error);
           
           if (SvOK(sv_error)) {
             croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -1890,7 +1890,7 @@ _xs_call_method(...)
       // Argument conversion - multi-type_dimensional array
       SV* sv_error = &PL_sv_undef;
       
-      sv_value = SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, sv_env, sv_stack, arg_basic_type, arg_type_dimension, sv_value, &sv_error);
+      sv_value = SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, arg_basic_type, arg_type_dimension, sv_value, &sv_error);
       
       if (SvOK(sv_error)) {
         croak("The %dth argument of the \"%s\" method in the \"%s\" class%s\n    %s at %s line %d\n", arg_index_nth, method_name, basic_type_name, SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2352,7 +2352,7 @@ _xs_new_string(...)
   SV* sv_string = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_string = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_string, &sv_error);
+  sv_string = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_string, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$string%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2385,7 +2385,7 @@ _xs_new_address_object(...)
   SV* sv_address = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_address = SPVM_XS_UTIL_new_address_object(aTHX_ sv_self, sv_env, sv_stack, sv_address, &sv_error);
+  sv_address = SPVM_XS_UTIL_new_address_object(aTHX_ sv_self, sv_address, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$address%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2416,7 +2416,7 @@ _xs_new_byte_array(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_byte_array(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2447,7 +2447,7 @@ _xs_new_byte_array_unsigned(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_byte_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_byte_array_unsigned(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2553,7 +2553,7 @@ _xs_new_short_array(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_short_array(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2584,7 +2584,7 @@ _xs_new_short_array_unsigned(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_short_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_short_array_unsigned(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2696,7 +2696,7 @@ _xs_new_int_array(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_int_array(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2727,7 +2727,7 @@ _xs_new_int_array_unsigned(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_int_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_int_array_unsigned(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2838,7 +2838,7 @@ _xs_new_long_array(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_long_array(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2869,7 +2869,7 @@ _xs_new_long_array_unsigned(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_long_array_unsigned(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_long_array_unsigned(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -2981,7 +2981,7 @@ _xs_new_float_array(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_float_array(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3093,7 +3093,7 @@ _xs_new_double_array(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_double_array(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3204,7 +3204,7 @@ _xs_new_string_array(...)
   SV* sv_array = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_string_array(aTHX_ sv_self, sv_env, sv_stack, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_string_array(aTHX_ sv_self, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3283,7 +3283,7 @@ _xs_new_object_array(...)
   }
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, sv_env, sv_stack, basic_type, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_object_array(aTHX_ sv_self, basic_type, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3378,7 +3378,7 @@ _xs_new_mulnum_array(...)
   }
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, sv_env, sv_stack, basic_type, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_mulnum_array(aTHX_ sv_self, basic_type, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3618,7 +3618,7 @@ _xs_new_muldim_array(...)
   int32_t type_dimension = (int32_t)SvIV(sv_type_dimension);
   
   SV* sv_error = &PL_sv_undef;
-  sv_array = SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, sv_env, sv_stack, basic_type, type_dimension, sv_array, &sv_error);
+  sv_array = SPVM_XS_UTIL_new_muldim_array(aTHX_ sv_self, basic_type, type_dimension, sv_array, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$array%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
@@ -3727,7 +3727,7 @@ _xs_set_exception(...)
   SV* sv_message = ST(1);
   
   SV* sv_error = &PL_sv_undef;
-  sv_message = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_env, sv_stack, sv_message, &sv_error);
+  sv_message = SPVM_XS_UTIL_new_string(aTHX_ sv_self, sv_message, &sv_error);
   
   if (SvOK(sv_error)) {
     croak("$message%s\n    %s at %s line %d\n", SvPV_nolen(sv_error), __func__, FILE_NAME, __LINE__);
