@@ -40,8 +40,8 @@ void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_blessed_object) {
     
     SV** sv_spvm_object_ptr = hv_fetch(hv_blessed_object, "spvm_object", strlen("spvm_object"), 0);
     SV* sv_spvm_object = sv_spvm_object_ptr ? *sv_spvm_object_ptr : &PL_sv_undef;
-    size_t iv_spvm_object = SvIV(SvRV(sv_spvm_object));
-    void* spvm_object = INT2PTR(void*, iv_spvm_object);
+    void** spvm_object_ref = (void**)SvPV_nolen(sv_spvm_object);
+    void* spvm_object = *spvm_object_ref;
     
     return spvm_object;
   }
@@ -102,9 +102,9 @@ SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, void* spvm_object, cons
   
   env->inc_ref_count(env, stack, spvm_object);
   
-  size_t iv_spvm_object = PTR2IV(spvm_object);
-  SV* sviv_spvm_object = sv_2mortal(newSViv(iv_spvm_object));
-  SV* sv_spvm_object = sv_2mortal(newRV_inc(sviv_spvm_object));
+  SV* sv_spvm_object = sv_2mortal(newSVpv("", sizeof(void*)));
+  void** spvm_object_ref = (void**)SvPV_nolen(sv_spvm_object);
+  *spvm_object_ref = spvm_object;
   
   HV* hv_blessed_object = (HV*)sv_2mortal((SV*)newHV());
   SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
