@@ -16,22 +16,6 @@
 
 static const char* FILE_NAME = "SPVM.xs";
 
-SV* SPVM_XS_UTIL_new_sv_pointer_object(pTHX_ void* pointer, const char* class) {
-  
-  size_t iv_pointer = PTR2IV(pointer);
-  SV* sviv_pointer = sv_2mortal(newSViv(iv_pointer));
-  SV* sv_pointer = sv_2mortal(newRV_inc(sviv_pointer));
-  
-  HV* hv_pointer_object = (HV*)sv_2mortal((SV*)newHV());
-  (void)hv_store(hv_pointer_object, "pointer", strlen("pointer"), SvREFCNT_inc(sv_pointer), 0);
-  SV* sv_pointer_object = sv_2mortal(newRV_inc((SV*)hv_pointer_object));
-  
-  HV* hv_class = gv_stashpv(class, 0);
-  sv_bless(sv_pointer_object, hv_class);
-  
-  return sv_pointer_object;
-}
-
 void* SPVM_XS_UTIL_get_pointer(pTHX_ SV* sv_data) {
   
   if (SvOK(sv_data)) {
@@ -47,29 +31,6 @@ void* SPVM_XS_UTIL_get_pointer(pTHX_ SV* sv_data) {
   else {
     return NULL;
   }
-}
-
-SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, void* spvm_object, const char* class) {
-  
-  
-  // Create spvm_object
-  size_t iv_spvm_object = PTR2IV(spvm_object);
-  SV* sviv_spvm_object = sv_2mortal(newSViv(iv_spvm_object));
-  SV* sv_spvm_object = sv_2mortal(newRV_inc(sviv_spvm_object));
-  
-  HV* hv_blessed_object = (HV*)sv_2mortal((SV*)newHV());
-  SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
-  
-  (void)hv_store(hv_blessed_object, "spvm_object", strlen("spvm_object"), SvREFCNT_inc(sv_spvm_object), 0);
-  
-  if (SvOK(sv_api)) {
-    (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
-  }
-  
-  HV* hv_class = gv_stashpv(class, 0);
-  sv_bless(sv_blessed_object, hv_class);
-  
-  return sv_blessed_object;
 }
 
 void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_blessed_object) {
@@ -125,6 +86,53 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   }
   
   return stack;
+}
+
+SV* SPVM_XS_UTIL_new_sv_blessed_object(pTHX_ SV* sv_api, void* spvm_object, const char* class) {
+  
+  HV* hv_self = (HV*)SvRV(sv_api);
+  
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = SPVM_XS_UTIL_get_env(aTHX_ sv_env);
+  
+  SV** sv_stack_ptr = hv_fetch(hv_self, "stack", strlen("stack"), 0);
+  SV* sv_stack = sv_stack_ptr ? *sv_stack_ptr : &PL_sv_undef;
+  SPVM_VALUE* stack = SPVM_XS_UTIL_get_stack(aTHX_ sv_stack);
+  
+  size_t iv_spvm_object = PTR2IV(spvm_object);
+  SV* sviv_spvm_object = sv_2mortal(newSViv(iv_spvm_object));
+  SV* sv_spvm_object = sv_2mortal(newRV_inc(sviv_spvm_object));
+  
+  HV* hv_blessed_object = (HV*)sv_2mortal((SV*)newHV());
+  SV* sv_blessed_object = sv_2mortal(newRV_inc((SV*)hv_blessed_object));
+  
+  (void)hv_store(hv_blessed_object, "spvm_object", strlen("spvm_object"), SvREFCNT_inc(sv_spvm_object), 0);
+  
+  if (SvOK(sv_api)) {
+    (void)hv_store(hv_blessed_object, "__api", strlen("__api"), SvREFCNT_inc(sv_api), 0);
+  }
+  
+  HV* hv_class = gv_stashpv(class, 0);
+  sv_bless(sv_blessed_object, hv_class);
+  
+  return sv_blessed_object;
+}
+
+SV* SPVM_XS_UTIL_new_sv_pointer_object(pTHX_ void* pointer, const char* class) {
+  
+  size_t iv_pointer = PTR2IV(pointer);
+  SV* sviv_pointer = sv_2mortal(newSViv(iv_pointer));
+  SV* sv_pointer = sv_2mortal(newRV_inc(sviv_pointer));
+  
+  HV* hv_pointer_object = (HV*)sv_2mortal((SV*)newHV());
+  (void)hv_store(hv_pointer_object, "pointer", strlen("pointer"), SvREFCNT_inc(sv_pointer), 0);
+  SV* sv_pointer_object = sv_2mortal(newRV_inc((SV*)hv_pointer_object));
+  
+  HV* hv_class = gv_stashpv(class, 0);
+  sv_bless(sv_pointer_object, hv_class);
+  
+  return sv_pointer_object;
 }
 
 SV* SPVM_XS_UTIL_new_string(pTHX_ SV* sv_api, SV* sv_string, SV** sv_error) {
