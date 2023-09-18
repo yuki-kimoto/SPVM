@@ -1,3 +1,11 @@
+0.989044 2023-09-18
+  [Internal Changes]
+    * A blessed object has SV* object instead of the reference to SV* object
+  [New Features]
+    * Add the following Native APIs.
+    
+      void* (*new_string_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+    
 0.989043 2023-09-18
   [New Features]
     * Add the following native APIs.

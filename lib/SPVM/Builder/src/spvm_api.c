@@ -318,6 +318,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_dec_ref_count_only,
     SPVM_API_leave_scope_local,
     SPVM_API_assign_object,
+    SPVM_API_new_string_array_no_mortal,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -2735,9 +2736,18 @@ SPVM_OBJECT* SPVM_API_new_double_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t
 
 SPVM_OBJECT* SPVM_API_new_string_array(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
   
+  SPVM_OBJECT* string_array = SPVM_API_new_string_array_no_mortal(env, stack, length);
+  
+  SPVM_API_push_mortal(env, stack, string_array);
+  
+  return string_array;
+}
+
+SPVM_OBJECT* SPVM_API_new_string_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
+  
   SPVM_RUNTIME_BASIC_TYPE* string_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING);
   
-  SPVM_OBJECT* object = SPVM_API_new_object_array(env, stack, string_basic_type, length);
+  SPVM_OBJECT* object = SPVM_API_new_object_array_no_mortal(env, stack, string_basic_type, length);
   
   return object;
 }

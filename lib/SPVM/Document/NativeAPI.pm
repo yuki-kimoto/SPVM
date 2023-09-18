@@ -1749,9 +1749,13 @@ If the length is 0, the length is set to 64.
 
   void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 
-Creates a new string array. This is alias for the following code using L</"new_object_array">.
+Calls the L</"new_string_array_no_mortal"> native API and calls the L</"push_mortal/"> native API given the return value.
 
-  void* obj_string_array = env->new_object_array(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_STRING, length);
+=head2 new_string_array_no_mortal
+
+    void* (*new_string_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+
+Creates a new string array.
 
 =head2 dumpc
 
@@ -2212,7 +2216,13 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   206 inc_ref_count
   207 dec_ref_count
   208 get_field_object_defined_and_has_pointer_by_name
-  209 dec_ref_count_only
+  209 get_field_object_ref
+  210 get_field_object_ref_by_name
+  211 check_stack_env,
+  212 dec_ref_count_only
+  213 leave_scope_local
+  214 assign_object
+  215 new_string_array_no_mortal
   
 =head1 Constant Values
 
