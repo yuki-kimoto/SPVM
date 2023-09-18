@@ -829,8 +829,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
       int32_t length = av_len(av_array) + 1;
       
       // New array
-      // TODO: void* spvm_array = env->new_string_array_no_mortal(env, stack, length);
-      void* spvm_array = env->new_string_array(env, stack, length);
+      void* spvm_array = env->new_string_array_no_mortal(env, stack, length);
       
       for (int32_t i = 0; i < length; i++) {
         SV** sv_elem_ptr = av_fetch(av_array, i, 0);
@@ -846,7 +845,7 @@ SV* SPVM_XS_UTIL_new_string_array(pTHX_ SV* sv_self, SV* sv_env, SV* sv_stack, S
         env->set_elem_string(env, stack, spvm_array, i, spvm_elem);
       }
       
-      // TODO: env->inc_ref_count(env, stack, spvm_array);
+      env->inc_ref_count(env, stack, spvm_array);
       sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, spvm_array, "SPVM::BlessedObject::Array");
     }
   }
@@ -3216,12 +3215,9 @@ _xs_new_string_array_len(...)
     croak("$length must be greater than or equal to 0\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
   }
   
-  // TODO
-  // void* spvm_array = env->new_string_array_no_mortal(env, stack, length);
-  // env->inc_ref_count(env, stack, spvm_array);
+  void* spvm_array = env->new_string_array_no_mortal(env, stack, length);
   
-  void* spvm_array = env->new_string_array(env, stack, length);
-  
+  env->inc_ref_count(env, stack, spvm_array);
   SV* sv_array = SPVM_XS_UTIL_new_sv_blessed_object(aTHX_ sv_self, spvm_array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
