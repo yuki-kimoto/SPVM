@@ -3919,7 +3919,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
     return 0;
   }
   else {
-    SPVM_API_dec_ref_count(env, stack, object);
+    SPVM_API_dec_ref_count_only(env, stack, object);
   }
   
   // Create weaken_backref_head
