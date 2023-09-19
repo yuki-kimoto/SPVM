@@ -15,7 +15,6 @@ struct spvm_object {
   int32_t ref_count;
   uint8_t type_dimension;
   uint8_t flag;
-  int8_t in_destroy;
   int32_t length;
 };
 

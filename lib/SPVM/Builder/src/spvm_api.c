@@ -3935,7 +3935,6 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
     // If reference count is 1, the object is destroied
     if (ref_count == 1) {
       destroy = 1;
-      object->in_destroy = 1;
       
       object_ref_tmps[0] = object;
       *object_ref = NULL;
@@ -4118,8 +4117,6 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
   // If reference count is zero, free address.
   if (ref_count == 1) {
-    
-    object->in_destroy = 1;
     
     // Free object array
     if (SPVM_API_is_object_array(env, stack, object)) {
