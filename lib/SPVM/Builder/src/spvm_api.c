@@ -3905,6 +3905,10 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
   
   SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
   
+  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(object_mutex);
+  
   int32_t isweak = SPVM_API_isweak(env, stack, object_ref);
   
   int32_t destroy = 0;
@@ -3916,9 +3920,8 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
     
     assert(ref_count > 0);
     
-    // Decrelement reference count
+    // If reference count is 1, the object is destroied
     if (ref_count == 1) {
-      // If reference count is 1, the object is freeed without weaken
       destroy = 1;
       object->in_destroy = 1;
       
@@ -3952,6 +3955,8 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
       *object_ref = (SPVM_OBJECT*)((intptr_t)*object_ref | 1);
     }
   }
+  
+  SPVM_MUTEX_unlock(object_mutex);
   
   if (destroy) {
     SPVM_API_assign_object(env, stack, &object_ref_tmps[0], NULL);
