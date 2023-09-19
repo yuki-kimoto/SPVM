@@ -4170,6 +4170,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   assert(object != NULL);
   assert(ref_count > 0);
   
+  object->in_destroy = 1;
+  
   // Not weakened
   assert((((intptr_t)object) & 1) == 0);
   
