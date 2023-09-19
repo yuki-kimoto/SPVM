@@ -3964,6 +3964,10 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
   
   SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
   
+  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(object_mutex);
+  
   if (!SPVM_API_isweak(env, stack, object_ref)) {
     return;
   }
@@ -3988,6 +3992,8 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
     }
     *weaken_backref_next_ptr = (*weaken_backref_next_ptr)->next;
   }
+  
+  SPVM_MUTEX_unlock(object_mutex);
 }
 
 void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
