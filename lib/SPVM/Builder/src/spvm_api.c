@@ -3924,13 +3924,13 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
     SPVM_API_dec_ref_count_only(env, stack, object);
   }
   
-  // Create weaken_backref_head
+  // Create a new weaken back refference
   if (object->weaken_backref_head == NULL) {
     SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
     new_weaken_backref->object_ref = object_ref;
     object->weaken_backref_head = new_weaken_backref;
   }
-  // Add weaken_back_ref
+  // Add weaken back refference
   else {
     SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
     
