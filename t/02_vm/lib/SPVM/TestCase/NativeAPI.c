@@ -1715,28 +1715,36 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
     if (!(strcmp(string_basic_type_name, "string") == 0 && string_type_dimension == 0)) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
 
     if (env->length(env, stack, string) != 3) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     const char* string_chars = env->get_chars(env, stack, string);
     if (strcmp(string_chars, "abc") != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
-    env->inc_ref_count(env, stack, string);
-    env->dec_ref_count(env, stack, string);
+    // Assign and destroy
+    void* referent = NULL;
+    env->assign_object(env, stack, &referent, string);
+    env->assign_object(env, stack, &referent, NULL);
   }
 
   // Length is shorten than the string
@@ -1745,21 +1753,27 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
 
     if (env->length(env, stack, string) != 1) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     const char* string_chars = env->get_chars(env, stack, string);
     if (strcmp(string_chars, "a") != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
-    env->inc_ref_count(env, stack, string);
-    env->dec_ref_count(env, stack, string);
+    // Assign and destroy
+    void* referent = NULL;
+    env->assign_object(env, stack, &referent, string);
+    env->assign_object(env, stack, &referent, NULL);
   }
 
   // Length is shorten than the string 0
@@ -1768,21 +1782,27 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     const char* string_chars = env->get_chars(env, stack, string);
     if (strcmp(string_chars, "") != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
-    env->inc_ref_count(env, stack, string);
-    env->dec_ref_count(env, stack, string);
+    // Assign and destroy
+    void* referent = NULL;
+    env->assign_object(env, stack, &referent, string);
+    env->assign_object(env, stack, &referent, NULL);
   }
 
   // Length is longer than the string
@@ -1791,21 +1811,27 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
 
     if (env->length(env, stack, string) != 4) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     const char* string_chars = env->get_chars(env, stack, string);
     if (strncmp(string_chars, "abc\0\0", 5) != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
-    env->inc_ref_count(env, stack, string);
-    env->dec_ref_count(env, stack, string);
+    // Assign and destroy
+    void* referent = NULL;
+    env->assign_object(env, stack, &referent, string);
+    env->assign_object(env, stack, &referent, NULL);
   }
 
   // NULL
@@ -1814,21 +1840,27 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
 
     if (env->length(env, stack, string) != 4) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     const char* string_chars = env->get_chars(env, stack, string);
     if (strncmp(string_chars, "\0\0\0\0\0", 5) != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
-    env->inc_ref_count(env, stack, string);
-    env->dec_ref_count(env, stack, string);
+    // Assign and destroy
+    void* referent = NULL;
+    env->assign_object(env, stack, &referent, string);
+    env->assign_object(env, stack, &referent, NULL);
   }
 
   // NULL 0
@@ -1837,21 +1869,27 @@ int32_t SPVM__TestCase__NativeAPI__new_string_no_mortal(SPVM_ENV* env, SPVM_VALU
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     const char* string_chars = env->get_chars(env, stack, string);
     if (strncmp(string_chars, "\0", 1) != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
-    env->inc_ref_count(env, stack, string);
-    env->dec_ref_count(env, stack, string);
+    // Assign and destroy
+    void* referent = NULL;
+    env->assign_object(env, stack, &referent, string);
+    env->assign_object(env, stack, &referent, NULL);
   }
 
 
@@ -1984,28 +2022,36 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_no_mortal(SPVM_ENV* env, SPV
     int32_t string_type_dimension = env->get_object_type_dimension(env, stack, string);
     if (!(strcmp(string_basic_type_name, "string") == 0 && string_type_dimension == 0)) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
 
     if (env->length(env, stack, string) != 3) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     const char* string_chars = env->get_chars(env, stack, string);
     if (strcmp(string_chars, "abc") != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
-    env->inc_ref_count(env, stack, string);
-    env->dec_ref_count(env, stack, string);
+    // Assign and destroy
+    void* referent = NULL;
+    env->assign_object(env, stack, &referent, string);
+    env->assign_object(env, stack, &referent, NULL);
   }
 
   // ""
@@ -2014,21 +2060,27 @@ int32_t SPVM__TestCase__NativeAPI__new_string_nolen_no_mortal(SPVM_ENV* env, SPV
 
     if (env->length(env, stack, string) != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
     const char* string_chars = env->get_chars(env, stack, string);
     if (strcmp(string_chars, "") != 0) {
       stack[0].ival = 0;
-      env->inc_ref_count(env, stack, string);
-      env->dec_ref_count(env, stack, string);
+      // Assign and destroy
+      void* referent = NULL;
+      env->assign_object(env, stack, &referent, string);
+      env->assign_object(env, stack, &referent, NULL);
       return 0;
     }
     
-    env->inc_ref_count(env, stack, string);
-    env->dec_ref_count(env, stack, string);
+    // Assign and destroy
+    void* referent = NULL;
+    env->assign_object(env, stack, &referent, string);
+    env->assign_object(env, stack, &referent, NULL);
   }
 
   stack[0].ival = 1;
