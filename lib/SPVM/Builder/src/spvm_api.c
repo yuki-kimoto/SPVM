@@ -4074,10 +4074,12 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist
   if (object != NULL) {
     SPVM_API_inc_ref_count(env, stack, object);
   }
-  if (*(SPVM_OBJECT**)(dist_ref) != NULL) {
+  
+  if (*dist_ref != NULL) {
     if (__builtin_expect(SPVM_API_isweak(env, stack, dist_ref), 0)) { SPVM_API_unweaken(env, stack, dist_ref); }
     SPVM_API_dec_ref_count(env, stack, *dist_ref);
   }
+  
   *dist_ref = object;
 }
 
