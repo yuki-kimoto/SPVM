@@ -3916,8 +3916,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
   // Decrelement reference count
   if (ref_count == 1) {
     // If reference count is 1, the object is freeed without weaken
-    SPVM_API_dec_ref_count(env, stack, *object_ref);
-    *object_ref = NULL;
+    SPVM_API_assign_object(env, stack, object_ref, NULL);
     return 0;
   }
   else {
