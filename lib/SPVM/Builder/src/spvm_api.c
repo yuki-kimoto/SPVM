@@ -3958,14 +3958,18 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
 
   assert(object_ref);
   
+  if (*object_ref == NULL) {
+    return;
+  }
+  
+  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
+  
   if (!SPVM_API_isweak(env, stack, object_ref)) {
     return;
   }
   
   // Drop weaken flag
   *object_ref = (SPVM_OBJECT*)((intptr_t)*object_ref & ~(intptr_t)1);
-  
-  SPVM_OBJECT* object = *object_ref;
   
   SPVM_API_inc_ref_count(env, stack, object);
   
