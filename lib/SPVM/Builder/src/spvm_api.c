@@ -3962,31 +3962,28 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
     return;
   }
   
-  // Unweaken
+  // Drop weaken flag
   *object_ref = (SPVM_OBJECT*)((intptr_t)*object_ref & ~(intptr_t)1);
   
   SPVM_OBJECT* object = *object_ref;
   
-  // Increment reference count
   SPVM_API_inc_ref_count(env, stack, object);
   
-  // Remove weaken back ref
-  SPVM_WEAKEN_BACKREF** weaken_backref_next_address = &object->weaken_backref_head;
-  assert(*weaken_backref_next_address);
+  // Remove a weaken back reference
+  assert(object->weaken_backref_head);
   
-  int32_t pass_one = 0;
-  while (*weaken_backref_next_address != NULL){
-    if ((*weaken_backref_next_address)->object_ref == object_ref) {
-      pass_one++;
-      SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_address)->next;
-      SPVM_API_free_memory_stack(env, stack, *weaken_backref_next_address);
-      *weaken_backref_next_address = NULL;
-      *weaken_backref_next_address = tmp;
+  SPVM_WEAKEN_BACKREF** weaken_backref_next_ptr = &object->weaken_backref_head;
+  
+  while (*weaken_backref_next_ptr != NULL){
+    if ((*weaken_backref_next_ptr)->object_ref == object_ref) {
+      SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_ptr)->next;
+      SPVM_API_free_memory_stack(env, stack, *weaken_backref_next_ptr);
+      *weaken_backref_next_ptr = NULL;
+      *weaken_backref_next_ptr = tmp;
       break;
     }
-    *weaken_backref_next_address = (*weaken_backref_next_address)->next;
+    *weaken_backref_next_ptr = (*weaken_backref_next_ptr)->next;
   }
-  assert(pass_one == 1);
 }
 
 void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
