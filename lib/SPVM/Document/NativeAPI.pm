@@ -1372,14 +1372,6 @@ Specifying an object increments the reference count of the object.
 
 Use this method only if you have a specific reason to use it. Normally, the reference count is managed automatically.
 
-=head2 dec_ref_count
-
-  void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Specifying an object decrements the object's reference count by 1. When the reference count reaches 0, the object is released.
-
-Use this method only if you have a specific reason to use it. Normally, the reference count is managed automatically.
-
 =head2 enter_scope
 
   int32_t (*enter_scope)(SPVM_ENV* env, SPVM_VALUE* stack);
@@ -1434,35 +1426,21 @@ If the object is C<NULL>, returns 0.
 
 =head2 weaken
 
-  int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
+  int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref);
 
-Creates weak reference to the object which is specified by object address.
-
-The reference count of the object is decrimented by 1 and weaken flag is added to the object address.
-
-If the reference count is 1, "dec_ref_count" is called to the object.
-
-If object_address is NULL, this method do nothing.
-
-If the object is already weaken, this method do nothing.
-
-This method allocate memory internally to add the back reference from the object to the object address.
-
-This method success return 0.
-
-If failing memory allocation of back reference, return 1.
+Weakens the reference C<ref>.
 
 =head2 isweak 
 
-  int32_t (*isweak()SPVM_ENV* env, void** object);
+  int32_t (*isweak()SPVM_ENV* env, void** ref);
 
-Given the address of an object, returns non-zero if the object is a weak reference, 0 otherwise.
+Checks if the reference C<ref> is weakend. If so, returns 1, otherwise, returns 0.
 
 =head2 unweaken
 
-  void (*unweaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
+  void (*unweaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref);
 
-Specifying the address of the object releases the weak reference to the object.
+Unweakens the reference C<ref>.
 
 =head2 get_type_name_no_mortal
 
@@ -2214,7 +2192,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   204 free_stack
   205 get_ref_count
   206 inc_ref_count
-  207 dec_ref_count
+  207 reserved207
   208 get_field_object_defined_and_has_pointer_by_name
   209 get_field_object_ref
   210 get_field_object_ref_by_name

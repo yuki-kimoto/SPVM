@@ -10,6 +10,11 @@
     * The unweaken operator and the unweaken native API becomes thread safe.
     * The weaken operator and the weaken native API becomes thread safe.
     
+  [Incompatible Changes]
+    * The following native APIs are removed.
+    
+      -  void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+    
 0.989043 2023-09-18
   [New Features]
     * Add the following native APIs.
