@@ -3905,46 +3905,47 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
   
   SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
   
-  if (SPVM_API_isweak(env, stack, object_ref)) {
-    return 0;
-  }
+  int32_t isweak = SPVM_API_isweak(env, stack, object_ref);
   
-  int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
-  
-  assert(ref_count > 0);
-  
-  // Decrelement reference count
-  if (ref_count == 1) {
-    // If reference count is 1, the object is freeed without weaken
-    SPVM_API_assign_object(env, stack, object_ref, NULL);
-    return 0;
-  }
-  else {
-    SPVM_API_dec_ref_count_only(env, stack, object);
-  }
-  
-  // Create a new weaken back refference
-  if (object->weaken_backref_head == NULL) {
-    SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
-    new_weaken_backref->object_ref = object_ref;
-    object->weaken_backref_head = new_weaken_backref;
-  }
-  // Add weaken back refference
-  else {
-    SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
+  if (!isweak) {
     
-    SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
-    new_weaken_backref->object_ref = object_ref;
+    int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
     
-    while (weaken_backref_next->next != NULL){
-      weaken_backref_next = weaken_backref_next->next;
+    assert(ref_count > 0);
+    
+    // Decrelement reference count
+    if (ref_count == 1) {
+      // If reference count is 1, the object is freeed without weaken
+      SPVM_API_assign_object(env, stack, object_ref, NULL);
+      return 0;
     }
-    weaken_backref_next->next = new_weaken_backref;
+    else {
+      SPVM_API_dec_ref_count_only(env, stack, object);
+    }
+    
+    // Create a new weaken back refference
+    if (object->weaken_backref_head == NULL) {
+      SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
+      new_weaken_backref->object_ref = object_ref;
+      object->weaken_backref_head = new_weaken_backref;
+    }
+    // Add weaken back refference
+    else {
+      SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
+      
+      SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
+      new_weaken_backref->object_ref = object_ref;
+      
+      while (weaken_backref_next->next != NULL){
+        weaken_backref_next = weaken_backref_next->next;
+      }
+      weaken_backref_next->next = new_weaken_backref;
+    }
+    
+    // Weaken is implemented by tag pointer.
+    // If pointer most right bit is 1, object is weaken.
+    *object_ref = (SPVM_OBJECT*)((intptr_t)*object_ref | 1);
   }
-  
-  // Weaken is implemented by tag pointer.
-  // If pointer most right bit is 1, object is weaken.
-  *object_ref = (SPVM_OBJECT*)((intptr_t)*object_ref | 1);
   
   return 0;
 }
