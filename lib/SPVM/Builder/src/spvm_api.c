@@ -4054,16 +4054,17 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
   *current_mortal_stack_top_ptr = original_mortal_stack_top;
 }
 
-void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist_address, SPVM_OBJECT* src_object) {
-  SPVM_OBJECT* tmp_object = SPVM_API_get_object_no_weaken_address(env, stack, src_object);
-  if (tmp_object != NULL) {
-    SPVM_API_inc_ref_count(env, stack, tmp_object);
+void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** dist_ref, SPVM_OBJECT* object) {
+  object = SPVM_API_get_object_no_weaken_address(env, stack, object);
+  
+  if (object != NULL) {
+    SPVM_API_inc_ref_count(env, stack, object);
   }
-  if (*(SPVM_OBJECT**)(dist_address) != NULL) {
-    if (__builtin_expect(SPVM_API_isweak(env, stack, dist_address), 0)) { SPVM_API_unweaken(env, stack, dist_address); }
-    SPVM_API_dec_ref_count(env, stack, *dist_address);
+  if (*(SPVM_OBJECT**)(dist_ref) != NULL) {
+    if (__builtin_expect(SPVM_API_isweak(env, stack, dist_ref), 0)) { SPVM_API_unweaken(env, stack, dist_ref); }
+    SPVM_API_dec_ref_count(env, stack, *dist_ref);
   }
-  *dist_address = tmp_object;
+  *dist_ref = object;
 }
 
 void SPVM_API_try_destroy(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {

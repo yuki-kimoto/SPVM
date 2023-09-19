@@ -311,7 +311,7 @@ struct spvm_env {
   int32_t (*check_stack_env)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*dec_ref_count_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
-  void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_address, void* src_object);
+  void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_ref, void* object);
   void* (*new_string_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
 };
 
