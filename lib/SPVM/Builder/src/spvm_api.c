@@ -4169,14 +4169,14 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
   assert(object != NULL);
   assert(ref_count > 0);
-  
-  object->in_destroy = 1;
-  
   // Not weakened
   assert((((intptr_t)object) & 1) == 0);
   
   // If reference count is zero, free address.
   if (ref_count == 1) {
+    
+    object->in_destroy = 1;
+    
     // Free object array
     if (SPVM_API_is_object_array(env, stack, object)) {
       int32_t length = SPVM_API_length(env, stack, object);
