@@ -2393,11 +2393,13 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array_no_mortal(SPVM_ENV* env, SPV
     return 0;
   }
   
-  // Free
-  env->inc_ref_count(env, stack, obj_object_array);
-  env->dec_ref_count(env, stack, obj_object_array);
+  // Assign and destroy
+  void* referent = NULL;
+  env->assign_object(env, stack, &referent, obj_object_array);
+  env->assign_object(env, stack, &referent, NULL);
   
   stack[0].ival = 1;
+  
   return 0;
 }
 
