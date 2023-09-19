@@ -3958,10 +3958,6 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
 
   assert(object_ref);
   
-  if (*object_ref == NULL) {
-    return;
-  }
-  
   if (!SPVM_API_isweak(env, stack, object_ref)) {
     return;
   }
