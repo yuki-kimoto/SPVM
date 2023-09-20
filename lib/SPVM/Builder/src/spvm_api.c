@@ -4073,6 +4073,9 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
 }
 
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref, SPVM_OBJECT* object) {
+  
+  SPVM_API_unweaken(env, stack, ref);
+  
   object = SPVM_API_get_object_no_weaken_address(env, stack, object);
   
   if (object != NULL) {
@@ -4080,7 +4083,6 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   }
   
   if (*ref != NULL) {
-    SPVM_API_unweaken(env, stack, ref);
     
     int32_t ref_count = SPVM_API_get_ref_count(env, stack, *ref);
     
