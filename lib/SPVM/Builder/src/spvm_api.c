@@ -3827,19 +3827,12 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         assert(native_address != NULL);
         error_id = (*native_address)(env, stack);
         
-        // Increment ref count of return value
+        // Assign a object to stack[0]
         if (!error_id) {
           if (method_return_type_is_object) {
-            SPVM_OBJECT* return_object = *(void**)&stack[0];
-            if (return_object != NULL) {
-              SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, return_object);
-              
-              SPVM_MUTEX_lock(object_mutex);
-              
-              SPVM_API_inc_ref_count(env, stack, return_object);
-              
-              SPVM_MUTEX_unlock(object_mutex);
-            }
+            SPVM_OBJECT* return_object = stack[0].oval;
+            stack[0].oval = NULL;
+            env->assign_object(env, stack, &stack[0].oval, return_object);
           }
         }
         
