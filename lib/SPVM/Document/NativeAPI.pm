@@ -1977,9 +1977,9 @@ Leave scope using local mortal stack.
 
 =head2 assign_object
 
-C<void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_ref, void* object);>
+C<void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref, void* object);>
 
-Assigns an object C<object> to the destination with the address of the destication C<dist_ref>.
+Assigns an object C<object> to the place referred by the reference C<ref>.
 
 =head1 Native API IDs
 
