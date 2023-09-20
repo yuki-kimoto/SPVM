@@ -4234,7 +4234,7 @@ void SPVM_API_lock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object)
   SPVM_MUTEX_lock(object_mutex);
 }
 
-void SPVM_API_unlock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+void SPVM_API_INTERNAL_unlock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   SPVM_MUTEX* object_mutex = SPVM_API_INTERNAL_get_object_mutex(env, stack, object);
   
