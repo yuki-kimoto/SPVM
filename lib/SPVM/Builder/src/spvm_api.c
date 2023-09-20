@@ -4018,19 +4018,6 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
   SPVM_MUTEX_unlock(object_mutex);
 }
 
-void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
-  
-  for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
-    int32_t var_index = mortal_stack[mortal_stack_index];
-    SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&object_vars[var_index];
-    if (*object_ref != NULL) {
-      SPVM_API_assign_object(env, stack, object_ref, NULL);
-    }
-  }
-  *mortal_stack_top_ptr = original_mortal_stack_top;
-  
-}
-
 int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   
@@ -4224,6 +4211,32 @@ void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
     
     object->ref_count--;
   }
+  
+}
+
+void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
+  
+  for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
+    int32_t var_index = mortal_stack[mortal_stack_index];
+    SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&object_vars[var_index];
+    if (*object_ref != NULL) {
+      SPVM_API_assign_object(env, stack, object_ref, NULL);
+    }
+  }
+  *mortal_stack_top_ptr = original_mortal_stack_top;
+  
+}
+
+void SPVM_API_INTERNAL_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
+  
+  for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
+    int32_t var_index = mortal_stack[mortal_stack_index];
+    SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&object_vars[var_index];
+    if (*object_ref != NULL) {
+      SPVM_API_assign_object(env, stack, object_ref, NULL);
+    }
+  }
+  *mortal_stack_top_ptr = original_mortal_stack_top;
   
 }
 
