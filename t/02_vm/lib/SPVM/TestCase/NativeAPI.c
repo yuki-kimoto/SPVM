@@ -220,7 +220,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_memory_blocks_count_stack != &env_array[202]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_stack != &env_array[203]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_stack != &env_array[204]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_ref_count != &env_array[205]) { stack[0].ival = 0; return 0; }
     
   stack[0].ival = 1;
 
@@ -1342,37 +1341,37 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
   // 1
   {
     void* obj_values = env->new_byte_array(env, stack, length);
-    ref_count += env->get_ref_count(env, stack, obj_values);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 2
   {
     void* obj_values = env->new_short_array(env, stack, length);
-    ref_count += env->get_ref_count(env, stack, obj_values);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 3
   {
     void* obj_values = env->new_int_array(env, stack, length);
-    ref_count += env->get_ref_count(env, stack, obj_values);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 4
   {
     void* obj_values = env->new_long_array(env, stack, length);
-    ref_count += env->get_ref_count(env, stack, obj_values);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 5
   {
     void* obj_values = env->new_float_array(env, stack, length);
-    ref_count += env->get_ref_count(env, stack, obj_values);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 6
   {
     void* obj_values = env->new_long_array(env, stack, length);
-    ref_count += env->get_ref_count(env, stack, obj_values);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 7
   {
     void* obj_values = env->new_string(env, stack, "foo", (int32_t)strlen("foo"));
-    ref_count += env->get_ref_count(env, stack, obj_values);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_values);
   }
   // 8
   {
@@ -1381,7 +1380,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
       return 1;
     }
     void* obj_object = env->new_object(env, stack, basic_type);
-    ref_count += env->get_ref_count(env, stack, obj_object);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_object);
   }
   // 9
   {
@@ -1390,7 +1389,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
       return 1;
     }
     void* obj_objects = env->new_object_array(env, stack, basic_type, 3);
-    ref_count += env->get_ref_count(env, stack, obj_objects);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_objects);
   }
   // 10
   {
@@ -1399,7 +1398,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
       return 1;
     }
     void* obj_objects = env->new_object_array(env, stack, basic_type, 3);
-    ref_count += env->get_ref_count(env, stack, obj_objects);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_objects);
   }
   // 11
   {
@@ -1408,7 +1407,7 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
       return 1;
     }
     void* obj_objects = env->new_pointer_object(env, stack, basic_type, NULL);
-    ref_count += env->get_ref_count(env, stack, obj_objects);
+    ref_count += env->api->internal->get_ref_count(env, stack, obj_objects);
   }
   
   if (ref_count == 11) {
@@ -2433,7 +2432,7 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array_no_mortal(SPVM_ENV* env, SPV
     return 0;
   }
   
-  if (!(env->get_ref_count(env, stack, obj_object_array) == 0)) {
+  if (!(env->api->internal->get_ref_count(env, stack, obj_object_array) == 0)) {
     stack[0].ival = 0;
     return 0;
   }
@@ -2462,7 +2461,7 @@ int32_t SPVM__TestCase__NativeAPI__new_object_array(SPVM_ENV* env, SPVM_VALUE* s
     return 0;
   }
   
-  if (!(env->get_ref_count(env, stack, obj_object_array) == 1)) {
+  if (!(env->api->internal->get_ref_count(env, stack, obj_object_array) == 1)) {
     stack[0].ival = 0;
     return 0;
   }
@@ -2485,7 +2484,7 @@ int32_t SPVM__TestCase__NativeAPI__new_string_array(SPVM_ENV* env, SPVM_VALUE* s
     return 0;
   }
   
-  if (!(env->get_ref_count(env, stack, obj_string_array) == 1)) {
+  if (!(env->api->internal->get_ref_count(env, stack, obj_string_array) == 1)) {
     stack[0].ival = 0;
     return 0;
   }

@@ -1364,12 +1364,6 @@ Gets a exception message which type is byte[].
 
 Sets a exception message which type is byte[].
 
-=head2 get_ref_count
-
-  int32_t (*get_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Gets the refernce count of the object.
-
 =head2 enter_scope
 
   int32_t (*enter_scope)(SPVM_ENV* env, SPVM_VALUE* stack);
@@ -2182,7 +2176,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   202 get_memory_blocks_count_stack
   203 new_stack
   204 free_stack
-  205 get_ref_count
+  205 reserved205
   206 reserved206
   207 reserved207
   208 get_field_object_defined_and_has_pointer_by_name
