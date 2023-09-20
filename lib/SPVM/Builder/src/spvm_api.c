@@ -3884,6 +3884,67 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   return error_id;
 }
 
+int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
+  
+  if (object != NULL) {
+    // Extend mortal stack
+    if (*current_mortal_stack_top_ptr >= *current_mortal_stack_capacity_ptr) {
+      int32_t new_mortal_stack_capacity = *current_mortal_stack_capacity_ptr * 2;
+      SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_stack(env, stack, sizeof(void*) * new_mortal_stack_capacity);
+      if (new_mortal_stack == NULL) {
+        return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+      }
+      memcpy(new_mortal_stack, *current_mortal_stack_ptr, sizeof(void*) * *current_mortal_stack_capacity_ptr);
+      *current_mortal_stack_capacity_ptr = new_mortal_stack_capacity;
+      SPVM_API_free_memory_stack(env, stack, *current_mortal_stack_ptr);
+      *current_mortal_stack_ptr = NULL;
+      *current_mortal_stack_ptr = new_mortal_stack;
+    }
+    
+    SPVM_API_assign_object(env, stack, &(*current_mortal_stack_ptr)[*current_mortal_stack_top_ptr], object);
+    
+    *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr + 1;
+  }
+  
+  return 0;
+}
+
+void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top) {
+  
+  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
+  
+  int32_t mortal_stack_index;
+  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
+    
+    SPVM_OBJECT** object_ref = &(*current_mortal_stack_ptr)[mortal_stack_index];
+    
+    SPVM_API_assign_object(env, stack, object_ref, NULL);
+    
+  }
+  
+  *current_mortal_stack_top_ptr = original_mortal_stack_top;
+}
+
+void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
+  
+  for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
+    int32_t var_index = mortal_stack[mortal_stack_index];
+    SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&object_vars[var_index];
+    if (*object_ref != NULL) {
+      SPVM_API_assign_object(env, stack, object_ref, NULL);
+    }
+  }
+  *mortal_stack_top_ptr = original_mortal_stack_top;
+  
+}
+
 SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   //  Dropping weaken flag
   void* object_no_weaken_address = (void*)((intptr_t)object & ~(intptr_t)1);
@@ -4009,67 +4070,6 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
   }
   
   SPVM_API_unlock_object(env, stack, object);
-}
-
-int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
-  
-  if (object != NULL) {
-    // Extend mortal stack
-    if (*current_mortal_stack_top_ptr >= *current_mortal_stack_capacity_ptr) {
-      int32_t new_mortal_stack_capacity = *current_mortal_stack_capacity_ptr * 2;
-      SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_stack(env, stack, sizeof(void*) * new_mortal_stack_capacity);
-      if (new_mortal_stack == NULL) {
-        return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-      }
-      memcpy(new_mortal_stack, *current_mortal_stack_ptr, sizeof(void*) * *current_mortal_stack_capacity_ptr);
-      *current_mortal_stack_capacity_ptr = new_mortal_stack_capacity;
-      SPVM_API_free_memory_stack(env, stack, *current_mortal_stack_ptr);
-      *current_mortal_stack_ptr = NULL;
-      *current_mortal_stack_ptr = new_mortal_stack;
-    }
-    
-    SPVM_API_assign_object(env, stack, &(*current_mortal_stack_ptr)[*current_mortal_stack_top_ptr], object);
-    
-    *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr + 1;
-  }
-  
-  return 0;
-}
-
-void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mortal_stack_top) {
-  
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
-  
-  int32_t mortal_stack_index;
-  for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
-    
-    SPVM_OBJECT** object_ref = &(*current_mortal_stack_ptr)[mortal_stack_index];
-    
-    SPVM_API_assign_object(env, stack, object_ref, NULL);
-    
-  }
-  
-  *current_mortal_stack_top_ptr = original_mortal_stack_top;
-}
-
-void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
-  
-  for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
-    int32_t var_index = mortal_stack[mortal_stack_index];
-    SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&object_vars[var_index];
-    if (*object_ref != NULL) {
-      SPVM_API_assign_object(env, stack, object_ref, NULL);
-    }
-  }
-  *mortal_stack_top_ptr = original_mortal_stack_top;
-  
 }
 
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref, SPVM_OBJECT* object) {
