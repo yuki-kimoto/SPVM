@@ -41,6 +41,7 @@
 #include "spvm_api_method.h"
 #include "spvm_api_arg.h"
 #include "spvm_api_type.h"
+#include "spvm_api_internal.h"
 
 #include "spvm_mutex.h"
 
@@ -70,6 +71,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
   
   SPVM_API_ARG* api_arg = SPVM_API_ARG_new_api();
   
+  SPVM_API_INTERNAL* api_internal = SPVM_API_INTERNAL_new_api();
+  
   void* env_api_init[]  = {
     api_allocator,
     api_string_buffer,
@@ -82,6 +85,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     api_method,
     api_arg,
     api_type,
+    api_internal,
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
@@ -343,6 +347,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   SPVM_API_TYPE_free_api(env->api->type);
   SPVM_API_METHOD_free_api(env->api->method);
   SPVM_API_ARG_free_api(env->api->arg);
+  SPVM_API_INTERNAL_free_api(env->api->internal);
   
   free(env->api);
   
@@ -4253,32 +4258,5 @@ void SPVM_API_unlock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
   
   SPVM_MUTEX_unlock(object_mutex);
-}
-
-// SPVM_API_INTERNAL functions are defined for the internal native APIs.
-
-void SPVM_API_INTERNAL_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
-  
-  SPVM_API_leave_scope_local(env, stack, object_vars, mortal_stack, mortal_stack_top_ptr, original_mortal_stack_top);
-}
-
-void SPVM_API_INTERNAL_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_API_inc_ref_count(env, stack, object);
-}
-
-void SPVM_API_INTERNAL_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_API_dec_ref_count_only(env, stack, object);
-}
-
-void SPVM_API_INTERNAL_lock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_API_lock_object(env, stack, object);
-}
-
-void SPVM_API_INTERNAL_unlock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_API_unlock_object(env, stack, object);
 }
 

@@ -98,6 +98,12 @@ L<SPVM::Document::NativeAPI::Argument>
 
 L<SPVM::Document::NativeAPI::Type>
 
+=head3 Internal Native API
+
+  env->api->internal;
+
+L<SPVM::Document::NativeAPI::Internal>
+
 =head2 allocator
 
   void* allocator;

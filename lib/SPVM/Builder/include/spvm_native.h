@@ -60,6 +60,9 @@ typedef struct spvm_api_method SPVM_API_METHOD;
 struct spvm_api_arg;
 typedef struct spvm_api_arg SPVM_API_ARG;
 
+struct spvm_api_internal;
+typedef struct spvm_api_internal SPVM_API_INTERNAL;
+
 union spvm_value {
   int8_t bval;
   int16_t sval;
@@ -327,6 +330,7 @@ struct spvm_env_api {
   SPVM_API_METHOD* method;
   SPVM_API_ARG* arg;
   SPVM_API_TYPE* type;
+  SPVM_API_INTERNAL* internal;
 };
 
 struct spvm_api_allocator {
@@ -478,6 +482,14 @@ struct spvm_api_arg {
   int32_t (*get_type_dimension)(void* runtime, void* arg);
   int32_t (*get_type_flag)(void* runtime, void* arg);
   int32_t (*get_stack_index)(void* runtime, void* arg);
+};
+
+struct spvm_api_internal {
+  void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
+  void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*lock_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+  void (*unlock_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 };
 
 SPVM_ENV* SPVM_API_new_env(void);
