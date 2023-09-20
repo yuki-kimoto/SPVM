@@ -4093,7 +4093,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   }
   
   if (*ref != NULL) {
-    if (__builtin_expect(SPVM_API_isweak(env, stack, ref), 0)) { SPVM_API_unweaken_thread_unsafe(env, stack, ref); }
+    if (__builtin_expect(SPVM_API_isweak(env, stack, ref), 0)) { SPVM_API_unweaken(env, stack, ref); }
     
     int32_t ref_count = SPVM_API_get_ref_count(env, stack, *ref);
     
