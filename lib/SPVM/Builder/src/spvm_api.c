@@ -4044,6 +4044,21 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
   
   SPVM_API_lock_object(env, stack, object);
   
+  SPVM_API_unweaken_thread_unsafe(env, stack, object_ref);
+  
+  SPVM_API_unlock_object(env, stack, object);
+}
+
+void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_ref) {
+
+  assert(object_ref);
+  
+  if (*object_ref == NULL) {
+    return;
+  }
+  
+  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
+  
   int32_t isweak = SPVM_API_isweak(env, stack, object_ref);
   
   if (isweak) {
@@ -4068,8 +4083,6 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
       *weaken_backref_next_ptr = (*weaken_backref_next_ptr)->next;
     }
   }
-  
-  SPVM_API_unlock_object(env, stack, object);
 }
 
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref, SPVM_OBJECT* object) {
