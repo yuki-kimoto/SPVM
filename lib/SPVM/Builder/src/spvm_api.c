@@ -3867,13 +3867,12 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         if (method_return_type_is_object) {
           SPVM_OBJECT* return_object = stack[0].oval;
           if (return_object != NULL) {
-            SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, return_object);
             
-            SPVM_MUTEX_lock(object_mutex);
+            SPVM_API_lock_object(env, stack, return_object);
             
             SPVM_API_dec_ref_count_only(env, stack, return_object);
             
-            SPVM_MUTEX_unlock(object_mutex);
+            SPVM_API_unlock_object(env, stack, return_object);
           }
         }
       }
@@ -3915,9 +3914,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
   
   SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
   
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
+  SPVM_API_lock_object(env, stack, object);
   
   int32_t isweak = SPVM_API_isweak(env, stack, object_ref);
   
@@ -3965,7 +3962,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
     }
   }
   
-  SPVM_MUTEX_unlock(object_mutex);
+  SPVM_API_unlock_object(env, stack, object);
   
   if (destroy) {
     SPVM_API_assign_object(env, stack, &object_ref_tmps[0], NULL);
@@ -3984,9 +3981,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
   
   SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
   
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
+  SPVM_API_lock_object(env, stack, object);
   
   int32_t isweak = SPVM_API_isweak(env, stack, object_ref);
   
@@ -4013,7 +4008,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
     }
   }
   
-  SPVM_MUTEX_unlock(object_mutex);
+  SPVM_API_unlock_object(env, stack, object);
 }
 
 int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
