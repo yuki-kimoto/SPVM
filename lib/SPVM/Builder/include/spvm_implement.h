@@ -2540,8 +2540,8 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void*
 #define SPVM_IMPLEMENT_RETURN_DOUBLE(stack, in) (*(double*)&stack[0] = in)
 
 static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in) {
-  *(void**)&stack[0] = NULL;
-  env->assign_object(env, stack, (void**)&stack[0], in);
+  stack[0].oval = NULL;
+  env->assign_object(env, stack, &stack[0].oval, in);
 }
 
 #define SPVM_IMPLEMENT_RETURN_UNDEF(stack) (*(void**)&stack[0] = NULL)
