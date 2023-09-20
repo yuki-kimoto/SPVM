@@ -11,11 +11,13 @@ SPVM_API_INTERNAL* SPVM_API_INTERNAL_new_api();
 
 void SPVM_API_INTERNAL_free_api(SPVM_API_INTERNAL* internal);
 
-void SPVM_API_INTERNAL_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
+int32_t SPVM_API_INTERNAL_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
 void SPVM_API_INTERNAL_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
 void SPVM_API_INTERNAL_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
+
+void SPVM_API_INTERNAL_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
 
 void SPVM_API_INTERNAL_lock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
