@@ -14,6 +14,7 @@
     * The following native APIs are removed.
     
       -  void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      -  void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
     
 0.989043 2023-09-18
   [New Features]

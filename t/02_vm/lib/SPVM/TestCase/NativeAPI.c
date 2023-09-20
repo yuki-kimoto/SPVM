@@ -221,7 +221,6 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->new_stack != &env_array[203]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_stack != &env_array[204]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_ref_count != &env_array[205]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->inc_ref_count != &env_array[206]) { stack[0].ival = 0; return 0; }
     
   stack[0].ival = 1;
 

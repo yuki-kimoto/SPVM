@@ -2197,7 +2197,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   203 new_stack
   204 free_stack
   205 get_ref_count
-  206 inc_ref_count
+  206 reserved206
   207 reserved207
   208 get_field_object_defined_and_has_pointer_by_name
   209 get_field_object_ref
