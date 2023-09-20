@@ -319,7 +319,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_field_object_ref,
     SPVM_API_get_field_object_ref_by_name,
     SPVM_API_check_stack_env,
-    SPVM_API_dec_ref_count_only,
+    NULL,
     SPVM_API_leave_scope_local,
     SPVM_API_assign_object,
     SPVM_API_new_string_array_no_mortal,

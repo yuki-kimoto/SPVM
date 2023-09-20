@@ -1370,14 +1370,6 @@ Sets a exception message which type is byte[].
 
 Gets the refernce count of the object.
 
-=head2 inc_ref_count
-
-  void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Specifying an object increments the reference count of the object.
-
-Use this method only if you have a specific reason to use it. Normally, the reference count is managed automatically.
-
 =head2 enter_scope
 
   int32_t (*enter_scope)(SPVM_ENV* env, SPVM_VALUE* stack);
@@ -1969,12 +1961,6 @@ If an excetpion is thrown because the field does not exist or other errors occur
 
 If the env of the stack is equal to the env, returns 1. Otherwise returns 0.
 
-=head2 dec_ref_count_only
-
-C<void (*dec_ref_count_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
-
-Decrements the reference count of the object, but do not release even if the reference count becomes 0.
-
 =head2 leave_scope_local
 
 C<void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);>
@@ -2203,7 +2189,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   209 get_field_object_ref
   210 get_field_object_ref_by_name
   211 check_stack_env,
-  212 dec_ref_count_only
+  212 reserved212
   213 leave_scope_local
   214 assign_object
   215 new_string_array_no_mortal
