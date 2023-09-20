@@ -3865,7 +3865,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
       // Decrement ref count of return value
       if (!error_id) {
         if (method_return_type_is_object) {
-          SPVM_OBJECT* return_object = *(void**)&stack[0];
+          SPVM_OBJECT* return_object = stack[0].oval;
           if (return_object != NULL) {
             SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, return_object);
             
