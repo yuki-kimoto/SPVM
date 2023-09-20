@@ -4227,7 +4227,7 @@ void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   
 }
 
-void SPVM_API_lock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+void SPVM_API_INTERNAL_lock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   SPVM_MUTEX* object_mutex = SPVM_API_INTERNAL_get_object_mutex(env, stack, object);
   
