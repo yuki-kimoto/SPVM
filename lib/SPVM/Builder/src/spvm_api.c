@@ -4227,6 +4227,17 @@ void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* 
   
 }
 
+void SPVM_API_INTERNAL_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  if (object != NULL) {
+    int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
+    assert(ref_count >= 0);
+    
+    object->ref_count++;
+  }
+  
+}
+
 void SPVM_API_INTERNAL_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   SPVM_RUNTIME* runtime = env->runtime;
