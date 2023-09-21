@@ -10,6 +10,7 @@
 
 struct spvm_weaken_backref {
   SPVM_OBJECT** ref;
+  SPVM_MUTEX* mutex;
   SPVM_WEAKEN_BACKREF* next;
 };
 
