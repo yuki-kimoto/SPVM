@@ -4075,7 +4075,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   SPVM_API_unlock_object(env, stack, object);
 }
 
-void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
+void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
   
   SPVM_WEAKEN_BACKREF* weaken_backref_head_cur = weaken_backref_head;
   SPVM_WEAKEN_BACKREF* weaken_backref_head_next = NULL;
@@ -4192,7 +4192,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
         
         // Free weak back refenreces
         if (object->weaken_backref_head != NULL) {
-          SPVM_API_free_weaken_back_refs(env, stack, object->weaken_backref_head);
+          SPVM_API_free_weaken_backrefs(env, stack, object->weaken_backref_head);
           object->weaken_backref_head = NULL;
         }
         
