@@ -4047,8 +4047,12 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     while (*weaken_backref_next_ptr != NULL){
       if ((*weaken_backref_next_ptr)->ref == ref) {
         SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_ptr)->next;
-        SPVM_API_free_memory_stack(env, stack, *weaken_backref_next_ptr);
-        *weaken_backref_next_ptr = NULL;
+        
+        SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
+        
+        SPVM_API_free_memory_stack(env, stack, weaken_backref_next);
+        weaken_backref_next = NULL;
+        
         *weaken_backref_next_ptr = tmp;
         break;
       }
