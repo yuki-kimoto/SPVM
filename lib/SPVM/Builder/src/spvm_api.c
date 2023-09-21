@@ -2655,19 +2655,6 @@ int32_t SPVM_API_is_read_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* str
   return is_read_only;
 }
 
-void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
-  
-  SPVM_WEAKEN_BACKREF* weaken_backref_head_cur = weaken_backref_head;
-  SPVM_WEAKEN_BACKREF* weaken_backref_head_next = NULL;
-  while (weaken_backref_head_cur != NULL){
-    *(weaken_backref_head_cur->object_ref) = NULL;
-    weaken_backref_head_next = weaken_backref_head_cur->next;
-    SPVM_API_free_memory_stack(env, stack, weaken_backref_head_cur);
-    weaken_backref_head_cur = NULL;
-    weaken_backref_head_cur = weaken_backref_head_next;
-  }
-}
-
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception) {
   
   SPVM_OBJECT** current_exception_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
@@ -3952,35 +3939,35 @@ SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* st
   return object_no_weaken_address;
 }
 
-int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_ref) {
+int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
-  assert(object_ref);
+  assert(ref);
   
-  if (*object_ref == NULL) {
+  if (*ref == NULL) {
     return 0;
   }
   
-  int32_t isweak = (intptr_t)*object_ref & 1;
+  int32_t isweak = (intptr_t)*ref & 1;
   
   return isweak;
 }
 
-int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_ref) {
+int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
-  assert(object_ref);
+  assert(ref);
   
-  if (*object_ref == NULL) {
+  if (*ref == NULL) {
     return 0;
   }
   
-  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
+  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
   SPVM_API_lock_object(env, stack, object);
   
-  int32_t isweak = SPVM_API_isweak(env, stack, object_ref);
+  int32_t isweak = SPVM_API_isweak(env, stack, ref);
   
   int32_t destroy = 0;
-  SPVM_OBJECT* object_ref_tmps[1] = {0};
+  SPVM_OBJECT* ref_tmps[1] = {0};
   
   if (!isweak) {
     
@@ -3992,8 +3979,8 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
     if (ref_count == 1) {
       destroy = 1;
       
-      object_ref_tmps[0] = object;
-      *object_ref = NULL;
+      ref_tmps[0] = object;
+      *ref = NULL;
     }
     else {
       SPVM_API_dec_ref_count_only(env, stack, object);
@@ -4001,7 +3988,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
       // Create a new weaken back refference
       if (object->weaken_backref_head == NULL) {
         SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
-        new_weaken_backref->object_ref = object_ref;
+        new_weaken_backref->ref = ref;
         object->weaken_backref_head = new_weaken_backref;
       }
       // Add weaken back refference
@@ -4009,7 +3996,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
         SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
         
         SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
-        new_weaken_backref->object_ref = object_ref;
+        new_weaken_backref->ref = ref;
         
         while (weaken_backref_next->next != NULL){
           weaken_backref_next = weaken_backref_next->next;
@@ -4019,36 +4006,36 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_r
       
       // Weaken is implemented by tag pointer.
       // If pointer most right bit is 1, object is weaken.
-      *object_ref = (SPVM_OBJECT*)((intptr_t)*object_ref | 1);
+      *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
     }
   }
   
   SPVM_API_unlock_object(env, stack, object);
   
   if (destroy) {
-    SPVM_API_assign_object(env, stack, &object_ref_tmps[0], NULL);
+    SPVM_API_assign_object(env, stack, &ref_tmps[0], NULL);
   }
   
   return 0;
 }
 
-void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_ref) {
+void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
 
-  assert(object_ref);
+  assert(ref);
   
-  if (*object_ref == NULL) {
+  if (*ref == NULL) {
     return;
   }
   
-  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *object_ref);
+  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
   SPVM_API_lock_object(env, stack, object);
   
-  int32_t isweak = SPVM_API_isweak(env, stack, object_ref);
+  int32_t isweak = SPVM_API_isweak(env, stack, ref);
   
   if (isweak) {
     // Drop weaken flag
-    *object_ref = (SPVM_OBJECT*)((intptr_t)*object_ref & ~(intptr_t)1);
+    *ref = (SPVM_OBJECT*)((intptr_t)*ref & ~(intptr_t)1);
     
     SPVM_API_inc_ref_count(env, stack, object);
     
@@ -4058,7 +4045,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
     SPVM_WEAKEN_BACKREF** weaken_backref_next_ptr = &object->weaken_backref_head;
     
     while (*weaken_backref_next_ptr != NULL){
-      if ((*weaken_backref_next_ptr)->object_ref == object_ref) {
+      if ((*weaken_backref_next_ptr)->ref == ref) {
         SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_ptr)->next;
         SPVM_API_free_memory_stack(env, stack, *weaken_backref_next_ptr);
         *weaken_backref_next_ptr = NULL;
@@ -4070,6 +4057,19 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_re
   }
   
   SPVM_API_unlock_object(env, stack, object);
+}
+
+void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
+  
+  SPVM_WEAKEN_BACKREF* weaken_backref_head_cur = weaken_backref_head;
+  SPVM_WEAKEN_BACKREF* weaken_backref_head_next = NULL;
+  while (weaken_backref_head_cur != NULL){
+    *(weaken_backref_head_cur->ref) = NULL;
+    weaken_backref_head_next = weaken_backref_head_cur->next;
+    SPVM_API_free_memory_stack(env, stack, weaken_backref_head_cur);
+    weaken_backref_head_cur = NULL;
+    weaken_backref_head_cur = weaken_backref_head_next;
+  }
 }
 
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref, SPVM_OBJECT* object) {
@@ -4108,8 +4108,8 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
         if (SPVM_API_is_object_array(env, stack, object)) {
           int32_t length = SPVM_API_length(env, stack, object);
           for (int32_t index = 0; index < length; index++) {
-            SPVM_OBJECT** object_ref = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
-            SPVM_API_assign_object(env, stack, object_ref, NULL);
+            SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
+            SPVM_API_assign_object(env, stack, ref, NULL);
           }
         }
         // Free object
@@ -4162,8 +4162,8 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
               int32_t field_type_is_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
               
               if (field_type_is_object) {
-                SPVM_OBJECT** object_ref = (SPVM_OBJECT**)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-                SPVM_API_assign_object(env, stack, object_ref, NULL);
+                SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+                SPVM_API_assign_object(env, stack, ref, NULL);
               }
             }
           }
