@@ -131,7 +131,7 @@ struct spvm_compiler {
   
   SPVM_RUNTIME* runtime;
   
-  SPVM_MUTEX* mutex_compile;
+  SPVM_MUTEX* mutex;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
