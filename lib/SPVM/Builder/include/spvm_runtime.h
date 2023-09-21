@@ -18,7 +18,7 @@ struct spvm_runtime {
   
   SPVM_HASH* assignability_symtable; 
   
-  SPVM_MUTEX* mutex_assignability_symtable;
+  SPVM_MUTEX* mutex;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
