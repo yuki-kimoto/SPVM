@@ -4156,16 +4156,16 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   SPVM_MUTEX_unlock(runtime_mutex_update_object);
   
-  // SPVM_MUTEX_lock(runtime_mutex_update_object);
+  SPVM_MUTEX_lock(runtime_mutex_update_object);
   
   if (!object_assign_off) {
-    // SPVM_MUTEX_unlock(runtime_mutex_update_object);
+    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     return;
   }
   
   // SPVM_API_lock_object(env, stack, object_assign_off);
   
-  // SPVM_MUTEX_unlock(runtime_mutex_update_object);
+  SPVM_MUTEX_unlock(runtime_mutex_update_object);
   
   SPVM_API_dec_ref_count_only(env, stack, object_assign_off); 
   
