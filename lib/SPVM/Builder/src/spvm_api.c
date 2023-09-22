@@ -4061,7 +4061,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
       if ((*weaken_backref_next_ptr)->ref == ref) {
         
         SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
-        // SPVM_MUTEX_lock(weaken_backref_next->mutex);
+        SPVM_MUTEX_lock(weaken_backref_next->mutex);
         
         break;
       }
@@ -4086,7 +4086,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
       SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_ptr)->next;
       
       SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
-      // SPVM_MUTEX_unlock(weaken_backref_next->mutex);
+      SPVM_MUTEX_unlock(weaken_backref_next->mutex);
       SPVM_MUTEX_destroy(weaken_backref_next->mutex);
       SPVM_API_free_memory_stack(env, stack, weaken_backref_next->mutex);
       weaken_backref_next->mutex = NULL;
