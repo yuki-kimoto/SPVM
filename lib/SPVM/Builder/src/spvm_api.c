@@ -4177,10 +4177,6 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
     
     SPVM_OBJECT* object = object_assign_off;
     
-    SPVM_RUNTIME* runtime = env->runtime;
-    
-    int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
-    
     assert(object != NULL);
     assert(ref_count > 0);
     // Not weakened
