@@ -4139,19 +4139,23 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   object = SPVM_API_get_object_no_weaken_address(env, stack, object);
   
-  if (object != NULL) {
+  SPVM_OBJECT* object_assign_off = *ref;
+  
+  if (object) {
     SPVM_API_inc_ref_count(env, stack, object);
   }
   
-  if (*ref != NULL) {
+  *ref = object;
+  
+  if (object_assign_off != NULL) {
     
-    int32_t ref_count = SPVM_API_get_ref_count(env, stack, *ref);
+    int32_t ref_count = SPVM_API_get_ref_count(env, stack, object_assign_off);
     
     assert(ref_count > 0);
     
     if (ref_count == 1) {
       
-      SPVM_OBJECT* object = *ref;
+      SPVM_OBJECT* object = object_assign_off;
       
       SPVM_RUNTIME* runtime = env->runtime;
       
@@ -4252,11 +4256,9 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
       }
     }
     else {
-      SPVM_API_dec_ref_count_only(env, stack, *ref);
+      SPVM_API_dec_ref_count_only(env, stack, object_assign_off);
     }
   }
-  
-  *ref = object;
 }
 
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
