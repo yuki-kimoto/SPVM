@@ -4162,6 +4162,10 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
     return;
   }
   
+  // SPVM_API_lock_object(env, stack, object_assign_off);
+  
+  // SPVM_MUTEX_unlock(runtime_mutex_update_object);
+  
   int32_t ref_count = SPVM_API_get_ref_count(env, stack, object_assign_off);
   
   assert(ref_count > 0);
@@ -4271,6 +4275,8 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   else {
     SPVM_API_dec_ref_count_only(env, stack, object_assign_off);
   }
+  
+  // SPVM_API_unlock_object(env, stack, object_assign_off);
 }
 
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
