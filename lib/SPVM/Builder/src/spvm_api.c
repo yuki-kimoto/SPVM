@@ -3953,23 +3953,23 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
 }
 
 int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
-  // SPVM_RUNTIME* runtime = env->runtime;
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  // SPVM_MUTEX* runtime_mutex = runtime->mutex;
+  SPVM_MUTEX* runtime_mutex = runtime->mutex;
   
-  // SPVM_MUTEX_reader_lock(runtime_mutex);
+  SPVM_MUTEX_reader_lock(runtime_mutex);
   
   assert(ref);
   
   if (*ref == NULL) {
-    // SPVM_MUTEX_reader_unlock(runtime_mutex);
+    SPVM_MUTEX_reader_unlock(runtime_mutex);
     return 0;
   }
   
   int32_t isweak = SPVM_API_isweak(env, stack, ref);
   
   if (isweak) {
-    // SPVM_MUTEX_reader_unlock(runtime_mutex);
+    SPVM_MUTEX_reader_unlock(runtime_mutex);
     return 0;
   }
   
@@ -3983,7 +3983,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   if (ref_count == 1) {
     SPVM_OBJECT* destroied_referent = object;
     *ref = NULL;
-    // SPVM_MUTEX_reader_unlock(runtime_mutex);
+    SPVM_MUTEX_reader_unlock(runtime_mutex);
     
     SPVM_API_assign_object(env, stack, &destroied_referent, NULL);
   }
@@ -3992,9 +3992,9 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     SPVM_MUTEX_init(weaken_backref_mutex);
     
     SPVM_API_lock_object(env, stack, object);
-    // SPVM_MUTEX_lock(weaken_backref_mutex);
+    SPVM_MUTEX_lock(weaken_backref_mutex);
     
-    // SPVM_MUTEX_reader_unlock(runtime_mutex);
+    SPVM_MUTEX_reader_unlock(runtime_mutex);
     
     SPVM_API_dec_ref_count_only(env, stack, object);
     
@@ -4021,7 +4021,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
     
     SPVM_API_unlock_object(env, stack, object);
-    // SPVM_MUTEX_unlock(weaken_backref_mutex);
+    SPVM_MUTEX_unlock(weaken_backref_mutex);
   }
   
   return 0;
