@@ -83,12 +83,12 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   
   compiler->runtime = SPVM_RUNTIME_new();
   
-  int32_t mutex_size = SPVM_MUTEX_size();
-  void* compiler_mutex = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, mutex_size);
+  int32_t compiler_mutex_compile_size = SPVM_MUTEX_size();
+  void* compiler_mutex_compile = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, compiler_mutex_compile_size);
   
-  SPVM_MUTEX_init(compiler_mutex);
+  SPVM_MUTEX_init(compiler_mutex_compile);
   
-  compiler->mutex = compiler_mutex;
+  compiler->mutex_compile = compiler_mutex_compile;
   
   return compiler;
 }
@@ -133,7 +133,7 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   SPVM_ALLOCATOR_free(compiler->class_file_allocator);
   compiler->class_file_allocator = NULL;
   
-  SPVM_MUTEX_destroy(compiler->mutex);
+  SPVM_MUTEX_destroy(compiler->mutex_compile);
   
   SPVM_ALLOCATOR_free(compiler->global_allocator);
   compiler->global_allocator = NULL;
@@ -141,9 +141,9 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
   
-  SPVM_MUTEX* compiler_mutex = compiler->mutex;
+  SPVM_MUTEX* compiler_mutex_compile = compiler->mutex_compile;
   
-  SPVM_MUTEX_lock(compiler_mutex);
+  SPVM_MUTEX_lock(compiler_mutex_compile);
   
   compiler->current_each_compile_allocator = SPVM_ALLOCATOR_new();
   
@@ -246,7 +246,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_na
     SPVM_COMPILER_build_runtime(compiler);
   }
   
-  SPVM_MUTEX_unlock(compiler_mutex);
+  SPVM_MUTEX_unlock(compiler_mutex_compile);
   
   return error_id;
 }
