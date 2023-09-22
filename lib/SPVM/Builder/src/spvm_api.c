@@ -3994,6 +3994,10 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     SPVM_API_lock_object(env, stack, object);
     SPVM_MUTEX_lock(weaken_backref_mutex);
     
+    // Weaken is implemented by tag pointer.
+    // If pointer most right bit is 1, object is weaken.
+    *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
+    
     SPVM_MUTEX_unlock(runtime_mutex);
     
     SPVM_API_dec_ref_count_only(env, stack, object);
@@ -4015,10 +4019,6 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
       }
       weaken_backref_next->next = new_weaken_backref;
     }
-    
-    // Weaken is implemented by tag pointer.
-    // If pointer most right bit is 1, object is weaken.
-    *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
     
     SPVM_API_unlock_object(env, stack, object);
     SPVM_MUTEX_unlock(weaken_backref_mutex);
@@ -4070,10 +4070,10 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   SPVM_API_lock_object(env, stack, object);
   
-  SPVM_MUTEX_unlock(runtime_mutex);
-  
   // Drop weaken flag
   *ref = (SPVM_OBJECT*)((intptr_t)*ref & ~(intptr_t)1);
+  
+  SPVM_MUTEX_unlock(runtime_mutex);
   
   SPVM_API_inc_ref_count(env, stack, object);
   
