@@ -3940,22 +3940,14 @@ SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* st
 }
 
 int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  SPVM_MUTEX* runtime_mutex = runtime->mutex;
-  
-  SPVM_MUTEX_reader_lock(runtime_mutex);
   
   assert(ref);
   
   if (*ref == NULL) {
-    SPVM_MUTEX_reader_unlock(runtime_mutex);
     return 0;
   }
   
   int32_t isweak = (intptr_t)*ref & 1;
-  
-  SPVM_MUTEX_reader_unlock(runtime_mutex);
   
   return isweak;
 }
