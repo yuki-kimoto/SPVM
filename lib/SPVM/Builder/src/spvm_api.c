@@ -3955,21 +3955,21 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
 int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* runtime_mutex = runtime->mutex;
+  SPVM_MUTEX* runtime_mutex_update_object = runtime->mutex_update_object;
   
-  SPVM_MUTEX_lock(runtime_mutex);
+  SPVM_MUTEX_lock(runtime_mutex_update_object);
   
   assert(ref);
   
   if (*ref == NULL) {
-    SPVM_MUTEX_unlock(runtime_mutex);
+    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     return 0;
   }
   
   int32_t isweak = SPVM_API_isweak(env, stack, ref);
   
   if (isweak) {
-    SPVM_MUTEX_unlock(runtime_mutex);
+    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     return 0;
   }
   
@@ -3983,7 +3983,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   if (ref_count == 1) {
     SPVM_OBJECT* destroied_referent = object;
     *ref = NULL;
-    SPVM_MUTEX_unlock(runtime_mutex);
+    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     
     SPVM_API_assign_object(env, stack, &destroied_referent, NULL);
   }
@@ -3998,7 +3998,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     // If pointer most right bit is 1, object is weaken.
     *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
     
-    SPVM_MUTEX_unlock(runtime_mutex);
+    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     
     SPVM_API_dec_ref_count_only(env, stack, object);
     
@@ -4031,21 +4031,21 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* runtime_mutex = runtime->mutex;
+  SPVM_MUTEX* runtime_mutex_update_object = runtime->mutex_update_object;
   
-  SPVM_MUTEX_lock(runtime_mutex);
+  SPVM_MUTEX_lock(runtime_mutex_update_object);
   
   assert(ref);
   
   if (*ref == NULL) {
-    SPVM_MUTEX_unlock(runtime_mutex);
+    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     return;
   }
   
   int32_t isweak = SPVM_API_isweak(env, stack, ref);
   
   if (!isweak) {
-    SPVM_MUTEX_unlock(runtime_mutex);
+    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     return;
   }
   
@@ -4073,7 +4073,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   // Drop weaken flag
   *ref = (SPVM_OBJECT*)((intptr_t)*ref & ~(intptr_t)1);
   
-  SPVM_MUTEX_unlock(runtime_mutex);
+  SPVM_MUTEX_unlock(runtime_mutex_update_object);
   
   SPVM_API_inc_ref_count(env, stack, object);
   
