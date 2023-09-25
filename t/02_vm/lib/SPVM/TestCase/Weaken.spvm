@@ -271,13 +271,19 @@ class TestCase::Weaken {
     # Weaken
     weaken $weaken1->{data_weaken};
     
+    warn;
+    
     unless (isweak $weaken1->{data_weaken}) {
       return 0;
     }
-
+    
+    warn;
+    
     if (isweak $weaken2->{data_weaken}) {
       return 0;
     }
+    
+    warn;
     
     return 1;
   }
@@ -297,9 +303,13 @@ class TestCase::Weaken {
     weaken $weaken1->{data_weaken};
     unweaken $weaken1->{data_weaken};
     
+    warn;
+    
     if (isweak $weaken1->{data_weaken}) {
       return 0;
     }
+    
+    warn;
     
     return 1;
   }
