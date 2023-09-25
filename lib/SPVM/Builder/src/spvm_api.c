@@ -3683,6 +3683,16 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
   
   SPVM_MUTEX_init(mutex);
   
+  warn("SPVM_API_new_object_common %d", __LINE__);
+  
+  SPVM_MUTEX_lock(mutex);
+  
+  warn("SPVM_API_new_object_common %d", __LINE__);
+  
+  SPVM_MUTEX_unlock(mutex);
+  
+  warn("SPVM_API_new_object_common %d", __LINE__);
+  
   return object;
 }
 
