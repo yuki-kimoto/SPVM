@@ -3947,20 +3947,21 @@ int32_t SPVM_API_isweak_only_check_flag(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
 int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* runtime_mutex_update_object = runtime->mutex_update_object;
-  
-  SPVM_MUTEX_reader_lock(runtime_mutex_update_object);
-  
   assert(ref);
   
   if (*ref == NULL) {
-    SPVM_MUTEX_reader_unlock(runtime_mutex_update_object);
     return 0;
   }
   
+  SPVM_OBJECT* object = *ref;
+  
+  SPVM_MUTEX* mutex_object = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(mutex_object);
+  
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
-  SPVM_MUTEX_reader_unlock(runtime_mutex_update_object);
+  SPVM_MUTEX_unlock(mutex_object);
   
   return isweak;
 }
