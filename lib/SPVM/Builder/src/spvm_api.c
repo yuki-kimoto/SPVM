@@ -4133,92 +4133,90 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   if (ref_count > 1) {
     SPVM_API_dec_ref_count(env, stack, object_assign_off);
-    // SPVM_API_lock_object(env, stack, object_assign_off);
-    return;
   }
-  
-  // Free object_assign_off array
-  if (SPVM_API_is_object_array(env, stack, object_assign_off)) {
-    int32_t length = SPVM_API_length(env, stack, object_assign_off);
-    for (int32_t index = 0; index < length; index++) {
-      SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)object_assign_off + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
-      SPVM_API_assign_object(env, stack, ref, NULL);
-    }
-  }
-  // Free object_assign_off
-  else {
-    SPVM_RUNTIME_BASIC_TYPE* object_assign_off_basic_type = SPVM_API_get_object_basic_type(env, stack, object_assign_off);
-    int32_t object_assign_off_basic_type_category = object_assign_off_basic_type->category;
-    if (object_assign_off_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-      // Class
-      SPVM_RUNTIME* runtime = env->runtime;
-      
-      // Call destructor
-      if (object_assign_off_basic_type->destructor_method) {
-        
-        SPVM_VALUE save_stack0 = stack[0];
-        SPVM_OBJECT* save_exception = SPVM_API_get_exception(env, stack);
-        SPVM_OBJECT* save_exception_referent = NULL;
-        SPVM_API_assign_object(env, stack, &save_exception_referent, save_exception);
-        
-        SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_assign_off_basic_type, object_assign_off_basic_type->destructor_method->index);
-        
-        stack[0].oval = object_assign_off;
-        int32_t args_width = 1;
-        int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
-        
-        // Exception in destructor is changed to warning
-        if (error_id) {
-          void* exception = SPVM_API_get_exception(env, stack);
-          const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
-          fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
-        }
-        
-        // Restore stack and exception
-        stack[0] = save_stack0;
-        SPVM_API_set_exception(env, stack, save_exception);
-        SPVM_API_assign_object(env, stack, &save_exception_referent, NULL);
-        
-        int32_t ref_count = SPVM_API_get_ref_count(env, stack, object_assign_off);
-        
-        assert(ref_count > 0);
-      }
-      
-      // Free object_assign_off fields
-      int32_t object_assign_off_fields_length = object_assign_off_basic_type->fields_length;
-      for (int32_t field_index = 0; field_index < object_assign_off_fields_length; field_index++) {
-        SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_assign_off_basic_type, field_index);
-        
-        void* field_basic_type = field->basic_type;
-        int32_t field_type_dimension = field->type_dimension;
-        int32_t field_type_flag = field->type_flag;
-        int32_t field_type_is_object_assign_off = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
-        
-        if (field_type_is_object_assign_off) {
-          SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object_assign_off + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-          SPVM_API_assign_object(env, stack, ref, NULL);
-        }
+  else if (ref_count == 1) {
+    
+    // Free object_assign_off array
+    if (SPVM_API_is_object_array(env, stack, object_assign_off)) {
+      int32_t length = SPVM_API_length(env, stack, object_assign_off);
+      for (int32_t index = 0; index < length; index++) {
+        SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)object_assign_off + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
+        SPVM_API_assign_object(env, stack, ref, NULL);
       }
     }
+    // Free object_assign_off
+    else {
+      SPVM_RUNTIME_BASIC_TYPE* object_assign_off_basic_type = SPVM_API_get_object_basic_type(env, stack, object_assign_off);
+      int32_t object_assign_off_basic_type_category = object_assign_off_basic_type->category;
+      if (object_assign_off_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+        // Class
+        SPVM_RUNTIME* runtime = env->runtime;
+        
+        // Call destructor
+        if (object_assign_off_basic_type->destructor_method) {
+          
+          SPVM_VALUE save_stack0 = stack[0];
+          SPVM_OBJECT* save_exception = SPVM_API_get_exception(env, stack);
+          SPVM_OBJECT* save_exception_referent = NULL;
+          SPVM_API_assign_object(env, stack, &save_exception_referent, save_exception);
+          
+          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_assign_off_basic_type, object_assign_off_basic_type->destructor_method->index);
+          
+          stack[0].oval = object_assign_off;
+          int32_t args_width = 1;
+          int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
+          
+          // Exception in destructor is changed to warning
+          if (error_id) {
+            void* exception = SPVM_API_get_exception(env, stack);
+            const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
+            fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
+          }
+          
+          // Restore stack and exception
+          stack[0] = save_stack0;
+          SPVM_API_set_exception(env, stack, save_exception);
+          SPVM_API_assign_object(env, stack, &save_exception_referent, NULL);
+          
+          int32_t ref_count = SPVM_API_get_ref_count(env, stack, object_assign_off);
+          
+          assert(ref_count > 0);
+        }
+        
+        // Free object_assign_off fields
+        int32_t object_assign_off_fields_length = object_assign_off_basic_type->fields_length;
+        for (int32_t field_index = 0; field_index < object_assign_off_fields_length; field_index++) {
+          SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_assign_off_basic_type, field_index);
+          
+          void* field_basic_type = field->basic_type;
+          int32_t field_type_dimension = field->type_dimension;
+          int32_t field_type_flag = field->type_flag;
+          int32_t field_type_is_object_assign_off = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
+          
+          if (field_type_is_object_assign_off) {
+            SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object_assign_off + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+            SPVM_API_assign_object(env, stack, ref, NULL);
+          }
+        }
+      }
+    }
+    
+    // Free weak back refenreces
+    if (object_assign_off->weaken_backref_head != NULL) {
+      SPVM_API_free_weaken_backrefs(env, stack, object_assign_off->weaken_backref_head);
+      object_assign_off->weaken_backref_head = NULL;
+    }
+    
+    // Decrement reference count
+    SPVM_API_dec_ref_count(env, stack, object_assign_off);
+    
+    SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object_assign_off);
+    SPVM_MUTEX_destroy(mutex);
+    
+    // Free object_assign_off
+    SPVM_API_free_memory_stack(env, stack, object_assign_off);
+    object_assign_off = NULL;
   }
-  
-  // Free weak back refenreces
-  if (object_assign_off->weaken_backref_head != NULL) {
-    SPVM_API_free_weaken_backrefs(env, stack, object_assign_off->weaken_backref_head);
-    object_assign_off->weaken_backref_head = NULL;
-  }
-  
-  // Decrement reference count
-  SPVM_API_dec_ref_count(env, stack, object_assign_off);
-  
-  SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object_assign_off);
-  SPVM_MUTEX_destroy(mutex);
-  
-  // Free object_assign_off
-  SPVM_API_free_memory_stack(env, stack, object_assign_off);
-  object_assign_off = NULL;
-  
-  // SPVM_API_unlock_object_assign_off(env, stack, object_assign_off);
 }
 
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
