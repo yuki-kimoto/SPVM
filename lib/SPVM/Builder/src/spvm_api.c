@@ -3959,7 +3959,7 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   warn("AAA %p", mutex_object);
   
-  SPVM_MUTEX_reader_lock(mutex_object);
+  SPVM_MUTEX_lock(mutex_object);
   
   warn("BBB");
   
@@ -3967,7 +3967,7 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   warn("CCC");
   
-  SPVM_MUTEX_reader_unlock(mutex_object);
+  SPVM_MUTEX_unlock(mutex_object);
   
   warn("DDD");
   
