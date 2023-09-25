@@ -3976,6 +3976,10 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   SPVM_OBJECT* object = *ref;
   
+  SPVM_MUTEX* mutex_object = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(mutex_object);
+  
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
   SPVM_OBJECT* destroied_referent = NULL;
@@ -4016,6 +4020,8 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
       }
     }
   }
+  
+  SPVM_MUTEX_unlock(mutex_object);
   
   if (destroied_referent) {
     SPVM_API_assign_object(env, stack, &destroied_referent, NULL);
