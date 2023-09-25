@@ -4083,7 +4083,13 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   SPVM_OBJECT* object = *ref;
   
+  SPVM_MUTEX* mutex_object = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(mutex_object);
+  
   SPVM_API_unweaken_thread_unsafe(env, stack, ref);
+  
+  SPVM_MUTEX_unlock(mutex_object);
 }
 
 void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
@@ -4102,7 +4108,7 @@ void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN
 
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref, SPVM_OBJECT* object) {
   
-  SPVM_API_unweaken(env, stack, ref);
+  SPVM_API_unweaken_thread_unsafe(env, stack, ref);
   
   SPVM_RUNTIME* runtime = env->runtime;
   
