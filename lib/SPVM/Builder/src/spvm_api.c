@@ -3957,7 +3957,7 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   SPVM_MUTEX* mutex_object = SPVM_API_get_object_mutex(env, stack, object);
   
-  warn("AAA");
+  warn("AAA %p", mutex_object);
   
   SPVM_MUTEX_reader_lock(mutex_object);
   
