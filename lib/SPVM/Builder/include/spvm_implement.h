@@ -1323,8 +1323,8 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = 1;
   }
   else {
-    void* get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
-    env->assign_object(env, stack, get_field_object_ref, in);
+    void* ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    env->assign_object(env, stack, ref, in);
   }
 }
 
@@ -1336,8 +1336,8 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = 1;
   }
   else {
-    void* get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
-    env->assign_object(env, stack, get_field_object_ref, NULL);
+    void* ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    env->assign_object(env, stack, ref, NULL);
   }
 }
 
@@ -1348,8 +1348,8 @@ static inline void SPVM_IMPLEMENT_WEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
     *error_id = 1;
   }
   else {
-    void** get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
-    int32_t status = env->weaken(env, stack, get_field_object_ref);
+    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    int32_t status = env->weaken(env, stack, ref);
     if (status != 0) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WEAKEN_BACK_REFERENCE_ALLOCATION_FAILED]);
       env->set_exception(env, stack, exception);
@@ -1365,8 +1365,8 @@ static inline void SPVM_IMPLEMENT_UNWEAKEN_FIELD(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = 1;
   }
   else {
-    void** get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
-    env->unweaken(env, stack, get_field_object_ref);
+    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    env->unweaken(env, stack, ref);
   }
 }
 
@@ -1377,8 +1377,8 @@ static inline void SPVM_IMPLEMENT_ISWEAK_FIELD(SPVM_ENV* env, SPVM_VALUE* stack,
     *error_id = 1;
   }
   else {
-    void** get_field_object_ref = (void**)((intptr_t)object + object_data_offset + field_offset);
-    *out = env->isweak(env, stack, get_field_object_ref);
+    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    *out = env->isweak(env, stack, ref);
   }
 }
 
