@@ -268,7 +268,11 @@ class TestCase::Weaken {
     $weaken1->{data_weaken} = $weaken2;
     $weaken2->{data_weaken} = $weaken1;
     
+    warn;
+    
     isweak $weaken1->{data_weaken};
+    
+    warn;
     
     # Weaken
     weaken $weaken1->{data_weaken};
