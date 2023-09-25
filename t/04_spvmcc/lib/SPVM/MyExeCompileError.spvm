@@ -1,5 +1,0 @@
-class MyExeCompileError {
-  static method main : int () {
-    my $foo;
-  }
-}

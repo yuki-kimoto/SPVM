@@ -1,5 +1,0 @@
-class CompileError::LocalVar::LocalVarNameStartDigit {
-  static method foo : void () {
-    my $3foo = 0;
-  }
-}

@@ -1,6 +1,0 @@
-class CompileError::Assign::BoxingDifferentType {
-
-  static method main : int () {
-    my $num : Long = 3;
-  }
-}

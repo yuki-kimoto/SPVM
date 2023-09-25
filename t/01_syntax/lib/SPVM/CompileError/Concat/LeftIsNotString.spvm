@@ -1,9 +1,0 @@
-class CompileError::Concat::LeftIsNotString {
-  use TestCase::Minimal;
-  
-  static method main : int () {
-    my $minimal : TestCase::Minimal;
-    
-    $minimal . "abc";
-  }
-}
