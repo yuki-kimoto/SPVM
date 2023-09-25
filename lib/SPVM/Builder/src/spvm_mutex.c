@@ -43,34 +43,30 @@ int32_t SPVM_MUTEX_size () {
 #include <pthread.h>
 #include <stdlib.h>
 
-#define SAFE_PTHREAD(fncall)    \
-  do {                          \
-    if ((fncall) != 0) abort(); \
-  } while (0)
-
 void SPVM_MUTEX_init(void* mutex) {
   
-  SAFE_PTHREAD(pthread_rwlock_init((pthread_rwlock_t*)mutex, NULL));
+  pthread_rwlock_init((pthread_rwlock_t*)mutex, NULL);
 }
 
 void SPVM_MUTEX_destroy(void* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_destroy((pthread_rwlock_t*)mutex));
+  pthread_rwlock_destroy((pthread_rwlock_t*)mutex);
 }
 
 void SPVM_MUTEX_lock (void* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_wrlock((pthread_rwlock_t*)mutex));
+  pthread_rwlock_wrlock((pthread_rwlock_t*)mutex);
 }
 
 void SPVM_MUTEX_unlock (void* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_unlock((pthread_rwlock_t*)mutex));
+  pthread_rwlock_unlock((pthread_rwlock_t*)mutex);
 }
 
 void SPVM_MUTEX_reader_lock (void* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_rdlock((pthread_rwlock_t*)mutex));
+  int32_t ret = pthread_rwlock_rdlock((pthread_rwlock_t*)mutex);
+  warn("SPVM_MUTEX_reader_lock: %d", ret);
 }
 
 void SPVM_MUTEX_reader_unlock (void* mutex) {
-  SAFE_PTHREAD(pthread_rwlock_unlock((pthread_rwlock_t*)mutex));
+  pthread_rwlock_unlock((pthread_rwlock_t*)mutex);
 }
 
 int32_t SPVM_MUTEX_size () {
