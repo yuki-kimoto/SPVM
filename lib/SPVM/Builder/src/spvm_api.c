@@ -3857,7 +3857,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
             
             SPVM_API_lock_object(env, stack, return_object);
             
-            SPVM_API_dec_ref_count_only(env, stack, return_object);
+            SPVM_API_dec_ref_count(env, stack, return_object);
             
             SPVM_API_unlock_object(env, stack, return_object);
           }
@@ -3999,7 +3999,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
       // If pointer most right bit is 1, object is weaken.
       *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
       
-      SPVM_API_dec_ref_count_only(env, stack, object);
+      SPVM_API_dec_ref_count(env, stack, object);
       
       SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
       new_weaken_backref->ref = ref;
@@ -4125,14 +4125,14 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
     return;
   }
   
-  SPVM_API_dec_ref_count_only(env, stack, object_assign_off); 
+  SPVM_API_dec_ref_count(env, stack, object_assign_off); 
   
   int32_t ref_count = SPVM_API_get_ref_count(env, stack, object_assign_off);
   
   assert(ref_count > 0);
   
   if (ref_count > 1) {
-    SPVM_API_dec_ref_count_only(env, stack, object_assign_off);
+    SPVM_API_dec_ref_count(env, stack, object_assign_off);
     // SPVM_API_lock_object(env, stack, object_assign_off);
     return;
   }
@@ -4209,7 +4209,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   }
   
   // Decrement reference count
-  SPVM_API_dec_ref_count_only(env, stack, object_assign_off);
+  SPVM_API_dec_ref_count(env, stack, object_assign_off);
   
   SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object_assign_off);
   SPVM_MUTEX_destroy(mutex);
@@ -4232,7 +4232,7 @@ void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
 }
 
-void SPVM_API_dec_ref_count_only(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
