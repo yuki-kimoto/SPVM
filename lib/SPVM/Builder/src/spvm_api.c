@@ -4106,19 +4106,46 @@ void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN
 
 void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref, SPVM_OBJECT* object) {
   
-  SPVM_API_unweaken_thread_unsafe(env, stack, ref);
-  
   SPVM_RUNTIME* runtime = env->runtime;
+  
+  SPVM_MUTEX* runtime_mutex_update_object = runtime->mutex_update_object;
+  
+  SPVM_MUTEX_lock(runtime_mutex_update_object);
+  
+  SPVM_OBJECT* object_assign_off = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+  if (object_assign_off) {
+    
+    SPVM_MUTEX* mutex_object_assign_off = SPVM_API_get_object_mutex(env, stack, object_assign_off);
+    
+    SPVM_MUTEX_lock(mutex_object_assign_off);
+  }
   
   assert(!((intptr_t)object & 1));
   
-  SPVM_OBJECT* object_assign_off = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+  int32_t lock_object_mutex = 0;
+  if (object && (object != object_assign_off)) {
+    SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
+    
+    SPVM_MUTEX_lock(object_mutex);
+    lock_object_mutex = 1;
+  }
+  
+  SPVM_MUTEX_unlock(runtime_mutex_update_object);
+  
+  SPVM_API_unweaken_thread_unsafe(env, stack, ref);
   
   if (object) {
     SPVM_API_inc_ref_count(env, stack, object);
   }
   
   *ref = object;
+  
+  if (object) {
+    SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
+    if (lock_object_mutex) {
+      SPVM_MUTEX_unlock(object_mutex);
+    }
+  }
   
   if (!object_assign_off) {
     return;
@@ -4128,10 +4155,16 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   assert(object_assign_off_ref_count > 0);
   
+  SPVM_MUTEX* mutex_object_assign_off = SPVM_API_get_object_mutex(env, stack, object_assign_off);
   if (object_assign_off_ref_count > 1) {
+  
     SPVM_API_dec_ref_count(env, stack, object_assign_off);
+    SPVM_MUTEX_unlock(mutex_object_assign_off);
+  
     return;
   }
+  
+  SPVM_MUTEX_unlock(mutex_object_assign_off);
   
   // Free object_assign_off array
   if (SPVM_API_is_object_array(env, stack, object_assign_off)) {
@@ -4192,9 +4225,8 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
         }
       }
     }
-  }
   
-  SPVM_MUTEX* mutex_object_assign_off = SPVM_API_get_object_mutex(env, stack, object_assign_off);
+  }
   
   SPVM_MUTEX_lock(mutex_object_assign_off);
   
