@@ -70,7 +70,7 @@ void SPVM_MUTEX_reader_unlock (void* mutex) {
 }
 
 int32_t SPVM_MUTEX_size () {
-  return sizeof(pthread_rwlock_t);
+  return sizeof(pthread_rwlock_t) + 100;
 }
 
 #endif
