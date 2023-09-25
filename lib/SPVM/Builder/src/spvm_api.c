@@ -3969,73 +3969,67 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
 int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* runtime_mutex_update_object = runtime->mutex_update_object;
-  
-  SPVM_MUTEX_lock(runtime_mutex_update_object);
-  
   assert(ref);
   
   if (*ref == NULL) {
-    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     return 0;
   }
+  
+  SPVM_OBJECT* object = *ref;
+  
+  SPVM_MUTEX* mutex_object = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(mutex_object);
   
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
-  if (isweak) {
-    SPVM_MUTEX_unlock(runtime_mutex_update_object);
-    return 0;
-  }
-  
-  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
-  
-  int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
-  
-  assert(ref_count > 0);
-  
-  // If reference count is 1, the object is destroied
-  if (ref_count == 1) {
-    SPVM_OBJECT* destroied_referent = object;
-    *ref = NULL;
-    SPVM_MUTEX_unlock(runtime_mutex_update_object);
+  SPVM_OBJECT* destroied_referent = NULL;
+  if (!isweak) {
+    SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
     
-    SPVM_API_assign_object(env, stack, &destroied_referent, NULL);
-  }
-  else {
-    SPVM_MUTEX* weaken_backref_mutex = SPVM_API_new_memory_stack(env, stack, SPVM_MUTEX_size());
-    SPVM_MUTEX_init(weaken_backref_mutex);
+    int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
     
-    SPVM_API_lock_object(env, stack, object);
-    SPVM_MUTEX_lock(weaken_backref_mutex);
+    assert(ref_count > 0);
     
-    // Weaken is implemented by tag pointer.
-    // If pointer most right bit is 1, object is weaken.
-    *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
-    
-    SPVM_MUTEX_unlock(runtime_mutex_update_object);
-    
-    SPVM_API_dec_ref_count_only(env, stack, object);
-    
-    SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
-    new_weaken_backref->ref = ref;
-    new_weaken_backref->mutex = weaken_backref_mutex;
-    
-    // Create a new weaken back refference
-    if (object->weaken_backref_head == NULL) {
-      object->weaken_backref_head = new_weaken_backref;
+    // If reference count is 1, the object is destroied
+    if (ref_count == 1) {
+      destroied_referent = object;
+      *ref = NULL;
     }
-    // Add weaken back refference
     else {
-      SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
+      SPVM_MUTEX* weaken_backref_mutex = SPVM_API_new_memory_stack(env, stack, SPVM_MUTEX_size());
+      SPVM_MUTEX_init(weaken_backref_mutex);
       
-      while (weaken_backref_next->next != NULL){
-        weaken_backref_next = weaken_backref_next->next;
+      // Weaken is implemented by tag pointer.
+      // If pointer most right bit is 1, object is weaken.
+      *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
+      
+      SPVM_API_dec_ref_count_only(env, stack, object);
+      
+      SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
+      new_weaken_backref->ref = ref;
+      new_weaken_backref->mutex = weaken_backref_mutex;
+      
+      // Create a new weaken back refference
+      if (object->weaken_backref_head == NULL) {
+        object->weaken_backref_head = new_weaken_backref;
       }
-      weaken_backref_next->next = new_weaken_backref;
+      // Add weaken back refference
+      else {
+        SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
+        
+        while (weaken_backref_next->next != NULL){
+          weaken_backref_next = weaken_backref_next->next;
+        }
+        weaken_backref_next->next = new_weaken_backref;
+      }
     }
-    
-    SPVM_API_unlock_object(env, stack, object);
-    SPVM_MUTEX_unlock(weaken_backref_mutex);
+  }
+  
+  SPVM_MUTEX_unlock(mutex_object);
+  
+  if (destroied_referent) {
+    SPVM_API_assign_object(env, stack, &destroied_referent, NULL);
   }
   
   return 0;
