@@ -1238,8 +1238,9 @@ static inline void SPVM_IMPLEMENT_GET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = 1;
   }
   else {
-    void* get_field_object = *(void**)((intptr_t)object + object_data_offset + field_offset);
-    env->assign_object(env, stack, out, get_field_object);
+    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void* object = (void*)((intptr_t)*ref & ~(intptr_t)1);
+    env->assign_object(env, stack, out, object);
   }
 }
 

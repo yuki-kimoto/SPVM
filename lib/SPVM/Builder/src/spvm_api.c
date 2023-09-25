@@ -4098,7 +4098,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  object = SPVM_API_get_object_no_weaken_address(env, stack, object);
+  assert(!((intptr_t)object & 1));
   
   SPVM_OBJECT* object_assign_off = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   SPVM_API_inc_ref_count(env, stack, object_assign_off);
