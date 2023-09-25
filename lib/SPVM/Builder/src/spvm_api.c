@@ -4194,23 +4194,27 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
     }
   }
   
-  // Decrement reference count
+  SPVM_MUTEX* mutex_object_assign_off = SPVM_API_get_object_mutex(env, stack, object_assign_off);
+  
+  SPVM_MUTEX_lock(mutex_object_assign_off);
+  
   SPVM_API_dec_ref_count(env, stack, object_assign_off);
   
   object_assign_off_ref_count = SPVM_API_get_ref_count(env, stack, object_assign_off);
   
   if (object_assign_off_ref_count > 0) {
-    
+    SPVM_MUTEX_unlock(mutex_object_assign_off);
   }
   else if (object_assign_off_ref_count == 0) {
+    
     // Free weak back refenreces
     if (object_assign_off->weaken_backref_head != NULL) {
       SPVM_API_free_weaken_backrefs(env, stack, object_assign_off->weaken_backref_head);
       object_assign_off->weaken_backref_head = NULL;
     }
     
-    SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object_assign_off);
-    SPVM_MUTEX_destroy(mutex);
+    SPVM_MUTEX_unlock(mutex_object_assign_off);
+    SPVM_MUTEX_destroy(mutex_object_assign_off);
     
     // Free object_assign_off
     SPVM_API_free_memory_stack(env, stack, object_assign_off);
