@@ -3986,9 +3986,6 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
       *ref = NULL;
     }
     else {
-      SPVM_MUTEX* weaken_backref_mutex = SPVM_API_new_memory_stack(env, stack, SPVM_MUTEX_size());
-      SPVM_MUTEX_init(weaken_backref_mutex);
-      
       // Weaken is implemented by tag pointer.
       // If pointer most right bit is 1, object is weaken.
       *ref = (SPVM_OBJECT*)((intptr_t)*ref | 1);
@@ -3997,7 +3994,6 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
       
       SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
       new_weaken_backref->ref = ref;
-      new_weaken_backref->mutex = weaken_backref_mutex;
       
       // Create a new weaken back refference
       if (object->weaken_backref_head == NULL) {
@@ -4039,20 +4035,6 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     
     assert(object->weaken_backref_head);
     
-    // Lock weaken_backref mutex
-    {
-      SPVM_WEAKEN_BACKREF** weaken_backref_next_ptr = &object->weaken_backref_head;
-      while (*weaken_backref_next_ptr != NULL){
-        if ((*weaken_backref_next_ptr)->ref == ref) {
-          
-          SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
-          
-          break;
-        }
-        *weaken_backref_next_ptr = (*weaken_backref_next_ptr)->next;
-      }
-    }
-    
     // Drop weaken flag
     *ref = (SPVM_OBJECT*)((intptr_t)*ref & ~(intptr_t)1);
     
@@ -4066,9 +4048,6 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
         SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_ptr)->next;
         
         SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
-        SPVM_MUTEX_destroy(weaken_backref_next->mutex);
-        SPVM_API_free_memory_stack(env, stack, weaken_backref_next->mutex);
-        weaken_backref_next->mutex = NULL;
         
         SPVM_API_free_memory_stack(env, stack, weaken_backref_next);
         weaken_backref_next = NULL;
@@ -4102,10 +4081,6 @@ void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN
   while (weaken_backref_head_cur != NULL){
     *(weaken_backref_head_cur->ref) = NULL;
     weaken_backref_head_next = weaken_backref_head_cur->next;
-    
-    SPVM_MUTEX_destroy(weaken_backref_head_cur->mutex);
-    SPVM_API_free_memory_stack(env, stack, weaken_backref_head_cur->mutex);
-    weaken_backref_head_cur->mutex = NULL;
     
     SPVM_API_free_memory_stack(env, stack, weaken_backref_head_cur);
     weaken_backref_head_cur = NULL;
