@@ -4039,75 +4039,67 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_MUTEX* runtime_mutex_update_object = runtime->mutex_update_object;
-  
-  SPVM_MUTEX_lock(runtime_mutex_update_object);
-  
   assert(ref);
   
   if (*ref == NULL) {
-    SPVM_MUTEX_unlock(runtime_mutex_update_object);
     return;
   }
+  
+  SPVM_OBJECT* object = *ref;
+  
+  SPVM_MUTEX* mutex_object = SPVM_API_get_object_mutex(env, stack, object);
+  
+  SPVM_MUTEX_lock(mutex_object);
   
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
-  if (!isweak) {
-    SPVM_MUTEX_unlock(runtime_mutex_update_object);
-    return;
-  }
-  
-  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
-  
-  assert(object->weaken_backref_head);
-  
-  // Lock weaken_backref mutex
-  {
+  if (isweak) {
+    SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+    
+    assert(object->weaken_backref_head);
+    
+    // Lock weaken_backref mutex
+    {
+      SPVM_WEAKEN_BACKREF** weaken_backref_next_ptr = &object->weaken_backref_head;
+      while (*weaken_backref_next_ptr != NULL){
+        if ((*weaken_backref_next_ptr)->ref == ref) {
+          
+          SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
+          
+          break;
+        }
+        *weaken_backref_next_ptr = (*weaken_backref_next_ptr)->next;
+      }
+    }
+    
+    // Drop weaken flag
+    *ref = (SPVM_OBJECT*)((intptr_t)*ref & ~(intptr_t)1);
+    
+    SPVM_API_inc_ref_count(env, stack, object);
+    
+    // Remove a weaken back reference
+    assert(object->weaken_backref_head);
     SPVM_WEAKEN_BACKREF** weaken_backref_next_ptr = &object->weaken_backref_head;
     while (*weaken_backref_next_ptr != NULL){
       if ((*weaken_backref_next_ptr)->ref == ref) {
+        SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_ptr)->next;
         
         SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
-        SPVM_MUTEX_lock(weaken_backref_next->mutex);
+        SPVM_MUTEX_destroy(weaken_backref_next->mutex);
+        SPVM_API_free_memory_stack(env, stack, weaken_backref_next->mutex);
+        weaken_backref_next->mutex = NULL;
         
+        SPVM_API_free_memory_stack(env, stack, weaken_backref_next);
+        weaken_backref_next = NULL;
+        
+        *weaken_backref_next_ptr = tmp;
         break;
       }
       *weaken_backref_next_ptr = (*weaken_backref_next_ptr)->next;
     }
   }
   
-  SPVM_API_lock_object(env, stack, object);
-  
-  // Drop weaken flag
-  *ref = (SPVM_OBJECT*)((intptr_t)*ref & ~(intptr_t)1);
-  
-  SPVM_MUTEX_unlock(runtime_mutex_update_object);
-  
-  SPVM_API_inc_ref_count(env, stack, object);
-  
-  // Remove a weaken back reference
-  assert(object->weaken_backref_head);
-  SPVM_WEAKEN_BACKREF** weaken_backref_next_ptr = &object->weaken_backref_head;
-  while (*weaken_backref_next_ptr != NULL){
-    if ((*weaken_backref_next_ptr)->ref == ref) {
-      SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_ptr)->next;
-      
-      SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
-      SPVM_MUTEX_unlock(weaken_backref_next->mutex);
-      SPVM_MUTEX_destroy(weaken_backref_next->mutex);
-      SPVM_API_free_memory_stack(env, stack, weaken_backref_next->mutex);
-      weaken_backref_next->mutex = NULL;
-      
-      SPVM_API_free_memory_stack(env, stack, weaken_backref_next);
-      weaken_backref_next = NULL;
-      
-      *weaken_backref_next_ptr = tmp;
-      break;
-    }
-    *weaken_backref_next_ptr = (*weaken_backref_next_ptr)->next;
-  }
-  
-  SPVM_API_unlock_object(env, stack, object);
+  SPVM_MUTEX_unlock(mutex_object);
 }
 
 void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
