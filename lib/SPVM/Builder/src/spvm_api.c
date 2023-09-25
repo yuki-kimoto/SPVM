@@ -3953,7 +3953,7 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     return 0;
   }
   
-  SPVM_OBJECT* object = *ref;
+  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
@@ -3968,13 +3968,12 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     return 0;
   }
   
-  SPVM_OBJECT* object = *ref;
+  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
   SPVM_OBJECT* destroied_referent = NULL;
   if (!isweak) {
-    SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
     
     int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
     
@@ -4026,12 +4025,11 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     return;
   }
   
-  SPVM_OBJECT* object = *ref;
+  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
   
   if (isweak) {
-    SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
     
     assert(object->weaken_backref_head);
     
@@ -4069,7 +4067,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     return;
   }
   
-  SPVM_OBJECT* object = *ref;
+  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
   SPVM_API_unweaken_thread_unsafe(env, stack, ref);
 }
@@ -4096,7 +4094,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   object = SPVM_API_get_object_no_weaken_address(env, stack, object);
   
-  SPVM_OBJECT* object_assign_off = *ref;
+  SPVM_OBJECT* object_assign_off = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   SPVM_API_inc_ref_count(env, stack, object_assign_off);
   
   if (object) {
