@@ -2975,7 +2975,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
   }
   
 #ifdef _WIN32
-  int32_t stdout_mode_current = env->set_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "stdout_windows_binary_mode", &error, __func__, FILE_NAME, __LINE__);
+  int32_t stdout_mode_current = env->get_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "stdout_windows_binary_mode", &error, __func__, FILE_NAME, __LINE__);
   if (error) { return error; }
   _setmode(fileno(fp), stdout_mode_current);
 #endif
