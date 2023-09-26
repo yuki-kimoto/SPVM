@@ -37,6 +37,8 @@ sub slurp_binmode {
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
+  SPVM::TestCase::NativeAPI->save_stdout_windows_binary_mode();
+  
   # print
   {
     # print
