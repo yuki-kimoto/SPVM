@@ -1,3 +1,7 @@
+0.989045 2023-09-26
+  [New Features]
+    * SPVM Language becomes thread safe logically. The tests are not done.
+    
 0.989044 2023-09-18
   [Internal Changes]
     * A blessed object has SV* object instead of the reference to SV* object
