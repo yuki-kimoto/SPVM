@@ -1395,6 +1395,10 @@ class TestCase::NativeAPI {
     
     return 1;
   }
-
+  
   native static method get_object_basic_type_name : int ();
+  
+  native static method freopen_stdout : void ($path : string);
+  
+  native static method freopen_stderr : void ($path : string);
 }

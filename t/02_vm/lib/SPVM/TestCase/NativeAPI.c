@@ -2901,3 +2901,45 @@ int32_t SPVM__TestCase__NativeAPI__get_object_basic_type_name(SPVM_ENV* env, SPV
   
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error = 0;
+  
+  void* obj_path = stack[0].oval;
+  
+  if (!obj_path) {
+    return env->die(env, stack, "$path must be defined.");
+  }
+  
+  const char* path = env->get_chars(env, stack, obj_path);
+  
+  FILE* fp = freopen(path, "wb", stdout);
+  
+  if (!fp) {
+    return env->die(env, stack, "freopen failed.");
+  }
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error = 0;
+  
+  void* obj_path = stack[0].oval;
+  
+  if (!obj_path) {
+    return env->die(env, stack, "$path must be defined.");
+  }
+  
+  const char* path = env->get_chars(env, stack, obj_path);
+  
+  FILE* fp = freopen(path, "wb", stderr);
+  
+  if (!fp) {
+    return env->die(env, stack, "freopen failed.");
+  }
+  
+  return 0;
+}
