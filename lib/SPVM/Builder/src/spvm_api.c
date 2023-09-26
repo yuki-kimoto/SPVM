@@ -3852,7 +3852,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
       // Decrement ref count of return value
       if (!error_id) {
         if (method_return_type_is_object) {
-          SPVM_OBJECT* return_object = stack[0].oval;
+          SPVM_OBJECT* return_object = *(void**)&stack[0];
           if (return_object != NULL) {
             
             SPVM_API_lock_object(env, stack, return_object);
