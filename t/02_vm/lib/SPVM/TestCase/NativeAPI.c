@@ -2934,6 +2934,19 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__close_stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error = 0;
+  
+  int32_t status = fclose(stdout);
+  
+  if (!(status == 0)) {
+    return env->die(env, stack, "fclose failed.");
+  }
+  
+  return 0;
+}
+
 int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
@@ -2965,3 +2978,17 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
   
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__close_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error = 0;
+  
+  int32_t status = fclose(stderr);
+  
+  if (!(status == 0)) {
+    return env->die(env, stack, "fclose failed.");
+  }
+  
+  return 0;
+}
+

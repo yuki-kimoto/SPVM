@@ -1400,5 +1400,10 @@ class TestCase::NativeAPI {
   
   native static method freopen_stdout : void ($path : string);
   
+  native static method close_stdout : void ();
+  
   native static method freopen_stderr : void ($path : string);
+  
+  native static method close_stderr : void ();
+  
 }
