@@ -39,6 +39,9 @@ class TestCase::NativeAPI {
   has draw_width : rw int;
   has draw_height : rw int;
   
+  has stdout_windows_binary_mode : int;
+  has stderr_windows_binary_mode : int;
+  has stdin_windows_binary_mode : int;
   
   static method new : TestCase::NativeAPI () {
     return new TestCase::NativeAPI;
@@ -1395,6 +1398,12 @@ class TestCase::NativeAPI {
     
     return 1;
   }
+  
+  native static method save_stdout_windows_binary_mode : int ();
+  
+  native static method save_stderr_windows_binary_mode : int ();
+  
+  native static method save_stdin_windows_binary_mode : int ();
   
   native static method get_object_basic_type_name : int ();
   
