@@ -2916,7 +2916,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
   
 #ifdef _WIN32
   int32_t stdout_mode_current = _setmode(fileno(stdout), _O_BINARY);
-  if (stdout_mode_current == _O_BINARY) {
+  if (!(stdout_mode_current == _O_BINARY)) {
     return env->die(env, stack, "stdout mode must be _O_BINARY.");
   }
 #endif
@@ -2961,7 +2961,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
   
 #ifdef _WIN32
   int32_t stderr_mode_current = _setmode(fileno(stderr), _O_BINARY);
-  if (stderr_mode_current == _O_BINARY) {
+  if (!(stderr_mode_current == _O_BINARY)) {
     return env->die(env, stack, "stderr mode must be _O_BINARY.");
   }
 #endif
