@@ -5046,9 +5046,11 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_RUNTIME_BASIC_TYPE* current_method_return_basic_type = current_method->return_basic_type;
   int32_t current_method_return_type_dimension = current_method->return_type_dimension;
   int32_t current_method_return_type_flag =current_method->return_type_flag;
-  int32_t method_return_type_check_runtime_assignability_to_any_object = SPVM_API_TYPE_is_object_type(runtime, current_method_return_basic_type, current_method_return_type_dimension, current_method_return_type_flag);
-  if (method_return_type_check_runtime_assignability_to_any_object) {
-    SPVM_STRING_BUFFER_add(string_buffer, "  if (stack[0].oval != NULL) { env->api->internal->dec_ref_count(env, stack, stack[0].oval); }\n");
+  int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, current_method_return_basic_type, current_method_return_type_dimension, current_method_return_type_flag);
+  if (method_return_type_is_object) {
+    SPVM_STRING_BUFFER_add(string_buffer, "  if (stack[0].oval != NULL) {\n"
+                                          "    env->api->internal->dec_ref_count(env, stack, stack[0].oval);\n"
+                                          "  }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n"
   "  return error_id;\n"
