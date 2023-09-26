@@ -2914,11 +2914,22 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
   
   const char* path = env->get_chars(env, stack, obj_path);
   
-  FILE* fp = freopen(path, "wb", stdout);
+#ifdef _WIN32
+  int32_t stdout_mode_current = _setmode(fileno(stdout), _O_BINARY);
+  if (stdout_mode_current == _O_BINARY) {
+    return env->die(env, stack, "stdout mode must be _O_BINARY.");
+  }
+#endif
+  
+  FILE* fp = freopen(path, "w", stdout);
   
   if (!fp) {
     return env->die(env, stack, "freopen failed.");
   }
+  
+#ifdef _WIN32
+  _setmode(fileno(fp), stdout_mode_current);
+#endif
   
   return 0;
 }
@@ -2935,11 +2946,22 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
   
   const char* path = env->get_chars(env, stack, obj_path);
   
-  FILE* fp = freopen(path, "wb", stderr);
+#ifdef _WIN32
+  int32_t stderr_mode_current = _setmode(fileno(stderr), _O_BINARY);
+  if (stderr_mode_current == _O_BINARY) {
+    return env->die(env, stack, "stderr mode must be _O_BINARY.");
+  }
+#endif
+  
+  FILE* fp = freopen(path, "w", stderr);
   
   if (!fp) {
     return env->die(env, stack, "freopen failed.");
   }
+  
+#ifdef _WIN32
+  _setmode(fileno(fp), stderr_mode_current);
+#endif
   
   return 0;
 }
