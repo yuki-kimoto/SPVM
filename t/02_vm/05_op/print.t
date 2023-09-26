@@ -9,6 +9,7 @@ use Test::More;
 
 use TestFile;
 use SPVM 'TestCase::Print';
+use SPVM 'TestCase::NativeAPI';
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
@@ -107,6 +108,35 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
       my $output = slurp_binmode($output_file);
       is($output, "");
     }
+  }
+}
+
+{
+  # print
+  {
+    # test_print
+    {
+      SPVM::TestCase::NativeAPI->freopen_stdout($output_file);
+      
+      SPVM::TestCase::Print->test_print;
+      
+      SPVM::TestCase::NativeAPI->close_stdout();
+      
+      my $output = slurp_binmode($output_file);
+      is($output, 'Hello');
+    }
+    
+    {
+      SPVM::TestCase::NativeAPI->freopen_stdout($output_file);
+      
+      SPVM::TestCase::Print->test_print_newline;
+      
+      SPVM::TestCase::NativeAPI->close_stdout();
+      
+      my $output = slurp_binmode($output_file);
+      is($output, "\x0A");
+    }
+    
   }
 }
 
