@@ -3842,7 +3842,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
               
               SPVM_MUTEX_lock(object_mutex);
               
-              SPVM_API_dec_ref_count_only(env, stack, return_object);
+              SPVM_API_dec_ref_count(env, stack, return_object);
               
               SPVM_MUTEX_unlock(object_mutex);
             }
