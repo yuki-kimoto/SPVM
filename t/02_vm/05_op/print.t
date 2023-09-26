@@ -39,11 +39,11 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # print
   {
-    # test_print
+    # print
     {
       SPVM::TestCase::NativeAPI->freopen_stdout($output_file);
       
-      SPVM::TestCase::Print->test_print;
+      SPVM::TestCase::Print->print;
       
       SPVM::TestCase::NativeAPI->close_stdout();
       
@@ -54,7 +54,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     {
       SPVM::TestCase::NativeAPI->freopen_stdout($output_file);
       
-      SPVM::TestCase::Print->test_print_newline;
+      SPVM::TestCase::Print->print_newline;
       
       SPVM::TestCase::NativeAPI->close_stdout();
       
@@ -65,7 +65,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     {
       SPVM::TestCase::NativeAPI->freopen_stdout($output_file);
       
-      SPVM::TestCase::Print->test_print_long_lines;
+      SPVM::TestCase::Print->print_long_lines;
       
       SPVM::TestCase::NativeAPI->close_stdout();
       
@@ -76,7 +76,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     {
       SPVM::TestCase::NativeAPI->freopen_stdout($output_file);
       
-      SPVM::TestCase::Print->test_print_empty;
+      SPVM::TestCase::Print->print_empty;
       
       SPVM::TestCase::NativeAPI->close_stdout();
       
@@ -87,7 +87,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     {
       SPVM::TestCase::NativeAPI->freopen_stdout($output_file);
       
-      SPVM::TestCase::Print->test_print_undef;
+      SPVM::TestCase::Print->print_undef;
       
       SPVM::TestCase::NativeAPI->close_stdout();
       

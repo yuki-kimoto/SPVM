@@ -1,29 +1,30 @@
 class TestCase::Print {
 
-  static method test_print : int () {
+  static method print : int () {
     print "Hello";
     
     return 1;
   }
-
-  static method test_print_newline : int () {
+  
+  static method print_newline : int () {
     print "\n";
     
     return 1;
   }
-
-  static method test_print_long_lines : int () {
+  
+  static method print_long_lines : int () {
     print "AAAAAAAAAAAAA\nBBBBBBBBBBBBBBBBBBB\nCCCCCCCCCCCCCCCCCCCCCCCCCCC\nDDDDDDDDDDDDDDDDDDDDDDDDD\nEEEEEEEEEEEEEEEEEEEEEE\nFFFFFFFFFFFFFF\n";
     
     return 1;
   }
-
-  static method test_print_empty : int () {
+  
+  static method print_empty : int () {
     print "";
     
     return 1;
   }
-  static method test_print_undef : int () {
+  
+  static method print_undef : int () {
     my $str : string = undef;
     print $str;
     
