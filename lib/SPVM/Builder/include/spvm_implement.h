@@ -2541,8 +2541,10 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void*
 #define SPVM_IMPLEMENT_RETURN_DOUBLE(stack, in) (*(double*)&stack[0] = in)
 
 static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in) {
-  *(void**)&stack[0] = NULL;
-  env->assign_object(env, stack, (void**)&stack[0], in);
+  *(void**)&stack[0] = in;
+  if (in != NULL) {
+    env->api->internal->inc_ref_count(env, stack, in);
+  }
 }
 
 #define SPVM_IMPLEMENT_RETURN_UNDEF(stack) (*(void**)&stack[0] = NULL)

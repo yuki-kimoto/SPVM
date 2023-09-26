@@ -1,6 +1,3 @@
-0.989045 2023-09-20
-  [Breaking Binary Compatibility]
-    * The return value of vm and precompiled method is referred and returned, and cancel the reference after.
 0.989044 2023-09-18
   [Internal Changes]
     * A blessed object has SV* object instead of the reference to SV* object
