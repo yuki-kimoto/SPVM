@@ -32,16 +32,16 @@ class TestCase::NativeAPI {
   our $DOUBLE_VALUE : double;
   our $MINIMAL_VALUE : TestCase::Minimal;
 
+  our $STDOUT_WINDOWS_BINARY_MODE : int;
+  our $STDERR_WINDOWS_BINARY_MODE : int;
+  our $STDIN_WINDOWS_BINARY_MODE : int;
+  
   has text : rw string;
   has color : rw int;
   has draw_left : rw int;
   has draw_top : rw int;
   has draw_width : rw int;
   has draw_height : rw int;
-  
-  has stdout_windows_binary_mode : int;
-  has stderr_windows_binary_mode : int;
-  has stdin_windows_binary_mode : int;
   
   static method new : TestCase::NativeAPI () {
     return new TestCase::NativeAPI;
