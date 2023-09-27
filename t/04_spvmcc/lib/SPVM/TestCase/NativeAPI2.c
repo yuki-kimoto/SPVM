@@ -20,11 +20,11 @@ int32_t SPVM__TestCase__NativeAPI2__mul(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 // Extra test of stdin, stdout, stderr is binary mode.
 #ifdef _WIN32  
-  int32_t stdin_old_mode = _setmode(0, _O_BINARY);
+  int32_t stdin_old_mode = setmode(0, _O_BINARY);
   assert(stdin_old_mode == _O_BINARY);
-  int32_t stdout_old_mode = _setmode(1, _O_BINARY);
+  int32_t stdout_old_mode = setmode(1, _O_BINARY);
   assert(stdout_old_mode == _O_BINARY);
-  int32_t stderr_old_mode = _setmode(2, _O_BINARY);
+  int32_t stderr_old_mode = setmode(2, _O_BINARY);
   assert(stderr_old_mode == _O_BINARY);
 #endif
   

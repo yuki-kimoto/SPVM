@@ -505,7 +505,7 @@ sub create_bootstrap_header_source {
 #include <time.h>
 #include <assert.h>
 
-// Only used for _setmode function and _O_BINARY
+// Only used for setmode function and _O_BINARY
 #include <fcntl.h>
 
 #include "spvm_native.h"
@@ -581,9 +581,9 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
 
   // Binary mode in all systems
 #ifdef _WIN32
-  _setmode(fileno(stdout), _O_BINARY);
-  _setmode(fileno(stderr), _O_BINARY);
-  _setmode(fileno(stdin), _O_BINARY);
+  setmode(fileno(stdout), _O_BINARY);
+  setmode(fileno(stderr), _O_BINARY);
+  setmode(fileno(stdin), _O_BINARY);
 #endif
   
   // Create env

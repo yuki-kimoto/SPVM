@@ -2681,20 +2681,20 @@ int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__NativeAPI__check_stdin_stdout_stderr_binary_mode(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef _WIN32  
-  int32_t stdin_old_mode = _setmode(0, _O_BINARY);
+  int32_t stdin_old_mode = setmode(0, _O_BINARY);
   
   if (!(stdin_old_mode == _O_BINARY)) {
     stack[0].ival = 0;
     return 0;
   }
   
-  int32_t stdout_old_mode = _setmode(1, _O_BINARY);
+  int32_t stdout_old_mode = setmode(1, _O_BINARY);
   if (!(stdout_old_mode == _O_BINARY)) {
     stack[0].ival = 0;
     return 0;
   }
   
-  int32_t stderr_old_mode = _setmode(2, _O_BINARY);
+  int32_t stderr_old_mode = setmode(2, _O_BINARY);
   if (!(stderr_old_mode == _O_BINARY)) {
     stack[0].ival = 0;
     return 0;
@@ -2907,7 +2907,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stdout_windows_binary_mode(SPVM_ENV* env
   int32_t error = 0;
   
 #ifdef _WIN32
-  int32_t stdout_mode_current = _setmode(fileno(stdout), _O_BINARY);
+  int32_t stdout_mode_current = setmode(fileno(stdout), _O_BINARY);
   if (!(stdout_mode_current == _O_BINARY)) {
     return env->die(env, stack, "stdout mode must be _O_BINARY.");
   }
@@ -2925,7 +2925,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stderr_windows_binary_mode(SPVM_ENV* env
   int32_t error = 0;
   
 #ifdef _WIN32
-  int32_t stderr_mode_current = _setmode(fileno(stderr), _O_BINARY);
+  int32_t stderr_mode_current = setmode(fileno(stderr), _O_BINARY);
   if (!(stderr_mode_current == _O_BINARY)) {
     return env->die(env, stack, "stderr mode must be _O_BINARY.");
   }
@@ -2943,7 +2943,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stdin_windows_binary_mode(SPVM_ENV* env,
   int32_t error = 0;
   
 #ifdef _WIN32
-  int32_t stdin_mode_current = _setmode(fileno(stdin), _O_BINARY);
+  int32_t stdin_mode_current = setmode(fileno(stdin), _O_BINARY);
   if (!(stdin_mode_current == _O_BINARY)) {
     return env->die(env, stack, "stdin mode must be _O_BINARY.");
   }
@@ -2977,7 +2977,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
 #ifdef _WIN32
   int32_t stdout_mode_current = env->get_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$STDOUT_WINDOWS_BINARY_MODE", &error, __func__, FILE_NAME, __LINE__);
   if (error) { return error; }
-  _setmode(fileno(fp), stdout_mode_current);
+  setmode(fileno(fp), stdout_mode_current);
 #endif
   
   return 0;
@@ -3016,7 +3016,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
   
 #ifdef _WIN32
   int32_t stderr_mode_current = env->get_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$STDERR_WINDOWS_BINARY_MODE", &error, __func__, FILE_NAME, __LINE__);
-  _setmode(fileno(fp), stderr_mode_current);
+  setmode(fileno(fp), stderr_mode_current);
 #endif
   
   return 0;

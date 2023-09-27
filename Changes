@@ -1,3 +1,7 @@
+0.989046 2023-09-28
+  [Internal Changes]
+    * Use setmode instead of _setmode because _setmode fails in latest MinGW.
+
 0.989045 2023-09-26
   [New Features]
     * Make SPVM Language thread-safe logically. The tests are not done.
