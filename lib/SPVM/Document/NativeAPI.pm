@@ -1955,12 +1955,6 @@ If an excetpion is thrown because the field does not exist or other errors occur
 
 If the env of the stack is equal to the env, returns 1. Otherwise returns 0.
 
-=head2 leave_scope_local
-
-C<void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);>
-
-Leave scope using local mortal stack.
-
 =head2 assign_object
 
 C<void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref, void* object);>
@@ -2184,7 +2178,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   210 get_field_object_ref_by_name
   211 check_stack_env,
   212 reserved212
-  213 leave_scope_local
+  213 reserved213
   214 assign_object
   215 new_string_array_no_mortal
   
