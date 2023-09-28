@@ -35,7 +35,7 @@
 #include "spvm_runtime_basic_type.h"
 #include "spvm_api_basic_type.h"
 #include "spvm_mutex.h"
-
+#include "spvm_compiler.h"
 
 
 
@@ -105,6 +105,8 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_basic_types_length,
     SPVM_API_RUNTIME_build_precompile_module_source,
     SPVM_API_RUNTIME_build_precompile_method_source,
+    SPVM_API_RUNTIME_get_compiler,
+    SPVM_API_RUNTIME_set_compiler,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -245,5 +247,14 @@ void SPVM_API_RUNTIME_build_precompile_method_source(SPVM_RUNTIME* runtime, SPVM
   SPVM_PRECOMPILE_set_runtime(precompile, runtime);
   SPVM_PRECOMPILE_build_method_source(precompile, string_buffer, method->current_basic_type, method);
   SPVM_PRECOMPILE_free(precompile);
+}
+
+SPVM_COMPILER* SPVM_API_RUNTIME_get_compiler(SPVM_RUNTIME* runtime) {
+  
+  return runtime->compiler;
+}
+void SPVM_API_RUNTIME_set_compiler(SPVM_RUNTIME* runtime, SPVM_COMPILER* compiler) {
+  
+  runtime->compiler = compiler;
 }
 

@@ -86,6 +86,14 @@ The C<string_buffer> argument is a L<string buffer|SPVM::Document::NativeAPI::St
 
 The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
 
+=head2 get_compiler
+
+  void* (*get_compiler)(void* runtime);
+
+=head2 set_compiler
+
+  void (*set_compiler)(void* runtime, void* compiler);
+
 =head1 Native API IDs
 
   0 get_object_data_offset
@@ -96,6 +104,8 @@ The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
   5 get_basic_types_length
   6 build_precompile_module_source
   7 build_precompile_method_source
+  8 get_compiler
+  9 set_compiler
 
 =head1 Copyright & License
 

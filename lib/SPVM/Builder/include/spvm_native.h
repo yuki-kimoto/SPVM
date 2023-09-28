@@ -385,6 +385,8 @@ struct spvm_api_runtime {
   int32_t (*get_basic_types_length)(void* runtime);
   void (*build_precompile_module_source)(void* runtime, void* string_buffer, void* module_basic_type);
   void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
+  void* (*get_compiler)(void* runtime);
+  void (*set_compiler)(void* runtime, void* compiler);
 };
 
 struct spvm_api_basic_type {

@@ -31,7 +31,11 @@ int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
     env->set_field_object_by_name(env, stack, obj_self, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     
-    new_env->runtime = env->get_pointer(env, stack, obj_runtime);
+    void* runtime = env->get_pointer(env, stack, obj_runtime);
+    
+    env->api->runtime->set_compiler(runtime, compiler);
+    
+    new_env->runtime = runtime;
   }
   
   stack[0].oval = obj_self;

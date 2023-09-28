@@ -3,6 +3,13 @@
     * Use setmode instead of _setmode because _setmode fails in latest MinGW.
   [Incompatible Changes]
     * Remove the leave_scope_local native API.
+  [New Features]
+    * Add the following runtime native APIs
+    
+      void* (*get_compiler)(void* runtime);
+      
+      void (*set_compiler)(void* runtime, void* compiler);
+    
 0.989045 2023-09-26
   [New Features]
     * Make SPVM Language thread-safe logically. The tests are not done.
