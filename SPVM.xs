@@ -4591,6 +4591,13 @@ create_native_compiler(...)
   SV* sv_runtime = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ runtime, "SPVM::Builder::Runtime");
   (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   
+  // This is very bad because global variables are changed. I will create SPVM own stdout, stderr, stdin in near future.
+#ifdef _WIN32
+  setmode(fileno(stdout), _O_BINARY);
+  setmode(fileno(stderr), _O_BINARY);
+  setmode(fileno(stdin), _O_BINARY);
+#endif
+
   XSRETURN(0);
 }
 
