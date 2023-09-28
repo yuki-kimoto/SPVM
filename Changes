@@ -33,17 +33,7 @@
       void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
       void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
       int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
-  [Temporary Fix]
-    Add the following logic after creating a compiler.
     
-    // This is very bad because global variables are changed. I will create SPVM own stdout, stderr, stdin in near future.
-    #ifdef _WIN32
-      setmode(fileno(stdout), _O_BINARY);
-      setmode(fileno(stderr), _O_BINARY);
-      setmode(fileno(stdin), _O_BINARY);
-    #endif
-
-  
 0.989045 2023-09-26
   [New Features]
     * Make SPVM Language thread-safe logically. The tests are not done.
