@@ -293,7 +293,7 @@ struct spvm_env {
   void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
   const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
   const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
-  void* allocator;
+  void* reserved196;
   void* reserved197;
   void* reserved198;
   void* reserved199;

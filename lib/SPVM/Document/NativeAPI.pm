@@ -98,12 +98,6 @@ L<SPVM::Document::NativeAPI::Type>
 
 L<SPVM::Document::NativeAPI::Internal>
 
-=head2 allocator
-
-  void* allocator;
-
-The memory allocator for this environment.
-
 =head2 new_env
 
   SPVM_ENV* (*new_env)();
@@ -2131,7 +2125,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   193 strerror_string_nolen
   194 strerror
   195 strerror_nolen
-  196 allocator
+  196 reserved196
   197 reserved197
   198 reserved198
   199 reserved199
