@@ -11,13 +11,13 @@
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_ALLOCATOR));
-
+  
   assert(allocator->memory_blocks_count_tmp == 0);
   assert(allocator->memory_blocks_count_permanent == 0);
-
+  
   allocator->permanent_memory_blocks_capacity = 1024;
   allocator->permanent_memory_blocks = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(void*) * allocator->permanent_memory_blocks_capacity);
-
+  
   return allocator;
 }
 
@@ -48,19 +48,17 @@ void SPVM_ALLOCATOR_free_memory_block_unmanaged(void* block) {
 }
 
 void* SPVM_ALLOCATOR_alloc_memory_block_tmp(SPVM_ALLOCATOR* allocator, size_t size) {
-  (void)allocator;
   
   void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size);
-
+  
   assert(allocator);
   allocator->memory_blocks_count_tmp++;
-
+  
   return block;
 }
 
 void SPVM_ALLOCATOR_free_memory_block_tmp(SPVM_ALLOCATOR* allocator, void* block) {
-  (void)allocator;
-
+  
   SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
   
   allocator->memory_blocks_count_tmp--;
@@ -81,7 +79,7 @@ void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, siz
     new_permanent_memory_blocks = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(void*) * new_capacity);
     memcpy(new_permanent_memory_blocks, allocator->permanent_memory_blocks, sizeof(void*) * capacity);
     SPVM_ALLOCATOR_free_memory_block_unmanaged(allocator->permanent_memory_blocks);
-
+    
     allocator->permanent_memory_blocks = new_permanent_memory_blocks;
     allocator->permanent_memory_blocks_capacity = new_capacity;
   }
@@ -94,16 +92,14 @@ void* SPVM_ALLOCATOR_alloc_memory_block_permanent(SPVM_ALLOCATOR* allocator, siz
 }
 
 void SPVM_ALLOCATOR_free_memory_block_permanent(SPVM_ALLOCATOR* allocator, void* block) {
-  (void)allocator;
-
+  
   SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
   
   allocator->memory_blocks_count_permanent--;
-
+  
 }
 
 void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {
-  (void)allocator;
   
   // Free permanent memory blocks
   int32_t i;
@@ -119,6 +115,6 @@ void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {
   assert(allocator->memory_blocks_count_tmp == 0);
   
   assert(allocator->memory_blocks_count_permanent == 0);
-
+  
   SPVM_ALLOCATOR_free_memory_block_unmanaged(allocator);
 }
