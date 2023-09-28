@@ -5,6 +5,11 @@
     * Remove the leave_scope_local native API.
     * Remove the compiler field from the Native::Env class.
     * Remove the compiler Native API.
+    * The get_memory_blocks_count method in the ExchangeAPI class returns the count of the memory blocks allocated by the current call stack,
+      instead of the current environment.
+    * The new_memory_stack method do not increment the memory blocks count allocated by the runtime allocator.
+    * The free_memory_stack method do not decrement the memory blocks count allocated by the runtime allocator.
+    
   [New Features]
     * Add the following runtime native APIs
     

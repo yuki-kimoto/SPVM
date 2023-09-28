@@ -1423,10 +1423,10 @@ int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) 
 int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t length = 10;
-  int32_t start_memory_blocks_count = env->get_memory_blocks_count_env(env);
+  int32_t start_memory_blocks_count = env->get_memory_blocks_count_stack(env, stack);
   env->new_int_array(env, stack, length);
   env->new_int_array(env, stack, length);
-  int32_t before_enter_memory_blocks_count = env->get_memory_blocks_count_env(env);
+  int32_t before_enter_memory_blocks_count = env->get_memory_blocks_count_stack(env, stack);
   int32_t before_leave_memory_blocks_count;
   {
     int32_t scope_id = env->enter_scope(env, stack);
@@ -1435,11 +1435,11 @@ int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_V
     env->new_int_array(env, stack, length);
     env->new_int_array(env, stack, length);
     
-    before_leave_memory_blocks_count = env->get_memory_blocks_count_env(env);
+    before_leave_memory_blocks_count = env->get_memory_blocks_count_stack(env, stack);
     env->leave_scope(env, stack, scope_id);
   }
   
-  int32_t after_leave_memory_blocks_counts = env->get_memory_blocks_count_env(env);
+  int32_t after_leave_memory_blocks_counts = env->get_memory_blocks_count_stack(env, stack);
   
   stack[0].ival = 0;
   if ((before_enter_memory_blocks_count - start_memory_blocks_count) == 2) {
@@ -2277,18 +2277,18 @@ int32_t SPVM__TestCase__NativeAPI__new_memory_apis(SPVM_ENV* env, SPVM_VALUE* st
   int32_t error = 0;
   
   {
-    int32_t memory_blocks_count_env_start = env->get_memory_blocks_count_env(env);
+    int32_t memory_blocks_count_start = env->get_memory_blocks_count_stack(env, stack);
     
-    void* memory_block = env->new_memory_env(env, sizeof(SPVM_ENV));
+    void* memory_block = env->new_memory_stack(env, stack, sizeof(SPVM_ENV));
     
-    if (!(env->get_memory_blocks_count_env(env) == memory_blocks_count_env_start + 1)) {
+    if (!(env->get_memory_blocks_count_stack(env, stack) == memory_blocks_count_start + 1)) {
       stack[0].ival = 0;
       return 0;
     }
     
-    env->free_memory_env(env, memory_block);
+    env->free_memory_stack(env, stack, memory_block);
     
-    if (!(env->get_memory_blocks_count_env(env) == memory_blocks_count_env_start)) {
+    if (!(env->get_memory_blocks_count_stack(env, stack) == memory_blocks_count_start)) {
       stack[0].ival = 0;
       return 0;
     }
@@ -2298,52 +2298,32 @@ int32_t SPVM__TestCase__NativeAPI__new_memory_apis(SPVM_ENV* env, SPVM_VALUE* st
     void* new_stack = env->new_stack(env);
     env->free_stack(env, new_stack);
   }
-
+  
   {
     void* new_stack = env->new_stack(env);
-
-    int32_t memory_blocks_count_env_start = env->get_memory_blocks_count_env(env);
     
-    int32_t memory_blocks_count_stack_start = env->get_memory_blocks_count_stack(env, stack);
-    int32_t memory_blocks_count_new_stack_start = env->get_memory_blocks_count_stack(env, new_stack);
+    int32_t memory_blocks_count_start_stack = env->get_memory_blocks_count_stack(env, stack);
+    int32_t memory_blocks_count_start_new_stack = env->get_memory_blocks_count_stack(env, new_stack);
     
-    void* memory_block_stack = env->new_memory_stack(env, stack, sizeof(SPVM_ENV));
-    void* memory_block_new_stack = env->new_memory_stack(env, new_stack, sizeof(SPVM_ENV));
-
-    if (!(env->get_memory_blocks_count_env(env) == memory_blocks_count_env_start + 2)) {
+    void* memory_block_new_stack = env->new_memory_stack(env, new_stack, 8);
+    
+    if (!(env->get_memory_blocks_count_stack(env, new_stack) == memory_blocks_count_start_new_stack + 1)) {
       stack[0].ival = 0;
       return 0;
     }
     
-    if (!(env->get_memory_blocks_count_stack(env, stack) == memory_blocks_count_stack_start + 1)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-
-    if (!(env->get_memory_blocks_count_stack(env, new_stack) == memory_blocks_count_new_stack_start + 1)) {
+    if (!(env->get_memory_blocks_count_stack(env, stack) == memory_blocks_count_start_stack)) {
       stack[0].ival = 0;
       return 0;
     }
     
-    
-    env->free_memory_stack(env, stack, memory_block_stack);
     env->free_memory_stack(env, new_stack, memory_block_new_stack);
-
-    if (!(env->get_memory_blocks_count_env(env) == memory_blocks_count_env_start)) {
+    
+    if (!(env->get_memory_blocks_count_stack(env, new_stack) == memory_blocks_count_start_new_stack)) {
       stack[0].ival = 0;
       return 0;
     }
-    
-    if (!(env->get_memory_blocks_count_stack(env, stack) == memory_blocks_count_stack_start)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    
-    if (!(env->get_memory_blocks_count_stack(env, new_stack) == memory_blocks_count_new_stack_start)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    
+   
     env->free_stack(env, new_stack);
   }
   

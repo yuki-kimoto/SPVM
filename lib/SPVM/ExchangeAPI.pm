@@ -1062,7 +1062,7 @@ Examples:
 
   my $count = $api->get_memory_blocks_count();
 
-Returns the count of memory blocks on the current execution environment.
+Returns the count of the memory blocks allocated by the current call stack.
 
 Examples:
 

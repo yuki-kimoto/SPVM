@@ -279,8 +279,6 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
 
 ok(SPVM::TestCase::NativeAPI->new_memory_apis);
 
-ok(SPVM::TestCase::NativeAPI->new_memory_apis);
-
 ok(SPVM::TestCase::NativeAPI->dumpc);
 
 ok(SPVM::TestCase::NativeAPI->precompile_build_methodd_source);
