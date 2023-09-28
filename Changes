@@ -12,6 +12,7 @@
     * Remove the new_memory_env native API.
     * Remove the free_memory_env native API.
     * Remove the get_memory_blocks_count_env native API.
+    * Remove the allocator native API.
     
   [New Features]
     * Add the following runtime native APIs
@@ -20,6 +21,18 @@
       
       void (*set_compiler)(void* runtime, void* compiler);
     * Add the get_compiler method to the Native::Runtime class.
+    * Add the following Native APIs.
+    
+      void* (*new_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
+      void (*free_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+      int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+  [Deprecations]
+    * Deprecate the following Native APIs.
+    
+      void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
+      void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+      int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
     
 0.989045 2023-09-26
   [New Features]

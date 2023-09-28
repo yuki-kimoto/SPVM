@@ -532,7 +532,7 @@ Next is the definition on the C language side.
   int32_t SPVM__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     // Alloc strcut tm
-    void* tm_ptr = env->new_memory_stack(env, stack, sizeof (struct tm));
+    void* tm_ptr = env->new_memory_block(env, stack, sizeof (struct tm));
 
     // Create strcut tm instance
     void* tm_obj = env->new_pointer_object(env, stack, "MyTimeInfo", tm_ptr);
@@ -557,7 +557,7 @@ Next is the definition on the C language side.
     void* tm_obj = stack[0].oval;
     strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
 
-    env->free_memory_block (tm_ptr);
+    env->free_memory_block(tm_ptr);
 
     return 0;
   }
@@ -565,7 +565,7 @@ Next is the definition on the C language side.
 In the constructor new, the memory of "struct tm" is first allocated by the new_memory_stack function. This is a function that reserves one memory block in SPVM. Similar to malloc, this function increments the memory block count by one, making it easier to spot memory leaks.
 
   // Alloc strcut tm
-  void* tm_ptr = env->new_memory_stack(env, stack, sizeof (struct tm));
+  void* tm_ptr = env->new_memory_block(env, stack, sizeof (struct tm));
 
 Next, use the new_pointer_object function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
 
@@ -594,7 +594,7 @@ The last is the destructor. Be sure to define a destructor, as the allocated mem
 
     strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
 
-    env->free_memory_block (tm_ptr);
+    env->free_memory_block(tm_ptr);
 
     return 0;
   }

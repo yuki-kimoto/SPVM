@@ -313,6 +313,9 @@ struct spvm_env {
   void* reserved213;
   void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_ref, void* object);
   void* (*new_string_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+  void* (*new_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
+  void (*free_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+  int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {

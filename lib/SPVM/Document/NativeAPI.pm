@@ -1647,9 +1647,21 @@ If the string is C<NULL>, nothing is printed.
 
 =head2 new_memory_stack
 
+(Deprecated)
+
   void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
 
-Creates a new memory block that is managed by the stack of the environment with the byte size and return the address. If it fails, return C<NULL>.
+Creates a new memory block that is managed by the call stack with the byte size and return the address. If it fails, return C<NULL>.
+
+The count of the memory block that is managed by the stack is incremented by 1.
+
+The count of the memory block that is managed by the environment is incremented by 1.
+
+=head2 new_memory_block
+
+  void* (*new_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
+
+Creates a new memory block that is managed by the call stack with the byte size and return the address. If it fails, return C<NULL>.
 
 The count of the memory block that is managed by the stack is incremented by 1.
 
@@ -1657,9 +1669,21 @@ The count of the memory block that is managed by the environment is incremented 
 
 =head2 free_memory_stack
 
+(Deprecated)
+
   void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
 
-Frees the memory block that is managed by the environment.
+Frees the memory block that is managed by the call stack.
+
+The count of the memory block that is managed by the stack is decremented by 1.
+
+The count of the memory block that is managed by the environment is decremented by 1.
+
+=head2 free_memory_block
+
+  void (*free_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+
+Frees the memory block that is managed by the call stack.
 
 The count of the memory block that is managed by the stack is decremented by 1.
 
@@ -1667,7 +1691,15 @@ The count of the memory block that is managed by the environment is decremented 
 
 =head2 get_memory_blocks_count_stack
 
+(Deprecated)
+
   int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Returns the count of the memory blocks on the stack.
+
+=head2 get_memory_blocks_count
+
+  int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Returns the count of the memory blocks on the stack.
 

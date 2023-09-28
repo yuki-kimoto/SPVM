@@ -313,6 +313,9 @@ SPVM_ENV* SPVM_API_new_env(void) {
     NULL,
     SPVM_API_assign_object,
     SPVM_API_new_string_array_no_mortal,
+    SPVM_API_new_memory_block,
+    SPVM_API_free_memory_block,
+    SPVM_API_get_memory_blocks_count,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -1660,7 +1663,7 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   
   va_list args;
   
-  char* message_with_line = (char*)SPVM_API_new_memory_stack(env, stack, 512);
+  char* message_with_line = (char*)SPVM_API_new_memory_block(env, stack, 512);
   int32_t message_length = strlen(message);
   if (message_length > 255) {
     message_length = 255;
@@ -1669,17 +1672,17 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   const char* place = "\n    %s at %s line %d";
   memcpy(message_with_line + message_length, place, strlen(place));
 
-  char* buffer = (char*)SPVM_API_new_memory_stack(env, stack, 512);
+  char* buffer = (char*)SPVM_API_new_memory_block(env, stack, 512);
   va_start(args, message);
   vsnprintf(buffer, 511, message_with_line, args);
   va_end(args);
   
   void* exception = SPVM_API_new_string_no_mortal(env, stack, buffer, strlen(buffer));
   
-  SPVM_API_free_memory_stack(env, stack, message_with_line);
+  SPVM_API_free_memory_block(env, stack, message_with_line);
   message_with_line = NULL;
   
-  SPVM_API_free_memory_stack(env, stack, buffer);
+  SPVM_API_free_memory_block(env, stack, buffer);
   buffer = NULL;
   
   SPVM_API_set_exception(env, stack, exception);
@@ -1701,7 +1704,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   SPVM_VALUE* stack = SPVM_ALLOCATOR_alloc_memory_block_tmp(runtime->allocator, sizeof(SPVM_VALUE) * 512);
   
   int32_t native_mortal_stack_capacity = 1;
-  void* native_mortal_stack = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
+  void* native_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
   if (native_mortal_stack == NULL) {
     return NULL;
   }
@@ -1721,7 +1724,7 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_OBJECT** mortal_stack = stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval;
   
   if (mortal_stack != NULL) {
-    SPVM_API_free_memory_stack(env, stack, mortal_stack);
+    SPVM_API_free_memory_block(env, stack, mortal_stack);
     mortal_stack = NULL;
   }
   
@@ -3288,7 +3291,13 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* sta
   return method;
 }
 
+// Deprecated
 void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
+  
+  return SPVM_API_new_memory_block(env, stack, size);
+}
+
+void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   
   assert(size > 0);
   
@@ -3307,8 +3316,9 @@ void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   return block;
 }
 
-void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
-
+// Deprecated
+void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
+  
   if (block) {
     SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
     stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival--;
@@ -3318,12 +3328,23 @@ void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
   }
 }
 
+void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
+  
+  SPVM_API_free_memory_block(env, stack, block);
+  
+}
+
 int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  return SPVM_API_get_memory_blocks_count(env, stack);
+}
+
+int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t memory_blocks_count_stack = stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival;
   
-  return memory_blocks_count_stack;
+  int32_t memory_blocks_count = stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival;
+  
+  return memory_blocks_count;
 }
 
 SPVM_OBJECT* SPVM_API_copy_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
@@ -3610,7 +3631,7 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t alloc_size, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t length, int32_t flag) {
   
-  SPVM_OBJECT* object = SPVM_API_new_memory_stack(env, stack, alloc_size);
+  SPVM_OBJECT* object = SPVM_API_new_memory_block(env, stack, alloc_size);
   
   if (object) {
     object->basic_type = basic_type;
@@ -3832,13 +3853,13 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
     // Extend mortal stack
     if (*current_mortal_stack_top_ptr >= *current_mortal_stack_capacity_ptr) {
       int32_t new_mortal_stack_capacity = *current_mortal_stack_capacity_ptr * 2;
-      SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_stack(env, stack, sizeof(void*) * new_mortal_stack_capacity);
+      SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(void*) * new_mortal_stack_capacity);
       if (new_mortal_stack == NULL) {
         return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       }
       memcpy(new_mortal_stack, *current_mortal_stack_ptr, sizeof(void*) * *current_mortal_stack_capacity_ptr);
       *current_mortal_stack_capacity_ptr = new_mortal_stack_capacity;
-      SPVM_API_free_memory_stack(env, stack, *current_mortal_stack_ptr);
+      SPVM_API_free_memory_block(env, stack, *current_mortal_stack_ptr);
       *current_mortal_stack_ptr = NULL;
       *current_mortal_stack_ptr = new_mortal_stack;
     }
@@ -3951,7 +3972,7 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
       
       SPVM_API_dec_ref_count(env, stack, object);
       
-      SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
+      SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_WEAKEN_BACKREF));
       new_weaken_backref->ref = ref;
       
       // Create a new weaken back refference
@@ -4009,7 +4030,7 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
         
         SPVM_WEAKEN_BACKREF* weaken_backref_next =  *weaken_backref_next_ptr;
         
-        SPVM_API_free_memory_stack(env, stack, weaken_backref_next);
+        SPVM_API_free_memory_block(env, stack, weaken_backref_next);
         weaken_backref_next = NULL;
         
         *weaken_backref_next_ptr = tmp;
@@ -4048,7 +4069,7 @@ void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN
     *(weaken_backref_head_cur->ref) = NULL;
     weaken_backref_head_next = weaken_backref_head_cur->next;
     
-    SPVM_API_free_memory_stack(env, stack, weaken_backref_head_cur);
+    SPVM_API_free_memory_block(env, stack, weaken_backref_head_cur);
     weaken_backref_head_cur = NULL;
     weaken_backref_head_cur = weaken_backref_head_next;
   }
@@ -4199,7 +4220,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
     SPVM_MUTEX_destroy(mutex_object_assign_off);
     
     // Free object_assign_off
-    SPVM_API_free_memory_stack(env, stack, object_assign_off);
+    SPVM_API_free_memory_block(env, stack, object_assign_off);
     object_assign_off = NULL;
   }
   else {
