@@ -42,7 +42,7 @@ sub build_module {
     
     my $env = $API->env;
     
-    my $compiler = $env->compiler;
+    my $compiler = $env->runtime->get_compiler;
     
     my $start_runtime = $compiler->get_runtime;
     my $start_basic_types_length = $start_runtime->get_basic_types_length;
@@ -238,7 +238,7 @@ sub bind_to_perl {
   
   my $env = $API->env;
   
-  my $compiler = $env->compiler;
+  my $compiler = $env->runtime->get_compiler;
   
   my $runtime = $compiler->get_runtime;
     
