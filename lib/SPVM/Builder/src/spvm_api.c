@@ -1702,6 +1702,8 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
 
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   
+  SPVM_RUNTIME* runtime = env->runtime;
+  
   // Arguments and return values : 0-255
   // Stack local varialbe : 256-511
   //   Exception message 511
@@ -1709,9 +1711,8 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   //   Motal stack top 509
   //   Motal stack capacity 508
   
-  SPVM_VALUE* stack = SPVM_API_new_memory_env(env, sizeof(SPVM_VALUE) * 512);
+  SPVM_VALUE* stack = SPVM_ALLOCATOR_alloc_memory_block_tmp(runtime->allocator, sizeof(SPVM_VALUE) * 512);
   
-  // Mortal stack
   int32_t native_mortal_stack_capacity = 1;
   void* native_mortal_stack = SPVM_API_new_memory_stack(env, stack, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
   if (native_mortal_stack == NULL) {
@@ -1726,10 +1727,10 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
 
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  // Free exception
+  SPVM_RUNTIME* runtime = env->runtime;
+  
   SPVM_API_set_exception(env, stack, NULL);
   
-  // Free mortal stack
   SPVM_OBJECT** mortal_stack = stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK].oval;
   
   if (mortal_stack != NULL) {
@@ -1737,7 +1738,7 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
     mortal_stack = NULL;
   }
   
-  SPVM_API_free_memory_env(env, stack);
+  SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, stack);
   stack = NULL;
 }
 
