@@ -3310,7 +3310,7 @@ void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival++;
   
 #ifdef SPVM_DEBUG_MEMORY
-    fprintf(stderr, "[Debug]Function : new_memory_stack, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    fprintf(stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
 #endif
   
   return block;
@@ -3323,7 +3323,7 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
     SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
     stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival--;
 #ifdef SPVM_DEBUG_MEMORY
-    fprintf(stderr, "[Debug]Function : new_memory_stack, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    fprintf(stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
 #endif
   }
 }
