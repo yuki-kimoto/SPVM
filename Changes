@@ -3,6 +3,7 @@
     * Use setmode instead of _setmode because _setmode fails in latest MinGW.
   [Incompatible Changes]
     * Remove the leave_scope_local native API.
+    * Remove the compiler field from the Native::Env class.
   [New Features]
     * Add the following runtime native APIs
     
