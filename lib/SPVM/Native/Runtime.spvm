@@ -48,4 +48,6 @@ class Native::Runtime : pointer {
     
     return $user_defined_basic_type_names;
   }
+  
+  native method get_compiler : Native::Compiler ();
 }

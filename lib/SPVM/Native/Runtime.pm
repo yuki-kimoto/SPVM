@@ -72,6 +72,12 @@ C<method method build_precompile_method_source : string ($method : L<Native::Met
 
 Builds the C source code of a C<precompile> method and returns it.
 
+=head2 get_compiler
+
+C<method get_compiler : L<Native::Compiler|SPVM::Native::Compiler> ();>
+
+Gets the compiler that built this runtime.
+
 =head1 See Also
 
 =head2 Native::Compiler

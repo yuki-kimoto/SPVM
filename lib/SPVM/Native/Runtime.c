@@ -396,3 +396,20 @@ int32_t SPVM__Native__Runtime___get_method_names(SPVM_ENV* env, SPVM_VALUE* stac
   return 0;
 }
 
+int32_t SPVM__Native__Runtime__get_compiler(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_basic_type = stack[1].oval;
+  
+  void* runtime = env->get_pointer(env, stack, obj_self);
+  
+  void* obj_compiler = env->get_field_object_by_name(env, stack, obj_self, "compiler", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  stack[0].oval = obj_compiler;
+  
+  return 0;
+}

@@ -9,6 +9,7 @@
       void* (*get_compiler)(void* runtime);
       
       void (*set_compiler)(void* runtime, void* compiler);
+    * Add the get_compiler method to the Native::Runtime class.
     
 0.989045 2023-09-26
   [New Features]
