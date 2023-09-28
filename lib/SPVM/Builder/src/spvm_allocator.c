@@ -37,7 +37,6 @@ void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t size) {
     return NULL;
   }
   
-  // Alloc memory block
   void* block = calloc(1, (size_t)size);
   
   return block;
@@ -101,7 +100,6 @@ void SPVM_ALLOCATOR_free_memory_block_permanent(SPVM_ALLOCATOR* allocator, void*
 
 void SPVM_ALLOCATOR_free(SPVM_ALLOCATOR* allocator) {
   
-  // Free permanent memory blocks
   int32_t i;
   for (i = 0; i < allocator->permanent_memory_blocks_length; i++) {
     void* permanent_memory_block = allocator->permanent_memory_blocks[i];
