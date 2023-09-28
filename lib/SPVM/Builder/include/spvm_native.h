@@ -97,7 +97,7 @@ union spvm_value {
 
 
 struct spvm_env {
-  void* compiler;
+  void* reserved0;
   void* runtime;
   SPVM_ENV_API* api;
   SPVM_ENV* (*new_env)(void);

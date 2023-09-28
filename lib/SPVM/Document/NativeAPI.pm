@@ -10,12 +10,6 @@ These APIs are used in L<native classes|SPVM::Document::NativeClass>.
 
 =head1 Native APIs
 
-=head2 compiler
-
-  void* compiler;
-
-The compiler object that builds the L</"runtime">.
-
 =head2 runtime
 
   void* runtime;
@@ -1965,7 +1959,7 @@ Assigns an object C<object> to the place referred by the reference C<ref>.
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
-  0 compiler
+  0 reserved0
   1 runtime
   2 api
   3 new_env

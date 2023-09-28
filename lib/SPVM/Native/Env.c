@@ -18,7 +18,6 @@ int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   if (obj_compiler) {
     void* compiler = env->get_pointer(env, stack, obj_compiler);
-    new_env->compiler = compiler;
     
     stack[0].oval = obj_compiler;
     env->call_instance_method_by_name(env, stack, "get_runtime", 0, &error_id, __func__, FILE_NAME, __LINE__);

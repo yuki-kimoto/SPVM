@@ -4,6 +4,7 @@
   [Incompatible Changes]
     * Remove the leave_scope_local native API.
     * Remove the compiler field from the Native::Env class.
+    * Remove the compiler Native API.
   [New Features]
     * Add the following runtime native APIs
     

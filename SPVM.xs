@@ -4971,8 +4971,9 @@ new(...)
   
   if (SvOK(sv_compiler)) {
     void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
-    new_env->compiler = compiler;
-    new_env->runtime = new_env->api->compiler->get_runtime(compiler);
+    void* runtime = new_env->api->compiler->get_runtime(compiler);
+    new_env->runtime = runtime;
+    new_env->api->runtime->set_compiler(runtime, compiler);
     (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
   }
   
