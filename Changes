@@ -9,6 +9,9 @@
       instead of the current environment.
     * The new_memory_stack method do not increment the memory blocks count allocated by the runtime allocator.
     * The free_memory_stack method do not decrement the memory blocks count allocated by the runtime allocator.
+    * Remove the new_memory_env native API.
+    * Remove the free_memory_env native API.
+    * Remove the get_memory_blocks_count_env native API.
     
   [New Features]
     * Add the following runtime native APIs

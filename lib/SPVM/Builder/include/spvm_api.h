@@ -24,9 +24,6 @@ enum {
 
 SPVM_ENV* SPVM_API_new_env(void);
 void SPVM_API_free_env(SPVM_ENV* env);
-void* SPVM_API_new_memory_env(SPVM_ENV* env, size_t size);
-void SPVM_API_free_memory_env(SPVM_ENV* env, void* block);
-int32_t SPVM_API_get_memory_blocks_count_env(SPVM_ENV* env);
 SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env);
 void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack);
 

@@ -212,9 +212,9 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->strerror != &env_array[194]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->strerror_nolen != &env_array[195]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->allocator != &env_array[196]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_memory_env != &env_array[197]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->free_memory_env != &env_array[198]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_memory_blocks_count_env != &env_array[199]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved197 != &env_array[197]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved198 != &env_array[198]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved199 != &env_array[199]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_memory_stack != &env_array[200]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_memory_stack != &env_array[201]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_memory_blocks_count_stack != &env_array[202]) { stack[0].ival = 0; return 0; }

@@ -1651,30 +1651,6 @@ If the string is C<NULL>, nothing is printed.
 
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-=head2 new_memory_env
-
-  void* (*new_memory_env)(SPVM_ENV* env, size_t size);
-
-Creates a new memory block that is managed by the environment with the byte size and return the address. If it fails, return C<NULL>.
-
-The count of the memory block that is managed by the environment is incremented by 1.
-
-=head2 free_memory_env
-
-  void (*free_memory_env)(SPVM_ENV* env, void* block);
-
-Frees the memory block that is managed by the environment.
-
-The count of the memory block that is managed by the environment is decremented by 1.
-
-=head2 get_memory_blocks_count_env
-
-  int32_t (*get_memory_blocks_count_env)(SPVM_ENV* env);
-
-Returns the count of the memory blocks on the environment.
-
-This is the same as L</"get_memory_blocks_count">. This is more understandable name that memories are managed by the environment.
-
 =head2 new_memory_stack
 
   void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
@@ -2156,9 +2132,9 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   194 strerror
   195 strerror_nolen
   196 allocator
-  197 new_memory_env
-  198 free_memory_env
-  199 get_memory_blocks_count_env
+  197 reserved197
+  198 reserved198
+  199 reserved199
   200 new_memory_stack
   201 free_memory_stack
   202 get_memory_blocks_count_stack
