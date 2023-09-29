@@ -40,17 +40,31 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_MUTEX_init(mutex_update_object);
   runtime->mutex_update_object = mutex_update_object;
   
+  spvm_warn("LINE %d", __LINE__);
+  
   runtime->spvm_stdin = fdopen(dup(fileno(stdin)), "rb");
+  
+  spvm_warn("LINE %d", __LINE__);
   
   setvbuf(runtime->spvm_stdin, NULL, _IOLBF, 0);
   
+  spvm_warn("LINE %d", __LINE__);
+  
   runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "wb");
+  
+  spvm_warn("LINE %d", __LINE__);
   
   setvbuf(runtime->spvm_stdout, NULL, _IOLBF, 0);
   
+  spvm_warn("LINE %d", __LINE__);
+  
   runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "wb");
   
+  spvm_warn("LINE %d", __LINE__);
+  
   setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
+  
+  spvm_warn("LINE %d", __LINE__);
   
   return runtime;
 }
@@ -63,11 +77,19 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   
   SPVM_MUTEX_destroy(runtime->mutex_assignability_symtable);
   
+  spvm_warn("LINE %d", __LINE__);
+  
   fclose(runtime->spvm_stdin);
+  
+  spvm_warn("LINE %d", __LINE__);
   
   fclose(runtime->spvm_stdout);
   
+  spvm_warn("LINE %d", __LINE__);
+  
   fclose(runtime->spvm_stderr);
+  
+  spvm_warn("LINE %d", __LINE__);
   
   // Free allocator
   SPVM_ALLOCATOR_free(runtime->allocator);
