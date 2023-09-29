@@ -8,6 +8,7 @@
 #include "spvm_native.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 struct spvm_runtime {
   SPVM_COMPILER* compiler;
@@ -26,11 +27,11 @@ struct spvm_runtime {
   
   SPVM_MUTEX* mutex_update_object;
   
-  FILE* stdin;
+  FILE* spvm_stdin;
   
-  FILE* stdout;
+  FILE* spvm_stdout;
   
-  FILE* stderr;
+  FILE* spvm_stderr;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();

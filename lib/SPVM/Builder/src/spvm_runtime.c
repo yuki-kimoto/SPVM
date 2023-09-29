@@ -40,17 +40,17 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_MUTEX_init(mutex_update_object);
   runtime->mutex_update_object = mutex_update_object;
   
-  runtime->stdin = fdopen(dup(fileno(stdin)), "rb");
+  runtime->spvm_stdin = fdopen(dup(fileno(stdin)), "rb");
   
-  setvbuf(runtime->stdin, NULL, _IOLBF, 0);
+  setvbuf(runtime->spvm_stdin, NULL, _IOLBF, 0);
   
-  runtime->stdout = fdopen(dup(fileno(stdout)), "wb");
+  runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "wb");
   
-  setvbuf(runtime->stdout, NULL, _IOLBF, 0);
+  setvbuf(runtime->spvm_stdout, NULL, _IOLBF, 0);
   
-  runtime->stderr = fdopen(dup(fileno(stderr)), "wb");
+  runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "wb");
   
-  setvbuf(runtime->stderr, NULL, _IONBF, 0);
+  setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
   
   return runtime;
 }
@@ -63,11 +63,11 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   
   SPVM_MUTEX_destroy(runtime->mutex_assignability_symtable);
   
-  fclose(runtime->stdin);
+  fclose(runtime->spvm_stdin);
   
-  fclose(runtime->stdout);
+  fclose(runtime->spvm_stdout);
   
-  fclose(runtime->stderr);
+  fclose(runtime->spvm_stderr);
   
   // Free allocator
   SPVM_ALLOCATOR_free(runtime->allocator);
