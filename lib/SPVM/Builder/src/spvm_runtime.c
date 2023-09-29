@@ -50,7 +50,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   assert(stdin_fileno >= 0);
   
-  FILE* spvm_stdin = fdopen(stdin_fileno_dup, "rb");
+  FILE* spvm_stdin = fdopen(stdin_fileno_dup, "r");
   
   assert(spvm_stdin);
   
@@ -62,7 +62,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 
 #endif
 
-  runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "wb");
+  runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "w");
   
 #ifdef _WIN32  
 
@@ -72,7 +72,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 
   // setvbuf(runtime->spvm_stdout, NULL, _IOLBF, 0);
   
-  runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "wb");
+  runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "w");
   
 #ifdef _WIN32  
 
