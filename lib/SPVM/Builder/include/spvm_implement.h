@@ -1438,35 +1438,41 @@ static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* 
     int32_t string_length = env->length(env, stack, string);
     
     if (string_length > 0) {
-      size_t ret = fwrite(bytes, 1, string_length, stdout);
+      FILE* spvm_stdout = env->api->runtime->get_spvm_stdout(env->runtime);
+      size_t ret = fwrite(bytes, 1, string_length, spvm_stdout);
     }
   }
 }
 
 static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* string) {
+  FILE* spvm_stdout = env->api->runtime->get_spvm_stdout(env->runtime);
+  
   if (string) {
     const char* bytes = env->get_chars(env, stack, string);
     int32_t string_length = env->length(env, stack, string);
     
     if (string_length > 0) {
-      size_t ret = fwrite(bytes, 1, string_length, stdout);
+      size_t ret = fwrite(bytes, 1, string_length, spvm_stdout);
     }
   }
-  fprintf(stdout, "\n");
+  
+  fprintf(spvm_stdout, "\n");
 }
 
 static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* include_dir, const char* include_dir_sep, const char* class_rel_file, int32_t line) {
+  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
+  
   int32_t empty_or_undef = 0;
   if (string) {
     const char* bytes = env->get_chars(env, stack, string);
     int32_t string_length = env->length(env, stack, string);
-
+    
     if (string_length > 0) {
-      size_t ret = fwrite(bytes, 1, string_length, stderr);
+      size_t ret = fwrite(bytes, 1, string_length, spvm_stderr);
       // Add line and file information if last character is not '\n'
       int32_t add_line_file;
       if (bytes[string_length - 1] != '\n') {
-        fprintf(stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_AT], include_dir, include_dir_sep, class_rel_file, line);
+        fprintf(spvm_stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_AT], include_dir, include_dir_sep, class_rel_file, line);
       }
     }
     else {
@@ -1476,12 +1482,12 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
   else {
     empty_or_undef = 1;
   }
-
+  
   if (empty_or_undef) {
-    fprintf(stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_UNDEF], include_dir, include_dir_sep, class_rel_file, line);
+    fprintf(spvm_stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_UNDEF], include_dir, include_dir_sep, class_rel_file, line);
   }
-
-  fflush(stderr);
+  
+  fflush(spvm_stderr);
 }
 
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id) (eval_error_id = 0)
