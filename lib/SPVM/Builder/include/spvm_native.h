@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdarg.h>
 
-#define SPVM_NATIVE_VERSION_NUMBER 0.989046
+#define SPVM_NATIVE_VERSION_NUMBER 0.989047
 
 #define SPVM_NATIVE_CREATE_VERSION_STRING_STRINGIFY(x) #x
 
