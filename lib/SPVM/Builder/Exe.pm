@@ -505,9 +505,6 @@ sub create_bootstrap_header_source {
 #include <time.h>
 #include <assert.h>
 
-// Only used for setmode function and _O_BINARY
-#include <fcntl.h>
-
 #include "spvm_native.h"
 
 EOS
@@ -578,18 +575,9 @@ sub create_bootstrap_main_func_source {
   $source .= <<"EOS";
 
 int32_t main(int32_t command_args_length, const char *command_args[]) {
-
-  // Binary mode in all systems
-#ifdef _WIN32
-  setmode(fileno(stdout), _O_BINARY);
-  setmode(fileno(stderr), _O_BINARY);
-  setmode(fileno(stdin), _O_BINARY);
-#endif
   
-  // Create env
   SPVM_ENV* env_api = SPVM_API_new_env();
   
-  // Compiler
   void* compiler = env_api->api->compiler->new_instance();
   
   void* runtime = SPVM_BOOTSTRAP_get_runtime(env_api, compiler);
