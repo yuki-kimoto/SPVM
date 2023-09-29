@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #include "spvm_allocator.h"
 #include "spvm_runtime.h"
@@ -18,6 +19,7 @@
 #include "spvm_runtime_arg.h"
 #include "spvm_opcode.h"
 #include "spvm_mutex.h"
+
 
 SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_RUNTIME* runtime = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_RUNTIME));
