@@ -42,11 +42,27 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   spvm_warn("LINE %d", __LINE__);
   
-  runtime->spvm_stdin = fdopen(dup(fileno(stdin)), "rb");
+  int32_t stdin_fileno = fileno(stdin);
+  
+  assert(stdin_fileno >= 0);
+  
+  int32_t stdin_fileno_dup = dup(stdin_fileno);
+  
+  assert(stdin_fileno >= 0);
+  
+  FILE* spvm_stdin = fdopen(stdin_fileno_dup, "rb");
+  
+  assert(spvm_stdin);
   
   spvm_warn("LINE %d", __LINE__);
   
-  setvbuf(runtime->spvm_stdin, NULL, _IOLBF, 0);
+  int32_t setvbuf_status = setvbuf(spvm_stdin, NULL, _IOLBF, 0);
+  
+  assert(setvbuf_status == 0);
+  
+  spvm_warn("LINE %d", __LINE__);
+  
+  runtime->spvm_stdin = spvm_stdin;
   
   spvm_warn("LINE %d", __LINE__);
   
