@@ -1,5 +1,0 @@
-class CompileError::Type::MutableNoStringCaseStringArray {
-  static method main : int () {
-    my $value : mutable string[];
-  }
-}

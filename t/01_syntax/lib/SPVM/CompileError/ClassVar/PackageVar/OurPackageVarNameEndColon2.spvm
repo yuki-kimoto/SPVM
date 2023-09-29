@@ -1,3 +1,0 @@
-class CompileError::ClassVar::OurClassVarNameEndColon2 {
-  our $FOO:: : int;
-}
