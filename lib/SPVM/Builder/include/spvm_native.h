@@ -390,6 +390,9 @@ struct spvm_api_runtime {
   void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
   void* (*get_compiler)(void* runtime);
   void (*set_compiler)(void* runtime, void* compiler);
+  FILE* (*get_spvm_stdin)(void* runtime);
+  FILE* (*get_spvm_stdout)(void* runtime);
+  FILE* (*get_spvm_stderr)(void* runtime);
 };
 
 struct spvm_api_basic_type {

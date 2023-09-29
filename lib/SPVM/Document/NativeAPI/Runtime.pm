@@ -94,6 +94,18 @@ The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
 
   void (*set_compiler)(void* runtime, void* compiler);
 
+=head2 get_spvm_stdin
+
+  FILE* (*get_spvm_stdin)(void* runtime);
+
+=head2 get_spvm_stdout
+
+  FILE* (*get_spvm_stdout)(void* runtime);
+
+=head2 get_spvm_stderr
+
+  FILE* (*get_spvm_stderr)(void* runtime);
+
 =head1 Native API IDs
 
   0 get_object_data_offset
@@ -106,6 +118,9 @@ The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
   7 build_precompile_method_source
   8 get_compiler
   9 set_compiler
+  10 get_spvm_stdin
+  11 get_spvm_stdout
+  12 get_spvm_stderr
 
 =head1 Copyright & License
 

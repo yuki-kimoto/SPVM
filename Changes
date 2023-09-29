@@ -1,3 +1,14 @@
+0.989047 2023-09-29
+  [New Features]
+    * SPVM has own stdin, stdout, stderr.
+    
+    * Add the following runtime native APIs
+    
+      FILE* (*get_spvm_stdin)(void* runtime);
+      
+      FILE* (*get_spvm_stdout)(void* runtime);
+      FILE* (*get_spvm_stderr)(void* runtime);
+
 0.989046 2023-09-28
   [Internal Changes]
     * Use setmode instead of _setmode because _setmode fails in latest MinGW.

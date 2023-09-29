@@ -45,4 +45,10 @@ SPVM_COMPILER* SPVM_API_RUNTIME_get_compiler(SPVM_RUNTIME* runtime);
 
 void SPVM_API_RUNTIME_set_compiler(SPVM_RUNTIME* runtime, SPVM_COMPILER* compiler);
 
+FILE* SPVM_API_RUNTIME_get_spvm_stdin(SPVM_RUNTIME* runtime);
+
+FILE* SPVM_API_RUNTIME_get_spvm_stdout(SPVM_RUNTIME* runtime);
+
+FILE* SPVM_API_RUNTIME_get_spvm_stderr(SPVM_RUNTIME* runtime);
+
 #endif

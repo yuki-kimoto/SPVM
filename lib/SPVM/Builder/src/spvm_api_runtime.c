@@ -107,6 +107,9 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_build_precompile_method_source,
     SPVM_API_RUNTIME_get_compiler,
     SPVM_API_RUNTIME_set_compiler,
+    SPVM_API_RUNTIME_get_spvm_stdin,
+    SPVM_API_RUNTIME_get_spvm_stdout,
+    SPVM_API_RUNTIME_get_spvm_stderr,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -253,8 +256,24 @@ SPVM_COMPILER* SPVM_API_RUNTIME_get_compiler(SPVM_RUNTIME* runtime) {
   
   return runtime->compiler;
 }
+
 void SPVM_API_RUNTIME_set_compiler(SPVM_RUNTIME* runtime, SPVM_COMPILER* compiler) {
   
   runtime->compiler = compiler;
+}
+
+FILE* SPVM_API_RUNTIME_get_spvm_stdin(SPVM_RUNTIME* runtime) {
+  
+  return runtime->spvm_stdin;
+}
+
+FILE* SPVM_API_RUNTIME_get_spvm_stdout(SPVM_RUNTIME* runtime) {
+  
+  return runtime->spvm_stdout;
+}
+
+FILE* SPVM_API_RUNTIME_get_spvm_stderr(SPVM_RUNTIME* runtime) {
+  
+  return runtime->spvm_stderr;
 }
 
