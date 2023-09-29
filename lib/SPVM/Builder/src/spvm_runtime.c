@@ -62,7 +62,7 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
     
     assert(spvm_stdin);
     
-#ifdef _WIN32  
+#if defined(_WIN32)
     
     setmode(fileno(spvm_stdin), _O_BINARY);
     
@@ -85,7 +85,7 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
     
     assert(spvm_stdout);
     
-#ifdef _WIN32  
+#if defined(_WIN32)
     
     setmode(fileno(spvm_stdout), _O_BINARY);
     
@@ -109,7 +109,7 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
     
     assert(spvm_stderr);
     
-#ifdef _WIN32  
+#if defined(_WIN32)
     
     setmode(fileno(spvm_stderr), _O_BINARY);
     
