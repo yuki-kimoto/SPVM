@@ -56,11 +56,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "wb");
   
-  setvbuf(runtime->spvm_stdout, NULL, _IOLBF, 0);
+  // setvbuf(runtime->spvm_stdout, NULL, _IOLBF, 0);
   
   runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "wb");
   
-  setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
+  // setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
   
   return runtime;
 }
