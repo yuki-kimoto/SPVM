@@ -80,7 +80,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 
 #endif
 
-  // setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
+  setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
   
   return runtime;
 }
