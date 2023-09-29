@@ -598,6 +598,8 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   env->runtime = runtime;
   
+  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
+  
   // Set precompile method addresses
   SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);
   
@@ -660,7 +662,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     void* method = env->api->basic_type->get_method_by_name(env->runtime, module_basic_type, "main");
     
     if (!method) {
-      fprintf(stderr, "The class method %s->main is not defined\\n", class_name);
+      fprintf(spvm_stderr, "The class method %s->main is not defined\\n", class_name);
       return -1;
     }
     
@@ -763,12 +765,13 @@ EOS
   
   $source .= qq|  int32_t error_id = env->api->compiler->compile(compiler, \"$start_basic_type_name\");\n|;
   
+  $source .= qq|  void* runtime = env->api->compiler->get_runtime(compiler);\n|;
+  
+  $source .= qq|  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(runtime);\n|;
   $source .= qq|  if (error_id != 0) {\n|;
-  $source .= qq|    fprintf(stderr, "[Unexpected Compile Error]%s.", env->api->compiler->get_error_message(compiler, 0));\n|;
+  $source .= qq|    fprintf(spvm_stderr, "[Unexpected Compile Error]%s.", env->api->compiler->get_error_message(compiler, 0));\n|;
   $source .= qq|    exit(255);\n|;
   $source .= qq|  }\n|;
-  
-  $source .= qq|  void* runtime = env->api->compiler->get_runtime(compiler);\n|;
   
   $source .= qq|  return runtime;\n|;
   
