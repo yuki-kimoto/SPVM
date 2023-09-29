@@ -68,6 +68,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "wb");
   
+#ifdef _WIN32  
+
+  setmode(fileno(runtime->spvm_stderr), _O_BINARY);
+
+#endif
+
   // setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
   
   return runtime;
