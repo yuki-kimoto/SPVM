@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #include "spvm_allocator.h"
 #include "spvm_runtime.h"
