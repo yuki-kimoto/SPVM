@@ -40,4 +40,6 @@ SPVM_COMPILER* SPVM_COMPILER_new_with_runtime(SPVM_RUNTIME* runtime);
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime);
 
+void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime);
+
 #endif
