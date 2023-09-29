@@ -97,28 +97,15 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
   
   // stderr
   {
-    int32_t stderr_fileno = fileno(stderr);
-    
-    assert(stderr_fileno >= 0);
-    
-    int32_t stderr_fileno_dup = dup(stderr_fileno);
-    
-    assert(stderr_fileno_dup >= 2);
-    
-    FILE* spvm_stderr = fdopen(stderr_fileno_dup, "w");
-    
-    assert(spvm_stderr);
+    runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "w");
     
 #ifdef _WIN32  
     
-    setmode(fileno(spvm_stderr), _O_BINARY);
-    
+    setmode(fileno(runtime->spvm_stderr), _O_BINARY);
+
 #endif
     
     setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
-    
-    runtime->spvm_stderr = spvm_stderr;
-    
   }
   
 }
