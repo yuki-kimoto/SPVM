@@ -56,6 +56,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->spvm_stdin = spvm_stdin;
   
+#ifdef _WIN32  
+
+  setmode(fileno(runtime->spvm_stdin), _O_BINARY);
+
+#endif
+
   runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "wb");
   
 #ifdef _WIN32  
