@@ -50,13 +50,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   FILE* spvm_stdin = fdopen(stdin_fileno_dup, "rb");
   
-  fflush(spvm_stdin);
-  
   assert(spvm_stdin);
-  
-  int32_t setvbuf_status = setvbuf(spvm_stdin, NULL, _IOLBF, 0);
-  
-  assert(setvbuf_status == 0);
   
   runtime->spvm_stdin = spvm_stdin;
   
