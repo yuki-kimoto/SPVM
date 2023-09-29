@@ -64,7 +64,7 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
     
 #ifdef _WIN32  
     
-    setmode(spvm_stdin, _O_BINARY);
+    setmode(fileno(spvm_stdin), _O_BINARY);
 
 #endif
     
