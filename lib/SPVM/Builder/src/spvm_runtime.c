@@ -56,7 +56,7 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
     
     int32_t stdin_fileno_dup = dup(stdin_fileno);
     
-    assert(stdin_fileno_dup >= 2);
+    assert(stdin_fileno_dup > 2);
     
     FILE* spvm_stdin = fdopen(stdin_fileno_dup, "r");
     
@@ -79,7 +79,7 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
     
     int32_t stdout_fileno_dup = dup(stdout_fileno);
     
-    assert(stdout_fileno_dup >= 2);
+    assert(stdout_fileno_dup > 2);
     
     FILE* spvm_stdout = fdopen(stdout_fileno_dup, "w");
     
