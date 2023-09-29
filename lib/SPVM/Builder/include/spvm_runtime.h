@@ -7,6 +7,8 @@
 #include "spvm_typedecl.h"
 #include "spvm_native.h"
 
+#include <stdlib.h>
+
 struct spvm_runtime {
   SPVM_COMPILER* compiler;
   
@@ -23,6 +25,12 @@ struct spvm_runtime {
   SPVM_MUTEX* mutex_assignability_symtable;
   
   SPVM_MUTEX* mutex_update_object;
+  
+  FILE* stdin;
+  
+  FILE* stdout;
+  
+  FILE* stderr;
 };
 
 SPVM_RUNTIME* SPVM_RUNTIME_new();
