@@ -1,4 +1,4 @@
-0.989047 2023-09-29
+0.989047 2023-09-30
   [New Features]
     * SPVM has own stdin, stdout, stderr.
     
@@ -8,6 +8,8 @@
       
       FILE* (*get_spvm_stdout)(void* runtime);
       FILE* (*get_spvm_stderr)(void* runtime);
+  [Bug Fix]
+    * Fix bugs that SPVM stdio does not work well on latest Windows 2022 Server.
 
 0.989046 2023-09-28
   [Internal Changes]
