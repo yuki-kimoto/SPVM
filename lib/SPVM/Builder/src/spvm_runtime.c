@@ -71,23 +71,30 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
     runtime->spvm_stdin = spvm_stdin;
   }
   
-  runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "w");
-  
+  // stdout
+  {
+    runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "w");
+    
 #ifdef _WIN32  
-
-  setmode(fileno(runtime->spvm_stdout), _O_BINARY);
+    
+    setmode(fileno(runtime->spvm_stdout), _O_BINARY);
+    
+#endif
+  
+  }
+  
+  // stderr
+  {
+    runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "w");
+    
+#ifdef _WIN32  
+    
+    setmode(fileno(runtime->spvm_stderr), _O_BINARY);
 
 #endif
-
-  runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "w");
-  
-#ifdef _WIN32  
-
-  setmode(fileno(runtime->spvm_stderr), _O_BINARY);
-
-#endif
-
-  setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
+    
+    setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
+  }
   
 }
 
