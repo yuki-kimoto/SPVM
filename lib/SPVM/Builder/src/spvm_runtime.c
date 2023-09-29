@@ -40,19 +40,85 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_MUTEX_init(mutex_update_object);
   runtime->mutex_update_object = mutex_update_object;
   
-  runtime->spvm_stdin = fdopen(dup(fileno(stdin)), "rb");
-  
-  setvbuf(runtime->spvm_stdin, NULL, _IOLBF, 0);
-  
-  runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "wb");
-  
-  setvbuf(runtime->spvm_stdout, NULL, _IOLBF, 0);
-  
-  runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "wb");
-  
-  setvbuf(runtime->spvm_stderr, NULL, _IONBF, 0);
+  SPVM_RUNTIME_init_stdio(runtime);
   
   return runtime;
+}
+
+void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
+  
+  // stdin
+  {
+    int32_t stdin_fileno = fileno(stdin);
+    
+    assert(stdin_fileno >= 0);
+    
+    int32_t stdin_fileno_dup = dup(stdin_fileno);
+    
+    assert(stdin_fileno_dup > 2);
+    
+    FILE* spvm_stdin = fdopen(stdin_fileno_dup, "r");
+    
+    assert(spvm_stdin);
+    
+#if defined(_WIN32)
+    
+    setmode(fileno(spvm_stdin), _O_BINARY);
+    
+#endif
+    
+    runtime->spvm_stdin = spvm_stdin;
+  }
+  
+  // stdout
+  {
+    int32_t stdout_fileno = fileno(stdout);
+    
+    assert(stdout_fileno >= 0);
+    
+    int32_t stdout_fileno_dup = dup(stdout_fileno);
+    
+    assert(stdout_fileno_dup > 2);
+    
+    FILE* spvm_stdout = fdopen(stdout_fileno_dup, "w");
+    
+    assert(spvm_stdout);
+    
+#if defined(_WIN32)
+    
+    setmode(fileno(spvm_stdout), _O_BINARY);
+    
+#endif
+    
+    runtime->spvm_stdout = spvm_stdout;
+    
+  }
+  
+  // stderr
+  {
+    int32_t stderr_fileno = fileno(stderr);
+    
+    assert(stderr_fileno >= 0);
+    
+    int32_t stderr_fileno_dup = dup(stderr_fileno);
+    
+    assert(stderr_fileno_dup > 2);
+    
+    FILE* spvm_stderr = fdopen(stderr_fileno_dup, "w");
+    
+    assert(spvm_stderr);
+    
+#if defined(_WIN32)
+    
+    setmode(fileno(spvm_stderr), _O_BINARY);
+    
+#endif
+    
+    setvbuf(spvm_stderr, NULL, _IONBF, 0);
+    
+    runtime->spvm_stderr = spvm_stderr;
+  }
+  
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
