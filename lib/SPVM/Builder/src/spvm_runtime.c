@@ -5,6 +5,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 #include "spvm_allocator.h"
 #include "spvm_runtime.h"
@@ -39,6 +40,14 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_MUTEX_init(mutex_update_object);
   runtime->mutex_update_object = mutex_update_object;
   
+  runtime->stdin = fdopen(dup(fileno(stdin)), "rb");
+  
+  runtime->stdout = fdopen(dup(fileno(stdout)), "wb");
+  
+  runtime->stderr = fdopen(dup(fileno(stderr)), "wb");
+  
+  setvbuf(runtime->stderr, NULL, _IONBF, 0);
+  
   return runtime;
 }
 
@@ -49,6 +58,12 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   }
   
   SPVM_MUTEX_destroy(runtime->mutex_assignability_symtable);
+  
+  fclose(runtime->stdin);
+  
+  fclose(runtime->stdout);
+  
+  fclose(runtime->stderr);
   
   // Free allocator
   SPVM_ALLOCATOR_free(runtime->allocator);
