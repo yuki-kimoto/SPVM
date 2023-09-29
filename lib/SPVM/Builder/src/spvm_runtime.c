@@ -47,26 +47,30 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 }
 
 void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
-  int32_t stdin_fileno = fileno(stdin);
   
-  assert(stdin_fileno >= 0);
-  
-  int32_t stdin_fileno_dup = dup(stdin_fileno);
-  
-  assert(stdin_fileno_dup >= 2);
-  
-  FILE* spvm_stdin = fdopen(stdin_fileno_dup, "r");
-  
-  assert(spvm_stdin);
-  
-  runtime->spvm_stdin = spvm_stdin;
-  
+  // stdin
+  {
+    int32_t stdin_fileno = fileno(stdin);
+    
+    assert(stdin_fileno >= 0);
+    
+    int32_t stdin_fileno_dup = dup(stdin_fileno);
+    
+    assert(stdin_fileno_dup >= 2);
+    
+    FILE* spvm_stdin = fdopen(stdin_fileno_dup, "r");
+    
+    assert(spvm_stdin);
+    
 #ifdef _WIN32  
-
-  setmode(fileno(runtime->spvm_stdin), _O_BINARY);
+    
+    setmode(spvm_stdin, _O_BINARY);
 
 #endif
-
+    
+    runtime->spvm_stdin = spvm_stdin;
+  }
+  
   runtime->spvm_stdout = fdopen(dup(fileno(stdout)), "w");
   
 #ifdef _WIN32  
