@@ -70,7 +70,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
 
 #endif
 
-  // setvbuf(runtime->spvm_stdout, NULL, _IOLBF, 0);
+  setvbuf(runtime->spvm_stdout, NULL, _IOLBF, 0);
   
   runtime->spvm_stderr = fdopen(dup(fileno(stderr)), "w");
   
