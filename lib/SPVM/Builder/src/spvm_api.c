@@ -2254,14 +2254,16 @@ void SPVM_API_fprint(SPVM_ENV* env, SPVM_VALUE* stack, FILE* fh, SPVM_OBJECT* st
 
 void SPVM_API_print(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_API_fprint(env, stack, stdout, string);
+  SPVM_API_fprint(env, stack, runtime->spvm_stdout, string);
 }
 
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_API_fprint(env, stack, stderr, string);
+  SPVM_API_fprint(env, stack, runtime->spvm_stderr, string);
 }
 
 SPVM_OBJECT* SPVM_API_concat_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
@@ -3299,6 +3301,8 @@ void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
 
 void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   
+  SPVM_RUNTIME* runtime = env->runtime;
+  
   assert(size > 0);
   
   if ((uint64_t)size > (uint64_t)SIZE_MAX) {
@@ -3310,7 +3314,7 @@ void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival++;
   
 #ifdef SPVM_DEBUG_MEMORY
-    fprintf(stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    fprintf(runtime->spvm_stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
 #endif
   
   return block;
@@ -3319,11 +3323,13 @@ void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
 // Deprecated
 void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
   
+  SPVM_RUNTIME* runtime = env->runtime;
+  
   if (block) {
     SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
     stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival--;
 #ifdef SPVM_DEBUG_MEMORY
-    fprintf(stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    fprintf(runtime->spvm_stderr, "[Debug]Function : free_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
 #endif
   }
 }
@@ -4171,7 +4177,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
         if (error_id) {
           void* exception = SPVM_API_get_exception(env, stack);
           const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
-          fprintf(stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
+          fprintf(runtime->spvm_stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
         }
         
         // Restore stack and exception
