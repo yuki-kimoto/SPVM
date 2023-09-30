@@ -2659,7 +2659,7 @@ int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__check_stdin_stdout_stderr_binary_mode(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__check_stdio_binary_mode(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   FILE* spvm_stdin = env->api->runtime->get_spvm_stdin(env->runtime);
   

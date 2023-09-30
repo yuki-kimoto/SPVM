@@ -89,7 +89,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   }
   
   # stdin, stdout, stderr is binary mode
-  ok(SPVM::TestCase::NativeAPI->check_stdin_stdout_stderr_binary_mode);
+  ok(SPVM::TestCase::NativeAPI->check_stdio_binary_mode);
 }
 
 # All object is freed

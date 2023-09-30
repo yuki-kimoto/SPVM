@@ -1270,7 +1270,6 @@ class TestCase::NativeAPI {
       }
     }
     
-    
     {
       my $args_length = &args_width_1(0);
       unless ($args_length == 1) {
@@ -1291,7 +1290,7 @@ class TestCase::NativeAPI {
         return 0;
       }
     }
-
+    
     {
       my $z : Complex_2d;
       my $args_length = &args_width_4($z, 0, 0);
@@ -1299,7 +1298,7 @@ class TestCase::NativeAPI {
         return 0;
       }
     }
-
+    
     {
       my $z : Complex_2d;
       my $args_length = &args_width_4($z);
@@ -1314,7 +1313,7 @@ class TestCase::NativeAPI {
   native static method args_width_1 : int ($args0 : int);
   native static method args_width_2 : int ($args0 : int, $args1 : int = 0);
   native static method args_width_4 : int ($args_2d : Complex_2d, $args0 : int = 0, $args1 : int = 0);
-
+  
   native static method default_all_types_native : int (
     $value_byte : byte = -128,
     $value_short : short = -32768,
@@ -1324,7 +1323,7 @@ class TestCase::NativeAPI {
     $value_double : double = -2147483648.5,
     $value_object : object = undef,
   );
-
+  
   static method default_all_types : int () {
     {
       my $success = &default_all_types_native(1, 2, 3, 4, 5.5f, 6.5, Int->new(1));
@@ -1344,20 +1343,20 @@ class TestCase::NativeAPI {
   }
 
   native static method dumpc : int ();
-
+  
   native static method precompile_build_methodd_source : int ();
-
+  
   native static method get_compile_type_name : int ();
-
+  
   native static method runtime_get_method_is_enum : int ();
-
-  native static method check_stdin_stdout_stderr_binary_mode : int ();
-
+  
+  native static method check_stdio_binary_mode : int ();
+  
   static method get_string_field : int () {
     my $na = new TestCase::NativeAPI;
-
+    
     $na->set_text("Hello");
-
+    
     $na->set_draw_left(1);
     $na->set_draw_top(2);
     $na->set_draw_width(3);
