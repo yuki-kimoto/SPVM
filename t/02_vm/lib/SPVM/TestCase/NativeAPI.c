@@ -2660,21 +2660,28 @@ int32_t SPVM__TestCase__NativeAPI__dumpc(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__TestCase__NativeAPI__check_stdin_stdout_stderr_binary_mode(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  FILE* spvm_stdin = env->api->runtime->get_spvm_stdin(env->runtime);
+  
+  FILE* spvm_stdout = env->api->runtime->get_spvm_stdout(env->runtime);
+  
+  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
+  
 #ifdef _WIN32  
-  int32_t stdin_old_mode = setmode(0, _O_BINARY);
+  int32_t stdin_old_mode = setmode(fileno(spvm_stdin), _O_BINARY);
   
   if (!(stdin_old_mode == _O_BINARY)) {
     stack[0].ival = 0;
     return 0;
   }
   
-  int32_t stdout_old_mode = setmode(1, _O_BINARY);
+  int32_t stdout_old_mode = setmode(fileno(spvm_stdout), _O_BINARY);
   if (!(stdout_old_mode == _O_BINARY)) {
     stack[0].ival = 0;
     return 0;
   }
   
-  int32_t stderr_old_mode = setmode(2, _O_BINARY);
+  int32_t stderr_old_mode = setmode(fileno(spvm_stderr), _O_BINARY);
   if (!(stderr_old_mode == _O_BINARY)) {
     stack[0].ival = 0;
     return 0;
