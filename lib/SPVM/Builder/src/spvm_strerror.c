@@ -12,7 +12,7 @@ int32_t SPVM_STRERROR_strerror(int errnum, char *buf, size_t buflen) {
   
   int32_t status;
   
-#ifdef _WIN32
+#if defined(_WIN32)
   status = strerror_s(buf, buflen, errnum);
 #else
   status = strerror_r(errnum, buf, buflen);

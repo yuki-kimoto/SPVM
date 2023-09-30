@@ -2667,7 +2667,7 @@ int32_t SPVM__TestCase__NativeAPI__check_stdio_binary_mode(SPVM_ENV* env, SPVM_V
   
   FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
   
-#ifdef _WIN32  
+#if defined(_WIN32)  
   int32_t stdin_old_mode = setmode(fileno(spvm_stdin), _O_BINARY);
   
   if (!(stdin_old_mode == _O_BINARY)) {
@@ -2893,7 +2893,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stdout_windows_binary_mode(SPVM_ENV* env
   
   int32_t error = 0;
   
-#ifdef _WIN32
+#if defined(_WIN32)
   int32_t stdout_mode_current = setmode(fileno(stdout), _O_BINARY);
   if (!(stdout_mode_current == _O_BINARY)) {
     return env->die(env, stack, "stdout mode must be _O_BINARY.");
@@ -2911,7 +2911,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stderr_windows_binary_mode(SPVM_ENV* env
   
   int32_t error = 0;
   
-#ifdef _WIN32
+#if defined(_WIN32)
   int32_t stderr_mode_current = setmode(fileno(stderr), _O_BINARY);
   if (!(stderr_mode_current == _O_BINARY)) {
     return env->die(env, stack, "stderr mode must be _O_BINARY.");
@@ -2929,7 +2929,7 @@ int32_t SPVM__TestCase__NativeAPI__save_stdin_windows_binary_mode(SPVM_ENV* env,
   
   int32_t error = 0;
   
-#ifdef _WIN32
+#if defined(_WIN32)
   int32_t stdin_mode_current = setmode(fileno(stdin), _O_BINARY);
   if (!(stdin_mode_current == _O_BINARY)) {
     return env->die(env, stack, "stdin mode must be _O_BINARY.");
@@ -2961,7 +2961,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
     return env->die(env, stack, "freopen failed.");
   }
   
-#ifdef _WIN32
+#if defined(_WIN32)
   int32_t stdout_mode_current = env->get_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$STDOUT_WINDOWS_BINARY_MODE", &error, __func__, FILE_NAME, __LINE__);
   if (error) { return error; }
   setmode(fileno(fp), stdout_mode_current);
@@ -3001,7 +3001,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
     return env->die(env, stack, "freopen failed.");
   }
   
-#ifdef _WIN32
+#if defined(_WIN32)
   int32_t stderr_mode_current = env->get_class_var_int_by_name(env, stack, "TestCase::NativeAPI", "$STDERR_WINDOWS_BINARY_MODE", &error, __func__, FILE_NAME, __LINE__);
   setmode(fileno(fp), stderr_mode_current);
 #endif

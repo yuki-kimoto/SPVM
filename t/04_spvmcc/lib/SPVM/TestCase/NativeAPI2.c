@@ -19,7 +19,7 @@ int32_t SPVM__TestCase__NativeAPI2__mul(SPVM_ENV* env, SPVM_VALUE* stack) {
   stack[0].ival = total;
 
 // Extra test of stdin, stdout, stderr is binary mode.
-#ifdef _WIN32  
+#if defined(_WIN32)  
   int32_t stdin_old_mode = setmode(0, _O_BINARY);
   assert(stdin_old_mode == _O_BINARY);
   int32_t stdout_old_mode = setmode(1, _O_BINARY);
