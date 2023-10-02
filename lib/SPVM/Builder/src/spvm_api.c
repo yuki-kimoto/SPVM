@@ -2236,18 +2236,13 @@ SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 
 void SPVM_API_fprint(SPVM_ENV* env, SPVM_VALUE* stack, FILE* fh, SPVM_OBJECT* string) {
   
-  
-  if (string == NULL) {
-    return;
-  }
-  
-  const char* bytes = SPVM_API_get_chars(env, stack, string);
-  int32_t string_length = SPVM_API_length(env, stack, string);
-  
-  {
-    int32_t i;
-    for (i = 0; i < string_length; i++) {
-      putc((char)bytes[i], fh);
+  if (string) {
+    const char* bytes = SPVM_API_get_chars(env, stack, string);
+    int32_t string_length = SPVM_API_length(env, stack, string);
+    
+    if (string_length > 0) {
+      FILE* spvm_stdout = SPVM_API_RUNTIME_get_spvm_stdout(env->runtime);
+      size_t ret = fwrite(bytes, 1, string_length, spvm_stdout);
     }
   }
 }
