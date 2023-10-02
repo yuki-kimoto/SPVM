@@ -1437,18 +1437,7 @@ static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* 
 }
 
 static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* string) {
-  FILE* spvm_stdout = env->api->runtime->get_spvm_stdout(env->runtime);
-  
-  if (string) {
-    const char* bytes = env->get_chars(env, stack, string);
-    int32_t string_length = env->length(env, stack, string);
-    
-    if (string_length > 0) {
-      size_t ret = fwrite(bytes, 1, string_length, spvm_stdout);
-    }
-  }
-  
-  fprintf(spvm_stdout, "\n");
+  env->say(env, stack, string);
 }
 
 static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* include_dir, const char* include_dir_sep, const char* class_rel_file, int32_t line) {

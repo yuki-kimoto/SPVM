@@ -1625,17 +1625,13 @@ The charaters of the after the given length are filled with C<\0>.
 
   void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
 
-Prints the characters of the string to stdout.
-
-If the string is C<NULL>, nothing is printed.
+Prints a string to stdout. This is the same operator as the print operator.
 
 =head2 print_stderr
 
   void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
 
-Prints the characters of the string to stderr.
-
-If the string is C<NULL>, nothing is printed.
+Prints a string to stderr. This is the same operator as the print operator except for the destination of the output.
 
 =head2 new_stack
 
@@ -1956,6 +1952,12 @@ If the env of the stack is equal to the env, returns 1. Otherwise returns 0.
 C<void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref, void* object);>
 
 Assigns an object C<object> to the place referred by the reference C<ref>.
+
+=head2 say
+
+  void (*say)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
+
+Prints a string and C<\n> to stdout. This is the same operator as the say operator.
 
 =head1 Native API IDs
 

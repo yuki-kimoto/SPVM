@@ -2,10 +2,12 @@
   [Internal Changes]
     * The warn operator does not call fflush function in the C language.
     * The print operator uses the print native API.
+    * The say operator uses the say native API.
   [Incompatible Changes]
     * The print native API outputs to SPVM stdout instead of the C language stdout.
     * The print_stderr native API outputs to SPVM stderr instead of the C language stderr.
-    
+  [New Feature]
+    * The say native API is added.
 0.989047 2023-09-30
   [New Features]
     * SPVM has own stdin, stdout, stderr.

@@ -316,6 +316,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_new_memory_block,
     SPVM_API_free_memory_block,
     SPVM_API_get_memory_blocks_count,
+    SPVM_API_say,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -2252,6 +2253,15 @@ void SPVM_API_print(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   SPVM_API_fprint(env, stack, runtime->spvm_stdout, string);
+}
+
+void SPVM_API_say(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
+  
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  SPVM_API_fprint(env, stack, runtime->spvm_stdout, string);
+  
+  fputc('\n', runtime->spvm_stdout);
 }
 
 void SPVM_API_print_stderr(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
