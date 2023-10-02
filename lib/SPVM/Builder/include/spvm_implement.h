@@ -1433,15 +1433,7 @@ static inline void SPVM_IMPLEMENT_IS_ERROR(SPVM_ENV* env, SPVM_VALUE* stack, int
 #define SPVM_IMPLEMENT_CAN(env, stack, out, object, method_name) (out = (env->get_instance_method(env, stack, object, method_name) != NULL))
 
 static inline void SPVM_IMPLEMENT_PRINT(SPVM_ENV* env, SPVM_VALUE* stack, void* string) {
-  if (string) {
-    const char* bytes = env->get_chars(env, stack, string);
-    int32_t string_length = env->length(env, stack, string);
-    
-    if (string_length > 0) {
-      FILE* spvm_stdout = env->api->runtime->get_spvm_stdout(env->runtime);
-      size_t ret = fwrite(bytes, 1, string_length, spvm_stdout);
-    }
-  }
+  env->print(env, stack, string);
 }
 
 static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* string) {

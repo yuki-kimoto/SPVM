@@ -1,6 +1,7 @@
 0.989048 2023-10-03
   [Internal Changes]
     * The warn operator does not call fflush function in the C language.
+    * The print operator uses the print native API.
   [Incompatible Changes]
     * The print native API outputs to SPVM stdout instead of the C language stdout.
     * The print_stderr native API outputs to SPVM stderr instead of the C language stderr.
