@@ -2242,7 +2242,7 @@ void SPVM_API_fprint(SPVM_ENV* env, SPVM_VALUE* stack, FILE* fh, SPVM_OBJECT* st
     
     if (string_length > 0) {
       FILE* spvm_stdout = SPVM_API_RUNTIME_get_spvm_stdout(env->runtime);
-      size_t ret = fwrite(bytes, 1, string_length, spvm_stdout);
+      fwrite(bytes, 1, string_length, spvm_stdout);
     }
   }
 }
