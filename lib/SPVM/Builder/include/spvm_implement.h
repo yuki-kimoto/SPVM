@@ -1441,43 +1441,7 @@ static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* st
 }
 
 static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line) {
-  const char* class_dir_sep;
-  if (class_dir) {
-    class_dir_sep = "/";
-  }
-  else {
-    class_dir_sep = "";
-    class_dir = "";
-  }
-  
-  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
-  
-  int32_t empty_or_undef = 0;
-  if (string) {
-    const char* bytes = env->get_chars(env, stack, string);
-    int32_t string_length = env->length(env, stack, string);
-    
-    if (string_length > 0) {
-      size_t ret = fwrite(bytes, 1, string_length, spvm_stderr);
-      
-      // Add line and file information if last character is not '\n'
-      int32_t add_line_file;
-      if (bytes[string_length - 1] != '\n') {
-        fprintf(spvm_stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_AT], class_dir, class_dir_sep, class_rel_file, line);
-      }
-    }
-    else {
-      empty_or_undef = 1;
-    }
-  }
-  else {
-    empty_or_undef = 1;
-  }
-  
-  if (empty_or_undef) {
-    fprintf(spvm_stderr, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_WARN_UNDEF], class_dir, class_dir_sep, class_rel_file, line);
-  }
-  
+  env->warn(env, stack, string, class_dir, class_rel_file, line);
 }
 
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id) (eval_error_id = 0)

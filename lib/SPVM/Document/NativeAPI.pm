@@ -1959,6 +1959,12 @@ Assigns an object C<object> to the place referred by the reference C<ref>.
 
 Prints a string and C<\n> to stdout. This is the same operator as the say operator.
 
+=head2 warn
+
+  void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line);
+
+Operates the warn operator.
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
