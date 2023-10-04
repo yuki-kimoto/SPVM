@@ -6,16 +6,20 @@ package SPVM::Sync::Channel;
 
 =head1 Name
 
-SPVM::Sync::Channel - Short Description
+SPVM::Sync::Channel - Golang Compatible Channel
 
 =head1 Description
 
-Sync::Channel class of L<SPVM> has methods for someting.
+Sync::Channel class of L<SPVM> has methods to manipulate golang compatible channel.
 
 =head1 Usage
 
   use Sync::Channel;
-
+  
+  my $channel = Sync::Channel->make;
+  
+  my $channel_with_buffer = Sync::Channel->make(3);
+  
 =head1 Fields
 
 

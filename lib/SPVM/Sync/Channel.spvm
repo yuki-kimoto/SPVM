@@ -3,4 +3,62 @@
 
 class Sync::Channel {
   
+  use Hash;
+  
+  # Fields
+  has length : int;
+  
+  # Class Methods
+  static method new : Sync::Channel ($options : object[] = undef) {
+    
+    &check_option_names($options, ["length"]);
+    
+    my $options_h = Hash->new($options);
+    
+    my $self = new Sync::Channel;
+    
+    $self->{length} = $options_h->delete_or_default_int("length", 0);
+    
+    return $self;
+  }
+  
+  static method make : Sync::Channel ($length : int = 0) {
+    my $self = &new({length => $length});
+    
+    return $self;
+  }
+  
+  private static method check_option_names : void ($options : object[], $available_option_names : string[]) {
+    
+    unless ($options) {
+      return;
+    }
+    
+    my $available_option_names_h = Hash->new;
+    for my $available_option_name (@$available_option_names) {
+     $available_option_names_h->set_int($available_option_name, 1);
+    }
+    
+    for (my $i = 0; $i < @$options; $i += 2) {
+      my $option_name = (string)$options->[$i];
+      
+      unless ($available_option_names_h->get($option_name)) {
+        die "The \"$option_name\" option is not available.";
+      }
+    }
+  }
+  
+  # Instance Methods
+  method read : object () {
+    
+  }
+  
+  method write : void ($object : object) {
+    
+  }
+  
+  method close : void () {
+    
+  }
+  
 }

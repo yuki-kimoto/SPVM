@@ -373,6 +373,8 @@ lib/SPVM/Stringer.pm
 lib/SPVM/Stringer.spvm
 lib/SPVM/StringList.pm
 lib/SPVM/StringList.spvm
+lib/SPVM/Sync/Channel.pm
+lib/SPVM/Sync/Channel.spvm
 lib/SPVM/Sync/Mutex.c
 lib/SPVM/Sync/Mutex.config
 lib/SPVM/Sync/Mutex.pm
@@ -694,6 +696,7 @@ t/02_vm/08_module/ShortList.t
 t/02_vm/08_module/Sort.t
 t/02_vm/08_module/StringBuffer.t
 t/02_vm/08_module/StringList.t
+t/02_vm/08_module/Sync/Channel.t
 t/02_vm/08_module/Sync_Mutex.t
 t/02_vm/09_stdio/stdio.t
 t/02_vm/99_extra/examples.t
@@ -816,6 +819,7 @@ t/02_vm/lib/SPVM/TestCase/Module/ShortList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Sort.spvm
 t/02_vm/lib/SPVM/TestCase/Module/StringBuffer.spvm
 t/02_vm/lib/SPVM/TestCase/Module/StringList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Sync/Channel.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Sync/Mutex.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiClass.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiClass/FloatMatrix.spvm

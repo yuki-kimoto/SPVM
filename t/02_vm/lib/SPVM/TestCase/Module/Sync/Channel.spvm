@@ -1,0 +1,11 @@
+class TestCase::Module::Sync::Channel {
+  
+  use Sync::Channel;
+  
+  static method basic : int () {
+    
+    my $channel = Sync::Channel->new;
+    
+    return 1;
+  }
+}
