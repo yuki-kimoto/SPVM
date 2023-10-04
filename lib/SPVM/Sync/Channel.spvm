@@ -4,6 +4,7 @@
 class Sync::Channel {
   
   use Hash;
+  use Sync::Mutex;
   
   # Fields
   has length : int;
