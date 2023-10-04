@@ -15,6 +15,8 @@ class Sync::Channel {
   
   has length : int;
   
+  has mutex : Sync::Mutex;
+  
   # Class Methods
   static method new : Sync::Channel ($options : object[] = undef) {
     
@@ -29,6 +31,8 @@ class Sync::Channel {
     
     my $objects = new object[$capacity];
     $self->{objects} = $objects;
+    
+    $self->{mutex} = Sync::Mutex->new;
     
     return $self;
   }
