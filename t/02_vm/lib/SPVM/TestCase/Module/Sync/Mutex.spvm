@@ -1,10 +1,10 @@
-class TestCase::Module::Mutex {
+class TestCase::Module::Sync::Mutex {
   
-  use Mutex;
+  use Sync::Mutex;
   
   static method basic : int () {
     
-    my $mutex = Mutex->new;
+    my $mutex = Sync::Mutex->new;
     
     $mutex->lock;
     

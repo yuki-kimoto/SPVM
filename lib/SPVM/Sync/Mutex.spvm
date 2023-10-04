@@ -1,10 +1,10 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Mutex {
+class Sync::Mutex {
   
   # Class Methods
-  native static method new : Mutex ();
+  native static method new : Sync::Mutex ();
   
   # Instance Methods
   native method DESTROY : void ();

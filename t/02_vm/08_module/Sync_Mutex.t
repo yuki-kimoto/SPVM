@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Module::Mutex';
+use SPVM 'TestCase::Module::Sync::Mutex';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
-# Mutex
+# Sync::Mutex
 {
-  ok(SPVM::TestCase::Module::Mutex->basic);
+  ok(SPVM::TestCase::Module::Sync::Mutex->basic);
 }
 
 # All object is freed

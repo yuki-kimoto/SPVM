@@ -1,4 +1,4 @@
-package SPVM::Mutex;
+package SPVM::Sync::Mutex;
 
 
 
@@ -6,17 +6,17 @@ package SPVM::Mutex;
 
 =head1 Name
 
-SPVM::Mutex - Short Description
+SPVM::Sync::Mutex - Mutex
 
 =head1 Description
 
-Mutex class of L<SPVM> has methods to manipulate mutex.
+Sync::Mutex class of L<SPVM> has methods to manipulate mutex.
 
 =head1 Usage
 
-  use Mutex;
+  use Sync::Mutex;
   
-  my $mutex = Mutex->new;
+  my $mutex = Sync::Mutex->new;
   
   $mutex->lock;
   
@@ -24,7 +24,7 @@ Mutex class of L<SPVM> has methods to manipulate mutex.
 
 =head1 Class Methods
 
-  static method new : Mutex ();
+  static method new : Sync::Mutex ();
 
 =head1 Instance Methods
 

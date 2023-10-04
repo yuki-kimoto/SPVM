@@ -300,12 +300,6 @@ lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
-lib/SPVM/Mutex.c
-lib/SPVM/Mutex.config
-lib/SPVM/Mutex.native/include/.gitkeep
-lib/SPVM/Mutex.native/src/.gitkeep
-lib/SPVM/Mutex.pm
-lib/SPVM/Mutex.spvm
 lib/SPVM/Native.c
 lib/SPVM/Native.config
 lib/SPVM/Native.pm
@@ -379,6 +373,10 @@ lib/SPVM/Stringer.pm
 lib/SPVM/Stringer.spvm
 lib/SPVM/StringList.pm
 lib/SPVM/StringList.spvm
+lib/SPVM/Sync/Mutex.c
+lib/SPVM/Sync/Mutex.config
+lib/SPVM/Sync/Mutex.pm
+lib/SPVM/Sync/Mutex.spvm
 lib/SPVM/Time.pm
 lib/SPVM/Time/Info.pm
 LICENSE
@@ -687,7 +685,6 @@ t/02_vm/08_module/IntList.t
 t/02_vm/08_module/List.t
 t/02_vm/08_module/Long.t
 t/02_vm/08_module/LongList.t
-t/02_vm/08_module/Mutex.t
 t/02_vm/08_module/Native/MethodCall.t
 t/02_vm/08_module/Point.t
 t/02_vm/08_module/Point3D.t
@@ -697,6 +694,7 @@ t/02_vm/08_module/ShortList.t
 t/02_vm/08_module/Sort.t
 t/02_vm/08_module/StringBuffer.t
 t/02_vm/08_module/StringList.t
+t/02_vm/08_module/Sync_Mutex.t
 t/02_vm/09_stdio/stdio.t
 t/02_vm/99_extra/examples.t
 t/02_vm/99_extra/issues.t
@@ -809,7 +807,6 @@ t/02_vm/lib/SPVM/TestCase/Module/IntList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/List.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Long.spvm
 t/02_vm/lib/SPVM/TestCase/Module/LongList.spvm
-t/02_vm/lib/SPVM/TestCase/Module/Mutex.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Native/MethodCall.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point3D.spvm
@@ -819,6 +816,7 @@ t/02_vm/lib/SPVM/TestCase/Module/ShortList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Sort.spvm
 t/02_vm/lib/SPVM/TestCase/Module/StringBuffer.spvm
 t/02_vm/lib/SPVM/TestCase/Module/StringList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Sync/Mutex.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiClass.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiClass/FloatMatrix.spvm
 t/02_vm/lib/SPVM/TestCase/ModuleContainsMultiPackage.spvm

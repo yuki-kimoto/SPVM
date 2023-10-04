@@ -148,6 +148,8 @@ The list of SPVM Standard Modules. All Standard classes are yet experimental sta
 
 =item * L<StringList|SPVM::StringList>
 
+=item * L<Sync::Mutex|SPVM::Sync::Mutex>
+
 =item * L<Time|SPVM::Time>
 
 =item * L<Time::Info|SPVM::Time::Info>
