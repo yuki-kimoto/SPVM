@@ -17,6 +17,8 @@ class Sync::Channel {
   
   has mutex : Sync::Mutex;
   
+  has closed : int;
+  
   # Class Methods
   static method new : Sync::Channel ($options : object[] = undef) {
     
@@ -65,15 +67,33 @@ class Sync::Channel {
   
   # Instance Methods
   method read : object () {
+    my $closed = $self->{closed};
+    
+    if ($closed) {
+      return undef;
+    }
+    
     
   }
   
   method write : void ($object : object) {
+    my $closed = $self->{closed};
+    
+    if ($closed) {
+      die "This channel is closed.";
+    }
+    
     
   }
   
   method close : void () {
+    my $closed = $self->{closed};
     
+    if ($closed) {
+      die "This channel is already closed.";
+    }
+    
+    $self->{closed} = 1;
   }
   
   method cap : int () {
