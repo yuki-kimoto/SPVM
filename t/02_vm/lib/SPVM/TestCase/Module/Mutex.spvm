@@ -1,0 +1,19 @@
+class TestCase::Module::Mutex {
+  
+  use Mutex;
+  
+  static method basic : int () {
+    
+    my $mutex = Mutex->new;
+    
+    $mutex->lock;
+    
+    $mutex->unlock;
+    
+    $mutex->reader_lock;
+    
+    $mutex->reader_unlock;
+    
+    return 1;
+  }
+}

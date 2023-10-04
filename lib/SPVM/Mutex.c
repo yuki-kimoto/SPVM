@@ -25,7 +25,7 @@ int32_t SPVM__Mutex__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* mutex = env->get_pointer(env, stack, obj_mutex);
   
-  env->api->mutex->free_instance(env, stack, obj_mutex);
+  env->api->mutex->free_instance(env, stack, mutex);
   
   return 0;
 }
