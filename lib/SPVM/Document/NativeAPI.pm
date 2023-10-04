@@ -98,6 +98,12 @@ L<SPVM::Document::NativeAPI::Type>
 
 L<SPVM::Document::NativeAPI::Internal>
 
+=head3 Mutex Native API
+
+  env->api->mutex;
+
+L<SPVM::Document::NativeAPI::Mutex>
+
 =head2 new_env
 
   SPVM_ENV* (*new_env)();

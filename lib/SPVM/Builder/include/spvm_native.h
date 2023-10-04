@@ -63,6 +63,9 @@ typedef struct spvm_api_arg SPVM_API_ARG;
 struct spvm_api_internal;
 typedef struct spvm_api_internal SPVM_API_INTERNAL;
 
+struct spvm_api_mutex;
+typedef struct spvm_api_mutex SPVM_API_MUTEX;
+
 union spvm_value {
   int8_t bval;
   int16_t sval;
@@ -318,6 +321,12 @@ struct spvm_env {
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*say)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line);
+  void* (*new_mutex)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*free_mutex)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  int32_t (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  int32_t (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  int32_t (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  int32_t (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
 };
 
 struct spvm_env_api {
@@ -333,6 +342,7 @@ struct spvm_env_api {
   SPVM_API_ARG* arg;
   SPVM_API_TYPE* type;
   SPVM_API_INTERNAL* internal;
+  SPVM_API_MUTEX* mutex;
 };
 
 struct spvm_api_allocator {
@@ -498,6 +508,15 @@ struct spvm_api_internal {
   void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
   void (*lock_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*unlock_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+};
+
+struct spvm_api_mutex {
+  void* (*new_instance)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void (*free_instance)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  void (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  void (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  void (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  void (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
 };
 
 SPVM_ENV* SPVM_API_new_env(void);

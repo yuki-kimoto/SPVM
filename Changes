@@ -1,3 +1,7 @@
+0.989049 2023-10-04
+  [New Features]
+    * Add the mutex native APIs.
+    
 0.989048 2023-10-03
   [Internal Changes]
     * The warn operator does not call fflush function in the C language.

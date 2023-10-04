@@ -42,6 +42,7 @@
 #include "spvm_api_arg.h"
 #include "spvm_api_type.h"
 #include "spvm_api_internal.h"
+#include "spvm_api_mutex.h"
 
 #include "spvm_mutex.h"
 
@@ -73,6 +74,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
   
   SPVM_API_INTERNAL* api_internal = SPVM_API_INTERNAL_new_api();
   
+  SPVM_API_MUTEX* api_mutex = SPVM_API_MUTEX_new_api();
+  
   void* env_api_init[]  = {
     api_allocator,
     api_string_buffer,
@@ -86,13 +89,10 @@ SPVM_ENV* SPVM_API_new_env(void) {
     api_arg,
     api_type,
     api_internal,
+    api_mutex,
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
-
-
-
-
 
 
   // Native APIs
@@ -4330,4 +4330,3 @@ void SPVM_API_unlock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
   
   SPVM_MUTEX_unlock(object_mutex);
 }
-
