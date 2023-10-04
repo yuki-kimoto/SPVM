@@ -11,6 +11,8 @@ class Sync::Channel {
   
   has objects : object[];
   
+  has offset : int;
+  
   # Class Methods
   static method new : Sync::Channel ($options : object[] = undef) {
     
