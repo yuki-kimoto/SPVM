@@ -7,32 +7,34 @@ class Sync::Channel {
   use Sync::Mutex;
   
   # Fields
-  has length : int;
+  has capacity : int;
   
   has objects : object[];
   
   has offset : int;
   
+  has length : int;
+  
   # Class Methods
   static method new : Sync::Channel ($options : object[] = undef) {
     
-    &check_option_names($options, ["length"]);
+    &check_option_names($options, ["capacity"]);
     
     my $options_h = Hash->new($options);
     
     my $self = new Sync::Channel;
     
-    my $length = $options_h->delete_or_default_int("length", 0);
-    $self->{length} = $length;
+    my $capacity = $options_h->delete_or_default_int("capacity", 0);
+    $self->{capacity} = $capacity;
     
-    my $objects = new object[$length];
+    my $objects = new object[$capacity];
     $self->{objects} = $objects;
     
     return $self;
   }
   
-  static method make : Sync::Channel ($length : int = 0) {
-    my $self = &new({length => $length});
+  static method make : Sync::Channel ($capacity : int = 0) {
+    my $self = &new({capacity => $capacity});
     
     return $self;
   }
@@ -70,4 +72,11 @@ class Sync::Channel {
     
   }
   
+  method cap : int () {
+    return $self->{capacity};
+  }
+  
+  method len : int () {
+    return $self->{length};
+  }
 }
