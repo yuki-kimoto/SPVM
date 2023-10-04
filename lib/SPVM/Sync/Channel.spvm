@@ -9,6 +9,8 @@ class Sync::Channel {
   # Fields
   has length : int;
   
+  has objects : object[];
+  
   # Class Methods
   static method new : Sync::Channel ($options : object[] = undef) {
     
@@ -18,7 +20,11 @@ class Sync::Channel {
     
     my $self = new Sync::Channel;
     
-    $self->{length} = $options_h->delete_or_default_int("length", 0);
+    my $length = $options_h->delete_or_default_int("length", 0);
+    $self->{length} = $length;
+    
+    my $objects = new object[$length];
+    $self->{objects} = $objects;
     
     return $self;
   }
