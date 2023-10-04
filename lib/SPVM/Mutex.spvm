@@ -1,0 +1,20 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Mutex {
+  
+  # Class Methods
+  native static method new : Mutex ();
+  
+  # Instance Methods
+  native method DESTROY : void ();
+  
+  native method lock : void ();
+  
+  native method unlock : void ();
+  
+  native method reader_lock : void ();
+  
+  native method reader_unlock : void ();
+
+}
