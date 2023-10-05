@@ -86,20 +86,44 @@ class Sync::Channel {
     my $closed = $self->{closed};
     
     if ($closed) {
+      $$error_ref = 1;
       return undef;
     }
     
-    my $can_read = 0;
-    if ($can_read) {
-      my $offset = $self->{offset};
-      my $objects = $self->{objects};
-      my $object = $objects->[$offset];
+    while (1) {
+      my $readable = $self->{readable};
       
-      $offset++;
-      
-      $self->{offset} = $offset;
-      
-      return $object;
+      if ($readable) {
+        my $object = $self->{readable_object};
+        $self->{readable} = 0;
+        
+        return $object;
+      }
+      else {
+        my $length = $self->{length};
+        
+        if ($length > 0) {
+          my $offset = $self->{offset};
+          my $objects = $self->{objects};
+          
+          my $object = $objects->[$offset];
+          $self->{readable_object} = $object;
+          $self->{readable} = 1;
+          
+          $objects->[$offset] = undef;
+          
+          $offset++;
+          
+          if ($offset >= $length) {
+            $offset = 0;
+          }
+          
+          $length -= 1;
+          
+          $self->{offset} = $offset;
+          $self->{length} = $length;
+        }
+      }
     }
   }
   
@@ -137,5 +161,9 @@ class Sync::Channel {
   
   method len : int () {
     return $self->{length};
+  }
+  
+  method can_read : int () {
+    return $self->{readable};
   }
 }
