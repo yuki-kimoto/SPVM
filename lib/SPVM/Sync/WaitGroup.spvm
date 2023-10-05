@@ -1,0 +1,56 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Sync::WaitGroup {
+  use Sync::Mutex;
+  
+  has state : int;
+  
+  has mutex : Sync::Mutex;
+  
+  # Class Methods
+  static method new : Sync::WaitGroup () {
+    
+    my $self = new Sync::WaitGroup;
+    
+    $self->{mutex} = Sync::Mutex->new;
+    
+    return $self;
+  }
+  
+  # Instance Methods
+  method add : void ($delta : int = 1) {
+    
+    my $mutex = $self->{mutex};
+    
+    $mutex->lock;
+    
+    my $state = $self->{state};
+    
+    $state += $delta;
+    
+    $self->{state} = $state;
+    
+    $mutex->unlock;
+    
+    my $state_is_negative = $self->{state} < 0;
+    
+    if ($state_is_negative) {
+      die "The state field must be greater than or equal to 0.";
+    }
+  }
+  
+  method done : void () {
+    $self->add(-1);
+  }
+  
+  method wait : void () {
+    while (1) {
+      my $state = $self->{state};
+      
+      if ($state == 0) {
+        return;
+      }
+    }
+  }
+}

@@ -31,10 +31,19 @@ class Sync::Channel {
     my $capacity = $options_h->delete_or_default_int("capacity", 0);
     $self->{capacity} = $capacity;
     
+    unless ($capacity >= 0) {
+      die "The \"capacity\" option must be greater than or equal to 0.";
+    }
+    
     my $objects = new object[$capacity];
     $self->{objects} = $objects;
     
-    $self->{mutex} = Sync::Mutex->new;
+    my $mutex = Sync::Mutex->new;
+    $self->{mutex} = $mutex;
+    
+    if ($capacity == 0) {
+      $mutex->lock;
+    }
     
     return $self;
   }
@@ -76,7 +85,18 @@ class Sync::Channel {
       return undef;
     }
     
-    
+    my $can_read = 0;
+    if ($can_read) {
+      my $objects = $self->{objects};
+      my $object = $objects->[$offset];
+      
+      $offset++;
+      
+      return $object;
+    }
+    else {
+      $mutex->lock;
+    }
   }
   
   method write : void ($object : object) {
@@ -86,6 +106,14 @@ class Sync::Channel {
       die "This channel is closed.";
     }
     
+    my $mutex = $self->{mutex};
+    
+    if ($capacity == 0) {
+      $mutex->lock;
+    }
+    else {
+      
+    }
     
   }
   

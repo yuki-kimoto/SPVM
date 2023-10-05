@@ -1,0 +1,27 @@
+class TestCase::Module::Sync::WaitGroup {
+  
+  use Sync::WaitGroup;
+  
+  static method basic : int () {
+    
+    my $wg = Sync::WaitGroup->new;
+    
+    $wg->add;
+    
+    $wg->done;
+    
+    $wg->add(1);
+    
+    $wg->done;
+    
+    $wg->add(2);
+    
+    $wg->done;
+    
+    $wg->done;
+    
+    $wg->wait;
+    
+    return 1;
+  }
+}
