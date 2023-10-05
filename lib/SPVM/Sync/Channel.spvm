@@ -9,11 +9,15 @@ class Sync::Channel {
   # Fields
   has capacity : int;
   
-  has objects : object[];
-  
   has offset : int;
   
   has length : int;
+  
+  has objects : object[];
+  
+  has readable_object : object;
+  
+  has readable : int;
   
   has mutex : Sync::Mutex;
   
@@ -87,15 +91,15 @@ class Sync::Channel {
     
     my $can_read = 0;
     if ($can_read) {
+      my $offset = $self->{offset};
       my $objects = $self->{objects};
       my $object = $objects->[$offset];
       
       $offset++;
       
+      $self->{offset} = $offset;
+      
       return $object;
-    }
-    else {
-      $mutex->lock;
     }
   }
   
@@ -106,10 +110,10 @@ class Sync::Channel {
       die "This channel is closed.";
     }
     
-    my $mutex = $self->{mutex};
+    my $capacity = $self->{capacity};
     
     if ($capacity == 0) {
-      $mutex->lock;
+      
     }
     else {
       
