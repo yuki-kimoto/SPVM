@@ -6,6 +6,10 @@ class Sync::Channel {
   use Hash;
   use Sync::Mutex;
   
+  private enum {
+    READABLE_
+  }
+  
   # Fields
   has capacity : int;
   
@@ -13,9 +17,9 @@ class Sync::Channel {
   
   has length : int;
   
-  has objects : object[];
+  has values_in_buffer : object[];
   
-  has readable_object : object;
+  has readable_value : object;
   
   has readable : int;
   
@@ -39,8 +43,8 @@ class Sync::Channel {
       die "The \"capacity\" option must be greater than or equal to 0.";
     }
     
-    my $objects = new object[$capacity];
-    $self->{objects} = $objects;
+    my $values_in_buffer = new object[$capacity];
+    $self->{values_in_buffer} = $values_in_buffer;
     
     my $mutex = Sync::Mutex->new;
     $self->{mutex} = $mutex;
@@ -94,7 +98,7 @@ class Sync::Channel {
       my $readable = $self->{readable};
       
       if ($readable) {
-        my $object = $self->{readable_object};
+        my $object = $self->{readable_value};
         $self->{readable} = 0;
         
         return $object;
@@ -104,13 +108,13 @@ class Sync::Channel {
         
         if ($length > 0) {
           my $base = $self->{base};
-          my $objects = $self->{objects};
+          my $values_in_buffer = $self->{values_in_buffer};
           
-          my $object = $objects->[$base];
-          $self->{readable_object} = $object;
+          my $object = $values_in_buffer->[$base];
+          $self->{readable_value} = $object;
           $self->{readable} = 1;
           
-          $objects->[$base] = undef;
+          $values_in_buffer->[$base] = undef;
           
           $base++;
           
@@ -141,7 +145,7 @@ class Sync::Channel {
         
       }
       
-      $self->{readable_object} = $object;
+      $self->{readable_value} = $object;
       $self->{readable} = 1;
       while (1) {
         my $readable = $self->{readable};
@@ -155,14 +159,14 @@ class Sync::Channel {
       my $length = $self->{length};
       
       if ($length < $capacity) {
-        my $objects = $self->{objects};
+        my $values_in_buffer = $self->{values_in_buffer};
         my $base = $self->{base};
         my $offset = $base + $length;
         if ($offset >= $length) {
           $offset -= $base;
         }
         
-        $objects->[$offset] = $object;
+        $values_in_buffer->[$offset] = $object;
         $length++;
         
         $self->{length} = $length;
