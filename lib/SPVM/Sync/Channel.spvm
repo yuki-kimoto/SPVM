@@ -13,7 +13,7 @@ class Sync::Channel {
   # Fields
   has capacity : int;
   
-  has base : int;
+  has base_offset : int;
   
   has length : int;
   
@@ -107,24 +107,24 @@ class Sync::Channel {
         my $length = $self->{length};
         
         if ($length > 0) {
-          my $base = $self->{base};
+          my $base_offset = $self->{base_offset};
           my $values_in_buffer = $self->{values_in_buffer};
           
-          my $object = $values_in_buffer->[$base];
+          my $object = $values_in_buffer->[$base_offset];
           $self->{readable_value} = $object;
           $self->{readable} = 1;
           
-          $values_in_buffer->[$base] = undef;
+          $values_in_buffer->[$base_offset] = undef;
           
-          $base++;
+          $base_offset++;
           
-          if ($base >= $length) {
-            $base = 0;
+          if ($base_offset >= $length) {
+            $base_offset = 0;
           }
           
           $length -= 1;
           
-          $self->{base} = $base;
+          $self->{base_offset} = $base_offset;
           $self->{length} = $length;
         }
       }
@@ -160,10 +160,10 @@ class Sync::Channel {
       
       if ($length < $capacity) {
         my $values_in_buffer = $self->{values_in_buffer};
-        my $base = $self->{base};
-        my $offset = $base + $length;
+        my $base_offset = $self->{base_offset};
+        my $offset = $base_offset + $length;
         if ($offset >= $length) {
-          $offset -= $base;
+          $offset -= $base_offset;
         }
         
         $values_in_buffer->[$offset] = $object;
