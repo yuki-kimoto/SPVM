@@ -21,7 +21,7 @@ class Sync::Channel {
   
   has readable_value : object;
   
-  has readable : int;
+  has readable_state : int;
   
   has mutex : Sync::Mutex;
   
@@ -95,11 +95,11 @@ class Sync::Channel {
     }
     
     while (1) {
-      my $readable = $self->{readable};
+      my $readable_state = $self->{readable_state};
       
-      if ($readable) {
+      if ($readable_state) {
         my $object = $self->{readable_value};
-        $self->{readable} = 0;
+        $self->{readable_state} = 0;
         
         return $object;
       }
@@ -112,7 +112,7 @@ class Sync::Channel {
           
           my $object = $values_in_buffer->[$base_offset];
           $self->{readable_value} = $object;
-          $self->{readable} = 1;
+          $self->{readable_state} = 1;
           
           $values_in_buffer->[$base_offset] = undef;
           
@@ -146,10 +146,10 @@ class Sync::Channel {
       }
       
       $self->{readable_value} = $object;
-      $self->{readable} = 1;
+      $self->{readable_state} = 1;
       while (1) {
-        my $readable = $self->{readable};
-        if ($readable == 0) {
+        my $readable_state = $self->{readable_state};
+        if ($readable_state == 0) {
           return;
         }
       }
@@ -194,6 +194,6 @@ class Sync::Channel {
   }
   
   method can_read : int () {
-    return $self->{readable};
+    return $self->{readable_state};
   }
 }
