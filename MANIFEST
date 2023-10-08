@@ -279,6 +279,10 @@ lib/SPVM/Go/Channel.pm
 lib/SPVM/Go/Channel.spvm
 lib/SPVM/Go/Channel/ReadCallback.pm
 lib/SPVM/Go/Channel/ReadCallback.spvm
+lib/SPVM/Go/Coroutine.pm
+lib/SPVM/Go/Coroutine.spvm
+lib/SPVM/Go/Coroutine/State.pm
+lib/SPVM/Go/Coroutine/State.spvm
 lib/SPVM/Go/Schedule.pm
 lib/SPVM/Go/Schedule.spvm
 lib/SPVM/Go/Sync/RWMutex.c
