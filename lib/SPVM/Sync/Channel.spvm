@@ -5,9 +5,12 @@ class Sync::Channel {
   
   use Hash;
   use Sync::Mutex;
+  use Sync::Channel::ReadCallback;
   
   private enum {
-    READABLE_
+    READABLE_STATE_NONE,
+    READABLE_STATE_EXISTS,
+    READABLE_STATE_FINISHED,
   }
   
   # Fields
@@ -26,6 +29,8 @@ class Sync::Channel {
   has mutex : Sync::Mutex;
   
   has closed : int;
+  
+  has read_cb : rw Sync::Channel::ReadCallback;
   
   # Class Methods
   static method new : Sync::Channel ($options : object[] = undef) {
@@ -97,9 +102,9 @@ class Sync::Channel {
     while (1) {
       my $readable_state = $self->{readable_state};
       
-      if ($readable_state) {
+      if ($readable_state == READABLE_STATE_EXISTS) {
         my $object = $self->{readable_value};
-        $self->{readable_state} = 0;
+        $self->{readable_state} =  READABLE_STATE_FINISHED;
         
         return $object;
       }
@@ -112,7 +117,7 @@ class Sync::Channel {
           
           my $object = $values_in_buffer->[$base_offset];
           $self->{readable_value} = $object;
-          $self->{readable_state} = 1;
+          $self->{readable_state} = READABLE_STATE_EXISTS;
           
           $values_in_buffer->[$base_offset] = undef;
           
@@ -141,35 +146,35 @@ class Sync::Channel {
     my $capacity = $self->{capacity};
     
     if ($capacity == 0) {
-      while (1) {
-        
-      }
       
-      $self->{readable_value} = $object;
-      $self->{readable_state} = 1;
       while (1) {
         my $readable_state = $self->{readable_state};
-        if ($readable_state == 0) {
+        if ($readable_state == READABLE_STATE_NONE) {
+          $self->{readable_value} = $object;
+          $self->{readable_state} = READABLE_STATE_EXISTS;
           return;
         }
       }
     }
     else {
-      my $capacity = $self->{capacity};
-      my $length = $self->{length};
-      
-      if ($length < $capacity) {
-        my $values_in_buffer = $self->{values_in_buffer};
-        my $base_offset = $self->{base_offset};
-        my $offset = $base_offset + $length;
-        if ($offset >= $length) {
-          $offset -= $base_offset;
+      while (1) {
+        my $capacity = $self->{capacity};
+        my $length = $self->{length};
+        
+        if ($length < $capacity) {
+          my $values_in_buffer = $self->{values_in_buffer};
+          my $base_offset = $self->{base_offset};
+          my $offset = $base_offset + $length;
+          if ($offset >= $length) {
+            $offset -= $base_offset;
+          }
+          
+          $values_in_buffer->[$offset] = $object;
+          $length++;
+          
+          $self->{length} = $length;
+          return;
         }
-        
-        $values_in_buffer->[$offset] = $object;
-        $length++;
-        
-        $self->{length} = $length;
       }
     }
     
@@ -193,7 +198,4 @@ class Sync::Channel {
     return $self->{length};
   }
   
-  method can_read : int () {
-    return $self->{readable_state};
-  }
 }

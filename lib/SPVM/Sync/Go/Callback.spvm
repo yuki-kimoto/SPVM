@@ -1,0 +1,7 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Sync::Go::Callback : interface_t {
+  
+  required method : void ();
+}

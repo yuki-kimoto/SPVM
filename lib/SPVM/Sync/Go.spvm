@@ -1,0 +1,42 @@
+# Copyright (c) 2023 Yuki Kimoto
+# MIT License
+
+class Sync::Go {
+  use Sync::Go::Callback;
+  use Sync::Channel::ReadCallback;
+  
+  our $GO : Sync::Go;
+  
+  INIT {
+    $GO = new Sync::Go;
+  }
+  
+  static method new () {
+    return $GO;
+  }
+  
+  method go : void ($cb : Sync::Go::Callback) {
+    
+  }
+  
+  method make : Sync::Channel ($length : int = 0) {
+    
+  }
+  
+  method read : object () {
+    
+  }
+  
+  method write : void ($data : object) {
+    
+  }
+  
+  method select : void ($cases : object[], $default : Sync::Channel::ReadCallback = undef) {
+    
+  }
+  
+  private static method getenv : string ($name : string) {
+    
+  }
+}
+
