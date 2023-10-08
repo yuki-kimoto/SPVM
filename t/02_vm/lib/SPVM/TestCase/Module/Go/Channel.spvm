@@ -1,0 +1,11 @@
+class TestCase::Module::Go::Channel {
+  
+  use Go::Channel;
+  
+  static method basic : int () {
+    
+    my $channel = Go::Channel->new;
+    
+    return 1;
+  }
+}

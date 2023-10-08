@@ -1,3 +1,9 @@
+0.989051 2023-10-09
+  [Incompatible Changes]
+    * Remove the Sync::Mutex class. This class will be used as Go::Sync::RWMutex in future.
+  [New Experimental Features]
+    * Add the Go class and its related classes. These class doesn't work now.
+    
 0.989050 2023-10-04
   [Incompatible Changes]
     * Rename the Mutex class to the Sync::Mutex class.

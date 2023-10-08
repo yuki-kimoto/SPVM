@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Sync::Channel::ReadCallback : interface_t {
+class Go::Channel::ReadCallback : interface_t {
   
   required method : void ($data : object);
 }

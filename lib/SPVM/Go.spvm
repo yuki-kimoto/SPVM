@@ -1,25 +1,25 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Sync::Go {
-  use Sync::Go::Callback;
-  use Sync::Channel::ReadCallback;
+class Go {
+  use Go::Callback;
+  use Go::Channel::ReadCallback;
   
-  our $GO : Sync::Go;
+  our $GO : Go;
   
   INIT {
-    $GO = new Sync::Go;
+    $GO = new Go;
   }
   
   static method new () {
     return $GO;
   }
   
-  method go : void ($cb : Sync::Go::Callback) {
+  method go : void ($cb : Go::Callback) {
     
   }
   
-  method make : Sync::Channel ($length : int = 0) {
+  method make : Go::Channel ($length : int = 0) {
     
   }
   
@@ -31,7 +31,7 @@ class Sync::Go {
     
   }
   
-  method select : void ($cases : object[], $default : Sync::Channel::ReadCallback = undef) {
+  method select : void ($cases : object[], $default : Go::Channel::ReadCallback = undef) {
     
   }
   

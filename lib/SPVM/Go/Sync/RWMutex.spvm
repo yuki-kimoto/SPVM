@@ -1,10 +1,10 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Sync::Mutex {
+class Go::Sync::RWMutex {
   
   # Class Methods
-  native static method new : Sync::Mutex ();
+  native static method new : Go::Sync::RWMutex ();
   
   # Instance Methods
   native method DESTROY : void ();
@@ -13,8 +13,8 @@ class Sync::Mutex {
   
   native method unlock : void ();
   
-  native method reader_lock : void ();
+  native method r_lock : void ();
   
-  native method reader_unlock : void ();
+  native method r_unlock : void ();
 
 }

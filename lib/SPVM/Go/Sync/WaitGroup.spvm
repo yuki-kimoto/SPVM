@@ -1,19 +1,19 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Sync::WaitGroup {
-  use Sync::Mutex;
+class Go::Sync::WaitGroup {
+  use Go::Sync::RWMutex;
   
   has state : int;
   
-  has mutex : Sync::Mutex;
+  has mutex : Go::Sync::RWMutex;
   
   # Class Methods
-  static method new : Sync::WaitGroup () {
+  static method new : Go::Sync::WaitGroup () {
     
-    my $self = new Sync::WaitGroup;
+    my $self = new Go::Sync::WaitGroup;
     
-    $self->{mutex} = Sync::Mutex->new;
+    $self->{mutex} = Go::Sync::RWMutex->new;
     
     return $self;
   }

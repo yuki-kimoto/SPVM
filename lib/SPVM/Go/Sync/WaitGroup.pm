@@ -1,4 +1,4 @@
-package SPVM::Sync::WaitGroup;
+package SPVM::Go::Sync::WaitGroup;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::Sync::WaitGroup;
 
 =head1 Name
 
-SPVM::Sync::WaitGroup - Short Description
+SPVM::Go::Sync::WaitGroup - Short Description
 
 =head1 Description
 
-Sync::WaitGroup class of L<SPVM> has methods for someting.
+Go::Sync::WaitGroup class of L<SPVM> has methods for someting.
 
 =head1 Usage
 
-  use Sync::WaitGroup;
+  use Go::Sync::WaitGroup;
 
 =head1 Fields
 

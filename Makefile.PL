@@ -156,7 +156,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Array');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Hash');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Format');
-    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Sync::Mutex');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Go::Sync::RWMutex');
     
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Compiler');

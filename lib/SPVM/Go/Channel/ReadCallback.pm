@@ -1,4 +1,4 @@
-package SPVM::Sync::Channel::ReadCallback;
+package SPVM::Go::Channel::ReadCallback;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::Sync::Channel::ReadCallback;
 
 =head1 Name
 
-SPVM::Sync::Channel::ReadCallback - Short Description
+SPVM::Go::Channel::ReadCallback - Short Description
 
 =head1 Description
 
-Sync::Channel::ReadCallback interface of L<SPVM> has interface methods for someting.
+Go::Channel::ReadCallback interface of L<SPVM> has interface methods for someting.
 
 =head1 Usage
 
-  interface Sync::Channel::ReadCallback;
+  interface Go::Channel::ReadCallback;
 
 =head1 Interface Methods
 

@@ -1,10 +1,10 @@
-class TestCase::Module::Sync::WaitGroup {
+class TestCase::Module::Go::Sync::WaitGroup {
   
-  use Sync::WaitGroup;
+  use Go::Sync::WaitGroup;
   
   static method basic : int () {
     
-    my $wg = Sync::WaitGroup->new;
+    my $wg = Go::Sync::WaitGroup->new;
     
     $wg->add;
     

@@ -1,11 +1,11 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class Sync::Channel {
+class Go::Channel {
   
   use Hash;
   use Sync::Mutex;
-  use Sync::Channel::ReadCallback;
+  use Go::Channel::ReadCallback;
   
   private enum {
     READABLE_STATE_NONE,
@@ -30,16 +30,16 @@ class Sync::Channel {
   
   has closed : int;
   
-  has read_cb : rw Sync::Channel::ReadCallback;
+  has read_cb : rw Go::Channel::ReadCallback;
   
   # Class Methods
-  static method new : Sync::Channel ($options : object[] = undef) {
+  static method new : Go::Channel ($options : object[] = undef) {
     
     &check_option_names($options, ["capacity"]);
     
     my $options_h = Hash->new($options);
     
-    my $self = new Sync::Channel;
+    my $self = new Go::Channel;
     
     my $capacity = $options_h->delete_or_default_int("capacity", 0);
     $self->{capacity} = $capacity;
@@ -61,7 +61,7 @@ class Sync::Channel {
     return $self;
   }
   
-  static method make : Sync::Channel ($capacity : int = 0) {
+  static method make : Go::Channel ($capacity : int = 0) {
     my $self = &new({capacity => $capacity});
     
     return $self;
@@ -102,9 +102,9 @@ class Sync::Channel {
     while (1) {
       my $readable_state = $self->{readable_state};
       
-      if ($readable_state == READABLE_STATE_EXISTS) {
+      if ($readable_state == &READABLE_STATE_EXISTS) {
         my $object = $self->{readable_value};
-        $self->{readable_state} =  READABLE_STATE_FINISHED;
+        $self->{readable_state} =  &READABLE_STATE_FINISHED;
         
         return $object;
       }
@@ -117,7 +117,7 @@ class Sync::Channel {
           
           my $object = $values_in_buffer->[$base_offset];
           $self->{readable_value} = $object;
-          $self->{readable_state} = READABLE_STATE_EXISTS;
+          $self->{readable_state} = &READABLE_STATE_EXISTS;
           
           $values_in_buffer->[$base_offset] = undef;
           
@@ -149,9 +149,9 @@ class Sync::Channel {
       
       while (1) {
         my $readable_state = $self->{readable_state};
-        if ($readable_state == READABLE_STATE_NONE) {
+        if ($readable_state == &READABLE_STATE_NONE) {
           $self->{readable_value} = $object;
-          $self->{readable_state} = READABLE_STATE_EXISTS;
+          $self->{readable_state} = &READABLE_STATE_EXISTS;
           return;
         }
       }

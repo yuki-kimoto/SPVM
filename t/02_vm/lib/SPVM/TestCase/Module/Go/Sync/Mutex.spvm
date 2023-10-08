@@ -1,0 +1,19 @@
+class TestCase::Module::Go::Sync::RWMutex {
+  
+  use Go::Sync::RWMutex;
+  
+  static method basic : int () {
+    
+    my $mutex = Go::Sync::RWMutex->new;
+    
+    $mutex->lock;
+    
+    $mutex->unlock;
+    
+    $mutex->r_lock;
+    
+    $mutex->r_unlock;
+    
+    return 1;
+  }
+}

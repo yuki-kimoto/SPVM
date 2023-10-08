@@ -1,4 +1,4 @@
-package SPVM::Sync::Mutex;
+package SPVM::Go::Sync::RWMutex;
 
 
 
@@ -6,17 +6,17 @@ package SPVM::Sync::Mutex;
 
 =head1 Name
 
-SPVM::Sync::Mutex - Mutex
+SPVM::Go::Sync::RWMutex - Mutex
 
 =head1 Description
 
-Sync::Mutex class of L<SPVM> has methods to manipulate mutex.
+Go::Sync::RWMutex class of L<SPVM> has methods to manipulate mutex.
 
 =head1 Usage
 
-  use Sync::Mutex;
+  use Go::Sync::RWMutex;
   
-  my $mutex = Sync::Mutex->new;
+  my $mutex = Go::Sync::RWMutex->new;
   
   $mutex->lock;
   
@@ -24,7 +24,7 @@ Sync::Mutex class of L<SPVM> has methods to manipulate mutex.
 
 =head1 Class Methods
 
-  static method new : Sync::Mutex ();
+  static method new : Go::Sync::RWMutex ();
 
 =head1 Instance Methods
 
@@ -40,13 +40,13 @@ Sync::Mutex class of L<SPVM> has methods to manipulate mutex.
 
   method unlock : void ();
 
-=head2 reader_lock
+=head2 r_lock
 
-  method reader_lock : void ();
+  method r_lock : void ();
 
-=head2 reader_unlock
+=head2 r_unlock
 
-  method reader_unlock : void ();
+  method r_unlock : void ();
 
 =head1 Copyright & License
 

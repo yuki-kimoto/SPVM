@@ -1,4 +1,4 @@
-package SPVM::Sync::Go;
+package SPVM::Go;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::Sync::Go;
 
 =head1 Name
 
-SPVM::Sync::Go - Short Description
+SPVM::Go - Short Description
 
 =head1 Description
 
-Sync::Go class of L<SPVM> has methods for someting.
+Go class of L<SPVM> has methods for someting.
 
 =head1 Usage
 
-  use Sync::Go;
+  use Go;
 
 =head1 Fields
 

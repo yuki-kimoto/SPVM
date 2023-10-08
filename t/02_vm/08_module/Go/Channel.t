@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Module::Sync::Channel';
+use SPVM 'TestCase::Module::Go::Channel';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
-# Sync::Channel
+# Go::Channel
 {
-  ok(SPVM::TestCase::Module::Sync::Channel->basic);
+  ok(SPVM::TestCase::Module::Go::Channel->basic);
 }
 
 # All object is freed
