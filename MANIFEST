@@ -287,6 +287,14 @@ lib/SPVM/Go/Coroutine/State.native/include/.gitkeep
 lib/SPVM/Go/Coroutine/State.native/src/.gitkeep
 lib/SPVM/Go/Coroutine/State.pm
 lib/SPVM/Go/Coroutine/State.spvm
+lib/SPVM/Go/Event.pm
+lib/SPVM/Go/Event.spvm
+lib/SPVM/Go/Event/Coroutine.pm
+lib/SPVM/Go/Event/Coroutine.spvm
+lib/SPVM/Go/Event/SocketIO.pm
+lib/SPVM/Go/Event/SocketIO.spvm
+lib/SPVM/Go/Event/Thread.pm
+lib/SPVM/Go/Event/Thread.spvm
 lib/SPVM/Go/Schedule.pm
 lib/SPVM/Go/Schedule.spvm
 lib/SPVM/Go/Sync/RWMutex.c
