@@ -281,6 +281,10 @@ lib/SPVM/Go/Channel/ReadCallback.pm
 lib/SPVM/Go/Channel/ReadCallback.spvm
 lib/SPVM/Go/Coroutine.pm
 lib/SPVM/Go/Coroutine.spvm
+lib/SPVM/Go/Coroutine/State.c
+lib/SPVM/Go/Coroutine/State.config
+lib/SPVM/Go/Coroutine/State.native/include/.gitkeep
+lib/SPVM/Go/Coroutine/State.native/src/.gitkeep
 lib/SPVM/Go/Coroutine/State.pm
 lib/SPVM/Go/Coroutine/State.spvm
 lib/SPVM/Go/Schedule.pm
@@ -291,6 +295,12 @@ lib/SPVM/Go/Sync/RWMutex.pm
 lib/SPVM/Go/Sync/RWMutex.spvm
 lib/SPVM/Go/Sync/WaitGroup.pm
 lib/SPVM/Go/Sync/WaitGroup.spvm
+lib/SPVM/Go/Thread.c
+lib/SPVM/Go/Thread.config
+lib/SPVM/Go/Thread.native/include/.gitkeep
+lib/SPVM/Go/Thread.native/src/.gitkeep
+lib/SPVM/Go/Thread.pm
+lib/SPVM/Go/Thread.spvm
 lib/SPVM/Hash.c
 lib/SPVM/Hash.config
 lib/SPVM/Hash.pm
