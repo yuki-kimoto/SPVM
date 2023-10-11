@@ -15,7 +15,7 @@ class TestCase::Module::Scope::Guard {
           $string->[1] = 'B';
         };
         my $guard = Scope::Guard->new($handler);
-
+        
         unless ($handler == $guard->handler) {
           return 0;
         }
@@ -27,7 +27,29 @@ class TestCase::Module::Scope::Guard {
         return 0;
       }
     }
-
+    
+    # Executing the handler at the end of the scope
+    {
+      my $string = (mutable string)copy "abc";
+      {
+        my $handler = [has string : mutable string = $string] method : void () {
+          my $string = $self->{string};
+          
+          $string->[0] = 'A';
+          $string->[1] = 'B';
+        };
+        
+        # Temporary local variable is created if the instance is not assigned to a local variable.
+        Scope::Guard->new($handler);
+        
+        $string->[0] = 'P';
+      }
+      
+      unless ($string eq "ABc") {
+        return 0;
+      }
+    }
+    
     # Exceptions
     {
       my $handler : Scope::Guard::Handler;
