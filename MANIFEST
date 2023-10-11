@@ -196,6 +196,8 @@ lib/SPVM/Builder/Util/API.pm
 lib/SPVM/Byte.pm
 lib/SPVM/ByteList.pm
 lib/SPVM/ByteList.spvm
+lib/SPVM/Callback.pm
+lib/SPVM/Callback.spvm
 lib/SPVM/Cloneable.pm
 lib/SPVM/Cloneable.spvm
 lib/SPVM/Cloner.pm
