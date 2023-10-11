@@ -1,6 +1,7 @@
 0.989051 2023-10-11
   [New Feature]
     * Add the Callback class.
+    * Add the defer method to the Fn class.
   [Incompatible Changes]
     * The handler field in the Scope::Guard class is renamed to the callback field.
     * Remove the Scope::Guard::Handler.

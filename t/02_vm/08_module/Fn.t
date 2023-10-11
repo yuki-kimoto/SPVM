@@ -169,6 +169,7 @@ my $seed = time();
       warn "[Test Output]Perl Version Number:" . sprintf("%.20f", $perl_version_number) . ",SPVM Version Number:" . sprintf("%.20f", $spvm_version_number);
       ok($perl_version_number == $spvm_version_number);
     }
+    ok(SPVM::TestCase::Module::Fn->defer);
   }
   
   # Extra

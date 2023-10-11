@@ -8,6 +8,8 @@ class Fn {
   use Hash;
   use Sort;
   use List;
+  use Scope::Guard;
+  use Callback;
   
   enum {
     GET_CODE_POINT_ERROR_OVER_STRING_RANGE = -1,
@@ -1161,7 +1163,14 @@ class Fn {
     
     return $substring;
   }
-
+  
+  static method defer : Scope::Guard ($callback : Callback) {
+    
+    my $guard = Scope::Guard->new($callback);
+    
+    return $guard;
+  }
+  
   native static method _chr_native : string ($uchar : int);
   
   private precompile static method _parse_range : int[] ($range_format : string, $arg_name : string) {

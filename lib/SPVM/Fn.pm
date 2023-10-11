@@ -1140,6 +1140,12 @@ $basic_type_name must be defined. Otherwise an exception is thrown.
 
 The class specified by $basic_type_name must be loaded. Otherwise an exception is thrown.
 
+=head2 defer
+
+C<static method defer : L<Scope::Guard|SPVM::Scope::Guard> ($callback : L<Callback|SPVM::Callback>);>
+
+Calls the L<new|Scope::Guard/"new"> method in the L<Scope::Guard|SPVM::Scope::Guard> class and return its return value.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

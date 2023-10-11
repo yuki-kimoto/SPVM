@@ -4458,4 +4458,65 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  
+  static method defer : int () {
+    
+    # Executing the callback at the end of the scope
+    {
+      my $string = (mutable string)copy "abc";
+      {
+        my $callback = [has string : mutable string = $string] method : void () {
+          my $string = $self->{string};
+          
+          $string->[0] = 'A';
+          $string->[1] = 'B';
+        };
+        my $guard = Fn->defer($callback);
+        
+        unless ($callback == $guard->callback) {
+          return 0;
+        }
+        
+        $string->[0] = 'P';
+      }
+      
+      unless ($string eq "ABc") {
+        return 0;
+      }
+    }
+    
+    # Executing the callback at the end of the scope
+    {
+      my $string = (mutable string)copy "abc";
+      
+      {
+        # Temporary local variable is created if the instance is not assigned to a local variable.
+        Fn->defer([has string : mutable string = $string] method : void () {
+          my $string = $self->{string};
+          
+          $string->[0] = 'A';
+          $string->[1] = 'B';
+        });
+        
+        $string->[0] = 'P';
+      }
+      
+      unless ($string eq "ABc") {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      my $callback : Callback;
+      eval { Fn->defer($callback); } ;
+      unless (Fn->contains($@, "\$callback must be defined")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }
