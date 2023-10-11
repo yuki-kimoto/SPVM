@@ -359,8 +359,6 @@ lib/SPVM/Point3D.spvm
 lib/SPVM/Runtime.pm
 lib/SPVM/Scope/Guard.pm
 lib/SPVM/Scope/Guard.spvm
-lib/SPVM/Scope/Guard/Handler.pm
-lib/SPVM/Scope/Guard/Handler.spvm
 lib/SPVM/Short.pm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm

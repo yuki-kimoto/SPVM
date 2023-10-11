@@ -1,6 +1,0 @@
-# Copyright (c) 2023 Yuki Kimoto
-# MIT License
-
-class Scope::Guard::Handler : interface_t {
-  required method : void ();
-}

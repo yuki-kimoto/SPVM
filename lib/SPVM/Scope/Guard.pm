@@ -4,25 +4,25 @@ package SPVM::Scope::Guard;
 
 =head1 Name
 
-SPVM::Scope::Guard - Executing Handler at End of Scope
+SPVM::Scope::Guard - Executing Callback at End of Scope
 
 =head1 Usage
   
   use Scope::Guard;
   
-  # Executing the handler at the end of the scope
+  # Executing the callback at the end of the scope
   {
-    my $guard = Scope::Guard->new(method : void () {
+    Scope::Guard->new(method : void () {
       print "End of Scope\n";
     });
     
     print "Foo";
   }
   
-  # With a capture
+  # With field definitions
   {
     my $value = 1;
-    my $guard = Scope::Guard->new([$value : int] method : void () {
+    Scope::Guard->new([$value : int] method : void () {
       print "$value\n";
     });
     
@@ -31,31 +31,29 @@ SPVM::Scope::Guard - Executing Handler at End of Scope
 
 =head1 Description
 
-C<Scope::Guard> provides a feature to execue a hander at the end of the scope.
+The Scope::Guard class has the methods to execute a callback at the end of the scope.
 
 =head1 Fields
 
-=head2 handler
+=head2 callback
 
-  has handler : ro Scope::Guard::Handler;
+C<has callback : ro L<Callback|SPVM::Callback>;>
 
-A handler. The type is L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler>.
+A callback called at the end of the scope.
 
 =head1 Class Methods
 
 =head2 new
 
-C<static method new : L<Scope::Guard|SPVM::Scope::Guard> ($handler : L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler>);>
+C<static method new : L<Scope::Guard|SPVM::Scope::Guard> ($callback : L<Callback|SPVM::Callback>);>
 
 Creates a new C<Scope::Guard> object and returns it.
 
-$handler is set to the L</"handler"> field.
-
-$handler is a L<Scope::Guard::Handler|SPVM::Scope::Guard::Handler> object.
+$callback is set to the L</"callback"> field.
 
 Exceptions:
 
-$handler must be defined. Otherwise an exception is thrown.
+$callback must be defined. Otherwise an exception is thrown.
 
 =head1 Instance Methods
 
@@ -63,7 +61,7 @@ $handler must be defined. Otherwise an exception is thrown.
 
 C<method DESTROY : void ();>
 
-Executes the L</"handler">.
+Executes the L</"callback">.
 
 =head1 See Also
 

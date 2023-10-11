@@ -4,19 +4,19 @@ class TestCase::Module::Scope::Guard {
   
   static method basic : int () {
   
-    # Executing the handler at the end of the scope
+    # Executing the callback at the end of the scope
     {
       my $string = (mutable string)copy "abc";
       {
-        my $handler = [has string : mutable string = $string] method : void () {
+        my $callback = [has string : mutable string = $string] method : void () {
           my $string = $self->{string};
           
           $string->[0] = 'A';
           $string->[1] = 'B';
         };
-        my $guard = Scope::Guard->new($handler);
+        my $guard = Scope::Guard->new($callback);
         
-        unless ($handler == $guard->handler) {
+        unless ($callback == $guard->callback) {
           return 0;
         }
         
@@ -28,11 +28,11 @@ class TestCase::Module::Scope::Guard {
       }
     }
     
-    # Executing the handler at the end of the scope
+    # Executing the callback at the end of the scope
     {
       my $string = (mutable string)copy "abc";
       {
-        my $handler = [has string : mutable string = $string] method : void () {
+        my $callback = [has string : mutable string = $string] method : void () {
           my $string = $self->{string};
           
           $string->[0] = 'A';
@@ -40,7 +40,7 @@ class TestCase::Module::Scope::Guard {
         };
         
         # Temporary local variable is created if the instance is not assigned to a local variable.
-        Scope::Guard->new($handler);
+        Scope::Guard->new($callback);
         
         $string->[0] = 'P';
       }
@@ -52,9 +52,9 @@ class TestCase::Module::Scope::Guard {
     
     # Exceptions
     {
-      my $handler : Scope::Guard::Handler;
-      eval { Scope::Guard->new($handler); } ;
-      unless (Fn->contains($@, "\$handler must be defined")) {
+      my $callback : Callback;
+      eval { Scope::Guard->new($callback); } ;
+      unless (Fn->contains($@, "\$callback must be defined")) {
         return 0;
       }
     }

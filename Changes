@@ -1,7 +1,16 @@
 0.989051 2023-10-11
   [New Feature]
     * Add the Callback class.
-    
+  [Incompatible Changes]
+    * The handler field in the Scope::Guard class is renamed to the callback field.
+    * Remove the Scope::Guard::Handler.
+    * Change the definition of the new method in the Scope::Guard class.
+      [before]
+        static method new : Scope::Guard ($handler : Scope::Guard::Handler);
+      
+      [after]
+        static method new : Scope::Guard ($callback : Callback);
+      
 0.989050 2023-10-04
   [Incompatible Changes]
     * Rename the Mutex class to the Sync::Mutex class.

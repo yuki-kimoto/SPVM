@@ -3,24 +3,24 @@
 
 class Scope::Guard {
   
-  use Scope::Guard::Handler;
+  use Callback;
   
-  has handler : ro Scope::Guard::Handler;
+  has callback : ro Callback;
   
-  static method new : Scope::Guard ($handler : Scope::Guard::Handler) {
+  static method new : Scope::Guard ($callback : Callback) {
     
-    unless ($handler) {
-      die "\$handler must be defined.";
+    unless ($callback) {
+      die "\$callback must be defined.";
     }
-
+    
     my $self = new Scope::Guard;
     
-    $self->{handler} = $handler;
+    $self->{callback} = $callback;
     
     return $self;
   }
   
   method DESTROY : void () {
-    $self->{handler}->();
+    $self->{callback}->();
   }
 }
