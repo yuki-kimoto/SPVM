@@ -21,7 +21,8 @@
     
     * Rename the SPVM_API_new_env function in spvm_native.h to SPVM_NATIVE_new_env. This is undocumented function.
     * Remove the SPVM_API_free_env function. This is undocumented function.
-    
+  [Internal Changes]
+    * The pointer member is moved to the beginning of spvm_object structure.
 0.989050 2023-10-04
   [Incompatible Changes]
     * Rename the Mutex class to the Sync::Mutex class.

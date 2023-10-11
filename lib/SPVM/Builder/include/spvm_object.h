@@ -9,8 +9,8 @@
 
 // SPVM_OBJECT
 struct spvm_object {
-  SPVM_WEAKEN_BACKREF* weaken_backref_head;
   void* pointer;
+  SPVM_WEAKEN_BACKREF* weaken_backref_head;
   SPVM_RUNTIME_BASIC_TYPE* basic_type;
   int32_t ref_count;
   uint8_t type_dimension;
