@@ -17,6 +17,10 @@
 
 #define SPVM_NATIVE_VERSION_STRING SPVM_NATIVE_CREATE_VERSION_STRING(SPVM_NATIVE_VERSION_NUMBER);
 
+#define SPVM_NATIVE_GET_POINTER(object) (*(void**)object)
+
+#define SPVM_NATIVE_SET_POINTER(object, pointer) (*(void**)object = pointer)
+
 #define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)
 
 typedef union spvm_value SPVM_VALUE;

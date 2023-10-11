@@ -2367,7 +2367,7 @@ The basic type category for the any object type.
 
 The type flags.
 
-=head1 Version
+=head1 Macro Functions
 
 =head2 SPVM_NATIVE_VERSION_NUMBER
 
@@ -2376,8 +2376,6 @@ The version number of the SPVM language.
 =head2 SPVM_NATIVE_VERSION_STRING
 
 The version string of the SPVM language.
-
-=head1 Utility Functions
 
 =head2 spvm_warn
 
@@ -2389,6 +2387,18 @@ Examples:
 
   spvm_warn("Hello");
   spvm_warn("Hello %s%d", "Foo", 3);
+
+=head2 SPVM_NATIVE_GET_POINTER
+
+C<#define SPVM_NATIVE_GET_POINTER(object)>
+
+Gets the pointer saved in the object.
+
+=head2 SPVM_NATIVE_SET_POINTER
+
+C<#define SPVM_NATIVE_SET_POINTER(object, pointer)>
+
+Sets the pointer in the object.
 
 =head1 Examples
 

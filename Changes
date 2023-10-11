@@ -2,6 +2,9 @@
   [New Feature]
     * Add the Callback class.
     * Add the defer method to the Fn class.
+    * Add the SPVM_NATIVE_GET_POINTER macro function to the Native APIs.
+    * Add the SPVM_NATIVE_SET_POINTER macro function to the Native APIs.
+
   [Incompatible Changes]
     * The handler field in the Scope::Guard class is renamed to the callback field.
     * Remove the Scope::Guard::Handler.

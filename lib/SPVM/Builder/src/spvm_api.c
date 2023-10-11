@@ -3209,12 +3209,14 @@ void SPVM_API_set_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
 
 void* SPVM_API_get_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  return object->pointer;
+  void* pointer = SPVM_NATIVE_GET_POINTER(object);
+  
+  return pointer;
 }
 
 void SPVM_API_set_pointer(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, void* pointer) {
   
-  object->pointer = pointer;
+  SPVM_NATIVE_SET_POINTER(object, pointer);
 }
 
 SPVM_RUNTIME_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name) {
