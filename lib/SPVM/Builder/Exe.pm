@@ -576,7 +576,7 @@ sub create_bootstrap_main_func_source {
 
 int32_t main(int32_t command_args_length, const char *command_args[]) {
   
-  SPVM_ENV* env_api = SPVM_API_new_env();
+  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
   
   void* compiler = env_api->api->compiler->new_instance();
   

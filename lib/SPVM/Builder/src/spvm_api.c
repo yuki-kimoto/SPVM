@@ -7,30 +7,25 @@
 #include <errno.h>
 
 #include "spvm_native.h"
-
 #include "spvm_api.h"
 #include "spvm_vm.h"
 #include "spvm_api_runtime.h"
 #include "spvm_api_allocator.h"
 #include "spvm_api_string_buffer.h"
 #include "spvm_opcode.h"
-
 #include "spvm_strerror.h"
 #include "spvm_object.h"
 #include "spvm_allocator.h"
 #include "spvm_weaken_backref.h"
 #include "spvm_hash.h"
 #include "spvm_string_buffer.h"
-
 #include "spvm_runtime.h"
 #include "spvm_runtime_string.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_class_var.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_method.h"
-
 #include "spvm_implement.h"
-
 #include "spvm_api_string_buffer.h"
 #include "spvm_api_compiler.h"
 #include "spvm_api_runtime.h"
@@ -43,10 +38,13 @@
 #include "spvm_api_type.h"
 #include "spvm_api_internal.h"
 #include "spvm_api_mutex.h"
-
 #include "spvm_mutex.h"
 
 static const char* FILE_NAME = "spvm_api.c";
+
+SPVM_ENV* SPVM_NATIVE_new_env(void) {
+  return SPVM_API_new_env();
+}
 
 SPVM_ENV* SPVM_API_new_env(void) {
 
@@ -93,6 +91,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
   };
   SPVM_ENV_API* env_api = calloc(1, sizeof(env_api_init));
   memcpy(env_api, env_api_init, sizeof(env_api_init));
+
+
 
 
   // Native APIs

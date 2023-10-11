@@ -59,7 +59,7 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   else if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
     void* spvm_env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
     
-    SPVM_ENV* env_api = SPVM_API_new_env();
+    SPVM_ENV* env_api = SPVM_NATIVE_new_env();
     
     env = env_api->get_pointer(env_api, NULL, spvm_env);
     
@@ -78,7 +78,7 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
     void* spvm_stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
     
-    SPVM_ENV* env_api = SPVM_API_new_env();
+    SPVM_ENV* env_api = SPVM_NATIVE_new_env();
     
     stack = env_api->get_pointer(env_api, NULL, spvm_stack);
     
@@ -4964,7 +4964,7 @@ new(...)
   
   SV* sv_compiler = ST(1);
   
-  SPVM_ENV* new_env = SPVM_API_new_env();
+  SPVM_ENV* new_env = SPVM_NATIVE_new_env();
   
   SV* sv_self = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Env");
   HV* hv_self = (HV*)SvRV(sv_self);

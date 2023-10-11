@@ -519,10 +519,6 @@ struct spvm_api_mutex {
   void (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
 };
 
-SPVM_ENV* SPVM_API_new_env(void);
-
-void SPVM_API_free_env(SPVM_ENV* env);
-
 enum {
   SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN,
   SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF,
@@ -565,5 +561,9 @@ enum {
   SPVM_NATIVE_C_TYPE_FLAG_REF = 1,
   SPVM_NATIVE_C_TYPE_FLAG_MUTABLE = 2,
 };
+
+// These functions are linked only by SPVM itself,
+// so native classes cannot use these functions.
+SPVM_ENV* SPVM_NATIVE_new_env(void);
 
 #endif

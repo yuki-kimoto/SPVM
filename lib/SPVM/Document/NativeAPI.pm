@@ -1731,7 +1731,7 @@ Creates a new string array.
 
 The alias for the following code using L</"dump">.
 
-  const char* ret = env->get_chars(env, stack, SPVM_API_dump(env, stack, object));
+  const char* ret = env->get_chars(env, stack, env->dump(env, stack, object));
 
 =head2 new_pointer_object_no_mortal
 
