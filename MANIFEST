@@ -342,8 +342,6 @@ lib/SPVM/Native/MethodCall.c
 lib/SPVM/Native/MethodCall.config
 lib/SPVM/Native/MethodCall.pm
 lib/SPVM/Native/MethodCall.spvm
-lib/SPVM/Native/MethodCall/Callback.pm
-lib/SPVM/Native/MethodCall/Callback.spvm
 lib/SPVM/Native/Runtime.c
 lib/SPVM/Native/Runtime.config
 lib/SPVM/Native/Runtime.pm

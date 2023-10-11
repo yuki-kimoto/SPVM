@@ -1,6 +1,0 @@
-# Copyright (c) 2023 Yuki Kimoto
-# MIT License
-
-class Native::MethodCall::Callback : interface_t {
-  required method : void ();
-}

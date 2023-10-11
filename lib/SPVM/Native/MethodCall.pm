@@ -34,13 +34,13 @@ Create a class method call and returns it. It is a L<Native::MethodCall>.
 
 =head2 call_callback
 
-C<static method call_callback : void ($callback : L<Native::MethodCall::Callback|SPVM::Native::MethodCall::Callback>, $error_id : int*, $stack = undef : L<Native::Stack|SPVM::Native::Stack>);>
+C<static method call_callback : void ($callback : L<Callback|SPVM::Callback>, $error_id : int*, $stack = undef : L<Native::Stack|SPVM::Native::Stack>);>
 
 Calls a callback with a stack. If $stack is not defined, the current stack is used.
 
 The stack is a L<Native::Stack|SPVM::Native::Stack> object.
 
-The callback is a L<Native::MethodCall::Callback|SPVM::Native::MethodCall::Callback> object.
+The callback is a L<Callback|SPVM::Callback> object.
 
 If the callback throw exception, the error id is set to $error_id. Otherwise 0 is set to $error_id.
 

@@ -204,7 +204,6 @@ sub get_spvm_compiler_and_runtime_class_file_names {
     SPVM/Native/Field.spvm
     SPVM/Native/Method.c
     SPVM/Native/MethodCall.c
-    SPVM/Native/MethodCall/Callback.spvm
     SPVM/Native/MethodCall.spvm
     SPVM/Native/Method.spvm
     SPVM/Native/ClassFile.c

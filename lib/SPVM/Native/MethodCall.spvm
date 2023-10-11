@@ -3,14 +3,14 @@
 
 class Native::MethodCall {
   use Native::Method;
-  use Native::MethodCall::Callback;
+  use Callback;
   
   has method : Native::Method;
   
   # Class Methods
   native static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
   
-  native static method call_callback : void ($callback : Native::MethodCall::Callback, $error_id : int*, $stack : Native::Stack = undef);
+  native static method call_callback : void ($callback : Callback, $error_id : int*, $stack : Native::Stack = undef);
   
   native static method call_class_method : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : Native::Stack = undef, $env : Native::Env = undef);
   
