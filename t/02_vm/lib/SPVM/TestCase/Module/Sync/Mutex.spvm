@@ -9,6 +9,8 @@ class TestCase::Module::Sync::Mutex {
   
   our $MUTEX : public Sync::Mutex;
   
+  our $INCREMENT_VALUE : public int;
+  
   INIT {
     $MUTEX = Sync::Mutex->new;
   }
@@ -28,6 +30,42 @@ class TestCase::Module::Sync::Mutex {
     return 1;
   }
 
+  static method increment : int () {
+    
+    my $thread = TestCase::Util::Thread->new(method : void () {
+      my $mutex = $TestCase::Module::Sync::Mutex::MUTEX;
+      
+      for (my $i = 0; $i < 10000; $i++) {
+        $mutex->lock;
+        
+        $TestCase::Module::Sync::Mutex::INCREMENT_VALUE++;
+        
+        $mutex->unlock;
+      }
+    });
+    
+    my $thread2 = TestCase::Util::Thread->new(method : void () {
+      my $mutex = $TestCase::Module::Sync::Mutex::MUTEX;
+      
+      for (my $i = 0; $i < 10000; $i++) {
+        $mutex->lock;
+        
+        $TestCase::Module::Sync::Mutex::INCREMENT_VALUE++;
+        
+        $mutex->unlock;
+      }
+    });
+    
+    $thread->join;
+    $thread2->join;
+    
+    unless ($TestCase::Module::Sync::Mutex::INCREMENT_VALUE == 20000) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   static method thread : int () {
     
     $TestCase::Module::Sync::Mutex::VALUE = 0;
