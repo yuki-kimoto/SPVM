@@ -7,6 +7,12 @@ class TestCase::Module::Sync::Mutex {
   
   our $VALUES : public int[];
   
+  our $MUTEX : public Sync::Mutex;
+  
+  INIT {
+    $MUTEX = Sync::Mutex->new;
+  }
+  
   static method basic : int () {
     
     my $mutex = Sync::Mutex->new;
