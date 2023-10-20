@@ -14,6 +14,8 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 # SPVM::Byte
 {
   ok(SPVM::TestCase::Module::Sync::Mutex->basic);
+  
+  ok(SPVM::TestCase::Module::Sync::Mutex->thread);
 }
 
 # All object is freed

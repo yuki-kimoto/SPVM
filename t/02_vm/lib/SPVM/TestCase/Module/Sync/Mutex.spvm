@@ -3,6 +3,10 @@ class TestCase::Module::Sync::Mutex {
   use Sync::Mutex;
   use TestCase::Util::Thread;
   
+  our $VALUE : public int;
+  
+  our $VALUES : public int[];
+  
   static method basic : int () {
     
     my $mutex = Sync::Mutex->new;
@@ -14,6 +18,58 @@ class TestCase::Module::Sync::Mutex {
     $mutex->reader_lock;
     
     $mutex->reader_unlock;
+    
+    return 1;
+  }
+
+  static method thread : int () {
+    
+    $TestCase::Module::Sync::Mutex::VALUE = 0;
+    
+    $TestCase::Module::Sync::Mutex::VALUES = [0, 0];
+    
+    my $values = [0, 0];
+    
+    my $thread = TestCase::Util::Thread->new([has foo : int[] = $values] method : void () {
+      
+      $TestCase::Module::Sync::Mutex::VALUE = 1;
+      
+      $TestCase::Module::Sync::Mutex::VALUES->[0] = 2;
+      
+      $self->{foo}[0] = 5;
+    });
+    
+    my $thread2 = TestCase::Util::Thread->new([has foo : int[] = $values] method : void () {
+      
+      $TestCase::Module::Sync::Mutex::VALUES->[1] = 3;
+      
+      $self->{foo}[1] = 7;
+    });
+    
+    $thread->join;
+    $thread2->join;
+    
+    unless ($VALUE == 1) {
+      return 0;
+    }
+    
+    unless ($VALUES->[0] == 2) {
+      return 0;
+    }
+    
+    unless ($VALUES->[1] == 3) {
+      return 0;
+    }
+    
+    unless ($values->[0] == 5) {
+      return 0;
+    }
+    
+    unless ($values->[1] == 7) {
+      return 0;
+    }
+    
+    $VALUES = undef;
     
     return 1;
   }
