@@ -37,15 +37,34 @@ class TestCase::Module::Sync::Mutex {
     my $values = [0, 0];
     
     my $thread = TestCase::Util::Thread->new([has foo : int[] = $values] method : void () {
+      my $mutex = $TestCase::Module::Sync::Mutex::MUTEX;
+      
+      $mutex->lock;
+      
+      $mutex->unlock;
+      
+      $mutex->reader_lock;
+      
+      $mutex->reader_unlock;
       
       $TestCase::Module::Sync::Mutex::VALUE = 1;
       
       $TestCase::Module::Sync::Mutex::VALUES->[0] = 2;
       
       $self->{foo}[0] = 5;
+      
     });
     
     my $thread2 = TestCase::Util::Thread->new([has foo : int[] = $values] method : void () {
+      my $mutex = $TestCase::Module::Sync::Mutex::MUTEX;
+      
+      $mutex->lock;
+      
+      $mutex->unlock;
+      
+      $mutex->reader_lock;
+      
+      $mutex->reader_unlock;
       
       $TestCase::Module::Sync::Mutex::VALUES->[1] = 3;
       
