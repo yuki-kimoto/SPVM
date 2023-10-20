@@ -55,8 +55,6 @@ int32_t SPVM__TestCase__Util__Thread__create(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__Util__Thread__joinable(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t e;
-  
   void* obj_thread = stack[0].oval;
   
   std::thread* nt_thread = (std::thread*)env->get_pointer(env, stack, obj_thread);
@@ -69,8 +67,6 @@ int32_t SPVM__TestCase__Util__Thread__joinable(SPVM_ENV* env, SPVM_VALUE* stack)
 }
 
 int32_t SPVM__TestCase__Util__Thread__join(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t e;
   
   void* obj_thread = stack[0].oval;
   
@@ -89,8 +85,6 @@ int32_t SPVM__TestCase__Util__Thread__join(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 
 int32_t SPVM__TestCase__Util__Thread__detach(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t e;
   
   void* obj_thread = stack[0].oval;
   
@@ -118,6 +112,28 @@ int32_t SPVM__TestCase__Util__Thread__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) 
   }
   
   env->free_memory_block(env, stack, nt_thread);
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__Util__Thread__get_id(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_thread = stack[0].oval;
+  
+  std::thread* nt_thread = (std::thread*)env->get_pointer(env, stack, obj_thread);
+  
+  std::thread::id* thread_id = (std::thread::id*)env->new_memory_block(env, stack, sizeof(std::thread::id));
+  
+  *thread_id = nt_thread->get_id();
+  
+  void* obj_thread_id = env->new_object_by_name(env, stack, "TestCase::Util::Thread::ID", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_pointer(env, stack, obj_thread_id, (void*)thread_id);
+  
+  stack[0].oval = obj_thread_id;
   
   return 0;
 }

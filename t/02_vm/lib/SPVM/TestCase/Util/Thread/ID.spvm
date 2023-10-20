@@ -1,0 +1,17 @@
+class TestCase::Util::Thread::ID : pointer {
+  
+  # Instance Methods
+  native method eq : int ($thread_id : TestCase::Util::Thread::ID);
+  
+  native method ne : int ($thread_id : TestCase::Util::Thread::ID);
+  
+  native method gt : int ($thread_id : TestCase::Util::Thread::ID);
+  
+  native method ge : int ($thread_id : TestCase::Util::Thread::ID);
+  
+  native method lt : int ($thread_id : TestCase::Util::Thread::ID);
+  
+  native method le : int ($thread_id : TestCase::Util::Thread::ID);
+  
+  native method DESTROY : void ();
+}

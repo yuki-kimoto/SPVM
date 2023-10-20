@@ -806,6 +806,7 @@ t/02_vm/lib/SPVM/TestCase/Module/IntList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/List.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Long.spvm
 t/02_vm/lib/SPVM/TestCase/Module/LongList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Mutex.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Native/MethodCall.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point3D.spvm
@@ -823,6 +824,7 @@ t/02_vm/lib/SPVM/TestCase/Move.spvm
 t/02_vm/lib/SPVM/TestCase/Mulnum.spvm
 t/02_vm/lib/SPVM/TestCase/MulnumArray.spvm
 t/02_vm/lib/SPVM/TestCase/Multiply.spvm
+t/02_vm/lib/SPVM/TestCase/Mutex.spvm
 t/02_vm/lib/SPVM/TestCase/NativeAPI.c
 t/02_vm/lib/SPVM/TestCase/NativeAPI.config
 t/02_vm/lib/SPVM/TestCase/NativeAPI.spvm
@@ -908,6 +910,12 @@ t/02_vm/lib/SPVM/TestCase/UseResource/Mylib2.spvm
 t/02_vm/lib/SPVM/TestCase/Util/Thread.config
 t/02_vm/lib/SPVM/TestCase/Util/Thread.cpp
 t/02_vm/lib/SPVM/TestCase/Util/Thread.spvm
+t/02_vm/lib/SPVM/TestCase/Util/Thread/ID.config
+t/02_vm/lib/SPVM/TestCase/Util/Thread/ID.cpp
+t/02_vm/lib/SPVM/TestCase/Util/Thread/ID.spvm
+t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.config
+t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.cpp
+t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.spvm
 t/02_vm/lib/SPVM/TestCase/Warn.spvm
 t/02_vm/lib/SPVM/TestCase/Weaken.spvm
 t/02_vm/lib/SPVM/TestCase/While.spvm

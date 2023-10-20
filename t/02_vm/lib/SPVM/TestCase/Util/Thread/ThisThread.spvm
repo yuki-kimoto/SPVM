@@ -1,0 +1,6 @@
+class TestCase::Util::Thread::ThisThread {
+  use TestCase::Util::Thread::ID;
+  
+  # Instance Methods
+  native static method get_id : TestCase::Util::Thread::ID ();
+}

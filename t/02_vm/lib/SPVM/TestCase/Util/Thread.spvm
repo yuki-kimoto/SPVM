@@ -1,5 +1,6 @@
 class TestCase::Util::Thread {
   use Callback;
+  use TestCase::Util::Thread::ID;
   
   # Fields
   has exception : ro string;
@@ -22,7 +23,7 @@ class TestCase::Util::Thread {
   
   # Instance Methods
   native private method create : void ();
-
+  
   native method join : void ();
   
   native method detach : void ();
@@ -30,5 +31,7 @@ class TestCase::Util::Thread {
   native method joinable : int ();
   
   native method DESTROY : void ();
+  
+  native method get_id : TestCase::Util::Thread::ID ();
   
 }
