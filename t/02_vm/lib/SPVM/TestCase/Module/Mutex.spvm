@@ -1,0 +1,9 @@
+class TestCase::Module::Mutex {
+  use Mutex;
+  use TestCase::Util::Trhead;
+  
+  static method thread : int () {
+    
+    return 1;
+  }
+}
