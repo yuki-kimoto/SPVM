@@ -1,6 +1,7 @@
 class TestCase::Module::Sync::Mutex {
   
   use Sync::Mutex;
+  use TestCase::Util::Thread;
   
   static method basic : int () {
     

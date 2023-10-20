@@ -1,0 +1,34 @@
+class TestCase::Util::Thread {
+  use Callback;
+  
+  # Fields
+  has exception : ro string;
+  
+  has error_id : ro int;
+  
+  has task : Callback;
+  
+  # Class Methods
+  static method new : TestCase::Util::Thread ($task : Callback) {
+    
+    my $self = new TestCase::Util::Thread;
+    
+    $self->{task} = $task;
+    
+    $self->create;
+    
+    return $self;
+  }
+  
+  # Instance Methods
+  native private method create : void ();
+
+  native method join : void ();
+  
+  native method detach : void ();
+  
+  native method joinable : int ();
+  
+  native method DESTROY : void ();
+  
+}
