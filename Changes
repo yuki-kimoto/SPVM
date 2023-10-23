@@ -3,7 +3,9 @@
     * Add the get_memory_blocks_count method to the Fn class.
       
       static method get_memory_blocks_count : int ();
-      
+  [Fix Warnings]
+    * Fix warnings in Windows such as "warning: implicit declaration of function 'InitializeSRWLock';"
+    
 0.989051 2023-10-11
   [New Feature]
     * Add the Callback class.
