@@ -7,6 +7,7 @@
 #if defined(_WIN32)
 
 #include <windows.h>
+#include <synchapi.h>
 
 void SPVM_MUTEX_init(void* mutex) {
   
