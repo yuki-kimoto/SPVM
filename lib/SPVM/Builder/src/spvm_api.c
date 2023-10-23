@@ -626,13 +626,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
 
 int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   int8_t value = class_var->data.bval;
   
@@ -641,13 +635,7 @@ int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   int16_t value = class_var->data.sval;
   
@@ -656,13 +644,7 @@ int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNT
 
 int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   int32_t value = class_var->data.ival;
   
@@ -671,14 +653,7 @@ int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   int64_t value = class_var->data.lval;
   
@@ -687,13 +662,7 @@ int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
 
 float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   float value = class_var->data.fval;
  
@@ -702,13 +671,7 @@ float SPVM_API_get_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
 
 double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   double value = class_var->data.dval;
   
@@ -717,13 +680,7 @@ double SPVM_API_get_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNT
 
 SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)class_var->data.oval;
   SPVM_OBJECT* value = SPVM_API_get_object_no_weaken_address(env, stack, value_maybe_weaken);
@@ -733,13 +690,7 @@ SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPV
 
 SPVM_OBJECT** SPVM_API_get_class_var_object_ref(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&class_var->data.oval;
   
@@ -753,97 +704,57 @@ SPVM_OBJECT* SPVM_API_get_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPV
 
 void SPVM_API_set_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int8_t value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   class_var->data.bval = value;
 }
 
 void SPVM_API_set_class_var_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int16_t value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   class_var->data.sval = value;
 }
 
 void SPVM_API_set_class_var_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int32_t value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   class_var->data.ival = value;
 }
 
 void SPVM_API_set_class_var_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, int64_t value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   class_var->data.lval = value;
 }
 
 void SPVM_API_set_class_var_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, float value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   class_var->data.fval = value;
 }
 
 void SPVM_API_set_class_var_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, double value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   class_var->data.dval = value;
 }
 
 void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value) {
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_type = class_var->current_basic_type;
-  
-  assert(basic_type);
-  
-  int32_t class_vars_length = basic_type->class_vars_length;
-  
-  assert(class_var->index >= 0 && class_var->index < class_vars_length);
+  assert(class_var);
   
   void* object_ref = &class_var->data.oval;
   SPVM_API_assign_object(env, stack, object_ref, value);
 }
 
 void SPVM_API_set_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value) {
+  
+  assert(class_var);
   
   SPVM_API_set_class_var_object(env, stack, class_var, value);
 }
