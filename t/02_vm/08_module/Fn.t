@@ -170,6 +170,8 @@ my $seed = time();
       ok($perl_version_number == $spvm_version_number);
     }
     ok(SPVM::TestCase::Module::Fn->defer);
+    
+    ok(SPVM::TestCase::Module::Fn->get_memory_blocks_count);
   }
   
   # Extra

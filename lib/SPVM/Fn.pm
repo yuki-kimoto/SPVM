@@ -1146,6 +1146,12 @@ C<static method defer : L<Scope::Guard|SPVM::Scope::Guard> ($callback : L<Callba
 
 Calls the L<new|Scope::Guard/"new"> method in the L<Scope::Guard|SPVM::Scope::Guard> class and return its return value.
 
+=head2 get_memory_blocks_count
+
+  static method get_memory_blocks_count : int ();
+
+Gets the count of the memory blocks allocated by the L<new_memory_block|SPVM::Document::NativeAPI/"new_memory_block"> native API.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

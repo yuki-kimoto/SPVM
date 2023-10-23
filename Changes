@@ -1,3 +1,9 @@
+0.989052 2023-10-24
+  [New Features]
+    * Add the get_memory_blocks_count method to the Fn class.
+      
+      static method get_memory_blocks_count : int ();
+      
 0.989051 2023-10-11
   [New Feature]
     * Add the Callback class.
