@@ -6,9 +6,6 @@
 
 #if defined(_WIN32)
 
-// Windows 8.1+
-#define _WIN32_WINNT 0x0603
-
 #include <windows.h>
 #include <synchapi.h>
 
