@@ -1148,9 +1148,15 @@ Calls the L<new|Scope::Guard/"new"> method in the L<Scope::Guard|SPVM::Scope::Gu
 
 =head2 get_memory_blocks_count
 
-  static method get_memory_blocks_count : int ();
+C<static method get_memory_blocks_count : int ();>
 
 Gets the count of the memory blocks allocated by the L<new_memory_block|SPVM::Document::NativeAPI/"new_memory_block"> native API.
+
+=head2 to_address
+
+C<static method to_address : string ($object : object);>
+
+Gets the address of an object $object as a string.
 
 =head1 Copyright & License
 

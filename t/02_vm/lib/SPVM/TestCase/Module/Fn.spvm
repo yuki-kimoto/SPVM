@@ -4542,4 +4542,26 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  
+  static method to_address : int () {
+    
+    {
+      my $point = Point->new;
+      
+      unless (Fn->to_address($point) eq Format->sprintf("%p", [(object)$point])) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $point = (Point)undef;
+      
+      unless (Fn->to_address($point) eq Format->sprintf("%p", [(object)$point])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

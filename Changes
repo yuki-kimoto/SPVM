@@ -1,3 +1,9 @@
+0.989053 2023-10-26
+  [New Feautres]
+    * Add the to_address method to the Fn class.
+    
+      static method to_address : string ($object : object);
+    
 0.989052 2023-10-24
   [New Features]
     * Add the get_memory_blocks_count method to the Fn class.
