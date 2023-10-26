@@ -17,27 +17,17 @@ class List {
   
   # Class methods
   static method new : List ($array : object[] = undef, $capacity : int = -1) {
-    my $length : int;
-    if ($array) {
-      $length = @$array;
-    }
-    else {
-      $length = 0;
-    }
+    my $self = new List;
     
-    my $self = &new_len($array, $length, $capacity);
-    
-    if ($array) {
-      Array->memcpy_object_address($self->{array}, 0, $array, 0, $length);
-    }
+    $self->init($array, $capacity);
     
     return $self;
   }
-
-=pod
-
+  
   protected method init : void ($array : object[] = undef, $capacity : int = -1) {
+    
     my $length : int;
+    
     if ($array) {
       $length = @$array;
     }
@@ -45,17 +35,14 @@ class List {
       $length = 0;
     }
     
-    my $self = &new_len($array, $length, $capacity);
+    $self->init_len($array, $length, $capacity);
     
     if ($array) {
       Array->memcpy_object_address($self->{array}, 0, $array, 0, $length);
     }
     
-    return $self;
   }
-
-=cut
-
+  
   static method new_len : List ($proto_array : object[], $length : int, $capacity : int = -1) {
     my $self = new List;
     
