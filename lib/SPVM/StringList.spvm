@@ -1,7 +1,7 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class StringList {
+class StringList extends List {
   use Fn;
   use Array;
   
@@ -9,11 +9,6 @@ class StringList {
   enum {
     DEFAULT_CAPACITY = 4,
   }
-  
-  # Fields
-  has capacity : ro int;
-  has length : ro int;
-  has array : string[];
   
   # Class methods
   static method new : StringList ($array : string[] = undef, $capacity : int = -1) {
@@ -28,7 +23,7 @@ class StringList {
     my $self = &new_len($length, $capacity);
     
     if ($array) {
-      Array->memcpy_string_address($self->{array}, 0, $array, 0, $length);
+      Array->memcpy_object_address($self->{array}, 0, $array, 0, $length);
     }
     
     return $self;
@@ -70,7 +65,7 @@ class StringList {
     
     my $element = $self->{array}[$index];
     
-    return $element;
+    return (string)$element;
   }
   
   method insert : void ($index : int, $element : string) {
@@ -91,7 +86,7 @@ class StringList {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      Array->memmove_string_address($elements, $dist_index, $elements, $index, $move_length);
+      Array->memmove_object_address($elements, $dist_index, $elements, $index, $move_length);
     }
     $elements->[$index] = $element;
     
@@ -107,11 +102,11 @@ class StringList {
     
     my $element = $self->{array}[$length - 1];
     
-    $self->{array}[$length - 1] = 0;
+    $self->{array}[$length - 1] = undef;
     
     $self->{length}--;
     
-    return $element;
+    return (string)$element;
   }
   
   method push : void ($element : string) {
@@ -142,11 +137,11 @@ class StringList {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    Array->memmove_string_address($elements, $dist_index, $elements, $src_index, $move_length);
+    Array->memmove_object_address($elements, $dist_index, $elements, $src_index, $move_length);
     
     $self->{length}--;
     
-    return $remove_value;
+    return (string)$remove_value;
   }
   
   method replace : void ($offset : int, $remove_length : int, $replace : string[]) {
@@ -170,10 +165,10 @@ class StringList {
     $self->_maybe_extend($new_length);
     
     my $move_length = $self->{length} - $offset - $remove_length;
-    Array->memmove_string_address($self->{array}, $offset + $replace_length, $self->{array}, $offset + $remove_length, $move_length);
+    Array->memmove_object_address($self->{array}, $offset + $replace_length, $self->{array}, $offset + $remove_length, $move_length);
     
     if ($replace) {
-      Array->memcpy_string_address($self->{array}, $offset, $replace, 0, $replace_length);
+      Array->memcpy_object_address($self->{array}, $offset, $replace, 0, $replace_length);
     }
     
     $self->{length} = $new_length;
@@ -189,7 +184,7 @@ class StringList {
     if ($new_capacity > $capacity) {
       my $length = $self->{length};
       my $new_array = new string[$new_capacity];
-      Array->memcpy_string_address($new_array, 0, $self->{array}, 0, $length);
+      Array->memcpy_object_address($new_array, 0, $self->{array}, 0, $length);
       $self->{array} = $new_array;
       $self->{capacity} = $new_capacity;
     }
@@ -204,10 +199,10 @@ class StringList {
     
     if ($new_length > $length) {
       $self->_maybe_extend($new_length);
-      Array->memset_string($self->{array}, undef, $length, $new_length - $length);
+      Array->memset_object($self->{array}, undef, $length, $new_length - $length);
     }
     elsif ($new_length < $length) {
-      Array->memset_string($self->{array}, undef, $new_length, $length - $new_length);
+      Array->memset_object($self->{array}, undef, $new_length, $length - $new_length);
     }
     
     $self->{length} = $new_length;
@@ -240,7 +235,7 @@ class StringList {
       die "The length of \$array must be \$same as the length of \$list.";
     }
     
-    Array->memcpy_string_address($self->{array}, 0, $array, 0, $current_length);
+    Array->memcpy_object_address($self->{array}, 0, $array, 0, $current_length);
   }
   
   method shift : string () {
@@ -254,13 +249,13 @@ class StringList {
     
     my $element = $elements->[0];
     
-    Array->memmove_string_address($elements, 0, $elements, 1, $length - 1);
+    Array->memmove_object_address($elements, 0, $elements, 1, $length - 1);
     
-    $elements->[$length - 1] = 0;
+    $elements->[$length - 1] = undef;
     
     $self->{length}--;
     
-    return $element;
+    return (string)$element;
   }
   
   method to_array : string[] () {
@@ -270,13 +265,13 @@ class StringList {
     
     my $elements = $self->{array};
     
-    Array->memcpy_string_address($new_array, 0, $elements, 0, $length);
+    Array->memcpy_object_address($new_array, 0, $elements, 0, $length);
     
     return $new_array;
   }
   
   method get_array_unsafe : string[] () {
-    return $self->{array};
+    return (string[])$self->{array};
   }
   
   method unshift : void ($element : string) {
@@ -288,7 +283,7 @@ class StringList {
     
     my $elements = $self->{array};
     
-    Array->memmove_string_address($elements, 1, $elements, 0, $length);
+    Array->memmove_object_address($elements, 1, $elements, 0, $length);
     
     $elements->[0] = $element;
     $self->{length} = $new_length;
@@ -310,7 +305,7 @@ class StringList {
     
     my $length = $self->{length};
     my $elements = $self->{array};
-    Array->memcpy_string_address($new_array, 0, $elements, 0, $length);
+    Array->memcpy_object_address($new_array, 0, $elements, 0, $length);
     
     $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
