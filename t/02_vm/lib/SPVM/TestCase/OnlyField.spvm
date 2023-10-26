@@ -1,3 +1,0 @@
-class TestCase::OnlyField : public {
-  has field1 : int;
-}

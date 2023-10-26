@@ -1,5 +1,0 @@
-class MinimalMethod {
-  static method foo : void () {
-    
-  }
-}

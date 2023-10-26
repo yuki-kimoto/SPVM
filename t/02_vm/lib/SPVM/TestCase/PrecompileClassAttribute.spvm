@@ -1,6 +1,0 @@
-class TestCase::PrecompileClassAttribute : precompile {
-  static method foo : int () {
-    
-    return 1;
-  }
-}
