@@ -29,7 +29,7 @@ use Test::More;
   {
     my $source = "class MyClass { \xFE }";
     
-    compile_not_ok($source, q|Use of the character code "FE" is not allowed in source code.|);
+    compile_not_ok($source, q|Use of the character code "FE" is not allowed as a token start character in source code. It must be a ASCII code.|);
   }
 }
 
