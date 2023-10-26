@@ -11,6 +11,7 @@
         Use of the character code "FE" is not allowed in source code.
   [Bug Fix]
     * Fix a bug that a token is returned when the charactor is not allowed in source code.
+    * Fix a bug where the tokenizer was affected by locale.
     
 0.989052 2023-10-24
   [New Features]
