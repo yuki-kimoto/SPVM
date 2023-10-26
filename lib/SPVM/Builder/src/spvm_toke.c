@@ -101,13 +101,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     }
     
     // Current character
-    char ch = -1;
+    int32_t ch = -1;
     
     // Variable expansion state
     if (var_expansion_state > 0) {
       switch (var_expansion_state) {
         case SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED: {
-          ch = *compiler->ch_ptr;
+          ch = (uint8_t)*compiler->ch_ptr;
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT: {
@@ -115,7 +115,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR: {
-          ch = *compiler->ch_ptr;
+          ch = (uint8_t)*compiler->ch_ptr;
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT: {
@@ -137,7 +137,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       return (int) (uint8_t) ';';
     }
     else {
-      ch = *compiler->ch_ptr;
+      ch = (uint8_t)*compiler->ch_ptr;
     }
     
     switch (ch) {
