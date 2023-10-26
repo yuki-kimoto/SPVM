@@ -5,11 +5,6 @@ class StringList extends List {
   use Fn;
   use Array;
   
-  # Enumerations
-  enum {
-    DEFAULT_CAPACITY = 4,
-  }
-  
   # Class methods
   static method new : StringList ($array : string[] = undef, $capacity : int = -1) {
     my $self = new StringList;

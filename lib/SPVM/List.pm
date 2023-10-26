@@ -60,16 +60,6 @@ SPVM::List - Dynamic Object Array
 
 C<List> is the dynamic object array that has a specified object array type.
 
-=head1 Enumerations
-
-  enum {
-    DEFAULT_CAPACITY = 4,
-  }
-
-=head2 DEFAULT_CAPACITY
-
-The default capacity. The value is 4.
-
 =head1 Fields
 
 =head2 capacity
@@ -110,7 +100,7 @@ Creates a new C<StringList> object with $protot_array, $length and $capacity.
 
 If $protot_array is undefined, $protot_array is set to an C<object[]> object.
 
-If $capacity is less than 0, $capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If $capacity is less than 0, $capacity is set to the default value.
 
 If $length is greater than $capacity, $capacity is set to the length.
 

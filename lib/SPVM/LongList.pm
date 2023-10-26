@@ -51,16 +51,6 @@ SPVM::LongList - Dynamic long Array
 
 C<LongList> is a dynamic C<long> array.
 
-=head1 Enumerations
-
-  enum {
-    DEFAULT_CAPACITY = 4,
-  }
-
-=head2 DEFAULT_CAPACITY
-
-The default capacity. The value is 4.
-
 =head1 Fields
 
 =head2 capacity
@@ -98,7 +88,7 @@ C<static method new_len : L<LongList|SPVM::LongList> ($length : int, $capacity :
 
 Creates a new C<LongList> object with $length and $capacity.
 
-If $capacity is less than 0, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If $capacity is less than 0, the capacity is set to the default value.
 
 If $length is greater than $capacity, $capacity is set to $length.
 

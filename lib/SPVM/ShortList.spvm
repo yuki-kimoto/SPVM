@@ -6,7 +6,7 @@ class ShortList {
   use Array;
   
   # Enumerations
-  enum {
+  private enum {
     DEFAULT_CAPACITY = 4,
   }
   
