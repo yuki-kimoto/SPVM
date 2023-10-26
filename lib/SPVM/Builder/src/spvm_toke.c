@@ -141,9 +141,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     }
     
     if (strstr(compiler->current_class_rel_file, "MyClass")) {
-      spvm_warn("CHAR %X", ch);
+      spvm_warn("CHAR %X line %d", ch, __LINE__);
     }
-      
+    
     switch (ch) {
       // Skip space character
       case ' ':
@@ -1368,8 +1368,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return (int) (uint8_t) ch;
       }
       default: {
+        if (strstr(compiler->current_class_rel_file, "MyClass")) {
+          spvm_warn("CHAR %X line %d", ch, __LINE__);
+        }
+        
         // Numeric literal
         if (isdigit(ch)) {
+          if (strstr(compiler->current_class_rel_file, "MyClass")) {
+            spvm_warn("CHAR %X line %d", ch, __LINE__);
+          }
           const char* number_literal_begin_ptr = compiler->ch_ptr;
           
           // The before character is "-"
@@ -1704,6 +1711,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         // A symbol name
         else if (isalpha(ch) || ch == '_') {
+          if (strstr(compiler->current_class_rel_file, "MyClass")) {
+            spvm_warn("CHAR %X line %d", ch, __LINE__);
+          }
           // Column
           int32_t column = compiler->ch_ptr - compiler->line_begin_ch_ptr;
           
@@ -2311,7 +2321,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return token;
         }
         else {
-          spvm_warn("BBB");
+          if (strstr(compiler->current_class_rel_file, "MyClass")) {
+            spvm_warn("CHAR %X line %d", ch, __LINE__);
+          }
+          spvm_warn("COMPILE ERROR");
           SPVM_COMPILER_error(compiler, "Use of the character code \"%X\" is not allowed in source code.\n  at %s line %d", (uint8_t)ch, compiler->current_file, compiler->current_line);
           return 0;
         }
