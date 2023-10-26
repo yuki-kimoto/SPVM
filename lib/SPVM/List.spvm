@@ -33,9 +33,38 @@ class List {
     
     return $self;
   }
-  
+
+=pod
+
+  protected method init : void ($array : object[] = undef, $capacity : int = -1) {
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $self = &new_len($array, $length, $capacity);
+    
+    if ($array) {
+      Array->memcpy_object_address($self->{array}, 0, $array, 0, $length);
+    }
+    
+    return $self;
+  }
+
+=cut
+
   static method new_len : List ($proto_array : object[], $length : int, $capacity : int = -1) {
     my $self = new List;
+    
+    $self->init_len($proto_array, $length, $capacity);
+    
+    return $self;
+  }
+  
+  protected method init_len : void ($proto_array : object[], $length : int, $capacity : int = -1) {
     
     unless ($proto_array) {
       $proto_array = new object[0];
@@ -56,8 +85,6 @@ class List {
     $self->{capacity} = $capacity;
     $self->{length} = $length;
     $self->{array} = Array->new_proto($proto_array, $capacity);
-    
-    return $self;
   }
   
   # Instance methods
