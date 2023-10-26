@@ -93,21 +93,7 @@ class StringList extends List {
   }
   
   method resize : void ($new_length : int) {
-    unless ($new_length >= 0) {
-      die "\$new_length must be greater than or equal to 0.";
-    }
-    
-    my $length = $self->{length};
-    
-    if ($new_length > $length) {
-      $self->_maybe_extend($new_length);
-      Array->memset_object($self->{array}, undef, $length, $new_length - $length);
-    }
-    elsif ($new_length < $length) {
-      Array->memset_object($self->{array}, undef, $new_length, $length - $new_length);
-    }
-    
-    $self->{length} = $new_length;
+    $self->SUPER::resize($new_length);
   }
   
   method set : void ($index : int, $element : string) {
