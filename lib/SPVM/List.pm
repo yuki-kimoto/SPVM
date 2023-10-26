@@ -257,14 +257,6 @@ C<method to_array : object[] ();>
 
 Creates a new array and copies all elements of the list into the new array, and returns it.
 
-=head2 get_array_unsafe
-
-C<method get_array_unsafe : object[] ();>
-
-Gets the internally array.
-
-This array is unsafe because it continues to point to the old array if the internal array is extended.
-
 =head2 unshift
 
 C<method unshift : void ($element : object);>

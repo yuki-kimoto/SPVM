@@ -208,14 +208,6 @@ C<method to_array : string[] ();>
 
 Converts the list to an array.
 
-=head2 get_array_unsafe
-
-C<method get_array_unsafe : string[] ();>
-
-Gets the internally array.
-
-This array is unsafe because it continues to point to the old array if the internal array is extended.
-
 =head2 unshift
 
 C<method unshift : void ($element : string);>

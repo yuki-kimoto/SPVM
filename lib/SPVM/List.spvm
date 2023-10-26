@@ -289,10 +289,6 @@ class List {
     return $new_array;
   }
   
-  method get_array_unsafe : object[] () {
-    return $self->{array};
-  }
-  
   method unshift : void ($element : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};

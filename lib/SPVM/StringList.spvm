@@ -69,10 +69,6 @@ class StringList extends List {
     return (string[])$self->SUPER::to_array;
   }
   
-  method get_array_unsafe : string[] () {
-    return (string[])$self->SUPER::get_array_unsafe;
-  }
-  
   method unshift : void ($element : string) {
     $self->SUPER::unshift($element);
   }
