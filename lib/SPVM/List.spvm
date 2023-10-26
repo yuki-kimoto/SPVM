@@ -294,7 +294,7 @@ class List {
     $self->{length}++;
   }
   
-  private method _maybe_extend : void ($min_capacity : int) {
+  protected method _maybe_extend : void ($min_capacity : int) {
     my $capacity = $self->{capacity};
     
     unless ($min_capacity > $capacity) {

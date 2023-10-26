@@ -119,26 +119,4 @@ class StringList extends List {
   method unshift : void ($element : string) {
     $self->SUPER::unshift($element);
   }
-  
-  private method _maybe_extend : void ($min_capacity : int) {
-    my $capacity = $self->{capacity};
-    
-    unless ($min_capacity > $capacity) {
-      return;
-    }
-    
-    if ($capacity < $min_capacity) {
-      $capacity = $min_capacity;
-    }
-    
-    my $new_capacity = $capacity * 2;
-    my $new_array = new string[$new_capacity];
-    
-    my $length = $self->{length};
-    my $elements = $self->{array};
-    Array->memcpy_object_address($new_array, 0, $elements, 0, $length);
-    
-    $self->{array} = $new_array;
-    $self->{capacity} = $new_capacity;
-  }
 }
