@@ -193,7 +193,7 @@ class List {
     
     if ($new_capacity > $capacity) {
       my $length = $self->{length};
-      my $new_array = new object[$new_capacity];
+      my $new_array = Array->new_proto($self->{array}, $new_capacity);
       Array->memcpy_object_address($new_array, 0, $self->{array}, 0, $length);
       $self->{array} = $new_array;
       $self->{capacity} = $new_capacity;

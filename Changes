@@ -1,3 +1,6 @@
+0.989054 2023-10-26
+  {Bug Fix]
+    * Fix the bug that the reserve method in the List class creates any object array instead of using Array->new_proto.
 0.989053 2023-10-26
   [New Feautres]
     * Add the to_address method to the Fn class.
