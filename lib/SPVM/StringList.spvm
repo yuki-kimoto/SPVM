@@ -76,22 +76,6 @@ class StringList extends List {
     $self->SUPER::replace($offset, $remove_length, $replace);
   }
   
-  method reserve : void ($new_capacity : int) {
-    unless ($new_capacity >= 0) {
-      die "\$new_capacity must be greater than or equal to 0.";
-    }
-    
-    my $capacity = $self->{capacity};
-    
-    if ($new_capacity > $capacity) {
-      my $length = $self->{length};
-      my $new_array = new string[$new_capacity];
-      Array->memcpy_object_address($new_array, 0, $self->{array}, 0, $length);
-      $self->{array} = $new_array;
-      $self->{capacity} = $new_capacity;
-    }
-  }
-  
   method resize : void ($new_length : int) {
     $self->SUPER::resize($new_length);
   }
