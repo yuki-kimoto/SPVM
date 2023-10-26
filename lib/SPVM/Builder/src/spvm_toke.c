@@ -2308,7 +2308,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         else {
           SPVM_COMPILER_error(compiler, "Use of the character code \"%X\" is not allowed in source code.\n  at %s line %d", (uint8_t)ch, compiler->current_file, compiler->current_line);
-          return (int) (uint8_t) ch;
+          return 0;
         }
       }
     }
