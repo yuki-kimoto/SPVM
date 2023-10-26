@@ -51,6 +51,10 @@ SPVM::StringList - Dynamic string array
 
 C<StringList> is a dynamic C<string> array.
 
+=head1 Inheritance
+
+L<List|SPVM::List>.
+
 =head1 Enumerations
 
   enum {
