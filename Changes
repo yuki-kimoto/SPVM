@@ -1,5 +1,11 @@
 0.989054 2023-10-26
-  {Bug Fix]
+  [Incompatible Changes]
+    * Remove the get_array_unsafe from the StringList class and the List class.
+    
+  [Changes]
+    * The StringList class extends the List class.
+    
+  [Bug Fix]
     * Fix the bug that the reserve method in the List class creates any object array instead of using Array->new_proto.
 0.989053 2023-10-26
   [New Feautres]

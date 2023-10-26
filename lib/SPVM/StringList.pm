@@ -178,20 +178,6 @@ $remove_length must be greater than or equal to 0. Otherwise an exception is thr
 
 $offset + $removing lenght must be less than or equal to the length of $list.
 
-=head2 reserve
-
-C<method reserve : void ($new_capacity : int);>
-
-Reserves the elements with $new_capacity.
-
-If $new_capacity is greater than the capacity of the list, the capacity of the list is extended to $new_capacity.
-
-Note that L</"values"> is replaced with the new values and the values of the original list are copied to the new values in the above case.
-
-Exceptions:
-
-$new_capacity must be greater than or equal to 0. Otherwise an exception is thrown.
-
 =head2 resize
 
 C<method resize : void ($new_length : int);>
