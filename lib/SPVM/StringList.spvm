@@ -64,10 +64,6 @@ class StringList extends List {
     $self->SUPER::replace($offset, $remove_length, $replace);
   }
   
-  method resize : void ($new_length : int) {
-    $self->SUPER::resize($new_length);
-  }
-  
   method set : void ($index : int, $element : string) {
     $self->SUPER::set($index, $element);
   }

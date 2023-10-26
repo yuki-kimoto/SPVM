@@ -178,16 +178,6 @@ $remove_length must be greater than or equal to 0. Otherwise an exception is thr
 
 $offset + $removing lenght must be less than or equal to the length of $list.
 
-=head2 resize
-
-C<method resize : void ($new_length : int);>
-
-Resizes the list with $new_length.
-
-Exceptions:
-
-$new_length must be greater than or equal to 0. Otherwise an exception is thrown.
-
 =head2 set
 
 C<method set : void ($index : int, $element : string);>
