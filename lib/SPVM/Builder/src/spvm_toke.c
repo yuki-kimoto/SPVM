@@ -29,6 +29,10 @@
 #include "spvm_string.h"
 #include "spvm_class_file.h"
 
+int32_t SPVM_TOKE_isalpha_ascii(SPVM_COMPILER* compiler, int32_t ch);
+
+int32_t SPVM_TOKE_isalnum_ascii(SPVM_COMPILER* compiler, int32_t ch);
+
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
@@ -375,7 +379,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         // &foo - Current module
-        else if (isalpha(*compiler->ch_ptr) || *compiler->ch_ptr == '_') {
+        else if (SPVM_TOKE_isalpha_ascii(compiler, *compiler->ch_ptr) || *compiler->ch_ptr == '_') {
           yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS);
           compiler->expect_method_name = 1;
           return CURRENT_CLASS;
@@ -490,7 +494,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             const char* heredoc_name_start_ptr = compiler->ch_ptr;
             
-            while(isalnum(*compiler->ch_ptr) || *compiler->ch_ptr == '_') {
+            while(SPVM_TOKE_isalnum_ascii(compiler, *compiler->ch_ptr) || *compiler->ch_ptr == '_') {
               compiler->ch_ptr++;
             }
             
@@ -865,7 +869,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                   // Proceed through a variable
                   while (1) {
-                    if (isalnum(*next_string_literal_ch_ptr) || *next_string_literal_ch_ptr == '_') {
+                    if (SPVM_TOKE_isalnum_ascii(compiler, *next_string_literal_ch_ptr) || *next_string_literal_ch_ptr == '_') {
                       next_string_literal_ch_ptr++;
                     }
                     else if (*next_string_literal_ch_ptr == ':' && *(next_string_literal_ch_ptr + 1) == ':') {
@@ -917,7 +921,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      while (isalnum(*next_string_literal_ch_ptr) || *next_string_literal_ch_ptr == '_') {
+                      while (SPVM_TOKE_isalnum_ascii(compiler, *next_string_literal_ch_ptr) || *next_string_literal_ch_ptr == '_') {
                         next_string_literal_ch_ptr++;
                       }
                       
@@ -1265,7 +1269,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Go forward to the end of the variable name
           while (
-            isalnum(*compiler->ch_ptr)
+            SPVM_TOKE_isalnum_ascii(compiler, *compiler->ch_ptr)
             || (*compiler->ch_ptr) == '_'
             || (*compiler->ch_ptr == ':' && *(compiler->ch_ptr + 1) == ':')
           )
@@ -1699,7 +1703,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return CONSTANT;
         }
         // A symbol name
-        else if (isalpha(ch) || ch == '_') {
+        else if (SPVM_TOKE_isalpha_ascii(compiler, ch) || ch == '_') {
           // Column
           int32_t column = compiler->ch_ptr - compiler->line_begin_ch_ptr;
           
@@ -1710,7 +1714,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           compiler->ch_ptr++;
           
           // Go forward to the end of the symbol name
-          while(isalnum(*compiler->ch_ptr)
+          while(SPVM_TOKE_isalnum_ascii(compiler, *compiler->ch_ptr)
             || *compiler->ch_ptr == '_'
             || (*compiler->ch_ptr == ':' && *(compiler->ch_ptr + 1) == ':'))
           {
@@ -2783,6 +2787,28 @@ int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch) {
   }
   
   return is_line_terminator;
+}
+
+int32_t SPVM_TOKE_isalpha_ascii(SPVM_COMPILER* compiler, int32_t ch) {
+  
+  int32_t isalpha_ascii = 0;
+  
+  if (isascii(ch) && isalpha(ch)) {
+    isalpha_ascii = 1;
+  }
+  
+  return isalpha_ascii;
+}
+
+int32_t SPVM_TOKE_isalnum_ascii(SPVM_COMPILER* compiler, int32_t ch) {
+  
+  int32_t isalnum_ascii = 0;
+  
+  if (isascii(ch) && isalnum(ch)) {
+    isalnum_ascii = 1;
+  }
+  
+  return isalnum_ascii;
 }
 
 int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** ch_ptr_ptr) {
