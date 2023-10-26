@@ -12,19 +12,13 @@ class StringList extends List {
   
   # Class methods
   static method new : StringList ($array : string[] = undef, $capacity : int = -1) {
-    my $length : int;
-    if ($array) {
-      $length = @$array;
-    }
-    else {
-      $length = 0;
+    my $self = new StringList;
+    
+    unless ($array) {
+      $array = new string[0];
     }
     
-    my $self = &new_len($length, $capacity);
-    
-    if ($array) {
-      Array->memcpy_object_address($self->{array}, 0, $array, 0, $length);
-    }
+    $self->SUPER::init($array, $capacity);
     
     return $self;
   }
