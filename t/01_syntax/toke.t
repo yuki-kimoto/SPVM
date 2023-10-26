@@ -27,6 +27,7 @@ use Test::More;
 # Unexpected Charater
 {
   {
+    no utf8;
     my $source = "class MyClass { \xFE }";
     compile_not_ok($source, q|Use of the character code "FE" is not allowed in source code.|);
   }
