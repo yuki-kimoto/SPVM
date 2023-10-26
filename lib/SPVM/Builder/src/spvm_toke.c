@@ -2304,8 +2304,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Free symbol name
           SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, symbol_name);
           
-          spvm_warn("AAA");
-          
           return token;
         }
         else {
