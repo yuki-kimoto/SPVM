@@ -2304,12 +2304,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Free symbol name
           SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, symbol_name);
           
-          warn("AAA");
+          spvm_warn("AAA");
           
           return token;
         }
         else {
-          warn("BBB");
+          spvm_warn("BBB");
           SPVM_COMPILER_error(compiler, "Use of the character code \"%X\" is not allowed in source code.\n  at %s line %d", (uint8_t)ch, compiler->current_file, compiler->current_line);
           return 0;
         }
