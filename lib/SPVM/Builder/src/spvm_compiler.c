@@ -948,7 +948,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* error_message_temp
         char* arg = va_arg(args, char*);
         error_message_length += strlen(arg);
       }
-      else if (*(found_ptr + 1) == 'd') {
+      else if (*(found_ptr + 1) == 'd' || *(found_ptr + 1) == 'X') {
         (void) va_arg(args, int);
         error_message_length += 30;
       }

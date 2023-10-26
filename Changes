@@ -3,7 +3,12 @@
     * Add the to_address method to the Fn class.
     
       static method to_address : string ($object : object);
-    
+  [Compilation Error Message Changes]
+    A compilation error message is changed.
+      [before]
+        The character -2 in a 8bit signed integer is not expected.
+      [after]
+        Use of the character code "FE" is not allowed in source code.
 0.989052 2023-10-24
   [New Features]
     * Add the get_memory_blocks_count method to the Fn class.

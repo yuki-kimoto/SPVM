@@ -2307,7 +2307,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return token;
         }
         else {
-          SPVM_COMPILER_error(compiler, "The character %d in a 8bit signed integer is not expected.\n  at %s line %d", ch, compiler->current_file, compiler->current_line);
+          SPVM_COMPILER_error(compiler, "Use of the character code \"%X\" is not allowed in source code.\n  at %s line %d", (uint8_t)ch, compiler->current_file, compiler->current_line);
           return (int) (uint8_t) ch;
         }
       }
