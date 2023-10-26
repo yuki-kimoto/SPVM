@@ -107,7 +107,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     if (var_expansion_state > 0) {
       switch (var_expansion_state) {
         case SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED: {
-          ch = *compiler->ch_ptr;
+          ch = (uint8_t)*compiler->ch_ptr;
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT: {
@@ -115,7 +115,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR: {
-          ch = *compiler->ch_ptr;
+          ch = (uint8_t)*compiler->ch_ptr;
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT: {
@@ -1712,7 +1712,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // A symbol name
         else if (isalpha(ch) || ch == '_') {
           if (strstr(compiler->current_class_rel_file, "MyClass")) {
-            spvm_warn("CHAR %X line %d", ch, __LINE__);
+            
+            spvm_warn("CHAR %X isalpha %d line %d", ch, isalpha(ch), __LINE__);
           }
           // Column
           int32_t column = compiler->ch_ptr - compiler->line_begin_ch_ptr;
