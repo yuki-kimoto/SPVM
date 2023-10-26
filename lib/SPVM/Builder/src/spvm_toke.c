@@ -101,7 +101,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     }
     
     // Current character
-    char ch = -1;
+    int32_t ch = -1;
     
     // Variable expansion state
     if (var_expansion_state > 0) {
@@ -137,9 +137,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       return (int) (uint8_t) ';';
     }
     else {
-      ch = *compiler->ch_ptr;
+      ch = (uint8_t)*compiler->ch_ptr;
     }
     
+    if (strstr(compiler->current_class_rel_file, "MyClass")) {
+      spvm_warn("CHAR %X", ch);
+    }
+      
     switch (ch) {
       // Skip space character
       case ' ':
