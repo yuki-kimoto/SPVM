@@ -44,4 +44,12 @@ int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch);
 
 void SPVM_TOKE_increment_current_line(SPVM_COMPILER* compiler);
 
+int32_t SPVM_TOKE_isalpha_ascii(SPVM_COMPILER* compiler, int32_t ch);
+
+int32_t SPVM_TOKE_isalnum_ascii(SPVM_COMPILER* compiler, int32_t ch);
+
+int32_t SPVM_TOKE_isdigit_ascii(SPVM_COMPILER* compiler, int32_t ch);
+
+int32_t SPVM_TOKE_islower_ascii(SPVM_COMPILER* compiler, int32_t ch);
+
 #endif
