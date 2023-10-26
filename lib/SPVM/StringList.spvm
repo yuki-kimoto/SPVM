@@ -32,21 +32,9 @@ class StringList extends List {
   static method new_len : StringList ($length : int, $capacity : int = -1) {
     my $self = new StringList;
     
-    unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
-    }
+    my $proto = new string[0];
     
-    if ($capacity < 0) {
-      $capacity = &DEFAULT_CAPACITY;
-    }
-    
-    if ($length > $capacity) {
-      $capacity = $length;
-    }
-    
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
-    $self->{array} = new string[$capacity];
+    $self->SUPER::init_len($proto, $length, $capacity);
     
     return $self;
   }
