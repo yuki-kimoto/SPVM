@@ -7,8 +7,6 @@ class Native::BasicType {
   use Native::Field;
   use Native::Method;
   
-  use StringList;
-  
   has runtime : Native::Runtime;
   
   native method get_id : int ();
@@ -53,35 +51,53 @@ class Native::BasicType {
   
   # Private Instance Methods - Only used in core.
   method _get_native_method_names : string[] () {
-    
     my $methods_length = $self->get_methods_length;
     
-    my $native_method_names_list = StringList->new;
-    for (my $index = 0; $index < $methods_length; $index++) {
-      my $method = $self->get_method_by_index($index);
-      
+    my $native_method_names_tmp = new string [$methods_length];
+    
+    my $native_method_names_length = 0;
+    
+    for (my $method_index = 0; $method_index < $methods_length; $method_index++) {
+      my $method = $self->get_method_by_index($method_index);
+      my $method_name = $method->get_name;
       if ($method->is_native) {
-        $native_method_names_list->push($method->get_name);
+        $native_method_names_tmp->[$native_method_names_length] = $method_name;
+        $native_method_names_length++;
       }
     }
     
-    return $native_method_names_list->to_array;
+    my $native_method_names = new string [$native_method_names_length];
+    
+    for (my $i = 0; $i < $native_method_names_length; $i++) {
+      $native_method_names->[$i] = $native_method_names_tmp->[$i];
+    }
+    
+    return $native_method_names;
   }
   
   method _get_precompile_method_names : string[] () {
-    
     my $methods_length = $self->get_methods_length;
     
-    my $precompile_method_names_list = StringList->new;
-    for (my $index = 0; $index < $methods_length; $index++) {
-      my $method = $self->get_method_by_index($index);
-      
+    my $precompile_method_names_tmp = new string [$methods_length];
+    
+    my $precompile_method_names_length = 0;
+    
+    for (my $method_index = 0; $method_index < $methods_length; $method_index++) {
+      my $method = $self->get_method_by_index($method_index);
+      my $method_name = $method->get_name;
       if ($method->is_precompile) {
-        $precompile_method_names_list->push($method->get_name);
+        $precompile_method_names_tmp->[$precompile_method_names_length] = $method_name;
+        $precompile_method_names_length++;
       }
     }
     
-    return $precompile_method_names_list->to_array;
+    my $precompile_method_names = new string [$precompile_method_names_length];
+    
+    for (my $i = 0; $i < $precompile_method_names_length; $i++) {
+      $precompile_method_names->[$i] = $precompile_method_names_tmp->[$i];
+    }
+    
+    return $precompile_method_names;
   }
   
   method _get_class_file : string () {
