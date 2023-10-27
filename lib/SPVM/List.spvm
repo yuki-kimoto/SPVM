@@ -135,14 +135,20 @@ class List {
   }
   
   method push : void ($element : object) {
+    
     my $length = $self->{length};
+    
     my $capacity = $self->{capacity};
     
     my $new_length = $length + 1;
+    
     $self->_extend($new_length);
-    my $index = $self->{length};
-    $self->{array}[$index] = $element;
-    ++$self->{length};
+    
+    my $index = $length;
+    
+    $self->{length} = $new_length;
+    
+    $self->set($index, $element);
   }
   
   method remove : object ($index : int) {
