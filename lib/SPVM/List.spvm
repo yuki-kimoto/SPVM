@@ -191,14 +191,40 @@ class List {
     my $new_length = $self->{length} - $remove_length + $replace_length;
     $self->_extend($new_length);
     
-    my $move_length = $self->{length} - $index - $remove_length;
-    Array->memmove_object_address($self->{array}, $index + $replace_length, $self->{array}, $index + $remove_length, $move_length);
+    my $diff_length = $replace_length - $remove_length;
     
-    if ($replace) {
-      Array->memcpy_object_address($self->{array}, $index, $replace, 0, $replace_length);
+    if ($diff_length == 0) {
+      # Do nothing
+    }
+    elsif ($diff_length > 0) {
+      my $move_length = $self->{length} - $index - $remove_length;
+      
+      $self->{length} += $diff_length;
+      
+      for (my $i = $move_length - 1; $i >= 0; $i--) {
+        my $element = $self->get($index + $remove_length + $i);
+        $self->set($index + $replace_length + $i, $element);
+      }
+    }
+    elsif ($diff_length < 0) {
+      my $move_length = $self->{length} - $index - $remove_length;
+      
+      for (my $i = 0; $i < $move_length; $i++) {
+        my $element = $self->get($index + $remove_length + $i);
+        $self->set($index + $replace_length + $i, $element);
+        $self->set($index + $remove_length + $i, undef);
+      }
     }
     
     $self->{length} = $new_length;
+    
+    if ($replace) {
+      for (my $i = 0; $i < $replace_length; $i++) {
+        my $element = $replace->[$i];
+        $self->set($index + $i, $element);
+      }
+    }
+    
   }
   
   method reserve : void ($new_capacity : int) {
