@@ -291,22 +291,30 @@ class List {
     $self->{length}++;
   }
   
-  protected method _extend : void ($min_capacity : int) {
+  protected method _extend : void ($new_capacity_at_least : int, $just : int = 0) {
     my $capacity = $self->{capacity};
     
-    unless ($min_capacity > $capacity) {
+    unless ($new_capacity_at_least > $capacity) {
       return;
     }
     
-    my $base_capacity = 0;
-    if ($capacity < $min_capacity) {
-      $base_capacity = $min_capacity;
+    my $new_capacity = 0;
+    
+    if ($just) {
+      $new_capacity = $new_capacity_at_least;
     }
     else {
-      $base_capacity = $capacity;
+      my $base_capacity = 0;
+      if ($capacity < $new_capacity_at_least) {
+        $base_capacity = $new_capacity_at_least;
+      }
+      else {
+        $base_capacity = $capacity;
+      }
+      
+      $new_capacity = $base_capacity * 2;
     }
     
-    my $new_capacity = $base_capacity * 2;
     my $new_array = Array->new_proto($self->{array}, $new_capacity);
     
     my $length = $self->{length};
