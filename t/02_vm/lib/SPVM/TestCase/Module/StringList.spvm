@@ -238,12 +238,11 @@ class TestCase::Module::StringList {
       
       {
         my $list = StringList->new_len(0);
-        my $element = $list->pop;
-        if ($element) {
+        eval { $list->pop; };
+        unless (Fn->contains($@, "The length of \$list must be greater than 0")) {
           return 0;
         }
       }
-      
       $@ = undef;
     }
     
@@ -645,11 +644,9 @@ class TestCase::Module::StringList {
         return 0;
       }
       
-      {
-        my $element = $list->shift;
-        if ($element) {
-          return 0;
-        }
+      eval { $list->shift; };
+      unless (Fn->contains($@, "The length of \$list must be greater than 0")) {
+        return 0;
       }
       
       $@ = undef;

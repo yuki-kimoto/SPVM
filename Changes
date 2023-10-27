@@ -3,8 +3,6 @@
     * Remove the get_array_unsafe method from the StringList class and the List class.
     * Remove the set_array methods are removed from the ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, and List classes.
     * Remove the DEFAULT_CAPACITY enumerations are removed from the ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, and List classes.
-    * The pop and shift methods in the List class and the StringList class return undef if the length is 0, instead of throwing an exception.
-    
   [Changes]
     * The StringList class extends the List class.
     * The shift and unshift method becomes O(1) in the List and StringList classes.
