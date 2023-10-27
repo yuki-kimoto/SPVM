@@ -303,10 +303,16 @@ class List {
     
     my $array = $self->{array};
     
-    Array->memmove_object_address($array, 1, $array, 0, $length);
+    $self->{offset}--;
     
-    $array->[0] = $element;
+    if ($self->{offset} < 0) {
+      $self->{offset} = $self->{capacity} - 1;
+    }
+    
     $self->{length}++;
+    
+    $self->set(0, $element);
+    
   }
   
   protected method _extend : void ($new_capacity_at_least : int, $just : int = 0) {
