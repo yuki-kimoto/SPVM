@@ -255,12 +255,17 @@ class List {
     
     my $array = $self->{array};
     
-    my $element = $array->[0];
+    my $element = $self->get(0);
     
-    Array->memmove_object_address($array, 0, $array, 1, $length - 1);
-    $array->[$length - 1] = undef;
+    $self->set(0, undef);
     
     $self->{length}--;
+    
+    $self->{offset}++;
+    
+    if ($self->{offset} >= $self->{capacity}) {
+      $self->{offset} -= $self->{capacity};
+    }
     
     return $element;
   }
