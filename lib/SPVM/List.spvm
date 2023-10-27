@@ -120,7 +120,7 @@ class List {
     my $length = $self->length;
     
     unless ($length > 0) {
-      die "The length of \$list must be greater than 0.";
+      return undef;
     }
     
     my $index = $length - 1;
@@ -276,7 +276,7 @@ class List {
     my $capacity = $self->{capacity};
     
     unless ($length > 0) {
-      die "The length of \$list must be greater than 0.";
+      return undef;
     }
     
     my $array = $self->{array};

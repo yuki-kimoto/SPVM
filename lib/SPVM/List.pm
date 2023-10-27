@@ -143,12 +143,8 @@ $index must be less than or equal to the length of $list. Otherwise an exception
 
 C<method pop : object ();>
 
-Removes the last element and return it.
+Removes the last element and return it. If the length is 0, returns undef.
 
-Exceptions:
-
-The length of $list must be greater than 0. Otherwise an exception is thrown.
-            
 =head2 push
   
 C<method push : void ($element : object);>
@@ -227,11 +223,7 @@ $index must be less than the length of $list. Otherwise an exception is thrown.
 
 C<method shift : object ();>
 
-Removes the first element and return it.
-
-Exceptions:
-
-The length of $list must be greater than 0. Otherwise an exception is thrown.
+Removes the first element and return it.  If the length is 0, returns undef.
 
 =head2 to_array
 
