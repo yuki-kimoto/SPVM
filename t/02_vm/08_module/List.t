@@ -36,6 +36,8 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::List->to_array);
   ok(SPVM::TestCase::Module::List->unshift);
   ok(SPVM::TestCase::Module::List->extra);
+  
+  ok(SPVM::TestCase::Module::List->check_offset_logic);
 }
 
 # All object is freed

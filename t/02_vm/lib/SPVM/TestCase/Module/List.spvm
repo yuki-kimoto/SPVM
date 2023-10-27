@@ -741,4 +741,175 @@ class TestCase::Module::List {
   static method equals_list : int ($got : List, $expected : List) {
     return Array->equals_object_address($got->to_array, $expected->to_array);
   }
+  
+  static method check_offset_logic : int () {
+    
+    {
+      my $list = List->new(new string[0]);
+      
+      $list->push("1");
+      $list->push("2");
+      $list->push("3");
+      
+      $list->shift;
+      
+      unless (Array->equals_string($list->to_array->(string[]), ["2", "3"])) {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "3") {
+        return 0;
+      }
+      
+      $list->set(1, "0");
+      
+      unless ($list->get(1)->(string) eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = List->new(new string[0]);
+      
+      $list->push("1");
+      $list->push("2");
+      $list->push("3");
+      $list->push("4");
+      $list->push("5");
+      
+      $list->shift;
+      
+      unless (Array->equals_string($list->to_array->(string[]), ["2", "3", "4", "5"])) {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "3") {
+        return 0;
+      }
+      
+      $list->set(1, "0");
+      
+      unless ($list->get(1)->(string) eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = List->new(new string[0]);
+      
+      $list->unshift("1");
+      $list->unshift("2");
+      $list->unshift("3");
+      
+      $list->pop;
+      
+      unless (Array->equals_string($list->to_array->(string[]), ["3", "2"])) {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "2") {
+        return 0;
+      }
+      
+      $list->set(1, "0");
+      
+      unless ($list->get(1)->(string) eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $list = List->new(new string[0]);
+      
+      $list->unshift("1");
+      $list->unshift("2");
+      $list->unshift("3");
+      $list->unshift("4");
+      $list->unshift("5");
+      
+      $list->pop;
+      
+      unless (Array->equals_string($list->to_array->(string[]), ["5", "4", "3", "2"])) {
+        return 0;
+      }
+      
+      unless ($list->get(1)->(string) eq "4") {
+        return 0;
+      }
+      
+      $list->set(1, "0");
+      
+      unless ($list->get(1)->(string) eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      {
+        my $list = List->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        
+        $list->replace(1, 2, undef);
+        unless (Array->equals_string((string[])$list->to_array, [(string)1, 4])) {
+          return 0;
+        }
+      }
+      
+      {
+        my $list = List->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        $list->replace(1, 2, [(string)20, 30]);
+        unless (Array->equals_string((string[])$list->to_array, [(string)1, 20, 30, 4])) {
+          return 0;
+        }
+      }
+      
+      {
+        my $list = List->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        
+        $list->replace(0, 2, [(string)10, 20]);
+        unless (Array->equals_string((string[])$list->to_array, [(string)10, 20, 3, 4])) {
+          return 0;
+        }
+      }
+      
+      {
+        my $list = List->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        
+        $list->replace(2, 2, [(string)30, 40]);
+        unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 30, 40])) {
+          return 0;
+        }
+      }
+      
+      {
+        my $list = List->new(new string[0]);
+        $list->push("3");
+        $list->push("4");
+        $list->unshift("2");
+        $list->unshift("1");
+        
+        $list->replace(4, 0, [(string)50, 60]);
+        unless (Array->equals_string((string[])$list->to_array, [(string)1, 2, 3, 4, 50, 60])) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
 }
