@@ -12,8 +12,12 @@ class List {
   
   # Fields
   has capacity : ro int;
+  
   has length : ro int;
+  
   has array : object[];
+  
+  has offset : int;
   
   # Class methods
   static method new : List ($array : object[] = undef, $capacity : int = -1) {
