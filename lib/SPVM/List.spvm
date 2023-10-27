@@ -261,8 +261,25 @@ class List {
   
   method to_array : object[] () {
     my $length = $self->{length};
+    
     my $new_array = Array->new_proto($self->{array}, $length);
-    Array->memcpy_object_address($new_array, 0, $self->{array}, 0, $length);
+    
+    my $capacity = $self->{capacity};
+    
+    my $offset = $self->{offset};
+    
+    my $array = $self->{array};
+    
+    my $leftover = $length - ($capacity - $offset);
+    
+    if ($leftover > 0) {
+      Array->memcpy_object_address($new_array, 0, $array, $offset, $length - $leftover);
+      Array->memcpy_object_address($new_array, $length - $leftover, $array, 0, $leftover);
+    }
+    else {
+      Array->memcpy_object_address($new_array, 0, $array, $offset, $length);
+    }
+    
     return $new_array;
   }
   
