@@ -123,11 +123,11 @@ class List {
       die "The length of \$list must be greater than 0.";
     }
     
-    my $index = $self->{length};
+    my $index = $length - 1;
     
-    my $ret = $self->{array}[$index - 1];
+    my $ret = $self->get($index);
     
-    $self->{array}[$index - 1] = undef;
+    $self->set($index, undef);
     
     --$self->{length};
     
