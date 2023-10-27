@@ -241,7 +241,13 @@ class List {
       die "\$index must be less than the length of \$list.";
     }
     
-    $self->{array}[$index] = $element;
+    my $offset = $self->{offset};
+    
+    my $capacity = $self->{capacity};
+    
+    my $real_index = ($offset + $index) % $capacity;
+    
+    $self->{array}[$real_index] = $element;
   }
   
   method shift : object () {
