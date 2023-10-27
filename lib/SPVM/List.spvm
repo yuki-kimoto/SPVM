@@ -155,25 +155,21 @@ class List {
   }
   
   method remove : object ($index : int) {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
     
     unless ($index >= 0) {
       die "\$index must be greater than or equal to 0.";
     }
     
+    my $length = $self->{length};
+    
     unless ($index < $length) {
       die "\$index must be less than the length of \$list.";
     }
     
-    my $array = $self->{array};
-    my $remove_value = $array->[$index];
+    my $remove_value = $self->get($index);
     
-    my $move_length = $length - $index - 1;
-    Array->memmove_object_address($array, $index, $array, $index + 1, $move_length);
-    $array->[$length - 1] = undef;
-    
-    $self->{length}--;
+    my $remove_length = 1;
+    $self->replace($index, $remove_length, undef);
     
     return $remove_value;
   }
