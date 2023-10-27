@@ -313,7 +313,11 @@ class List {
       die "[Unexpected Error]The capacity field must be equal to the length of the array field.";
     }
     
-    Array->memcpy_object_address($new_array, 0, $array, 0, $length);
+    my $offset = $self->{offset};
+    
+    Array->memcpy_object_address($new_array, $offset, $array, $offset, $capacity - $offset);
+    
+    Array->memcpy_object_address($new_array, $capacity, $array, 0, $offset);
     
     $self->{array} = $new_array;
     $self->{capacity} = $new_capacity;
