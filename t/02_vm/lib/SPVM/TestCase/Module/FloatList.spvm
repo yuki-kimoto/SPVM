@@ -687,39 +687,6 @@ class TestCase::Module::FloatList {
     return 1;
   }
   
-  static method set_array : int () {
-    # Set array
-    {
-      my $list = FloatList->new([(float)1, 2, 3]);
-      $list->set_array([(float)3, 4, 5]);
-      unless (Array->equals_float($list->to_array, [(float)3, 4, 5])) {
-        return 0;
-      }
-    }
-    
-    # Exception - Array must be defined
-    {
-      my $list = FloatList->new([(float)1, 2, 3]);
-      eval { $list->set_array(undef); };
-      unless (Fn->contains($@, "\$array must be defined")) {
-        return 0;
-      }
-    }
-    
-    # Exception - The length of argument array must be same as the length of current list array
-    {
-      my $list = FloatList->new([(float)1, 2, 3]);
-      eval { $list->set_array([(float)1, 2, 3, 4]); };
-      unless (Fn->contains($@, "The length of \$array must be \$same as the length of \$list")) {
-        return 0;
-      }
-    }
-    
-    $@ = undef;
-    
-    return 1;
-  }
-  
   static method shift : int () {
     # shift
     {

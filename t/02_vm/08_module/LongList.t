@@ -25,7 +25,6 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::LongList->reserve);
   ok(SPVM::TestCase::Module::LongList->resize);
   ok(SPVM::TestCase::Module::LongList->set);
-  ok(SPVM::TestCase::Module::LongList->set_array);
   ok(SPVM::TestCase::Module::LongList->shift);
   ok(SPVM::TestCase::Module::LongList->to_array);
   ok(SPVM::TestCase::Module::LongList->get_array_unsafe);

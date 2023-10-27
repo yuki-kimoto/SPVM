@@ -1,6 +1,7 @@
 0.989054 2023-10-26
   [Incompatible Changes]
-    * Remove the get_array_unsafe from the StringList class and the List class.
+    * Remove the get_array_unsafe method from the StringList class and the List class.
+    * Remove the set_array methods are removed from the ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, and List classes.
     * Remove the DEFAULT_CAPACITY enumerations are removed from the ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, and List classes.
   [Changes]
     * The StringList class extends the List class.

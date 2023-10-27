@@ -198,18 +198,6 @@ $index must be greater than or equal to 0. Otherwise an exception is thrown.
 
 $index must be less than the length of $list. Otherwise an exception is thrown.
 
-=head2 set_array
-
-C<method set_array : void ($array : double[]);>
-
-Sets an $array. Each element of $array is copied to the element of the list.
-
-Exceptions:
-
-$array must be defined. Otherwise an exception is thrown.
-
-The length of $array must be equal to the length of $list. Otherwise an exception is thrown.
-
 =head2 shift
 
 C<method shift : double ();>

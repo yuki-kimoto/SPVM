@@ -57,10 +57,6 @@ class StringList extends List {
     $self->SUPER::set($index, $element);
   }
   
-  method set_array : void ($array : string[]) {
-    $self->SUPER::set_array($array);
-  }
-  
   method shift : string () {
     return (string)$self->SUPER::shift;
   }
