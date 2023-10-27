@@ -1,3 +1,10 @@
+0.989055 2023-10-28
+  [Incompatible Changes]
+    * Revert the following changes
+      
+      [Incompatible Changes] 0.989054 2023-10-26
+        * The pop and shift methods in the List class and the StringList class return undef if the length is 0, instead of throwing an exception.
+          
 0.989054 2023-10-26
   [Incompatible Changes]
     * Remove the get_array_unsafe method from the StringList class and the List class.
