@@ -7,6 +7,7 @@
     
   [Changes]
     * The StringList class extends the List class.
+    * The shift and unshift method becomes O(1) in the List and StringList classes.
     
   [Bug Fix]
     * Fix the bug that the reserve method in the List class creates any object array instead of using Array->new_proto.
