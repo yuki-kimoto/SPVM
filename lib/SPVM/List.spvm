@@ -90,7 +90,13 @@ class List {
       die "\$index must be less than the length of \$list.";
     }
     
-    my $element = $self->{array}[$index];
+    my $offset = $self->{offset};
+    
+    my $capacity = $self->{capacity};
+    
+    my $real_index = ($offset + $index) % $capacity;
+    
+    my $element = $self->{array}[$real_index];
     
     return $element;
   }
