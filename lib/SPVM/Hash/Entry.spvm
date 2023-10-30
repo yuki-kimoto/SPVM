@@ -5,6 +5,6 @@ class Hash::Entry {
   allow Hash;
 
   has key : string;
-  has val : object;
+  has value : object;
   has next_entry : Hash::Entry;
 }

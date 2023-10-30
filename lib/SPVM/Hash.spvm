@@ -112,7 +112,7 @@ class Hash {
     }
     while (1) {
       if ($ref->{key} eq $key) {
-        return $ref->{val};
+        return $ref->{value};
       }
       unless ($ref->{next_entry}) {
         return undef;
@@ -156,7 +156,7 @@ class Hash {
     }
     while (1) {
       if ($ref->{key} eq $key) {
-        my $ret = $ref->{val};
+        my $ret = $ref->{value};
         if ($prev) {
           $prev->{next_entry} = $ref->{next_entry};
         }
@@ -200,18 +200,18 @@ class Hash {
   }
   
   precompile method values : object[] () {
-    my $retval = new object[$self->{keys_length}];
+    my $retvalue = new object[$self->{keys_length}];
     # iterate entries
     my $keys_length = 0;
     my $entries_length = @{$self->{entries}};
     for (my $i = 0; $i < $entries_length; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $retval->[$keys_length++] = $ref->{val};
+        $retvalue->[$keys_length++] = $ref->{value};
         $ref = $ref->{next_entry};
       }
     }
-    return $retval;
+    return $retvalue;
   }
   
   precompile method to_array : object[] ($sort : int = 0) {
@@ -474,14 +474,14 @@ class Hash {
       }
       
       $entries->[$index]->{key} = $new_key;
-      $entries->[$index]->{val} = $value;
+      $entries->[$index]->{value} = $value;
       $entries->[$index]->{next_entry} = undef;
       ++$$keys_length_ref;
       return;
     }
     while (1) {
       if ($ref->{key} eq $key) {
-        $ref->{val} = $value;
+        $ref->{value} = $value;
         return;
       }
       unless ($ref->{next_entry}) {
@@ -496,7 +496,7 @@ class Hash {
         
         $ref->{next_entry} = new Hash::Entry;
         $ref->{next_entry}->{key} = $new_key;
-        $ref->{next_entry}->{val} = $value;
+        $ref->{next_entry}->{value} = $value;
         $ref->{next_entry}->{next_entry} = undef;
         ++$$keys_length_ref;
         return;
@@ -515,7 +515,7 @@ class Hash {
     for (my $i = 0; $i < $entries_length; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $ref->{key}, $ref->{val});
+        $self->_set_to_container($new_entries, $new_entries_length, \$new_keys_length, $ref->{key}, $ref->{value});
         $ref = $ref->{next_entry};
       }
     }
