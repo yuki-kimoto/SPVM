@@ -4179,13 +4179,22 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
 
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  if (object != NULL) {
-    int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
-    assert(ref_count >= 0);
-    
-    object->ref_count++;
-  }
+  SPVM_RUNTIME* runtime = env->runtime;
   
+  SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
+  
+  {
+    SPVM_MUTEX_lock(runtime_mutex_atomic);
+    
+    if (object != NULL) {
+      int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
+      assert(ref_count >= 0);
+      
+      object->ref_count++;
+    }
+    
+    SPVM_MUTEX_unlock(runtime_mutex_atomic);
+  }
 }
 
 void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
