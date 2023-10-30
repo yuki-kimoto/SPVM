@@ -6,6 +6,9 @@
     * The dec_ref_count in the internal native API becomes atomic operation.
   [Internal Changes]
     * Each object does not have a mutex.
+  [Bug Fix]
+    * Some mutex bugs are fixed.
+    
 0.989055 2023-10-28
   [Incompatible Changes]
     * Revert the following changes
