@@ -4051,21 +4051,24 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   SPVM_MUTEX* runtime_mutex = runtime->mutex;
   
-  SPVM_MUTEX_lock(runtime_mutex);
-  
-  SPVM_OBJECT* released_object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
-  
-  assert(!((intptr_t)object & 1));
-  
-  SPVM_API_unweaken_thread_unsafe(env, stack, ref);
-  
-  if (object) {
-    SPVM_API_inc_ref_count(env, stack, object);
+  SPVM_OBJECT* released_object = NULL;
+  {
+    SPVM_MUTEX_lock(runtime_mutex);
+    
+    released_object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+    
+    assert(!((intptr_t)object & 1));
+    
+    SPVM_API_unweaken_thread_unsafe(env, stack, ref);
+    
+    if (object) {
+      SPVM_API_inc_ref_count(env, stack, object);
+    }
+    
+    *ref = object;
+    
+    SPVM_MUTEX_unlock(runtime_mutex);
   }
-  
-  *ref = object;
-  
-  SPVM_MUTEX_unlock(runtime_mutex);
   
   if (!released_object) {
     return;
