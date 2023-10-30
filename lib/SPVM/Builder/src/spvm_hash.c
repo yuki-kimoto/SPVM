@@ -42,12 +42,12 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int3
   else {
     assert(0);
   }
-
+  
   memset(hash->table, -1, hash->table_capacity * sizeof(int32_t));
   
   // Initialize entries
   hash->entries_capacity = 1;
-
+  
   if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
     hash->entries =  SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
   }
@@ -58,21 +58,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int3
     assert(0);
   }
   hash->entries_length = 0;
-
-  // Initialize key buffer
-  hash->key_buffer_capacity = 1;
-  if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    hash->key_buffer = SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, hash->key_buffer_capacity);
-  }
-  else if (memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-    hash->key_buffer = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, hash->key_buffer_capacity);
-  }
-  else {
-    assert(0);
-  }
-
-  hash->key_buffer_length = 0;
-
+  
   hash->allocator = allocator;
   
   hash->memory_block_type = memory_block_type;
@@ -101,7 +87,6 @@ void SPVM_HASH_set(SPVM_HASH* hash, const char* key, int32_t length, void* value
     
     SPVM_HASH_rehash(hash, new_table_capacity);
   }
-  
   SPVM_HASH_set_norehash(hash, key, length, value);
 }
 
@@ -111,7 +96,7 @@ void* SPVM_HASH_get(SPVM_HASH* hash, const char* key, int32_t length) {
 }
 
 void* SPVM_HASH_get_with_exists(SPVM_HASH* hash, const char* key, int32_t length, int32_t* exists) {
-
+  
   assert(hash);
   assert(length >= 0);
   
@@ -126,12 +111,11 @@ void* SPVM_HASH_get_with_exists(SPVM_HASH* hash, const char* key, int32_t length
     assert(entry_index >= -1);
     if (entry_index != -1) {
       int32_t match = 0;
-      int32_t key_length;
-      memcpy(&key_length, &hash->key_buffer[hash->entries[entry_index].key_index], sizeof(int32_t));
+      int32_t key_length = hash->entries[entry_index].key_length;
       if (length == 0 && key_length == 0) {
         match = 1;
       }
-      else if (key_length == length && memcmp(key, &hash->key_buffer[hash->entries[entry_index].key_index + sizeof(int32_t)], length) == 0) {
+      else if (key_length == length && memcmp(key, hash->entries[entry_index].key, length) == 0) {
         match = 1;
       }
       
@@ -152,18 +136,24 @@ void* SPVM_HASH_get_with_exists(SPVM_HASH* hash, const char* key, int32_t length
       return NULL;
     }
   }
+  
 }
 
 void SPVM_HASH_free(SPVM_HASH* hash) {
-
+  
   SPVM_ALLOCATOR* allocator = hash->allocator;
   
   assert(hash);
-
+  
   if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
+    for (int32_t i = 0; i < hash->entries_length; i++) {
+      char* key = hash->entries[i].key;
+      SPVM_ALLOCATOR_free_memory_block_tmp(allocator, key);
+      hash->entries[i].key = NULL;
+    }
+    
     SPVM_ALLOCATOR_free_memory_block_tmp(allocator, hash->table);
     SPVM_ALLOCATOR_free_memory_block_tmp(allocator, hash->entries);
-    SPVM_ALLOCATOR_free_memory_block_tmp(allocator, hash->key_buffer);
     SPVM_ALLOCATOR_free_memory_block_tmp(allocator, hash);
   }
   else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
@@ -217,49 +207,6 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
   }
 }
 
-void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
-  
-  SPVM_ALLOCATOR* allocator = hash->allocator;
-
-  assert(hash);
-  
-  int32_t key_buffer_length = hash->key_buffer_length;
-  
-  assert(key_buffer_length >= 0);
-  
-  int32_t key_buffer_capacity = hash->key_buffer_capacity;
-  
-  if (key_buffer_length + length + (int32_t)sizeof(int32_t) >= key_buffer_capacity) {
-    int32_t new_key_buffer_capacity = (key_buffer_length + length + sizeof(int32_t)) * 2;
-    
-    char* new_key_buffer;
-    if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-      new_key_buffer = SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, new_key_buffer_capacity);
-    }
-    else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-      new_key_buffer = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, new_key_buffer_capacity);
-    }
-    else {
-      assert(0);
-    }
-
-    memcpy(new_key_buffer, hash->key_buffer, key_buffer_capacity);
-    if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-      SPVM_ALLOCATOR_free_memory_block_tmp(allocator, hash->key_buffer);
-    }
-    else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
-      // Nothing
-    }
-    else {
-      assert(0);
-    }
-
-    hash->key_buffer = new_key_buffer;
-
-    hash->key_buffer_capacity = new_key_buffer_capacity;
-  }
-}
-
 int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, int32_t key_length, void* value) {
   
   assert(hash);
@@ -269,18 +216,24 @@ int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, int32_t key_l
   
   SPVM_HASH_maybe_extend_entries(hash);
   
-  SPVM_HASH_maybe_extend_key_buffer(hash, key_length);
+  SPVM_ALLOCATOR* allocator = hash->allocator;
   
-  hash->entries[index].key_index = hash->key_buffer_length;
+  char* new_key = NULL;
   
-  // Copy key length
-  memcpy(&hash->key_buffer[hash->key_buffer_length], &key_length, sizeof(int32_t));
+  if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
+    new_key = SPVM_ALLOCATOR_alloc_memory_block_tmp(allocator, key_length + 1);
+  }
+  else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
+    new_key = SPVM_ALLOCATOR_alloc_memory_block_permanent(allocator, key_length + 1);
+  }
+  else {
+    assert(0);
+  }
   
-  // Copy key
-  memcpy(&hash->key_buffer[hash->key_buffer_length + sizeof(int32_t)], key, key_length);
+  memcpy(new_key, key, key_length);
   
-  hash->key_buffer_length += sizeof(int32_t) + key_length;
-  
+  hash->entries[index].key = new_key;
+  hash->entries[index].key_length = key_length;
   hash->entries[index].value = value;
   hash->entries[index].next_index = -1;
   
@@ -300,16 +253,23 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   SPVM_HASH* new_hash = SPVM_HASH_new(allocator, new_table_capacity, hash->memory_block_type);
   
   // Rehash
-  {
-    int32_t i;
-    for (i = 0; i < hash->entries_length; i++) {
-      int32_t key_length;
-      memcpy(&key_length, &hash->key_buffer[hash->entries[i].key_index], sizeof(int32_t));
-      const char* key = &hash->key_buffer[hash->entries[i].key_index + sizeof(int32_t)];
-      
-      void* value = hash->entries[i].value;
-      
-      SPVM_HASH_set_norehash(new_hash, key, key_length, value);
+  for (int32_t i = 0; i < hash->entries_length; i++) {
+    int32_t key_length = hash->entries[i].key_length;
+    const char* key = hash->entries[i].key;
+    
+    void* value = hash->entries[i].value;
+    
+    SPVM_HASH_set_norehash(new_hash, key, key_length, value);
+    
+    // Replace hash fields
+    if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
+      SPVM_ALLOCATOR_free_memory_block_tmp(allocator, (void*)key);
+    }
+    else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
+      // Nothing
+    }
+    else {
+      assert(0);
     }
   }
   
@@ -317,7 +277,6 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
     SPVM_ALLOCATOR_free_memory_block_tmp(allocator, hash->table);
     SPVM_ALLOCATOR_free_memory_block_tmp(allocator, hash->entries);
-    SPVM_ALLOCATOR_free_memory_block_tmp(allocator, hash->key_buffer);
   }
   else if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_PERMANENT) {
     // Nothing
@@ -325,16 +284,12 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   else {
     assert(0);
   }
-
+  
   hash->entries_length = new_hash->entries_length;
   hash->table_capacity = new_hash->table_capacity;
   hash->entries_capacity = new_hash->entries_capacity;
   hash->table = new_hash->table;
   hash->entries = new_hash->entries;
-  
-  hash->key_buffer_capacity = new_hash->key_buffer_capacity;
-  hash->key_buffer_length = new_hash->key_buffer_length;
-  hash->key_buffer = new_hash->key_buffer;
   
   if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
     SPVM_ALLOCATOR_free_memory_block_tmp(allocator, new_hash);
@@ -363,12 +318,11 @@ void SPVM_HASH_set_norehash(SPVM_HASH* hash, const char* key, int32_t length, vo
     int32_t entry_index = hash->table[table_index];
     while (1) {
       int32_t match = 0;
-      int32_t key_length;
-      memcpy(&key_length, &hash->key_buffer[hash->entries[entry_index].key_index], sizeof(int32_t));
+      int32_t key_length = hash->entries[entry_index].key_length;
       if (key_length == 0 && length == 0) {
         match = 1;
       }
-      else if (key_length == length && memcmp(key, &hash->key_buffer[hash->entries[entry_index].key_index + sizeof(int32_t)], length) == 0) {
+      else if (key_length == length && memcmp(key, hash->entries[entry_index].key, length) == 0) {
         match = 1;
       }
       
