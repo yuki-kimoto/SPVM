@@ -92,7 +92,6 @@ void* SPVM_HASH_get(SPVM_HASH* hash, const char* key, int32_t key_length) {
     else {
       return NULL;
     }
-    warn("LINE %d", __LINE__);
   }
 }
 
@@ -142,7 +141,6 @@ void SPVM_HASH_set(SPVM_HASH* hash, const char* key, int32_t key_length, void* v
           break;
         }
       }
-    warn("LINE %d", __LINE__);
     }
   }
   else {
@@ -159,18 +157,18 @@ void SPVM_HASH_set_entry(SPVM_HASH_ENTRY** table, int32_t table_capacity, const 
   int32_t hash_value = SPVM_HASH_calc_hash_value(key, key_length);
   int32_t table_index = hash_value % table_capacity;
   
+  entry->next_entry = NULL;
+  
   SPVM_HASH_ENTRY* found_entry = table[table_index];
   if (found_entry) {
     while (1) {
       if (found_entry->next_entry) {
         found_entry = found_entry->next_entry;
-    warn("LINE %d %p", __LINE__, found_entry);
       }
       else {
         found_entry->next_entry = entry;
         break;
       }
-    warn("LINE %d", __LINE__);
     }
   }
   else {
@@ -207,7 +205,6 @@ void SPVM_HASH_free(SPVM_HASH* hash) {
           else {
             break;
           }
-    warn("LINE %d", __LINE__);
         }
       }
     }
@@ -293,7 +290,6 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
         else {
           break;
         }
-    warn("LINE %d", __LINE__);
       }
     }
   }
