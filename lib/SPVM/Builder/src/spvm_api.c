@@ -4203,7 +4203,15 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* objec
     int32_t ref_count = SPVM_API_get_ref_count(env, stack, object);
     assert(ref_count > 0);
     
-    object->ref_count--;
+    SPVM_RUNTIME* runtime = env->runtime;
+    
+    SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
+    
+    {
+      SPVM_MUTEX_lock(runtime_mutex_atomic);
+      object->ref_count--;
+      SPVM_MUTEX_unlock(runtime_mutex_atomic);
+    }
   }
   
 }
