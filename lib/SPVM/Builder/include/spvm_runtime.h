@@ -25,6 +25,8 @@ struct spvm_runtime {
   
   SPVM_MUTEX* mutex;
   
+  SPVM_MUTEX* mutex_atmic;
+  
   FILE* spvm_stdin;
   
   FILE* spvm_stdout;

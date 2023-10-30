@@ -36,6 +36,11 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   SPVM_MUTEX_init(mutex);
   runtime->mutex = mutex;
   
+  int32_t mutex_atmic_size = SPVM_MUTEX_size();
+  void* mutex_atmic = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_atmic_size);
+  SPVM_MUTEX_init(mutex_atmic);
+  runtime->mutex_atmic = mutex_atmic;
+  
   SPVM_RUNTIME_init_stdio(runtime);
   
   return runtime;
@@ -124,6 +129,8 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
   }
   
   SPVM_MUTEX_destroy(runtime->mutex);
+  
+  SPVM_MUTEX_destroy(runtime->mutex_atmic);
   
   fclose(runtime->spvm_stdin);
   
