@@ -1,3 +1,10 @@
+0.989056 2023-10-30
+  [Incompatible Changes]
+    * Remove the lock_object in the internal native API.
+    * Remove the unlock_object in the internal native API.
+    * The inc_ref_count in the internal native API becomes atomic operation.
+    * The dec_ref_count in the internal native API becomes atomic operation.
+    
 0.989055 2023-10-28
   [Incompatible Changes]
     * Revert the following changes

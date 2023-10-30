@@ -2503,9 +2503,7 @@ static inline void SPVM_IMPLEMENT_GET_STACK_OPTIONAL_OBJECT(SPVM_ENV* env, void*
 static inline void SPVM_IMPLEMENT_RETURN_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void* in) {
   *(void**)&stack[0] = in;
   if (in != NULL) {
-    env->api->internal->lock_object(env, stack, in);
     env->api->internal->inc_ref_count(env, stack, in);
-    env->api->internal->unlock_object(env, stack, in);
   }
 }
 

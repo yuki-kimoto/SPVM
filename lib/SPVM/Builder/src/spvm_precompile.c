@@ -5036,9 +5036,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, current_method_return_basic_type, current_method_return_type_dimension, current_method_return_type_flag);
   if (method_return_type_is_object) {
     SPVM_STRING_BUFFER_add(string_buffer, "  if (stack[0].oval != NULL) {\n"
-                                          "    env->api->internal->lock_object(env, stack, stack[0].oval);\n"
                                           "    env->api->internal->dec_ref_count(env, stack, stack[0].oval);\n"
-                                          "    env->api->internal->unlock_object(env, stack, stack[0].oval);\n"
                                           "  }\n");
   }
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n"

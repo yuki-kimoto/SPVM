@@ -2402,9 +2402,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, current_method_return_basic_type, current_method_return_type_dimension, current_method_return_type_flag);
       if (method_return_type_is_object) {
         if (*(void**)&stack[0] != NULL) {
-          env->api->internal->lock_object(env, stack, *(void**)&stack[0]);
           env->api->internal->dec_ref_count(env, stack, *(void**)&stack[0]);
-          env->api->internal->unlock_object(env, stack, *(void**)&stack[0]);
         }
       }
     }
