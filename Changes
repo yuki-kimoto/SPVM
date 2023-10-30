@@ -4,7 +4,8 @@
     * Remove the unlock_object in the internal native API.
     * The inc_ref_count in the internal native API becomes atomic operation.
     * The dec_ref_count in the internal native API becomes atomic operation.
-    
+  [Internal Changes]
+    * Each object does not have a mutex.
 0.989055 2023-10-28
   [Incompatible Changes]
     * Revert the following changes

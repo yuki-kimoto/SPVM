@@ -128,7 +128,7 @@ int32_t SPVM_API_RUNTIME_get_object_mutex_offset(SPVM_RUNTIME* runtime) {
 }
 
 int32_t SPVM_API_RUNTIME_get_object_data_offset(SPVM_RUNTIME* runtime) {
-  int32_t object_data_offset = sizeof(SPVM_OBJECT) + SPVM_MUTEX_size();
+  int32_t object_data_offset = sizeof(SPVM_OBJECT);
   
   return object_data_offset;
 }

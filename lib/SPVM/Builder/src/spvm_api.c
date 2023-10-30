@@ -3606,10 +3606,6 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
     SPVM_API_set_length(env, stack, object, length);
   }
   
-  SPVM_MUTEX* mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_init(mutex);
-  
   return object;
 }
 
@@ -3878,13 +3874,7 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
   SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
-  SPVM_MUTEX* mutex_object = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(mutex_object);
-  
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
-  
-  SPVM_MUTEX_unlock(mutex_object);
   
   return isweak;
 }
@@ -4209,25 +4199,4 @@ int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   int32_t ref_count = object->ref_count;
   
   return ref_count;
-}
-
-SPVM_MUTEX* SPVM_API_get_object_mutex(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_MUTEX* object_mutex = (SPVM_MUTEX*)((intptr_t)object + sizeof(SPVM_OBJECT));
-  
-  return object_mutex;
-}
-
-void SPVM_API_lock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(object_mutex);
-}
-
-void SPVM_API_unlock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
-  
-  SPVM_MUTEX* object_mutex = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_unlock(object_mutex);
 }
