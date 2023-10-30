@@ -4057,8 +4057,6 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   assert(!((intptr_t)object & 1));
   
-  SPVM_MUTEX_unlock(runtime_mutex);
-  
   SPVM_API_unweaken_thread_unsafe(env, stack, ref);
   
   if (object) {
@@ -4066,6 +4064,8 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   }
   
   *ref = object;
+  
+  SPVM_MUTEX_unlock(runtime_mutex);
   
   if (!released_object) {
     return;
