@@ -217,7 +217,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->reserved199 != &env_array[199]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_memory_stack != &env_array[200]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_memory_stack != &env_array[201]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_memory_blocks_count_stack != &env_array[202]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->reserved202 != &env_array[202]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_stack != &env_array[203]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_stack != &env_array[204]) { stack[0].ival = 0; return 0; }
     
@@ -2302,33 +2302,27 @@ int32_t SPVM__TestCase__NativeAPI__new_memory_apis(SPVM_ENV* env, SPVM_VALUE* st
   {
     void* new_stack = env->new_stack(env);
     
-    int32_t memory_blocks_count_start_stack = env->get_memory_blocks_count(env, stack);
-    int32_t memory_blocks_count_start_new_stack = env->get_memory_blocks_count(env, new_stack);
+    int32_t memory_blocks_count_start = env->get_memory_blocks_count(env, stack);
     
     void* memory_block_new_stack = env->new_memory_block(env, new_stack, 8);
     
-    if (!(env->get_memory_blocks_count(env, new_stack) == memory_blocks_count_start_new_stack + 1)) {
-      stack[0].ival = 0;
-      return 0;
-    }
-    
-    if (!(env->get_memory_blocks_count(env, stack) == memory_blocks_count_start_stack)) {
+    if (!(env->get_memory_blocks_count(env, new_stack) == memory_blocks_count_start + 1)) {
       stack[0].ival = 0;
       return 0;
     }
     
     env->free_memory_block(env, new_stack, memory_block_new_stack);
     
-    if (!(env->get_memory_blocks_count(env, new_stack) == memory_blocks_count_start_new_stack)) {
+    if (!(env->get_memory_blocks_count(env, stack) == memory_blocks_count_start)) {
       stack[0].ival = 0;
       return 0;
     }
-   
+    
     env->free_stack(env, new_stack);
   }
   
   stack[0].ival = 1;
-
+  
   return 0;
 }
 

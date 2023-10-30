@@ -96,13 +96,6 @@ union spvm_value {
 
 
 
-
-
-
-
-
-
-
 struct spvm_env {
   void* reserved0;
   void* runtime;
@@ -306,7 +299,7 @@ struct spvm_env {
   void* reserved199;
   void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
   void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
-  int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void* reserved202;
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* reserved205;

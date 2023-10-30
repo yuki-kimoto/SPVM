@@ -41,7 +41,6 @@ void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size); 
 void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
 void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block); // Deprecated
 void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
-int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack); // Deprecated
 int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack);
 
 // Basic type

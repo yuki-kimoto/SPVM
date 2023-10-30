@@ -299,7 +299,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     NULL,
     SPVM_API_new_memory_stack,
     SPVM_API_free_memory_stack,
-    SPVM_API_get_memory_blocks_count_stack,
+    NULL,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
     SPVM_API_get_ref_count,
@@ -3269,10 +3269,21 @@ void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   
   void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged((size_t)size);
   
-  stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival++;
+  SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
+  {
+    SPVM_MUTEX_lock(runtime_mutex_atomic);
+    
+    runtime->memory_blocks_count++;
+    
+    SPVM_MUTEX_unlock(runtime_mutex_atomic);
+  }
   
 #ifdef SPVM_DEBUG_MEMORY
-    fprintf(runtime->spvm_stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    {
+      SPVM_MUTEX_reader_lock(runtime_mutex_atomic);
+      fprintf(runtime->spvm_stderr, "[Debug]Function : new_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, runtime->memory_blocks_count);
+      SPVM_MUTEX_reader_unlock(runtime_mutex_atomic);
+    }
 #endif
   
   return block;
@@ -3285,9 +3296,22 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
   
   if (block) {
     SPVM_ALLOCATOR_free_memory_block_unmanaged(block);
-    stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival--;
+    
+    SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
+    {
+      SPVM_MUTEX_lock(runtime_mutex_atomic);
+      
+      runtime->memory_blocks_count--;
+      
+      SPVM_MUTEX_unlock(runtime_mutex_atomic);
+    }
+    
 #ifdef SPVM_DEBUG_MEMORY
-    fprintf(runtime->spvm_stderr, "[Debug]Function : free_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival);
+    {
+      SPVM_MUTEX_reader_lock(runtime_mutex_atomic);
+      fprintf(runtime->spvm_stderr, "[Debug]Function : free_memory_block, Block Address: %p, Stack Address : %p, Memory Blocks Count : %d\n", block, stack, runtime->memory_blocks_count);
+      SPVM_MUTEX_reader_unlock(runtime_mutex_atomic);
+    }
 #endif
   }
 }
@@ -3298,15 +3322,18 @@ void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
   
 }
 
-int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  return SPVM_API_get_memory_blocks_count(env, stack);
-}
-
 int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  int32_t memory_blocks_count = stack[SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT].ival;
+  SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
+  
+  int32_t memory_blocks_count = 0;
+  {
+    SPVM_MUTEX_reader_lock(runtime_mutex_atomic);
+    memory_blocks_count = runtime->memory_blocks_count;
+    SPVM_MUTEX_reader_unlock(runtime_mutex_atomic);
+  }
   
   return memory_blocks_count;
 }
