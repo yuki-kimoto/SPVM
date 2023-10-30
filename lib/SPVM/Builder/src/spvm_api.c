@@ -4053,7 +4053,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   SPVM_MUTEX_lock(runtime_mutex);
   
-  SPVM_OBJECT* object_assign_off = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+  SPVM_OBJECT* released_object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
   assert(!((intptr_t)object & 1));
   
@@ -4067,47 +4067,47 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   *ref = object;
   
-  if (!object_assign_off) {
+  if (!released_object) {
     return;
   }
   
-  int32_t object_assign_off_ref_count = SPVM_API_get_ref_count(env, stack, object_assign_off);
+  int32_t released_object_ref_count = SPVM_API_get_ref_count(env, stack, released_object);
   
-  assert(object_assign_off_ref_count > 0);
+  assert(released_object_ref_count > 0);
   
-  if (object_assign_off_ref_count > 1) {
+  if (released_object_ref_count > 1) {
   
-    SPVM_API_dec_ref_count(env, stack, object_assign_off);
+    SPVM_API_dec_ref_count(env, stack, released_object);
     return;
   }
   
-  // Free object_assign_off array
-  if (SPVM_API_is_object_array(env, stack, object_assign_off)) {
-    int32_t length = SPVM_API_length(env, stack, object_assign_off);
+  // Free released_object array
+  if (SPVM_API_is_object_array(env, stack, released_object)) {
+    int32_t length = SPVM_API_length(env, stack, released_object);
     for (int32_t index = 0; index < length; index++) {
-      SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)object_assign_off + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
+      SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)released_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
       SPVM_API_assign_object(env, stack, ref, NULL);
     }
   }
-  // Free object_assign_off
+  // Free released_object
   else {
-    SPVM_RUNTIME_BASIC_TYPE* object_assign_off_basic_type = SPVM_API_get_object_basic_type(env, stack, object_assign_off);
-    int32_t object_assign_off_basic_type_category = object_assign_off_basic_type->category;
-    if (object_assign_off_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+    SPVM_RUNTIME_BASIC_TYPE* released_object_basic_type = SPVM_API_get_object_basic_type(env, stack, released_object);
+    int32_t released_object_basic_type_category = released_object_basic_type->category;
+    if (released_object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
       // Class
       SPVM_RUNTIME* runtime = env->runtime;
       
       // Call destructor
-      if (object_assign_off_basic_type->destructor_method) {
+      if (released_object_basic_type->destructor_method) {
         
         SPVM_VALUE save_stack0 = stack[0];
         SPVM_OBJECT* save_exception = SPVM_API_get_exception(env, stack);
         SPVM_OBJECT* save_exception_referent = NULL;
         SPVM_API_assign_object(env, stack, &save_exception_referent, save_exception);
         
-        SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, object_assign_off_basic_type, object_assign_off_basic_type->destructor_method->index);
+        SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, released_object_basic_type, released_object_basic_type->destructor_method->index);
         
-        stack[0].oval = object_assign_off;
+        stack[0].oval = released_object;
         int32_t args_width = 1;
         int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
         
@@ -4124,18 +4124,18 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
         SPVM_API_assign_object(env, stack, &save_exception_referent, NULL);
       }
       
-      // Free object_assign_off fields
-      int32_t object_assign_off_fields_length = object_assign_off_basic_type->fields_length;
-      for (int32_t field_index = 0; field_index < object_assign_off_fields_length; field_index++) {
-        SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, object_assign_off_basic_type, field_index);
+      // Free released_object fields
+      int32_t released_object_fields_length = released_object_basic_type->fields_length;
+      for (int32_t field_index = 0; field_index < released_object_fields_length; field_index++) {
+        SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, released_object_basic_type, field_index);
         
         void* field_basic_type = field->basic_type;
         int32_t field_type_dimension = field->type_dimension;
         int32_t field_type_flag = field->type_flag;
-        int32_t field_type_is_object_assign_off = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
+        int32_t field_type_is_released_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
         
-        if (field_type_is_object_assign_off) {
-          SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object_assign_off + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+        if (field_type_is_released_object) {
+          SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)released_object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
           SPVM_API_assign_object(env, stack, ref, NULL);
         }
       }
@@ -4143,24 +4143,24 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   }
   
-  SPVM_API_dec_ref_count(env, stack, object_assign_off);
+  SPVM_API_dec_ref_count(env, stack, released_object);
   
-  object_assign_off_ref_count = SPVM_API_get_ref_count(env, stack, object_assign_off);
+  released_object_ref_count = SPVM_API_get_ref_count(env, stack, released_object);
   
-  if (object_assign_off_ref_count > 0) {
+  if (released_object_ref_count > 0) {
     
   }
-  else if (object_assign_off_ref_count == 0) {
+  else if (released_object_ref_count == 0) {
     
     // Free weak back refenreces
-    if (object_assign_off->weaken_backref_head != NULL) {
-      SPVM_API_free_weaken_backrefs(env, stack, object_assign_off->weaken_backref_head);
-      object_assign_off->weaken_backref_head = NULL;
+    if (released_object->weaken_backref_head != NULL) {
+      SPVM_API_free_weaken_backrefs(env, stack, released_object->weaken_backref_head);
+      released_object->weaken_backref_head = NULL;
     }
     
-    // Free object_assign_off
-    SPVM_API_free_memory_block(env, stack, object_assign_off);
-    object_assign_off = NULL;
+    // Free released_object
+    SPVM_API_free_memory_block(env, stack, released_object);
+    released_object = NULL;
   }
   else {
     assert(0);
