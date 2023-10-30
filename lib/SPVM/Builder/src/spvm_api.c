@@ -4071,99 +4071,108 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   }
   
   if (released_object) {
-    int32_t released_object_ref_count = SPVM_API_get_ref_count(env, stack, released_object);
+    int32_t do_dec_ref_count_only = 0;
     
-    assert(released_object_ref_count > 0);
+    {
+      SPVM_MUTEX_lock(runtime_mutex);
+      
+      int32_t released_object_ref_count = SPVM_API_get_ref_count(env, stack, released_object);
+      
+      assert(released_object_ref_count > 0);
+      
+      if (released_object_ref_count > 1) {
+        SPVM_API_dec_ref_count(env, stack, released_object);
+        do_dec_ref_count_only = 1;
+      }
+      
+      SPVM_MUTEX_unlock(runtime_mutex);
+    }
     
-    if (released_object_ref_count > 1) {
+    if (!do_dec_ref_count_only) {
+      // Free released_object array
+      if (SPVM_API_is_object_array(env, stack, released_object)) {
+        int32_t length = SPVM_API_length(env, stack, released_object);
+        for (int32_t index = 0; index < length; index++) {
+          SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)released_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
+          SPVM_API_assign_object(env, stack, ref, NULL);
+        }
+      }
+      // Free released_object
+      else {
+        SPVM_RUNTIME_BASIC_TYPE* released_object_basic_type = SPVM_API_get_object_basic_type(env, stack, released_object);
+        int32_t released_object_basic_type_category = released_object_basic_type->category;
+        if (released_object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+          // Class
+          SPVM_RUNTIME* runtime = env->runtime;
+          
+          // Call destructor
+          if (released_object_basic_type->destructor_method) {
+            
+            SPVM_VALUE save_stack0 = stack[0];
+            SPVM_OBJECT* save_exception = SPVM_API_get_exception(env, stack);
+            SPVM_OBJECT* save_exception_referent = NULL;
+            SPVM_API_assign_object(env, stack, &save_exception_referent, save_exception);
+            
+            SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, released_object_basic_type, released_object_basic_type->destructor_method->index);
+            
+            stack[0].oval = released_object;
+            int32_t args_width = 1;
+            int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
+            
+            // Exception in destructor is changed to warning
+            if (error_id) {
+              void* exception = SPVM_API_get_exception(env, stack);
+              const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
+              fprintf(runtime->spvm_stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
+            }
+            
+            // Restore stack and exception
+            stack[0] = save_stack0;
+            SPVM_API_set_exception(env, stack, save_exception);
+            SPVM_API_assign_object(env, stack, &save_exception_referent, NULL);
+          }
+          
+          // Free released_object fields
+          int32_t released_object_fields_length = released_object_basic_type->fields_length;
+          for (int32_t field_index = 0; field_index < released_object_fields_length; field_index++) {
+            SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, released_object_basic_type, field_index);
+            
+            void* field_basic_type = field->basic_type;
+            int32_t field_type_dimension = field->type_dimension;
+            int32_t field_type_flag = field->type_flag;
+            int32_t field_type_is_released_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
+            
+            if (field_type_is_released_object) {
+              SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)released_object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+              SPVM_API_assign_object(env, stack, ref, NULL);
+            }
+          }
+        }
+      
+      }
       
       SPVM_API_dec_ref_count(env, stack, released_object);
-      return;
-    }
-    
-    // Free released_object array
-    if (SPVM_API_is_object_array(env, stack, released_object)) {
-      int32_t length = SPVM_API_length(env, stack, released_object);
-      for (int32_t index = 0; index < length; index++) {
-        SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)released_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
-        SPVM_API_assign_object(env, stack, ref, NULL);
-      }
-    }
-    // Free released_object
-    else {
-      SPVM_RUNTIME_BASIC_TYPE* released_object_basic_type = SPVM_API_get_object_basic_type(env, stack, released_object);
-      int32_t released_object_basic_type_category = released_object_basic_type->category;
-      if (released_object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-        // Class
-        SPVM_RUNTIME* runtime = env->runtime;
+      
+      int32_t released_object_ref_count = SPVM_API_get_ref_count(env, stack, released_object);
+      
+      if (released_object_ref_count > 0) {
         
-        // Call destructor
-        if (released_object_basic_type->destructor_method) {
-          
-          SPVM_VALUE save_stack0 = stack[0];
-          SPVM_OBJECT* save_exception = SPVM_API_get_exception(env, stack);
-          SPVM_OBJECT* save_exception_referent = NULL;
-          SPVM_API_assign_object(env, stack, &save_exception_referent, save_exception);
-          
-          SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, released_object_basic_type, released_object_basic_type->destructor_method->index);
-          
-          stack[0].oval = released_object;
-          int32_t args_width = 1;
-          int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
-          
-          // Exception in destructor is changed to warning
-          if (error_id) {
-            void* exception = SPVM_API_get_exception(env, stack);
-            const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
-            fprintf(runtime->spvm_stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
-          }
-          
-          // Restore stack and exception
-          stack[0] = save_stack0;
-          SPVM_API_set_exception(env, stack, save_exception);
-          SPVM_API_assign_object(env, stack, &save_exception_referent, NULL);
+      }
+      else if (released_object_ref_count == 0) {
+        
+        // Free weak back refenreces
+        if (released_object->weaken_backref_head != NULL) {
+          SPVM_API_free_weaken_backrefs(env, stack, released_object->weaken_backref_head);
+          released_object->weaken_backref_head = NULL;
         }
         
-        // Free released_object fields
-        int32_t released_object_fields_length = released_object_basic_type->fields_length;
-        for (int32_t field_index = 0; field_index < released_object_fields_length; field_index++) {
-          SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(runtime, released_object_basic_type, field_index);
-          
-          void* field_basic_type = field->basic_type;
-          int32_t field_type_dimension = field->type_dimension;
-          int32_t field_type_flag = field->type_flag;
-          int32_t field_type_is_released_object = SPVM_API_TYPE_is_object_type(runtime, field_basic_type, field_type_dimension, field_type_flag);
-          
-          if (field_type_is_released_object) {
-            SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)released_object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-            SPVM_API_assign_object(env, stack, ref, NULL);
-          }
-        }
+        // Free released_object
+        SPVM_API_free_memory_block(env, stack, released_object);
+        released_object = NULL;
       }
-    
-    }
-    
-    SPVM_API_dec_ref_count(env, stack, released_object);
-    
-    released_object_ref_count = SPVM_API_get_ref_count(env, stack, released_object);
-    
-    if (released_object_ref_count > 0) {
-      
-    }
-    else if (released_object_ref_count == 0) {
-      
-      // Free weak back refenreces
-      if (released_object->weaken_backref_head != NULL) {
-        SPVM_API_free_weaken_backrefs(env, stack, released_object->weaken_backref_head);
-        released_object->weaken_backref_head = NULL;
+      else {
+        assert(0);
       }
-      
-      // Free released_object
-      SPVM_API_free_memory_block(env, stack, released_object);
-      released_object = NULL;
-    }
-    else {
-      assert(0);
     }
   }
 }
