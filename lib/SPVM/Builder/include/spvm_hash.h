@@ -13,7 +13,7 @@ struct spvm_hash {
   SPVM_HASH_ENTRY* entries;
   int32_t table_capacity;
   int32_t entries_capacity;
-  int32_t entries_length;
+  int32_t keys_length;
   int8_t memory_block_type;
 };
 

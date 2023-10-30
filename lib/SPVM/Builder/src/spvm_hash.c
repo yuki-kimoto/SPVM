@@ -57,7 +57,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t table_capacity, int3
   else {
     assert(0);
   }
-  hash->entries_length = 0;
+  hash->keys_length = 0;
   
   hash->allocator = allocator;
   
@@ -82,7 +82,7 @@ void SPVM_HASH_set(SPVM_HASH* hash, const char* key, int32_t length, void* value
   assert(length >= 0);
   
   // Rehash
-  if (hash->entries_length > hash->table_capacity * 0.75) {
+  if (hash->keys_length > hash->table_capacity * 0.75) {
     int32_t new_table_capacity = (hash->table_capacity * 2) + 1;
     
     SPVM_HASH_rehash(hash, new_table_capacity);
@@ -146,7 +146,7 @@ void SPVM_HASH_free(SPVM_HASH* hash) {
   assert(hash);
   
   if (hash->memory_block_type == SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP) {
-    for (int32_t i = 0; i < hash->entries_length; i++) {
+    for (int32_t i = 0; i < hash->keys_length; i++) {
       char* key = hash->entries[i].key;
       SPVM_ALLOCATOR_free_memory_block_tmp(allocator, key);
       hash->entries[i].key = NULL;
@@ -170,13 +170,13 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
   
   assert(hash);
   
-  int32_t entries_length = hash->entries_length;
+  int32_t keys_length = hash->keys_length;
   
-  assert(entries_length >= 0);
+  assert(keys_length >= 0);
   
   int32_t entries_capacity = hash->entries_capacity;
   
-  if (entries_length >= entries_capacity) {
+  if (keys_length >= entries_capacity) {
     int32_t new_entries_capacity = entries_capacity * 2;
     
     SPVM_HASH_ENTRY* new_entries;
@@ -212,7 +212,7 @@ int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, int32_t key_l
   assert(hash);
   assert(key);
   
-  int32_t index = hash->entries_length;
+  int32_t index = hash->keys_length;
   
   SPVM_HASH_maybe_extend_entries(hash);
   
@@ -237,7 +237,7 @@ int32_t SPVM_HASH_new_hash_entry(SPVM_HASH* hash, const char* key, int32_t key_l
   hash->entries[index].value = value;
   hash->entries[index].next_index = -1;
   
-  hash->entries_length++;
+  hash->keys_length++;
   
   return index;
 }
@@ -253,7 +253,7 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   SPVM_HASH* new_hash = SPVM_HASH_new(allocator, new_table_capacity, hash->memory_block_type);
   
   // Rehash
-  for (int32_t i = 0; i < hash->entries_length; i++) {
+  for (int32_t i = 0; i < hash->keys_length; i++) {
     int32_t key_length = hash->entries[i].key_length;
     const char* key = hash->entries[i].key;
     
@@ -285,7 +285,7 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
     assert(0);
   }
   
-  hash->entries_length = new_hash->entries_length;
+  hash->keys_length = new_hash->keys_length;
   hash->table_capacity = new_hash->table_capacity;
   hash->entries_capacity = new_hash->entries_capacity;
   hash->table = new_hash->table;
