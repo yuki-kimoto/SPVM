@@ -19,10 +19,10 @@ struct spvm_hash {
 
 // Hash entry
 struct spvm_hash_entry {
-  void* value;
-  int32_t next_index;
   char* key;
   int32_t key_length;
+  void* value;
+  int32_t next_index;
 };
 
 SPVM_HASH* SPVM_HASH_new(SPVM_ALLOCATOR* allocator, int32_t capacity, int32_t memory_block_type);
