@@ -4008,21 +4008,25 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
 
 void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   
-  assert(ref);
+  SPVM_RUNTIME* runtime = env->runtime;
   
-  if (*ref == NULL) {
-    return;
+  SPVM_MUTEX* runtime_mutex = runtime->mutex;
+  
+  {
+    SPVM_MUTEX_lock(runtime_mutex);
+    
+    assert(ref);
+    
+    if (*ref == NULL) {
+      return;
+    }
+    
+    SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
+    
+    SPVM_API_unweaken_thread_unsafe(env, stack, ref);
+    
+    SPVM_MUTEX_unlock(runtime_mutex);
   }
-  
-  SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
-  
-  SPVM_MUTEX* mutex_object = SPVM_API_get_object_mutex(env, stack, object);
-  
-  SPVM_MUTEX_lock(mutex_object);
-  
-  SPVM_API_unweaken_thread_unsafe(env, stack, ref);
-  
-  SPVM_MUTEX_unlock(mutex_object);
 }
 
 void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
