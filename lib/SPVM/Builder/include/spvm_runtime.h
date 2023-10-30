@@ -23,6 +23,8 @@ struct spvm_runtime {
   
   SPVM_HASH* assignability_symtable; 
   
+  SPVM_HASH* stack_symtable;
+  
   SPVM_MUTEX* mutex;
   
   SPVM_MUTEX* mutex_atomic;
