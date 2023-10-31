@@ -1,4 +1,6 @@
 0.989058 2023-10-30
+  [Bug Fix]
+    * Fix the bug that the print_stderr native API print output to stdout.
   [Incompatible Changes]
     * The new_stack native API uses the new_memory_block native API.
     * The free_stack native API uses the free_memory_block native API.
