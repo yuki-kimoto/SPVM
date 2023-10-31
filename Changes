@@ -1,3 +1,8 @@
+0.989058 2023-10-30
+  [Incompatible Changes]
+    * The new_stack native API uses the new_memory_block native API.
+    * The free_stack native API uses the free_memory_block native API.
+    
 0.989057 2023-10-30
   [Internal Changes]
     * Keys of spvm_hash is allocated temporary in temporary hash.
