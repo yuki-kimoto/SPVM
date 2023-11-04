@@ -3815,7 +3815,6 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
 
 int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  
   SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
   int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
   int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
@@ -3825,9 +3824,7 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
     if (*current_mortal_stack_top_ptr >= *current_mortal_stack_capacity_ptr) {
       int32_t new_mortal_stack_capacity = *current_mortal_stack_capacity_ptr * 2;
       SPVM_OBJECT** new_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(void*) * new_mortal_stack_capacity);
-      if (new_mortal_stack == NULL) {
-        return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-      }
+      assert(new_mortal_stack);
       memcpy(new_mortal_stack, *current_mortal_stack_ptr, sizeof(void*) * *current_mortal_stack_capacity_ptr);
       *current_mortal_stack_capacity_ptr = new_mortal_stack_capacity;
       SPVM_API_free_memory_block(env, stack, *current_mortal_stack_ptr);
