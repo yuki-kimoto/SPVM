@@ -99,7 +99,7 @@ class TestCase::Module::Sync::Mutex {
         return 0;
       }
     }
-
+    
     return 1;
   }
   
