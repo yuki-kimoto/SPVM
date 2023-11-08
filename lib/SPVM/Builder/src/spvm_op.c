@@ -1846,7 +1846,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   
   // @$.array
   SPVM_OP* op_var_array_for_length = SPVM_OP_clone_op_var(compiler, op_var_array_orig);
-  SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
+  SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, op_for->file, op_for->line);
   SPVM_OP_build_array_length(compiler, op_array_length, op_var_array_for_length);
   
   // my $.array_length
@@ -1867,7 +1867,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   // $.array->[$.i]
   SPVM_OP* op_var_init_for_array_access = SPVM_OP_clone_op_var(compiler, op_var_init_orig);
   SPVM_OP* op_var_array_for_array_access = SPVM_OP_clone_op_var(compiler, op_var_array_orig);
-  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
+  SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, op_for->file, op_for->line);
   op_array_access = SPVM_OP_build_array_access(compiler, op_array_access, op_var_array_for_array_access, op_var_init_for_array_access);
   
   // my $element = $.array->[$.i]

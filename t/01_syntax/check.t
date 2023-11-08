@@ -1429,5 +1429,22 @@ use Test::More;
     ];
     compile_not_ok($source, 'The right operand of the . operator must be the string type or the byte[] type');
   }
+
+  {
+  
+    my $source = <<'EOS';
+class MyClass { 
+  static method main : int () { 
+    my $array = 1;
+    for my $element (@$array) {
+      
+    }
+  }
+}
+EOS
+    
+    compile_not_ok($source, q|line 4|);
+  }
+
 }
 done_testing;
