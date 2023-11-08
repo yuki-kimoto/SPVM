@@ -101,13 +101,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     }
     
     // Current character
-    char ch = -1;
+    int32_t ch = -1;
     
     // Variable expansion state
     if (var_expansion_state > 0) {
       switch (var_expansion_state) {
         case SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED: {
-          ch = *compiler->ch_ptr;
+          ch = (uint8_t)*compiler->ch_ptr;
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT: {
@@ -115,7 +115,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR: {
-          ch = *compiler->ch_ptr;
+          ch = (uint8_t)*compiler->ch_ptr;
           break;
         }
         case  SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT: {
@@ -137,7 +137,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       return (int) (uint8_t) ';';
     }
     else {
-      ch = *compiler->ch_ptr;
+      ch = (uint8_t)*compiler->ch_ptr;
     }
     
     switch (ch) {
@@ -225,7 +225,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->ch_ptr++;
         
         // "-" is the sign of a numeric literal
-        if (isdigit(*compiler->ch_ptr)) {
+        if (SPVM_TOKE_isdigit_ascii(compiler, *compiler->ch_ptr)) {
           before_char_is_minus = 1;
           continue;
         }
@@ -375,7 +375,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         // &foo - Current module
-        else if (isalpha(*compiler->ch_ptr) || *compiler->ch_ptr == '_') {
+        else if (SPVM_TOKE_isalpha_ascii(compiler, *compiler->ch_ptr) || *compiler->ch_ptr == '_') {
           yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS);
           compiler->expect_method_name = 1;
           return CURRENT_CLASS;
@@ -490,7 +490,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             const char* heredoc_name_start_ptr = compiler->ch_ptr;
             
-            while(isalnum(*compiler->ch_ptr) || *compiler->ch_ptr == '_') {
+            while(SPVM_TOKE_isalnum_ascii(compiler, *compiler->ch_ptr) || *compiler->ch_ptr == '_') {
               compiler->ch_ptr++;
             }
             
@@ -506,7 +506,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             heredoc_name[heredoc_name_length] = '\0';
             
             int32_t comile_error = 0;
-            if (isdigit(heredoc_name[0])) {
+            if (SPVM_TOKE_isdigit_ascii(compiler, heredoc_name[0])) {
               SPVM_COMPILER_error(compiler, "A here document name cannot start with a number.\n  at %s line %d", compiler->current_file, compiler->current_line);
             }
             else if (strstr(heredoc_name, "__")) {
@@ -865,7 +865,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                   // Proceed through a variable
                   while (1) {
-                    if (isalnum(*next_string_literal_ch_ptr) || *next_string_literal_ch_ptr == '_') {
+                    if (SPVM_TOKE_isalnum_ascii(compiler, *next_string_literal_ch_ptr) || *next_string_literal_ch_ptr == '_') {
                       next_string_literal_ch_ptr++;
                     }
                     else if (*next_string_literal_ch_ptr == ':' && *(next_string_literal_ch_ptr + 1) == ':') {
@@ -917,7 +917,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         }
                       }
                       
-                      while (isalnum(*next_string_literal_ch_ptr) || *next_string_literal_ch_ptr == '_') {
+                      while (SPVM_TOKE_isalnum_ascii(compiler, *next_string_literal_ch_ptr) || *next_string_literal_ch_ptr == '_') {
                         next_string_literal_ch_ptr++;
                       }
                       
@@ -1265,7 +1265,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Go forward to the end of the variable name
           while (
-            isalnum(*compiler->ch_ptr)
+            SPVM_TOKE_isalnum_ascii(compiler, *compiler->ch_ptr)
             || (*compiler->ch_ptr) == '_'
             || (*compiler->ch_ptr == ':' && *(compiler->ch_ptr + 1) == ':')
           )
@@ -1329,7 +1329,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             // A variable name cannnot begin with a number
-            if (var_name_symbol_name_part_length >= 1 && isdigit(var_name[1])) {
+            if (var_name_symbol_name_part_length >= 1 && SPVM_TOKE_isdigit_ascii(compiler, var_name[1])) {
               SPVM_COMPILER_error(compiler, "The symbol name part of the variable name \"%s\" cannnot begin with a number.\n  at %s line %d", var_name, compiler->current_file, compiler->current_line);
             }
           }
@@ -1365,7 +1365,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       default: {
         // Numeric literal
-        if (isdigit(ch)) {
+        if (SPVM_TOKE_isdigit_ascii(compiler, ch)) {
           const char* number_literal_begin_ptr = compiler->ch_ptr;
           
           // The before character is "-"
@@ -1386,7 +1386,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               digit = 2;
             }
             // Octal Literal
-            else if (isdigit(*(compiler->ch_ptr + 1)) || *(compiler->ch_ptr + 1) == '_') {
+            else if (SPVM_TOKE_isdigit_ascii(compiler, *(compiler->ch_ptr + 1)) || *(compiler->ch_ptr + 1) == '_') {
               digit = 8;
             }
             // 0...
@@ -1425,7 +1425,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else if (digit == 8 || digit == 2) {
             compiler->ch_ptr += 1;
             while(
-              isdigit(*compiler->ch_ptr)
+              SPVM_TOKE_isdigit_ascii(compiler, *compiler->ch_ptr)
               || *compiler->ch_ptr == '_'
             )
             {
@@ -1435,7 +1435,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Scan Decimal number
           else {
             while(
-              isdigit(*compiler->ch_ptr)
+              SPVM_TOKE_isdigit_ascii(compiler, *compiler->ch_ptr)
               || *compiler->ch_ptr == '.' || *compiler->ch_ptr == '-' || *compiler->ch_ptr == '+' || *compiler->ch_ptr == 'e' || *compiler->ch_ptr == 'E'
               || *compiler->ch_ptr == '_'
             )
@@ -1466,7 +1466,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             numeric_literal[pos] = '\0';
           }
           // Back suffix such as "f" or "F" when hex floating number
-          if (is_hex_floating_number && !isdigit(*(compiler->ch_ptr - 1))) {
+          if (is_hex_floating_number && !SPVM_TOKE_isdigit_ascii(compiler, *(compiler->ch_ptr - 1))) {
             compiler->ch_ptr--;
             numeric_literal[pos - 1] = '\0';
           }
@@ -1699,7 +1699,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return CONSTANT;
         }
         // A symbol name
-        else if (isalpha(ch) || ch == '_') {
+        else if (SPVM_TOKE_isalpha_ascii(compiler, ch) || ch == '_') {
           // Column
           int32_t column = compiler->ch_ptr - compiler->line_begin_ch_ptr;
           
@@ -1710,7 +1710,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           compiler->ch_ptr++;
           
           // Go forward to the end of the symbol name
-          while(isalnum(*compiler->ch_ptr)
+          while(SPVM_TOKE_isalnum_ascii(compiler, *compiler->ch_ptr)
             || *compiler->ch_ptr == '_'
             || (*compiler->ch_ptr == ':' && *(compiler->ch_ptr + 1) == ':'))
           {
@@ -2279,7 +2279,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               assert(!(symbol_name[0] == ':' && symbol_name[1] == ':'));
               
               // A symbol name cannnot begin with a number "0-9".
-              assert(!isdigit(symbol_name[0]));
+              assert(!SPVM_TOKE_isdigit_ascii(compiler, symbol_name[0]));
             }
             
             // A string literal of the left operand of the fat camma
@@ -2307,8 +2307,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return token;
         }
         else {
-          SPVM_COMPILER_error(compiler, "The character %d in a 8bit signed integer is not expected.\n  at %s line %d", ch, compiler->current_file, compiler->current_line);
-          return (int) (uint8_t) ch;
+          SPVM_COMPILER_error(compiler, "Use of the character code \"%X\" is not allowed in source code.\n  at %s line %d", (uint8_t)ch, compiler->current_file, compiler->current_line);
+          return 0;
         }
       }
     }
@@ -2342,7 +2342,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
       // Check the class name
       {
         // A class name must begin with an upper case character
-        if (islower(basic_type_name[0])) {
+        if (SPVM_TOKE_islower_ascii(compiler, basic_type_name[0])) {
           SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
           return 0;
         }
@@ -2353,7 +2353,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         for (int32_t i = 0; i < basic_type_name_length; i++) {
           if (i > 1) {
             if (basic_type_name[i - 2] == ':' && basic_type_name[i - 1] == ':') {
-              if (islower(basic_type_name[i])) {
+              if (SPVM_TOKE_islower_ascii(compiler, basic_type_name[i])) {
                 SPVM_COMPILER_error(compiler, "The part names of the \"%s\" module must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
                 return 0;
               }
@@ -2386,7 +2386,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
         }
         
         // A class name cannnot begin with a number
-        if (basic_type_name_length >= 1 && isdigit(basic_type_name[0])) {
+        if (basic_type_name_length >= 1 && SPVM_TOKE_isdigit_ascii(compiler, basic_type_name[0])) {
           SPVM_COMPILER_error(compiler, "The class name \"%s\" cannnot begin with a number.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
           return 0;
         }
@@ -2618,7 +2618,7 @@ int32_t SPVM_TOKE_is_octal_number(SPVM_COMPILER* compiler, char ch) {
 int32_t SPVM_TOKE_is_hex_number(SPVM_COMPILER* compiler, char ch) {
   (void)compiler;
   // SP, CR, LF, HT, FF
-  if (isdigit(ch) || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')) {
+  if (SPVM_TOKE_isdigit_ascii(compiler, ch) || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F')) {
     return 1;
   }
   else {
@@ -2783,6 +2783,50 @@ int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch) {
   }
   
   return is_line_terminator;
+}
+
+int32_t SPVM_TOKE_isalpha_ascii(SPVM_COMPILER* compiler, int32_t ch) {
+  
+  int32_t isalpha_ascii = 0;
+  
+  if (isascii(ch) && isalpha(ch)) {
+    isalpha_ascii = 1;
+  }
+  
+  return isalpha_ascii;
+}
+
+int32_t SPVM_TOKE_isalnum_ascii(SPVM_COMPILER* compiler, int32_t ch) {
+  
+  int32_t isalnum_ascii = 0;
+  
+  if (isascii(ch) && isalnum(ch)) {
+    isalnum_ascii = 1;
+  }
+  
+  return isalnum_ascii;
+}
+
+int32_t SPVM_TOKE_isdigit_ascii(SPVM_COMPILER* compiler, int32_t ch) {
+  
+  int32_t isdigit_ascii = 0;
+  
+  if (isascii(ch) && isdigit(ch)) {
+    isdigit_ascii = 1;
+  }
+  
+  return isdigit_ascii;
+}
+
+int32_t SPVM_TOKE_islower_ascii(SPVM_COMPILER* compiler, int32_t ch) {
+  
+  int32_t islower_ascii = 0;
+  
+  if (isascii(ch) && islower(ch)) {
+    islower_ascii = 1;
+  }
+  
+  return islower_ascii;
 }
 
 int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** ch_ptr_ptr) {

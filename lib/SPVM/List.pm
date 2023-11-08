@@ -60,16 +60,6 @@ SPVM::List - Dynamic Object Array
 
 C<List> is the dynamic object array that has a specified object array type.
 
-=head1 Enumerations
-
-  enum {
-    DEFAULT_CAPACITY = 4,
-  }
-
-=head2 DEFAULT_CAPACITY
-
-The default capacity. The value is 4.
-
 =head1 Fields
 
 =head2 capacity
@@ -110,7 +100,7 @@ Creates a new C<StringList> object with $protot_array, $length and $capacity.
 
 If $protot_array is undefined, $protot_array is set to an C<object[]> object.
 
-If $capacity is less than 0, $capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If $capacity is less than 0, $capacity is set to the default value.
 
 If $length is greater than $capacity, $capacity is set to the length.
 
@@ -179,29 +169,23 @@ $index must be less than the length of $list. Otherwise an exception is thrown.
 
 =head2 replace
 
-C<method replace : void ($offset : int, $remove_length : int, $replace : string[]);>
+C<method replace : void ($index : int, $remove_length : int, $replace : string[]);>
 
-Replaces the elements of the range specified by $offset and $lenght with $replace array.
+Replaces the elements of the range specified by $index and $lenght with $replace array.
 
 Exceptions:
 
-$offset must be greater than or equal to 0. Otherwise an exception is thrown.
+$index must be greater than or equal to 0. Otherwise an exception is thrown.
 
 $remove_length must be greater than or equal to 0. Otherwise an exception is thrown.
 
-$offset + $removing lenght must be less than or equal to the length of $list. Otherwise an exception is thrown.
+$index + $removing lenght must be less than or equal to the length of $list. Otherwise an exception is thrown.
 
 =head2 reserve
 
 C<method reserve : void ($new_capacity : int);>
 
-Reserves the elements with $new_capacity.
-
 If $new_capacity is greater than the capacity of the list, the capacity of the list is extended to $new_capacity.
-
-Exceptions:
-
-$new_capacity must be greater than or equal to 0. Otherwise an exception is thrown.
 
 =head2 resize
 
@@ -239,18 +223,6 @@ $index must be greater than or equal to 0. Otherwise an exception is thrown.
 
 $index must be less than the length of $list. Otherwise an exception is thrown.
 
-=head2 set_array
-
-C<method set_array : void ($array : object[]);>
-
-Sets an $array. Each element of $array is copied to the element of the list.
-
-Exceptions:
-
-$array must be defined. Otherwise an exception is thrown.
-
-The length of $array must be equal to the length of $list. Otherwise an exception is thrown.
-
 =head2 shift
 
 C<method shift : object ();>
@@ -266,14 +238,6 @@ The length of $list must be greater than 0. Otherwise an exception is thrown.
 C<method to_array : object[] ();>
 
 Creates a new array and copies all elements of the list into the new array, and returns it.
-
-=head2 get_array_unsafe
-
-C<method get_array_unsafe : object[] ();>
-
-Gets the internally array.
-
-This array is unsafe because it continues to point to the old array if the internal array is extended.
 
 =head2 unshift
 

@@ -1,3 +1,71 @@
+0.989058 2023-10-30
+  [Bug Fix]
+    * Fix the bug that the print_stderr native API print output to stdout.
+  [Incompatible Changes]
+    * The new_stack native API uses the new_memory_block native API.
+    * The free_stack native API uses the free_memory_block native API.
+    
+0.989057 2023-10-30
+  [Internal Changes]
+    * Keys of spvm_hash is allocated temporary in temporary hash.
+    * Entries of spvm_hash is allocated temporary in temporary hash.
+    * The val field of the Hash::Entry is renamed to value.
+  [Incompatible Changes]
+    * The get_memory_blocks_count method in the SPVM::ExchangeAPI returns the count of memory blocks the runtime allocate.
+    * The get_memory_blocks_count in the native API returns the count of memory blocks the runtime allocate.
+    * Remove the get_meory_block_count_stack in the native API.
+0.989056 2023-10-30
+  [Incompatible Changes]
+    * Remove the lock_object in the internal native API.
+    * Remove the unlock_object in the internal native API.
+    * The inc_ref_count in the internal native API becomes atomic operation.
+    * The dec_ref_count in the internal native API becomes atomic operation.
+  [Internal Changes]
+    * Each object does not have a mutex.
+  [Bug Fix]
+    * Some mutex bugs are fixed.
+    
+0.989055 2023-10-28
+  [Incompatible Changes]
+    * Revert the following changes
+      
+      [Incompatible Changes] 0.989054 2023-10-26
+        * The pop and shift methods in the List class and the StringList class return undef if the length is 0, instead of throwing an exception.
+          
+0.989054 2023-10-26
+  [Incompatible Changes]
+    * Remove the get_array_unsafe method from the StringList class and the List class.
+    * Remove the set_array methods are removed from the ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, and List classes.
+    * Remove the DEFAULT_CAPACITY enumerations are removed from the ByteList, ShortList, IntList, LongList, FloatList, DoubleList, StringList, and List classes.
+  [Changes]
+    * The StringList class extends the List class.
+    * The shift and unshift method becomes O(1) in the List and StringList classes.
+    
+  [Bug Fix]
+    * Fix the bug that the reserve method in the List class creates any object array instead of using Array->new_proto.
+0.989053 2023-10-26
+  [New Feautres]
+    * Add the to_address method to the Fn class.
+    
+      static method to_address : string ($object : object);
+  [Compilation Error Message Changes]
+    * A compilation error message is changed.
+      [before]
+        The character -2 in a 8bit signed integer is not expected.
+      [after]
+        Use of the character code "FE" is not allowed in source code.
+  [Bug Fix]
+    * Fix a bug that a token is returned when the charactor is not allowed in source code.
+    * Fix a bug where the tokenizer was affected by locale.
+    
+0.989052 2023-10-24
+  [New Features]
+    * Add the get_memory_blocks_count method to the Fn class.
+      
+      static method get_memory_blocks_count : int ();
+  [Fix Warnings]
+    * Fix warnings in Windows such as "warning: implicit declaration of function 'InitializeSRWLock';"
+    
 0.989051 2023-10-11
   [New Feature]
     * Add the Callback class.

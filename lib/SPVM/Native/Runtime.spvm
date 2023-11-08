@@ -11,7 +11,6 @@ class Native::Runtime : pointer {
   use Native::ClassVar;
   use Native::Field;
   
-  use StringList;
   use Fn;
   
   # Fields
@@ -34,17 +33,24 @@ class Native::Runtime : pointer {
     
     my $basic_types_length = $self->get_basic_types_length;
     
-    my $user_defined_basic_type_names_list = StringList->new;
+    my $user_defined_basic_type_names_tmp = new string [$basic_types_length];
+    
+    my $user_defined_basic_type_names_length = 0;
     
     for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
       my $basic_type = $self->get_basic_type_by_id($basic_type_id);
       my $basic_type_name = $basic_type->get_name;
       if (($basic_type_name->[0] >= 'A' && $basic_type_name->[0] <= 'Z') && !Fn->contains($basic_type_name, "::anon::")) {
-        $user_defined_basic_type_names_list->push($basic_type->get_name);
+        $user_defined_basic_type_names_tmp->[$user_defined_basic_type_names_length] = $basic_type_name;
+        $user_defined_basic_type_names_length++;
       }
     }
     
-    my $user_defined_basic_type_names = $user_defined_basic_type_names_list->to_array;
+    my $user_defined_basic_type_names = new string [$user_defined_basic_type_names_length];
+    
+    for (my $i = 0; $i < $user_defined_basic_type_names_length; $i++) {
+      $user_defined_basic_type_names->[$i] = $user_defined_basic_type_names_tmp->[$i];
+    }
     
     return $user_defined_basic_type_names;
   }

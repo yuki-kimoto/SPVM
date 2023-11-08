@@ -12,10 +12,9 @@ enum {
   SPVM_API_C_STACK_INDEX_MORTAL_STACK = 510,
   SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP = 509,
   SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY = 508,
-  SPVM_API_C_STACK_INDEX_MEMORY_BLOCKS_COUNT = 507,
-  SPVM_API_C_STACK_INDEX_ARGS_WIDTH = 506,
-  SPVM_API_C_STACK_INDEX_CALL_DEPTH = 505,
-  SPVM_API_C_STACK_INDEX_ENV = 504,
+  SPVM_API_C_STACK_INDEX_ARGS_WIDTH = 507,
+  SPVM_API_C_STACK_INDEX_CALL_DEPTH = 506,
+  SPVM_API_C_STACK_INDEX_ENV = 503,
 };
 
 /*
@@ -41,7 +40,6 @@ void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size); 
 void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
 void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block); // Deprecated
 void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
-int32_t SPVM_API_get_memory_blocks_count_stack(SPVM_ENV* env, SPVM_VALUE* stack); // Deprecated
 int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack);
 
 // Basic type

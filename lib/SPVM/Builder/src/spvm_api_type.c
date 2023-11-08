@@ -157,14 +157,13 @@ int32_t SPVM_API_TYPE_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE*
   char assinability_key[256] = {0};
   snprintf(assinability_key, 255, "%d-%d-%d-%d-%d-%d", dist_basic_type->id, dist_type_dimension, dist_type_flag, src_basic_type->id, src_type_dimension, src_type_flag);
   
+  SPVM_MUTEX* runtime_mutex = runtime->mutex;
   
-  SPVM_MUTEX* mutex_assignability_symtable = runtime->mutex_assignability_symtable;
-  
-  SPVM_MUTEX_reader_lock(mutex_assignability_symtable);
+  SPVM_MUTEX_reader_lock(runtime_mutex);
   
   int32_t assignability = (intptr_t)SPVM_HASH_get(runtime->assignability_symtable, assinability_key, strlen(assinability_key));
   
-  SPVM_MUTEX_reader_unlock(mutex_assignability_symtable);
+  SPVM_MUTEX_reader_unlock(runtime_mutex);
   
   if (assignability > 0) {
     isa = 1;
@@ -207,11 +206,11 @@ int32_t SPVM_API_TYPE_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE*
       isa = 0;
     }
     
-    SPVM_MUTEX_lock(mutex_assignability_symtable);
+    SPVM_MUTEX_lock(runtime_mutex);
     
     SPVM_HASH_set(runtime->assignability_symtable, assinability_key, strlen(assinability_key), (void*)(intptr_t)(isa ? 1 : -1));
     
-    SPVM_MUTEX_unlock(mutex_assignability_symtable);
+    SPVM_MUTEX_unlock(runtime_mutex);
   }
   
   return isa;

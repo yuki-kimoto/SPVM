@@ -36,26 +36,12 @@ Decrements the reference count of the object.
 
 Leaves scope.
 
-=head2 lock_object
-
-  void (*lock_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Locks the object.
-
-=head2 unlock_object
-
-  void (*unlock_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-
-Unlocks the object.
-
 =head1 Native API IDs
 
   0 get_ref_count
   1 inc_ref_count
   2 dec_ref_count
   3 leave_scope_local
-  4 lock_object
-  5 unlock_object
 
 =head1 Copyright & License
 

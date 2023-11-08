@@ -1,35 +1,19 @@
 # Copyright (c) 2023 Yuki Kimoto
 # MIT License
 
-class StringList {
+class StringList extends List {
   use Fn;
   use Array;
   
-  # Enumerations
-  enum {
-    DEFAULT_CAPACITY = 4,
-  }
-  
-  # Fields
-  has capacity : ro int;
-  has length : ro int;
-  has array : string[];
-  
   # Class methods
   static method new : StringList ($array : string[] = undef, $capacity : int = -1) {
-    my $length : int;
-    if ($array) {
-      $length = @$array;
-    }
-    else {
-      $length = 0;
+    my $self = new StringList;
+    
+    unless ($array) {
+      $array = new string[0];
     }
     
-    my $self = &new_len($length, $capacity);
-    
-    if ($array) {
-      Array->memcpy_string_address($self->{array}, 0, $array, 0, $length);
-    }
+    $self->SUPER::init($array, $capacity);
     
     return $self;
   }
@@ -37,282 +21,51 @@ class StringList {
   static method new_len : StringList ($length : int, $capacity : int = -1) {
     my $self = new StringList;
     
-    unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
-    }
+    my $proto = new string[0];
     
-    if ($capacity < 0) {
-      $capacity = &DEFAULT_CAPACITY;
-    }
-    
-    if ($length > $capacity) {
-      $capacity = $length;
-    }
-    
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
-    $self->{array} = new string[$capacity];
+    $self->SUPER::init_len($proto, $length, $capacity);
     
     return $self;
   }
   
   # Instance methods
   method get : string ($index : int) {
-    my $length = $self->length;
-    
-    unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
-    }
-    
-    unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
-    }
-    
-    my $element = $self->{array}[$index];
-    
-    return $element;
+    return (string)$self->SUPER::get($index);
   }
   
   method insert : void ($index : int, $element : string) {
-    my $length = $self->{length};
-    
-    unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
-    }
-    
-    unless ($index <= $length) {
-      die "\$index must be less than or equal to the length of \$list.";
-    }
-    
-    my $new_length = $length + 1;
-    $self->_maybe_extend($new_length);
-    
-    my $elements = $self->{array};
-    if ($index != $length) {
-      my $dist_index = $index + 1;
-      my $move_length = $length - $index;
-      Array->memmove_string_address($elements, $dist_index, $elements, $index, $move_length);
-    }
-    $elements->[$index] = $element;
-    
-    $self->{length} = $new_length;
+    $self->SUPER::insert($index, $element);
   }
   
   method pop : string () {
-    my $length = $self->length;
-    
-    unless ($length > 0) {
-      die "The length of \$list must be greater than 0.";
-    }
-    
-    my $element = $self->{array}[$length - 1];
-    
-    $self->{array}[$length - 1] = 0;
-    
-    $self->{length}--;
-    
-    return $element;
+    return (string)$self->SUPER::pop;
   }
   
   method push : void ($element : string) {
-    my $length = $self->{length};
-    
-    my $new_length = $length + 1;
-    $self->_maybe_extend($new_length);
-    
-    $self->{array}[$length] = $element;
-    
-    $self->{length} = $new_length;
+    $self->SUPER::push($element);
   }
   
   method remove : string ($index : int) {
-    my $length = $self->{length};
-    
-    unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
-    }
-    
-    unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
-    }
-    
-    my $elements = $self->{array};
-    my $remove_value = $elements->[$index];
-    
-    my $dist_index = $index;
-    my $src_index = $index + 1;
-    my $move_length = $length - $index - 1;
-    Array->memmove_string_address($elements, $dist_index, $elements, $src_index, $move_length);
-    
-    $self->{length}--;
-    
-    return $remove_value;
+    return (string)$self->SUPER::remove($index);
   }
   
   method replace : void ($offset : int, $remove_length : int, $replace : string[]) {
-    unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
-    }
-    
-    unless ($remove_length >= 0) {
-      die "\$remove_length must be greater than or equal to 0.";
-    }
-    unless ($offset + $remove_length <= $self->{length}) {
-      die "\$offset + \$removing lenght must be less than or equal to the length of \$list.";
-    }
-    
-    my $replace_length = 0;
-    if ($replace) {
-      $replace_length = @$replace;
-    }
-    
-    my $new_length = $self->{length} - $remove_length + $replace_length;
-    $self->_maybe_extend($new_length);
-    
-    my $move_length = $self->{length} - $offset - $remove_length;
-    Array->memmove_string_address($self->{array}, $offset + $replace_length, $self->{array}, $offset + $remove_length, $move_length);
-    
-    if ($replace) {
-      Array->memcpy_string_address($self->{array}, $offset, $replace, 0, $replace_length);
-    }
-    
-    $self->{length} = $new_length;
-  }
-  
-  method reserve : void ($new_capacity : int) {
-    unless ($new_capacity >= 0) {
-      die "\$new_capacity must be greater than or equal to 0.";
-    }
-    
-    my $capacity = $self->{capacity};
-    
-    if ($new_capacity > $capacity) {
-      my $length = $self->{length};
-      my $new_array = new string[$new_capacity];
-      Array->memcpy_string_address($new_array, 0, $self->{array}, 0, $length);
-      $self->{array} = $new_array;
-      $self->{capacity} = $new_capacity;
-    }
-  }
-  
-  method resize : void ($new_length : int) {
-    unless ($new_length >= 0) {
-      die "\$new_length must be greater than or equal to 0.";
-    }
-    
-    my $length = $self->{length};
-    
-    if ($new_length > $length) {
-      $self->_maybe_extend($new_length);
-      Array->memset_string($self->{array}, undef, $length, $new_length - $length);
-    }
-    elsif ($new_length < $length) {
-      Array->memset_string($self->{array}, undef, $new_length, $length - $new_length);
-    }
-    
-    $self->{length} = $new_length;
+    $self->SUPER::replace($offset, $remove_length, $replace);
   }
   
   method set : void ($index : int, $element : string) {
-    my $length = $self->length;
-    
-    unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
-    }
-    
-    unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
-    }
-    
-    $self->{array}[$index] = $element;
-  }
-  
-  method set_array : void ($array : string[]) {
-    unless ($array) {
-      die "\$array must be defined.";
-    }
-    
-    my $current_length = $self->length;
-    
-    my $set_length = @$array;
-    
-    unless ($set_length == $current_length) {
-      die "The length of \$array must be \$same as the length of \$list.";
-    }
-    
-    Array->memcpy_string_address($self->{array}, 0, $array, 0, $current_length);
+    $self->SUPER::set($index, $element);
   }
   
   method shift : string () {
-    my $length = $self->{length};
-    
-    unless ($length > 0) {
-      die "The length of \$list must be greater than 0.";
-    }
-    
-    my $elements = $self->{array};
-    
-    my $element = $elements->[0];
-    
-    Array->memmove_string_address($elements, 0, $elements, 1, $length - 1);
-    
-    $elements->[$length - 1] = 0;
-    
-    $self->{length}--;
-    
-    return $element;
+    return (string)$self->SUPER::shift;
   }
   
   method to_array : string[] () {
-    my $length = $self->length;
-    
-    my $new_array = new string[$length];
-    
-    my $elements = $self->{array};
-    
-    Array->memcpy_string_address($new_array, 0, $elements, 0, $length);
-    
-    return $new_array;
-  }
-  
-  method get_array_unsafe : string[] () {
-    return $self->{array};
+    return (string[])$self->SUPER::to_array;
   }
   
   method unshift : void ($element : string) {
-    my $length = $self->{length};
-    
-    my $new_length = $length + 1;
-    
-    $self->_maybe_extend($new_length);
-    
-    my $elements = $self->{array};
-    
-    Array->memmove_string_address($elements, 1, $elements, 0, $length);
-    
-    $elements->[0] = $element;
-    $self->{length} = $new_length;
-  }
-  
-  private method _maybe_extend : void ($min_capacity : int) {
-    my $capacity = $self->{capacity};
-    
-    unless ($min_capacity > $capacity) {
-      return;
-    }
-    
-    if ($capacity < $min_capacity) {
-      $capacity = $min_capacity;
-    }
-    
-    my $new_capacity = $capacity * 2;
-    my $new_array = new string[$new_capacity];
-    
-    my $length = $self->{length};
-    my $elements = $self->{array};
-    Array->memcpy_string_address($new_array, 0, $elements, 0, $length);
-    
-    $self->{array} = $new_array;
-    $self->{capacity} = $new_capacity;
+    $self->SUPER::unshift($element);
   }
 }

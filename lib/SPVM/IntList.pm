@@ -51,16 +51,6 @@ SPVM::IntList - Dynamic int Array
 
 C<IntList> is a dynamic C<int> array.
 
-=head1 Enumerations
-
-  enum {
-    DEFAULT_CAPACITY = 4,
-  }
-
-=head2 DEFAULT_CAPACITY
-
-The default capacity. The value is 4.
-
 =head1 Fields
 
 =head2 capacity
@@ -98,7 +88,7 @@ C<static method new_len : L<IntList|SPVM::IntList> ($length : int, $capacity : i
 
 Creates a new C<IntList> object with $length and $capacity.
 
-If $capacity is less than 0, the capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If $capacity is less than 0, the capacity is set to the default value.
 
 If $length is greater than $capacity, $capacity is set to $length.
 
@@ -207,18 +197,6 @@ Exceptions:
 $index must be greater than or equal to 0.
 
 $index must be less than the length of $list.
-
-=head2 set_array
-
-C<method set_array : void ($array : int[]);>
-
-Sets an $array. Each element of $array is copied to the element of the list.
-
-Exceptions:
-
-$array must be defined.
-
-The length of $array must be equal to the length of $list.
 
 =head2 shift
 

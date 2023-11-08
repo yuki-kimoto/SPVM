@@ -6,7 +6,7 @@ class LongList {
   use Array;
   
   # Enumerations
-  enum {
+  private enum {
     DEFAULT_CAPACITY = 4,
   }
   
@@ -225,22 +225,6 @@ class LongList {
     }
     
     $self->{array}[$index] = $element;
-  }
-  
-  method set_array : void ($array : long[]) {
-    unless ($array) {
-      die "\$array must be defined.";
-    }
-    
-    my $current_length = $self->length;
-    
-    my $set_length = @$array;
-    
-    unless ($set_length == $current_length) {
-      die "The length of \$array must be \$same as the length of \$list.";
-    }
-    
-    Array->memcpy_long($self->{array}, 0, $array, 0, $current_length);
   }
   
   method shift : long () {

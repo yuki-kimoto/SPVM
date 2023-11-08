@@ -712,3 +712,12 @@ int32_t SPVM__Fn__get_spvm_version_string(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t memory_blocks_count = env->get_memory_blocks_count(env, stack);
+  
+  stack[0].ival = memory_blocks_count;
+  
+  return 0;
+}

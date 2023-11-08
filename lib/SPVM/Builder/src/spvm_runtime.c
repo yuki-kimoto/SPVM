@@ -31,15 +31,15 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->assignability_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
   
-  int32_t mutex_assignability_symtable_size = SPVM_MUTEX_size();
-  void* mutex_assignability_symtable = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_assignability_symtable_size);
-  SPVM_MUTEX_init(mutex_assignability_symtable);
-  runtime->mutex_assignability_symtable = mutex_assignability_symtable;
+  int32_t mutex_size = SPVM_MUTEX_size();
+  void* mutex = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_size);
+  SPVM_MUTEX_init(mutex);
+  runtime->mutex = mutex;
   
-  int32_t mutex_update_object_size = SPVM_MUTEX_size();
-  void* mutex_update_object = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_update_object_size);
-  SPVM_MUTEX_init(mutex_update_object);
-  runtime->mutex_update_object = mutex_update_object;
+  int32_t mutex_atomic_size = SPVM_MUTEX_size();
+  void* mutex_atomic = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_atomic_size);
+  SPVM_MUTEX_init(mutex_atomic);
+  runtime->mutex_atomic = mutex_atomic;
   
   SPVM_RUNTIME_init_stdio(runtime);
   
@@ -128,7 +128,9 @@ void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
     SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, runtime->basic_types);
   }
   
-  SPVM_MUTEX_destroy(runtime->mutex_assignability_symtable);
+  SPVM_MUTEX_destroy(runtime->mutex);
+  
+  SPVM_MUTEX_destroy(runtime->mutex_atomic);
   
   fclose(runtime->spvm_stdin);
   

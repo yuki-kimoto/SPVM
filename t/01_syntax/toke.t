@@ -497,7 +497,7 @@ use Test::More;
 {
   {
     my $source = "class MyClass { \xFE }";
-    compile_not_ok($source, q|The character -2 in a 8bit signed integer is not expected|);
+    compile_not_ok($source, q|Use of the character code "FE" is not allowed in source code.|);
   }
 }
 

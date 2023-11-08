@@ -23,9 +23,11 @@ struct spvm_runtime {
   
   SPVM_HASH* assignability_symtable; 
   
-  SPVM_MUTEX* mutex_assignability_symtable;
+  SPVM_MUTEX* mutex;
   
-  SPVM_MUTEX* mutex_update_object;
+  SPVM_MUTEX* mutex_atomic;
+  
+  int32_t memory_blocks_count;
   
   FILE* spvm_stdin;
   

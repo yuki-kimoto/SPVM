@@ -10,6 +10,7 @@ class Fn {
   use List;
   use Scope::Guard;
   use Callback;
+  use Format;
   
   enum {
     GET_CODE_POINT_ERROR_OVER_STRING_RANGE = -1,
@@ -1289,4 +1290,12 @@ class Fn {
   native static method get_version_string : string ($basic_type_name : string);
   
   native static method get_version_number : double ($basic_type_name : string);
+  
+  native static method get_memory_blocks_count : int ();
+  
+  static method to_address : string ($object : object) {
+    my $address = Format->sprintf("%p", [$object]);
+    
+    return $address;
+  }
 }

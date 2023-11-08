@@ -1691,19 +1691,11 @@ The count of the memory block that is managed by the stack is decremented by 1.
 
 The count of the memory block that is managed by the environment is decremented by 1.
 
-=head2 get_memory_blocks_count_stack
-
-(Deprecated)
-
-  int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
-
-Returns the count of the memory blocks on the stack.
-
 =head2 get_memory_blocks_count
 
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);
 
-Returns the count of the memory blocks on the stack.
+Returns the count of memory blocks the current runtime allocates.
 
 =head2 strerror
 
@@ -2177,7 +2169,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   199 reserved199
   200 new_memory_stack
   201 free_memory_stack
-  202 get_memory_blocks_count_stack
+  202 reserved202
   203 new_stack
   204 free_stack
   205 reserved205

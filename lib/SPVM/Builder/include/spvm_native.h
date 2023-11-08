@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdarg.h>
 
-#define SPVM_NATIVE_VERSION_NUMBER 0.989051
+#define SPVM_NATIVE_VERSION_NUMBER 0.989058
 
 #define SPVM_NATIVE_CREATE_VERSION_STRING_STRINGIFY(x) #x
 
@@ -85,13 +85,6 @@ union spvm_value {
   float* fref;
   double* dref;
 };
-
-
-
-
-
-
-
 
 
 
@@ -306,7 +299,7 @@ struct spvm_env {
   void* reserved199;
   void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
   void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
-  int32_t (*get_memory_blocks_count_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
+  void* reserved202;
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* reserved205;
@@ -510,8 +503,6 @@ struct spvm_api_internal {
   void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
-  void (*lock_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void (*unlock_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
 };
 
 struct spvm_api_mutex {

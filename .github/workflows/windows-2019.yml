@@ -17,6 +17,10 @@ jobs:
         run: perl -V
       - name: Perl config
         run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
+      - name: Set PATH using GITHUB_PATH
+        run: echo "C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Show PATH
+        run: echo $env:PATH
       - name: Set PERL5LIB
         run: echo "PERL5LIB=$HOME/mylib/lib/perl5;$HOME/mylib/lib/perl5/$(perl -MConfig -e 'print $Config{archname}')" >> $env:GITHUB_ENV
       - name: Show PERL5LIB
