@@ -695,6 +695,7 @@ t/02_vm/08_module/StringList.t
 t/02_vm/08_module/Sync/Mutex.t
 t/02_vm/08_module/Sync_Mutex.t
 t/02_vm/09_stdio/stdio.t
+t/02_vm/10_thread_safe/thread_safe.t
 t/02_vm/99_extra/examples.t
 t/02_vm/99_extra/issues.t
 t/02_vm/99_extra/version.t
@@ -890,6 +891,7 @@ t/02_vm/lib/SPVM/TestCase/String.spvm
 t/02_vm/lib/SPVM/TestCase/Subtract.spvm
 t/02_vm/lib/SPVM/TestCase/Switch.spvm
 t/02_vm/lib/SPVM/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.spvm
+t/02_vm/lib/SPVM/TestCase/ThreadSafe.spvm
 t/02_vm/lib/SPVM/TestCase/TypeCast.spvm
 t/02_vm/lib/SPVM/TestCase/TypeComment.spvm
 t/02_vm/lib/SPVM/TestCase/TypeConversion.spvm

@@ -1,0 +1,76 @@
+class TestCase::ThreadSafe {
+  use Point;
+  use TestCase::Util::Thread;
+  use TestCase::Util::Thread::ThisThread;
+  
+  static method assign : int () {
+    
+    # undef
+    {
+      my $point_ref = [(Point)undef];
+      
+      my $thread = TestCase::Util::Thread->new([has point_ref : Point[] = $point_ref] method : void () {
+        
+        my $point_ref = $self->{point_ref};
+        
+        for (my $i = 0; $i < 10000; $i++) {
+          my $point = Point->new;
+          $point_ref->[0] = $point;
+        }
+      });
+      
+      my $thread2 = TestCase::Util::Thread->new([has point_ref : Point[] = $point_ref] method : void () {
+        my $point_ref = $self->{point_ref};
+        
+        for (my $i = 0; $i < 10000; $i++) {
+          $point_ref->[0] = undef;
+        }
+      });
+      
+      $thread->join;
+      $thread2->join;
+      
+    }
+
+    # All patterns
+    {
+      my $point_ref = [(Point)undef];
+      
+      my $thread = TestCase::Util::Thread->new([has point_ref : Point[] = $point_ref] method : void () {
+        
+        my $point_ref = $self->{point_ref};
+        
+        for (my $i = 0; $i < 10000; $i++) {
+          my $point = Point->new;
+          $point_ref->[0] = $point;
+          $point_ref->[0] = $point;
+          $point_ref->[0] = Point->new;
+          $point_ref->[0] = undef;
+          $point_ref->[0] = Point->new;
+        }
+      });
+      
+      my $thread2 = TestCase::Util::Thread->new([has point_ref : Point[] = $point_ref] method : void () {
+        my $point_ref = $self->{point_ref};
+        
+        for (my $i = 0; $i < 10000; $i++) {
+          my $point = Point->new;
+          $point_ref->[0] = $point;
+          $point_ref->[0] = $point;
+          $point_ref->[0] = Point->new;
+          $point_ref->[0] = undef;
+          $point_ref->[0] = Point->new;
+        }
+      });
+      
+      $thread->join;
+      $thread2->join;
+      
+      unless ($point_ref->[0] is_type Point) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

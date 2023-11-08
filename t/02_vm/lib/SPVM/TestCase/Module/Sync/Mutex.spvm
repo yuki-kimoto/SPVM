@@ -2,7 +2,6 @@ class TestCase::Module::Sync::Mutex {
   
   use Sync::Mutex;
   use TestCase::Util::Thread;
-  use TestCase::Util::Thread::ThisThread;
   use Point;
   
   our $VALUE : public int;
