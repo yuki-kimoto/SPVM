@@ -618,7 +618,6 @@ t/02_vm/05_op/constant.t
 t/02_vm/05_op/copy.t
 t/02_vm/05_op/divide.t
 t/02_vm/05_op/dump.t
-t/02_vm/05_op/error_code.t
 t/02_vm/05_op/field.t
 t/02_vm/05_op/increment.t
 t/02_vm/05_op/init.t
@@ -741,7 +740,6 @@ t/02_vm/lib/SPVM/TestCase/DumpTest1.spvm
 t/02_vm/lib/SPVM/TestCase/Empty.spvm
 t/02_vm/lib/SPVM/TestCase/Enum.spvm
 t/02_vm/lib/SPVM/TestCase/Enum/Data1.spvm
-t/02_vm/lib/SPVM/TestCase/ErrorCode.spvm
 t/02_vm/lib/SPVM/TestCase/Examples.spvm
 t/02_vm/lib/SPVM/TestCase/Exception.spvm
 t/02_vm/lib/SPVM/TestCase/ExchangeAPI.spvm

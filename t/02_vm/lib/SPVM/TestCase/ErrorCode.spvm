@@ -1,7 +1,0 @@
-class TestCase::ErrorCode {
-  use Point;
-  use Fn;
-  static method basic : int () {
-    return 1;
-  }
-}
