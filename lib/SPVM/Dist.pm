@@ -880,13 +880,20 @@ use SPVM '$basic_type_name';
 use SPVM::$basic_type_name;
 use SPVM 'Fn';
 
+my \$api = SPVM::api();
+
+my \$start_memory_blocks_count = \$api->get_memory_blocks_count;
+
 ok(SPVM::TestCase::$basic_type_name->test);
 
-# Version
+# Version check
 {
   my \$version_string = SPVM::Fn->get_version_string("$basic_type_name");
   is(\$SPVM::${basic_type_name}::VERSION, \$version_string);
 }
+
+my \$end_memory_blocks_count = \$api->get_memory_blocks_count;
+is(\$end_memory_blocks_count, \$start_memory_blocks_count);
 
 done_testing;
 EOS
