@@ -93,7 +93,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   
   my $changes_file = "$tmp_dir/SPVM-Foo/Changes";
   ok(-f $changes_file);
-  ok(SPVM::Builder::Util::file_contains($changes_file, "0.01 "));
+  ok(SPVM::Builder::Util::file_contains($changes_file, "0.001 "));
   my $today = $today_tp->strftime('%Y-%m-%d');
   ok(SPVM::Builder::Util::file_contains($changes_file, $today));
   ok(SPVM::Builder::Util::file_contains($changes_file, '[Changes]'));
@@ -192,7 +192,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   
   my $changes_file = "$tmp_dir/SPVM-Foo/Changes";
   ok(-f $changes_file);
-  ok(SPVM::Builder::Util::file_contains($changes_file, "0.01 "));
+  ok(SPVM::Builder::Util::file_contains($changes_file, "0.001 "));
   
   my $gitignore_file = "$tmp_dir/SPVM-Foo/.gitignore";
   ok(-f $gitignore_file);
