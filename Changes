@@ -8,6 +8,7 @@
     * Fix the bug that line numbers in compilation error messages.
   [New Features]
     * Add the check_option_names method to the Fn class.
+    * Add the shuffle_object method to the Array class.
     
 0.989058 2023-10-30
   [Bug Fix]

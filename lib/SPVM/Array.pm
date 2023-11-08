@@ -933,6 +933,16 @@ $prototype array must be defined. Otherwise an exception is thrown.
 
 $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
+=head2 shuffle_object
+
+C<static method shuffle_object : void ($array : object[], $seed_ref : int*);>
+
+Shuffles the array $array with the reference to a seed $seed_ref.
+
+Exceptions:
+
+$array must be defined. Otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

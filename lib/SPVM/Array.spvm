@@ -1056,5 +1056,26 @@ class Array {
   }
   
   native static method new_proto : object[] ($proto_array : object[], $length : int);
+  
+  static method shuffle_object : void ($array : object[], $seed_ref : int*) {
+    
+    unless ($array) {
+      die "\$array must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    for (my $i = $array_length - 1; $i > 0; $i--) {
+      
+      my $j = Fn->crand($seed_ref) % ($i + 1);
+      
+      my $temp = $array->[$i];
+      
+      $array->[$i] = $array->[$j];
+      
+      $array->[$j] = $temp;
+    }
+  }
+
 }
 
