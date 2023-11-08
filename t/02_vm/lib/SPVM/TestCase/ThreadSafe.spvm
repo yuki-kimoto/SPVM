@@ -3,6 +3,7 @@ class TestCase::ThreadSafe {
   use TestCase::Util::Thread;
   use TestCase::Util::Thread::ID;
   use TestCase::Util::Thread::ThisThread;
+  use TestCase::Data::Weaken;
   
   static method assign : int () {
     
@@ -70,6 +71,61 @@ class TestCase::ThreadSafe {
       unless ($point_ref->[0] is_type Point) {
         return 0;
       }
+    }
+    
+    return 1;
+  }
+
+  static method weaken : int () {
+
+    my $object1 = new TestCase::Data::Weaken;
+    $object1->{x} =1;
+    
+    my $object2 = new TestCase::Data::Weaken;
+    $object2->{x} = 2;
+    
+    # Circular reference
+    $object2->{data_weaken} = $object1;
+    $object1->{data_weaken} = $object2;
+    
+    {
+      my $object_ref = [(TestCase::Data::Weaken)$object1, $object2];
+      
+      my $thread = TestCase::Util::Thread->new([has object_ref : TestCase::Data::Weaken[] = $object_ref] method : void () {
+        
+        my $object_ref = $self->{object_ref};
+        
+        for (my $i = 0; $i < 10000; $i++) {
+          my $object = $object_ref->[0];
+          weaken $object->{data_weaken};
+          $object->{data_weaken} = $object->{data_weaken};
+          unweaken $object->{data_weaken};
+          $object->{data_weaken} = $object->{data_weaken};
+          isweak $object->{data_weaken};;
+        }
+      });
+      
+      my $thread2 = TestCase::Util::Thread->new([has object_ref : TestCase::Data::Weaken[] = $object_ref] method : void () {
+        my $object_ref = $self->{object_ref};
+        
+        for (my $i = 0; $i < 10000; $i++) {
+          my $object = $object_ref->[0];
+          weaken $object->{data_weaken};
+          $object->{data_weaken} = $object->{data_weaken};
+          unweaken $object->{data_weaken};
+          $object->{data_weaken} = $object->{data_weaken};
+          isweak $object->{data_weaken};;
+        }
+      });
+      
+      $thread->join;
+      $thread2->join;
+      
+      unless ($object1->{x} == 1 && $object2->{x} == 2) {
+        return 0;
+      }
+      
+      weaken $object1->{data_weaken};
     }
     
     return 1;
