@@ -458,7 +458,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             char *end;
             double double_value = strtod(version_string, &end);
             if (*end != '\0') {
-              SPVM_COMPILER_error(compiler, "A version string must be able to be parsed by the \"strtod\" C function.\n  at %s line %d", compiler->current_file, compiler->current_line);
+              SPVM_COMPILER_error(compiler, "A version string must be able to be parsed by the \"strtod\" C function.\n  at %s line %d", op_decl->file, op_decl->line);
               break;
             }
           }
@@ -553,8 +553,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
-          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);
+          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_decl->file, op_decl->line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
           SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
@@ -620,8 +620,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
-          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);
+          SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
+          SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_decl->file, op_decl->line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
           op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
@@ -1162,8 +1162,8 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_TYPE* return_type = op_constant->uv.constant->type;
   SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type->unresolved_basic_type_name, return_type->basic_type, return_type->dimension, return_type->flag, op_name->file, op_name->line);
   
-  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
-  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, compiler->current_file, compiler->current_line);
+  SPVM_OP* op_list_attributes = SPVM_OP_new_op_list(compiler, op_name->file, op_name->line);
+  SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_name->file, op_name->line);
   SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
   
   // Build method
@@ -1584,7 +1584,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
   
   SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
-  SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
+  SPVM_OP* op_list_definitions = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
   SPVM_OP_insert_child(compiler, op_list_definitions, op_list_definitions->last, op_method);
   SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_definitions);
   
