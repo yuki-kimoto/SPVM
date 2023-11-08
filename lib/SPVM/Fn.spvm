@@ -1298,4 +1298,25 @@ class Fn {
     
     return $address;
   }
+  
+  static method check_option_names : void ($options : object[], $available_option_names : string[]) {
+    
+    unless ($options) {
+      return;
+    }
+    
+    my $available_option_names_h = Hash->new;
+    for my $available_option_name (@$available_option_names) {
+     $available_option_names_h->set_int($available_option_name, 1);
+    }
+    
+    for (my $i = 0; $i < @$options; $i += 2) {
+      my $option_name = (string)$options->[$i];
+      
+      unless ($available_option_names_h->get($option_name)) {
+        die "The \"$option_name\" option is not available.";
+      }
+    }
+  }
+  
 }

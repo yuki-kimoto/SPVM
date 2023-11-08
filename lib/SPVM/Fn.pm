@@ -1158,6 +1158,28 @@ C<static method to_address : string ($object : object);>
 
 Gets the address of an object $object as a string.
 
+=head2 check_option_names
+
+C<static method check_option_names : void ($options : object[], $available_option_names : string[]);>
+
+Checks if the options $options that contain name-value pairs has the available option names $available_option_names.
+
+If $options is undef, nothing is done.
+
+If the check is ok, nothing is done. Otherwise the following exception is thrown.
+
+The "%s" option is not available.
+
+%s is an option name.
+
+Examples:
+
+  my $options = {foo => 1, bar => 2};
+  
+  my $available_option_names = ["foo", "bar", "baz"];
+  
+  Fn->check_option_names($options, $available_option_names);
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

@@ -4564,4 +4564,38 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  
+  static method check_option_names : int () {
+    
+    {
+      my $available_option_names = ["foo", "bar", "baz"];
+      
+      Fn->check_option_names(undef, $available_option_names);
+    }
+    
+    {
+      my $options = {foo => undef, bar => undef};
+      
+      my $available_option_names = ["foo", "bar", "baz"];
+      
+      Fn->check_option_names($options, $available_option_names);
+    }
+    
+    {
+      my $options = {foo => 1, bar => 2};
+      
+      my $available_option_names = ["foo"];
+      
+      eval { Fn->check_option_names($options, $available_option_names); }
+      
+      unless (Fn->contains($@, "The \"bar\" option is not available.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
 }

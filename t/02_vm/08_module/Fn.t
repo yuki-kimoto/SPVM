@@ -174,6 +174,8 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->get_memory_blocks_count);
     
     ok(SPVM::TestCase::Module::Fn->to_address);
+    
+    ok(SPVM::TestCase::Module::Fn->check_option_names);
   }
   
   # Extra
