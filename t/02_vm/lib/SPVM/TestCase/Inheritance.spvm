@@ -1,0 +1,47 @@
+class TestCase::Inheritance {
+  use TestCase::SimpleChild;
+  
+  static method basic : int () {
+    
+    my $simple_child = TestCase::SimpleChild->new;
+    
+    unless ($simple_child isa TestCase::SimpleChild) {
+      return 0;
+    }
+    
+    $simple_child->{x} = 1;
+    $simple_child->{y} = 2;
+    $simple_child->{z} = 3;
+    
+    $simple_child->clear;
+    
+    unless ($simple_child->{x} == 0 && $simple_child->{y} == 0 && $simple_child->{x} == 0) {
+      return 0;
+    }
+    
+    my $simple = (TestCase::Simple)$simple_child;
+    
+    $simple_child->{x} = 1;
+    $simple_child->{y} = 2;
+    $simple_child->{z} = 3;
+    
+    $simple->clear;
+    
+    unless ($simple_child->{x} == 0 && $simple_child->{y} == 0 && $simple_child->{x} == 0) {
+      return 0;
+    }
+    
+    $simple = undef;
+    
+    $TestCase::Simple::DESTROY_VALUE = 0;
+    
+    $simple_child = undef;
+    
+    unless ($TestCase::Simple::DESTROY_VALUE == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+}

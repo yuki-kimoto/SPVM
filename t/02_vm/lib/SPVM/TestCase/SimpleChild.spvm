@@ -1,0 +1,21 @@
+class TestCase::SimpleChild extends TestCase::Simple {
+  
+  has z : rw public int;
+  
+  static method new : TestCase::SimpleChild () {
+    return new TestCase::SimpleChild;
+  }
+  
+  method clear : void () {
+    $self->SUPER::clear;
+    
+    $self->{z} = 0;
+  }
+  
+  method DESTROY : void () {
+    $self->SUPER::DESTROY();
+    
+    $TestCase::Simple::DESTROY_VALUE += 2;
+    
+  }
+}

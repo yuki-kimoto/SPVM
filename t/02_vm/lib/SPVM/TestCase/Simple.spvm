@@ -25,6 +25,8 @@ class TestCase::Simple : public {
   our $FOO : public rw int;
   our $VAR_PRIVATE : private int;
 
+  our $DESTROY_VALUE : public int;
+  
   method get_x : int () {
     return $self->{x};
   }
@@ -104,5 +106,16 @@ class TestCase::Simple : public {
     }
     
     return 1;
+  }
+  
+  method clear : void () {
+    $self->{x} = 0;
+    $self->{y} = 0;
+  }
+  
+  method DESTROY : void () {
+    
+    $TestCase::Simple::DESTROY_VALUE += 1;
+    
   }
 }
