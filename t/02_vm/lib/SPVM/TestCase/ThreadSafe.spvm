@@ -1,6 +1,7 @@
 class TestCase::ThreadSafe {
   use Point;
   use TestCase::Util::Thread;
+  use TestCase::Util::Thread::ID;
   use TestCase::Util::Thread::ThisThread;
   
   static method assign : int () {
