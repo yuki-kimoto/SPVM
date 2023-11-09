@@ -13,6 +13,7 @@
     * Break the binary compatibility of the die statement.
   [Internal Changes]
     * SET_ERROR_ID in spvm_impelment.h receives a basic type ID instead of a basic type.
+    * SET_ERROR_ID in spvm_opcode.h is renamed to SET_ERROR_ID_BY_TYPE.
 0.989058 2023-10-30
   [Bug Fix]
     * Fix the bug that the print_stderr native API print output to stdout.
