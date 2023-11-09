@@ -1,7 +1,7 @@
 class TestCase::LogicalOperator {
   use TestCase::Minimal;
   use Point;
-
+  use TestCase::Simple;
 
   static method combination : int () {
     {
@@ -142,6 +142,56 @@ class TestCase::LogicalOperator {
       my $ret = -1 && 1 || 0;
       unless ($ret == 1) {
         return 0;
+      }
+    }
+    
+    {
+      {
+        my $simple = TestCase::Simple->new;
+        my $minimal = TestCase::Minimal->new;
+        $minimal->{x} = 1;
+        
+        $simple->{minimal} = $minimal;
+        
+        {
+          my $ret = 0 % 60 == 0 || !$simple->{minimal}->x;
+          
+          unless ($ret == 1) {
+            return 0;
+          }
+        }
+        
+        {
+          my $ret = 1 % 60 == 0 || !$simple->{minimal}->x;
+          
+          unless ($ret == 0) {
+            return 0;
+          }
+        }
+      }
+      
+      {
+        my $simple = TestCase::Simple->new;
+        my $minimal = TestCase::Minimal->new;
+        $minimal->{x} = 0;
+        
+        $simple->{minimal} = $minimal;
+        
+        {
+          my $ret = 0 % 60 == 0 || !$simple->{minimal}->x;
+          
+          unless ($ret == 1) {
+            return 0;
+          }
+        }
+        
+        {
+          my $ret = 1 % 60 == 0 || !$simple->{minimal}->x;
+          
+          unless ($ret == 1) {
+            return 0;
+          }
+        }
       }
     }
     
