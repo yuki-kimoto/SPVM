@@ -2380,6 +2380,17 @@ Examples:
   spvm_warn("Hello");
   spvm_warn("Hello %s%d", "Foo", 3);
 
+=head2 spvm_warnf
+
+  void spvm_warnf(FILE* stream, const char* format, ...)
+
+Prints the formatted message I<format> to the stream I<stream> with a new line.
+
+Examples:
+
+  spvm_warnf(env->api->runtime->get_spvm_stderr(env->runtime), "Hello");
+  spvm_warnf(env->api->runtime->get_spvm_stderr(env->runtime), "Hello %s%d", "Foo", 3);
+
 =head2 SPVM_NATIVE_GET_POINTER
 
 C<#define SPVM_NATIVE_GET_POINTER(object)>

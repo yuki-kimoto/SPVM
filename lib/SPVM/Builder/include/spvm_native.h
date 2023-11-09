@@ -23,6 +23,8 @@
 
 #define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)
 
+#define spvm_warnf(stream, format, ...) fprintf(stream, format "\n", ##__VA_ARGS__)
+
 typedef union spvm_value SPVM_VALUE;
 
 struct spvm_env;

@@ -2264,8 +2264,11 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* en
   if ((void*)&env->api->runtime->build_precompile_module_source != &env_array[6]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->build_precompile_method_source != &env_array[7]) { stack[0].ival = 0; return 0; }
   
-  spvm_warn("Foo %s %d", "aaa", 3);
-  spvm_warn("Foo");
+  spvm_warn("spvm_warn test: %s %d", "aaa", 3);
+  spvm_warn("spvm_warn test:Foo");
+  
+  spvm_warnf(env->api->runtime->get_spvm_stderr(env->runtime), "spvm_warnf test: %s %d", "aaa", 3);
+  spvm_warnf(env->api->runtime->get_spvm_stderr(env->runtime), "spvm_warnf test:Foo");
   
   stack[0].ival = 1;
 
