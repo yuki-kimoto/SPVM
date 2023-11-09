@@ -19,6 +19,7 @@ struct spvm_field {
   int8_t has_setter;
   int8_t has_getter;
   int8_t access_control_type;
+  int8_t is_decl_var_in_anon_method;
 };
 
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler);
