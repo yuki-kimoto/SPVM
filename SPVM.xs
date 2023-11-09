@@ -7,6 +7,9 @@
 
 #undef call_method
 #undef leave_scope
+#undef stdin;
+#undef stdout;
+#undef stderr;
 
 #include "spvm_native.h"
 
