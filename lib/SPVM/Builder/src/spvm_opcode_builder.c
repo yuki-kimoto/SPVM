@@ -824,12 +824,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                   
                   // Type
                   if (op_cur->last->id == SPVM_OP_C_ID_TYPE) {
-                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ERROR_ID_BY_TYPE);
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ERROR_ID);
                     opcode.operand0 = type->basic_type->id;
                   }
                   // Basic type ID
                   else {
-                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ERROR_ID);
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_ERROR_ID_DYNAMIC);
                     opcode.operand0 = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_cur->last);
                   }
                   SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
