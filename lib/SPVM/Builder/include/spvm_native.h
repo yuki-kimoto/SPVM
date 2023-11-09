@@ -320,12 +320,9 @@ struct spvm_env {
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*say)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
   void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line);
-  void* (*new_mutex)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void (*free_mutex)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
-  int32_t (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
-  int32_t (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
-  int32_t (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
-  int32_t (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+  FILE* (*stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
+  FILE* (*stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
+  FILE* (*stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_env_api {

@@ -11,6 +11,10 @@
     * Add the shuffle_object method to the Array class.
     * Add syntax of die OPERAND_ERROR_ID ',' OPERAND_MESSAGE.
     * Add spvm_warnf Native API.
+    * Add the stdin native API.
+    * Add the stdout native API.
+    * Add the stderr native API.
+    
   [Breaking Binary Compatibility]
     * Break the binary compatibility of the die statement.
   [Internal Changes]

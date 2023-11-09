@@ -1963,6 +1963,24 @@ Prints a string and C<\n> to stdout. This is the same operator as the say operat
 
 Operates the warn operator.
 
+=head2 stdin
+
+  FILE* (*stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Gets the standard input opened for SPVM.
+
+=head2 stdout
+
+  FILE* (*stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Gets the standard output opened for SPVM.
+
+=head2 stderr
+
+  FILE* (*stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
+
+Gets the standard error opened for SPVM.
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.

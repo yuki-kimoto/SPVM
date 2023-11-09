@@ -947,7 +947,7 @@ int32_t SPVM__TestCase__NativeAPI__native_get_field_int_by_name_exception(SPVM_E
 
 int32_t SPVM__TestCase__NativeAPI__native_get_field_long_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error = 0;
-
+  
   void* object = stack[0].oval;
   
   int64_t long_value = env->get_field_long_by_name(env, stack, object, "long_value", &error, __func__, FILE_NAME, __LINE__);
@@ -3015,6 +3015,48 @@ int32_t SPVM__TestCase__NativeAPI__close_stderr(SPVM_ENV* env, SPVM_VALUE* stack
   if (!(status == 0)) {
     return env->die(env, stack, "fclose failed.");
   }
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  if (!(env->stdin(env, stack) == env->api->runtime->get_spvm_stdin(env->runtime))) {
+    
+    stack[0].ival = 0;
+    
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  if (!(env->stdout(env, stack) == env->api->runtime->get_spvm_stdout(env->runtime))) {
+    
+    stack[0].ival = 0;
+    
+    return 0;
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  if (!(env->stderr(env, stack) == env->api->runtime->get_spvm_stderr(env->runtime))) {
+    
+    stack[0].ival = 0;
+    
+    return 0;
+  }
+  
+  stack[0].ival = 1;
   
   return 0;
 }
