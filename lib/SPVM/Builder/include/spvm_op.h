@@ -419,7 +419,7 @@ SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method);
 
-SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field_definition, SPVM_OP* op_default);
+SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type, SPVM_OP* op_default);
 
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_basic_type, SPVM_OP* op_name_alias, int32_t is_require);
 

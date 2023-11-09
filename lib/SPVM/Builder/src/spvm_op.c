@@ -1626,7 +1626,9 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   return op_anon_method;
 }
 
-SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field_definition, SPVM_OP* op_default) {
+SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type, SPVM_OP* op_default) {
+  
+  SPVM_OP* op_field_definition = SPVM_OP_build_field_definition(compiler, op_field, op_name_field, op_attributes, op_type);
   
   op_field_definition->uv.field->op_anon_method_field_default = op_default;
   
