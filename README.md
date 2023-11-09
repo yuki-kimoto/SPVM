@@ -58,6 +58,7 @@
 ## Not Released CPAN Modules
 
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-HiRes">SPVM::Time::HiRes</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Thread">SPVM::Thread</a>
 
 ## Examples
 
