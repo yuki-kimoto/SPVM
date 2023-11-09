@@ -310,7 +310,10 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
     );
     
     if (!assignability_for_method_definition) {
-      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_class->file, basic_type->op_class->line);
+      const char* method_return_type_name = SPVM_TYPE_new_type_name(compiler, method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag);
+      const char* dist_method_return_type_name = SPVM_TYPE_new_type_name(compiler, dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag);
+      
+      SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class which return type is \"%s\" must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s which return type is \"%s\".\n  at %s line %d", method->name, basic_type->name, method_return_type_name, dist_method->name, dist_basic_type->name, type_desc, dist_method_return_type_name, basic_type->op_class->file, basic_type->op_class->line);
       return 0;
     }
   }

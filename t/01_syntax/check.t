@@ -1289,7 +1289,7 @@ use Test::More;
       'class MyClass { interface MyInterface; method foo : object () {} }',
       'class MyInterface : interface_t { required method foo : MyClass  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class which return type is "object" must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface which return type is "MyClass".|);
   }
   {
     my $source = [
@@ -1303,7 +1303,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : Point () {} }',
       'class MyInterface : interface_t { required method foo : Point3D  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class which return type is "Point" must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface which return type is "Point3D".|);
   }
 
   {
@@ -1311,7 +1311,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : int () {} }',
       'class MyInterface : interface_t { required method foo : long  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface|);
+    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class which return type is "int" must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface which return type is "long".|);
   }
   {
     {
