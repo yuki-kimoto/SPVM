@@ -11,9 +11,7 @@ class TestCase::ThreadSafe {
     {
       my $point_ref = [(Point)undef];
       
-      my $thread = TestCase::Util::Thread->new([has point_ref : Point[] = $point_ref] method : void () {
-        
-        my $point_ref = $self->{point_ref};
+      my $thread = TestCase::Util::Thread->new([$point_ref : Point[]] method : void () {
         
         for (my $i = 0; $i < 10000; $i++) {
           my $point = Point->new;
@@ -21,9 +19,7 @@ class TestCase::ThreadSafe {
         }
       });
       
-      my $thread2 = TestCase::Util::Thread->new([has point_ref : Point[] = $point_ref] method : void () {
-        my $point_ref = $self->{point_ref};
-        
+      my $thread2 = TestCase::Util::Thread->new([$point_ref : Point[]] method : void () {
         for (my $i = 0; $i < 10000; $i++) {
           $point_ref->[0] = undef;
         }
@@ -38,9 +34,7 @@ class TestCase::ThreadSafe {
     {
       my $point_ref = [(Point)undef];
       
-      my $thread = TestCase::Util::Thread->new([has point_ref : Point[] = $point_ref] method : void () {
-        
-        my $point_ref = $self->{point_ref};
+      my $thread = TestCase::Util::Thread->new([$point_ref : Point[]] method : void () {
         
         for (my $i = 0; $i < 10000; $i++) {
           my $point = Point->new;
@@ -52,8 +46,7 @@ class TestCase::ThreadSafe {
         }
       });
       
-      my $thread2 = TestCase::Util::Thread->new([has point_ref : Point[] = $point_ref] method : void () {
-        my $point_ref = $self->{point_ref};
+      my $thread2 = TestCase::Util::Thread->new([$point_ref : Point[]] method : void () {
         
         for (my $i = 0; $i < 10000; $i++) {
           my $point = Point->new;
@@ -91,9 +84,7 @@ class TestCase::ThreadSafe {
     {
       my $object_ref = [(TestCase::Data::Weaken)$object1, $object2];
       
-      my $thread = TestCase::Util::Thread->new([has object_ref : TestCase::Data::Weaken[] = $object_ref] method : void () {
-        
-        my $object_ref = $self->{object_ref};
+      my $thread = TestCase::Util::Thread->new([$object_ref : TestCase::Data::Weaken[]] method : void () {
         
         for (my $i = 0; $i < 10000; $i++) {
           my $object = $object_ref->[0];
@@ -105,8 +96,7 @@ class TestCase::ThreadSafe {
         }
       });
       
-      my $thread2 = TestCase::Util::Thread->new([has object_ref : TestCase::Data::Weaken[] = $object_ref] method : void () {
-        my $object_ref = $self->{object_ref};
+      my $thread2 = TestCase::Util::Thread->new([$object_ref : TestCase::Data::Weaken[]] method : void () {
         
         for (my $i = 0; $i < 10000; $i++) {
           my $object = $object_ref->[0];
