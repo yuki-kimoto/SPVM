@@ -254,7 +254,7 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
   
   if (dist_method->is_required && !method) {
     if (!dist_method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" class must implement the \"%s\" method. This is defined as a required interface method in the \"%s\" %s.\n  at %s line %d", basic_type->name, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_class->file, basic_type->op_class->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" class must implement the \"%s\" method, which is defined as a required interface method in the \"%s\" %s.\n  at %s line %d", basic_type->name, dist_method->name, dist_basic_type->name, type_desc, basic_type->op_class->file, basic_type->op_class->line);
       return 0;
     }
   }
@@ -262,7 +262,7 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
   if (method) {
     if (method->is_class_method) {
       if (!dist_method->is_class_method) {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must be an instance method. This is defined as an interface method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, dist_basic_type->name, type_desc, basic_type->op_class->file, basic_type->op_class->line);
+        SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must be an instance method, which is defined as an interface method in the \"%s\" %s.\n  at %s line %d", method->name, basic_type->name, dist_basic_type->name, type_desc, basic_type->op_class->file, basic_type->op_class->line);
         return 0;
       }
     }

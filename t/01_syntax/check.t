@@ -1268,7 +1268,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
-    compile_not_ok($source, q|The "to_string" method in the "MyClass" class must be an instance method. This is defined as an interface method in the "Stringable" interface.|);
+    compile_not_ok($source, q|The "to_string" method in the "MyClass" class must be an instance method, which is defined as an interface method in the "Stringable" interface.|);
   }
   {
     my $source = [
