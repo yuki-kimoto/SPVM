@@ -539,6 +539,10 @@ die
     {
       $$ = SPVM_OP_build_die(compiler, $1, NULL, $2);
     }
+  | DIE operator ',' operator
+    {
+      $$ = SPVM_OP_build_die(compiler, $1, $4, $2);
+    }
 
 void_return_operator
   : warn
