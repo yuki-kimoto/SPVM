@@ -9,6 +9,8 @@
   [New Features]
     * Add the check_option_names method to the Fn class.
     * Add the shuffle_object method to the Array class.
+    * Add syntax of die OPERAND_ERROR_ID ',' OPERAND_MESSAGE.
+
   [Breaking Binary Compatibility]
     * Break the binary compatibility of the die statement.
   [Internal Changes]

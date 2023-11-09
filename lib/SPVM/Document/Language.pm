@@ -1480,6 +1480,10 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | DIE
     | DIE type operator
     | DIE type
+    | DIE operator ',' operator
+      {
+        $$ = SPVM_OP_build_die(compiler, $1, $4, $2);
+      }
 
   void_return_operator
     : warn
@@ -6937,16 +6941,23 @@ The type of the OPERAND must be able to L<assign|/"Assignability"> to the return
 
 The C<die> statement throws an L<exception|/"Throwing Exception">.
 
-  die OPERAND;
-  die;
+  die OPERAND_MESSAGE
+  die
+  die ERROR_TYPE OPERAND_MESSAGE
+  die ERROR_TYPE
+  die OPERAND_ERROR_ID ',' OPERAND_MESSAGE
 
-The OPERAND is an error message. The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
+OPERAND_MESSAGE is an error message. The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
 
 If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error ID 255.
 
-The operand must be the L<string type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+If OPERAND_MESSAGE is omitted or L<undef|/"Undefined Value">, "Error" is set to the L<exception variable|/"Exception Variable"> C<$@>.
 
-If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Value">, The OPERAND is set to the string C<"Error">.
+ERROR_TYPE is a class type. If ERROR_TYPE is given, the basic type id of the class is the value got by the L</"eval_error_id Operator">.
+
+OPERAND_ERROR_ID is an integer value within int type. If OPERAND_ERROR_ID is given, it is the value got by the L</"eval_error_id Operator">.
+
+the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on OPERAND_ERROR_ID.
 
 The return type is the L<void type|/"void Type">.
 
@@ -6957,6 +6968,14 @@ The following one is an example of a stack trace. Each line of the stack trace c
     TestCase->main at SPVM/TestCase.spvm line 1198
 
 The exception can be caught by the L<eval block|/"Exception Catching">.
+
+Comlication Errors:
+
+OPERAND_MESSAGE must be the L<string type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+
+ERROR_TYPE must be a class type. Otherwise a compilation error occurs.
+
+OPERAND_ERROR_ID must be an integer type within int. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -6970,7 +6989,12 @@ Examples:
   if ($@) {
     # ...
   }
-
+  
+  die Error::System "System Error";
+  
+  my $error_id = 10;
+  die $error_id, "Some Error";
+  
 =head2 Operator Statement
 
 The operator statement is the L<statement|/"Statement"> to execute an L<operator|/"Operator">.
