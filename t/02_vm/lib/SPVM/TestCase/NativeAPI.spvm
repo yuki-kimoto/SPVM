@@ -1414,10 +1414,10 @@ class TestCase::NativeAPI {
   
   native static method close_stderr : void ();
   
-  native static method stdin : int ();
+  native static method spvm_stdin : int ();
   
-  native static method stdout : int ();
+  native static method spvm_stdout : int ();
   
-  native static method stderr : int ();
+  native static method spvm_stderr : int ();
 
 }

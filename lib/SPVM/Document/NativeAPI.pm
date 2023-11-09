@@ -1963,21 +1963,21 @@ Prints a string and C<\n> to stdout. This is the same operator as the say operat
 
 Operates the warn operator.
 
-=head2 stdin
+=head2 spvm_stdin
 
-  FILE* (*stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
+  FILE* (*spvm_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Gets the standard input opened for SPVM.
 
-=head2 stdout
+=head2 spvm_stdout
 
-  FILE* (*stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
+  FILE* (*spvm_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Gets the standard output opened for SPVM.
 
-=head2 stderr
+=head2 spvm_stderr
 
-  FILE* (*stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
+  FILE* (*spvm_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
 
 Gets the standard error opened for SPVM.
 

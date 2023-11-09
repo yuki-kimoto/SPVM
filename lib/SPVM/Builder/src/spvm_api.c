@@ -318,9 +318,9 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_memory_blocks_count,
     SPVM_API_say,
     SPVM_API_warn,
-    SPVM_API_stdin,
-    SPVM_API_stdout,
-    SPVM_API_stderr,
+    SPVM_API_spvm_stdin,
+    SPVM_API_spvm_stdout,
+    SPVM_API_spvm_stderr,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4230,21 +4230,21 @@ int32_t SPVM_API_get_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   return ref_count;
 }
 
-FILE* SPVM_API_stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
+FILE* SPVM_API_spvm_stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   FILE* spvm_stdin = env->api->runtime->get_spvm_stdin(env->runtime);
   
   return spvm_stdin;
 }
 
-FILE* SPVM_API_stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
+FILE* SPVM_API_spvm_stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   FILE* spvm_stdout = env->api->runtime->get_spvm_stdout(env->runtime);
   
   return spvm_stdout;
 }
 
-FILE* SPVM_API_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+FILE* SPVM_API_spvm_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
   

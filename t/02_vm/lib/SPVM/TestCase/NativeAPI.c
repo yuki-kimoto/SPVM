@@ -3019,9 +3019,9 @@ int32_t SPVM__TestCase__NativeAPI__close_stderr(SPVM_ENV* env, SPVM_VALUE* stack
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__spvm_stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  if (!(env->stdin(env, stack) == env->api->runtime->get_spvm_stdin(env->runtime))) {
+  if (!(env->spvm_stdin(env, stack) == env->api->runtime->get_spvm_stdin(env->runtime))) {
     
     stack[0].ival = 0;
     
@@ -3033,9 +3033,9 @@ int32_t SPVM__TestCase__NativeAPI__stdin(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__spvm_stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  if (!(env->stdout(env, stack) == env->api->runtime->get_spvm_stdout(env->runtime))) {
+  if (!(env->spvm_stdout(env, stack) == env->api->runtime->get_spvm_stdout(env->runtime))) {
     
     stack[0].ival = 0;
     
@@ -3047,9 +3047,9 @@ int32_t SPVM__TestCase__NativeAPI__stdout(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__spvm_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  if (!(env->stderr(env, stack) == env->api->runtime->get_spvm_stderr(env->runtime))) {
+  if (!(env->spvm_stderr(env, stack) == env->api->runtime->get_spvm_stderr(env->runtime))) {
     
     stack[0].ival = 0;
     
