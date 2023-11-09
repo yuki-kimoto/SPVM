@@ -1448,7 +1448,7 @@ static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* s
 
 #define SPVM_IMPLEMENT_GET_EVAL_ERROR_ID(out, eval_error_id) (out = eval_error_id)
 
-#define SPVM_IMPLEMENT_SET_ERROR_ID(error_id, die_error_basic_type) (error_id = env->api->basic_type->get_id(env->runtime, die_error_basic_type))
+#define SPVM_IMPLEMENT_SET_ERROR_ID(error_id, die_error_id) (error_id = die_error_id)
 
 #define SPVM_IMPLEMENT_SET_EVAL_ERROR_ID(eval_error_id, die_error_id) (eval_error_id = die_error_id)
 

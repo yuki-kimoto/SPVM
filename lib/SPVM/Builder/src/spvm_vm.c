@@ -1421,9 +1421,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       case SPVM_OPCODE_C_ID_SET_ERROR_ID: {
         int32_t basic_type_id = opcode->operand0;
         
-        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
-        
-        SPVM_IMPLEMENT_SET_ERROR_ID(error_id, basic_type);
+        SPVM_IMPLEMENT_SET_ERROR_ID(error_id, basic_type_id);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_BASIC_TYPE_ID: {
