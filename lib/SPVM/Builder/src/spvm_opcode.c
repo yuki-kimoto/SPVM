@@ -304,7 +304,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "GET_CLASS_ID",
     "GET_BASIC_TYPE_ID",
     "SET_ERROR_ID_BY_TYPE",
-    "SET_ERROR_ID_DYNAMIC",
+    "SET_ERROR_ID",
     "TYPE_NAME",
     "DUMP",
     "COPY",
