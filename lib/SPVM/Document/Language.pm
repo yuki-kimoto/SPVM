@@ -1274,7 +1274,7 @@ The SPVM language is assumed to be parsed by yacc/bison.
 
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
-  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
+  token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
   %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -1282,10 +1282,10 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
-  %type <opval> opt_modules modules module module_block version_decl
+  %type <opval> opt_classes classes class class_block version_decl
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-  %type <opval> method anon_method opt_args args arg has use require alias our anon_method_has_list anon_method_has
+  %type <opval> method anon_method opt_args args arg use require alias our has has_for_anon_list has_for_anon
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
@@ -1299,7 +1299,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> var_decl var interface union_type
   %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
   %type <opval> field_name method_name alias_name is_read_only
-  %type <opval> type qualified_type basic_type array_type module_type
+  %type <opval> type qualified_type basic_type array_type class_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
@@ -1316,27 +1316,27 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %left <opval> ARROW
 
   grammar
-    : opt_modules
+    : opt_classes
 
-  opt_modules
+  opt_classes
     : /* Empty */
-    | modules
+    | classes
 
-  modules
-    : modules module
-    | module
+  classes
+    : classes class
+    | class
 
-  module
-    : CLASS module_type opt_extends module_block END_OF_FILE
-    | CLASS module_type opt_extends ':' opt_attributes module_block END_OF_FILE
-    | CLASS module_type opt_extends ';' END_OF_FILE
-    | CLASS module_type opt_extends ':' opt_attributes ';' END_OF_FILE
+  class
+    : CLASS class_type opt_extends class_block END_OF_FILE
+    | CLASS class_type opt_extends ':' opt_attributes class_block END_OF_FILE
+    | CLASS class_type opt_extends ';' END_OF_FILE
+    | CLASS class_type opt_extends ':' opt_attributes ';' END_OF_FILE
 
   opt_extends
     : /* Empty */
     | EXTENDS basic_type
 
-  module_block
+  class_block
     : '{' opt_definitions '}'
 
   opt_definitions
@@ -1414,7 +1414,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
   anon_method
     : opt_attributes METHOD ':' return_type '(' opt_args ')' block
-    | '[' anon_method_has_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
+    | '[' has_for_anon_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
 
   opt_args
     : /* Empty */
@@ -1429,14 +1429,15 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     : var ':' qualified_type opt_type_comment
     | var ':' qualified_type opt_type_comment ASSIGN operator
 
-  anon_method_has_list
-    : anon_method_has_list ',' anon_method_has
-    | anon_method_has_list ','
-    | anon_method_has
+  has_for_anon_list
+    : has_for_anon_list ',' has_for_anon
+    | has_for_anon_list ','
+    | has_for_anon
 
-  anon_method_has
-    : has ASSIGN operator
-    | has
+  has_for_anon
+    : HAS field_name ':' opt_attributes qualified_type opt_type_comment
+    | HAS field_name ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
+    | var ':' opt_attributes qualified_type opt_type_comment
 
   opt_attributes
     : /* Empty */
@@ -1481,9 +1482,6 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | DIE type operator
     | DIE type
     | DIE operator ',' operator
-      {
-        $$ = SPVM_OP_build_die(compiler, $1, $4, $2);
-      }
 
   void_return_operator
     : warn
@@ -1747,7 +1745,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | array_type
     | ref_type
 
-  module_type
+  class_type
     : basic_type
 
   basic_type
@@ -8881,19 +8879,33 @@ The anon method field definition is the syntax to define the field of the anon c
   # Anon method field definitions with field default values
   [has FIELD_NAME : TYPE1 = OPERAND1, has FIELD_NAME : TYPE2 = OPERAND2, ...] ANON_METHOD_DEFINITION
   
+  [VAR1 : TYPE1, VAR2 : TYPE2, ...] ANON_METHOD_DEFINITION
+  
 Examples:
 
   class Foo::Bar {
     method some_method : void () {
-      # Externally defined local variables
       my $foo = 1;
       my $bar = 5L;
       
-      # Capture
       my $comparator = (Comparator)[has foo : int = $foo, has bar : long = $bar] method : int ($x1 : object, $x2 : object) {
         my $foo = $self->{foo};
         my $bar = $self->{bar};
         
+        print "$foo\n";
+        print "$bar\n";
+      };
+    }
+  }
+
+Same as avobe but more simple:
+
+  class Foo::Bar {
+    method some_method : void () {
+      my $foo = 1;
+      my $bar = 5L;
+      
+      my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
         print "$foo\n";
         print "$bar\n";
       };

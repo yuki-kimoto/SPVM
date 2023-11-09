@@ -1,6 +1,39 @@
 0.989060 2023-11-09
   [Compilation Error Messages Improvement]
     * Improve compilation error messages in interface.
+  [New Features]
+    * Add more simple anon method filed definition syntax
+
+        class Foo::Bar {
+          method some_method : void () {
+            my $foo = 1;
+            my $bar = 5L;
+            
+            my $comparator = (Comparator)[has foo : int = $foo, has bar : long = $bar] method : int ($x1 : object, $x2 : object) {
+              my $foo = $self->{foo};
+              my $bar = $self->{bar};
+              
+              print "$foo\n";
+              print "$bar\n";
+            };
+          }
+        }
+
+      Same as avobe but more simple with new syntax:
+
+        class Foo::Bar {
+          method some_method : void () {
+            my $foo = 1;
+            my $bar = 5L;
+            
+            my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
+              print "$foo\n";
+              print "$bar\n";
+            };
+          }
+        }
+
+      
 0.989059 2023-11-09
   [Test Improvement]
     * Add tests of thread safetiness.

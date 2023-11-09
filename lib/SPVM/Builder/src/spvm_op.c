@@ -1658,20 +1658,21 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
 
 SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_attributes, SPVM_OP* op_type, SPVM_OP* op_default) {
   
+  int32_t is_decl_var_in_anon_method = 0;
   if (!op_name_field) {
     
     assert(op_default->id == SPVM_OP_C_ID_VAR);
     
     op_name_field = SPVM_OP_new_op_name(compiler, op_default->uv.var->name + 1, op_default->file, op_default->line);
+    
+    is_decl_var_in_anon_method = 1;
   }
   
   SPVM_OP* op_field_definition = SPVM_OP_build_field_definition(compiler, op_field, op_name_field, op_attributes, op_type);
   
   op_field_definition->uv.field->op_anon_method_field_default = op_default;
   
-  if (!op_name_field) {
-    op_field_definition->uv.field->is_decl_var_in_anon_method = 1;
-  }
+  op_field_definition->uv.field->is_decl_var_in_anon_method = is_decl_var_in_anon_method;
   
   return op_field_definition;
 }
