@@ -2597,8 +2597,17 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
           case SPVM_OP_C_ID_DIE: {
             SPVM_TYPE* last_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
-            if (!SPVM_TYPE_is_class_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The error class of the die statement must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+            // Type
+            if (op_cur->last->id == SPVM_OP_C_ID_TYPE) {
+              if (!SPVM_TYPE_is_class_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The error class of the die statement must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+              }
+            }
+            // Basic type ID
+            else {
+              if (!SPVM_TYPE_is_integer_type_within_int(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The error ID must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+              }
             }
             
             break;
