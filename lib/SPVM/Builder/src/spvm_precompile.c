@@ -2845,13 +2845,9 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_SET_ERROR_ID: {
-        int32_t basic_type_id = opcode->operand0;
-        SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, basic_type_id);
-        const char* basic_type_name = basic_type->name;
-        
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_id = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                 
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_ERROR_ID(error_id, basic_type_id);\n");
         break;

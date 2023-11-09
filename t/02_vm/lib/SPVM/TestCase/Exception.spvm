@@ -254,6 +254,64 @@ class TestCase::Exception {
       }
     }
     
+    {
+      eval { die 1, "Error Message"; }
+      my $error = $@;
+      unless (Fn->index($error, "Error Message\n  ", 0) == 0) {
+        return 0;
+      }
+      unless (eval_error_id == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      eval { die -1, "Error Message"; }
+      my $error = $@;
+      unless (Fn->index($error, "Error Message\n  ", 0) == 0) {
+        return 0;
+      }
+      unless (eval_error_id == -1) {
+        return 0;
+      }
+    }
+    
+    {
+      # Set 1 to eval_error_id
+      eval { die -1, "Foo"; }
+      
+      # 0 means do not throw an exception
+      die 0, "Error Message 0";
+      
+      my $error = $@;
+      
+      unless (Fn->index($error, "Error Message 0", 0) == 0) {
+        return 0;
+      }
+      
+      unless (eval_error_id == -1) {
+        return 0;
+      }
+    }
+    
+    {
+      # Set 1 to eval_error_id
+      eval { die -1, "Foo"; }
+      
+      # 0 means do not throw an exception
+      eval { die 0, "Error Message 1"; }
+      
+      my $error = $@;
+      
+      unless (Fn->index($error, "Error Message 1", 0) == 0) {
+        return 0;
+      }
+      
+      unless (eval_error_id == 0) {
+        return 0;
+      }
+    }
+    
     $@ = undef;
     
     return 1;
