@@ -768,7 +768,7 @@ void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, const char* current_basic_type_name) {
+void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_METHOD* current_method) {
   
   if (op_class_var_access->uv.class_var_access->class_var) {
     return;
@@ -797,7 +797,7 @@ void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_clas
     memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
   else {
-    basic_type_name = (char*)current_basic_type_name;
+    basic_type_name = (char*)current_method->current_basic_type->name;
     base_name = (char*)name;
   }
   
@@ -2813,19 +2813,19 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               var->var_decl = found_var_decl;
             }
             else {
-              // Search the class variable
+              // Search a class variable
               SPVM_OP* op_name_basic_type_var = SPVM_OP_new_op_name(compiler, op_cur->uv.var->name, op_cur->file, op_cur->line);
               SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_name_basic_type_var);
               
               op_class_var_access->is_dist = op_cur->is_dist;
               
-              SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, basic_type->name);
+              SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, method);
               if (op_class_var_access->uv.class_var_access->class_var) {
                 
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 
                 // Check field name
-                SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, basic_type->name);
+                SPVM_CHECK_check_class_var_access(compiler, op_class_var_access, method);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
