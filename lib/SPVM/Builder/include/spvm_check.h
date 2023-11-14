@@ -12,7 +12,7 @@ void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type);
 
 void SPVM_CHECK_check_op_types(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_BASIC_TYPE* current_basic_type);
+void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_METHOD* current_method);
 
 void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access);
 
