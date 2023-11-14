@@ -8314,6 +8314,8 @@ If the class variable does not found, a compilation error occurs.
 
 If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
 
+If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outer class.
+
 Examples:
 
   class Foo {
@@ -8322,6 +8324,11 @@ Examples:
     static method bar : int () {
       my $var1 = $Foo::VAR;
       my $var2 = $VAR;
+      
+      my $cb = method : void () {
+        # $Foo::BAR
+        $VAR;
+      }
     }
   }
 
@@ -8349,6 +8356,8 @@ If the type of the assigned value is an L<object type|/"Object Type">, the refer
 
 If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by 1.
 
+If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outer class.
+
 Examples:
 
   class Foo {
@@ -8357,6 +8366,10 @@ Examples:
     static method bar : int () {
       $Foo::VAR = 1;
       $VAR = 3;
+    }
+    my $cb = method : void () {
+      # $Foo::VAR
+      $VAR = 5;
     }
   }
 

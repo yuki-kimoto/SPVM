@@ -2,6 +2,7 @@
   [Incompatible Changes]
     * The __PACKAGE__ operator returns its outer class in anon method.
     * The current class "&" means its outer class in anon method.
+    * If the class variable is used in an anon method and it is not full qualified, its current class means its outer class.
     
 0.989060 2023-11-09
   [Compilation Error Messages Improvement]

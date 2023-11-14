@@ -8,6 +8,7 @@ class TestCase::AnonMethod {
   use Point;
   
   our $var_prec : int;
+  our $ANON_RESULT : int;
   INIT {
     $var_prec = 5;
   }
@@ -195,6 +196,19 @@ class TestCase::AnonMethod {
       $cb->();
       
       unless ($anon_result_ref->[0] == 5) {
+        return 0;
+      }
+    }
+    
+    # Use a class var in current class in anon method
+    {
+      my $cb = method : void () {
+        $ANON_RESULT = 3;
+      };
+      
+      $cb->();
+      
+      unless ($ANON_RESULT == 3) {
         return 0;
       }
     }
