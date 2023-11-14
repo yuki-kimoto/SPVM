@@ -1219,7 +1219,17 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
           }
           case SPVM_OP_C_ID_CURRENT_CLASS_NAME: {
             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, basic_type->name, strlen(basic_type->name), op_cur->file, op_cur->line);
+            
+            const char* current_class_name = NULL;
+            if (method->is_anon) {
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->outer_basic_type_name, strlen(method->outer_basic_type_name));
+              current_class_name = method->outer_basic_type_name;
+            }
+            else {
+              current_class_name = basic_type->name;
+            }
+            
+            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, current_class_name, strlen(current_class_name), op_cur->file, op_cur->line);
             SPVM_OP_replace_op(compiler, op_stab, op_constant);
             op_cur = op_constant;
             

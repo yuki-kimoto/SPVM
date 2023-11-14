@@ -8773,12 +8773,21 @@ The C<__PACKAGE__> operator gets the current class name.
 
   __PACKAGE__
 
+The return type is the string type.
+
+If the __PACKAGE__ operator is used in anon method, it returns its outer class.
+
 Examples:
 
   class Foo::Bar {
     static method baz : void () {
       # Foo::Bar
-      my $current_basic_type_name = __PACKAGE__;
+      my $current_class_name = __PACKAGE__;
+      
+      my $cb = method : void () {
+        # Foo::Bar
+        my $current_class_name = __PACKAGE__;
+      };
     }
   }
 

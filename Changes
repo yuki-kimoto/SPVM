@@ -1,3 +1,7 @@
+0.989061 2023-11-14
+  [Incompatible Changes]
+    * The __PACKAGE__ operator returns its outer class in anon method.
+    
 0.989060 2023-11-09
   [Compilation Error Messages Improvement]
     * Improve compilation error messages in interface.
