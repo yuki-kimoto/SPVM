@@ -168,19 +168,43 @@ class TestCase::AnonMethod {
     
     my $num1 = $implement_callback1->(0, 0);
     my $num2 = $implement_callback2->(0, 0);
-
+    
     my $minimal = (TestCase::Minimal)$object;
     $minimal->{x} = 4;
     
-    if ($num1 == 1) {
-      if ($num2 == 2) {
-        if ($minimal->{x} == 4) {
-          return 1;
-        }
+    unless ($num1 == 1) {
+      return 0;
+    }
+    
+    unless ($num2 == 2) {
+      return 0;
+    }
+    
+    unless ($minimal->{x} == 4) {
+      return 0;
+    }
+    
+    # Call a method in current class in anon method
+    {
+      my $anon_result_ref = new int[1];
+      
+      my $cb = [$anon_result_ref : int[]] method : void () {
+        $anon_result_ref->[0] = &foo;
+      };
+      
+      $cb->();
+      
+      unless ($anon_result_ref->[0] == 5) {
+        return 0;
       }
     }
     
+    return 1;
+  }
+  
+  static method foo : int () {
     
+    return 5;
   }
 
   static method callback_array : int () {

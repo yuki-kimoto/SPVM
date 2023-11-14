@@ -938,7 +938,12 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
     // Basic type name + method name
     const char* basic_type_name;
     if (call_method->is_current) {
-      basic_type_name = current_method->current_basic_type->name;
+      if (current_method->is_anon) {
+        basic_type_name = current_method->outer_basic_type_name;
+      }
+      else {
+        basic_type_name = current_method->current_basic_type->name;
+      }
     }
     else {
       SPVM_OP* op_type_basic_type = op_call_method->last;

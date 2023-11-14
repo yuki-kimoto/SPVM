@@ -9146,14 +9146,38 @@ The method call calls a L<method|/"Method">.
 A method defined as the L<class method|/"Class Method"> can be called using the class method call.
 
   ClassName->MethodName(ARGS1, ARGS2, ...);
+  
+  &MethodName(ARGS1, ARGS2, ...);
 
 If the number of arguments does not correct, a compilation error occurs.
 
 If the types of arguments have no type compatible, a compilation error occurs.
 
-Examples:
+C<&> means the current class.
 
-  my $ret = Foo->bar(1, 2, 3);
+If C<&> is used in anon method, it means its outer class.
+
+Examples:
+  
+  class Foo {
+    
+    static method main : void () {
+      
+      my $ret = Foo->bar(1, 2, 3);
+      
+      # Same as Foo->bar
+      my $ret = &bar(1, 2, 3);
+      
+      my $cb = method : void () {
+        # Same as Foo->bar;
+        my $ret = &foo;
+      };
+    }
+    
+    static method foo : int () {
+      return 5;
+    }
+  }
 
 =head2 Instance Method Call
 
