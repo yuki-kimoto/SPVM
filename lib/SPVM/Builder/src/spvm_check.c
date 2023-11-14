@@ -922,7 +922,7 @@ void SPVM_CHECK_check_field_offset(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
   basic_type->fields_size = offset;
 }
 
-void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, const char* current_basic_type_name) {
+void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_BASIC_TYPE* current_basic_type) {
   
   SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
@@ -938,7 +938,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
     // Basic type name + method name
     const char* basic_type_name;
     if (call_method->is_current) {
-      basic_type_name = current_basic_type_name;
+      basic_type_name = current_basic_type->name;
     }
     else {
       SPVM_OP* op_type_basic_type = op_call_method->last;
@@ -2858,7 +2858,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 
             
             // Check method
-            SPVM_CHECK_check_call_method(compiler, op_cur, basic_type->name);
+            SPVM_CHECK_check_call_method(compiler, op_cur, basic_type);
             if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
               return;
             }
