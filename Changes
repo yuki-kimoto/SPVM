@@ -3,7 +3,8 @@
     * The __PACKAGE__ operator returns its outer class in anon method.
     * The current class "&" means its outer class in anon method.
     * If the class variable is used in an anon method and it is not full qualified, its current class means its outer class.
-    
+  [Changes]
+    * The Perl module file Name section the spvmdist command generates is change a little.
 0.989060 2023-11-09
   [Compilation Error Messages Improvement]
     * Improve compilation error messages in interface.
