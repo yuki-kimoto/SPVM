@@ -150,6 +150,12 @@ use Test::More;
     my $source = 'class MyClass : interface_t { required method foo : void (); required method bar : void (); }';
     compile_ok($source);
   }
+  
+  {
+    my $source = 'class MyClass : interface_t { static method foo : void () { new MyClass; } }';
+    compile_not_ok($source, q|The operand of the new operator cannnot be an interface type.|);
+  }
+  
 }
 
 # Pointer Class
