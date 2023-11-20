@@ -1,6 +1,8 @@
 class TestCase::Module::Native::Compiler {
   use Native::Compiler;
   use Native;
+  use Native::MethodCall;
+  use Stringable;
   
   static method add_class : int () {
     
@@ -28,6 +30,18 @@ class TestCase::Module::Native::Compiler {
           warn "$error_message";
         }
         die "Can't compile the \"$basic_type_name\" basic type";
+      }
+    }
+    
+    {
+      my $class_method_call = Native::MethodCall->new_class_method("MyPoint", "new");
+      
+      {
+        my $stringable = (Stringable)$class_method_call->call([(object)1, 2]);
+        
+        unless ($stringable->to_string eq "(1,2)") {
+          return 0;
+        }
       }
     }
     
