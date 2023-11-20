@@ -12,7 +12,7 @@ SPVM::Error::System - System Error
 
 =head1 Description
 
-C<Error::System> is the error class for system errors.
+The Error::System class represents system errors.
 
 =head1 Inheritance
 

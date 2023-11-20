@@ -12,7 +12,7 @@ SPVM::Error::NotSupported - Not Supported Error
 
 =head1 Description
 
-C<Error::NotSupported> is the error class to represent the system dose not support the feature.
+The Error::NotSupported class represents errors the system dose not support this feature.
 
 =head1 Inheritance
 
