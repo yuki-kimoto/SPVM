@@ -4598,4 +4598,39 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method get_basic_type_id : int () {
+    
+    {
+      my $basic_type_name = "Error";
+      my $basic_type_id = Fn->get_basic_type_id($basic_type_name);
+      
+      unless ($basic_type_id == 18) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->get_basic_type_id(undef); }
+        
+        unless (Fn->contains($@, "\$basic_type_name must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->get_basic_type_id("NotExists::XXXXXXXXX"); }
+        
+        unless (Fn->contains($@, "The basic type \"NotExists::XXXXXXXXX\" is not found.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
 }

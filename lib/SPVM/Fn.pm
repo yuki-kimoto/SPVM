@@ -1180,6 +1180,18 @@ Examples:
   
   Fn->check_option_names($options, $available_option_names);
 
+=head2 get_basic_type_id
+
+  static method get_basic_type_id : int ($basic_type_name : string);
+
+Gets the basic type ID of the basic type $basic_type_name.
+
+Exceptions:
+
+$basic_type_name must be defined. Otherwise an exception is thrwon.
+
+If the basic type is not found, an exception is thrwon.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

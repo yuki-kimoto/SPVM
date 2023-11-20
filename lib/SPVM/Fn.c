@@ -721,3 +721,23 @@ int32_t SPVM__Fn__get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_basic_type_name = stack[0].oval;
+  
+  if (!obj_basic_type_name) {
+    return env->die(env, stack, "$basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
+  
+  int32_t basic_type_id = env->get_basic_type_id(env, stack, basic_type_name);
+  if (!(basic_type_id >= 0)) {
+    return env->die(env, stack, "The basic type \"%s\" is not found.", basic_type_name, __func__, FILE_NAME, __LINE__);
+  }
+  
+  stack[0].ival = basic_type_id;
+  
+  return 0;
+}

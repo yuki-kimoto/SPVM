@@ -1319,4 +1319,6 @@ class Fn {
     }
   }
   
+  native static method get_basic_type_id : int ($basic_type_name : string);
+  
 }

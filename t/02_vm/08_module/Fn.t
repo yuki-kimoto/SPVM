@@ -176,6 +176,8 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->to_address);
     
     ok(SPVM::TestCase::Module::Fn->check_option_names);
+    
+    ok(SPVM::TestCase::Module::Fn->get_basic_type_id);
   }
   
   # Extra
