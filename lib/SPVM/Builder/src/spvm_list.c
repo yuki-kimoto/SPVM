@@ -132,7 +132,7 @@ void SPVM_LIST_unshift(SPVM_LIST* list, void* value) {
   
   int32_t length = list->length;
   
-  memmove(list->values + 1, list->values, length);
+  memmove(list->values + 1, list->values, sizeof(void*) * length);
   
   *(void**)&list->values[0] = value;
   list->length++;
