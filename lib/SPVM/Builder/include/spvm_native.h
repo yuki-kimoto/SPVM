@@ -371,6 +371,7 @@ struct spvm_api_compiler {
   const char* (*get_error_message)(void* compiler, int32_t index);
   int32_t (*get_error_messages_length)(void* compiler);
   void* (*get_runtime)(void* compiler);
+  void (*prepend_include_dir)(void* compiler, const char* include_dir);
 };
 
 struct spvm_api_class_file {

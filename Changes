@@ -1,4 +1,6 @@
 0.989062 2023-11-20
+  [New Features]
+    * Add the prepend_include_dir compiler native API is added.
   [Changes]
     * An interface can have class methods.
   [Bug Fix]

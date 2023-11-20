@@ -23,6 +23,8 @@ class Native::Compiler : pointer {
   
   native method add_include_dir : void ($include_dir : string);
   
+  native method prepend_include_dir : void ($include_dir : string);
+  
   native method get_error_messages : string[] ();
   
   native method get_class_file : Native::ClassFile ($class_name : string);

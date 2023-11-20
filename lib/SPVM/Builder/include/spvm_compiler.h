@@ -170,6 +170,8 @@ void SPVM_COMPILER_set_start_line(SPVM_COMPILER* compiler, int32_t start_line);
 
 void SPVM_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_dir);
 
+void SPVM_COMPILER_prepend_include_dir(SPVM_COMPILER* compiler, const char* include_dir);
+
 int32_t SPVM_COMPILER_get_include_dirs_length(SPVM_COMPILER* compiler);
 
 const char* SPVM_COMPILER_get_include_dir(SPVM_COMPILER* compiler, int32_t index);

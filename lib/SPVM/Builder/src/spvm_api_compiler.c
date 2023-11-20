@@ -37,6 +37,7 @@ SPVM_API_COMPILER* SPVM_API_COMPILER_new_api() {
     SPVM_API_COMPILER_get_error_message,
     SPVM_API_COMPILER_get_error_messages_length,
     SPVM_API_COMPILER_get_runtime,
+    SPVM_API_COMPILER_prepend_include_dir,
   };
   SPVM_API_COMPILER* env_compiler = calloc(1, sizeof(env_compiler_init));
   memcpy(env_compiler, env_compiler_init, sizeof(env_compiler_init));
@@ -110,6 +111,10 @@ const char* SPVM_API_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t
 
 SPVM_RUNTIME* SPVM_API_COMPILER_get_runtime(SPVM_COMPILER* compiler) {
   return SPVM_COMPILER_get_runtime(compiler);
+}
+
+void SPVM_API_COMPILER_prepend_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {
+  SPVM_COMPILER_prepend_include_dir(compiler, include_dir);
 }
 
 void  SPVM_API_COMPILER_free_api(SPVM_API_COMPILER* api) {

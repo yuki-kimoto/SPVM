@@ -1014,6 +1014,13 @@ void SPVM_COMPILER_add_include_dir(SPVM_COMPILER* compiler, const char* include_
   SPVM_LIST_push(compiler->include_dirs, (void*)compiler_include_dir);
 }
 
+void SPVM_COMPILER_prepend_include_dir(SPVM_COMPILER* compiler, const char* include_dir) {  
+  int32_t include_dir_length = strlen(include_dir);
+  char* compiler_include_dir = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->global_allocator, include_dir_length + 1);
+  memcpy(compiler_include_dir, include_dir, include_dir_length);
+  SPVM_LIST_unshift(compiler->include_dirs, (void*)compiler_include_dir);
+}
+
 void SPVM_COMPILER_clear_include_dirs(SPVM_COMPILER* compiler) {
   int32_t include_dirs_length = SPVM_COMPILER_get_include_dirs_length(compiler);
   
