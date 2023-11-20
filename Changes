@@ -1,3 +1,6 @@
+0.989062 2023-11-20
+  [Changes]
+    * An interface can have class methods.
 0.989061 2023-11-14
   [Incompatible Changes]
     * The __PACKAGE__ operator returns its outer class in anon method.

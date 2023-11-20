@@ -118,17 +118,22 @@ use Test::More;
   
   {
     my $source = 'class MyClass : interface_t { static method foo : void (); }';
-    compile_not_ok($source, qr/The method defined in the interface must be an instance method/);
+    compile_not_ok($source, q|The non-native method must have the block.|);
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { static method foo : void () {} }';
+    compile_ok($source);
   }
   
   {
     my $source = 'class MyClass : interface_t { enum { FOO } }';
-    compile_not_ok($source, q|The method defined in the interface must be an instance method.|);
+    compile_ok($source);
   }
   
   {
     my $source = 'class MyClass : interface_t { INIT { } }';
-    compile_not_ok($source, q|The method defined in the interface must be an instance method.|);
+    compile_ok($source);
   }
   
   {
@@ -145,7 +150,6 @@ use Test::More;
     my $source = 'class MyClass : interface_t { required method foo : void (); required method bar : void (); }';
     compile_ok($source);
   }
-  
 }
 
 # Pointer Class

@@ -885,12 +885,17 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     const char* method_name = op_name_method->uv.name;
     
     int32_t must_have_block;
-    if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+    if (method->is_native) {
       must_have_block = 0;
     }
     else {
-      if (method->is_native) {
-        must_have_block = 0;
+      if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+        if (method->is_class_method) {
+          must_have_block = 1;
+        }
+        else {
+          must_have_block = 0;
+        }
       }
       else {
         must_have_block = 1;
@@ -932,13 +937,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
     }
     
-    if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-      // Method having interface_t attribute must be method
-      if (method->is_class_method) {
-        SPVM_COMPILER_error(compiler, "The method defined in the interface must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
-      }
-    }
-    else if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+    if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
       if (method->is_required) {
         SPVM_COMPILER_error(compiler, "The method defined in the class cannnot have the method attribute \"required\".\n  at %s line %d", method->op_method->file, method->op_method->line);
       }

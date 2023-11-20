@@ -45,7 +45,7 @@ use Test::More;
   {
     compile_ok_file('CompileError::Interface::HaveBlock');
     compile_ok_file('CompileError::Interface::NativeMethod');
-    compile_not_ok_file('CompileError::Interface::StaticMethod');
+    compile_ok_file('CompileError::Interface::StaticMethod');
     compile_not_ok_file('CompileError::Interface::ArrayElementCantAssign');
     compile_ok_file('CompileError::Interface::NoMethods');
     compile_not_ok_file('CompileError::Interface::HasImplNotFound');
