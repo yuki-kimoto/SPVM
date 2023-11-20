@@ -1,6 +1,8 @@
 0.989062 2023-11-20
   [Changes]
     * An interface can have class methods.
+  [Bug Fix]
+    * Fix the bug that the env got by the get_current_env method in the Native class does not contains the current runtime.
 0.989061 2023-11-14
   [Incompatible Changes]
     * The __PACKAGE__ operator returns its outer class in anon method.

@@ -14,6 +14,26 @@ int32_t SPVM__Native__get_current_env(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_env = env->new_pointer_object_by_name(env, stack, "Native::Env", env, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
+  void* obj_runtime = env->new_pointer_object_by_name(env, stack, "Native::Runtime", env->runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_env, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* obj_compiler = env->new_pointer_object_by_name(env, stack, "Native::Compiler", env->api->runtime->get_compiler(env->runtime), &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_runtime, "compiler", obj_compiler, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_compiler, "runtime", obj_runtime, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void** obj_runtime_ref = env->get_field_object_ref_by_name(env, stack, obj_compiler, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->weaken(env, stack, obj_runtime_ref);
+  
   env->set_field_byte_by_name(env, stack, obj_env, "no_destroy", 1, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
