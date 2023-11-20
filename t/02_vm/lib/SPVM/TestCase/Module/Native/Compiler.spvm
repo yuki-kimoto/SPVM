@@ -3,6 +3,7 @@ class TestCase::Module::Native::Compiler {
   use Native;
   use Native::MethodCall;
   use Stringable;
+  use Fn;
   
   static method add_class : int () {
     
@@ -45,6 +46,13 @@ class TestCase::Module::Native::Compiler {
       }
     }
     
+    {
+      eval { Native::MethodCall->new_class_method("MyPoint", "not_exists"); }
+      
+      Fn->contains($@, "he \"not_exists\" method in the \"MyPoint\" class cannot be found.");
+      
+      $@ = undef;
+    }
     return 1;
   }
 }
