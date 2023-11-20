@@ -8,11 +8,28 @@ class TestCase::Module::Native::Compiler {
     
     my $current_stack = Native->get_current_stack;
     
-    my $include_dir = "lib/SPVM";
-    
     my $current_runtime = $current_env->runtime;
     
     my $current_compiler = $current_runtime->get_compiler;
+    
+    my $include_dir = "t/test_add_class/SPVM";
+    
+    $current_compiler->add_include_dir($include_dir);
+    
+    $current_compiler->set_start_file(__FILE__);
+    
+    {
+      my $basic_type_name = "MyPoint";
+      $current_compiler->set_start_line(__LINE__ + 1);
+      my $success = $current_compiler->compile($basic_type_name);
+      unless ($success) {
+        my $error_messages = $current_compiler->get_error_messages;
+        for my $error_message (@$error_messages) {
+          warn "$error_message";
+        }
+        die "Can't compile the \"$basic_type_name\" basic type";
+      }
+    }
     
     return 1;
   }
