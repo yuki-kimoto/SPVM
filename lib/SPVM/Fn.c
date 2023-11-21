@@ -210,11 +210,12 @@ static ptrdiff_t spvm_utf8proc_iterate(const uint8_t *str, ptrdiff_t strlen, int
 }
 
 int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
+  
+  int32_t error_id = 0;
   
   void* obj_string = stack[0].oval;
   int32_t* offset_ref = stack[1].iref;
-
+  
   if (!obj_string) {
     return env->die(env, stack, "$string must be defined.", __func__, FILE_NAME, __LINE__);
   }
@@ -227,9 +228,7 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t string_len = env->length(env, stack, obj_string);
   
   if (!(*offset_ref < string_len)) {
-    // GET_CODE_POINT_ERROR_OVER_STRING_RANGE
-    stack[0].ival = -1;
-    return 0;
+    return env->die(env, stack, "The value of $offset must be less than the length of $string.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t dst;
@@ -243,8 +242,12 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
     *offset_ref += utf8_char_len;
   }
   else if (utf8_char_len == SPVM_UTF8PROC_ERROR_INVALIDUTF8) {
-    // GET_CODE_POINT_ERROR_INVALID_UTF8
-    uchar = -2;
+    env->die(env, stack, "An invalid UTF-8 is gotten.", __func__, FILE_NAME, __LINE__);
+    
+    int32_t error_id_unicode_invalid_utf8 = env->get_basic_type_id_by_name(env, stack, "Error::Unicode::InvalidUTF8", &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    return error_id_unicode_invalid_utf8;
   }
   else {
     assert(0);

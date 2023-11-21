@@ -10,6 +10,11 @@
     * Add the Error::Compile class.
   [Test Improvement]
     * Add tests of error classes.
+  [Incompatible Changes]
+    * The code_point method in the Fn class throw an exceptions.
+    * Remove the GET_CODE_POINT_ERROR_OVER_STRING_RANGE and GET_CODE_POINT_ERROR_INVALID_UTF8 methods from the Fn class.
+  [Exception Message Improvement]
+    * Add periods to exception messages.
 0.989061 2023-11-14
   [Incompatible Changes]
     * The __PACKAGE__ operator returns its outer class in anon method.
