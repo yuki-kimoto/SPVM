@@ -2371,22 +2371,43 @@ The basic type category for the interface types.
 
 The basic type category for the any object type.
 
-=head2 Type Flags
+=head2 Type Flag IDs
 
-  1 SPVM_NATIVE_C_TYPE_FLAG_REF
-  2 SPVM_NATIVE_C_TYPE_FLAG_MUTABLE
+=begin html
 
-The type flags.
+<table>
+  <tr>
+    <th>ID</th><th>Name</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>1</td><td>SPVM_NATIVE_C_TYPE_FLAG_REF</td><td>A flag indicating that it is a reference type</td>
+  </tr>
+  <tr>
+    <td>2</td><td>SPVM_NATIVE_C_TYPE_FLAG_MUTABLE</td><td>A flag indicating that a mutable modifier is present</td>
+  </tr>
+</table>
 
-=head1 Macro Functions
+=end html
 
 =head2 SPVM_NATIVE_VERSION_NUMBER
 
 The version number of the SPVM language.
 
+Examples:
+  
+  // 0.989062
+  double spvm_version_number = SPVM_NATIVE_VERSION_NUMBER;
+
 =head2 SPVM_NATIVE_VERSION_STRING
 
-The version string of the SPVM language.
+The version string of the SPVM language. This is a string constant.
+
+Examples:
+  
+  // "0.989062"
+  const char* spvm_version_string = SPVM_NATIVE_VERSION_STRING;
+
+=head1 Functions
 
 =head2 spvm_warn
 
@@ -2407,20 +2428,20 @@ Prints the formatted message I<format> to the stream I<stream> with a new line.
 
 Examples:
 
-  spvm_warnf(env->api->runtime->get_spvm_stderr(env->runtime), "Hello");
-  spvm_warnf(env->api->runtime->get_spvm_stderr(env->runtime), "Hello %s%d", "Foo", 3);
+  spvm_warnf(env->spvm_stderr(env, stack), "Hello");
+  spvm_warnf(env->spvm_stderr(env, stack), "Hello %s%d", "Foo", 3);
 
 =head2 SPVM_NATIVE_GET_POINTER
 
 C<#define SPVM_NATIVE_GET_POINTER(object)>
 
-Gets the pointer saved in the object.
+Gets the pointer stored in the object I<object> and returns it. The return type is the void* type.
 
 =head2 SPVM_NATIVE_SET_POINTER
 
 C<#define SPVM_NATIVE_SET_POINTER(object, pointer)>
 
-Sets the pointer in the object.
+Sets the pointer I<pointer> in the object I<object>.
 
 =head1 Examples
 
