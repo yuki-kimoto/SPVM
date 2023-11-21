@@ -95,7 +95,10 @@ sub compile_not_ok_file {
     include_dirs => $builder->include_dirs
   );
   
-  my $success = $compiler->compile($basic_type_name, $file, $line);
+  eval { $compiler->compile_v2($basic_type_name, $file, $line) };
+  
+  my $success = !$@;
+  
   ok(!$success);
   my $error_messages = $compiler->get_error_messages;
   my $first_error_message = $error_messages->[0];
