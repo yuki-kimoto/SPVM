@@ -375,7 +375,10 @@ sub compile {
   
   $compiler->set_start_file(__FILE__);
   $compiler->set_start_line(__LINE__ + 1);
-  my $success = $compiler->compile($basic_type_name);
+  eval { $compiler->compile($basic_type_name) };
+  
+  my $success = !$@;
+  
   unless ($success) {
     my $error_messages = $compiler->get_error_messages;
     for my $error_message (@$error_messages) {
@@ -751,12 +754,12 @@ EOS
   
   my $start_basic_type_name = $self->{class_name};
   
-  $source .= qq|  int32_t error_id = env->api->compiler->compile(compiler, \"$start_basic_type_name\");\n|;
+  $source .= qq|  int32_t status = env->api->compiler->compile(compiler, \"$start_basic_type_name\");\n|;
   
   $source .= qq|  void* runtime = env->api->compiler->get_runtime(compiler);\n|;
   
   $source .= qq|  FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(runtime);\n|;
-  $source .= qq|  if (error_id != 0) {\n|;
+  $source .= qq|  if (status != 0) {\n|;
   $source .= qq|    fprintf(spvm_stderr, "[Unexpected Compile Error]%s.", env->api->compiler->get_error_message(compiler, 0));\n|;
   $source .= qq|    exit(255);\n|;
   $source .= qq|  }\n|;

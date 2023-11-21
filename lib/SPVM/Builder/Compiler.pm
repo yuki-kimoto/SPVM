@@ -72,7 +72,10 @@ sub new {
 sub compile_with_exit {
   my ($self, $basic_type_name, $file, $line) = @_;
   
-  my $success = $self->compile($basic_type_name, __FILE__, __LINE__);
+  eval { $self->compile($basic_type_name, __FILE__, __LINE__) };
+  
+  my $success = !$@;
+  
   unless ($success) {
     $self->print_error_messages(*STDERR);
     exit(255);

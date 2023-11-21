@@ -49,7 +49,11 @@ sub build_module {
     
     $compiler->set_start_file($file);
     $compiler->set_start_line($line);
-    my $success = $compiler->compile($basic_type_name);
+    
+    eval { $compiler->compile($basic_type_name) };
+    
+    my $success = !$@;
+    
     unless ($success) {
       my $error_messages = $compiler->get_error_messages;
       for my $error_message (@$error_messages) {
