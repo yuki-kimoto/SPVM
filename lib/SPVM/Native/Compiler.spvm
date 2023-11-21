@@ -4,6 +4,7 @@
 class Native::Compiler : pointer {
   use Native::Runtime;
   use Native::ClassFile;
+  use Error::Compile;
   
   # Fields
   

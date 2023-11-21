@@ -132,6 +132,7 @@ sub init_api {
     for my $include_dir (@{$builder->include_dirs}) {
       $compiler->add_include_dir($include_dir);
     }
+    
     $compiler->compile(undef);
     
     my $env = $builder_api->class("Native::Env")->new($compiler);
