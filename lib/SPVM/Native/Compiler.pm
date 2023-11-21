@@ -96,6 +96,10 @@ Returns 1 on success, 0 on failure.
 
 This method can be called multiple times.
 
+Exceptions:
+
+If compilation errors occurred, an exception is thrown set eval_errro_id to the basic type ID of the L<Error::Compile|SPVM::Error::Compile> class.
+
 =head2 get_error_messages
 
 C<method get_error_messages : string[] ();>

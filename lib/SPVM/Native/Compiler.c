@@ -65,14 +65,16 @@ int32_t SPVM__Native__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   // Compile SPVM
-  int32_t compile_die_error_id = env->api->compiler->compile(compiler, basic_type_name);
+  int32_t status = env->api->compiler->compile(compiler, basic_type_name);
   
-  int32_t success = 0;
-  if (compile_die_error_id == 0) {
-    success = 1;
+  if (!(status == 0)) {
+    
+    env->die(env, stack, "Compilation errors occurred.", __func__, FILE_NAME, __LINE__);
+    
+    return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COPMPILE;
   }
   
-  stack[0].ival = success;
+  stack[0].ival = 1;
   
   return 0;
 }

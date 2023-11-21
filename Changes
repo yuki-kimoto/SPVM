@@ -10,6 +10,8 @@
     * Add the Error::Compile class.
   [Test Improvement]
     * Add tests of error classes.
+  [Incompatible Changes]
+    * The compile method in the Native::Compiler throw an exception when compilation errors occurred.
 0.989061 2023-11-14
   [Incompatible Changes]
     * The __PACKAGE__ operator returns its outer class in anon method.
