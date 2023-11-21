@@ -49,8 +49,8 @@ sub build_module {
     
     $compiler->set_start_file($file);
     $compiler->set_start_line($line);
-    my $success = $compiler->compile($basic_type_name);
-    unless ($success) {
+    eval { $compiler->compile($basic_type_name) };
+    if ($@) {
       my $error_messages = $compiler->get_error_messages;
       for my $error_message (@$error_messages) {
         printf STDERR "[CompileError]$error_message\n";
