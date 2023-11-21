@@ -4,7 +4,7 @@ package SPVM::Error::Compile;
 
 =head1 Name
 
-SPVM::Error::Compile - Compile Error
+SPVM::Error::Compile - Compilation Errors
 
 =head1 Usage
 
