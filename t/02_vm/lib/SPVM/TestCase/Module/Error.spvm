@@ -1,0 +1,24 @@
+class TestCase::Module::Error {
+  use Fn;
+  
+  static method basic_type_id : int () {
+    
+    unless (Fn->get_basic_type_id("Error") == 18) {
+      return 0;
+    }
+    
+    unless (Fn->get_basic_type_id("Error::System") == 19) {
+      return 0;
+    }
+    
+    unless (Fn->get_basic_type_id("Error::NotSupported") == 20) {
+      return 0;
+    }
+    
+    unless (Fn->get_basic_type_id("Error::Compile") == 23) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

@@ -455,6 +455,7 @@ void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler) {
   SPVM_COMPILER_use(compiler, "Error::NotSupported", "Error::NotSupported", 0);
   SPVM_COMPILER_use(compiler, "CommandInfo", "CommandInfo", 0);
   SPVM_COMPILER_use(compiler, "Address", "Address", 0);
+  SPVM_COMPILER_use(compiler, "Error::Compile", "Error::Compile", 0);
 }
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
@@ -551,6 +552,14 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Address";
     const char* rel_file = "Address.spvm";
     const char* content = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
+    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+  }
+  
+  // Add Error::Compile class file
+  {
+    const char* class_name = "Error::Compile";
+    const char* rel_file = "Error/Compile.spvm";
+    const char* content = "class Error::Compile extends Error;";
     SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
   }
 }

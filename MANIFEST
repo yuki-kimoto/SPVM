@@ -255,6 +255,7 @@ lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/Address.pm
 lib/SPVM/EqualityChecker/Address.spvm
 lib/SPVM/Error.pm
+lib/SPVM/Error/Compile.pm
 lib/SPVM/Error/NotSupported.pm
 lib/SPVM/Error/System.pm
 lib/SPVM/ExchangeAPI.pm
@@ -665,6 +666,7 @@ t/02_vm/08_module/CommandInfo.t
 t/02_vm/08_module/default_loaded_modules.t
 t/02_vm/08_module/Double.t
 t/02_vm/08_module/DoubleList.t
+t/02_vm/08_module/Error.t
 t/02_vm/08_module/Error_System.t
 t/02_vm/08_module/Float.t
 t/02_vm/08_module/FloatList.t
@@ -683,6 +685,7 @@ t/02_vm/08_module/IntList.t
 t/02_vm/08_module/List.t
 t/02_vm/08_module/Long.t
 t/02_vm/08_module/LongList.t
+t/02_vm/08_module/Native/Compiler.t
 t/02_vm/08_module/Native/MethodCall.t
 t/02_vm/08_module/Point.t
 t/02_vm/08_module/Point3D.t
@@ -790,6 +793,7 @@ t/02_vm/lib/SPVM/TestCase/Module/ByteList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/CommandInfo.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Double.spvm
 t/02_vm/lib/SPVM/TestCase/Module/DoubleList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Error.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Float.spvm
 t/02_vm/lib/SPVM/TestCase/Module/FloatList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Fn.spvm
@@ -808,6 +812,7 @@ t/02_vm/lib/SPVM/TestCase/Module/List.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Long.spvm
 t/02_vm/lib/SPVM/TestCase/Module/LongList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Mutex.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Native/Compiler.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Native/MethodCall.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point3D.spvm
@@ -946,6 +951,7 @@ t/04_spvmcc/SPVM_Builder_Exe.t
 t/04_spvmcc/spvmcc.t
 t/05_spvmdist/command.t
 t/05_spvmdist/module.t
+t/test_add_class/SPVM/MyPoint.spvm
 t/test_files/file_eof.txt
 t/test_files/fread.txt
 t/test_files/fread_eof.txt
