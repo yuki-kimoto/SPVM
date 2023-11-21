@@ -4708,10 +4708,10 @@ compile(...)
   }
   
   // Compile SPVM
-  int32_t error_id = env_api->api->compiler->compile(compiler, basic_type_name);
+  int32_t status = env_api->api->compiler->compile(compiler, basic_type_name);
   
   SV* sv_success = &PL_sv_undef;
-  if (error_id == 0) {
+  if (status == 0) {
     sv_success = sv_2mortal(newSViv(1));
   }
   
