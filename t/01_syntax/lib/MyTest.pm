@@ -99,13 +99,33 @@ sub compile_not_ok_file {
   
   my $success = !$@;
   
+  warn 'Test';
+  
   ok(!$success);
+  
+  warn 'Test';
+  
   my $error_messages = $compiler->get_error_messages;
+  
+  warn 'Test';
+  
   my $first_error_message = $error_messages->[0];
+  
+  warn 'Test';
+  
   my $message_ok;
   if ($error_message_re) {
+  
+  warn 'Test';
+  
     $message_ok = like($first_error_message, $error_message_re);
+  
+  warn 'Test';
+  
   }
+  
+  
+  warn 'Test';
   
   if ($success || ($error_message_re && !$message_ok)) {
     warn "  at $file line $line\n";
@@ -195,10 +215,16 @@ sub compile_ok_file {
   
   my $success = !$@;
   
+  warn 'Test';
+  
+  
   if (!$success) {
     warn "  at $file line $line\n";
     
     my $error_messages = $compiler->get_error_messages;
+  
+  warn 'Test';
+  
     my $first_error_message = $error_messages->[0];
     warn "[Compile Error]$first_error_message";
   }
