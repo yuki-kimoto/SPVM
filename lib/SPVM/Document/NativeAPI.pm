@@ -2229,7 +2229,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   20 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS
   21 SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS
   22 SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS
-  23 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COPMPILE
+  23 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE
 
 These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
 
