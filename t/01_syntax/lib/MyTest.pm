@@ -190,7 +190,10 @@ sub compile_ok_file {
   my $compiler = SPVM::Builder::Compiler->new(
     include_dirs => $builder->include_dirs
   );
-  my $success = $compiler->compile($basic_type_name, $file, $line);
+  eval { $compiler->compile_v2($basic_type_name, $file, $line) };
+  
+  my $success = !$@;
+  
   ok($success);
   
   if (!$success) {
