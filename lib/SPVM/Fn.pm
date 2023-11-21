@@ -37,16 +37,6 @@ The Fn class of L<SPVM> has methods for numbers, strings, general utilities.
   my $int_max = Fn->INT_MAX();
   my $long_max = Fn->LONG_MAX();
 
-=head1 Enumerations
-
-=head2 GET_CODE_POINT_ERROR_OVER_STRING_RANGE
-
-Returns -1. The return type is the C<int> type.
-
-=head2 GET_CODE_POINT_ERROR_INVALID_UTF8
-
-Returns -2. The return type is the C<int> type.
-
 =head1 Class Methods
 
 =head2 BYTE_MAX
@@ -340,15 +330,15 @@ Parses the UTF-8 character at the value reffered by $offset_ref of $string and r
 
 The offset is updated to the position of the next UTF-8 character.
 
-If the offset is greater than the length of the string, return the value of L</"GET_CODE_POINT_ERROR_OVER_STRING_RANGE">.
-
-If the UTF-8 character is invalid, return the value of L</"GET_CODE_POINT_ERROR_INVALID_UTF8">.
-
 Exceptions:
 
 $string must be defined. Otherwise an exception is thrown.
 
 $offset must be greater than or equal to 0. Otherwise an exception is thrown.
+
+The value of $offset must be less than the length of $string. Otherwise an exception is thrown.
+
+If an invalid UTF-8 is gotten, an exception is thrown set C<eval_error_id> to the basic type ID of the L<Error::Unicode::InvalidUTF8|SPVM::Error::Unicode::InvalidUTF8> class.
 
 =head2 hex
 

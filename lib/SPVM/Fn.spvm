@@ -11,11 +11,7 @@ class Fn {
   use Scope::Guard;
   use Callback;
   use Format;
-  
-  enum {
-    GET_CODE_POINT_ERROR_OVER_STRING_RANGE = -1,
-    GET_CODE_POINT_ERROR_INVALID_UTF8 = -2,
-  }
+  use Error::Unicode::InvalidUTF8;
   
   static method BYTE_MAX : int () { return 127; }
   static method BYTE_MIN : int () { return -128; }
@@ -837,14 +833,6 @@ class Fn {
     my $code_points_list = IntList->new;
     while ($offset < $string_length) {
       my $code_point = &get_code_point($string, \$offset);
-      if ($code_point < 0) {
-        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "\$string contains a invalid Unicode code point.";
-        }
-        else {
-          die "An unexpected exception is thrown.";
-        }
-      }
       $code_points_list->push($code_point);
     }
     
@@ -896,14 +884,6 @@ class Fn {
     my $utf8_chars_list = StringList->new;
     while ($offset < $string_length) {
       my $code_point = &get_code_point($string, \$offset);
-      if ($code_point < 0) {
-        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "\$string contains a invalid Unicode code point.";
-        }
-        else {
-          die "An unexpected exception is thrown.";
-        }
-      }
       my $utf8_char = &chr($code_point);
     
       $utf8_chars_list->push($utf8_char);
@@ -940,14 +920,6 @@ class Fn {
     while ($offset < $string_length) {
       
       my $code_point = &get_code_point($string, \$offset);
-      if ($code_point < 0) {
-        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "\$string contains a invalid Unicode code point.";
-        }
-        else {
-          die "An unexpected exception is thrown.";
-        }
-      }
       
       my $pattern_offset = 0;
       my $match = 0;
@@ -1083,14 +1055,6 @@ class Fn {
     my $utf8_length = 0;
     while ($offset < $string_length) {
       my $code_point = &get_code_point($string, \$offset);
-      if ($code_point < 0) {
-        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "\$string contains a invalid Unicode code point.";
-        }
-        else {
-          die "An unexpected exception is thrown.";
-        }
-      }
       $utf8_length++;
     }
     
@@ -1114,14 +1078,6 @@ class Fn {
     my $buffer = StringBuffer->new;
     while ($offset < $string_length) {
       my $code_point = &get_code_point($string, \$offset);
-      if ($code_point < 0) {
-        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "\$string contains a invalid Unicode code point.";
-        }
-        else {
-          die "An unexpected exception is thrown.";
-        }
-      }
       
       # -1:before, 0:range, 1:after
       
@@ -1186,15 +1142,6 @@ class Fn {
     while ($offset < $range_format_length) {
       
       my $code_point = &get_code_point($range_format, \$offset);
-      
-      if ($code_point < 0) {
-        if ($code_point == &GET_CODE_POINT_ERROR_INVALID_UTF8) {
-          die "The range format of $arg_name cannnot be contain a invalid Unicode code point.";
-        }
-        else {
-          die "Calling the get_code_point method in the Fn class to $arg_name returns an error code: $code_point.";
-        }
-      }
       
       if ($code_points_index == 0) {
         $min_code_point = $code_point;

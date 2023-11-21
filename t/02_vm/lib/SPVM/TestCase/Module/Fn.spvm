@@ -10,28 +10,6 @@ class TestCase::Module::Fn {
   use Hash;
   use Sort;
   
-  static method GET_CODE_POINT_ERROR_OVER_STRING_RANGE : int () {
-    
-    unless (Fn->GET_CODE_POINT_ERROR_OVER_STRING_RANGE isa int) {
-      return 0;
-    }
-    unless (Fn->GET_CODE_POINT_ERROR_OVER_STRING_RANGE == -1) {
-      return 0;
-    }
-    return 1;
-  }
-  
-  static method GET_CODE_POINT_ERROR_INVALID_UTF8 : int () {
-    
-    unless (Fn->GET_CODE_POINT_ERROR_INVALID_UTF8 isa int) {
-      return 0;
-    }
-    unless (Fn->GET_CODE_POINT_ERROR_INVALID_UTF8 == -2) {
-      return 0;
-    }
-    return 1;
-  }
-  
   static method BYTE_MAX : int () {
     
     unless (Fn->BYTE_MAX isa int) {
@@ -924,26 +902,18 @@ class TestCase::Module::Fn {
         }
       }
       
-      # End
+      # End - exception
       {
-        my $code_point = Fn->get_code_point($string, \$offset);
+        eval { Fn->get_code_point($string, \$offset); }
         
-        unless ($code_point == Fn->GET_CODE_POINT_ERROR_OVER_STRING_RANGE) {
+        unless (Fn->contains($@, "The value of \$offset must be less than the length of \$string.")) {
           return 0;
         }
+        
       }
     }
     
-    # 0xFF - Invalid UTF-8
-    {
-      my $string = "\xFF";
-      my $offset = 0;
-      my $code_point = Fn->get_code_point($string, \$offset);
-      
-      unless ($code_point == Fn->GET_CODE_POINT_ERROR_INVALID_UTF8) {
-        return 0;
-      }
-    }
+    warn;
     
     {
       my $string = "あaい";
@@ -951,7 +921,13 @@ class TestCase::Module::Fn {
       
       my $offset = 0;
       my $i = 0;
-      while ((my $code_point = Fn->get_code_point($string, \$offset)) >= 0) {
+      while (1) {
+        
+        if ($offset >= length $string) {
+          last;
+        }
+        
+        my $code_point = Fn->get_code_point($string, \$offset);
         
         unless ($code_point == $code_points->[$i]) {
           return 0;
@@ -963,6 +939,19 @@ class TestCase::Module::Fn {
     
     # Exceptions
     {
+      # 0xFF - Invalid UTF-8
+      {
+        my $string = "\xFF";
+        my $offset = 0;
+        eval { Fn->get_code_point($string, \$offset); }
+        unless (Fn->contains($@, "An invalid UTF-8 is gotten.")) {
+          return 0;
+        }
+        
+        unless (eval_error_id is_error Error::Unicode::InvalidUTF8) {
+          return 0;
+        }
+      }
       {
         my $string = (string)undef;
         my $offset = 0;
@@ -971,7 +960,6 @@ class TestCase::Module::Fn {
           return 0;
         }
       }
-      
       {
         my $string = "あaい";
         my $offset = -1;
@@ -2565,10 +2553,11 @@ class TestCase::Module::Fn {
     
     # End
     {
-      my $code_point = Fn->ord("");
-      unless ($code_point == Fn->GET_CODE_POINT_ERROR_OVER_STRING_RANGE) {
+      eval { Fn->ord(""); }
+      unless (Fn->contains($@, "The value of \$offset must be less than the length of \$string.")) {
         return 0;
       }
+      
     }
     
     # Error

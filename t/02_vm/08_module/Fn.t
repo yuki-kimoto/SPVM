@@ -26,12 +26,6 @@ my $seed = time();
 
 # Fn
 {
-  # Enumerations
-  {
-    ok(SPVM::TestCase::Module::Fn->GET_CODE_POINT_ERROR_OVER_STRING_RANGE);
-    ok(SPVM::TestCase::Module::Fn->GET_CODE_POINT_ERROR_INVALID_UTF8);
-  }
-  
   # Class methods
   {
     ok(SPVM::TestCase::Module::Fn->BYTE_MAX);
