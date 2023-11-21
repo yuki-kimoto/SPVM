@@ -1296,40 +1296,40 @@ int32_t SPVM__TestCase__NativeAPI__add_int_array(SPVM_ENV* env, SPVM_VALUE* stac
 
 int32_t SPVM__TestCase__NativeAPI__call_void_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die(env, stack, "Exception %s", "ppp", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception %s", "ppp.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_byte_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die(env, stack, "Exception", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_short_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  return env->die(env, stack, "Exception", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_int_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die(env, stack, "Exception", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_long_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die(env, stack, "Exception", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 float SPVM__TestCase__NativeAPI__call_float_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return env->die(env, stack, "Exception", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_double_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {  
-  return env->die(env, stack, "Exception", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__call_object_method_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {  
-  return env->die(env, stack, "Exception", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, stack, "Exception.", __func__, "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPVM__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {
