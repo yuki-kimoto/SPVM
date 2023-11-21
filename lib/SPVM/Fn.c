@@ -13,8 +13,6 @@
 static const char* FILE_NAME = "Fn.c";
 
 int32_t SPVM__Fn__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].dval = DBL_MAX;
   
@@ -22,8 +20,6 @@ int32_t SPVM__Fn__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].dval = DBL_MIN;
   
@@ -31,8 +27,6 @@ int32_t SPVM__Fn__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__DOUBLE_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].dval = DBL_MAX;
   
@@ -40,8 +34,6 @@ int32_t SPVM__Fn__DOUBLE_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__DOUBLE_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].dval = DBL_MIN;
   
@@ -49,8 +41,6 @@ int32_t SPVM__Fn__DOUBLE_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__FLOAT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].fval = FLT_MAX;
   
@@ -58,8 +48,6 @@ int32_t SPVM__Fn__FLOAT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__FLOAT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].fval = FLT_MIN;
   
@@ -67,8 +55,6 @@ int32_t SPVM__Fn__FLOAT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].fval = FLT_MAX;
   
@@ -76,8 +62,6 @@ int32_t SPVM__Fn__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
   
   stack[0].fval = FLT_MIN;
   
@@ -111,7 +95,6 @@ static ptrdiff_t SPVM__Fn__static__convert_code_point_to_utf8_char(int32_t uc, u
 }
 
 int32_t SPVM__Fn___chr_native(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   int32_t code_point = stack[0].ival;
   
@@ -259,7 +242,6 @@ int32_t SPVM__Fn__get_code_point(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__is_array(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   void* object = stack[0].oval;
   
@@ -277,7 +259,6 @@ int32_t SPVM__Fn__is_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__is_class(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   void* object = stack[0].oval;
   
@@ -295,7 +276,6 @@ int32_t SPVM__Fn__is_class(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   void* object = stack[0].oval;
   
@@ -313,7 +293,6 @@ int32_t SPVM__Fn__is_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   void* object = stack[0].oval;
   
@@ -331,7 +310,6 @@ int32_t SPVM__Fn__is_numeric_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__is_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   void* object = stack[0].oval;
   
@@ -349,7 +327,6 @@ int32_t SPVM__Fn__is_object_array(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__is_pointer_class(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   void* object = stack[0].oval;
   
@@ -501,7 +478,6 @@ int32_t SPVM__Fn__sizeof_native_pointer(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Fn__shorten(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   void* string = stack[0].oval;
   int32_t length = stack[1].ival;
