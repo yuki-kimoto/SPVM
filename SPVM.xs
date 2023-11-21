@@ -4714,7 +4714,11 @@ compile(...)
     croak("Compilation errors occurred.");
   }
   
-  XSRETURN(0);
+  SV* sv_success = sv_2mortal(newSViv(1));
+  
+  XPUSHs(sv_success);
+  
+  XSRETURN(1);
 }
 
 SV*
