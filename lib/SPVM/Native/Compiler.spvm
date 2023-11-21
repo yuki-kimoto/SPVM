@@ -14,7 +14,7 @@ class Native::Compiler : pointer {
   native static method new : Native::Compiler ();
   
   # Instance Methods
-  native method compile : int ($basic_type_name : string);
+  native method compile : void ($basic_type_name : string);
   
   native method get_runtime : Native::Runtime ();
   

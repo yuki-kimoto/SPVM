@@ -74,7 +74,7 @@ Sets the line to start compiling by the L</"compile"> method.
 
 =head2 compile
 
-C<method compile : int ($basic_type_name : string);>
+C<method compile : void ($basic_type_name : string);>
 
 Compiles the specified class and the classes that are load in the specified class. 
 

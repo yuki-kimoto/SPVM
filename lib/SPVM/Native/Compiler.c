@@ -74,8 +74,6 @@ int32_t SPVM__Native__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE;
   }
   
-  stack[0].ival = 1;
-  
   return 0;
 }
 
