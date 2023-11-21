@@ -2407,13 +2407,15 @@ Examples:
   // "0.989062"
   const char* spvm_version_string = SPVM_NATIVE_VERSION_STRING;
 
-=head1 Functions
+=head1 Macro Functions
 
 =head2 spvm_warn
 
-  void spvm_warn(const char* format, ...)
+  #define spvm_warn(format, ...)
 
-Prints the formatted message to C<stderr> with a new line.
+Prints the formatted message I<format> to C<stderr> with a new line.
+
+I<format> must be the C<char*> type.
 
 Examples:
 
@@ -2422,9 +2424,13 @@ Examples:
 
 =head2 spvm_warnf
 
-  void spvm_warnf(FILE* stream, const char* format, ...)
+  #define spvm_warnf(stream, format, ...)
 
 Prints the formatted message I<format> to the stream I<stream> with a new line.
+
+I<format> must be the C<char*> type.
+
+I<stream> must be the C<FILE> type.
 
 Examples:
 
