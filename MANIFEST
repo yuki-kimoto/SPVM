@@ -258,6 +258,8 @@ lib/SPVM/Error.pm
 lib/SPVM/Error/Compile.pm
 lib/SPVM/Error/NotSupported.pm
 lib/SPVM/Error/System.pm
+lib/SPVM/Error/Unicode/InvalidUTF8.pm
+lib/SPVM/Error/Unicode/InvalidUTF8.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/ExchangeAPI/Class.pm
 lib/SPVM/ExchangeAPI/Error.pm
