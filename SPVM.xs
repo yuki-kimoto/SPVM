@@ -4721,6 +4721,69 @@ compile(...)
 }
 
 SV*
+compile_v2(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_start_file = ST(2);
+  SV* sv_start_line = ST(3);
+  
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  // Include directries
+  SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
+  SV* sv_include_dirs = sv_include_dirs_ptr ? *sv_include_dirs_ptr : &PL_sv_undef;
+  
+  // Name
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  // File
+  const char* start_file = SvPV_nolen(sv_start_file);
+  
+  // Line
+  int32_t start_line = (int32_t)SvIV(sv_start_line);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  // Set starting file
+  env_api->api->compiler->set_start_file(compiler, start_file);
+  
+  // Set starting line
+  env_api->api->compiler->set_start_line(compiler, start_line);
+  
+  // Add include paths
+  AV* av_include_dirs;
+  if (SvOK(sv_include_dirs)) {
+    av_include_dirs = (AV*)SvRV(sv_include_dirs);
+  }
+  else {
+    av_include_dirs = (AV*)sv_2mortal((SV*)newAV());
+  }
+  int32_t av_include_dirs_length = (int32_t)av_len(av_include_dirs) + 1;
+  for (int32_t i = 0; i < av_include_dirs_length; i++) {
+    SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
+    SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
+    char* include_dir = SvPV_nolen(sv_include_dir);
+    env_api->api->compiler->add_include_dir(compiler, include_dir);
+  }
+  
+  // Compile SPVM
+  int32_t status = env_api->api->compiler->compile(compiler, basic_type_name);
+  
+  if (!(status == 0)) {
+    croak("Compilation errors occurred.");
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
 get_error_messages(...)
   PPCODE:
 {
