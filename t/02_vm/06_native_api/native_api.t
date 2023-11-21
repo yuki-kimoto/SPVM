@@ -30,12 +30,12 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 }
 
 {
-  ok(SPVM::TestCase::NativeAPI->check_native_api_indexes);
+  ok(SPVM::TestCase::NativeAPI->check_native_api_ids);
   ok(SPVM::TestCase::NativeAPI->check_native_api_constant_values);
-  ok(SPVM::TestCase::NativeAPI->check_native_api_compiler_indexes);
-  ok(SPVM::TestCase::NativeAPI->check_native_api_string_buffer_indexes);
-  ok(SPVM::TestCase::NativeAPI->check_native_api_runtime_indexes);
-  ok(SPVM::TestCase::NativeAPI->check_native_api_allocator_indexes);
+  ok(SPVM::TestCase::NativeAPI->check_native_api_compiler_ids);
+  ok(SPVM::TestCase::NativeAPI->check_native_api_string_buffer_ids);
+  ok(SPVM::TestCase::NativeAPI->check_native_api_runtime_ids);
+  ok(SPVM::TestCase::NativeAPI->check_native_api_allocator_ids);
 }
 
 # get_field_string_chars_by_name

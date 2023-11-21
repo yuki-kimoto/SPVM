@@ -8,7 +8,7 @@
 
 static const char* FILE_NAME = "TestCase/NativeAPI.c";
 
-int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
 
@@ -2190,7 +2190,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__check_native_api_string_buffer_indexes(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__check_native_api_string_buffer_ids(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
   
@@ -2206,7 +2206,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_string_buffer_indexes(SPVM_E
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__check_native_api_allocator_indexes(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__check_native_api_allocator_ids(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
   
@@ -2220,7 +2220,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_allocator_indexes(SPVM_ENV* 
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_indexes(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_ids(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
   
@@ -2249,7 +2249,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_indexes(SPVM_ENV* e
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_indexes(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_ids(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
   

@@ -49,11 +49,11 @@ class TestCase::NativeAPI {
 
   native static method new_memory_apis : int ();
 
-  native static method check_native_api_indexes : int ();
-  native static method check_native_api_string_buffer_indexes : int ();
-  native static method check_native_api_allocator_indexes : int ();
-  native static method check_native_api_compiler_indexes : int ();
-  native static method check_native_api_runtime_indexes : int ();
+  native static method check_native_api_ids : int ();
+  native static method check_native_api_string_buffer_ids : int ();
+  native static method check_native_api_allocator_ids : int ();
+  native static method check_native_api_compiler_ids : int ();
+  native static method check_native_api_runtime_ids : int ();
   native static method check_native_api_constant_values : int ();
   
   native static method get_class_var : int ();
