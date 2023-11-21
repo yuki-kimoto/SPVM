@@ -12,6 +12,8 @@
     * Add tests of error classes.
   [Incompatible Changes]
     * The compile method in the Native::Compiler throw an exception when compilation errors occurred and the return type becomes void.
+  [Exception Message Improvement]
+    * Add periods to exception messages.
 0.989061 2023-11-14
   [Incompatible Changes]
     * The __PACKAGE__ operator returns its outer class in anon method.

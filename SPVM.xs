@@ -4714,7 +4714,7 @@ compile(...)
     croak("Compilation errors occurred.");
   }
   
-  XSRETURN(1);
+  XSRETURN(0);
 }
 
 SV*
