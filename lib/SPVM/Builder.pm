@@ -60,7 +60,10 @@ sub build_dynamic_lib_dist {
     include_dirs => $self->include_dirs
   );
   
-  my $success = $compiler->compile($basic_type_name, __FILE__, __LINE__);
+  eval { $compiler->compile($basic_type_name, __FILE__, __LINE__) };
+  
+  my $success = !$@;
+  
   unless ($success) {
     $compiler->print_error_messages(*STDERR);
     exit(255);

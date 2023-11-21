@@ -1,0 +1,1 @@
+class Error::Compile extends Error;
