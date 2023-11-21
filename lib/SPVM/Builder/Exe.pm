@@ -375,8 +375,9 @@ sub compile {
   
   $compiler->set_start_file(__FILE__);
   $compiler->set_start_line(__LINE__ + 1);
-  my $success = $compiler->compile($basic_type_name);
-  unless ($success) {
+  eval { $compiler->compile($basic_type_name) };
+  
+  if ($@) {
     my $error_messages = $compiler->get_error_messages;
     for my $error_message (@$error_messages) {
       print STDERR "$error_message\n";
