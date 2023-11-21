@@ -9,8 +9,6 @@ use File::Basename 'dirname';
 
 our @EXPORT_OK = qw(compile_not_ok_file compile_not_ok);
 
-use SPVM 'Fn';
-
 sub compile_not_ok {
   my ($sources, $error_message_re) = @_;
   
