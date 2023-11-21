@@ -4714,6 +4714,9 @@ compile(...)
   if (status == 0) {
     sv_success = sv_2mortal(newSViv(1));
   }
+  else {
+    croak("Compilation errors occurred.\n    %s at %s line %d\n", __func__, FILE_NAME, __LINE__);
+  }
   
   XPUSHs(sv_success);
   

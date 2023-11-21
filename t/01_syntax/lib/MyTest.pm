@@ -95,16 +95,24 @@ sub compile_not_ok_file {
     include_dirs => $builder->include_dirs
   );
   
-  my $success = $compiler->compile($basic_type_name, $file, $line);
-  ok(!$success);
-  my $error_messages = $compiler->get_error_messages;
-  my $first_error_message = $error_messages->[0];
-  my $message_ok;
-  if ($error_message_re) {
-    $message_ok = like($first_error_message, $error_message_re);
-  }
+  eval { $compiler->compile($basic_type_name, $file, $line) };
   
-  if ($success || ($error_message_re && !$message_ok)) {
+  if ($@) {
+    ok(1);
+    
+    my $error_messages = $compiler->get_error_messages;
+    my $first_error_message = $error_messages->[0];
+    my $message_ok;
+    if ($error_message_re) {
+      $message_ok = like($first_error_message, $error_message_re);
+    }
+    
+    if ($error_message_re && !$message_ok) {
+      warn "  at $file line $line\n";
+    }
+  }
+  else {
+    ok(0);
     warn "  at $file line $line\n";
   }
 }
@@ -187,14 +195,19 @@ sub compile_ok_file {
   my $compiler = SPVM::Builder::Compiler->new(
     include_dirs => $builder->include_dirs
   );
-  my $success = $compiler->compile($basic_type_name, $file, $line);
-  ok($success);
   
-  if (!$success) {
+  eval { $compiler->compile($basic_type_name, $file, $line) };
+  
+  if ($@) {
+    ok(0);
+    
     warn "  at $file line $line\n";
     
     my $error_messages = $compiler->get_error_messages;
     my $first_error_message = $error_messages->[0];
     warn "[Compile Error]$first_error_message";
+  }
+  else {
+    ok(1);
   }
 }
