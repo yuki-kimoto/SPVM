@@ -2753,6 +2753,8 @@ The following classes are loaded by default. These classes are deeply related to
 
 =item * L<Error::NotSupported|SPVM::Error::NotSupported>
 
+=item * L<Error::Compile|SPVM::Error::Compile>
+
 =item * L<CommandInfo|SPVM::CommandInfo>
 
 =item * L<Address|SPVM::Address>
