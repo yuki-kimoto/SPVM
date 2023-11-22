@@ -2206,120 +2206,87 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
 
 =head2 Basic Type IDs
 
-  0  SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN
-  1  SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF
-  2  SPVM_NATIVE_C_BASIC_TYPE_ID_VOID
-  3  SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE
-  4  SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT
-  5  SPVM_NATIVE_C_BASIC_TYPE_ID_INT
-  6  SPVM_NATIVE_C_BASIC_TYPE_ID_LONG
-  7  SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT
-  8  SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE
-  9  SPVM_NATIVE_C_BASIC_TYPE_ID_STRING
-  10 SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT
-  11 SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS
-  12 SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS
-  13 SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS
-  14 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS
-  15 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS
-  16 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS
-  17 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS
-  18 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS
-  19 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
-  20 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS
-  21 SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS
-  22 SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS
-  23 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE
+=begin html
 
-These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
+<table>
+  <tr>
+    <th>ID</th><th>Name</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>0</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN</td><td>The basic type ID for unknown types</td>
+  </tr>
+  <tr>
+    <td>1</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF</td><td>The basic type ID of the undef type</td>
+  </tr>
+  <tr>
+    <td>2</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_VOID</td><td>The basic type ID of the void type</td>
+  </tr>
+  <tr>
+    <td>3</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE</td><td>The basic type ID of the byte type</td>
+  </tr>
+  <tr>
+    <td>4</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT</td><td>The basic type ID of the short type</td>
+  </tr>
+  <tr>
+    <td>5</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_INT</td><td>The basic type ID of the int type</td>
+  </tr>
+  <tr>
+    <td>6</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_LONG</td><td>The basic type ID of the long type</td>
+  </tr>
+  <tr>
+    <td>7</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT</td><td>The basic type ID of the float type</td>
+  </tr>
+  <tr>
+    <td>8</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE</td><td>The basic type ID of the double type</td>
+  </tr>
+  <tr>
+    <td>9</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_STRING</td><td>The basic type ID of the string type</td>
+  </tr>
+  <tr>
+    <td>10</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT</td><td>The basic type ID of the any object type</td>
+  </tr>
+  <tr>
+    <td>11</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a> class</td>
+  </tr>
+  <tr>
+    <td>12</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Short">Short</a> class</td>
+  </tr>
+  <tr>
+    <td>13</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Int">Int</a> class</td>
+  </tr>
+  <tr>
+    <td>14</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Long">Long</a> class</td>
+  </tr>
+  <tr>
+    <td>15</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Float">Float</a> class</td>
+  </tr>
+  <tr>
+    <td>16</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Double">Double</a> class</td>
+  </tr>
+  <tr>
+    <td>17</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Bool">Bool</a> class</td>
+  </tr>
+  <tr>
+    <td>18</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Error">Error</a> class</td>
+  </tr>
+  <tr>
+    <td>19</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Error::System">Error::System</a> class</td>
+  </tr>
+  <tr>
+    <td>20</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Error::NotSupported">Error::NotSupported</a> class</td>
+  </tr>
+  <tr>
+    <td>21</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::CommandInfo">CommandInfo</a> class</td>
+  </tr>
+  <tr>
+    <td>22</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Address">Address</a> class</td>
+  </tr>
+  <tr>
+    <td>23</td><td>SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE</td><td>The basic type ID of the <a href="https://metacpan.org/pod/SPVM::Error::Compile">Error::Compile</a> class</td>
+  </tr>
+</table>
 
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNKNOWN
-
-The basic type is unknown.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_UNDEF
-
-The basic type ID of undef type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_VOID
-
-The basic type ID of C<void> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE
-
-The basic type ID of C<byte> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT
-
-The basic type ID of C<short> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_INT
-
-The basic type ID of C<int> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG
-
-The basic type ID of C<long> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT
-
-The basic type ID of C<float> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE
-
-The basic type ID of C<double> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_STRING
-
-The basic type ID of C<string> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT
-
-The basic type ID of C<object> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE_CLASS
-
-The basic type ID of L<Byte|SPVM::Byte> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT_CLASS
-
-The basic type ID of L<Short|SPVM::Short> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_INT_CLASS
-
-The basic type ID of L<Int|SPVM::Int> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_LONG_CLASS
-
-The basic type ID of L<Long|SPVM::Long> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT_CLASS
-
-The basic type ID of L<Float|SPVM::Float> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE_CLASS
-
-The basic type ID of L<Double|SPVM::Double> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_BOOL_CLASS
-
-The basic type ID of L<BOOL|SPVM::BOOL> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS
-
-The basic type ID of L<Error|SPVM::Error> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_SYSTEM_CLASS
-
-The basic type ID of L<Error::System|SPVM::Error::System> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS
-
-The basic type ID of L<Error::NotSupported|SPVM::Error::NotSupported> type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS
-
-The basic type ID of L<Address|SPVM::Address> type.
+=end html
 
 =head2 Basic Type Category IDs
 
