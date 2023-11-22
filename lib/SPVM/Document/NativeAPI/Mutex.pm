@@ -48,6 +48,10 @@ Frees a mutex object.
 
   0 new_instance
   1 free_instance
+  2 lock
+  3 unlock
+  4 reader_lock
+  5 reader_unlock
 
 =head1 Copyright & License
 

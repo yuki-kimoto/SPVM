@@ -445,6 +445,13 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_mutex_ids(SPVM_ENV* env, SPV
   
   void** env_array = (void**)env->api->mutex;
   
+  if ((void*)&env->api->mutex->new_instance != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->mutex->free_instance != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->mutex->lock != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->mutex->unlock != &env_array[3]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->mutex->reader_lock != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->mutex->reader_unlock != &env_array[5]) { stack[0].ival = 0; return 0; }
+  
   stack[0].ival = 1;
   
   return 0;
