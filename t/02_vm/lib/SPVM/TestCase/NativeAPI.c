@@ -437,7 +437,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS != 22) { stack[0].ival = 0; return 0; }
   }
 
-  // Constant Values of Basic Type Categories
+  // Basic Type Category IDs
   {
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN != 0) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF != 1) { stack[0].ival = 0; return 0; }
@@ -450,7 +450,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT != 8) { stack[0].ival = 0; return 0; }
   }
   
-  // Type flags
+  // Type Flag IDs
   {
     if (SPVM_NATIVE_C_TYPE_FLAG_REF != 1) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_TYPE_FLAG_MUTABLE != 2) { stack[0].ival = 0; return 0; }

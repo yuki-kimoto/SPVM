@@ -2321,55 +2321,44 @@ The basic type ID of L<Error::NotSupported|SPVM::Error::NotSupported> type.
 
 The basic type ID of L<Address|SPVM::Address> type.
 
-=head2 Constant Values of Basic Type Categories
+=head2 Basic Type Category IDs
 
-  0 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
-  1 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF
-  2 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID
-  3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC
-  4 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM
-  5 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING
-  6 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS
-  7 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
-  8 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
+=begin html
 
-These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
+<table>
+  <tr>
+    <th>ID</th><th>Name</th><th>Description</th>
+  </tr>
+  <tr>
+    <td>0</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN</td><td>The basic type category for unknown types</td>
+  </tr>
+  <tr>
+    <td>1</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF</td><td>The basic type category for the undef type</td>
+  </tr>
+  <tr>
+    <td>2</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID</td><td>The basic type category for the void type</td>
+  </tr>
+  <tr>
+    <td>3</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC</td><td>The basic type category for numeric types</td>
+  </tr>
+  <tr>
+    <td>4</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM</td><td>The basic type category for multi-numeric types</td>
+  </tr>
+  <tr>
+    <td>5</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING</td><td>The basic type category for the string type</td>
+  </tr>
+  <tr>
+    <td>6</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS</td><td>The basic type category for class types</td>
+  </tr>
+  <tr>
+    <td>7</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE</td><td>The basic type category for interface types</td>
+  </tr>
+  <tr>
+    <td>8</td><td>SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT</td><td>The basic type category for the any object type</td>
+  </tr>
+</table>
 
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNKNOWN
-
-The basic type category for unknown types.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_UNDEF
-
-The basic type category for the undefined type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_VOID
-
-The basic type category for the void type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC
-
-The basic type category for the numeric types.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM
-
-The basic type category for the multi-numeric types.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_STRING
-
-The basic type category for the string type.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS
-
-The basic type category for the class types.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE
-
-The basic type category for the interface types.
-
-=head3 SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT
-
-The basic type category for the any object type.
+=end html
 
 =head2 Type Flag IDs
 
