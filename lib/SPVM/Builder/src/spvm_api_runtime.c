@@ -103,7 +103,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_basic_type_by_id,
     SPVM_API_RUNTIME_get_basic_type_by_name,
     SPVM_API_RUNTIME_get_basic_types_length,
-    SPVM_API_RUNTIME_build_precompile_module_source,
+    SPVM_API_RUNTIME_build_precompile_class_source,
     SPVM_API_RUNTIME_build_precompile_method_source,
     SPVM_API_RUNTIME_get_compiler,
     SPVM_API_RUNTIME_set_compiler,
@@ -238,7 +238,7 @@ int32_t SPVM_API_RUNTIME_is_any_object_array_type(SPVM_RUNTIME* runtime, SPVM_RU
   return is_any_object_array_type;
 }
 
-void SPVM_API_RUNTIME_build_precompile_module_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* module_basic_type) {
+void SPVM_API_RUNTIME_build_precompile_class_source(SPVM_RUNTIME* runtime, SPVM_STRING_BUFFER* string_buffer, SPVM_RUNTIME_BASIC_TYPE* module_basic_type) {
   SPVM_PRECOMPILE* precompile = SPVM_PRECOMPILE_new(precompile);
   SPVM_PRECOMPILE_set_runtime(precompile, runtime);
   SPVM_PRECOMPILE_build_module_source(precompile, string_buffer, module_basic_type);

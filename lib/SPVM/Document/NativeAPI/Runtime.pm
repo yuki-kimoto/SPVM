@@ -62,9 +62,9 @@ Gets the length of the basic types.
 
 The C<runtime> argument is a runtime object.
 
-=head2 build_precompile_module_source
+=head2 build_precompile_class_source
 
-  void (*build_precompile_module_source)(void* runtime, void* string_buffer, void* module_basic_type);
+  void (*build_precompile_class_source)(void* runtime, void* string_buffer, void* module_basic_type);
 
 Builds the C source code of a precompiled module, and saves it to the string buffer.
 
@@ -114,7 +114,7 @@ The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
   3 get_basic_type_by_id
   4 get_basic_type_by_name
   5 get_basic_types_length
-  6 build_precompile_module_source
+  6 build_precompile_class_source
   7 build_precompile_method_source
   8 get_compiler
   9 set_compiler

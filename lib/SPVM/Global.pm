@@ -189,7 +189,7 @@ sub load_dynamic_lib {
             {category => $category}
           );
           
-          my $precompile_source = $runtime->build_precompile_module_source($basic_type)->to_string;
+          my $precompile_source = $runtime->build_precompile_class_source($basic_type)->to_string;
           
           my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
           my $builder = SPVM::Builder->new(build_dir => $build_dir);

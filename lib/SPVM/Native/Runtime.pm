@@ -60,9 +60,9 @@ Exceptions:
 
 If The basic type cannot be found, an exception is throen.
 
-=head2 build_precompile_module_source
+=head2 build_precompile_class_source
 
-C<method build_precompile_module_source : string ($basic_type : L<Native::BasicType|SPVM::Native::BasicType>);>
+C<method build_precompile_class_source : string ($basic_type : L<Native::BasicType|SPVM::Native::BasicType>);>
 
 Builds the C source code of the class that contains C<precompile> methods and returns it.
 

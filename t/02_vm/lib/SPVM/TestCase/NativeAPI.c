@@ -469,7 +469,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_ids(SPVM_ENV* env, S
   if ((void*)&env->api->runtime->get_basic_type_by_id != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_type_by_name != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_basic_types_length != &env_array[5]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->runtime->build_precompile_module_source != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->build_precompile_class_source != &env_array[6]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->build_precompile_method_source != &env_array[7]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->get_compiler != &env_array[8]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->set_compiler != &env_array[9]) { stack[0].ival = 0; return 0; }

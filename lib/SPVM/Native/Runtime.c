@@ -7,7 +7,7 @@
 
 static const char* FILE_NAME = "Native::Runtime.c";
 
-int32_t SPVM__Native__Runtime__build_precompile_module_source(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Native__Runtime__build_precompile_class_source(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
@@ -23,7 +23,7 @@ int32_t SPVM__Native__Runtime__build_precompile_module_source(SPVM_ENV* env, SPV
   
   void* string_buffer = env->api->string_buffer->new_instance(allocator, 0);
   
-  env->api->runtime->build_precompile_module_source(runtime, string_buffer, basic_type);
+  env->api->runtime->build_precompile_class_source(runtime, string_buffer, basic_type);
   
   const char* string_buffer_value = env->api->string_buffer->get_string(string_buffer);
   int32_t string_buffer_length = env->api->string_buffer->get_length(string_buffer);

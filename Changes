@@ -1,6 +1,7 @@
 0.989063 2023-11-20
   [Incompatible Changes]
     * The SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE native API constant is renamed to SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS.
+    * The build_precompile_module_source runtime native API constant is renamed to build_precompile_class_source.
 0.989062 2023-11-20
   [New Features]
     * Add the prepend_include_dir compiler native API is added.
