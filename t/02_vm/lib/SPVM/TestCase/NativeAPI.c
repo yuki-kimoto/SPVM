@@ -263,7 +263,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_basic_type_ids(SPVM_ENV* env
   int32_t error = 0;
   
   void** env_array = (void**)env->api->basic_type;
-
+  
   if ((void*)&env->api->basic_type->get_name != &env_array[0]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->basic_type->get_id != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->basic_type->get_category != &env_array[2]) { stack[0].ival = 0; return 0; }
@@ -297,6 +297,18 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_class_file_ids(SPVM_ENV* env
   int32_t error = 0;
   
   void** env_array = (void**)env->api->class_file;
+  
+  if ((void*)&env->api->class_file->get_class_name != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->get_file != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->set_file != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->get_dir != &env_array[3]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->set_dir != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->get_rel_file != &env_array[5]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->set_rel_file != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->get_content != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->set_content != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->get_content_length != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->set_content_length != &env_array[10]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
