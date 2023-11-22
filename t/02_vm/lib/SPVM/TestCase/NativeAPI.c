@@ -263,6 +263,29 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_basic_type_ids(SPVM_ENV* env
   int32_t error = 0;
   
   void** env_array = (void**)env->api->basic_type;
+
+  if ((void*)&env->api->basic_type->get_name != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_id != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_category != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_parent != &env_array[3]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_version_string != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_class_dir != &env_array[5]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_class_rel_file != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->is_pointer != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->is_anon != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_class_var_by_index != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_class_var_by_name != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_class_vars_length != &env_array[11]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_field_by_index != &env_array[12]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_field_by_name != &env_array[13]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_fields_length != &env_array[14]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_method_by_index != &env_array[15]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_method_by_name != &env_array[16]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_methods_length != &env_array[17]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_anon_basic_type_by_index != &env_array[18]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_anon_basic_types_length != &env_array[19]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->has_interface != &env_array[20]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->is_super_class != &env_array[21]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

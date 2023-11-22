@@ -242,33 +242,28 @@ The C<child_basic_type> argument is a basic type object.
 
 =head1 Native API IDs
 
-  0 get_name
-  1 get_index
-  2 get_return_basic_type
-  3 get_return_type_dimension
-  4 get_return_type_flag
-  5 get_arg_by_index
-  6 get_args_length
-  7 get_required_args_length
-  8 get_current_basic_type
-  9 get_opcodes
-  10 get_opcodes_length
-  11 is_class_method
-  12 is_anon
-  13 is_native
-  14 is_precompile
-  15 is_enum
-  16 get_byte_vars_width
-  17 get_short_vars_width
-  18 get_int_vars_width
-  19 get_long_vars_width
-  20 get_float_vars_width
-  21 get_double_vars_width
-  22 get_object_vars_width
-  23 get_ref_vars_width
-  24 get_mortal_stack_length
-  25 has_interface
-  26 is_super_class
+  0 get_name,
+  1 get_id,
+  2 get_category,
+  3 get_parent,
+  4 get_version_string,
+  5 get_class_dir,
+  6 get_class_rel_file,
+  7 is_pointer,
+  8 is_anon,
+  9 get_class_var_by_index,
+  10 get_class_var_by_name,
+  11 get_class_vars_length,
+  12 get_field_by_index,
+  13 get_field_by_name,
+  14 get_fields_length,
+  15 get_method_by_index,
+  16 get_method_by_name,
+  17 get_methods_length,
+  18 get_anon_basic_type_by_index,
+  19 get_anon_basic_types_length,
+  20 has_interface,
+  21 is_super_class,
 
 =head1 Copyright & License
 
