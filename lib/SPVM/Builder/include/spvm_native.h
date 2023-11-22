@@ -96,10 +96,7 @@ union spvm_value {
 
 
 
-
-
 struct spvm_env {
-  void* reserved0;
   void* runtime;
   SPVM_ENV_API* api;
   SPVM_ENV* (*new_env)(void);
@@ -287,7 +284,6 @@ struct spvm_env {
   int32_t (*enter_scope)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*leave_scope)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id);
   int32_t (*push_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void* *reserved188;
   int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, SPVM_VALUE* stack, void** object);
   void (*unweaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_address);
@@ -295,24 +291,14 @@ struct spvm_env {
   void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
   const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
   const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
-  void* reserved196;
-  void* reserved197;
-  void* reserved198;
-  void* reserved199;
   void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
   void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
-  void* reserved202;
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void* reserved205;
-  void* reserved206;
-  void* reserved207;
   void* (*get_field_object_defined_and_has_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);
   void** (*get_field_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
   void** (*get_field_object_ref_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
   int32_t (*check_stack_env)(SPVM_ENV* env, SPVM_VALUE* stack);
-  void* reserved212;
-  void* reserved213;
   void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_ref, void* object);
   void* (*new_string_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
   void* (*new_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);

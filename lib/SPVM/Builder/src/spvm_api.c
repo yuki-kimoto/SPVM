@@ -97,7 +97,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
 
   // Native APIs
   void* env_init[]  = {
-    NULL, // compiler
     NULL, // runtime
     env_api, // api
     SPVM_API_new_env,
@@ -285,7 +284,6 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_enter_scope,
     SPVM_API_leave_scope,
     SPVM_API_push_mortal,
-    NULL,
     SPVM_API_weaken,
     SPVM_API_isweak,
     SPVM_API_unweaken,
@@ -293,24 +291,14 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_strerror_string_nolen,
     SPVM_API_strerror,
     SPVM_API_strerror_nolen,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
     SPVM_API_new_memory_stack,
     SPVM_API_free_memory_stack,
-    NULL,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
-    SPVM_API_get_ref_count,
-    NULL,
-    NULL,
     SPVM_API_get_field_object_defined_and_has_pointer_by_name,
     SPVM_API_get_field_object_ref,
     SPVM_API_get_field_object_ref_by_name,
     SPVM_API_check_stack_env,
-    NULL,
-    NULL,
     SPVM_API_assign_object,
     SPVM_API_new_string_array_no_mortal,
     SPVM_API_new_memory_block,
