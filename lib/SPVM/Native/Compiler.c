@@ -71,7 +71,7 @@ int32_t SPVM__Native__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
     
     env->die(env, stack, "Compilation errors occurred.", __func__, FILE_NAME, __LINE__);
     
-    return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE;
+    return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS;
   }
   
   return 0;
