@@ -388,6 +388,11 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_internal_ids(SPVM_ENV* env, 
   
   void** env_array = (void**)env->api->internal;
   
+  if ((void*)&env->api->internal->get_ref_count != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->inc_ref_count != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->dec_ref_count != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->internal->leave_scope_local != &env_array[3]) { stack[0].ival = 0; return 0; }
+  
   stack[0].ival = 1;
   
   return 0;
