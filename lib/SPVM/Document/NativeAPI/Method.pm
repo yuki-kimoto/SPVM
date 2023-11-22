@@ -329,7 +329,7 @@ The C<method> argument is a method object.
   26 set_native_address
   27 get_precompile_address
   28 set_precompile_address
-  
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

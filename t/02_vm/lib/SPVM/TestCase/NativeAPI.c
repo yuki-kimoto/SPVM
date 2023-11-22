@@ -404,6 +404,36 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_method_ids(SPVM_ENV* env, SP
   
   void** env_array = (void**)env->api->method;
   
+  if ((void*)&env->api->method->get_name != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_index != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_return_basic_type != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_return_type_dimension != &env_array[3]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_return_type_flag != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_arg_by_index != &env_array[5]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_args_length != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_required_args_length != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_current_basic_type != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_opcode_by_index != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_opcodes_length != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->is_class_method != &env_array[11]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->is_anon != &env_array[12]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->is_native != &env_array[13]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->is_precompile != &env_array[14]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->is_enum != &env_array[15]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_byte_vars_width != &env_array[16]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_short_vars_width != &env_array[17]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_int_vars_width != &env_array[18]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_long_vars_width != &env_array[19]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_float_vars_width != &env_array[20]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_double_vars_width != &env_array[21]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_object_vars_width != &env_array[22]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_ref_vars_width != &env_array[23]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_mortal_stack_length != &env_array[24]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_native_address != &env_array[25]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->set_native_address != &env_array[26]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->get_precompile_address != &env_array[27]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->method->set_precompile_address != &env_array[28]) { stack[0].ival = 0; return 0; }
+  
   stack[0].ival = 1;
   
   return 0;
