@@ -356,6 +356,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_compiler_ids(SPVM_ENV* env, 
   if ((void*)&env->api->compiler->get_error_message != &env_array[14]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_error_messages_length != &env_array[15]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->compiler->get_runtime != &env_array[16]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->compiler->prepend_include_dir != &env_array[17]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

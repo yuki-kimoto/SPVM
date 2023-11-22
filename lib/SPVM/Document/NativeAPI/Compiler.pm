@@ -149,6 +149,7 @@ Gets the runtime.
   14 get_error_message
   15 get_error_messages_length
   16 get_runtime
+  17 prepend_include_dir
 
 =head1 Copyright & License
 
