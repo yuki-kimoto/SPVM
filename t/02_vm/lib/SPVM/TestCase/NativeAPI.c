@@ -471,6 +471,11 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_runtime_ids(SPVM_ENV* env, S
   if ((void*)&env->api->runtime->get_basic_types_length != &env_array[5]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->build_precompile_module_source != &env_array[6]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->runtime->build_precompile_method_source != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_compiler != &env_array[8]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->set_compiler != &env_array[9]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_spvm_stdin != &env_array[10]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_spvm_stdout != &env_array[11]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->runtime->get_spvm_stderr != &env_array[12]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   
