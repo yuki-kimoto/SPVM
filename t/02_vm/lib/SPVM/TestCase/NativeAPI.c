@@ -246,6 +246,13 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_arg_ids(SPVM_ENV* env, SPVM_
   
   void** env_array = (void**)env->api->arg;
   
+  if ((void*)&env->api->arg->get_name != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->arg->get_index != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->arg->get_basic_type != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->arg->get_type_dimension != &env_array[3]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->arg->get_type_flag != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->arg->get_stack_index != &env_array[5]) { stack[0].ival = 0; return 0; }
+  
   stack[0].ival = 1;
   
   return 0;
@@ -435,7 +442,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_NOT_SUPPORTED_CLASS != 20) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_COMMAND_INFO_CLASS != 21) { stack[0].ival = 0; return 0; }
     if (SPVM_NATIVE_C_BASIC_TYPE_ID_ADDRESS_CLASS != 22) { stack[0].ival = 0; return 0; }
-    if (SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS_CLASS != 23) { stack[0].ival = 0; return 0; }
+    if (SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS != 23) { stack[0].ival = 0; return 0; }
   }
 
   // Basic Type Category IDs
