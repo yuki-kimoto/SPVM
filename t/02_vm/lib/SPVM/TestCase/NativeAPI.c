@@ -369,6 +369,14 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_field_ids(SPVM_ENV* env, SPV
   
   void** env_array = (void**)env->api->field;
   
+  if ((void*)&env->api->field->get_name != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->field->get_index != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->field->get_offset != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->field->get_basic_type != &env_array[3]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->field->get_type_dimension != &env_array[4]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->field->get_type_flag != &env_array[5]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->field->get_current_basic_type != &env_array[6]) { stack[0].ival = 0; return 0; }
+  
   stack[0].ival = 1;
   
   return 0;
