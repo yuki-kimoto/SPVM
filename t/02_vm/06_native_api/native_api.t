@@ -84,7 +84,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # get_class_var_byte
 {
-  ok(SPVM::TestCase::NativeAPI->get_class_var_byte_native);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_byte);
 }
 
 # Field

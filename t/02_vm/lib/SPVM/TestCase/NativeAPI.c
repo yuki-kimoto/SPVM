@@ -262,8 +262,6 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_native(SPVM_ENV* env, SPVM
     return 0;
   }
   
-  env->set_class_var_byte(env, stack, class_var, 0xf);
-  
   int8_t value = env->get_class_var_byte(env, stack, class_var);
   
   if (!(value == 0xf)) {
@@ -271,7 +269,7 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_native(SPVM_ENV* env, SPVM
     return 0;
   }
  
-  stack[0].ival = 1;
+  stack[0].ival = value;
   
   return 0;
 }
