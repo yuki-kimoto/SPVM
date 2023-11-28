@@ -61,9 +61,9 @@ class TestCase::NativeAPI {
   static method get_class_var_byte : int () {
     $BYTE_VALUE = 0x0F;
     
-    my $value = TestCase::NativeAPI->get_class_var_byte_native();
-    
-    unless ($value == 0x0F) {
+    my $success = TestCase::NativeAPI->get_class_var_byte_native();
+
+    unless ($success) {
       return 0;
     }
     

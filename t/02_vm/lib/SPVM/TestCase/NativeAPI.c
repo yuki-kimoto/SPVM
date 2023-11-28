@@ -262,8 +262,12 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_native(SPVM_ENV* env, SPVM
   
   int8_t value = env->get_class_var_byte(env, stack, class_var);
   
-  stack[0].ival = value;
-  
+  if (!(value == 0x0F)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+
+  stack[0].ival = 1;
   return 0;
 }
 
