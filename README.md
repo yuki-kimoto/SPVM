@@ -47,16 +47,17 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Unicode">SPVM::Unicode</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Go">SPVM::Go</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Thread">SPVM::Thread</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Time-HiRes">SPVM::Time::HiRes</a>
 
 ## Highly Experimental CPAN Modules
 
 * <a href="https://github.com/yuki-kimoto/SPVM-HTTP-Minimal">SPVM::HTTP::Minimal</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Mozilla-CA">SPVM::Mozilla::CA</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Net-SSLeay">SPVM::Net::SSLeay</a>
-* <a href="https://github.com/yuki-kimoto/SPVM-Time-HiRes">SPVM::Time::HiRes</a>
 
 ## Not Released CPAN Modules
 
+* <a href="https://github.com/yuki-kimoto/SPVM-Getopt-Long">SPVM::Getopt::Long</a>
 
 ## Examples
 
