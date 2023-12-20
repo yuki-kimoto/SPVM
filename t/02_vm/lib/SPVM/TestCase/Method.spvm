@@ -934,6 +934,14 @@ class TestCase::Method {
           return 0;
         }
       }
+      
+      {
+        my $value = &optional_args_long_int_minus1;
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
       {
         my $value = &optional_args_long0(9223372036854775807L);
         unless ($value == 9223372036854775807L) {
@@ -968,9 +976,24 @@ class TestCase::Method {
           return 0;
         }
       }
+      
       {
         my $value = &optional_args_float0(2.5f);
         unless ($value == 2.5f) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_float_int_minus1;
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_float_long_minus1;
+        unless ($value == -1) {
           return 0;
         }
       }
@@ -984,9 +1007,31 @@ class TestCase::Method {
           return 0;
         }
       }
+      
       {
         my $value = &optional_args_double0(2147483647.55);
         unless ($value == 2147483647.55) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_double_int_minus1;
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_double_long_minus1;
+        unless ($value == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_double_float_minus1_5;
+        unless ($value == -1.5) {
           return 0;
         }
       }
@@ -1154,6 +1199,9 @@ class TestCase::Method {
   static method optional_args_long0 : long ($arg : long = 0) {
     return $arg;
   }
+  static method optional_args_long_int_minus1 : long ($arg : long = -1) {
+    return $arg;
+  }
   static method optional_args_long_min : long ($arg : long = 9223372036854775807L) {
     return $arg;
   }
@@ -1168,7 +1216,27 @@ class TestCase::Method {
     return $arg;
   }
   
+  static method optional_args_float_int_minus1 : float ($arg : float = -1) {
+    return $arg;
+  }
+  
+  static method optional_args_float_long_minus1 : float ($arg : float = -1L) {
+    return $arg;
+  }
+  
   static method optional_args_double0 : double ($arg : double = 2147483647.5) {
+    return $arg;
+  }
+  
+  static method optional_args_double_int_minus1 : double ($arg : double = -1) {
+    return $arg;
+  }
+  
+  static method optional_args_double_long_minus1 : double ($arg : double = -1L) {
+    return $arg;
+  }
+  
+  static method optional_args_double_float_minus1_5 : double ($arg : double = -1.5f) {
     return $arg;
   }
   
