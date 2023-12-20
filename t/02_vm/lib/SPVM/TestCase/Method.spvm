@@ -849,20 +849,30 @@ class TestCase::Method {
           return 0;
         }
       }
+      
       {
         my $value = &optional_args_byte0(127);
         unless ($value == 127) {
           return 0;
         }
       }
+      
       {
-        my $value = &optional_args_byte_min;
+        my $value = &optional_args_byte_max;
         unless ($value == 127) {
           return 0;
         }
       }
+      
       {
-        my $value = &optional_args_byte_max;
+        my $value = &optional_args_byte_min;
+        unless ($value == -128) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_byte_min_long;
         unless ($value == -128) {
           return 0;
         }
@@ -878,20 +888,30 @@ class TestCase::Method {
           return 0;
         }
       }
+      
       {
         my $value = &optional_args_short0(32767);
         unless ($value == 32767) {
           return 0;
         }
       }
+      
       {
-        my $value = &optional_args_short_min;
+        my $value = &optional_args_short_max;
         unless ($value == 32767) {
           return 0;
         }
       }
+      
       {
-        my $value = &optional_args_short_max;
+        my $value = &optional_args_short_min;
+        unless ($value == -32768) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_short_min_long;
         unless ($value == -32768) {
           return 0;
         }
@@ -906,20 +926,30 @@ class TestCase::Method {
           return 0;
         }
       }
+      
       {
         my $value = &optional_args_int0(2147483647);
         unless ($value == 2147483647) {
           return 0;
         }
       }
+      
       {
-        my $value = &optional_args_int_min;
+        my $value = &optional_args_int_max;
         unless ($value == 2147483647) {
           return 0;
         }
       }
+      
       {
-        my $value = &optional_args_int_max;
+        my $value = &optional_args_int_min;
+        unless ($value == -2147483648) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = &optional_args_int_min_long;
         unless ($value == -2147483648) {
           return 0;
         }
@@ -1169,33 +1199,45 @@ class TestCase::Method {
   static method optional_args_byte0 : byte ($arg : byte = 0) {
     return $arg;
   }
-  static method optional_args_byte_min : byte ($arg : byte = 127) {
+  static method optional_args_byte_max : byte ($arg : byte = 127) {
     return $arg;
   }
-  static method optional_args_byte_max : byte ($arg : byte = -128) {
+  static method optional_args_byte_min : byte ($arg : byte = -128) {
     return $arg;
   }
-
+  
+  static method optional_args_byte_min_long : byte ($arg : byte = -128L) {
+    return $arg;
+  }
+  
   static method optional_args_short0 : short ($arg : short = 0) {
     return $arg;
   }
-  static method optional_args_short_min : short ($arg : short = 32767) {
+  static method optional_args_short_max : short ($arg : short = 32767) {
     return $arg;
   }
-  static method optional_args_short_max : short ($arg : short = -32768) {
+  static method optional_args_short_min : short ($arg : short = -32768) {
+    return $arg;
+  }
+  
+  static method optional_args_short_min_long : short ($arg : short = -32768L) {
     return $arg;
   }
 
   static method optional_args_int0 : int ($arg : int = 0) {
     return $arg;
   }
-  static method optional_args_int_min : int ($arg : int = 2147483647) {
+  static method optional_args_int_max : int ($arg : int = 2147483647) {
     return $arg;
   }
-  static method optional_args_int_max : int ($arg : int = -2147483648) {
+  static method optional_args_int_min : int ($arg : int = -2147483648) {
     return $arg;
   }
-
+  
+  static method optional_args_int_min_long : int ($arg : int = -2147483648L) {
+    return $arg;
+  }
+  
   static method optional_args_long0 : long ($arg : long = 0) {
     return $arg;
   }

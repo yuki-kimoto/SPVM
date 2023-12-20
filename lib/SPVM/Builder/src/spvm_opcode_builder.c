@@ -95,7 +95,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     if (arg->op_optional_arg_default) {
                       SPVM_CONSTANT* constant = arg->op_optional_arg_default->uv.constant;
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE);
-                      opcode.operand1 = (uint16_t)(uint8_t)constant->value.bval;
+                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
+                        opcode.operand1 = (int8_t)constant->value.ival;
+                      }
+                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
+                        opcode.operand1 = (int8_t)constant->value.lval;
+                      }
+                      else {
+                        assert(0);
+                      }
                     }
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_BYTE);
@@ -109,7 +117,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     if (arg->op_optional_arg_default) {
                       SPVM_CONSTANT* constant = arg->op_optional_arg_default->uv.constant;
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_SHORT);
-                      opcode.operand1 = (uint16_t)constant->value.sval;
+                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
+                        opcode.operand1 = (int16_t)constant->value.ival;
+                      }
+                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
+                        opcode.operand1 = (int16_t)constant->value.lval;
+                      }
+                      else {
+                        assert(0);
+                      }
                     }
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_SHORT);
@@ -123,7 +139,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                     if (arg->op_optional_arg_default) {
                       SPVM_CONSTANT* constant = arg->op_optional_arg_default->uv.constant;
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_INT);
-                      opcode.operand1 = (uint32_t)constant->value.ival;
+                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
+                        opcode.operand1 = (int32_t)constant->value.ival;
+                      }
+                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
+                        opcode.operand1 = (int32_t)constant->value.lval;
+                      }
+                      else {
+                        assert(0);
+                      }
                     }
                     else {
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_INT);
@@ -141,8 +165,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
                         *(int64_t*)&opcode.operand1 = (int64_t)constant->value.ival;
                       }
-                      else {
+                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
                         *(int64_t*)&opcode.operand1 = constant->value.lval;
+                      }
+                      else {
+                        assert(0);
                       }
                     }
                     else {
@@ -165,8 +192,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                         float tmp = (float)constant->value.lval;
                         opcode.operand1 = (uint32_t)*(int32_t*)&tmp;
                       }
-                      else {
+                      else if (SPVM_TYPE_is_float_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
                         opcode.operand1 = (uint32_t)constant->value.ival;
+                      }
+                      else {
+                        assert(0);
                       }
                     }
                     else {
@@ -190,8 +220,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       else if (SPVM_TYPE_is_float_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
                         *(double*)&opcode.operand1 = (double)constant->value.fval;
                       }
-                      else {
+                      else if (SPVM_TYPE_is_double_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
                         *(double*)&opcode.operand1 = constant->value.dval;
+                      }
+                      else {
+                        assert(0);
                       }
                     }
                     else {
