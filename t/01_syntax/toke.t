@@ -242,6 +242,11 @@ use Test::More;
         my $source = 'class Tmp { static method main : void () { 123L_; } }';
         compile_not_ok($source, qr/Unexpected token "_"/);
       }
+
+      {
+        my $source = 'class Tmp { static method main : void () { 1234+3; } }';
+        compile_ok($source);
+      }
     }
 
     # Integer literal hexadecimal notation

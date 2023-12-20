@@ -108,6 +108,21 @@ class TestCase::Literal::Integer {
       }
     }
     
+    # 1+2 (not 1 + 2)
+    {
+      my $total = 1+2;
+      unless ($total == 3) {
+        return 0;
+      }
+    }
+    
+    # 1- -2 (not 1- -2)
+    {
+      my $total = 1- -2;
+       unless ($total == 3) {
+        return 0;
+      }
+    }    
     return 1;
   }
 

@@ -1403,6 +1403,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t is_hex_floating_number = 0;
           
           compiler->ch_ptr++;
+          
+          int32_t before_is_exponant = 0;
+          
           // Scan Hex number
           if (digit == 16) {
             compiler->ch_ptr += 2;
@@ -1411,12 +1414,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               || *compiler->ch_ptr == '.' || *compiler->ch_ptr == 'p' || *compiler->ch_ptr == 'P' || *compiler->ch_ptr == '-' || *compiler->ch_ptr == '+'
             )
             {
+              if (!before_is_exponant && (*compiler->ch_ptr == '-' || *compiler->ch_ptr == '+')) {
+                break;
+              }
+              
               // Floating point literal
               if (*compiler->ch_ptr == '.' || *compiler->ch_ptr == 'p' || *compiler->ch_ptr == 'P') {
                 is_floating_number = 1;
               }
               if (*compiler->ch_ptr == 'p' || *compiler->ch_ptr == 'P') {
                 is_hex_floating_number = 1;
+                before_is_exponant = 1;
               }
               compiler->ch_ptr++;
             }
@@ -1440,9 +1448,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               || *compiler->ch_ptr == '_'
             )
             {
+              if (!before_is_exponant && (*compiler->ch_ptr == '-' || *compiler->ch_ptr == '+')) {
+                break;
+              }
+              
               // Floating point literal
               if (*compiler->ch_ptr == '.' || *compiler->ch_ptr == 'e' || *compiler->ch_ptr == 'E') {
                 is_floating_number = 1;
+                before_is_exponant = 1;
               }
               compiler->ch_ptr++;
             }
