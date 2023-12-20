@@ -17,6 +17,8 @@
       
       get_current_runtime
       get_current_compiler
+  [Document Improvement]
+    * Improve the doc of the Cloneable interface.
     
 0.989063 2023-11-20
   [Incompatible Changes]
