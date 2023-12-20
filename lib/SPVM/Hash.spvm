@@ -328,6 +328,110 @@ class Hash {
     return (string)$object;
   }
   
+  method get_or_default_byte : int ($key : string, $default : int) {
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = $self->get_byte($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+  
+  method get_or_default_short : int ($key : string, $default : int) {
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = $self->get_short($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+  
+  method get_or_default_int : int ($key : string, $default : int) {
+    
+    my $value = 0;
+    if ($self->exists($key)) {
+      $value = $self->get_int($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+  
+  method get_or_default_long : long ($key : string, $default : long) {
+    
+    my $value = 0L;
+    if ($self->exists($key)) {
+      $value = $self->get_long($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+  
+  method get_or_default_float : float ($key : string, $default : float) {
+    
+    my $value = 0f;
+    if ($self->exists($key)) {
+      $value = $self->get_float($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+  
+  method get_or_default_double : double ($key : string, $default : double) {
+    
+    my $value = 0.0;
+    if ($self->exists($key)) {
+      $value = $self->get_double($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+  
+  method get_or_default_string : string ($key : string, $default : string) {
+    
+    my $value = (string)undef;
+    if ($self->exists($key)) {
+      $value = $self->get_string($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+  
+  method get_or_default : object ($key : string, $default : object) {
+    
+    my $value = (object)undef;
+    if ($self->exists($key)) {
+      $value = $self->get($key);
+    }
+    else {
+      $value = $default;
+    }
+    
+    return $value;
+  }
+  
   method delete_or_default_byte : int ($key : string, $default : int) {
     
     my $value = 0;

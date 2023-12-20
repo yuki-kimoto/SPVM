@@ -249,6 +249,78 @@ If the option $sort is a positive value, the keys are sorted by ascendant order.
 
 If the option $sort is a negative value, the keys are sorted by decendant order.
 
+=head2 get_or_default_byte
+
+C<method get_or_default_byte : int ($key : string, $default : int;>
+
+If the value specified by the key $key exists, this method calls the L</"get_byte"> method
+, and returns the return value of the the L</"get_byte"> method.
+
+If the value specified by the key $key does not exists, returns the default value $default.
+
+=head2 get_or_default_short
+
+C<method get_or_default_short : int ($key : string, $default : int;>
+
+If the value specified by the key $key exists, this method calls the L</"get_short"> method
+, and returns the return value of the the L</"get_short"> method.
+
+If the value specified by the key $key does not exists, returns the default value $default.
+
+=head2 get_or_default_int
+
+C<method get_or_default_int : int ($key : string, $default : int;>
+
+If the value specified by the key $key exists, this method calls the L</"get_int"> method
+, and returns the return value of the the L</"get_int"> method.
+
+If the value specified by the key $key does not exists, returns the default value $default.
+
+=head2 get_or_default_long
+
+C<method get_or_default_long : long ($key : string, $default : long;>
+
+If the value specified by the key $key exists, this method calls the L</"get_long"> method
+, and returns the return value of the the L</"get_long"> method.
+
+If the value specified by the key $key does not exists, returns the default value $default.
+
+=head2 get_or_default_float
+
+C<method get_or_default_float : float ($key : string, $default : float;>
+
+If the value specified by the key $key exists, this method calls the L</"get_float"> method
+, and returns the return value of the the L</"get_float"> method.
+
+If the value specified by the key $key does not exists, returns the default value $default.
+
+=head2 get_or_default_double
+
+C<method get_or_default_double : double ($key : string, $default : double;>
+
+If the value specified by the key $key exists, this method calls the L</"get_double"> method
+, and returns the return value of the the L</"get_double"> method.
+
+If the value specified by the key $key does not exists, returns the default value $default.
+
+=head2 get_or_default_string
+
+C<method get_or_default_string : string ($key : string, $default : string;>
+
+If the value specified by the key $key exists, this method calls the L</"get_string"> method
+, and returns the return value of the the L</"get_string"> method.
+
+If the value specified by the key $key does not exists, returns the default value $default.
+
+=head2 get_or_default
+
+C<method get_or_default : object ($key : string, $default : object;>
+
+If the value specified by the key $key exists, this method calls the L</"get"> method
+, and returns the return value of the the L</"get"> method.
+
+If the value specified by the key $key does not exists, returns the default value $default.
+
 =head2 delete_or_default_byte
 
 C<method delete_or_default_byte : int ($key : string, $default : int;>

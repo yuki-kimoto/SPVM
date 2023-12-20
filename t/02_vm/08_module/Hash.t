@@ -41,6 +41,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Hash->clone);
   ok(SPVM::TestCase::Module::Hash->new);
   ok(SPVM::TestCase::Module::Hash->to_array);
+  ok(SPVM::TestCase::Module::Hash->get_or_default);
   ok(SPVM::TestCase::Module::Hash->delete_or_default);
 }
 

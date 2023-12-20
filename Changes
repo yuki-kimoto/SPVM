@@ -1,7 +1,18 @@
 0.989064 2023-12-20
   [Exception Message Fix and Improvement]
     * Fix and improve the exception messages in the get_(byte|short|int|long|float|double|string) methods in the Hash class.
+  [New Features]
+    * Add the following method to the Hash class.
     
+      get_or_default_byte
+      get_or_default_short
+      get_or_default_int
+      get_or_default_long
+      get_or_default_float
+      get_or_default_double
+      get_or_default_string
+      get_or_default
+
 0.989063 2023-11-20
   [Incompatible Changes]
     * The SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE native API constant is renamed to SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS.
