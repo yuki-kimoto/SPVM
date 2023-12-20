@@ -4,6 +4,171 @@ class TestCase::Isa {
   use Comparator;
   use Complex_2d;
   use Complex_2f;
+  use Point;
+  use Stringable;
+  
+  static method isa : int () {
+    
+    # Numeric
+    {
+      {
+        my $value : byte;
+        
+        unless ($value isa byte) {
+          return 0;
+        }
+        
+        if ($value isa short) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : double;
+        
+        unless ($value isa double) {
+          return 0;
+        }
+      }
+    }
+    
+    # Multi-numeric
+    {
+      {
+        my $value : Complex_2d;
+        
+        unless ($value isa Complex_2d) {
+          return 0;
+        }
+        
+        if ($value isa Complex_2f) {
+          return 0;
+        }
+      }
+    }
+    
+    # Ref
+    {
+      {
+        my $value : byte*;
+        
+        unless ($value isa byte*) {
+          return 0;
+        }
+        
+        if ($value isa short*) {
+          return 0;
+        }
+      }
+    }
+    
+    # Any object
+    {
+      {
+        my $value : object;
+        
+        unless ($value isa object) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point;
+        
+        unless ($value isa object) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Stringable;
+        
+        unless ($value isa object) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : int;
+        
+        if ($value isa object) {
+          return 0;
+        }
+      }
+    }
+    
+    # Any object array
+    {
+      {
+        my $value : object[];
+        
+        unless ($value isa object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point[];
+        
+        unless ($value isa object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point;
+        
+        if ($value isa object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Stringable[];
+        
+        unless ($value isa object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : int[];
+        
+        if ($value isa object[]) {
+          return 0;
+        }
+      }
+    }
+    
+    # An object type
+    {
+      {
+        my $value : Point = Point->new;
+        
+        unless ($value isa Point) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point = Point->new;
+        
+        unless ($value isa Cloneable) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point;
+        
+        if ($value isa Point) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
   
   static method isa_any_object_type : int () {
     my $num : object;

@@ -15,6 +15,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # isa
 {
+  ok(SPVM::TestCase::Isa->isa);
   ok(SPVM::TestCase::Isa->isa_any_object_type);
   ok(SPVM::TestCase::Isa->isa_numeric_type);
   ok(SPVM::TestCase::Isa->isa_multi_numeric_type);
