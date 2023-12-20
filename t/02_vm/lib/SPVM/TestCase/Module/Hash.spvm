@@ -10,6 +10,7 @@ class TestCase::Module::Hash {
   use Comparator;
   use Comparator::Int;
   use Sort;
+  use Point;
 
   static method new : int () {
     # Without arguments
@@ -148,6 +149,21 @@ class TestCase::Module::Hash {
       }
     }
     
+    # Excetpions
+    {
+      my $hash = Hash->new;
+      
+      $hash->set(foo => Point->new);
+      
+      eval { $hash->get_byte("foo"); }
+      
+      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be the Byte class.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   
@@ -166,7 +182,22 @@ class TestCase::Module::Hash {
         return 0;
       }
     }
-
+    
+    # Excetpions
+    {
+      my $hash = Hash->new;
+      
+      $hash->set(foo => Point->new);
+      
+      eval { $hash->get_short("foo"); }
+      
+      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be the Short class.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   
@@ -185,7 +216,22 @@ class TestCase::Module::Hash {
         return 0;
       }
     }
-
+    
+    # Excetpions
+    {
+      my $hash = Hash->new;
+      
+      $hash->set(foo => Point->new);
+      
+      eval { $hash->get_int("foo"); }
+      
+      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be the Int class.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   
@@ -204,7 +250,22 @@ class TestCase::Module::Hash {
         return 0;
       }
     }
-
+    
+    # Excetpions
+    {
+      my $hash = Hash->new;
+      
+      $hash->set(foo => Point->new);
+      
+      eval { $hash->get_long("foo"); }
+      
+      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be the Long class.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   
@@ -223,7 +284,22 @@ class TestCase::Module::Hash {
         return 0;
       }
     }
-
+    
+    # Excetpions
+    {
+      my $hash = Hash->new;
+      
+      $hash->set(foo => Point->new);
+      
+      eval { $hash->get_float("foo"); }
+      
+      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be the Float class.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   
@@ -242,7 +318,22 @@ class TestCase::Module::Hash {
         return 0;
       }
     }
-
+    
+    # Excetpions
+    {
+      my $hash = Hash->new;
+      
+      $hash->set(foo => Point->new);
+      
+      eval { $hash->get_double("foo"); }
+      
+      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be the Double class.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
 
@@ -262,7 +353,22 @@ class TestCase::Module::Hash {
         return 0;
       }
     }
-
+    
+    # Excetpions
+    {
+      my $hash = Hash->new;
+      
+      $hash->set(foo => Point->new);
+      
+      eval { $hash->get_string("foo"); }
+      
+      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be the string type.")) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   

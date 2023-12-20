@@ -272,7 +272,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Short) {
-      die "The type of the value for the key \"$key\" must be a Short class.";
+      die "The type of the value for the key \"$key\" must be the Short class.";
     }
     
     return (int)(short)$object;
