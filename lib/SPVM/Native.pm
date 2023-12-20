@@ -6,11 +6,11 @@ package SPVM::Native;
 
 =head1 Name
 
-SPVM::Native - Native Class Utilities
+SPVM::Native - Getting the current native environment, stack, runtime, compiler.
 
 =head1 Description
 
-The Native class of L<SPVM> has methods for native class utilities.
+The Native class of L<SPVM> has methods to get the current native environment, stack, runtime, compiler.
 
 =head1 Usage
 
@@ -18,17 +18,29 @@ The Native class of L<SPVM> has methods for native class utilities.
 
 =head1 Class Methods
 
-=head2 get_current_env
-
-  static get_current_env : Native::Env ();
-
-Gets the current execution environemnt. This is a L<Native::Env|SPVM::Native::Env> object.
-
 =head2 get_current_stack
 
-  static get_current_stack : Native::Stack ();
+C<static method get_current_stack : L<Native::Stack|SPVM::Native::Stack> ();>
 
-Gets the current execution stack. This is a L<Native::Stack|SPVM::Native::Stack> object.
+Returns the current execution stack.
+
+=head2 get_current_env
+
+C<static get_current_env : L<Native::Env|SPVM::Native::Env> ();>
+
+Returns the current execution environemnt.
+
+=head2 get_current_runtime
+
+C<static method get_current_runtime : L<Native::Runtime|SPVM::Native::Runtime> ();>
+
+Returns the current runtime.
+
+=head2 get_current_compiler
+
+C<static method get_current_compiler : L<Native::Compiler|SPVM::Native::Compiler> ();>
+
+Returns the current compiler.
 
 =head1 Copyright & License
 

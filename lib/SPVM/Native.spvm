@@ -4,9 +4,32 @@
 class Native {
   use Native::Env;
   use Native::Stack;
+  use Native::Runtime;
+  use Native::Compiler;
   
   # Class methods
   native static method get_current_env : Native::Env ();
   
   native static method get_current_stack : Native::Stack ();
+  
+  static method get_current_runtime : Native::Runtime () {
+    
+    my $current_env = Native->get_current_env;
+    
+    my $current_stack = Native->get_current_stack;
+    
+    my $current_runtime = $current_env->runtime;
+    
+    return $current_runtime;
+  }
+  
+  static method get_current_compiler : Native::Compiler () {
+    
+    my $current_runtime = &get_current_runtime;
+    
+    my $current_compiler = $current_runtime->get_compiler;
+    
+    return $current_compiler;
+  }
+  
 }

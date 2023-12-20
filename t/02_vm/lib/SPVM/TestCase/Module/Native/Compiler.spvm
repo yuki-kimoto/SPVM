@@ -7,13 +7,16 @@ class TestCase::Module::Native::Compiler {
   
   static method add_class : int () {
     
-    my $current_env = Native->get_current_env;
+    # Extra
+    {
+      my $current_env = Native->get_current_env;
+      
+      my $current_stack = Native->get_current_stack;
+      
+      my $current_runtime = $current_env->runtime;
+    }
     
-    my $current_stack = Native->get_current_stack;
-    
-    my $current_runtime = $current_env->runtime;
-    
-    my $current_compiler = $current_runtime->get_compiler;
+    my $current_compiler = Native->get_current_compiler;
     
     my $include_dir = "t/test_add_class/SPVM";
     
