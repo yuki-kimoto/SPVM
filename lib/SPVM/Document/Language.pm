@@ -3144,7 +3144,7 @@ The argument names must be follow the rule of L</"Local Variable Name">.
 
 The minimal length of arguments is 0. The max length of arguments is 255.
 
-The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or L</"Reference Type">. Otherwise a compilation error occurs.
+The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or a L<reference type|/"Reference Type">. Otherwise a compilation error occurs.
 
 The type of the return value must be the L<void type|/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
 
@@ -3492,7 +3492,7 @@ The local variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L</"Local Variable Name">.
 
-the L<type|/"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, the L<multi-numeric type|/"Multi-Numeric Type">, or L</"Reference Type">.
+the L<type|/"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, the L<multi-numeric type|/"Multi-Numeric Type">, or a L<reference type|/"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
@@ -4723,11 +4723,11 @@ Reference Type are L<Numeric Reference Type> and L<Multi-Numeric Reference Type>
 
 =head2 Numeric Reference Type
 
-Numeric Reference Type means a L<numeric type|/"Numeric Type"> for L</"Reference Type">. Says.
+Numeric Reference Type means a L<numeric type|/"Numeric Type"> for a L<reference type|/"Reference Type">. Says.
 
 =head2 Multi-Numeric Reference Type
 
-Multi-Numeric Reference Type means L</"Reference Type"> for the L<multi-numeric type|/"Multi-Numeric Type"> variables. > Means.
+Multi-Numeric Reference Type means a L<reference type|/"Reference Type"> for the L<multi-numeric type|/"Multi-Numeric Type"> variables. > Means.
 
 =head2 Type Qualifier
 
@@ -6242,11 +6242,11 @@ The boolean conversion returns the following value corresponding to the type of 
 
 If the type is the L<int type|/"int Type">, return the value.
 
-If the type is the L<undef|/"undef Type">, return 0.
+If the type is the L<undef|/"undef Type">, returns 0.
 
-If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE">, return 1.
+If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE">, returns 1.
 
-If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, return 0.
+If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, returns 0.
 
 If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the OPERAND.
 
@@ -7613,7 +7613,7 @@ The list of numeric comparison operators.
       The left operand and the right operand are numeric types
     </td>
     <td>
-      If the left operand is greater than the right operand, return 1. If the left operand is less than Right value_op, return -1. If the left operand is equals to Right value_op, return 0.
+      If the left operand is greater than the right operand, returns 1. If the left operand is less than Right value_op, return -1. If the left operand is equals to Right value_op, returns 0.
     </td>
   </tr>
 </table>
@@ -7651,7 +7651,7 @@ The string comparison operator is a L<comparison operator|/"Comparison Operator"
 
 The type of the left operand and the right operand must be the L<string type|/"string Type"> or L<byte[] type|"byte[] Type">.
 
-The return type is the L<int type|/"int Type">. If the condition is satisfied, return 1, otherwise 0.
+The return type is the L<int type|/"int Type">. If the condition is satisfied, returns 1, otherwise 0.
 
 The list of string comparison operators.
 
@@ -7715,7 +7715,7 @@ The list of string comparison operators.
       LEFT_OPERAND cmp RIGHT_OPERAND
     </td>
     <td>
-      If the left operand is greater than Right value_op, return 1. If the left operand is less than the right operand, return -1. If the left operand is equal to the right operand, return 0.
+      If the left operand is greater than Right value_op, returns 1. If the left operand is less than the right operand, return -1. If the left operand is equal to the right operand, returns 0.
     </td>
   </tr>
 </table>
@@ -7724,29 +7724,35 @@ The list of string comparison operators.
 
 =head2 isa Operator
 
-The C<isa> operator is a L<comparison operator|/"Comparison Operator"> to check whether the left operand can be assigned to the right type.
+The C<isa> operator checks whether the left operand can be assigned to the right type.
 
   LEFT_OPERAND isa RIGHT_TYPE
 
-The return type is L<int type|/"int Type">.
+If the right type is a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignability|/"Assignability">.
 
-If the right type is a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, L</"Any Object Type">, L</"Reference Type">, it checks the L<assignability|/"Assignability"> at compile-time.
+If the assignability without implicite convertion is true, it returns 1, otherwise returns 0.
 
-If the assignability is true, it is replaced with 1. Otherwise it is replaced with 0.
+If the right type is another object type, this operator checks the L<runtime assignability|/"Runtime Assignability">.
 
-If the right type is other type, it checks the L<runtime assignability|/"Runtime Assignability"> at runtime. If the runtime assignability is true, it returns 1. Otherwise return 0.
+If the runtime assignability is true, it returns 1, otherwise returns 0.
+
+The return type is the L<int type|/"int Type">.
 
 Examples:
-
-  if ($object isa Point) {
+  
+  if ($value isa int) {
     
   }
   
-  if ($object isa Point3D) {
+  if ($value isa Point) {
     
   }
   
-  if ($object isa Stringable) {
+  if ($value isa Point3D) {
+    
+  }
+  
+  if ($value isa Stringable) {
     
   }
   
@@ -7786,7 +7792,7 @@ The C<is_type> operator is a L<comparison operator|/"Comparison Operator"> to ch
 
   LEFT_OPERAND is_type RIGHT_TYPE
 
-If the type of the instance of the left operand is the right type, return 1. Otherwise return 0.
+If the type of the instance of the left operand is the right type, returns 1. Otherwise returns 0.
 
 The return type is L<int type|/"int Type">.
 
@@ -7846,7 +7852,7 @@ The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operator
 
   LEFT_OPERAND is_compile_type RIGHT_TYPE
 
-If the compilation-time type of the left operand is the right type, return 1. Otherwise return 0.
+If the compilation-time type of the left operand is the right type, returns 1. Otherwise returns 0.
 
 The return type is L<int type|/"int Type">.
 
@@ -7935,9 +7941,9 @@ The left operand and the right operand must be an L<operator|/"Operator">.
 
 The return type of the logical AND operator is the L<int type|/"int Type">.
 
-Thg logical AND operator performs the L<boolean conversion|/"Boolean Conversion"> to the left operand. If the evaluated value is 0, return 0. Otherwise proceed to the evaluation of the right operand.
+Thg logical AND operator performs the L<boolean conversion|/"Boolean Conversion"> to the left operand. If the evaluated value is 0, returns 0. Otherwise proceed to the evaluation of the right operand.
 
-It performs the L<boolean conversion|/"Boolean Conversion"> to the right operand. If the evaluated value is 0, return 0. Otherwise return the evaluated value.
+It performs the L<boolean conversion|/"Boolean Conversion"> to the right operand. If the evaluated value is 0, returns 0. Otherwise return the evaluated value.
 
 =head3 Logical OR Operator
 
@@ -7949,7 +7955,7 @@ The return type of the logical OR operator is the L<int type|/"int Type">.
 
 Thg logical OR operator performs the L<boolean conversion|/"Boolean Conversion"> to the left operand. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of the right operand.
 
-It performs the L<boolean conversion|/"Boolean Conversion"> to the right operand. If the evaluated value is not 0, return the evaluated value. Otherwise return 0.
+It performs the L<boolean conversion|/"Boolean Conversion"> to the right operand. If the evaluated value is not 0, return the evaluated value. Otherwise returns 0.
 
 =head3 Logical NOT Operator
 
@@ -7959,7 +7965,7 @@ The logical NOT operator C<!> is a L<logical operator|/"Logical Operator"> to pe
 
 The return type of the logical NOT operator is the L<int type|/"int Type">.
 
-Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"> to the OPERAND. If the evaluated value is 0, returns 1. Otherwise return 0.
+Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"> to the OPERAND. If the evaluated value is 0, returns 1. Otherwise returns 0.
 
 =head2 String Concatenation Operator
 

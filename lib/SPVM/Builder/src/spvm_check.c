@@ -1971,37 +1971,23 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             
             if (SPVM_TYPE_is_numeric_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)
               || SPVM_TYPE_is_mulnum_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag))
+              || SPVM_TYPE_is_ref_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)
+              || SPVM_TYPE_is_any_object_array_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)
+              || SPVM_TYPE_is_any_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag))
             {
-              if (left_operand_type->basic_type->id == right_type->basic_type->id && left_operand_type->dimension == right_type->dimension) {
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-                SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
-                op_cur = op_constant_true;
-              }
-              else {
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
-                SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
-                op_cur = op_constant_false;
-              }
-            }
-            else if (SPVM_TYPE_is_any_object_array_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-              if (SPVM_TYPE_is_object_array_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-                SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
-                op_cur = op_constant_true;
-              }
-              else {
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
-                SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
-                op_cur = op_constant_false;
-              }
-            }
-            else if (SPVM_TYPE_is_any_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-              if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              int32_t need_implicite_conversion = 0;
+              int32_t allow_narrowing_conversion = 0;
+              
+              int32_t assignability = SPVM_TYPE_can_assign(
+                compiler,
+                right_type->basic_type->id, right_type->dimension, right_type->flag,
+                left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag,
+                &need_implicite_conversion, allow_narrowing_conversion
+              );
+              
+              int32_t assignability_without_implicite_conversion = assignability && !need_implicite_conversion;
+              
+              if (assignability_without_implicite_conversion) {
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
                 SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
