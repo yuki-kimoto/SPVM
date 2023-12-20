@@ -14,7 +14,20 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 # SPVM::Hash
 {
   ok(SPVM::TestCase::Module::Hash->rehash);
-  ok(SPVM::TestCase::Module::Hash->set_get_numeric);
+  ok(SPVM::TestCase::Module::Hash->get_byte);
+  ok(SPVM::TestCase::Module::Hash->get_short);
+  ok(SPVM::TestCase::Module::Hash->get_int);
+  ok(SPVM::TestCase::Module::Hash->get_long);
+  ok(SPVM::TestCase::Module::Hash->get_float);
+  ok(SPVM::TestCase::Module::Hash->get_double);
+  ok(SPVM::TestCase::Module::Hash->get_string);
+  ok(SPVM::TestCase::Module::Hash->set_byte);
+  ok(SPVM::TestCase::Module::Hash->set_short);
+  ok(SPVM::TestCase::Module::Hash->set_int);
+  ok(SPVM::TestCase::Module::Hash->set_long);
+  ok(SPVM::TestCase::Module::Hash->set_float);
+  ok(SPVM::TestCase::Module::Hash->set_double);
+  ok(SPVM::TestCase::Module::Hash->set_string);
   ok(SPVM::TestCase::Module::Hash->murmur_hash);
   ok(SPVM::TestCase::Module::Hash->set);
   ok(SPVM::TestCase::Module::Hash->set_do_not_refer_caller_key);

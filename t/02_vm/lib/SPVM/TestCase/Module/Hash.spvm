@@ -132,25 +132,30 @@ class TestCase::Module::Hash {
     return 1;
   }
 
-  static method set_get_numeric : int () {
-
-    my $hash = Hash->new;
-
-    # set_byte, get_byte
+  static method get_byte : int () {
+    
     {
+      my $hash = Hash->new;
+      
       $hash->set_byte(foo => Fn->INT8_MAX);
       unless ($hash->get("foo") isa Byte) {
         return 0;
       }
       my $value = $hash->get_byte("foo");
-
+      
       unless ($value == Fn->INT8_MAX) {
         return 0;
       }
     }
-
-    # set_short, get_short
+    
+    return 1;
+  }
+  
+  static method get_short : int () {
+    
     {
+      my $hash = Hash->new;
+      
       $hash->set_short(foo => Fn->INT16_MAX);
       unless ($hash->get("foo") isa Short) {
         return 0;
@@ -162,8 +167,14 @@ class TestCase::Module::Hash {
       }
     }
 
-    # set_int, get_int
+    return 1;
+  }
+  
+  static method get_int : int () {
+    
     {
+      my $hash = Hash->new;
+      
       $hash->set_int(foo => Fn->INT32_MAX);
       unless ($hash->get("foo") isa Int) {
         return 0;
@@ -175,22 +186,14 @@ class TestCase::Module::Hash {
       }
     }
 
-    # set_string, get_string
+    return 1;
+  }
+  
+  static method get_long : int () {
+    
     {
-      my $str = "bar";
-      $hash->set_string(foo => $str);
-      unless ($hash->get_string("foo") isa string) {
-        return 0;
-      }
-      my $value = $hash->get_string("foo");
-
-      unless ($value == $str) {
-        return 0;
-      }
-    }
-
-    # set_long, get_long
-    {
+      my $hash = Hash->new;
+      
       $hash->set_long(foo => Fn->INT64_MAX);
       unless ($hash->get("foo") isa Long) {
         return 0;
@@ -202,8 +205,14 @@ class TestCase::Module::Hash {
       }
     }
 
-    # set_float, get_float
+    return 1;
+  }
+  
+  static method get_float : int () {
+    
     {
+      my $hash = Hash->new;
+      
       $hash->set_float(foo => Fn->FLT_MIN);
       unless ($hash->get("foo") isa Float) {
         return 0;
@@ -215,8 +224,14 @@ class TestCase::Module::Hash {
       }
     }
 
-    # set_double, get_double
+    return 1;
+  }
+  
+  static method get_double : int () {
+    
     {
+      my $hash = Hash->new;
+      
       $hash->set_double(foo => Fn->DBL_MIN);
       unless ($hash->get("foo") isa Double) {
         return 0;
@@ -231,6 +246,160 @@ class TestCase::Module::Hash {
     return 1;
   }
 
+  static method get_string : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      my $str = "bar";
+      $hash->set_string(foo => $str);
+      unless ($hash->get_string("foo") isa string) {
+        return 0;
+      }
+      my $value = $hash->get_string("foo");
+
+      unless ($value == $str) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  static method set_byte : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      $hash->set_byte(foo => Fn->INT8_MAX);
+      unless ($hash->get("foo") isa Byte) {
+        return 0;
+      }
+      my $value = $hash->get_byte("foo");
+
+      unless ($value == Fn->INT8_MAX) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  static method set_short : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      $hash->set_short(foo => Fn->INT16_MAX);
+      unless ($hash->get("foo") isa Short) {
+        return 0;
+      }
+      my $value = $hash->get_short("foo");
+
+      unless ($value == Fn->INT16_MAX) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  static method set_int : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      $hash->set_int(foo => Fn->INT32_MAX);
+      unless ($hash->get("foo") isa Int) {
+        return 0;
+      }
+      my $value = $hash->get_int("foo");
+
+      unless ($value == Fn->INT32_MAX) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  static method set_long : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      $hash->set_long(foo => Fn->INT64_MAX);
+      unless ($hash->get("foo") isa Long) {
+        return 0;
+      }
+      my $value = $hash->get_long("foo");
+
+      unless ($value == Fn->INT64_MAX) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  static method set_float : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      $hash->set_float(foo => Fn->FLT_MIN);
+      unless ($hash->get("foo") isa Float) {
+        return 0;
+      }
+      my $value = $hash->get_float("foo");
+
+      unless ($value == Fn->FLT_MIN) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  static method set_double : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      $hash->set_double(foo => Fn->DBL_MIN);
+      unless ($hash->get("foo") isa Double) {
+        return 0;
+      }
+      my $value = $hash->get_double("foo");
+
+      unless ($value == Fn->DBL_MIN) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  static method set_string : int () {
+    
+    {
+      my $hash = Hash->new;
+      
+      my $str = "bar";
+      $hash->set_string(foo => $str);
+      unless ($hash->get_string("foo") isa string) {
+        return 0;
+      }
+      my $value = $hash->get_string("foo");
+
+      unless ($value == $str) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
   static method murmur_hash : int () {
     my $seed = 123456789;
     # Testcase is created from https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
