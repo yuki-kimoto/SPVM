@@ -2032,35 +2032,38 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             break;
           }
           case SPVM_OP_C_ID_IS_TYPE: {
-            
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_OP* op_type = op_cur->last;
             
             SPVM_TYPE* right_type = op_type->uv.type;
             
-            if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand of the is_type operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            if (SPVM_TYPE_is_numeric_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)
+              || SPVM_TYPE_is_mulnum_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)
+              || SPVM_TYPE_is_ref_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)
+              || SPVM_TYPE_is_any_object_array_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)
+              || SPVM_TYPE_is_any_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag))
+            {
+              if (left_operand_type->basic_type->id == right_type->basic_type->id && left_operand_type->dimension == right_type->dimension) {
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
+                SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
+                op_cur = op_constant_true;
+              }
+              else {
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
+                SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
+                op_cur = op_constant_false;
+              }
             }
-            
-            if (!SPVM_TYPE_is_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right type of the is_type operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            else if (SPVM_TYPE_is_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
+              if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of the is_type operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
             }
-            
-            if (SPVM_TYPE_is_any_object_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be the any object type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (SPVM_TYPE_is_any_object_array_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be the any object array type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            if (SPVM_TYPE_is_interface_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right type of the is_type operator cannnot be an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
+            else {
+              assert(0);
             }
             
             break;

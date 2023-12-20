@@ -7738,6 +7738,10 @@ If the runtime assignability is true, it returns 1, otherwise returns 0.
 
 The return type is the L<int type|/"int Type">.
 
+Compilation Errors:
+
+If the runtime assignability is checked, the left operand of the isa operator must be an object type. Otherwise a compilation error occurs.
+
 Examples:
   
   if ($value isa int) {
@@ -7788,26 +7792,30 @@ Examples:
   
 =head2 is_type Operator
 
-The C<is_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the type of the instance of the left operand is the right type.
+The C<is_type> operator checks whether the type of the left operand is equal to the right type.
 
   LEFT_OPERAND is_type RIGHT_TYPE
 
-If the type of the instance of the left operand is the right type, returns 1. Otherwise returns 0.
+If the right type is a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the compile type of the left operand is equal to the right type.
+
+If the check is true, it returns 1, otherwise returns 0.
+
+If the right type is another object type, this operator checks the runtime type of the left operand is equal to the right type.
+
+If the runtime check is true, it returns 1, otherwise returns 0.
 
 The return type is L<int type|/"int Type">.
 
-The left operand of the is_type operator must be an object type. Otherwise a compilation error occurs.
+Compilation Errors:
 
-The right type of the is_type operator must be an object type. Otherwise a compilation error occurs.
-
-The right type of the is_type operator cannnot be the any object type. If so, a compilation error occurs.
-
-The right type of the is_type operator cannnot be the any object array type. If so, a compilation error occurs.
-
-The right type of the is_type operator cannnot be an interface type. If so, a compilation error occurs.
+If the runtime check is performed, the left operand of the is_type operator must be an object type. Otherwise a compilation error occurs.
 
 Examples:
 
+  if ($object is_type int) {
+    
+  }
+  
   if ($object is_type Point) {
     
   }

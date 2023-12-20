@@ -5,8 +5,168 @@ class TestCase::IsType {
   use Complex_2d;
   use Complex_2f;
   use Stringer;
+  use Point;
 
   static method is_type : int () {
+    
+    # Numeric
+    {
+      {
+        my $value : byte;
+        
+        unless ($value is_type byte) {
+          return 0;
+        }
+        
+        if ($value is_type short) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : double;
+        
+        unless ($value is_type double) {
+          return 0;
+        }
+      }
+    }
+    
+    # Multi-numeric
+    {
+      {
+        my $value : Complex_2d;
+        
+        unless ($value is_type Complex_2d) {
+          return 0;
+        }
+        
+        if ($value is_type Complex_2f) {
+          return 0;
+        }
+      }
+    }
+    
+    # Ref
+    {
+      {
+        my $value : byte*;
+        
+        unless ($value is_type byte*) {
+          return 0;
+        }
+        
+        if ($value is_type short*) {
+          return 0;
+        }
+      }
+    }
+    
+    # Any object
+    {
+      {
+        my $value : object;
+        
+        unless ($value is_type object) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point;
+        
+        if ($value is_type object) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Stringable;
+        
+        if ($value is_type object) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : int;
+        
+        if ($value is_type object) {
+          return 0;
+        }
+      }
+    }
+    
+    # Any object array
+    {
+      {
+        my $value : object[];
+        
+        unless ($value is_type object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point[];
+        
+        if ($value is_type object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point;
+        
+        if ($value is_type object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Stringable[];
+        
+        if ($value is_type object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : int[];
+        
+        if ($value is_type object[]) {
+          return 0;
+        }
+      }
+    }
+    
+    # An object type
+    {
+      {
+        my $value : Point = Point->new;
+        
+        unless ($value is_type Point) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point = Point->new;
+        
+        if ($value is_type Cloneable) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value : Point;
+        
+        if ($value is_type Point) {
+          return 0;
+        }
+      }
+    }
+    
     {
       my $object = TestCase::Minimal->new;
       unless ($object is_type TestCase::Minimal) {

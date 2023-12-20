@@ -402,22 +402,6 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { 1 is_type Int; } }';
     compile_not_ok($source, 'The left operand of the is_type operator must be an object type');
   }
-  {
-    my $source = 'class MyClass { static method main : void () { Int->new(1) is_type int; } }';
-    compile_not_ok($source, 'The right type of the is_type operator must be an object type');
-  }
-  {
-    my $source = 'class MyClass { static method main : void () { Int->new(1) is_type object; } }';
-    compile_not_ok($source, q|The right type of the is_type operator cannnot be the any object type|);
-  }
-  {
-    my $source = 'class MyClass { static method main : void () { Int->new(1) is_type object[]; } }';
-    compile_not_ok($source, q|The right type of the is_type operator cannnot be the any object array type|);
-  }
-  {
-    my $source = 'class MyClass { use Stringable; static method main : void () { Int->new(1) is_type Stringable; } }';
-    compile_not_ok($source, q|The right type of the is_type operator cannnot be an interface type|);
-  }
 }
 
 # is_error

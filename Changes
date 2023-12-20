@@ -17,6 +17,8 @@
       
       get_current_runtime
       get_current_compiler
+    * The is_type operator can receive non-object types.
+    
   [Document Improvement]
     * Improve the doc of the Cloneable interface.
   
