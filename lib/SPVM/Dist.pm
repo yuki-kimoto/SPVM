@@ -320,6 +320,10 @@ sub generate_perl_class_file {
 
   interface $basic_type_name;
 
+=head1 Details
+
+
+
 =head1 Interface Methods
 
 
@@ -387,6 +391,10 @@ MyClass.$native_module_ext:
   
   $extern_c_end
   
+=head1 Details
+
+
+
 =head1 Original Product
 
 
@@ -451,6 +459,18 @@ EOS
 =head1 Usage
 
   use $basic_type_name;
+
+=head1 Details
+
+
+
+=head1 Interfaces
+
+
+
+=head1 Enumerations
+
+
 
 =head1 Fields
 
