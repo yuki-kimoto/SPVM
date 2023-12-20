@@ -1,3 +1,7 @@
+0.989064 2023-12-20
+  [Exception Message Fix and Improvement]
+    * Fix and improve the exception messages in the get_(byte|short|int|long|float|double|string) methods in the Hash class.
+    
 0.989063 2023-11-20
   [Incompatible Changes]
     * The SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE native API constant is renamed to SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS.

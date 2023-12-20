@@ -262,7 +262,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Byte) {
-      die "The value of \$key must be a Byte object.";
+      die "The type of the value for the key \"$key\" must be the Byte class.";
     }
     
     return (int)(byte)$object;
@@ -272,7 +272,7 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Short) {
-      die "The value of \$key must be a Short object.";
+      die "The type of the value for the key \"$key\" must be a Short class.";
     }
     
     return (int)(short)$object;
@@ -282,46 +282,50 @@ class Hash {
     my $object = $self->get($key);
     
     unless ($object is_type Int) {
-      die "The value of \$key must be a Int object.";
+      die "The type of the value for the key \"$key\" must be the Int class.";
     }
     
     return (int)$object;
   }
-  method get_string : string ($key : string) {
-    my $object = $self->get($key);
-    
-    unless ($object is_type string) {
-      die "The value of \$key must be a string.";
-    }
-    
-    return (string)$object;
-  }
+  
   method get_long : long ($key : string) {
     my $object = $self->get($key);
     
     unless ($object is_type Long) {
-      die "The value of \$key must be a Byte object.";
+      die "The type of the value for the key \"$key\" must be the Long class.";
     }
     
     return (long)$object;
   }
+  
   method get_float : float ($key : string) {
     my $object = $self->get($key);
     
     unless ($object is_type Float) {
-      die "The value of \$key must be a Byte object.";
+      die "The type of the value for the key \"$key\" must be the Float class.";
     }
     
     return (float)$object;
   }
+  
   method get_double : double ($key : string) {
     my $object = $self->get($key);
     
     unless ($object is_type Double) {
-      die "The value of \$key must be a Byte object.";
+      die "The type of the value for the key \"$key\" must be the Double class.";
     }
     
     return (double)$object;
+  }
+  
+  method get_string : string ($key : string) {
+    my $object = $self->get($key);
+    
+    unless ($object is_type string) {
+      die "The type of the value for the key \"$key\" must be the string type.";
+    }
+    
+    return (string)$object;
   }
   
   method delete_or_default_byte : int ($key : string, $default : int) {
