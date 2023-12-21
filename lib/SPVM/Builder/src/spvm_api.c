@@ -3508,7 +3508,7 @@ void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_v
   
   if (!(status == 0)) {
     errno = status;
-    return NULL;
+    sprintf(strerror_value, "strerror failed. errno is %d.", errno);
   }
   
   SPVM_API_shorten(env, stack, obj_strerror_value, strlen(strerror_value));

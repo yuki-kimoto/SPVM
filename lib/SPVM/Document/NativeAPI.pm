@@ -1636,7 +1636,7 @@ Returns the return value of the L<strerror|https://linux.die.net/man/3/strerror>
 
 If the length is 0, the length is set to 128.
 
-If the C<strerror> function failed, returns NULL with C<errno> set to the an appropriate value.
+If the C<strerror> function failed, C<errno> is set to the an appropriate positive value.
 
 This function is thread-safe.
 
