@@ -6,6 +6,7 @@ class Array {
   use Cloner;
   use EqualityChecker;
   use Format;
+  use StringList;
   
   static method copy_byte : byte[] ($array : byte[], $offset : int = 0, $length : int = -1) {
     
@@ -1076,6 +1077,27 @@ class Array {
       $array->[$j] = $temp;
     }
   }
-
+  
+  precompile static method repeat_string : string[] ($strings : string[], $count : int) {
+    
+    unless ($strings) {
+      die "\$strings must be defined.";
+    }
+    
+    unless ($count >= 0) {
+      die "\$count must be greater than or equal to 0.";
+    }
+    
+    my $string_list = StringList->new;
+    
+    for (my $i = 0; $i < $count; $i++) {
+      for my $string (@$strings) {
+        $string_list->push($string);
+      }
+    }
+    
+    my $repeat_array = $string_list->to_array;
+    
+    return $repeat_array;
+  }
 }
-

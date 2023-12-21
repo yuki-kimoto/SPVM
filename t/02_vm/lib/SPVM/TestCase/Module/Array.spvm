@@ -4961,4 +4961,47 @@ class TestCase::Module::Array {
     return 1;
   }
 
+  static method repeat_string : int () {
+    
+    {
+      my $strings = ["Foo", "Bar"];
+      
+      my $repeated_strings = Array->repeat_string($strings, 3);
+      
+      unless (Array->equals_string($repeated_strings, ["Foo", "Bar", "Foo", "Bar", "Foo", "Bar"])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $strings = ["Foo", "Bar"];
+      
+      my $repeated_strings = Array->repeat_string($strings, 0);
+      
+      unless (Array->equals_string($repeated_strings, new string[0])) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { Array->repeat_string(undef, 3); };
+        unless (Fn->contains($@, "\$strings must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Array->repeat_string(["Foo"], -1); };
+        unless (Fn->contains($@, "\$count must be greater than or equal to 0.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

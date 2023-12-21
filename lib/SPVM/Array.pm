@@ -943,6 +943,18 @@ Exceptions:
 
 $array must be defined. Otherwise an exception is thrown.
 
+=head2 repeat_string
+
+C<static method repeat_string : string[] ($strings : string[], $count : int);>
+
+Creates a new array that repeats the string $strings $count times, and returns it.
+
+Exceptions:
+
+$strings must be defined. Otherwise an exception is thrown.
+
+$count must be greater than or equal to 0. Otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
