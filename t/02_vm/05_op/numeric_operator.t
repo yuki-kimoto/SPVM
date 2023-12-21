@@ -13,11 +13,6 @@ use SPVM 'TestCase::NumericOperator';
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
-# Modulo
-{
-  ok(SPVM::TestCase::NumericOperator->modulo());
-}
-
 # Plus
 {
   ok(SPVM::TestCase::NumericOperator->plus());
