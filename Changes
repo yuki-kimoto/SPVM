@@ -41,6 +41,7 @@
       if ((in1 < 0) != (in2 < 0) && ret) { ret += in2; }
     * The remui operator is renamed to the mod_uint operator.
     * The remul operator is renamed to the mod_ulong operator.
+    * The depth of the recursive calls becomes from 10000 to 1000.
   [Language Specification Changes]
     * The % operator is called the modulo operator.
   
