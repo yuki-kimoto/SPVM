@@ -56,10 +56,10 @@ use Test::More;
   compile_not_ok_file('CompileError::Assign::BoxingDifferentType');
 }
 
-# Remainder
+# Modulo
 {
-  compile_not_ok_file('CompileError::Remainder::RightIsNotIntegral');
-  compile_not_ok_file('CompileError::Remainder::LeftIsNotIntegral');
+  compile_not_ok_file('CompileError::Modulo::RightIsNotIntegral');
+  compile_not_ok_file('CompileError::Modulo::LeftIsNotIntegral');
 }
 
 
@@ -94,14 +94,14 @@ use Test::More;
 }
 
 
-# Remainder - Compile Error
+# Modulo - Compile Error
 {
-  compile_not_ok_file('CompileError::Remainder::LeftIsNotIntegral', qr/left.+%.+integer/);
-  compile_not_ok_file('CompileError::Remainder::RightIsNotIntegral', qr/right.+%.+integer/);
-  compile_not_ok_file('CompileError::Remainder::RemuiLeftIsNotInt', qr/left.+remui.+int/);
-  compile_not_ok_file('CompileError::Remainder::RemuiRightIsNotInt', qr/right.+remui.+int/);
-  compile_not_ok_file('CompileError::Remainder::RemulLeftIsNotLong', qr/left.+remul.+long/);
-  compile_not_ok_file('CompileError::Remainder::RemulRightIsNotLong', qr/right.+remul.+long/);
+  compile_not_ok_file('CompileError::Modulo::LeftIsNotIntegral', qr/left.+%.+integer/);
+  compile_not_ok_file('CompileError::Modulo::RightIsNotIntegral', qr/right.+%.+integer/);
+  compile_not_ok_file('CompileError::Modulo::RemuiLeftIsNotInt', qr/left.+mod_uint.+int/);
+  compile_not_ok_file('CompileError::Modulo::RemuiRightIsNotInt', qr/right.+mod_uint.+int/);
+  compile_not_ok_file('CompileError::Modulo::RemulLeftIsNotLong', qr/left.+mod_ulong.+long/);
+  compile_not_ok_file('CompileError::Modulo::RemulRightIsNotLong', qr/right.+mod_ulong.+long/);
 }
 
 # Weaken

@@ -59,7 +59,7 @@
 %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA ISA_ERROR IS_TYPE IS_ERROR IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
-%left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
+%left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
 %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
@@ -959,15 +959,15 @@ binary_operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | operator REMAINDER operator
+  | operator MODULO operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | operator REMAINDER_UNSIGNED_INT operator
+  | operator MODULO_UNSIGNED_INT operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | operator REMAINDER_UNSIGNED_LONG operator
+  | operator MODULO_UNSIGNED_LONG operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }

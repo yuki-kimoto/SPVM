@@ -1,0 +1,5 @@
+class CompileError::Modulo::RightIsNotIntegral {
+  static method main : int () {
+    1 % 0.5;
+  }
+}

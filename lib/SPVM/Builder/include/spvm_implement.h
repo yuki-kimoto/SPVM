@@ -231,7 +231,7 @@ static inline void SPVM_IMPLEMENT_DIVIDE_UNSIGNED_LONG(SPVM_ENV* env, SPVM_VALUE
   }
 }
 
-static inline void SPVM_IMPLEMENT_REMAINDER_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t in1, int32_t in2, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_MODULO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t in1, int32_t in2, int32_t* error_id) {
   if (__builtin_expect(in2 == 0, 0)) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_DIVIDE_ZERO]);
     env->set_exception(env, stack, exception);
@@ -244,7 +244,7 @@ static inline void SPVM_IMPLEMENT_REMAINDER_INT(SPVM_ENV* env, SPVM_VALUE* stack
   }
 }
 
-static inline void SPVM_IMPLEMENT_REMAINDER_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t in1, int64_t in2, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_MODULO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t in1, int64_t in2, int32_t* error_id) {
   if (__builtin_expect(in2 == 0, 0)) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_DIVIDE_ZERO]);
     env->set_exception(env, stack, exception);
@@ -257,7 +257,7 @@ static inline void SPVM_IMPLEMENT_REMAINDER_LONG(SPVM_ENV* env, SPVM_VALUE* stac
   }
 }
 
-static inline void SPVM_IMPLEMENT_REMAINDER_UNSIGNED_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t in1, int32_t in2, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_MODULO_UNSIGNED_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, int32_t in1, int32_t in2, int32_t* error_id) {
   if (__builtin_expect(in2 == 0, 0)) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_DIVIDE_ZERO]);
     env->set_exception(env, stack, exception);
@@ -268,7 +268,7 @@ static inline void SPVM_IMPLEMENT_REMAINDER_UNSIGNED_INT(SPVM_ENV* env, SPVM_VAL
   }
 }
 
-static inline void SPVM_IMPLEMENT_REMAINDER_UNSIGNED_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t in1, int64_t in2, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_MODULO_UNSIGNED_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, int64_t in1, int64_t in2, int32_t* error_id) {
   if (__builtin_expect(in2 == 0, 0)) {
     void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_DIVIDE_ZERO]);
     env->set_exception(env, stack, exception);

@@ -301,16 +301,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         if (*compiler->ch_ptr == '=') {
           compiler->ch_ptr++;
           SPVM_OP* op_special_assign = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
-          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER;
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MODULO;
           
           yylvalp->opval = op_special_assign;
           
           return SPECIAL_ASSIGN;
         }
         else {
-          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_REMAINDER);
+          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_MODULO);
           yylvalp->opval = op;
-          return REMAINDER;
+          return MODULO;
         }
       }
       case '^': {
@@ -2002,16 +2002,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_MAKE_READ_ONLY);
                   keyword_token = MAKE_READ_ONLY;
                 }
-                else if (strcmp(symbol_name, "my") == 0) {
-                  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, compiler->current_file, compiler->current_line);
-                  yylvalp->opval = op_var_decl;
-                  keyword_token = MY;
-                }
-                else if (strcmp(symbol_name, "mulnum_t") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_MULNUM_T, compiler->current_file, compiler->current_line);
-                  yylvalp->opval = op_attribute;
-                  keyword_token = ATTRIBUTE;
-                }
                 else if (strcmp(symbol_name, "method") == 0) {
                   SPVM_OP* op_method = SPVM_TOKE_new_op_with_column(compiler, SPVM_OP_C_ID_METHOD, column);
                   yylvalp->opval = op_method;
@@ -2020,9 +2010,27 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   keyword_token = METHOD;
                 }
+                else if (strcmp(symbol_name, "mod_uint") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_MODULO_UNSIGNED_INT);
+                  keyword_token = MODULO_UNSIGNED_INT;
+                }
+                else if (strcmp(symbol_name, "mod_ulong") == 0) {
+                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_MODULO_UNSIGNED_LONG);
+                  keyword_token = MODULO_UNSIGNED_LONG;
+                }
+                else if (strcmp(symbol_name, "mulnum_t") == 0) {
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_MULNUM_T, compiler->current_file, compiler->current_line);
+                  yylvalp->opval = op_attribute;
+                  keyword_token = ATTRIBUTE;
+                }
                 else if (strcmp(symbol_name, "mutable") == 0) {
                   SPVM_OP* op_mutable = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_MUTABLE);
                   keyword_token = MUTABLE;
+                }
+                else if (strcmp(symbol_name, "my") == 0) {
+                  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, compiler->current_file, compiler->current_line);
+                  yylvalp->opval = op_var_decl;
+                  keyword_token = MY;
                 }
                 break;
               }
@@ -2104,15 +2112,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'r' : {
-                if (strcmp(symbol_name, "remui") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT);
-                  keyword_token = REMAINDER_UNSIGNED_INT;
-                }
-                else if (strcmp(symbol_name, "remul") == 0) {
-                  yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG);
-                  keyword_token = REMAINDER_UNSIGNED_LONG;
-                }
-                else if (strcmp(symbol_name, "return") == 0) {
+                if (strcmp(symbol_name, "return") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_RETURN);
                   keyword_token = RETURN;
                 }

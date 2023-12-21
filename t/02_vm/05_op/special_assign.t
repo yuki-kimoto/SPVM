@@ -47,9 +47,9 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   ok(SPVM::TestCase::SpecialAssign->special_assign_divide_var);
 }
-# Special assign remainder
+# Special assign modulo
 {
-  ok(SPVM::TestCase::SpecialAssign->special_assign_remainder_var);
+  ok(SPVM::TestCase::SpecialAssign->special_assign_modulo_var);
 }
 
 # Special assign bit and

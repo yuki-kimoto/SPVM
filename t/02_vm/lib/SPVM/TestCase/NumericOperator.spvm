@@ -358,7 +358,7 @@ class TestCase::NumericOperator {
     return 0;
   }
   
-  static method remainder : int () {
+  static method modulo : int () {
     my $num1 = (byte)((byte)5 % (byte)3);
     my $num2 = (byte)((byte)-3 % (byte)5);
     my $num3 = (short)((int)(short)5 % (int)(short)3);

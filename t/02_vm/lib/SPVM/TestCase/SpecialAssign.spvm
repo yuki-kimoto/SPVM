@@ -195,7 +195,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  static method special_assign_remainder_var : int () {
+  static method special_assign_modulo_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
     my $value_int = 6;

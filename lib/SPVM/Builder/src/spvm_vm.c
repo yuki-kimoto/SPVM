@@ -484,20 +484,20 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_DIVIDE_UNSIGNED_LONG(env, stack, &long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2], &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_INT: {
-        SPVM_IMPLEMENT_REMAINDER_INT(env, stack, &int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2], &error_id);
+      case SPVM_OPCODE_C_ID_MODULO_INT: {
+        SPVM_IMPLEMENT_MODULO_INT(env, stack, &int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2], &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_LONG: {
-        SPVM_IMPLEMENT_REMAINDER_LONG(env, stack, &long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2], &error_id);
+      case SPVM_OPCODE_C_ID_MODULO_LONG: {
+        SPVM_IMPLEMENT_MODULO_LONG(env, stack, &long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2], &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_INT: {
-        SPVM_IMPLEMENT_REMAINDER_UNSIGNED_INT(env, stack, &int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2], &error_id);
+      case SPVM_OPCODE_C_ID_MODULO_UNSIGNED_INT: {
+        SPVM_IMPLEMENT_MODULO_UNSIGNED_INT(env, stack, &int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2], &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_LONG: {
-        SPVM_IMPLEMENT_REMAINDER_UNSIGNED_LONG(env, stack, &long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2], &error_id);
+      case SPVM_OPCODE_C_ID_MODULO_UNSIGNED_LONG: {
+        SPVM_IMPLEMENT_MODULO_UNSIGNED_LONG(env, stack, &long_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_LEFT_SHIFT_INT: {

@@ -313,8 +313,8 @@ EOS
       # -1 = -1 % 3
       my $ret_rem = $uint_max % 3;
       
-      #  0 = 4,294,967,295 remui 3
-      my $ret_remui = $uint_max remui 3;
+      #  0 = 4,294,967,295 mod_uint 3
+      my $ret_remui = $uint_max mod_uint 3;
       
       warn "$ret_rem $ret_remui";
     }
@@ -324,8 +324,8 @@ EOS
       # -1 = -1 % 3
       my $ret_rem = $ulong_max % 3L;
       
-      # 0 = 18,446,744,073,709,551,615 remul 3
-      my $ret_remui = $ulong_max remul 3L;
+      # 0 = 18,446,744,073,709,551,615 mod_ulong 3
+      my $ret_remui = $ulong_max mod_ulong 3L;
       
       warn "$ret_rem $ret_remui";
     }

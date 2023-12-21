@@ -618,27 +618,27 @@ use Test::More;
   }
 }
 
-# remui
+# mod_uint
 {
   {
-    my $source = 'class MyClass { static method main : void () { 1L remui 1; } }';
-    compile_not_ok($source, q|The left operand of the remui operator must be the int type|);
+    my $source = 'class MyClass { static method main : void () { 1L mod_uint 1; } }';
+    compile_not_ok($source, q|The left operand of the mod_uint operator must be the int type|);
   }
   {
-    my $source = 'class MyClass { static method main : void () { 1 remui 1L; } }';
-    compile_not_ok($source, q|The right operand of the remui operator must be the int type|);
+    my $source = 'class MyClass { static method main : void () { 1 mod_uint 1L; } }';
+    compile_not_ok($source, q|The right operand of the mod_uint operator must be the int type|);
   }
 }
 
-# remul
+# mod_ulong
 {
   {
-    my $source = 'class MyClass { static method main : void () { 1 remul 1L; } }';
-    compile_not_ok($source, q|The left operand of the remul operator must be the long type|);
+    my $source = 'class MyClass { static method main : void () { 1 mod_ulong 1L; } }';
+    compile_not_ok($source, q|The left operand of the mod_ulong operator must be the long type|);
   }
   {
-    my $source = 'class MyClass { static method main : void () { 1L remul 1; } }';
-    compile_not_ok($source, q|The right operand of the remul operator must be the long type|);
+    my $source = 'class MyClass { static method main : void () { 1L mod_ulong 1; } }';
+    compile_not_ok($source, q|The right operand of the mod_ulong operator must be the long type|);
   }
 }
 

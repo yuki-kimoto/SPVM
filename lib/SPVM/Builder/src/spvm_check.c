@@ -2405,7 +2405,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             
             break;
           }
-          case SPVM_OP_C_ID_REMAINDER: {
+          case SPVM_OP_C_ID_MODULO: {
             SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* last_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
@@ -2429,37 +2429,37 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                                             
             break;
           }
-          case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT: {
+          case SPVM_OP_C_ID_MODULO_UNSIGNED_INT: {
             SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* last_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
             // Left operand must be a numeric type
             if (!SPVM_TYPE_is_int_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand of the remui operator must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The left operand of the mod_uint operator must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
 
             // Right operand must be a numeric type
             if (!SPVM_TYPE_is_int_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand of the remui operator must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The right operand of the mod_uint operator must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
             break;
           }
-          case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG: {
+          case SPVM_OP_C_ID_MODULO_UNSIGNED_LONG: {
             SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* last_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
             // Left operand must be a numeric type
             if (!SPVM_TYPE_is_long_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The left operand of the remul operator must be the long type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The left operand of the mod_ulong operator must be the long type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
 
             // Right operand must be a numeric type
             if (!SPVM_TYPE_is_long_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The right operand of the remul operator must be the long type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The right operand of the mod_ulong operator must be the long type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
@@ -3250,9 +3250,9 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_DIVIDE:
               case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT:
               case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG:
-              case SPVM_OP_C_ID_REMAINDER:
-              case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT:
-              case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG:
+              case SPVM_OP_C_ID_MODULO:
+              case SPVM_OP_C_ID_MODULO_UNSIGNED_INT:
+              case SPVM_OP_C_ID_MODULO_UNSIGNED_LONG:
               case SPVM_OP_C_ID_BIT_AND:
               case SPVM_OP_C_ID_BIT_OR:
               case SPVM_OP_C_ID_BIT_XOR:
@@ -4184,9 +4184,9 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_DIVIDE:
     case SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT:
     case SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG:
-    case SPVM_OP_C_ID_REMAINDER:
-    case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT:
-    case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG:
+    case SPVM_OP_C_ID_MODULO:
+    case SPVM_OP_C_ID_MODULO_UNSIGNED_INT:
+    case SPVM_OP_C_ID_MODULO_UNSIGNED_LONG:
     case SPVM_OP_C_ID_INC:
     case SPVM_OP_C_ID_PRE_INC:
     case SPVM_OP_C_ID_POST_INC:

@@ -555,7 +555,7 @@ class Hash {
     my $default_seed = $self->{seed};
     
     my $hash = Hash->_siphash13($key, $default_seed);
-    my $index_by_key = (int)($hash remul (long)$entries_length);
+    my $index_by_key = (int)($hash mod_ulong (long)$entries_length);
     
     return $index_by_key;
   }

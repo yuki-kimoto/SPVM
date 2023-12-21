@@ -1112,8 +1112,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ", &error_id);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REMAINDER_INT(env, stack, ");
+      case SPVM_OPCODE_C_ID_MODULO_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_MODULO_INT(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1122,8 +1122,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ", &error_id);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REMAINDER_LONG(env, stack, ");
+      case SPVM_OPCODE_C_ID_MODULO_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_MODULO_LONG(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -1132,8 +1132,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ", &error_id);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REMAINDER_UNSIGNED_INT(env, stack, ");
+      case SPVM_OPCODE_C_ID_MODULO_UNSIGNED_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_MODULO_UNSIGNED_INT(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1142,8 +1142,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ", &error_id);\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_REMAINDER_UNSIGNED_LONG(env, stack, ");
+      case SPVM_OPCODE_C_ID_MODULO_UNSIGNED_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_MODULO_UNSIGNED_LONG(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);

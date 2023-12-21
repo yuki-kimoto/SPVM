@@ -1,0 +1,5 @@
+class CompileError::Modulo::RemulRightIsNotLong {
+  static method main : int () {
+    1L mod_ulong 3;
+  }
+}

@@ -170,7 +170,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "BIT_OR",
     "BIT_XOR",
     "BIT_NOT",
-    "REMAINDER",
+    "MODULO",
     "LEFT_SHIFT",
     "RIGHT_ARITHMETIC_SHIFT",
     "RIGHT_LOGICAL_SHIFT",
@@ -238,8 +238,8 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "FALSE",
     "DIVIDE_UNSIGNED_INT",
     "DIVIDE_UNSIGNED_LONG",
-    "REMAINDER_UNSIGNED_INT",
-    "REMAINDER_UNSIGNED_LONG",
+    "MODULO_UNSIGNED_INT",
+    "MODULO_UNSIGNED_LONG",
     "NEW_STRING_LEN",
     "IS_READ_ONLY",
     "MAKE_READ_ONLY",
@@ -2624,8 +2624,8 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
           culc_op_id = SPVM_OP_C_ID_DIVIDE;
           break;
         }
-        case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER: {
-          culc_op_id = SPVM_OP_C_ID_REMAINDER;
+        case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MODULO: {
+          culc_op_id = SPVM_OP_C_ID_MODULO;
           break;
         }
         case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_LEFT_SHIFT: {

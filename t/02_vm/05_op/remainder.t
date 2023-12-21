@@ -6,35 +6,35 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Remainder';
+use SPVM 'TestCase::Modulo';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Spec tests
 {
-  # Remainder - Operation
+  # Modulo - Operation
   {
-    ok(SPVM::TestCase::Remainder->remainder_byte_byte);
-    ok(SPVM::TestCase::Remainder->remainder_short_short);
-    ok(SPVM::TestCase::Remainder->remainder_int_byte);
-    ok(SPVM::TestCase::Remainder->remainder_int_short);
-    ok(SPVM::TestCase::Remainder->remainder_byte_int);
-    ok(SPVM::TestCase::Remainder->remainder_short_int);
-    ok(SPVM::TestCase::Remainder->remainder_int_int);
-    ok(SPVM::TestCase::Remainder->remainder_long_long);
+    ok(SPVM::TestCase::Modulo->modulo_byte_byte);
+    ok(SPVM::TestCase::Modulo->modulo_short_short);
+    ok(SPVM::TestCase::Modulo->modulo_int_byte);
+    ok(SPVM::TestCase::Modulo->modulo_int_short);
+    ok(SPVM::TestCase::Modulo->modulo_byte_int);
+    ok(SPVM::TestCase::Modulo->modulo_short_int);
+    ok(SPVM::TestCase::Modulo->modulo_int_int);
+    ok(SPVM::TestCase::Modulo->modulo_long_long);
   }
 
   # Divide Unsinged operator
   {
-    ok(SPVM::TestCase::Remainder->remainder_unsigned_int);
-    ok(SPVM::TestCase::Remainder->remainder_unsigned_long);
+    ok(SPVM::TestCase::Modulo->modulo_unsigned_int);
+    ok(SPVM::TestCase::Modulo->modulo_unsigned_long);
   }
 }
 
 # Optional tests
 {
-  ok(SPVM::TestCase::Remainder->remainder());
+  ok(SPVM::TestCase::Modulo->modulo());
 }
 
 # All object is freed

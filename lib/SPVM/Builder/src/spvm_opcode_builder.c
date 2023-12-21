@@ -2383,7 +2383,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       break;
                     }
-                    case SPVM_OP_C_ID_REMAINDER : {
+                    case SPVM_OP_C_ID_MODULO : {
                       SPVM_OPCODE opcode = {0};
                       
                       
@@ -2393,13 +2393,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       int32_t runtime_var_index_in2;
                       switch (type_dist->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_INT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MODULO_INT);
                           runtime_var_index_out = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_dist);
                           runtime_var_index_in1 = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_src->first);
                           runtime_var_index_in2 = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_LONG);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MODULO_LONG);
                           runtime_var_index_out = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_dist);
                           runtime_var_index_in1 = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_src->first);
                           runtime_var_index_in2 = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_src->last);
@@ -2424,12 +2424,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_ID_REMAINDER_UNSIGNED_INT : {
+                    case SPVM_OP_C_ID_MODULO_UNSIGNED_INT : {
 
                       SPVM_OPCODE opcode = {0};
                       
                       
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_INT);
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MODULO_UNSIGNED_INT);
 
                       int32_t runtime_var_index_out = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_dist);
                       int32_t runtime_var_index_in1 = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_src->first);
@@ -2445,12 +2445,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);                              
                       break;
                     }
-                    case SPVM_OP_C_ID_REMAINDER_UNSIGNED_LONG : {
+                    case SPVM_OP_C_ID_MODULO_UNSIGNED_LONG : {
 
                       SPVM_OPCODE opcode = {0};
                       
                       
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REMAINDER_UNSIGNED_LONG);
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MODULO_UNSIGNED_LONG);
 
                       int32_t runtime_var_index_out = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_dist);
                       int32_t runtime_var_index_in1 = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_src->first);

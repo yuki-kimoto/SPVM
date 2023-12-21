@@ -303,8 +303,8 @@ The list of keywords:
   public
   precompile
   pointer
-  remui
-  remul
+  mod_uint
+  mod_ulong
   return
   require
   required
@@ -1310,7 +1310,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA ISA_ERROR IS_TYPE IS_ERROR IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
-  %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
+  %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
   %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
@@ -1628,9 +1628,9 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | operator DIVIDE operator
     | operator DIVIDE_UNSIGNED_INT operator
     | operator DIVIDE_UNSIGNED_LONG operator
-    | operator REMAINDER operator
-    | operator REMAINDER_UNSIGNED_INT operator
-    | operator REMAINDER_UNSIGNED_LONG operator
+    | operator MODULO operator
+    | operator MODULO_UNSIGNED_INT operator
+    | operator MODULO_UNSIGNED_LONG operator
     | operator BIT_XOR operator
     | operator BIT_AND operator
     | operator BIT_OR operator
@@ -2051,13 +2051,13 @@ The list of syntax parsing tokens:
     <td>TYPE_NAME</td><td>type_name</td>
   </tr>
   <tr>
-    <td>REMAINDER</td><td>%</td>
+    <td>MODULO</td><td>%</td>
   </tr>
   <tr>
-    <td>REMAINDER_UNSIGNED_INT</td><td>remui</td>
+    <td>MODULO_UNSIGNED_INT</td><td>mod_uint</td>
   </tr>
   <tr>
-    <td>REMAINDER_UNSIGNED_LONG</td><td>remul</td>
+    <td>MODULO_UNSIGNED_LONG</td><td>mod_ulong</td>
   </tr>
   <tr>
     <td>REQUIRE</td><td>require</td>
@@ -2180,7 +2180,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA ISA_ERROR IS_TYPE IS_ERROR IS_COMPILE_TYPE NUMERIC_CMP STRING_CMP CAN
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
-  %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG REMAINDER  REMAINDER_UNSIGNED_INT REMAINDER_UNSIGNED_LONG
+  %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
   %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
@@ -7181,9 +7181,9 @@ The return type of the division operator is the L<long type|/"long Type">.
 
 If the value of the right operand is 0, an L<exception|/"Exception"> is thrown.
 
-=head2 Remainder Operator
+=head2 Modulo Operator
 
-The remainder operator C<%> is an L<operator|/"Operator"> to calculate a remainder of two numbers.
+The modulo operator C<%> is an L<operator|/"Operator"> to calculate a modulo of two numbers.
 
   LEFT_OPERAND % RIGHT_OPERAND
 
@@ -7191,46 +7191,46 @@ The left operand and the right operand must be an L<integer type|/"Integer Type"
 
 the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
-The remainder operator performs the operation that exactly same as the following operation in the C language.
+The modulo operator performs the operation that exactly same as the following operation in the C language.
 
   ret = x % y;
   if ((x < 0) != (y < 0) && ret) { ret += y; }
   
-the return type of Remainder Operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+the return type of Modulo Operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
-If the right operand is 0, the remainder operator throw an L<exception|/"Exception">.
+If the right operand is 0, an exception is thrown.
 
-=head2 Remainder Unsigned Int Operator
+=head2 Modulo Unsigned Int Operator
 
-The remainder unsigned int operator C<remui> is an L<operator|/"Operator"> to calculate a unsigned int remainder of two numbers.
+The modulo unsigned int operator C<mod_uint> is an L<operator|/"Operator"> to calculate a unsigned int modulo of two numbers.
 
-  LEFT_OPERAND remui RIGHT_OPERAND
+  LEFT_OPERAND mod_uint RIGHT_OPERAND
 
 The left operand and the right operand must be a L<int type|/"int Type">. Otherwise a compilation error occurs.
 
-The remainder unsigned int operator performs the operation that exactly same as the following operation in the C language.
+The modulo unsigned int operator performs the operation that exactly same as the following operation in the C language.
 
   (uint32_t)x % (uint32_t)y;
 
-The return type of the remainder unsigned int operator is the L<int type|/"int Type">.
+The return type of the modulo unsigned int operator is the L<int type|/"int Type">.
 
-If the value of the right operand is 0, an L<exception|/"Exception"> is thrown .
+If the value of the right operand is 0, an L<exception|/"Exception"> is thrown.
 
-=head2 Remainder Unsigned Long Operator
+=head2 Modulo Unsigned Long Operator
 
-The remainder unsigned long operator C<remul> is an L<operator|/"Operator"> to calculate a unsigned long remainder of two numbers.
+The modulo unsigned long operator C<mod_ulong> is an L<operator|/"Operator"> to calculate a unsigned long modulo of two numbers.
 
-  LEFT_OPERAND remul RIGHT_OPERAND
+  LEFT_OPERAND mod_ulong RIGHT_OPERAND
 
 The left operand and the right operand must be a L<long type|/"long Type">. Otherwise a compilation error occurs.
 
-The remainder unsigned long operator performs the operation that exactly same as the following operation in the C language.
+The modulo unsigned long operator performs the operation that exactly same as the following operation in the C language.
 
-  (ulong64_t)x % (ulong64_t)y;
+  (uint64_t)x % (uint64_t)y;
 
-The return type of the remainder unsigned long operator is the L<long type|/"long Type">.
+The return type of the modulo unsigned long operator is the L<long type|/"long Type">.
 
-If the value of the right operand is 0, an L<exception|/"Exception"> is thrown .
+If the value of the right operand is 0, an L<exception|/"Exception"> is thrown.
 
 =head2 Increment Operator
 
@@ -8064,7 +8064,7 @@ The following operators are used as the operators of the special assignment oper
     <td>/=</td>
   </tr>
   <tr>
-    <td>Remainder assignment operator</td>
+    <td>Modulo assignment operator</td>
     <td>%=</td>
   </tr>
   <tr>

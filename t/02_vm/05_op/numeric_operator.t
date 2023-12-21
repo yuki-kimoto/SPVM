@@ -13,9 +13,9 @@ use SPVM 'TestCase::NumericOperator';
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
-# Remainder
+# Modulo
 {
-  ok(SPVM::TestCase::NumericOperator->remainder());
+  ok(SPVM::TestCase::NumericOperator->modulo());
 }
 
 # Plus

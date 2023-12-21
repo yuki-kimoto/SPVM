@@ -1,4 +1,4 @@
-class CompileError::Remainder::LeftIsNotIntegral {
+class CompileError::Modulo::LeftIsNotIntegral {
   static method main : int () {
     0.5 % 2;
   }
