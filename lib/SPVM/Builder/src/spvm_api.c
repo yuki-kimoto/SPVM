@@ -377,7 +377,7 @@ int32_t SPVM_API_set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return SPVM_API_die(env, stack, "The obj_program_name must be a string.", __func__, FILE_NAME, __LINE__);
   }
   
-  SPVM_API_set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &error_id, __func__, __FILE__, __LINE__);
+  SPVM_API_set_class_var_object_by_name(env, stack, "CommandInfo", "$PROGRAM_NAME", obj_program_name, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   return 0;
@@ -396,7 +396,7 @@ int32_t SPVM_API_set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
     return SPVM_API_die(env, stack, "The obj_argv must be a string array.", __func__, FILE_NAME, __LINE__);
   }
   
-  SPVM_API_set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", obj_argv, &error_id, __func__, __FILE__, __LINE__);
+  SPVM_API_set_class_var_object_by_name(env, stack, "CommandInfo", "$ARGV", obj_argv, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   return 0;
@@ -406,7 +406,7 @@ int32_t SPVM_API_set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE* stack, in
   
   int32_t error_id = 0;
   
-  SPVM_API_set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &error_id, __func__, __FILE__, __LINE__);
+  SPVM_API_set_class_var_long_by_name(env, stack, "CommandInfo", "$BASE_TIME", base_time, &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
   return 0;
@@ -3636,7 +3636,8 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   int32_t max_call_depth = 10000;
   if (stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > max_call_depth) {
-    error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d", max_call_depth, FILE_NAME, __LINE__);
+    
+    error_id = SPVM_API_die(env, stack, "Deep recursion occurs. The depth of a method call must be less than %d.", max_call_depth, FILE_NAME, __LINE__);
   }
   else {
     void* method_return_basic_type = method->return_basic_type;
