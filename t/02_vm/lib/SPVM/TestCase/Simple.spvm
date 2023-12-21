@@ -118,4 +118,10 @@ class TestCase::Simple : public {
     $TestCase::Simple::DESTROY_VALUE += 1;
     
   }
+  
+  static method call_recursive : TestCase::Simple () {
+    my $self = TestCase::Simple->call_recursive;
+    
+    return $self;
+  }
 }
