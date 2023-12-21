@@ -12,7 +12,7 @@ These APIs are used in L<native classes|SPVM::Document::NativeClass>.
 
 =head2 runtime
 
-  void* runtime;
+C<void* runtime;>
 
 The runtime object for this environment.
 
@@ -22,7 +22,7 @@ Examples:
 
 =head2 api
 
-  void* api;
+C<void* api;>
 
 Access to other native APIs.
 
@@ -106,19 +106,19 @@ L<SPVM::Document::NativeAPI::Mutex>
 
 =head2 new_env
 
-  SPVM_ENV* (*new_env)();
+C<SPVM_ENV* (*new_env)();>
 
 Creates a new environment.
 
 =head2 free_env
 
-  void (*free_env)(SPVM_ENV* env);
+C<void (*free_env)(SPVM_ENV* env);>
 
 Frees an environment.
 
 =head2 call_init_methods
   
-  int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Calls all C<INIT> methods defined by C<INIT> blocks.
 
@@ -126,7 +126,7 @@ If an exception is thrown, returns non-zero value. Otherwise returns 0.
 
 =head2 set_command_info_program_name
 
-  int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);
+C<int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);>
 
 Sets the L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable to the program name.
 
@@ -134,7 +134,7 @@ If an exception is thrown, returns non-zero value. Otherwise returns 0.
 
 =head2 set_command_info_argv
 
-  int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);
+C<int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);>
 
 Sets the L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"ARGV"> class variable to the command line arguments.
 
@@ -142,7 +142,7 @@ If an exception is thrown, returns non-zero value. Otherwise returns 0.
 
 =head2 set_command_info_base_time
 
-  int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);
+C<int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);>
 
 Sets the L<CommandInfo->BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable to the time when the program starts.
 
@@ -150,13 +150,13 @@ If an exception is thrown, returns non-zero value. Otherwise returns 0.
 
 =head2 destroy_class_vars
   
-  void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Destroys all class variables.
 
 =head2 args_width
 
-  int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Returns the total width of the arguments given by the caller.
 
@@ -166,37 +166,37 @@ Examples:
 
 =head2 get_object_basic_type
 
-  void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<void* (*get_object_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the object.
 
 =head2 get_object_basic_type_id
 
-  int32_t (*get_object_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*get_object_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Returns the basic type ID of the object.
 
 =head2 get_object_basic_type_name
 
-  const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<const char* (*get_object_basic_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Returns the basic type name of the object.
 
 =head2 get_object_type_dimension
 
-  int32_t (*get_object_type_dimension)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*get_object_type_dimension)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Returns the type dimension of the object.
 
 =head2 get_basic_type
 
-  void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
+C<void* (*get_basic_type)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);>
 
 Gets a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type name.
 
 =head2 get_basic_type_by_name
 
-  void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void* (*get_basic_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type name.
 
@@ -204,13 +204,13 @@ If an exception is thrown, C<error_id> is set to non-zero value. Otherwise it is
 
 =head2 get_basic_type_by_id
 
-  void* (*get_basic_type_by_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);
+C<void* (*get_basic_type_by_id)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t basic_type_id);>
 
 Gets a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type ID.
 
 =head2 get_basic_type_id
 
-  int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
+C<int32_t (*get_basic_type_id)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);>
 
 Gets a basic type ID by a basic type name.
 
@@ -220,7 +220,7 @@ Examples:
 
 =head2 get_basic_type_id_by_name
 
-  int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int32_t (*get_basic_type_id_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets a basic type ID by a basic type name.
 
@@ -228,7 +228,7 @@ If an exception is thrown, C<error_id> is set to non-zero value. Otherwise it is
 
 =head2 get_class_var
 
-  void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);
+C<void* (*get_class_var)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name);>
 
 Gets a L<class variable|SPVM::Document::NativeAPI::ClassVariable> object by its basic type name and class variable name, and returns it.
 
@@ -240,7 +240,7 @@ Examples:
 
 =head2 get_class_var_byte
 
-  int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+C<int8_t (*get_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);>
 
 Gets the value of a class variable of the byte type.
 
@@ -248,7 +248,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 get_class_var_short
 
-  int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+C<int16_t (*get_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);>
 
 Gets the value of a class variable of the short type.
 
@@ -256,7 +256,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 get_class_var_int
 
-  int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+C<int32_t (*get_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);>
 
 Gets the value of a class variable of the int type.
 
@@ -264,7 +264,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 get_class_var_long
 
-  int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+C<int64_t (*get_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);>
 
 Gets the value of a class variable of the long type.
 
@@ -272,7 +272,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 get_class_var_float
 
-  float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+C<float (*get_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);>
 
 Gets the value of a class variable of the float type.
 
@@ -280,7 +280,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 get_class_var_double
 
-  double (*get_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+C<double (*get_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);>
 
 Gets the value of a class variable of the double type.
 
@@ -288,7 +288,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 get_class_var_object
 
-  void* (*get_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+C<void* (*get_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);>
 
 Gets the value of a class variable of the object type.
 
@@ -300,7 +300,7 @@ The same as L</"get_class_var_object">.
 
 =head2 get_class_var_object_ref
 
-  void** (*get_class_var_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);
+C<void** (*get_class_var_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var);>
 
 Gets the address of the value of a class variable of the object type.
 
@@ -308,7 +308,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 set_class_var_byte
 
-  void (*set_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int8_t value);
+C<void (*set_class_var_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int8_t value);>
 
 Sets the value of a class variable of the byte type.
 
@@ -316,7 +316,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 set_class_var_short
 
-  void (*set_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int16_t value);
+C<void (*set_class_var_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int16_t value);>
 
 Sets the value of a class variable of the short type.
 
@@ -324,7 +324,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 set_class_var_int
 
-  void (*set_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int32_t value);
+C<void (*set_class_var_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int32_t value);>
 
 Sets the value of a class variable of the int type.
 
@@ -332,7 +332,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 set_class_var_long
 
-  void (*set_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int64_t value);
+C<void (*set_class_var_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, int64_t value);>
 
 Sets the value of a class variable of the long type.
 
@@ -340,7 +340,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 set_class_var_float
 
-  void (*set_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, float value);
+C<void (*set_class_var_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, float value);>
 
 Sets the value of a class variable of the float type.
 
@@ -348,7 +348,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 set_class_var_double
 
-  void (*set_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, double value);
+C<void (*set_class_var_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, double value);>
 
 Sets the value of a class variable of the double type.
 
@@ -356,7 +356,7 @@ The argument C<class_var> must be a valid L<class variable|SPVM::Document::Nativ
 
 =head2 set_class_var_object
 
-  void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, void* value);
+C<void (*set_class_var_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* class_var, void* value);>
 
 Sets the value of a class variable of the object type.
 
@@ -368,8 +368,7 @@ The same as L</"set_class_var_object">.
 
 =head2 get_class_var_byte_by_name
 
-  int8_t (*get_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int8_t (*get_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a class variable of the byte type by its basic type name and class variable name.
 
@@ -383,9 +382,7 @@ Examples:
 
 =head2 get_class_var_short_by_name
 
-  int16_t (*get_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int16_t (*get_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a class variable of the short type by its basic type name and class variable name.
 
@@ -399,9 +396,7 @@ Examples:
 
 =head2 get_class_var_int_by_name
 
-  int32_t (*get_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int32_t (*get_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a class variable of the int type by its basic type name and class variable name.
 
@@ -415,9 +410,7 @@ Examples:
 
 =head2 get_class_var_long_by_name
 
-  int64_t (*get_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int64_t (*get_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a class variable of the long type by its basic type name and class variable name.
 
@@ -431,9 +424,7 @@ Examples:
 
 =head2 get_class_var_float_by_name
 
-  float (*get_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<float (*get_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a class variable of the float type by its basic type name and class variable name.
 
@@ -447,9 +438,7 @@ Examples:
 
 =head2 get_class_var_double_by_name
 
-  double (*get_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<double (*get_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a class variable of the double type by its basic type name and class variable name.
 
@@ -463,9 +452,7 @@ Examples:
 
 =head2 get_class_var_object_by_name
 
-  void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void* (*get_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a class variable of the object type by its basic type name and class variable name.
 
@@ -483,9 +470,7 @@ The same as L</"get_class_var_object_by_name">.
 
 =head2 set_class_var_byte_by_name
 
-  void (*set_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, int8_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_class_var_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a class variable of the byte type by its basic type name and class variable name.
 
@@ -499,9 +484,7 @@ Examples:
 
 =head2 set_class_var_short_by_name
 
-  void (*set_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, int16_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_class_var_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a class variable of the short type by its basic type name and class variable name.
 
@@ -515,9 +498,7 @@ Examples:
 
 =head2 set_class_var_int_by_name
 
-  void (*set_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, int32_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_class_var_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int32_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a class variable of the int type by its basic type name and class variable name.
 
@@ -531,9 +512,7 @@ Examples:
 
 =head2 set_class_var_long_by_name
 
-  void (*set_class_var_long_by_name)(SPVM_ENV* env
-    const char* basic_type_name, const char* class_var_name, int64_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_class_var_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, int64_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a class variable of the long type by its basic type name and class variable name.
 
@@ -547,9 +526,7 @@ Examples:
 
 =head2 set_class_var_float_by_name
 
-  void (*set_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, float value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_class_var_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, float value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a class variable of the float type by its basic type name and class variable name.
 
@@ -563,9 +540,7 @@ Examples:
 
 =head2 set_class_var_double_by_name
 
-  void (*set_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, double value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_class_var_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, double value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a class variable of the double type by its basic type name and class variable name.
 
@@ -579,9 +554,7 @@ Examples:
 
 =head2 set_class_var_object_by_name
 
-  void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    const char* basic_type_name, const char* class_var_name, void* value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_class_var_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* class_var_name, void* value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a class variable of the object type by its basic type name and class variable name.
 
@@ -599,7 +572,7 @@ The same as L</"set_class_var_object_by_name">.
 
 =head2 get_field
 
-  void* (*get_field_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);
+C<void* (*get_field_by_index)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name);>
 
 Gets a L<field|SPVM::Document::NativeAPI::Field> object by its basic type name of the object and field name, and returns it.
 
@@ -611,7 +584,7 @@ Examples:
 
 =head2 get_field_static
 
-  void* (*get_field_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);
+C<void* (*get_field_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* field_name);>
 
 Gets a L<field|SPVM::Document::NativeAPI::Field> object by its basic type name and field name, and returns it.
 
@@ -623,7 +596,7 @@ Examples:
 
 =head2 get_field_byte
 
-  int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+C<int8_t (*get_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
 Gets the value of a field of the byte type.
 
@@ -631,7 +604,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 get_field_short
 
-  int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+C<int16_t (*get_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
 Gets the value of a field of the short type.
 
@@ -639,7 +612,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 get_field_int
 
-  int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+C<int32_t (*get_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
 Gets the value of a field of the int type.
 
@@ -647,7 +620,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 get_field_long
 
-  int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+C<int64_t (*get_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
 Gets the value of a field of the long type.
 
@@ -655,7 +628,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 get_field_float
 
-  float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+C<float (*get_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
 Gets the value of a field of the float type.
 
@@ -663,7 +636,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 get_field_double
 
-  double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+C<double (*get_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
 Gets the value of a field of the double type.
 
@@ -671,7 +644,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 get_field_object
 
-  void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+C<void* (*get_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
 Gets the value of a field of the object type.
 
@@ -683,7 +656,7 @@ The same as L<"get_field_object">.
 
 =head2 set_field_byte
 
-  void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);
+C<void (*set_field_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int8_t value);>
 
 Sets the value of a field of the byte type.
 
@@ -691,7 +664,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 set_field_short
 
-  void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);
+C<void (*set_field_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int16_t value);>
 
 Sets the value of a field of the short type.
 
@@ -699,7 +672,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 set_field_int
 
-  void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);
+C<void (*set_field_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int32_t value);>
 
 Sets the value of a field of the int type.
 
@@ -707,7 +680,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 set_field_long
 
-  void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);
+C<void (*set_field_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, int64_t value);>
 
 Sets the value of a field of the long type.
 
@@ -715,7 +688,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 set_field_float
 
-  void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);
+C<void (*set_field_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, float value);>
 
 Sets the value of a field of the float type.
 
@@ -723,7 +696,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 set_field_double
 
-  void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);
+C<void (*set_field_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, double value);>
 
 Sets the value of a field of the double type.
 
@@ -731,7 +704,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 set_field_object
 
-  void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);
+C<void (*set_field_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field, void* value);>
 
 Sets the value of a field of the object type.
 
@@ -743,9 +716,7 @@ The same as L<"set_field_object">.
 
 =head2 get_field_byte_by_name
 
-  int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int8_t (*get_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a field of the byte type by its basic type name of the object and field name.
 
@@ -759,9 +730,7 @@ Examples:
 
 =head2 get_field_short_by_name
 
-  int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int16_t (*get_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a field of the short type by its basic type name of the object and field name.
 
@@ -775,9 +744,7 @@ Examples:
 
 =head2 get_field_int_by_name
 
-  int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int32_t (*get_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a field of the int type by its basic type name of the object and field name.
 
@@ -791,9 +758,7 @@ Examples:
 
 =head2 get_field_long_by_name
 
-  int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<int64_t (*get_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a field of the long type by its basic type name of the object and field name.
 
@@ -807,9 +772,7 @@ Examples:
 
 =head2 get_field_float_by_name
 
-  float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<float (*get_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a field of the float type by its basic type name of the object and field name.
 
@@ -823,9 +786,7 @@ Examples:
 
 =head2 get_field_double_by_name
 
-  double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<double (*get_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a field of the double type by its basic type name of the object and field name.
 
@@ -839,9 +800,7 @@ Examples:
 
 =head2 get_field_object_by_name
 
-  void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void* (*get_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the value of a field of the object type by its basic type name of the object and field name.
 
@@ -859,9 +818,7 @@ The same as L</"get_field_object_by_name">.
 
 =head2 set_field_byte_by_name
 
-  void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, int8_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_field_byte_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a field of the byte type by its basic type name of the object and field name.
 
@@ -875,9 +832,7 @@ Examples:
 
 =head2 set_field_short_by_name
 
-  void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, int16_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_field_short_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a field of the short type by its basic type name of the object and field name.
 
@@ -891,9 +846,7 @@ Examples:
 
 =head2 set_field_int_by_name
 
-  void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, int32_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_field_int_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a field of the int type by its basic type name of the object and field name.
 
@@ -907,9 +860,7 @@ Examples:
 
 =head2 set_field_long_by_name
 
-  void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, int64_t value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_field_long_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int64_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a field of the long type by its basic type name of the object and field name.
 
@@ -923,9 +874,7 @@ Examples:
 
 =head2 set_field_float_by_name
 
-  void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, float value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_field_float_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, float value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a field of the float type by its basic type name of the object and field name.
 
@@ -939,9 +888,7 @@ Examples:
 
 =head2 set_field_double_by_name
 
-  void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, double value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_field_double_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, double value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a field of the double type by its basic type name of the object and field name.
 
@@ -955,9 +902,7 @@ Examples:
 
 =head2 set_field_object_by_name
 
-  void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name, void* value,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*set_field_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, void* value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Sets the value of a field of the object type by its basic type name of the object and field name.
 
@@ -975,7 +920,7 @@ The same as L</"set_field_object_by_name">.
 
 =head2 get_method
 
-  void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
+C<void* (*get_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);>
 
 Returns a method given a basic type name and a method name. If the method does not exists, returns NULL.
 
@@ -985,7 +930,7 @@ Examples:
 
 =head2 get_class_method
 
-  void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
+C<void* (*get_class_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);>
 
 Returns a class method given a basic type name and a method name. If the class method does not exists, returns NULL.
 
@@ -995,7 +940,7 @@ Examples:
 
 =head2 get_instance_method
 
-  void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);
+C<void* (*get_instance_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* method_name);>
 
 Gets an instance method address by the object and the method name. If the instance method does not exist, a negative value is returned.
 
@@ -1005,13 +950,13 @@ Examples:
 
 =head2 new_object_no_mortal
 
-  void* (*new_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
+C<void* (*new_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);>
 
 Creates a new object with a basic type. The basic type must be the correct basic type ID return by the L</"get_basic_type_id"> Native API.
 
 =head2 new_object
 
-  void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
+C<void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);>
 
 The same as C<new_object_no_mortal>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_no_mortal>.
 
@@ -1022,13 +967,13 @@ Examples:
 
 =head2 new_byte_array_no_mortal
 
-  void* (*new_byte_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_byte_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 Creates a new byte[] type array by specifying the length.
 
 =head2 new_byte_array
 
-  void* (*new_byte_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_byte_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 The same as C<new_byte_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_byte_array_no_mortal>.
 
@@ -1038,13 +983,13 @@ Examples:
 
 =head2 new_short_array_no_mortal
 
-  void* (*new_short_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_short_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 Creates a new short[] type array by specifying the length.
 
 =head2 new_short_array
 
-  void* (*new_short_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_short_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 The same as C<new_short_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_short_array_no_mortal>.
 
@@ -1054,13 +999,13 @@ Examples:
 
 =head2 new_int_array_no_mortal
 
-  void* (*new_int_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_int_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 Creates a new int[] type array by specifying the length.
 
 =head2 new_int_array
 
-  void* (*new_int_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_int_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 The same as C<new_int_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_int_array_no_mortal>.
 
@@ -1070,13 +1015,13 @@ Examples:
 
 =head2 new_long_array_no_mortal
 
-  void* (*new_long_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_long_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 Creates a new long[] type array by specifying the length.
 
 =head2 new_long_array
 
-  void* (*new_long_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_long_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 The same as C<new_long_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_long_array_no_mortal>.
 
@@ -1086,13 +1031,13 @@ Examples:
 
 =head2 new_float_array_no_mortal
 
-  void* (*new_float_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_float_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 Creates a new float[] type array by specifying the length.
 
 =head2 new_float_array
 
-  void* (*new_float_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_float_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 The same as C<new_float_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_float_array_no_mortal>.
 
@@ -1102,13 +1047,13 @@ Examples:
 
 =head2 new_double_array_no_mortal
 
-  void* (*new_double_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_double_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 Creates a new double[] type array by specifying the length.
 
 =head2 new_double_array
 
-  void* (*new_double_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_double_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 The same as C<new_double_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_double_array_no_mortal>.
 
@@ -1118,13 +1063,13 @@ Examples:
 
 =head2 new_object_array_no_mortal
 
-  void* (*new_object_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+C<void* (*new_object_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);>
 
 Creates a new object type array by specifying the basic type and the array length. The basic type must be the correct basic type got by the L</"get_basic_type"> Native API.
 
 =head2 new_object_array
 
-  void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+C<void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);>
 
 The same as C<new_object_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_no_mortal>.
 
@@ -1135,13 +1080,13 @@ Examples:
 
 =head2 new_muldim_array_no_mortal
 
-  void* (*new_muldim_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);
+C<void* (*new_muldim_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);>
 
 Creates a new multi-dimensional array by specifying the basic type and the type dimension, and the array length. The basic type must be the correct basic type got bu the L</"get_basic_type_id"> Native API. the type dimension of the element must be less than or equals to 255.
 
 =head2 new_muldim_array
 
-  void* (*new_muldim_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);
+C<void* (*new_muldim_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);>
 
 The same as C<new_muldim_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_no_mortal>.
 
@@ -1153,13 +1098,13 @@ Examples:
 
 =head2 new_mulnum_array_no_mortal
 
-  void* (*new_mulnum_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+C<void* (*new_mulnum_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);>
 
 Creates a new multi-numeric array by specifying the basic type and the array length. The basic type must be the correct basic type got by the L</"basic_type_id"> Native API.
 
 =head2 new_mulnum_array
 
-  void* (*new_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);
+C<void* (*new_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);>
 
 The same as C<new_mulnum_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_no_mortal>.
 
@@ -1170,13 +1115,13 @@ Examples:
 
 =head2 new_string_nolen_no_mortal
 
-  void* (*new_string_nolen_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
+C<void* (*new_string_nolen_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);>
 
 Creates a new string object by specifying C language char* type value. this value must end with "\0".
 
 =head2 new_string_nolen
 
-  void* (*new_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);
+C<void* (*new_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes);>
 
 The same as C<new_string_nolen_no_mortal>, and push the created object to the mortal stack. Use this function in normal use instead of C<new_string_nolen_no_mortal>.
 
@@ -1186,7 +1131,7 @@ Examples:
 
 =head2 new_string_no_mortal
 
-  void* (*new_string_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
+C<void* (*new_string_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);>
 
 Creates a new string object with the bytes and the length.
 
@@ -1194,7 +1139,7 @@ If the length of bytes is lower than the specified length or the bytes is NULL, 
 
 =head2 new_string
 
-  void* (*new_string)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);
+C<void* (*new_string)(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length);>
 
 The same as C<new_string_no_mortal>, and push the created object to the mortal stack. Usually use this function instead of C<new_string_no_mortal>.
 
@@ -1204,31 +1149,31 @@ Examples:
 
 =head2 concat_no_mortal
 
-  void* (*concat_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
+C<void* (*concat_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);>
 
 Concats two strings.
 
 =head2 concat
 
-  void* (*concat)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);
+C<void* (*concat)(SPVM_ENV* env, SPVM_VALUE* stack, void* string1, void* string2);>
 
 The same as C<concat_no_mortal>, and push the created object to the mortal stack. Use this function in normal use instead of C<concat_no_mortal>.
 
 =head2 new_stack_trace_no_mortal
 
-  void* (*new_stack_trace_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+C<void* (*new_stack_trace_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);>
 
 Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
 
 =head2 new_stack_trace
 
-  void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);
+C<void* (*new_stack_trace)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, void* method, int32_t line);>
 
 The same as L</"new_stack_trace_no_mortal">, and push the created object to the mortal stack.
 
 =head2 length
 
-  int32_t (*length)(SPVM_ENV*, void* array);
+C<int32_t (*length)(SPVM_ENV*, void* array);>
 
 If you specify an array, the length of the array is returned.
 
@@ -1238,7 +1183,7 @@ Examples:
 
 =head2 get_elems_byte
 
-  int8_t* (*get_elems_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+C<int8_t* (*get_elems_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);>
 
 If you specify a byte[] type array, the pointer at the beginning of the internally stored C language int8_t[] type array is returned.  
 
@@ -1249,7 +1194,7 @@ Examples:
 
 =head2 get_elems_short
 
-  int16_t* (*get_elems_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+C<int16_t* (*get_elems_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);>
 
 If a short[] type array is specified, the pointer at the beginning of the internally stored C language int16_t[] type array is returned.
 
@@ -1260,7 +1205,7 @@ Examples:
 
 =head2 get_elems_int
 
-  int32_t* (*get_elems_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+C<int32_t* (*get_elems_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);>
 
 When an int[] type array is specified, the pointer at the beginning of the internally stored C language int32_t[] type array is returned.
 
@@ -1271,7 +1216,7 @@ Examples:
 
 =head2 get_elems_long
 
-  int64_t* (*get_elems_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+C<int64_t* (*get_elems_long)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);>
 
 When a long[] type array is specified, the pointer at the beginning of the internally stored C language int64_t[] type array is returned.
 
@@ -1282,7 +1227,7 @@ Examples:
 
 =head2 get_elems_float
 
-  float* (*get_elems_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+C<float* (*get_elems_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);>
 
 When a float[] type array is specified, the pointer at the beginning of the C language float[] type array internally held is returned.
 
@@ -1293,7 +1238,7 @@ Examples:
 
 =head2 get_elems_double
 
-  double* (*get_elems_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+C<double* (*get_elems_double)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);>
 
 If a double[] type array is specified, the pointer at the beginning of the internally stored C double[] type array is returned.
 
@@ -1304,7 +1249,7 @@ Examples:
 
 =head2 get_elem_object
 
-  void* (*get_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);
+C<void* (*get_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);>
 
 Gets an object of an element given an array of object types and a methodscript. If the element is a weak reference, the weak reference is removed.
 
@@ -1314,7 +1259,7 @@ Examples:
 
 =head2 set_elem_object
 
-  void (*set_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* object);
+C<void (*set_elem_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* object);>
 
 If you specify an array of object type and methodscript and element objects, the element object is assigned to the corresponding methodscript position. If the element's object has a weak reference, the weak reference is removed. The reference count of the originally assigned object is decremented by 1.
 
@@ -1324,7 +1269,7 @@ Examples:
 
 =head2 get_pointer
 
-  void* (*get_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object);
+C<void* (*get_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object);>
 
 Specifies a pointer object and return the C language pointer stored inside the object.
 
@@ -1334,13 +1279,13 @@ Examples:
 
 =head2 set_pointer
 
-  void (*set_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object, void* pointer);
+C<void (*set_pointer)(SPVM_ENV* env, SPVM_VALUE* stack, void* pointer_object, void* pointer);>
 
 If you specify a pointer object and a C language pointer, the C language pointer is saved in the internal data of the pointer type object.
 
 =head2 call_method_no_mortal
 
-  int32_t (*call_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);
+C<int32_t (*call_method_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);>
 
 Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
@@ -1348,25 +1293,25 @@ The return value of the method is set to stack[0].
 
 =head2 get_exception
 
-  void* (*get_exception)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<void* (*get_exception)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Gets a exception message which type is byte[].
 
 =head2 set_exception
 
-  void (*set_exception)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception);
+C<void (*set_exception)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception);>
 
 Sets a exception message which type is byte[].
 
 =head2 enter_scope
 
-  int32_t (*enter_scope)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<int32_t (*enter_scope)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Creates a new scope and return the scope ID.
 
 =head2 push_mortal
 
-  int32_t (*push_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*push_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Add an object to the mortal stack.
 
@@ -1376,13 +1321,13 @@ If this method don't alloc memory for new mortal information, return 1.
 
 =head2 leave_scope
 
-  void (*leave_scope)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id);
+C<void (*leave_scope)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t scope_id);>
 
 Specifies a scope ID to exit that scope and decrement the object's reference count stored in the mortal stack. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
 
 =head2 isa
 
-  int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* cast_basic_type, int32_t cast_type_dimension);
+C<int32_t (*isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* cast_basic_type, int32_t cast_type_dimension);>
 
 Checks if the object C<object> can be assigned to the type given by the basic type C<cast_basic_type> and the type dimension C<cast_type_dimension>.
 
@@ -1390,7 +1335,7 @@ If it is ok, returns 1. Otherwise returns 0.
 
 =head2 elem_isa
 
-  int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);
+C<int32_t (*elem_isa)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, void* element);>
 
 Checks if the element C<element> can be assigned to the element of the array C<array>.
 
@@ -1398,13 +1343,13 @@ If it is ok, returns 1. Otherwise returns 0.
 
 =head2 is_type
 
-  int32_t (*is_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);
+C<int32_t (*is_type)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* basic_type, int32_t type_dimension);>
 
 Given an object and a basic type and a type dimension, returns a nonzero value if the object matches both the basic type and the type dimension, and 0 otherwise.
 
 =head2 is_object_array
 
-  int32_t (*is_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*is_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If the object is a object array, returns 1, otherwise returns 0.
 
@@ -1412,25 +1357,25 @@ If the object is C<NULL>, returns 0.
 
 =head2 weaken
 
-  int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref);
+C<int32_t (*weaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref);>
 
 Weakens the reference C<ref>.
 
 =head2 isweak 
 
-  int32_t (*isweak()SPVM_ENV* env, void** ref);
+C<int32_t (*isweak()SPVM_ENV* env, void** ref);>
 
 Checks if the reference C<ref> is weakend. If so, returns 1, otherwise, returns 0.
 
 =head2 unweaken
 
-  void (*unweaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref);
+C<void (*unweaken)(SPVM_ENV* env, SPVM_VALUE* stack, void** ref);>
 
 Unweakens the reference C<ref>.
 
 =head2 get_type_name_no_mortal
 
-  void* (*get_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<void* (*get_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Gets a new C<string> object that is the type name of the object.
 
@@ -1438,23 +1383,23 @@ This function does not add the returned object to the mortal stack, so use the L
 
 =head2 get_type_name
 
-  void* (*get_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<void* (*get_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Gets a new C<string> object that is the type name of the object.
 
 =head2 get_chars
 
-  const char* (*get_chars)(SPVM_ENV* env, SPVM_VALUE* stack, void* string_object);
+C<const char* (*get_chars)(SPVM_ENV* env, SPVM_VALUE* stack, void* string_object);>
 
 Gets characters in the string object.
 
 Examples:
 
-  const char* bytes = env->get_chars(env, stack, string_object);
+C<const char* bytes = env->get_chars(env, stack, string_object);>
 
 =head2 die
 
-  int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);
+C<int32_t (*die)(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...);>
 
 Creates a C<sprintf> formatted message with file name and line number and set it to the exception.
 
@@ -1468,7 +1413,7 @@ Examples:
 
 =head2 new_object_by_name
 
-  void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void* (*new_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 This is the same as the L</"new_object"> Native API, but you can specify basic type name directly.
 
@@ -1482,7 +1427,7 @@ Examples:
 
 =head2 call_class_method_by_name
 
-  void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*call_class_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Calls a class method given the basic type name and method name.
 
@@ -1501,31 +1446,29 @@ Examples:
 
 =head2 call_instance_method_by_name
 
-  void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*call_instance_method_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Calls an instance method given the method name.
 
 =head2 get_field_string_chars_by_name
 
-  const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack,
-    void* object, const char* field_name,
-    int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);<
 
 =head2 dump_no_mortal
 
-  void* (*dump_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<void* (*dump_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Gets the string which dump the object. The string is the same as the return value of C<dump> operator.
 
 =head2 dump
 
-  void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<void* (*dump)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 The same as C<dump_no_mortal>, and push the created object to the mortal stack. Use this function in normal use instead of C<dump_no_mortal>.
 
 =head2 get_instance_method_static
 
-  void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);
+C<void* (*get_instance_method_static)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name);>
 
 Returns an instance method given a basic type name and a method name. If the instance method does not exists, returns NULL.
 
@@ -1535,7 +1478,7 @@ Examples:
 
 =head2 get_bool_object_value
 
-  int32_t (*get_bool_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* bool_object);
+C<int32_t (*get_bool_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* bool_object);>
 
 Gets the value of a L<Bool|SPVM::Bool> object. If the Bool object is true, return 1, otherwise return 0.
 
@@ -1545,19 +1488,19 @@ Examples:
 
 =head2 make_read_only
 
-  void (*make_read_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* string)
+C<void (*make_read_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* string)>
 
 Make the string read-only.
 
 =head2 is_read_only
 
-  void (*make_read_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* string)
+C<void (*make_read_only)(SPVM_ENV* env, SPVM_VALUE* stack, void* string)>
 
 If the string is read-only, returns 1, otherwise returns 0.
 
 =head2 is_array
 
-  int32_t (*is_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*is_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If the object is an array, returns 1, otherwise returns 0.
 
@@ -1565,7 +1508,7 @@ If the object is C<NULL>, returns 0.
 
 =head2 is_string
 
-  int32_t (*is_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*is_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If the object is a string, returns 1, otherwise returns 0.
 
@@ -1573,7 +1516,7 @@ If the object is C<NULL>, returns 0.
 
 =head2 is_numeric_array
 
-  int32_t (*is_numeric_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*is_numeric_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If the object is a numeric array, returns 1, otherwise returns 0.
 
@@ -1581,7 +1524,7 @@ If the object is C<NULL>, returns 0.
 
 =head2 is_mulnum_array
 
-  int32_t (*is_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*is_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If the object is a multi numeric array, returns 1, otherwise returns 0.
 
@@ -1589,13 +1532,13 @@ If the object is C<NULL>, returns 0.
 
 =head2 get_elem_size
 
-  int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+C<int32_t (*get_elem_size)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);>
 
 Gets the byte size of the element of the array.
 
 =head2 new_array_proto
 
-  void* (*new_array_proto)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
+C<void* (*new_array_proto)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);>
 
 Creates a new array that have the type of the given array and the given length.
 
@@ -1607,7 +1550,7 @@ If the given length is lower than 0, returns C<NULL>.
 
 =head2 copy
 
-  void* (*copy)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<void* (*copy)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 Copy the object. The type of the object must be a string type, a numeric array, or a multi numeric array.
 
@@ -1615,7 +1558,7 @@ If the given object is L<NULL>, returns L<NULL>.
 
 =head2 shorten
 
-  void (*shorten)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t new_length);
+C<void (*shorten)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, int32_t new_length);>
 
 Shorten the string with the given length.
 
@@ -1629,39 +1572,27 @@ The charaters of the after the given length are filled with C<\0>.
 
 =head2 print
 
-  void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
+C<void (*print)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);>
 
 Prints a string to stdout. This is the same operator as the print operator.
 
 =head2 print_stderr
 
-  void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
+C<void (*print_stderr)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);>
 
 Prints a string to stderr. This is the same operator as the print operator except for the destination of the output.
 
 =head2 new_stack
 
-  SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
+C<SPVM_VALUE* (*new_stack)(SPVM_ENV* env);>
 
 =head2 free_stack
 
-  void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
-
-=head2 new_memory_stack
-
-(Deprecated)
-
-  void* (*new_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
-
-Creates a new memory block that is managed by the call stack with the byte size and return the address. If it fails, return C<NULL>.
-
-The count of the memory block that is managed by the stack is incremented by 1.
-
-The count of the memory block that is managed by the environment is incremented by 1.
+C<void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 =head2 new_memory_block
 
-  void* (*new_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
+C<void* (*new_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);>
 
 Creates a new memory block that is managed by the call stack with the byte size and return the address. If it fails, return C<NULL>.
 
@@ -1669,21 +1600,9 @@ The count of the memory block that is managed by the stack is incremented by 1.
 
 The count of the memory block that is managed by the environment is incremented by 1.
 
-=head2 free_memory_stack
-
-(Deprecated)
-
-  void (*free_memory_stack)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
-
-Frees the memory block that is managed by the call stack.
-
-The count of the memory block that is managed by the stack is decremented by 1.
-
-The count of the memory block that is managed by the environment is decremented by 1.
-
 =head2 free_memory_block
 
-  void (*free_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
+C<void (*free_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);>
 
 Frees the memory block that is managed by the call stack.
 
@@ -1693,7 +1612,7 @@ The count of the memory block that is managed by the environment is decremented 
 
 =head2 get_memory_blocks_count
 
-  int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Returns the count of memory blocks the current runtime allocates.
 
@@ -1727,19 +1646,19 @@ Calls the L</"strerror"> function given I<length> 0.
 
 =head2 new_string_array
 
-  void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_string_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 Calls the L</"new_string_array_no_mortal"> native API and calls the L</"push_mortal/"> native API given the return value.
 
 =head2 new_string_array_no_mortal
 
-    void* (*new_string_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
+C<void* (*new_string_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
 Creates a new string array.
 
 =head2 dumpc
 
-  const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<const char* (*dumpc)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 The alias for the following code using L</"dump">.
 
@@ -1747,13 +1666,13 @@ The alias for the following code using L</"dump">.
 
 =head2 new_pointer_object_no_mortal
 
-  void* (*new_pointer_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
+C<void* (*new_pointer_object_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);>
 
 Creates a pointer object by specifying a basic type and a C language pointer. The basic type must be the correct basic type got by the L</"get_basic_type"> Native API.
 
 =head2 new_pointer_object
 
-  void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);
+C<void* (*new_pointer_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, void* pointer);>
 
 The same as L</"new_pointer_no_mortal">, and push the created object to the mortal stack. Use this function in normal use instead of C<new_pointer_no_mortal>.
 
@@ -1765,7 +1684,7 @@ Examples:
 
 =head2 new_pointer_object_by_name
 
-  void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void* (*new_pointer_object_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 This is the same as L</"new_pointer"> function, but you can specify basic type name directly.
 
@@ -1777,19 +1696,19 @@ If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> 
 
 =head2 get_elem_string
 
-  void* (*get_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);
+C<void* (*get_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index);>
 
 The same as L</"get_elem_object">.
 
 =head2 set_elem_string
 
-  void (*set_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* string);
+C<void (*set_elem_string)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t index, void* string);>
 
 The same as L</"set_elem_object">.
 
 =head2 is_class
 
-  int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*is_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If the object is an instance of a class, returns 1, otherwise returns 0.
 
@@ -1797,7 +1716,7 @@ If the object is C<NULL>, returns 0.
 
 =head2 is_pointer_class
 
-  int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+C<int32_t (*is_pointer_class)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
 
 If the object is an instance of a pointer class, returns 1, otherwise returns 0.
 
@@ -1805,7 +1724,7 @@ If the object is C<NULL>, returns 0.
 
 =head2 call_instance_method_static_by_name
 
-  void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Calls an instance method by the basic type name and the method name.
 
@@ -1823,7 +1742,7 @@ Examples:
 
 =head2 get_compile_type_name_no_mortal
 
-  void* (*get_compile_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);
+C<void* (*get_compile_type_name_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);>
 
 Gets a new C<string> object that is the compile-time type name with a basic type name, a type dimension, a type flag.
 
@@ -1831,7 +1750,7 @@ This function does not add the returned object to the mortal stack, so use the L
 
 =head2 get_compile_type_name
 
-  void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);
+C<void* (*get_compile_type_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);>
 
 Gets a new C<string> object that is the compile-time type name with a basic type name, a type dimension, a type flag.
 
@@ -1843,7 +1762,7 @@ Returns the L<version string|SPVM::Document::Language/"Version String"> of the S
 
 =head2 get_spvm_version_number
 
-  double (*get_spvm_version_number)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<double (*get_spvm_version_number)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Returns the L<version number|SPVM::Document::Language/"Version Number"> of the SPVM language.
 
@@ -1857,7 +1776,7 @@ If the version string in the basic_type is not defined, returns NULL.
 
 =head2 get_version_number
 
-  double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);
+C<double (*get_version_number)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);>
 
 Returns the version number of a basic_type. The C<basic_type_id> must be a valid basic type.
 
@@ -1865,7 +1784,7 @@ If the version string in the basic_type is not defined, returns -1.
 
 =head2 call_method
 
-  int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);
+C<int32_t (*call_method)(SPVM_ENV* env, SPVM_VALUE* stack, void* method, int32_t args_width);>
 
 Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
@@ -1875,59 +1794,59 @@ If stack[0] is a value of an object type, the object is pushed to the mortal sta
 
 =head2 isa_by_name
 
-  int32_t (*isa_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);
+C<int32_t (*isa_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);>
 
 The feature is the same as the L</"isa">, but the basic type name can be given. If the basic type name is not found, returns 0.
 
 =head2 is_type_by_name
 
-  int32_t (*is_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);
+C<int32_t (*is_type_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* basic_type_name, int32_t type_dimension);>
 
 The feature is the same as the L</"is_type">, but the basic type name can be given. If the basic type name is not found, returns 0.
 
 =head2 new_stack_trace_raw_by_name
 
-  void* (*new_stack_trace_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* basic_type_name, const char* method_name, int32_t line);
+C<void* (*new_stack_trace_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* basic_type_name, const char* method_name, int32_t line);>
 
 Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
 
 =head2 new_stack_trace_by_name
 
-  void* (*new_stack_trace_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* basic_type_name, const char* method_name, int32_t line);
+C<void* (*new_stack_trace_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* exception, const char* basic_type_name, const char* method_name, int32_t line);>
 
 The same as L</"new_stack_trace_raw_by_name">, and push the created object to the mortal stack.
 
 =head2 new_object_array_raw_by_name
 
-  void* (*new_object_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+C<void* (*new_object_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);>
 
 =head2 new_object_array_by_name
 
-  void* (*new_object_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+C<void* (*new_object_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);>
 
 =head2 new_muldim_array_raw_by_name
 
-  void* (*new_muldim_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);
+C<void* (*new_muldim_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);>
 
 =head2 new_muldim_array_by_name
 
-  void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);
+C<void* (*new_muldim_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t element_dimension, int32_t length);>
 
 =head2 new_mulnum_array_raw_by_name
 
-  void* (*new_mulnum_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+C<void* (*new_mulnum_array_raw_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);>
 
 =head2 new_mulnum_array_by_name
 
-  void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);
+C<void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length);>
 
 =head2 get_field_object_defined_and_has_pointer_by_name
 
-  void* (*get_field_object_defined_and_has_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);
+C<void* (*get_field_object_defined_and_has_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);>
 
 =head2 get_field_object_ref
 
-  void** (*get_field_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
+C<void** (*get_field_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);>
 
 Gets the address of the value of a field of the object type.
 
@@ -1935,7 +1854,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 =head2 get_field_object_ref_by_name
 
-  void** (*get_field_object_ref_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
+C<void** (*get_field_object_ref_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Gets the address of the value of a field of the object type by its basic type name of the object and field name.
 
@@ -1943,7 +1862,7 @@ If an excetpion is thrown because the field does not exist or other errors occur
 
 =head2 check_stack_env
 
-  int32_t (*check_stack_env)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<int32_t (*check_stack_env)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 If the env of the stack is equal to the env, returns 1. Otherwise returns 0.
 
@@ -1955,31 +1874,31 @@ Assigns an object C<object> to the place referred by the reference C<ref>.
 
 =head2 say
 
-  void (*say)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
+C<void (*say)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);>
 
 Prints a string and C<\n> to stdout. This is the same operator as the say operator.
 
 =head2 warn
 
-  void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line);
+C<void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line);>
 
 Operates the warn operator.
 
 =head2 spvm_stdin
 
-  FILE* (*spvm_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<FILE* (*spvm_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Gets the standard input opened for SPVM.
 
 =head2 spvm_stdout
 
-  FILE* (*spvm_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<FILE* (*spvm_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Gets the standard output opened for SPVM.
 
 =head2 spvm_stderr
 
-  FILE* (*spvm_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<FILE* (*spvm_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Gets the standard error opened for SPVM.
 
@@ -2181,8 +2100,8 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   191 strerror_string_nolen,
   192 strerror,
   193 strerror_nolen,
-  194 new_memory_stack,
-  195 free_memory_stack,
+  194 reserved194,
+  195 reserved195,
   196 new_stack,
   197 free_stack,
   198 get_field_object_defined_and_has_pointer_by_name,

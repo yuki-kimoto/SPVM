@@ -291,8 +291,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_strerror_string_nolen,
     SPVM_API_strerror,
     SPVM_API_strerror_nolen,
-    SPVM_API_new_memory_stack,
-    SPVM_API_free_memory_stack,
+    reserved194,
+    reserved195,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
     SPVM_API_get_field_object_defined_and_has_pointer_by_name,
@@ -3241,12 +3241,6 @@ SPVM_RUNTIME_METHOD* SPVM_API_get_instance_method(SPVM_ENV* env, SPVM_VALUE* sta
   return method;
 }
 
-// Deprecated
-void* SPVM_API_new_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
-  
-  return SPVM_API_new_memory_block(env, stack, size);
-}
-
 void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -3304,12 +3298,6 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
     }
 #endif
   }
-}
-
-void SPVM_API_free_memory_stack(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
-  
-  SPVM_API_free_memory_block(env, stack, block);
-  
 }
 
 int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
