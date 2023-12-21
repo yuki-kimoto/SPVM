@@ -2607,7 +2607,7 @@ int32_t SPVM__TestCase__NativeAPI__strerror_string(SPVM_ENV* env, SPVM_VALUE* st
   
   void* strerror_string_value = env->strerror_string(env, stack, errno_value, 0);
   
-  warn("[Test Output]strerr_string:%s", env->get_chars(env, stack, strerror_string_value));
+  spvm_warn("[Test Output]strerr_string:%s", env->get_chars(env, stack, strerror_string_value));
   
   stack[0].ival = 1;
   
