@@ -240,7 +240,6 @@ lib/SPVM/Document/NativeAPI/Runtime.pm
 lib/SPVM/Document/NativeAPI/StringBuffer.pm
 lib/SPVM/Document/NativeAPI/Type.pm
 lib/SPVM/Document/NativeClass.pm
-lib/SPVM/Document/NativeModule.pm
 lib/SPVM/Document/Resource.pm
 lib/SPVM/Document/Tutorial.pm
 lib/SPVM/Document/Tutorial/Complex.pm
