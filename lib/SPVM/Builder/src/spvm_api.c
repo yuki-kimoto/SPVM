@@ -3505,9 +3505,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_get_basic_type_by_id(SPVM_ENV* env, SPVM_VALUE
 
 void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {
   
-  if (length < 0) {
-    return NULL;
-  }
+  assert(length >= 0);
   
   if (length == 0) {
     // Linux maybe needs at least 49.

@@ -1697,13 +1697,33 @@ The count of the memory block that is managed by the environment is decremented 
 
 Returns the count of memory blocks the current runtime allocates.
 
+=head2 strerror_string
+
+C<void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);>
+
+The same as the L</"strerror"> function, but return a string object.
+
+=head2 strerror_string_nolen
+
+C<void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);>
+
+Calls the L</"strerror_string"> function given I<length> 0.
+
 =head2 strerror
 
-  const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
+C<const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);>
 
-Gets the value of C<strerror> of the C language on thread-safely.
+Gets the value of C<strerror> of the C language.
 
-If the length is 0, the length is set to 64.
+If the length is 0, the length is set to 128.
+
+This function is thread-safe.
+
+=head2 strerror_nolen
+
+C<const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);>
+
+Calls the L</"strerror"> function given I<length> 0.
 
 =head2 new_string_array
 
@@ -1783,12 +1803,6 @@ If the object is an instance of a pointer class, returns 1, otherwise returns 0.
 
 If the object is C<NULL>, returns 0.
 
-=head2 strerror_string
-
-  void* (*strerror_string)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
-
-The same as the L</"strerror"> function, but return a C<string> object.
-
 =head2 call_instance_method_static_by_name
 
   void (*call_instance_method_static_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);
@@ -1806,18 +1820,6 @@ Examples:
     if (error_id) { return error_id; }
     output = stack[0].ival;
   }
-
-=head2 strerror_nolen
-
-  const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
-
-The same as L</"strerror"> given the length to 0.
-
-=head2 strerror_string_nolen
-
-  void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
-
-The same as L</"strerror_string"> given the length to 0.
 
 =head2 get_compile_type_name_no_mortal
 
