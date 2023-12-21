@@ -3510,7 +3510,9 @@ void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_v
   }
   
   if (length == 0) {
-    length = 64;
+    // Linux maybe needs at least 49.
+    // Windows needs at least 94.
+    length = 128;
   }
   
   void* obj_strerror_value = SPVM_API_new_string(env, stack, NULL, length);
