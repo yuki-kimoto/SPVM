@@ -124,7 +124,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     // Total area byte size
     int32_t total_vars_size = numeric_vars_size + address_vars_size;
     
-    call_stack = SPVM_API_new_memory_stack(env, stack, total_vars_size + 1);
+    call_stack = SPVM_API_new_memory_block(env, stack, total_vars_size + 1);
     if (call_stack == NULL) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_STACK_ALLOCATION_FAILED]);
       env->set_exception(env, stack, exception);
@@ -2411,7 +2411,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
     }
     
-    SPVM_API_free_memory_stack(env, stack, call_stack);
+    SPVM_API_free_memory_block(env, stack, call_stack);
     call_stack = NULL;
     
     return error_id;
