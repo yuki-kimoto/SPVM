@@ -1265,24 +1265,33 @@ class TestCase::NativeAPI {
     return 1;
   }
   native static method get_bool_object_value_native : int ($bool_object : Bool);
-
+  
   native static method new_string_no_mortal : int ();
-
+  
   native static method new_string : int ();
-
+  
   native static method new_string_nolen_no_mortal : int ();
-
+  
   native static method new_string_nolen : int ();
   
   native static method get_basic_type_id : int ();
-
+  
+  native static method strerror_string : int ();
+  
   native static method strerror_value : string ($errno_value : int);
+  
   native static method strerror_nolen_value : string ($errno_value : int);
+  
   native static method strerror_string_value : string ($errno_value : int);
+  
   native static method strerror_string_nolen_value : string ($errno_value : int);
+  
   native static method new_object_array_no_mortal : int ();
+  
   native static method new_object_array : int ();
+  
   native static method new_string_array : int ();
+  
   native static method new_string_array_value : string[] ();
   
   static method args_width : int () {

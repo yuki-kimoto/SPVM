@@ -3,6 +3,7 @@
 #include <float.h>
 #include <assert.h>
 #include <fcntl.h>
+#include <errno.h>
 
 #include <spvm_native.h>
 
@@ -2596,6 +2597,27 @@ int32_t SPVM__TestCase__NativeAPI__strerror_value(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_strerror_value = env->new_string(env, stack, strerror_value, strlen(strerror_value));
   
   stack[0].oval = obj_strerror_value;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__strerror_string(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t errno_value = -1;
+  
+  void* strerror_string_value = env->strerror_string(env, stack, errno_value, 0);
+  
+  if (strerror_string_value) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  if (!(errno > 0)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  stack[0].ival = 1;
   
   return 0;
 }

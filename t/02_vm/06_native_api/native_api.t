@@ -253,6 +253,8 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
 
 # strerror_string
 {
+  ok(SPVM::TestCase::NativeAPI->strerror_string);
+  
   if (exists $!{EAGAIN}) {
     my $strerror_string = SPVM::TestCase::NativeAPI->strerror_string_value(Errno::EAGAIN);
     ok(ref $strerror_string);
