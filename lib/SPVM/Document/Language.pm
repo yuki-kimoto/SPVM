@@ -250,8 +250,8 @@ The list of keywords:
   copy
   default
   die
-  divui
-  divul
+  div_uint
+  div_ulong
   double
   dump
   elsif
@@ -288,6 +288,8 @@ The list of keywords:
   my
   mulnum_t
   method
+  mod_uint
+  mod_ulong
   mutable
   native
   ne
@@ -303,8 +305,6 @@ The list of keywords:
   public
   precompile
   pointer
-  mod_uint
-  mod_ulong
   return
   require
   required
@@ -1886,10 +1886,10 @@ The list of syntax parsing tokens:
     <td>DIVIDE</td><td>/</td>
   </tr>
   <tr>
-    <td>DIVIDE_UNSIGNED_INT</td><td>divui</td>
+    <td>DIVIDE_UNSIGNED_INT</td><td>div_uint</td>
   </tr>
   <tr>
-    <td>DIVIDE_UNSIGNED_LONG</td><td>divul</td>
+    <td>DIVIDE_UNSIGNED_LONG</td><td>div_ulong</td>
   </tr>
   <tr>
     <td>DOUBLE</td><td>double</td>
@@ -4644,7 +4644,7 @@ You can get and set the element using the L<get array element|/"Getting Array El
   # Setting the element of any object array
   $array->[0] = Int->new(5);
 
-When setting the element of any object array, the element type is checked. If the dimension of the element is not the dimension of the array - 1, an L<exception|/"Exception"> is thrown.
+When setting the element of any object array, the element type is checked. If the dimension of the element is not the dimension of the array - 1, an exception is thrown.
 
 =head2 string Type
 
@@ -7081,23 +7081,21 @@ Examples:
 
 =head2 Addition Operator
 
+The addition operator C<+> calculates the addition of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+
   LEFT_OPERAND + RIGHT_OPERAND
 
-The addition operator C<+> calculates the addition of the C<LEFT_OPERAND> and the C<RIGHT_OPERAND>.
+The addition operator performs the same operation as the following C language operation.
+
+  LEFT_OPERAND + RIGHT_OPERAND
+
+Before this operation, The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
 
 Compilation Errors:
 
-The C<LEFT_OPERAND> and the C<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">.
-
-Type Conversion:
-
-The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on C<LEFT_OPERAND> and C<RIGHT_OPERAND>.
-
-Return Type and Operand Types:
-
-  RETURN_TYPE (OPERAND_LEFT : byte|short|int|long|float|double, OPERAND_RIGHT : byte|short|int|long|float|double)
-
-The C<RETURN_TYPE> is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
 =head2 Subtraction Operator
 
@@ -7107,13 +7105,13 @@ The subtraction operator - is an L<operator|/"Operator"> to calculate the result
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
-the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
+The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
-The subtraction operator performs the operation that exactly same as the following operation in the C language.
+The subtraction operator performs the same operation as the following C language operation.
 
   x - y;
 
-The return type of the subtraction operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+The return type of the subtraction operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
 
 =head2 Multiplication Operator
 
@@ -7123,114 +7121,134 @@ The multiplication operator is an L<operator|/"Operator"> to calculate the resul
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
-the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
+The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
-The multiplication operator performs the operation that exactly same as the following operation in the C language.
+The multiplication operator performs the same operation as the following C language operation.
 
   x * y;
 
-The return type of the multiplication operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+The return type of the multiplication operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
 
 =head2 Division Operator
 
-The division operator C</> is an L<operator|/"Operator"> to culcurate the division of two numbers.
+The division operator C</> is an L<operator|/"Operator"> to calculate the division of two numbers.
 
   LEFT_OPERAND / RIGHT_OPERAND
 
 The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
-the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
+The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
-The division operator performs the operation that exactly same as the following operation in the C language.
+The division operator performs the same operation as the following C language operation.
 
   x / y;
 
-The return type of the division operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+The return type of the division operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
 
-If the two operands are L<integer types|/"Integer Type"> and the value of the right operand is 0, an L<exception|/"Exception"> is thrown.
+If the two operands are L<integer types|/"Integer Type"> and the value of the right operand is 0, an exception is thrown.
 
 =head2 Division Unsigned Int Operator
 
-The division unsigned int operator C<divui> is an L<operator|/"Operator"> to culcurate the unsigned int division of two numbers.
+The division unsigned int operator C<div_uint> calculates the unsigned int division of two numbers.
 
-  LEFT_OPERAND divui RIGHT_OPERAND
+  LEFT_OPERAND div_uint RIGHT_OPERAND
 
-The left operand and the right operand must be an L<int type|/"int Type">. Otherwise a compilation error occurs.
-
-The division unsigned int operator performs the operation that exactly same as the following operation in the C language.
+The division unsigned int operator performs the same operation as the following C language operation.
 
   (uint32_t)x / (uint32_t)y;
 
-The return type of the division operator is the L<int type|/"int Type">.
+The return type is the L<int type|/"int Type">.
 
-If the value of the right operand is 0, an L<exception|/"Exception"> is thrown.
+Compilation Errors:
+
+The left operand and the right operand must be an L<int type|/"int Type">. Otherwise a compilation error occurs.
+
+Exceptions:
+
+If the value of the right operand is 0, an exception is thrown.
 
 =head2 Division Unsigned Long Operator
 
-The division unsigned long operator C<divul> is an L<operator|/"Operator"> to culcurate the unsigned long division of two numbers.
+The division unsigned long operator C<div_ulong> calculates the unsigned long division of two numbers.
 
-  LEFT_OPERAND divul RIGHT_OPERAND
+  LEFT_OPERAND div_ulong RIGHT_OPERAND
 
-The left operand and the right operand must be an L<long type|/"long Type">. Otherwise a compilation error occurs.
-
-The division unsigned long operator performs the operation that exactly same as the following operation in the C language.
+The division unsigned long operator performs the same operation as the following C language operation.
 
   (uint64_t)x / (uint64_t)y;
 
 The return type of the division operator is the L<long type|/"long Type">.
 
-If the value of the right operand is 0, an L<exception|/"Exception"> is thrown.
+Compilation Errors:
+
+The left operand and the right operand must be an L<long type|/"long Type">. Otherwise a compilation error occurs.
+
+Exceptions:
+
+If the value of the right operand is 0, an exception is thrown.
 
 =head2 Modulo Operator
 
-The modulo operator C<%> is an L<operator|/"Operator"> to calculate a modulo of two numbers.
+The modulo operator C<%> is calculates a modulo of two numbers.
 
   LEFT_OPERAND % RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+The L<binary numeric conversion|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
 
-the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
-
-The modulo operator performs the operation that exactly same as the following operation in the C language.
+The modulo operator performs the same operation as the following C language operation.
 
   ret = x % y;
   if ((x < 0) != (y < 0) && ret) { ret += y; }
   
-the return type of Modulo Operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+The return type of the modulo operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+
+Compilation Errors:
+
+The left operand and the right operand must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+
+Exceptions:
 
 If the right operand is 0, an exception is thrown.
 
 =head2 Modulo Unsigned Int Operator
 
-The modulo unsigned int operator C<mod_uint> is an L<operator|/"Operator"> to calculate a unsigned int modulo of two numbers.
+The modulo unsigned int operator C<mod_uint> calculates a unsigned int modulo of two numbers.
 
   LEFT_OPERAND mod_uint RIGHT_OPERAND
 
-The left operand and the right operand must be a L<int type|/"int Type">. Otherwise a compilation error occurs.
-
-The modulo unsigned int operator performs the operation that exactly same as the following operation in the C language.
+The modulo unsigned int operator performs the same operation as the following C language operation.
 
   (uint32_t)x % (uint32_t)y;
 
-The return type of the modulo unsigned int operator is the L<int type|/"int Type">.
+The return type of the modulo unsigned int operator is the int type.
 
-If the value of the right operand is 0, an L<exception|/"Exception"> is thrown.
+Compilation Errors:
+
+The left operand and the right operand must be the int type. Otherwise a compilation error occurs.
+
+Exceptions:
+
+If the value of the right operand is 0, an exception is thrown.
 
 =head2 Modulo Unsigned Long Operator
 
-The modulo unsigned long operator C<mod_ulong> is an L<operator|/"Operator"> to calculate a unsigned long modulo of two numbers.
+The modulo unsigned long operator C<mod_ulong> calculates a unsigned long modulo of two numbers.
 
   LEFT_OPERAND mod_ulong RIGHT_OPERAND
 
-The left operand and the right operand must be a L<long type|/"long Type">. Otherwise a compilation error occurs.
-
-The modulo unsigned long operator performs the operation that exactly same as the following operation in the C language.
+The modulo unsigned long operator performs the same operation as the following C language operation.
 
   (uint64_t)x % (uint64_t)y;
 
-The return type of the modulo unsigned long operator is the L<long type|/"long Type">.
+The return type of the modulo unsigned long operator is the long type.
 
-If the value of the right operand is 0, an L<exception|/"Exception"> is thrown.
+Compilation Errors:
+
+The left operand and the right operand must be a long type. Otherwise a compilation error occurs.
+
+Exceptions:
+
+If the value of the right operand is 0, an exception is thrown.
 
 =head2 Increment Operator
 
@@ -7390,7 +7408,7 @@ The bit AND operator C<&> is an L<operator|/"Operator"> to performe a bit AND op
 
 The left operand and the right operand must be an L<integer type/"Integer Type">. Otherwise a compilation error occurs.
 
-A L<binary numeric widening conversion|/"Binary Numeric Conversion"> is performed.
+A L<binary numeric widening conversion|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
 
 The return value is the same as the follwoing operation of the C language.
 
@@ -7413,7 +7431,7 @@ The bit OR operator C<|> is an L<operator|/"Operator"> to performe a bit OR oper
 
 The left operand and the right operand must be an L<integer type/"Integer Type">. Otherwise a compilation error occurs.
 
-A L<binary numeric widening conversion|/"Binary Numeric Conversion"> is performed.
+A L<binary numeric widening conversion|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
 
 The return value is the same as the follwoing operation of the C language.
 
@@ -7623,7 +7641,7 @@ The list of numeric comparison operators.
 
 The types of the left operand and the right operand must be comparable types. Otherwise a compilation error occurs.
 
-In Numeric Type Comparison, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed for The left operand and the right operand.
+In Numeric Type Comparison, the L<binary numeric conversion|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed for The left operand and the right operand.
 
 the Numeric Comparison Operation is performed that exactly same as the following operation in the C language.
 

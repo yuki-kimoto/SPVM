@@ -582,27 +582,27 @@ use Test::More;
   }
 }
 
-# divui
+# div_uint
 {
   {
-    my $source = 'class MyClass { static method main : void () { 1L divui 1; } }';
-    compile_not_ok($source, q|The left operand of the divui operator must be the int type|);
+    my $source = 'class MyClass { static method main : void () { 1L div_uint 1; } }';
+    compile_not_ok($source, q|The left operand of the div_uint operator must be the int type|);
   }
   {
-    my $source = 'class MyClass { static method main : void () { 1 divui 1L; } }';
-    compile_not_ok($source, q|The right operand of the divui operator must be the int type|);
+    my $source = 'class MyClass { static method main : void () { 1 div_uint 1L; } }';
+    compile_not_ok($source, q|The right operand of the div_uint operator must be the int type|);
   }
 }
 
-# divul
+# div_ulong
 {
   {
-    my $source = 'class MyClass { static method main : void () { 1 divul 1L; } }';
-    compile_not_ok($source, q|The left operand of the divul operator must be the long type|);
+    my $source = 'class MyClass { static method main : void () { 1 div_ulong 1L; } }';
+    compile_not_ok($source, q|The left operand of the div_ulong operator must be the long type|);
   }
   {
-    my $source = 'class MyClass { static method main : void () { 1L divul 1; } }';
-    compile_not_ok($source, q|The right operand of the divul operator must be the long type|);
+    my $source = 'class MyClass { static method main : void () { 1L div_ulong 1; } }';
+    compile_not_ok($source, q|The right operand of the div_ulong operator must be the long type|);
   }
 }
 

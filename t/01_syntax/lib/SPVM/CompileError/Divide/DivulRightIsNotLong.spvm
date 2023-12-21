@@ -1,5 +1,5 @@
 class CompileError::Divide::DivulRightIsNotLong {
   static method main : int () {
-    1L divul 3;
+    1L div_ulong 3;
   }
 }

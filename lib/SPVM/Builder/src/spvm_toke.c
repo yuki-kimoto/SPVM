@@ -1839,11 +1839,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIE);
                   keyword_token = DIE;
                 }
-                else if (strcmp(symbol_name, "divui") == 0) {
+                else if (strcmp(symbol_name, "div_uint") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIVIDE_UNSIGNED_INT);
                   keyword_token = DIVIDE_UNSIGNED_INT;
                 }
-                else if (strcmp(symbol_name, "divul") == 0) {
+                else if (strcmp(symbol_name, "div_ulong") == 0) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_DIVIDE_UNSIGNED_LONG);
                   keyword_token = DIVIDE_UNSIGNED_LONG;
                 }

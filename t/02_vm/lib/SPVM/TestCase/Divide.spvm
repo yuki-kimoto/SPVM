@@ -193,8 +193,8 @@ class TestCase::Divide {
       # 0 = -1 / 3
       my $ret_div = $x / 3;
       
-      # 1431655765 = 4,294,967,295 divui 3
-      my $ret_divui = $x divui 3;
+      # 1431655765 = 4,294,967,295 div_uint 3
+      my $ret_divui = $x div_uint 3;
       
       unless ($ret_divui isa int) {
         return 0;
@@ -219,8 +219,8 @@ class TestCase::Divide {
       # 0 = -1 / 3
       my $ret_div = $x / 3L;
       
-      # 6,148,914,691,236,517,205 = 18,446,744,073,709,551,615 divul 3
-      my $ret_divul = $x divul 3L;
+      # 6,148,914,691,236,517,205 = 18,446,744,073,709,551,615 div_ulong 3
+      my $ret_divul = $x div_ulong 3L;
 
       unless ($ret_divul isa long) {
         return 0;

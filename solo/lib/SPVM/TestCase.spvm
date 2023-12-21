@@ -291,7 +291,7 @@ EOS
       my $ret_div = $uint_max / 3;
       
       # 1431655765 = 4,294,967,295 / 3
-      my $ret_divui = $uint_max divui 3;
+      my $ret_divui = $uint_max div_uint 3;
       
       warn "$ret_div $ret_divui";
     }
@@ -302,7 +302,7 @@ EOS
       my $ret_div = $ulong_max / 3L;
       
       # 6,148,914,691,236,517,205 = 18,446,744,073,709,551,615 / 3
-      my $ret_divui = $ulong_max divul 3L;
+      my $ret_divui = $ulong_max div_ulong 3L;
       
       warn "$ret_div $ret_divui";
     }
