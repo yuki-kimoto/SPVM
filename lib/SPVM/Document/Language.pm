@@ -7193,8 +7193,9 @@ the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on th
 
 The remainder operator performs the operation that exactly same as the following operation in the C language.
 
-  x % y;
-
+  ret = x % y;
+  if ((x < 0) != (y < 0) && ret) { ret += y; }
+  
 the return type of Remainder Operator is the type that the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 If the right operand is 0, the remainder operator throw an L<exception|/"Exception">.

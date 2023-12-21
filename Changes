@@ -35,7 +35,10 @@
   [Incompatible Changes]
     * Remove the deprecated new_memory_stack native API.
     * Remove the deprecated free_memory_stack native API.
-    
+    * The % operator returns modulo instead of C remainder. This is the same as the Perl's % beheivor.
+      int32_t ret = in1 % in2;
+      if ((in1 < 0) != (in2 < 0) && ret) { ret += in2; }
+      
 0.989063 2023-11-20
   [Incompatible Changes]
     * The SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE native API constant is renamed to SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS.

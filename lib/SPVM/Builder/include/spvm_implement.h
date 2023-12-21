@@ -238,7 +238,9 @@ static inline void SPVM_IMPLEMENT_REMAINDER_INT(SPVM_ENV* env, SPVM_VALUE* stack
     *error_id = 1;
   }
   else {
-    *out = in1 % in2;
+    int32_t ret = in1 % in2;
+    if ((in1 < 0) != (in2 < 0) && ret) { ret += in2; }
+    *out = ret;
   }
 }
 
@@ -249,7 +251,9 @@ static inline void SPVM_IMPLEMENT_REMAINDER_LONG(SPVM_ENV* env, SPVM_VALUE* stac
     *error_id = 1;
   }
   else {
-    *out = in1 % in2;
+    int64_t ret = in1 % in2;
+    if ((in1 < 0) != (in2 < 0) && ret) { ret += in2; }
+    *out = ret;
   }
 }
 
