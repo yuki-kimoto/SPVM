@@ -3506,13 +3506,14 @@ void* SPVM_API_strerror_string(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_v
   
   int32_t status = SPVM_STRERROR_strerror(errno_value, strerror_value, length);
   
-  if (status == 0) {
-    SPVM_API_shorten(env, stack, obj_strerror_value, strlen(strerror_value));
-    return obj_strerror_value;
-  }
-  else {
+  if (!(status == 0)) {
+    errno = status;
     return NULL;
   }
+  
+  SPVM_API_shorten(env, stack, obj_strerror_value, strlen(strerror_value));
+  
+  return obj_strerror_value;
 }
 
 const char* SPVM_API_strerror(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length) {

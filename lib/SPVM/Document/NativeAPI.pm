@@ -1229,7 +1229,7 @@ Examples:
 
 C<float* (*get_elems_float)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);>
 
-When a float[] type array is specified, the pointer at the beginning of the C language float[] type array internally held is returned.
+When a float[] type array is specified, the pointer at the beginning in the C language float[] type array internally held is returned.
 
 Examples:
 
@@ -1626,23 +1626,35 @@ The same as the L</"strerror"> function, but return a string object.
 
 C<void* (*strerror_string_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);>
 
-Calls the L</"strerror_string"> function given I<length> 0.
+Calls the L</"strerror_string"> function given I<length> 0, and returns its return value.
 
 =head2 strerror
 
 C<const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);>
 
-Gets the value of C<strerror> of the C language.
+Returns the return value of the L<strerror|https://linux.die.net/man/3/strerror> function in the C language.
 
 If the length is 0, the length is set to 128.
 
+If the C<strerror> function failed, returns NULL with C<errno> set to the an appropriate value.
+
 This function is thread-safe.
+
+This function actually is implemented by the following functions:
+
+Windows:
+
+C<errno_t L<strerror_s|https://learn.microsoft.com/ja-jp/cpp/c-runtime-library/reference/strerror-s-strerror-s-wcserror-s-wcserror-s?view=msvc-170>(char *buffer, size_t sizeInBytes, int errnum);>
+
+Other OSs:
+
+C<int L<strerror_r|https://linux.die.net/man/3/strerror_r>(int errnum, char *buf, size_t buflen); /* XSI-compliant */>
 
 =head2 strerror_nolen
 
 C<const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);>
 
-Calls the L</"strerror"> function given I<length> 0.
+Calls the L</"strerror"> function given I<length> 0, and returns its return value.
 
 =head2 new_string_array
 
