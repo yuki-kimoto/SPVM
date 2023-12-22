@@ -44,13 +44,13 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Resource-Zlib">SPVM::Resource::Zlib</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Sys">SPVM::Sys</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-Local">SPVM::Time::Local</a>
-* <a href="https://github.com/yuki-kimoto/SPVM-Unicode">SPVM::Unicode</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Go">SPVM::Go</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Thread">SPVM::Thread</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-HiRes">SPVM::Time::HiRes</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Getopt-Long">SPVM::Getopt::Long</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-Piece">SPVM::Time::Piece</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Encode">SPVM::Encode</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Unicode-Normalize">SPVM::Unicode::Normalize</a>
 
 ## Highly Experimental CPAN Modules
 
@@ -59,6 +59,10 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Net-SSLeay">SPVM::Net::SSLeay</a>
 
 ## Not Released CPAN Modules
+
+## Deprecated or removed CPAN modules
+
+* <a href="https://github.com/yuki-kimoto/SPVM-Unicode">SPVM::Unicode</a>
 
 ## Examples
 
