@@ -59,6 +59,7 @@
 
 ## Not Released CPAN Modules
 
+* <a href="https://github.com/yuki-kimoto/SPVM-Encode">SPVM::Encode</a>
 
 ## Examples
 
