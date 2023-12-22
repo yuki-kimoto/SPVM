@@ -70,6 +70,8 @@ A class name must be the name that the relative class file path's all C</> are r
     
   }
 
+Compilation Errors:
+
 If class names are invalid, a compilation error occurs.
 
 Examples:
@@ -93,6 +95,8 @@ Examples:
 A method name is a L<symbol name|/"Symbol Name"> that doesn't contains C<::>.
 
 0-length method name is valid. This is used in the L<anon method|/"Anon Method">.
+
+Compilation Errors:
 
 If method names are invalid, a compilation error occurs.
 
@@ -121,6 +125,8 @@ A method name that is the same as a L<keyword/"Keyword"> is allowed.
 
 A field name is a L<symbol name|/"Symbol Name"> that doesn't contains C<::>.
 
+Compilation Errors:
+
 If field names are invalid, a compilation error occurs.
 
 Examples:
@@ -147,6 +153,8 @@ The field name that is the same as a L<keyword/"Keyword"> is allowed.
 
 A variable name begins with C<$> and is followed by a L<symbol name|/"Symbol Name">.
 
+Compilation Errors:
+
 The L<symbol name|/"Symbol Name"> can be wrapped by C<{> and C<}>. If a opening C<{> exists and the closing C<}> doesn't exists, a compilation error occurs.
 
 Examples:
@@ -169,6 +177,8 @@ Examples:
 =head2 Class Variable Name
 
 A class variable name is a L<variable name|/"Variable Name">.
+
+Compilation Errors:
 
 If class variable names are invalid, a compilation error occurs.
 
@@ -475,11 +485,13 @@ C<_> can be used as a separator at the any positions after the first 0-9. C<_> h
 
 The suffix C<L> or C<l> can be at the end.
 
-If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
+If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the L<int type|/"int Type"> and the value is greater than the max value of L<int type|/"int Type"> or less than the minimal value of L<int type|/"int Type">, a compilation error occurs.
+Compilation Errors:
 
-If the return type is the L<long type|/"long Type"> and the value is greater than the max value of L<long type|/"long Type"> or less than the minimal value of L<long type|/"long Type">, a compilation error occurs.
+If the return type is the int type and the value is greater than the max value of L<int type|/"int Type"> or less than the minimal value of L<int type|/"int Type">, a compilation error occurs.
+
+If the return type is the long type and the value is greater than the max value of L<long type|/"long Type"> or less than the minimal value of L<long type|/"long Type">, a compilation error occurs.
 
 Examples:
 
@@ -500,13 +512,9 @@ C<_> can be used as a separator at the any positions after C<0x> or C<0X>. C<_> 
 
 The suffix C<L> or C<l> can be at the end.
 
-If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
+If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the L<int type|/"int Type"> and the value that is except for - is greater than hexadecimal C<FFFFFFFF>, a compilation error occurs.
-
-If the return type is the L<long type|/"long Type"> and the value that is except for - is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error occurs.
-
-If the return type is the L<int type|/"int Type">, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
+If the return type is the int type, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
 
   uint32_t value_uint32_t;
   int32_t value_int32_t = (int32_t)value_uint32_t;
@@ -517,7 +525,7 @@ And if - exists, the following conversion is performed.
 
 For example, C<0xFFFFFFFF> is the same as -1, C<-0xFFFFFFFF> is the same as 1.
 
-If the return type is the L<long type|/"long Type">, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
+If the return type is the long type, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
 
   uint64_t value_uint64_t;
   value_int64_t = (int64_t)value_uint64_t;
@@ -527,6 +535,12 @@ And if - exists, the following conversion is performed.
   value_int64_t = -value_int64_t;
 
 For example, C<0xFFFFFFFFFFFFFFFFL> is the same as C<-1L>, C<-0xFFFFFFFFFFFFFFFFL> is the same as C<1L>.
+
+Compilation Errors:
+
+If the return type is the int type and the value that is except for - is greater than hexadecimal C<FFFFFFFF>, a compilation error occurs.
+
+If the return type is the long type and the value that is except for - is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error occurs.
 
 Examples:
 
@@ -548,13 +562,9 @@ C<_> can be used as a separator at the any positions after 0. C<_> has no meanin
 
 The suffix C<L> or C<l> can be at the end.
 
-If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
+If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the L<int type|/"int Type"> and the value that is except for - is greater than octal 37777777777, a compilation error occurs.
-
-If the return type is the L<long type|/"long Type"> and the value that is except for - is greater than octal 1777777777777777777777, a compilation error occurs.
-
-If the return type is the L<int type|/"int Type">, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
+If the return type is the int type, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
 
   uint32_t value_uint32_t;
   int32_t value_int32_t = (int32_t)value_uint32_t;
@@ -565,7 +575,7 @@ And if - exists, the following conversion is performed.
 
 For example, 037777777777 is the same as -1, -037777777777 is the same as 1.
 
-If the return type is the L<long type|/"long Type">, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
+If the return type is the long type, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
 
   uint64_t value_uint64_t;
   value_int64_t = (int64_t)value_uint64_t;
@@ -575,6 +585,12 @@ And if - exists, the following conversion is performed.
   value_int64_t = -value_int64_t;
 
 For example, C<01777777777777777777777L> is the same as C<-1L>, C<-01777777777777777777777L> is the same as C<1L>.
+
+Compilation Errors:
+
+If the return type is the int type and the value that is except for - is greater than octal 37777777777, a compilation error occurs.
+
+If the return type is the long type and the value that is except for - is greater than octal 1777777777777777777777, a compilation error occurs.
 
 Examples:
 
@@ -593,13 +609,9 @@ C<_> can be used as a separator at the any positions after C<0b> or C<0B>. C<_> 
 
 The suffix C<L> or C<l> can be at the end.
 
-If the suffix C<L> or C<l> exists, the return type is the L<long type|/"long Type">. Otherwise the return type is the L<int type|/"int Type">.
+If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the L<int type|/"int Type"> and the value that is except for - is greater than binary 11111111111111111111111111111111, a compilation error occurs.
-
-If the return type is the L<long type|/"long Type"> and the value that is except for - is greater than binary 1111111111111111111111111111111111111111111111111111111111111111, a compilation error occurs.
-
-If the return type is the L<int type|/"int Type">, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
+If the return type is the int type, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
 
   uint32_t value_uint32_t;
   int32_t value_int32_t = (int32_t)value_uint32_t;
@@ -610,7 +622,7 @@ And if - exists, the following conversion is performed.
 
 For example, C<0b11111111111111111111111111111111> is the same as -1, C<-0b11111111111111111111111111111111> is the same as 1.
 
-If the return type is the L<long type|/"long Type">, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
+If the return type is the long type, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
 
   uint64_t value_uint64_t;
   value_int64_t = (int64_t)value_uint64_t;
@@ -620,6 +632,12 @@ And if - exists, the following conversion is performed.
   value_int64_t = -value_int64_t;
 
 For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is the same as C<-1L>, C<-0b1111111111111111111111111111111111111111111111111111111111111111L> is the same as C<1L>.
+
+Compilation Errors:
+
+If the return type is the int type and the value that is except for - is greater than binary 11111111111111111111111111111111, a compilation error occurs.
+
+If the return type is the long type and the value that is except for - is greater than binary 1111111111111111111111111111111111111111111111111111111111111111, a compilation error occurs.
 
 Examples:
 
@@ -653,6 +671,8 @@ And can be followed by a suffix is C<f>, C<F>, C<d>, or C<D>.
 one of a floating point part, an exponent part, or a suffix must exist.
 
 If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
+
+Compilation Errors:
 
 If the return type is the L<float type|/"float Type">, the floating point literal is parsed by the C<strtof> function of the C language. If the parsing fails, a compilation error occurs.
 
@@ -694,6 +714,8 @@ one of a floating point part or an exponent part must exist.
 
 If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
 
+Compilation Errors:
+
 If the return type is the L<float type|/"float Type">, the floating point literal is parsed by the C<strtof> function of the C language. If the parsing fails, a compilation error occurs.
 
 If the return type is the L<double type|/"double Type">, the floating point literal is parsed by the C<strtod> function of the C language. If the parsing fails, a compilation error occurs.
@@ -723,6 +745,8 @@ And is followed by a printable ASCII character C<0x20-0x7e> or an L<character li
 And ends with C<'>.
 
 The return type is the L<byte type|/"byte Type">.
+
+Compilation Errors:
 
 If the format of the character literal is invalid, a compilation error occurs.
 
@@ -868,6 +892,8 @@ A character literal begins with C<">.
 And is followed by zero or more than zero UTF-8 character, or L<string literal escape characters|/"String Literal Escape Characters">, or L<variable expansions|/"Variable Expansion">.
 
 And ends with C<">.
+
+Compilation Errors:
 
 If the format of the string literal is invalid, a compilation error occurs.
 
@@ -1029,6 +1055,8 @@ The Unicode escape character begins with C<N{U+>.
 And is followed by one or more C<0-9a-fA-F>.
 
 And ends with C<}>.
+
+Compilation Errors:
 
 If the Unicode code point is not a Unicode scalar value, a compilation error occurs.
 
@@ -1216,7 +1244,7 @@ The fat comma is an alias for Comma C<,>.
   # Fat Comma
   ["a" => "b", "c" => "d"]
 
-If the characters of the left operand of the fat camma is not wrapped by C<"> and the characters are a L<symbol name|/"Symbol Name"> that does'nt contain C<::>, the characters are treated as a L<string literal|/"String Literal">.
+If the characters of I<LEFT_OPERAND> of the fat camma is not wrapped by C<"> and the characters are a L<symbol name|/"Symbol Name"> that does'nt contain C<::>, the characters are treated as a L<string literal|/"String Literal">.
 
   # foo_bar2 is treated as "foo_bar2"
   [foo_bar2 => "Mark"]
@@ -1239,6 +1267,8 @@ A string begins from the next line.
 
 Here document syntax ends with the line that begins C<HERE_DOCUMENT_NAME> + a line terminator.
 
+Compilation Errors:
+
 C<<<'HERE_DOCUMENT_NAME'> cannot contains spaces. If so, a compilation error occurs.
 
 Examples:
@@ -1259,6 +1289,8 @@ Examples:
 =head3 Here Document Name
 
 Here document name is composed of C<a-z>, C<A-Z>, C<_>, C<0-9>.
+
+Compilaition Errors:
 
 The length of a here document name must be greater than or equal to 0. Otherwise a compilation error occurs.
 
@@ -2161,7 +2193,7 @@ The unary operator is the L<operator|/"Operator"> that has an operand.
 
 =head2 Binary Operator
 
-The binary operator is the L<operator|/"Operator"> that has the left operand and the right operand.
+The binary operator is the L<operator|/"Operator"> that has I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
 
@@ -2229,6 +2261,10 @@ L<Class attributes|/"Class Attribute"> are written after C<:>.
   
   }
 
+Compilation Errors:
+
+If more than one class is defined in a class file, a compilation error occurs.
+
 Examples:
 
   # Class attributes
@@ -2240,8 +2276,6 @@ Examples:
   
   }
 
-If more than one class is defined in a class file, a compilation error occurs.
-
 =head2 Version Declaration
 
 The C<version> keyword declares the version string of a module.
@@ -2250,13 +2284,17 @@ The C<version> keyword declares the version string of a module.
 
 The operand VERSION_STRING is a version string.
 
-If the version string has already been declared, a compilation error occurs.
-
 A version string is the string type.
 
 It is composed of numbers C<0-9>, C<.>. 
 
 The following checks are performed.
+
+The version string is saved to the version information of the module.
+
+Compilation Errors:
+
+If the version string has already been declared, a compilation error occurs.
 
 A character in a version string must be a number or C<.>. Otherwise a compilation error occurs.
 
@@ -2271,8 +2309,6 @@ The number of C<.> in a version string must be less than or equal to 1. Otherwis
 The length of characters after C<.> in a version string must be divisible by 3. Otherwise a compilation error occurs.
 
 A version number must be able to be parsed by the C<strtod> C function. Otherwise a compilation error occurs.
-
-The version string is saved to the version information of the module.
 
 Examples:
   
@@ -2324,7 +2360,7 @@ The list of class attributes.
       <b>public</b>
     </td>
     <td>
-      This class is public. In other classes, this class can be used as the OPERAND of <a href="#Creating-Object">new operator</a>.
+      This class is public. In other classes, this class can be used as I<OPERAND> of <a href="#Creating-Object">new operator</a>.
     </td>
   </tr>
   <tr>
@@ -2332,7 +2368,7 @@ The list of class attributes.
       <b>private</b>
     </td>
     <td>
-      This class is private. In other classes, this class cannot be used as the OPERAND of <a href="#Creating-Object">new operator</a>. This is default.
+      This class is private. In other classes, this class cannot be used as I<OPERAND> of <a href="#Creating-Object">new operator</a>. This is default.
     </td>
   </tr>
   <tr>
@@ -2340,7 +2376,7 @@ The list of class attributes.
       <b>protected</b>
     </td>
     <td>
-      This class is protected. In other classes except for the child classes, this class cannot be used as the OPERAND of <a href="#Creating-Object">new operator</a>.
+      This class is protected. In other classes except for the child classes, this class cannot be used as I<OPERAND> of <a href="#Creating-Object">new operator</a>.
     </td>
   </tr>
   <tr>
@@ -2379,6 +2415,8 @@ The list of class attributes.
 
 =end html
 
+Compilation Errors:
+
 Only one of class attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
 
 If more than one of C<interface_t>, C<mulnum_t>, and C<pointer> are specified, a compilation error occurs.
@@ -2401,9 +2439,11 @@ The retrun type must be L<void type|/"void Type">.
 
 A destructor must be an L<instance method|/"Instance Method">.
 
-If the definition of the destructor is invalid, a compilation error occurs.
-
 If an L<exception|/"Exception"> occurs in the destructor, the exception is not thrown. Instead, a warnings message is printed to C<STDERR>.
+
+Compilation Errors:
+
+If the definition of the destructor is invalid, a compilation error occurs.
 
 Examples:
   
@@ -2420,7 +2460,7 @@ The child class inherits the destructor of the parent class if the destructor of
 
 Private methods, private fields, and private class variables cannot be accessed except from the current class.
 
-A private class cannot be the OPERAND of the L<new operator|/"Creating Object"> except from the current class.
+A private class cannot be I<OPERAND> of the L<new operator|/"Creating Object"> except from the current class.
 
 The C<allow> statemenet allows the private access from the other classes.
 
@@ -2428,7 +2468,7 @@ The C<allow> statemenet allows the private access from the other classes.
 
 The C<allow> statemenet must be defined directory under the L<class definition|/"Class Definition">.
   
-The class that is the OPERAND of the C<allow> statemenet is loaded by the same way as the L<use statement|/"use Statement">.
+The class that is I<OPERAND> of the C<allow> statemenet is loaded by the same way as the L<use statement|/"use Statement">.
 
 Examples:
 
@@ -2446,6 +2486,8 @@ The C<interface> statement guarantees the following things.
 1. If the class has methods that are definied the the L<interface|/"Interface Definition">, each method must have the L<Method Compatibility|method compatibility> of each interface method in the L<interface definition|/"Interface Definition">.
 
 2. The class must have methods that defined as required interface methods in the the L<interface|/"Interface Definition">.
+
+Compilation Errors:
 
 If not, a compilation error occurs.
 
@@ -2516,14 +2558,6 @@ A class inherits a class using the C<extends> keyword.
     
   }
 
-The parant class must be a L<class type|/"Class Type">. Otherwise a compilation error occurs.
-
-The name of the parant class must be different from the name of the class. Otherwise a compilation error occurs.
-
-The all super classes must be different from its own class. Otherwise a compilation error occurs.
-
-The field that name is the same as the field of the super class cannnot be defined. Otherwise a compilation error occurs.
-
 The parts of the definitions of the fields of the all super classes are copied to the class.
 
 The copied parts of the definitions are the field name, the type, the access controll.
@@ -2533,6 +2567,16 @@ The the definitions of the interfaces of the all super classes are copied to the
 The copied order is from the beginning of the super class at the top level to the current class.
 
 The class can call instance methods of the super classes. The searching order is from the current class to the super class at the top level.
+
+Compilation Errors:
+
+The parant class must be a L<class type|/"Class Type">. Otherwise a compilation error occurs.
+
+The name of the parant class must be different from the name of the class. Otherwise a compilation error occurs.
+
+The all super classes must be different from its own class. Otherwise a compilation error occurs.
+
+The field that name is the same as the field of the super class cannnot be defined. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -2591,10 +2635,6 @@ An interface can have required interface methods by using the L<method attribute
 
 The type of the interface is the L<interface type|/"Interface Type">.
 
-An interface cannnot have L<field definitions|/"Field Definition">. If so, an compilation error occurs.
-
-An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, an compilation error occurs.
-
 An interface can have L<interface statements|/"interface Statement">.
 
   class TestCase::Pointable : interface_t {
@@ -2617,6 +2657,12 @@ An interface method can have its method block.
 This method is only called by the static instance method call.
 
   $self->Stringable::call_to_string;
+
+Compilation Errors:
+
+An interface cannnot have L<field definitions|/"Field Definition">. If so, an compilation error occurs.
+
+An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, an compilation error occurs.
 
 =head1 Duck Typing
 
@@ -2660,8 +2706,6 @@ The C<use> statemenet loads a class.
 
   use Foo;
 
-If the class does not exist, a compilation error occurs.
-
 Classes are loaded at compile-time.
 
 The C<use> statemenet must be defined directly under the L<class definition|/"Class Definition">.
@@ -2669,6 +2713,10 @@ The C<use> statemenet must be defined directly under the L<class definition|/"Cl
   class Foo {
     use Foo;
   }
+
+Compilation Errors:
+
+If the class does not exist, a compilation error occurs.
 
 =head2 alias Statement
 
@@ -2775,14 +2823,16 @@ A Class variable must be defined directly under the L<class definition|/"Class D
 
 The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">.
 
-The class variable mame must follow the rule defined in the L<class variable name|/"Class Variable Name">, and must not contain C<::>. Otherwise a compilation error occurs.
-
-If a class name with the same name is defined, a compilation error occurs.
-
 L<Class variable attributes|/"Class Variable Attribute"> can be specified.
 
   our CLASS_VARIABLE_NAME : ATTRIBUTE TYPE;
   our CLASS_VARIABLE_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTE3 TYPE;
+
+Compilation Errors:
+
+The class variable mame must follow the rule defined in the L<class variable name|/"Class Variable Name">, and must not contain C<::>. Otherwise a compilation error occurs.
+
+If a class name with the same name is defined, a compilation error occurs.
 
 Examples:
 
@@ -2867,6 +2917,8 @@ The list of class variable attributes.
 
 =end html
 
+Compilation Errors:
+
 Only one of class variable attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error occurs
@@ -2881,7 +2933,7 @@ A class variable getter method is a L<method|/"Method"> to perform the L<getting
 
 It has no arguments. The return type is the same as the type of the class variable except that the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>.
 
-If the type of the class variable is the L<byte type|/"byte Type"> or the L<short type|short Type>, the return type is the L<int type|/"int Type">.
+If the type of the class variable is the L<byte type|/"byte Type"> or the L<short type|short Type>, the return type is the int type.
 
 It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
@@ -2906,7 +2958,7 @@ The return type is the L<void type|/"void Type">.
 
 It has an argument that type is the same as the type of the class variableexcept that the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>.
 
-If the type of the class variable is the L<byte type|/"byte Type"> or the L<short type|short Type>, the argument type is the L<int type|/"int Type">.
+If the type of the class variable is the L<byte type|/"byte Type"> or the L<short type|short Type>, the argument type is the int type.
 
 It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
@@ -2966,13 +3018,15 @@ The field is defined directly under the L<class block|/"Class Block">.
     has name : string;
   }
 
+L<Field attributes|/"Field Attribute"> can be specified.
+
+Compilation Errors:
+
 The field definition needs the L<type|/"Type">. The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
 
 The field names must follows the rule of the L<field name|/"Field Name">. Otherwise a compilation error occurs.
 
 Field names cannot be duplicated. If so, a compilation error occurs.
-
-L<Field attributes|/"Field Attribute"> can be specified.
 
 =head2 Field Attribute
 
@@ -3041,10 +3095,6 @@ The list of field attributes.
 
 =end html
 
-Only one of field attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
-
-If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a compilation error occurs
-
 A field getter method is an L<instance method|/"Instance Method">. It has no arguments. The return type of a field getter method is the same as its field type, except for the C<byte> and C<short> type.
 
 If the type of the field is the C<byte> or C<short> type, The return type of a field getter method is the C<int> type.
@@ -3052,6 +3102,12 @@ If the type of the field is the C<byte> or C<short> type, The return type of a f
 A field setter method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|/"void Type">.
 
 If the type of the field is the C<byte> or C<short> type, The argument type of a field setter method is the C<int> type.
+
+Compilation Errors:
+
+Only one of field attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
+
+If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a compilation error occurs
 
 Examples:
 
@@ -3076,6 +3132,8 @@ The field access is an L<operator|/"Operator"> to get or set the field.
   INVOCANT->{FIELD_NAME}
 
 The field access has three different syntax.
+
+Compilation Errors:
 
 If the invocant is different from the following three field access, a compilation error occurs.
 
@@ -3144,10 +3202,6 @@ The argument names must be follow the rule of L</"Local Variable Name">.
 
 The minimal length of arguments is 0. The max length of arguments is 255.
 
-The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or a L<reference type|/"Reference Type">. Otherwise a compilation error occurs.
-
-The type of the return value must be the L<void type|/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
-
 Defined methods can be called using L</"Method Call"> syntax.
 
 A method can have L<method attributes|/"Method Attributes">.
@@ -3157,6 +3211,12 @@ A method can have L<method attributes|/"Method Attributes">.
   }
 
 A method has L</"Method Block"> except for the case that the method has the C<native> L<method attributes|/"Method Attributes">. 
+
+Compilation Errors:
+
+The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or a L<reference type|/"Reference Type">. Otherwise a compilation error occurs.
+
+The type of the return value must be the L<void type|/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
 
 =head3 Optional Argument
 
@@ -3286,9 +3346,11 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
 
 If C<native> and C<precompile> attributes cannnot used together.
 
-Only one of method attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
-
 C<required> can be only used in a method of a L<interface|/"Interface">.
+
+Compilation Errors:
+
+Only one of method attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
 
 If the specifed attribute is not found or the way to specify is invalid, a compilation error occurs.
 
@@ -3335,7 +3397,7 @@ Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<
 
 =head1 Enumeration
 
-The enumeration is the syntx to defines constant values of the L<int type|/"int Type">.
+The enumeration is the syntx to defines constant values of the int type.
 
 =head2 Enumeration Definition
 
@@ -3364,7 +3426,7 @@ The first enumeration value is 0. The next enumeration value is incremented by 1
 
 In the above example, C<FLAG1> is 0, C<FALG2> is 1, and C<FLAG3> is 2.
 
-The type of an enumeration value is the L<int type|/"int Type">.
+The type of an enumeration value is the int type.
 
 C<,> after the last enumeration value can be allowed.
 
@@ -3384,9 +3446,11 @@ An enumeration value can be set by C<=> explicitly.
 
 In the above example, C<FLAG1> is 0, C<FALG2> is 4, and C<FLAG3> is 5.
 
-If an enumeration definition is invalid, a compilation error occurs.
-
 An enumeration value is got by the L<getting enumeration value|/"Getting Enumeration Value">.
+
+Compilation Errors:
+
+If an enumeration definition is invalid, a compilation error occurs.
 
 Examples:
 
@@ -3448,6 +3512,8 @@ B<The list of enumeration attributes:>
 </table>
 
 =end html
+
+Compilation Errors:
 
 Only one of enumeration attributes C<private>, C<protected> or C<public> can be specified. Otherwise a compilation error occurs.
 
@@ -4207,7 +4273,7 @@ The list of initial values.
 
 =head2 Numeric Type
 
-The numeric type are the L<integer type|/"Integer Type"> and L</"Floating Point Type">.
+The numeric type are an L<integer type|/"Integer Type"> and L</"Floating Point Type">.
 
 =head3 Numeric Type Order
 
@@ -4283,25 +4349,25 @@ Note that SPVM has only B<singed> integer types, and doesn't have B<unsigned> in
 
 =head2 Integer Type Within int
 
-The integer type within C<int> is the L<integer type|/"Integer Type"> within the L<int type|/"int Type">.
+The integer type within C<int> is an L<integer type|/"Integer Type"> within the int type.
 
-In other words, the integer types within C<int> are the L<byte type|/"byte Type">, the L<short type|/"short Type">, and the L<int type|/"int Type">.
+In other words, the integer types within C<int> are the L<byte type|/"byte Type">, the L<short type|/"short Type">, and the int type.
 
 =head2 byte Type
 
-C<byte> type is the L<integer type|/"Integer Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of the C language.
+C<byte> type is an L<integer type|/"Integer Type"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of the C language.
 
 =head2 short Type
 
-C<short> type  is the L<integer type|/"Integer Type"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of the C language.
+C<short> type  is an L<integer type|/"Integer Type"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of the C language.
 
 =head2 int Type
 
-C<int> type is  is the L<integer type|/"Integer Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of the C language.
+C<int> type is  is an L<integer type|/"Integer Type"> that represents signed 32-bit integer. This is the same as C<int32_t> type of the C language.
 
 =head2 long Type
 
-C<long> type is the L<integer type|/"Integer Type"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of the C language.
+C<long> type is an L<integer type|/"Integer Type"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of the C language.
 
 =head2 Floating Point Type
 
@@ -4508,9 +4574,11 @@ The array type is the L<type|Type> for the L<array|/"Array">. The array type is 
   # 3 dimensional array
   int[][][]
 
-The maximam value of dimesions is 255. Otherwise a compilation error occurs.
-
 The array type is an L<object type|/"Object Type">.
+
+Compilation Errors:
+
+The maximam value of dimesions is 255. Otherwise a compilation error occurs.
 
 =head3 Numeric Array Type
 
@@ -4625,8 +4693,6 @@ The any object array type C<object[]> is the type that any L<object array type|/
   my $array : object[] = new object[3];
   my $array : object[] = new Point[][3];
 
-If a invalid type is assigned, a compilation error occurs.
-
 Any Object Array Type is an L<array type|/"Array Type">.
 
 You can get the array length using the L<array length operator|/"The array Length Operator">.
@@ -4645,6 +4711,10 @@ You can get and set the element using the L<get array element|/"Getting Array El
   $array->[0] = Int->new(5);
 
 When setting the element of any object array, the element type is checked. If the dimension of the element is not the dimension of the array - 1, an exception is thrown.
+
+Compilation Errors:
+
+If a invalid type is assigned, a compilation error occurs.
 
 =head2 string Type
 
@@ -4701,10 +4771,6 @@ Reference Type is a Type that can store the address of a variable. Add C<*> afte
 
 Only the address of the Local Variable acquired by L</"Reference Operator"> can be assigned to the value of Reference Type.
 
-If only Local Variable Declaration of Reference Type is performed, a compilation error occurs
-
-Reference Type can be used as Type of the L<local variable declaration|/"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
-
 Reference Type can be used as Type of argument in the L<method definition|/"Method Definition">.
 
 Reference Type cannot be used as return value Type in the L<method definition|/"Method Definition">.
@@ -4713,9 +4779,15 @@ Reference Type cannot be used as the field type in the L<class definition|/"Clas
 
 Reference Type cannot be used as the type of Class Variable in the L<class definition|/"Class Definition">.
 
-If the Reference Type is used at an Invalid location, a compilation error occurs
-
 See L</"Reference"> for a detailed explanation of Reference.
+
+Compilation Errors:
+
+If only Local Variable Declaration of Reference Type is performed, a compilation error occurs
+
+Reference Type can be used as Type of the L<local variable declaration|/"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
+
+If the Reference Type is used at an Invalid location, a compilation error occurs
 
 =head2 Reference Type
 
@@ -4764,6 +4836,8 @@ Omitting the L<type|/"Type"> when the L<local variable declaration|/"Local Varia
 
 The assignability at compile-time is explained.
 
+Compilation Errors:
+
 The assignability is false, a compilation error occurs.
 
 =head2 Assignability to Numeric
@@ -4772,9 +4846,9 @@ Explains the assignability to the L<numeric types|"Numeric Type">.
 
 =head3 Assignability from Numeric to Numeric
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than or equal to the L<nemric type order|/"Numeric Type Order"> of the right operand, the assignability is true.
+If the L<nemric type order|/"Numeric Type Order"> of I<LEFT_OPERAND> is greater than or equal to the L<nemric type order|/"Numeric Type Order"> of I<RIGHT_OPERAND>, the assignability is true.
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
+If the L<nemric type order|/"Numeric Type Order"> of I<LEFT_OPERAND> is greater than the L<nemric type order|/"Numeric Type Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
 =begin html
 
@@ -4819,9 +4893,9 @@ Examples:
   # float to double
   my $num : double = 4.5f;
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is less than the L<nemric type order|/"Numeric Type Order"> of the right operand, the assignability is conditional true.
+If the L<nemric type order|/"Numeric Type Order"> of I<LEFT_OPERAND> is less than the L<nemric type order|/"Numeric Type Order"> of I<RIGHT_OPERAND>, the assignability is conditional true.
 
-The condition is that the right operand is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of the left operand.
+The condition is that I<RIGHT_OPERAND> is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of I<LEFT_OPERAND>.
 
 If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing Conversion"> is performed.
 
@@ -4855,7 +4929,7 @@ Examples:
 
 =head3 Assignability from NumericObject to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|/"Numeric Object Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Type">, the assignability is true.
 
 =begin html
 
@@ -4879,7 +4953,7 @@ Examples:
 
 =head3 Assignability from Any Object to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the assignability is true.
 
 The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric type is performed.
 
@@ -4900,11 +4974,11 @@ Examples:
 
 =head3 Assignability from Others to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is other than the types described above, the assignability is false.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is other than the types described above, the assignability is false.
 
 =head2 Assignability to Multi-Numeric
 
-If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of the right operand is the same type of the left operand, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -4925,7 +4999,7 @@ Examples:
 
 =head2 Assignability to Referenece
 
-If the type of the left operand is a L<reference type|/"Reference Type"> and the type of the right operand is the same type of the left operand, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -4946,15 +5020,15 @@ Examples:
 
 =head2 Assignability to String
 
-If the type of the left operand is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the assignability is true.
 
-If the type of the left operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is true.
 
-If the type of the left operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is false.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is false.
 
-If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the assignability is true.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
+If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
 =begin html
 
@@ -4980,11 +5054,11 @@ Examples:
 
 =head2 Assignability to NumericObject
 
-If the type of the left operand is a L<numeric object type|/"Numeric Object Type"> and the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
+If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
@@ -5006,9 +5080,9 @@ Examples:
 
 =head2 Assignability to Class
 
-If the type of the left operand is a L<class type|/"Class Type"> and the type of the right operand is the same type, or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignability is true.
 
-If the type of the left operand is a super class of the type of the right operand, the assignability is true.
+If the type of I<LEFT_OPERAND> is a super class of the type of I<RIGHT_OPERAND>, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5031,9 +5105,9 @@ Examples:
 
 =head2 Assignability to Interface
 
-If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is the same type, or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignability is true.
 
-If the type of the left operand is an L<interface type|/"Interface Type"> and the type of the right operand is a L<class type|/"Class Type"> and the class has the same interface of the left operand, the assignability is true.
+If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class has the same interface of I<LEFT_OPERAND>, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5057,11 +5131,11 @@ Examples:
 
 =head2 Assignability to Any Object
 
-If the type of the left operand is the L<any object type|/"Any Object Type"> and the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the type of I<RIGHT_OPERAND> is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
+If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
@@ -5083,7 +5157,7 @@ Examples:
 
 =head2 Assignability to Undefined
 
-If the type of the left operand is the L<undef type|/"undef Type">, the assignability is false.
+If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignability is false.
 
 =begin html
 
@@ -5101,7 +5175,7 @@ Examples:
 
 =head2 Assignability to Numeric Array
 
-If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5128,7 +5202,7 @@ Examples:
 
 =head2 Assignability to Multi-Numeric Array
 
-If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5150,7 +5224,7 @@ Examples:
 
 =head2 Assignability to String Array
 
-If the type of the left operand is a L<string array type|/"String Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5172,9 +5246,9 @@ Examples:
 
 =head2 Assignability to Class Array
 
-If the type of the left operand is a L<class array type|/"Class Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
-If the L<basic type|/"Basic Type"> of the left operand is an super class of the type of the right operand, the assignability is true.
+If the L<basic type|/"Basic Type"> of I<LEFT_OPERAND> is an super class of the type of I<RIGHT_OPERAND>, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5197,9 +5271,9 @@ Examples:
 
 =head2 Assignability to Interface Array
 
-If the type of the left operand is an L<interface array type|/"Interface Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
-If the type of the left operand is an L<interface array type|/"Interface Array Type"> and the type of the right operand is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Type"> can assign to the basic type of the left operand, the assignability is true.
+If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Type"> can assign to the basic type of I<LEFT_OPERAND>, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5225,7 +5299,7 @@ Examples:
 
 =head2 Assignability to Any Object Array
 
-If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5261,11 +5335,11 @@ Examples:
 
 =head2 Assignability to Multi-Dimensional Array
 
-If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
-If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the assignability is true.
+If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Type"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Type"> of I<RIGHT_OPERAND>, the assignability is true.
 
-If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the right operand has the L<basic type|/"Basic Type"> of the left operand, the assignability is true.
+If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Type"> of I<RIGHT_OPERAND> has the L<basic type|/"Basic Type"> of I<LEFT_OPERAND>, the assignability is true.
 
 Otherwise, the assignability is false.
 
@@ -5306,6 +5380,8 @@ Examples:
 
 The castability at compile-time is explained.
 
+Compilation Errors:
+
 The castability is false, a compilation error occurs.
 
 =head2 Castability to Numeric
@@ -5314,13 +5390,13 @@ The castability to the L<numeric types|/"Numeric Type"> is explained.
 
 =head3 Castability from Numeric to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the castability is true.
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is greater than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
+If the L<nemric type order|/"Numeric Type Order"> of I<LEFT_OPERAND> is greater than the L<nemric type order|/"Numeric Type Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is less than the L<nemric type order|/"Numeric Type Order"> of the right operand, the L<numeric narrowing conversion|/"Numeric Narrowing Conversion"> is performed.
+If the L<nemric type order|/"Numeric Type Order"> of I<LEFT_OPERAND> is less than the L<nemric type order|/"Numeric Type Order"> of I<RIGHT_OPERAND>, the L<numeric narrowing conversion|/"Numeric Narrowing Conversion"> is performed.
 
-If the L<nemric type order|/"Numeric Type Order"> of the left operand is equal to the L<nemric type order|/"Numeric Type Order"> of the right operand, copying is performed.
+If the L<nemric type order|/"Numeric Type Order"> of I<LEFT_OPERAND> is equal to the L<nemric type order|/"Numeric Type Order"> of I<RIGHT_OPERAND>, copying is performed.
 
 =begin html
 
@@ -5389,7 +5465,7 @@ Examples:
 
 =head3 Castability from NumericObject to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of the right operand and the type of the right operand is a L<numeric object type|/"Numeric Object Type">, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Type">, the castability is true.
 
 =begin html
 
@@ -5413,7 +5489,7 @@ Examples:
 
 =head3 Castability from Any Object to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is a L<any object type|/"Any Object Type"> C<object>, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the castability is true.
 
 The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric type is performed.
 
@@ -5436,11 +5512,11 @@ Examples:
 
 =head3 Castability from Others to Numeric
 
-If the type of the left operand is a L<numeric type|/"Numeric Type"> and the type of the right operand is other than the types described above, the castability is false.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is other than the types described above, the castability is false.
 
 =head2 Castability to Multi-Numeric
 
-If the type of the left operand is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of the right operand is the same type of the left operand, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5461,7 +5537,7 @@ Examples:
 
 =head2 Castability to Referenece
 
-If the type of the left operand is a L<reference type|/"Reference Type"> and the type of the right operand is the same type of the left operand, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5482,17 +5558,17 @@ Examples:
 
 =head2 Castability to String
 
-If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is the L<string type|/"string Type">, the castability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the castability is true.
 
-If the type of the left operand is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of the right operand is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
+If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is a L<numeric type|/"Numeric Type">, the L<undef type|/"undef Type">, or the L<any object type|/"Any Object Type"> C<object>, the castability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the L<undef type|/"undef Type">, or the L<any object type|/"Any Object Type"> C<object>, the castability is true.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
+If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-If the type of the left operand is the L<string type|/"string Type"> and the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the castability is true and the runtime type checking is performed.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the castability is true and the runtime type checking is performed.
 
 =begin html
 
@@ -5519,15 +5595,15 @@ Examples:
 
 =head2 Castability to NumericObject
 
-If the type of the left operand is a L<numeric object type|/"Numeric Object Type"> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of the right operand is the same type of the left operand, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"undef Type">, the castability is true.
 
-The type of the right operand is other than above, the castability is false.
+The type of I<RIGHT_OPERAND> is other than above, the castability is false.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
+If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
-If the type of the left operand is the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5553,17 +5629,17 @@ Examples:
 
 =head2 Castability to Class
 
-If the type of the left operand is a L<class type|/"Class Type"> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the castability is true.
 
-If the type of the left operand is a super class of the type of right operand, the castability is true.
+If the type of I<LEFT_OPERAND> is a super class of the type of right operand, the castability is true.
 
-If the type of the right operand is a super class of the type of left operand, the castability is true.
+If the type of I<RIGHT_OPERAND> is a super class of the type of left operand, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5594,15 +5670,15 @@ Examples:
 
 =head2 Castability to Interface
 
-If the type of the left operand is an L<interface type|/"Interface Type">, and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type">, and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of the right operand is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the castability is true.
 
-If the type of the right operand is a L<class type|/"Class Type"> and the class has the interface of the left operand, the castability is true.
+If the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class has the interface of I<LEFT_OPERAND>, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5635,13 +5711,13 @@ Examples:
 
 =head2 Castability to Any Object
 
-If the type of the left operand is the L<any object type|/"Any Object Type"> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
-If the type of the right operand is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the right operand is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
+If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
@@ -5663,17 +5739,17 @@ Examples:
 
 =head2 Castability to Numeric Array
 
-If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"string Type">, the castability is true.
+If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the castability is true.
 
-If the type of the left operand is a L<numeric array type|/"Numeric Array Type"> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the left operand is the L<byte[] type|/"byte[] Type"> and the type of the right operand is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
+If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5701,13 +5777,13 @@ Examples:
 
 =head2 Castability to Multi-Numeric Array
 
-If the type of the left operand is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5732,13 +5808,13 @@ Examples:
 
 =head2 Castability to String Array
 
-If the type of the left operand is a L<string array type|/"String Array Type"> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5767,17 +5843,17 @@ Examples:
 
 =head2 Castability to Class Array
 
-If the type of the left operand is a L<class array type|/"Class Array Type"> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the castability is true.
+If the L<basic type|/"Basic Type"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Type"> of I<RIGHT_OPERAND>, the castability is true.
 
-If the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the castability is true.
+If the L<basic type|/"Basic Type"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Type"> of I<LEFT_OPERAND>, the castability is true.
 
-If the type of the right operand is the same type of the left operand, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5808,21 +5884,21 @@ Examples:
 
 =head2 Castability to Interface Array
 
-If the type of the left operand is an L<interface array type|/"Interface Array Type"> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of the right operand is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Type"> has the interface of the basic type of the left operand, the castability is true.
+If the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Type"> has the interface of the basic type of I<LEFT_OPERAND>, the castability is true.
 
-If the type of the right operand is the same type of the left operand, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the castability is true.
 
-If the type of the right operand is an differnt type of L<interface array type|/"Interface Array Type">, the castability is also true.
+If the type of I<RIGHT_OPERAND> is an differnt type of L<interface array type|/"Interface Array Type">, the castability is also true.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"undef Type">, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the right operand is an differnt type of  L<interface array type|/"Interface Array Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
-If the type of the right operand is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5849,15 +5925,15 @@ Examples:
 
 =head2 Castability to Any Object Array
 
-If the type of the left operand is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of the right operand is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the castability is true.
 
-If the type of the right operand is an L<any object type|/"Any Object Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the castability is true.
 
 Otherwise, the castability is false.
 
-If the type of the right operand is an L<any object type|/"Any Object Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
+If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the L<runtime type checking|/"Runtime Type Checking"> is performed.
 
 =begin html
 
@@ -5895,17 +5971,17 @@ Examples:
   
 =head2 Castability to Multi-Dimensional Array
 
-If the type of the left operand is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of the right operands are the following cases:
+If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of the right operand is the same type of the left operand or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the castability is true.
 
-If the type of the right operand is an L<any object type|/"Any Object Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the castability is true.
 
-If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the left operand is a super class of the L<basic type|/"Basic Type"> of the right operand, the castability is true.
+If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Type"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Type"> of I<RIGHT_OPERAND>, the castability is true.
 
-If the type dimesion of the left operand is equal to the type dimension of the right operand, and the L<basic type|/"Basic Type"> of the right operand is a super class of the L<basic type|/"Basic Type"> of the left operand, the castability is true.
+If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Type"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Type"> of I<LEFT_OPERAND>, the castability is true.
 
-If the L<basic type|/"Basic Type"> of the type of the left operand is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of the right operand is a L<class type|/"Class Type"> and the dimension of the type of the right operand is the same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of the right operand has the interface of the L<basic type|/"Basic Type"> of the type of the left operand , the castability is true.
+If the L<basic type|/"Basic Type"> of the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Type"> of the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the dimension of the type of I<RIGHT_OPERAND> is the same as the dimension of the type left oerand and the L<basic type|/"Basic Type"> of the type of I<RIGHT_OPERAND> has the interface of the L<basic type|/"Basic Type"> of the type of I<LEFT_OPERAND> , the castability is true.
 
 Otherwise, the castability is false.
 
@@ -5986,7 +6062,7 @@ Examples:
 
 =head2 Integer Promotional Conversion
 
-The integer promotional conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Type Within int"> to the L<int type|/"int Type"> using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+The integer promotional conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Type Within int"> to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
 =head2 Numeric Widening Conversion
 
@@ -6068,7 +6144,7 @@ B<long to double:>
   int64_t from = VALUE;
   double to = (double)from;
 
-The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, the OPERAND of the L<unary plus operator|/"Unary Plus Operator">, the OPERAND of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
+The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
 
 =head2 Numeric Narrowing Conversion
 
@@ -6159,17 +6235,17 @@ The numeric narrowing conversion is performed in some of the L<type casts|/"Type
 
 =head2 Binary Numeric Conversion
 
-The binary numeric conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of the left operand or the right operand of the binary operator that operands are L<numeric types|/"Numeric Type">.
+The binary numeric conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of I<LEFT_OPERAND> or I<RIGHT_OPERAND> of the binary operator that operands are L<numeric types|/"Numeric Type">.
 
 The following rules apply in order.
 
-1. If the left operand or the right operand is the L<double type|/"double Type">, the OPERAND of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+1. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the L<double type|/"double Type">, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-2. If the left operand or the right operand is the L<float type|/"float Type">, the OPERAND of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+2. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the L<float type|/"float Type">, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-3. If the left operand or the right operand is the L<long type|/"long Type">, the OPERAND of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+3. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the long type, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-4, Otherwise, both the left operand and the right operand are converted to the L<int type|/"int Type"> using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+4, Otherwise, both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are converted to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
 =head2 Numeric-to-String Conversion
 
@@ -6236,11 +6312,9 @@ The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the
 
 The boolean conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
 
-The type of the OPERAND of the boolean conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
-
 The boolean conversion returns the following value corresponding to the type of the condional operand.
 
-If the type is the L<int type|/"int Type">, return the value.
+If the type is the int type, return the value.
 
 If the type is the L<undef|/"undef Type">, returns 0.
 
@@ -6248,11 +6322,15 @@ If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE
 
 If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, returns 0.
 
-If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the OPERAND.
+If the type is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
 
-And the following operation in the C language is performed on the OPERAND .
+And the following operation in the C language is performed on I<OPERAND> .
 
   !!OPERAND
+
+Compilation Errors:
+
+The type of I<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type"> or an L<reference type|/"Reference Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -6417,9 +6495,11 @@ The type comment can be used the type of the L<field decralation|/"Field Definit
   
   my $replace : object of string|Regex::Replacer;
 
-If the type specified as the type comment is not found, a compilation error occurs.
-
 Type comments have no meanings at runtime.
+
+Compilation Errors:
+
+If the type specified as the type comment is not found, a compilation error occurs.
 
 =head1 Statement
 
@@ -6636,15 +6716,11 @@ The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
     }
   }
 
-The condition must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
-
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the condition.
 
 The value of the L<case statement|/"case Statement"> must be one of the L<character literal|/"Character Literal">, the L<integer literal|/"Integer Literal"> or the L<getting enumeration value|/"Getting Enumeration Value">.
 
-If it is a L<character literal|/"Character Literal">, the value is converted to the L<int type|/"int Type"> at compile-time.
-
-The values of the case statements cannnot be duplicated. If so, a compilation error occurs.
+If it is a L<character literal|/"Character Literal">, the value is converted to the int type at compile-time.
 
 If the condition matches the value of a C<case> statement, the program jumps to the beginning of the L<case block|/"case Block">.
 
@@ -6695,6 +6771,12 @@ Multiple C<case> statements before a L<case block|/"case Block"> can be specifie
       # ...
     }
   }
+
+Compilation Errors:
+
+The condition must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+
+The values of the case statements cannnot be duplicated. If so, a compilation error occurs.
 
 Examples:
 
@@ -6931,11 +7013,13 @@ The C<return> statement is a L<statement|/"Statement"> to return a value.
   // non-void
   return OPERAND;
 
-If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, the OPERAND cannnot exist. If so, a compilation error occurs.
+Compilation Errors:
 
-If the return type of the current L<method|/"Method Definition"> is the non-void type, the OPERAND must exist. Otherwise a compilation error occurs.
+If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, I<OPERAND> cannnot exist. If so, a compilation error occurs.
 
-The type of the OPERAND must be able to L<assign|/"Assignability"> to the return type of the current method. Otherwise a compilation error occurs.
+If the return type of the current L<method|/"Method Definition"> is the non-void type, I<OPERAND> must exist. Otherwise a compilation error occurs.
+
+The type of I<OPERAND> must be able to L<assign|/"Assignability"> to the return type of the current method. Otherwise a compilation error occurs.
 
 =head2 die Statement
 
@@ -6953,7 +7037,7 @@ If an exception is thrown, the program prints the error message to the standard 
 
 If OPERAND_MESSAGE is omitted or L<undef|/"Undefined Value">, "Error" is set to the L<exception variable|/"Exception Variable"> C<$@>.
 
-ERROR_TYPE is a class type. If ERROR_TYPE is given, the basic type id of the class is the value got by the L</"eval_error_id Operator">.
+ERROR_TYPE is a class type. If ERROR_TYPE is given, the basic type ID of the class is the value got by the L</"eval_error_id Operator">.
 
 OPERAND_ERROR_ID is an integer value within int type. If OPERAND_ERROR_ID is given, it is the value got by the L</"eval_error_id Operator">.
 
@@ -6971,7 +7055,7 @@ The exception can be caught by the L<eval block|/"Exception Catching">.
 
 Comlication Errors:
 
-OPERAND_MESSAGE must be the L<string type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+OPERAND_MESSAGE must be the string type or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
 ERROR_TYPE must be a class type. Otherwise a compilation error occurs.
 
@@ -7025,26 +7109,17 @@ An operator performs an operation that process something and returns a value.
 
 =head2 Unary Plus Operator
 
+The unary plus operator C<+> returns I<OPERAND>.
+
   +OPERAND
 
-The unary plus operator C<+> returns the value of the OPERAND.
+Before this operation, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
+
+The return type is the type after the L<integer promotional conversion|/"Integer Promotional Conversion"> has been performed.
 
 Compilation Errors:
 
-The OPERAND must be a L<numeric type|/"Numeric Type">.
-
-Type Conversion:
-
-If the OPERAND is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the OPERAND.
-
-Return Type and Operand Types:
-  
-  int (OPERAND : byte)
-  int (OPERAND : short)
-  int (OPERAND : int)
-  long (OPERAND : long)
-  float (OPERAND : float)
-  double (OPERAND : double)
+The type of I<OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7055,24 +7130,15 @@ Examples:
 
   -OPERAND
 
-The unary minus operator - returns the negative value of the OPERAND.
+The unary minus operator C<-> returns the negative value of I<OPERAND>.
+
+Before this operation, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
+
+The return type is the type after the L<integer promotional conversion|/"Integer Promotional Conversion"> has been performed.
 
 Compilation Errors:
 
-The OPERAND must be a L<numeric type|/"Numeric Type">.
-
-Type Conversion:
-
-If the OPERAND is an L<integer type within int|/"Integer Type Within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the OPERAND.
-
-Return Type and Operand Types:
-  
-  int (OPERAND : byte)
-  int (OPERAND : short)
-  int (OPERAND : int)
-  long (OPERAND : long)
-  float (OPERAND : float)
-  double (OPERAND : double)
+The type of I<OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -7095,160 +7161,186 @@ The return type is the type after the L<binary numeric conversion|/"Binary Numer
 
 Compilation Errors:
 
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
 =head2 Subtraction Operator
 
-The subtraction operator - is an L<operator|/"Operator"> to calculate the result of the subtraction of two numbers.
+The subtraction operator C<-> calculates the subtraction of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND - RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
-
-The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
-
 The subtraction operator performs the same operation as the following C language operation.
 
-  x - y;
+  LEFT_OPERAND - RIGHT_OPERAND
 
-The return type of the subtraction operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+Before this operation, The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+
+Compilation Errors:
+
+The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
 =head2 Multiplication Operator
 
-The multiplication operator is an L<operator|/"Operator"> to calculate the result of multiplication of two numbers.
+The multiplication operator C<*> calculates the multiplication of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND * RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
-
-The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
+Before this operation, The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The multiplication operator performs the same operation as the following C language operation.
 
-  x * y;
+  LEFT_OPERAND * RIGHT_OPERAND;
 
-The return type of the multiplication operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+
+Compilation Errors:
+
+The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
 =head2 Division Operator
 
-The division operator C</> is an L<operator|/"Operator"> to calculate the division of two numbers.
+The division operator C</> calculates the division of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND / RIGHT_OPERAND
 
-The left operand and the right operand must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
-
-The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
+Before this operation, The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The division operator performs the same operation as the following C language operation.
 
-  x / y;
+  LEFT_OPERAND / RIGHT_OPERAND;
 
-The return type of the division operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
 
-If the two operands are L<integer types|/"Integer Type"> and the value of the right operand is 0, an exception is thrown.
+Compilation Errors:
+
+The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+
+Exceptions:
+
+If I<LEFT_OPERAND> and I<RIGHT_OPERAND> are L<integer types|/"Integer Type"> and I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Division Unsigned Int Operator
 
-The division unsigned int operator C<div_uint> calculates the unsigned int division of two numbers.
+The division unsigned int operator C<div_uint> calculates the unsigned int division of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND div_uint RIGHT_OPERAND
 
 The division unsigned int operator performs the same operation as the following C language operation.
 
-  (uint32_t)x / (uint32_t)y;
+  (uint32_t)LEFT_OPERAND / (uint32_t)RIGHT_OPERAND;
 
-The return type is the L<int type|/"int Type">.
+The return type is the int type.
 
 Compilation Errors:
 
-The left operand and the right operand must be an L<int type|/"int Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
 Exceptions:
 
-If the value of the right operand is 0, an exception is thrown.
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Division Unsigned Long Operator
 
-The division unsigned long operator C<div_ulong> calculates the unsigned long division of two numbers.
+The division unsigned long operator C<div_ulong> calculates the unsigned long division of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND div_ulong RIGHT_OPERAND
 
 The division unsigned long operator performs the same operation as the following C language operation.
 
-  (uint64_t)x / (uint64_t)y;
+  (uint64_t)LEFT_OPERAND / (uint64_t)RIGHT_OPERAND;
 
-The return type of the division operator is the L<long type|/"long Type">.
+The return type of the division operator is the long type.
 
 Compilation Errors:
 
-The left operand and the right operand must be an L<long type|/"long Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the long type. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be the long type. Otherwise a compilation error occurs.
 
 Exceptions:
 
-If the value of the right operand is 0, an exception is thrown.
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Modulo Operator
 
-The modulo operator C<%> is calculates a modulo of two numbers.
+The modulo operator C<%> is calculates a modulo of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND % RIGHT_OPERAND
 
-The L<binary numeric conversion|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on the left operand and the right operand.
+Before this operation, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The modulo operator performs the same operation as the following C language operation.
 
-  ret = x % y;
-  if ((x < 0) != (y < 0) && ret) { ret += y; }
-  
-The return type of the modulo operator is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+  RETURN_VALUE = LEFT_OPERAND % RIGHT_OPERAND;
+  if ((LEFT_OPERAND < 0) != (RIGHT_OPERAND < 0) && RETURN_VALUE) { RETURN_VALUE += RIGHT_OPERAND; }
+
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
 
 Compilation Errors:
 
-The left operand and the right operand must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
 
 Exceptions:
 
-If the right operand is 0, an exception is thrown.
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Modulo Unsigned Int Operator
 
-The modulo unsigned int operator C<mod_uint> calculates a unsigned int modulo of two numbers.
+The modulo unsigned int operator C<mod_uint> calculates a unsigned int modulo of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND mod_uint RIGHT_OPERAND
 
 The modulo unsigned int operator performs the same operation as the following C language operation.
 
-  (uint32_t)x % (uint32_t)y;
+  (uint32_t)LEFT_OPERAND % (uint32_t)RIGHT_OPERAND;
 
-The return type of the modulo unsigned int operator is the int type.
+The return type is the int type.
 
 Compilation Errors:
 
-The left operand and the right operand must be the int type. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the int type. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be the int type. Otherwise a compilation error occurs.
 
 Exceptions:
 
-If the value of the right operand is 0, an exception is thrown.
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Modulo Unsigned Long Operator
 
-The modulo unsigned long operator C<mod_ulong> calculates a unsigned long modulo of two numbers.
+The modulo unsigned long operator C<mod_ulong> calculates a unsigned long modulo of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND mod_ulong RIGHT_OPERAND
 
 The modulo unsigned long operator performs the same operation as the following C language operation.
 
-  (uint64_t)x % (uint64_t)y;
+  (uint64_t)LEFT_OPERAND % (uint64_t)RIGHT_OPERAND;
 
 The return type of the modulo unsigned long operator is the long type.
 
 Compilation Errors:
 
-The left operand and the right operand must be a long type. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the long type. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be the long type. Otherwise a compilation error occurs.
 
 Exceptions:
 
-If the value of the right operand is 0, an exception is thrown.
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Increment Operator
 
@@ -7256,20 +7348,22 @@ Increment operators are the L<pre-increment operator|/"Pre-Increment Operator"> 
 
 =head3 Pre-Increment Operator
 
-The pre-increment operator adds 1 to the value of the OPERAND and returns the value after the incrementation.
+The pre-increment operator adds 1 to I<OPERAND> and returns the value after the incrementation.
   
   # Pre-increment operator
   ++OPERAND
-
-The type of the OPERAND must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 The pre-increment operator performs the same operation as the following.
 
   (OPERAND = (TYPE_OF_OPERAND)(OPERAND + 1))
 
-For example, if the type of the OPERAND is the L<byte type|/"byte Type">, the following operation is performed.
+For example, if the type of I<OPERAND> is the L<byte type|/"byte Type">, the following operation is performed.
 
   ($num = (byte)($num + 1))
+
+Compilation Errors:
+
+The type of I<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7290,20 +7384,22 @@ Examples:
 
 =head3 Post-Increment Operator
 
-The post-increment operator adds 1 to the value of the OPERAND and returns the value before the incrementation.
+The post-increment operator adds 1 to I<OPERAND> and returns the value before the incrementation.
   
   # Post-increment operator
   OPERAND++
-
-The type of the OPERAND must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 The post-increment operator performs the same operation as the following.
 
   (my TMP_VARIABLE = OPERAND, OPERAND = (TYPE_OF_OPERAND)(OPERAND + 1), TMP_VARIABLE)
 
-For example, if the type of the OPERAND is the L<byte type|/"byte Type">, the following operation is performed.
+For example, if the type of I<OPERAND> is the L<byte type|/"byte Type">, the following operation is performed.
 
   (my $tmp = $num, $num = (byte)($num + 1), $tmp)
+
+Compilation Errors:
+
+The type of I<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7328,20 +7424,22 @@ Decrement operators are the L<pre-decrement operator|/"Pre-Decrement Operator"> 
 
 =head3 Pre-Decrement Operator
 
-The pre-decrement operator subtracts 1 to the value of the OPERAND and returns the value after the decrementation.
+The pre-decrement operator subtracts 1 to I<OPERAND> and returns the value after the decrementation.
   
   # Pre-decrement operator
   --OPERAND
-
-The type of the OPERAND must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access">, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 The pre-decrement operator performs the same operation as the following.
 
   (OPERAND = (TYPE_OF_OPERAND)(OPERAND - 1))
 
-For example, if the type of the OPERAND is the L<byte type|/"byte Type">, the following operation is performed.
+For example, if the type of I<OPERAND> is the L<byte type|/"byte Type">, the following operation is performed.
 
   ($num = (byte)($num - 1))
+
+Complation Errors:
+
+The type of I<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access">, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7362,20 +7460,22 @@ Examples:
 
 =head3 Post-Decrement Operator
 
-The post-decrement operator subtracts 1 to the value of the OPERAND and returns the value before the decrementation.
+The post-decrement operator subtracts 1 to I<OPERAND> and returns the value before the decrementation.
   
   # Post-decrement operator
   OPERAND--
-
-The type of the OPERAND must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 The post-decrement operator performs the same operation as the following.
 
   (my TMP_VARIABLE = OPERAND, OPERAND = (TYPE_OF_OPERAND)(OPERAND - 1), TMP_VARIABLE)
 
-For example, if the type of the OPERAND is the L<byte type|/"byte Type">, the following operation is performed.
+For example, if the type of I<OPERAND> is the L<byte type|/"byte Type">, the following operation is performed.
 
   (my $tmp = $num, $num = (byte)($num - 1), $tmp)
+
+Compilation Errors:
+
+The type of I<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7396,25 +7496,25 @@ Examples:
 
 =head2 Bit Operator
 
-Bit operators are L<operators|/"Operator"> to perform bit operations.
+Bit operators perform bit operations.
 
-Bit operators are the L<bit AND operator|/"Bit AND Operator">, the L<bit OR operator|/"Bit OR Operator">, or the L<bit NOT operator|/"Bit NOT Operator">.
+=head3 Bit AND Operator
 
-=head2 Bit AND Operator
-
-The bit AND operator C<&> is an L<operator|/"Operator"> to performe a bit AND operation.
+The bit AND operator C<&> performes a bit AND operation.
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integer type/"Integer Type">. Otherwise a compilation error occurs.
-
-A L<binary numeric widening conversion|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+Before this operation, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 The return value is the same as the follwoing operation of the C language.
 
-  x & y;
+  LEFT_OPERAND & RIGHT_OPERAND;
 
 The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
+
+Compilation Errors:
+
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<integer type/"Integer Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7423,21 +7523,23 @@ Examples:
   my $num2 = 0x12;
   my $result = $num1 & $num2;
   
-=head2 Bit OR Operator
+=head3 Bit OR Operator
 
-The bit OR operator C<|> is an L<operator|/"Operator"> to performe a bit OR operation.
+The bit OR operator C<|> performes a bit OR operation.
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-The left operand and the right operand must be an L<integer type/"Integer Type">. Otherwise a compilation error occurs.
-
-A L<binary numeric widening conversion|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+Before this operation, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 The return value is the same as the follwoing operation of the C language.
 
-  x | y;
+  LEFT_OPERAND | RIGHT_OPERAND;
 
 The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
+
+Compilation Errors:
+
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<integer type/"Integer Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7446,21 +7548,23 @@ Examples:
   my $num2 = 0x12;
   my $result = $num1 | $num2;
 
-=head2 Bit NOT Operator
+=head3 Bit NOT Operator
 
 The bit NOT operator C<~> is an L<operator|/"Operator"> to perform the bit NOT operation.
 
   ~OPERAND
 
-The type of the OPERAND must is an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
-
 The L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
 The return value is the same as the follwoing operation of the C language.
 
-  ~x
+  ~OPERAND
 
 The return type is the type that the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
+
+Compilation Errors:
+
+The type of I<OPERAND> must is an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7469,210 +7573,198 @@ Examples:
 
 =head2 Shift Operator
 
-Shift operators are operators that performs bit shift operations. These are L</"Left Shift Operator">, L</"Arithmetic Right Shift Operator">, and L</"Logical Right Shift Operator">.
+Shift operators perform bit shift operations.
 
-=head2 Left Shift Operator
+=head3 Left Shift Operator
 
-The left shift operator C<E<lt>E<lt>> is an L<operator|/"Operator"> to perform the left bit shift.
+The left shift operator C<E<lt>E<lt>> performs the left bit shift.
 
   LEFT_OPERAND << RIGHT_OPERAND
 
-The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
 
-The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the left operand.
+Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
-The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error occurs.
+The left shift operator performs the same operation as the following C language operation.
 
-The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the right operand.
+  LEFT_OPERAND << RIGHT_OPERAND;
 
-The return type is the same as the type of the left operand.
+The return type is the same as the type of I<LEFT_OPERAND>.
 
-The calculation result of the left shift operator is the same as the following calculation in the C language.
+Compilation Erorrs:
 
-  x << y;
+The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
 
-=head2 Arithmetic Right Shift Operator
+The type of I<RIGHT_OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
-The arithmetic right shift operator C<E<gt>E<gt>> is an L<operator|/"Operator"> to perform the arithmetic right bit shift.
+=head3 Arithmetic Right Shift Operator
+
+The arithmetic right shift operator C<E<gt>E<gt>> performs the arithmetic right bit shift.
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
 
-The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the left operand.
-
-The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error occurs.
-
-The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the right operand.
-
-The return type is the same as the type of the left operand.
+Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
 The operation result of the arithmetic right shift Operator is the operation that exactly same as the following operation in the C language.
 
-  x >> y;
+  LEFT_OPERAND >> RIGHT_OPERNAD;
 
-=head2 Logical Right Shift Operator
+The return type is the same as the type of I<LEFT_OPERAND>.
 
-The logical right shift operator C<E<gt>E<gt>E<gt>>is an L<operator|/"Operator"> to perform the logical right bit shift.
+Compilation Errors:
+
+The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+
+=head3 Logical Right Shift Operator
+
+The logical right shift operator C<E<gt>E<gt>E<gt>> performs the logical right bit shift.
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-The left operand must be the L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
 
-The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the left operand.
-
-The right operand must be the L<integer type|/"Integer Type"> except for the L<long type|/"long Type">. Otherwise a compilation error occurs.
-
-The L<numeric widening conversion/"Numeric Widening Conversion"> is performed on the right operand.
-
-The return type is the same as the type of the left operand.
+Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
 The operation result of logical right shift Operator is the same as the following calculation in the C language.
   
-  // In the case that the left operand is a int type
-  (uint32_t)x >> y;
+  // The type of LEFT_OPERAND is the int type
+  (uint32_t)LEFT_OPERAND >> RIGHT_OPERAND;
 
-  // In the case that the left operand is a long type
-  (uint64_t)x >> y;
+  // The type of LEFT_OPERAND is the long type
+  (uint64_t)LEFT_OPERAND >> RIGHT_OPERAND;
+
+The return type is the same as the type of I<LEFT_OPERAND>.
+
+Compilation Errors:
+
+The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 =head2 Comparison Operator
 
-The comparison operator is the L<operator|/"Operator"> to compare the left operand and the right operand.
+Comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-  LEFT_OPERAND COMPARISON_OPERATOR RIGHT_OPERAND
+=head3 Numeric Comparison Operator
 
-Comparison operators are the L<numeric comparison operators|/"Numeric Comparison Operator">, the L<string comparison operators|/"String Comparison Operator">, and the L<isa operator|/"isa Operator">.
+Numeric comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND> in the numeric order.
 
-=head2 Numeric Comparison Operator
-
-The numeric comparison operator is a L<comparison operator|/"Comparison Operator"> that is placed between The left operand and the right operand to compare the size of number or check the equqlity of objects.
-  LEFT_OPERAND NUMERIC_COMPARISON_OPERATOR RIGHT_OPERAND
-
-The list of numeric comparison operators.
+  LEFT_OPERAND == RIGHT_OPERAND
+  LEFT_OPERAND != RIGHT_OPERAND
+  LEFT_OPERAND > RIGHT_OPERAND
+  LEFT_OPERAND >= RIGHT_OPERAND
+  LEFT_OPERAND < RIGHT_OPERAND
+  LEFT_OPERAND <= RIGHT_OPERAND
+  LEFT_OPERAND <=> RIGHT_OPERAND
 
 =begin html
 
 <table>
   <tr>
     <th>Operator</th>
-    <th>Allowing Type</th>
     <th>Description</th>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND == RIGHT_OPERAND
+      <i>==</i>
     </td>
     <td>
-      The left operand and the right operand are numeric types or object types or reference types. If the one side is an object type or an reference type, L<undef|/"Undefined Value"> is allowed at the other side.
-    </td>
-    <td>
-      The left operand and the right operand are equal
+      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0. The comparation of operands of object types and reference types are also available.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND != RIGHT_OPERAND
+      <i>!=</i>
     </td>
     <td>
-      The left operand and the right operand are numeric types or object types or reference types. If the one side is an object type or an reference type, L<undef|/"Undefined Value"> is allowed at the other side.
-    </td>
-    <td>
-      The left operand and the right operand are not equal
+      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0. The comparation of operands of object types and reference types are also available.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND > RIGHT_OPERAND
+      <i>></i>
     </td>
     <td>
-      The left operand and the right operand are numeric types
-    </td>
-    <td>
-      The left operand is greater than the right operand
+      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND >= RIGHT_OPERAND
+      <i>>=</i>
     </td>
     <td>
-      The left operand and the right operand are numeric types
-    </td>
-    <td>
-      The left operand is greater than or equal to the right operand
+      If <i>LEFT_OPERAN</i> is greater than or equal to <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND < RIGHT_OPERAND
+      <i><</i>
     </td>
     <td>
-      The left operand and the right operand are numeric types
-    </td>
-    <td>
-      The left operand is less than the right operand
+      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND <= RIGHT_OPERAND
+      <i><=</i>
     </td>
     <td>
-      The left operand and the right operand are numeric types
-    </td>
-    <td>
-      The left operand is less than or equal to the right operand
+      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND <=> RIGHT_OPERAND
+      <i><=></i>
     </td>
     <td>
-      The left operand and the right operand are numeric types
-    </td>
-    <td>
-      If the left operand is greater than the right operand, returns 1. If the left operand is less than Right value_op, return -1. If the left operand is equals to Right value_op, returns 0.
+      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERNAD</i> in the numeric order, returns 1. If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERNAD</i> in the numeric order, return -1. If <i>LEFT_OPERAND</i> is equals to <i>RIGHT_OPERNAD</i> in the numeric order, returns 0.
     </td>
   </tr>
 </table>
 
 =end html
 
-The types of the left operand and the right operand must be comparable types. Otherwise a compilation error occurs.
+Before this operation, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-In Numeric Type Comparison, the L<binary numeric conversion|is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed for The left operand and the right operand.
+The numeric comparison operators performed the same operations as the following C language operations.
 
-the Numeric Comparison Operation is performed that exactly same as the following operation in the C language.
+  (int32_t)(LEFT_OPERAND == RIGHT_OPERAND);
+  (int32_t)(LEFT_OPERAND != RIGHT_OPERAND);
+  (int32_t)(LEFT_OPERAND > RIGHT_OPERAND);
+  (int32_t)(LEFT_OPERAND >= RIGHT_OPERAND);
+  (int32_t)(LEFT_OPERAND < RIGHT_OPERAND);
+  (int32_t)(LEFT_OPERAND <= RIGHT_OPERAND);
+  (int32_t)(LEFT_OPERAND > RIGHT_OPERAND ? 1 : LEFT_OPERAND < RIGHT_OPERAND ? -1 : 0);
 
-  # Numeric Type Comparison, Object Type Comparison
-  (int32_t)(x == y);
-  (int32_t)(x != y);
-  
-  # Numeric Type Comparison
-  (int32_t)(x > y);
-  (int32_t)(x >= y);
-  (int32_t)(x < y);
-  (int32_t)(x <= y);
-  (int32_t)(x > y ? 1 : x < y ? -1 : 0);
+The return type is the int type.
 
-For Numeric Type Operation(==, !=, >, >=, <, <=), the L<int type|/"int Type"> Operation, L</"long Type"> Operation, L</"float Type"> Operation, the L<double type|/"double Type"> Operation is defined.
+Compilation Errors:
 
-And Object Type Operation(==, !=) is defined.
+The type of I<LEFT_OPERAND> of the C<==> operator and the C<!=> operator must be a numeric type, an object type, or an reference type. Otherwise a compilation error occurs.
 
-The return type of the Numeric Comparison Operator is the L<int type|/"int Type">.
+The type of I<RIGHT_OPERAND> of the C<==> operator and the C<!=> operator must be a numeric type, an object type, or an reference type. Otherwise a compilation error occurs.
 
-=head2 String Comparison Operator
+If the type of I<RIGHT_OPERAND> of the C<==> operator and the C<!=> operator is an object type or an reference type, and the type of I<LEFT_OPERAND> is different from the type of I<RIGHT_OPERAND>, a compilation error occurs.
 
-The string comparison operator is a L<comparison operator|/"Comparison Operator"> to compare tow strings.
+The type of I<LEFT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a numeric type. Otherwise a compilation error occurs.
 
-  LEFT_OPERAND STRING_COMPARISON_OPERATOR RIGHT_OPERAND
+The type of I<RIGHT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a numeric type. Otherwise a compilation error occurs.
 
-The type of the left operand and the right operand must be the L<string type|/"string Type"> or L<byte[] type|"byte[] Type">.
+=head3 String Comparison Operator
 
-The return type is the L<int type|/"int Type">. If the condition is satisfied, returns 1, otherwise 0.
+String comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND> in the dictionary order.
 
-The list of string comparison operators.
+  LEFT_OPERAND eq RIGHT_OPERAND
+  LEFT_OPERAND ne RIGHT_OPERAND
+  LEFT_OPERAND gt RIGHT_OPERAND
+  LEFT_OPERAND ge RIGHT_OPERAND
+  LEFT_OPERAND lt RIGHT_OPERAND
+  LEFT_OPERAND le RIGHT_OPERAND
+  LEFT_OPERAND cmp RIGHT_OPERAND
 
 =begin html
 
@@ -7683,67 +7775,75 @@ The list of string comparison operators.
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND eq RIGHT_OPERAND
+      <i>eq</i>
     </td>
     <td>
-      The left operand and the right operand are equal
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_OPERAND ne RIGHT_OPERAND
-    </td>
-    <td>
-      The left operand and the right operand are not equal
+      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND gt RIGHT_OPERAND
+      <i>ne</i>
     </td>
     <td>
-      The left operand is greater than the right operand in the dictionary order.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_OPERAND ge RIGHT_OPERAND
-    </td>
-    <td>
-      The left operand is greater than or equal to the right operand compared in the dictionary order
+      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND lt RIGHT_OPERAND
+      <i>gt</i>
     </td>
     <td>
-      The left operand is less than the right operand when compared in the dictionary order
-    </td>
-  </tr>
-  <tr>
-    <td>
-      LEFT_OPERAND le RIGHT_OPERAND
-    </td>
-    <td>
-      The left operand is less than or equal to the right operand compared in the dictionary order
+      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
     <td>
-      LEFT_OPERAND cmp RIGHT_OPERAND
+      <i>ge</i>
     </td>
     <td>
-      If the left operand is greater than Right value_op, returns 1. If the left operand is less than the right operand, return -1. If the left operand is equal to the right operand, returns 0.
+      If <i>LEFT_OPERAND</i> is greater than or equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <i>lt</i>
+    </td>
+    <td>
+      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <i>le</i>
+    </td>
+    <td>
+      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <i>cmp</i>
+    </td>
+    <td>
+      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1. If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERNAD</i> in the dictionary order, return -1. If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 0.
     </td>
   </tr>
 </table>
 
 =end html
 
+The return type is the int type. 
+
+Compilation Errors.
+
+The type of I<LEFT_OPERAND> must be the string type or the byte[] type. Otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be the string type or the byte[] type. Otherwise a compilation error occurs.
+
 =head2 isa Operator
 
-The C<isa> operator checks whether the left operand can be assigned to the right type.
+The C<isa> operator checks whether I<LEFT_OPERAND> can be assigned to the right type.
 
   LEFT_OPERAND isa RIGHT_TYPE
 
@@ -7755,11 +7855,11 @@ If the right type is another object type, this operator checks the L<runtime ass
 
 If the runtime assignability is true, it returns 1, otherwise returns 0.
 
-The return type is the L<int type|/"int Type">.
+The return type is the int type.
 
 Compilation Errors:
 
-If the runtime assignability is checked, the left operand of the isa operator must be an object type. Otherwise a compilation error occurs.
+If the runtime assignability is checked, I<LEFT_OPERAND> of the isa operator must be an object type. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -7785,7 +7885,7 @@ Examples:
 
 =head2 isa_error Operator
 
-The C<isa_error> operator checks whether the basic type id given by the left operand can be assigned to the right type.
+The C<isa_error> operator checks whether the basic type ID given by I<LEFT_OPERAND> can be assigned to the right type.
 
   LEFT_OPERAND isa RIGHT_TYPE
 
@@ -7795,9 +7895,9 @@ If the assignability is true, returns 1. Otherwise returns 0.
 
 Compilation Errors:
 
-The left operand of the isa_error operator must be an integer type within int. Otherwise a compilation error occurs.
+I<LEFT_OPERAND> of the isa_error operator must be an integer type within int. Otherwise a compilation error occurs.
 
-The right operand of the isa_error operator must be a class type. Otherwise a compilation error occurs.
+I<RIGHT_OPERAND> of the isa_error operator must be a class type. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -7811,15 +7911,15 @@ Examples:
   
 =head2 is_type Operator
 
-The C<is_type> operator checks whether the type of the left operand is equal to the right type.
+The C<is_type> operator checks whether the type of I<LEFT_OPERAND> is equal to the right type.
 
   LEFT_OPERAND is_type RIGHT_TYPE
 
-If the right type is a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the compile type of the left operand is equal to the right type.
+If the right type is a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the compile type of I<LEFT_OPERAND> is equal to the right type.
 
 If the check is true, it returns 1, otherwise returns 0.
 
-If the right type is another object type, this operator checks the runtime type of the left operand is equal to the right type.
+If the right type is another object type, this operator checks the runtime type of I<LEFT_OPERAND> is equal to the right type.
 
 If the runtime check is true, it returns 1, otherwise returns 0.
 
@@ -7827,7 +7927,7 @@ The return type is L<int type|/"int Type">.
 
 Compilation Errors:
 
-If the runtime check is performed, the left operand of the is_type operator must be an object type. Otherwise a compilation error occurs.
+If the runtime check is performed, I<LEFT_OPERAND> of the is_type operator must be an object type. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -7849,7 +7949,7 @@ Examples:
 
 =head2 is_error Operator
 
-The C<is_error> operator checks whether the basic type id given by the left operand is the basic type of the right type.
+The C<is_error> operator checks whether the basic type ID given by I<LEFT_OPERAND> is the basic type of the right type.
 
   LEFT_OPERAND isa RIGHT_TYPE
 
@@ -7859,9 +7959,9 @@ If it is ok, returns 1. Otherwise returns 0.
 
 Compilation Errors:
 
-The left operand of the is_error operator must be an integer type within int. Otherwise a compilation error occurs.
+I<LEFT_OPERAND> of the is_error operator must be an integer type within int. Otherwise a compilation error occurs.
 
-The right operand of the is_error operator must be a class type. Otherwise a compilation error occurs.
+I<RIGHT_OPERAND> of the is_error operator must be a class type. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -7875,11 +7975,11 @@ Examples:
   
 =head2 is_compile_type Operator
 
-The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the compilation-time type of the left operand is the right type.
+The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the compilation-time type of I<LEFT_OPERAND> is the right type.
 
   LEFT_OPERAND is_compile_type RIGHT_TYPE
 
-If the compilation-time type of the left operand is the right type, returns 1. Otherwise returns 0.
+If the compilation-time type of I<LEFT_OPERAND> is the right type, returns 1. Otherwise returns 0.
 
 The return type is L<int type|/"int Type">.
 
@@ -7912,11 +8012,13 @@ The C<type_name> operator returns the type name of the object.
 
   type_name OPERAND
 
-If the OPERAND is defined, returns the type name of the object. Otherwise returns L<undef|/"Undefined Value">.
+If I<OPERAND> is defined, returns the type name of the object. Otherwise returns L<undef|/"Undefined Value">.
 
 The return type is the L<string type|/"string Type">.
 
-If the OPERAND is not an L<object type|/"Object Type">, a compilation error occurs.
+Compilation Errors.
+
+If I<OPERAND> is not an L<object type|/"Object Type">, a compilation error occurs.
 
 Examples:
   
@@ -7948,9 +8050,11 @@ It returns the string representation of the object.
 
 The return type is the L<string type|/"string Type">.
 
-If the OPERAND is not an L<object type|/"Object Type">, a compilation error occurs.
-
 The string representation may be changed from SPVM version to version. Please don't use C<dump> operator for the purpose of the data serialization.
+
+Compilation Errors:
+
+If I<OPERAND> is not an L<object type|/"Object Type">, a compilation error occurs.
 
 =head2 Logical Operator
 
@@ -7964,13 +8068,13 @@ The logical AND operator C<&&> is a L<logical operator|/"Logical Operator"> to p
 
   LEFT_OPERAND && RIGHT_OPERAND
   
-The left operand and the right operand must be an L<operator|/"Operator">.
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<operator|/"Operator">.
 
-The return type of the logical AND operator is the L<int type|/"int Type">.
+The return type of the logical AND operator is the int type.
 
-Thg logical AND operator performs the L<boolean conversion|/"Boolean Conversion"> to the left operand. If the evaluated value is 0, returns 0. Otherwise proceed to the evaluation of the right operand.
+Thg logical AND operator performs the L<boolean conversion|/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
 
-It performs the L<boolean conversion|/"Boolean Conversion"> to the right operand. If the evaluated value is 0, returns 0. Otherwise return the evaluated value.
+It performs the L<boolean conversion|/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise return the evaluated value.
 
 =head3 Logical OR Operator
 
@@ -7978,11 +8082,11 @@ The logical OR operator C<||> is a L<logical operator|/"Logical Operator"> to pe
 
   LEFT_OPERAND || RIGHT_OPERAND
 
-The return type of the logical OR operator is the L<int type|/"int Type">.
+The return type of the logical OR operator is the int type.
 
-Thg logical OR operator performs the L<boolean conversion|/"Boolean Conversion"> to the left operand. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of the right operand.
+Thg logical OR operator performs the L<boolean conversion|/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
 
-It performs the L<boolean conversion|/"Boolean Conversion"> to the right operand. If the evaluated value is not 0, return the evaluated value. Otherwise returns 0.
+It performs the L<boolean conversion|/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise returns 0.
 
 =head3 Logical NOT Operator
 
@@ -7990,9 +8094,9 @@ The logical NOT operator C<!> is a L<logical operator|/"Logical Operator"> to pe
 
   !OPERAND
 
-The return type of the logical NOT operator is the L<int type|/"int Type">.
+The return type of the logical NOT operator is the int type.
 
-Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"> to the OPERAND. If the evaluated value is 0, returns 1. Otherwise returns 0.
+Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"> to I<OPERAND>. If the evaluated value is 0, returns 1. Otherwise returns 0.
 
 =head2 String Concatenation Operator
 
@@ -8000,17 +8104,19 @@ String concatenation operator . is an L<operator|/"Operator"> to concat two stri
 
   LEFT_OPERAND . RIGHT_OPERAND
 
-The left operand and the right operand must be a L<string type|/"string Type">, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
-
-If the type of the OPERAND is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
+If the type of I<OPERAND> is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
 The return type is a L<string type|/"string Type">.
 
 A string concatenation operator returns the result to concat two operands.
 
-If both the left operand and the right operand are a L<string literal|/"String Literal">, the two string literals are concatenated at compile-time.
+If both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are a L<string literal|/"String Literal">, the two string literals are concatenated at compile-time.
 
-If the left operand or the right operand is L<undef|/"Undefined Value">, an exception occurs.
+If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is L<undef|/"Undefined Value">, an exception occurs.
+
+Compilation Errors:
+
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -8024,7 +8130,7 @@ The assignment operator C<=> is an L<operator|/"Operator"> to assign a value.
 
   LEFT_OPERAND = RIGHTH_OPERAND
 
-The assignment operator has different meanings depending on the left operand and the right operand.
+The assignment operator has different meanings depending on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 =head3 Local Variable Assignment
 
@@ -8135,11 +8241,13 @@ The array length operator is an L<operator|/"Operator"> to get the length of the
 
   @OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is an the L<array type|/"Array Type">. Otherwise a compilation error occurs.
-
-The array length operator returns the L<int type|/"int Type"> value that is the length of the L<array|/"Array">.
+The array length operator returns the int type value that is the length of the L<array|/"Array">.
 
 Array Length Operator returns the L<operator|/"Operator">
+
+Compilation Errors:
+
+The operand must be an L<operator|/"Operator"> that type is an the L<array type|/"Array Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -8159,17 +8267,19 @@ The C<new_string_len> operator is an L<operator|/"Operator"> to create a L<strin
 
   new_string_len OPERAND
 
-The type of the OPERAND must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
 
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the OPERAND.
-
-The C<new_string_len> operator returns a new string that length is the length specified by the OPERAND and all characters are C<\0>.
+The C<new_string_len> operator returns a new string that length is the length specified by I<OPERAND> and all characters are C<\0>.
 
 The character just after the last character is C<\0>. The string created by the new_string_len operator can be used as the C language string ending with C<\0>.
 
 The return type is the L<string type|/"string Type">.
 
-The length specified by the OPERAND must be greater than or equal to 0. Otherwise an exception is thrown.
+The length specified by I<OPERAND> must be greater than or equal to 0. Otherwise an exception is thrown.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -8182,8 +8292,6 @@ The C<copy> operator is an L<operator|/"Operator"> to copy the object.
 
   copy OPERAND
 
-The operand must be an L<operator|/"Operator"> that type is a L<object type|/"object Type">. Otherwise a compilation error occurs.
-
 If the type of operand is none of a L<string type|/"string Type">, a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">,
 An L<exception|/"Exception"> is thorwn.
 
@@ -8192,6 +8300,10 @@ The C<copy> operator returns the copied object.
 The return type is the same as the type of operand.
 
 Read-only flag of the string is dropped.
+
+Compilation Errors:
+
+The operand must be an L<operator|/"Operator"> that type is a L<object type|/"object Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -8204,11 +8316,13 @@ The C<is_read_only> is an L<operator|/"Operator"> to check if the L<string|/"Str
 
   is_read_only OPERAND
 
-The operand must be a L<string type|/"string Type">. Otherwise a compilation error occurs.
-
 If the string is read-only, the C<is_read_only> operator returns 1, otherwise returns 0.
 
 The return type is an L<int type|/"int Type">.
+
+Compilation Errors:
+
+The operand must be the string type. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -8224,9 +8338,11 @@ The string length operator C<length> is an L<operator|/"Operator"> to get the le
 
 The returned length is the byte size. Note that the length is not the count of UTF-8 characters.
 
-The type of the OPERAND must be the L<string type|/"string Type">. Otherwise a compilation error occurs.
+The return type is the int type.
 
-The return type is the L<int type|/"int Type">.
+Compilation Errors:
+
+The type of I<OPERAND> must be the string type. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -8240,9 +8356,11 @@ Examples:
 
 =head2 scalar Operator
 
-The C<scalar> operator is an L<Operator|/"Operator"> that returns the value of the OPERAND.
+The C<scalar> operator is an L<Operator|/"Operator"> that returns I<OPERAND>.
 
   scalar OPERAND
+
+Compilation Errors:
 
 The operand must be an L</"The array Length Operator">. Otherwise a compilation error occurs.
 
@@ -8264,17 +8382,19 @@ The C<isweak> operator checks whether the L<field|/"Field"> is L<weak reference|
 
   isweak OBJECT->{FIELD_NAME};
 
+If the field is weaken, the C<isweak> operator returns 1, otherwise returns 0.
+
+The return type of the C<isweak> operator is the int type.
+
+See L</"Weak Reference"> to know the behavior of the C<isweak> operator.
+
+Compilation Errors:
+
 The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
 
 If the field name is not found, a compilation error occurs.
 
 The type of the field targetted by the C<isweak> operator is not an L<object type|/"Object Type">, a compilation error occurs.
-
-If the field is weaken, the C<isweak> operator returns 1, otherwise returns 0.
-
-The return type of the C<isweak> operator is the L<int type|/"int Type">.
-
-See L</"Weak Reference"> to know the behavior of the C<isweak> operator.
 
 Examples:
 
@@ -8287,15 +8407,17 @@ The C<can> operator checks if a method can be called.
 
   OPERAND can METHOD_NAME
 
-The type of the OPERAND must be the L<class type|/"Class Type"> or the L<interface type|/"Interface Type">. Otherwise a compilation error occurs.
-
-The METHOD_NAME must be a L<method name|/"Method Name"> or an empty string C<"">. Otherwise a compilation error occurs.
-
 An empty string C<""> means an L<anon method|/"Anon Method">.
 
-If the OPERAND can call the method given by METHOD_NAME, returns 1. Otherwise returns 0.
+If I<OPERAND> can call the method given by METHOD_NAME, returns 1. Otherwise returns 0.
 
 The return type is L<int type|/"int Type">.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be the L<class type|/"Class Type"> or the L<interface type|/"Interface Type">. Otherwise a compilation error occurs.
+
+The METHOD_NAME must be a L<method name|/"Method Name"> or an empty string C<"">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -8325,8 +8447,6 @@ The setting local variable is an L<operator|/"Operator"> to set the value of L</
 
   $var = VALUE
 
-The assignment of the value must satisfy the L<assignability|/"Assignability">. Otherwise a compilation error occurs.
-
 The return value is the value after the assignment.
 
 If the type of the assigned value is an L<object type|/"Object Type">, the reference count of the object is incremented by 1.
@@ -8334,6 +8454,10 @@ If the type of the assigned value is an L<object type|/"Object Type">, the refer
 If an object has already been assigned to $var before the assignment, the reference count of the object is decremented by 1.
 
 See the L<scope|/"Scope"> to know the L<garbage collection|/"Garbage Collection"> of local variables.
+
+Compilation Errors:
+
+The assignment of the value must satisfy the L<assignability|/"Assignability">. Otherwise a compilation error occurs.
 
 =head2 Getting Class Variable
 
@@ -8345,11 +8469,13 @@ C<CLASS_NAME::> can be omitted if the class variable belongs to the current L<cl
 
   $CLASS_VARIABLE_NAME
 
+If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outer class.
+
+Compilation Errors:
+
 If the class variable does not found, a compilation error occurs.
 
 If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
-
-If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outer class.
 
 Examples:
 
@@ -8377,21 +8503,23 @@ B<Setting Class Variable operator> is an L<operator|/"Operator"> to set L</"Clas
 
   $CLASS_VARIABLE_NAME = VALUE
 
-If the assignment does not satisfy the L<assignability|/"Assignability">, a compilation error occurs.
-
 The return value is the value after the setting.
 
 The return type is the type of the class variable.
-
-If the class variable does not found, a compilation error occurs.
-
-If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
 
 If the type of the assigned value is an L<object type|/"Object Type">, the reference count of the object is incremented by 1.
 
 If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by 1.
 
 If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outer class.
+
+Compilation Errors:
+
+If the assignment does not satisfy the L<assignability|/"Assignability">, a compilation error occurs.
+
+If the class variable does not found, a compilation error occurs.
+
+If the class variable is C<private> and it is accessed outside of the class, a compilation error occurs.
 
 Examples:
 
@@ -8429,7 +8557,7 @@ The setting exception variable is an L<operator|/"Operator"> to set the value of
 
   $@ = VALUE
 
-The type of the assigned value must be the L<string Type|/"string Type">.
+The type of the assigned value must be the string type.
 
 The return value is the value after the setting.
 
@@ -8466,8 +8594,6 @@ The setting field is an L<operator|/"Operator"> to set the L<field|/"Field"> of 
 
 The type of invocant is a L<class type|/"Class Type">.
 
-If the assignment does not satisfy the L<assignability|/"Assignability">, a compilation error occurs.
-
 The return value is the value after the setting. 
 
 The return type is the field type.
@@ -8475,6 +8601,10 @@ The return type is the field type.
 If the type of assigned value is a L<basic object type|/"Object Type">, the reference count of the object is incremented by 1.
 
 If an object has already been assigned to the field before the assignment, the reference count of that object is decremented by 1.
+
+Compilation Errors:
+
+If the assignment does not satisfy the L<assignability|/"Assignability">, a compilation error occurs.
 
 Examples:
 
@@ -8489,11 +8619,13 @@ B<Getting Multi-Numeric Field operator> is an L<operator|/"Operator"> to get Fie
 
 The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
   
-If the field names does not found in the L</"Class">, a compilation error occurs
-
 Getting Multi-Numeric Field operator returns the field value in the multi-numeric value.
 
 The retrun type is the L<type|/"Type"> of the field.
+
+Compilation Errors:
+
+If the field names does not found in the L</"Class">, a compilation error occurs
 
 Examples:
 
@@ -8508,13 +8640,15 @@ Setting Multi-Numeric Field operator is an L<operator|/"Operator"> to set Field 
 
 The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
 
-If the field names does not found in the L</"Class">, a compilation error occurs.
-
 Setting Multi-Numeric Field operator returns the value of the field after setting. 
 
 The assignment must satisfy the L<assignability|/"Assignability">.
 
 The return type is the field type.
+
+Compilation Errors:
+
+If the field names does not found in the L</"Class">, a compilation error occurs.
 
 Examples:
 
@@ -8529,8 +8663,6 @@ The getting array element is an L<operator|/"Operator"> to get the element of th
 
 The array must be the L<array type|/"Array Type">.
 
-The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
-
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
 
 The getting array element returns the element that is specifed by the index.
@@ -8540,6 +8672,10 @@ The return type is the type of the element.
 The array must be defined. Otherwise an exception is thrown.
 
 The index must be greater than or equal to 0. Otherwise an exception is thrown.
+
+Compilation Errors:
+
+The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -8560,11 +8696,9 @@ The setting array element is an L<operator|/"Operator"> to set the element of th
 
 The array must be the L<array type|/"Array Type">.
 
-The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
-
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
 
-The right operand must be L<assigned|/"Assignability"> to the element of the array.
+I<RIGHT_OPERAND> must be L<assigned|/"Assignability"> to the element of the array.
 
 The setting array element returns the value of the element that is set.
 
@@ -8572,9 +8706,13 @@ The array must be defined. Otherwise an exception is thrown.
 
 The index must be greater than or equal to 0. Otherwise an exception is thrown.
 
-If the right operand is an L<object type|/"Object Type">, the reference count of the object is incremented by 1.
+If I<RIGHT_OPERAND> is an L<object type|/"Object Type">, the reference count of the object is incremented by 1.
 
 If an object has already been assigned to the field before the assignment, the reference count of the object is decremented by 1.
+
+Compilation Errors:
+
+The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -8615,8 +8753,6 @@ The creating array is an L<operator|/"Operator"> to create an array using the L<
 
 The type must be a L<basic type|/"Basic Type">.
 
-The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
-
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the length.
 
 The length must be greater than or equal to 0. Otherwise an exception is thrown.
@@ -8624,6 +8760,10 @@ The length must be greater than or equal to 0. Otherwise an exception is thrown.
 All elements of the array are initialized by the L<initial value|/"Initial Value">.
 
 The type of the created array is the L<array type|/"Array Type">.
+
+Compilation Errors:
+
+The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -8694,7 +8834,9 @@ The array initialization has another syntax using C<{}>.
 
 This is the same as above array init syntax, but the type of the created array is always L</"Any Object Array Type"> C<object[]>.
 
-And if the length of the elements is odd number, a compilation error occurs.
+Compilation Errors:
+
+If the length of the elements is odd number, a compilation error occurs.
 
 Examples:
 
@@ -8710,9 +8852,11 @@ The reference operator C<\> is the L<operator|/"Operator"> to create a L<referen
 
   \OPERAND
 
-The operand must be a L<local variable|/"Local Variable"> that type is a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">. Otherwise a compilation error occurs.
+The return type is the L<reference type|/"Reference Type"> of I<OPERAND>.
 
-The return type is the L<reference type|/"Reference Type"> of the OPERAND.
+Compilation Errors:
+
+The operand must be a L<local variable|/"Local Variable"> that type is a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -8734,9 +8878,11 @@ Obtaining a value by Dereference is an L<operator|/"Operator"> to obtain the act
 
   $VARIABLE
 
-The variable Type must be Reference Type. Otherwise a compilation error occurs.
-
 The value obtained by Dereference returns the L<operator|/"Operator">.
+
+Compilation Errors:
+
+The variable Type must be Reference Type. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -8754,11 +8900,13 @@ Setting a value with Dereference is an L<operator|/"Operator"> to set the actual
 
   $VARIABLE = OPERAND
 
+Setting a value with Dereference returns the set value. This is the L<operator|/"Operator">.
+
+Compilation Errors:
+
 The variable Type must be Reference Type. Otherwise a compilation error occurs.
 
 The type of operator must match the type of the variable when dereferenced. Otherwise a compilation error occurs.
-
-Setting a value with Dereference returns the set value. This is the L<operator|/"Operator">.
 
 Examples:
 
@@ -8781,11 +8929,13 @@ B<Getting Multi-Numeric Field via Dereference operator> is an L<operator|/"Opera
 
 The invocant is L</"Multi-Numeric Reference Type">.
 
-If the field names does not found in the L</"Class">, a compilation error occurs
-
 The getting multi-numeric field via dereference operator returns the field value in the multi-numeric value.
 
 The retrun type is the L<type|/"Type"> of the field.
+
+Compilation Errors:
+
+If the field names does not found in the L</"Class">, a compilation error occurs
 
 Examples:
 
@@ -8801,13 +8951,15 @@ The setting multi-numeric field via dereference operator is an L<operator|/"Oper
 
 The invocant is L</"Multi-Numeric Reference Type">.
 
-If the field names does not found in the L</"Class">, a compilation error occurs
-
 The setting multi-numeric field via dereference operator returns the value of the field after setting.
 
 The assignment must satisfy the L<assignability|/"Assignability">.
 
 The return type is the field type.
+
+Compilation Errors:
+
+If the field names does not found in the L</"Class">, a compilation error occurs
 
 Examples:
 
@@ -9002,13 +9154,13 @@ The above example is the same as the following codes.
 
 =head2 basic_type_id Operator
 
-The C<basic_type_id> operator gets the basic type id from a type.
+The C<basic_type_id> operator gets the basic type ID from a type.
 
   basic_type_id TYPE
 
-The return value is the basic type id.
+The return value is the basic type ID.
 
-The return type is the L<int type|/"int Type">.
+The return type is the int type.
 
 Examples:
 
@@ -9036,11 +9188,13 @@ The type cast is the L<operator|/"Operator"> to perform an L<explicite type conv
   # Postfix Type Cast
   OPERAND->(TYPE)
 
-If the type cast doesn't have the L<castability|"Castability">, a compilation error occurs.
-
 A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
 
 The behaviors of type casts are explained in L</"Castability">.
+
+Compilation Errors:
+
+If the type cast doesn't have the L<castability|"Castability">, a compilation error occurs.
 
 Examples:
   
@@ -9082,9 +9236,7 @@ The C<warn> operator prints a message to the standard error.
   warn OPERNAD;
   warn;
 
-The OPERNAD must be the L<string Type|/"string Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
-
-If the OPERAND is omitted or the value of the OPERAND is L<undef|/"Undefined Value">, The OPERAND is set to the string C<"Warning">.
+If I<OPERAND> is omitted or I<OPERAND> is L<undef|/"Undefined Value">, I<OPERAND> is set to the string C<"Warning">.
 
 The return type is the L<void type|/"void Type">.
 
@@ -9093,6 +9245,10 @@ If the end character of the OPERNAD is C<\n>, the C<warn> operator prints the OP
 Otherwise the current file name and the current line number by the format C<"\n  at $file_name line $line\n"> are added to the end of the OPERNAD.
 
 The buffer of the standard error is flushed after the printing.
+
+Compilation Errors:
+
+The OPERNAD must be the string type or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -9104,11 +9260,11 @@ The C<print> operator prints a L<string|/"String"> to the standard output.
 
   print OPERAND;
 
-The oeprand must be a L<string type|/"string Type">.
+I<OPERAND> must be the string type.
 
 The return type is the L<void type|/"void Type">.
 
-If the value of the OPERAND is an L<undef|/"Undefined Value">, print nothing.
+If I<OPERAND> is an L<undef|/"Undefined Value">, print nothing.
 
 =head2 say Operator
 
@@ -9116,11 +9272,11 @@ The C<say> operator prints a L<string|/"String"> with a line break C<\n> to the 
 
   say OPERAND;
 
-The oeprand must be a L<string type|/"string Type">.
+I<OPERAND> must be the string type.
 
 The return type is the L<void type|/"void Type">.
 
-If the value of the OPERAND is an L<undef|/"Undefined Value">, print C<\n>.
+If I<OPERAND> is an L<undef|/"Undefined Value">, print C<\n>.
 
 =head2 make_read_only Operator
 
@@ -9128,7 +9284,7 @@ The C<make_read_only> operator makes the L<string|/"Strings"> read-only.
 
   make_read_only OPERAND;
 
-The oeprand must be a L<string type|/"string Type">.
+I<OPERAND> must be the string type.
 
 The return type is the L<void type|/"void Type">.
 
@@ -9149,15 +9305,17 @@ The C<weaken> operator creates a L<weak reference|/"Weak Reference">.
 
   weaken OBJECT->{FIELD_NAME};
 
-The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
-
 The return type is the L<void type|/"void Type">.
+
+See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
+
+Compilation Errors:
+
+The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
 
 If the field name is not found, a compilation error occurs.
 
 The type of the field targetted by the C<weaken> statement is not an L<object type|/"Object Type">, a compilation error occurs.
-
-See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
 
 Examples:
 
@@ -9170,15 +9328,17 @@ The C<unweaken> operator unweakens a L<weak reference|/"Weak Reference">.
 
   unweaken OBJECT->{FIELD_NAME};
 
-The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
-
 The return type is the L<void type|/"void Type">.
+
+See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
+
+Compilation Errors:
+
+The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
 
 If the field name is not found, a compilation error occurs.
 
 The type of the field targetted by the C<unweaken> statement is not an L<object type|/"Object Type">, a compilation error occurs.
-
-See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
 
 Examples:
 
@@ -9197,13 +9357,15 @@ A method defined as the L<class method|/"Class Method"> can be called using the 
   
   &MethodName(ARGS1, ARGS2, ...);
 
-If the number of arguments does not correct, a compilation error occurs.
-
-If the types of arguments have no type compatible, a compilation error occurs.
-
 C<&> means the current class.
 
 If C<&> is used in anon method, it means its outer class.
+
+Compilation Errors:
+
+If the number of arguments does not correct, a compilation error occurs.
+
+If the types of arguments have no type compatible, a compilation error occurs.
 
 Examples:
   
@@ -9233,11 +9395,13 @@ A method defined as the L<instance method|/"Instance Method"> can be called usin
 
   Instance->MethodName(ARGS1, ARGS2, ...);
 
+The called method is resolved from the type of the instance.
+
+Compilation Errors:
+
 If the number of arguments does not correct, a compilation error occurs.
 
 If the types of arguments have no type compatible, a compilation error occurs.
-
-The called method is resolved from the type of the instance.
 
 Examples:
   
