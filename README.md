@@ -50,6 +50,7 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-HiRes">SPVM::Time::HiRes</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Getopt-Long">SPVM::Getopt::Long</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-Piece">SPVM::Time::Piece</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Encode">SPVM::Encode</a>
 
 ## Highly Experimental CPAN Modules
 
@@ -58,8 +59,6 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Net-SSLeay">SPVM::Net::SSLeay</a>
 
 ## Not Released CPAN Modules
-
-* <a href="https://github.com/yuki-kimoto/SPVM-Encode">SPVM::Encode</a>
 
 ## Examples
 
