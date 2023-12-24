@@ -60,6 +60,8 @@
 
 ## Not Released CPAN Modules
 
+* <a href="https://github.com/yuki-kimoto/SPVM-Resource-Utf8proc">SPVM::Resource::Utf8proc</a>
+
 ## Deprecated or removed CPAN modules
 
 * <a href="https://github.com/yuki-kimoto/SPVM-Unicode">SPVM::Unicode</a>
