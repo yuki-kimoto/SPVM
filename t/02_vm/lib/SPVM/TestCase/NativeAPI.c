@@ -648,6 +648,46 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_native(SPVM_ENV* env, SPVM
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__get_class_var_int_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$INT_VALUE");
+ 
+  if (!class_var) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  int32_t value = env->get_class_var_int(env, stack, class_var);
+  
+  if (!(value == -2147483648)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+
+  stack[0].ival = 1;
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_class_var_short_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$SHORT_VALUE");
+  
+  if (!class_var) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  int16_t value = env->get_class_var_short(env, stack, class_var);
+  
+  if (!(value == -32768)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+
+  stack[0].ival = 1;
+  return 0;
+}
+
 int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
