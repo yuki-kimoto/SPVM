@@ -51,6 +51,7 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Time-Piece">SPVM::Time::Piece</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Encode">SPVM::Encode</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Unicode-Normalize">SPVM::Unicode::Normalize</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Resource-Utf8proc">SPVM::Resource::Utf8proc</a>
 
 ## Highly Experimental CPAN Modules
 
@@ -59,8 +60,6 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-Net-SSLeay">SPVM::Net::SSLeay</a>
 
 ## Not Released CPAN Modules
-
-* <a href="https://github.com/yuki-kimoto/SPVM-Resource-Utf8proc">SPVM::Resource::Utf8proc</a>
 
 ## Deprecated or removed CPAN modules
 
