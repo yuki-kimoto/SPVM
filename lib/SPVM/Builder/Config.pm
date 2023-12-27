@@ -1019,16 +1019,6 @@ Gets and sets the C<before_compile_cbs> field.
 
 This field is an array reference that contains the callbacks called before a compilation.
 
-Examples:
-
-  $config->add_before_compile_cb(sub {
-    my ($config, $compile_info) = @_;
-    
-    my $cc = $compile_info->cc;
-    
-    # Do something
-  });
-
 =head2 before_link_cbs
 
   my $before_link_cbs = $config->before_link_cbs;
@@ -1037,17 +1027,6 @@ Examples:
 Gets and sets the C<before_link_cbs> field.
 
 This field is an array reference that contains the callbacks called before a link.
-
-Examples:
-
-  $config->add_before_link_cb(sub {
-    my ($config, $link_info) = @_;
-    
-    my $object_files = $link_info->object_files;
-    
-    # Do something
-    
-  });
 
 =head2 ld
 
@@ -1411,19 +1390,19 @@ Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++17>.
 
   $config->add_ccflag(@ccflags);
 
-Adds values after the last element of L</"ccflags"> field.
+Adds values at the end of the L</"ccflags"> field.
 
 =head2 add_ldflag
 
   $config->add_ldflag(@ldflags);
 
-Adds values after the last element of L</"ldflags"> field.
+Adds values at the end of the L</"ldflags"> field.
 
 =head2 add_include_dir
 
   $config->add_include_dir(@include_dirs);
 
-Adds values after the last element of L</"include_dirs"> field.
+Adds values at the end of the L</"include_dirs"> field.
 
 =head2 add_lib_dir
 
@@ -1435,25 +1414,46 @@ Adds values after the last element of  C<lib_dirs> field.
 
   $config->add_source_file(@source_files);
 
-Adds elements after the last element of L</"source_files"> field.
+Adds elements at the end of the L</"source_files"> field.
 
 =head2 add_before_compile_cb
 
   $config->add_before_compile_cb(@before_compile_cbs);
 
-Adds elements after the last element of L</"before_compile_cbs"> field.
+Adds callbacks called just before the compile command L</"cc"> is executed at the end of the L</"before_compile_cbs"> field.
 
-=head2 add_before_compile_cb
+Examples:
+
+  $config->add_before_compile_cb(sub {
+    my ($config, $compile_info) = @_;
+    
+    my $cc = $compile_info->cc;
+    
+    # Do something
+  });
+
+=head2 add_before_link_cb
 
   $config->add_before_link_cb(@before_link_cbs);
 
-Adds elements after the last element of L</"before_link_cbs"> field.
+Adds callbacks called just before the link command L</"ld"> is executed at the end of the L</"before_link_cbs"> field.
+
+Examples:
+
+  $config->add_before_link_cb(sub {
+    my ($config, $link_info) = @_;
+    
+    my $object_files = $link_info->object_files;
+    
+    # Do something
+    
+  });
 
 =head2 add_lib
 
   $config->add_lib(@libs);
 
-Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
+Adds library names or L<SPVM::Builder::LibInfo> objects at the end of the L</"libs"> field.
 
 Examples:
 
@@ -1468,7 +1468,7 @@ Examples:
 
   $config->add_static_lib(@libs);
 
-Adds library names or L<SPVM::Builder::LibInfo> objects after the last element of L</"libs"> field.
+Adds library names or L<SPVM::Builder::LibInfo> objects at the end of the L</"libs"> field.
 
 C<static> field is set to a true value.
 

@@ -1,3 +1,7 @@
+0.989066 2023-12-27
+  [Document Fix]
+    * Fix and improve the doc of SPVM::Builder::Config.
+    
 0.989065 2023-12-22
   [Incompatible Changes]
     * The divui operator is renamed to the div_uint operator.
