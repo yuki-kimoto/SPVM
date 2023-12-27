@@ -814,11 +814,11 @@ sub _remove_ext_from_config_file {
 
 =head1 Name
 
-The SPVM::Builder::Config - Config of Compiler and Linker
+SPVM::Builder::Config - Compiler and Linker Configuration
 
 =head1 Description
 
-The SPVM::Builder::Config class has methods to manipulate a config to compile source files and generate a dynamic link.
+The SPVM::Builder::Config class has methods to manipulate compiler and linker configuration.
 
 =head1 Usage
 
@@ -839,20 +839,26 @@ The SPVM::Builder::Config class has methods to manipulate a config to compile so
   # C++11
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
   
+  # C++17
+  my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
+  
   # Optimize
   $config->optimize('-O2');
   
   # Optimize with debug mode
   $config->optimize('-O0 -g');
   
-  # Adds source files
+  # Add libraries
+  $config->add_lib('gdi32', 'd2d1', 'Dwrite');
+
+  # Add source files
   $config->add_source_file('foo.c', 'bar.c', 'baz/baz.c');
   
-  # Uses resource
+  # Use resource
   $config->use_resource('TestCase::Resource::Zlib');
   $config->use_resource('TestCase::Resource::Foo1', mode => 'mode1', argv => ['args1', 'args2']);
   
-  # Gets resouce information
+  # Get resouce information
   my $resource = $config->get_resource('TestCase::Resource::Zlib');
 
 =head1 Fields
@@ -862,9 +868,7 @@ The SPVM::Builder::Config class has methods to manipulate a config to compile so
   my $ext = $config->ext;
   $config->ext($ext);
 
-Gets and sets the C<ext> field.
-
-This field is the extension of a native class.
+Gets and sets the C<ext> field, the extension of a native class.
 
 Examples:
   
@@ -879,9 +883,7 @@ Examples:
   my $cc = $config->cc;
   $config->cc($cc);
 
-Gets and sets the C<cc> field.
-
-This field is a compiler name.
+Gets and sets the C<cc> field, a compiler name.
 
 Examples:
   
@@ -903,81 +905,85 @@ Examples:
   my $include_dirs = $config->include_dirs;
   $config->include_dirs($include_dirs);
 
-Gets and sets the C<include_dirs> field.
+Gets and sets the C<include_dirs> field, an array reference of directories for native header files.
 
-This field is an array reference of including directories of the compiler.
+The values of this field are converted to the C<-I> options given the compiler L</"cc">.
 
-This is same as C<-I> option of C<gcc>. 
+  # -I/path1 -I/path2
+  $config->include_dirs('/path1', '/path2');
 
 =head2 spvm_core_include_dir
 
   my $spvm_core_include_dir = $config->spvm_core_include_dir;
   $config->spvm_core_include_dir($spvm_core_include_dir);
 
-Gets and sets the C<spvm_core_include_dir> field.
+Gets and sets the C<spvm_core_include_dir> field, the directory for SPVM core header files.
 
-This is the header including directory of the SPVM core.
+This field are converted to the C<-I> option given the compiler L</"cc">.
 
 =head2 native_include_dir
 
   my $native_include_dir = $config->native_include_dir;
   $config->native_include_dir($native_include_dir);
 
-Gets and sets the C<native_include_dir> field.
+Gets and sets the C<native_include_dir> field, the directory for native header files in this native class.
 
-This field is the path of the header including directory of this native class.
+This field are converted to the C<-I> option given the compiler L</"cc">.
 
 =head2 native_src_dir
 
   my $native_src_dir = $config->native_src_dir;
   $config->native_src_dir($native_src_dir);
 
-Gets and sets the C<native_src_dir> field.
+Gets and sets the C<native_src_dir> field, the directory for native source files in this native class.
 
-This field is the path of the source directory of this native class.
+This directory is where the source files added by the L</"add_source_file"> method are searched.
 
 =head2 ccflags
 
   my $ccflags = $config->ccflags;
   $config->ccflags($ccflags);
 
-Gets and sets the C<ccflags> field.
-
-This field is an array reference that contains compiler flags.
+Gets and sets the C<ccflags> field, an array reference of compiler flags given the compile L</"cc">.
 
 =head2 dynamic_lib_ccflags
 
   my $dynamic_lib_ccflags = $config->dynamic_lib_ccflags;
   $config->dynamic_lib_ccflags($dynamic_lib_ccflags);
 
-Gets and sets the C<dynamic_lib_ccflags> field.
-
-This field is an array reference that contains compiler flags for information when the linker generates a dynamic link.
+Gets and sets the C<dynamic_lib_ccflags> field, an array reference of compiler flags given the compile L</"cc"> used when the linker generates a dynamic link file.
 
 =head2 thread_ccflags
 
   my $thread_ccflags = $config->thread_ccflags;
   $config->thread_ccflags($thread_ccflags);
 
-Gets and sets the C<thread_ccflags> field.
-
-This field is an array reference that contains compiler flags for thread setting.
+Gets and sets the C<thread_ccflags> field, an array reference of compiler flags given the compile L</"cc"> for threads.
 
 =head2 std
 
   my $std = $config->std;
   $config->std($std);
 
-Gets and sets the C<std> field.
+Gets and sets the C<std> field, a language standard.
 
-This field is the value for C<-std> option of the compiler.
+This field is converted to the C<-std> option given the compiler L</"cc">.
 
 Examples:
-
+  
+  # -std=c99
   $config->std('c99');
+  
+  # -std=gnu99
   $config->std('gnu99');
+  
+  # -std=cpp
   $config->std('cpp');
+  
+  # -std=cpp11
   $config->std('cpp11');
+  
+  # -std=cpp17
   $config->std('cpp17');
 
 =head2 optimize
@@ -985,9 +991,7 @@ Examples:
   my $optimize = $config->optimize;
   $config->optimize($optimize);
 
-Gets and sets the C<optimize> field.
-
-This field is the option for optimization of the compiler.
+Gets and sets the C<optimize> field, an option given the compiler L</"cc"> for optimization.
 
 Examples:
 
@@ -1000,42 +1004,35 @@ Examples:
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Gets and sets the C<source_files> field.
+Gets and sets the C<source_files> field, an array reference of native source files.
 
-This field is a array reference that contains source files.
-
-The file name is the relative pass from L</"native_src_dir">.
-
-Examples:
-
-  $config->source_files(['foo.c', 'bar.c']);
+The source file names are specified as relative paths from the L</"native_src_dir"> field.
 
 =head2 before_compile_cbs
 
   my $before_compile_cbs = $config->before_compile_cbs;
   $config->before_compile_cbs($before_compile_cbs);
 
-Gets and sets the C<before_compile_cbs> field.
-
-This field is an array reference that contains the callbacks called before a compilation.
+Gets and sets the C<before_compile_cbs> field, an array reference of callbacks called just before the compile command L</"cc"> is executed.
 
 =head2 before_link_cbs
 
   my $before_link_cbs = $config->before_link_cbs;
   $config->before_link_cbs($before_link_cbs);
 
-Gets and sets the C<before_link_cbs> field.
-
-This field is an array reference that contains the callbacks called before a link.
+Gets and sets the C<before_link_cbs> field, an array reference of callbacks called just before the link command L</"ld"> is executed.
 
 =head2 ld
 
   my $ld = $config->ld;
   $config->ld($ld);
 
-Gets and sets the C<ld> field.
+Gets and sets the C<ld> field, a linker name.
 
-This field is a linker name.
+Excamples:
+
+  $config->ld('gcc');
+  $config->ld('g++');
 
 =head2 lib_dirs
 
@@ -1044,7 +1041,9 @@ This field is a linker name.
 
 Gets and sets the C<lib_dirs> field.
 
-This field is an array reference that contains the directories that libraries are searched for by the linker. This is same as C<-L> option of C<gcc>.
+This field is an array reference that contains the directories that libraries are searched for by the linker.
+
+This is same as C<-L> option of the compiler L</"cc">.
 
 =head2 libs
 
@@ -1414,7 +1413,11 @@ Adds values after the last element of  C<lib_dirs> field.
 
   $config->add_source_file(@source_files);
 
-Adds elements at the end of the L</"source_files"> field.
+Adds a native source file at the end of the L</"source_files"> field.
+
+Examples:
+
+  $config->add_source_file('foo.c', 'bar.c');
 
 =head2 add_before_compile_cb
 
