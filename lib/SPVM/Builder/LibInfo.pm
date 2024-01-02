@@ -106,30 +106,30 @@ sub new {
 }
 
 # Instance Methods
-sub to_arg {
+sub to_ldflags {
   my ($self) = @_;
   
-  my $link_command_arg;
+  my @link_command_ldflags;
   
   if ($self->is_abs) {
     if (defined $self->file) {
-      $link_command_arg = $self->file;
+      push @link_command_ldflags, $self->file;
     }
     else {
-      $link_command_arg = "";
+      push @link_command_ldflags, "";
     }
   }
   else {
     my $name = $self->name;
     if ($self->is_static) {
-      $link_command_arg = $self->static_option_cb->($self, $name);
+      push @link_command_ldflags, $self->static_option_cb->($self, $name);
     }
     else {
-      $link_command_arg = "-l$name";
+      push @link_command_ldflags, "-l$name";
     }
   }
   
-  return $link_command_arg;
+  return \@link_command_ldflags;
 }
 
 sub to_string { 
@@ -151,7 +151,7 @@ The SPVM::Builder::LibInfo class has methods to manipulate library information.
 =head1 Usage
 
   my $lib_info = SPVM::Builder::LibInfo->new(%fields);
-  my $lib_arg = $lib_info->to_arg;
+  my $lib_arg = $lib_info->to_ldflags;
 
 =head1 Fields
 
@@ -247,18 +247,15 @@ undef
 
 =head1 Instance Methods
 
-=head2 to_arg
+=head2 to_ldflags
 
-  my $link_command_arg = $lib_info->to_arg;
+  my $ldflags = $lib_info->to_ldflags;
 
-Creates an argument of the link command from the L</"is_abs"> field and L</"is_static"> field, and returns it.
+Creates an array reference of the library part of the linker flags given to the linker L<ld|SPVM::Builder::Config/"ld">, and returns it.
 
-The following ones are examples of the return value.
+Return Value Examples:
   
-  -lfoo
-  -Wl,-Bstatic -lfoo -Wl,-Bdynamic
-  /path/foo.so
-  /path/foo.a
+  ["-lfoo", "-Wl,-Bstatic -lfoo -Wl,-Bdynamic", "/path/foo.so", "/path/foo.a"]
 
 =head2 to_string
 

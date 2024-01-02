@@ -110,8 +110,8 @@ sub create_link_command_args {
       $lib = SPVM::Builder::LibInfo->new(name => $lib);
     }
     
-    $lib_ldflag = $lib->to_arg;
-    push @lib_ldflags, $lib_ldflag;
+    my $lib_ldflags = $lib->to_ldflags;
+    push @lib_ldflags, @$lib_ldflags;
   }
   
   push @merged_ldflags, @lib_ldflags;
