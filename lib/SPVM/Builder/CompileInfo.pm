@@ -135,7 +135,7 @@ sub create_compile_command_args {
   return \@compile_command_args;
 }
 
-sub to_cmd {
+sub to_command {
   my ($self) = @_;
 
   my $compile_command = $self->create_compile_command;
@@ -237,9 +237,9 @@ The following one is an example of the return value.
 
   [qw(-O2 -Ipath/include)]
 
-=head2 to_cmd
+=head2 to_command
 
-  my $compile_command_string = $compile_info->to_cmd;
+  my $compile_command_string = $compile_info->to_command;
 
 Calls the L<create_compile_command|/"create_compile_command"> method and joins all elements of the returned array reference with a space, and returns it.
 

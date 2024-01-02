@@ -6,7 +6,9 @@
   [New features and Incompatible Changes]
     * Add the static_lib_ldflag option to the SPVM::Builder::Config.
     * Add the to_ldflags method to the SPVM::Builder::LibInfo and remove the to_arg method from the SPVM::Builder::LibInfo.
-    
+  [Incompatible Changes]
+    * Rename the to_cmd method in the SPVM::Builder::CompileInfo class to the to_command method.
+    * Rename the to_cmd method in the SPVM::Builder::LinkInfo class to the to_command method.
 0.989065 2023-12-22
   [Incompatible Changes]
     * The divui operator is renamed to the div_uint operator.

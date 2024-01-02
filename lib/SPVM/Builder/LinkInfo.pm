@@ -119,7 +119,7 @@ sub create_link_command_args {
   return \@merged_ldflags;
 }
 
-sub to_cmd {
+sub to_command {
   my ($self) = @_;
 
   my $link_command = $self->create_link_command;
@@ -141,7 +141,7 @@ The SPVM::Builder::LinkInfo class has methods to manipulate link information.
 =head1 Usage
 
   my $link_info = SPVM::Builder::LinkInfo->new(%fields);
-  my $link_command_string = $link_info->to_cmd;
+  my $link_command_string = $link_info->to_command;
 
 =head1 Fields
 
@@ -224,9 +224,9 @@ The following one is an example of the return value.
 
   [qw(-shared -O2 -Llibdir -lz)]
 
-=head2 to_cmd
+=head2 to_command
 
-  my $link_command_string = $link_info->to_cmd;
+  my $link_command_string = $link_info->to_command;
 
 Calls the L<create_link_command|/"create_link_command"> method and joins all elements of the returned array reference with a space, and returns it.
 
