@@ -64,17 +64,6 @@ sub is_abs {
   }
 }
 
-sub static_option_cb {
-  my $self = shift;
-  if (@_) {
-    $self->{static_option_cb} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{static_option_cb};
-  }
-}
-
 # Class Methods
 sub new {
   my $class = shift;
@@ -89,17 +78,6 @@ sub new {
   
   unless (defined $self->is_abs) {
     $self->is_abs(0);
-  }
-  
-  unless (defined $self->static_option_cb) {
-    my $default_static_option_cb = sub {
-      my ($self, $name) = @_;
-      
-      $name = "-Wl,-Bstatic -l$name -Wl,-Bdynamic";
-      
-      return $name;
-    };
-    $self->static_option_cb($default_static_option_cb);
   }
   
   return $self;
@@ -122,7 +100,10 @@ sub to_ldflags {
   else {
     my $name = $self->name;
     if ($self->is_static) {
-      push @link_command_ldflags, $self->static_option_cb->($self, $name);
+      my $static_lib_begin = $self->static_lib_ldflag->[0];
+      my $static_lib_end = $self->static_lib_ldflag->[1];
+      
+      push @link_command_ldflags, "$static_lib_begin -l$name $static_lib_end";
     }
     else {
       push @link_command_ldflags, "-l$name";
@@ -196,15 +177,6 @@ Gets and sets the C<is_static> field, a flag whether this library is linked stat
 
 Gets and sets the C<is_abs> field, a flag whether the library is linked by a absolute path such as C</path/libfoo.so>.
 
-=head2 static_option_cb
-
-  my $static_option_cb = $lib_info->static_option_cb;
-  $lib_info->static_option_cb($static_option_cb);
-
-Gets and sets the C<static_option_cb> field.
-
-This field is the callback to create a linker option to link a static library.
-
 =head1 Class Methods
 
 =head2 new
@@ -232,18 +204,6 @@ undef
 =item * L</"is_abs">
 
 0
-
-=item * L</"static_option_cb">
-
-  sub {
-    my ($self, $name) = @_;
-    
-    $name = "-Wl,-Bstatic -l$name -Wl,-Bdynamic";
-    
-    return $name;
-  };
-
-=back
 
 =head1 Instance Methods
 
