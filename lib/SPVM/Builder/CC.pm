@@ -406,7 +406,6 @@ sub create_link_info {
   
   # Libraries
   my $lib_infos = [];
-  my $static_lib_infos = [];
   my $libs = $config->libs;
   my $lib_dirs = $config->lib_dirs;
   for my $lib (@$libs) {
@@ -437,7 +436,7 @@ sub create_link_info {
         unless ($static) {
           my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
           my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
-          
+
           if (-f $dynamic_lib_file) {
             $found_lib_file = $dynamic_lib_file;
             last;
@@ -458,17 +457,8 @@ sub create_link_info {
       }
     }
     
-    if ($static) {
-      push @$static_lib_infos, $lib_info;
-    }
-    else {
-      push @$lib_infos, $lib_info;
-    }
+    push @$lib_infos, $lib_info;
   }
-  
-  # Static libraries must be before dynamic libraries.
-  unshift @$lib_infos, @$static_lib_infos;
-  
   $config->libs($lib_infos);
   
   # Use resources

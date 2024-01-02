@@ -1,10 +1,10 @@
 0.989066 2023-12-27
   [Document Fix]
     * Fix and improve the doc of SPVM::Builder::Config.
-  [Incompatible Changes]
-    * Static liraries is before dynamic libraries for the linker command in compiling native class.
   [New features and Incompatible Changes]
     * Add the static_lib_ldflag option to the SPVM::Builder::Config.
+    
+>>>>>>> parent of 734a4acee... Static liraries is before dynamic libraries for the linker command in compiling native class.
 0.989065 2023-12-22
   [Incompatible Changes]
     * The divui operator is renamed to the div_uint operator.
