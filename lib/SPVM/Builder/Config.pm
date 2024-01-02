@@ -252,6 +252,17 @@ sub thread_ldflags {
   }
 }
 
+sub static_lib_ldflag {
+  my $self = shift;
+  if (@_) {
+    $self->{static_lib_ldflag} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{static_lib_ldflag};
+  }
+}
+
 sub ld_optimize {
   my $self = shift;
   if (@_) {
@@ -440,6 +451,13 @@ sub new {
     else {
       $self->thread_ldflags(['-pthread']);
     }
+  }
+  
+  # static_lib_ldflag
+  unless (defined $self->{static_lib_ldflag}) {
+    my $begin = '-Wl,-Bstatic';
+    my $end = '-Wl,-Bdynamic';
+    $self->static_lib_ldflag([$begin, $end]);
   }
   
   # ld_optimize
@@ -1068,19 +1086,29 @@ This field is an array reference that contains linker flags.
   my dynamic_lib_ldflags = $config->dynamic_lib_ldflags;
   $config->dynamic_lib_ldflags(dynamic_lib_ldflags);
 
-Gets and sets the C<dynamic_lib_ldflags> field.
-
-This field is an array reference that contains linker flags for a dynamic link.
+Gets and sets the C<dynamic_lib_ldflags> field, an array reference of the linker flags for the linker L</"ld">.
 
 =head2 thread_ldflags
 
   my thread_ldflags = $config->thread_ldflags;
   $config->thread_ldflags(thread_ldflags);
 
-Gets and sets the C<thread_ldflags> field.
+Gets and sets the C<thread_ldflags> field, an array reference of the linker flags for thread for the linker L</"ld">.
 
-This field is an array reference that contains linker flags for thread setting.
+=head2 static_lib_ldflag
 
+  my static_lib_ldflag = $config->static_lib_ldflag;
+  $config->static_lib_ldflag(static_lib_ldflag);
+
+Gets and sets the C<static_lib_ldflag> field, an array reference that contains the begining and the end of static linking option for each static library of L</"static_libs">.
+
+Excamples:
+  
+  
+  # -Wl,-Bstatic -lfoo -Wl,-Bdynamic
+  $config->static_lib_ldflag(['-Wl,-Bstatic', '-Wl,-Bdynamic']);
+  $config->add_static_lib('foo');
+  
 =head2 ld_optimize
 
   my $ld_optimize = $config->ld_optimize;
@@ -1298,6 +1326,10 @@ Windows:
 Other OSs:
 
   ['-pthread']
+  
+=item * L</"static_lib_ldflag">
+
+  ['-Wl,-Bstatic', '-Wl,-Bdynamic']
 
 =item * L</"ld_optimize">
 
