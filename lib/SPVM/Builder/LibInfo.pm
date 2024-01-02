@@ -9,6 +9,17 @@ use File::Basename 'dirname';
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
 # Fields
+sub config {
+  my $self = shift;
+  if (@_) {
+    $self->{config} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config};
+  }
+}
+
 sub name {
   my $self = shift;
   if (@_) {
@@ -144,14 +155,19 @@ The SPVM::Builder::LibInfo class has methods to manipulate library information.
 
 =head1 Fields
 
+=head2 config
+
+  my $config = $lib_info->config;
+  $lib_info->config($config);
+
+Gets and sets the C<config> field, a L<SPVM::Builder::Config> object used to create linker options for libraries for the linker L<ld|SPVM::Builder::Config/"ld">.
+
 =head2 name
 
   my $name = $lib_info->name;
   $lib_info->name($name);
 
-Gets and sets the C<name> field.
-
-This field is a library name.
+Gets and sets the C<name> field, a library name.
 
 Examples:
   
@@ -164,29 +180,21 @@ Examples:
   my $file = $lib_info->file;
   $lib_info->file($file);
 
-Gets and sets the C<file> field.
-
-This field is the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>.
+Gets and sets the C<file> field, the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>.
 
 =head2 is_static
 
   my $is_static = $lib_info->is_static;
   $lib_info->is_static($is_static);
 
-Gets and sets the C<is_static> field.
-
-If this field is a true value, a static library is linked.
+Gets and sets the C<is_static> field, a flag whether this library is linked statically.
 
 =head2 is_abs
 
   my $is_abs = $lib_info->is_abs;
   $lib_info->is_abs($is_abs);
 
-Gets and sets the C<is_abs> field.
-
-If this field is a true value, the library is linked by the library name like C<-lfoo>.
-
-Otherwise the library is linked by the absolute path of the library like C</path/libfoo.so>.
+Gets and sets the C<is_abs> field, a flag whether the library is linked by a absolute path such as C</path/libfoo.so>.
 
 =head2 static_option_cb
 
@@ -203,9 +211,7 @@ This field is the callback to create a linker option to link a static library.
 
   my $lib_info = SPVM::Builder::LibInfo->new(%fields);
 
-Creates a L<SPVM::Builder::LibInfo> object with L</"Fields">.
-
-Default Field Values:
+Creates a new L<SPVM::Builder::LibInfo> object given the fileds L</"Fields">.
 
 If a field is not defined, the field is set to the following default value.
 

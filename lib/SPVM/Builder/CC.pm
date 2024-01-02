@@ -424,6 +424,7 @@ sub create_link_info {
     else {
       $lib_name = $lib;
       $lib_info = SPVM::Builder::LibInfo->new;
+      $lib_info->config($config);
       $lib_info->name($lib_name);
     }
     

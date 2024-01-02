@@ -1,6 +1,8 @@
 0.989066 2023-12-27
   [Document Fix]
     * Fix and improve the doc of SPVM::Builder::Config.
+  [New features]
+    * Add the config field to the SPVM::Builder::LibInfo.
   [New features and Incompatible Changes]
     * Add the static_lib_ldflag option to the SPVM::Builder::Config.
     
