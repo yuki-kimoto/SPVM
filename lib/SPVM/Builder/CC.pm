@@ -637,7 +637,7 @@ sub link {
     my $link_info_output_file = $link_info->output_file;
     my $link_info_object_files = $link_info->object_files;
     
-    my $link_command_args = $link_info->create_link_command_args;
+    my $link_command_args = $link_info->create_command_args;
     
     my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
 

@@ -56,7 +56,7 @@ sub new {
 }
 
 # Instance Methods
-sub create_link_command {
+sub create_command {
   my ($self) = @_;
   
   my $config = $self->config;
@@ -66,7 +66,7 @@ sub create_link_command {
   my $object_files = $self->object_files;
   my $object_file_names = [map { $_->to_string; } @$object_files];
   
-  my $link_command_args = $self->create_link_command_args;
+  my $link_command_args = $self->create_command_args;
   
   # Note: Arguments of the link command(these contain -l flags) must be
   # after object file names for resolving symbol names properly
@@ -75,7 +75,7 @@ sub create_link_command {
   return \@link_command;
 }
 
-sub create_link_command_args {
+sub create_command_args {
   my ($self) = @_;
   
   my $config = $self->config;
@@ -122,7 +122,7 @@ sub create_link_command_args {
 sub to_command {
   my ($self) = @_;
   
-  my $link_command = $self->create_link_command;
+  my $link_command = $self->create_command;
   my $link_command_string = "@$link_command";
   
   return $link_command_string;
@@ -202,9 +202,9 @@ undef
 
 =head1 Instance Methods
 
-=head2 create_link_command
+=head2 create_command
 
-  my $link_command = $link_info->create_link_command;
+  my $link_command = $link_info->create_command;
 
 Creates a link command, and returns it. The return value is an array reference.
 
@@ -212,9 +212,9 @@ The following one is an example of the return value.
 
   [qw(cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz)]
 
-=head2 create_link_command_args
+=head2 create_command_args
 
-  my $link_command_args = $link_info->create_link_command_args;
+  my $link_command_args = $link_info->create_command_args;
 
 Creates the parts of the arguments of the link command from the information of the L</"config"> field, and returns it. The return value is an array reference.
 
@@ -228,7 +228,7 @@ The following one is an example of the return value.
 
   my $link_command_string = $link_info->to_command;
 
-Calls the L<create_link_command|/"create_link_command"> method and joins all elements of the returned array reference with a space, and returns it.
+Calls the L<create_command|/"create_command"> method and joins all elements of the returned array reference with a space, and returns it.
 
 The following one is an example of the return value.
 
