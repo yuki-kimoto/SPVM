@@ -216,7 +216,7 @@ sub compile_source_file {
 
   # Execute compile command
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
-  my $cc_cmd = $compile_info->create_compile_command;
+  my $cc_cmd = $compile_info->create_command;
   
   unless ($quiet) {
     warn "@$cc_cmd\n";

@@ -10,6 +10,7 @@
     * Rename the to_cmd method in the SPVM::Builder::CompileInfo class to the to_command method.
     * Rename the to_cmd method in the SPVM::Builder::LinkInfo class to the to_command method.
     * Rename the create_link_command method in the SPVM::Builder::LinkInfo class to the create_command method.
+    * Rename the create_compile_command method in the SPVM::Builder::CompileInfo class to the create_command method.
   [Document Fix and Improvement]
     * Fix and improve the doc of SPVM::Builder::LibInfo.
 0.989065 2023-12-22

@@ -52,7 +52,7 @@ sub new {
 }
 
 # Instance Methods
-sub create_compile_command {
+sub create_command {
   my ($self) = @_;
   
   my $config = $self->config;
@@ -61,14 +61,14 @@ sub create_compile_command {
   my $output_file = $self->output_file;
   my $source_file = $self->source_file;
   
-  my $compile_command_args = $self->create_compile_command_args;
+  my $compile_command_args = $self->create_command_args;
   
   my @compile_command = ($cc, '-c', '-o', $output_file, @$compile_command_args, $source_file);
   
   return \@compile_command;
 }
 
-sub create_compile_command_args {
+sub create_command_args {
   my ($self) = @_;
   
   my $config = $self->config;
@@ -138,7 +138,7 @@ sub create_compile_command_args {
 sub to_command {
   my ($self) = @_;
 
-  my $compile_command = $self->create_compile_command;
+  my $compile_command = $self->create_command;
   my $compile_command_string = "@$compile_command";
   
   return $compile_command_string;
@@ -213,9 +213,9 @@ undef
 
 =head1 Instance Methods
 
-=head2 create_compile_command
+=head2 create_command
 
-  my $compile_command = $compile_info->create_compile_command;
+  my $compile_command = $compile_info->create_command;
 
 Creates the compilation command, and returns it.
 
@@ -225,9 +225,9 @@ The following one is an example of the return value.
 
   [qw(cc -o foo.o -c -O2 -Ipath/include foo.c)]
 
-=head2 create_compile_command_args
+=head2 create_command_args
 
-  my $config_args = $compile_info->create_compile_command_args;
+  my $config_args = $compile_info->create_command_args;
 
 Creates the parts of the arguments of the compilation command from the information of the L</"config"> field, and returns it. The return value is an array reference.
 
@@ -241,7 +241,7 @@ The following one is an example of the return value.
 
   my $compile_command_string = $compile_info->to_command;
 
-Calls the L<create_compile_command|/"create_compile_command"> method and joins all elements of the returned array reference with a space, and returns it.
+Calls the L<create_command|/"create_command"> method and joins all elements of the returned array reference with a space, and returns it.
 
 The following one is an example of the return value.
 
