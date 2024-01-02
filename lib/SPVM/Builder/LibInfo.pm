@@ -84,7 +84,7 @@ sub new {
 }
 
 # Instance Methods
-sub to_ldflags {
+sub create_ldflags {
   my ($self) = @_;
   
   my @link_command_ldflags;
@@ -132,7 +132,7 @@ The SPVM::Builder::LibInfo class has methods to manipulate library information f
 =head1 Usage
 
   my $lib_info = SPVM::Builder::LibInfo->new(%fields);
-  my $lib_ldflags = $lib_info->to_ldflags;
+  my $lib_ldflags = $lib_info->create_ldflags;
 
 =head1 Fields
 
@@ -213,9 +213,9 @@ undef
 
 =head1 Instance Methods
 
-=head2 to_ldflags
+=head2 create_ldflags
 
-  my $lib_ldflags = $lib_info->to_ldflags;
+  my $lib_ldflags = $lib_info->create_ldflags;
 
 Creates an array reference of the library part of the linker flags given to the linker L<ld|SPVM::Builder::Config/"ld">, and returns it.
 

@@ -110,7 +110,7 @@ sub create_link_command_args {
       $lib = SPVM::Builder::LibInfo->new(name => $lib);
     }
     
-    my $lib_ldflags = $lib->to_ldflags;
+    my $lib_ldflags = $lib->create_ldflags;
     push @lib_ldflags, @$lib_ldflags;
   }
   
@@ -121,7 +121,7 @@ sub create_link_command_args {
 
 sub to_command {
   my ($self) = @_;
-
+  
   my $link_command = $self->create_link_command;
   my $link_command_string = "@$link_command";
   

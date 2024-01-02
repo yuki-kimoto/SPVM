@@ -5,7 +5,7 @@
     * Add the config field to the SPVM::Builder::LibInfo.
   [New features and Incompatible Changes]
     * Remove the static_option_cb in the SPVM::Builder::LibInfo class and add the static_lib_ldflag option to the SPVM::Builder::Config.
-    * Add the to_ldflags method to the SPVM::Builder::LibInfo and remove the to_arg method from the SPVM::Builder::LibInfo.
+    * Add the create_ldflags method to the SPVM::Builder::LibInfo and remove the to_arg method from the SPVM::Builder::LibInfo.
   [Incompatible Changes]
     * Rename the to_cmd method in the SPVM::Builder::CompileInfo class to the to_command method.
     * Rename the to_cmd method in the SPVM::Builder::LinkInfo class to the to_command method.
