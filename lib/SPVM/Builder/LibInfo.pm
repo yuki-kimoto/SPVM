@@ -123,16 +123,16 @@ sub to_string {
 
 =head1 Name
 
-SPVM::Builder::LibInfo - Library Information
+SPVM::Builder::LibInfo - Library Information for A Linker
 
 =head1 Description
 
-The SPVM::Builder::LibInfo class has methods to manipulate library information.
+The SPVM::Builder::LibInfo class has methods to manipulate library information for a linker.
 
 =head1 Usage
 
   my $lib_info = SPVM::Builder::LibInfo->new(%fields);
-  my $lib_arg = $lib_info->to_ldflags;
+  my $lib_ldflags = $lib_info->to_ldflags;
 
 =head1 Fields
 
@@ -141,7 +141,7 @@ The SPVM::Builder::LibInfo class has methods to manipulate library information.
   my $config = $lib_info->config;
   $lib_info->config($config);
 
-Gets and sets the C<config> field, a L<SPVM::Builder::Config> object used to create linker options for libraries for the linker L<ld|SPVM::Builder::Config/"ld">.
+Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
 
 =head2 name
 
@@ -161,21 +161,21 @@ Examples:
   my $file = $lib_info->file;
   $lib_info->file($file);
 
-Gets and sets the C<file> field, the absolute path of the library file like C</path/libz.so>, C</path/libpng.a>.
+Gets and sets the C<file> field, the absolute path of the library file such as C</path/libz.so>, C</path/libpng.a>.
 
 =head2 is_static
 
   my $is_static = $lib_info->is_static;
   $lib_info->is_static($is_static);
 
-Gets and sets the C<is_static> field, a flag whether this library is linked statically.
+Gets and sets the C<is_static> field. If this field is a true value, this library is linked statically, otherwise is linked dynamically.
 
 =head2 is_abs
 
   my $is_abs = $lib_info->is_abs;
   $lib_info->is_abs($is_abs);
 
-Gets and sets the C<is_abs> field, a flag whether the library is linked by a absolute path such as C</path/libfoo.so>.
+Gets and sets the C<is_abs> field. If this field is a true value, the library is linked by the absolute path L</"file">, otherwise is linked by the relative path from library search path.
 
 =head1 Class Methods
 
@@ -188,6 +188,10 @@ Creates a new L<SPVM::Builder::LibInfo> object given the fileds L</"Fields">.
 If a field is not defined, the field is set to the following default value.
 
 =over 2
+
+=item * L</"config">
+
+undef
 
 =item * L</"name">
 
@@ -205,11 +209,13 @@ undef
 
 0
 
+=back
+
 =head1 Instance Methods
 
 =head2 to_ldflags
 
-  my $ldflags = $lib_info->to_ldflags;
+  my $lib_ldflags = $lib_info->to_ldflags;
 
 Creates an array reference of the library part of the linker flags given to the linker L<ld|SPVM::Builder::Config/"ld">, and returns it.
 
