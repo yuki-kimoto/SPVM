@@ -61,14 +61,14 @@ sub create_command {
   my $output_file = $self->output_file;
   my $source_file = $self->source_file;
   
-  my $compile_command_args = $self->create_command_args;
+  my $compile_command_args = $self->create_ccflags;
   
   my @compile_command = ($cc, '-c', '-o', $output_file, @$compile_command_args, $source_file);
   
   return \@compile_command;
 }
 
-sub create_command_args {
+sub create_ccflags {
   my ($self) = @_;
   
   my $config = $self->config;
@@ -225,9 +225,9 @@ The following one is an example of the return value.
 
   [qw(cc -o foo.o -c -O2 -Ipath/include foo.c)]
 
-=head2 create_command_args
+=head2 create_ccflags
 
-  my $config_args = $compile_info->create_command_args;
+  my $config_args = $compile_info->create_ccflags;
 
 Creates the parts of the arguments of the compilation command from the information of the L</"config"> field, and returns it. The return value is an array reference.
 
