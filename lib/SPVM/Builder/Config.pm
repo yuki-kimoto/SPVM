@@ -330,7 +330,7 @@ sub new {
   
   my $file = $self->file;
   if (!$file_optional && !defined $file) {
-    confess "\"file\" option must be specified";
+    confess "The \"file\" field must be defined";
   }
   
   # cc
@@ -1200,11 +1200,11 @@ If this value is a true value, all resources loaded by the L</"use_resource"> me
 
   my $config = SPVM::Builder::Config->new(%fields);
 
-Create a C<SPVM::Builder::Config> object with L<fields|/"Fields">.
+Creates a new C<SPVM::Builder::Config> object with L<fields|/"Fields">, and returns it.
 
 Exceptions:
 
-If the L</"file_optional"> field is not set to a true value, the L</"file"> field must be passed. Otherwise an exception is thrown.
+The \"file" field must be defined. Otherwise an exception is thrown.
 
 Default Field Values:
 

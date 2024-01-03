@@ -1,5 +1,8 @@
 0.989067 2023-01-04
-
+  
+  [Exception Messages Improvement]
+    * Improve the exception message of the new method in the SPVM::Builder::Config.
+    
   [Document Fix and Improvement]
     * Fix and improve the doc of SPVM::Builder::Config.
 
