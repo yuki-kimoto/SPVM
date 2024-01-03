@@ -57,7 +57,7 @@ SPVM::Builder::ObjectFileInfo - Object File Information
 
 =head1 Description
 
-The SPVM::Builder::ObjectFileInfo class has methods to manipulate information of an object file.
+The SPVM::Builder::ObjectFileInfo class has methods to manipulate object file information.
 
 =head1 Fields
 
@@ -66,18 +66,14 @@ The SPVM::Builder::ObjectFileInfo class has methods to manipulate information of
   my $file = $object_file_info->file;
   $object_file_info->file($file);
 
-Gets and sets the C<file> field.
-
-This field is the file name of an object file.
+Gets and sets the C<file> field, an object file name.
 
 =head2 compile_info
 
   my $compile_info = $object_file_info->compile_info;
   $object_file_info->compile_info($compile_info);
 
-Gets and sets the C<compile_info> field.
-
-This field is a L<SPVM::Builder::CompileInfo> object.
+Gets and sets the C<compile_info> field, a L<SPVM::Builder::CompileInfo> object.
 
 =head1 Class Methods
 
@@ -85,7 +81,7 @@ This field is a L<SPVM::Builder::CompileInfo> object.
 
   my $object_file_info = SPVM::Builder::ObjectFileInfo->new(%fields);
 
-Default Field Values:
+Creates a new L<SPVM::Builder::ObjectFileInfo> object, and returns it.
 
 If a field is not defined, the field is set to the following default value.
 
