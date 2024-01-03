@@ -196,6 +196,7 @@ undef
 
 Exceptions:
 
+The "config" field must be defined.
 
 =head1 Instance Methods
 
@@ -203,9 +204,9 @@ Exceptions:
 
   my $link_command = $link_info->create_command;
 
-Creates a link command, and returns it. The return value is an array reference.
+Creates an array reference of the link command, and returns it.
 
-The following one is an example of the return value.
+Return Value Examples:
 
   [qw(cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz)]
 
@@ -213,11 +214,11 @@ The following one is an example of the return value.
 
   my $link_command_args = $link_info->create_ldflags;
 
-Creates an array reference of the linker options for the link command L<ld|SPVM::Builder::Config/"ld">, and returns it.
+Creates an array reference of the linker options, and returns it.
 
-The C<-o> option and the object file names are not contained.
+The output file L</"output_file"> and the object files L</"object_files"> are not contained.
 
-The following one is an example of the return value.
+Return Value Examples:
 
   [qw(-shared -O2 -Llibdir -lz)]
 
@@ -225,9 +226,9 @@ The following one is an example of the return value.
 
   my $link_command_string = $link_info->to_command;
 
-Calls the L<create_command|/"create_command"> method and joins all elements of the returned array reference with a space, and returns it.
+Joins all elements of the return value of the L<create_command|/"create_command"> method with a space, and returns it.
 
-The following one is an example of the return value.
+Return Value Examples:
 
   "cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz"
 

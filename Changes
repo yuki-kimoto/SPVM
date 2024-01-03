@@ -18,6 +18,7 @@
 
   [Document Fix and Improvement]
     * Fix and improve the doc of SPVM::Builder::LibInfo.
+    * Fix and improve the doc of SPVM::Builder::LinkInfo.
 0.989065 2023-12-22
   [Incompatible Changes]
     * The divui operator is renamed to the div_uint operator.
