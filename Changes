@@ -15,6 +15,7 @@
     * The create_command_args in the SPVM::Builder::LinkInfo is renamed to create_ldflags.
     * The create_command_args in the SPVM::Builder::CompileInfo is renamed to create_ccflags.
     * The new method in the SPVM::Builder::LinkInfo must be given the config option.
+    * The new method in the SPVM::Builder::CompileInfo must be given the config option.
 
   [Document Fix and Improvement]
     * Fix and improve the doc of SPVM::Builder::LibInfo.

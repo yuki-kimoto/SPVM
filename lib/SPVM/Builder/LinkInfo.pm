@@ -138,11 +138,11 @@ sub to_command {
 
 =head1 Name
 
-SPVM::Builder::LinkInfo - Link Information
+SPVM::Builder::LinkInfo - Linker Information
 
 =head1 Description
 
-The SPVM::Builder::LinkInfo class has methods to manipulate link information.
+The SPVM::Builder::LinkInfo class has methods to manipulate linker information.
 
 =head1 Usage
 

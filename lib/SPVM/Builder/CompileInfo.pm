@@ -7,6 +7,17 @@ use Carp 'confess';
 use File::Basename 'dirname';
 
 # Fields
+sub config {
+  my $self = shift;
+  if (@_) {
+    $self->{config} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config};
+  }
+}
+
 sub source_file {
   my $self = shift;
   if (@_) {
@@ -29,24 +40,19 @@ sub output_file {
   }
 }
 
-sub config {
-  my $self = shift;
-  if (@_) {
-    $self->{config} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config};
-  }
-}
-
 # Class methods
 sub new {
   my $class = shift;
   
   my $self = {@_};
-
+  
   bless $self, $class;
+  
+  my $config = $self->config;
+  
+  unless ($config) {
+    confess "The \"config\" field must be defined.";
+  }
   
   return $self;
 }
@@ -56,7 +62,7 @@ sub create_command {
   my ($self) = @_;
   
   my $config = $self->config;
-
+  
   my $cc = $config->cc;
   my $output_file = $self->output_file;
   my $source_file = $self->source_file;
@@ -148,11 +154,11 @@ sub to_command {
 
 =head1 Name
 
-SPVM::Builder::CompileInfo - Compilation Information
+SPVM::Builder::CompileInfo - Compiler Information
 
 =head1 Description
 
-The SPVM::Builder::CompileInfo class has methods to manipulate compilation information.
+The SPVM::Builder::CompileInfo class has methods to manipulate compiler information.
 
 =head1 Fields
 
@@ -161,27 +167,21 @@ The SPVM::Builder::CompileInfo class has methods to manipulate compilation infor
   my $config = $compile_info->config;
   $compile_info->config($config);
 
-Gets and sets the C<config> field.
-
-This is a L<SPVM::Builder::Config> object used to compile the source file.
+Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
 
 =head2 source_file
 
   my $source_file = $compile_info->source_file;
   $compile_info->source_file($source_file);
 
-Gets and sets the C<source_file> field.
-
-This field is a source file.
+Gets and sets the C<source_file> field, a source file.
 
 =head2 output_file
 
   my $output_file = $compile_info->output_file;
   $compile_info->output_file($output_file);
 
-Gets and sets the C<output_file> field.
-
-This field is an output file.
+Gets and sets the C<output_file> field, an output file.
 
 =head1 Class Methods
 
@@ -189,9 +189,7 @@ This field is an output file.
 
   my $compile_info = SPVM::Builder::CompileInfo->new(%fields);
 
-Creates a new L<SPVM::Builder::CompileInfo> object with L</"Fields">.
-
-Default Field Values:
+Creates a new L<SPVM::Builder::CompileInfo> object given L</"Fields">.
 
 If a field is not defined, the field is set to the following default value.
 
@@ -205,11 +203,11 @@ undef
 
 undef
 
-=item * L</"config">
-
-undef
-
 =back
+
+Exceptions:
+
+The "config" field must be defined.
 
 =head1 Instance Methods
 
@@ -217,11 +215,9 @@ undef
 
   my $compile_command = $compile_info->create_command;
 
-Creates the compilation command, and returns it.
+Creates an array reference of the compilation command, and returns it.
 
-The return value is an array reference.
-
-The following one is an example of the return value.
+Return Value Examples:
 
   [qw(cc -o foo.o -c -O2 -Ipath/include foo.c)]
 
@@ -229,11 +225,11 @@ The following one is an example of the return value.
 
   my $config_args = $compile_info->create_ccflags;
 
-Creates the parts of the arguments of the compilation command from the information of the L</"config"> field, and returns it. The return value is an array reference.
+Creates n array reference of the compilation options, and returns it.
 
-The C<-c> option, the C<-o> option and the source file name are not contained.
+The source file L<"source_file"> and the output file L</"output_file"> are not contained.
 
-The following one is an example of the return value.
+Return Value Examples:
 
   [qw(-O2 -Ipath/include)]
 
@@ -241,9 +237,9 @@ The following one is an example of the return value.
 
   my $compile_command_string = $compile_info->to_command;
 
-Calls the L<create_command|/"create_command"> method and joins all elements of the returned array reference with a space, and returns it.
+Joins all elements of the return value of the the L<create_command|/"create_command"> method with a space, and returns it.
 
-The following one is an example of the return value.
+Return Value Examples:
 
   "cc -c -o foo.o -O2 -Ipath/include foo.c"
 
