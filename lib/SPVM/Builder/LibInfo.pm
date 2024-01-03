@@ -219,7 +219,7 @@ undef
 
 Exceptions:
 
-The \"config\" field must be defined.
+The "config" field must be defined.
 
 =head1 Instance Methods
 

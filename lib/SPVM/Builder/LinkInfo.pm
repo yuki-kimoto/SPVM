@@ -45,13 +45,19 @@ sub new {
   my $class = shift;
   
   my $self = {@_};
-
+  
   bless $self, $class;
+  
+  my $config = $self->config;
+  
+  unless ($config) {
+    confess "The \"config\" field must be defined.";
+  }
   
   unless (defined $self->object_files) {
     $self->object_files([]);
   }
-
+  
   return $self;
 }
 
@@ -141,7 +147,7 @@ The SPVM::Builder::LinkInfo class has methods to manipulate link information.
 =head1 Usage
 
   my $link_info = SPVM::Builder::LinkInfo->new(%fields);
-  my $link_command_string = $link_info->to_command;
+  my $link_command = $link_info->to_command;
 
 =head1 Fields
 
@@ -150,27 +156,21 @@ The SPVM::Builder::LinkInfo class has methods to manipulate link information.
   my $config = $link_info->config;
   $link_info->config($config);
 
-Gets and sets the C<config> field.
-
-This field is a L<SPVM::Builder::Config> object used to link the object files.
+Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
 
 =head2 output_file
 
   my $output_file = $link_info->output_file;
   $link_info->output_file($output_file);
 
-Gets and sets the C<output_file> field.
-
-This field is an output file.
+Gets and sets the C<output_file> field, an output file.
 
 =head2 object_files
 
   my $object_files = $link_info->object_files;
   $link_info->object_files($object_files);
 
-Gets and sets the C<object_files> field.
-
-This field is an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
+Gets and sets the C<object_files> field, an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
 =head1 Class Methods
 
@@ -178,17 +178,11 @@ This field is an array reference of L<SPVM::Builder::ObjectFileInfo> objects.
 
   my $link_info = SPVM::Builder::LinkInfo->new(%fields);
 
-Creates a new C<SPVM::Builder::LinkInfo> object with L</"Fields">.
-
-Default Field Values:
+Creates a new C<SPVM::Builder::LinkInfo> object given L</"Fields">.
 
 If a field is not defined, the field is set to the following default value.
 
 =over 2
-
-=item * L</"config">
-
-undef
 
 =item * L</"output_file">
 
@@ -199,6 +193,9 @@ undef
 []
 
 =back
+
+Exceptions:
+
 
 =head1 Instance Methods
 

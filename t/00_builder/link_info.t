@@ -3,10 +3,14 @@ use warnings;
 
 use Test::More;
 
+use SPVM::Builder::Config;
 use SPVM::Builder::LinkInfo;
 
 {
-  my $object_file = SPVM::Builder::LinkInfo->new;
+  my $config = SPVM::Builder::Config->new(file => __FILE__);
+  
+  my $object_file = SPVM::Builder::LinkInfo->new(config => $config);
+  
   is(ref $object_file, 'SPVM::Builder::LinkInfo');
   
   $object_file->config("test");
