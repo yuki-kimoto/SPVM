@@ -12,6 +12,8 @@
     * Rename the create_link_command method in the SPVM::Builder::LinkInfo class to the create_command method.
     * Rename the create_compile_command method in the SPVM::Builder::CompileInfo class to the create_command method.
     * The new method in the SPVM::Builder::LibInfo must be given the config option.
+    * The create_command_args in the SPVM::Builder::LinkInfo is renamed to create_ldflags.
+
   [Document Fix and Improvement]
     * Fix and improve the doc of SPVM::Builder::LibInfo.
 0.989065 2023-12-22

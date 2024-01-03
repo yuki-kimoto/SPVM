@@ -66,7 +66,7 @@ sub create_command {
   my $object_files = $self->object_files;
   my $object_file_names = [map { $_->to_string; } @$object_files];
   
-  my $link_command_args = $self->create_command_args;
+  my $link_command_args = $self->create_ldflags;
   
   # Note: Arguments of the link command(these contain -l flags) must be
   # after object file names for resolving symbol names properly
@@ -75,7 +75,7 @@ sub create_command {
   return \@link_command;
 }
 
-sub create_command_args {
+sub create_ldflags {
   my ($self) = @_;
   
   my $config = $self->config;
@@ -212,11 +212,11 @@ The following one is an example of the return value.
 
   [qw(cc -o dylib.so foo.o bar.o -shared -O2 -Llibdir -lz)]
 
-=head2 create_command_args
+=head2 create_ldflags
 
-  my $link_command_args = $link_info->create_command_args;
+  my $link_command_args = $link_info->create_ldflags;
 
-Creates the parts of the arguments of the link command from the information of the L</"config"> field, and returns it. The return value is an array reference.
+Creates an array reference of the linker options for the link command L<ld|SPVM::Builder::Config/"ld">, and returns it.
 
 The C<-o> option and the object file names are not contained.
 
