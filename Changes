@@ -1,3 +1,8 @@
+0.989067 2023-01-04
+
+  [Document Fix and Improvement]
+    * Fix and improve the doc of SPVM::Builder::Config.
+
 0.989066 2023-01-03
   [Document Fix]
     * Fix and improve the doc of SPVM::Builder::Config.
