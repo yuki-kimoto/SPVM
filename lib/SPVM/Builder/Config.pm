@@ -1495,8 +1495,8 @@ Examples:
   $config->add_lib('gsl');
   $config->add_lib('gsl', 'z');
   $config->add_lib(
-    SPVM::Builder::LibInfo->new(config => $self, name => 'gsl'),
-    SPVM::Builder::LibInfo->new(config => $self, name => 'z', abs => 1),
+    SPVM::Builder::LibInfo->new(config => $config, name => 'gsl'),
+    SPVM::Builder::LibInfo->new(config => $config, name => 'z', abs => 1),
   );
 
 =head2 add_static_lib
@@ -1512,8 +1512,8 @@ Examples:
   $config->add_static_lib('gsl');
   $config->add_static_lib('gsl', 'z');
   $config->add_static_lib(
-    SPVM::Builder::LibInfo->new(config => $self, name => 'gsl'),
-    SPVM::Builder::LibInfo->new(config => $self, name => 'z', abs => 1),
+    SPVM::Builder::LibInfo->new(config => $config, name => 'gsl'),
+    SPVM::Builder::LibInfo->new(config => $config, name => 'z', abs => 1),
   );
 
 =head2 use_resource
