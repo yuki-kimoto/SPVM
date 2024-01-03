@@ -69,9 +69,15 @@ sub new {
   my $class = shift;
   
   my $self = {@_};
-
+  
   bless $self, $class;
-
+  
+  my $config = $self->config;
+  
+  unless ($config) {
+    confess "The \"config\" field must be defined.";
+  }
+  
   unless (defined $self->is_static) {
     $self->is_static(0);
   }
@@ -100,8 +106,12 @@ sub create_ldflags {
   else {
     my $name = $self->name;
     if ($self->is_static) {
-      my $static_lib_begin = $self->static_lib_ldflag->[0];
-      my $static_lib_end = $self->static_lib_ldflag->[1];
+      my $config = $self->config;
+      
+      my $static_lib_begin = $config->static_lib_ldflag->[0];
+      my $static_lib_end = $config->static_lib_ldflag->[1];
+      
+      warn "$static_lib_begin -l$name $static_lib_end";
       
       push @link_command_ldflags, "$static_lib_begin -l$name $static_lib_end";
     }
@@ -189,10 +199,6 @@ If a field is not defined, the field is set to the following default value.
 
 =over 2
 
-=item * L</"config">
-
-undef
-
 =item * L</"name">
 
 undef
@@ -210,6 +216,10 @@ undef
 0
 
 =back
+
+Exceptions:
+
+The \"config\" field must be defined.
 
 =head1 Instance Methods
 

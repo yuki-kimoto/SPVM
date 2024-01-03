@@ -107,7 +107,7 @@ sub create_command_args {
     my $lib_ldflag;
     
     unless (ref $lib) {
-      $lib = SPVM::Builder::LibInfo->new(name => $lib);
+      $lib = SPVM::Builder::LibInfo->new(config => $config, name => $lib);
     }
     
     my $lib_ldflags = $lib->create_ldflags;

@@ -640,7 +640,7 @@ sub add_static_lib {
     }
     else {
       my $lib_name = $lib;
-      $static_lib = SPVM::Builder::LibInfo->new;
+      $static_lib = SPVM::Builder::LibInfo->new(config => $self);
       $static_lib->name($lib_name);
       $static_lib->is_static(1);
     }
@@ -1495,8 +1495,8 @@ Examples:
   $config->add_lib('gsl');
   $config->add_lib('gsl', 'z');
   $config->add_lib(
-    SPVM::Builder::LibInfo->new(name => 'gsl'),
-    SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
+    SPVM::Builder::LibInfo->new(config => $self, name => 'gsl'),
+    SPVM::Builder::LibInfo->new(config => $self, name => 'z', abs => 1),
   );
 
 =head2 add_static_lib
@@ -1512,8 +1512,8 @@ Examples:
   $config->add_static_lib('gsl');
   $config->add_static_lib('gsl', 'z');
   $config->add_static_lib(
-    SPVM::Builder::LibInfo->new(name => 'gsl'),
-    SPVM::Builder::LibInfo->new(name => 'z', abs => 1),
+    SPVM::Builder::LibInfo->new(config => $self, name => 'gsl'),
+    SPVM::Builder::LibInfo->new(config => $self, name => 'z', abs => 1),
   );
 
 =head2 use_resource
