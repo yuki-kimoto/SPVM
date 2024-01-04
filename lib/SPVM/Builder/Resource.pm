@@ -82,7 +82,7 @@ SPVM::Builder::Resource - Resource
 
 =head1 Description
 
-The SPVM::Builder::Resource class has methods to manipulate a resource.
+The SPVM::Builder::Resource class has methods to manipulate L<resources|SPVM::Document::Resource>.
 
 =head1 Usage
 
@@ -92,6 +92,10 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
     argv => ['foo', 'bar'],
   );
 
+=head1 Details
+
+See L<SPVM::Document::Resource> about creating and using resources.
+
 =head1 Fields
 
 =head2 class_name
@@ -99,36 +103,28 @@ The SPVM::Builder::Resource class has methods to manipulate a resource.
   my $basic_type_name = $resource->class_name;
   $resource->class_name($basic_type_name);
 
-Gets and sets the C<class_name> field.
-
-This field is a class name of a resource.
+Gets and sets the C<class_name> field, the class name of this resource.
 
 =head2 mode
 
   my $mode = $resource->mode;
   $resource->mode($mode);
 
-Gets and sets the C<mode> field.
-
-This field is a mode of a config file of a resource.
+Gets and sets the C<mode> field, the mode of the config file of this resource.
 
 =head2 argv
 
   my $argv = $resource->argv;
   $resource->argv($argv);
 
-Gets and sets the C<mode> field.
-
-This field is an array reference that contains command line arguments C<@ARGV> of a config file of a resource.
+Gets and sets the C<argv> field, an array reference of command line arguments C<@ARGV> given to the config file of this resource.
 
 =head2 config
 
   my $config = $resource->config;
   $resource->config($config);
 
-Gets and sets the C<config> field.
-
-This field is a a L<SPVM::Builder::Config> object for a resource.
+Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
 
 =head1 Class Methods
 
@@ -136,9 +132,7 @@ This field is a a L<SPVM::Builder::Config> object for a resource.
 
   my $resource = SPVM::Builder::Resource->new(%fields);
 
-Creates a L<SPVM::Builder::Resource> object with L</"Fields">.
-
-Default Field Values:
+Creates a new L<SPVM::Builder::Resource> object with L</"Fields">.
 
 If a field is not defined, the field is set to the following default value.
 

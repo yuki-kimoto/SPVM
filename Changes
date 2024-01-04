@@ -5,6 +5,7 @@
     
   [Document Fix and Improvement]
     * Fix and improve the doc of SPVM::Builder::Config.
+    * Fix and improve the doc of SPVM::Builder::Resource.
 
 0.989066 2023-01-03
   [Document Fix]
