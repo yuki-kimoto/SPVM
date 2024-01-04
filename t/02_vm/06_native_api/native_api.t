@@ -110,6 +110,16 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->get_class_var_byte);
 }
 
+# get_class_var_int
+{
+  ok(SPVM::TestCase::NativeAPI->get_class_var_int);
+}
+
+# get_class_var_short
+{
+  ok(SPVM::TestCase::NativeAPI->get_class_var_short);
+}
+
 # Field
 {
   ok(SPVM::TestCase::NativeAPI->get_field_byte_by_name);
