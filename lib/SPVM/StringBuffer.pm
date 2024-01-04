@@ -4,7 +4,11 @@ package SPVM::StringBuffer;
 
 =head1 Name
 
-SPVM::StringBuffer - String Buffer
+SPVM::StringBuffer - String Buffers
+
+=head1 Description
+
+The StringBuffer class in L<SPVM> has methods to manipulate string buffers.
 
 =head1 Usage
   
@@ -13,16 +17,21 @@ SPVM::StringBuffer - String Buffer
   # new
   my $buffer = StringBuffer->new;
   
+  my $buffer = StringBuffer->new("abc");
+  
   # push string
-  $buffer->push("abc");
   $buffer->push("def");
   
-  # Convert to string - abcdef
+  # Convert to the string
   my $string = $buffer->to_string;
-  
-=head1 Description
 
-String buffer.
+=head1 Details
+
+=head2 Internal Data Structure
+
+The L</"string"> stored in a StringBuffer object always starts at index 0.
+
+The charactors in the range that is greater than or equal to the L</"length"> field and less than the L</"capacity"> field are filled with "\0".
 
 =head1 Fields
 
@@ -37,6 +46,12 @@ The capacity. This is the length of the internally reserved characters to extend
   has length : ro int;
 
 The length of the string buffer.
+
+=head2 string
+
+  has string : mutable string;
+
+The internal string manipulated by this StringBuffer object.
 
 =head1 Class Methods
 
