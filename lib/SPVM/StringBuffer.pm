@@ -24,16 +24,6 @@ SPVM::StringBuffer - String Buffer
 
 String buffer.
 
-=head1 Enumerations
-
-  enum {
-    DEFAULT_CAPACITY = 4,
-  }
-
-=head2 DEFAULT_CAPACITY
-
-The default capacity. The value is 4.
-
 =head1 Fields
 
 =head2 capacity
@@ -66,7 +56,7 @@ C<static method new_len : L<StringBuffer|SPVM::StringBuffer> ($length : int, $ca
 
 Creates a new C<StringBuffer> object with $length and $capacity.
 
-If $capacity is less than 0, $capacity is set to the value of L</"DEFAULT_CAPACITY">.
+If $capacity is less than 0, $capacity is set to an appropriate value.
 
 If $length is greater than $capacity, $capacity is set to $length.
 

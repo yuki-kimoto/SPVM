@@ -6,7 +6,7 @@ class StringBuffer {
   use Array;
   
   # Enumerations
-  enum {
+  private enum {
     DEFAULT_CAPACITY = 4,
   }
   
