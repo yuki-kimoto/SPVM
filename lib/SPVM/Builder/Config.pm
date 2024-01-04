@@ -1202,39 +1202,33 @@ If this value is a true value, all resources loaded by the L</"use_resource"> me
 
 Creates a new C<SPVM::Builder::Config> object with L<fields|/"Fields">, and returns it.
 
-Exceptions:
-
-The \"file" field must be defined. Otherwise an exception is thrown.
-
-Default Field Values:
-
 If a field is not defined, the field is set to the following default value.
 
 =over 2
 
 =item * L</"class_name">
 
-  undef
+undef
 
 =item * L</"file">
 
-  undef
+undef
 
 =item * L</"file_optional">
 
-  0
+0
 
 =item * L</"ext">
 
-  undef
+undef
 
 =item * L</"quiet">
 
-  undef
+undef
 
 =item * L</"force">
 
-  undef
+undef
 
 =item * L</"cc">
 
@@ -1242,65 +1236,71 @@ The C<$Config{cc}> of the L<Config> class.
 
 =item * L</"ccflags">
 
-  []
+[]
 
 =item * L</"dynamic_lib_ccflags">
 
 Windows:
 
-  []
+[]
 
-Others:
+Other OSs:
 
-  ['-fPIC']
+["-fPIC"]
 
 =item * L</"thread_ccflags">
 
 Windows:
 
-  []
+[]
 
-Others:
+Other OSs:
 
-  ['-pthread']
+["-pthread"]
 
 =item * L</"std">
 
-  undef
+undef
 
 =item * L</"optimize">
 
-  "-O3"
+"-O3"
 
 =item * L</"include_dirs">
 
-  []
+[]
 
 =item * L</"spvm_core_include_dir">
 
-The header including directory of the SPVM core is created from the class file of the loaded L<SPVM::Builder::Config> class. 
+The SPVM core header file search directory.
 
-The value looks like C<path/SPVM/Builder/include>.
+This is generated from the path of the config file L</"file">.
+
+This is something like C</path/SPVM/Builder/include>.
 
 =item * L</"native_include_dir">
 
-If the L</"file"> field is defined, the path of the header including directory is created from the L</"file"> field.
+The header file search directory for this natvie class.
 
-The value looks like C<path/Foo.native/include>.
+This is generated from the path of the config file L</"file">.
+
+This is something like C</path/Foo.native/include>.
 
 =item * L</"native_src_dir">
 
-If the L</"file"> field is defined, the path of the source directory is created from the L</"file"> field.
+The source file search directory for this natvie class.
 
-The value looks like C<path/Foo.native/src>.
+This is generated from the path of the config file L</"file">.
+
+This is something like C</path/Foo.native/src>.
 
 =item * L</"source_files">
 
-  []
+[]
 
 =item * L</"before_compile_cbs">
 
-  []
+[]
 
 =item * L</"ld">
 
@@ -1308,113 +1308,115 @@ The C<$Config{ld}> of the L<Config> class.
 
 =item * L</"ldflags">
 
+[]
+
 =item * L</"dynamic_lib_ldflags">
 
 Windows:
 
-  ["-mdll", "-s"]
+["-mdll", "-s"]
 
 Other OSs:
 
-  ['-shared']
+["-shared"]
 
 =item * L</"thread_ldflags">
 
 Windows:
 
-  []
+[]
 
 Other OSs:
 
-  ['-pthread']
+["-pthread"]
   
 =item * L</"static_lib_ldflag">
 
-  ['-Wl,-Bstatic', '-Wl,-Bdynamic']
+["-Wl,-Bstatic", "-Wl,-Bdynamic"]
 
 =item * L</"ld_optimize">
 
-  "-O2"
+"-O2"
 
 =item * L</"lib_dirs">
 
-  []
+[]
 
 =item * L</"libs">
 
-  []
+[]
 
 =item * L</"before_link_cbs">
 
-  []
+[]
 
 =item * L</"output_type">
 
-  "dynamic_lib"
+"dynamic_lib"
 
 =back
 
-Examples:
+Exceptions:
 
-  my $config = SPVM::Builder::Config->new(file => __FILE__);
+The \"file" field must be defined. Otherwise an exception is thrown.
 
 =head2 new_c
   
   my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
-Calls the L</"new"> method and sets th L</"ext"> field to C<c>.
+Calls the L</"new"> method and sets the L</"ext"> field to C<c>, and returns the return value of the L</"new_c"> method.
 
 =head2 new_c99
   
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
-Calls the L</"new_c"> method and sets the L</"std"> field to C<c99>.
+Calls the L</"new_c"> method and sets the L</"std"> field to C<c99>, and returns the return value of the L</"new_c"> method.
 
 =head2 new_c11
   
   my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
 
-Calls the L</"new_c"> method and sets the L</"std"> field to C<c11>.
+Calls the L</"new_c"> method and sets the L</"std"> field to C<c11>, and returns the return value of the L</"new_c"> method.
 
 =head2 new_gnu99
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu99>.
+Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu99>, and returns the return value of the L</"new_c"> method.
 
 =head2 new_gnu11
   
   my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
 
-Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu11>.
+Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu11>, and returns the return value of the L</"new_c"> method.
 
 =head2 new_cpp
   
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-Calls the L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to a C<C++> compiler and sets the L</"ld"> field to a C<C++> linker.
+Calls the L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to a C<C++> compiler and sets the L</"ld"> field to a C<C++> linker, and returns the return value of the L</"new"> method.
 
-If C<$Config{gccversion}> of the L<Config> class matches the regex C</\bclang\b/i>, the L</"cc"> field and the L</"ld"> field are set to C<clang++>.
+If the compiler included in C<$Config{gccversion}> is C<clang>, the L</"cc"> field and the L</"ld"> field are set to C<clang++>.
 
-Otherwise the L</"cc"> field and the L</"ld"> field are set to set to C<g++>.
+Otherwise the L</"cc"> field and the L</"ld"> field are set to C<g++>.
 
 =head2 new_cpp11
   
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
-Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++11>.
+Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++11>, and returns the return value of the L</"new_cpp"> method.
 
 =head2 new_cpp14
   
   my $config = SPVM::Builder::Config->new_cpp14(file => __FILE__);
 
-Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++14>.
+Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++14>, and returns the return value of the L</"new_cpp"> method.
 
 =head2 new_cpp17
   
   my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
 
-Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++17>.
+Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++17>, and returns the return value of the L</"new_cpp"> method.
 
 =head1 Instance Methods
 
@@ -1422,31 +1424,25 @@ Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++17>.
 
   $config->add_ccflag(@ccflags);
 
-Adds values at the end of the L</"ccflags"> field.
+Adds compiler options at the end of the L</"ccflags"> field.
 
 =head2 add_ldflag
 
   $config->add_ldflag(@ldflags);
 
-Adds values at the end of the L</"ldflags"> field.
+Adds linker options at the end of the L</"ldflags"> field.
 
 =head2 add_include_dir
 
   $config->add_include_dir(@include_dirs);
 
-Adds values at the end of the L</"include_dirs"> field.
-
-=head2 add_lib_dir
-
-  $config->add_lib_dir(@lib_dirs);
-
-Adds values after the last element of  C<lib_dirs> field.
+Adds header file search directories at the end of the L</"include_dirs"> field.
 
 =head2 add_source_file
 
   $config->add_source_file(@source_files);
 
-Adds a native source file at the end of the L</"source_files"> field.
+Adds source files used by this native class at the end of the L</"source_files"> field.
 
 Examples:
 
@@ -1468,22 +1464,11 @@ Examples:
     # Do something
   });
 
-=head2 add_before_link_cb
+=head2 add_lib_dir
 
-  $config->add_before_link_cb(@before_link_cbs);
+  $config->add_lib_dir(@lib_dirs);
 
-Adds callbacks called just before the link command L</"ld"> is executed at the end of the L</"before_link_cbs"> field.
-
-Examples:
-
-  $config->add_before_link_cb(sub {
-    my ($config, $link_info) = @_;
-    
-    my $object_files = $link_info->object_files;
-    
-    # Do something
-    
-  });
+Adds library search directories at the end of the L</"lib_dirs"> field.
 
 =head2 add_lib
 
@@ -1504,40 +1489,57 @@ Examples:
 
   $config->add_static_lib(@libs);
 
-Adds library names or L<SPVM::Builder::LibInfo> objects at the end of the L</"libs"> field.
-
-C<static> field is set to a true value.
+Adds library names or L<SPVM::Builder::LibInfo> objects at the end of the L</"libs"> field with the C<static> field set to a true value.
 
 Examples:
 
   $config->add_static_lib('gsl');
   $config->add_static_lib('gsl', 'z');
-  $config->add_static_lib(
-    SPVM::Builder::LibInfo->new(config => $config, name => 'gsl'),
-    SPVM::Builder::LibInfo->new(config => $config, name => 'z', abs => 1),
-  );
+
+=head2 add_before_link_cb
+
+  $config->add_before_link_cb(@before_link_cbs);
+
+Adds callbacks called just before the link command L</"ld"> is executed at the end of the L</"before_link_cbs"> field.
+
+Examples:
+
+  $config->add_before_link_cb(sub {
+    my ($config, $link_info) = @_;
+    
+    my $object_files = $link_info->object_files;
+    
+    # Do something
+    
+  });
 
 =head2 use_resource
 
   my $resource = $config->use_resource($resource_name);
   my $resource = $config->use_resource($resource_name, %options);
 
-Loads a resource by the resource name $resource_name using the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class, and returns a L<SPVM::Builder::Resource> object.
-  my $resource = SPVM::Builder::Resource->new(class_name => $resource_name);
-  $config->use_resource($resource);
+Loads a resource(a L<SPVM::Builder::Resource> object) given a resource name and options, and returns it.
 
-If the options %options are given, they are used as the options of the L<SPVM::Builder::Resource|/"new"> method in the L<SPVM::Builder::Resource> class.
+See L<SPVM::Document::Resource> about creating and using resources.
 
-  my $resource = SPVM::Builder::Resource->new(
-    class_name => 'Resource::Zlib',
-    mode => 'production',
-    argv => ['foo', 'bar'],
-  );
-  $config->use_resource($resource);
+Options:
+
+=over 2
+
+=item * mode
+
+The same as the L<mode|SPVM::Builder::Resource/"mode"> option in the new method in the SPVM::Builder::Resource class.
+
+=item * argv
+
+The same as the L<argv|SPVM::Builder::Resource/"argv"> option in the new method in the SPVM::Builder::Resource class.
+
+=back
 
 Examples:
 
   $config->use_resource('Resource::Zlib');
+  $config->use_resource('Resource::Foo', mode => 'mode1', argv => ['args1', 'args2']);
 
 =head2 get_resource
 
@@ -1549,37 +1551,51 @@ Gets a resource(a L<SPVM::Builder::Resource> object) loaded by the L</"use_resou
 
   my $resource_names = $config->get_resource_names;
 
-Gets resource names loaded by the L</"use_resource"> method.
+Returns resource names loaded by the L</"use_resource"> method.
 
 =head2 load_config
 
   my $config = $config->load_config($config_file, @argv);
 
-Loads a config file, and returns a L<SPVM::Builder::Config> object. The argument @argv is set to the @ARGV of the config file.
+Loads a config file, and returns a L<SPVM::Builder::Config> object.
+
+The argument @argv is set to the @ARGV of the config file.
 
 =head2 load_base_config
 
   my $config = $config->load_base_config($config_file, @argv);
 
-Loads a base config file like C<Foo.config>. This method is the alias for the following method call using L</"load_mode_config">.
+Loads the base config file of the config file given as the argument, and returns a L<SPVM::Builder::Config> object.
 
-  my $config = $config->load_mode_config($config_file, undef, @argv);
+The base config file is the config file that removes its mode from the config file given as the argument.
+
+The argument @argv is set to the @ARGV of the base config file.
+
+If the config file given as the argument is C</path/Foo.devel.config>, the base config file is C</path/Foo.config>.
+
+Examples:
+
+  my $config = SPVM::Builder::Config::Exe->load_base_config(__FILE__);
 
 =head2 load_mode_config
 
   my $config = $config->load_mode_config($config_file, $mode, @argv);
 
-Loads a mode config file like C<Foo.mode.config>.
+Loads the mode config file of the config file given as the argument, and returns a L<SPVM::Builder::Config> object.
 
-At first, removes the string matching the regex C<(\.[^\.]+)?\.config$> from the base name of the config file $config_file.
+The mode config file is the config file that removes its mode(if the mode exists) from the config file given as the argument and added the mode given as the argument.
 
-Next, if the mode $mode is defined, C<.$mode.config> is added to $config_file. Otherwise C<.config> is added.
+The argument @argv is set to the @ARGV of the mode config file.
 
-Last, L</"load_config"> is called with the modified name of the config file.
+If the config file given as the argument is C</path/Foo.config> and the mode given as the argument is C<production>, the mode config file is C</path/Foo.production.config>.
+
+If the config file given as the argument is C</path/Foo.devel.config> and the mode given as the argument is C<production>, the mode config file is C</path/Foo.production.config>.
+
+  my $config = SPVM::Builder::Config::Exe->load_mode_config(__FILE__, "production");
 
 =head2 get_loaded_config_files
 
-Gets the config files loaded by the L</"load_config"> method.
+Returns the config files loaded by the L</"load_config"> method.
 
 =head2 clone
 
