@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <errno.h>
+#include <ctype.h>
 
 #include "spvm_native.h"
 #include "spvm_api.h"
@@ -2287,6 +2288,54 @@ const char* SPVM_API_dumpc(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
   return dump_chars;
 }
 
+#define utf_cont(ch)  (((ch) & 0xc0) == 0x80)
+#define SPVM_UTF8PROC_ERROR_INVALIDUTF8 -3
+static ptrdiff_t spvm_utf8proc_iterate(const uint8_t *str, ptrdiff_t strlen, int32_t *dst) {
+  uint32_t uc;
+  const uint8_t *end;
+  
+  *dst = -1;
+  if (!strlen) return 0;
+  end = str + ((strlen < 0) ? 4 : strlen);
+  uc = *str++;
+  if (uc < 0x80) {
+    *dst = uc;
+    return 1;
+  }
+  // Must be between 0xc2 and 0xf4 inclusive to be valid
+  if ((uc - 0xc2) > (0xf4-0xc2)) return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
+  if (uc < 0xe0) {         // 2-byte sequence
+     // Must have valid continuation character
+     if (str >= end || !utf_cont(*str)) return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
+     *dst = ((uc & 0x1f)<<6) | (*str & 0x3f);
+     return 2;
+  }
+  if (uc < 0xf0) {        // 3-byte sequence
+     if ((str + 1 >= end) || !utf_cont(*str) || !utf_cont(str[1]))
+        return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
+     // Check for surrogate chars
+     if (uc == 0xed && *str > 0x9f)
+         return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
+     uc = ((uc & 0xf)<<12) | ((*str & 0x3f)<<6) | (str[1] & 0x3f);
+     if (uc < 0x800)
+         return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
+     *dst = uc;
+     return 3;
+  }
+  // 4-byte sequence
+  // Must have 3 valid continuation characters
+  if ((str + 2 >= end) || !utf_cont(*str) || !utf_cont(str[1]) || !utf_cont(str[2]))
+     return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
+  // Make sure in correct range (0x10000 - 0x10ffff)
+  if (uc == 0xf0) {
+    if (*str < 0x90) return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
+  } else if (uc == 0xf4) {
+    if (*str > 0x8f) return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
+  }
+  *dst = ((uc & 7)<<18) | ((*str & 0x3f)<<12) | ((str[1] & 0x3f)<<6) | (str[2] & 0x3f);
+  return 4;
+}
+
 void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable) {
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -2303,8 +2352,43 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
     if (SPVM_API_is_string(env, stack, object)) {
       const char* chars = SPVM_API_get_chars(env, stack, object);
       int32_t chars_length  = SPVM_API_length(env, stack, object);
+      
       SPVM_STRING_BUFFER_add(string_buffer, "\"");
-      SPVM_STRING_BUFFER_add_len(string_buffer, (char*)chars, chars_length);
+      
+      int32_t offset = 0;
+      while (1) {
+        
+        if (offset >= chars_length) {
+          break;
+        }
+        
+        int32_t dst;
+        int32_t utf8_char_len = (int32_t)spvm_utf8proc_iterate((const uint8_t*)(chars + offset), chars_length, &dst);
+        
+        int32_t uchar;
+        if (utf8_char_len > 0) {
+            
+          if (utf8_char_len == 1 && !isprint(*(chars + offset))) {
+            sprintf(tmp_buffer, "\\0x{%02X}", *(chars + offset));
+            
+            SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, 7);
+          }
+          else {
+            SPVM_STRING_BUFFER_add_len(string_buffer, (char*)(chars + offset), utf8_char_len);
+          }
+          
+          offset += utf8_char_len;
+        }
+        else {
+          
+          sprintf(tmp_buffer, "\\0x{%02X}", *(chars + offset));
+          
+          SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, 7);
+          
+          offset += 1;
+        }
+      }
+      
       SPVM_STRING_BUFFER_add(string_buffer, "\"");
     }
     else if (type_dimension > 0) {

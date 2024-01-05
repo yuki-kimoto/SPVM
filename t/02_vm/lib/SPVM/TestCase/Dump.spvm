@@ -18,6 +18,24 @@ class TestCase::Dump {
     return $dump;
   }
 
+  static method dump_string_utf8 : string () {
+    # dump string
+    my $string = "あいう";
+    
+    my $dump = dump $string;
+    
+    return $dump;
+  }
+  
+  static method dump_string_non_utf8 : string () {
+    # dump string
+    my $string = "\0\x01\t";
+    
+    my $dump = dump $string;
+    
+    return $dump;
+  }
+  
   static method dump_undef : string () {
     # dump undef
     my $string = (string)undef;
@@ -25,7 +43,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_byte_array : string () {
     # dump byte array
     my $array = [(byte)1, 2];
@@ -33,7 +51,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_short_array : string () {
     # dump short array
     my $array = [(short)1, 2];
@@ -41,7 +59,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_int_array : string () {
     # dump int array
     my $array = [(int)1, 2];
@@ -49,7 +67,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_long_array : string () {
     # dump long array
     my $array = [(long)1, 2];
@@ -57,7 +75,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_float_array : string () {
     # dump float array
     my $array = [(float)1.2f, 2.4f];
@@ -65,7 +83,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_double_array : string () {
     # dump double array
     my $array = [(double)1.2, 2.4];
@@ -73,7 +91,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_multi_numeric_byte_array : string () {
     # dump numeric byte array
     my $array = new TestCase::Point_3b[2];
@@ -87,7 +105,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_multi_numeric_short_array : string () {
     # dump numeric short array
     my $array = new TestCase::Point_3s[2];
@@ -101,7 +119,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_multi_numeric_int_array : string () {
     # dump numeric int array
     my $array = new TestCase::Point_3i[2];
@@ -115,7 +133,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_multi_numeric_long_array : string () {
     # dump numeric long array
     my $array = new TestCase::Point_3l[2];
@@ -129,7 +147,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_multi_numeric_float_array : string () {
     # dump numeric float array
     my $array = new TestCase::Point_3f[2];
@@ -143,7 +161,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_multi_numeric_double_array : string () {
     # dump numeric double array
     my $array = new TestCase::Point_3d[2];
@@ -157,21 +175,21 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_string_array : string () {
     # dump numeric double array
     my $array = ["abc", "def", undef];
     my $dump = dump $array;
     return $dump;
   }
-
+  
   static method dump_string_array_of_array : string () {
     # dump numeric double array
     my $array = [["abc", "def", undef], ["a", "b"]];
     my $dump = dump $array;
     return $dump;
   }
-
+  
   static method dump_object : string () {
     my $object = new TestCase::DumpTest1;
     $object->{byte_value} = 1;
@@ -188,7 +206,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_object_reuse : string () {
     my $object = new TestCase::DumpTest1;
     $object->{object_value} = $object;
@@ -201,7 +219,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_object_reuse_weaken : string () {
     my $object = new TestCase::DumpTest1;
     $object->{object_value} = $object;

@@ -3,6 +3,8 @@ use TestAuto;
 
 use strict;
 use warnings;
+use utf8;
+
 use Devel::Peek;
 
 use Test::More;
@@ -15,6 +17,8 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 # dump
 {
   is(SPVM::TestCase::Dump->dump_string, '"Hello"');
+  is(SPVM::TestCase::Dump->dump_string_utf8, '"あいう"');
+  is(SPVM::TestCase::Dump->dump_string_non_utf8, '"\\0x{00}\\0x{01}\0x{09}"');
   is(SPVM::TestCase::Dump->dump_undef, 'undef');
   like(SPVM::TestCase::Dump->dump_byte_array, qr/^\s*\[\s*1\s*,\s*2\s*\]\s*/s);
   like(SPVM::TestCase::Dump->dump_byte_array, qr/\s*:\s*byte\[\]/);

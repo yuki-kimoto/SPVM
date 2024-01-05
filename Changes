@@ -8,6 +8,8 @@
     * Add the memset_char method to the Fn class.
     * Add the set_length method to the StringBuffer class.
     * Add the set method to the StringBuffer class.
+  [Incompatible Changes]
+    * The dump operator print escaped character if caracters in the string is not valid UTF-8 or is not printable ASCII.
     
 0.989067 2023-01-04
   
