@@ -172,6 +172,8 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->check_option_names);
     
     ok(SPVM::TestCase::Module::Fn->get_basic_type_id);
+    
+    ok(SPVM::TestCase::Module::Fn->memset_char);
   }
   
   # Extra

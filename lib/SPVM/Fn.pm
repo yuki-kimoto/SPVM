@@ -1182,6 +1182,26 @@ $basic_type_name must be defined. Otherwise an exception is thrwon.
 
 If the basic type is not found, an exception is thrwon.
 
+=head2 memset_char
+
+C<static method memset_char : void ($string : mutable string, $char : int, $offset : int = 0, $length : int = -1);>
+
+Set the range of the characters of the string $string to the character $char.
+
+$char is an ASCII code.
+
+The range of the characters of $string is from the offset $offset to the position proceeded by the length $length.
+
+If $length is less than 0, the length to the end of the string is calculated from the length of $string and $offset.
+
+Exceptions:
+
+$string must be defined.
+
+$offset must be greater than or equal to 0. Otherwise an exception is thrown.
+
+$offset + $length must be less than or equal to the length of $string. Otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
