@@ -1,9 +1,6 @@
-0.989068 2023-01-05
+0.989067 2023-01-05
   [Incompatible Changes]
     * Remove the DEFAULT_CAPACITY enumeration from the StringBuffer class.
-  [Document Improvement]
-    * Improve the docs of the Byte, Short, Int, Long, Float, Double classes.
-    * Improve the docs of the ByteList, ShortList, IntList, LongList, FloatList, DoubleList classes.
   [New Features]
     * Add the memset_char method to the Fn class.
     * Add the set_length method to the StringBuffer class.
@@ -12,16 +9,15 @@
     * The dump operator print escaped character if caracters in the string is not valid UTF-8 or is not printable ASCII.
   [Bug Fix]
     * Fix the bug that {"foo"} causes a segmentation fault.
-    
-0.989067 2023-01-04
-  
   [Exception Messages Improvement]
     * Improve the exception message of the new method in the SPVM::Builder::Config.
-    
   [Document Fix and Improvement]
     * Fix and improve the doc of SPVM::Builder::Config.
     * Fix and improve the doc of SPVM::Builder::Resource.
     * Fix and improve the doc of SPVM::Builder::Config::Exe.
+  [Document Improvement]
+    * Improve the docs of the Byte, Short, Int, Long, Float, Double classes.
+    * Improve the docs of the ByteList, ShortList, IntList, LongList, FloatList, DoubleList classes.
 
 0.989066 2023-01-03
   [Document Fix]
