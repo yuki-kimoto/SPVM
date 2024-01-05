@@ -4,7 +4,11 @@ package SPVM::DoubleList;
 
 =head1 Name
 
-SPVM::DoubleList - Dynamic double Array
+SPVM::DoubleList - Dynamic double Arrays
+
+=head1 Description
+
+The DoubleList class in L<SPVM> has methods to manipulate dynamic double arrays.
 
 =head1 Usage
   
@@ -47,23 +51,33 @@ SPVM::DoubleList - Dynamic double Array
   # Convert list to array.
   my $array = $list->to_array;
   
-=head1 Description
+=head1 Details
 
-C<DoubleList> is a dynamic C<double> array.
+=head2 Internal Data Structure
+
+The L</"array"> stored in a DoubleList object always starts at index 0.
+
+The elements in the range that is greater than or equal to the L</"length"> field and less than the L</"capacity"> field are filled with 0.
 
 =head1 Fields
 
 =head2 capacity
 
-  has capacity : ro int;
+ C<has capacity : ro int;>
 
 The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
-  has length : ro int;
+C<has length : ro int;>
 
 The length of the list.
+
+=head2 array
+
+C<has array : double[];>
+
+The internal array stored in the DoubleList object.
 
 =head1 Class Methods
 

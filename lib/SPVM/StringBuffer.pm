@@ -51,7 +51,7 @@ The length of the string buffer.
 
   has string : mutable string;
 
-The internal string manipulated by this StringBuffer object.
+The internal string stored in the StringBuffer object.
 
 =head1 Class Methods
 

@@ -4,7 +4,11 @@ package SPVM::ByteList;
 
 =head1 Name
 
-SPVM::ByteList - Dynamic byte Array
+SPVM::ByteList - Dynamic byte Arrays
+
+=head1 Description
+
+The ByteList class in L<SPVM> has methods to manipulate dynamic byte arrays.
 
 =head1 Usage
   
@@ -47,23 +51,33 @@ SPVM::ByteList - Dynamic byte Array
   # Convert list to array.
   my $array = $list->to_array;
   
-=head1 Description
+=head1 Details
 
-C<ByteList> is a dynamic C<byte> array.
+=head2 Internal Data Structure
+
+The L</"array"> stored in a ByteList object always starts at index 0.
+
+The elements in the range that is greater than or equal to the L</"length"> field and less than the L</"capacity"> field are filled with 0.
 
 =head1 Fields
 
 =head2 capacity
 
-  has capacity : ro int;
+C<has capacity : ro int;>
 
 The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
-  has length : ro int;
+C<has length : ro int;>
 
 The length of the list.
+
+=head2 array
+
+C<has array : byte[];>
+
+The internal array stored in the ByteList object.
 
 =head1 Class Methods
 

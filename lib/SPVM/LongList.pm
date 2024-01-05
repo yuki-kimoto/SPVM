@@ -4,7 +4,11 @@ package SPVM::LongList;
 
 =head1 Name
 
-SPVM::LongList - Dynamic long Array
+SPVM::LongList - Dynamic long Arrays
+
+=head1 Description
+
+The LongList class in L<SPVM> has methods to manipulate dynamic long arrays.
 
 =head1 Usage
   
@@ -47,23 +51,33 @@ SPVM::LongList - Dynamic long Array
   # Convert list to array.
   my $array = $list->to_array;
   
-=head1 Description
+=head1 Details
 
-C<LongList> is a dynamic C<long> array.
+=head2 Internal Data Structure
+
+The L</"array"> stored in a LongList object always starts at index 0.
+
+The elements in the range that is greater than or equal to the L</"length"> field and less than the L</"capacity"> field are filled with 0.
 
 =head1 Fields
 
 =head2 capacity
 
-  has capacity : ro int;
+C<has capacity : ro int;>
 
 The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
-  has length : ro int;
+C<has length : ro int;>
 
 The length of the list.
+
+=head2 array
+
+C<has array : long[];>
+
+The internal array stored in the LongList object.
 
 =head1 Class Methods
 

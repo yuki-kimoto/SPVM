@@ -4,7 +4,11 @@ package SPVM::ShortList;
 
 =head1 Name
 
-SPVM::ShortList - Dynamic short Array
+SPVM::ShortList - Dynamic short Arrays
+
+=head1 Description
+
+The ShortList class in L<SPVM> has methods to manipulate dynamic short arrays.
 
 =head1 Usage
   
@@ -47,23 +51,33 @@ SPVM::ShortList - Dynamic short Array
   # Convert list to array.
   my $array = $list->to_array;
   
-=head1 Description
+=head1 Details
 
-C<ShortList> is a dynamic C<short> array.
+=head2 Internal Data Structure
+
+The L</"array"> stored in a ShortList object always starts at index 0.
+
+The elements in the range that is greater than or equal to the L</"length"> field and less than the L</"capacity"> field are filled with 0.
 
 =head1 Fields
 
 =head2 capacity
 
-  has capacity : ro int;
+C<has capacity : ro int;>
 
 The capacity. This is the length of the internally reserved elements to extend the length of the list.
 
 =head2 length
 
-  has length : ro int;
+C<has length : ro int;>
 
 The length of the list.
+
+=head2 array
+
+C<has array : short[];>
+
+The internal array stored in the ShortList object.
 
 =head1 Class Methods
 
