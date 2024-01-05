@@ -1449,5 +1449,20 @@ EOS
     
     compile_not_ok($source, q|line 4|);
   }
+  
+  {
+    my $source = [
+      'class MyClass { use Point; static method main : int () { 1 && my $x = 3; } }',
+    ];
+    compile_not_ok($source, q|The left operand of the assign operator must be mutable|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass { use Point; static method main : int () { 1 && (my $x = 3); } }',
+    ];
+    compile_ok($source);
+  }
+  
 }
 done_testing;
