@@ -2130,12 +2130,15 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
   
   // Array length
   int32_t length = 0;
-  {
+  if (op_list_elements->id == SPVM_OP_C_ID_LIST) {
     SPVM_OP* op_element = op_list_elements->first;
     int32_t index = 0;
     while ((op_element = SPVM_OP_sibling(compiler, op_element))) {
       length++;
     }
+  }
+  else {
+    length = 1;
   }
   
   if (is_key_value_pairs && length % 2 != 0) {

@@ -10,6 +10,8 @@
     * Add the set method to the StringBuffer class.
   [Incompatible Changes]
     * The dump operator print escaped character if caracters in the string is not valid UTF-8 or is not printable ASCII.
+  [Bug Fix]
+    * Fix the bug that {"foo"} causes a segmentation fault.
     
 0.989067 2023-01-04
   

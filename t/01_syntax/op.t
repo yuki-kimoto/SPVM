@@ -32,6 +32,13 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { {"foo" => 1, "bar"}; } }';
     compile_not_ok($source, qr/\QThe lenght of the elements in {} of the array initialization must be an even number/);
   }
+  
+  {
+    my $source = [
+      'class MyClass { static method main : int () { {"foo"}; }',
+    ];
+    compile_not_ok($source, q|The lenght of the elements in {} of the array initialization must be an even number.|);
+  }
 }
 
 # Reference operator

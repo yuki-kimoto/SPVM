@@ -1449,6 +1449,6 @@ EOS
     
     compile_not_ok($source, q|line 4|);
   }
-
+  
 }
 done_testing;
