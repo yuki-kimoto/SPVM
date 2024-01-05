@@ -425,6 +425,59 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method set : int () {
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      $buffer->set("ab");
+      
+      unless ($buffer->to_string eq "ab") {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe->[2] == '\0') {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      $buffer->set("");
+      
+      unless ($buffer->to_string eq "") {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe->[0] == '\0') {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe->[1] == '\0') {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe->[2] == '\0') {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      $buffer->set("abcd");
+      
+      unless ($buffer->to_string eq "abcd") {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
   static method extra : int () {
     
     {

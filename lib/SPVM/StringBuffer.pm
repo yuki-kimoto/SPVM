@@ -147,6 +147,12 @@ Sets the L</"length"> fields.
 
 If the length $length is greater than the L</"length"> field, the characters of the exceeding part are filled with "\0".
 
+=head2 set
+
+C<method set : void ($string : string);>
+
+Sets the string $string.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

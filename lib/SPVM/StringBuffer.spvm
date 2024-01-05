@@ -187,4 +187,11 @@ class StringBuffer {
     }
     
   }
+  
+  method set : void ($string : string) {
+    
+    $self->set_length(0);
+    
+    $self->push($string);
+  }
 }
