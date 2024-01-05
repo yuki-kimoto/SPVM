@@ -359,6 +359,72 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method set_length : int () {
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      $buffer->set_length(2);
+      
+      unless ($buffer->to_string eq "ab") {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe->[2] == '\0') {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      $buffer->set_length(0);
+      
+      unless ($buffer->to_string eq "") {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe->[0] == '\0') {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe->[1] == '\0') {
+        return 0;
+      }
+      
+      unless ($buffer->get_string_unsafe->[2] == '\0') {
+        return 0;
+      }
+    }
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      $buffer->set_length(4);
+      
+      unless ($buffer->to_string eq "abc\0") {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $buffer = StringBuffer->new("abc");
+        
+        eval { $buffer->set_length(-1); }
+        
+        unless (Fn->contains($@, "\$length must be greater than or equal to 0.")) {
+          return 0;
+        }
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
   static method extra : int () {
     
     {

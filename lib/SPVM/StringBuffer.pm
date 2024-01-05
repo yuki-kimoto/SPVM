@@ -37,19 +37,19 @@ The charactors in the range that is greater than or equal to the L</"length"> fi
 
 =head2 capacity
 
-  has capacity : ro int;
+C<has capacity : ro int;>
 
 The capacity. This is the length of the internally reserved characters to extend the length of the string buffer.
 
 =head2 length
 
-  has length : ro int;
+C<has length : ro int;>
 
 The length of the string buffer.
 
 =head2 string
 
-  has string : mutable string;
+C<has string : mutable string;>
 
 The internal string stored in the StringBuffer object.
 
@@ -138,6 +138,14 @@ C<method get_string_unsafe : string ();>
 Gets the internally string. 
 
 This buffer is unsafe because it continues to point to the old string if the internal string is extended.
+
+=head2 set_length
+
+C<method set_length : void ($length : int);>
+
+Sets the L</"length"> fields.
+
+If the length $length is greater than the L</"length"> field, the characters of the exceeding part are filled with "\0".
 
 =head1 Copyright & License
 

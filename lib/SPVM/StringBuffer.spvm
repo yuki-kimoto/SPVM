@@ -171,4 +171,20 @@ class StringBuffer {
     $self->{string} = $new_buffer;
     $self->{capacity} = $new_capacity;
   }
+  
+  method set_length : void ($length : int) {
+    
+    unless ($length >= 0) {
+      die "\$length must be greater than or equal to 0.";
+    }
+    
+    $self->_maybe_extend($length);
+    
+    $self->{length} = $length;
+    
+    if ($length < $self->{capacity}) {
+      Fn->memset_char($self->{string}, '\0', $length, $self->{capacity} - $length);
+    }
+    
+  }
 }

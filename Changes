@@ -6,6 +6,8 @@
     * Improve the docs of the ByteList, ShortList, IntList, LongList, FloatList, DoubleList classes.
   [New Features]
     * Add the memset_char method to the Fn class.
+    * Add the set_length method to the StringBuffer class.
+    
 0.989067 2023-01-04
   
   [Exception Messages Improvement]
