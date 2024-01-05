@@ -8042,7 +8042,7 @@ Examples:
 
 =head2 dump Operator
 
-The C<dump> operator is an L<operator|/"Operator"> to get the string representation of the object.
+The C<dump> operator gets the string representation of the object.
 
   dump OPERAND
 
@@ -8050,11 +8050,11 @@ It returns the string representation of the object.
 
 The return type is the L<string type|/"string Type">.
 
-The string representation may be changed from SPVM version to version. Please don't use C<dump> operator for the purpose of the data serialization.
+The string representation may be changed. Please don't use the C<dump> operator for the purpose of the data serialization.
 
 Compilation Errors:
 
-If I<OPERAND> is not an L<object type|/"Object Type">, a compilation error occurs.
+If I<OPERAND> is not an L<object type|/"Object Type"> or the undef type, a compilation error occurs.
 
 =head2 Logical Operator
 
