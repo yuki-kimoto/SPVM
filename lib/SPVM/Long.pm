@@ -4,26 +4,28 @@ package SPVM::Long;
 
 =head1 Name
 
-SPVM::Long - The long Object
+SPVM::Long - A long value as An Object
 
 =head1 Description
 
-The Long class has methods to manipulate an object that has a long value.
-
-This class is immutable.
-
-This class is automatically loaded.
+The Long class in L<SPVM> represents a long value as an object.
 
 =head1 Usage
   
   my $long_object = Long->new(5);
   my $long_value = $long_object->value;
 
+=head1 Details
+
+This class is immutable.
+
+This class is automatically loaded.
+
 =head1 Fields
 
 =head2 value
 
-  has value : ro long;
+C<has value : ro long;>
 
 The value.
 

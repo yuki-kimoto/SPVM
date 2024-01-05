@@ -1,7 +1,9 @@
 0.989068 2023-01-05
   [Incompatible Changes]
     * Remove the DEFAULT_CAPACITY enumeration from the StringBuffer class.
-    
+  [Document Improvement]
+    * Improve the docs of the Byte, Short, Int, Long, Float, Double classes.
+    * Improve the docs of the ByteList, ShortList, IntList, LongList, FloatList, DoubleList classes.
 0.989067 2023-01-04
   
   [Exception Messages Improvement]

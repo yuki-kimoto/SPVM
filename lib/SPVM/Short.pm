@@ -4,26 +4,28 @@ package SPVM::Short;
 
 =head1 Name
 
-SPVM::Short - The short Class
+SPVM::Short - A short Value as An Object
 
 =head1 Description
 
-The Short class has methods to manipulate an object that has a short value.
-
-This class is immutable.
-
-This class is automatically loaded.
+The Short class in L<SPVM> represents a short value as an object.
 
 =head1 Usage
   
   my $short_object = Short->new(5);
   my $short_value = $short_object->value;
 
+=head1 Details
+
+This class is immutable.
+
+This class is automatically loaded.
+
 =head1 Fields
 
 =head2 value
 
-  has value : ro short;
+C<has value : ro short;>
 
 The value.
 

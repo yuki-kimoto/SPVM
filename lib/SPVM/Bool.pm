@@ -4,7 +4,11 @@ package SPVM::Bool;
 
 =head1 Name
 
-SPVM::Bool - Bool object
+SPVM::Bool - A Boolean value as An Object
+
+=head1 Description
+
+The Bool class in L<SPVM> represents a boolean value as an object.
 
 =head1 Usage
 
@@ -16,13 +20,45 @@ SPVM::Bool - Bool object
   my $true_value = $true->value;
   my $false_value = $false->value;
 
-=head1 Description
+=head1 Details
 
-L<Bool|SPVM::Bool> object stores a C<long> value.
+This class is immutable.
 
-This object is immutable and its value cannot be changed.
+This class is automatically loaded.
 
-L<Bool|SPVM::Bool> is automatically loaded just after the program starts.
+The Bool object is different behavior in bool context.
+
+If the L</"value"> field is 1, it is evaluated as true.
+
+  if (Bool->TRUE) {
+    # Run
+  }
+
+If the L</"value"> field is 0, it is evaluated as false.
+
+  if (Bool->FALSE) {
+    # Not run
+  }
+
+The C<true> keyword is the same as C<Bool-E<gt>TRUE>.
+
+  if (true) {
+    # Run
+  }
+
+The C<false> keyword is the same as C<Bool-E<gt>FALSE>.
+ 
+  if (false) {
+    # Not run
+  }
+
+=head1 Fields
+
+=head2 value
+
+C<has value : ro int;>
+
+The value.
 
 =head1 Class Methods
 
@@ -30,53 +66,13 @@ L<Bool|SPVM::Bool> is automatically loaded just after the program starts.
 
 C<static method TRUE : L<Bool|SPVM::Bool> ();>
 
-A true singleton. This is created by INIT block when the program start.
+Returns the true singleton object.
 
 =head2 FALSE
 
 C<static method FALSE : L<Bool|SPVM::Bool> ();>
 
-A false singleton. This is created by INIT block when the program start.
-
-=head1 Instance Methods
-
-=head2 value
-
-C<method value : int ();>
-
-Returns a C<int> value.
-
-If L<Bool|SPVM::Bool> object express true, this method return 1.
-
-If L<Bool|SPVM::Bool> object express false, this method return 1.
-
-=head1 Bool Context
-
-the object of Bool class is different behavior in bool context.
-
-If the C<value> of Bool object is 1, it is evaluated as true.
-
-  if (Bool->TRUE) {
-    # Run
-  }
-
-If the C<value> of Bool object is 0, it is evaluated as false.
-
-  if (Bool->FALSE) {
-    # Not run
-  }
-
-=head1 Keywords
-
-C<true> keyword means Bool->TRUE. C<false> keyword means Bool->FALSE.
-
-  if (true) {
-    # Run
-  }
-
-  if (false) {
-    # Not run
-  }
+Returns the false singleton object.
 
 =head1 Copyright & License
 
