@@ -4061,14 +4061,14 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     SPVM_WEAKEN_BACKREF** weaken_backref_cur_ptr = &object->weaken_backref_head;
     while (*weaken_backref_cur_ptr != NULL){
       if ((*weaken_backref_cur_ptr)->ref == ref) {
-        SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_cur_ptr)->next;
+        SPVM_WEAKEN_BACKREF* weaken_backref_next = (*weaken_backref_cur_ptr)->next;
         
         SPVM_WEAKEN_BACKREF* weaken_backref_cur =  *weaken_backref_cur_ptr;
         
         SPVM_API_free_memory_block(env, stack, weaken_backref_cur);
         weaken_backref_cur = NULL;
         
-        *weaken_backref_cur_ptr = tmp;
+        *weaken_backref_cur_ptr = weaken_backref_next;
         break;
       }
       *weaken_backref_cur_ptr = (*weaken_backref_cur_ptr)->next;
