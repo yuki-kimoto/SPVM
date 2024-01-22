@@ -1,5 +1,6 @@
 class TestCase::Weaken {
   use TestCase::Data::Weaken;
+  use TestCase::Util::Node;
   
   has x_int : int;
   has x_self : TestCase::Weaken;
@@ -305,22 +306,26 @@ class TestCase::Weaken {
   }
   
   static method dom_tree : int () {
-    my $weaken1 = new TestCase::Data::Weaken;
-    $weaken1->{x} = 1;
     
-    my $weaken2 = new TestCase::Data::Weaken;
-    $weaken2->{x} = 2;
-    
-    # Cross reference
-    $weaken1->{data_weaken} = $weaken2;
-    $weaken2->{data_weaken} = $weaken1;
-    
-    # Weaken
-    weaken $weaken1->{data_weaken};
-    unweaken $weaken1->{data_weaken};
-    
-    if (isweak $weaken1->{data_weaken}) {
-      return 0;
+    {
+      my $node = new TestCase::Util::Node;
+      
+      my $child_nodes = [new TestCase::Util::Node, new TestCase::Util::Node];
+      
+      $node->{first_child} = $child_nodes->[0];
+      
+      $node->{last_child} = $child_nodes->[1];
+      
+      for my $child_node (@$child_nodes) {
+        $child_node->{parent_node} = $node;
+        weaken $child_node->{parent_node};
+      }
+      
+      $child_nodes->[0]->{next_sibling} = $child_nodes->[1];
+      
+      my $child_nodes1 = $child_nodes->[1];
+      $child_nodes1->{previous_sibling} = $child_nodes->[0];
+      weaken $child_nodes1->{previous_sibling};
     }
     
     return 1;

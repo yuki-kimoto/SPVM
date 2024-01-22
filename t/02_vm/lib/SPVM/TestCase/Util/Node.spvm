@@ -1,0 +1,13 @@
+class TestCase::Util::Node : public {
+  
+  # Fields
+  has parent_node : public TestCase::Util::Node;
+  
+  has next_sibling : public TestCase::Util::Node;
+  
+  has previous_sibling : public TestCase::Util::Node;
+  
+  has first_child : public TestCase::Util::Node;
+  
+  has last_child : public TestCase::Util::Node;
+}

@@ -122,6 +122,16 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
     my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count;
     is($end_memory_blocks_count, $start_memory_blocks_count);
   }
+  
+  {
+    my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count;
+    {
+      ok(SPVM::TestCase::Weaken->dom_tree);
+    }
+    my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count;
+    is($end_memory_blocks_count, $start_memory_blocks_count);
+  }
+  
 }
 
 # isweak

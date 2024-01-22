@@ -912,6 +912,7 @@ t/02_vm/lib/SPVM/TestCase/UseResource/Mylib1.spvm
 t/02_vm/lib/SPVM/TestCase/UseResource/Mylib2.c
 t/02_vm/lib/SPVM/TestCase/UseResource/Mylib2.config
 t/02_vm/lib/SPVM/TestCase/UseResource/Mylib2.spvm
+t/02_vm/lib/SPVM/TestCase/Util/Node.spvm
 t/02_vm/lib/SPVM/TestCase/Util/Thread.config
 t/02_vm/lib/SPVM/TestCase/Util/Thread.cpp
 t/02_vm/lib/SPVM/TestCase/Util/Thread.spvm
