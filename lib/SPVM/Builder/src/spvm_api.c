@@ -4102,20 +4102,20 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
 
 void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
   
-  SPVM_WEAKEN_BACKREF* weaken_backref_head_cur = weaken_backref_head;
-  while (weaken_backref_head_cur != NULL){
-    int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, weaken_backref_head_cur->ref);
+  SPVM_WEAKEN_BACKREF* weaken_backref_cur = weaken_backref_head;
+  while (weaken_backref_cur != NULL){
+    int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, weaken_backref_cur->ref);
     
     assert(isweak);
     
-    *(weaken_backref_head_cur->ref) = NULL;
+    *(weaken_backref_cur->ref) = NULL;
     
-    SPVM_WEAKEN_BACKREF* weaken_backref_head_next = weaken_backref_head_cur->next;
+    SPVM_WEAKEN_BACKREF* weaken_backref_head_next = weaken_backref_cur->next;
     
-    SPVM_API_free_memory_block(env, stack, weaken_backref_head_cur);
-    weaken_backref_head_cur = NULL;
+    SPVM_API_free_memory_block(env, stack, weaken_backref_cur);
+    weaken_backref_cur = NULL;
     
-    weaken_backref_head_cur = weaken_backref_head_next;
+    weaken_backref_cur = weaken_backref_head_next;
   }
 }
 
