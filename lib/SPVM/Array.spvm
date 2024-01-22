@@ -144,29 +144,9 @@ class Array {
       die "\$array must be defined.";
     }
     
-    unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
-    }
+    my $proto = &new_proto($array, 0);
     
-    my $array_length = @$array;
-    if ($length < 0) {
-      $length = $array_length - $offset;
-    }
-    
-    unless ($offset + $length <= $array_length) {
-      die "\$offset + \$length must be less than or equal to the length of \$array.";
-    }
-    
-    my $new_array = &new_proto($array, $length);
-    
-    if ($cloner) {
-      for (my $i = 0; $i < $length; $i++) {
-        $new_array->[$i] = $cloner->($array->[$offset + $i]);
-      }
-    }
-    else {
-      Array->memcpy_object_address($new_array, 0, $array, $offset, $length);
-    }
+    my $new_array = &copy_object_with_proto($array, $proto, $cloner, $offset, $length);
     
     return $new_array;
   }
@@ -1099,5 +1079,46 @@ class Array {
     my $repeat_array = $string_list->to_array;
     
     return $repeat_array;
+  }
+  
+  static method copy_object_with_proto : object[] ($array : object[], $proto : object[], $cloner : Cloner = undef, $offset : int = 0, $length : int = -1) {
+    
+    unless ($array) {
+      die "\$array must be defined.";
+    }
+    
+    unless ($offset >= 0) {
+      die "\$offset must be greater than or equal to 0.";
+    }
+    
+    my $array_length = @$array;
+    if ($length < 0) {
+      $length = $array_length - $offset;
+    }
+    
+    unless ($offset + $length <= $array_length) {
+      die "\$offset + \$length must be less than or equal to the length of \$array.";
+    }
+    
+    unless ($proto) {
+      $proto = $array;
+    }
+    
+    my $new_array = &new_proto($proto, $length);
+    
+    if ($cloner) {
+      for (my $i = 0; $i < $length; $i++) {
+        $new_array->[$i] = $cloner->($array->[$offset + $i]);
+      }
+    }
+    else {
+      Array->memcpy_object_address($new_array, 0, $array, $offset, $length);
+    }
+    
+    return $new_array;
+  }
+  
+  static method copy_object_address_with_proto : object[] ($array : object[], $proto : object[], $offset : int = 0, $length : int = -1) {
+    return &copy_object_with_proto($array, $proto, undef, $offset, $length);
   }
 }

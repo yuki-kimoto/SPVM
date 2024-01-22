@@ -1,4 +1,7 @@
 0.989068 2023-01-22
+  [New Features]
+    * Add the copy_object_with_proto method to the Array class.
+    * Add the copy_object_address_with_proto method to the Array class.
   [Bug Fix]
     * Fix the bug that the unweaken operator does not work well.
     * Fix the bug that the get_string method in the Hash class throws exception when the value is undef.
