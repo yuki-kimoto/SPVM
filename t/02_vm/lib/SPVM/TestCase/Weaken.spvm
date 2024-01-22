@@ -381,6 +381,79 @@ class TestCase::Weaken {
       }
     }
     
+    {
+      my $node = new TestCase::Util::Node;
+      
+      my $child_nodes = [new TestCase::Util::Node, new TestCase::Util::Node, new TestCase::Util::Node];
+      
+      my $child_nodes_length = @$child_nodes;
+      
+      $node->{first_child} = $child_nodes->[0];
+      
+      $node->{last_child} = $child_nodes->[$child_nodes_length - 1];
+      
+      for (my $i = 0; $i < $child_nodes_length; $i++) {
+        my $child_node = $child_nodes->[$i];
+        
+        $child_node->{parent_node} = $node;
+        weaken $child_node->{parent_node};
+        
+        if ($i + 1 < $child_nodes_length) {
+          $child_node->{next_sibling} = $child_nodes->[$i + 1];
+        }
+        
+        if ($i - 1 >= 0) {
+          $child_node->{previous_sibling} = $child_nodes->[$i - 1];
+          weaken $child_node->{previous_sibling};
+        }
+      }
+      
+      {
+        my $nodes_count = 0;
+        
+        my $node_root = (TestCase::Util::Node)$node;
+        my $node_cur = $node_root;
+        my $finish = 0;
+        while ($node_cur) {
+          
+          # [START]Preorder traversal position
+          
+          if ($node_cur->{first_child}) {
+            $node_cur = (TestCase::Util::Node)$node_cur->{first_child};
+          }
+          else {
+            while (1) {
+              # [START]Postorder traversal position
+              $nodes_count++;
+              
+              if ($node_cur == $node_root) {
+                
+                $finish = 1;
+                
+                last;
+              }
+              
+              # Next sibling
+              if ($node_cur->{next_sibling}) {
+                $node_cur = $node_cur->{next_sibling};
+                last;
+              }
+              # Next is parent
+              else {
+                $node_cur = $node_cur->{parent_node};
+              }
+            }
+            if ($finish) {
+              last;
+            }
+          }
+        }
+        
+        unless ($nodes_count == 4) {
+          return 0;
+        }
+      }
+    }
     return 1;
   }
 }
