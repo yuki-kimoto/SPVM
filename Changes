@@ -5,6 +5,7 @@
   [Bug Fix]
     * Fix the bug that the unweaken operator does not work well.
     * Fix the bug that the get_string method in the Hash class throws exception when the value is undef.
+    * Fix the bug that parant's private fields can access from child classes.
 0.989067 2023-01-05
   [Incompatible Changes]
     * Remove the DEFAULT_CAPACITY enumeration from the StringBuffer class.

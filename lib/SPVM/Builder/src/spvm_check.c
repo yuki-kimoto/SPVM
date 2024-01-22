@@ -369,6 +369,7 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
             new_field->current_basic_type = current_basic_type;
             new_field->type = field->type;
             new_field->access_control_type = field->access_control_type;
+            new_field->is_parent_field = field->is_parent_field;
           }
           SPVM_LIST_push(merged_fields, new_field);
           merged_fields_index++;
@@ -1933,8 +1934,8 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               }
 
               SPVM_BASIC_TYPE* current_basic_type = method->current_basic_type;
-              if (!SPVM_CHECK_can_access(compiler, current_basic_type, new_basic_type, new_basic_type->access_control_type)) {
-                if (!SPVM_OP_is_allowed(compiler, current_basic_type, new_basic_type)) {
+              if (!SPVM_CHECK_can_access(compiler, current_basic_type, new_basic_type, new_basic_type->access_control_type, 0)) {
+                if (!SPVM_OP_is_allowed(compiler, current_basic_type, new_basic_type, 0)) {
                   SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, current_basic_type->name, op_new->file, op_new->line);
                   return;
                 }
@@ -2841,8 +2842,8 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
                 SPVM_CLASS_VAR* class_var = class_var_access->class_var;
                 SPVM_BASIC_TYPE* class_var_access_basic_type = class_var->current_basic_type;
                 
-                if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, class_var_access_basic_type, class_var_access->class_var->access_control_type)) {
-                  if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, class_var_access_basic_type)) {
+                if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, class_var_access_basic_type, class_var_access->class_var->access_control_type, 0)) {
+                  if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, class_var_access_basic_type, 0)) {
                     SPVM_COMPILER_error(compiler, "The %s \"%s\" class variable in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, class_var_access->class_var->access_control_type), class_var->name, class_var_access_basic_type->name,  method->current_basic_type->name, op_class_var_access->file, op_class_var_access->line);
                     return;
                   }
@@ -2880,8 +2881,8 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
             SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
             const char* method_name = call_method->method->name;
 
-            if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, call_method->method->current_basic_type, call_method->method->access_control_type)) {
-              if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, call_method->method->current_basic_type)) {
+            if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, call_method->method->current_basic_type, call_method->method->access_control_type, 0)) {
+              if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, call_method->method->current_basic_type, 0)) {
                 SPVM_COMPILER_error(compiler, "The %s \"%s\" method in the \"%s\" class cannnot be called from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->current_basic_type->name,  method->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
@@ -3070,8 +3071,12 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
 
             SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
             
-            if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type)) {
-              if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type)) {
+            SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->unmerged_field_symtable, field_access->field->name, strlen(field_access->field->name));
+            
+            int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_anon;
+            
+            if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type, is_parent_field)) {
+              if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type, is_parent_field)) {
                 SPVM_COMPILER_error(compiler, "The %s \"%s\" field in the \"%s\" class cannnot be accessed from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, field_access->field->access_control_type), field->name, field->current_basic_type->name, method->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
@@ -3737,7 +3742,7 @@ SPVM_FIELD* SPVM_CHECK_search_unmerged_field(SPVM_COMPILER* compiler, SPVM_BASIC
   return found_field;
 }
 
-int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type_from, SPVM_BASIC_TYPE* basic_type_to, int32_t access_controll_flag_to) {
+int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type_from, SPVM_BASIC_TYPE* basic_type_to, int32_t access_controll_flag_to, int32_t is_parent_field) {
   
   int32_t can_access = 0;
   
@@ -3746,11 +3751,16 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_ty
   }
   
   if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
-    if (strcmp(basic_type_from->name, basic_type_to->name) == 0) {
-      can_access = 1;
+    if (is_parent_field) {
+      can_access = 0;
     }
     else {
-      can_access = 0;
+      if (strcmp(basic_type_from->name, basic_type_to->name) == 0) {
+        can_access = 1;
+      }
+      else {
+        can_access = 0;
+      }
     }
   }
   else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {

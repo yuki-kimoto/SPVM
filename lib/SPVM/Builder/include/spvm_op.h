@@ -579,7 +579,7 @@ SPVM_OP* SPVM_OP_new_op_var_decl_arg(SPVM_COMPILER* compiler, const char* file, 
 
 SPVM_OP* SPVM_OP_new_op_name_tmp_var(SPVM_COMPILER* compiler, const char* file, int32_t line);
 
-int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type_current, SPVM_BASIC_TYPE* basic_type_dist);
+int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type_current, SPVM_BASIC_TYPE* basic_type_dist, int32_t is_parent_field);
 
 int32_t SPVM_OP_is_comparison_op(SPVM_COMPILER* compiler, SPVM_OP* op);
 

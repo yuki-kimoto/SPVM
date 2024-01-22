@@ -1258,6 +1258,30 @@ use Test::More;
     ];
     compile_not_ok($source, q|The 1th argument of the "main" method in the "MyClass2" class which argument type is "Point" must be able to be assigned to the 1th argument of the "main" method in the "MyClass" class which argument type is "Point3D".|);
   }
+  
+  {
+    my $source = [
+      'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
+      'class MyClassParent { has foo : int; }',
+    ];
+    compile_not_ok($source, q|The private "foo" field in the "MyClass" class cannnot be accessed from the current class "MyClass".|);
+  }
+  
+  {
+    my $source = [
+      'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
+      'class MyClassParent { has foo : protected int; }',
+    ];
+    compile_ok($source);
+  }
+  
+  {
+    my $source = [
+      'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
+      'class MyClassParent { has foo : public int; }',
+    ];
+    compile_ok($source);
+  }
 }
 
 # interface Statement
