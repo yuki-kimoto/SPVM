@@ -509,11 +509,6 @@ class TestCase::Weaken {
       }
     }
 
-=pod TODO
-
-perl: lib/SPVM/Builder/src/spvm_api.c:4053: SPVM_API_unweaken_thread_unsafe: Assertion `object->weaken_backref_head' failed.
-Aborted (core dumped)
-
     {
       my $node = TestCase::Util::Node->new([
         TestCase::Util::Node->new([TestCase::Util::Node->new]),
@@ -566,8 +561,6 @@ Aborted (core dumped)
         }
       }
     }
-
-=cut
 
     return 1;
   }
