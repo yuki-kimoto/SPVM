@@ -4058,7 +4058,6 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     SPVM_API_inc_ref_count(env, stack, object);
     
     // Remove a weaken back reference
-    assert(object->weaken_backref_head);
     SPVM_WEAKEN_BACKREF** weaken_backref_next_ptr = &object->weaken_backref_head;
     while (*weaken_backref_next_ptr != NULL){
       if ((*weaken_backref_next_ptr)->ref == ref) {
