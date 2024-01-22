@@ -281,8 +281,30 @@ class TestCase::Weaken {
     
     return 1;
   }
-
+  
   static method unweaken_test : int () {
+    my $weaken1 = new TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    unweaken $weaken1->{data_weaken};
+    
+    if (isweak $weaken1->{data_weaken}) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method dom_tree : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} = 1;
     
