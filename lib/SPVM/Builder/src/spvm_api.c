@@ -4105,11 +4105,10 @@ void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN
   SPVM_WEAKEN_BACKREF* weaken_backref_head_cur = weaken_backref_head;
   while (weaken_backref_head_cur != NULL){
     *(weaken_backref_head_cur->ref) = NULL;
-    SPVM_WEAKEN_BACKREF* weaken_backref_head_next = weaken_backref_head_cur->next;
     
     SPVM_API_free_memory_block(env, stack, weaken_backref_head_cur);
-    weaken_backref_head_cur = NULL;
-    weaken_backref_head_cur = weaken_backref_head_next;
+    
+    weaken_backref_head_cur = weaken_backref_head_cur->next;
   }
 }
 
