@@ -312,20 +312,29 @@ class TestCase::Weaken {
       
       my $child_nodes = [new TestCase::Util::Node, new TestCase::Util::Node];
       
+      my $child_nodes_length = @$child_nodes;
+      
       $node->{first_child} = $child_nodes->[0];
       
-      $node->{last_child} = $child_nodes->[1];
+      $node->{last_child} = $child_nodes->[$child_nodes_length - 1];
       
-      for my $child_node (@$child_nodes) {
+      for (my $i = 0; $i < $child_nodes_length; $i++) {
+        my $child_node = $child_nodes->[$i];
+        
         $child_node->{parent_node} = $node;
         weaken $child_node->{parent_node};
+        
+        if ($i + 1 < $child_nodes_length - 1) {
+          $child_node->{next_sibling} = $child_nodes->[$i + 1];
+        }
+        
+        if ($i - 1 >= 0) {
+          $child_node->{previous_sibling} = $child_nodes->[$i - 1];
+          weaken $child_node->{previous_sibling};
+        }
       }
       
-      $child_nodes->[0]->{next_sibling} = $child_nodes->[1];
       
-      my $child_nodes1 = $child_nodes->[1];
-      $child_nodes1->{previous_sibling} = $child_nodes->[0];
-      weaken $child_nodes1->{previous_sibling};
     }
     
     return 1;
