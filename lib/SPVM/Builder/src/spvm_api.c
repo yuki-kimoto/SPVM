@@ -4108,6 +4108,11 @@ void SPVM_API_free_weaken_backrefs(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_WEAKEN
     
     assert(isweak);
     
+    // Drop weaken flag
+    *weaken_backref_cur->ref = (SPVM_OBJECT*)((intptr_t)*weaken_backref_cur->ref & ~(intptr_t)1);
+    
+    assert(!SPVM_API_isweak_only_check_flag(env, stack, weaken_backref_cur->ref));
+    
     *(weaken_backref_cur->ref) = NULL;
     
     SPVM_WEAKEN_BACKREF* weaken_backref_head_next = weaken_backref_cur->next;
