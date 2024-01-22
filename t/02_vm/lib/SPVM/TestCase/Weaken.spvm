@@ -454,6 +454,61 @@ class TestCase::Weaken {
         }
       }
     }
+    
+    {
+      my $node = TestCase::Util::Node->new([
+        TestCase::Util::Node->new,
+        TestCase::Util::Node->new,
+        TestCase::Util::Node->new
+      ]);
+      
+      {
+        my $nodes_count = 0;
+        
+        my $node_root = (TestCase::Util::Node)$node;
+        my $node_cur = $node_root;
+        my $finish = 0;
+        while ($node_cur) {
+          
+          # [START]Preorder traversal position
+          
+          if ($node_cur->{first_child}) {
+            $node_cur = (TestCase::Util::Node)$node_cur->{first_child};
+          }
+          else {
+            while (1) {
+              # [START]Postorder traversal position
+              $nodes_count++;
+              
+              if ($node_cur == $node_root) {
+                
+                $finish = 1;
+                
+                last;
+              }
+              
+              # Next sibling
+              if ($node_cur->{next_sibling}) {
+                $node_cur = $node_cur->{next_sibling};
+                last;
+              }
+              # Next is parent
+              else {
+                $node_cur = $node_cur->{parent_node};
+              }
+            }
+            if ($finish) {
+              last;
+            }
+          }
+        }
+        
+        unless ($nodes_count == 4) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
 }
