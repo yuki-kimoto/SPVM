@@ -348,12 +348,25 @@ class TestCase::Module::Hash {
         return 0;
       }
       my $value = $hash->get_string("foo");
-
+      
       unless ($value == $str) {
         return 0;
       }
+      
     }
     
+    {
+      my $hash = Hash->new;
+      
+      $hash->set_string(foo => undef);
+      
+      my $value = $hash->get_string("foo");
+      
+      if ($value) {
+        return 0;
+      }
+    }
+      
     # Excetpions
     {
       my $hash = Hash->new;

@@ -321,7 +321,7 @@ class Hash {
   method get_string : string ($key : string) {
     my $object = $self->get($key);
     
-    unless ($object is_type string) {
+    unless (!$object || $object is_type string) {
       die "The type of the value for the key \"$key\" must be the string type.";
     }
     
