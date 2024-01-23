@@ -58,10 +58,10 @@
 * <a href="https://github.com/yuki-kimoto/SPVM-HTTP-Minimal">SPVM::HTTP::Minimal</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Mozilla-CA">SPVM::Mozilla::CA</a>
 * <a href="https://github.com/yuki-kimoto/SPVM-Net-SSLeay">SPVM::Net::SSLeay</a>
+* <a href="https://github.com/yuki-kimoto/SPVM-Eg">SPVM::Eg</a>
 
 ## Not Released CPAN Modules
 
-* <a href="https://github.com/yuki-kimoto/SPVM-Eg">SPVM::Eg</a>
 
 ## Deprecated or removed CPAN modules
 
