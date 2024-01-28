@@ -107,7 +107,6 @@ class TestCase::NativeAPI {
   } 
   native static method get_class_var_int_native : int ();
 
-
   static method get_class_var_short : int () {
     $SHORT_VALUE = -32768;
     
@@ -120,6 +119,45 @@ class TestCase::NativeAPI {
     return 1;
   } 
   native static method get_class_var_short_native : int ();
+
+  static method get_class_var_long : int () {
+    $LONG_VALUE = 2147483647;
+    
+    my $success = TestCase::NativeAPI->get_class_var_long_native();
+
+    unless ($success) {
+      return 0;
+    }
+    
+    return 1;
+  } 
+  native static method get_class_var_long_native : int ();
+
+  static method get_class_var_float : int () {
+    $FLOAT_VALUE = 3.402823e+38f;
+    
+    my $success = TestCase::NativeAPI->get_class_var_float_native();
+
+    unless ($success) {
+      return 0;
+    }
+    
+    return 1;
+  } 
+  native static method get_class_var_float_native : int ();
+
+  static method get_class_var_double : int () {
+    $DOUBLE_VALUE = 1.79769e+308;
+    
+    my $success = TestCase::NativeAPI->get_class_var_double_native();
+
+    unless ($success) {
+      return 0;
+    }
+    
+    return 1;
+  } 
+  native static method get_class_var_double_native : int ();
 
   static method get_class_var_byte_by_name : int () {
     

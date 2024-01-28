@@ -120,6 +120,21 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->get_class_var_short);
 }
 
+# get_class_var_long
+{
+  ok(SPVM::TestCase::NativeAPI->get_class_var_long);
+}
+
+# get_class_var_float
+{
+  ok(SPVM::TestCase::NativeAPI->get_class_var_float);
+}
+
+# get_class_var_double
+{
+  ok(SPVM::TestCase::NativeAPI->get_class_var_double);
+}
+
 # Field
 {
   ok(SPVM::TestCase::NativeAPI->get_field_byte_by_name);

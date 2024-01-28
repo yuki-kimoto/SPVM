@@ -688,6 +688,69 @@ int32_t SPVM__TestCase__NativeAPI__get_class_var_short_native(SPVM_ENV* env, SPV
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__get_class_var_long_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$LONG_VALUE");
+  
+  if (!class_var) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  long value = env->get_class_var_long(env, stack, class_var);
+  
+  if (!(value == 2147483647)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+
+  stack[0].ival = 1;
+  return 0;
+}
+
+
+int32_t SPVM__TestCase__NativeAPI__get_class_var_float_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$FLOAT_VALUE");
+  
+  if (!class_var) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  float value = env->get_class_var_float(env, stack, class_var);
+  
+  if (!(value == 3.402823e+38f)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+
+  stack[0].ival = 1;
+  return 0;
+}
+
+
+int32_t SPVM__TestCase__NativeAPI__get_class_var_double_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* class_var = env->get_class_var(env, stack, "TestCase::NativeAPI", "$DOUBLE_VALUE");
+  
+  if (!class_var) {
+    stack[0].ival = 0;
+    return 0;
+  }
+  
+  double value = env->get_class_var_double(env, stack, class_var);
+  
+  if (!(value == 1.79769e+308)) {
+    stack[0].ival = 0;
+    return 0;
+  }
+
+  stack[0].ival = 1;
+  return 0;
+}
+
+
 int32_t SPVM__TestCase__NativeAPI__get_class_var_byte_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error = 0;
