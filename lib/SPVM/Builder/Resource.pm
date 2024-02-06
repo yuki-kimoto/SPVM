@@ -100,8 +100,8 @@ See L<SPVM::Document::Resource> about creating and using resources.
 
 =head2 class_name
 
-  my $basic_type_name = $resource->class_name;
-  $resource->class_name($basic_type_name);
+  my $class_name = $resource->class_name;
+  $resource->class_name($class_name);
 
 Gets and sets the C<class_name> field, the class name of this resource.
 
@@ -176,7 +176,7 @@ Always true.
 
 =head2 stringify
 
-  my $basic_type_name = "$resource";
+  my $class_name = "$resource";
 
 The alias for the L</"to_string"> method.
 
