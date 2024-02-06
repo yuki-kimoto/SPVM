@@ -5,6 +5,7 @@
     * Add a message in compiling a source file in a resource like
       [Compile a source file in the resource "%s" at "%s" used as a resource in the config "%s" at "%s"]
     * Add the resource_loader_config field to the SPVM::Builder::Config class.
+    * Add the category field to the SPVM::Builder::Config class.
 0.989068 2023-01-22
   [New Features]
     * Add the copy_object_with_proto method to the Array class.
