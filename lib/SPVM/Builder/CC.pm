@@ -241,19 +241,28 @@ sub compile_source_file {
       
       my $config_file = $config->file;
       
-      my $message = "[Compile a source file";
-      
-      if (defined $config_file && $config_class_name) {
-        $message .= " defined in the config file \"$config_file\" of the \"$config_class_name\" class";
+      my $message;
+      if ($compile_info_category eq 'spvm_core') {
+        $message = "[Compile a SPVM core source file]\n";
       }
-      elsif (defined $config_file) {
-        $message .= " defined in the config file \"$config_file\"";
+      elsif ($compile_info_category eq 'bootstrap') {
+        $message = "[Compile a bootstrap source file for an excutable file]\n";
       }
-      elsif (defined $config_class_name) {
-        $message .= " for the \"$config_class_name\" class for precompile";
+      else {
+        $message = "[Compile a source file";
+        
+        if (defined $config_file && $config_class_name) {
+          $message .= " defined in the config file \"$config_file\" of the \"$config_class_name\" class";
+        }
+        elsif (defined $config_file) {
+          $message .= " defined in the config file \"$config_file\"";
+        }
+        elsif (defined $config_class_name) {
+          $message .= " for the \"$config_class_name\" class for precompile";
+        }
+        
+        $message .= "]\n";
       }
-      
-      $message .= "]\n";
       
       warn $message;
     }
