@@ -213,12 +213,28 @@ sub compile_source_file {
   my $quiet = $self->detect_quiet($config);
   
   my $source_file = $compile_info->source_file;
-
+  
   # Execute compile command
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
   my $cc_cmd = $compile_info->create_command;
   
   unless ($quiet) {
+    
+    my $resource_loader_config = $compile_info->config->resource_loader_config;
+    
+    if ($resource_loader_config) {
+      
+      my $resource_loader_config_basic_type_name = $resource_loader_config->class_name;
+      
+      my $resource_loader_config_file = $config->file;
+      
+      my $resource_basic_type_name = $config->class_name;
+      
+      my $resource_config_file = $config->file;
+      
+      warn "[Compile a source file in the resource \"$resource_basic_type_name\" at \"$resource_config_file\" used in the config \"$resource_loader_config_basic_type_name\" at $resource_loader_config_file]\n";
+    }
+    
     warn "@$cc_cmd\n";
   }
   
@@ -497,6 +513,10 @@ sub create_link_info {
     
     $resource_config->add_include_dir(@$resource_include_dirs);
     
+    $resource_config->class_name($resource_basic_type_name);
+    
+    $resource_config->resource_loader_config($config),
+    
     $resource_config->disable_resource(1);
     my $compile_options = {
       input_dir => $resource_src_dir,
@@ -507,10 +527,9 @@ sub create_link_info {
     };
     
     my $object_files = $builder_cc_resource->compile_source_files($resource_basic_type_name, $compile_options);
-    
     push @$all_object_files, @$object_files;
   }
-
+  
   # Output file
   my $output_file = $options->{output_file};
   unless (defined $output_file) {

@@ -318,6 +318,17 @@ sub output_type {
   }
 }
 
+sub resource_loader_config {
+  my $self = shift;
+  if (@_) {
+    $self->{resource_loader_config} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{resource_loader_config};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -1193,6 +1204,13 @@ If thie field is C<exe>, the output file is an executable file.
 Gets and sets the C<disable_resource> field.
 
 If this value is a true value, all resources loaded by the L</"use_resource"> method are disabled.
+
+=head2 resource_loader_config
+
+  my $resource_loader_config = $config->resource_loader_config;
+  $config->resource_loader_config($resource_loader_config);
+
+Gets and sets the C<resource_loader_config> field, the config file that uses this config as a resource by the L</"use_resource"> method.
 
 =head1 Class Methods
 
