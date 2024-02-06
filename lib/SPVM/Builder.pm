@@ -256,7 +256,6 @@ sub build {
     input_dir => $options->{compile_input_dir},
     output_dir => $options->{compile_output_dir},
     config => $config,
-    category => $category,
   };
   
   my $object_files = $cc->compile_native_class($class_name, $compile_options);
@@ -265,7 +264,6 @@ sub build {
   my $link_options = {
     output_dir => $options->{link_output_dir},
     config => $config,
-    category => $category,
     dl_func_list => $dl_func_list,
   };
   my $output_file = $cc->link(

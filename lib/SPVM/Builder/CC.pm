@@ -557,7 +557,6 @@ sub create_link_info {
       output_dir => $resource_object_dir,
       ignore_native_module => 1,
       config => $resource_config,
-      category => 'native',
     };
     
     my $object_files = $builder_cc_resource->compile_native_class($resource_class_name, $compile_options);
