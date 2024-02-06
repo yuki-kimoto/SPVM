@@ -590,15 +590,13 @@ sub link {
   
   my $dl_func_list = $options->{dl_func_list};
   
-  my $category = $options->{category};
-  
   # Build directory
   my $build_dir = $self->build_dir;
   if (defined $build_dir) {
     mkpath $build_dir;
   }
   else {
-    confess "The \"build_dir\" field must be defined to build the native class for $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+    confess "The \"build_dir\" field must be defined to link the object files for the \"$basic_type_name\" class. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
   # Config
