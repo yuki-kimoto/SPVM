@@ -286,7 +286,7 @@ sub get_required_resources {
     
     my $class = $self->runtime->get_basic_type_by_name($class_name);
     
-    my $perl_basic_type_name = "SPVM::$class_name";
+    my $perl_class_name = "SPVM::$class_name";
     
     my $native_method_names = $class->_get_native_method_names;
     if (@$native_method_names) {
@@ -295,7 +295,7 @@ sub get_required_resources {
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
-      my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $perl_basic_type_name);
+      my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $perl_class_name);
       my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
       
@@ -337,14 +337,14 @@ sub get_required_resource_json_lines {
   for my $required_resource (@$required_resources) {
     my $class_name = $required_resource->{class_name};
     my $resource = $required_resource->{resource};
-    my $resource_basic_type_name = $resource->class_name;
+    my $resource_class_name = $resource->class_name;
     my $resource_mode = $resource->mode;
     my $resource_argv = $resource->argv || [];
     
     my $line = {
       caller_class_name => "$class_name",
       resource => {
-        class_name => $resource_basic_type_name,
+        class_name => $resource_class_name,
       }
     };
     if (defined $resource_mode) {
@@ -750,9 +750,9 @@ EOS
   
   $source .= qq|  env->api->compiler->set_start_line(compiler, __LINE__ + 1);\n|;
   
-  my $start_basic_type_name = $self->{class_name};
+  my $start_class_name = $self->{class_name};
   
-  $source .= qq|  int32_t error_id = env->api->compiler->compile(compiler, \"$start_basic_type_name\");\n|;
+  $source .= qq|  int32_t error_id = env->api->compiler->compile(compiler, \"$start_class_name\");\n|;
   
   $source .= qq|  void* runtime = env->api->compiler->get_runtime(compiler);\n|;
   
@@ -856,8 +856,8 @@ sub create_bootstrap_source {
   
   # Source file - Output
   my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
-  my $target_perl_basic_type_name = "SPVM::$class_name";
-  my $bootstrap_base = $target_perl_basic_type_name;
+  my $target_perl_class_name = "SPVM::$class_name";
+  my $bootstrap_base = $target_perl_class_name;
   $bootstrap_base =~ s|::|/|g;
   my $bootstrap_source_file = "$build_src_dir/$bootstrap_base.boot.c";
   
@@ -908,10 +908,10 @@ sub compile_bootstrap_source_file {
   # Target class name
   my $class_name = $self->class_name;
   
-  my $target_perl_basic_type_name = "SPVM::$class_name";
+  my $target_perl_class_name = "SPVM::$class_name";
   
   # Compile source files
-  my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_basic_type_name);
+  my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
   my $object_file_name = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$class_name_rel_file.boot.o");
   my $source_file = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir, "$class_name_rel_file.boot.c");
   
@@ -1061,7 +1061,7 @@ sub compile_module_native_source_files {
   
   my $all_object_files = [];
   
-  my $perl_basic_type_name = "SPVM::$class_name";
+  my $perl_class_name = "SPVM::$class_name";
   
   my $class = $self->runtime->get_basic_type_by_name($class_name);
   
@@ -1072,7 +1072,7 @@ sub compile_module_native_source_files {
     
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $perl_basic_type_name);
+    my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $perl_class_name);
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
 
