@@ -466,6 +466,7 @@ sub compile_source_file {
     output_file => $output_file,
     source_file => $source_file,
     config => $config,
+    category => $options->{category},
   );
   
   if ($need_generate) {

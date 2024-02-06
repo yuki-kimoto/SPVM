@@ -222,6 +222,8 @@ sub compile_source_file {
     
     my $resource_loader_config = $compile_info->config->resource_loader_config;
     
+    warn $compile_info->category;
+    
     if ($resource_loader_config) {
       
       my $resource_loader_config_class_name = $resource_loader_config->class_name;
