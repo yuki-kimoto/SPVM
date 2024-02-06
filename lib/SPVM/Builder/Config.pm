@@ -329,6 +329,17 @@ sub resource_loader_config {
   }
 }
 
+sub category {
+  my $self = shift;
+  if (@_) {
+    $self->{category} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{category};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -493,6 +504,11 @@ sub new {
   
   unless (defined $self->{_loaded_config_files}) {
     $self->{_loaded_config_files} = [];
+  }
+  
+  # category
+  unless (defined $self->{category}) {
+    $self->category('native');
   }
   
   return $self;
@@ -1211,6 +1227,15 @@ If this value is a true value, all resources loaded by the L</"use_resource"> me
   $config->resource_loader_config($resource_loader_config);
 
 Gets and sets the C<resource_loader_config> field, the config file that uses this config as a resource by the L</"use_resource"> method.
+
+=head2 category
+
+  my $category = $config->category;
+  $config->category($category);
+
+Gets and sets the C<category> field.
+
+If a source file is compiled by the C<precompile> option, the value is C<precompile>, otherwise C<native>.
 
 =head1 Class Methods
 

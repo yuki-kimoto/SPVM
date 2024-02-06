@@ -245,25 +245,26 @@ sub build {
   }
   elsif ($category eq 'precompile') {
     $config = SPVM::Builder::Util::API::create_default_config();
+    $config->category('precompile');
   }
   
   $config->class_name($basic_type_name);
+  
+  $config->category($category);
   
   # Compile source file and create object files
   my $compile_options = {
     input_dir => $options->{compile_input_dir},
     output_dir => $options->{compile_output_dir},
     config => $config,
-    category => $category,
   };
-
+  
   my $object_files = $cc->compile_source_files($basic_type_name, $compile_options);
   
   # Link object files and create dynamic library
   my $link_options = {
     output_dir => $options->{link_output_dir},
     config => $config,
-    category => $category,
     dl_func_list => $dl_func_list,
   };
   my $output_file = $cc->link(

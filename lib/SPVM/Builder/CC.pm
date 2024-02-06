@@ -239,7 +239,14 @@ sub compile_source_file {
       
       my $config_file = $config->file;
       
-      warn "[Compile a source file used in the config \"$config_basic_type_name\" at \"$config_file\"]\n";
+      my $category = $config->category;
+      
+      if ($category eq 'precompile') {
+        warn "[Compile a source file for the \"$config_basic_type_name\" class for precompile]\n";
+      }
+      else {
+        warn "[Compile a source file used in the config \"$config_basic_type_name\" at \"$config_file\"]\n";
+      }
     }
     
     warn "@$cc_cmd\n";
@@ -254,9 +261,12 @@ sub compile_source_files {
   
   $options ||= {};
   
+  # Config
+  my $config = $options->{config};
+  
   # Category
-  my $category = $options->{category};
-
+  my $category = $config->category;
+  
   # Build directory
   my $build_dir = $self->build_dir;
   if (defined $build_dir) {
@@ -272,15 +282,12 @@ sub compile_source_files {
   # Object directory
   my $output_dir = $options->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
-    confess "Output directory must exists for " . $options->{category} . " build";
+    confess "Output directory must exists for $category build";
   }
-  
-  # Config
-  my $config = $options->{config};
   
   # Force compile
   my $force = $self->detect_force($config);
-
+  
   my $ignore_native_module = $options->{ignore_native_module};
   
   # Native class file
@@ -415,8 +422,8 @@ sub compile_source_files {
 sub create_link_info {
   my ($self, $basic_type_name, $object_files, $config, $options) = @_;
   
-  my $category = $options->{category};
-
+  my $category = $config->category;
+  
   my $all_object_files = [@$object_files];
   
   $options ||= {};
@@ -547,7 +554,7 @@ sub create_link_info {
     }
     
     # Dynamic library file
-    my $output_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_category_rel_file($basic_type_name, $options->{category});
+    my $output_rel_file = SPVM::Builder::Util::convert_basic_type_name_to_category_rel_file($basic_type_name, $config->category);
     $output_file = "$output_dir/$output_rel_file";
   }
   
@@ -590,7 +597,13 @@ sub link {
   
   my $dl_func_list = $options->{dl_func_list};
   
-  my $category = $options->{category};
+  # Config
+  my $config = $options->{config};
+  unless ($config) {
+    confess "Need config option";
+  }
+  
+  my $category = $config->category;
   
   # Build directory
   my $build_dir = $self->build_dir;
@@ -601,12 +614,6 @@ sub link {
     confess "The \"build_dir\" field must be defined to build the native class for $category methods. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
-  # Config
-  my $config = $options->{config};
-  unless ($config) {
-    confess "Need config option";
-  }
-
   # Force link
   my $force = $self->detect_force($config);
   
