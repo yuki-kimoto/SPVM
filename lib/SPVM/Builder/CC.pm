@@ -263,7 +263,7 @@ sub compile_source_file {
     or confess "$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
 }
 
-sub compile_source_files {
+sub compile_native_class {
   my ($self, $basic_type_name, $options) = @_;
   
   $options ||= {};
@@ -560,7 +560,7 @@ sub create_link_info {
       category => 'native',
     };
     
-    my $object_files = $builder_cc_resource->compile_source_files($resource_basic_type_name, $compile_options);
+    my $object_files = $builder_cc_resource->compile_native_class($resource_basic_type_name, $compile_options);
     push @$all_object_files, @$object_files;
   }
   

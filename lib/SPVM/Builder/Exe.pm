@@ -1023,7 +1023,7 @@ sub compile_module_precompile_source_file {
     my $config = SPVM::Builder::Util::API::create_default_config();
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
-    my $precompile_object_files = $builder_cc->compile_source_files(
+    my $precompile_object_files = $builder_cc->compile_native_class(
       $basic_type_name,
       {
         input_dir => $build_src_dir,
@@ -1097,7 +1097,7 @@ sub compile_module_native_source_files {
     $config->add_include_dir(@$resource_include_dirs);
     
     $config->disable_resource(1);
-    my $object_files = $builder_cc->compile_source_files(
+    my $object_files = $builder_cc->compile_native_class(
       $basic_type_name,
       {
         input_dir => $input_dir,

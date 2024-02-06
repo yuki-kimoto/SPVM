@@ -257,7 +257,7 @@ sub build {
     category => $category,
   };
 
-  my $object_files = $cc->compile_source_files($basic_type_name, $compile_options);
+  my $object_files = $cc->compile_native_class($basic_type_name, $compile_options);
   
   # Link object files and create dynamic library
   my $link_options = {
