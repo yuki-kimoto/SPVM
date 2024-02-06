@@ -222,7 +222,7 @@ sub compile_source_file {
     
     my $resource_loader_config = $compile_info->config->resource_loader_config;
     
-    warn $compile_info->category;
+    my $compile_info_category = $compile_info->category;
     
     if ($resource_loader_config) {
       
@@ -394,7 +394,7 @@ sub compile_native_class {
     
     my $compile_info_category;
     if ($category eq 'precompile') {
-      $compile_info_category = 'precompile';
+      $compile_info_category = 'precompile_class';
     }
     elsif ($category eq 'native') {
       if ($current_is_native_module) {
@@ -410,6 +410,7 @@ sub compile_native_class {
       output_file => $object_file_name,
       source_file => $source_file,
       config => $config,
+      category => $compile_info_category,
     );
     
     my $before_compile_cbs = $config->before_compile_cbs;
