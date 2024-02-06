@@ -319,25 +319,6 @@ sub spurt_binary {
   print $fh $content;
 }
 
-sub create_cfunc_name {
-  my ($basic_type_name, $method_name, $category) = @_;
-  
-  my $prefix;
-  if ($category eq 'native') {
-    $prefix = 'SPVM__';
-  }
-  elsif ($category eq 'precompile') {
-    $prefix = 'SPVMPRECOMPILE__'
-  }
-  
-  # Precompile Method names
-  my $method_abs_name_under_score = "${basic_type_name}::$method_name";
-  $method_abs_name_under_score =~ s/:/_/g;
-  my $cfunc_name = "$prefix$method_abs_name_under_score";
-  
-  return $cfunc_name;
-}
-
 sub unindent {
   my $str = shift;
   my $min = min map { m/^([ \t]*)/; length $1 || () } split "\n", $str;
@@ -734,6 +715,71 @@ sub create_build_lib_path {
   return $build_lib_path;
 }
 
+sub get_dynamic_lib_file_dist {
+  my ($class_file, $category) = @_;
+
+  my $dynamic_lib_file = SPVM::Builder::Util::convert_class_file_to_dynamic_lib_file($class_file, $category);
+  
+  return $dynamic_lib_file;
+}
+
+sub create_default_config {
+  
+  my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+  
+  return $config;
+}
+
+sub get_normalized_env {
+  my ($name) = @_;
+  
+  my $value = $ENV{$name};
+  
+  if (defined $value && !length $value) {
+    $value = undef;
+  }
+  
+  return $value;
+}
+
+sub get_version_string {
+  my ($spvm_class_file) = @_;
+  
+  open my $spvm_module_fh, '<', $spvm_class_file or die "Can't open the file \"$spvm_class_file\": $!";
+  local $/;
+  my $content = <$spvm_module_fh>;
+  my $version_string;
+  if ($content =~ /\bversion\s*"([\d\._]+)"\s*;/) {
+    $version_string = $1;
+  }
+
+  unless (defined $version_string) {
+    confess "The version string can't be find in $spvm_class_file file";
+  }
+  
+  return $version_string;
+}
+
+sub get_spvm_version_string {
+  
+  my $builder_dir = &get_builder_dir_from_config_class;
+  my $spvm_api_header_file = "$builder_dir/include/spvm_native.h";
+  
+  open my $spvm_module_fh, '<', $spvm_api_header_file or die "Can't open the file \"$spvm_api_header_file\": $!";
+  local $/;
+  my $content = <$spvm_module_fh>;
+  my $version_string;
+  if ($content =~ /#define\s+SPVM_NATIVE_VERSION_NUMBER\s* ([\d\._]+)/) {
+    $version_string = $1;
+  }
+  
+  unless (defined $version_string) {
+    confess "The version string can't be find in $spvm_api_header_file file";
+  }
+  
+  return $version_string;
+}
+
 sub create_dl_func_list {
   my ($basic_type_name, $method_names, $options) = @_;
   
@@ -757,12 +803,23 @@ sub create_dl_func_list {
   return $dl_func_list;
 }
 
-sub get_dynamic_lib_file_dist {
-  my ($class_file, $category) = @_;
-
-  my $dynamic_lib_file = SPVM::Builder::Util::convert_class_file_to_dynamic_lib_file($class_file, $category);
+sub create_cfunc_name {
+  my ($basic_type_name, $method_name, $category) = @_;
   
-  return $dynamic_lib_file;
+  my $prefix;
+  if ($category eq 'native') {
+    $prefix = 'SPVM__';
+  }
+  elsif ($category eq 'precompile') {
+    $prefix = 'SPVMPRECOMPILE__'
+  }
+  
+  # Precompile Method names
+  my $method_abs_name_under_score = "${basic_type_name}::$method_name";
+  $method_abs_name_under_score =~ s/:/_/g;
+  my $cfunc_name = "$prefix$method_abs_name_under_score";
+  
+  return $cfunc_name;
 }
 
 sub get_method_addresses {
@@ -824,63 +881,6 @@ EOS
   }
   
   return $method_addresses;
-}
-
-sub create_default_config {
-  
-  my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
-  
-  return $config;
-}
-
-sub get_normalized_env {
-  my ($name) = @_;
-  
-  my $value = $ENV{$name};
-  
-  if (defined $value && !length $value) {
-    $value = undef;
-  }
-  
-  return $value;
-}
-
-sub get_version_string {
-  my ($spvm_class_file) = @_;
-  
-  open my $spvm_module_fh, '<', $spvm_class_file or die "Can't open the file \"$spvm_class_file\": $!";
-  local $/;
-  my $content = <$spvm_module_fh>;
-  my $version_string;
-  if ($content =~ /\bversion\s*"([\d\._]+)"\s*;/) {
-    $version_string = $1;
-  }
-
-  unless (defined $version_string) {
-    confess "The version string can't be find in $spvm_class_file file";
-  }
-  
-  return $version_string;
-}
-
-sub get_spvm_version_string {
-  
-  my $builder_dir = &get_builder_dir_from_config_class;
-  my $spvm_api_header_file = "$builder_dir/include/spvm_native.h";
-  
-  open my $spvm_module_fh, '<', $spvm_api_header_file or die "Can't open the file \"$spvm_api_header_file\": $!";
-  local $/;
-  my $content = <$spvm_module_fh>;
-  my $version_string;
-  if ($content =~ /#define\s+SPVM_NATIVE_VERSION_NUMBER\s* ([\d\._]+)/) {
-    $version_string = $1;
-  }
-  
-  unless (defined $version_string) {
-    confess "The version string can't be find in $spvm_api_header_file file";
-  }
-  
-  return $version_string;
 }
 
 1;
