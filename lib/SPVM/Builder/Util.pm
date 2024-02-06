@@ -386,6 +386,7 @@ sub convert_basic_type_name_to_dynamic_lib_rel_file {
   return $dynamic_lib_category_rel_file;
 }
 
+# Deprecated
 sub convert_basic_type_name_to_category_rel_file {
   my ($basic_type_name, $category, $ext) = @_;
   
@@ -401,11 +402,27 @@ sub convert_basic_type_name_to_category_rel_file {
   return $rel_file_with_ext;
 }
 
+sub convert_class_name_to_category_rel_file {
+  my ($class_name, $category, $ext) = @_;
+  
+  $class_name =~ s/^SPVM:://;
+  
+  my $rel_file_with_ext = "SPVM::$class_name";
+  $rel_file_with_ext =~ s/::/\//g;
+  $rel_file_with_ext .= $category eq 'native' ? "" : ".$category";
+  if (defined $ext) {
+    $rel_file_with_ext .= ".$ext";
+  }
+  
+  return $rel_file_with_ext;
+}
+
+# Deprecated
 sub convert_basic_type_name_to_rel_dir {
   my ($basic_type_name) = @_;
-
+  
   $basic_type_name =~ s/^SPVM:://;
-
+  
   my $rel_dir;
   my $rel_file = "SPVM::$basic_type_name";
   $rel_file =~ s/::/\//g;
@@ -414,12 +431,41 @@ sub convert_basic_type_name_to_rel_dir {
   return $rel_dir;
 }
 
+sub convert_class_name_to_rel_dir {
+  my ($class_name) = @_;
+  
+  $class_name =~ s/^SPVM:://;
+  
+  my $rel_dir;
+  my $rel_file = "SPVM::$class_name";
+  $rel_file =~ s/::/\//g;
+  $rel_dir = dirname $rel_file;
+  
+  return $rel_dir;
+}
+
+# Deprecated
 sub convert_basic_type_name_to_rel_file {
   my ($basic_type_name, $ext) = @_;
 
   $basic_type_name =~ s/^SPVM:://;
   
   my $rel_file_with_ext = "SPVM::$basic_type_name";
+  $rel_file_with_ext =~ s/::/\//g;
+  
+  if (defined $ext) {
+    $rel_file_with_ext .= ".$ext";
+  }
+  
+  return $rel_file_with_ext;
+}
+
+sub convert_class_name_to_rel_file {
+  my ($class_name, $ext) = @_;
+
+  $class_name =~ s/^SPVM:://;
+  
+  my $rel_file_with_ext = "SPVM::$class_name";
   $rel_file_with_ext =~ s/::/\//g;
   
   if (defined $ext) {
@@ -588,6 +634,7 @@ sub get_spvm_dependent_files {
   return \@spvm_dependent_files;
 }
 
+# Deprecated
 sub get_config_file_from_basic_type_name {
   my ($basic_type_name, $mode) = @_;
   
@@ -597,6 +644,30 @@ sub get_config_file_from_basic_type_name {
   }
   
   my $config_file_base = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($basic_type_name, $ext);
+  my $config_file;
+  for my $inc (@INC) {
+    my $config_file_tmp = "$inc/$config_file_base";
+    if (-f $config_file_tmp) {
+      $config_file = $config_file_tmp;
+      last;
+    }
+  }
+  unless (defined $config_file) {
+    confess "Can't find the config file \"$config_file_base\" in (@INC)";
+  }
+  
+  return $config_file;
+}
+
+sub get_config_file_from_class_name {
+  my ($class_name, $mode) = @_;
+  
+  my $ext = 'config';
+  if (defined $mode) {
+    $ext = "$mode.$ext";
+  }
+  
+  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, $ext);
   my $config_file;
   for my $inc (@INC) {
     my $config_file_tmp = "$inc/$config_file_base";
