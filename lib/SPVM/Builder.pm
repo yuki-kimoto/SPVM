@@ -249,6 +249,8 @@ sub build {
   
   $config->class_name($class_name);
   
+  $config->category($category);
+  
   # Compile source file and create object files
   my $compile_options = {
     input_dir => $options->{compile_input_dir},
@@ -256,7 +258,7 @@ sub build {
     config => $config,
     category => $category,
   };
-
+  
   my $object_files = $cc->compile_native_class($class_name, $compile_options);
   
   # Link object files and create dynamic library

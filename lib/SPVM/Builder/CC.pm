@@ -549,6 +549,8 @@ sub create_link_info {
     
     $resource_config->class_name($resource_class_name);
     
+    $resource_config->category('native');
+    
     $resource_config->resource_loader_config($config),
     
     $resource_config->disable_resource(1);
