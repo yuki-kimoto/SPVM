@@ -40,6 +40,17 @@ sub output_file {
   }
 }
 
+sub category {
+  my $self = shift;
+  if (@_) {
+    $self->{category} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{category};
+  }
+}
+
 # Class methods
 sub new {
   my $class = shift;
@@ -182,6 +193,15 @@ Gets and sets the C<source_file> field, a source file.
   $compile_info->output_file($output_file);
 
 Gets and sets the C<output_file> field, an output file.
+
+=head2 category
+
+  my $category = $config->category;
+  $config->category($category);
+
+Gets and sets the C<category> field.
+
+These are C<precompile>, C<native>, C<native_source>, C<spvm_core>, C<bootstrap>.
 
 =head1 Class Methods
 
