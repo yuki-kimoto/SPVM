@@ -1086,7 +1086,6 @@ sub compile_module_native_source_files {
     $config->add_before_compile_cb(@$before_each_compile_cbs);
     
     my $resource_include_dirs = [];
-    my $config_exe = $self->config;
     my $resource_names = $config_exe->get_resource_names;
     for my $resource_name (@$resource_names) {
       my $resource = $config_exe->get_resource($resource_name);
