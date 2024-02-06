@@ -268,9 +268,6 @@ sub compile_native_class {
   
   $options ||= {};
   
-  # Category
-  my $category = $options->{category};
-  
   # Build directory
   my $build_dir = $self->build_dir;
   if (defined $build_dir) {
@@ -283,14 +280,17 @@ sub compile_native_class {
   # Input directory
   my $input_dir = $options->{input_dir};
   
+  # Config
+  my $config = $options->{config};
+  
+  # Category
+  my $category = $config->category;
+  
   # Object directory
   my $output_dir = $options->{output_dir};
   unless (defined $output_dir && -d $output_dir) {
-    confess "Output directory must exists for " . $options->{category} . " build";
+    confess "Output directory must exists for $category build";
   }
-  
-  # Config
-  my $config = $options->{config};
   
   # Force compile
   my $force = $self->detect_force($config);
@@ -442,7 +442,7 @@ sub compile_native_class {
 sub create_link_info {
   my ($self, $class_name, $object_files, $config, $options) = @_;
   
-  my $category = $options->{category};
+  my $category = $config->category;
 
   my $all_object_files = [@$object_files];
   
@@ -549,8 +549,6 @@ sub create_link_info {
     
     $resource_config->class_name($resource_class_name);
     
-    $resource_config->category('native');
-    
     $resource_config->resource_loader_config($config),
     
     $resource_config->disable_resource(1);
@@ -576,7 +574,7 @@ sub create_link_info {
     }
     
     # Dynamic library file
-    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $options->{category});
+    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
     $output_file = "$output_dir/$output_rel_file";
   }
   

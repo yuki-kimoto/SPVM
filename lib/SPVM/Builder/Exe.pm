@@ -243,7 +243,7 @@ sub build_exe_file {
   mkpath $build_dir;
   
   # Link and generate executable file
-  my $config_exe = $self->config;
+  my $config_linker = $self->config->clone;
   my $cc_linker = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -251,8 +251,7 @@ sub build_exe_file {
   );
   my $options = {
     output_file => $self->{output_file},
-    config => $self->config,
-    category => 'native',
+    config => $config_linker,
   };
   
   $cc_linker->link($class_name, $object_files, $options);
@@ -1032,7 +1031,6 @@ sub compile_module_precompile_source_file {
         input_dir => $build_src_dir,
         output_dir => $build_object_dir,
         config => $config,
-        category => 'precompile',
       }
     );
     push @$object_files, @$precompile_object_files;
@@ -1088,8 +1086,6 @@ sub compile_module_native_source_files {
     }
     my $config = $builder->create_native_config_from_class_file($class_file);
     
-    $config->category('native');
-    
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
     
@@ -1109,7 +1105,6 @@ sub compile_module_native_source_files {
         input_dir => $input_dir,
         output_dir => $build_object_dir,
         config => $config,
-        category => 'native',
       }
     );
     push @$all_object_files, @$object_files;
