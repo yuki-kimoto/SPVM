@@ -1,7 +1,9 @@
 0.989069 2023-02-06
   [New Features]
+    * Add a message in compiling a source file like
+      [Compile a source file used in the config "$config_basic_type_name" at "$config_file"]
     * Add a message in compiling a source file in a resource like
-      "[Compile a source file in the resource \"$resource_basic_type_name\" at \"$resource_config_file\" used in the config \"$resource_loader_config_basic_type_name\" at $resource_loader_config_file]"
+      [Compile a source file in the resource "%s" at "%s" used as a resource in the config "%s" at "%s"]
     * Add the resource_loader_config field to the SPVM::Builder::Config class.
 0.989068 2023-01-22
   [New Features]

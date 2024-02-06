@@ -232,7 +232,14 @@ sub compile_source_file {
       
       my $resource_config_file = $config->file;
       
-      warn "[Compile a source file in the resource \"$resource_basic_type_name\" at \"$resource_config_file\" used in the config \"$resource_loader_config_basic_type_name\" at $resource_loader_config_file]\n";
+      warn "[Compile a source file in the resource \"$resource_basic_type_name\" at \"$resource_config_file\" used as a resource in the config \"$resource_loader_config_basic_type_name\" at \"$resource_loader_config_file\"]\n";
+    }
+    else {
+      my $config_basic_type_name = $config->class_name;
+      
+      my $config_file = $config->file;
+      
+      warn "[Compile a source file used in the config \"$config_basic_type_name\" at \"$config_file\"]\n";
     }
     
     warn "@$cc_cmd\n";
