@@ -928,6 +928,7 @@ sub compile_bootstrap_source_file {
     source_file => $source_file,
     output_file => $object_file_name,
     config => $config,
+    category => 'bootstrap',
   });
   
   return $object_file;
@@ -971,6 +972,7 @@ sub compile_spvm_core_source_files {
       source_file => $src_file,
       output_file => $object_file_name,
       config => $config,
+      category => 'spvm_core',
     });
     push @$object_files, $object_file;
   }

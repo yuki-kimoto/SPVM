@@ -201,7 +201,7 @@ Gets and sets the C<output_file> field, an output file.
 
 Gets and sets the C<category> field.
 
-These are C<precompile>, C<native>, C<native_source>, C<spvm_core>, C<bootstrap>.
+These are C<precompile>, C<native_class>, C<native_source>, C<spvm_core>, C<bootstrap>.
 
 =head1 Class Methods
 

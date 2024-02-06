@@ -270,7 +270,7 @@ sub compile_source_files {
   
   # Category
   my $category = $options->{category};
-
+  
   # Build directory
   my $build_dir = $self->build_dir;
   if (defined $build_dir) {
@@ -294,7 +294,7 @@ sub compile_source_files {
   
   # Force compile
   my $force = $self->detect_force($config);
-
+  
   my $ignore_native_module = $options->{ignore_native_module};
   
   # Native class file
@@ -388,6 +388,19 @@ sub compile_source_files {
         output_file => $object_file_name,
         input_files => $input_files,
       });
+    }
+    
+    my $compile_info_category;
+    if ($category eq 'precompile') {
+      $compile_info_category = 'precompile';
+    }
+    elsif ($category eq 'native') {
+      if ($current_is_native_module) {
+        $compile_info_category = 'native_class';
+      }
+      else {
+        $compile_info_category = 'native_source';
+      }
     }
     
     # Compile-information
@@ -544,7 +557,7 @@ sub create_link_info {
       output_dir => $resource_object_dir,
       ignore_native_module => 1,
       config => $resource_config,
-      category => $category,
+      category => 'native',
     };
     
     my $object_files = $builder_cc_resource->compile_source_files($resource_basic_type_name, $compile_options);
