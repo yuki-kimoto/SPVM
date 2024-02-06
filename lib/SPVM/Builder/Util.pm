@@ -187,8 +187,8 @@ sub get_spvm_core_source_file_names {
   return \@spvm_core_source_file_names;
 }
 
-sub get_spvm_compiler_and_runtime_class_file_names {
-  my @spvm_compiler_and_runtime_class_file_names = qw(
+sub get_spvm_compiler_required_file_names {
+  my @get_spvm_compiler_required_file_names = qw(
     SPVM/Native/Arg.c
     SPVM/Native/Arg.spvm
     SPVM/Native/BasicType.c
@@ -215,7 +215,7 @@ sub get_spvm_compiler_and_runtime_class_file_names {
     SPVM/Native/Stack.spvm
   );
   
-  return \@spvm_compiler_and_runtime_class_file_names;
+  return \@get_spvm_compiler_required_file_names;
 }
 
 sub need_generate {
@@ -616,14 +616,14 @@ sub get_spvm_dependent_files {
       push @spvm_dependent_files, $spvm_core_source_file;
     }
     
-    # SPVM Compiler and Runtime class file names
-    my $spvm_compiler_and_runtime_class_file_names = &get_spvm_compiler_and_runtime_class_file_names();
-    for my $spvm_compiler_and_runtime_class_file_name (@$spvm_compiler_and_runtime_class_file_names) {
-      my $spvm_compiler_and_runtime_class_file = "$builder_loaded_dir/$spvm_compiler_and_runtime_class_file_name";
-      unless (-f $spvm_compiler_and_runtime_class_file) {
-        confess "Can't find $spvm_compiler_and_runtime_class_file";
+    # SPVM Compiler required file names
+    my $get_spvm_compiler_required_file_names = &get_spvm_compiler_required_file_names();
+    for my $get_spvm_compiler_required_file_name (@$get_spvm_compiler_required_file_names) {
+      my $get_spvm_compiler_required_class_file = "$builder_loaded_dir/$get_spvm_compiler_required_file_name";
+      unless (-f $get_spvm_compiler_required_class_file) {
+        confess "Can't find $get_spvm_compiler_required_class_file";
       }
-      push @spvm_dependent_files, $spvm_compiler_and_runtime_class_file;
+      push @spvm_dependent_files, $get_spvm_compiler_required_class_file;
     }
   }
   
