@@ -761,22 +761,22 @@ sub use_resource {
     $resource = $first_arg;
   }
   else {
-    my $basic_type_name = $first_arg;
+    my $class_name = $first_arg;
     my %args = @args;
     if (exists $args{class_name}) {
-      $basic_type_name = delete $args{class_name};
+      $class_name = delete $args{class_name};
     }
-    $resource = SPVM::Builder::Resource->new(class_name => $basic_type_name, %args);
+    $resource = SPVM::Builder::Resource->new(class_name => $class_name, %args);
   }
   
-  my $resource_basic_type_name = $resource->class_name;
+  my $resource_class_name = $resource->class_name;
   my $resource_mode = $resource->mode;
   my $resource_argv = $resource->argv;
   
   my $ext = defined $resource_mode ? "$resource_mode.config" : 'config';
-  my $config_file_base = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($resource_basic_type_name, $ext);
+  my $config_file_base = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, $ext);
   
-  my $config_file = SPVM::Builder::Util::get_config_file_from_basic_type_name($resource_basic_type_name, $resource_mode);
+  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($resource_class_name, $resource_mode);
   
   my $config = $self->load_config($config_file, @$resource_argv);
   $config->file($config_file);
@@ -785,7 +785,7 @@ sub use_resource {
   
   my $index = keys %{$self->{resources}};
   
-  $self->{resources}->{$resource_basic_type_name} = {resource => $resource, index => $index};
+  $self->{resources}->{$resource_class_name} = {resource => $resource, index => $index};
   
   return $resource;
 }
@@ -802,13 +802,13 @@ sub disable_resource {
 }
 
 sub get_resource {
-  my ($self, $resource_basic_type_name) = @_;
+  my ($self, $resource_class_name) = @_;
   
-  unless (defined $self->{resources}{$resource_basic_type_name}) {
+  unless (defined $self->{resources}{$resource_class_name}) {
     return;
   }
   
-  my $resource = $self->{resources}{$resource_basic_type_name}{resource};
+  my $resource = $self->{resources}{$resource_class_name}{resource};
   
   return $resource;
 }
@@ -1178,8 +1178,8 @@ If this field is undef, whether compiler and linker messages are output is not s
 
 =head2 class_name
 
-  my $basic_type_name = $config->class_name;
-  $config->class_name($basic_type_name);
+  my $class_name = $config->class_name;
+  $config->class_name($class_name);
 
 Gets and sets the C<class_name> field, the class name configured by this config.
 
