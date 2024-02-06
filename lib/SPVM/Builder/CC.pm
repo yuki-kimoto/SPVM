@@ -234,7 +234,7 @@ sub compile_source_file {
       
       my $resource_config_file = $config->file;
       
-      warn "[Compile a source file for the resource \"$resource_class_name\" at \"$resource_config_file\" used as a resource in the config \"$resource_loader_config_class_name\" at \"$resource_loader_config_file\"]\n";
+      warn "[Compile a resource source file for the \"$resource_class_name\" resource using the config file \"$resource_config_file\", which is used as a resource for the class \"$resource_loader_config_class_name\" using the config file \"$resource_loader_config_file\"]\n";
     }
     else {
       my $config_class_name = $config->class_name;
@@ -248,20 +248,17 @@ sub compile_source_file {
       elsif ($compile_info_category eq 'bootstrap') {
         $message = "[Compile a bootstrap source file for an excutable file]\n";
       }
+      elsif ($compile_info_category eq 'precompile_class') {
+        $message = "[Compile a precompile source file for the \"$config_class_name\" class";
+      }
+      elsif ($compile_info_category eq 'native_class') {
+        $message = "[Compile a native class source file the \"$config_class_name\" class using the config file \"$config_file\"";
+      }
+      elsif ($compile_info_category eq 'native_source') {
+        $message = "[Compile a native source file for the \"$config_class_name\" class using the config file \"$config_file\"";
+      }
       else {
-        $message = "[Compile a source file";
-        
-        if (defined $config_file && $config_class_name) {
-          $message .= " defined in the config file \"$config_file\" of the \"$config_class_name\" class";
-        }
-        elsif (defined $config_file) {
-          $message .= " defined in the config file \"$config_file\"";
-        }
-        elsif (defined $config_class_name) {
-          $message .= " for the \"$config_class_name\" class for precompile";
-        }
-        
-        $message .= "]\n";
+        confess "[Unexpected Error]Invalid compile info category.";
       }
       
       warn $message;
@@ -276,6 +273,10 @@ sub compile_source_file {
 
 sub compile_native_class {
   my ($self, $class_name, $options) = @_;
+  
+  unless (defined $class_name) {
+    confess "A class name must be defined.";
+  }
   
   $options ||= {};
   
@@ -293,6 +294,8 @@ sub compile_native_class {
   
   # Config
   my $config = $options->{config};
+  
+  $config->class_name("$class_name");
   
   # Category
   my $category = $config->category;
