@@ -440,7 +440,11 @@ sub create_make_rule {
   my ($class_name, $category, $options) = @_;
   
   $options ||= {};
-  $class_name =~ s/^SPVM:://;
+  
+  # Deprecated
+  if ($class_name =~ s/^SPVM:://) {
+    warn "The SPVM:: prefix is no more required in the class name given to the create_make_rule function.";
+  }
   
   my $module_base_name = $class_name;
   $module_base_name =~ s/^.+:://;

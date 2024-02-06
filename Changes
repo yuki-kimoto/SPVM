@@ -1,4 +1,4 @@
-0.989069 2023-02-06
+0.989069 2023-02-07
   [New Features]
     * Add a message in compiling and linking a source file like
       [Compile a %s source file ...]
@@ -6,6 +6,9 @@
     * Add the resource_loader_config field to the SPVM::Builder::Config class.
     * Add the category field to the SPVM::Builder::Config class.
     * Add the category field to the SPVM::Builder::CompileInfo class.
+  [Deprecation]
+    * The SPVM:: prefix is no more required in the class name given to the create_make_rule function in Makefile.PL.
+    
 0.989068 2023-01-22
   [New Features]
     * Add the copy_object_with_proto method to the Array class.
