@@ -759,13 +759,13 @@ sub get_method_addresses {
     my $method_infos = [];
     for my $method_name (@$method_names) {
       my $method_info = {};
-      $method_info->{basic_type_name} = $class_name;
+      $method_info->{class_name} = $class_name;
       $method_info->{method_name} = $method_name;
       push @$method_infos, $method_info;
     }
     
     for my $method_info (@$method_infos) {
-      my $class_name = $method_info->{basic_type_name};
+      my $class_name = $method_info->{class_name};
       my $method_name = $method_info->{method_name};
 
       my $cfunc_address;
