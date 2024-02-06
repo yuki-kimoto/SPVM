@@ -297,11 +297,11 @@ sub compile_native_class {
   # Force compile
   my $force = $self->detect_force($config);
   
-  my $ignore_native_module = $options->{ignore_native_module};
+  my $is_resource = $options->{is_resource};
   
   # Native class file
   my $native_class_file;
-  unless ($ignore_native_module) {
+  unless ($is_resource) {
     # Native class file
     my $native_module_ext = $config->ext;
     unless (defined $native_module_ext) {
@@ -558,7 +558,7 @@ sub create_link_info {
     my $compile_options = {
       input_dir => $resource_src_dir,
       output_dir => $resource_object_dir,
-      ignore_native_module => 1,
+      is_resource => 1,
       config => $resource_config,
     };
     
