@@ -357,30 +357,14 @@ sub convert_class_file_to_dynamic_lib_file {
   return $dynamic_lib_category_file;
 }
 
-sub convert_basic_type_name_to_dynamic_lib_rel_file {
+sub convert_class_name_to_dynamic_lib_rel_file {
   my ($class_name, $category) = @_;
   
   my $dlext = $Config{dlext};
-  my $dynamic_lib_category_rel_file = &convert_basic_type_name_to_rel_file($class_name);
+  my $dynamic_lib_category_rel_file = &convert_class_name_to_rel_file($class_name);
   $dynamic_lib_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dynamic_lib_category_rel_file;
-}
-
-# Deprecated
-sub convert_basic_type_name_to_category_rel_file {
-  my ($class_name, $category, $ext) = @_;
-  
-  $class_name =~ s/^SPVM:://;
-  
-  my $rel_file_with_ext = "SPVM::$class_name";
-  $rel_file_with_ext =~ s/::/\//g;
-  $rel_file_with_ext .= $category eq 'native' ? "" : ".$category";
-  if (defined $ext) {
-    $rel_file_with_ext .= ".$ext";
-  }
-  
-  return $rel_file_with_ext;
 }
 
 sub convert_class_name_to_category_rel_file {
@@ -398,20 +382,6 @@ sub convert_class_name_to_category_rel_file {
   return $rel_file_with_ext;
 }
 
-# Deprecated
-sub convert_basic_type_name_to_rel_dir {
-  my ($class_name) = @_;
-  
-  $class_name =~ s/^SPVM:://;
-  
-  my $rel_dir;
-  my $rel_file = "SPVM::$class_name";
-  $rel_file =~ s/::/\//g;
-  $rel_dir = dirname $rel_file;
-  
-  return $rel_dir;
-}
-
 sub convert_class_name_to_rel_dir {
   my ($class_name) = @_;
   
@@ -423,22 +393,6 @@ sub convert_class_name_to_rel_dir {
   $rel_dir = dirname $rel_file;
   
   return $rel_dir;
-}
-
-# Deprecated
-sub convert_basic_type_name_to_rel_file {
-  my ($class_name, $ext) = @_;
-
-  $class_name =~ s/^SPVM:://;
-  
-  my $rel_file_with_ext = "SPVM::$class_name";
-  $rel_file_with_ext =~ s/::/\//g;
-  
-  if (defined $ext) {
-    $rel_file_with_ext .= ".$ext";
-  }
-  
-  return $rel_file_with_ext;
 }
 
 sub convert_class_name_to_rel_file {
@@ -456,7 +410,7 @@ sub convert_class_name_to_rel_file {
   return $rel_file_with_ext;
 }
 
-sub remove_basic_type_name_part_from_file {
+sub remove_class_name_part_from_file {
   my ($file, $class_name) = @_;
 
   $class_name =~ s/^SPVM:://;
@@ -493,7 +447,7 @@ sub create_make_rule {
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
-  my $class_rel_file = &convert_basic_type_name_to_rel_file($class_name, 'spvm');
+  my $class_rel_file = &convert_class_name_to_rel_file($class_name, 'spvm');
   
   my $noext_file = $class_rel_file;
   $noext_file =~ s/\.[^\.]+$//;
@@ -544,7 +498,7 @@ sub create_make_rule {
   }
   
   # Shared library file
-  my $dynamic_lib_rel_file = &convert_basic_type_name_to_dynamic_lib_rel_file($class_name, $category);
+  my $dynamic_lib_rel_file = &convert_class_name_to_dynamic_lib_rel_file($class_name, $category);
   my $dynamic_lib_file = "blib/lib/$dynamic_lib_rel_file";
   
   my $make_rule = '';
@@ -613,31 +567,6 @@ sub get_spvm_dependent_files {
   }
   
   return \@spvm_dependent_files;
-}
-
-# Deprecated
-sub get_config_file_from_basic_type_name {
-  my ($class_name, $mode) = @_;
-  
-  my $ext = 'config';
-  if (defined $mode) {
-    $ext = "$mode.$ext";
-  }
-  
-  my $config_file_base = SPVM::Builder::Util::convert_basic_type_name_to_rel_file($class_name, $ext);
-  my $config_file;
-  for my $inc (@INC) {
-    my $config_file_tmp = "$inc/$config_file_base";
-    if (-f $config_file_tmp) {
-      $config_file = $config_file_tmp;
-      last;
-    }
-  }
-  unless (defined $config_file) {
-    confess "Can't find the config file \"$config_file_base\" in (@INC)";
-  }
-  
-  return $config_file;
 }
 
 sub get_config_file_from_class_name {
