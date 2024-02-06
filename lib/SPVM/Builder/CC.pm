@@ -224,6 +224,7 @@ sub compile_source_file {
     
     my $compile_info_category = $compile_info->category;
     
+    my $message;
     if ($resource_loader_config) {
       
       my $resource_loader_config_class_name = $resource_loader_config->class_name;
@@ -234,35 +235,34 @@ sub compile_source_file {
       
       my $resource_config_file = $config->file;
       
-      warn "[Compile a resource source file for the \"$resource_class_name\" resource using the config file \"$resource_config_file\", which is used as a resource for the class \"$resource_loader_config_class_name\" using the config file \"$resource_loader_config_file\"]\n";
+      $message = "[Compile a resource source file for the \"$resource_class_name\" resource using the config file \"$resource_config_file\", which is used as a resource for the class \"$resource_loader_config_class_name\" using the config file \"$resource_loader_config_file\"]";
     }
     else {
       my $config_class_name = $config->class_name;
       
       my $config_file = $config->file;
       
-      my $message;
       if ($compile_info_category eq 'spvm_core') {
-        $message = "[Compile a SPVM core source file]\n";
+        $message = "[Compile a SPVM core source file]";
       }
       elsif ($compile_info_category eq 'bootstrap') {
-        $message = "[Compile a bootstrap source file for an excutable file]\n";
+        $message = "[Compile a bootstrap source file for an excutable file]";
       }
       elsif ($compile_info_category eq 'precompile_class') {
-        $message = "[Compile a precompile source file for the \"$config_class_name\" class";
+        $message = "[Compile a precompile source file for the \"$config_class_name\" class]";
       }
       elsif ($compile_info_category eq 'native_class') {
-        $message = "[Compile a native class source file the \"$config_class_name\" class using the config file \"$config_file\"";
+        $message = "[Compile a native class source file for the \"$config_class_name\" class using the config file \"$config_file\"]";
       }
       elsif ($compile_info_category eq 'native_source') {
-        $message = "[Compile a native source file for the \"$config_class_name\" class using the config file \"$config_file\"";
+        $message = "[Compile a native source file for the \"$config_class_name\" class using the config file \"$config_file\"]";
       }
       else {
         confess "[Unexpected Error]Invalid compile info category.";
       }
-      
-      warn $message;
     }
+    
+    warn "$message\n";
     
     warn "@$cc_cmd\n";
   }
@@ -645,7 +645,9 @@ sub link {
   unless ($config) {
     confess "Need config option";
   }
-
+  
+  my $category = $config->category;
+  
   # Force link
   my $force = $self->detect_force($config);
   
@@ -691,10 +693,10 @@ sub link {
       # For the reason, libm is linked which seems to have no effect.
       perllibs => '-lm',
     };
-
+    
     # Quiet output
     my $quiet = $self->detect_quiet($config);
-
+    
     # ExtUtils::CBuilder object
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
@@ -704,7 +706,7 @@ sub link {
     my $link_command_args = $link_info->create_ldflags;
     
     my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
-
+    
     my @tmp_files;
     
     my $output_type = $config->output_type;
@@ -719,6 +721,11 @@ sub link {
         dl_func_list => $dl_func_list,
       );
       unless ($quiet) {
+        
+        my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
+        my $message = "[Generate a dynamic link library for the \"$class_name\" class$for_precompile]";
+        warn "$message\n";
+        
         my $link_command = $link_info->to_command;
         warn "$link_command\n";
       }
@@ -730,6 +737,8 @@ sub link {
       $cbuilder->do_system(@ar_cmd)
         or confess "Can't execute command @ar_cmd";
       unless ($quiet) {
+        warn "[Generate a static link library for the \"$class_name\" class]\n";
+        
         warn "@ar_cmd\n";
       }
     }
@@ -742,6 +751,8 @@ sub link {
         extra_linker_flags => "@$link_command_args",
       );
       unless ($quiet) {
+        warn "[Generate an executable file for the \"$class_name\" class]\n";
+        
         my $link_command = $link_info->to_command;
         warn "$link_command\n";
       }
@@ -749,7 +760,7 @@ sub link {
     else {
       confess "Unknown output_type \"$output_type\"";
     }
-
+    
     if ($self->debug) {
       if ($^O eq 'MSWin32') {
         my $def_file;
@@ -758,7 +769,7 @@ sub link {
           # Remove double quote
           $tmp_file =~ s/^"//;
           $tmp_file =~ s/"$//;
-
+          
           if ($tmp_file =~ /\.def$/) {
             $def_file = $tmp_file;
             $lds_file = $def_file;
