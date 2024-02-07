@@ -448,51 +448,43 @@ sub create_make_rule {
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
-  my $class_rel_file = &convert_class_name_to_rel_file($class_name, 'spvm');
+  my $config_file = "$lib_dir/" . &convert_class_name_to_rel_file($class_name, 'config');
   
-  my $noext_file = $class_rel_file;
-  $noext_file =~ s/\.[^\.]+$//;
-  
-  my $spvm_file = $noext_file;
-  $spvm_file .= '.spvm';
-  $spvm_file = "$lib_dir/$spvm_file";
+  my $config_file_without_ext = $config_file;
+  $config_file_without_ext =~ s/\.[^\.]+$//;
   
   # Dependency files
-  my @deps;
+  my @dependent_files;
   
-  push @deps, $spvm_file;
+  my $spvm_class_file = "$config_file_without_ext.spvm";
+  push @dependent_files, $spvm_class_file;
   
   # Dependency native class file
   if ($category eq 'native') {
     # Config
-    my $config_file = $noext_file;
-    $config_file .= '.config';
-    $config_file = "$lib_dir/$config_file";
     my $config = SPVM::Builder::Config->load_config($config_file);
-    push @deps, $config_file;
+    push @dependent_files, $config_file;
     
     # Native class
-    my $native_class_file = $noext_file;
     my $native_class_file_ext = $config->ext;
-    $native_class_file .= ".$native_class_file_ext";
-    $native_class_file = "$lib_dir/$native_class_file";
-    push @deps, $native_class_file;
+    my $native_class_file = "$config_file_without_ext.$native_class_file_ext";
+    push @dependent_files, $native_class_file;
     
     # Native include
-    my $native_include_dir = "$lib_dir/$noext_file.native/include";
+    my $native_include_dir = "$config_file_without_ext.native/include";
     my @native_include_files;
     if (-d $native_include_dir) {
       find({wanted => sub { if (-f $_) { push @native_include_files, $_ } }, no_chdir => 1}, $native_include_dir);
     }
-    push @deps, @native_include_files;
+    push @dependent_files, @native_include_files;
     
     # Native source
-    my $native_src_dir = "$lib_dir/$noext_file.native/src";
+    my $native_src_dir = "$config_file_without_ext.native/src";
     my @native_src_files;
     if (-d $native_src_dir) {
       find({wanted => sub { if (-f $_) { push @native_src_files, $_ } }, no_chdir => 1}, $native_src_dir);
     }
-    push @deps, @native_src_files;
+    push @dependent_files, @native_src_files;
   }
   
   # Shared library file
@@ -506,7 +498,7 @@ sub create_make_rule {
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
   
   # Get source files
-  $make_rule .= "$dynamic_lib_file :: @deps\n";
+  $make_rule .= "$dynamic_lib_file :: @dependent_files\n";
   $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
   
   return $make_rule;
