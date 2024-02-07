@@ -8,7 +8,8 @@
     * Add the category field to the SPVM::Builder::CompileInfo class.
   [Deprecation]
     * The SPVM:: prefix is no more required in the class name given to the create_make_rule function in Makefile.PL.
-    
+  [Bug Fix]
+    * Add resource dependency to the create_make_rule_native method in Makefile.PL.
 0.989068 2023-01-22
   [New Features]
     * Add the copy_object_with_proto method to the Array class.

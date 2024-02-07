@@ -485,6 +485,44 @@ sub create_make_rule {
       find({wanted => sub { if (-f $_) { push @native_src_files, $_ } }, no_chdir => 1}, $native_src_dir);
     }
     push @dependent_files, @native_src_files;
+    
+    # Dependency resources
+    {
+      my $resource_class_names = $config->get_resource_names;
+      for my $resource_class_name (@$resource_class_names) {
+        my $resource = $config->get_resource($resource_class_name);
+        
+        my $resource_config = $resource->config;
+        
+        my $resource_config_file = $resource_config->file;
+        
+        my $resource_config_file_without_ext = $resource_config_file;
+        $resource_config_file_without_ext =~ s/\.[^\.]+$//;
+        
+        # Resource class file
+        my $resource_spvm_class_file = "$resource_config_file_without_ext.spvm";
+        push @dependent_files, $resource_spvm_class_file;
+        
+        # Config
+        push @dependent_files, $resource_config_file;
+        
+        # Native include
+        my $resource_native_include_dir = "$config_file_without_ext.native/include";
+        my @resource_native_include_files;
+        if (-d $resource_native_include_dir) {
+          find({wanted => sub { if (-f $_) { push @resource_native_include_files, $_ } }, no_chdir => 1}, $resource_native_include_dir);
+        }
+        push @dependent_files, @resource_native_include_files;
+        
+        # Native source
+        my $resource_native_src_dir = "$config_file_without_ext.native/src";
+        my @resource_native_src_files;
+        if (-d $resource_native_src_dir) {
+          find({wanted => sub { if (-f $_) { push @resource_native_src_files, $_ } }, no_chdir => 1}, $resource_native_src_dir);
+        }
+        push @dependent_files, @resource_native_src_files;
+      }
+    }
   }
   
   # Shared library file
