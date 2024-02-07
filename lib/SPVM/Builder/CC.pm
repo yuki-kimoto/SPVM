@@ -253,6 +253,10 @@ sub compile_native_class {
   return &compile_class(@_);
 }
 
+sub compile_precompile_class {
+  return &compile_class(@_);
+}
+
 sub compile_precompile_class_for_exe {
   
   my ($self, $class_name, $options) = @_;
