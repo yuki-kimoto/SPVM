@@ -102,28 +102,6 @@ sub new {
 }
 
 # Instance Methods
-sub resource_src_dir_from_class_name {
-  my ($self, $class_name) = @_;
-
-  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
-  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-  
-  my $resource_src_dir = $config_file;
-  $resource_src_dir =~ s|/\Q$config_rel_file\E$||;
-  
-  return $resource_src_dir;
-}
-
-sub get_resource_object_dir_from_class_name {
-  my ($self, $class_name) = @_;
-  
-  my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-  
-  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
-  
-  return $resource_object_dir;
-}
-
 sub detect_force {
   my ($self, $config) = @_;
   
@@ -454,179 +432,6 @@ sub compile_native_class {
   return $object_files;
 }
 
-sub create_link_info {
-  my ($self, $class_name, $object_files, $config, $options) = @_;
-  
-  my $category = $config->category;
-  
-  my $all_object_files = [@$object_files];
-  
-  $options ||= {};
-  
-  # Linker
-  my $ld = $config->ld;
-  
-  # Output type
-  my $output_type = $config->output_type;
-  
-  # Libraries
-  my $lib_infos = [];
-  my $libs = $config->libs;
-  my $lib_dirs = $config->lib_dirs;
-  for my $lib (@$libs) {
-    my $lib_info;
-    
-    # Library is linked by file path
-    my $static;
-    my $lib_name;
-    my $is_abs;
-    if (ref $lib) {
-      $static = $lib->is_static;
-      $lib_name = $lib->name;
-      $is_abs = $lib->is_abs;
-      $lib_info = $lib;
-    }
-    else {
-      $lib_name = $lib;
-      $lib_info = SPVM::Builder::LibInfo->new(config => $config);
-      $lib_info->name($lib_name);
-    }
-    
-    if ($is_abs) {
-      my $found_lib_file;
-      for my $lib_dir (@$lib_dirs) {
-        $lib_dir =~ s|[\\/]$||;
-        
-        # Search dynamic library
-        unless ($static) {
-          my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
-          my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
-
-          if (-f $dynamic_lib_file) {
-            $found_lib_file = $dynamic_lib_file;
-            last;
-          }
-        }
-        
-        # Search static library
-        my $static_lib_file_base = "lib$lib_name.a";
-        my $static_lib_file = "$lib_dir/$static_lib_file_base";
-        if (-f $static_lib_file) {
-          $found_lib_file = $static_lib_file;
-          last;
-        }
-      }
-      
-      if (defined $found_lib_file) {
-        $lib_info->file = $found_lib_file;
-      }
-    }
-    
-    push @$lib_infos, $lib_info;
-  }
-  $config->libs($lib_infos);
-  
-  # Use resources
-  my $resource_names = $config->get_resource_names;
-  my $resource_include_dirs = [];
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    my $resource_config = $resource->config;
-    my $resource_include_dir = $resource_config->native_include_dir;
-    if (defined $resource_include_dir) {
-      push @$resource_include_dirs, $resource_include_dir;
-    }
-  }
-  
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    
-    # Build native classes
-    my $builder_cc_resource = SPVM::Builder::CC->new(
-      build_dir => $self->build_dir,
-    );
-    
-    my $resource_class_name;
-    my $resource_config;
-    if (ref $resource) {
-      $resource_class_name = $resource->class_name;
-      $resource_config = $resource->config;
-    }
-    else {
-      $resource_class_name = $resource;
-    }
-    
-    $resource_config->add_include_dir(@$resource_include_dirs);
-    
-    $resource_config->class_name($resource_class_name);
-    
-    $resource_config->resource_loader_config($config),
-    
-    $resource_config->disable_resource(1);
-    
-    my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
-    my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
-    mkpath $resource_object_dir;
-    
-    my $compile_options = {
-      input_dir => $resource_src_dir,
-      output_dir => $resource_object_dir,
-      is_resource => 1,
-      config => $resource_config,
-    };
-    
-    my $object_files = $builder_cc_resource->compile_native_class($resource_class_name, $compile_options);
-    push @$all_object_files, @$object_files;
-  }
-  
-  # Output file
-  my $output_file = $options->{output_file};
-  unless (defined $output_file) {
-    # Dynamic library directory
-    my $output_dir = $options->{output_dir};
-    unless (defined $output_dir && -d $output_dir) {
-      confess "Shared lib directory must be specified for link";
-    }
-    
-    # Dynamic library file
-    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
-    $output_file = "$output_dir/$output_rel_file";
-  }
-  
-  # Add output file extension
-  my $output_file_base = basename $output_file;
-  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
-    my $exe_ext;
-    
-    # Dynamic library
-    if ($output_type eq 'dynamic_lib') {
-      $exe_ext = ".$Config{dlext}"
-    }
-    # Static library
-    elsif ($output_type eq 'static_lib') {
-      $exe_ext = '.a';
-    }
-    # Executable file
-    elsif ($output_type eq 'exe') {
-      $exe_ext = $Config{exe_ext};
-    }
-    
-    $output_file .= $exe_ext;
-  }
-
-  # Optimize
-  my $ld_optimize = $config->ld_optimize;
-  
-  my $link_info = SPVM::Builder::LinkInfo->new(
-    class_name => $class_name,
-    config => $config,
-    object_files => $all_object_files,
-    output_file => $output_file,
-  );
-  
-  return $link_info;
-}
-
 sub link {
   my ($self, $class_name, $object_files, $options) = @_;
   
@@ -791,6 +596,201 @@ sub link {
   }
   
   return $output_file;
+}
+
+sub create_link_info {
+  my ($self, $class_name, $object_files, $config, $options) = @_;
+  
+  my $category = $config->category;
+  
+  my $all_object_files = [@$object_files];
+  
+  $options ||= {};
+  
+  # Linker
+  my $ld = $config->ld;
+  
+  # Output type
+  my $output_type = $config->output_type;
+  
+  # Libraries
+  my $lib_infos = [];
+  my $libs = $config->libs;
+  my $lib_dirs = $config->lib_dirs;
+  for my $lib (@$libs) {
+    my $lib_info;
+    
+    # Library is linked by file path
+    my $static;
+    my $lib_name;
+    my $is_abs;
+    if (ref $lib) {
+      $static = $lib->is_static;
+      $lib_name = $lib->name;
+      $is_abs = $lib->is_abs;
+      $lib_info = $lib;
+    }
+    else {
+      $lib_name = $lib;
+      $lib_info = SPVM::Builder::LibInfo->new(config => $config);
+      $lib_info->name($lib_name);
+    }
+    
+    if ($is_abs) {
+      my $found_lib_file;
+      for my $lib_dir (@$lib_dirs) {
+        $lib_dir =~ s|[\\/]$||;
+        
+        # Search dynamic library
+        unless ($static) {
+          my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
+          my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
+          
+          if (-f $dynamic_lib_file) {
+            $found_lib_file = $dynamic_lib_file;
+            last;
+          }
+        }
+        
+        # Search static library
+        my $static_lib_file_base = "lib$lib_name.a";
+        my $static_lib_file = "$lib_dir/$static_lib_file_base";
+        if (-f $static_lib_file) {
+          $found_lib_file = $static_lib_file;
+          last;
+        }
+      }
+      
+      if (defined $found_lib_file) {
+        $lib_info->file = $found_lib_file;
+      }
+    }
+    
+    push @$lib_infos, $lib_info;
+  }
+  $config->libs($lib_infos);
+  
+  # Use resources
+  my $resource_names = $config->get_resource_names;
+  my $resource_include_dirs = [];
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    my $resource_config = $resource->config;
+    my $resource_include_dir = $resource_config->native_include_dir;
+    if (defined $resource_include_dir) {
+      push @$resource_include_dirs, $resource_include_dir;
+    }
+  }
+  
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    
+    # Build native classes
+    my $builder_cc_resource = SPVM::Builder::CC->new(
+      build_dir => $self->build_dir,
+    );
+    
+    my $resource_class_name;
+    my $resource_config;
+    if (ref $resource) {
+      $resource_class_name = $resource->class_name;
+      $resource_config = $resource->config;
+    }
+    else {
+      $resource_class_name = $resource;
+    }
+    
+    $resource_config->add_include_dir(@$resource_include_dirs);
+    
+    $resource_config->class_name($resource_class_name);
+    
+    $resource_config->resource_loader_config($config),
+    
+    $resource_config->disable_resource(1);
+    
+    my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
+    my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
+    mkpath $resource_object_dir;
+    
+    my $compile_options = {
+      input_dir => $resource_src_dir,
+      output_dir => $resource_object_dir,
+      is_resource => 1,
+      config => $resource_config,
+    };
+    
+    my $object_files = $builder_cc_resource->compile_native_class($resource_class_name, $compile_options);
+    push @$all_object_files, @$object_files;
+  }
+  
+  # Output file
+  my $output_file = $options->{output_file};
+  unless (defined $output_file) {
+    # Dynamic library directory
+    my $output_dir = $options->{output_dir};
+    unless (defined $output_dir && -d $output_dir) {
+      confess "Shared lib directory must be specified for link";
+    }
+    
+    # Dynamic library file
+    my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
+    $output_file = "$output_dir/$output_rel_file";
+  }
+  
+  # Add output file extension
+  my $output_file_base = basename $output_file;
+  if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
+    my $exe_ext;
+    
+    # Dynamic library
+    if ($output_type eq 'dynamic_lib') {
+      $exe_ext = ".$Config{dlext}"
+    }
+    # Static library
+    elsif ($output_type eq 'static_lib') {
+      $exe_ext = '.a';
+    }
+    # Executable file
+    elsif ($output_type eq 'exe') {
+      $exe_ext = $Config{exe_ext};
+    }
+    
+    $output_file .= $exe_ext;
+  }
+
+  # Optimize
+  my $ld_optimize = $config->ld_optimize;
+  
+  my $link_info = SPVM::Builder::LinkInfo->new(
+    class_name => $class_name,
+    config => $config,
+    object_files => $all_object_files,
+    output_file => $output_file,
+  );
+  
+  return $link_info;
+}
+
+sub resource_src_dir_from_class_name {
+  my ($self, $class_name) = @_;
+
+  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+  
+  my $resource_src_dir = $config_file;
+  $resource_src_dir =~ s|/\Q$config_rel_file\E$||;
+  
+  return $resource_src_dir;
+}
+
+sub get_resource_object_dir_from_class_name {
+  my ($self, $class_name) = @_;
+  
+  my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
+  
+  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
+  
+  return $resource_object_dir;
 }
 
 1;
