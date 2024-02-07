@@ -972,7 +972,7 @@ sub compile_spvm_core_source_files {
 
 sub compile_precompile_class {
   my ($self, $class_name) = @_;
-
+  
   my $config_exe = $self->config;
   
   # Builer
@@ -988,46 +988,15 @@ sub compile_precompile_class {
     force => $self->force,
   );
   
-  my $object_files = [];
   my $runtime = $self->runtime;
-  my $class = $runtime->get_basic_type_by_name($class_name);
-  my $precompile_method_names = $class->_get_precompile_method_names;
-  if (@$precompile_method_names) {
-    my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
-    mkpath $build_src_dir;
-    
-    my $class_file = $class->_get_class_file;
-    my $precompile_source = $runtime->build_precompile_class_source($class);
-    
-    $builder_cc->build_precompile_class_source_file(
-      $class_name,
-      {
-        output_dir => $build_src_dir,
-        precompile_source => $precompile_source,
-        class_file => $class_file,
-      }
-    );
-    
-    my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
-    mkpath $build_object_dir;
-    
-    my $config = SPVM::Builder::Util::API::create_default_config();
-    
-    $config->category('precompile');
-    
-    my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
-    $config->add_before_compile_cb(@$before_each_compile_cbs);
-    my $precompile_object_files = $builder_cc->compile_precompile_class(
-      $class_name,
-      {
-        input_dir => $build_src_dir,
-        output_dir => $build_object_dir,
-        config => $config,
-        runtime => $runtime,
-      }
-    );
-    push @$object_files, @$precompile_object_files;
-  }
+  
+  my $object_files = $builder_cc->compile_precompile_class(
+    $class_name,
+    {
+      runtime => $runtime,
+      config_exe => $config_exe,
+    }
+  );
   
   return $object_files;
 }
