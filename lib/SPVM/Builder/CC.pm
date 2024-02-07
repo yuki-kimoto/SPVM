@@ -429,6 +429,70 @@ sub compile_native_class {
     push @$object_files, $object_file;
   }
   
+  # Use resources
+  unless ($options->{is_resource}) {
+    my $output_type = $config->output_type;
+    
+    if ($output_type eq 'exe') {
+      unless ($config->isa('SPVM::Builder::Config::Exe')) {
+        next;
+      }
+    }
+    
+    # Use resources
+    my $resource_names = $config->get_resource_names;
+    my $resource_include_dirs = [];
+    for my $resource_name (@$resource_names) {
+      my $resource = $config->get_resource($resource_name);
+      my $resource_config = $resource->config;
+      my $resource_include_dir = $resource_config->native_include_dir;
+      if (defined $resource_include_dir) {
+        push @$resource_include_dirs, $resource_include_dir;
+      }
+    }
+    
+    for my $resource_name (@$resource_names) {
+      my $resource = $config->get_resource($resource_name);
+      
+      # Build native classes
+      my $builder_cc_resource = SPVM::Builder::CC->new(
+        build_dir => $self->build_dir,
+      );
+      
+      my $resource_class_name;
+      my $resource_config;
+      if (ref $resource) {
+        $resource_class_name = $resource->class_name;
+        $resource_config = $resource->config;
+      }
+      else {
+        $resource_class_name = $resource;
+      }
+      
+      $resource_config->add_include_dir(@$resource_include_dirs);
+      
+      $resource_config->class_name($resource_class_name);
+      
+      $resource_config->resource_loader_config($config),
+      
+      $resource_config->disable_resource(1);
+      
+      my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
+      my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
+      mkpath $resource_object_dir;
+      
+      my $compile_options = {
+        is_resource => 1,
+        input_dir => $resource_src_dir,
+        output_dir => $resource_object_dir,
+        config => $resource_config,
+      };
+      
+      my $resource_object_files = $builder_cc_resource->compile_native_class($resource_class_name, $compile_options);
+      push @$object_files, @$resource_object_files;
+    }
+  }
+  
   return $object_files;
 }
 
@@ -670,59 +734,6 @@ sub create_link_info {
   }
   $config->libs($lib_infos);
   
-  # Use resources
-  my $resource_names = $config->get_resource_names;
-  my $resource_include_dirs = [];
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    my $resource_config = $resource->config;
-    my $resource_include_dir = $resource_config->native_include_dir;
-    if (defined $resource_include_dir) {
-      push @$resource_include_dirs, $resource_include_dir;
-    }
-  }
-  
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    
-    # Build native classes
-    my $builder_cc_resource = SPVM::Builder::CC->new(
-      build_dir => $self->build_dir,
-    );
-    
-    my $resource_class_name;
-    my $resource_config;
-    if (ref $resource) {
-      $resource_class_name = $resource->class_name;
-      $resource_config = $resource->config;
-    }
-    else {
-      $resource_class_name = $resource;
-    }
-    
-    $resource_config->add_include_dir(@$resource_include_dirs);
-    
-    $resource_config->class_name($resource_class_name);
-    
-    $resource_config->resource_loader_config($config),
-    
-    $resource_config->disable_resource(1);
-    
-    my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
-    my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
-    mkpath $resource_object_dir;
-    
-    my $compile_options = {
-      input_dir => $resource_src_dir,
-      output_dir => $resource_object_dir,
-      is_resource => 1,
-      config => $resource_config,
-    };
-    
-    my $object_files = $builder_cc_resource->compile_native_class($resource_class_name, $compile_options);
-    push @$all_object_files, @$object_files;
-  }
-  
   # Output file
   my $output_file = $options->{output_file};
   unless (defined $output_file) {
@@ -757,7 +768,7 @@ sub create_link_info {
     
     $output_file .= $exe_ext;
   }
-
+  
   # Optimize
   my $ld_optimize = $config->ld_optimize;
   
