@@ -1016,7 +1016,7 @@ sub compile_precompile_class {
     
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
-    my $precompile_object_files = $builder_cc->compile_native_class(
+    my $precompile_object_files = $builder_cc->compile_precompile_class(
       $class_name,
       {
         input_dir => $build_src_dir,

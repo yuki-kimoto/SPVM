@@ -250,6 +250,14 @@ sub compile_source_file {
 }
 
 sub compile_native_class {
+  return &compile_class(@_);
+}
+
+sub compile_precompile_class {
+  return &compile_class(@_);
+}
+
+sub compile_class {
   my ($self, $class_name, $options) = @_;
   
   unless (defined $class_name) {
