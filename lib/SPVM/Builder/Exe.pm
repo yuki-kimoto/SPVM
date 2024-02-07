@@ -221,6 +221,10 @@ sub build_exe_file {
   
   my $class_file = $class->_get_class_file;
   
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+  
   # Object files
   my $object_files = [];
   
@@ -237,10 +241,6 @@ sub build_exe_file {
   # Compile bootstrap C source
   my $bootstrap_object_file = $self->compile_bootstrap_source_file;
   push @$object_files, $bootstrap_object_file;
-  
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  mkpath $build_dir;
   
   # Link and generate executable file
   my $config_linker = $self->config->clone;
@@ -1047,9 +1047,7 @@ sub compile_native_class {
   
   my $builder = $self->builder;
   
-  # Build directory
   my $build_dir = $self->builder->build_dir;
-  mkpath $build_dir;
   
   # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
