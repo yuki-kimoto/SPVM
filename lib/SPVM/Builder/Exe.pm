@@ -228,8 +228,8 @@ sub build_exe_file {
   my $spvm_core_object_files = $self->compile_spvm_core_source_files;
   push @$object_files, @$spvm_core_object_files;
   
-  my $classs_object_files = $self->compile_classs;
-  push @$object_files, @$classs_object_files;
+  my $classes_object_files = $self->compile_classes;
+  push @$object_files, @$classes_object_files;
   
   # Create bootstrap C source
   $self->create_bootstrap_source;
@@ -390,7 +390,7 @@ sub compile {
   $self->{finish_compile} = 1;
 }
 
-sub compile_classs {
+sub compile_classes {
   my ($self) = @_;
 
   my $class_names = $self->runtime->_get_user_defined_basic_type_names;
@@ -991,7 +991,7 @@ sub compile_class_precompile_source_file {
   # Build directory
   my $build_dir = $self->builder->build_dir;
   
-  # Build precompile classs
+  # Build precompile classes
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
