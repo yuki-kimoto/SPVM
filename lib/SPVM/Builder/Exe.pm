@@ -990,7 +990,7 @@ sub compile_precompile_class {
   
   my $runtime = $self->runtime;
   
-  my $object_files = $builder_cc->compile_precompile_class(
+  my $object_files = $builder_cc->compile_precompile_class_for_exe(
     $class_name,
     {
       runtime => $runtime,
