@@ -507,7 +507,7 @@ sub create_make_rule {
         push @dependent_files, $resource_config_file;
         
         # Native include
-        my $resource_native_include_dir = "$config_file_without_ext.native/include";
+        my $resource_native_include_dir = "$resource_config_file_without_ext.native/include";
         my @resource_native_include_files;
         if (-d $resource_native_include_dir) {
           find({wanted => sub { if (-f $_) { push @resource_native_include_files, $_ } }, no_chdir => 1}, $resource_native_include_dir);
@@ -515,7 +515,7 @@ sub create_make_rule {
         push @dependent_files, @resource_native_include_files;
         
         # Native source
-        my $resource_native_src_dir = "$config_file_without_ext.native/src";
+        my $resource_native_src_dir = "$resource_config_file_without_ext.native/src";
         my @resource_native_src_files;
         if (-d $resource_native_src_dir) {
           find({wanted => sub { if (-f $_) { push @resource_native_src_files, $_ } }, no_chdir => 1}, $resource_native_src_dir);
