@@ -254,6 +254,13 @@ sub compile_native_class {
 }
 
 sub compile_precompile_class {
+  
+  my ($self, $class_name, $options) = @_;
+  
+  my $runtime = $options->{runtime};
+  
+  
+  
   return &compile_class(@_);
 }
 

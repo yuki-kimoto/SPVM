@@ -989,6 +989,7 @@ sub compile_precompile_class {
   );
   
   my $object_files = [];
+  my $runtime = $self->runtime;
   my $class = $self->runtime->get_basic_type_by_name($class_name);
   my $precompile_method_names = $class->_get_precompile_method_names;
   if (@$precompile_method_names) {
@@ -1022,6 +1023,7 @@ sub compile_precompile_class {
         input_dir => $build_src_dir,
         output_dir => $build_object_dir,
         config => $config,
+        runtime => $runtime,
       }
     );
     push @$object_files, @$precompile_object_files;
