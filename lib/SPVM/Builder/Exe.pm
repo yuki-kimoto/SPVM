@@ -990,14 +990,14 @@ sub compile_precompile_class {
   
   my $object_files = [];
   my $runtime = $self->runtime;
-  my $class = $self->runtime->get_basic_type_by_name($class_name);
+  my $class = $runtime->get_basic_type_by_name($class_name);
   my $precompile_method_names = $class->_get_precompile_method_names;
   if (@$precompile_method_names) {
     my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
     mkpath $build_src_dir;
     
     my $class_file = $class->_get_class_file;
-    my $precompile_source = $self->runtime->build_precompile_class_source($class);
+    my $precompile_source = $runtime->build_precompile_class_source($class);
     
     $builder_cc->build_precompile_class_source_file(
       $class_name,
