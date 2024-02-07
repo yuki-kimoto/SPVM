@@ -315,11 +315,11 @@ sub compile_native_class {
   my $native_class_file;
   unless ($is_resource) {
     # Native class file
-    my $native_module_ext = $config->ext;
-    unless (defined $native_module_ext) {
+    my $native_class_ext = $config->ext;
+    unless (defined $native_class_ext) {
       confess "Source extension is not specified";
     }
-    my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_module_ext);
+    my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
     $native_class_file = "$input_dir/$native_class_rel_file";
     
     unless (-f $native_class_file) {
@@ -337,17 +337,17 @@ sub compile_native_class {
   
   # Compile source files
   my $object_files = [];
-  my $is_native_module = 1;
+  my $is_native_class = 1;
   for my $source_file ($native_class_file, @$resource_src_files) {
-    my $current_is_native_module = $is_native_module;
-    $is_native_module = 0;
+    my $current_is_native_class = $is_native_class;
+    $is_native_class = 0;
     
     next unless defined $source_file;
     
     my $object_file_name;
     
     # Object file of native class
-    if ($current_is_native_module) {
+    if ($current_is_native_class) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
       $object_file_name = "$output_dir/$object_rel_file";
     }
@@ -390,7 +390,7 @@ sub compile_native_class {
       if (defined $config->file) {
         push @$input_files, $config->file;
       };
-      if ($current_is_native_module) {
+      if ($current_is_native_class) {
         my $class_file = $source_file;
         $class_file =~ s/\.[^\/\\]+$//;
         $class_file .= '.spvm';
@@ -409,7 +409,7 @@ sub compile_native_class {
       $compile_info_category = 'precompile_class';
     }
     elsif ($category eq 'native') {
-      if ($current_is_native_module) {
+      if ($current_is_native_class) {
         $compile_info_category = 'native_class';
       }
       else {
