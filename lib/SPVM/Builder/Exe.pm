@@ -269,10 +269,9 @@ sub get_required_resources {
   my $required_resources = [];
   
   my $builder = $self->builder;
-
+  
   my $build_dir = $self->builder->build_dir;
   
-  # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
@@ -285,8 +284,6 @@ sub get_required_resources {
     
     my $class = $self->runtime->get_basic_type_by_name($class_name);
     
-    my $perl_class_name = "SPVM::$class_name";
-    
     my $native_method_names = $class->_get_native_method_names;
     if (@$native_method_names) {
       my $class_file = $class->_get_class_file;
@@ -294,7 +291,7 @@ sub get_required_resources {
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
-      my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $perl_class_name);
+      my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $class_name);
       my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
       mkpath $build_object_dir;
       
@@ -1058,8 +1055,6 @@ sub compile_native_class {
   
   my $all_object_files = [];
   
-  my $perl_class_name = "SPVM::$class_name";
-  
   my $class = $self->runtime->get_basic_type_by_name($class_name);
   
   my $native_method_names = $class->_get_native_method_names;
@@ -1069,7 +1064,7 @@ sub compile_native_class {
     
     $native_dir =~ s/\.spvm$//;
     $native_dir .= 'native';
-    my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $perl_class_name);
+    my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $class_name);
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
     
