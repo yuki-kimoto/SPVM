@@ -460,9 +460,6 @@ sub create_make_rule {
   # Dependency files
   my @deps;
   
-  # Dependency c source files
-  push @deps, grep { $_ ne '.' && $_ ne '..' } glob "$lib_dir/$class_rel_file/*";
-
   push @deps, $spvm_file;
   
   # Dependency native class file
