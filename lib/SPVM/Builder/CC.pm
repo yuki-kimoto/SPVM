@@ -289,8 +289,11 @@ sub compile_precompile_class {
     
     $config->category('precompile');
     
-    my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
-    $config->add_before_compile_cb(@$before_each_compile_cbs);
+    if ($config_exe) {
+      my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
+      $config->add_before_compile_cb(@$before_each_compile_cbs);
+    }
+    
     my $precompile_object_files = $self->compile_class(
       $class_name,
       {
