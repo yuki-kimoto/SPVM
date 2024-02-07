@@ -446,9 +446,6 @@ sub create_make_rule {
     warn "The SPVM:: prefix is no more required in the class name given to the create_make_rule function.";
   }
   
-  my $module_base_name = $class_name;
-  $module_base_name =~ s/^.+:://;
-  
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
   my $class_rel_file = &convert_class_name_to_rel_file($class_name, 'spvm');
