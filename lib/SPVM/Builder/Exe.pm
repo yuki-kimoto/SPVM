@@ -392,15 +392,15 @@ sub compile {
 
 sub compile_classes {
   my ($self) = @_;
-
+  
   my $class_names = $self->runtime->_get_user_defined_basic_type_names;
   
   my $object_files = [];
   for my $class_name (@$class_names) {
-    my $precompile_object_files = $self->compile_class_precompile_source_file($class_name);
+    my $precompile_object_files = $self->compile_precompile_class($class_name);
     push @$object_files, @$precompile_object_files;
     
-    my $native_object_files = $self->compile_class_native_source_files($class_name);
+    my $native_object_files = $self->compile_native_class($class_name);
     push @$object_files, @$native_object_files;
   }
   
@@ -980,7 +980,7 @@ sub compile_spvm_core_source_files {
   return $object_files;
 }
 
-sub compile_class_precompile_source_file {
+sub compile_precompile_class {
   my ($self, $class_name) = @_;
 
   my $config_exe = $self->config;
@@ -1040,17 +1040,17 @@ sub compile_class_precompile_source_file {
   return $object_files;
 }
 
-sub compile_class_native_source_files {
+sub compile_native_class {
   my ($self, $class_name) = @_;
-
+  
   my $config_exe = $self->config;
   
   my $builder = $self->builder;
-
+  
   # Build directory
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
-
+  
   # Compiler for native class
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
@@ -1074,7 +1074,7 @@ sub compile_class_native_source_files {
     my $input_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $perl_class_name);
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
     mkpath $build_object_dir;
-
+    
     unless (defined $class_file) {
       my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
       if ($config_file) {
