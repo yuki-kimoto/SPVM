@@ -1008,6 +1008,7 @@ sub compile_precompile_class {
       {
         runtime => $runtime,
         config => $config,
+        config_exe => $config_exe,
       }
     );
     push @$object_files, @$precompile_object_files;
@@ -1078,6 +1079,7 @@ sub compile_native_class {
       {
         runtime => $runtime,
         config => $config,
+        config_exe => $config_exe,
       }
     );
     push @$all_object_files, @$object_files;
