@@ -106,6 +106,25 @@ sub get_method_names {
   return $method_names;
 }
 
+sub build_precompile_class_source {
+  my ($runtime, $class_name, $category) = @_;
+  
+  my $precompile_source;
+  if ($runtime->isa('SPVM::Builder::Runtime')) {
+    $precompile_source = $runtime->build_precompile_class_source($class_name);
+  }
+  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    $precompile_source = $runtime->build_precompile_class_source($basic_type)->to_string;
+  }
+  else {
+    confess "[Unexpected Error]Invalid object type.";
+  }
+  
+  return $precompile_source;
+}
+
 sub build_dist {
   my ($self, $class_name, $options) = @_;
   
