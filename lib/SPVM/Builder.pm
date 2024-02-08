@@ -200,7 +200,7 @@ sub build {
   
   my $compile_input_dir = $build_src_dir;
   my $compile_output_dir = $build_object_dir;
-  my $link_output_dir = $build_lib_dir;
+  my $output_dir = $build_lib_dir;
   
   # Class file
   unless (defined $class_file) {
@@ -239,7 +239,7 @@ sub build {
   # Link object files and create dynamic library
   my $link_options = {
     runtime => $runtime,
-    output_dir => $link_output_dir,
+    output_dir => $output_dir,
     config => $config,
     dl_func_list => $dl_func_list,
   };
