@@ -159,7 +159,7 @@ sub build_dist {
   
   my $category = $options->{category};
   
-  my $class_file = $runtime->get_class_file($class_name);
+  my $class_file = &get_class_file($runtime, $class_name);
   my $method_names = &get_method_names($runtime, $class_name, $category);
   my $precompile_source = &build_precompile_class_source($runtime, $class_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
@@ -219,9 +219,8 @@ sub build_at_runtime {
   my $build_dir = $self->build_dir;
   
   my $runtime = $options->{runtime};
-  my $class_file = $options->{class_file};
   
-  my $basic_type = $runtime->get_basic_type_by_name($class_name);
+  my $class_file = &get_class_file($runtime, $class_name);
   
   my $method_names = &get_method_names($runtime, $class_name, $category);
   
@@ -263,7 +262,6 @@ sub build_at_runtime {
     );
   }
   elsif ($category eq 'native') {
-    my $class_file = $options->{class_file};
     $build_src_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $class_name);
   }
   
