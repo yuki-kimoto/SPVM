@@ -280,6 +280,8 @@ sub compile_class_v2 {
   
   my $config_exe = $options->{config_exe};
   
+  my $is_resource = $options->{is_resource};
+  
   my $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $output_dir;
   
@@ -292,7 +294,21 @@ sub compile_class_v2 {
     }
   }
   
-  my $class_file = &_runtime_get_class_file($runtime, $class_name);
+  my $class_file;
+  if ($is_resource) {
+    my $config_file = $config->file;
+    
+    my $config_file_basename = basename $config_file;
+    
+    my $config_file_dirname = dirname $config_file;
+    
+    $config_file_basename =~ s/\..+$//;
+    
+    $class_file = "$config_file_dirname/$config_file_basename.spvm";
+  }
+  else {
+    $class_file = &_runtime_get_class_file($runtime, $class_name);
+  }
   
   my $build_src_dir;
   if ($category eq 'precompile') {
@@ -352,8 +368,6 @@ sub compile_class_v2 {
   
   # Force compile
   my $force = $self->detect_force($config);
-  
-  my $is_resource = $options->{is_resource};
   
   # Native class file
   my $native_class_file;
@@ -923,6 +937,8 @@ sub link {
 sub create_link_info {
   my ($self, $class_name, $object_files, $config, $options) = @_;
   
+  my $runtime = $options->{runtime};
+  
   my $category = $config->category;
   
   my $all_object_files = [@$object_files];
@@ -1035,13 +1051,12 @@ sub create_link_info {
     mkpath $resource_object_dir;
     
     my $compile_options = {
-      input_dir => $resource_src_dir,
-      output_dir => $resource_object_dir,
-      is_resource => 1,
+      runtime => $runtime,
       config => $resource_config,
+      is_resource => 1,
     };
     
-    my $object_files = $builder_cc_resource->compile_native_class($resource_class_name, $compile_options);
+    my $object_files = $builder_cc_resource->compile_class_v2($resource_class_name, $compile_options);
     push @$all_object_files, @$object_files;
   }
   
