@@ -96,12 +96,15 @@ sub build_dist {
   
   my $runtime = $options->{runtime};
   
+  my $output_dir = 'blib/lib';
+  
   $self->build(
     $class_name,
     {
       runtime => $runtime,
       category => $category,
       at_runtime => $at_runtime,
+      output_dir => $output_dir,
     }
   );
 }
@@ -139,6 +142,7 @@ sub build {
   my $build_dir = $self->build_dir;
   
   my $at_runtime = $options->{at_runtime};
+  
   my $cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     at_runtime => $at_runtime,
@@ -147,6 +151,8 @@ sub build {
   my $category = $options->{category};
   
   my $runtime = $options->{runtime};
+  
+  my $output_dir = $options->{output_dir};
   
   if ($at_runtime) {
     if (defined $build_dir) {
@@ -187,18 +193,18 @@ sub build {
   my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $build_object_dir;
   
-  my $build_lib_dir;
-  if ($at_runtime) {
-    $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
-    mkpath $build_lib_dir;
-  }
-  else {
-    $build_lib_dir = 'blib/lib';
+  unless (defined $output_dir) {
+    if ($at_runtime) {
+      $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
+      mkpath $output_dir;
+    }
+    else {
+      confess "The output_dir option is not defined.";
+    }
   }
   
   my $input_dir = $build_src_dir;
   my $compile_output_dir = $build_object_dir;
-  my $output_dir = $build_lib_dir;
   
   # Class file
   unless (defined $class_file) {
