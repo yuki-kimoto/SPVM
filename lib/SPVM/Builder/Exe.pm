@@ -980,39 +980,32 @@ sub compile_precompile_class {
   
   my $config_exe = $self->config;
   
-  # Builer
   my $builder = $self->builder;
   
-  # Build directory
   my $build_dir = $self->builder->build_dir;
   
-  # Build precompile classes
   my $builder_cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     quiet => $self->quiet,
     force => $self->force,
   );
   
-  my $runtime = $self->runtime;
-  
   my $config = SPVM::Builder::Util::API::create_default_config();
   
   $config->category('precompile');
   
+  my $runtime = $self->runtime;
+  
   my $object_files = [];
-  my $basic_type = $runtime->get_basic_type_by_name($class_name);
-  my $precompile_method_names = $basic_type->_get_precompile_method_names;
-  if (@$precompile_method_names) {
-    my $precompile_object_files = $builder_cc->compile_class(
-      $class_name,
-      {
-        runtime => $runtime,
-        config => $config,
-        config_exe => $config_exe,
-      }
-    );
-    push @$object_files, @$precompile_object_files;
-  }
+  my $precompile_object_files = $builder_cc->compile_class(
+    $class_name,
+    {
+      runtime => $runtime,
+      config => $config,
+      config_exe => $config_exe,
+    }
+  );
+  push @$object_files, @$precompile_object_files;
   
   return $object_files;
 }

@@ -282,6 +282,14 @@ sub compile_class {
   
   my $is_resource = $options->{is_resource};
   
+  if ($category eq 'precompile') {
+    my $precompile_method_names = &_runtime_get_method_names($runtime, $class_name, $category);
+    
+    unless (@$precompile_method_names) {
+      return [];
+    }
+  }
+  
   my $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $output_dir;
   
@@ -316,6 +324,7 @@ sub compile_class {
   
   my $build_src_dir;
   if ($category eq 'precompile') {
+    
     $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
     
