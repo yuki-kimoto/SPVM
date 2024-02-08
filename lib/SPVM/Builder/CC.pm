@@ -514,7 +514,7 @@ sub compile_precompile_class_for_exe {
   
   my $config_exe = $options->{config_exe};
   
-  my $config = $options->{config};
+  my $config = SPVM::Builder::Util::API::create_default_config();;
   
   $config->category('precompile');
   
