@@ -289,30 +289,6 @@ EOS
   
 }
 
-sub _runtime_get_method_names {
-  my ($runtime, $class_name, $category) = @_;
-  
-  my $method_names;
-  if ($runtime->isa('SPVM::Builder::Runtime')) {
-    $method_names = $runtime->get_method_names($class_name, $category);
-  }
-  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
-    
-    if ($category eq 'native') {
-      $method_names = $basic_type->_get_native_method_names;
-    }
-    elsif ($category eq 'precompile') {
-      $method_names = $basic_type->_get_precompile_method_names;
-    }
-  }
-  else {
-    confess "[Unexpected Error]Invalid object type.";
-  }
-  
-  return $method_names;
-}
-
 sub _runtime_build_precompile_class_source {
   my ($runtime, $class_name, $category) = @_;
   
