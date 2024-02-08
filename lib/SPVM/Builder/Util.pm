@@ -619,7 +619,7 @@ sub get_config_file_from_class_name {
   return $config_file;
 }
 
-sub get_builder_dir_from_config_class {
+sub get_builder_dir {
   my $builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
   my $builder_dir = $builder_config_dir;
   $builder_dir =~ s/\/Config\.pm$//;
@@ -717,7 +717,7 @@ sub get_version_string {
 
 sub get_spvm_version_string {
   
-  my $builder_dir = &get_builder_dir_from_config_class;
+  my $builder_dir = &get_builder_dir;
   my $spvm_api_header_file = "$builder_dir/include/spvm_native.h";
   
   open my $spvm_module_fh, '<', $spvm_api_header_file or die "Can't open the file \"$spvm_api_header_file\": $!";

@@ -932,7 +932,7 @@ sub compile_spvm_core_source_files {
   # Config
   my $config_exe = $self->config;
   
-  my $builder_dir = SPVM::Builder::Util::get_builder_dir_from_config_class();
+  my $builder_dir = SPVM::Builder::Util::get_builder_dir();
   
   # SPVM src directory
   my $builder_src_dir = "$builder_dir/src";
