@@ -52,6 +52,18 @@ sub new {
   return $self;
 }
 
+sub build_dynamic_lib_dist_precompile {
+  my ($self, $class_name) = @_;
+  
+  $self->build_dynamic_lib_dist($class_name, 'precompile');
+}
+
+sub build_dynamic_lib_dist_native {
+  my ($self, $class_name) = @_;
+  
+  $self->build_dynamic_lib_dist($class_name, 'native');
+}
+
 sub build_dynamic_lib_dist {
   my ($self, $class_name, $category) = @_;
   
@@ -66,12 +78,8 @@ sub build_dynamic_lib_dist {
     exit(255);
   }
   my $runtime = $compiler->get_runtime;
-  my $class_file = $runtime->get_class_file($class_name);
-  my $method_names = $runtime->get_method_names($class_name, $category);
-  my $precompile_source = $runtime->build_precompile_class_source($class_name);
-  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
   
-  $self->build_dist($class_name, {runtime => $runtime, category => $category, class_file => $class_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+  $self->build_dist($class_name, {runtime => $runtime, category => $category});
 }
 
 sub build_dist {
@@ -82,11 +90,13 @@ sub build_dist {
   my $build_dir = $self->build_dir;
   
   my $runtime = $options->{runtime};
-  my $dl_func_list = $options->{dl_func_list};
-  my $class_file = $options->{class_file};
-  my $precompile_source = $options->{precompile_source};
   
   my $category = $options->{category};
+  
+  my $class_file = $runtime->get_class_file($class_name);
+  my $method_names = $runtime->get_method_names($class_name, $category);
+  my $precompile_source = $runtime->build_precompile_class_source($class_name);
+  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
   
   my $build_src_dir;
   if ($category eq 'precompile') {
@@ -127,18 +137,6 @@ sub build_dist {
       dl_func_list => $dl_func_list,
     }
   );
-}
-
-sub build_dynamic_lib_dist_precompile {
-  my ($self, $class_name) = @_;
-  
-  $self->build_dynamic_lib_dist($class_name, 'precompile');
-}
-
-sub build_dynamic_lib_dist_native {
-  my ($self, $class_name) = @_;
-  
-  $self->build_dynamic_lib_dist($class_name, 'native');
 }
 
 sub build_at_runtime {
