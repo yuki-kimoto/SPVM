@@ -1041,18 +1041,6 @@ sub compile_native_class {
   
   my $native_method_names = $class->_get_native_method_names;
   if (@$native_method_names) {
-    my $class_file = $class->_get_class_file;
-    
-    unless (defined $class_file) {
-      my $config_file = SPVM::Builder::Util::search_config_file($class_name);
-      if ($config_file) {
-        $class_file = $config_file;
-        $class_file =~ s/\.config$/\.spvm/;
-      }
-      else {
-        confess "The class file \"$class_file\" is not loaded";
-      }
-    }
     
     my $config_file = SPVM::Builder::Util::search_config_file($class_name);
     
