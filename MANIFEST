@@ -887,9 +887,11 @@ t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.native/include/mylib1_source2.h
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.native/src/extra.c
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.native/src/mylib1_source1.c
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.native/src/mylib1_source2.c
+t/02_vm/lib/SPVM/TestCase/Resource/Mylib1.spvm
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.config
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.native/include/mylib2_source1.h
 t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.native/src/mylib2_source1.c
+t/02_vm/lib/SPVM/TestCase/Resource/Mylib2.spvm
 t/02_vm/lib/SPVM/TestCase/Return.spvm
 t/02_vm/lib/SPVM/TestCase/Say.spvm
 t/02_vm/lib/SPVM/TestCase/Seqop.spvm

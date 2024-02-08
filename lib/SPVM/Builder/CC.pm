@@ -305,6 +305,10 @@ sub compile_class_v2 {
     $config_file_basename =~ s/\..+$//;
     
     $class_file = "$config_file_dirname/$config_file_basename.spvm";
+    
+    unless (-f $class_file) {
+      confess "The resource \"$class_name\" must have its SPVM class file \"$class_file\".";
+    }
   }
   else {
     $class_file = &_runtime_get_class_file($runtime, $class_name);

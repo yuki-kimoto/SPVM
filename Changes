@@ -1,4 +1,4 @@
-0.989069 2023-02-07
+0.989069 2023-02-09
   [New Features]
     * Add a message in compiling and linking a source file like
       [Compile a %s source file ...]
@@ -10,6 +10,8 @@
     * The SPVM:: prefix is no more required in the class name given to the create_make_rule function in Makefile.PL.
   [Bug Fix]
     * Add resource dependency to the create_make_rule_native method in Makefile.PL.
+  [Incompatible Changes]
+    * A resource must need its SPVM class file.
 0.989068 2023-01-22
   [New Features]
     * Add the copy_object_with_proto method to the Array class.
