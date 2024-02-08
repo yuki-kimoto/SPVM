@@ -196,6 +196,7 @@ sub load_dynamic_lib {
           $dynamic_lib_file = $builder->build_at_runtime(
             $basic_type_name,
             {
+              runtime => $runtime,
               class_file => $class_file,
               category => $category,
               dl_func_list => $dl_func_list,

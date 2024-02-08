@@ -71,7 +71,7 @@ sub build_dynamic_lib_dist {
   my $precompile_source = $runtime->build_precompile_class_source($class_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
   
-  $self->build_dist($class_name, {category => $category, class_file => $class_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
+  $self->build_dist($class_name, {runtime => $runtime, category => $category, class_file => $class_file, dl_func_list => $dl_func_list, precompile_source => $precompile_source});
 }
 
 sub build_dist {
@@ -81,6 +81,7 @@ sub build_dist {
   
   my $build_dir = $self->build_dir;
   
+  my $runtime = $options->{runtime};
   my $dl_func_list = $options->{dl_func_list};
   my $class_file = $options->{class_file};
   my $precompile_source = $options->{precompile_source};
@@ -117,6 +118,7 @@ sub build_dist {
   $self->build(
     $class_name,
     {
+      runtime => $runtime,
       compile_input_dir => $build_src_dir,
       compile_output_dir => $build_object_dir,
       link_output_dir => $build_lib_dir,
@@ -146,10 +148,11 @@ sub build_at_runtime {
   
   my $build_dir = $self->build_dir;
   
+  my $runtime = $options->{runtime};
   my $dl_func_list = $options->{dl_func_list};
   my $class_file = $options->{class_file};
   my $precompile_source = $options->{precompile_source};
-
+  
   my $category = $options->{category};
   
   # Build directory
@@ -174,6 +177,7 @@ sub build_at_runtime {
     $cc->build_precompile_class_source_file(
       $class_name,
       {
+        runtime => $runtime,
         output_dir => $build_src_dir,
         precompile_source => $precompile_source,
         class_file => $class_file,
@@ -226,6 +230,8 @@ sub build {
   
   my $category = $options->{category};
   
+  my $runtime = $options->{runtime};
+  
   # Class file
   my $class_file = $options->{class_file};
   unless (defined $class_file) {
@@ -253,6 +259,7 @@ sub build {
   
   # Compile source file and create object files
   my $compile_options = {
+    runtime => $runtime,
     input_dir => $options->{compile_input_dir},
     output_dir => $options->{compile_output_dir},
     config => $config,
@@ -262,10 +269,12 @@ sub build {
   
   # Link object files and create dynamic library
   my $link_options = {
+    runtime => $runtime,
     output_dir => $options->{link_output_dir},
     config => $config,
     dl_func_list => $dl_func_list,
   };
+  
   my $output_file = $cc->link(
     $class_name,
     $object_files,
