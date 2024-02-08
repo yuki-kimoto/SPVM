@@ -908,7 +908,7 @@ sub create_link_info {
 sub resource_src_dir_from_class_name {
   my ($self, $class_name) = @_;
 
-  my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
   
   my $resource_src_dir = $config_file;

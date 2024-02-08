@@ -210,7 +210,7 @@ sub build {
   
   my $config;
   if ($category eq 'native') {
-    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+    my $config_file = SPVM::Builder::Util::search_config_file($class_name);
     
     my $class_file_without_ext = $class_file;
     $class_file_without_ext =~ s/\.spvm$//;

@@ -595,7 +595,7 @@ sub get_spvm_dependent_files {
   return \@spvm_dependent_files;
 }
 
-sub get_config_file_from_class_name {
+sub search_config_file {
   my ($class_name, $mode) = @_;
   
   my $ext = 'config';

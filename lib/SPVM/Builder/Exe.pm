@@ -291,7 +291,7 @@ sub get_required_resources {
       my $class_file = $class->_get_class_file;
       
       unless (defined $class_file) {
-        my $config_exe_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+        my $config_exe_file = SPVM::Builder::Util::search_config_file($class_name);
         if ($config_exe_file) {
           $class_file = $config_exe_file;
           $class_file =~ s/\.config$/\.spvm/;
@@ -1033,7 +1033,7 @@ sub compile_native_class {
     mkpath $build_object_dir;
     
     unless (defined $class_file) {
-      my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+      my $config_file = SPVM::Builder::Util::search_config_file($class_name);
       if ($config_file) {
         $class_file = $config_file;
         $class_file =~ s/\.config$/\.spvm/;
