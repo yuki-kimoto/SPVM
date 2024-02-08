@@ -193,7 +193,14 @@ sub build_dist {
   my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $build_object_dir;
   
-  my $build_lib_dir = 'blib/lib';
+  my $build_lib_dir;
+  if ($at_runtime) {
+    $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
+    mkpath $build_lib_dir;
+  }
+  else {
+    $build_lib_dir = 'blib/lib';
+  }
   
   my $compile_input_dir = $build_src_dir;
   my $compile_output_dir = $build_object_dir;
@@ -271,8 +278,14 @@ sub build_at_runtime {
   my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $build_object_dir;
   
-  my $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
-  mkpath $build_lib_dir;
+  my $build_lib_dir;
+  if ($at_runtime) {
+    $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
+    mkpath $build_lib_dir;
+  }
+  else {
+    $build_lib_dir = 'blib/lib';
+  }
   
   my $compile_input_dir = $build_src_dir;
   my $compile_output_dir = $build_object_dir;
