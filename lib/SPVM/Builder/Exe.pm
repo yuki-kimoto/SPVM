@@ -300,7 +300,10 @@ sub get_required_resources {
           confess "The class file \"$class_file\" is not found";
         }
       }
-      my $config_exe = SPVM::Builder::_search_config($runtime, $class_name);
+      
+      my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+      
+      my $config_exe = SPVM::Builder::Config->load_config($config_file);
       
       my $resource_names = $config_exe->get_resource_names;
       for my $resource_name (@$resource_names) {
@@ -1043,7 +1046,9 @@ sub compile_native_class {
       }
     }
     
-    my $config = SPVM::Builder::_search_config($runtime, $class_name);
+    my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+    
+    my $config = SPVM::Builder::Config->load_config($config_file);
     
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);
