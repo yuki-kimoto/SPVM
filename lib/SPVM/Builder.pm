@@ -153,16 +153,18 @@ sub build_dist {
   
   $options ||= {};
   
+  my $category = $options->{category};
+  
   my $build_dir = $self->build_dir;
   
   my $runtime = $options->{runtime};
-  
-  my $category = $options->{category};
   
   my $class_file = &get_class_file($runtime, $class_name);
   my $method_names = &get_method_names($runtime, $class_name, $category);
   my $precompile_source = &build_precompile_class_source($runtime, $class_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
+  
+  my $at_runtime = 0;
   
   my $build_src_dir;
   if ($category eq 'precompile') {
@@ -171,6 +173,7 @@ sub build_dist {
     
     my $cc = SPVM::Builder::CC->new(
       build_dir => $build_dir,
+      at_runtime => $at_runtime,
     );
     
     $cc->build_precompile_class_source_file(
@@ -205,6 +208,7 @@ sub build_dist {
       category => $category,
       class_file => $class_file,
       dl_func_list => $dl_func_list,
+      at_runtime => $at_runtime,
     }
   );
 }
@@ -218,20 +222,6 @@ sub build_at_runtime {
   
   my $build_dir = $self->build_dir;
   
-  my $runtime = $options->{runtime};
-  
-  my $class_file = &get_class_file($runtime, $class_name);
-  
-  my $method_names = &get_method_names($runtime, $class_name, $category);
-  
-  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
-    $class_name,
-    $method_names,
-    {category => $category}
-  );
-  
-  my $precompile_source = &build_precompile_class_source($runtime, $class_name);
-  
   # Build directory
   if (defined $build_dir) {
     mkpath $build_dir;
@@ -240,7 +230,19 @@ sub build_at_runtime {
     confess "The \"build_dir\" field must be defined to build a $category method at runtime. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
   }
   
-  # Source directory
+  my $runtime = $options->{runtime};
+  
+  my $class_file = &get_class_file($runtime, $class_name);
+  my $method_names = &get_method_names($runtime, $class_name, $category);
+  my $precompile_source = &build_precompile_class_source($runtime, $class_name);
+  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
+    $class_name,
+    $method_names,
+    {category => $category}
+  );
+  
+  my $at_runtime = 1;
+  
   my $build_src_dir;
   if ($category eq 'precompile') {
     $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
@@ -248,7 +250,7 @@ sub build_at_runtime {
     
     my $cc = SPVM::Builder::CC->new(
       build_dir => $build_dir,
-      at_runtime => 1,
+      at_runtime => $at_runtime,
     );
     
     $cc->build_precompile_class_source_file(
@@ -273,16 +275,21 @@ sub build_at_runtime {
   my $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
   mkpath $build_lib_dir;
   
+  my $compile_input_dir = $build_src_dir;
+  my $compile_output_dir = $build_object_dir;
+  my $link_output_dir = $build_lib_dir;
+  
   my $build_file = $self->build(
     $class_name,
     {
-      compile_input_dir => $build_src_dir,
-      compile_output_dir => $build_object_dir,
-      link_output_dir => $build_lib_dir,
+      runtime => $runtime,
+      compile_input_dir => $compile_input_dir,
+      compile_output_dir => $compile_output_dir,
+      link_output_dir => $link_output_dir,
       category => $category,
       class_file => $class_file,
       dl_func_list => $dl_func_list,
-      at_runtime => 1,
+      at_runtime => $at_runtime,
     }
   );
   
