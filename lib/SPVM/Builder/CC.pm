@@ -251,6 +251,246 @@ sub compile_source_file {
     or confess "$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
 }
 
+sub compile_class_v2 {
+  my ($self, $class_name, $options) = @_;
+  
+  unless (defined $class_name) {
+    confess "A class name must be defined.";
+  }
+  
+  $options ||= {};
+  
+  # Build directory
+  my $build_dir = $self->build_dir;
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "Build directory is not specified. Maybe forget to set \"SPVM_BUILD_DIR\" environment variable?";
+  }
+  
+  # Config
+  my $config = $options->{config};
+  
+  my $at_runtime = $options->{at_runtime};
+  
+  my $category = $config->category;
+  
+  my $runtime = $options->{runtime};
+  
+  my $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
+  mkpath $output_dir;
+  
+  if ($at_runtime) {
+    if (defined $build_dir) {
+      mkpath $build_dir;
+    }
+    else {
+      confess "The \"build_dir\" field must be defined to build a $category method at runtime. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+    }
+  }
+  
+  my $class_file = &_runtime_get_class_file($runtime, $class_name);
+  
+  my $build_src_dir;
+  if ($category eq 'precompile') {
+    $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
+    mkpath $build_src_dir;
+    
+    my $cc = SPVM::Builder::CC->new(
+      build_dir => $build_dir,
+      at_runtime => $at_runtime,
+    );
+    
+    $cc->build_precompile_class_source_file(
+      $class_name,
+      {
+        runtime => $runtime,
+        output_dir => $build_src_dir,
+      }
+    );
+  }
+  elsif ($category eq 'native') {
+    $build_src_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
+  }
+  
+  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
+  mkpath $build_object_dir;
+  
+  my $input_dir = $build_src_dir;
+  my $compile_output_dir = $build_object_dir;
+  
+  # Class file
+  unless (defined $class_file) {
+    confess "[Unexpected Error]The class file is not defined.";
+  }
+  
+  if (defined $config->file) {
+    my $config_file = $config->file;
+    
+    my $config_file_abs = File::Spec->rel2abs($config_file);
+    
+    my $class_file_cannonpath = File::Spec->rel2abs($class_file);
+    
+    my $class_file_cannonpath_without_ext = $class_file_cannonpath;
+    $class_file_cannonpath_without_ext =~ s/\.spvm$//;
+    my $class_file_cannonpath_without_ext_quotemeta = quotemeta $class_file_cannonpath_without_ext;
+    
+    unless ($config_file_abs =~ /^$class_file_cannonpath_without_ext_quotemeta\./) {
+      confess "The config file \"$config_file_abs\" is not compatible with the SPVM file \"$class_file_cannonpath\".";
+    }
+  }
+  
+  $config->class_name("$class_name");
+  
+  # Force compile
+  my $force = $self->detect_force($config);
+  
+  my $is_resource = $options->{is_resource};
+  
+  # Native class file
+  my $native_class_file;
+  unless ($is_resource) {
+    # Native class file
+    my $native_class_ext = $config->ext;
+    unless (defined $native_class_ext) {
+      confess "Source extension is not specified";
+    }
+    my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
+    $native_class_file = "$input_dir/$native_class_rel_file";
+    
+    unless (-f $native_class_file) {
+      confess "Can't find source file $native_class_file";
+    }
+  }
+  
+  # Own resource source files
+  my $own_source_files = $config->source_files;
+  my $native_src_dir = $config->native_src_dir;
+  my $resource_src_files;
+  if (defined $native_src_dir) {
+    $resource_src_files = [map { "$native_src_dir/$_" } @$own_source_files ];
+  }
+  
+  # Compile source files
+  my $object_files = [];
+  my $is_native_class = 1;
+  for my $source_file ($native_class_file, @$resource_src_files) {
+    my $current_is_native_class = $is_native_class;
+    $is_native_class = 0;
+    
+    next unless defined $source_file;
+    
+    my $object_file_name;
+    
+    # Object file of native class
+    if ($current_is_native_class) {
+      my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
+      $object_file_name = "$output_dir/$object_rel_file";
+    }
+    # Object file of resource source file
+    else {
+      my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
+      
+      my $object_file_base = $source_file;
+      $object_file_base =~ s/^\Q$native_src_dir//;
+      $object_file_base =~ s/^[\\\/]//;
+      
+      $object_file_base =~ s/\.[^\.]+$/.o/;
+      $object_file_name = "$output_dir/$object_rel_file/$object_file_base";
+      
+      my $output_dir = dirname $object_file_name;
+      mkpath $output_dir;
+    }
+    
+    # Check if object file need to be generated
+    my $need_generate;
+    {
+      # Own resource header files
+      my @own_header_files;
+      my $native_include_dir = $config->native_include_dir;
+      if (defined $native_include_dir && -d $native_include_dir) {
+        find(
+          {
+            wanted => sub {
+              my $include_file_name = $File::Find::name;
+              if (-f $include_file_name) {
+                push @own_header_files, $include_file_name;
+              }
+            },
+            no_chdir => 1,
+          },
+          $native_include_dir,
+        );
+      }
+      my $input_files = [$source_file, @own_header_files];
+      if (defined $config->file) {
+        push @$input_files, $config->file;
+      };
+      if ($current_is_native_class) {
+        my $class_file = $source_file;
+        $class_file =~ s/\.[^\/\\]+$//;
+        $class_file .= '.spvm';
+        
+        push @$input_files, $class_file;
+      }
+      $need_generate = SPVM::Builder::Util::need_generate({
+        force => $force,
+        output_file => $object_file_name,
+        input_files => $input_files,
+      });
+    }
+    
+    my $compile_info_category;
+    if ($category eq 'precompile') {
+      $compile_info_category = 'precompile_class';
+    }
+    elsif ($category eq 'native') {
+      if ($current_is_native_class) {
+        $compile_info_category = 'native_class';
+      }
+      else {
+        $compile_info_category = 'native_source';
+      }
+    }
+    
+    # Compile-information
+    my $compile_info = SPVM::Builder::CompileInfo->new(
+      output_file => $object_file_name,
+      source_file => $source_file,
+      config => $config,
+      category => $compile_info_category,
+    );
+    
+    my $before_compile_cbs = $config->before_compile_cbs;
+    for my $before_compile_cb (@$before_compile_cbs) {
+      $before_compile_cb->($config, $compile_info);
+    }
+    
+    # Compile a source file
+    if ($need_generate) {
+      my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
+      my $work_output_dir = "$output_dir/$module_rel_dir";
+      mkpath dirname $object_file_name;
+      
+      $self->compile_source_file($compile_info);
+    }
+    
+    # Object file information
+    my $compile_info_cc = $compile_info->{cc};
+    my $compile_info_ccflags = $compile_info->{ccflags};
+    my $object_file = SPVM::Builder::ObjectFileInfo->new(
+      file => $object_file_name,
+      compile_info => $compile_info,
+    );
+    
+    # Add object file information
+    push @$object_files, $object_file;
+  }
+  
+  return $object_files;
+}
+
 sub compile_native_class {
   return &compile_class(@_);
 }

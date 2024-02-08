@@ -169,91 +169,29 @@ sub build {
   
   $config->category($category);
   
-  if ($at_runtime) {
-    if (defined $build_dir) {
-      mkpath $build_dir;
-    }
-    else {
-      confess "The \"build_dir\" field must be defined to build a $category method at runtime. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
-    }
-  }
+  # Compile source files to object files
+  my $compile_options = {
+    runtime => $runtime,
+    config => $config,
+    at_runtime => $at_runtime,
+  };
   
-  my $class_file = &_runtime_get_class_file($runtime, $class_name);
+  my $object_files = $cc->compile_class_v2($class_name, $compile_options);
   
-  my $build_src_dir;
-  if ($category eq 'precompile') {
-    $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
-    mkpath $build_src_dir;
-    
-    my $cc = SPVM::Builder::CC->new(
-      build_dir => $build_dir,
-      at_runtime => $at_runtime,
-    );
-    
-    $cc->build_precompile_class_source_file(
-      $class_name,
-      {
-        runtime => $runtime,
-        output_dir => $build_src_dir,
-      }
-    );
-  }
-  elsif ($category eq 'native') {
-    $build_src_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
-  }
-  
-  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
-  mkpath $build_object_dir;
-  
+  # Output directory
   unless (defined $output_dir) {
     if ($at_runtime) {
       $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
       mkpath $output_dir;
     }
-    else {
-      confess "The output_dir option is not defined.";
-    }
   }
   
-  my $input_dir = $build_src_dir;
-  my $compile_output_dir = $build_object_dir;
-  
-  # Class file
-  unless (defined $class_file) {
-    confess "[Unexpected Error]The class file is not defined.";
-  }
-  
-  if (defined $config->file) {
-    my $config_file = $config->file;
-    
-    my $config_file_abs = File::Spec->rel2abs($config_file);
-    
-    my $class_file_cannonpath = File::Spec->rel2abs($class_file);
-    
-    my $class_file_cannonpath_without_ext = $class_file_cannonpath;
-    $class_file_cannonpath_without_ext =~ s/\.spvm$//;
-    my $class_file_cannonpath_without_ext_quotemeta = quotemeta $class_file_cannonpath_without_ext;
-    
-    unless ($config_file_abs =~ /^$class_file_cannonpath_without_ext_quotemeta\./) {
-      confess "The config file \"$config_file_abs\" is not compatible with the SPVM file \"$class_file_cannonpath\".";
-    }
-  }
-  
-  # Compile source file and create object files
-  my $compile_options = {
-    runtime => $runtime,
-    input_dir => $input_dir,
-    output_dir => $compile_output_dir,
-    config => $config,
-  };
-  
-  my $object_files = $cc->compile_native_class($class_name, $compile_options);
-  
-  # Link object files and create dynamic library
+  # Link object files and generate a dynamic library
   my $link_options = {
     runtime => $runtime,
     output_dir => $output_dir,
     config => $config,
+    at_runtime => $at_runtime,
   };
   
   my $output_file = $cc->link(
@@ -263,29 +201,6 @@ sub build {
   );
   
   return $output_file;
-}
-
-sub _runtime_get_class_file {
-  my ($runtime, $class_name, $category) = @_;
-  
-  my $class_file;
-  if ($runtime->isa('SPVM::Builder::Runtime')) {
-    $class_file = $runtime->get_class_file($class_name, $category);
-  }
-  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
-    
-    my $spvm_class_dir = $basic_type->get_class_dir;
-    
-    my $spvm_class_rel_file = $basic_type->get_class_rel_file;
-    
-    $class_file = "$spvm_class_dir/$spvm_class_rel_file";
-  }
-  else {
-    confess "[Unexpected Error]Invalid object type.";
-  }
-  
-  return $class_file;
 }
 
 1;
