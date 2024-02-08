@@ -210,7 +210,17 @@ sub build {
   
   my $config;
   if ($category eq 'native') {
-    $config = _search_config($runtime, $class_name);
+    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
+    
+    my $class_file_without_ext = $class_file;
+    $class_file_without_ext =~ s/\.spvm$//;
+    my $class_file_without_ext_quotemeta = quotemeta $class_file_without_ext;
+    
+    unless ($config_file =~ /^$class_file_without_ext_quotemeta/) {
+      confess "The config file \"$config_file\" is not compatible with the SPVM file \"$class_file\".";
+    }
+    
+    $config = SPVM::Builder::Config->load_config($config_file);
   }
   elsif ($category eq 'precompile') {
     $config = SPVM::Builder::Util::API::create_default_config();
