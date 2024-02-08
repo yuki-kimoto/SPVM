@@ -158,9 +158,7 @@ sub build {
   }
   
   my $class_file = &_runtime_get_class_file($runtime, $class_name);
-  my $method_names = &_runtime_get_method_names($runtime, $class_name, $category);
   my $precompile_source = &_runtime_build_precompile_class_source($runtime, $class_name);
-  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
   
   my $build_src_dir;
   if ($category eq 'precompile') {
@@ -241,7 +239,6 @@ sub build {
     runtime => $runtime,
     output_dir => $output_dir,
     config => $config,
-    dl_func_list => $dl_func_list,
   };
   
   my $output_file = $cc->link(
