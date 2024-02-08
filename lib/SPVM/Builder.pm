@@ -82,6 +82,23 @@ sub build_dynamic_lib_dist {
   $self->build_dist($class_name, {runtime => $runtime, category => $category});
 }
 
+sub get_method_names {
+  my ($runtime, $class_name, $category) = @_;
+  
+  my $method_names;
+  if ($runtime->isa('SPVM::Builder::Runtime')) {
+    $method_names = $runtime->get_method_names($class_name, $category);
+  }
+  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
+    
+  }
+  else {
+    confess "[Unexpected Error]Invalid object type.";
+  }
+  
+  return $method_names;
+}
+
 sub build_dist {
   my ($self, $class_name, $options) = @_;
   
@@ -94,7 +111,7 @@ sub build_dist {
   my $category = $options->{category};
   
   my $class_file = $runtime->get_class_file($class_name);
-  my $method_names = $runtime->get_method_names($class_name, $category);
+  my $method_names = &get_method_names($runtime, $class_name, $category);
   my $precompile_source = $runtime->build_precompile_class_source($class_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
   
