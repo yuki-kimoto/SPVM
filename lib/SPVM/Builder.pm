@@ -179,6 +179,7 @@ sub build_dist {
     $cc->build_precompile_class_source_file(
       $class_name,
       {
+        runtime => $runtime,
         output_dir => $build_src_dir,
         precompile_source => $precompile_source,
         class_file => $class_file,
