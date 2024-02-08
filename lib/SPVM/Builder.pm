@@ -205,14 +205,7 @@ sub build {
   
   # Class file
   unless (defined $class_file) {
-    my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
-    if ($config_file) {
-      $class_file = $config_file;
-      $class_file =~ s/\.config$/\.spvm/;
-    }
-    else {
-      confess "The class file \"$class_file\" is not found";
-    }
+    confess "[Unexpected Error]The class file is not defined.";
   }
   
   my $config;
