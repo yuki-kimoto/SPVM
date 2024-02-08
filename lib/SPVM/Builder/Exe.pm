@@ -1073,11 +1073,10 @@ sub compile_native_class {
     $config->add_include_dir(@$resource_include_dirs);
     
     $config->disable_resource(1);
-    my $object_files = $builder_cc->compile_native_class(
+    my $object_files = $builder_cc->compile_class_v2(
       $class_name,
       {
-        input_dir => $input_dir,
-        output_dir => $build_object_dir,
+        runtime => $runtime,
         config => $config,
       }
     );
