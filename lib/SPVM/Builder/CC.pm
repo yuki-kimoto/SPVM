@@ -519,39 +519,14 @@ sub compile_precompile_class_for_exe {
   $config->category('precompile');
   
   my $object_files = [];
-  my $class = $runtime->get_basic_type_by_name($class_name);
-  my $precompile_method_names = $class->_get_precompile_method_names;
+  my $basic_type = $runtime->get_basic_type_by_name($class_name);
+  my $precompile_method_names = $basic_type->_get_precompile_method_names;
   if (@$precompile_method_names) {
-    my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->build_dir);
-    mkpath $build_src_dir;
-    
-    my $class_file = $class->_get_class_file;
-    my $precompile_source = $runtime->build_precompile_class_source($class);
-    
-    $self->build_precompile_class_source_file(
-      $class_name,
-      {
-        runtime => $runtime,
-        output_dir => $build_src_dir,
-      }
-    );
-    
-    my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir);
-    mkpath $build_object_dir;
-    
-    if ($config_exe) {
-      my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
-      $config->add_before_compile_cb(@$before_each_compile_cbs);
-    }
-    
     my $precompile_object_files = $self->compile_class_v2(
       $class_name,
       {
         runtime => $runtime,
-        input_dir => $build_src_dir,
-        output_dir => $build_object_dir,
         config => $config,
-        runtime => $runtime,
       }
     );
     push @$object_files, @$precompile_object_files;
