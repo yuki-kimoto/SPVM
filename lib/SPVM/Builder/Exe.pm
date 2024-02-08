@@ -278,11 +278,13 @@ sub get_required_resources {
     force => $self->force,
   );
   
-  my $class_names = $self->runtime->_get_user_defined_basic_type_names;
+  my $runtime = $self->runtime;
+  
+  my $class_names = $runtime->_get_user_defined_basic_type_names;
   my $all_object_files = [];
   for my $class_name (@$class_names) {
     
-    my $class = $self->runtime->get_basic_type_by_name($class_name);
+    my $class = $runtime->get_basic_type_by_name($class_name);
     
     my $native_method_names = $class->_get_native_method_names;
     if (@$native_method_names) {
@@ -298,7 +300,7 @@ sub get_required_resources {
           confess "The class file \"$class_file\" is not found";
         }
       }
-      my $config_exe = $builder->create_native_config_from_class_file($class_file);
+      my $config_exe = SPVM::Builder::_search_config($runtime, $class_name);
       
       my $resource_names = $config_exe->get_resource_names;
       for my $resource_name (@$resource_names) {
@@ -1019,6 +1021,8 @@ sub compile_native_class {
   
   my $all_object_files = [];
   
+  my $runtime = $self->runtime;
+  
   my $class = $self->runtime->get_basic_type_by_name($class_name);
   
   my $native_method_names = $class->_get_native_method_names;
@@ -1038,7 +1042,8 @@ sub compile_native_class {
         confess "The class file \"$class_file\" is not loaded";
       }
     }
-    my $config = $builder->create_native_config_from_class_file($class_file);
+    
+    my $config = SPVM::Builder::_search_config($runtime, $class_name);
     
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
     $config->add_before_compile_cb(@$before_each_compile_cbs);

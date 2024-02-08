@@ -217,7 +217,7 @@ sub build {
   
   my $config;
   if ($category eq 'native') {
-    $config = $self->create_native_config_from_class_file($class_file);
+    $config = _search_config($runtime, $class_name);
   }
   elsif ($category eq 'precompile') {
     $config = SPVM::Builder::Util::API::create_default_config();
@@ -253,8 +253,10 @@ sub build {
   return $output_file;
 }
 
-sub create_native_config_from_class_file {
-  my ($self, $class_file) = @_;
+sub _search_config {
+  my ($runtime, $class_name) = @_;
+  
+  my $class_file = &_runtime_get_class_file($runtime, $class_name);
   
   my $config;
   my $config_file = $class_file;
@@ -265,17 +267,8 @@ sub create_native_config_from_class_file {
     $config = SPVM::Builder::Config->load_config($config_file);
   }
   else {
-    my $error = $self->_error_message_find_config($config_file);
-    confess $error;
-  }
-  
-  return $config;
-}
-
-sub _error_message_find_config {
-  my ($self, $config_file) = @_;
-  
-  my $error = <<"EOS";
+    
+    my $error = <<"EOS";
 Can't find the native config file \"$config_file\".
 
 The config file must contain at least the following code.
@@ -289,7 +282,11 @@ my \$config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 \$config;
 ----------------------------------------------
 EOS
+
+    confess $error;
+  }
   
+  return $config;
 }
 
 sub _runtime_get_class_file {
