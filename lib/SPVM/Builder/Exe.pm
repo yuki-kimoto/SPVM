@@ -995,10 +995,14 @@ sub compile_precompile_class {
   
   my $runtime = $self->runtime;
   
+  my $config = SPVM::Builder::Util::API::create_default_config();
+  $config->category('precompile');
+  
   my $object_files = $builder_cc->compile_precompile_class_for_exe(
     $class_name,
     {
       runtime => $runtime,
+      config => $config,
       config_exe => $config_exe,
     }
   );

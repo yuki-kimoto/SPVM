@@ -537,10 +537,6 @@ sub compile_precompile_class_for_exe {
     my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir);
     mkpath $build_object_dir;
     
-    my $config = SPVM::Builder::Util::API::create_default_config();
-    
-    $config->category('precompile');
-    
     if ($config_exe) {
       my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
       $config->add_before_compile_cb(@$before_each_compile_cbs);
