@@ -153,6 +153,8 @@ sub build_dist {
   
   $options ||= {};
   
+  my $at_runtime = 0;
+  
   my $category = $options->{category};
   
   my $build_dir = $self->build_dir;
@@ -163,8 +165,6 @@ sub build_dist {
   my $method_names = &get_method_names($runtime, $class_name, $category);
   my $precompile_source = &build_precompile_class_source($runtime, $class_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
-  
-  my $at_runtime = 0;
   
   my $build_src_dir;
   if ($category eq 'precompile') {
@@ -218,6 +218,8 @@ sub build_at_runtime {
   
   $options ||= {};
   
+  my $at_runtime = 1;
+  
   my $category = $options->{category};
   
   my $build_dir = $self->build_dir;
@@ -240,8 +242,6 @@ sub build_at_runtime {
     $method_names,
     {category => $category}
   );
-  
-  my $at_runtime = 1;
   
   my $build_src_dir;
   if ($category eq 'precompile') {
