@@ -178,6 +178,10 @@ sub build_at_runtime {
   my $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
   mkpath $build_lib_dir;
   
+  my $compile_input_dir = $build_src_dir;
+  my $compile_output_dir = $build_object_dir;
+  my $link_output_dir = $build_lib_dir;
+  
   my $build_file = $self->build(
     $class_name,
     {
