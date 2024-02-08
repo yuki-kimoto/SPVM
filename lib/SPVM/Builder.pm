@@ -119,18 +119,22 @@ sub build_dist {
   elsif ($category eq 'native') {
     $build_src_dir = 'lib';
   }
-
+  
   my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $build_object_dir;
   
   my $build_lib_dir = 'blib/lib';
   
+  my $compile_input_dir = $build_src_dir;
+  my $compile_output_dir = $build_object_dir;
+  my $link_output_dir = $build_lib_dir;
+  
   $self->build(
     $class_name,
     {
       runtime => $runtime,
-      compile_input_dir => $build_src_dir,
-      compile_output_dir => $build_object_dir,
+      compile_input_dir => $compile_input_dir,
+      compile_output_dir => $compile_output_dir,
       link_output_dir => $build_lib_dir,
       category => $category,
       class_file => $class_file,
