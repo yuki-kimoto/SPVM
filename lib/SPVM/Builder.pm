@@ -161,6 +161,67 @@ sub build_dist {
   
   my $runtime = $options->{runtime};
   
+  
+  $self->build(
+    $class_name,
+    {
+      runtime => $runtime,
+      category => $category,
+      at_runtime => $at_runtime,
+    }
+  );
+}
+
+sub build_at_runtime {
+  my ($self, $class_name, $options) = @_;
+  
+  $options ||= {};
+  
+  my $at_runtime = 1;
+  
+  my $category = $options->{category};
+  
+  my $build_dir = $self->build_dir;
+  
+  # Build directory
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "The \"build_dir\" field must be defined to build a $category method at runtime. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+  }
+  
+  my $runtime = $options->{runtime};
+  
+  my $build_file = $self->build(
+    $class_name,
+    {
+      runtime => $runtime,
+      category => $category,
+      at_runtime => $at_runtime,
+    }
+  );
+  
+  return $build_file;
+}
+
+sub build {
+  my ($self, $class_name, $options) = @_;
+  
+  $options ||= {};
+  
+  my $build_dir = $self->build_dir;
+  
+  my $at_runtime = $options->{at_runtime};
+  my $cc = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    at_runtime => $at_runtime,
+  );
+  
+  my $category = $options->{category};
+  
+  my $runtime = $options->{runtime};
+  
   my $class_file = &get_class_file($runtime, $class_name);
   my $method_names = &get_method_names($runtime, $class_name, $category);
   my $precompile_source = &build_precompile_class_source($runtime, $class_name);
@@ -206,129 +267,7 @@ sub build_dist {
   my $compile_output_dir = $build_object_dir;
   my $link_output_dir = $build_lib_dir;
   
-  $self->build(
-    $class_name,
-    {
-      runtime => $runtime,
-      compile_input_dir => $compile_input_dir,
-      compile_output_dir => $compile_output_dir,
-      link_output_dir => $build_lib_dir,
-      category => $category,
-      class_file => $class_file,
-      dl_func_list => $dl_func_list,
-      at_runtime => $at_runtime,
-    }
-  );
-}
-
-sub build_at_runtime {
-  my ($self, $class_name, $options) = @_;
-  
-  $options ||= {};
-  
-  my $at_runtime = 1;
-  
-  my $category = $options->{category};
-  
-  my $build_dir = $self->build_dir;
-  
-  # Build directory
-  if (defined $build_dir) {
-    mkpath $build_dir;
-  }
-  else {
-    confess "The \"build_dir\" field must be defined to build a $category method at runtime. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
-  }
-  
-  my $runtime = $options->{runtime};
-  
-  my $class_file = &get_class_file($runtime, $class_name);
-  my $method_names = &get_method_names($runtime, $class_name, $category);
-  my $precompile_source = &build_precompile_class_source($runtime, $class_name);
-  my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
-    $class_name,
-    $method_names,
-    {category => $category}
-  );
-  
-  my $build_src_dir;
-  if ($category eq 'precompile') {
-    $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
-    mkpath $build_src_dir;
-    
-    my $cc = SPVM::Builder::CC->new(
-      build_dir => $build_dir,
-      at_runtime => $at_runtime,
-    );
-    
-    $cc->build_precompile_class_source_file(
-      $class_name,
-      {
-        runtime => $runtime,
-        output_dir => $build_src_dir,
-        precompile_source => $precompile_source,
-        class_file => $class_file,
-      }
-    );
-  }
-  elsif ($category eq 'native') {
-    $build_src_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $class_name);
-  }
-  
-  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
-  mkpath $build_object_dir;
-  
-  my $build_lib_dir;
-  if ($at_runtime) {
-    $build_lib_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
-    mkpath $build_lib_dir;
-  }
-  else {
-    $build_lib_dir = 'blib/lib';
-  }
-  
-  my $compile_input_dir = $build_src_dir;
-  my $compile_output_dir = $build_object_dir;
-  my $link_output_dir = $build_lib_dir;
-  
-  my $build_file = $self->build(
-    $class_name,
-    {
-      runtime => $runtime,
-      compile_input_dir => $compile_input_dir,
-      compile_output_dir => $compile_output_dir,
-      link_output_dir => $link_output_dir,
-      category => $category,
-      class_file => $class_file,
-      dl_func_list => $dl_func_list,
-      at_runtime => $at_runtime,
-    }
-  );
-  
-  return $build_file;
-}
-
-sub build {
-  my ($self, $class_name, $options) = @_;
-  
-  $options ||= {};
-  
-  my $build_dir = $self->build_dir;
-  
-  my $at_runtime = $options->{at_runtime};
-  my $cc = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-    at_runtime => $at_runtime,
-  );
-  
-  my $dl_func_list = $options->{dl_func_list};
-  
-  my $category = $options->{category};
-  
-  my $runtime = $options->{runtime};
-  
   # Class file
-  my $class_file = $options->{class_file};
   unless (defined $class_file) {
     my $config_file = SPVM::Builder::Util::get_config_file_from_class_name($class_name);
     if ($config_file) {
@@ -355,8 +294,8 @@ sub build {
   # Compile source file and create object files
   my $compile_options = {
     runtime => $runtime,
-    input_dir => $options->{compile_input_dir},
-    output_dir => $options->{compile_output_dir},
+    input_dir => $compile_input_dir,
+    output_dir => $compile_output_dir,
     config => $config,
   };
   
@@ -365,7 +304,7 @@ sub build {
   # Link object files and create dynamic library
   my $link_options = {
     runtime => $runtime,
-    output_dir => $options->{link_output_dir},
+    output_dir => $link_output_dir,
     config => $config,
     dl_func_list => $dl_func_list,
   };
