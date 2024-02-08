@@ -187,7 +187,12 @@ sub build_dist {
     );
   }
   elsif ($category eq 'native') {
-    $build_src_dir = 'lib';
+    if ($at_runtime) {
+      $build_src_dir = 'lib';
+    }
+    else {
+      $build_src_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $class_name);
+    }
   }
   
   my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
@@ -265,7 +270,12 @@ sub build_at_runtime {
     );
   }
   elsif ($category eq 'native') {
-    $build_src_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $class_name);
+    if ($at_runtime) {
+      $build_src_dir = 'lib';
+    }
+    else {
+      $build_src_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $class_name);
+    }
   }
   
   # Object directory
