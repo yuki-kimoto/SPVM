@@ -181,14 +181,7 @@ sub build_at_runtime {
   
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
-  my $method_names;
-  
-  if ($category eq 'native') {
-    $method_names = $basic_type->_get_native_method_names;
-  }
-  elsif ($category eq 'precompile') {
-    $method_names = $basic_type->_get_precompile_method_names;
-  }
+  my $method_names = &get_method_names($runtime, $class_name, $category);
   
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
     $class_name,
