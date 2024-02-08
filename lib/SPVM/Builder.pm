@@ -256,42 +256,6 @@ sub build {
   return $output_file;
 }
 
-sub _search_config {
-  my ($runtime, $class_name) = @_;
-  
-  my $class_file = &_runtime_get_class_file($runtime, $class_name);
-  
-  my $config;
-  my $config_file = $class_file;
-  $config_file =~ s/\.spvm$/.config/;
-  
-  # Config file
-  if (-f $config_file) {
-    $config = SPVM::Builder::Config->load_config($config_file);
-  }
-  else {
-    
-    my $error = <<"EOS";
-Can't find the native config file \"$config_file\".
-
-The config file must contain at least the following code.
-----------------------------------------------
-use strict;
-use warnings;
-
-use SPVM::Builder::Config;
-my \$config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
-
-\$config;
-----------------------------------------------
-EOS
-
-    confess $error;
-  }
-  
-  return $config;
-}
-
 sub _runtime_get_class_file {
   my ($runtime, $class_name, $category) = @_;
   
