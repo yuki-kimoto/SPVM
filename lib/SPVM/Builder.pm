@@ -198,7 +198,7 @@ sub build {
     $build_lib_dir = 'blib/lib';
   }
   
-  my $compile_input_dir = $build_src_dir;
+  my $input_dir = $build_src_dir;
   my $compile_output_dir = $build_object_dir;
   my $output_dir = $build_lib_dir;
   
@@ -229,7 +229,7 @@ sub build {
   # Compile source file and create object files
   my $compile_options = {
     runtime => $runtime,
-    input_dir => $compile_input_dir,
+    input_dir => $input_dir,
     output_dir => $compile_output_dir,
     config => $config,
   };
