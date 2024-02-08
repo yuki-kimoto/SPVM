@@ -278,6 +278,8 @@ sub compile_class_v2 {
   
   my $runtime = $options->{runtime};
   
+  my $config_exe = $options->{config_exe};
+  
   my $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $output_dir;
   
@@ -342,6 +344,11 @@ sub compile_class_v2 {
   }
   
   $config->class_name("$class_name");
+  
+  if ($config_exe) {
+    my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
+    $config->add_before_compile_cb(@$before_each_compile_cbs);
+  }
   
   # Force compile
   my $force = $self->detect_force($config);
