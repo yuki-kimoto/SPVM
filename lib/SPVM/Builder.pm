@@ -154,6 +154,21 @@ sub build {
   
   my $output_dir = $options->{output_dir};
   
+  # Config
+  my $config;
+  if ($category eq 'native') {
+    my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+    
+    $config = SPVM::Builder::Config->load_config($config_file);
+  }
+  elsif ($category eq 'precompile') {
+    $config = SPVM::Builder::Util::API::create_default_config();
+  }
+  
+  $config->class_name($class_name);
+  
+  $config->category($category);
+  
   if ($at_runtime) {
     if (defined $build_dir) {
       mkpath $build_dir;
@@ -208,29 +223,19 @@ sub build {
     confess "[Unexpected Error]The class file is not defined.";
   }
   
-  my $config;
-  if ($category eq 'native') {
-    my $config_file = SPVM::Builder::Util::search_config_file($class_name);
-    
-    $config = SPVM::Builder::Config->load_config($config_file);
-  }
-  elsif ($category eq 'precompile') {
-    $config = SPVM::Builder::Util::API::create_default_config();
-  }
-  
-  $config->class_name($class_name);
-  
-  $config->category($category);
-  
   if (defined $config->file) {
     my $config_file = $config->file;
     
-    my $class_file_without_ext = $class_file;
-    $class_file_without_ext =~ s/\.spvm$//;
-    my $class_file_without_ext_quotemeta = quotemeta $class_file_without_ext;
+    my $config_file_abs = File::Spec->rel2abs($config_file);
     
-    unless ($config_file =~ /^$class_file_without_ext_quotemeta/) {
-      confess "The config file \"$config_file\" is not compatible with the SPVM file \"$class_file\".";
+    my $class_file_cannonpath = File::Spec->rel2abs($class_file);
+    
+    my $class_file_cannonpath_without_ext = $class_file_cannonpath;
+    $class_file_cannonpath_without_ext =~ s/\.spvm$//;
+    my $class_file_cannonpath_without_ext_quotemeta = quotemeta $class_file_cannonpath_without_ext;
+    
+    unless ($config_file_abs =~ /^$class_file_cannonpath_without_ext_quotemeta\./) {
+      confess "The config file \"$config_file_abs\" is not compatible with the SPVM file \"$class_file_cannonpath\".";
     }
   }
   
