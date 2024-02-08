@@ -184,7 +184,7 @@ sub build {
     );
   }
   elsif ($category eq 'native') {
-    $build_src_dir = SPVM::Builder::Util::remove_class_name_part_from_file($class_file, $class_name);
+    $build_src_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
   }
   
   my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);

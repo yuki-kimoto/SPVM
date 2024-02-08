@@ -410,10 +410,8 @@ sub convert_class_name_to_rel_file {
   return $rel_file_with_ext;
 }
 
-sub remove_class_name_part_from_file {
+sub get_class_base_dir {
   my ($file, $class_name) = @_;
-
-  $class_name =~ s/^SPVM:://;
   
   $file =~ s/\.spvm$//;
   my $class_file = "SPVM::$class_name";
