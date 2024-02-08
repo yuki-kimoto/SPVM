@@ -506,35 +506,6 @@ sub compile_precompile_class {
   return &compile_class(@_);
 }
 
-sub compile_precompile_class_for_exe {
-  
-  my ($self, $class_name, $options) = @_;
-  
-  my $runtime = $options->{runtime};
-  
-  my $config_exe = $options->{config_exe};
-  
-  my $config = SPVM::Builder::Util::API::create_default_config();;
-  
-  $config->category('precompile');
-  
-  my $object_files = [];
-  my $basic_type = $runtime->get_basic_type_by_name($class_name);
-  my $precompile_method_names = $basic_type->_get_precompile_method_names;
-  if (@$precompile_method_names) {
-    my $precompile_object_files = $self->compile_class_v2(
-      $class_name,
-      {
-        runtime => $runtime,
-        config => $config,
-      }
-    );
-    push @$object_files, @$precompile_object_files;
-  }
-  
-  return $object_files;
-}
-
 sub _runtime_build_precompile_class_source {
   my ($runtime, $class_name, $category) = @_;
   
