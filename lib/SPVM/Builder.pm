@@ -176,7 +176,7 @@ sub build {
     at_runtime => $at_runtime,
   };
   
-  my $object_files = $cc->compile_class_v2($class_name, $compile_options);
+  my $object_files = $cc->compile_class($class_name, $compile_options);
   
   # Output directory
   unless (defined $output_dir) {

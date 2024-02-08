@@ -251,7 +251,7 @@ sub compile_source_file {
     or confess "$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
 }
 
-sub compile_class_v2 {
+sub compile_class {
   my ($self, $class_name, $options) = @_;
   
   unless (defined $class_name) {
@@ -873,7 +873,7 @@ sub create_link_info {
       is_resource => 1,
     };
     
-    my $object_files = $builder_cc_resource->compile_class_v2($resource_class_name, $compile_options);
+    my $object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
     push @$all_object_files, @$object_files;
   }
   

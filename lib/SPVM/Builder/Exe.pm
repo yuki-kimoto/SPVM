@@ -1003,7 +1003,7 @@ sub compile_precompile_class {
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   my $precompile_method_names = $basic_type->_get_precompile_method_names;
   if (@$precompile_method_names) {
-    my $precompile_object_files = $builder_cc->compile_class_v2(
+    my $precompile_object_files = $builder_cc->compile_class(
       $class_name,
       {
         runtime => $runtime,
@@ -1056,7 +1056,7 @@ sub compile_native_class {
     $config->add_include_dir(@$resource_include_dirs);
     
     $config->disable_resource(1);
-    my $object_files = $builder_cc->compile_class_v2(
+    my $object_files = $builder_cc->compile_class(
       $class_name,
       {
         runtime => $runtime,
