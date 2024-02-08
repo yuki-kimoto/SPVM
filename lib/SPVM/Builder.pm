@@ -212,14 +212,6 @@ sub build {
   if ($category eq 'native') {
     my $config_file = SPVM::Builder::Util::search_config_file($class_name);
     
-    my $class_file_without_ext = $class_file;
-    $class_file_without_ext =~ s/\.spvm$//;
-    my $class_file_without_ext_quotemeta = quotemeta $class_file_without_ext;
-    
-    unless ($config_file =~ /^$class_file_without_ext_quotemeta/) {
-      confess "The config file \"$config_file\" is not compatible with the SPVM file \"$class_file\".";
-    }
-    
     $config = SPVM::Builder::Config->load_config($config_file);
   }
   elsif ($category eq 'precompile') {
@@ -229,6 +221,18 @@ sub build {
   $config->class_name($class_name);
   
   $config->category($category);
+  
+  if (defined $config->file) {
+    my $config_file = $config->file;
+    
+    my $class_file_without_ext = $class_file;
+    $class_file_without_ext =~ s/\.spvm$//;
+    my $class_file_without_ext_quotemeta = quotemeta $class_file_without_ext;
+    
+    unless ($config_file =~ /^$class_file_without_ext_quotemeta/) {
+      confess "The config file \"$config_file\" is not compatible with the SPVM file \"$class_file\".";
+    }
+  }
   
   # Compile source file and create object files
   my $compile_options = {
