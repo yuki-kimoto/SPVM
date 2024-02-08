@@ -125,6 +125,29 @@ sub build_precompile_class_source {
   return $precompile_source;
 }
 
+sub get_class_file {
+  my ($runtime, $class_name, $category) = @_;
+  
+  my $class_file;
+  if ($runtime->isa('SPVM::Builder::Runtime')) {
+    $class_file = $runtime->get_class_file($class_name, $category);
+  }
+  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $spvm_class_dir = $basic_type->get_class_dir;
+    
+    my $spvm_class_rel_file = $basic_type->get_class_rel_file;
+    
+    $class_file = "$spvm_class_dir/$spvm_class_rel_file";
+  }
+  else {
+    confess "[Unexpected Error]Invalid object type.";
+  }
+  
+  return $class_file;
+}
+
 sub build_dist {
   my ($self, $class_name, $options) = @_;
   
