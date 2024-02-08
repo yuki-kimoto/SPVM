@@ -1042,9 +1042,6 @@ sub compile_native_class {
   my $native_method_names = $class->_get_native_method_names;
   if (@$native_method_names) {
     my $class_file = $class->_get_class_file;
-    my $input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
-    my $build_object_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
-    mkpath $build_object_dir;
     
     unless (defined $class_file) {
       my $config_file = SPVM::Builder::Util::search_config_file($class_name);
