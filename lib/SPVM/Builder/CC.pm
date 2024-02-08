@@ -146,13 +146,15 @@ sub detect_quiet {
 
 sub build_precompile_class_source_file {
   my ($self, $class_name, $options) = @_;
-
-  my $precompile_source = $options->{precompile_source};
-  my $class_file = $options->{class_file};
+  
+  my $runtime = $options->{runtime};
+  
+  my $class_file = &_runtime_get_class_file($runtime, $class_name);
+  my $precompile_source = &_runtime_build_precompile_class_source($runtime, $class_name);
   
   # Force
   my $force = $self->detect_force;
-
+  
   # Output - Precompile C source file
   my $output_dir = $options->{output_dir};
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
@@ -280,9 +282,8 @@ sub compile_precompile_class_for_exe {
     $self->build_precompile_class_source_file(
       $class_name,
       {
+        runtime => $runtime,
         output_dir => $build_src_dir,
-        precompile_source => $precompile_source,
-        class_file => $class_file,
       }
     );
     
@@ -311,6 +312,48 @@ sub compile_precompile_class_for_exe {
   }
   
   return $object_files;
+}
+
+sub _runtime_build_precompile_class_source {
+  my ($runtime, $class_name, $category) = @_;
+  
+  my $precompile_source;
+  if ($runtime->isa('SPVM::Builder::Runtime')) {
+    $precompile_source = $runtime->build_precompile_class_source($class_name);
+  }
+  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    $precompile_source = $runtime->build_precompile_class_source($basic_type)->to_string;
+  }
+  else {
+    confess "[Unexpected Error]Invalid object type.";
+  }
+  
+  return $precompile_source;
+}
+
+sub _runtime_get_class_file {
+  my ($runtime, $class_name, $category) = @_;
+  
+  my $class_file;
+  if ($runtime->isa('SPVM::Builder::Runtime')) {
+    $class_file = $runtime->get_class_file($class_name, $category);
+  }
+  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $spvm_class_dir = $basic_type->get_class_dir;
+    
+    my $spvm_class_rel_file = $basic_type->get_class_rel_file;
+    
+    $class_file = "$spvm_class_dir/$spvm_class_rel_file";
+  }
+  else {
+    confess "[Unexpected Error]Invalid object type.";
+  }
+  
+  return $class_file;
 }
 
 sub compile_class {

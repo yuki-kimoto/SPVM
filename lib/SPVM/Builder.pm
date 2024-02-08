@@ -164,7 +164,6 @@ sub build {
   }
   
   my $class_file = &_runtime_get_class_file($runtime, $class_name);
-  my $precompile_source = &_runtime_build_precompile_class_source($runtime, $class_name);
   
   my $build_src_dir;
   if ($category eq 'precompile') {
@@ -181,8 +180,6 @@ sub build {
       {
         runtime => $runtime,
         output_dir => $build_src_dir,
-        precompile_source => $precompile_source,
-        class_file => $class_file,
       }
     );
   }
@@ -262,7 +259,7 @@ sub create_native_config_from_class_file {
   my $config;
   my $config_file = $class_file;
   $config_file =~ s/\.spvm$/.config/;
-
+  
   # Config file
   if (-f $config_file) {
     $config = SPVM::Builder::Config->load_config($config_file);
@@ -293,25 +290,6 @@ my \$config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 ----------------------------------------------
 EOS
   
-}
-
-sub _runtime_build_precompile_class_source {
-  my ($runtime, $class_name, $category) = @_;
-  
-  my $precompile_source;
-  if ($runtime->isa('SPVM::Builder::Runtime')) {
-    $precompile_source = $runtime->build_precompile_class_source($class_name);
-  }
-  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
-    
-    $precompile_source = $runtime->build_precompile_class_source($basic_type)->to_string;
-  }
-  else {
-    confess "[Unexpected Error]Invalid object type.";
-  }
-  
-  return $precompile_source;
 }
 
 sub _runtime_get_class_file {
