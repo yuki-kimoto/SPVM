@@ -105,8 +105,7 @@ sub init_api {
         my $method_names = $builder_runtime->get_method_names($basic_type_name, $category);
         
         if (@$method_names) {
-          # Build classes - Compile C source codes and link them to SPVM precompile method
-          # Shared library which is already installed in distribution directory
+          # Build classes - Compile C source codes and link them generating a dynamic link library
           my $class_file = $builder_runtime->get_class_file($basic_type_name);
           my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
           
@@ -183,14 +182,6 @@ sub load_dynamic_lib {
         
         # Try to build the shared library at runtime if shared library is not found
         unless (-f $dynamic_lib_file) {
-          my $dl_func_list = SPVM::Builder::Util::create_dl_func_list(
-            $basic_type_name,
-            $category_method_names,
-            {category => $category}
-          );
-          
-          my $precompile_source = $runtime->build_precompile_class_source($basic_type)->to_string;
-          
           my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
           my $builder = SPVM::Builder->new(build_dir => $build_dir);
           $dynamic_lib_file = $builder->build_at_runtime(
@@ -199,8 +190,6 @@ sub load_dynamic_lib {
               runtime => $runtime,
               class_file => $class_file,
               category => $category,
-              dl_func_list => $dl_func_list,
-              precompile_source => $precompile_source
             }
           );
         }
