@@ -502,10 +502,6 @@ sub compile_native_class {
   return &compile_class(@_);
 }
 
-sub compile_precompile_class {
-  return &compile_class(@_);
-}
-
 sub _runtime_build_precompile_class_source {
   my ($runtime, $class_name, $category) = @_;
   
