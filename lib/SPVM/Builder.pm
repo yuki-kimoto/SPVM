@@ -138,7 +138,7 @@ sub build_dist {
   
   my $class_file = $runtime->get_class_file($class_name);
   my $method_names = &get_method_names($runtime, $class_name, $category);
-  my $precompile_source = $runtime->build_precompile_class_source($class_name);
+  my $precompile_source = &build_precompile_class_source($runtime, $class_name);
   my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
   
   my $build_src_dir;
@@ -208,7 +208,7 @@ sub build_at_runtime {
     {category => $category}
   );
   
-  my $precompile_source = $runtime->build_precompile_class_source($basic_type)->to_string;
+  my $precompile_source = &build_precompile_class_source($runtime, $class_name);
   
   # Build directory
   if (defined $build_dir) {
