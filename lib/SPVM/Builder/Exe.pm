@@ -1106,7 +1106,7 @@ sub compile_native_class {
     }
     $config->add_include_dir(@$resource_include_dirs);
     
-    # 
+    # In an executable file, only resources used in the config of the class for generate an executable file are compiled.
     unless ($class_name eq $self->class_name) {
       $config->no_compile_resource(1);
     }
