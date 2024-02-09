@@ -19,6 +19,8 @@
     * Linker messages output before executing command.
     * No native class file and no ext is allowed.
     * A config file --config given to the spvmcc command can be plcaed in the directory as same as the SPVM class file.
+  [Internal Changes]
+    * Resources are loaded in a compilattion instead of a link.
 0.989068 2023-01-22
   [New Features]
     * Add the copy_object_with_proto method to the Array class.

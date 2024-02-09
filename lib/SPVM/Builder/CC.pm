@@ -285,10 +285,6 @@ sub compile_class {
   # Native class file
   my $native_class_ext = $config->ext;
   
-  unless (defined $native_class_ext) {
-    return [];
-  }
-  
   if ($category eq 'precompile') {
     my $precompile_method_names = &_runtime_get_method_names($runtime, $class_name, $category);
     
@@ -389,18 +385,74 @@ sub compile_class {
   # Force compile
   my $force = $self->detect_force($config);
   
-  # Native class file
-  my $native_class_file;
-  unless ($used_as_resource) {
-    my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
-    $native_class_file = "$input_dir/$native_class_rel_file";
-    
-    unless (-f $native_class_file) {
-      confess "Can't find source file $native_class_file";
+  # Add resource include directories
+  my $resource_names = $config->get_resource_names;
+  my $resource_include_dirs = [];
+  for my $resource_name (@$resource_names) {
+    my $resource = $config->get_resource($resource_name);
+    my $resource_config = $resource->config;
+    my $resource_include_dir = $resource_config->native_include_dir;
+    if (defined $resource_include_dir) {
+      push @$resource_include_dirs, $resource_include_dir;
     }
   }
   
-  # Own resource source files
+  my $object_files = [];
+  
+  unless ($config->no_compile_resource) {
+    for my $resource_name (@$resource_names) {
+      my $resource = $config->get_resource($resource_name);
+      
+      # Build native classes
+      my $builder_cc_resource = SPVM::Builder::CC->new(
+        build_dir => $self->build_dir,
+      );
+      
+      my $resource_class_name;
+      my $resource_config;
+      if (ref $resource) {
+        $resource_class_name = $resource->class_name;
+        $resource_config = $resource->config;
+      }
+      else {
+        $resource_class_name = $resource;
+      }
+      
+      $resource_config->add_include_dir(@$resource_include_dirs);
+      
+      $resource_config->class_name($resource_class_name);
+      
+      $resource_config->resource_loader_config($config),
+      
+      my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
+      my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
+      mkpath $resource_object_dir;
+      
+      my $compile_options = {
+        runtime => $runtime,
+        config => $resource_config,
+        used_as_resource => 1,
+      };
+      
+      my $resouce_object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
+      push @$object_files, @$resouce_object_files;
+    }
+  }
+  
+  # Native class file
+  my $native_class_file;
+  unless ($used_as_resource) {
+    if (defined $native_class_ext) {
+      my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
+      $native_class_file = "$input_dir/$native_class_rel_file";
+      
+      unless (-f $native_class_file) {
+        confess "Can't find source file $native_class_file";
+      }
+    }
+  }
+  
+  # Native source files
   my $native_source_files_base = $config->source_files;
   my $native_src_dir = $config->native_src_dir;
   my $native_source_files;
@@ -409,7 +461,6 @@ sub compile_class {
   }
   
   # Compile source files
-  my $object_files = [];
   my $is_native_class = 1;
   for my $source_file ($native_class_file, @$native_source_files) {
     my $current_is_native_class = $is_native_class;
@@ -844,56 +895,6 @@ sub create_link_info {
     push @$lib_infos, $lib_info;
   }
   $config->libs($lib_infos);
-  
-  # Use resources
-  my $resource_names = $config->get_resource_names;
-  my $resource_include_dirs = [];
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    my $resource_config = $resource->config;
-    my $resource_include_dir = $resource_config->native_include_dir;
-    if (defined $resource_include_dir) {
-      push @$resource_include_dirs, $resource_include_dir;
-    }
-  }
-  
-  for my $resource_name (@$resource_names) {
-    my $resource = $config->get_resource($resource_name);
-    
-    # Build native classes
-    my $builder_cc_resource = SPVM::Builder::CC->new(
-      build_dir => $self->build_dir,
-    );
-    
-    my $resource_class_name;
-    my $resource_config;
-    if (ref $resource) {
-      $resource_class_name = $resource->class_name;
-      $resource_config = $resource->config;
-    }
-    else {
-      $resource_class_name = $resource;
-    }
-    
-    $resource_config->add_include_dir(@$resource_include_dirs);
-    
-    $resource_config->class_name($resource_class_name);
-    
-    $resource_config->resource_loader_config($config),
-    
-    my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
-    my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
-    mkpath $resource_object_dir;
-    
-    my $compile_options = {
-      runtime => $runtime,
-      config => $resource_config,
-      used_as_resource => 1,
-    };
-    
-    my $object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
-    push @$all_object_files, @$object_files;
-  }
   
   # Output file
   my $output_file = $options->{output_file};
