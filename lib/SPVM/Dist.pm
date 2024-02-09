@@ -861,6 +861,8 @@ sub MY::postamble {
   unless (\$no_build_spvm_modules) {
     require SPVM::Builder::Util::API;
     
+    local \@INC = ('lib', \@INC);
+    
     $make_rule_native
     $make_rule_precompile
   }
