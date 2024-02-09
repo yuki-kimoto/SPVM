@@ -284,9 +284,11 @@ sub compile_class {
     }
   }
   
-  my $output_dir = $config->output_dir;
-  
-  unless (defined $output_dir) {
+  my $output_dir;
+  if ($used_as_resource) {
+    $output_dir = $config->output_dir;
+  }
+  else {
     $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   }
   

@@ -75,7 +75,7 @@ system($compile_native_api_prgoram) == 0 or die;
 
   system($compile_native_api_prgoram) == 0 or die;
 
-  # Naative object file is cached
+  # Native object file is cached
   my $native_object_file_mtime = (stat $native_object_file)[9];
   is($native_object_file_mtime, $start_native_object_file_mtime);
 
@@ -84,7 +84,7 @@ system($compile_native_api_prgoram) == 0 or die;
     is($precompile_object_file_mtime, $start_precompile_object_file_mtime);
   }
 
-  # Naative shared_lib file is cached
+  # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   is($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 
@@ -112,11 +112,11 @@ system($compile_native_api_prgoram) == 0 or die;
   utime $now, $now, $config_file;
   system($compile_native_api_prgoram) == 0 or die;
 
-  # Naative object file is cached
+  # Native object file is cached
   my $native_object_file_mtime = (stat $native_object_file)[9];
   isnt($native_object_file_mtime, $start_native_object_file_mtime);
 
-  # Naative shared_lib file is cached
+  # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
@@ -155,7 +155,7 @@ system($compile_native_api_prgoram) == 0 or die;
   utime $now, $now, $class_file;
   system($compile_native_api_prgoram) == 0 or die;
 
-  # Naative object file is cached
+  # Native object file is cached
   my $native_object_file_mtime = (stat $native_object_file)[9];
   isnt($native_object_file_mtime, $start_native_object_file_mtime);
 
@@ -164,7 +164,7 @@ system($compile_native_api_prgoram) == 0 or die;
     isnt($precompile_object_file_mtime, $start_precompile_object_file_mtime);
   }
 
-  # Naative shared_lib file is cached
+  # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 
@@ -196,7 +196,7 @@ system($compile_native_api_prgoram) == 0 or die;
   my $native_object_file_mtime = (stat $native_object_file)[9];
   isnt($native_object_file_mtime, $start_native_object_file_mtime);
   
-  # Naative shared_lib file is cached
+  # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
@@ -223,7 +223,7 @@ system($compile_native_api_prgoram) == 0 or die;
   my $native_src_object_file_mtime = (stat $native_src_object_file)[9];
   isnt($native_src_object_file_mtime, $start_native_src_object_file_mtime);
   
-  # Naative shared_lib file is cached
+  # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
@@ -260,7 +260,7 @@ system($compile_native_api_prgoram) == 0 or die;
   my $native_src_object_file_mtime = (stat $native_src_object_file)[9];
   isnt($native_src_object_file_mtime, $start_native_src_object_file_mtime);
   
-  # Naative shared_lib file is cached
+  # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
@@ -296,7 +296,7 @@ system($compile_native_api_prgoram) == 0 or die;
   my $native_src_object_file_mtime = (stat $native_src_object_file)[9];
   isnt($native_src_object_file_mtime, $start_native_src_object_file_mtime);
   
-  # Naative shared_lib file is cached
+  # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
@@ -332,7 +332,7 @@ system($compile_native_api_prgoram) == 0 or die;
   my $native_src_object_file_mtime = (stat $native_src_object_file)[9];
   isnt($native_src_object_file_mtime, $start_native_src_object_file_mtime);
   
-  # Naative shared_lib file is cached
+  # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
 }
