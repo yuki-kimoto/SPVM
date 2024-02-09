@@ -149,6 +149,17 @@ sub allow_no_config_file {
   }
 }
 
+sub mode {
+  my $self = shift;
+  if (@_) {
+    $self->{mode} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{mode};
+  }
+}
+
 # Methods
 sub new {
   my $class = shift;
@@ -203,10 +214,16 @@ sub new {
     }
   }
   
+  my $mode = $self->{mode};
+  
+  if (defined $config_file && $config_file =~ /\.(\w+)\.config$/) {
+    $mode = $1;
+  }
+  
   # Config
   my $config;
   if (defined $config_file) {
-    $config = SPVM::Builder::Config::Exe->load_config($config_file);
+    $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $mode);
     unless ($config->output_type eq 'exe') {
       confess "Config file \"$config_file\" is not the config to create the executable file";
     }
@@ -327,7 +344,9 @@ sub get_required_resources {
       
       my $config_file = SPVM::Builder::Util::search_config_file($class_name);
       
-      my $config_exe = SPVM::Builder::Config->load_config($config_file);
+      my $mode = $self->{mode};
+      
+      my $config_exe = SPVM::Builder::Config->load_mode_config($config_file, $mode);
       
       my $resource_names = $config_exe->get_resource_names;
       for my $resource_name (@$resource_names) {
@@ -1058,7 +1077,9 @@ sub compile_native_class {
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   
   if (defined $config_file) {
-    my $config = SPVM::Builder::Config->load_config($config_file);
+    my $mode = $self->{mode};
+    
+    my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode);
     
     my $resource_include_dirs = [];
     my $resource_names = $config_exe->get_resource_names;

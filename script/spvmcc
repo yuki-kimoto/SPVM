@@ -18,6 +18,7 @@ SPVM::Builder::Util::getopt
   'c|config=s' => \my $config_file,
   'r|required-resources' => \my $print_required_resources,
   'no-config' => \my $allow_no_config_file,
+  'm|mode=s' => \my $mode,
 ;
 
 if ($help) {
@@ -46,6 +47,7 @@ else {
     force => $force,
     config_file => $config_file,
     allow_no_config_file => $allow_no_config_file,
+    mode => $mode,
   );
   
   if ($print_required_resources) {
@@ -85,6 +87,7 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     -c, --config                   The config file
     -r, --required-resources       Prints required resources in JSON lines
     --no-config                    No configration file is ok
+    -m, --mode                     Mode
 
 =head1 Copyright & License
 
