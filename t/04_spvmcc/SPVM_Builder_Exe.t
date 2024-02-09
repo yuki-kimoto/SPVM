@@ -46,7 +46,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     ok($link_info->config->class_name, 'TestCase::NativeAPI2');
     ok($link_info->config->ld, $config->ld);
     ok($link_info->config->ldflags, $config->ldflags);
-    like($link_info->output_file, qr|$build_dir/work/myexe$Config{exe_ext}|);
+    like($link_info->config->output_file, qr|$build_dir/work/myexe$Config{exe_ext}|);
     my $is_object_files = 1;
     for my $object_file (@{$link_info->object_files}) {
       unless ($object_file->isa('SPVM::Builder::ObjectFileInfo')) {
