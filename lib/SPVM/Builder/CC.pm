@@ -401,17 +401,17 @@ sub compile_class {
   }
   
   # Own resource source files
-  my $own_source_files = $config->source_files;
+  my $native_source_files_base = $config->source_files;
   my $native_src_dir = $config->native_src_dir;
-  my $resource_src_files;
+  my $native_source_files;
   if (defined $native_src_dir) {
-    $resource_src_files = [map { "$native_src_dir/$_" } @$own_source_files ];
+    $native_source_files = [map { "$native_src_dir/$_" } @$native_source_files_base ];
   }
   
   # Compile source files
   my $object_files = [];
   my $is_native_class = 1;
-  for my $source_file ($native_class_file, @$resource_src_files) {
+  for my $source_file ($native_class_file, @$native_source_files) {
     my $current_is_native_class = $is_native_class;
     $is_native_class = 0;
     
