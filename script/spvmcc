@@ -84,7 +84,6 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Stops the output of messages
     -f, --force                    Forces the compile and link
-    -c, --config                   The config file
     -r, --required-resources       Prints required resources in JSON lines
     --no-config                    No configration file is ok
     -m, --mode                     Mode
