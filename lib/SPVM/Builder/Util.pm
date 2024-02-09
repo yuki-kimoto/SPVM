@@ -305,27 +305,30 @@ sub get_dependent_files {
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
-  my $config_file = "$lib_dir/" . &convert_class_name_to_rel_file($class_name, 'config');
+  my $spvm_class_rel_file_without_ext = &convert_class_name_to_rel_file($class_name);
   
-  my $config_file_without_ext = $config_file;
-  $config_file_without_ext =~ s/\.[^\.]+$//;
+  my $spvm_class_file_without_ext = "$lib_dir/$spvm_class_rel_file_without_ext";
   
-  my $spvm_class_file = "$config_file_without_ext.spvm";
+  my $spvm_class_rel_file = "$spvm_class_file_without_ext.spvm";
+  
+  my $spvm_class_file = "$spvm_class_file_without_ext.spvm";
   push @dependent_files, $spvm_class_file;
   
   # Dependency native class file
   if ($category eq 'native') {
     # Config
+    my $config_file = "$spvm_class_file_without_ext.config";
+    my @mode_config_files = glob "$spvm_class_file_without_ext.*.config";
+    push @dependent_files, $config_file, @mode_config_files;
     my $config = SPVM::Builder::Config->load_config($config_file);
-    push @dependent_files, $config_file;
     
     # Native class
     my $native_class_file_ext = $config->ext;
-    my $native_class_file = "$config_file_without_ext.$native_class_file_ext";
+    my $native_class_file = "$spvm_class_file_without_ext.$native_class_file_ext";
     push @dependent_files, $native_class_file;
     
     # Native include
-    my $native_include_dir = "$config_file_without_ext.native/include";
+    my $native_include_dir = "$spvm_class_file_without_ext.native/include";
     my @native_include_files;
     if (-d $native_include_dir) {
       find({wanted => sub { if (-f $_) { push @native_include_files, $_ } }, no_chdir => 1}, $native_include_dir);
@@ -333,7 +336,7 @@ sub get_dependent_files {
     push @dependent_files, @native_include_files;
     
     # Native source
-    my $native_src_dir = "$config_file_without_ext.native/src";
+    my $native_src_dir = "$spvm_class_file_without_ext.native/src";
     my @native_src_files;
     if (-d $native_src_dir) {
       find({wanted => sub { if (-f $_) { push @native_src_files, $_ } }, no_chdir => 1}, $native_src_dir);
