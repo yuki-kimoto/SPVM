@@ -15,7 +15,6 @@ SPVM::Builder::Util::getopt
   'I|include-dir=s' => \my @include_dirs,
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
-  'c|config=s' => \my $config_file,
   'r|required-resources' => \my $print_required_resources,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
@@ -45,7 +44,6 @@ else {
     output_file => $output_file,
     quiet => $quiet,
     force => $force,
-    config_file => $config_file,
     allow_no_config_file => $allow_no_config_file,
     mode => $mode,
   );

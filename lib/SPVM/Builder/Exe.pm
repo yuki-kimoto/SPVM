@@ -105,17 +105,6 @@ sub config {
   }
 }
 
-sub config_file {
-  my $self = shift;
-  if (@_) {
-    $self->{config_file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{config_file};
-  }
-}
-
 sub compiler {
   my $self = shift;
   if (@_) {
@@ -200,11 +189,7 @@ sub new {
   );
   
   # Config file
-  my $config_file = $self->{config_file};
-  
-  if (defined $config_file) {
-    warn "[Deprecated]The -c,--config option is deprecated.";
-  }
+  my $config_file;
   
   my $allow_no_config_file = $self->{allow_no_config_file};
   
