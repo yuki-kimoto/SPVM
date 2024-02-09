@@ -147,9 +147,9 @@ sub build_precompile_class_source_file {
   my $force = $self->detect_force;
   
   # Output - Precompile C source file
-  my $output_dir = $config->output_dir;
+  my $cc_output_dir = $config->cc_output_dir;
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
-  my $source_file = "$output_dir/$source_rel_file";
+  my $source_file = "$cc_output_dir/$source_rel_file";
   
   # Check if generating is needed
   my $spvm_include_dir = $INC{'SPVM/Builder.pm'};
@@ -284,15 +284,12 @@ sub compile_class {
     }
   }
   
-  my $output_dir;
-  if ($used_as_resource) {
-    $output_dir = $config->output_dir;
-  }
-  else {
-    $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
+  my $cc_output_dir = $config->cc_output_dir;
+  unless ($cc_output_dir) {
+    $cc_output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   }
   
-  mkpath $output_dir;
+  mkpath $cc_output_dir;
   
   if ($is_jit) {
     if (defined $build_dir) {
@@ -331,7 +328,7 @@ sub compile_class {
     
     my $config_precompile_class_source = $config->clone;
     
-    $config_precompile_class_source->output_dir($build_src_dir);
+    $config_precompile_class_source->cc_output_dir($build_src_dir);
     
     $self->build_precompile_class_source_file(
       $class_name,
@@ -349,7 +346,6 @@ sub compile_class {
   mkpath $build_object_dir;
   
   my $input_dir = $build_src_dir;
-  my $compile_output_dir = $build_object_dir;
   
   # Class file
   unless (defined $class_file) {
@@ -426,7 +422,7 @@ sub compile_class {
       my $resource_object_dir = $self->get_resource_object_dir_from_basic_type_name($class_name);
       mkpath $resource_object_dir;
       
-      $resource_config->output_dir($resource_object_dir),
+      $resource_config->cc_output_dir($resource_object_dir),
       
       my $compile_options = {
         runtime => $runtime,
@@ -474,7 +470,7 @@ sub compile_class {
     # Object file of native class
     if ($current_is_native_class) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
-      $object_file_name = "$output_dir/$object_rel_file";
+      $object_file_name = "$cc_output_dir/$object_rel_file";
     }
     # Object file of resource source file
     else {
@@ -485,7 +481,7 @@ sub compile_class {
       $object_file_base =~ s/^[\\\/]//;
       
       $object_file_base =~ s/\.[^\.]+$/.o/;
-      $object_file_name = "$output_dir/$object_rel_file/$object_file_base";
+      $object_file_name = "$cc_output_dir/$object_rel_file/$object_file_base";
       
       my $output_dir = dirname $object_file_name;
       mkpath $output_dir;
@@ -558,7 +554,7 @@ sub compile_class {
     # Compile a source file
     if ($need_generate) {
       my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
-      my $work_output_dir = "$output_dir/$module_rel_dir";
+      my $work_output_dir = "$cc_output_dir/$module_rel_dir";
       mkpath dirname $object_file_name;
       
       $self->compile_source_file($compile_info);
