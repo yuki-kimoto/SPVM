@@ -796,14 +796,14 @@ sub use_resource {
   return $resource;
 }
 
-sub disable_resource {
+sub no_compile_resource {
   my $self = shift;
   if (@_) {
-    $self->{disable_resource} = $_[0];
+    $self->{no_compile_resource} = $_[0];
     return $self;
   }
   else {
-    return $self->{disable_resource};
+    return $self->{no_compile_resource};
   }
 }
 
@@ -1218,12 +1218,12 @@ If thie field is C<static_lib>, the output file is a static link library.
 
 If thie field is C<exe>, the output file is an executable file.
 
-=head2 disable_resource
+=head2 no_compile_resource
 
-  my $disable_resource = $config->disable_resource;
-  $config->disable_resource($disable_resource);
+  my $no_compile_resource = $config->no_compile_resource;
+  $config->no_compile_resource($no_compile_resource);
 
-Gets and sets the C<disable_resource> field.
+Gets and sets the C<no_compile_resource> field.
 
 If this value is a true value, all resources loaded by the L</"use_resource"> method are disabled.
 

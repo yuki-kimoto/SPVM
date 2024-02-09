@@ -1106,7 +1106,11 @@ sub compile_native_class {
     }
     $config->add_include_dir(@$resource_include_dirs);
     
-    $config->disable_resource(1);
+    # 
+    unless ($class_name eq $self->class_name) {
+      $config->no_compile_resource(1);
+    }
+    
     my $object_files = $builder_cc->compile_class(
       $class_name,
       {
