@@ -1030,8 +1030,6 @@ sub compile_native_class {
   
   my $runtime = $self->runtime;
   
-  my $class = $self->runtime->get_basic_type_by_name($class_name);
-  
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   
   if (defined $config_file) {
