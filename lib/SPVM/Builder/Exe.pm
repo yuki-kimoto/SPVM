@@ -202,17 +202,11 @@ sub new {
   # Config file
   my $config_file = $self->{config_file};
   
-  my $allow_no_config_file = $self->{allow_no_config_file};
-  
-  unless ($allow_no_config_file) {
-    unless (defined $config_file) {
-      confess "A config file must be defined.";
-    }
-    
-    unless (-f $config_file) {
-      confess "The config file \"$config_file\" is not found.";
-    }
+  if (defined $config_file) {
+    warn "[Deprecated]The -c,--config option is deprecated.";
   }
+  
+  my $allow_no_config_file = $self->{allow_no_config_file};
   
   my $mode = $self->{mode};
   
@@ -229,7 +223,24 @@ sub new {
     }
   }
   else {
-    $config = SPVM::Builder::Config::Exe->new(file_optional => 1);
+    $config_file = SPVM::Builder::Util::search_config_file($class_name);
+    
+    if (defined $config_file) {
+      $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $mode);
+    }
+    else {
+      $config = SPVM::Builder::Config::Exe->new(file_optional => 1);
+    }
+  }
+  
+  unless ($allow_no_config_file) {
+    unless (defined $config_file) {
+      confess "A config file must be defined.";
+    }
+    
+    unless (-f $config_file) {
+      confess "The config file \"$config_file\" is not found.";
+    }
   }
   
   $config->class_name($class_name);

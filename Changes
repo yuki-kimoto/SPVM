@@ -7,8 +7,10 @@
     * Add the category field to the SPVM::Builder::Config class.
     * Add the category field to the SPVM::Builder::CompileInfo class.
     * Add the --no-config option to the spvmcc command.
+    * Add the -m, --mode option to the spvmcc command.
   [Deprecation]
     * The SPVM:: prefix is no more required in the class name given to the create_make_rule function in Makefile.PL.
+    * The -c, --config option in the spvmcc command is deprecated. A config file can be plcaed in the directory as same as the SPVM class file.
   [Bug Fix]
     * Add resource dependency to the create_make_rule_native method in Makefile.PL.
   [Incompatible Changes]
