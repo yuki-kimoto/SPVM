@@ -272,15 +272,15 @@ sub compile_class {
   # Config
   my $config = $options->{config};
   
+  my $runtime = $options->{runtime};
+  
+  my $used_as_resource = $options->{used_as_resource};
+  
   my $at_runtime = $options->{at_runtime};
   
   my $category = $config->category;
   
-  my $runtime = $options->{runtime};
-  
-  my $config_exe = $options->{config_exe};
-  
-  my $used_as_resource = $options->{used_as_resource};
+  my $config_exe = $config->config_exe;
   
   # Native class file
   my $native_class_ext = $config->ext;

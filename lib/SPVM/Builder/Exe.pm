@@ -1034,6 +1034,8 @@ sub compile_precompile_class {
   
   $config->category('precompile');
   
+  $config->config_exe($config_exe);
+  
   my $runtime = $self->runtime;
   
   my $object_files = [];
@@ -1042,7 +1044,6 @@ sub compile_precompile_class {
     {
       runtime => $runtime,
       config => $config,
-      config_exe => $config_exe,
     }
   );
   push @$object_files, @$precompile_object_files;
@@ -1095,12 +1096,13 @@ sub compile_native_class {
       $config->no_compile_resource(1);
     }
     
+    $config->config_exe($config_exe);
+    
     my $object_files = $builder_cc->compile_class(
       $class_name,
       {
         runtime => $runtime,
         config => $config,
-        config_exe => $config_exe,
       }
     );
     push @$all_object_files, @$object_files;
