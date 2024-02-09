@@ -24,7 +24,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok($link_info->config->class_name, 'TestCase::NativeAPILinkInfo');
   ok($link_info->config->ld, $config->ld);
   ok($link_info->config->ldflags, $config->ldflags);
-  like($link_info->output_file, qr|TestCase/NativeAPILinkInfo\.$Config{dlext}|);
+  like($link_info->config->output_file, qr|TestCase/NativeAPILinkInfo\.$Config{dlext}|);
   my $is_object_files = 1;
   for my $object_file (@{$link_info->object_files}) {
     unless ($object_file->isa('SPVM::Builder::ObjectFileInfo')) {
