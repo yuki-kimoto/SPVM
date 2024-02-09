@@ -43,7 +43,7 @@ my $dev_null = File::Spec->devnull;
 
 # Compilation Error
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_compile_error --config solo/lib/SPVM/MyExe.config MyExeCompileError);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_compile_error --no-config MyExeCompileError);
   my $status = system($spvmcc_cmd);
   ok($status != 0);
   
@@ -64,7 +64,7 @@ my $dev_null = File::Spec->devnull;
   
   # Basic
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe -c $test_dir/lib/SPVM/MyExe.config MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -91,7 +91,7 @@ my $dev_null = File::Spec->devnull;
     ok(length $spvmcc_output == 0);
   }
   
-  # debug config -O0 -g
+  # debug config -O0 -g (--config is deprecated. This test will be removed)
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --config $test_dir/lib/SPVM/MyExe.debug.config MyExe);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
@@ -121,7 +121,7 @@ my $dev_null = File::Spec->devnull;
   
   # debug config -O0 -g
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --config $test_dir/lib/SPVM/MyExe.config --mode debug MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --mode debug MyExe);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
@@ -166,7 +166,7 @@ my $dev_null = File::Spec->devnull;
 
 # Execute solo test. This is described in DEVELOPMENT.txt
 {
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I solo/lib/SPVM -o $exe_dir/myexe_solo --config solo/lib/SPVM/MyExe.config MyExe);
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I solo/lib/SPVM -o $exe_dir/myexe_solo MyExe);
   system($spvmcc_cmd) == 0
    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
