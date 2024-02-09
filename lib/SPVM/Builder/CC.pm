@@ -280,7 +280,7 @@ sub compile_class {
   
   my $config_exe = $options->{config_exe};
   
-  my $is_resource = $options->{is_resource};
+  my $used_as_resource = $options->{used_as_resource};
   
   # Native class file
   my $native_class_ext = $config->ext;
@@ -310,7 +310,7 @@ sub compile_class {
   }
   
   my $class_file;
-  if ($is_resource) {
+  if ($used_as_resource) {
     my $config_file = $config->file;
     
     my $config_file_basename = basename $config_file;
@@ -391,7 +391,7 @@ sub compile_class {
   
   # Native class file
   my $native_class_file;
-  unless ($is_resource) {
+  unless ($used_as_resource) {
     my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
     $native_class_file = "$input_dir/$native_class_rel_file";
     
@@ -890,7 +890,7 @@ sub create_link_info {
     my $compile_options = {
       runtime => $runtime,
       config => $resource_config,
-      is_resource => 1,
+      used_as_resource => 1,
     };
     
     my $object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);
