@@ -63,51 +63,36 @@ use SPVM::Builder::Config;
     }
   }
   
-  # $cc->is_jit
-  {
-    my $config = SPVM::Builder::Config->new(file_optional => 1);
-    my $cc = SPVM::Builder::CC->new;
-    
-    {
-      $cc->is_jit(1);
-      my $quiet = $cc->detect_quiet($config);
-      is($quiet, 1);
-    }
-  }
-  
   # order
   {
     {
-      my $config = SPVM::Builder::Config->new(file_optional => 1);
+      my $config = SPVM::Builder::Config->new(file_optional => 1, is_jit => 1);
       my $cc = SPVM::Builder::CC->new;
       
       $cc->debug(1);
       $cc->quiet(1);
       $config->quiet(1);
-      $cc->is_jit(1);
       
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 0);
     }
-
+    
     {
-      my $config = SPVM::Builder::Config->new(file_optional => 1);
+      my $config = SPVM::Builder::Config->new(file_optional => 1, is_jit => 1);
       my $cc = SPVM::Builder::CC->new;
       
       $cc->quiet(0);
       $config->quiet(1);
-      $cc->is_jit(1);
       
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 0);
     }
-
+    
     {
-      my $config = SPVM::Builder::Config->new(file_optional => 1);
+      my $config = SPVM::Builder::Config->new(file_optional => 1, is_jit => 1);
       my $cc = SPVM::Builder::CC->new;
       
       $config->quiet(0);
-      $cc->is_jit(1);
       
       my $quiet = $cc->detect_quiet($config);
       is($quiet, 0);

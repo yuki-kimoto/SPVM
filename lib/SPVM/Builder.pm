@@ -109,7 +109,7 @@ sub build_dist {
   );
 }
 
-sub build_is_jit {
+sub build_jit {
   my ($self, $class_name, $options) = @_;
   
   $options ||= {};
@@ -175,11 +175,12 @@ sub build {
   
   $config->category($category);
   
+  $config->is_jit($is_jit);
+  
   # Compile source files to object files
   my $compile_options = {
     runtime => $runtime,
     config => $config,
-    is_jit => $is_jit,
   };
   
   my $object_files = $cc->compile_class($class_name, $compile_options);
@@ -197,7 +198,6 @@ sub build {
     runtime => $runtime,
     output_dir => $output_dir,
     config => $config,
-    is_jit => $is_jit,
   };
   
   my $output_file = $cc->link(

@@ -351,6 +351,17 @@ sub config_exe {
   }
 }
 
+sub is_jit {
+  my $self = shift;
+  if (@_) {
+    $self->{is_jit} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{is_jit};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;

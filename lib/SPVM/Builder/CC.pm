@@ -53,17 +53,6 @@ sub quiet {
   }
 }
 
-sub is_jit {
-  my $self = shift;
-  if (@_) {
-    $self->{is_jit} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{is_jit};
-  }
-}
-
 sub debug {
   my $self = shift;
   if (@_) {
@@ -134,7 +123,7 @@ sub detect_quiet {
   elsif (defined $config && defined $config->quiet) {
     $quiet = $config->quiet;
   }
-  elsif ($self->is_jit) {
+  elsif (defined $config && $config->is_jit) {
     $quiet = 1;
   }
   else {
@@ -146,6 +135,8 @@ sub detect_quiet {
 
 sub build_precompile_class_source_file {
   my ($self, $class_name, $options) = @_;
+  
+  my $config = $options->{config};
   
   my $runtime = $options->{runtime};
   
@@ -276,7 +267,7 @@ sub compile_class {
   
   my $used_as_resource = $options->{used_as_resource};
   
-  my $is_jit = $options->{is_jit};
+  my $is_jit = $config->is_jit;
   
   my $category = $config->category;
   
@@ -331,14 +322,10 @@ sub compile_class {
     $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
     
-    my $cc = SPVM::Builder::CC->new(
-      build_dir => $build_dir,
-      is_jit => $is_jit,
-    );
-    
-    $cc->build_precompile_class_source_file(
+    $self->build_precompile_class_source_file(
       $class_name,
       {
+        config => $config,
         runtime => $runtime,
         output_dir => $build_src_dir,
       }
