@@ -15,48 +15,7 @@ use Encode 'decode';
 use File::Find 'find';
 
 # SPVM::Builder::Util is used from Makefile.PL
-# so this class must be wrote as pure perl script, not contain XS functions.
-
-sub get_spvm_core_perl_class_file_names {
-  my @spvm_builder_class_file_names = qw(
-    SPVM/BlessedObject/Array.pm
-    SPVM/BlessedObject/Class.pm
-    SPVM/BlessedObject.pm
-    SPVM/BlessedObject/String.pm
-    SPVM/Builder/API.pm
-    SPVM/Builder/CC.pm
-    SPVM/Builder/CompileInfo.pm
-    SPVM/Builder/Compiler.pm
-    SPVM/Builder/Config/Exe.pm
-    SPVM/Builder/Config.pm
-    SPVM/Builder/Env.pm
-    SPVM/Builder/Exe.pm
-    SPVM/Builder/LibInfo.pm
-    SPVM/Builder/LinkInfo.pm
-    SPVM/Builder/ObjectFileInfo.pm
-    SPVM/Builder.pm
-    SPVM/Builder/Resource.pm
-    SPVM/Builder/Runtime.pm
-    SPVM/Builder/Stack.pm
-    SPVM/Builder/Util/API.pm
-    SPVM/Builder/Util.pm
-    SPVM/Document/ExchangeAPI.pm
-    SPVM/ExchangeAPI/Class.pm
-    SPVM/ExchangeAPI/Error.pm
-    SPVM/ExchangeAPI.pm
-    SPVM/Global.pm
-    SPVM.pm
-  );
-  
-  return \@spvm_builder_class_file_names;
-}
-
-sub get_spvm_version_header_file_name {
-  
-  my $spvm_version_header_file_name = 'spvm_version.h';
-  
-  return $spvm_version_header_file_name;
-}
+# so this class must be wrote as pure perl. Do not contain XS functions.
 
 sub get_spvm_version_header_file {
   
@@ -69,81 +28,6 @@ sub get_spvm_version_header_file {
   }
   
   return $spvm_version_header_file;
-}
-
-sub get_spvm_core_header_file_names {
-  
-  my @spvm_core_header_file_names = qw(
-    spvm_allocator.h
-    spvm_allow.h
-    spvm_api_allocator.h
-    spvm_api_arg.h
-    spvm_api_basic_type.h
-    spvm_api_class_var.h
-    spvm_api_compiler.h
-    spvm_api_field.h
-    spvm_api.h
-    spvm_api_method.h
-    spvm_api_mutex.h
-    spvm_api_class_file.h
-    spvm_api_runtime.h
-    spvm_api_string_buffer.h
-    spvm_api_type.h
-    spvm_api_internal.h
-    spvm_array_field_access.h
-    spvm_attribute.h
-    spvm_basic_type.h
-    spvm_block.h
-    spvm_call_method.h
-    spvm_case_info.h
-    spvm_check.h
-    spvm_class_var_access.h
-    spvm_class_var.h
-    spvm_compiler.h
-    spvm_constant.h
-    spvm_dumper.h
-    spvm_field_access.h
-    spvm_field.h
-    spvm_hash.h
-    spvm_implement.h
-    spvm_interface.h
-    spvm_list.h
-    spvm_method.h
-    spvm_mutex.h
-    spvm_class_file.h
-    spvm_native.h
-    spvm_object.h
-    spvm_opcode_builder.h
-    spvm_opcode.h
-    spvm_opcode_list.h
-    spvm_op.h
-    spvm_precompile.h
-    spvm_public_api.h
-    spvm_runtime_arg.h
-    spvm_runtime_basic_type.h
-    spvm_runtime_class_var.h
-    spvm_runtime_field.h
-    spvm_runtime.h
-    spvm_runtime_method.h
-    spvm_runtime_string.h
-    spvm_strerror.h
-    spvm_string_buffer.h
-    spvm_string.h
-    spvm_switch_info.h
-    spvm_toke.h
-    spvm_typedecl.h
-    spvm_type.h
-    spvm_use.h
-    spvm_var_decl.h
-    spvm_var.h
-    spvm_version.h
-    spvm_vm.h
-    spvm_weaken_backref.h
-    spvm_yacc.h
-    spvm_yacc_util.h
-  );
-  
-  return \@spvm_core_header_file_names;
 }
 
 sub get_spvm_core_source_file_names {
@@ -206,37 +90,6 @@ sub get_spvm_core_source_file_names {
   );
 
   return \@spvm_core_source_file_names;
-}
-
-sub get_spvm_compiler_required_file_names {
-  my @get_spvm_compiler_required_file_names = qw(
-    SPVM/Native/Arg.c
-    SPVM/Native/Arg.spvm
-    SPVM/Native/BasicType.c
-    SPVM/Native/BasicType.spvm
-    SPVM/Native.c
-    SPVM/Native/ClassVar.c
-    SPVM/Native/ClassVar.spvm
-    SPVM/Native/Compiler.c
-    SPVM/Native/Compiler.spvm
-    SPVM/Native/Env.c
-    SPVM/Native/Env.spvm
-    SPVM/Native/Field.c
-    SPVM/Native/Field.spvm
-    SPVM/Native/Method.c
-    SPVM/Native/MethodCall.c
-    SPVM/Native/MethodCall.spvm
-    SPVM/Native/Method.spvm
-    SPVM/Native/ClassFile.c
-    SPVM/Native/ClassFile.spvm
-    SPVM/Native/Runtime.c
-    SPVM/Native/Runtime.spvm
-    SPVM/Native.spvm
-    SPVM/Native/Stack.c
-    SPVM/Native/Stack.spvm
-  );
-  
-  return \@get_spvm_compiler_required_file_names;
 }
 
 sub need_generate {
