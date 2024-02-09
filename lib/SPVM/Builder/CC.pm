@@ -667,7 +667,7 @@ sub link {
   my $link_info = $self->create_link_info($class_name, $object_files, $config, $options);
   
   # Output file
-  my $output_file = $link_info->output_file;
+  my $output_file = $config->output_file;
   
   # Execute the callback before this link
   my $before_link_cbs = $config->before_link_cbs;
@@ -712,7 +712,7 @@ sub link {
     # ExtUtils::CBuilder object
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
-    my $link_info_output_file = $link_info->output_file;
+    my $link_info_output_file = $config->output_file;
     my $link_info_object_files = $link_info->object_files;
     
     my $link_command_args = $link_info->create_ldflags;
@@ -821,6 +821,8 @@ sub create_link_info {
   
   my $category = $config->category;
   
+  my $output_file = $config->output_file;
+  
   my $all_object_files = [@$object_files];
   
   my $output_dir = $config->output_dir;
@@ -889,7 +891,6 @@ sub create_link_info {
   $config->libs($lib_infos);
   
   # Output file
-  my $output_file = $options->{output_file};
   unless (defined $output_file) {
     # Dynamic library directory
     unless (defined $output_dir && -d $output_dir) {
@@ -922,6 +923,8 @@ sub create_link_info {
     $output_file .= $exe_ext;
   }
   
+  $config->output_file($output_file);
+  
   # Optimize
   my $ld_optimize = $config->ld_optimize;
   
@@ -929,7 +932,6 @@ sub create_link_info {
     class_name => $class_name,
     config => $config,
     object_files => $all_object_files,
-    output_file => $output_file,
   );
   
   return $link_info;

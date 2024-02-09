@@ -11,6 +11,7 @@
     * Add the config_exe field to SPVM::Builder::Config.
     * Add the is_jit field to SPVM::Builder::Config.
     * Add the output_dir field to SPVM::Builder::Config.
+    * Add the output_file field to SPVM::Builder::Config.
   [Deprecation]
     * The SPVM:: prefix is no more required in the class name given to the create_make_rule function in Makefile.PL.
   [Bug Fix]

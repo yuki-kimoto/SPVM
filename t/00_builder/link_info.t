@@ -18,9 +18,6 @@ use SPVM::Builder::LinkInfo;
   
   $object_file->object_files("test");
   is($object_file->object_files(), "test");
-  
-  $object_file->output_file("test");
-  is($object_file->output_file(), "test");
 }
 
 done_testing;

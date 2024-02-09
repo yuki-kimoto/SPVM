@@ -286,12 +286,9 @@ sub build_exe_file {
     quiet => $self->quiet,
     force => $self->force,
   );
-  my $options = {
-    output_file => $self->{output_file},
-    config => $config_linker,
-  };
+  $config_linker->output_file($self->{output_file});
   
-  $cc_linker->link($class_name, $object_files, $options);
+  $cc_linker->link($class_name, $object_files, {config => $config_linker});
 }
 
 sub get_required_resources {

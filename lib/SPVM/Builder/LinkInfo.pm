@@ -18,17 +18,6 @@ sub config {
   }
 }
 
-sub output_file {
-  my $self = shift;
-  if (@_) {
-    $self->{output_file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{output_file};
-  }
-}
-
 sub object_files {
   my $self = shift;
   if (@_) {
@@ -68,7 +57,7 @@ sub create_command {
   my $config = $self->config;
   
   my $ld = $config->ld;
-  my $output_file = $self->output_file;
+  my $output_file = $config->output_file;
   my $object_files = $self->object_files;
   my $object_file_names = [map { $_->to_string; } @$object_files];
   
