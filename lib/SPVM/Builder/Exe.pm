@@ -344,20 +344,21 @@ sub get_required_resources {
       
       my $config_file = SPVM::Builder::Util::search_config_file($class_name);
       
-      my $mode = $self->{mode};
-      
-      my $config_exe = SPVM::Builder::Config->load_mode_config($config_file, $mode);
-      
-      my $resource_names = $config_exe->get_resource_names;
-      for my $resource_name (@$resource_names) {
-        my $resource = $config_exe->get_resource($resource_name);
+      unless ($class_name eq $self->class_name) {
         
-        my $resource_info = {
-          class_name => $class_name,
-          resource => $resource
-        };
+        my $config_exe = SPVM::Builder::Config->load_config($config_file);
         
-        push @$required_resources, $resource_info;
+        my $resource_names = $config_exe->get_resource_names;
+        for my $resource_name (@$resource_names) {
+          my $resource = $config_exe->get_resource($resource_name);
+          
+          my $resource_info = {
+            class_name => $class_name,
+            resource => $resource
+          };
+          
+          push @$required_resources, $resource_info;
+        }
       }
     }
   }
@@ -1077,7 +1078,11 @@ sub compile_native_class {
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   
   if (defined $config_file) {
-    my $mode = $self->{mode};
+    
+    my $mode;
+    if ($class_name eq $self->class_name) {
+      $mode = $self->{mode};
+    }
     
     my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode);
     
