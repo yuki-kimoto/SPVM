@@ -51,6 +51,10 @@ sub get_spvm_core_perl_class_file_names {
   return \@spvm_builder_class_file_names;
 }
 
+sub get_spvm_version_header_file_name {
+  
+}
+
 sub get_spvm_core_header_file_names {
   
   my @spvm_core_header_file_names = qw(
