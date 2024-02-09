@@ -298,15 +298,10 @@ sub create_make_rule_precompile {
   create_make_rule($class_name, 'precompile', @_);
 }
 
-sub create_make_rule {
+sub get_dependent_files {
   my ($class_name, $category, $options) = @_;
   
-  $options ||= {};
-  
-  # Deprecated
-  if ($class_name =~ s/^SPVM:://) {
-    warn "The SPVM:: prefix is no more required in the class name given to the create_make_rule function.";
-  }
+  my @dependent_files;
   
   my $lib_dir = defined $options->{lib_dir} ? $options->{lib_dir} : 'lib';
   
@@ -314,9 +309,6 @@ sub create_make_rule {
   
   my $config_file_without_ext = $config_file;
   $config_file_without_ext =~ s/\.[^\.]+$//;
-  
-  # Dependency files
-  my @dependent_files;
   
   my $spvm_class_file = "$config_file_without_ext.spvm";
   push @dependent_files, $spvm_class_file;
@@ -387,6 +379,19 @@ sub create_make_rule {
     }
   }
   
+  return \@dependent_files;
+}
+
+sub create_make_rule {
+  my ($class_name, $category, $options) = @_;
+  
+  $options ||= {};
+  
+  # Deprecated
+  if ($class_name =~ s/^SPVM:://) {
+    warn "The SPVM:: prefix is no more required in the class name given to the create_make_rule function.";
+  }
+  
   # Shared library file
   my $dynamic_lib_rel_file = &convert_class_name_to_dynamic_lib_rel_file($class_name, $category);
   my $dynamic_lib_file = "blib/lib/$dynamic_lib_rel_file";
@@ -398,7 +403,8 @@ sub create_make_rule {
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
   
   # Get source files
-  $make_rule .= "$dynamic_lib_file :: @dependent_files\n";
+  my $dependent_files = &get_dependent_files($class_name, $category, $options);
+  $make_rule .= "$dynamic_lib_file :: @$dependent_files\n";
   $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
   
   return $make_rule;
