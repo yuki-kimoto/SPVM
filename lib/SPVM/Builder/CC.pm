@@ -53,14 +53,14 @@ sub quiet {
   }
 }
 
-sub at_runtime {
+sub is_jit {
   my $self = shift;
   if (@_) {
-    $self->{at_runtime} = $_[0];
+    $self->{is_jit} = $_[0];
     return $self;
   }
   else {
-    return $self->{at_runtime};
+    return $self->{is_jit};
   }
 }
 
@@ -134,7 +134,7 @@ sub detect_quiet {
   elsif (defined $config && defined $config->quiet) {
     $quiet = $config->quiet;
   }
-  elsif ($self->at_runtime) {
+  elsif ($self->is_jit) {
     $quiet = 1;
   }
   else {
@@ -276,7 +276,7 @@ sub compile_class {
   
   my $used_as_resource = $options->{used_as_resource};
   
-  my $at_runtime = $options->{at_runtime};
+  my $is_jit = $options->{is_jit};
   
   my $category = $config->category;
   
@@ -296,7 +296,7 @@ sub compile_class {
   my $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   mkpath $output_dir;
   
-  if ($at_runtime) {
+  if ($is_jit) {
     if (defined $build_dir) {
       mkpath $build_dir;
     }
@@ -333,7 +333,7 @@ sub compile_class {
     
     my $cc = SPVM::Builder::CC->new(
       build_dir => $build_dir,
-      at_runtime => $at_runtime,
+      is_jit => $is_jit,
     );
     
     $cc->build_precompile_class_source_file(

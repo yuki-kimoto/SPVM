@@ -88,7 +88,7 @@ sub build_dist {
   
   $options ||= {};
   
-  my $at_runtime = 0;
+  my $is_jit = 0;
   
   my $category = $options->{category};
   
@@ -103,18 +103,18 @@ sub build_dist {
     {
       runtime => $runtime,
       category => $category,
-      at_runtime => $at_runtime,
+      is_jit => $is_jit,
       output_dir => $output_dir,
     }
   );
 }
 
-sub build_at_runtime {
+sub build_is_jit {
   my ($self, $class_name, $options) = @_;
   
   $options ||= {};
   
-  my $at_runtime = 1;
+  my $is_jit = 1;
   
   my $category = $options->{category};
   
@@ -127,7 +127,7 @@ sub build_at_runtime {
     {
       runtime => $runtime,
       category => $category,
-      at_runtime => $at_runtime,
+      is_jit => $is_jit,
     }
   );
   
@@ -141,11 +141,11 @@ sub build {
   
   my $build_dir = $self->build_dir;
   
-  my $at_runtime = $options->{at_runtime};
+  my $is_jit = $options->{is_jit};
   
   my $cc = SPVM::Builder::CC->new(
     build_dir => $build_dir,
-    at_runtime => $at_runtime,
+    is_jit => $is_jit,
   );
   
   my $category = $options->{category};
@@ -179,14 +179,14 @@ sub build {
   my $compile_options = {
     runtime => $runtime,
     config => $config,
-    at_runtime => $at_runtime,
+    is_jit => $is_jit,
   };
   
   my $object_files = $cc->compile_class($class_name, $compile_options);
   
   # Output directory
   unless (defined $output_dir) {
-    if ($at_runtime) {
+    if ($is_jit) {
       $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
       mkpath $output_dir;
     }
@@ -197,7 +197,7 @@ sub build {
     runtime => $runtime,
     output_dir => $output_dir,
     config => $config,
-    at_runtime => $at_runtime,
+    is_jit => $is_jit,
   };
   
   my $output_file = $cc->link(
