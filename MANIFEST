@@ -430,8 +430,6 @@ solo/lib/SPVM/TestCase/Pointer.spvm
 solo/lib/SPVM/TestCase/Simple.spvm
 solo/lib/SPVM/TestCase/Weaken.spvm
 solo/lib/SPVM/TestCase/Weaken2.spvm
-solo/myexe.config
-solo/myexe.debug.config
 solo/myexe.debug_memory_count.config
 SPVM.xs
 t/00_builder/cc.t
@@ -956,8 +954,6 @@ t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/baz/noneed.txt
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/foo.c
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/04_spvmcc/lib/SPVM/TestCase/NativeAPI2.spvm
-t/04_spvmcc/myexe.config
-t/04_spvmcc/myexe.debug.config
 t/04_spvmcc/myexe.pl
 t/04_spvmcc/SPVM_Builder_Exe.t
 t/04_spvmcc/spvmcc.t
