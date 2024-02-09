@@ -389,6 +389,9 @@ ppport.h
 README.md
 script/spvmcc
 script/spvmdist
+solo/lib/SPVM/MyExe.config
+solo/lib/SPVM/MyExe.debug.config
+solo/lib/SPVM/MyExe.debug_memory_count.config
 solo/lib/SPVM/MyExe.spvm
 solo/lib/SPVM/TestCase.spvm
 solo/lib/SPVM/TestCase/Allow.spvm
@@ -934,6 +937,8 @@ t/02_vm/lib/SPVM/TestCase/Util/Thread/ThisThread.spvm
 t/02_vm/lib/SPVM/TestCase/Warn.spvm
 t/02_vm/lib/SPVM/TestCase/Weaken.spvm
 t/02_vm/lib/SPVM/TestCase/While.spvm
+t/04_spvmcc/lib/SPVM/MyExe.config
+t/04_spvmcc/lib/SPVM/MyExe.debug.config
 t/04_spvmcc/lib/SPVM/MyExe.spvm
 t/04_spvmcc/lib/SPVM/MyExe/Foo/Bar.config
 t/04_spvmcc/lib/SPVM/MyExe/Foo/Bar.spvm
