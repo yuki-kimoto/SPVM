@@ -438,7 +438,9 @@ sub compile_class {
       $native_class_file = "$input_dir/$native_class_rel_file";
       
       unless (-f $native_class_file) {
-        confess "Can't find source file $native_class_file";
+        unless ($config->isa('SPVM::Builder::Config::Exe')) {
+          confess "Can't find source file $native_class_file";
+        }
       }
     }
   }
@@ -457,7 +459,7 @@ sub compile_class {
     my $current_is_native_class = $is_native_class;
     $is_native_class = 0;
     
-    next unless defined $source_file;
+    next unless defined $source_file && -f $source_file;;
     
     my $object_file_name;
     
