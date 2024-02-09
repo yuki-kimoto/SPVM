@@ -22,19 +22,19 @@ sub new {
 }
 
 sub build_dynamic_lib_dist_precompile {
-  my ($self, $class_name) = @_;
+  my ($self, $class_name, $options) = @_;
   
   my $builder = $self->{builder};
   
-  $builder->build_dynamic_lib_dist_precompile($class_name);
+  $builder->build_dynamic_lib_dist_precompile($class_name, $options);
 }
 
 sub build_dynamic_lib_dist_native {
-  my ($self, $class_name) = @_;
+  my ($self, $class_name, $options) = @_;
   
   my $builder = $self->{builder};
   
-  $builder->build_dynamic_lib_dist_native($class_name);
+  $builder->build_dynamic_lib_dist_native($class_name, $options);
 }
 
 1;
@@ -78,12 +78,21 @@ The building directory.
 
 =head2 build_dynamic_lib_dist_precompile
 
-  $builder->build_dynamic_lib_dist_precompile($class_name)
+  $builder->build_dynamic_lib_dist_precompile($class_name, $options)
 
 Generates a dynamic library for a class $class_name that has C<precompile> methods, and copies it to the C<blib/lib> directory.
 
+$options is a hash reference.
+
+If the C<force> option is a true value, the compilation and link are forced.
+
 =head2 build_dynamic_lib_dist_native
 
-  $builder->build_dynamic_lib_dist_native($class_name)
+  $builder->build_dynamic_lib_dist_native($class_name, $options)
 
 Generates a dynamic library for a class $class_name that has C<native> methods, and copies it to the C<blib/lib> directory.
+
+$options is a hash reference.
+
+If the C<force> option is a true value, the compilation and link are forced.
+

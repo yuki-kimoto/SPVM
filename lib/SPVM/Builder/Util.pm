@@ -411,7 +411,7 @@ sub create_make_rule {
   # Get source files
   my $dependent_files = &get_dependent_files($class_name, $category, $options);
   $make_rule .= "$dynamic_lib_file :: @$dependent_files\n";
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$class_name')\"\n\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_dynamic_lib_dist_$category('$class_name', {force => 1})\"\n\n";
   
   return $make_rule;
 }

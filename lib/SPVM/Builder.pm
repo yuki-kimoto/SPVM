@@ -54,19 +54,31 @@ sub new {
 
 # Instance Methods
 sub build_dynamic_lib_dist_precompile {
-  my ($self, $class_name) = @_;
+  my ($self, $class_name, $options) = @_;
   
-  $self->build_dynamic_lib_dist($class_name, 'precompile');
+  $options ||= {};
+  
+  $options = {%$options, category => 'precompile'};
+  
+  $self->build_dynamic_lib_dist($class_name, $options);
 }
 
 sub build_dynamic_lib_dist_native {
-  my ($self, $class_name) = @_;
+  my ($self, $class_name, $options) = @_;
   
-  $self->build_dynamic_lib_dist($class_name, 'native');
+  $options ||= {};
+  
+  $options = {%$options, category => 'native'};
+  
+  $self->build_dynamic_lib_dist($class_name, $options);
 }
 
 sub build_dynamic_lib_dist {
-  my ($self, $class_name, $category) = @_;
+  my ($self, $class_name, $options) = @_;
+  
+  $options ||= {};
+  
+  $options = {%$options};
   
   # Create the compiler
   my $compiler = SPVM::Builder::Compiler->new(
@@ -80,7 +92,9 @@ sub build_dynamic_lib_dist {
   }
   my $runtime = $compiler->get_runtime;
   
-  $self->build_dist($class_name, {runtime => $runtime, category => $category});
+  $options->{runtime} = $runtime;
+  
+  $self->build_dist($class_name, $options);
 }
 
 sub build_dist {
@@ -88,25 +102,17 @@ sub build_dist {
   
   $options ||= {};
   
-  my $is_jit = 0;
+  $options = {%$options};
   
-  my $category = $options->{category};
+  my $is_jit = 0;
   
   my $build_dir = $self->build_dir;
   
-  my $runtime = $options->{runtime};
-  
   my $output_dir = 'blib/lib';
   
-  $self->build(
-    $class_name,
-    {
-      runtime => $runtime,
-      category => $category,
-      is_jit => $is_jit,
-      output_dir => $output_dir,
-    }
-  );
+  $options->{output_dir} = $output_dir;
+  
+  $self->build($class_name, $options);
 }
 
 sub build_jit {
@@ -114,24 +120,13 @@ sub build_jit {
   
   $options ||= {};
   
-  my $is_jit = 1;
-  
-  my $category = $options->{category};
+  $options = {%$options};
   
   my $build_dir = $self->build_dir;
   
-  my $runtime = $options->{runtime};
+  $options->{is_jit} = 1;
   
-  my $build_file = $self->build(
-    $class_name,
-    {
-      runtime => $runtime,
-      category => $category,
-      is_jit => $is_jit,
-    }
-  );
-  
-  return $build_file;
+  $self->build($class_name, $options);
 }
 
 sub build {
@@ -139,18 +134,13 @@ sub build {
   
   $options ||= {};
   
+  $options = {%$options};
+  
   my $build_dir = $self->build_dir;
   
   my $is_jit = $options->{is_jit};
   
-  my $cc = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-    is_jit => $is_jit,
-  );
-  
   my $category = $options->{category};
-  
-  my $runtime = $options->{runtime};
   
   my $output_dir = $options->{output_dir};
   
@@ -186,26 +176,23 @@ sub build {
   
   $config->output_dir($output_dir);
   
-  # Output directory
-  # Compile source files to object files
-  my $compile_options = {
-    runtime => $runtime,
-    config => $config,
-  };
+  my $runtime = $options->{runtime};
   
-  my $object_files = $cc->compile_class($class_name, $compile_options);
+  my $cc_options = {build_dir => $build_dir};
+  
+  if (exists $options->{force}) {
+    $cc_options->{force} = $options->{force};
+  }
+  
+  my $cc = SPVM::Builder::CC->new(%$cc_options);
+  
+  my $compile_and_link_options = {config => $config, runtime => $runtime};
+  
+  # Compile source files to object files
+  my $object_files = $cc->compile_class($class_name, $compile_and_link_options);
   
   # Link object files and generate a dynamic library
-  my $link_options = {
-    runtime => $runtime,
-    config => $config,
-  };
-  
-  my $output_file = $cc->link(
-    $class_name,
-    $object_files,
-    $link_options
-  );
+  my $output_file = $cc->link($class_name, $object_files, $compile_and_link_options);
   
   return $output_file;
 }

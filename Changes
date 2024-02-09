@@ -1,4 +1,7 @@
 0.989070 2023-02-09
+  [New Features]
+    * Add the force option to the build_dynamic_lib_dist_precompile method and the build_dynamic_lib_dist_native method
+      in the SPVM::Builder::API class.
   [Internal Changes]
     * Add spvm_version.h, and spvm_native.h includes spvm_version.h.
   [Changes]
