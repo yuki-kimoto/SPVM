@@ -14,6 +14,7 @@
     * A resource must need its SPVM class file.
   [Changes]
     * Linker messages output before executing command.
+    * No native class file and no ext is allowed.
 0.989068 2023-01-22
   [New Features]
     * Add the copy_object_with_proto method to the Array class.

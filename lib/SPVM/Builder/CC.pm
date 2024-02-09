@@ -282,6 +282,13 @@ sub compile_class {
   
   my $is_resource = $options->{is_resource};
   
+  # Native class file
+  my $native_class_ext = $config->ext;
+  
+  unless (defined $native_class_ext) {
+    return [];
+  }
+  
   if ($category eq 'precompile') {
     my $precompile_method_names = &_runtime_get_method_names($runtime, $class_name, $category);
     
@@ -385,11 +392,6 @@ sub compile_class {
   # Native class file
   my $native_class_file;
   unless ($is_resource) {
-    # Native class file
-    my $native_class_ext = $config->ext;
-    unless (defined $native_class_ext) {
-      confess "Source extension is not specified";
-    }
     my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
     $native_class_file = "$input_dir/$native_class_rel_file";
     
