@@ -127,16 +127,13 @@ sub create_ccflags {
     }
     
     # Resource include directories
-    my $disable_resource = $config->disable_resource;
-    unless ($disable_resource) {
-      my $resource_names = $config->get_resource_names;
-      for my $resource_name (@$resource_names) {
-        my $resource = $config->get_resource($resource_name);
-        my $config = $resource->config;
-        my $resource_include_dir = $config->native_include_dir;
-        if (defined $resource_include_dir) {
-          push @all_include_dirs, $resource_include_dir;
-        }
+    my $resource_names = $config->get_resource_names;
+    for my $resource_name (@$resource_names) {
+      my $resource = $config->get_resource($resource_name);
+      my $config = $resource->config;
+      my $resource_include_dir = $config->native_include_dir;
+      if (defined $resource_include_dir) {
+        push @all_include_dirs, $resource_include_dir;
       }
     }
     
