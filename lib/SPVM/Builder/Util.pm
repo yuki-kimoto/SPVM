@@ -404,61 +404,6 @@ sub create_make_rule {
   return $make_rule;
 }
 
-sub get_spvm_dependent_files {
-  
-  my @spvm_dependent_files;
-  if (my $builder_loaded_file = $INC{'SPVM/Builder/Util.pm'}) {
-    my $builder_loaded_dir = $builder_loaded_file;
-    $builder_loaded_dir =~ s|[/\\]SPVM/Builder/Util\.pm$||;
-    
-    # SPVM::Builder class files
-    my $spvm_core_perl_class_file_names = &get_spvm_core_perl_class_file_names();
-    for my $spvm_core_perl_class_file_name (@$spvm_core_perl_class_file_names) {
-      my $spvm_core_perl_class_file = "$builder_loaded_dir/$spvm_core_perl_class_file_name";
-      unless (-f $spvm_core_perl_class_file) {
-        confess "Can't find $spvm_core_perl_class_file";
-      }
-      push @spvm_dependent_files, $spvm_core_perl_class_file;
-    }
-    
-    # SPVM core header files
-    my $spvm_core_header_file_names = &get_spvm_core_header_file_names();
-    for my $spvm_core_header_file_name (@$spvm_core_header_file_names) {
-      my $spvm_core_header_file = "$builder_loaded_dir/SPVM/Builder/include/$spvm_core_header_file_name";
-      unless (-f $spvm_core_header_file) {
-        confess "Can't find $spvm_core_header_file";
-      }
-      push @spvm_dependent_files, $spvm_core_header_file;
-    }
-    
-    # SPVM core source files
-    my $spvm_core_source_file_names  = &get_spvm_core_source_file_names();
-    for my $spvm_core_source_file_name (@$spvm_core_source_file_names) {
-      my $spvm_core_source_file = "$builder_loaded_dir/SPVM/Builder/src/$spvm_core_source_file_name";
-      unless (-f $spvm_core_source_file) {
-        confess "Can't find $spvm_core_source_file";
-      }
-      push @spvm_dependent_files, $spvm_core_source_file;
-    }
-    
-    # SPVM Compiler required file names
-    my $get_spvm_compiler_required_file_names = &get_spvm_compiler_required_file_names();
-    for my $get_spvm_compiler_required_file_name (@$get_spvm_compiler_required_file_names) {
-      my $get_spvm_compiler_required_class_file = "$builder_loaded_dir/$get_spvm_compiler_required_file_name";
-      unless (-f $get_spvm_compiler_required_class_file) {
-        confess "Can't find $get_spvm_compiler_required_class_file";
-      }
-      push @spvm_dependent_files, $get_spvm_compiler_required_class_file;
-    }
-  }
-  
-  unless (@spvm_dependent_files) {
-    confess "[Unexpected Error]SPVM dependent files are not found";
-  }
-  
-  return \@spvm_dependent_files;
-}
-
 sub search_config_file {
   my ($class_name, $mode) = @_;
   
