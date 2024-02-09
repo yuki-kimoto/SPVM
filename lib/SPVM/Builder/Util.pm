@@ -612,9 +612,6 @@ sub search_config_file {
       last;
     }
   }
-  unless (defined $config_file) {
-    confess "Can't find the config file \"$config_file_base\" in (@INC)";
-  }
   
   return $config_file;
 }

@@ -159,6 +159,12 @@ sub build {
   if ($category eq 'native') {
     my $config_file = SPVM::Builder::Util::search_config_file($class_name);
     
+    unless (defined $config_file) {
+      my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+      
+      confess "A config file \"$config_rel_file\" is not found in (@INC)";
+    }
+    
     $config = SPVM::Builder::Config->load_config($config_file);
   }
   elsif ($category eq 'precompile') {

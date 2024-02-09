@@ -936,8 +936,15 @@ sub create_link_info {
 
 sub resource_src_dir_from_class_name {
   my ($self, $class_name) = @_;
-
+  
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  
+  unless (defined $config_file) {
+    my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+    
+    confess "A config file \"$config_rel_file\" is not found in (@INC)";
+  }
+  
   my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
   
   my $resource_src_dir = $config_file;

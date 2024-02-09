@@ -778,6 +778,12 @@ sub use_resource {
   
   my $config_file = SPVM::Builder::Util::search_config_file($resource_class_name, $resource_mode);
   
+  unless (defined $config_file) {
+    my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, 'config');
+    
+    confess "A config file \"$config_rel_file\" is not found in (@INC)";
+  }
+  
   my $config = $self->load_config($config_file, @$resource_argv);
   $config->file($config_file);
   
