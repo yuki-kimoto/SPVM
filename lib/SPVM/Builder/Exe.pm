@@ -1032,17 +1032,9 @@ sub compile_native_class {
   
   my $class = $self->runtime->get_basic_type_by_name($class_name);
   
-  my $native_method_names = $class->_get_native_method_names;
-  if (@$native_method_names) {
-    
-    my $config_file = SPVM::Builder::Util::search_config_file($class_name);
-    
-    unless (defined $config_file) {
-      my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-      
-      confess "A config file \"$config_rel_file\" is not found in (@INC)";
-    }
-    
+  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  
+  if (defined $config_file) {
     my $config = SPVM::Builder::Config->load_config($config_file);
     
     my $resource_include_dirs = [];
