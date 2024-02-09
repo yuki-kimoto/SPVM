@@ -27,7 +27,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   my $basic_type_name = 'MyExe';
   my $include_dirs = [map { "$_/SPVM" } "$test_dir/lib", @INC];
   my $output_file = "$build_dir/work/myexe";
-  my $config_file = "$test_dir/myexe.config";
+  my $config_file = "$test_dir/lib/SPVM/MyExe.config";
 
   my $builder_exe = SPVM::Builder::Exe->new(
     class_name => $basic_type_name,
