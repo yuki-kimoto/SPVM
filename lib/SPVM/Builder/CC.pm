@@ -265,7 +265,7 @@ sub compile_class {
   
   my $runtime = $options->{runtime};
   
-  my $used_as_resource = $options->{used_as_resource};
+  my $used_as_resource = $config->used_as_resource;
   
   my $is_jit = $config->is_jit;
   
@@ -414,6 +414,8 @@ sub compile_class {
       
       $resource_config->resource_loader_config($config),
       
+      $resource_config->used_as_resource(1),
+      
       my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
       my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
       mkpath $resource_object_dir;
@@ -421,7 +423,6 @@ sub compile_class {
       my $compile_options = {
         runtime => $runtime,
         config => $resource_config,
-        used_as_resource => 1,
       };
       
       my $resouce_object_files = $builder_cc_resource->compile_class($resource_class_name, $compile_options);

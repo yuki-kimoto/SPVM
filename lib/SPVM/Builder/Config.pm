@@ -384,6 +384,17 @@ sub output_file {
   }
 }
 
+sub used_as_resource {
+  my $self = shift;
+  if (@_) {
+    $self->{used_as_resource} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{used_as_resource};
+  }
+}
+
 # Class Methods
 sub new {
   my $class = shift;
@@ -1313,6 +1324,15 @@ The directory that a dinamic link library or an executable file is output to.
 Gets and sets the C<output_file> field.
 
 The path that a dinamic link library or an executable file is output to.
+
+=head2 used_as_resource
+
+  my $used_as_resource = $config->used_as_resource;
+  $config->used_as_resource($used_as_resource);
+
+Gets and sets the C<used_as_resource> field.
+
+If this field is true, this config is used as a resource.
 
 =head1 Class Methods
 
