@@ -314,6 +314,9 @@ sub get_dependent_files {
   my $spvm_class_file = "$spvm_class_file_without_ext.spvm";
   push @dependent_files, $spvm_class_file;
   
+  my $spvm_version_header_file = &get_spvm_version_header_file;
+  push @dependent_files, $spvm_version_header_file;
+  
   # Dependency native class file
   if ($category eq 'native') {
     # Config
