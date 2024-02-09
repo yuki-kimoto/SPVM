@@ -175,7 +175,7 @@ sub new {
   unless (defined $build_dir) {
     $build_dir = '.spvm_build';
   }
-
+  
   # Class paths
   my $include_dirs = delete $self->{include_dirs};
   unless (defined $include_dirs) {
@@ -206,7 +206,8 @@ sub new {
     }
     else {
       unless (defined $config_file) {
-        confess "A config file is not found in (@INC).";
+        my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
+        confess "A config file \"$config_rel_file\" is not found in (@INC).";
       }
     }
   }
