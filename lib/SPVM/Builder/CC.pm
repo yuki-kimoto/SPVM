@@ -147,7 +147,7 @@ sub build_precompile_class_source_file {
   my $force = $self->detect_force;
   
   # Output - Precompile C source file
-  my $output_dir = $options->{output_dir};
+  my $output_dir = $config->output_dir;
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
   my $source_file = "$output_dir/$source_rel_file";
   
@@ -322,12 +322,15 @@ sub compile_class {
     $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     mkpath $build_src_dir;
     
+    my $config_precompile_class_source = $config->clone;
+    
+    $config_precompile_class_source->output_dir($build_src_dir);
+    
     $self->build_precompile_class_source_file(
       $class_name,
       {
-        config => $config,
+        config => $config_precompile_class_source,
         runtime => $runtime,
-        output_dir => $build_src_dir,
       }
     );
   }
@@ -812,13 +815,15 @@ sub link {
 sub create_link_info {
   my ($self, $class_name, $object_files, $config, $options) = @_;
   
+  $options ||= {};
+  
   my $runtime = $options->{runtime};
   
   my $category = $config->category;
   
   my $all_object_files = [@$object_files];
   
-  $options ||= {};
+  my $output_dir = $config->output_dir;
   
   # Linker
   my $ld = $config->ld;
@@ -887,7 +892,6 @@ sub create_link_info {
   my $output_file = $options->{output_file};
   unless (defined $output_file) {
     # Dynamic library directory
-    my $output_dir = $options->{output_dir};
     unless (defined $output_dir && -d $output_dir) {
       confess "Shared lib directory must be specified for link";
     }
@@ -917,7 +921,7 @@ sub create_link_info {
     
     $output_file .= $exe_ext;
   }
-
+  
   # Optimize
   my $ld_optimize = $config->ld_optimize;
   

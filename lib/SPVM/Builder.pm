@@ -154,6 +154,13 @@ sub build {
   
   my $output_dir = $options->{output_dir};
   
+  unless (defined $output_dir) {
+    if ($is_jit) {
+      $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
+      mkpath $output_dir;
+    }
+  }
+  
   # Config
   my $config;
   if ($category eq 'native') {
@@ -177,6 +184,9 @@ sub build {
   
   $config->is_jit($is_jit);
   
+  $config->output_dir($output_dir);
+  
+  # Output directory
   # Compile source files to object files
   my $compile_options = {
     runtime => $runtime,
@@ -185,18 +195,9 @@ sub build {
   
   my $object_files = $cc->compile_class($class_name, $compile_options);
   
-  # Output directory
-  unless (defined $output_dir) {
-    if ($is_jit) {
-      $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
-      mkpath $output_dir;
-    }
-  }
-  
   # Link object files and generate a dynamic library
   my $link_options = {
     runtime => $runtime,
-    output_dir => $output_dir,
     config => $config,
   };
   
