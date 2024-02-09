@@ -107,9 +107,15 @@ my $dev_null = File::Spec->devnull;
 
   # Compile and link cached
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --build-dir $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --no-config MyExe);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
-    ok(length $spvmcc_output == 0);
+    if (length $spvmcc_output == 0) {
+      ok(1);
+    }
+    else {
+      ok(0);
+      warn "[Test Failed]$spvmcc_output";
+    }
   }
   
   # debug config -O0 -g

@@ -189,43 +189,30 @@ sub new {
   );
   
   # Config file
-  my $config_file;
-  
   my $allow_no_config_file = $self->{allow_no_config_file};
   
   my $mode = $self->{mode};
   
-  if (defined $config_file && $config_file =~ /\.(\w+)\.config$/) {
-    $mode = $1;
-  }
-  
   # Config
+  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  
   my $config;
   if (defined $config_file) {
     $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $mode);
-    unless ($config->output_type eq 'exe') {
-      confess "Config file \"$config_file\" is not the config to create the executable file";
-    }
   }
   else {
-    $config_file = SPVM::Builder::Util::search_config_file($class_name);
-    
-    if (defined $config_file) {
-      $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $mode);
+    if ($allow_no_config_file) {
+      $config = SPVM::Builder::Config::Exe->new(file_optional => 1);
     }
     else {
-      $config = SPVM::Builder::Config::Exe->new(file_optional => 1);
+      unless (defined $config_file) {
+        confess "A config file must be defined.";
+      }
     }
   }
   
-  unless ($allow_no_config_file) {
-    unless (defined $config_file) {
-      confess "A config file must be defined.";
-    }
-    
-    unless (-f $config_file) {
-      confess "The config file \"$config_file\" is not found.";
-    }
+  unless ($config->output_type eq 'exe') {
+    confess "Config file \"$config_file\" is not the config to create the executable file";
   }
   
   $config->class_name($class_name);
