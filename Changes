@@ -1,3 +1,6 @@
+0.989070 2023-02-09
+  [Internal Changes]
+    * Add spvm_version.h, and spvm_native.h includes spvm_version.h.
 0.989069 2023-02-09
   [New Features]
     * Add a message in compiling and linking a source file like

@@ -116,6 +116,7 @@ sub get_spvm_core_header_file_names {
     spvm_use.h
     spvm_var_decl.h
     spvm_var.h
+    spvm_version.h
     spvm_vm.h
     spvm_weaken_backref.h
     spvm_yacc.h
@@ -715,9 +716,10 @@ sub get_version_string {
 sub get_spvm_version_string {
   
   my $builder_dir = &get_builder_dir;
-  my $spvm_api_header_file = "$builder_dir/include/spvm_native.h";
+  my $spvm_version_header_file = "$builder_dir/include/spvm_version.h";
   
-  open my $spvm_module_fh, '<', $spvm_api_header_file or die "Can't open the file \"$spvm_api_header_file\": $!";
+  open my $spvm_module_fh, '<', $spvm_version_header_file
+    or die "Can't open the file \"$spvm_version_header_file\": $!";
   local $/;
   my $content = <$spvm_module_fh>;
   my $version_string;
@@ -726,7 +728,7 @@ sub get_spvm_version_string {
   }
   
   unless (defined $version_string) {
-    confess "The version string can't be find in $spvm_api_header_file file";
+    confess "The version string can't be found in \"$spvm_version_header_file\"";
   }
   
   return $version_string;
