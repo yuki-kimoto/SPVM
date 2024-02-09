@@ -881,8 +881,6 @@ sub create_link_info {
     
     $resource_config->resource_loader_config($config),
     
-    $resource_config->no_compile_resource(1);
-    
     my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
     my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
     mkpath $resource_object_dir;
