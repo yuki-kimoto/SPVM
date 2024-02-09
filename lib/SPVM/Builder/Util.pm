@@ -62,7 +62,7 @@ sub get_spvm_version_header_file {
   
   my $builder_dir = &get_builder_dir;
   
-  my $spvm_version_header_file = "/include/spvm_version.h";
+  my $spvm_version_header_file = "$builder_dir/include/spvm_version.h";
   
   unless (-f $spvm_version_header_file) {
     confess "The SPVM version header file \"$spvm_version_header_file\" is not found.";
@@ -246,18 +246,6 @@ sub need_generate {
   my $input_files = $opt->{input_files};
   my $output_file = $opt->{output_file};
   
-  # SPVM::Builder classes
-  my $spvm_dependent_files = &get_spvm_dependent_files;
-  
-  my $spvm_dependent_files_mtime_max;
-  $spvm_dependent_files_mtime_max = 0;
-  for my $spvm_core_file (@$spvm_dependent_files) {
-    my $spvm_core_file_mtime = (stat($spvm_core_file))[9];
-    if ($spvm_core_file_mtime > $spvm_dependent_files_mtime_max) {
-      $spvm_dependent_files_mtime_max = $spvm_core_file_mtime;
-    }
-  }
-
   my $need_generate;
   if ($force) {
     $need_generate = 1;
@@ -279,13 +267,15 @@ sub need_generate {
         }
       }
       if ($exists_input_file_at_least_one) {
-        my $output_file_mtime = (stat($output_file))[9];
+        my $spvm_version_header_file = &get_spvm_version_header_file;
         
-        if (defined $spvm_dependent_files_mtime_max) {
-          if ($spvm_dependent_files_mtime_max > $input_files_mtime_max) {
-            $input_files_mtime_max = $spvm_dependent_files_mtime_max;
-          }
+        my $spvm_version_header_file_mtime = (stat($spvm_version_header_file))[9];
+        
+        if ($spvm_version_header_file_mtime > $input_files_mtime_max) {
+          $input_files_mtime_max = $spvm_version_header_file_mtime;
         }
+        
+        my $output_file_mtime = (stat($output_file))[9];
         
         if ($input_files_mtime_max > $output_file_mtime) {
           $need_generate = 1;
