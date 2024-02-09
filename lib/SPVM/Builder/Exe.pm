@@ -376,17 +376,16 @@ sub get_required_resource_json_lines {
     my $resource_argv = $resource->argv || [];
     
     my $line = {
-      caller_class_name => "$class_name",
-      resource => {
-        class_name => $resource_class_name,
-      }
+      resource_loader_class_name => "$class_name",
+      class_name => $resource_class_name,
     };
+    
     if (defined $resource_mode) {
-      $line->{resource}{mode} = $resource_mode;
+      $line->{mode} = $resource_mode;
     }
     
     if (@$resource_argv) {
-      $line->{resource}{argv} = $resource_argv;
+      $line->{argv} = $resource_argv;
     }
     
     my $json_line = JSON::PP->new->utf8->canonical(1)->encode($line);

@@ -15,6 +15,11 @@
   [Incompatible Changes]
     * A resource must need its SPVM class file.
     * Remove the -c, --config option in the spvmcc command. 
+    * The format of the --required-resources option in the spvmdist command
+      [After]
+      
+      {"argv":["args1","args2"],"class_name":"TestCase::Resource::Mylib1","mode":"mode1","resource_loader_class_name":"TestCase::NativeAPI2"}
+      
   [Changes]
     * Linker messages output before executing command.
     * No native class file and no ext is allowed.
