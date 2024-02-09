@@ -284,7 +284,12 @@ sub compile_class {
     }
   }
   
-  my $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
+  my $output_dir = $config->output_dir;
+  
+  unless (defined $output_dir) {
+    $output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
+  }
+  
   mkpath $output_dir;
   
   if ($is_jit) {
@@ -416,9 +421,10 @@ sub compile_class {
       
       $resource_config->used_as_resource(1),
       
-      my $resource_src_dir = $self->resource_src_dir_from_class_name($resource_class_name);
-      my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
+      my $resource_object_dir = $self->get_resource_object_dir_from_basic_type_name($class_name);
       mkpath $resource_object_dir;
+      
+      $resource_config->output_dir($resource_object_dir),
       
       my $compile_options = {
         runtime => $runtime,
@@ -962,6 +968,16 @@ sub resource_src_dir_from_class_name {
 sub get_resource_object_dir_from_class_name {
   my ($self, $class_name) = @_;
   
+  my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
+  
+  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
+  
+  return $resource_object_dir;
+}
+
+sub get_resource_object_dir_from_basic_type_name {
+  my ($self, $class_name) = @_;
+
   my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   
   my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
