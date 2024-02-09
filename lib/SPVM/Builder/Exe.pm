@@ -206,7 +206,7 @@ sub new {
     }
     else {
       unless (defined $config_file) {
-        confess "A config file must be defined.";
+        confess "A config file is not found in (@INC).";
       }
     }
   }
