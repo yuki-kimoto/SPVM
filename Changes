@@ -12,6 +12,8 @@
     * Add resource dependency to the create_make_rule_native method in Makefile.PL.
   [Incompatible Changes]
     * A resource must need its SPVM class file.
+  [Changes]
+    * Linker messages output before executing command.
 0.989068 2023-01-22
   [New Features]
     * Add the copy_object_with_proto method to the Array class.

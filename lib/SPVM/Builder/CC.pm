@@ -594,6 +594,10 @@ sub _runtime_get_method_names {
 sub link {
   my ($self, $class_name, $object_files, $options) = @_;
   
+  unless (@$object_files) {
+    return;
+  }
+  
   my $runtime = $options->{runtime};
   
   # Build directory
@@ -681,13 +685,6 @@ sub link {
       my $method_names = &_runtime_get_method_names($runtime, $class_name, $category);
       my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
       
-      (undef, @tmp_files) = $cbuilder->link(
-        objects => $link_info_object_file_names,
-        module_name => $class_name,
-        lib_file => $link_info_output_file,
-        extra_linker_flags => "@$link_command_args",
-        dl_func_list => $dl_func_list,
-      );
       unless ($quiet) {
         
         my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
@@ -697,33 +694,45 @@ sub link {
         my $link_command = $link_info->to_command;
         warn "$link_command\n";
       }
+      
+      (undef, @tmp_files) = $cbuilder->link(
+        objects => $link_info_object_file_names,
+        module_name => $class_name,
+        lib_file => $link_info_output_file,
+        extra_linker_flags => "@$link_command_args",
+        dl_func_list => $dl_func_list,
+      );
+      
     }
     # Create a static library
     elsif ($output_type eq 'static_lib') {
       my @object_files = map { "$_" } @$link_info_object_file_names;
       my @ar_cmd = ('ar', 'rc', $link_info_output_file, @object_files);
-      $cbuilder->do_system(@ar_cmd)
-        or confess "Can't execute command @ar_cmd";
+      
       unless ($quiet) {
         warn "[Generate a static link library for the \"$class_name\" class]\n";
         
         warn "@ar_cmd\n";
       }
+      
+      $cbuilder->do_system(@ar_cmd)
+        or confess "Can't execute command @ar_cmd";
     }
     # Create an executable file
     elsif ($output_type eq 'exe') {
-      (undef, @tmp_files) = $cbuilder->link_executable(
-        objects => $link_info_object_file_names,
-        module_name => $class_name,
-        exe_file => $link_info_output_file,
-        extra_linker_flags => "@$link_command_args",
-      );
       unless ($quiet) {
         warn "[Generate an executable file for the \"$class_name\" class]\n";
         
         my $link_command = $link_info->to_command;
         warn "$link_command\n";
       }
+      
+      (undef, @tmp_files) = $cbuilder->link_executable(
+        objects => $link_info_object_file_names,
+        module_name => $class_name,
+        exe_file => $link_info_output_file,
+        extra_linker_flags => "@$link_command_args",
+      );
     }
     else {
       confess "Unknown output_type \"$output_type\"";
