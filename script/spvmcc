@@ -17,6 +17,7 @@ SPVM::Builder::Util::getopt
   'f|force' => \my $force,
   'c|config=s' => \my $config_file,
   'r|required-resources' => \my $print_required_resources,
+  'no-config' => \my $allow_no_config_file,
 ;
 
 if ($help) {
@@ -35,7 +36,7 @@ else {
   my @original_include_dirs = @include_dirs;
   push @include_dirs, map { "$_/SPVM" } @INC;
   unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
-
+  
   my $build_exe = SPVM::Builder::Exe->new(
     class_name => $class_name,
     build_dir => $build_dir,
@@ -44,7 +45,9 @@ else {
     quiet => $quiet,
     force => $force,
     config_file => $config_file,
+    allow_no_config_file => $allow_no_config_file,
   );
+  
   if ($print_required_resources) {
     my $lines = $build_exe->get_required_resource_json_lines;
     print "$_\n" for @$lines;
@@ -81,6 +84,7 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     -f, --force                    Forces the compile and link
     -c, --config                   The config file
     -r, --required-resources       Prints required resources in JSON lines
+    --no-config                    No configration file is ok
 
 =head1 Copyright & License
 

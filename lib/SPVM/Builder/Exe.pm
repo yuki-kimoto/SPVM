@@ -138,6 +138,17 @@ sub runtime {
   }
 }
 
+sub allow_no_config_file {
+  my $self = shift;
+  if (@_) {
+    $self->{allow_no_config_file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{allow_no_config_file};
+  }
+}
+
 # Methods
 sub new {
   my $class = shift;
@@ -180,6 +191,18 @@ sub new {
   # Config file
   my $config_file = $self->{config_file};
   
+  my $allow_no_config_file = $self->{allow_no_config_file};
+  
+  unless ($allow_no_config_file) {
+    unless (defined $config_file) {
+      confess "A config file must be defined.";
+    }
+    
+    unless (-f $config_file) {
+      confess "The config file \"$config_file\" is not found.";
+    }
+  }
+  
   # Config
   my $config;
   if (defined $config_file) {
@@ -189,8 +212,9 @@ sub new {
     }
   }
   else {
-    $config = SPVM::Builder::Config::Exe->new_gnu99(file_optional => 1);
+    $config = SPVM::Builder::Config::Exe->new(file_optional => 1);
   }
+  
   $config->class_name($class_name);
   
   $self->{config} = $config;
@@ -392,6 +416,7 @@ sub compile_classes {
   
   my $object_files = [];
   for my $class_name (@$class_names) {
+    
     my $precompile_object_files = $self->compile_precompile_class($class_name);
     push @$object_files, @$precompile_object_files;
     

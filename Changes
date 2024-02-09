@@ -6,6 +6,7 @@
     * Add the resource_loader_config field to the SPVM::Builder::Config class.
     * Add the category field to the SPVM::Builder::Config class.
     * Add the category field to the SPVM::Builder::CompileInfo class.
+    * Add the --no-config option to the spvmcc command.
   [Deprecation]
     * The SPVM:: prefix is no more required in the class name given to the create_make_rule function in Makefile.PL.
   [Bug Fix]
