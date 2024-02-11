@@ -3,6 +3,8 @@ package SPVM::Builder::Compiler;
 use strict;
 use warnings;
 
+use SPVM::Builder::Runtime;
+
 ### Fields
 
 sub get_runtime { shift->{runtime} }

@@ -4750,8 +4750,6 @@ get_error_messages(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
-
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*

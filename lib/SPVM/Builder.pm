@@ -4,17 +4,10 @@ use strict;
 use warnings;
 
 use Carp 'confess';
-use Scalar::Util 'weaken';
-use File::Path 'mkpath';
-use File::Basename 'dirname', 'basename';
 
 use SPVM ();
-
 use SPVM::Builder::CC;
 use SPVM::Builder::Compiler;
-use SPVM::Builder::Runtime;
-use SPVM::Builder::Env;
-use SPVM::Builder::Stack;
 
 # Fields
 sub build_dir {
