@@ -8,6 +8,7 @@ use Carp 'confess';
 use SPVM ();
 use SPVM::Builder::CC;
 use SPVM::Builder::Compiler;
+use SPVM::Builder::Util::API;
 
 # Fields
 sub build_dir {

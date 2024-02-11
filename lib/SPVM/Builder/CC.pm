@@ -2,9 +2,9 @@ package SPVM::Builder::CC;
 
 use strict;
 use warnings;
+
 use Carp 'confess';
 use Config;
-
 use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
@@ -12,12 +12,9 @@ use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 
 use SPVM::Builder::Util;
-use SPVM::Builder::Util::API;
-use SPVM::Builder::Config;
 use SPVM::Builder::CompileInfo;
 use SPVM::Builder::ObjectFileInfo;
 use SPVM::Builder::LinkInfo;
-use SPVM::Builder::Resource;
 
 # Fields
 sub build_dir {
