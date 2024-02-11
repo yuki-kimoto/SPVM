@@ -31,7 +31,7 @@ sub api {
   return $API;
 }
 
-sub build_module {
+sub build_class {
   my ($basic_type_name, $file, $line) = @_;
   
   &init_api();
