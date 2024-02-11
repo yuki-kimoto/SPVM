@@ -3,18 +3,13 @@ use strict;
 use warnings;
 use Carp 'confess';
 
-use SPVM::BlessedObject;
-use SPVM::BlessedObject::Array;
-use SPVM::BlessedObject::Class;
-use SPVM::BlessedObject::String;
-
-use SPVM ();
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
 
 my $API;
 
 END {
+  
   if ($API) {
     # Remove circular reference
     my $env = delete $API->{env};
@@ -25,6 +20,7 @@ END {
 }
 
 sub api {
+  
   unless ($API) {
     &init_api();
   }
@@ -32,13 +28,13 @@ sub api {
 }
 
 sub build_class {
-  my ($basic_type_name, $file, $line) = @_;
+  my ($class_name, $file, $line) = @_;
   
   &init_api();
   
   # Add module informations
   my $build_success;
-  if (defined $basic_type_name) {
+  if (defined $class_name) {
     
     my $env = $API->env;
     
@@ -49,7 +45,7 @@ sub build_class {
     
     $compiler->set_start_file($file);
     $compiler->set_start_line($line);
-    eval { $compiler->compile($basic_type_name) };
+    eval { $compiler->compile($class_name) };
     if ($@) {
       my $error_messages = $compiler->get_error_messages;
       for my $error_message (@$error_messages) {
@@ -68,7 +64,7 @@ sub build_class {
       &load_dynamic_lib($runtime, $basic_type->get_name->to_string);
     }
     
-    &bind_to_perl($basic_type_name);
+    &bind_to_perl($class_name);
     
     my $stack = $API->stack;
     
@@ -85,7 +81,7 @@ sub init_api {
       include_dirs => $builder->include_dirs
     );
     
-    my @native_compiler_basic_type_names = qw(
+    my @native_compiler_class_name_names = qw(
       Native::Compiler
       Native::Method
       Native::Runtime
@@ -94,27 +90,27 @@ sub init_api {
       Native::Env
     );
     
-    for my $native_compiler_basic_type_name (@native_compiler_basic_type_names) {
-      $builder_compiler->compile_with_exit($native_compiler_basic_type_name, __FILE__, __LINE__);
+    for my $native_compiler_class_name_name (@native_compiler_class_name_names) {
+      $builder_compiler->compile_with_exit($native_compiler_class_name_name, __FILE__, __LINE__);
       my $builder_runtime = $builder_compiler->get_runtime;
       
       # Load dinamic libnaray - native only
       {
-        my $basic_type_name = $native_compiler_basic_type_name;
+        my $class_name = $native_compiler_class_name_name;
         my $category = 'native';
-        my $method_names = $builder_runtime->get_method_names($basic_type_name, $category);
+        my $method_names = $builder_runtime->get_method_names($class_name, $category);
         
         if (@$method_names) {
           # Build classes - Compile C source codes and link them generating a dynamic link library
-          my $class_file = $builder_runtime->get_class_file($basic_type_name);
+          my $class_file = $builder_runtime->get_class_file($class_name);
           my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
           
           if (-f $dynamic_lib_file) {
-            my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $basic_type_name, $method_names, $category);
+            my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
             
             for my $method_name (sort keys %$method_addresses) {
               my $cfunc_address = $method_addresses->{$method_name};
-              $builder_runtime->set_native_method_address($basic_type_name, $method_name, $cfunc_address);
+              $builder_runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
             }
           }
         }
@@ -149,9 +145,9 @@ sub init_api {
 }
 
 sub load_dynamic_lib {
-  my ($runtime, $basic_type_name) = @_;
+  my ($runtime, $class_name) = @_;
   
-  my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
+  my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
   for my $category ('precompile', 'native') {
     
@@ -185,7 +181,7 @@ sub load_dynamic_lib {
           my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
           my $builder = SPVM::Builder->new(build_dir => $build_dir);
           $dynamic_lib_file = $builder->build_jit(
-            $basic_type_name,
+            $class_name,
             {
               runtime => $runtime,
               class_file => $class_file,
@@ -197,7 +193,7 @@ sub load_dynamic_lib {
         if (-f $dynamic_lib_file) {
           my $method_addresses = SPVM::Builder::Util::get_method_addresses(
             $dynamic_lib_file,
-            $basic_type_name,
+            $class_name,
             $category_method_names,
             $category
           );
@@ -223,22 +219,22 @@ sub load_dynamic_lib {
   }
 }
 
-my $BIND_TO_PERL_BASIC_TYPE_NAME_H = {};
+my $BIND_TO_PERL_CLASS_NAME_H = {};
 sub bind_to_perl {
-  my ($basic_type_name) = @_;
+  my ($class_name) = @_;
   
   my $env = $API->env;
   
   my $compiler = $env->runtime->get_compiler;
   
   my $runtime = $compiler->get_runtime;
-    
-  my $basic_type = $runtime->get_basic_type_by_name($basic_type_name);
   
-  my $perl_basic_type_name_base = "SPVM::";
-  my $perl_basic_type_name = "$perl_basic_type_name_base$basic_type_name";
+  my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
-  unless ($BIND_TO_PERL_BASIC_TYPE_NAME_H->{$perl_basic_type_name}) {
+  my $perl_class_name_base = "SPVM::";
+  my $perl_class_name = "$perl_class_name_base$class_name";
+  
+  unless ($BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name}) {
     
     my $parent_basic_type = $basic_type->get_parent;
     
@@ -246,12 +242,12 @@ sub bind_to_perl {
     my @isa;
     if (defined $parent_basic_type) {
       my $parent_basic_type_name = $parent_basic_type->get_name->to_string;
-      push @isa, "$perl_basic_type_name_base$parent_basic_type_name";
+      push @isa, "$perl_class_name_base$parent_basic_type_name";
     }
     push @isa, 'SPVM::BlessedObject::Class';
     my $isa = "our \@ISA = (" . join(',', map { "'$_'" } @isa) . ");";
     
-    my $code = "package $perl_basic_type_name; $isa";
+    my $code = "package $perl_class_name; $isa";
     eval $code;
     
     if (my $error = $@) {
@@ -273,7 +269,7 @@ sub bind_to_perl {
         next;
       }
       
-      my $perl_method_abs_name = "${perl_basic_type_name}::$method_name";
+      my $perl_method_abs_name = "${perl_class_name}::$method_name";
       my $is_class_method = $method->is_class_method;
       
       if ($is_class_method) {
@@ -281,15 +277,15 @@ sub bind_to_perl {
         no strict 'refs';
         
         # Suppress refer to objects
-        my $basic_type_name_string = "$basic_type_name";
+        my $class_name_string = "$class_name";
         my $method_name_string = "$method_name";
         
         *{"$perl_method_abs_name"} = sub {
-          my $perl_basic_type_name = shift;
+          my $perl_class_name = shift;
           
           my $return_value;
           
-          eval { $return_value = SPVM::api()->call_method($basic_type_name_string, $method_name_string, @_) };
+          eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
             confess $error;
@@ -299,13 +295,13 @@ sub bind_to_perl {
       }
     }
     
-    $BIND_TO_PERL_BASIC_TYPE_NAME_H->{$perl_basic_type_name} = 1;
+    $BIND_TO_PERL_CLASS_NAME_H->{$perl_class_name} = 1;
   }
 }
 
 =head1 Name
 
-SPVM::Global - SPVM Global Instance for Perl Interpreter
+SPVM::Global - SPVM Global Instance
 
 =head1 Copyright & License
 

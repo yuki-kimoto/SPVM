@@ -9,6 +9,10 @@ use SPVM ();
 use SPVM::Builder::CC;
 use SPVM::Builder::Compiler;
 use SPVM::Builder::Util::API;
+use SPVM::BlessedObject;
+use SPVM::BlessedObject::Array;
+use SPVM::BlessedObject::Class;
+use SPVM::BlessedObject::String;
 
 # Fields
 sub build_dir {
