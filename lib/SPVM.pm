@@ -32,9 +32,9 @@ SPVM - SPVM Language
 
 =head1 Description
 
-SPVM is a statically typed programming language with the syntax of Perl.
+SPVM is a statically typed programming language that has Perl-like syntax.
 
-SPVM has not yet reached a stable release of version 1.0. For now, L<backward compatibility|https://github.com/yuki-kimoto/SPVM/wiki/Backward-Compatibility> of methods and features will not be kept.
+SPVM has not yet reached a stable release of version 1.0. For now, there is currently no policy to keep the L<backward compatibility|https://github.com/yuki-kimoto/SPVM/wiki/Backward-Compatibility>.
 
 =head1 Usage
 
@@ -42,7 +42,7 @@ A class of SPVM:
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
-C<static method sum : int ($nums : int[])>
+    static method sum : int ($nums : int[]) {
       
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {
@@ -90,14 +90,17 @@ Calling a SPVM method from Perl:
 
 =back
 
-=head1 use
-
-  use SPVM;
+=head1 Loading SPVM Class
+  
+  # Load a SPVM class
   use SPVM 'SomeClass';
+  
+  # Load only SPVM module
+  use SPVM ();
 
-Loads the L<SPVM> module.
+The C<use> statement loads a L<SPVM> class.
 
-If a class name of SPVM is given as the first argument, the SPVM module is loaded and is bound to a Perl module.
+A SPVM class is loaded and is bound to a Perl module.
 
 The bound Perl class name is prefixed with C<SPVM::>.
 
