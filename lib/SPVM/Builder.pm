@@ -144,12 +144,7 @@ sub build {
   
   my $output_dir = $options->{output_dir};
   
-  unless (defined $output_dir) {
-    if ($is_jit) {
-      $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
-      mkpath $output_dir;
-    }
-  }
+  my $runtime = $options->{runtime};
   
   # Config
   my $config;
@@ -175,8 +170,6 @@ sub build {
   $config->is_jit($is_jit);
   
   $config->output_dir($output_dir);
-  
-  my $runtime = $options->{runtime};
   
   my $cc_options = {build_dir => $build_dir};
   

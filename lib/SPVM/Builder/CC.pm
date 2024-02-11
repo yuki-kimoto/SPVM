@@ -834,6 +834,8 @@ sub create_link_info {
   
   my $output_dir = $config->output_dir;
   
+  my $build_dir = $self->build_dir;
+  
   # Linker
   my $ld = $config->ld;
   
@@ -899,6 +901,14 @@ sub create_link_info {
   
   # Output file
   unless (defined $output_file) {
+    unless (defined $output_dir) {
+      my $is_jit = $config->is_jit;
+      if ($is_jit) {
+        $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
+        mkpath $output_dir;
+      }
+    }
+    
     # Dynamic library directory
     unless (defined $output_dir && -d $output_dir) {
       confess "Shared lib directory must be specified for link";
