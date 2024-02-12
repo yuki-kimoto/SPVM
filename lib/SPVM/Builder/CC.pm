@@ -555,6 +555,16 @@ sub compile_class {
   return $object_files;
 }
 
+sub get_resource_object_dir_from_class_name {
+  my ($self, $class_name) = @_;
+  
+  my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
+  
+  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
+  
+  return $resource_object_dir;
+}
+
 sub _runtime_build_precompile_class_source {
   my ($runtime, $class_name, $category) = @_;
   
@@ -630,43 +640,35 @@ sub link {
   
   my $runtime = $options->{runtime};
   
-  # Build directory
   my $build_dir = $self->build_dir;
-  if (defined $build_dir) {
-    mkpath $build_dir;
-  }
-  else {
-    confess "The \"build_dir\" field must be defined to link the object files for the \"$class_name\" class. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
+  
+  unless (defined $build_dir) {
+    confess "A build directory must be defined. Perhaps the SPVM_BUILD_DIR environment variable is not set.";
   }
   
-  # Config
   my $config = $options->{config};
+  
   unless ($config) {
-    confess "Need config option";
+    confess "[Unexpected Error]A config must be defined.";
   }
   
   my $category = $config->category;
   
-  # Force link
   my $force = $self->detect_force($config);
   
-  # Link information
   my $link_info = $self->create_link_info($class_name, $object_files, $config, $options);
   
-  # Output file
   my $output_file = $config->output_file;
   
-  # Execute the callback before this link
   my $before_link_cbs = $config->before_link_cbs;
   for my $before_link_cb (@$before_link_cbs) {
     $before_link_cb->($config, $link_info);
   }
   
   my @object_files = map { "$_" } @{$link_info->object_files};
+  
   my $input_files = [@object_files];
-  if (defined $config->file) {
-    push @$input_files, $config->file;
-  }
+  
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $force,
     output_file => $output_file,
@@ -674,7 +676,9 @@ sub link {
   });
   
   if ($need_generate) {
-    # Move temporary dynamic library file to blib directory
+    
+    mkpath $build_dir;
+    
     mkpath dirname $output_file;
     
     my $ld = $config->ld;
@@ -693,13 +697,12 @@ sub link {
       perllibs => '-lm',
     };
     
-    # Quiet output
     my $quiet = $self->detect_quiet($config);
     
-    # ExtUtils::CBuilder object
     my $cbuilder = ExtUtils::CBuilder->new(quiet => 1, config => $cbuilder_config);
     
     my $link_info_output_file = $config->output_file;
+    
     my $link_info_object_files = $link_info->object_files;
     
     my $link_command_args = $link_info->create_ldflags;
@@ -932,16 +935,6 @@ sub create_link_info {
   );
   
   return $link_info;
-}
-
-sub get_resource_object_dir_from_class_name {
-  my ($self, $class_name) = @_;
-  
-  my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-  
-  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
-  
-  return $resource_object_dir;
 }
 
 1;
