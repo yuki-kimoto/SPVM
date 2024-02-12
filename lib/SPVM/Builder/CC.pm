@@ -149,17 +149,10 @@ sub build_precompile_class_source_file {
   my $source_file = "$cc_output_dir/$source_rel_file";
   
   # Check if generating is needed
-  my $spvm_include_dir = $INC{'SPVM/Builder.pm'};
-  $spvm_include_dir =~ s/\.pm$//;
-  $spvm_include_dir .= '/src';
-  my $spvm_precompile_soruce_file = "$spvm_include_dir/spvm_precompile.c";
-  unless (-f $spvm_precompile_soruce_file) {
-    confess "Can't find $spvm_precompile_soruce_file";
-  }
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $force,
     output_file => $source_file,
-    input_files => [$class_file, $spvm_precompile_soruce_file],
+    input_files => [$class_file],
   });
   
   # Generate precompile C source file
