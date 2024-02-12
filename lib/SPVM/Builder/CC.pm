@@ -705,23 +705,23 @@ sub link {
     
     my $link_info_object_files = $link_info->object_files;
     
-    my $link_command_args = $link_info->create_ldflags;
-    
     my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
     
-    my @link_tmp_files;
+    my $link_info_ldflags = $link_info->create_ldflags;
     
     my $output_type = $config->output_type;
+    
+    my @link_tmp_files;
     
     mkpath dirname $link_info_output_file;
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
       my $method_names = &_runtime_get_method_names($runtime, $class_name, $category);
+      
       my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
       
       unless ($quiet) {
-        
         my $for_precompile = $category eq 'precompile' ? ' for precompile' : '';
         my $message = "[Generate a dynamic link library for the \"$class_name\" class$for_precompile]";
         warn "$message\n";
@@ -734,7 +734,7 @@ sub link {
         objects => $link_info_object_file_names,
         module_name => $class_name,
         lib_file => $link_info_output_file,
-        extra_linker_flags => "@$link_command_args",
+        extra_linker_flags => "@$link_info_ldflags",
         dl_func_list => $dl_func_list,
       );
       
@@ -766,7 +766,7 @@ sub link {
         objects => $link_info_object_file_names,
         module_name => $class_name,
         exe_file => $link_info_output_file,
-        extra_linker_flags => "@$link_command_args",
+        extra_linker_flags => "@$link_info_ldflags",
       );
     }
     else {
