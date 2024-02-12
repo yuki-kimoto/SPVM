@@ -883,39 +883,48 @@ sub create_bootstrap_source {
   my $config_exe_loaded_config_files = $config_exe->get_loaded_config_files;
   my $need_generate_input_files = [@$input_files, @$config_exe_loaded_config_files];
   
+  my $bootstrap_source = '';
+  
+  # Header
+  $bootstrap_source .= $self->create_bootstrap_header_source;
+  
+  # main function
+  $bootstrap_source .= $self->create_bootstrap_main_func_source;
+  
+  # Set precompile method addresses function
+  $bootstrap_source .= $self->create_bootstrap_set_precompile_method_addresses_func_source;
+  
+  # Set native method addresses function
+  $bootstrap_source .= $self->create_bootstrap_set_native_method_addresses_func_source;
+  
+  $bootstrap_source .= $self->create_bootstrap_get_runtime_source;
+  
+  $bootstrap_source .= "\n// " . $config_exe->file;
+  
+  # Build source directory
+  mkpath $build_src_dir;
+  mkpath dirname $bootstrap_source_file;
+  
+    
+  my $bootstrap_source_original;
+  if (-f $bootstrap_source_file) {
+    $bootstrap_source_original = SPVM::Builder::Util::slurp_binary($bootstrap_source_file);
+  }
+  
+  my $force = $self->force || $config_exe->force;
+  
+  if (defined $bootstrap_source_original && $bootstrap_source ne $bootstrap_source_original) {
+    $force = 1;
+  }
+  
   my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force || $config_exe->force,
+    force => $force,
     output_file => $output_file,
     input_files => $need_generate_input_files,
   });
   
   if ($need_generate) {
-    my $bootstrap_source = '';
-    
-    # Header
-    $bootstrap_source .= $self->create_bootstrap_header_source;
-    
-    # main function
-    $bootstrap_source .= $self->create_bootstrap_main_func_source;
-    
-    # Set precompile method addresses function
-    my $config_exe = $self->config;
-    $bootstrap_source .= $self->create_bootstrap_set_precompile_method_addresses_func_source;
-    
-    # Set native method addresses function
-    $bootstrap_source .= $self->create_bootstrap_set_native_method_addresses_func_source;
-    
-    $bootstrap_source .= $self->create_bootstrap_get_runtime_source;
-    
-    # Build source directory
-    my $build_src_dir = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir);
-    mkpath $build_src_dir;
-    mkpath dirname $bootstrap_source_file;
-    
-    open my $bootstrap_source_fh, '>', $bootstrap_source_file
-      or die "Can't open file $bootstrap_source_file:$!";
-    
-    print $bootstrap_source_fh $bootstrap_source;
+    SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source);
   }
 }
 
