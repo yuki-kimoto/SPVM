@@ -179,6 +179,9 @@ sub compile_source_file {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
   my $cc_cmd = $compile_info->create_command;
   
+  my $output_file = $compile_info->output_file;
+  mkpath dirname $output_file;
+  
   unless ($quiet) {
     
     my $resource_loader_config = $compile_info->config->resource_loader_config;
@@ -543,10 +546,6 @@ sub compile_class {
     
     # Compile a source file
     if ($need_generate) {
-      my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
-      my $work_output_dir = "$cc_output_dir/$module_rel_dir";
-      mkpath dirname $object_file_name;
-      
       $self->compile_source_file($compile_info);
     }
     
