@@ -815,19 +815,14 @@ sub create_link_info {
   
   my $output_file = $config->output_file;
   
-  my $all_object_files = [@$object_files];
-  
   my $output_dir = $config->output_dir;
   
   my $build_dir = $self->build_dir;
   
-  # Linker
   my $ld = $config->ld;
   
-  # Output type
   my $output_type = $config->output_type;
   
-  # Libraries
   my $lib_infos = [];
   my $libs = $config->libs;
   my $lib_dirs = $config->lib_dirs;
@@ -890,34 +885,27 @@ sub create_link_info {
       my $is_jit = $config->is_jit;
       if ($is_jit) {
         $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
-        mkpath $output_dir;
+      }
+      else {
+        confess "[Unexpected Error]A output directory must exists.";
       }
     }
     
-    # Dynamic library directory
-    unless (defined $output_dir && -d $output_dir) {
-      confess "Shared lib directory must be specified for link";
-    }
-    
-    # Dynamic library file
     my $output_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
     $output_file = "$output_dir/$output_rel_file";
   }
   
-  # Add output file extension
+  # Output file extension
   my $output_file_base = basename $output_file;
   if ($output_file_base =~ /\.precompile$/ || $output_file_base !~ /\./) {
     my $exe_ext;
     
-    # Dynamic library
     if ($output_type eq 'dynamic_lib') {
       $exe_ext = ".$Config{dlext}"
     }
-    # Static library
     elsif ($output_type eq 'static_lib') {
       $exe_ext = '.a';
     }
-    # Executable file
     elsif ($output_type eq 'exe') {
       $exe_ext = $Config{exe_ext};
     }
@@ -927,13 +915,10 @@ sub create_link_info {
   
   $config->output_file($output_file);
   
-  # Optimize
-  my $ld_optimize = $config->ld_optimize;
-  
   my $link_info = SPVM::Builder::LinkInfo->new(
     class_name => $class_name,
     config => $config,
-    object_files => $all_object_files,
+    object_files => $object_files,
   );
   
   return $link_info;
