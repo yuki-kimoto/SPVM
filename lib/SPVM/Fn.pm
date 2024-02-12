@@ -1068,27 +1068,17 @@ C<static method merge_options : object[] ($options1 : object[], $options2 : obje
 
 Creates a new any object array merging $options1 and $options2, and returns it.
 
-If $options2 contains the same key of $options1, the key of $options1 is overwritten by the key of $options2.
+If $options1 is not defined, $options1 is set to an empty any object array.
+
+If $options2 is not defined, $options2 is set to an empty any object array.
 
 Exceptions:
-
-$options1 must be defined. Otherwise an exception is thrown.
-
-$options2 must be defined. Otherwise an exception is thrown.
 
 The length of $options1 must be an even number. Otherwise an exception is thrown.
 
 The length of $options2 must be an even number. Otherwise an exception is thrown.
 
-The key of $options1 must be defined. Otherwise an exception is thrown.
-
-The key of $options1 must be the string type. Otherwise an exception is thrown.
-
-The key of $options2 must be defined. Otherwise an exception is thrown.
-
-The key of $options2 must be the string type. Otherwise an exception is thrown.
-
-Exceptions of the L<Hash|SPVM::Hash> class can be thrown.
+Exceptions thrown by the L<merge_object|SPVM::Array/"merge_object"> in the Array class could be thrown.
 
 Examples:
 

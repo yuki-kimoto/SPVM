@@ -4255,7 +4255,7 @@ class TestCase::Module::Fn {
     
     {
       my $merged_options = Fn->merge_options({key1 => 1, key2 => 2}, {key2 => "abc", key4 => "def"});
-      unless (@$merged_options == 6) {
+      unless (@$merged_options == 8) {
         return 0;
       }
       
@@ -4271,31 +4271,33 @@ class TestCase::Module::Fn {
       unless ($merged_options->[2]->(string) eq "key2") {
         return 0;
       }
-      unless ($merged_options->[3]->(string) eq "abc") {
+      unless ($merged_options->[3]->(int) == 2) {
         return 0;
       }
-      unless ($merged_options->[4]->(string) eq "key4") {
+      unless ($merged_options->[4]->(string) eq "key2") {
         return 0;
       }
-      unless ($merged_options->[5]->(string) eq "def") {
+      unless ($merged_options->[5]->(string) eq "abc") {
+        return 0;
+      }
+      unless ($merged_options->[6]->(string) eq "key4") {
+        return 0;
+      }
+      unless ($merged_options->[7]->(string) eq "def") {
+        return 0;
+      }
+    }
+    
+    {
+      my $merged_options = Fn->merge_options(undef, undef);
+      
+      unless (@$merged_options == 0) {
         return 0;
       }
     }
     
     # Exceptions
     {
-      {
-        eval { Fn->merge_options(undef, {}); };
-        unless (Fn->contains($@, "\$options1 must be defined")) {
-          return 0;
-        }
-      }
-      {
-        eval { Fn->merge_options({}, undef); };
-        unless (Fn->contains($@, "\$options2 must be defined")) {
-          return 0;
-        }
-      }
       {
         eval { Fn->merge_options(["a"], {}); };
         unless (Fn->contains($@, "The length of \$options1 must be an even number")) {
@@ -4305,30 +4307,6 @@ class TestCase::Module::Fn {
       {
         eval { Fn->merge_options({}, ["a"]); };
         unless (Fn->contains($@, "The length of \$options2 must be an even number")) {
-          return 0;
-        }
-      }
-      {
-        eval { Fn->merge_options([(object)undef, 1], {}); };
-        unless (Fn->contains($@, "The key of \$options1 must be defined")) {
-          return 0;
-        }
-      }
-      {
-        eval { Fn->merge_options({}, [(object)undef, 1]); };
-        unless (Fn->contains($@, "The key of \$options2 must be defined")) {
-          return 0;
-        }
-      }
-      {
-        eval { Fn->merge_options([(object)1, 1], {}); };
-        unless (Fn->contains($@, "The key of \$options1 must be the string type")) {
-          return 0;
-        }
-      }
-      {
-        eval { Fn->merge_options({}, [(object)1, 1]); };
-        unless (Fn->contains($@, "The key of \$options2 must be the string type")) {
           return 0;
         }
       }

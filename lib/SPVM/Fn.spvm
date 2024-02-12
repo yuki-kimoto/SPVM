@@ -1176,11 +1176,11 @@ class Fn {
   
   precompile static method merge_options : object[] ($options1 : object[], $options2 : object[]) {
     unless ($options1) {
-      die "\$options1 must be defined.";
+      $options1 = {};
     }
     
     unless ($options2) {
-      die "\$options2 must be defined.";
+      $options2 = {};
     }
     
     my $options1_length = @$options1;
@@ -1193,35 +1193,7 @@ class Fn {
       die "The length of \$options2 must be an even number.";
     }
     
-    my $merged_options_h = Hash->new;
-    
-    for (my $i = 0; $i < $options1_length; $i += 2) {
-      unless ($options1->[$i]) {
-        die "The key of \$options1 must be defined.";
-      }
-      
-      unless ($options1->[$i] isa string) {
-        die "The key of \$options1 must be the string type.";
-      }
-      my $name = (string)$options1->[$i];
-      my $value = $options1->[$i + 1];
-      $merged_options_h->set($name, $value);
-    }
-    
-    for (my $i = 0; $i < $options2_length; $i += 2) {
-      unless ($options2->[$i]) {
-        die "The key of \$options2 must be defined.";
-      }
-      
-      unless ($options2->[$i] isa string) {
-        die "The key of \$options2 must be the string type.";
-      }
-      my $name = (string)$options2->[$i];
-      my $value = $options2->[$i + 1];
-      $merged_options_h->set($name, $value);
-    }
-    
-    my $merged_options = $merged_options_h->to_array;
+    my $merged_options = Array->merge_object($options1, $options2);
     
     return $merged_options;
   }
