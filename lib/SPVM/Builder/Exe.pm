@@ -666,28 +666,26 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
     void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, "main");
     
-    warn("BBB");
-    
     if (method) {
       int32_t is_class_method = env->api->method->is_class_method(env->runtime, method);
       
-      warn("AAA %s", is_class_method);
+      spvm_warnf(spvm_stderr, "AAA %d", is_class_method);
       
       if (is_class_method) {
         int32_t args_length = env->api->method->get_args_length(env->runtime, method);
         
         if (!(args_length == 0)) {
-          fprintf(spvm_stderr, "The length of the arguments of the \\\"main\\\" method in the \\\"%s\\\" class must be 0\\n", class_name);
+          fprintf(spvm_stderr, "The length of the arguments of the \\\"main\\\" method in the \\\"%s\\\" class must be 0.\\n", class_name);
           error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
         }
       }
       else {
-        fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be a class method\\n", class_name);
+        fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be a class method.\\n", class_name);
         error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       }
     }
     else {
-      fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be defined\\n", class_name);
+      fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be defined.\\n", class_name);
       error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
     

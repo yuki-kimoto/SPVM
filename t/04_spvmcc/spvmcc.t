@@ -50,6 +50,18 @@ my $dev_null = File::Spec->devnull;
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
     like($error, qr|The "main" method in the "MyExeCompileError::MainInstantMethod" class must be a class method|);
   }
+  
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_runtime_error --no-config MyExeCompileError::MainHasArguments);
+    my $status = system($spvmcc_cmd);
+    ok($status == 0);
+    
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_runtime_error/);
+    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    
+    my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
+    like($error, qr|The length of the arguments of the "main" method in the "MyExeCompileError::MainHasArguments" class must be 0|);
+  }
 }
 
   # Basic

@@ -1,0 +1,4 @@
+class MyExeCompileError::MainHasArguments {
+  static method main : int ($argv : string[]) {
+  }
+}
