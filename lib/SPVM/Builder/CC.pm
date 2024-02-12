@@ -460,12 +460,12 @@ sub compile_class {
     
     my $object_file_name;
     
-    # Object file of native class
+    # Native class source file
     if ($current_is_native_class) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
       $object_file_name = "$cc_output_dir/$object_rel_file";
     }
-    # Object file of resource source file
+    # Native source files
     else {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
@@ -481,42 +481,33 @@ sub compile_class {
     }
     
     # Check if object file need to be generated
-    my $need_generate;
-    {
-      # Own resource header files
-      my @native_header_files;
-      my $native_include_dir = $config->native_include_dir;
-      if (defined $native_include_dir && -d $native_include_dir) {
-        find(
-          {
-            wanted => sub {
-              my $include_file_name = $File::Find::name;
-              if (-f $include_file_name) {
-                push @native_header_files, $include_file_name;
-              }
-            },
-            no_chdir => 1,
+    my @native_header_files;
+    my $native_include_dir = $config->native_include_dir;
+    if (defined $native_include_dir && -d $native_include_dir) {
+      find(
+        {
+          wanted => sub {
+            my $include_file_name = $File::Find::name;
+            if (-f $include_file_name) {
+              push @native_header_files, $include_file_name;
+            }
           },
-          $native_include_dir,
-        );
-      }
-      my $input_files = [$source_file, @native_header_files];
-      if (defined $config->file) {
-        push @$input_files, $config->file;
-      };
-      if ($current_is_native_class) {
-        my $class_file = $source_file;
-        $class_file =~ s/\.[^\/\\]+$//;
-        $class_file .= '.spvm';
-        
-        push @$input_files, $class_file;
-      }
-      $need_generate = SPVM::Builder::Util::need_generate({
-        force => $force,
-        output_file => $object_file_name,
-        input_files => $input_files,
-      });
+          no_chdir => 1,
+        },
+        $native_include_dir,
+      );
     }
+    
+    my $input_files = [$source_file, $class_file, @native_header_files];
+    if (defined $config->file) {
+      push @$input_files, $config->file;
+    };
+    
+    my $need_generate = SPVM::Builder::Util::need_generate({
+      force => $force,
+      output_file => $object_file_name,
+      input_files => $input_files,
+    });
     
     my $compile_info_category;
     if ($category eq 'precompile') {
