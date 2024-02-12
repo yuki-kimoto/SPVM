@@ -120,6 +120,10 @@ sub create_ccflags {
     my $spvm_core_include_dir = $config->spvm_core_include_dir;
     push @all_include_dirs, $spvm_core_include_dir;
     
+    # include directories
+    my $include_dirs = $config->include_dirs;
+    push @all_include_dirs, @$include_dirs;
+    
     # Native include directory
     my $native_include_dir = $config->native_include_dir;
     if (defined $native_include_dir) {
@@ -136,10 +140,6 @@ sub create_ccflags {
         push @all_include_dirs, $resource_include_dir;
       }
     }
-    
-    # include directories
-    my $include_dirs = $config->include_dirs;
-    push @all_include_dirs, @$include_dirs;
     
     my @all_include_dirs_args = map { "-I$_" } @all_include_dirs;
     
