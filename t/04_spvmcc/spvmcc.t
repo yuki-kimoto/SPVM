@@ -39,11 +39,14 @@ my $dev_null = File::Spec->devnull;
 
 # Runtime error
 {
+  # TODO: remove this code
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-    
+  }
+  
+  {
     
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe_runtime_error1 --no-config MyExeCompileError::MainInstantMethod);
     my $status = system($spvmcc_cmd);
