@@ -40,11 +40,11 @@ my $dev_null = File::Spec->devnull;
 # Runtime error
 {
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_runtime_error --no-config MyExeCompileError::MainInstantMethod);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_runtime_error1 --no-config MyExeCompileError::MainInstantMethod);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_runtime_error/);
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_runtime_error1/);
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
@@ -52,15 +52,27 @@ my $dev_null = File::Spec->devnull;
   }
   
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_runtime_error --no-config MyExeCompileError::MainHasArguments);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_runtime_error2 --no-config MyExeCompileError::MainHasArguments);
     my $status = system($spvmcc_cmd);
     ok($status == 0);
     
-    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_runtime_error/);
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_runtime_error2/);
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     
     my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
     like($error, qr|The length of the arguments of the "main" method in the "MyExeCompileError::MainHasArguments" class must be 0|);
+  }
+  
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_runtime_error3 --no-config MyExeCompileError::MainNotFound);
+    my $status = system($spvmcc_cmd);
+    ok($status == 0);
+    
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_runtime_error3/);
+    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    
+    my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
+    like($error, qr|The "main" method in the "MyExeCompileError::MainNotFound" class must be defined|);
   }
 }
 

@@ -669,8 +669,6 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     if (method) {
       int32_t is_class_method = env->api->method->is_class_method(env->runtime, method);
       
-      spvm_warnf(spvm_stderr, "AAA %d", is_class_method);
-      
       if (is_class_method) {
         int32_t args_length = env->api->method->get_args_length(env->runtime, method);
         
