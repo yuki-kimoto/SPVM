@@ -3,29 +3,16 @@ package SPVM::Builder::Exe;
 use strict;
 use warnings;
 use Carp 'confess';
-use Pod::Usage 'pod2usage';
-use Config;
+use JSON::PP;
+use File::Path 'mkpath';
+use File::Basename 'dirname', 'basename';
 
 use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
-use JSON::PP;
 
 use SPVM 'Native::Compiler';
-use SPVM 'Native::Runtime';
-
-use File::Spec;
-use File::Find 'find';
-
-use Getopt::Long 'GetOptions';
-
-use File::Copy 'copy', 'move';
-use File::Path 'mkpath';
-use DynaLoader;
-use Scalar::Util 'weaken';
-
-use File::Basename 'dirname', 'basename';
 
 # Fields
 sub builder {
