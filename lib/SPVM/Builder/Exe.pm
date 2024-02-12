@@ -427,29 +427,6 @@ sub compile_classes {
   return $object_files;
 }
 
-sub create_source_file {
-  my ($self, $options) = @_;
-  
-  # Config
-  my $config_exe = $self->config;
-  
-  my $input_files = $options->{input_files};
-  my $output_file = $options->{output_file};
-  my $create_cb = $options->{create_cb};
-  
-  my $config_exe_loaded_config_files = $config_exe->get_loaded_config_files;
-  my $need_generate_input_files = [@$input_files, @$config_exe_loaded_config_files];
-  my $need_generate = SPVM::Builder::Util::need_generate({
-    force => $self->force || $config_exe->force,
-    output_file => $output_file,
-    input_files => $need_generate_input_files,
-  });
-  
-  if ($need_generate) {
-    $create_cb->();
-  }
-}
-
 sub compile_source_file {
   my ($self, $options) = @_;
   
@@ -897,9 +874,22 @@ sub create_bootstrap_source {
   $bootstrap_base =~ s|::|/|g;
   my $bootstrap_source_file = "$build_src_dir/$bootstrap_base.boot.c";
   
-  # Source creating callback
-  my $create_cb = sub {
-    
+  # Config
+  my $config_exe = $self->config;
+  
+  my $input_files = [@$class_files];
+  my $output_file = $bootstrap_source_file;
+  
+  my $config_exe_loaded_config_files = $config_exe->get_loaded_config_files;
+  my $need_generate_input_files = [@$input_files, @$config_exe_loaded_config_files];
+  
+  my $need_generate = SPVM::Builder::Util::need_generate({
+    force => $self->force || $config_exe->force,
+    output_file => $output_file,
+    input_files => $need_generate_input_files,
+  });
+  
+  if ($need_generate) {
     my $bootstrap_source = '';
     
     # Header
@@ -926,14 +916,7 @@ sub create_bootstrap_source {
       or die "Can't open file $bootstrap_source_file:$!";
     
     print $bootstrap_source_fh $bootstrap_source;
-  };
-  
-  # Create source file
-  $self->create_source_file({
-    input_files => [@$class_files],
-    output_file => $bootstrap_source_file,
-    create_cb => $create_cb,
-  });
+  }
 }
 
 sub compile_bootstrap_source_file {
