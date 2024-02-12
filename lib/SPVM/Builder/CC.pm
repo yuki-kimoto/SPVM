@@ -484,7 +484,7 @@ sub compile_class {
     my $need_generate;
     {
       # Own resource header files
-      my @own_header_files;
+      my @native_header_files;
       my $native_include_dir = $config->native_include_dir;
       if (defined $native_include_dir && -d $native_include_dir) {
         find(
@@ -492,7 +492,7 @@ sub compile_class {
             wanted => sub {
               my $include_file_name = $File::Find::name;
               if (-f $include_file_name) {
-                push @own_header_files, $include_file_name;
+                push @native_header_files, $include_file_name;
               }
             },
             no_chdir => 1,
@@ -500,7 +500,7 @@ sub compile_class {
           $native_include_dir,
         );
       }
-      my $input_files = [$source_file, @own_header_files];
+      my $input_files = [$source_file, @native_header_files];
       if (defined $config->file) {
         push @$input_files, $config->file;
       };
