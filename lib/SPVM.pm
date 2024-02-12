@@ -64,6 +64,28 @@ Calling a SPVM method from Perl:
   # Call method
   my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 
+=head1 Features
+
+=over2 
+
+=item * L<Native threads|SPVM::Thread> and L<goroutines|SPVM::Go>.
+
+=item * L<Generating an executable file|spvmcc>
+
+=item * AOT(Ahead-of-time compilation) and JIT(Just-in-time compilation).
+
+=item * Static types, type inference and L<static analysis|SPVM::Native::Compiler>.
+
+=item * L<C/C++ binding|SPVM::Document::NativeClass> and L<resource system|SPVM::Document::Resource> for C/C++ libraries.
+
+=item * L<Perl binding for SPVM methods|SPVM::ExchangeAPI>.
+
+=item * L<Perl-like syntax|SPVM::Document::Language> with class syntax.
+
+=item * L<High performance|https://github.com/yuki-kimoto/SPVM/wiki/Benchmark>
+
+=back
+
 =head1 Documents
 
 =over 2
