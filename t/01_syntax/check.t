@@ -1264,7 +1264,7 @@ use Test::More;
       'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
       'class MyClassParent { has foo : int; }',
     ];
-    compile_not_ok($source, q|The private "foo" field in the "MyClass" class cannnot be accessed from the current class "MyClass".|);
+    compile_not_ok($source, q|The private "foo" field in the "MyClassParent" class cannnot be accessed from the current class "MyClass".|);
   }
   
   {
