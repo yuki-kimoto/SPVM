@@ -609,10 +609,8 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   FILE* spvm_stderr = env->api->runtime->get_spvm_stderr(env->runtime);
   
-  // Set precompile method addresses
   SPVM_BOOTSTRAP_create_bootstrap_set_precompile_method_addresses(env);
   
-  // Set native method addresses
   SPVM_BOOTSTRAP_create_bootstrap_set_native_method_addresses(env);
   
   SPVM_VALUE* stack = env->new_stack(env);
@@ -621,10 +619,8 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   // Set the program name and the command line arguments
   {
-    // Enter scope
     int32_t scope_id = env->enter_scope(env, stack);
     
-    // Program name - string
     void* obj_program_name = env->new_string(env, stack, command_args[0], strlen(command_args[0]));
     
     // ARGV - string[]
@@ -634,58 +630,78 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
       env->set_elem_object(env, stack, obj_argv, arg_index - 1, obj_arg);
     }
     
-    // Base time
     int64_t base_time = time(NULL);
     
     // Set command info
     {
-      int32_t e;
-      e = env->set_command_info_program_name(env, stack, obj_program_name);
-      assert(e == 0);
-      e = env->set_command_info_argv(env, stack, obj_argv);
-      assert(e == 0);
-      e = env->set_command_info_base_time(env, stack, base_time);
-      assert(e == 0);
+      error = env->set_command_info_program_name(env, stack, obj_program_name);
+      
+      if (error) {
+        env->print_stderr(env, stack, env->get_exception(env, stack));
+        fprintf(spvm_stderr, "\\n");
+      }
+      else {
+        error = env->set_command_info_argv(env, stack, obj_argv);
+        
+        if (error) {
+          env->print_stderr(env, stack, env->get_exception(env, stack));
+          fprintf(spvm_stderr, "\\n");
+        }
+        else {
+          error = env->set_command_info_base_time(env, stack, base_time);
+          if (error) {
+            env->print_stderr(env, stack, env->get_exception(env, stack));
+            fprintf(spvm_stderr, "\\n");
+          }
+        }
+      }
     }
-    // Leave scope
+    
     env->leave_scope(env, stack, scope_id);
-    
   }
   
-  // Call INIT blocks
-  
-  int32_t status = 0;
-  error = env->call_init_methods(env, stack);
-  if (error) {
-    env->print_stderr(env, stack, env->get_exception(env, stack));
-    printf("\\n");
-    status = 255;
-  }
-  else {
-    
-    // Class name
+  if (!error) {
     const char* class_name = "$class_name";
     
-    // Class
     void* class_basic_type = env->api->runtime->get_basic_type_by_name(env->runtime, class_name);
     void* method = env->api->basic_type->get_method_by_name(env->runtime, class_basic_type, "main");
     
-    if (!method) {
-      fprintf(spvm_stderr, "The class method %s->main is not defined\\n", class_name);
-      return -1;
-    }
-    
-    // Run
-    int32_t args_width = 0;
-    error = env->call_method(env, stack, method, args_width);
-    
-    if (error) {
-      env->print_stderr(env, stack, env->get_exception(env, stack));
-      printf("\\n");
-      status = 255;
+    if (method) {
+      int32_t is_class_method = env->api->method->is_class_method(env->runtime, method);
+      
+      if (is_class_method) {
+        int32_t args_length = env->api->method->get_args_length(env->runtime, method);
+        
+        if (!(args_length == 0)) {
+          fprintf(spvm_stderr, "The length of the arguments of the \\\"main\\\" method in the \\\"%s\\\" class must be 0\\n", class_name);
+          error = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+        }
+      }
+      else {
+        fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be a class method\\n", class_name);
+        error = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+      }
     }
     else {
-      status = stack[0].ival;
+      fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be defined\\n", class_name);
+      error = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+    }
+    
+    if (!error) {
+      error = env->call_init_methods(env, stack);
+      if (error) {
+        env->print_stderr(env, stack, env->get_exception(env, stack));
+        fprintf(spvm_stderr, "\\n");
+      }
+      else {
+        int32_t args_width = 0;
+        error = env->call_method(env, stack, method, args_width);
+        
+        if (error) {
+          env->print_stderr(env, stack, env->get_exception(env, stack));
+          fprintf(spvm_stderr, "\\n");
+        }
+      }
     }
   }
   
@@ -699,7 +715,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   env_api->free_env(env_api);
   
-  return status;
+  return error;
 }
 EOS
 
