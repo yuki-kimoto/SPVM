@@ -1077,15 +1077,6 @@ sub compile_native_class {
     
     my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode);
     
-    my $resource_include_dirs = [];
-    my $resource_names = $config_exe->get_resource_names;
-    for my $resource_name (@$resource_names) {
-      my $resource = $config_exe->get_resource($resource_name);
-      my $resource_include_dir = $resource->config->native_include_dir;
-      push @$resource_include_dirs, $resource_include_dir;
-    }
-    $config->add_include_dir(@$resource_include_dirs);
-    
     # In an executable file, only resources used in the config of the class for generate an executable file are compiled.
     unless ($class_name eq $self->class_name) {
       $config->no_compile_resource(1);
