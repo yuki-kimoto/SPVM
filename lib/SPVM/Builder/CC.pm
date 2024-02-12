@@ -144,9 +144,9 @@ sub build_precompile_class_source_file {
   my $force = $self->detect_force;
   
   # Output - Precompile C source file
-  my $cc_output_dir = $config->cc_output_dir;
+  my $cc_input_dir = $config->cc_input_dir;
   my $source_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'precompile.c');
-  my $source_file = "$cc_output_dir/$source_rel_file";
+  my $source_file = "$cc_input_dir/$source_rel_file";
   
   # Check if generating is needed
   my $need_generate = SPVM::Builder::Util::need_generate({
@@ -318,7 +318,7 @@ sub compile_class {
     
     my $config_precompile_class_source = $config->clone;
     
-    $config_precompile_class_source->cc_output_dir($build_src_dir);
+    $config_precompile_class_source->cc_input_dir($build_src_dir);
     
     $self->build_precompile_class_source_file(
       $class_name,
@@ -409,10 +409,10 @@ sub compile_class {
       
       $resource_config->used_as_resource(1),
       
-      my $resource_object_dir = $self->get_resource_object_dir_from_basic_type_name($class_name);
+      my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
       mkpath $resource_object_dir;
       
-      $resource_config->cc_output_dir($resource_object_dir),
+      $resource_config->cc_output_dir($resource_object_dir);
       
       my $compile_options = {
         runtime => $runtime,
@@ -944,38 +944,9 @@ sub create_link_info {
   return $link_info;
 }
 
-sub resource_src_dir_from_class_name {
-  my ($self, $class_name) = @_;
-  
-  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
-  
-  unless (defined $config_file) {
-    my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-    
-    confess "A config file \"$config_rel_file\" is not found in (@INC)";
-  }
-  
-  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-  
-  my $resource_src_dir = $config_file;
-  $resource_src_dir =~ s|/\Q$config_rel_file\E$||;
-  
-  return $resource_src_dir;
-}
-
 sub get_resource_object_dir_from_class_name {
   my ($self, $class_name) = @_;
   
-  my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-  
-  my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
-  
-  return $resource_object_dir;
-}
-
-sub get_resource_object_dir_from_basic_type_name {
-  my ($self, $class_name) = @_;
-
   my $module_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   
   my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
