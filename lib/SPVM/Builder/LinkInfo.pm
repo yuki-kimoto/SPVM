@@ -61,11 +61,10 @@ sub create_command {
   my $object_files = $self->object_files;
   my $object_file_names = [map { $_->to_string; } @$object_files];
   
-  my $link_command_args = $self->create_ldflags;
+  my $ldflags = $self->create_ldflags;
   
-  # Note: Arguments of the link command(these contain -l flags) must be
-  # after object file names for resolving symbol names properly
-  my @link_command = ($ld, '-o', $output_file, @$object_file_names, @$link_command_args);
+  # ldflags must be after object files to resolve symbol names properly
+  my @link_command = ($ld, '-o', $output_file, @$object_file_names, @$ldflags);
   
   return \@link_command;
 }
@@ -201,7 +200,7 @@ Return Value Examples:
 
 =head2 create_ldflags
 
-  my $link_command_args = $link_info->create_ldflags;
+  my $ldflags = $link_info->create_ldflags;
 
 Creates an array reference of the linker options, and returns it.
 
