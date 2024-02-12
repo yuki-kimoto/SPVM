@@ -27,6 +27,31 @@ rmtree "$build_dir/work";
 
 my $dev_null = File::Spec->devnull;
 
+# Compilation Error
+{
+  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_compile_error --no-config MyExeCompileError);
+  my $status = system($spvmcc_cmd);
+  ok($status != 0);
+  
+  my $error = `$spvmcc_cmd 2>&1 1>$devnull`;
+  like($error, qr|CompileError|);
+}
+
+# Runtime error
+{
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_runtime_error --no-config MyExeCompileError::MainInstantMethod);
+    my $status = system($spvmcc_cmd);
+    ok($status == 0);
+    
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe_runtime_error/);
+    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    
+    my $error = `$execute_cmd_with_args 2>&1 1>$devnull`;
+    like($error, qr|The "main" method in the "MyExeCompileError::MainInstantMethod" class must be a class method|);
+  }
+}
+
   # Basic
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe MyExe);
@@ -60,16 +85,6 @@ my $dev_null = File::Spec->devnull;
     my $output = `$spvmdist_cmd`;
     like($output, qr/\Qusage: spvmcc [<options>] <class name>/);
   }
-}
-
-# Compilation Error
-{
-  my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_compile_error --no-config MyExeCompileError);
-  my $status = system($spvmcc_cmd);
-  ok($status != 0);
-  
-  my $error = `$spvmcc_cmd 2>&1 1>$devnull`;
-  like($error, qr|CompileError|);
 }
 
 {
