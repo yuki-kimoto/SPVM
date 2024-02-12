@@ -930,7 +930,7 @@ sub create_bootstrap_source {
   
   # Create source file
   $self->create_source_file({
-    input_files => [@$class_files, __FILE__],
+    input_files => [@$class_files],
     output_file => $bootstrap_source_file,
     create_cb => $create_cb,
   });
