@@ -646,6 +646,10 @@ sub link {
     confess "A build directory must be defined. Perhaps the SPVM_BUILD_DIR environment variable is not set.";
   }
   
+  unless (-d $build_dir) {
+    confess "[Unexpected Error]A build directory must exists.";
+  }
+  
   my $config = $options->{config};
   
   unless ($config) {
@@ -677,10 +681,6 @@ sub link {
   
   if ($need_generate) {
     
-    mkpath $build_dir;
-    
-    mkpath dirname $output_file;
-    
     my $ld = $config->ld;
     
     my $cbuilder_config = {
@@ -709,9 +709,11 @@ sub link {
     
     my $link_info_object_file_names = [map { $_->to_string; } @$link_info_object_files];
     
-    my @tmp_files;
+    my @link_tmp_files;
     
     my $output_type = $config->output_type;
+    
+    mkpath dirname $link_info_output_file;
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
@@ -728,7 +730,7 @@ sub link {
         warn "$link_command\n";
       }
       
-      (undef, @tmp_files) = $cbuilder->link(
+      (undef, @link_tmp_files) = $cbuilder->link(
         objects => $link_info_object_file_names,
         module_name => $class_name,
         lib_file => $link_info_output_file,
@@ -760,7 +762,7 @@ sub link {
         warn "$link_command\n";
       }
       
-      (undef, @tmp_files) = $cbuilder->link_executable(
+      (undef, @link_tmp_files) = $cbuilder->link_executable(
         objects => $link_info_object_file_names,
         module_name => $class_name,
         exe_file => $link_info_output_file,
@@ -775,7 +777,7 @@ sub link {
       if ($^O eq 'MSWin32') {
         my $def_file;
         my $lds_file;
-        for my $tmp_file (@tmp_files) {
+        for my $tmp_file (@link_tmp_files) {
           # Remove double quote
           $tmp_file =~ s/^"//;
           $tmp_file =~ s/"$//;
