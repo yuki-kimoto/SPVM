@@ -61,6 +61,15 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   ok(SPVM::Builder::Util::file_contains($perl_class_file, 'Copyright'));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, 'MIT License'));
   
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Usage"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Details"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Inheritance"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Interfaces"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Enumerations"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Fields"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Class Methods"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Instance Methods"));
+  
   my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_class_file);
   ok(SPVM::Builder::Util::file_contains($spvm_class_file, "class Foo {"));
