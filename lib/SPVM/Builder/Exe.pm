@@ -899,7 +899,9 @@ sub create_bootstrap_source {
   
   $bootstrap_source .= $self->create_bootstrap_get_runtime_source;
   
-  $bootstrap_source .= "\n// " . $config_exe->file;
+  if (defined $config_exe->file) {
+    $bootstrap_source .= "\n// " . $config_exe->file;
+  }
   
   # Build source directory
   mkpath $build_src_dir;
