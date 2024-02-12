@@ -2369,9 +2369,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         if (utf8_char_len > 0) {
             
           if (utf8_char_len == 1 && !isprint(*(chars + offset))) {
-            sprintf(tmp_buffer, "\\0x{%02X}", *(chars + offset));
+            sprintf(tmp_buffer, "\\x{%02X}", *(chars + offset) & 0xFF);
             
-            SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, 7);
+            SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, strlen(tmp_buffer));
           }
           else {
             SPVM_STRING_BUFFER_add_len(string_buffer, (char*)(chars + offset), utf8_char_len);
@@ -2381,9 +2381,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         }
         else {
           
-          sprintf(tmp_buffer, "\\0x{%02X}", *(chars + offset));
+          sprintf(tmp_buffer, "\\x{%02X}", *(chars + offset) & 0xFF);
           
-          SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, 7);
+          SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, strlen(tmp_buffer));
           
           offset += 1;
         }

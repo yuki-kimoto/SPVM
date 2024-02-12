@@ -8,7 +8,9 @@ class TestCase::Dump {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
-
+  
+  use Hash;
+  
   static method dump_string : string () {
     # dump string
     my $string = "Hello";
@@ -17,7 +19,7 @@ class TestCase::Dump {
     
     return $dump;
   }
-
+  
   static method dump_string_utf8 : string () {
     # dump string
     my $string = "あいう";
@@ -233,4 +235,14 @@ class TestCase::Dump {
     
     return $dump;
   }
+  
+  static method dump_binary : string () {
+    
+    my $binary = "\x{02}\x{8E}?A\x{95}\x{E3}\x{09}XT\x{17}_\x{C0} \x{E9}";
+    
+    my $dump = dump $binary;
+    
+    return $dump;
+  }
+  
 }

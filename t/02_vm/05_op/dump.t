@@ -18,7 +18,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   is(SPVM::TestCase::Dump->dump_string, '"Hello"');
   is(SPVM::TestCase::Dump->dump_string_utf8, '"あいう"');
-  is(SPVM::TestCase::Dump->dump_string_non_utf8, '"\\0x{00}\\0x{01}\0x{09}"');
+  is(SPVM::TestCase::Dump->dump_string_non_utf8, '"\\x{00}\\x{01}\x{09}"');
   is(SPVM::TestCase::Dump->dump_undef, 'undef');
   like(SPVM::TestCase::Dump->dump_byte_array, qr/^\s*\[\s*1\s*,\s*2\s*\]\s*/s);
   like(SPVM::TestCase::Dump->dump_byte_array, qr/\s*:\s*byte\[\]/);
@@ -55,6 +55,12 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
   like(SPVM::TestCase::Dump->dump_object_reuse_weaken, qr/object_value\s*=>\s*REUSE_OBJECT/);
   like(SPVM::TestCase::Dump->dump_object_reuse_weaken, qr/REUSE_OBJECT\([^\)]*\)\s*,/);
+  
+  {
+    my $expected_q = quotemeta '"\x{02}\x{8E}?A\x{95}\x{E3}\x{09}XT\x{17}_\x{C0} \x{E9}"';
+    
+    like(SPVM::TestCase::Dump->dump_binary, qr/$expected_q/);
+  }
 }
 
 # All object is freed
