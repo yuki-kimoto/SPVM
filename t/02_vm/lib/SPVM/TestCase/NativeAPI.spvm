@@ -1491,5 +1491,6 @@ class TestCase::NativeAPI {
   native static method spvm_stdout : int ();
   
   native static method spvm_stderr : int ();
-
+  
+  method instance_method : void () {}
 }

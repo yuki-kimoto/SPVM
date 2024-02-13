@@ -2002,6 +2002,44 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
         return 0;
       }
     }
+    
+    {
+      int32_t error_id = 0;
+      
+      stack[0].ival = 5;
+      
+      env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "not_found", 0, &error_id, __func__, FILE_NAME, __LINE__);
+      
+      if (!error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"not_found\" method in the \"TestCase::NativeAPI\" class is not found.")) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+    
+    {
+      int32_t error_id = 0;
+      
+      stack[0].ival = 5;
+      
+      env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "instance_method", 0, &error_id, __func__, FILE_NAME, __LINE__);
+      
+      if (!error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      env->print_stderr(env, stack, env->get_exception(env, stack));
+      
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"instance_method\" method in the \"TestCase::NativeAPI\" class must be a class method.")) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
   }
   
   stack[0].ival = 1;
