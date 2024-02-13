@@ -306,15 +306,14 @@ sub compile_class {
     $class_file = &_runtime_get_class_file($runtime, $class_name);
   }
   
-  my $build_src_dir;
+  my $cc_input_dir;
   if ($category eq 'precompile') {
     
-    $build_src_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
-    mkpath $build_src_dir;
+    $cc_input_dir = SPVM::Builder::Util::create_build_src_path($build_dir);
     
     my $config_precompile_class_source = $config->clone;
     
-    $config_precompile_class_source->cc_input_dir($build_src_dir);
+    $config_precompile_class_source->cc_input_dir($cc_input_dir);
     
     $self->build_precompile_class_source_file(
       $class_name,
@@ -325,13 +324,8 @@ sub compile_class {
     );
   }
   elsif ($category eq 'native') {
-    $build_src_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
+    $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
   }
-  
-  my $build_object_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
-  mkpath $build_object_dir;
-  
-  my $input_dir = $build_src_dir;
   
   # Class file
   unless (defined $class_file) {
@@ -424,7 +418,7 @@ sub compile_class {
   unless ($used_as_resource) {
     if (defined $native_class_ext) {
       my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
-      $native_class_file = "$input_dir/$native_class_rel_file";
+      $native_class_file = "$cc_input_dir/$native_class_rel_file";
       
       unless (-f $native_class_file) {
         unless ($config->isa('SPVM::Builder::Config::Exe')) {
