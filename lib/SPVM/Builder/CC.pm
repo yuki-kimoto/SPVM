@@ -466,6 +466,33 @@ sub compile_class {
       mkpath dirname $object_file_name;
     }
     
+    my $compile_info_category;
+    if ($category eq 'precompile') {
+      $compile_info_category = 'precompile_class';
+    }
+    elsif ($category eq 'native') {
+      if ($current_is_native_class_source_file) {
+        $compile_info_category = 'native_class';
+      }
+      else {
+        $compile_info_category = 'native_source';
+      }
+    }
+    
+    my $compile_info = SPVM::Builder::CompileInfo->new(
+      output_file => $object_file_name,
+      source_file => $source_file,
+      config => $config,
+      category => $compile_info_category,
+    );
+    
+    # Note: before_compile_cbs are executed before the check if a compilation is needed
+    # because this callback maybe change its condition.
+    my $before_compile_cbs = $config->before_compile_cbs;
+    for my $before_compile_cb (@$before_compile_cbs) {
+      $before_compile_cb->($config, $compile_info);
+    }
+    
     # Check if object file need to be generated
     my $need_generate;
     {
@@ -497,31 +524,6 @@ sub compile_class {
         output_file => $object_file_name,
         input_files => $input_files,
       });
-    }
-    
-    my $compile_info_category;
-    if ($category eq 'precompile') {
-      $compile_info_category = 'precompile_class';
-    }
-    elsif ($category eq 'native') {
-      if ($current_is_native_class_source_file) {
-        $compile_info_category = 'native_class';
-      }
-      else {
-        $compile_info_category = 'native_source';
-      }
-    }
-    
-    my $compile_info = SPVM::Builder::CompileInfo->new(
-      output_file => $object_file_name,
-      source_file => $source_file,
-      config => $config,
-      category => $compile_info_category,
-    );
-    
-    my $before_compile_cbs = $config->before_compile_cbs;
-    for my $before_compile_cb (@$before_compile_cbs) {
-      $before_compile_cb->($config, $compile_info);
     }
     
     # Compile a source file
@@ -661,14 +663,16 @@ sub link {
   
   my $output_file = $config->output_file;
   
+  my @object_files = map { "$_" } @{$link_info->object_files};
+  
+  my $input_files = [@object_files];
+  
+  # Note: before_link_cbs are executed before the check if a link is needed
+  # because this callback maybe change its condition.
   my $before_link_cbs = $config->before_link_cbs;
   for my $before_link_cb (@$before_link_cbs) {
     $before_link_cb->($config, $link_info);
   }
-  
-  my @object_files = map { "$_" } @{$link_info->object_files};
-  
-  my $input_files = [@object_files];
   
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $force,
