@@ -38,6 +38,11 @@ unless (-f $native_header_file) {
   die 'Unexpected error';
 }
 
+my $resource_native_header_file = "$test_dir/lib/SPVM/TestCase/Resource/Mylib1.native/include/mylib1_source1.h";
+unless (-f $resource_native_header_file) {
+  die 'Unexpected error';
+}
+
 my $native_src_file = "$test_dir/lib/SPVM/TestCase/NativeAPISrc.native/src/baz/baz.c";
 unless (-f $native_src_file) {
   die 'Unexpected error';
@@ -230,35 +235,61 @@ system($compile_native_api_prgoram) == 0 or die;
 
 # Update native header file
 {
-
   my $native_object_file;
   my $start_native_object_file_mtime;
   $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
-
+  
   my $native_src_object_file;
   my $start_native_src_object_file_mtime;
   $native_src_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.native/baz/baz.o";
   $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
-
+  
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
-   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-
+  $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
+  $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
+  
   # Update src file
   sleep $wait_time;
   my $now = time;
   utime $now, $now, $native_header_file;
   system($compile_native_api_prgoram) == 0 or die;
-
-  # Native object file is cached
+  
+  # Native class object file is cached
   my $native_object_file_mtime = (stat $native_object_file)[9];
   isnt($native_object_file_mtime, $start_native_object_file_mtime);
-
+  
   # Native object file is cached
   my $native_src_object_file_mtime = (stat $native_src_object_file)[9];
   isnt($native_src_object_file_mtime, $start_native_src_object_file_mtime);
+  
+  # Native shared_lib file is cached
+  my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
+  isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
+}
+
+# Update resource native header file
+{
+  my $native_object_file;
+  my $start_native_object_file_mtime;
+  $native_object_file = "$build_dir/work/object/SPVM/TestCase/NativeAPISrc.o";
+  $start_native_object_file_mtime = (stat $native_object_file)[9];
+  
+  my $native_shared_lib_file;
+  my $start_native_shared_lib_file_mtime;
+  $native_shared_lib_file = "$build_dir/work/lib/SPVM/TestCase/NativeAPISrc.$Config{dlext}";
+  $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
+  
+  # Update src file
+  sleep $wait_time;
+  my $now = time;
+  utime $now, $now, $resource_native_header_file;
+  system($compile_native_api_prgoram) == 0 or die;
+  
+  # Native class object file is cached
+  my $native_object_file_mtime = (stat $native_object_file)[9];
+  isnt($native_object_file_mtime, $start_native_object_file_mtime);
   
   # Native shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
