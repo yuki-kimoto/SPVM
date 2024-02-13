@@ -243,6 +243,10 @@ sub compile_class {
     confess "A class name must be defined.";
   }
   
+  if (ref $class_name) {
+    confess "[Unexpected Error]A class name must be non-reference.";
+  }
+  
   $options ||= {};
   
   my $build_dir = $self->build_dir;
@@ -327,11 +331,11 @@ sub compile_class {
     $cc_input_dir = SPVM::Builder::Util::get_class_base_dir($class_file, $class_name);
   }
   
-  # Class file
   unless (defined $class_file) {
     confess "[Unexpected Error]The class file is not defined.";
   }
   
+  # Check if a config file and a SPVM class file are in the same directory.
   if (defined $config->file) {
     my $config_file = $config->file;
     
@@ -348,7 +352,7 @@ sub compile_class {
     }
   }
   
-  $config->class_name("$class_name");
+  $config->class_name($class_name);
   
   if ($config_exe) {
     my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
@@ -618,6 +622,14 @@ sub _runtime_get_method_names {
 
 sub link {
   my ($self, $class_name, $object_files, $options) = @_;
+  
+  unless (defined $class_name) {
+    confess "A class name must be defined.";
+  }
+  
+  if (ref $class_name) {
+    confess "[Unexpected Error]A class name must be non-reference.";
+  }
   
   unless (@$object_files) {
     return;
