@@ -4,7 +4,8 @@
       call_class_method_by_name
       call_instance_method_static_by_name
       call_instance_method_by_name
-      
+  [Changes]
+    * Add periods to exception messages in native APIs.
 0.989071 2023-02-12
   [New Features]
     * Add the input_dir field to SPVM::Builder::Config.
