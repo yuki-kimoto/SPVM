@@ -1,3 +1,10 @@
+0.989072 2023-02-13
+  [Bug Fix]
+    * Fix the bug that not found basic type names cause segfault in the followin APIs.
+      call_class_method_by_name
+      call_instance_method_static_by_name
+      call_instance_method_by_name
+      
 0.989071 2023-02-12
   [New Features]
     * Add the input_dir field to SPVM::Builder::Config.
