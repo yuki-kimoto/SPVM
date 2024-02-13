@@ -2071,7 +2071,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name_exception(SP
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_native_value(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
   
