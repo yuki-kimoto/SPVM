@@ -515,10 +515,14 @@ sub compile_class {
       
       # Resource include directories
       my @resource_native_header_files;
+      my @resource_config_files;
       my $resource_names = $config->get_resource_names;
       for my $resource_name (@$resource_names) {
         my $resource = $config->get_resource($resource_name);
         my $resource_config = $resource->config;
+        
+        push @resource_config_files, $resource_config->file;
+        
         my $resource_native_include_dir = $resource_config->native_include_dir;
         if (defined $resource_native_include_dir && -d $resource_native_include_dir) {
           find(
@@ -536,7 +540,7 @@ sub compile_class {
         }
       }
       
-      my $input_files = [$source_file, $class_file, @native_header_files, @resource_native_header_files];
+      my $input_files = [$source_file, $class_file, @native_header_files, @resource_native_header_files, @resource_config_files];
       
       if (defined $config->file) {
         push @$input_files, $config->file;
