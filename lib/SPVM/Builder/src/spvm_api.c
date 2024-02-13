@@ -513,6 +513,23 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
   
+  if (!basic_type) {
+    *error_id = SPVM_API_die(env, stack, "The \"%s\" class is not found.", basic_type_name, func_name, file, line);
+    return;
+  }
+  
+  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
+  
+  if (!method) {
+    *error_id = SPVM_API_die(env, stack, "The \"%s\" method in the \"%s\" class is not found.", method_name, basic_type_name, func_name, file, line);
+    return;
+  }
+  
+  if (method->is_class_method) {
+    *error_id = SPVM_API_die(env, stack, "The \"%s\" method in the \"%s\" class must be an instance method.", method_name, basic_type_name, func_name, file, line);
+    return;
+  }
+  
   SPVM_OBJECT* object = stack[0].oval;
   
   if (!object) {
@@ -524,23 +541,6 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_API_die(env, stack, "The type dimension of the invocant must be equal to 0.", func_name, file, line);
     return;
   };
-  
-  if (!basic_type) {
-    *error_id = SPVM_API_die(env, stack, "The \"%s\" class is not found.", basic_type_name, func_name, file, line);
-    return;
-  }
-  
-  SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(env->runtime, basic_type, method_name);
-  
-  if (!method) {
-    *error_id = SPVM_API_die(env, stack, "The %s method in the %s class is not found.", method_name, basic_type_name, func_name, file, line);
-    return;
-  }
-  
-  if (method->is_class_method) {
-    *error_id = SPVM_API_die(env, stack, "The \"%s\" method in the \"%s\" class must be an instance method.", method_name, basic_type_name, func_name, file, line);
-    return;
-  }
   
   *error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
   
