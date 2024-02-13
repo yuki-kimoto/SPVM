@@ -1983,6 +1983,29 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* en
     stack[0].ival = 1;
   }
   
+  // Exceptions
+  {
+    {
+      int32_t error_id = 0;
+      
+      stack[0].ival = 5;
+      
+      env->call_class_method_by_name(env, stack, "NotFound", "foo", 0, &error_id, __func__, FILE_NAME, __LINE__);
+      
+      if (!error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"NotFound\" class is not found.")) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+  }
+  
+  stack[0].ival = 1;
+  
   return 0;
 }
 
