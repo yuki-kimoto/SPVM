@@ -357,7 +357,7 @@ int32_t SPVM_API_call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
     if (basic_type->init_method) {
       SPVM_RUNTIME_METHOD* init_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, basic_type, basic_type->init_method->index);      
       int32_t args_width = 0;
-      error_id = SPVM_API_call_method_no_mortal(env, stack, init_method, args_width);
+      error_id = SPVM_API_call_method(env, stack, init_method, args_width);
       if (error_id) { break; }
     }
   }
@@ -499,7 +499,7 @@ void SPVM_API_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const 
     return;
   }
   
-  *error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
+  *error_id = SPVM_API_call_method(env, stack, method, args_width);
   
   if (*error_id) {
     const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
@@ -542,7 +542,7 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
     return;
   };
   
-  *error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
+  *error_id = SPVM_API_call_method(env, stack, method, args_width);
   
   if (*error_id) {
     const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
@@ -574,7 +574,7 @@ void SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
     return;
   };
   
-  *error_id = SPVM_API_call_method_no_mortal(env, stack, method, args_width);
+  *error_id = SPVM_API_call_method(env, stack, method, args_width);
   
   if (*error_id) {
     const char* message = SPVM_API_get_chars(env, stack, SPVM_API_get_exception(env, stack));
@@ -4230,7 +4230,7 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             
             stack[0].oval = released_object;
             int32_t args_width = 1;
-            int32_t error_id = SPVM_API_call_method_no_mortal(env, stack, destructor_method, args_width);
+            int32_t error_id = SPVM_API_call_method(env, stack, destructor_method, args_width);
             
             // Exception in destructor is changed to warning
             if (error_id) {
