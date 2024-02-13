@@ -359,7 +359,6 @@ sub compile_class {
     $config->add_before_compile_cb(@$before_each_compile_cbs);
   }
   
-  # Force compile
   my $force = $self->detect_force($config);
   
   # Add resource include directories
@@ -417,16 +416,16 @@ sub compile_class {
     }
   }
   
-  # Native class file
-  my $native_class_file;
+  # Native class source file
+  my $native_class_source_file;
   unless ($used_as_resource) {
     if (defined $native_class_ext) {
       my $native_class_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, $native_class_ext);
-      $native_class_file = "$cc_input_dir/$native_class_rel_file";
+      $native_class_source_file = "$cc_input_dir/$native_class_rel_file";
       
-      unless (-f $native_class_file) {
+      unless (-f $native_class_source_file) {
         unless ($config->isa('SPVM::Builder::Config::Exe')) {
-          confess "Can't find source file $native_class_file";
+          confess "Can't find source file $native_class_source_file";
         }
       }
     }
@@ -441,17 +440,17 @@ sub compile_class {
   }
   
   # Compile source files
-  my $is_native_class = 1;
-  for my $source_file ($native_class_file, @$native_source_files) {
-    my $current_is_native_class = $is_native_class;
-    $is_native_class = 0;
+  my $is_native_class_source_file = 1;
+  for my $source_file ($native_class_source_file, @$native_source_files) {
+    my $current_is_native_class_source_file = $is_native_class_source_file;
+    $is_native_class_source_file = 0;
     
     next unless defined $source_file && -f $source_file;;
     
     my $object_file_name;
     
     # Native class source file
-    if ($current_is_native_class) {
+    if ($current_is_native_class_source_file) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'o');
       $object_file_name = "$cc_output_dir/$object_rel_file";
     }
@@ -503,7 +502,7 @@ sub compile_class {
       $compile_info_category = 'precompile_class';
     }
     elsif ($category eq 'native') {
-      if ($current_is_native_class) {
+      if ($current_is_native_class_source_file) {
         $compile_info_category = 'native_class';
       }
       else {
