@@ -1366,7 +1366,111 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       default: {
         // String literal - Single quote
         if (ch == 'q' && *(compiler->ch_ptr + 1) == '\'') {
+          compiler->ch_ptr += 2;
           
+          const char* string_literal_begin_ch_ptr = compiler->ch_ptr;
+          
+          char* string_literal_tmp;
+          int32_t memory_blocks_count_tmp = compiler->current_each_compile_allocator->memory_blocks_count_tmp;
+          int32_t string_literal_length = 0;
+          if (*(compiler->ch_ptr) == '\'') {
+            string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, 1);
+            string_literal_tmp[0] = '\0';
+            compiler->ch_ptr++;
+          }
+          else {
+            int32_t string_literal_finished = 0;
+            
+            while(1) {
+              // End of string literal
+              if (*compiler->ch_ptr == '\'') {
+                string_literal_finished = 1;
+              }
+              // End of source file
+              else if (*compiler->ch_ptr == '\0') {
+                string_literal_finished = 1;
+              }
+              
+              if (string_literal_finished) {
+                break;
+              }
+              else {
+                // \' escape character
+                if (*compiler->ch_ptr == '\\' && *(compiler->ch_ptr + 1) == '\'') {
+                  compiler->ch_ptr += 2;
+                }
+                // \\ escapte character
+                else if (*compiler->ch_ptr == '\\' && *(compiler->ch_ptr + 1) == '\\') {
+                  compiler->ch_ptr += 2;
+                }
+                else {
+                  compiler->ch_ptr++;
+                }
+              }
+            }
+            
+            if (*compiler->ch_ptr == '\0') {
+              SPVM_COMPILER_error(compiler, "A string literal created by q'' must be end with \"'\".\n  at %s line %d", compiler->current_file, compiler->current_line);
+              return 0;
+            }
+            
+            int32_t string_literal_tmp_len = (int32_t)(compiler->ch_ptr - string_literal_begin_ch_ptr);
+            
+            compiler->ch_ptr++;
+            
+            string_literal_tmp = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, string_literal_tmp_len + 1);
+            {
+              char* string_literal_ch_ptr = (char*)string_literal_begin_ch_ptr;
+              const char* string_literal_end_ch_ptr = compiler->ch_ptr - 1;
+              while (string_literal_ch_ptr != string_literal_end_ch_ptr) {
+                if (*string_literal_ch_ptr == '\\') {
+                  string_literal_ch_ptr++;
+                  if (*string_literal_ch_ptr == '\\') {
+                    string_literal_tmp[string_literal_length] = '\\';
+                    string_literal_length++;
+                    string_literal_ch_ptr++;
+                  }
+                  else if (*string_literal_ch_ptr == '\'') {
+                    string_literal_tmp[string_literal_length] = '\'';
+                    string_literal_length++;
+                    string_literal_ch_ptr++;
+                  }
+                  else {
+                    SPVM_COMPILER_error(compiler, "Invalid string literal escape character in q'' \"\\%c\".\n  at %s line %d", *string_literal_ch_ptr, compiler->current_file, compiler->current_line);
+                  }
+                }
+                else {
+                  int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, string_literal_ch_ptr);
+                  
+                  if (is_line_terminator) {
+                    SPVM_TOKE_parse_line_terminator(compiler, &string_literal_ch_ptr);
+                    SPVM_TOKE_increment_current_line(compiler);
+                    
+                    string_literal_tmp[string_literal_length] = '\n';
+                    string_literal_length++;
+                  }
+                  else {
+                    string_literal_tmp[string_literal_length] = *string_literal_ch_ptr;
+                    string_literal_length++;
+                    string_literal_ch_ptr++;
+                  }
+                }
+              }
+            }
+            string_literal_tmp[string_literal_length] = '\0';
+          }
+          
+          SPVM_STRING* string_literal_string = SPVM_STRING_new(compiler, string_literal_tmp, string_literal_length);
+          const char* string_literal = string_literal_string->value;
+          
+          SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, string_literal_tmp);
+          assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == memory_blocks_count_tmp);
+          
+          SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, string_literal, string_literal_length, compiler->current_file, compiler->current_line);
+          
+          yylvalp->opval = op_constant;
+          
+          return CONSTANT;
         }
         // Numeric literal
         else if (SPVM_TOKE_isdigit_ascii(compiler, ch)) {
