@@ -2171,6 +2171,37 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_static_by_name_exception
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV* env, SPVM_VALUE* stack) {  
+  
+  // Exceptions
+  {
+    {
+      int32_t error_id = 0;
+      
+      env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "new", 0, &error_id, __func__, FILE_NAME, __LINE__);
+      if (error_id) { return error_id; }
+      void* object = stack[0].oval;
+      
+      stack[0].oval = object;
+      env->call_instance_method_by_name(env, stack, "not_found", 1, &error_id, __func__, FILE_NAME, __LINE__);
+      
+      if (!error_id) {
+        stack[0].ival = 0;
+        return 0;
+      }
+      
+      if(!strstr(env->get_chars(env, stack, env->get_exception(env, stack)), "The \"not_found\" instance method in the \"TestCase::NativeAPI\" class is not found in the invocant class or its super classes.")) {
+        stack[0].ival = 0;
+        return 0;
+      }
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
 int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native_value(SPVM_ENV* env, SPVM_VALUE* stack) {  
   int32_t error_id = 0;
   
