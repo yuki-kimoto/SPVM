@@ -284,19 +284,10 @@ sub compile_class {
     $cc_output_dir = SPVM::Builder::Util::create_build_object_path($build_dir);
   }
   
-  mkpath $cc_output_dir;
-  
-  if ($is_jit) {
-    if (defined $build_dir) {
-      mkpath $build_dir;
-    }
-    else {
-      confess "The \"build_dir\" field must be defined to build a $category method at runtime. Perhaps the setting of the SPVM_BUILD_DIR environment variable is forgotten";
-    }
-  }
-  
   my $class_file;
   if ($used_as_resource) {
+    # Note: A resource do not load an SPVM class currently.
+    # However, I would like to have an SPVM class file that corresponds to the config file.
     my $config_file = $config->file;
     
     my $config_file_basename = basename $config_file;
