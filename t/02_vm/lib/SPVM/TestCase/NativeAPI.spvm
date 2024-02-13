@@ -1197,7 +1197,7 @@ class TestCase::NativeAPI {
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x(5);
     
-    my $value = &call_instance_method_by_name_native($minimal);
+    my $value = &call_instance_method_by_name_native_value($minimal);
     
     unless ($value == 5) {
       return 0;
@@ -1205,7 +1205,7 @@ class TestCase::NativeAPI {
     
     return 1;
   }
-  native static method call_instance_method_by_name_native : int ($minimal : TestCase::Minimal);
+  native static method call_instance_method_by_name_native_value : int ($minimal : TestCase::Minimal);
   static method call_instance_method_by_name_exception : int () {
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x(5);
