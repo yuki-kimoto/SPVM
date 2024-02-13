@@ -177,6 +177,12 @@ sub file_contains {
 sub spurt_binary {
   my ($file, $content) = @_;
   
+  unless (defined $file) {
+    confess "A file must be defined.";
+  }
+  
+  mkpath dirname $file;
+  
   open my $fh, '>:raw', $file
     or confess "Can't open file \"$file\":$!";
     

@@ -180,7 +180,6 @@ sub compile_source_file {
   my $cc_cmd = $compile_info->create_command;
   
   my $output_file = $compile_info->output_file;
-  mkpath dirname $output_file;
   
   unless ($quiet) {
     
@@ -231,6 +230,8 @@ sub compile_source_file {
     warn "@$cc_cmd\n";
   }
   
+  mkpath dirname $output_file;
+  
   $cbuilder->do_system(@$cc_cmd)
     or confess "$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
 }
@@ -244,13 +245,14 @@ sub compile_class {
   
   $options ||= {};
   
-  # Build directory
   my $build_dir = $self->build_dir;
-  if (defined $build_dir) {
-    mkpath $build_dir;
+  
+  unless (defined $build_dir) {
+    confess "[Unexpected Error]A build directory must be defined.";
   }
-  else {
-    confess "Build directory is not specified. Maybe forget to set \"SPVM_BUILD_DIR\" environment variable?";
+  
+  unless (-d $build_dir) {
+    confess "[Unexpected Error]A build directory must exists.";
   }
   
   # Config
@@ -413,7 +415,6 @@ sub compile_class {
       $resource_config->used_as_resource(1),
       
       my $resource_object_dir = $self->get_resource_object_dir_from_class_name($class_name);
-      mkpath $resource_object_dir;
       
       $resource_config->cc_output_dir($resource_object_dir);
       
@@ -476,8 +477,7 @@ sub compile_class {
       $object_file_base =~ s/\.[^\.]+$/.o/;
       $object_file_name = "$cc_output_dir/$object_rel_file/$object_file_base";
       
-      my $output_dir = dirname $object_file_name;
-      mkpath $output_dir;
+      mkpath dirname $object_file_name;
     }
     
     # Check if object file need to be generated
@@ -643,7 +643,7 @@ sub link {
   my $build_dir = $self->build_dir;
   
   unless (defined $build_dir) {
-    confess "A build directory must be defined. Perhaps the SPVM_BUILD_DIR environment variable is not set.";
+    confess "[Unexpected Error]A build directory must be defined.";
   }
   
   unless (-d $build_dir) {

@@ -4,8 +4,7 @@ use strict;
 use warnings;
 use Carp 'confess';
 use JSON::PP;
-use File::Path 'mkpath';
-use File::Basename 'dirname', 'basename';
+use File::Basename 'basename';
 
 use SPVM::Builder;
 use SPVM::Builder::CC;
@@ -235,7 +234,6 @@ sub build_exe_file {
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
-  mkpath $build_dir;
   
   # Object files
   my $object_files = [];
@@ -890,11 +888,6 @@ sub create_bootstrap_source {
     $bootstrap_source .= "\n// " . $config_exe->file;
   }
   
-  # Build source directory
-  mkpath $build_src_dir;
-  mkpath dirname $bootstrap_source_file;
-  
-    
   my $bootstrap_source_original;
   if (-f $bootstrap_source_file) {
     $bootstrap_source_original = SPVM::Builder::Util::slurp_binary($bootstrap_source_file);
@@ -932,9 +925,6 @@ sub compile_bootstrap_source_file {
   my $object_file_name = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir, "$class_name_rel_file.boot.o");
   my $source_file = SPVM::Builder::Util::create_build_src_path($self->builder->build_dir, "$class_name_rel_file.boot.c");
   
-  # Create directory for object file output
-  mkdir dirname $object_file_name;
-  
   my $config = $config_exe->config_bootstrap;
   unless ($config) {
     confess "The config_bootstrap field in the SPVM::Builder::Config class must be defined";
@@ -969,7 +959,6 @@ sub compile_spvm_core_source_files {
   
   # Object dir
   my $output_dir = SPVM::Builder::Util::create_build_object_path($self->builder->build_dir);
-  mkpath $output_dir;
   
   # Config
   my $config = $config_exe->config_spvm_core;

@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Carp 'confess';
+use File::Path 'mkpath';
 
 use SPVM ();
 use SPVM::Builder::CC;
@@ -173,6 +174,16 @@ sub build {
   
   if (exists $options->{force}) {
     $cc_options->{force} = $options->{force};
+  }
+  
+  unless (defined $build_dir) {
+    confess "A build directory must be defined. Perhaps the SPVM_BUILD_DIR environment variable is not set.";
+  }
+  
+  mkpath $build_dir;
+  
+  unless (-d $build_dir) {
+    confess "[Unexpected Error]A build directory must exists.";
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);
