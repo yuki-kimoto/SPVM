@@ -1959,22 +1959,27 @@ int32_t SPVM__TestCase__NativeAPI__native_call_method(SPVM_ENV* env, SPVM_VALUE*
 
 int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t error = 0;
-  
-  int32_t output;
   {
-    int32_t args_width = 1;
-    stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_width, &error, __func__, FILE_NAME, __LINE__);
-    if (error) {
-      return error;
+    int32_t error = 0;
+    
+    int32_t output;
+    {
+      int32_t args_width = 1;
+      stack[0].ival = 5;
+      env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_width, &error, __func__, FILE_NAME, __LINE__);
+      if (error) {
+        return error;
+      }
+      output = stack[0].ival;
     }
-    output = stack[0].ival;
-  }
-  
-  stack[0].ival = 0;
-  
-  if (output == 5) {
+    
+    stack[0].ival = 0;
+    
+    if (!(output == 5)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+    
     stack[0].ival = 1;
   }
   
