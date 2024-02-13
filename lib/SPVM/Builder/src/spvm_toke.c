@@ -718,7 +718,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return BIT_NOT;
         break;
       }
-      // Character literals
+      // Character literal
       case '\'': {
         compiler->ch_ptr++;
         char ch = 0;
@@ -795,7 +795,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         return CONSTANT;
       }
-      // String literal
+      // String literal - Double quote
       case '"': {
         if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL) {
           compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_NOT_STARTED;
@@ -1364,8 +1364,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         return (int) (uint8_t) ch;
       }
       default: {
+        // String literal - Single quote
+        if (ch == 'q' && *(compiler->ch_ptr + 1) == '\'') {
+          
+        }
         // Numeric literal
-        if (SPVM_TOKE_isdigit_ascii(compiler, ch)) {
+        else if (SPVM_TOKE_isdigit_ascii(compiler, ch)) {
           const char* number_literal_begin_ptr = compiler->ch_ptr;
           
           // The before character is "-"
