@@ -420,6 +420,8 @@ sub compile_source_file {
   my $config = $options->{config};
   my $config_exe = $self->config;
   
+  $config->config_exe($config_exe);
+  
   my $config_exe_loaded_config_files = $config_exe->get_loaded_config_files;
   my $config_loaded_config_files = $config->get_loaded_config_files;
   my $need_generate_input_files = [$source_file, @$config_loaded_config_files, @$config_exe_loaded_config_files];

@@ -16,6 +16,7 @@
       call_class_method_by_name
       call_instance_method_static_by_name
       call_instance_method_by_name
+    * Fix bug that spvmcc do not set config_exe to compile SPVM core source and bootstrap source.
   [Changes]
     * Add periods to exception messages in native APIs.
   [Incompatible Changes]
