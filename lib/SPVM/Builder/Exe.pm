@@ -135,6 +135,17 @@ sub mode {
   }
 }
 
+sub optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{optimize};
+  }
+}
+
 # Methods
 sub new {
   my $class = shift;
@@ -211,6 +222,11 @@ sub new {
   my $compiler = SPVM::Native::Compiler->new;
   $compiler->add_include_dir($_) for @{$builder->include_dirs};
   $self->{compiler} = $compiler;
+  
+  my $optimize = $self->{optimize};
+  if (defined $optimize) {
+    $config->set_global_optimize($optimize);
+  }
   
   return bless $self, $class;
 }

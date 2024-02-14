@@ -81,6 +81,7 @@ my $dev_null = File::Spec->devnull;
   }
 }
 
+{
   # Basic
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe MyExe);
@@ -102,6 +103,32 @@ my $dev_null = File::Spec->devnull;
       ok(-f "$build_dir/work/exe/myexe$Config{exe_ext}");
     }
   }
+}
+
+{
+  # --optimize="-O0 -g"
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --optimize="-O0 -g" -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe MyExe);
+    system($spvmcc_cmd) == 0
+      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+
+    my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe/);
+    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    system($execute_cmd_with_args) == 0
+      or die "Can't execute command:$execute_cmd_with_args:$!";
+    
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2 1";
+    is($output, $output_expect);
+    
+    # Check -B option
+    {
+      ok(-f "$build_dir/work/exe/myexe$Config{exe_ext}");
+    }
+  }
+}
+
 # -h, --help
 {
   {

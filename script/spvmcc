@@ -18,6 +18,7 @@ SPVM::Builder::Util::getopt
   'r|required-resources' => \my $print_required_resources,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
+  'optimize=s' => \my $optimize,
 ;
 
 if ($help) {
@@ -46,6 +47,7 @@ else {
     force => $force,
     allow_no_config_file => $allow_no_config_file,
     mode => $mode,
+    optimize => $optimize,
   );
   
   if ($print_required_resources) {
