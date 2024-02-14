@@ -8,6 +8,9 @@
     * Add the add_global_before_create_compile_info_cb method to the SPVM::Builder::Config::Exe class.
     * Add the before_create_compile_info_cbs field to the SPVM::Builder::Config class.
     * Add the add_before_create_compile_info_cb method to the SPVM::Builder::Config class.
+    * Add the add_before_create_compile_info_cb method to the SPVM::Builder::Config class.
+    * Add the before_create_link_info_cbs to the SPVM::Builder::Config class.
+    * Add the add_before_create_link_info_cb to the SPVM::Builder::Config class.
   [Bug Fix]
     * Fix the bug that not found basic type names cause segfault in the followin APIs.
       call_class_method_by_name

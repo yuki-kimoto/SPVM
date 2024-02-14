@@ -307,6 +307,17 @@ sub libs {
   }
 }
 
+sub before_create_link_info_cbs {
+  my $self = shift;
+  if (@_) {
+    $self->{before_create_link_info_cbs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{before_create_link_info_cbs};
+  }
+}
+
 sub before_link_cbs {
   my $self = shift;
   if (@_) {
@@ -590,6 +601,11 @@ sub new {
     $self->libs([]);
   }
   
+  # before_create_link_info_cbs
+  unless (defined $self->{before_create_link_info_cbs}) {
+    $self->before_create_link_info_cbs([]);
+  }
+  
   # before_link_cbs
   unless (defined $self->{before_link_cbs}) {
     $self->before_link_cbs([]);
@@ -786,6 +802,12 @@ sub add_before_compile_cb {
   my ($self, @before_compile_cbs) = @_;
   
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
+}
+
+sub add_before_create_link_info_cb {
+  my ($self, @before_create_link_info_cbs) = @_;
+  
+  push @{$self->{before_create_link_info_cbs}}, @before_create_link_info_cbs;
 }
 
 sub add_before_link_cb {
@@ -1252,6 +1274,15 @@ Gets and sets the C<ld_optimize> field, an optimization option for the linker L<
 Examples:
 
   $config->ld_optimize("-O3");
+
+=head2 before_create_link_info_cbs
+
+  my $before_create_link_info_cbs = $config->before_create_link_info_cbs;
+  $config->before_create_link_info_cbs($before_create_link_info_cbs);
+
+Gets and sets the C<before_create_link_info_cbs> field, an array reference of callbacks called just before creating link information.
+
+The 1th argument of the callback is a L<SPVM::Builder::Config> object.
 
 =head2 before_link_cbs
 
