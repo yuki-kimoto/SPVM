@@ -4,6 +4,9 @@
     
       q'Hello World!'
     
+    * Add the global_config_cbs field to the SPVM::Builder::Config::Exe class.
+    * Add the add_global_config_cb method to the SPVM::Builder::Config::Exe class.
+    
   [Bug Fix]
     * Fix the bug that not found basic type names cause segfault in the followin APIs.
       call_class_method_by_name
