@@ -86,6 +86,12 @@ If $stack is not defined, the current stackt is used.
 
 If $environment is not defined, the current environment is used.
 
+=head2 call_class_method
+
+C<static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[]);>
+
+Calls a class method given the basic type name $basic_type_name, the method name $method_name, and the arguments $args.
+
 =head1 Instance Methods
 
 =head2 call

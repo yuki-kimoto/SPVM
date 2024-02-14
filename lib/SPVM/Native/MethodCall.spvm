@@ -21,4 +21,13 @@ class Native::MethodCall {
   # Instance Methods
   native method call : object ($args : object[]);
   
+  static method call_class_method : object ($basic_type_name : string, $method_name : string, $args : object[]) {
+    
+    my $class_method = &new_class_method($basic_type_name, $method_name);
+    
+    my $return_value = $class_method->call($args);
+    
+    return $return_value;
+  }
+  
 }

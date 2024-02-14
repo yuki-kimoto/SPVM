@@ -1,6 +1,10 @@
 0.989073 2023-02-14
-  [Incompatible Changes]
+  [Incompatible Changes and New Features]
     * Rename the call_class_method in the Native::MethodCall class to call_class_method_for_env.
+    * Add the new call_class_method to the Native::MethodCall class.
+      
+      static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[]);
+
 0.989072 2023-02-14
   [New Features]
     * Add single quote string literal syntax.
