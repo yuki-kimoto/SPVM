@@ -232,6 +232,20 @@ sub compile_source_file {
   
   mkpath dirname $output_file;
   
+  my $before_compile_cbs = $config->before_compile_cbs;
+  for my $before_compile_cb (@$before_compile_cbs) {
+    $before_compile_cb->($config, $compile_info);
+  }
+  
+  my $config_exe = $config->config_exe;
+  
+  if ($config_exe) {
+    my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
+    for my $global_before_compile_cb (@$global_before_compile_cbs) {
+      $global_before_compile_cb->($config, $compile_info);
+    }
+  }
+  
   $cbuilder->do_system(@$cc_cmd)
     or confess "$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
 }
@@ -353,11 +367,6 @@ sub compile_class {
   }
   
   $config->class_name($class_name);
-  
-  if ($config_exe) {
-    my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
-    $config->add_before_compile_cb(@$global_before_compile_cbs);
-  }
   
   my $force = $self->detect_force($config);
   
@@ -485,13 +494,6 @@ sub compile_class {
       config => $config,
       category => $compile_info_category,
     );
-    
-    # Note: before_compile_cbs are executed before the check if a compilation is needed
-    # because this callback maybe change its condition.
-    my $before_compile_cbs = $config->before_compile_cbs;
-    for my $before_compile_cb (@$before_compile_cbs) {
-      $before_compile_cb->($config, $compile_info);
-    }
     
     # Check if object file need to be generated
     my $need_generate;

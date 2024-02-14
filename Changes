@@ -21,6 +21,7 @@
   [Incompatible Changes]
     * The before_each_compile_cbs field in the SPVM::Builder::Config::Exe is renamed to global_before_compile_cbs.
     * The add_before_each_compile_cb method in the SPVM::Builder::Config::Exe is renamed to add_global_before_compile_cb.
+    * before_compile_cbs are executed just before the compilation.
 0.989071 2023-02-12
   [New Features]
     * Add the input_dir field to SPVM::Builder::Config.
