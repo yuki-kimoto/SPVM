@@ -65,6 +65,19 @@ sub new {
     confess "The \"config\" field must be defined.";
   }
   
+  my $before_create_compile_info_cbs = $config->before_create_compile_info_cbs;
+  for my $before_create_compile_info_cb (@$before_create_compile_info_cbs) {
+    $before_create_compile_info_cb->($config);
+  }
+  
+  my $config_exe = $config->config_exe;
+  if ($config_exe) {
+    my $global_before_create_compile_info_cbs = $config_exe->global_before_create_compile_info_cbs;
+    for my $global_before_create_compile_info_cb (@$global_before_create_compile_info_cbs) {
+      $global_before_create_compile_info_cb->($config);
+    }
+  }
+  
   return $self;
 }
 
