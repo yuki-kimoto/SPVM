@@ -1395,12 +1395,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               else {
-                // \' escape character
-                if (*compiler->ch_ptr == '\\' && *(compiler->ch_ptr + 1) == '\'') {
-                  compiler->ch_ptr += 2;
-                }
-                // \\ escapte character
-                else if (*compiler->ch_ptr == '\\' && *(compiler->ch_ptr + 1) == '\\') {
+                // Escape character
+                if (*compiler->ch_ptr == '\\') {
                   compiler->ch_ptr += 2;
                 }
                 else {
@@ -1436,7 +1432,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     string_literal_ch_ptr++;
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "Invalid string literal escape character in q'' \"\\%c\".\n  at %s line %d", *string_literal_ch_ptr, compiler->current_file, compiler->current_line);
+                    SPVM_COMPILER_error(compiler, "The escape character \"\\%c\" in a single quote string literal is invalid.\n  at %s line %d", *string_literal_ch_ptr, compiler->current_file, compiler->current_line);
                   }
                 }
                 else {

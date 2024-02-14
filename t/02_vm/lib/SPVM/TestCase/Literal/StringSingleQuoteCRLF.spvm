@@ -1,0 +1,17 @@
+class TestCase::Literal::StringSingleQuoteCRLF {
+  
+  static method heredoc_like_crlf : int () {
+    
+    my $string =
+q'ab
+cd
+ef';
+    
+    unless ($string eq "ab\ncd\nef") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+}

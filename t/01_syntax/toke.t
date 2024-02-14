@@ -202,6 +202,15 @@ use Test::More;
       compile_not_ok($source, qr/\QThe character after "->" in a string literal must be "[" or "{"/);
     }
   }
+  
+  # Single quote string literal
+  {
+    {
+      my $source = q|class Tmp { static method main : void () { q'\t'; }|;
+      compile_not_ok($source, q|The escape character "\t" in a single quote string literal is invalid.|);
+    }
+  }
+  
   # Integer literal
   {
     # Integer literal decimal notation

@@ -585,6 +585,7 @@ t/02_vm/01_toke/literal_floating_point.t
 t/02_vm/01_toke/literal_heredoc.t
 t/02_vm/01_toke/literal_integer.t
 t/02_vm/01_toke/literal_string.t
+t/02_vm/01_toke/literal_string_single_quote.t
 t/02_vm/01_toke/literal_undef.t
 t/02_vm/01_toke/symbol_name.t
 t/02_vm/02_parser/inline.t
@@ -780,6 +781,8 @@ t/02_vm/lib/SPVM/TestCase/Literal/HeredocCRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Integer.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/String.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/StringCRLF.spvm
+t/02_vm/lib/SPVM/TestCase/Literal/StringSingleQuote.spvm
+t/02_vm/lib/SPVM/TestCase/Literal/StringSingleQuoteCRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Undef.spvm
 t/02_vm/lib/SPVM/TestCase/LocalVar.spvm
 t/02_vm/lib/SPVM/TestCase/LogicalOperator.spvm
