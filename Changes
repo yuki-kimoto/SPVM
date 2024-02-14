@@ -1,3 +1,6 @@
+0.989073 2023-02-14
+  [Incompatible Changes]
+    * Rename the call_class_method in the Native::MethodCall class to call_class_method_for_env.
 0.989072 2023-02-14
   [New Features]
     * Add single quote string literal syntax.

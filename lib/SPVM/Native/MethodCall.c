@@ -693,7 +693,7 @@ int32_t SPVM__Native__MethodCall__call_callback(SPVM_ENV* current_env, SPVM_VALU
   return 0;
 }
 
-int32_t SPVM__Native__MethodCall__call_class_method(SPVM_ENV* current_env, SPVM_VALUE* current_stack) {
+int32_t SPVM__Native__MethodCall__call_class_method_for_env(SPVM_ENV* current_env, SPVM_VALUE* current_stack) {
   
   int32_t current_error_id = 0;
   

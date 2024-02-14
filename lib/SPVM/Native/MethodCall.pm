@@ -44,9 +44,9 @@ The callback is a L<Callback|SPVM::Callback> object.
 
 If the callback throw exception, the error id is set to $error_id. Otherwise 0 is set to $error_id.
 
-=head2 call_class_method
+=head2 call_class_method_for_env
 
-C<static method call_class_method : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : L<Native::Stack|SPVM::Native::Stack> = undef, $env : L<Native::Env|SPVM::Native::Env> = undef);>
+C<static method call_class_method_for_env : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : L<Native::Stack|SPVM::Native::Stack> = undef, $env : L<Native::Env|SPVM::Native::Env> = undef);>
   
 Calls a class method with an environment and a stack without arguments. If the environment is not given, the current environment is used.
 
