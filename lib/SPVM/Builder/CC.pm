@@ -696,13 +696,6 @@ sub link {
   
   my $input_files = [@object_files];
   
-  # Note: before_link_cbs are executed before the check if a link is needed
-  # because this callback maybe change its condition.
-  my $before_link_cbs = $config->before_link_cbs;
-  for my $before_link_cb (@$before_link_cbs) {
-    $before_link_cb->($config, $link_info);
-  }
-  
   my $need_generate = SPVM::Builder::Util::need_generate({
     force => $force,
     output_file => $output_file,
@@ -744,6 +737,11 @@ sub link {
     my @link_tmp_files;
     
     mkpath dirname $link_info_output_file;
+    
+    my $before_link_cbs = $config->before_link_cbs;
+    for my $before_link_cb (@$before_link_cbs) {
+      $before_link_cb->($config, $link_info);
+    }
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
