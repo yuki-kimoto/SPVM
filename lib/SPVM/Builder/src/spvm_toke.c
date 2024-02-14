@@ -1406,7 +1406,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             
             if (*compiler->ch_ptr == '\0') {
-              SPVM_COMPILER_error(compiler, "A string literal created by q'' must be end with \"'\".\n  at %s line %d", compiler->current_file, compiler->current_line);
+              SPVM_COMPILER_error(compiler, "A single-quoted string literal must be end with \"'\".\n  at %s line %d", compiler->current_file, compiler->current_line);
               return 0;
             }
             
@@ -1432,7 +1432,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     string_literal_ch_ptr++;
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "The escape character \"\\%c\" in a single quote string literal is invalid.\n  at %s line %d", *string_literal_ch_ptr, compiler->current_file, compiler->current_line);
+                    SPVM_COMPILER_error(compiler, "The escape character \"\\%c\" in a single-quoted string literal is invalid.\n  at %s line %d", *string_literal_ch_ptr, compiler->current_file, compiler->current_line);
                   }
                 }
                 else {

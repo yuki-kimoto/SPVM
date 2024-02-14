@@ -1,4 +1,9 @@
 0.989072 2023-02-13
+  [New Features]
+    * Add single quote string literal syntax.
+    
+      q'Hello World!'
+    
   [Bug Fix]
     * Fix the bug that not found basic type names cause segfault in the followin APIs.
       call_class_method_by_name

@@ -885,7 +885,7 @@ Examples:
 
 A string literal is a L<literal|/"Literal"> to write a constant value that type is the L<string type|/"string Type"> in source codes.
 
-The return type is a L<string type|/"string Type">.
+The return type is the L<string type|/"string Type">.
 
 A character literal begins with C<">.
 
@@ -914,7 +914,7 @@ Examples:
   "AAA $foo->{x}[3] BBB"
   "AAA $@ BBB"
   "\N{U+3042}\N{U+3044}\N{U+3046}"
-  
+
 =head3 String Literal Escape Characters
 
 =begin html
@@ -1169,6 +1169,63 @@ The hexadecimal numbers can be sorrounded by C<{> and C<}>.
   "Foo \xA   Bar"
   "Foo \xFF  Bar"
   "Foo \x{A} Bar"
+
+=head2 Single-Quoted String Literal
+
+A single-quoted string literal represents a constant string value in source codes.
+
+The return type is the L<string type|/"string Type">.
+
+A character literal begins with C<q'>.
+
+And is followed by zero or more than zero UTF-8 character, or L<escape characters|/"Single-Quoted String Literal Escape Characters">.
+
+And ends with C<'>.
+
+Compilation Errors:
+
+A single-quoted string literal must be end with C<'>. Otherwise a compilation error occurs.
+
+If the escape character in a single-quoted string literal is invalid, a compilation error occurs.
+
+Examples:
+
+  # Single-quoted string literals
+  q'abc';
+  q'abc\'\\';
+
+=head3 Single-Quoted String Literal Escape Characters
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Single-quoted string literal escape characters
+   </th>
+    <th>
+      Descriptions
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>\\</b>
+    </td>
+    <td>
+      ASCII <code>0x5C</code> \
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>\'</b>
+    </td>
+    <td>
+      ASCII <code>0x27</code> '
+    </td>
+  </tr>
+</table>
+
+=end html
 
 =head2 Bool Literal
 
@@ -8106,7 +8163,7 @@ String concatenation operator . is an L<operator|/"Operator"> to concat two stri
 
 If the type of I<OPERAND> is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-The return type is a L<string type|/"string Type">.
+The return type is the L<string type|/"string Type">.
 
 A string concatenation operator returns the result to concat two operands.
 
@@ -8292,7 +8349,7 @@ The C<copy> operator is an L<operator|/"Operator"> to copy the object.
 
   copy OPERAND
 
-If the type of operand is none of a L<string type|/"string Type">, a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">,
+If the type of operand is none of the L<string type|/"string Type">, a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">,
 An L<exception|/"Exception"> is thorwn.
 
 The C<copy> operator returns the copied object.
