@@ -178,7 +178,7 @@ Adds callbacks called just after loading each config at the end of the L</"globa
 Examples:
 
   $config_exe->add_global_before_create_compile_info_cb(sub {
-    my ($config) = @_;
+    my ($config, $compile_info) = @_;
     
     my $cc = $config->cc;
     

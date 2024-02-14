@@ -688,7 +688,7 @@ sub link {
   
   my $force = $self->detect_force($config);
   
-  my $link_info = $self->create_link_info($class_name, $object_files, $config, $options);
+  my $link_info = $self->create_link_info($class_name, $object_files, $config);
   
   my $output_file = $config->output_file;
   
@@ -833,11 +833,7 @@ sub link {
 }
 
 sub create_link_info {
-  my ($self, $class_name, $object_files, $config, $options) = @_;
-  
-  $options ||= {};
-  
-  my $runtime = $options->{runtime};
+  my ($self, $class_name, $object_files, $config) = @_;
   
   my $category = $config->category;
   

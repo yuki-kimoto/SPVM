@@ -1191,6 +1191,8 @@ Gets and sets the C<before_create_compile_info_cbs> field, an array reference of
 
 The 1th argument of the callback is a L<SPVM::Builder::Config> object.
 
+The 2th argument of the callback is a L<SPVM::Builder::CompileInfo> object.
+
 =head2 before_compile_cbs
 
   my $before_compile_cbs = $config->before_compile_cbs;
@@ -1283,6 +1285,8 @@ Examples:
 Gets and sets the C<before_create_link_info_cbs> field, an array reference of callbacks called just before creating link information.
 
 The 1th argument of the callback is a L<SPVM::Builder::Config> object.
+
+The 2th argument of the callback is a L<SPVM::Builder::LinkInfo> object.
 
 =head2 before_link_cbs
 
