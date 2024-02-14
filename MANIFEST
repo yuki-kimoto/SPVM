@@ -732,8 +732,6 @@ t/02_vm/lib/SPVM/TestCase/Assign.spvm
 t/02_vm/lib/SPVM/TestCase/BasicTypeId.spvm
 t/02_vm/lib/SPVM/TestCase/BitOperator.spvm
 t/02_vm/lib/SPVM/TestCase/ClassVar.spvm
-t/02_vm/lib/SPVM/TestCase/Comment/CR.spvm
-t/02_vm/lib/SPVM/TestCase/Comment/CRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Comment/LF.spvm
 t/02_vm/lib/SPVM/TestCase/ComparisonOperator.spvm
 t/02_vm/lib/SPVM/TestCase/CompileTypeName.spvm
@@ -777,10 +775,8 @@ t/02_vm/lib/SPVM/TestCase/LINERN.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Character.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/FloatingPoint.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Heredoc.spvm
-t/02_vm/lib/SPVM/TestCase/Literal/HeredocCRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Integer.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/String.spvm
-t/02_vm/lib/SPVM/TestCase/Literal/StringCRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/StringSingleQuote.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/StringSingleQuoteCRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Undef.spvm

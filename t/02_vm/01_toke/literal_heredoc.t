@@ -7,12 +7,11 @@ use warnings;
 use Test::More;
 
 use SPVM 'TestCase::Literal::String';
-use SPVM 'TestCase::Literal::StringCRLF';
 
-
+my $api = SPVM::api();
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # String literal
 {
@@ -24,12 +23,11 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Literal::String->raw_escape_character);
   ok(SPVM::TestCase::Literal::String->var_expansion);
   ok(SPVM::TestCase::Literal::String->heredoc_like_lf);
-  ok(SPVM::TestCase::Literal::StringCRLF->heredoc_like_crlf);
   ok(SPVM::TestCase::Literal::String->string_literal_extra);
 }
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

@@ -2668,6 +2668,12 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
             compiler->current_file = class_file->rel_file;
           }
           
+          // Check new lines
+          if (strstr(compiler->current_class_content, "\r\n")) {
+            SPVM_COMPILER_error(compiler, "SPVM source codes cannot contains CRLF. The source code of the \"%s\" class in the \"%s\" file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
+            return 0;
+          }
+          
           // Set initial information for tokenization
           compiler->token_begin_ch_ptr = compiler->current_class_content;
           compiler->ch_ptr = compiler->token_begin_ch_ptr;
