@@ -355,8 +355,8 @@ sub compile_class {
   $config->class_name($class_name);
   
   if ($config_exe) {
-    my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
-    $config->add_before_compile_cb(@$before_each_compile_cbs);
+    my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
+    $config->add_before_compile_cb(@$global_before_compile_cbs);
   }
   
   my $force = $self->detect_force($config);

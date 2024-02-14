@@ -441,8 +441,8 @@ sub compile_source_file {
     force => $self->force,
   );
   
-  my $before_each_compile_cbs = $config_exe->before_each_compile_cbs;
-  $config->add_before_compile_cb(@$before_each_compile_cbs);
+  my $global_before_compile_cbs = $config_exe->global_before_compile_cbs;
+  $config->add_before_compile_cb(@$global_before_compile_cbs);
   
   my $compile_info = SPVM::Builder::CompileInfo->new(
     output_file => $output_file,
