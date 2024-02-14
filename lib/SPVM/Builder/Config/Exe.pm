@@ -73,6 +73,12 @@ sub new {
 }
 
 # Instance Methods
+sub add_global_after_create_compile_info_cb {
+  my ($self, @global_after_create_compile_info_cbs) = @_;
+  
+  push @{$self->{global_after_create_compile_info_cbs}}, @global_after_create_compile_info_cbs;
+}
+
 sub add_global_before_compile_cb {
   my ($self, @global_before_compile_cbs) = @_;
   
