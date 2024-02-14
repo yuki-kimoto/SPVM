@@ -207,7 +207,7 @@ use Test::More;
   {
     {
       my $source = q|class Tmp { static method main : void () { q'\t'; }|;
-      compile_not_ok($source, q|The escape character "\t" in a single quote string literal is invalid.|);
+      compile_not_ok($source, q|The escape character "\t" in a single-quoted string literal is invalid.|);
     }
   }
   
