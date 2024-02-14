@@ -85,6 +85,16 @@ sub add_global_before_compile_cb {
   push @{$self->{global_before_compile_cbs}}, @global_before_compile_cbs;
 }
 
+sub set_global_optimize {
+  my ($self, $optimize) = @_;
+  
+  $self->add_global_after_create_compile_info_cb(sub {
+    my ($config, $comile_info) = @_;
+    
+    $config->optimize($optimize);
+  });
+}
+
 1;
 
 =head1 Name
@@ -206,6 +216,12 @@ Examples:
     
     # Do something
   });
+
+=head2 set_global_optimize
+
+  $config_exe->set_global_optimize("-O0 -g");
+
+Set global C<optimize>.
 
 =head1 Copyright & License
 
