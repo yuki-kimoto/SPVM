@@ -196,7 +196,7 @@ Examples:
   $config_exe->add_global_before_compile_cb(sub {
     my ($config, $compile_info) = @_;
     
-    my $cc = $compile_info->cc;
+    my $cc_command = $compile_info->to_command;
     
     # Do something
   });
