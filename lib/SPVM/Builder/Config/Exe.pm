@@ -11,14 +11,14 @@ use SPVM::Builder::Util::API;
 use base 'SPVM::Builder::Config';
 
 # Fields
-sub global_before_create_compile_info_cbs {
+sub global_after_create_compile_info_cbs {
   my $self = shift;
   if (@_) {
-    $self->{global_before_create_compile_info_cbs} = $_[0];
+    $self->{global_after_create_compile_info_cbs} = $_[0];
     return $self;
   }
   else {
-    return $self->{global_before_create_compile_info_cbs};
+    return $self->{global_after_create_compile_info_cbs};
   }
 }
 
@@ -105,12 +105,12 @@ The SPVM::Builder::Config::Exe class has methods to manipulate the excutable fil
 
 =head1 Fields
 
-=head2 global_before_create_compile_info_cbs
+=head2 global_after_create_compile_info_cbs
 
-  my $global_before_create_compile_info_cbs = $config_exe->global_before_create_compile_info_cbs;
-  $config_exe->global_before_create_compile_info_cbs($global_before_create_compile_info_cbs);
+  my $global_after_create_compile_info_cbs = $config_exe->global_after_create_compile_info_cbs;
+  $config_exe->global_after_create_compile_info_cbs($global_after_create_compile_info_cbs);
 
-Gets and sets the C<global_before_create_compile_info_cbs> field, an array reference of callbacks called just before the compile command L</"cc"> is executed.
+Gets and sets the C<global_after_create_compile_info_cbs> field, an array reference of callbacks called just after creating a compilation information.
 
 This affects all compilations except for SPVM core source files(This is configured by the L</"config_spvm_core"> field) and the source file for the executable file(This is configured by the L</"config_bootstrap"> field).
 
@@ -169,15 +169,15 @@ The return value of the L<create_default_config|SPVM::Builder::Util::API/"create
 
 =back
 
-=head2 add_global_before_create_compile_info_cb
+=head2 add_global_after_create_compile_info_cb
 
-  $config_exe->add_global_before_create_compile_info_cb(@global_before_create_compile_info_cbs);
+  $config_exe->add_global_after_create_compile_info_cb(@global_after_create_compile_info_cbs);
 
-Adds callbacks called just after loading each config at the end of the L</"global_before_create_compile_info_cbs"> field.
+Adds callbacks called just after creating a compilation information at the end of the L</"global_after_create_compile_info_cbs"> field.
 
 Examples:
 
-  $config_exe->add_global_before_create_compile_info_cb(sub {
+  $config_exe->add_global_after_create_compile_info_cb(sub {
     my ($config, $compile_info) = @_;
     
     my $cc = $config->cc;

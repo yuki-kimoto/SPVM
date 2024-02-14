@@ -197,14 +197,14 @@ sub source_files {
   }
 }
 
-sub before_create_compile_info_cbs {
+sub after_create_compile_info_cbs {
   my $self = shift;
   if (@_) {
-    $self->{before_create_compile_info_cbs} = $_[0];
+    $self->{after_create_compile_info_cbs} = $_[0];
     return $self;
   }
   else {
-    return $self->{before_create_compile_info_cbs};
+    return $self->{after_create_compile_info_cbs};
   }
 }
 
@@ -307,14 +307,14 @@ sub libs {
   }
 }
 
-sub before_create_link_info_cbs {
+sub after_create_link_info_cbs {
   my $self = shift;
   if (@_) {
-    $self->{before_create_link_info_cbs} = $_[0];
+    $self->{after_create_link_info_cbs} = $_[0];
     return $self;
   }
   else {
-    return $self->{before_create_link_info_cbs};
+    return $self->{after_create_link_info_cbs};
   }
 }
 
@@ -529,9 +529,9 @@ sub new {
     $self->source_files([]);
   }
   
-  # before_create_compile_info_cbs
-  unless (defined $self->{before_create_compile_info_cbs}) {
-    $self->before_create_compile_info_cbs([]);
+  # after_create_compile_info_cbs
+  unless (defined $self->{after_create_compile_info_cbs}) {
+    $self->after_create_compile_info_cbs([]);
   }
   
   # before_compile_cbs
@@ -601,9 +601,9 @@ sub new {
     $self->libs([]);
   }
   
-  # before_create_link_info_cbs
-  unless (defined $self->{before_create_link_info_cbs}) {
-    $self->before_create_link_info_cbs([]);
+  # after_create_link_info_cbs
+  unless (defined $self->{after_create_link_info_cbs}) {
+    $self->after_create_link_info_cbs([]);
   }
   
   # before_link_cbs
@@ -792,10 +792,10 @@ sub add_source_file {
   push @{$self->{source_files}}, @source_files;
 }
 
-sub add_before_create_compile_info_cb {
-  my ($self, @before_create_compile_info_cbs) = @_;
+sub add_after_create_compile_info_cb {
+  my ($self, @after_create_compile_info_cbs) = @_;
   
-  push @{$self->{before_create_compile_info_cbs}}, @before_create_compile_info_cbs;
+  push @{$self->{after_create_compile_info_cbs}}, @after_create_compile_info_cbs;
 }
 
 sub add_before_compile_cb {
@@ -804,10 +804,10 @@ sub add_before_compile_cb {
   push @{$self->{before_compile_cbs}}, @before_compile_cbs;
 }
 
-sub add_before_create_link_info_cb {
-  my ($self, @before_create_link_info_cbs) = @_;
+sub add_after_create_link_info_cb {
+  my ($self, @after_create_link_info_cbs) = @_;
   
-  push @{$self->{before_create_link_info_cbs}}, @before_create_link_info_cbs;
+  push @{$self->{after_create_link_info_cbs}}, @after_create_link_info_cbs;
 }
 
 sub add_before_link_cb {
@@ -1182,12 +1182,12 @@ Gets and sets the C<source_files> field, an array reference of source files used
 
 The source file names are specified as relative paths from the L</"native_src_dir"> field.
 
-=head2 before_create_compile_info_cbs
+=head2 after_create_compile_info_cbs
 
-  my $before_create_compile_info_cbs = $config->before_create_compile_info_cbs;
-  $config->before_create_compile_info_cbs($before_create_compile_info_cbs);
+  my $after_create_compile_info_cbs = $config->after_create_compile_info_cbs;
+  $config->after_create_compile_info_cbs($after_create_compile_info_cbs);
 
-Gets and sets the C<before_create_compile_info_cbs> field, an array reference of callbacks called just before creating compilation information.
+Gets and sets the C<after_create_compile_info_cbs> field, an array reference of callbacks called just after creating compilation information.
 
 The 1th argument of the callback is a L<SPVM::Builder::Config> object.
 
@@ -1277,12 +1277,12 @@ Examples:
 
   $config->ld_optimize("-O3");
 
-=head2 before_create_link_info_cbs
+=head2 after_create_link_info_cbs
 
-  my $before_create_link_info_cbs = $config->before_create_link_info_cbs;
-  $config->before_create_link_info_cbs($before_create_link_info_cbs);
+  my $after_create_link_info_cbs = $config->after_create_link_info_cbs;
+  $config->after_create_link_info_cbs($after_create_link_info_cbs);
 
-Gets and sets the C<before_create_link_info_cbs> field, an array reference of callbacks called just before creating link information.
+Gets and sets the C<after_create_link_info_cbs> field, an array reference of callbacks called just after creating link information.
 
 The 1th argument of the callback is a L<SPVM::Builder::Config> object.
 
@@ -1562,7 +1562,7 @@ This is something like C</path/Foo.native/src>.
 
 []
 
-=item * L</"before_create_compile_info_cbs">
+=item * L</"after_create_compile_info_cbs">
 
 []
 
@@ -1716,15 +1716,15 @@ Examples:
 
   $config->add_source_file('foo.c', 'bar.c');
 
-=head2 add_before_create_compile_info_cb
+=head2 add_after_create_compile_info_cb
 
-  $config->add_before_create_compile_info_cb(@before_create_compile_info_cbs);
+  $config->add_after_create_compile_info_cb(@after_create_compile_info_cbs);
 
-Adds callbacks called just before the compile command L</"cc"> is executed at the end of the L</"before_create_compile_info_cbs"> field.
+Adds callbacks called just after creating compilation information at the end of the L</"after_create_compile_info_cbs"> field.
 
 Examples:
 
-  $config->add_before_create_compile_info_cb(sub {
+  $config->add_after_create_compile_info_cb(sub {
     my ($config) = @_;
     
     my $cc = $config->cc;

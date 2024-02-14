@@ -47,9 +47,9 @@ sub new {
     $self->object_files([]);
   }
   
-  my $before_create_link_info_cbs = $config->before_create_link_info_cbs;
-  for my $before_create_link_info_cb (@$before_create_link_info_cbs) {
-    $before_create_link_info_cb->($config, $self);
+  my $after_create_link_info_cbs = $config->after_create_link_info_cbs;
+  for my $after_create_link_info_cb (@$after_create_link_info_cbs) {
+    $after_create_link_info_cb->($config, $self);
   }
   
   return $self;
