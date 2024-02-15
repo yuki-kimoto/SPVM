@@ -82,6 +82,7 @@ sub get_spvm_core_source_file_names {
     spvm_toke.c
     spvm_type.c
     spvm_use.c
+    spvm_utf8.c
     spvm_var.c
     spvm_var_decl.c
     spvm_vm.c

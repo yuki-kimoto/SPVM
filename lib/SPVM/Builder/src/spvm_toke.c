@@ -28,6 +28,7 @@
 #include "spvm_method.h"
 #include "spvm_string.h"
 #include "spvm_class_file.h"
+#include "spvm_utf8.h"
 
 static ptrdiff_t spvm_utf8proc_iterate(const uint8_t *str, ptrdiff_t strlen, int32_t *dst);
 
