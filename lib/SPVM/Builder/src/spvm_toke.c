@@ -2669,8 +2669,8 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           }
           
           // Check new lines
-          if (strstr(compiler->current_class_content, "\r\n")) {
-            SPVM_COMPILER_error(compiler, "SPVM source codes cannot contains CRLF. The source code of the \"%s\" class in the \"%s\" file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
+          if (strstr(compiler->current_class_content, "\r")) {
+            SPVM_COMPILER_error(compiler, "The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF. The source code of the \"%s\" class in the \"%s\" file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
             return 0;
           }
           

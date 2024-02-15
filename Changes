@@ -4,7 +4,7 @@
     * Add the new call_class_method to the Native::MethodCall class.
       
       static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[]);
-    * SPVM source codes cannot contains CRLF.
+    * The new line of SPVM source codes must be LF. Otherwise compilation error occurs.
 0.989072 2023-02-14
   [New Features]
     * Add single quote string literal syntax.
