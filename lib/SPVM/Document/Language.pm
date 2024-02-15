@@ -22,11 +22,11 @@ The charactor encoding of SPVM source codes must be UTF-8. Otherwise a compilati
 
 =head2 End of Source Code
 
-A SPVM source code ends with C<\0> in ASCII. If a source code is loaded by a file, C<\0> is added to the end of the source code.
+A SPVM source code ends with 0x00 C<NULL> in ASCII. If a source code is loaded by a file, C<\0> is added to the end of the source code.
 
 =head2 Line Terminators
 
-The line terminators are C<LF> of ASCII.
+The line terminators are 0x2A C<LF> of ASCII.
 
 When a line terminator appears, the current line number is incremented by 1.
 
