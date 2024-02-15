@@ -402,6 +402,7 @@ struct spvm_api_compiler {
   int32_t (*get_error_messages_length)(void* compiler);
   void* (*get_runtime)(void* compiler);
   void (*prepend_include_dir)(void* compiler, const char* include_dir);
+  int32_t (*compile_anon_class)(void* compiler, const char* source);
 };
 
 struct spvm_api_field {

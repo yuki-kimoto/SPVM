@@ -4,6 +4,7 @@
       class {
         
       }
+    * Add the compile_anon_class native compiler API.
       
 0.989073 2023-02-14
   [Changes]

@@ -110,7 +110,7 @@ Gets the L<class file|SPVM::Document::NativeAPI::ClassFile> object for a module.
   
   int32_t (*compile)(void* compiler, const char* class_name);
 
-Compiles SPVM modules.
+Compiles a SPVM class.
 
 =head2 get_error_messages_length
   
@@ -129,6 +129,12 @@ Gets a compiler error message by an index.
   void* (*get_runtime)(void* compiler);
 
 Gets the runtime.
+
+=head2 compile_anon_class
+  
+  int32_t (*compile_anon_class)(void* compiler, const char* source);
+
+Compiles a SPVM anon class.
 
 =head1 Native API IDs
 
