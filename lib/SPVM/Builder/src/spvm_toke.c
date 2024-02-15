@@ -2955,11 +2955,7 @@ int32_t SPVM_TOKE_parse_line_terminator(SPVM_COMPILER* compiler, char** ch_ptr_p
   
   int32_t is_line_terminator = 0;
   
-  if (**ch_ptr_ptr == '\r' && *(*ch_ptr_ptr + 1) == '\n') {
-    is_line_terminator = 1;
-    *ch_ptr_ptr += 2;
-  }
-  else if (**ch_ptr_ptr == '\n' || **ch_ptr_ptr == '\r') {
+  if (**ch_ptr_ptr == '\n') {
     is_line_terminator = 1;
     (*ch_ptr_ptr)++;
   }
