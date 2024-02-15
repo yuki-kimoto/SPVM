@@ -132,6 +132,8 @@ struct spvm_compiler {
   SPVM_RUNTIME* runtime;
   
   SPVM_MUTEX* mutex_compile;
+  
+  int32_t eval_anon_classes_length;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
