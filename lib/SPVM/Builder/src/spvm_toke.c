@@ -2891,7 +2891,7 @@ int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch) {
   
   int32_t is_line_terminator = 0;
   
-  if (*ch == '\n' || *ch == '\r') {
+  if (*ch == '\n') {
     is_line_terminator = 1;
   }
   
