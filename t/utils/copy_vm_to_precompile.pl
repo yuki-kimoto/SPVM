@@ -33,10 +33,10 @@ find(
         
         my ($file_atime, $file_mtime) = (stat $file)[8, 9];
         
-        binmode $fh;
-        
         open my $fh, '<', $file
           or die "Can't open $file: $!";
+        
+        binmode $fh;
         
         my $content = do { local $/; <$fh> };
         
