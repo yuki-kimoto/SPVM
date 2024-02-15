@@ -30,4 +30,6 @@ class Native::Compiler : pointer {
   
   native method get_class_file : Native::ClassFile ($class_name : string);
   
+  native method compile_anon_class : void ($source : string);
+  
 }

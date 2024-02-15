@@ -78,8 +78,6 @@ C<method compile : void ($basic_type_name : string);>
 
 Compiles the specified class and the classes that are load in the specified class. 
 
-Returns 1 on success, 0 on failure.
-
 This method can be called multiple times.
 
 Exceptions:
@@ -105,6 +103,18 @@ The return value is a L<Native::Runtime|SPVM::Native::Runtime> object.
 C<method get_class_file : L<Native::ClassFile|SPVM::Native::ClassFile> ($class_name : string);>
 
 Gets a L<Native::ClassFile> object by a class name, and returns it.
+
+=head2 compile_anon_class
+
+C<native method compile_anon_class : void ($source : string);>
+
+Compiles a anon class.
+
+This method can be called multiple times.
+
+Exceptions:
+
+If compilation errors occurred, an exception is thrown set eval_errro_id to the basic type ID of the L<Error::Compile|SPVM::Error::Compile> class.
 
 =head1 See Also
 

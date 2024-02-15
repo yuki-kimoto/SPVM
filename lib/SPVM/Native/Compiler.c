@@ -215,3 +215,31 @@ int32_t SPVM__Native__Compiler__get_class_file(SPVM_ENV* env, SPVM_VALUE* stack)
   
   return 0;
 }
+
+int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* obj_source = stack[1].oval;
+  const char* source = NULL;
+  if (obj_source) {
+    source = env->get_chars(env, stack, obj_source);
+  }
+  
+  void* compiler = env->get_pointer(env, stack, obj_self);
+  
+  // Compile SPVM
+  int32_t status = env->api->compiler->compile_anon_class(compiler, source);
+  
+  if (!(status == 0)) {
+    
+    env->die(env, stack, "Compilation errors occurred.", __func__, FILE_NAME, __LINE__);
+    
+    return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS;
+  }
+  
+  return 0;
+}
+
