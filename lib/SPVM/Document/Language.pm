@@ -26,6 +26,10 @@ Compilation Errors:
 
 The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
 
+=head2 End of Source Code
+
+A SPVM source code ends with C<\0> in ASCII. If a source code is loaded by a file, C<\0> is added to the end of the source code.
+
 =head2 Space Character
 
 Space characters are C<SP>, C<HT>, C<FF> of ASCII and the L<line terminators|/"Line Terminators">.

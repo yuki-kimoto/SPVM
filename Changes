@@ -16,6 +16,12 @@
       Compilation Errors:
 
       The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
+  
+  [Document Improvement]
+  
+    * Add the specification of "End of Source Code"
+
+      A SPVM source code ends with C<\0> in ASCII. If a source code is loaded by a file, C<\0> is added to the end of the source code.
 
 0.989072 2023-02-14
   [New Features]
