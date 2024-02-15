@@ -33,6 +33,8 @@ find(
         
         my ($file_atime, $file_mtime) = (stat $file)[8, 9];
         
+        binmode $fh;
+        
         open my $fh, '<', $file
           or die "Can't open $file: $!";
         
@@ -44,6 +46,8 @@ find(
         
         open my $to_fh, '>', $to_file
           or die "Can't open $to_file: $!";
+        
+        binmode $to_fh;
         
         print $to_fh $content;
         
