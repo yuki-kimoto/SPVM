@@ -700,6 +700,18 @@ EOS
   $self->generate_file($gitignore_rel_file, $gitignore_content);
 }
 
+sub generate_gitattributes_file {
+  my ($self) = @_;
+  
+  my $gitattributes_content = <<'EOS';
+*.spvm text eol=lf
+EOS
+  
+  # Generate file
+  my $gitattributes_rel_file = '.gitattributes';
+  $self->generate_file($gitattributes_rel_file, $gitattributes_content);
+}
+
 sub generate_manifest_skip_file {
   my ($self) = @_;
   
@@ -1156,6 +1168,9 @@ sub generate_dist {
   unless ($only_lib_files) {
     # Generate .gitignore file
     $self->generate_gitignore_file;
+    
+    # Generate .gitattributes file
+    $self->generate_gitattributes_file;
     
     # Generate MANIFEST.SKIP file
     $self->generate_manifest_skip_file;

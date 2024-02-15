@@ -125,6 +125,10 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   ok(SPVM::Builder::Util::file_contains($gitignore_file, '*.o'));
   ok(SPVM::Builder::Util::file_contains($gitignore_file, '*.bs'));
   
+  my $gitattributes_file = "$tmp_dir/SPVM-Foo/.gitattributes";
+  ok(-f $gitattributes_file);
+  ok(SPVM::Builder::Util::file_contains($gitattributes_file, '*.spvm text eol=lf'));
+  
   my $manifest_skip_file = "$tmp_dir/SPVM-Foo/MANIFEST.SKIP";
   ok(-f $manifest_skip_file);
   ok(SPVM::Builder::Util::file_contains($manifest_skip_file, '(^|\\/)blib/'));

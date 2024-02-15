@@ -1,4 +1,6 @@
 0.989073 2023-02-14
+  [Changes]
+    * The spvmdist command outputs .gitattributes file that contains "*.spvm text eol=lf".
   [Incompatible Changes and New Features]
     * Rename the call_class_method in the Native::MethodCall class to call_class_method_for_env.
     * Add the new call_class_method to the Native::MethodCall class.
