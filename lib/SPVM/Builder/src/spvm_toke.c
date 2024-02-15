@@ -564,16 +564,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                 int32_t heredoc_index = 0;
                 while (heredoc_index < heredoc_length) {
-                  int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, heredoc_ptr);
-                  
-                  if (is_line_terminator) {
-                    heredoc[heredoc_index] = '\n';
-                    
-                    SPVM_TOKE_parse_line_terminator(compiler, &heredoc_ptr);
-                    
-                    heredoc_index++;
-                  }
-                  else if (*heredoc_ptr == '\0') {
+                  if (*heredoc_ptr == '\0') {
                     assert(0);
                   }
                   else {
