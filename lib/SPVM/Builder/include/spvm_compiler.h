@@ -194,7 +194,7 @@ void SPVM_COMPILER_use_default_loaded_classes(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler);
 
-void SPVM_COMPILER_set_default_loaded_class_file(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content);
+void SPVM_COMPILER_set_class_file_with_members(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content);
 
 void SPVM_COMPILER_assert_check_basic_type_ids(SPVM_COMPILER* compiler);
 

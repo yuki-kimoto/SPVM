@@ -189,7 +189,7 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
     char* rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, anon_method_basic_type_name_length + 1);
     sprintf(basic_type_name, "eval/anon/%d.spvm", compiler->eval_anon_classes_length);
     
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, basic_type_name, rel_file, source);
+    SPVM_COMPILER_set_class_file_with_members(compiler, basic_type_name, rel_file, source);
     
     const char* start_file = SPVM_COMPILER_get_start_file(compiler);
     
@@ -493,7 +493,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Bool";
     const char* rel_file = "Bool.spvm";
     const char* content = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Error class file
@@ -501,7 +501,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Error";
     const char* rel_file = "Error.spvm";
     const char* content = "class Error;";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Error::System class file
@@ -509,7 +509,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Error::System";
     const char* rel_file = "Error/System.spvm";
     const char* content = "class Error::System extends Error;";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Error::NotSupported class file
@@ -517,7 +517,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Error::NotSupported";
     const char* rel_file = "Error/NotSupported.spvm";
     const char* content = "class Error::NotSupported extends Error;";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Byte class file
@@ -525,7 +525,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Byte";
     const char* rel_file = "Byte.spvm";
     const char* content = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : int) {\n    my $self = new Byte;\n    $self->{value} = (byte)$value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Short class file
@@ -533,7 +533,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Short";
     const char* rel_file = "Short.spvm";
     const char* content = "class Short {\n  has value : ro short;\n  static method new : Short ($value : int) {\n    my $self = new Short;\n    $self->{value} = (short)$value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Int class file
@@ -541,7 +541,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Int";
     const char* rel_file = "Int.spvm";
     const char* content = "class Int {\n  has value : ro int;\n  static method new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Long class file
@@ -549,7 +549,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Long";
     const char* rel_file = "Long.spvm";
     const char* content = "class Long {\n  has value : ro long;\n  static method new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Float class file
@@ -557,7 +557,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Float";
     const char* rel_file = "Float.spvm";
     const char* content = "class Float {\n  has value : ro float;\n  static method new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Double class file
@@ -565,7 +565,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Double";
     const char* rel_file = "Double.spvm";
     const char* content = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add CommandInfo class file
@@ -573,7 +573,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "CommandInfo";
     const char* rel_file = "CommandInfo.spvm";
     const char* content = "class CommandInfo {\n  our $PROGRAM_NAME : ro string;\n  our $ARGV : ro string[];\n  our $BASE_TIME : ro long;\n  }";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Address class file
@@ -581,7 +581,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Address";
     const char* rel_file = "Address.spvm";
     const char* content = "class Address : pointer {\n  static method new : Address () {\n    my $self = new Address;\n    return $self;\n  }\n}";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
   // Add Error::Compile class file
@@ -589,11 +589,11 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
     const char* class_name = "Error::Compile";
     const char* rel_file = "Error/Compile.spvm";
     const char* content = "class Error::Compile extends Error;";
-    SPVM_COMPILER_set_default_loaded_class_file(compiler, class_name, rel_file, content);
+    SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
 }
 
-void SPVM_COMPILER_set_default_loaded_class_file(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content) {
+void SPVM_COMPILER_set_class_file_with_members(SPVM_COMPILER* compiler, const char* class_name, const char* rel_file, const char* content) {
   SPVM_COMPILER_add_class_file(compiler, class_name);
   
   SPVM_CLASS_FILE* class_file = SPVM_COMPILER_get_class_file(compiler, class_name);
