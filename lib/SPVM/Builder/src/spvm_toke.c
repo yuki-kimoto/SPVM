@@ -151,7 +151,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         continue;
         break;
       }
-      case '\r':
       case '\n':
       {
         assert(SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr));
