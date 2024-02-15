@@ -139,7 +139,15 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   compiler->global_allocator = NULL;
 }
 
+int32_t SPVM_COMPILER_compile_anon_class(SPVM_COMPILER* compiler, const char* source) {
+  return SPVM_COMPILER_compile_common(compiler, NULL, source);
+}
+
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
+  return SPVM_COMPILER_compile_common(compiler, basic_type_name, NULL);
+}
+
+int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source) {
   
   SPVM_MUTEX* compiler_mutex_compile = compiler->mutex_compile;
   
