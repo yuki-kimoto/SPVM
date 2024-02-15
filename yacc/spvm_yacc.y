@@ -47,7 +47,7 @@
 %type <opval> var_decl var interface union_type
 %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
 %type <opval> field_name method_name alias_name is_read_only
-%type <opval> type qualified_type basic_type array_type class_type
+%type <opval> type qualified_type basic_type array_type class_type opt_class_type
 %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -104,22 +104,29 @@ classes
   | class
 
 class
-  : CLASS class_type opt_extends class_block END_OF_FILE
+  : CLASS opt_class_type opt_extends class_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $4, NULL, $3);
     }
-  | CLASS class_type opt_extends ':' opt_attributes class_block END_OF_FILE
+  | CLASS opt_class_type opt_extends ':' opt_attributes class_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $6, $5, $3);
     }
-  | CLASS class_type opt_extends ';' END_OF_FILE
+  | CLASS opt_class_type opt_extends ';' END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, NULL, $3);
     }
-  | CLASS class_type opt_extends ':' opt_attributes ';' END_OF_FILE
+  | CLASS opt_class_type opt_extends ':' opt_attributes ';' END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $5, $3);
     }
+
+opt_class_type
+  : /* Empty */
+    {
+      $$ = NULL;
+    }
+  | class_type
 
 opt_extends
   : /* Empty */
