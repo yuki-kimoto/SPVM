@@ -258,7 +258,22 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
 
 SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_attributes, SPVM_OP* op_extends) {
   
-  const char* basic_type_name = op_type->uv.type->unresolved_basic_type_name;
+  const char* basic_type_name;
+  
+  // Anon class
+  if (strstr(compiler->current_outer_class_name, "eval::anon::")) {
+    if (op_type) {
+      SPVM_COMPILER_error(compiler, "An anon class cannot have its class name.\n  at %s line %d", op_class->file, op_class->line);
+      return op_class;
+    }
+    
+    basic_type_name = compiler->current_outer_class_name;
+  }
+  // Class
+  else {
+    basic_type_name = op_type->uv.type->unresolved_basic_type_name;
+  }
+  
   
   SPVM_TYPE* type = op_type->uv.type;
   
