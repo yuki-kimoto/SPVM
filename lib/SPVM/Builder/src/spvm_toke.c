@@ -2609,6 +2609,8 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
               fclose(fh);
               source[source_length] = '\0';
               
+              int32_t content_length = strlen(source);
+              
               SPVM_CLASS_FILE* found_class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
               
               if (!found_class_file) {
@@ -2618,7 +2620,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
                 SPVM_CLASS_FILE_set_rel_file(compiler, class_file, current_class_rel_file);
                 SPVM_CLASS_FILE_set_dir(compiler, class_file, include_dir);
                 SPVM_CLASS_FILE_set_content(compiler, class_file, source);
-                SPVM_CLASS_FILE_set_content_length(compiler, class_file, source_length);
+                SPVM_CLASS_FILE_set_content_length(compiler, class_file, content_length);
               }
             }
           }

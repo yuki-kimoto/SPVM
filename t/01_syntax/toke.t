@@ -39,6 +39,40 @@ use Test::More;
   }
 }
 
+# End of Source Code
+{
+  {
+    my $source = "class MyClass { }\x00aiueokakikukeko";
+    compile_ok($source);
+  }
+}
+
+# Character Encoding of Source Code
+{
+  {
+    my $source = "class MyClass { \xFF }";
+    compile_not_ok($source, q|The charactor encoding of SPVM source codes must be UTF-8.|);
+  }
+}
+
+# Line Terminator
+{
+  {
+    my $source = "class MyClass { static method main : void () { \x0A } }";
+    compile_ok($source);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () { \x0D\x0A } }";
+    compile_not_ok($source, q|The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.|);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () { \x0D } }";
+    compile_not_ok($source, q|The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.|);
+  }
+}
+
 # Basic Type Name
 {
   {
@@ -510,8 +544,8 @@ use Test::More;
 # Unexpected Charater
 {
   {
-    my $source = "class MyClass { \xFE }";
-    compile_not_ok($source, q|Use of the character code "FE" is not allowed in source code.|);
+    my $source = "class MyClass { \x01 }";
+    compile_not_ok($source, q|Use of the character code "1" is not allowed in source code.|);
   }
 }
 
