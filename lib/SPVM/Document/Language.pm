@@ -18,9 +18,13 @@ The source codes of SPVM language are expected to be written by the UTF-8 charct
 
 =head2 Line Terminators
 
-The line terminators are C<LF>, C<CR>, and C<CRLF> of ASCII.
+The line terminators are C<LF> of ASCII.
 
-When a line terminator appears, the current line number is incremented by 1. The line terminator is converted to C<LF> of ASCII.
+When a line terminator appears, the current line number is incremented by 1.
+
+Compilation Errors:
+
+The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
 
 =head2 Space Character
 

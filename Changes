@@ -5,6 +5,18 @@
       
       static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[]);
     * The new line of SPVM source codes must be LF. Otherwise compilation error occurs.
+    
+    
+    * Change the specification of "Line Terminators"
+
+      The line terminators are C<LF> of ASCII.
+
+      When a line terminator appears, the current line number is incremented by 1.
+
+      Compilation Errors:
+
+      The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
+
 0.989072 2023-02-14
   [New Features]
     * Add single quote string literal syntax.
