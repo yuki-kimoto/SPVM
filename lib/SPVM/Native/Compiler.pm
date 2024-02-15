@@ -106,12 +106,12 @@ Gets a L<Native::ClassFile> object by a class name, and returns it.
 
 =head2 compile_anon_class
 
-C<native method compile_anon_class : void ($source : string);>
+C<native method compile_anon_class : string ($source : string);>
 
-Compiles a anon class.
+Compiles a anon class, and return the generated anon class name.
 
-This method can be called multiple times.
 
+This method can be called multiple times. 
 Exceptions:
 
 If compilation errors occurred, an exception is thrown set eval_errro_id to the basic type ID of the L<Error::Compile|SPVM::Error::Compile> class.

@@ -231,7 +231,8 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
   void* compiler = env->get_pointer(env, stack, obj_self);
   
   // Compile SPVM
-  int32_t status = env->api->compiler->compile_anon_class(compiler, source);
+  const char* anon_basic_type_name = NULL;
+  int32_t status = env->api->compiler->compile_anon_class(compiler, source, &anon_basic_type_name);
   
   if (!(status == 0)) {
     
@@ -239,6 +240,10 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
     
     return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS;
   }
+  
+  void* obj_anon_basic_type_name = env->new_string(env, stack, anon_basic_type_name, strlen(anon_basic_type_name));
+  
+  stack[0].oval = obj_anon_basic_type_name;
   
   return 0;
 }

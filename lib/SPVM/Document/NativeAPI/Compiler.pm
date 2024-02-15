@@ -132,9 +132,9 @@ Gets the runtime.
 
 =head2 compile_anon_class
   
-  int32_t (*compile_anon_class)(void* compiler, const char* source);
+  int32_t (*compile_anon_class)(void* compiler, const char* source, const char** anon_basic_type_name_ptr);
 
-Compiles a SPVM anon class.
+Compiles a SPVM anon class with a source I<source>. The generated anon class name is set to I<anon_basic_type_name_ptr>.
 
 =head1 Native API IDs
 

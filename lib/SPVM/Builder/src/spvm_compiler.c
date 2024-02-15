@@ -139,15 +139,15 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   compiler->global_allocator = NULL;
 }
 
-int32_t SPVM_COMPILER_compile_anon_class(SPVM_COMPILER* compiler, const char* source) {
-  return SPVM_COMPILER_compile_common(compiler, NULL, source);
+int32_t SPVM_COMPILER_compile_anon_class(SPVM_COMPILER* compiler, const char* source, const char** anon_basic_type_name_ptr) {
+  return SPVM_COMPILER_compile_common(compiler, NULL, source, anon_basic_type_name_ptr);
 }
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler, const char* basic_type_name) {
-  return SPVM_COMPILER_compile_common(compiler, basic_type_name, NULL);
+  return SPVM_COMPILER_compile_common(compiler, basic_type_name, NULL, NULL);
 }
 
-int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source) {
+int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_type_name, const char* source, const char** anon_basic_type_name_ptr) {
   
   SPVM_MUTEX* compiler_mutex_compile = compiler->mutex_compile;
   
@@ -178,24 +178,25 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
   SPVM_COMPILER_use_default_loaded_classes(compiler);
   
   // Anon class
+  char* anon_basic_type_name = NULL;
   if (source) {
     int32_t int32_max_length = 10;
     int32_t anon_method_basic_type_name_length = 4 + 2 + 4 + 2 + int32_max_length;
     
-    char* basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, anon_method_basic_type_name_length + 1);
-    sprintf(basic_type_name, "eval::anon::%d", compiler->eval_anon_classes_length);
+    anon_basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, anon_method_basic_type_name_length + 1);
+    sprintf(anon_basic_type_name, "eval::anon::%d", compiler->eval_anon_classes_length);
     compiler->eval_anon_classes_length++;
     
     char* rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, anon_method_basic_type_name_length + 1);
-    sprintf(basic_type_name, "eval/anon/%d.spvm", compiler->eval_anon_classes_length);
+    sprintf(anon_basic_type_name, "eval/anon/%d.spvm", compiler->eval_anon_classes_length);
     
-    SPVM_COMPILER_set_class_file_with_members(compiler, basic_type_name, rel_file, source);
+    SPVM_COMPILER_set_class_file_with_members(compiler, anon_basic_type_name, rel_file, source);
     
     const char* start_file = SPVM_COMPILER_get_start_file(compiler);
     
     int32_t start_line = SPVM_COMPILER_get_start_line(compiler);
     
-    SPVM_COMPILER_use(compiler, basic_type_name, start_file, start_line);
+    SPVM_COMPILER_use(compiler, anon_basic_type_name, start_file, start_line);
   }
   // Class
   else if (basic_type_name) {
@@ -269,6 +270,11 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
     compiler->current_each_compile_allocator = NULL;
   }
   else {
+    // Anon class
+    if (source) {
+      *anon_basic_type_name_ptr = anon_basic_type_name;
+    }
+    
     SPVM_LIST_push(compiler->each_compile_allocators, compiler->current_each_compile_allocator);
     compiler->current_each_compile_allocator = NULL;
     
