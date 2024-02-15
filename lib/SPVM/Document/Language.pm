@@ -12,9 +12,17 @@ The L<SPVM> language specification is described.
 
 The tokenizing the source codes of SPVM language is explained.
 
-=head2 Character Set
+=head2 Character Encoding of Source Code
 
-The source codes of SPVM language are expected to be written by the UTF-8 charcter set.
+The character encoding of SPVM source codes is UTF-8.
+
+Compilation Errors:
+
+The charactor encoding of SPVM source codes must be UTF-8. Otherwise a compilation error occurs.
+
+=head2 End of Source Code
+
+A SPVM source code ends with C<\0> in ASCII. If a source code is loaded by a file, C<\0> is added to the end of the source code.
 
 =head2 Line Terminators
 
@@ -25,10 +33,6 @@ When a line terminator appears, the current line number is incremented by 1.
 Compilation Errors:
 
 The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
-
-=head2 End of Source Code
-
-A SPVM source code ends with C<\0> in ASCII. If a source code is loaded by a file, C<\0> is added to the end of the source code.
 
 =head2 Space Character
 

@@ -4,9 +4,10 @@
     * Add the new call_class_method to the Native::MethodCall class.
       
       static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[]);
+    
+    
+  [Incompatible Changes]
     * The new line of SPVM source codes must be LF. Otherwise compilation error occurs.
-    
-    
     * Change the specification of "Line Terminators"
 
       The line terminators are C<LF> of ASCII.
@@ -16,12 +17,22 @@
       Compilation Errors:
 
       The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
-  
+    * The charactor encoding of SPVM source codes must be UTF-8. Otherwise a compilation error occurs.
+    
   [Document Improvement]
   
     * Add the specification of "End of Source Code"
 
       A SPVM source code ends with C<\0> in ASCII. If a source code is loaded by a file, C<\0> is added to the end of the source code.
+
+    * Add the specification of "Character Encoding of Source Code"
+
+      The character encoding of SPVM source codes is UTF-8.
+
+      Compilation Errors:
+
+      The charactor encoding of SPVM source codes must be UTF-8. Otherwise a compilation error occurs.
+
 
 0.989072 2023-02-14
   [New Features]
