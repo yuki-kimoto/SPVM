@@ -30,8 +30,6 @@
 #include "spvm_class_file.h"
 #include "spvm_utf8.h"
 
-static ptrdiff_t spvm_utf8proc_iterate(const uint8_t *str, ptrdiff_t strlen, int32_t *dst);
-
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   
@@ -1074,10 +1072,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         char *end;
                         int64_t unicode = (int64_t)strtoll(unicode_chars, &end, 16);
                         
-                        int32_t is_valid_utf8_code_point = SPVM_TOKE_is_valid_utf8_code_point(unicode);
+                        int32_t is_valid_utf8_code_point = SPVM_UTF8_is_valid_utf8_code_point(unicode);
                         if (is_valid_utf8_code_point) {
                           char utf8_chars[4];
-                          int32_t byte_length = SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(unicode, (uint8_t*)utf8_chars);
+                          int32_t byte_length = SPVM_UTF8_convert_unicode_codepoint_to_utf8_character(unicode, (uint8_t*)utf8_chars);
                           for (int32_t byte_index = 0; byte_index < byte_length; byte_index++) {
                             string_literal_tmp[string_literal_length] = utf8_chars[byte_index];
                             string_literal_length++;
@@ -2673,7 +2671,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           char* ch_ptr = compiler->current_class_content;
           while (*ch_ptr != '\0') {
             int32_t dst;
-            int32_t utf8_char_len = (int32_t)spvm_utf8proc_iterate((const uint8_t*)(ch_ptr), strlen(compiler->current_class_content), &dst);
+            int32_t utf8_char_len = (int32_t)SPVM_UTF8_iterate((const uint8_t*)(ch_ptr), strlen(compiler->current_class_content), &dst);
             
             if (!(utf8_char_len > 0)) {
               SPVM_COMPILER_error(compiler, "The charactor encoding of SPVM source codes must be UTF-8. The source code of the \"%s\" class in the \"%s\" file contains non-UTF8 characters.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
@@ -2862,50 +2860,6 @@ char SPVM_TOKE_parse_hex_escape(SPVM_COMPILER* compiler, char** ch_ptr_ptr) {
   return ch;
 }
 
-int32_t SPVM_TOKE_is_valid_utf8_code_point(int32_t code_point) {
-  return SPVM_TOKE_is_unicode_scalar_value(code_point);
-}
-
-int32_t SPVM_TOKE_is_unicode_scalar_value(int32_t code_point) {
-  int32_t is_unicode_scalar_value = 0;
-  if (code_point >= 0 && code_point <= 0x10FFFF) {
-    if (!(code_point >= 0xD800 && code_point <= 0xDFFF)) {
-      is_unicode_scalar_value = 1;
-    }
-  }
-  
-  return is_unicode_scalar_value;
-}
-
-int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8_character(int32_t uc, uint8_t* dst) {
-  if (uc < 0x00) {
-    return 0;
-  } else if (uc < 0x80) {
-    dst[0] = (uint8_t)uc;
-    return 1;
-  } else if (uc < 0x800) {
-    dst[0] = (uint8_t)(0xC0 + (uc >> 6));
-    dst[1] = (uint8_t)(0x80 + (uc & 0x3F));
-    return 2;
-  // Note: we allow encoding 0xd800-0xdfff here, so as not to change
-  // the API, however, these are actually invalid in UTF-8
-  } else if (uc < 0x10000) {
-    dst[0] = (uint8_t)(0xE0 + (uc >> 12));
-    dst[1] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
-    dst[2] = (uint8_t)(0x80 + (uc & 0x3F));
-    return 3;
-  } else if (uc < 0x110000) {
-    dst[0] = (uint8_t)(0xF0 + (uc >> 18));
-    dst[1] = (uint8_t)(0x80 + ((uc >> 12) & 0x3F));
-    dst[2] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
-    dst[3] = (uint8_t)(0x80 + (uc & 0x3F));
-    return 4;
-  }
-  else {
-    return 0;
-  }
-}
-
 int32_t SPVM_TOKE_is_line_terminator(SPVM_COMPILER* compiler, char* ch) {
   
   int32_t is_line_terminator = 0;
@@ -2981,52 +2935,3 @@ void SPVM_TOKE_increment_current_line(SPVM_COMPILER* compiler) {
   compiler->current_line++;
   compiler->line_begin_ch_ptr = compiler->ch_ptr;
 }
-
-#define utf_cont(ch)  (((ch) & 0xc0) == 0x80)
-#define SPVM_UTF8PROC_ERROR_INVALIDUTF8 -3
-static ptrdiff_t spvm_utf8proc_iterate(const uint8_t *str, ptrdiff_t strlen, int32_t *dst) {
-  uint32_t uc;
-  const uint8_t *end;
-  
-  *dst = -1;
-  if (!strlen) return 0;
-  end = str + ((strlen < 0) ? 4 : strlen);
-  uc = *str++;
-  if (uc < 0x80) {
-    *dst = uc;
-    return 1;
-  }
-  // Must be between 0xc2 and 0xf4 inclusive to be valid
-  if ((uc - 0xc2) > (0xf4-0xc2)) return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
-  if (uc < 0xe0) {         // 2-byte sequence
-     // Must have valid continuation character
-     if (str >= end || !utf_cont(*str)) return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
-     *dst = ((uc & 0x1f)<<6) | (*str & 0x3f);
-     return 2;
-  }
-  if (uc < 0xf0) {        // 3-byte sequence
-     if ((str + 1 >= end) || !utf_cont(*str) || !utf_cont(str[1]))
-        return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
-     // Check for surrogate chars
-     if (uc == 0xed && *str > 0x9f)
-         return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
-     uc = ((uc & 0xf)<<12) | ((*str & 0x3f)<<6) | (str[1] & 0x3f);
-     if (uc < 0x800)
-         return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
-     *dst = uc;
-     return 3;
-  }
-  // 4-byte sequence
-  // Must have 3 valid continuation characters
-  if ((str + 2 >= end) || !utf_cont(*str) || !utf_cont(str[1]) || !utf_cont(str[2]))
-     return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
-  // Make sure in correct range (0x10000 - 0x10ffff)
-  if (uc == 0xf0) {
-    if (*str < 0x90) return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
-  } else if (uc == 0xf4) {
-    if (*str > 0x8f) return SPVM_UTF8PROC_ERROR_INVALIDUTF8;
-  }
-  *dst = ((uc & 7)<<18) | ((*str & 0x3f)<<12) | ((str[1] & 0x3f)<<6) | (str[2] & 0x3f);
-  return 4;
-}
-
