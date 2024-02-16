@@ -1104,7 +1104,7 @@ void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYP
               const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
               
               SPVM_HASH* alias_symtable = NULL;
-              if (basic_type->is_anon) {
+              if (basic_type->is_anon && basic_type->outer) {
                 alias_symtable = basic_type->outer->alias_symtable;
               }
               else {

@@ -79,4 +79,36 @@ class TestCase::Module::Native::Compiler {
     
     return 1;
   }
+  
+  static method compile_anon_class : int () {
+    
+    {
+      my $compiler = Native->get_current_compiler;
+      
+      my $source = <<'EOS';
+class {
+  static method sum : int ($num1 : int, $num2 : int) {
+    return $num1 + $num2;
+  }
+}
+EOS
+      $compiler->set_start_file(__FILE__);
+      $compiler->set_start_line(__LINE__ + 1);
+      my $anon_class_name = (string)undef;
+      
+      eval { $anon_class_name = $compiler->compile_anon_class($source); }
+      
+      if ($@) {
+        die dump $compiler->get_error_messages;
+      }
+      
+      my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [(object)1, 2]);;
+      
+      unless ($ret->(Int)->value == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

@@ -118,9 +118,12 @@ If compilation errors occurred, an exception is thrown set eval_errro_id to the 
 
 Examples:
   
+  use Native;
   use Native::Compiler;
   use Native::MethodCall;
   
+  my $current_compiler = Native->get_current_compiler;
+    
   my $source = <<'EOS';
   class {
     static method sum ($num1 : int, $num2 : int) {
