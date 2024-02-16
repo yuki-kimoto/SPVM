@@ -193,7 +193,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
   // Outer class
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    if (basic_type->is_anon) {
+    if (basic_type->is_anon && !strstr(basic_type->name, "eval::anon::")) {
       
       char* found_ptr = strstr(basic_type->name, "::anon::");
       assert(found_ptr);
