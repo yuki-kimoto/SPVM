@@ -433,7 +433,6 @@ solo/lib/SPVM/TestCase/Pointer.spvm
 solo/lib/SPVM/TestCase/Simple.spvm
 solo/lib/SPVM/TestCase/Weaken.spvm
 solo/lib/SPVM/TestCase/Weaken2.spvm
-solo/myexe.debug_memory_count.config
 SPVM.xs
 t/00_builder/cc.t
 t/00_builder/config.t
