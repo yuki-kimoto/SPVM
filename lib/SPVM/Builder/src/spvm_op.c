@@ -268,12 +268,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
     
     basic_type_name = compiler->current_outer_class_name;
+    
+    SPVM_OP* op_name_basic_type = SPVM_OP_new_op_name(compiler, basic_type_name, op_class->file, op_class->line);
+    op_type = SPVM_OP_build_basic_type(compiler, op_name_basic_type);
   }
   // Class
   else {
     basic_type_name = op_type->uv.type->unresolved_basic_type_name;
   }
-  
   
   SPVM_TYPE* type = op_type->uv.type;
   
