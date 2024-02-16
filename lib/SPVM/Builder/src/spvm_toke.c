@@ -2447,8 +2447,10 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
       const char* basic_type_name = op_use->uv.use->op_type->uv.type->unresolved_basic_type_name;
       int32_t basic_type_name_length = strlen(basic_type_name);
       
+      int32_t is_anon_class = strstr(basic_type_name, "::anon::");
+      
       // Check the class name
-      {
+      if (!is_anon_class) {
         // A class name must begin with an upper case character
         if (SPVM_TOKE_islower_ascii(compiler, basic_type_name[0])) {
           SPVM_COMPILER_error(compiler, "The class name \"%s\" must begin with an upper case character.\n  at %s line %d", basic_type_name, op_use->file, op_use->line);
