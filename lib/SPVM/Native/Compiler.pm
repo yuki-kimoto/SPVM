@@ -122,22 +122,22 @@ Examples:
   use Native::Compiler;
   use Native::MethodCall;
   
-  my $current_compiler = Native->get_current_compiler;
-    
+  my $compiler = Native->get_current_compiler;
+  
   my $source = <<'EOS';
-  class {
-    static method sum ($num1 : int, $num2 : int) {
-      return $num1 + $num2;
-    }
+class {
+  static method sum : int ($num1 : int, $num2 : int) {
+    return $num1 + $num2;
   }
+}
+EOS
+  $compiler->set_start_file(__FILE__);
+  $compiler->set_start_line(__LINE__ + 1);
+  my $anon_class_name = $compiler->compile_anon_class($source);;
   
-  EOS
+  my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [(object)1, 2]);;
   
-  my $anon_class_name = $compiler->compile_anon_class($source);
-  
-  my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [1, 2]);
-  
-  say $ret->value;
+  say $ret->(Int)->value;
 
 =head1 See Also
 

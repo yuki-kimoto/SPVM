@@ -102,7 +102,7 @@ EOS
         die dump $compiler->get_error_messages;
       }
       
-      my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [(object)1, 2]);;
+      my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [(object)1, 2]);
       
       unless ($ret->(Int)->value == 3) {
         return 0;

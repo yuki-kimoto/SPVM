@@ -1375,7 +1375,7 @@ The SPVM language is assumed to be parsed by yacc/bison.
 
 The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
 
-  token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
+  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
   %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -1400,7 +1400,7 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
   %type <opval> var_decl var interface union_type
   %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
   %type <opval> field_name method_name alias_name is_read_only
-  %type <opval> type qualified_type basic_type array_type class_type
+  %type <opval> type qualified_type basic_type array_type class_type opt_class_type
   %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
@@ -1428,10 +1428,14 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
     | class
 
   class
-    : CLASS class_type opt_extends class_block END_OF_FILE
-    | CLASS class_type opt_extends ':' opt_attributes class_block END_OF_FILE
-    | CLASS class_type opt_extends ';' END_OF_FILE
-    | CLASS class_type opt_extends ':' opt_attributes ';' END_OF_FILE
+    : CLASS opt_class_type opt_extends class_block END_OF_FILE
+    | CLASS opt_class_type opt_extends ':' opt_attributes class_block END_OF_FILE
+    | CLASS opt_class_type opt_extends ';' END_OF_FILE
+    | CLASS opt_class_type opt_extends ':' opt_attributes ';' END_OF_FILE
+
+  opt_class_type
+    : /* Empty */
+    | class_type
 
   opt_extends
     : /* Empty */
