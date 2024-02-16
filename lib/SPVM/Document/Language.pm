@@ -2588,24 +2588,39 @@ Examples:
 
 =head2 Anon Class
 
-The anon class is the class that is defined by the L<anon method|/"Anon Method"> syntax.
+The anon class is the class that do not has its class name.
 
-A anon class has its unique L<class name|/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
+  class {
+  
+  }
 
-A anon class has the same access control as its outer class.
+But internally an anon class has its name, such as C<eval::anon::0>.
 
-A anon class has the same alias names as its outer class.
+An anon class is also defined by the anon method.
+
+A anon class for an anon method has its unique L<class name|/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
+
+A anon class for an anon method has the same access control as its outer class.
+
+A anon class for an anon method has the same alias names as its outer class.
 
 L<Examples:>
-
-    123456789...
-  1:class Foo::Bar {
-  2:  method sum : void () {
-  3:    my $anon_method = method : string () {
-  4:      
-  5:    }
-  6:: }
-  7:}
+  
+  # Anon class
+  class {
+    static method sum : int ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
+  }
+  
+  # Anon method
+  class Foo::Bar {
+    method sum : void () {
+      my $anon_method = method : string () {
+        
+      }
+   }
+  }
   
   # The name of the anon class
   Foo::Bar::anon::3::23;
