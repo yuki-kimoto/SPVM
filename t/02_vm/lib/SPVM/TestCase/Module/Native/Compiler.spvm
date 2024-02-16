@@ -5,7 +5,7 @@ class TestCase::Module::Native::Compiler {
   use Stringable;
   use Fn;
   
-  static method add_class : int () {
+  static method compile : int () {
     
     # Extra
     {

@@ -12,7 +12,7 @@ use SPVM 'TestCase::Module::Native::Compiler';
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
-  ok(SPVM::TestCase::Module::Native::Compiler->add_class);
+  ok(SPVM::TestCase::Module::Native::Compiler->compile);
 }
 
 # All object is freed
