@@ -116,6 +116,26 @@ Exceptions:
 
 If compilation errors occurred, an exception is thrown set eval_errro_id to the basic type ID of the L<Error::Compile|SPVM::Error::Compile> class.
 
+Examples:
+  
+  use Native::Compiler;
+  use Native::MethodCall;
+  
+  my $source = <<'EOS';
+  class {
+    static method sum ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
+  }
+  
+  EOS
+  
+  my $anon_class_name = $compiler->compile_anon_class($source);
+  
+  my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [1, 2]);
+  
+  say $ret->value;
+
 =head1 See Also
 
 =head2 Native::Runtime
