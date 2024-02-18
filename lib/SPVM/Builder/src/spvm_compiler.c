@@ -177,6 +177,8 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
   
   SPVM_COMPILER_use_default_loaded_classes(compiler);
   
+  int32_t original_eval_anon_classes_length = compiler->eval_anon_classes_length;
+  
   // Anon class
   if (source) {
     int32_t int32_max_length = 10;
@@ -254,6 +256,9 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
       
       SPVM_HASH_set(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), NULL);
     }
+    
+    compiler->eval_anon_classes_length = original_eval_anon_classes_length;
+    
     compiler->basic_types->length = compiler_basic_types_base_id;
      
     for (int32_t constant_string_id = compiler_constant_strings_base_id; constant_string_id < compiler->constant_strings->length; constant_string_id++) {
