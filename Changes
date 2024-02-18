@@ -2,6 +2,8 @@
   [Changes]
     * The $args argument in the call_class_method method in the Native::MethodCall class becomes optional.
     * The $args argument in the call method in the Native::MethodCall class becomes optional.
+  [New Features]
+    * Add the eval_string method in the Native::Compiler class.
 0.989074 2023-02-14
   [New Features]
     * Add anon class syntax. Anon class cause compilation error, but this will be used for the compile_anon_class method.

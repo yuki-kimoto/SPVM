@@ -5,6 +5,7 @@ class Native::Compiler : pointer {
   use Native::Runtime;
   use Native::ClassFile;
   use Error::Compile;
+  use Native::MethodCall;
   
   # Fields
   
@@ -14,7 +15,7 @@ class Native::Compiler : pointer {
   native static method new : Native::Compiler ();
   
   # Instance Methods
-  native method compile : void ($basic_type_name : string);
+  native method compile : void ($class_name : string);
   
   native method get_runtime : Native::Runtime ();
   
@@ -32,4 +33,16 @@ class Native::Compiler : pointer {
   
   native method compile_anon_class : string ($source : string);
   
+  method eval_string : string ($main_source : string) {
+    
+    unless ($main_source) {
+      die "\$main_source must be defined.";
+    }
+    
+    my $source = "class { static method main : void () { $main_source } }";
+    
+    my $anon_class_name = $self->compile_anon_class($source);
+    
+    Native::MethodCall->call_class_method($anon_class_name, "main");
+  }
 }
