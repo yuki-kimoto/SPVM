@@ -19,9 +19,9 @@ class Native::MethodCall {
   native static method set_exception : void ($exception : string, $stack : Native::Stack = undef, $env : Native::Env = undef);
   
   # Instance Methods
-  native method call : object ($args : object[]);
+  native method call : object ($args : object[] = undef);
   
-  static method call_class_method : object ($basic_type_name : string, $method_name : string, $args : object[]) {
+  static method call_class_method : object ($basic_type_name : string, $method_name : string, $args : object[] = undef) {
     
     my $class_method = &new_class_method($basic_type_name, $method_name);
     

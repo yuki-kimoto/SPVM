@@ -55,7 +55,8 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_args = stack[1].oval;
   
   if (!obj_args) {
-    return env->die(env, stack, "$args must be defined.", __func__, FILE_NAME, __LINE__);
+    obj_args = env->new_object_array_by_name(env, stack, "object", 0, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
   }
   
   int32_t args_length = env->length(env, stack, obj_args);

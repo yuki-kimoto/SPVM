@@ -88,7 +88,7 @@ If $environment is not defined, the current environment is used.
 
 =head2 call_class_method
 
-C<static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[]);>
+C<static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[] = undef);>
 
 Calls a class method given the basic type name $basic_type_name, the method name $method_name, and the arguments $args.
 
@@ -96,7 +96,7 @@ Calls a class method given the basic type name $basic_type_name, the method name
 
 =head2 call
 
-C<method call : object ($args : object[]);>
+C<method call : object ($args : object[] = undef);>
 
 Calls a method with arguments and returns the return value.
 
