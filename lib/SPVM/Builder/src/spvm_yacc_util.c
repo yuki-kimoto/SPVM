@@ -42,8 +42,13 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message_not_used) {
   
   int32_t char_pos = (int32_t)(compiler->token_begin_ch_ptr + empty_count + 1 - compiler->line_begin_ch_ptr);
   
-  SPVM_COMPILER_error(compiler, "Unexpected token \"%s\"\n  at %s line %d:%d", token, compiler->current_file, compiler->current_line, char_pos);
-
+  const char* current_class_dir = "";
+  if (compiler->current_class_dir) {
+    current_class_dir = compiler->current_class_dir;
+  }
+  
+  SPVM_COMPILER_error(compiler, "Unexpected token \"%s\"\n  at %s%s line %d:%d", token, current_class_dir, compiler->current_class_rel_file, compiler->current_line, char_pos);
+  
   SPVM_ALLOCATOR_free_memory_block_tmp(compiler->current_each_compile_allocator, token);
 }
 
