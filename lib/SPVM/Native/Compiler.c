@@ -69,7 +69,26 @@ int32_t SPVM__Native__Compiler__compile(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   if (!(status == 0)) {
     
-    env->die(env, stack, "Compilation errors occurred.", __func__, FILE_NAME, __LINE__);
+    void* obj_prefix = env->new_string_nolen(env, stack, "[Compile Error]");
+    
+    void* obj_error_messages_string = env->new_string(env, stack, NULL, 0);
+    
+    void* obj_lf = env->new_string_nolen(env, stack, "\n");
+    
+    int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
+    
+    void* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
+    for (int32_t i = 0; i < error_messages_length; i++) {
+      
+      const char* error_message = env->api->compiler->get_error_message(compiler, i);
+      void* obj_error_message = env->new_string_nolen(env, stack, error_message);
+      
+      obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_prefix);
+      obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_error_message);
+      obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_lf);
+    }
+    
+    env->die(env, stack, env->get_chars(env, stack, obj_error_messages_string), __func__, FILE_NAME, __LINE__);
     
     return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS;
   }
@@ -236,7 +255,26 @@ int32_t SPVM__Native__Compiler__compile_anon_class(SPVM_ENV* env, SPVM_VALUE* st
   
   if (!(status == 0)) {
     
-    env->die(env, stack, "Compilation errors occurred.", __func__, FILE_NAME, __LINE__);
+    void* obj_prefix = env->new_string_nolen(env, stack, "[Compile Error]");
+    
+    void* obj_error_messages_string = env->new_string(env, stack, NULL, 0);
+    
+    void* obj_lf = env->new_string_nolen(env, stack, "\n");
+    
+    int32_t error_messages_length = env->api->compiler->get_error_messages_length(compiler);
+    
+    void* obj_error_messages = env->new_string_array(env, stack, error_messages_length);
+    for (int32_t i = 0; i < error_messages_length; i++) {
+      
+      const char* error_message = env->api->compiler->get_error_message(compiler, i);
+      void* obj_error_message = env->new_string_nolen(env, stack, error_message);
+      
+      obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_prefix);
+      obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_error_message);
+      obj_error_messages_string = env->concat(env, stack, obj_error_messages_string, obj_lf);
+    }
+    
+    env->die(env, stack, env->get_chars(env, stack, obj_error_messages_string), __func__, FILE_NAME, __LINE__);
     
     return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_COMPILE_CLASS;
   }
