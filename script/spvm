@@ -1,0 +1,74 @@
+#!perl
+
+use strict;
+use warnings;
+
+my $help;
+my $show_version;
+my @include_dirs;
+
+use SPVM::Builder::Util;
+
+my $class_name;
+
+BEGIN {
+  SPVM::Builder::Util::getopt
+    'h|help'          => \my $help,
+    'v|version'       => \my $show_version,
+    'I|include-dir=s' => \my @include_dirs,
+  ;
+  
+  my @original_include_dirs = @include_dirs;
+  push @include_dirs, map { "$_/SPVM" } @INC;
+  unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
+  
+  if ($help) {
+    print SPVM::Builder::Util::extract_usage;
+    exit 0;
+  }
+  elsif ($show_version) {
+    my $version_string = "spvm v$SPVM::VERSION";
+    print "$version_string\n";
+    exit 0;
+  }
+  else {
+    $class_name = shift;
+    
+    unless (defined $class_name) {
+      die SPVM::Builder::Util::extract_usage;
+    }
+  }
+}
+
+use SPVM $class_name;
+
+my $spvm_class_name = "SPVM::$class_name";
+
+$spvm_class_name->main;
+
+=encoding utf8
+
+=head1 Name
+
+spvm - Executing SPVM programs
+
+=head1 Description
+
+The spvm command is a SPVM compiler and linker to generate an executable file.
+
+=head1 Usage
+
+  usage: spvm [<options>] <class name>
+    
+    spvm -I lib/SPVM Myapp
+  
+  options:
+    -h, --help                     Shows this message
+    -v, --version                  Shows the version
+    -I, --include-dir <directory>  Adds a include directory
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

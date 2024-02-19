@@ -70,6 +70,8 @@ Calling a SPVM method from Perl:
 
 =item * L<Native threads|SPVM::Thread> and L<goroutines|SPVM::Go>.
 
+=item * L<Executing SPVM programs|spvm>
+
 =item * L<Generating an executable file|spvmcc>
 
 =item * AOT(Ahead-of-time compilation) and JIT(Just-in-time compilation).

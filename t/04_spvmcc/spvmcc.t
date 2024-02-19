@@ -248,5 +248,14 @@ my $dev_null = File::Spec->devnull;
   ok(1);
 }
 
+# spvm - Execute solo test.
+{
+  my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM MyExe foo bar);
+  system($spvm_cmd) == 0
+   or die "Can't execute spvmcc command $spvm_cmd:$!";
+  
+  ok(1);
+}
+
 ok(1);
 done_testing;
