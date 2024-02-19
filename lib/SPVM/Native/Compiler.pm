@@ -149,9 +149,11 @@ This method creates the following source code.
 
   "
   class {
-    static method main : void () {
-  #line1
-  $main_source}}
+  static method main : void () {
+  #line 1
+  $main_source
+  }
+  }
   "
 
 And calls L</"compile_anon_class"> given this source code and gets the anon class name.

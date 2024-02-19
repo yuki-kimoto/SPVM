@@ -41,10 +41,10 @@ class Native::Compiler : pointer {
     
     my $source = "
 class {
-  static method main : void () {
+static method main : void () {
 #line 1
 $main_source
-  }
+}
 }
 ";
     
