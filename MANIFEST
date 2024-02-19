@@ -390,6 +390,7 @@ Makefile.PL
 MANIFEST			This list of files
 ppport.h
 README.md
+script/spvm
 script/spvmcc
 script/spvmdist
 solo/lib/SPVM/MyExe.config
@@ -397,7 +398,6 @@ solo/lib/SPVM/MyExe.debug.config
 solo/lib/SPVM/MyExe.debug_memory_count.config
 solo/lib/SPVM/MyExe.spvm
 solo/lib/SPVM/TestCase.spvm
-solo/lib/SPVM/TestCase/Allow.spvm
 solo/lib/SPVM/TestCase/Callback1.spvm
 solo/lib/SPVM/TestCase/Callback2.spvm
 solo/lib/SPVM/TestCase/CommonInterface.spvm
@@ -422,7 +422,6 @@ solo/lib/SPVM/TestCase/List.spvm
 solo/lib/SPVM/TestCase/Minimal.spvm
 solo/lib/SPVM/TestCase/Minimal/XGetter.spvm
 solo/lib/SPVM/TestCase/MinimalExtend.spvm
-solo/lib/SPVM/TestCase/OnlyField.spvm
 solo/lib/SPVM/TestCase/Point_3b.spvm
 solo/lib/SPVM/TestCase/Point_3d.spvm
 solo/lib/SPVM/TestCase/Point_3f.spvm
@@ -449,9 +448,6 @@ t/01_syntax/extra_others.t
 t/01_syntax/extra_statement.t
 t/01_syntax/extra_type.t
 t/01_syntax/lib/MyTest.pm
-t/01_syntax/lib/SPVM/CompileError/Add/LeftIsNotNumeric.spvm
-t/01_syntax/lib/SPVM/CompileError/Add/RightIsNotNumeric.spvm
-t/01_syntax/lib/SPVM/CompileError/Assign/BoxingDifferentType.spvm
 t/01_syntax/lib/SPVM/CompileError/Assign/ConstToNoConst.spvm
 t/01_syntax/lib/SPVM/CompileError/Assign/DifferentObject.spvm
 t/01_syntax/lib/SPVM/CompileError/Assign/NarrwoingConvertionIntToByte.spvm
@@ -460,8 +456,6 @@ t/01_syntax/lib/SPVM/CompileError/Assign/NarrwoingConvertionLongToByte.spvm
 t/01_syntax/lib/SPVM/CompileError/Assign/NarrwoingConvertionLongToInt.spvm
 t/01_syntax/lib/SPVM/CompileError/Assign/NarrwoingConvertionLongToShort.spvm
 t/01_syntax/lib/SPVM/CompileError/Assign/NotNumericToNumeric.spvm
-t/01_syntax/lib/SPVM/CompileError/Assign/StringToBytArray.spvm
-t/01_syntax/lib/SPVM/CompileError/Assign/UnboxingDifferentType.spvm
 t/01_syntax/lib/SPVM/CompileError/BitNot/NotIntegral.spvm
 t/01_syntax/lib/SPVM/CompileError/Bool/NotNumericObject.spvm
 t/01_syntax/lib/SPVM/CompileError/CallMethod/ClassNotFound.spvm
@@ -481,12 +475,6 @@ t/01_syntax/lib/SPVM/CompileError/ClassVar/PackageVar/OurPackageVarNameInvalidCo
 t/01_syntax/lib/SPVM/CompileError/ClassVar/PackageVar/OurPackageVarNameStartDigit.spvm
 t/01_syntax/lib/SPVM/CompileError/ClassVar/PackageVar/Private.spvm
 t/01_syntax/lib/SPVM/CompileError/ClassVar/Private.spvm
-t/01_syntax/lib/SPVM/CompileError/ComparisonOperator/GeNotNumeric.spvm
-t/01_syntax/lib/SPVM/CompileError/ComparisonOperator/GtNotNumeric.spvm
-t/01_syntax/lib/SPVM/CompileError/ComparisonOperator/LeNotNumeric.spvm
-t/01_syntax/lib/SPVM/CompileError/ComparisonOperator/LtNotNumeric.spvm
-t/01_syntax/lib/SPVM/CompileError/Concat/LeftIsNotString.spvm
-t/01_syntax/lib/SPVM/CompileError/Concat/RightIsNotString.spvm
 t/01_syntax/lib/SPVM/CompileError/Convert/ConvertFromByteArrayToString.spvm
 t/01_syntax/lib/SPVM/CompileError/Convert/ConvertFromMultiNumericType.spvm
 t/01_syntax/lib/SPVM/CompileError/Convert/ConvertFromRef.spvm
@@ -547,8 +535,6 @@ t/01_syntax/lib/SPVM/CompileError/String/CharacterAssign.spvm
 t/01_syntax/lib/SPVM/CompileError/Sub/Begin.spvm
 t/01_syntax/lib/SPVM/CompileError/Sub/SubNameContainsUnderScoreTwice.spvm
 t/01_syntax/lib/SPVM/CompileError/Sub/SubNameStartDigit.spvm
-t/01_syntax/lib/SPVM/CompileError/Subtract/LeftIsNotNumeric.spvm
-t/01_syntax/lib/SPVM/CompileError/Subtract/RightIsNotNumeric.spvm
 t/01_syntax/lib/SPVM/CompileError/Syntax/LineNumber.spvm
 t/01_syntax/lib/SPVM/CompileError/Type/MultiDimensionalAnyObject.spvm
 t/01_syntax/lib/SPVM/CompileError/Type/MutableNoStringCaseInt.spvm
@@ -779,7 +765,6 @@ t/02_vm/lib/SPVM/TestCase/Literal/Heredoc.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Integer.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/String.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/StringSingleQuote.spvm
-t/02_vm/lib/SPVM/TestCase/Literal/StringSingleQuoteCRLF.spvm
 t/02_vm/lib/SPVM/TestCase/Literal/Undef.spvm
 t/02_vm/lib/SPVM/TestCase/LocalVar.spvm
 t/02_vm/lib/SPVM/TestCase/LogicalOperator.spvm
