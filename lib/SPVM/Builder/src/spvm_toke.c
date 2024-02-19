@@ -2666,7 +2666,6 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
               if (!found_class_file) {
                 SPVM_COMPILER_add_class_file(compiler, basic_type_name);
                 SPVM_CLASS_FILE* class_file = SPVM_COMPILER_get_class_file(compiler, basic_type_name);
-                SPVM_CLASS_FILE_set_file(compiler, class_file, current_file);
                 SPVM_CLASS_FILE_set_rel_file(compiler, class_file, current_class_rel_file);
                 SPVM_CLASS_FILE_set_dir(compiler, class_file, include_dir);
                 SPVM_CLASS_FILE_set_content(compiler, class_file, source);
@@ -2705,8 +2704,8 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           compiler->current_outer_class_name = class_file->class_name;
           
           // If we get current class file path, set it, otherwise set module relative file path
-          if (class_file->file) {
-            compiler->current_file = class_file->file;
+          if (current_file) {
+            compiler->current_file = current_file;
           }
           else {
             compiler->current_file = class_file->rel_file;

@@ -389,8 +389,6 @@ void SPVM_COMPILER_free_class_file(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* cla
   
   assert(class_file);
   
-  SPVM_CLASS_FILE_set_file(compiler, class_file, NULL);
-  
   SPVM_CLASS_FILE_set_dir(compiler, class_file, NULL);
   
   SPVM_CLASS_FILE_set_rel_file(compiler, class_file, NULL);

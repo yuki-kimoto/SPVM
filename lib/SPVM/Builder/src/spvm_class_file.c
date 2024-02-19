@@ -21,8 +21,6 @@ SPVM_CLASS_FILE* SPVM_CLASS_FILE_clone(SPVM_COMPILER* compiler, SPVM_CLASS_FILE*
   
   class_file_clone->class_name = class_file->class_name;
   
-  SPVM_CLASS_FILE_set_file(compiler, class_file_clone, class_file->file);
-  
   SPVM_CLASS_FILE_set_dir(compiler, class_file_clone, class_file->dir);
   
   SPVM_CLASS_FILE_set_rel_file(compiler, class_file_clone, class_file->rel_file);
@@ -37,24 +35,6 @@ SPVM_CLASS_FILE* SPVM_CLASS_FILE_clone(SPVM_COMPILER* compiler, SPVM_CLASS_FILE*
 const char* SPVM_CLASS_FILE_get_class_name(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file) {  
   const char* class_name = class_file->class_name;
   return class_name;
-}
-
-const char* SPVM_CLASS_FILE_get_file(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file) {  
-  const char* file = class_file->file;
-  return file;
-}
-
-void SPVM_CLASS_FILE_set_file(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file, const char* file) {
-  if (class_file->file) {
-    SPVM_ALLOCATOR_free_memory_block_tmp(compiler->class_file_allocator, (void*)class_file->file);
-    class_file->file = NULL;
-  }
-  
-  if (file) {
-    int32_t file_length = strlen(file);
-    class_file->file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->class_file_allocator, file_length + 1);
-    memcpy((void*)class_file->file, file, file_length);
-  }
 }
 
 const char* SPVM_CLASS_FILE_get_dir(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file) {  
