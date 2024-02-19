@@ -388,22 +388,71 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         break;
       }
-      // Comment
       case '#': {
+        
+        int32_t is_line_begin = (compiler->ch_ptr == compiler->line_begin_ch_ptr);
+        
         compiler->ch_ptr++;
-        while(1) {
-          int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr);
+        
+        // Line directive
+        if (strncmp(compiler->ch_ptr, "line ", 5) == 0) {
           
-          if (is_line_terminator) {
-            SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
-            SPVM_TOKE_increment_current_line(compiler);
+          if (!is_line_begin) {
+            SPVM_COMPILER_error(compiler, "A line directive must begin from the beggining of the line.\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
           }
           
-          if (is_line_terminator || *compiler->ch_ptr == '\0') {
-            break;
-          }
-          else {
+          compiler->ch_ptr += 4;
+          
+          while (*compiler->ch_ptr == ' ') {
             compiler->ch_ptr++;
+          }
+          
+          const char* line_number_begin_ptr = compiler->ch_ptr;
+          while (isdigit(*compiler->ch_ptr) || *compiler->ch_ptr == '-') {
+            compiler->ch_ptr++;
+          }
+          
+          if (!(*compiler->ch_ptr == '\n')) {
+            SPVM_COMPILER_error(compiler, "A line directive must end with \"\\n\".\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
+          }
+          
+          if (line_number_begin_ptr == compiler->ch_ptr) {
+            SPVM_COMPILER_error(compiler, "A line directive must have a line number.\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
+          }
+          
+          errno = 0;
+          char *end;
+          int64_t line_number = (int64_t)strtoll(line_number_begin_ptr, &end, 10);
+          
+          if (!(line_number >= 1 && line_number <= INT32_MAX && errno == 0)) {
+            SPVM_COMPILER_error(compiler, "The line number given to a line directive must be a positive 32bit integer.\n  at %s line %d", compiler->current_file, compiler->current_line);
+            return 0;
+          }
+          
+          compiler->current_line = (int32_t)line_number;
+          
+          compiler->ch_ptr++;
+          compiler->line_begin_ch_ptr = compiler->ch_ptr;
+        }
+        // Comment
+        else {
+          while(1) {
+            int32_t is_line_terminator = SPVM_TOKE_is_line_terminator(compiler, compiler->ch_ptr);
+            
+            if (is_line_terminator) {
+              SPVM_TOKE_parse_line_terminator(compiler, &compiler->ch_ptr);
+              SPVM_TOKE_increment_current_line(compiler);
+            }
+            
+            if (is_line_terminator || *compiler->ch_ptr == '\0') {
+              break;
+            }
+            else {
+              compiler->ch_ptr++;
+            }
           }
         }
         

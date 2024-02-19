@@ -26,6 +26,65 @@ use Test::More;
 
 # Compilation Errors in spvm_toke.c 
 
+# Line Directive
+{
+  {
+    my $source = "class MyClass { static method main : void () {\n#line 1\n} }";
+    compile_ok($source);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () {\n#line  1\n} }";
+    compile_ok($source);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () {\n#line 2147483647\n} }";
+    compile_ok($source);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () {\n#line 0\n} }";
+    compile_not_ok($source, q|The line number given to a line directive must be a positive 32bit integer.|);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () {\n#line 2147483648\n} }";
+    compile_not_ok($source, q|The line number given to a line directive must be a positive 32bit integer.|);
+  }
+  
+  {
+    my $source = "#line 1\nclass MyClass { static method main : void () {} }";
+    compile_ok($source);
+  }
+  
+  {
+    my $source = " #line 1\nclass MyClass { static method main : void () {} }";
+    compile_not_ok($source, q|A line directive must begin from the beggining of the line.|);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () {\n #line 1\n} }";
+    compile_not_ok($source, q|A line directive must begin from the beggining of the line.|);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () {\n#line a\n} }";
+    compile_not_ok($source, q|A line directive must end with "\n".|);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () {\n#line 12a\n} }";
+    compile_not_ok($source, q|A line directive must end with "\n".|);
+  }
+  
+  {
+    my $source = "class MyClass { static method main : void () {\n#line \n} }";
+    compile_not_ok($source, q|A line directive must have a line number.|);
+  }
+  
+}
+
 # Line number
 {
   compile_not_ok_file('CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/is);

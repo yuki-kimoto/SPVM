@@ -424,6 +424,28 @@ A comment begins with C<#> and ends with a L<line terminator|/"Line Terminators"
 
 Comments have no meaning in source codes.
 
+L<Line directives|/"Line Directive"> take precedence over L<comments|/"Comment">.
+
+=head2 Line Directive
+
+A line directive begins with C<#line > and positive 32bit integer and  ends with a L<line terminator|/"Line Terminators">.
+
+  #line 39
+
+A line directive change the current line of the source code.
+
+L<Line directives|/"Line Directive"> take precedence over L<comments|/"Comment">.
+
+Compilation Errors:
+
+A line directive must begin from the beggining of the line. Otherwise an compilation error occurs.
+
+A line directive must end with "\n". Otherwise an compilation error occurs.
+
+A line directive must have a line number. Otherwise an compilation error occurs.
+
+The line number given to a line directive must be a positive 32bit integer. Otherwise an compilation error occurs.
+
 =head2 POD
 
 POD(Plain Old Document) is a syntax to write documents in source codes.

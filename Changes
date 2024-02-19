@@ -1,7 +1,11 @@
 0.989076 2023-02-19
   [Changes]
     * Improve the compilation error message in the compile and compile_anon_class in the Native::Compiler class.
-
+  [New Features]
+    * Add line directive syntax.
+    
+      #line 35
+      
 0.989075 2023-02-19
   [Changes]
     * The $args argument in the call_class_method method in the Native::MethodCall class becomes optional.

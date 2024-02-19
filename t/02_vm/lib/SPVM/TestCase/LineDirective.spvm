@@ -1,0 +1,21 @@
+class TestCase::LineDirective {
+  
+  static method line_directive : int () {
+    
+#line 1
+    my $line = __LINE__;
+    
+    unless ($line == 1) {
+      return 0;
+    }
+    
+#line 73
+    my $line2 = __LINE__;
+    
+    unless ($line2 == 73) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}
