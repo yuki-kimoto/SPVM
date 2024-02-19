@@ -45,8 +45,13 @@ BEGIN {
   
   if (defined $program_source) {
     eval "use SPVM 'Native::Compiler'";
+    eval "use SPVM 'Native'";
     
-    SPVM::Native::Compiler->eval_string($program_source);
+    my $current_compiler = SPVM::Native->get_current_compiler;
+    
+    $current_compiler->set_start_file(__FILE__);
+    $current_compiler->set_start_line(__LINE__ + 1);
+    $current_compiler->eval_string($program_source);
   }
   else {
     eval "use SPVM '$class_name'";
@@ -77,6 +82,8 @@ The spvm command is a SPVM compiler and linker to generate an executable file.
     -h, --help                     Shows this message
     -v, --version                  Shows the version
     -I, --include-dir <directory>  Adds a include directory
+    -e <source>                    Executes a program source code using
+                                   the eval_string method in the Compiler class
 
 =head1 Copyright & License
 
