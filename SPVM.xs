@@ -4618,12 +4618,6 @@ get_class_file(...)
     
     (void)hv_store(hv_class_file, "class_name", strlen("class_name"), SvREFCNT_inc(sv_class_name), 0);
     
-    const char* file = env_api->api->class_file->get_file(compiler, class_file);
-    if (file) {
-      SV* sv_file = sv_2mortal(newSVpv(file, 0));
-      (void)hv_store(hv_class_file, "file", strlen("file"), SvREFCNT_inc(sv_file), 0);
-    }
-    
     const char* dir = env_api->api->class_file->get_dir(compiler, class_file);
     if (dir) {
       SV* sv_dir = sv_2mortal(newSVpv(dir, 0));

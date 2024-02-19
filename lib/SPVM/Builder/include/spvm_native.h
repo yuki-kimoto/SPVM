@@ -362,8 +362,8 @@ struct spvm_api_basic_type {
 
 struct spvm_api_class_file {
   const char* (*get_class_name)(void* compiler, void* class_file);
-  const char* (*get_file)(void* compiler, void* class_file);
-  void (*set_file)(void* compiler, void* class_file, const char* file);
+  void* reserved1;
+  void* reserved2;
   const char* (*get_dir)(void* compiler, void* class_file);
   void (*set_dir)(void* compiler, void* class_file, const char* dir);
   const char* (*get_rel_file)(void* compiler, void* class_file);
