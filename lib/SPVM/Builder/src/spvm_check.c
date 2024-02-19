@@ -598,8 +598,6 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         }
       }
       
-      assert(method->current_basic_type->class_file);
-      
       // Add variable declarations if the block does not exist
       if (!method->op_block) {
         for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {

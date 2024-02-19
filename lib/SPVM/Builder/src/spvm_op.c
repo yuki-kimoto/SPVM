@@ -295,7 +295,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   type->basic_type->class_dir = compiler->current_class_dir;
   type->basic_type->class_rel_file = compiler->current_class_rel_file;
-  type->basic_type->class_file = compiler->current_file;
   
   if (op_extends) {
     SPVM_OP* op_type_parent_basic_type = op_extends->first;
@@ -315,7 +314,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     SPVM_STRING_new(compiler, type->basic_type->class_dir, strlen(type->basic_type->class_dir));
   }
   SPVM_STRING_new(compiler, type->basic_type->class_rel_file, strlen(type->basic_type->class_rel_file));
-  SPVM_STRING_new(compiler, type->basic_type->class_file, strlen(type->basic_type->class_file));
   
   // Assert
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
