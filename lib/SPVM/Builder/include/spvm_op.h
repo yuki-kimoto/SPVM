@@ -294,6 +294,8 @@ struct spvm_op {
   SPVM_OP* first;
   SPVM_OP* last;
   SPVM_OP* sibparent;
+  const char* dir;
+  const char* rel_file;
   const char* file;
   union {
     SPVM_BLOCK* block;
