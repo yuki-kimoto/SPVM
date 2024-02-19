@@ -111,4 +111,27 @@ EOS
     
     return 1;
   }
+  
+  static method eval_string : int () {
+    
+    {
+      my $compiler = Native->get_current_compiler;
+      
+      my $main_source = <<'EOS';
+my $total = 1 + 2;
+warn "[Test Output]$total";
+EOS
+      $compiler->set_start_file(__FILE__);
+      $compiler->set_start_line(__LINE__ + 1);
+      my $anon_class_name = (string)undef;
+      
+      eval { $compiler->eval_string($main_source); }
+      
+      if ($@) {
+        die dump $compiler->get_error_messages;
+      }
+    }
+    
+    return 1;
+  }
 }

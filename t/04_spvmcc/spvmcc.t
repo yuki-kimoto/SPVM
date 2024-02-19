@@ -27,6 +27,35 @@ rmtree "$build_dir/work";
 
 my $dev_null = File::Spec->devnull;
 
+# spvm - Execute solo test.
+{
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM MyExe foo bar);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvmcc command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # -e
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM -e "warn q'[Test Output]spvmcc -e option';" MyExe);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvmcc command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # -e, -M
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM -M Fn -M StringBuffer -e "Fn->INT_MAX; StringBuffer->new;warn q'[Test Output]spvmcc -e and -M option';" MyExe);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvmcc command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+}
+
 # Compilation Error
 {
   my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I t/04_spvmcc/lib/SPVM -o $exe_dir/myexe_compile_error --no-config MyExeCompileError);

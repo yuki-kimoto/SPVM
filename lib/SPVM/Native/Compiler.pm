@@ -74,9 +74,9 @@ Sets the line to start compiling by the L</"compile"> method.
 
 =head2 compile
 
-C<method compile : void ($basic_type_name : string);>
+C<method compile : void ($class_name : string);>
 
-Compiles the specified class and the classes that are load in the specified class. 
+Compiles a class given by the class name $class_name.
 
 This method can be called multiple times.
 
@@ -138,6 +138,26 @@ EOS
   my $ret = Native::MethodCall->call_class_method($anon_class_name, "sum", [(object)1, 2]);;
   
   say $ret->(Int)->value;
+
+=head2 eval_string
+
+  method eval_string : string ($main_source : string);
+
+This method emulates L<Perl's string eval|https://perldoc.perl.org/functions/eval#String-eval>.
+
+This method creates the following source code.
+
+  "class { static method main : void () { $main_source } }"
+
+And calls L</"compile_anon_class"> given this source code and gets the anon class name.
+
+And calls L<call_class_method|SPVM::Native::MethodCall/"call_class_method"> in the Native::MethodCall class.
+
+  Native::MethodCall->call_class_method($anon_class_name, "main");
+
+Examples:
+
+  Compiler->eval_string("my $total = 1 + 2; say $total;");
 
 =head1 See Also
 

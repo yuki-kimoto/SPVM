@@ -130,7 +130,7 @@ WriteMakefile(
       },            
     },
   },
-  EXE_FILES => ['script/spvmcc', 'script/spvmdist'],
+  EXE_FILES => ['script/spvm', 'script/spvmcc', 'script/spvmdist'],
   PREREQ_PM => {
     'ExtUtils::CBuilder' => '0.280236',
     'Time::Piece' => '1.12',

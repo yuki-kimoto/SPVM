@@ -5,7 +5,7 @@ use warnings;
 
 use SPVM::Global;
 
-our $VERSION = "0.989074";
+our $VERSION = "0.989075";
 
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
@@ -69,6 +69,8 @@ Calling a SPVM method from Perl:
 =over2 
 
 =item * L<Native threads|SPVM::Thread> and L<goroutines|SPVM::Go>.
+
+=item * L<Executing SPVM programs|spvm>
 
 =item * L<Generating an executable file|spvmcc>
 

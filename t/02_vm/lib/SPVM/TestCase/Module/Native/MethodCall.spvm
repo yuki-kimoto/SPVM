@@ -516,6 +516,11 @@ class TestCase::Module::Native::MethodCall {
     return 1;
   }
   
+  static method one : int () {
+    
+    return 1;
+  }
+  
   static method add_byte : byte ($arg0 : byte, $arg1 : byte) {
     
     my $ret = (byte)($arg0 + $arg1);
@@ -905,6 +910,14 @@ class TestCase::Module::Native::MethodCall {
       }
       
       unless ((byte)$ret == Fn->BYTE_MIN + 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $ret = Native::MethodCall->call_class_method("TestCase::Module::Native::MethodCall", "one");
+      
+      unless ((int)$ret == 1) {
         return 0;
       }
     }
