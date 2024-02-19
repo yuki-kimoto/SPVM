@@ -26,22 +26,6 @@ Returns the class name.
 
 If a memory error occurs, an exception is thrown.
 
-=head2 get_file
-
-C<method get_file : string ();>
-
-Returns the file.
-
-If a memory error occurs, an exception is thrown.
-
-=head2 set_file
-
-C<method set_file : void ($file : string);>
-
-Sets the file.
-
-If a memory error occurs, an exception is thrown.
-
 =head2 get_dir
 
 C<method get_dir : string ();>
