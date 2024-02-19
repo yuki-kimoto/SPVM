@@ -1,3 +1,10 @@
+0.989077 2023-02-20
+  [Incompatible Changes]
+    * Remove the set_file class file native API.
+    * Remove the get_file class file native API.
+    * Remove the set_file method in the Native::ClassFile class.
+    * Remove the get_file method in the Native::ClassFile class.
+    
 0.989076 2023-02-19
   [Changes]
     * Improve the compilation error message in the compile and compile_anon_class in the Native::Compiler class.
