@@ -10,12 +10,14 @@ my @include_dirs;
 use SPVM::Builder::Util;
 
 my $class_name;
+my $program_source;
 
 BEGIN {
   SPVM::Builder::Util::getopt
     'h|help'          => \my $help,
     'v|version'       => \my $show_version,
     'I|include-dir=s' => \my @include_dirs,
+    'e=s' => \$program_source;
   ;
   
   my @original_include_dirs = @include_dirs;
@@ -32,19 +34,28 @@ BEGIN {
     exit 0;
   }
   else {
-    $class_name = shift;
-    
-    unless (defined $class_name) {
-      die SPVM::Builder::Util::extract_usage;
+    unless (defined $program_source) {
+      $class_name = shift;
+      
+      unless (defined $class_name) {
+        die SPVM::Builder::Util::extract_usage;
+      }
     }
   }
+  
+  if (defined $program_source) {
+    eval "use SPVM 'Native::Compiler'";
+    
+    SPVM::Native::Compiler->eval_string($program_source);
+  }
+  else {
+    eval "use SPVM '$class_name'";
+    
+    my $spvm_class_name = "SPVM::$class_name";
+    
+    $spvm_class_name->main;
+  }
 }
-
-use SPVM $class_name;
-
-my $spvm_class_name = "SPVM::$class_name";
-
-$spvm_class_name->main;
 
 =encoding utf8
 
