@@ -39,7 +39,14 @@ class Native::Compiler : pointer {
       die "\$main_source must be defined.";
     }
     
-    my $source = "class { static method main : void () { $main_source } }";
+    my $source = "
+class {
+  static method main : void () {
+#line 1
+$main_source
+  }
+}
+";
     
     my $anon_class_name = $self->compile_anon_class($source);
     

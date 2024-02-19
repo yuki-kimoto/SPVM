@@ -147,7 +147,12 @@ This method emulates L<Perl's string eval|https://perldoc.perl.org/functions/eva
 
 This method creates the following source code.
 
-  "class { static method main : void () { $main_source } }"
+  "
+  class {
+    static method main : void () {
+  #line1
+  $main_source}}
+  "
 
 And calls L</"compile_anon_class"> given this source code and gets the anon class name.
 

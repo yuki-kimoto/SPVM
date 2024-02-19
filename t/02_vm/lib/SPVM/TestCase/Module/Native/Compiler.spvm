@@ -118,7 +118,7 @@ EOS
       my $compiler = Native->get_current_compiler;
       
       my $main_source = <<'EOS';
-my $total = 1 + 2
+my $total = 1 + 2 foo
 warn "[Test Output]$total";
 EOS
       $compiler->set_start_file(__FILE__);
@@ -128,6 +128,10 @@ EOS
       eval { $compiler->eval_string($main_source); }
       
       unless (Fn->contains($@, "[Compile Error]")) {
+        return 0;
+      }
+      
+      unless (Fn->contains($@, "1:")) {
         return 0;
       }
     }
