@@ -19,18 +19,6 @@ The class file native APIs of L<SPVM> are the APIs to manipulate class files.
 
 Returns the class name.
 
-=head2 get_file
-
-  const char* (*get_file)(void* compiler, void* class_file);
-
-Returns the file.
-
-=head2 set_file
-
-  void (*set_file)(void* compiler, void* class_file, const char* file);
-
-Sets a file.
-
 =head2 get_dir
 
   const char* (*get_dir)(void* compiler, void* class_file);
@@ -82,8 +70,8 @@ Sets the length of a content.
 =head1 Native API IDs
 
   0 get_class_name
-  1 get_file
-  2 set_file
+  1 reserved1
+  2 reserved2
   3 get_dir
   4 set_dir
   5 get_rel_file

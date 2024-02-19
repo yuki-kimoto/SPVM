@@ -15,10 +15,6 @@ SPVM_CLASS_FILE* SPVM_CLASS_FILE_clone(SPVM_COMPILER* compiler, SPVM_CLASS_FILE*
 
 const char* SPVM_API_CLASS_FILE_get_class_name(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file);
 
-const char* SPVM_API_CLASS_FILE_get_file(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file);
-
-void SPVM_API_CLASS_FILE_set_file(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file, const char* file);
-
 const char* SPVM_API_CLASS_FILE_get_dir(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file);
 
 void SPVM_API_CLASS_FILE_set_dir(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file, const char* dir);

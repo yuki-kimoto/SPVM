@@ -17,8 +17,8 @@
 SPVM_API_CLASS_FILE* SPVM_API_CLASS_FILE_new_api(void) {
   void* env_compiler_init[]  = {
     SPVM_API_CLASS_FILE_get_class_name,
-    SPVM_API_CLASS_FILE_get_file,
-    SPVM_API_CLASS_FILE_set_file,
+    NULL,
+    NULL,
     SPVM_API_CLASS_FILE_get_dir,
     SPVM_API_CLASS_FILE_set_dir,
     SPVM_API_CLASS_FILE_get_rel_file,
@@ -40,14 +40,6 @@ void SPVM_API_CLASS_FILE_free_api(SPVM_API_CLASS_FILE* api) {
 
 const char* SPVM_API_CLASS_FILE_get_class_name(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file) {  
   return SPVM_CLASS_FILE_get_class_name(compiler, class_file);
-}
-
-const char* SPVM_API_CLASS_FILE_get_file(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file) {  
-  return SPVM_CLASS_FILE_get_file(compiler, class_file);
-}
-
-void SPVM_API_CLASS_FILE_set_file(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file, const char* file) {
-  SPVM_CLASS_FILE_set_file(compiler, class_file, file);
 }
 
 const char* SPVM_API_CLASS_FILE_get_dir(SPVM_COMPILER* compiler, SPVM_CLASS_FILE* class_file) {  

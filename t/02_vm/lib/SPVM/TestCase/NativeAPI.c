@@ -308,8 +308,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_class_file_ids(SPVM_ENV* env
   void** env_array = (void**)env->api->class_file;
   
   if ((void*)&env->api->class_file->get_class_name != &env_array[0]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->class_file->get_file != &env_array[1]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->api->class_file->set_file != &env_array[2]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->reserved1 != &env_array[1]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->class_file->reserved2 != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->class_file->get_dir != &env_array[3]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->class_file->set_dir != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->class_file->get_rel_file != &env_array[5]) { stack[0].ival = 0; return 0; }
