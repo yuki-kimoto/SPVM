@@ -11,13 +11,15 @@ use SPVM::Builder::Util;
 
 my $class_name;
 my $program_source;
+my @use_class_names;
 
 BEGIN {
   SPVM::Builder::Util::getopt
     'h|help'          => \my $help,
     'v|version'       => \my $show_version,
     'I|include-dir=s' => \my @include_dirs,
-    'e=s' => \$program_source;
+    'e=s' => \$program_source,
+    '-M=s' => \@use_class_names,
   ;
   
   my @original_include_dirs = @include_dirs;
@@ -41,6 +43,10 @@ BEGIN {
         die SPVM::Builder::Util::extract_usage;
       }
     }
+  }
+  
+  for my $use_class_name (@use_class_names) {
+    eval "use SPVM '$use_class_name'";
   }
   
   if (defined $program_source) {

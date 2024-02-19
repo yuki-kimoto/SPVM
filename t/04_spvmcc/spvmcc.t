@@ -45,6 +45,15 @@ my $dev_null = File::Spec->devnull;
     
     ok(1);
   }
+  
+  # -e, -M
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM -M Fn -M StringBuffer -e "Fn->INT_MAX; StringBuffer->new;warn q'[Test Output]spvmcc -e and -M option';" MyExe);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvmcc command $spvm_cmd:$!";
+    
+    ok(1);
+  }
 }
 
 # Compilation Error
