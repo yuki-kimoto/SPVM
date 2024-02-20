@@ -419,36 +419,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->ch_ptr++;
           }
           
-          // File
-          char* file = NULL;
-          if (*compiler->ch_ptr == '"') {
-            
-            compiler->ch_ptr++;
-            
-            const char* file_begin_ptr = compiler->ch_ptr;
-            int32_t file_length = 0;
-            while (*compiler->ch_ptr != '"') {
-              if (*compiler->ch_ptr == '\n') {
-                SPVM_COMPILER_error(compiler, "A file in a line directive must end with \".\n  at %s line %d", compiler->current_file, compiler->current_line);
-                return 0;
-              }
-              
-              compiler->ch_ptr++;
-              file_length++;
-            }
-            
-            compiler->ch_ptr++;
-            
-            file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, file_length + 1);
-            memcpy(file, file_begin_ptr, file_length);
-            
-            SPVM_STRING_new(compiler, file, file_length);
-          }
-          
-          while (*compiler->ch_ptr == ' ') {
-            compiler->ch_ptr++;
-          }
-          
           if (!(*compiler->ch_ptr == '\n')) {
             SPVM_COMPILER_error(compiler, "A line directive must end with \"\\n\".\n  at %s line %d", compiler->current_file, compiler->current_line);
             return 0;
@@ -469,9 +439,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           compiler->current_line = (int32_t)line_number;
-          if (file) {
-            compiler->current_file = file;
-          }
           
           compiler->ch_ptr++;
           compiler->line_begin_ch_ptr = compiler->ch_ptr;

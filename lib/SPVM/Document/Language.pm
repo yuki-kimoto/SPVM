@@ -434,15 +434,9 @@ A line directive begins with C<#line > and positive 32bit integer
 
   #line 39
 
-Optinally is be followed a file.
-
-  #line 39 "/Foo/Bar.spvm"
-
 And ends with a L<line terminator|/"Line Terminators">.
  
 The line number in a line directive is set to the current line of the source code.
-
-The file in a line directive is set to the current file of the source code.
 
 L<Line directives|/"Line Directive"> take precedence over L<comments|/"Comment">.
 
@@ -455,8 +449,6 @@ A line directive must end with "\n". Otherwise an compilation error occurs.
 A line directive must have a line number. Otherwise an compilation error occurs.
 
 The line number given to a line directive must be a positive 32bit integer. Otherwise an compilation error occurs.
-
-A file in a line directive must end with ". Otherwise an compilation error occurs.
 
 =head2 File Directive
 

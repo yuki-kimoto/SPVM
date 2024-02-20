@@ -88,21 +88,6 @@ use Test::More;
     compile_not_ok($source, q|A line directive must have a line number.|);
   }
   
-  {
-    my $source = qq|class MyClass { static method main : void () {\n#line 1 "/foo/bar.txt"\n} }|;
-    compile_ok($source);
-  }
-  
-  {
-    my $source = qq|class MyClass { static method main : void () {\n#line 1 "/foo/bar.txt" \n} }|;
-    compile_ok($source);
-  }
-  
-  {
-    my $source = qq|class MyClass { static method main : void () {\n#line 1 "/foo/bar.txt\n} }|;
-    compile_not_ok($source, q|A file in a line directive must end with ".|);
-  }
-
 }
 
 # File Directive
