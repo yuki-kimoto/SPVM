@@ -420,6 +420,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // File
           char* file = NULL;
           if (*compiler->ch_ptr == '"') {
+            
             compiler->ch_ptr++;
             
             const char* file_begin_ptr = compiler->ch_ptr;
@@ -434,7 +435,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               file_length++;
             }
             
-            file = SPVM_ALLOCATOR_alloc_memory_block_tmp(compiler->current_each_compile_allocator, file_length + 1);
+            compiler->ch_ptr++;
+            
+            file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, file_length + 1);
             memcpy(file, file_begin_ptr, file_length);
             
             SPVM_STRING_new(compiler, file, file_length);
