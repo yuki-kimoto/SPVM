@@ -6,6 +6,10 @@
     
       #line 35
       
+    * Add file directive syntax.
+    
+      #file "/Foo/Bar.spvm"
+      
   [Incompatible Changes and breaking binary compatibility]
     * The warn native API is changed. This change causes breaking binary compatibility in the warn operator.
       [Before]

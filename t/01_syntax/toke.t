@@ -129,7 +129,7 @@ use Test::More;
   
   {
     my $source = qq|#file \nclass MyClass { static method main : void () {} }|;
-    compile_not_ok($source, q|A file directive must have a file.|);
+    compile_not_ok($source, q|A file directive must have a file path.|);
   }
   
   {

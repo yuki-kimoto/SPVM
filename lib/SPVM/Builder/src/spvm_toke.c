@@ -525,7 +525,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           if (!file) {
-            SPVM_COMPILER_error(compiler, "A file directive must have a file.\n  at %s line %d", compiler->current_file, compiler->current_line);
+            SPVM_COMPILER_error(compiler, "A file directive must have a file path.\n  at %s line %d", compiler->current_file, compiler->current_line);
             return 0;
           }
           

@@ -424,7 +424,11 @@ Comments have no meaning in source codes.
 
 L<Line directives|/"Line Directive"> take precedence over L<comments|/"Comment">.
 
+A L<File directive|/"File Directive"> take precedence over L<comments|/"Comment">.
+
 =head2 Line Directive
+
+A line directive begin from the beggining of the line.
 
 A line directive begins with C<#line > and positive 32bit integer
 
@@ -453,6 +457,30 @@ A line directive must have a line number. Otherwise an compilation error occurs.
 The line number given to a line directive must be a positive 32bit integer. Otherwise an compilation error occurs.
 
 A file in a line directive must end with ". Otherwise an compilation error occurs.
+
+=head2 File Directive
+
+A file directive must begin from the beggining of the source code.
+
+A file directive begins with C<#file "> and is followed by a file path, and is closed with C<">
+
+  #file "/Foo/Bar.spvm"
+
+And ends with a L<line terminator|/"Line Terminators">.
+
+The file is set to the current file of the source code.
+
+A L<File directive|/"File Directive"> take precedence over L<comments|/"Comment">.
+
+Compilation Errors:
+
+A file directive must begin from the beggining of the source code. Otherwise an compilation error occurs.
+
+A file directive must end with "\n". Otherwise an compilation error occurs.
+
+A file directive must have a file path. Otherwise an compilation error occurs.
+
+A file directive must end with ". Otherwise an compilation error occurs.
 
 =head2 POD
 
