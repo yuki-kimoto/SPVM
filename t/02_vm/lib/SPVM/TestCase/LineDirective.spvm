@@ -1,4 +1,4 @@
-#line 1 "/Foo/Bar.spvm"
+#file "/Foo/Bar.spvm"
 class TestCase::LineDirective {
   
   use Fn;
