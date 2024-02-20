@@ -39,8 +39,12 @@ SPVM has not yet reached a stable release of version 1.0. For now, there is curr
 =head1 Usage
 
 One Liner:
-
+  
+  # Hello World!
   spvm -e 'say "Hello World!";';
+  
+  # foo,bar,baz
+  spvm -M Fn -e 'say Fn->join(",", ["foo", "bar", "baz"]);'
 
 Class:
 
@@ -76,12 +80,16 @@ Calling a SPVM Method from Perl:
   
   use SPVM 'MyMath';
   
-  # Call method
   my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
+  
+  print "$total\n";
+  
+  # Run
+  perl sum.pl
 
 =head1 Features
 
-=over2 
+=over 2
 
 =item * L<Native threads|SPVM::Thread> and L<goroutines|SPVM::Go>.
 
@@ -93,7 +101,7 @@ Calling a SPVM Method from Perl:
 
 =item * Static types, type inference and L<static analysis|SPVM::Native::Compiler>.
 
-=item * L<C/C++ binding|SPVM::Document::NativeClass> and L<resource system|SPVM::Document::Resource> for C/C++ libraries.
+=item * L<C and C++ binding|SPVM::Document::NativeClass> and L<resource system|SPVM::Document::Resource> for C and C++ libraries.
 
 =item * L<Perl binding for SPVM methods|SPVM::ExchangeAPI>.
 
@@ -103,11 +111,17 @@ Calling a SPVM Method from Perl:
 
 =back
 
-=head1 Documents
+=head1 Tutorial
 
 =over 2
 
 =item * L<Tutorial|https://github.com/yuki-kimoto/SPVM/wiki/Tutorial> - SPVM Tutorial
+
+=back
+
+=head1 Documents
+
+=over 2
 
 =item * L<Language Specification|SPVM::Document::Language> - SPVM Language Specification
 
@@ -120,6 +134,8 @@ Calling a SPVM Method from Perl:
 =item * L<Native APIs|SPVM::Document::NativeAPI> - Native APIs
 
 =item * L<Resource|SPVM::Document::Resource> - Resource
+
+=item * L<spvm> - Executing SPVM Programs
 
 =item * L<spvmcc> - Creating Executable File
 
