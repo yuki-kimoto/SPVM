@@ -1,3 +1,10 @@
+0.989078 2023-02-21
+  [Document Improvement]
+    * Improve "Usage" of SPVM program.
+    * Add SPVM::Document::EnvironmentVariables.
+  [New Features]
+    * Add the get_file basic type native API.
+    
 0.989077 2023-02-20
   [New Features]
     * Add file directive syntax.

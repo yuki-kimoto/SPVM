@@ -43,6 +43,7 @@ SPVM_API_BASIC_TYPE* SPVM_API_BASIC_TYPE_new_api() {
     SPVM_API_BASIC_TYPE_get_anon_basic_types_length,
     SPVM_API_BASIC_TYPE_has_interface,
     SPVM_API_BASIC_TYPE_is_super_class,
+    SPVM_API_BASIC_TYPE_get_file,
   };
   
   SPVM_API_BASIC_TYPE* native_apis = calloc(1, sizeof(native_apis_init));
@@ -444,4 +445,9 @@ int32_t SPVM_API_BASIC_TYPE_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_B
   }
   
   return is_super_class_basic_type;
+}
+
+const char* SPVM_API_BASIC_TYPE_get_file(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type) {
+  
+  return basic_type->file;
 }
