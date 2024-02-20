@@ -242,13 +242,9 @@ The C<child_basic_type> argument is a basic type object.
 
 =head2 get_file
 
-  const void* (*get_file)(void* runtime, void* basic_type);
+C<const void* (*get_file)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
 Returns the file path of the basic type.
-
-The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
-
-The C<basic_type> argument is a basic type object.
 
 =head1 Native API IDs
 
