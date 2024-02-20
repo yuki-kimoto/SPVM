@@ -145,39 +145,6 @@ Calling a SPVM Method from Perl:
 
 =back
 
-=head1 Loading SPVM Class
-  
-  # Load a SPVM class
-  use SPVM 'SomeClass';
-  
-  # Load only SPVM module
-  use SPVM ();
-
-The C<use> statement loads a L<SPVM> class.
-
-A SPVM class is loaded and is bound to a Perl module.
-
-The bound Perl class name is prefixed with C<SPVM::>.
-
-Exceptions:
-
-If the SPVM module cannot be loaded, an exception is thrown.
-
-Examples:
-
-  use SPVM 'Int';
-  
-  my $int_object = SPVM::Int->new(3);
-  my $value = $int_object->value.
-
-=head1 Functions
-
-=head2 api
-
-  my $api = SPVM::api();
-
-Gets the global L<SPVM::ExchangeAPI> object for this Perl interpreter.
-
 =head1 Environment Variables
 
 If an environment variable is an empty string, it is treated as an undefined value.
