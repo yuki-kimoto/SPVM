@@ -14,6 +14,8 @@
       [After]
       void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* file, int32_t line);
       
+  [Incompatible Changes]
+    * The __FILE__ operator returns current file path, instead of the relative file name of the class.
   [Document Changes]
   
     * Remove the specification of "End of Source Code"

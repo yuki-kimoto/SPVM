@@ -2431,7 +2431,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = CURRENT_CLASS_NAME;
                 }
                 else if (strcmp(symbol_name, "__FILE__") == 0) {
-                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->current_class_rel_file, strlen(compiler->current_class_rel_file), compiler->current_file, compiler->current_line);
+                  SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->current_file, strlen(compiler->current_file), compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_constant;
                   keyword_token = CONSTANT;
                 }
