@@ -105,6 +105,25 @@ use Test::More;
 
 }
 
+# File Directive
+{
+  {
+    my $source = qq|#file "/foo/bar.txt"\nclass MyClass { static method main : void () {} }|;
+    compile_ok($source);
+  }
+  
+  {
+    my $source = qq|#file "/foo/bar.txt" \nclass MyClass { static method main : void () {} }|;
+    compile_ok($source);
+  }
+  
+  {
+    my $source = qq|#file "/foo/bar.txt\nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|A file in a line directive must end with ".|);
+  }
+  
+}
+
 # Line number
 {
   compile_not_ok_file('CompileError::Syntax::LineNumber', qr/our.*\b8:3\b/is);
