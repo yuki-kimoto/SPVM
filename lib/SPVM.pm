@@ -76,7 +76,7 @@ Run the executable file.
 
   ./hello
 
-=head2 Calling a SPVM Method from Perl
+=head2 Calling A SPVM Method from Perl
 
 Write a SPVM program.
 
