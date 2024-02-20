@@ -924,8 +924,8 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     assert(basic_type_string->index >= 0);
     runtime_basic_type->name = runtime_basic_type->constant_strings[basic_type_string->index].value;
     
-    if (basic_type->class_file) {
-      SPVM_STRING* basic_type_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->class_file, strlen(basic_type->class_file));
+    if (basic_type->file) {
+      SPVM_STRING* basic_type_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->file, strlen(basic_type->file));
       runtime_basic_type->file = runtime_basic_type->constant_strings[basic_type_file_string->index].value;
     }
     
