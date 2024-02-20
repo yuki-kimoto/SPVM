@@ -348,4 +348,6 @@ FILE* SPVM_API_spvm_stdout(SPVM_ENV* env, SPVM_VALUE* stack);
 
 FILE* SPVM_API_spvm_stderr(SPVM_ENV* env, SPVM_VALUE* stack);
 
+int32_t SPVM_API_check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
+
 #endif

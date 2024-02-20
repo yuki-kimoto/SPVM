@@ -3,7 +3,8 @@
     * Add file directive syntax.
     
       #file "/Foo/Bar.spvm"
-      
+    * Add the check_bootstrap_method native API.
+    
   [Incompatible Changes and breaking binary compatibility]
     * The warn native API is changed. This change causes breaking binary compatibility in the warn operator.
       [Before]

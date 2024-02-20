@@ -1914,6 +1914,14 @@ C<FILE* (*spvm_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
 Gets the standard error opened for SPVM.
 
+=head2 check_bootstrap_method
+
+C<int32_t (*check_bootstrap_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);>
+
+Checks the definition of the bootstrap method.
+
+If it is invalid, return non-zero, otherwise return 0.
+
 =head1 Native API IDs
 
 Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
@@ -2130,6 +2138,7 @@ Native APIs have its IDs. These IDs are permanently same for the binary compatib
   209 spvm_stdin,
   210 spvm_stdout,
   211 spvm_stderr,
+  212 check_bootstrap_method
 
 =head1 Constant Values
 

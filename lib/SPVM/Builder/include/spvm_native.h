@@ -303,6 +303,7 @@ struct spvm_env {
   FILE* (*spvm_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
   FILE* (*spvm_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
   FILE* (*spvm_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*check_bootstrap_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
 };
 
 struct spvm_env_api {
