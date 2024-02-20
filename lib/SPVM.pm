@@ -38,7 +38,24 @@ SPVM has not yet reached a stable release of version 1.0. For now, there is curr
 
 =head1 Usage
 
-A class of SPVM:
+One Liner:
+
+  spvm -e 'say "Hello World!";';
+
+Class:
+
+  # lib/SPVM/HelloWorld.spvm
+  class HelloWorld {
+    static method main : void () {
+      
+      say "Hello World!";
+    }
+  }
+  
+  # Run
+  spvm -I lib/SPVM HelloWorld
+
+Calling a SPVM Method from Perl:
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
@@ -52,8 +69,6 @@ A class of SPVM:
       return $total;
     }
   }
-
-Calling a SPVM method from Perl:
 
   # sum.pl
   use FindBin;
