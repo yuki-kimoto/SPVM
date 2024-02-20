@@ -613,23 +613,11 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
     {
       error_id = env->set_command_info_program_name(env, stack, obj_program_name);
       
-      if (error_id) {
-        env->print_stderr(env, stack, env->get_exception(env, stack));
-        fprintf(spvm_stderr, "\\n");
-      }
-      else {
+      if (!error_id) {
         error_id = env->set_command_info_argv(env, stack, obj_argv);
         
-        if (error_id) {
-          env->print_stderr(env, stack, env->get_exception(env, stack));
-          fprintf(spvm_stderr, "\\n");
-        }
-        else {
+        if (!error_id) {
           error_id = env->set_command_info_base_time(env, stack, base_time);
-          if (error_id) {
-            env->print_stderr(env, stack, env->get_exception(env, stack));
-            fprintf(spvm_stderr, "\\n");
-          }
         }
       }
     }
@@ -650,45 +638,37 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
         int32_t args_length = env->api->method->get_args_length(env->runtime, method);
         
         if (!(args_length == 0)) {
-          fprintf(spvm_stderr, "The length of the arguments of the \\\"main\\\" method in the \\\"%s\\\" class must be 0.\\n", class_name);
-          error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+          error_id = env->die(env, stack, "The length of the arguments of the \\\"main\\\" method in the \\\"%s\\\" class must be 0.", class_name, __func__, __FILE__, __LINE__);
         }
         else {
           void* return_basic_type = env->api->method->get_return_basic_type(env->runtime, method);
           const char* return_basic_type_name = env->api->basic_type->get_name(env->runtime, return_basic_type);
           
           if (!(strcmp(return_basic_type_name, "void") == 0)) {
-            fprintf(spvm_stderr, "The return type of the \\\"main\\\" method in the \\\"%s\\\" class must be the void type.\\n", class_name);
-            error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+            error_id = env->die(env, stack, "The return type of the \\\"main\\\" method in the \\\"%s\\\" class must be the void type.", class_name, __func__, __FILE__, __LINE__);
           }
         }
       }
       else {
-        fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be a class method.\\n", class_name);
-        error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+        error_id = env->die(env, stack, "The \\\"main\\\" method in the \\\"%s\\\" class must be a class method.", class_name, __func__, __FILE__, __LINE__);
       }
     }
     else {
-      fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be defined.\\n", class_name);
-      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+      error_id = env->die(env, stack, "The \\\"main\\\" method in the \\\"%s\\\" class must be defined.", class_name, __func__, __FILE__, __LINE__);
     }
     
     if (!error_id) {
       error_id = env->call_init_methods(env, stack);
-      if (error_id) {
-        env->print_stderr(env, stack, env->get_exception(env, stack));
-        fprintf(spvm_stderr, "\\n");
-      }
-      else {
+      if (!error_id) {
         int32_t args_width = 0;
         error_id = env->call_method(env, stack, method, args_width);
-        
-        if (error_id) {
-          env->print_stderr(env, stack, env->get_exception(env, stack));
-          fprintf(spvm_stderr, "\\n");
-        }
       }
     }
+  }
+  
+  if (error_id) {
+    env->print_stderr(env, stack, env->get_exception(env, stack));
+    fprintf(spvm_stderr, "\\n");
   }
   
   env->destroy_class_vars(env, stack);

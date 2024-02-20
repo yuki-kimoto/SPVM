@@ -49,10 +49,13 @@ BEGIN {
     eval "use SPVM '$use_class_name'";
   }
   
+  eval "use SPVM 'Native'";
+  if ($@) { confess $@ }
+  
+  eval "use SPVM 'Native::Compiler'";
+  if ($@) { confess $@ }
+  
   if (defined $program_source) {
-    eval "use SPVM 'Native::Compiler'";
-    eval "use SPVM 'Native'";
-    
     my $current_compiler = SPVM::Native->get_current_compiler;
     
     $current_compiler->set_start_file(__FILE__);
@@ -61,6 +64,7 @@ BEGIN {
   }
   else {
     eval "use SPVM '$class_name'";
+    if ($@) { confess $@ }
     
     my $spvm_class_name = "SPVM::$class_name";
     
