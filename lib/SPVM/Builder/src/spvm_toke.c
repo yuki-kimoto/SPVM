@@ -413,6 +413,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->ch_ptr++;
           }
           
+          while (*compiler->ch_ptr == ' ') {
+            compiler->ch_ptr++;
+          }
+          
           if (!(*compiler->ch_ptr == '\n')) {
             SPVM_COMPILER_error(compiler, "A line directive must end with \"\\n\".\n  at %s line %d", compiler->current_file, compiler->current_line);
             return 0;
