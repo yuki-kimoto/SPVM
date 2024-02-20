@@ -1403,10 +1403,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* string = object_vars[opcode->operand0];
         int32_t line = opcode->operand1;
         
-        const char* class_dir = current_basic_type->class_dir;
-        const char* class_rel_file = current_basic_type->class_rel_file;
+        const char* file = current_basic_type->class_file;
         
-        SPVM_IMPLEMENT_WARN(env, stack, string, class_dir, class_rel_file, line);
+        SPVM_IMPLEMENT_WARN(env, stack, string, file, line);
         
         break;
       }

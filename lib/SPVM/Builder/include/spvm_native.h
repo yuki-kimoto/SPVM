@@ -299,7 +299,7 @@ struct spvm_env {
   void (*free_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, void* block);
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env, SPVM_VALUE* stack);
   void (*say)(SPVM_ENV* env, SPVM_VALUE* stack, void* string);
-  void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line);
+  void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* file, int32_t line);
   FILE* (*spvm_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
   FILE* (*spvm_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
   FILE* (*spvm_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);

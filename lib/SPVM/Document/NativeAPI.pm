@@ -1892,7 +1892,7 @@ Prints a string and C<\n> to stdout. This is the same operator as the say operat
 
 =head2 warn
 
-C<void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line);>
+C<void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* file, int32_t line);>
 
 Operates the warn operator.
 

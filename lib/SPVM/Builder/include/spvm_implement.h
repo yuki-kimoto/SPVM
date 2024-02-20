@@ -1444,8 +1444,8 @@ static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* st
   env->say(env, stack, string);
 }
 
-static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* class_dir, const char* class_rel_file, int32_t line) {
-  env->warn(env, stack, string, class_dir, class_rel_file, line);
+static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* file, int32_t line) {
+  env->warn(env, stack, string, file, line);
 }
 
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id) (eval_error_id = 0)

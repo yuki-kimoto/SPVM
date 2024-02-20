@@ -307,6 +307,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   
   SPVM_STRING_BUFFER_add(string_buffer, "  char* class_dir;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char* class_rel_file;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  char* file;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t field_index;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t fields_length;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  char tmp_buffer[256];\n");
@@ -2793,26 +2794,21 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        const char* class_dir = current_basic_type->class_dir;
-        const char* class_rel_file = current_basic_type->class_rel_file;
+        const char* file = current_basic_type->class_file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_dir = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, class_dir);
-        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  class_rel_file = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, class_rel_file);
+        SPVM_STRING_BUFFER_add(string_buffer, "  file = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, file);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  line = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, line);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, class_dir, class_rel_file, line);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_IMPLEMENT_WARN(env, stack, string, file, line);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_CLEAR_EVAL_ERROR_ID: {
