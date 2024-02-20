@@ -428,7 +428,7 @@ A L<File directive|/"File Directive"> take precedence over L<comments|/"Comment"
 
 =head2 Line Directive
 
-A line directive begin from the beggining of the line.
+A line directive begins from the beggining of the line.
 
 A line directive begins with C<#line > and positive 32bit integer
 
@@ -452,7 +452,7 @@ The line number given to a line directive must be a positive 32bit integer. Othe
 
 =head2 File Directive
 
-A file directive must begin from the beggining of the source code.
+A file directive begins from the beggining of the source code.
 
 A file directive begins with C<#file "> and is followed by a file path, and is closed with C<">
 
@@ -460,9 +460,9 @@ A file directive begins with C<#file "> and is followed by a file path, and is c
 
 And ends with a L<line terminator|/"Line Terminators">.
 
-The file is set to the current file of the source code.
+The file path is set to the current file path of the source code.
 
-A L<File directive|/"File Directive"> take precedence over L<comments|/"Comment">.
+A L<file directive|/"File Directive"> take precedence over L<comments|/"Comment">.
 
 Compilation Errors:
 
