@@ -2729,6 +2729,10 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
               return 0;
             }
             
+            if (utf8_char_len) {
+              
+            }
+            
             ch_ptr += utf8_char_len;
           }
           
@@ -2942,6 +2946,17 @@ int32_t SPVM_TOKE_isalnum_ascii(SPVM_COMPILER* compiler, int32_t ch) {
   }
   
   return isalnum_ascii;
+}
+
+int32_t SPVM_TOKE_isspace_ascii(SPVM_COMPILER* compiler, int32_t ch) {
+  
+  int32_t isalpha_ascii = 0;
+  
+  if (isascii(ch) && isspace(ch)) {
+    isalpha_ascii = 1;
+  }
+  
+  return isalpha_ascii;
 }
 
 int32_t SPVM_TOKE_isdigit_ascii(SPVM_COMPILER* compiler, int32_t ch) {
