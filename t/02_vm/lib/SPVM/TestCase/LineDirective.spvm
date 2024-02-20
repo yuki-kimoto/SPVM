@@ -1,5 +1,8 @@
+#line 1 "/Foo/Bar.spvm"
 class TestCase::LineDirective {
-
+  
+  use Fn;
+  
   static method line_directive : int () {
 
 #line 1
@@ -9,6 +12,14 @@ class TestCase::LineDirective {
       return 0;
     }
     
+    eval { die; }
+    
+    unless (Fn->contains($@, "/Foo/Bar.spvm")) {
+      return 0;
+    }
+    
+    warn "[Test Output]#file";
+    
 #line 73
     my $line2 = __LINE__;
     
@@ -16,7 +27,7 @@ class TestCase::LineDirective {
       return 0;
     }
     
-#line 75 "/Foo/Bar.spvm"
+#line 75
     my $line3 = __LINE__;
     my $file3 = __FILE__;
     
@@ -24,9 +35,7 @@ class TestCase::LineDirective {
       return 0;
     }
     
-    unless ($file3 eq "/Foo/Bar.spvm") {
-      return 0;
-    }
+    $@ = undef;
     
     return 1;
   }
