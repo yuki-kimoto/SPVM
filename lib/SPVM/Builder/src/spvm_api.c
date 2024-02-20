@@ -2090,34 +2090,24 @@ SPVM_OBJECT* SPVM_API_get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack, co
 }
 
 SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* exception, SPVM_RUNTIME_METHOD* method, int32_t line) {
-
+  
   if (stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival > 100) {
     return exception;
   }
-
+  
   SPVM_RUNTIME* runtime = env->runtime;
-
+  
   SPVM_RUNTIME_BASIC_TYPE* basic_type = method->current_basic_type;
   const char* basic_type_name = basic_type->name;
   const char* method_name = method->name;
-
-  const char* class_dir = basic_type->class_dir;
-  const char* class_dir_sep;
-  if (class_dir) {
-    class_dir_sep = "/";
-  }
-  else {
-    class_dir = "";
-    class_dir_sep = "";
-  }
   
-  const char* class_rel_file = basic_type->class_rel_file;
+  const char* class_file = basic_type->class_file;
   
   // Basic type name and method name
   const char* new_line_part = "\n  ";
   const char* arrow_part = "->";
   const char* at_part = " at ";
-
+  
   // Exception
   const char* exception_bytes = SPVM_API_get_chars(env, stack, exception);
   int32_t exception_length = SPVM_API_length(env, stack, exception);
@@ -2130,10 +2120,8 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   total_length += strlen(arrow_part);
   total_length += strlen(method_name);
   total_length += strlen(at_part);
-  total_length += strlen(class_dir);
-  total_length += strlen(class_dir_sep);
-  total_length += strlen(class_rel_file);
-
+  total_length += strlen(class_file);
+  
   const char* line_part = " line ";
   char line_str[20];
   
@@ -2150,18 +2138,16 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
     (void*)(exception_bytes),
     exception_length
   );
-
+  
   sprintf(
     (char*)new_exception_bytes + exception_length,
-    "%s%s%s%s%s%s%s%s%s%" PRId32,
+    "%s%s%s%s%s%s%s%" PRId32,
     new_line_part,
     basic_type_name,
     arrow_part,
     method_name,
     at_part,
-    class_dir,
-    class_dir_sep,
-    class_rel_file,
+    class_file,
     line_part,
     line
   );
