@@ -16,7 +16,8 @@
       
   [Incompatible Changes]
     * The __FILE__ operator returns current file path, instead of the relative file name of the class.
-    * The main method return type becomes void in the spvmcc.
+    * The main method return type of a given class to the spvmcc command becomes void .
+    * The main method return type of a given class to the spvm command becomes void.
   [Document Changes]
   
     * Remove the specification of "End of Source Code"

@@ -68,6 +68,8 @@ BEGIN {
     
     my $spvm_class_name = "SPVM::$class_name";
     
+    SPVM::Native->check_bootstrap_method($class_name);
+    
     $spvm_class_name->main;
   }
 }
