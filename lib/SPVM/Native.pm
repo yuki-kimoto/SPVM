@@ -42,6 +42,12 @@ C<static method get_current_compiler : L<Native::Compiler|SPVM::Native::Compiler
 
 Returns the current compiler.
 
+=head2 check_bootstrap_method
+
+C<static method check_bootstrap_method : void ($basic_type_name : string);>
+
+Check the bootstrap method in the basic type $basic_type_name.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

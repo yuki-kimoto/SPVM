@@ -32,4 +32,6 @@ class Native {
     return $current_compiler;
   }
   
+  native static method check_bootstrap_method : void ($basic_type_name : string);
+  
 }

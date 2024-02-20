@@ -57,3 +57,23 @@ int32_t SPVM__Native__get_current_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+int32_t SPVM__Native__check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_basic_type_name = stack[0].oval;
+  
+  if (!obj_basic_type_name) {
+    return env->die(env, stack, "$basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
+  
+  error_id = env->check_bootstrap_method(env, stack, basic_type_name);
+  if (error_id) {
+    return env->die(env, stack, env->get_chars(env, stack, env->get_exception(env, stack)), __func__, FILE_NAME, __LINE__);
+  }
+  
+  return 0;
+}
+
