@@ -8,6 +8,7 @@
 
 struct spvm_runtime_basic_type {
   const char* name;
+  const char* class_file;
   const char* class_dir;
   const char* class_rel_file;
   const char* version_string;

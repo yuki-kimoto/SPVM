@@ -924,14 +924,19 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
     assert(basic_type_string->index >= 0);
     runtime_basic_type->name = runtime_basic_type->constant_strings[basic_type_string->index].value;
     
-    if (basic_type->class_rel_file) {
-      SPVM_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->class_rel_file, strlen(basic_type->class_rel_file));
-      runtime_basic_type->class_rel_file = runtime_basic_type->constant_strings[basic_type_rel_file_string->index].value;
+    if (basic_type->class_file) {
+      SPVM_STRING* basic_type_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->class_file, strlen(basic_type->class_file));
+      runtime_basic_type->class_file = runtime_basic_type->constant_strings[basic_type_file_string->index].value;
     }
     
     if (basic_type->class_dir) {
       SPVM_STRING* basic_type_dir_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->class_dir, strlen(basic_type->class_dir));
       runtime_basic_type->class_dir = runtime_basic_type->constant_strings[basic_type_dir_string->index].value;
+    }
+    
+    if (basic_type->class_rel_file) {
+      SPVM_STRING* basic_type_rel_file_string = SPVM_HASH_get(basic_type->constant_string_symtable, basic_type->class_rel_file, strlen(basic_type->class_rel_file));
+      runtime_basic_type->class_rel_file = runtime_basic_type->constant_strings[basic_type_rel_file_string->index].value;
     }
     
     if (basic_type->version_string) {

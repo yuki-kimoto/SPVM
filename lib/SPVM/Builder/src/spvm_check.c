@@ -646,16 +646,21 @@ void SPVM_CHECK_check_basic_types_ast(SPVM_COMPILER* compiler) {
     
     SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->name, strlen(basic_type->name));
     
+    if (basic_type->class_file) {
+      SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_file, strlen(basic_type->class_file));
+    }
+    
     if (basic_type->class_dir) {
       SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_dir, strlen(basic_type->class_dir));
     }
+    
     if (basic_type->class_rel_file) {
       SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->class_rel_file, strlen(basic_type->class_rel_file));
     }
+    
     if (basic_type->version_string) {
       SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, basic_type->version_string, strlen(basic_type->version_string));
     }
-    
     
     for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
