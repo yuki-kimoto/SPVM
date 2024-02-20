@@ -34,6 +34,11 @@ use Test::More;
   }
   
   {
+    my $source = "class MyClass { static method main : void () {\n#line 1 \n} }";
+    compile_ok($source);
+  }
+  
+  {
     my $source = "class MyClass { static method main : void () {\n#line  1\n} }";
     compile_ok($source);
   }
@@ -82,6 +87,7 @@ use Test::More;
     my $source = "class MyClass { static method main : void () {\n#line \n} }";
     compile_not_ok($source, q|A line directive must have a line number.|);
   }
+  
   
 }
 
