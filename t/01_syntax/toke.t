@@ -604,7 +604,7 @@ use Test::More;
 {
   {
     my $source = "class MyClass { \x01 }";
-    compile_not_ok($source, q|Use of the character code "1" is not allowed in source code.|);
+    compile_not_ok($source, q|If a character in a SPVM source code is ASCII, it must be ASCII printable or space.|);
   }
 }
 

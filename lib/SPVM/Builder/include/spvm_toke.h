@@ -54,4 +54,6 @@ int32_t SPVM_TOKE_islower_ascii(SPVM_COMPILER* compiler, int32_t ch);
 
 int32_t SPVM_TOKE_isspace_ascii(SPVM_COMPILER* compiler, int32_t ch);
 
+int32_t SPVM_TOKE_isprint_ascii(SPVM_COMPILER* compiler, int32_t ch);
+
 #endif

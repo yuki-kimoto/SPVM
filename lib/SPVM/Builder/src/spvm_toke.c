@@ -2712,28 +2712,41 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
             compiler->current_file = class_file->rel_file;
           }
           
-          // Check new lines
-          if (strstr(compiler->current_class_content, "\r")) {
-            SPVM_COMPILER_error(compiler, "The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF. The source code of the \"%s\" class in the \"%s\" file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
-            return 0;
+          int32_t content_length = class_file->content_length;
+          
+          for (int32_t i = 0; i < content_length; i++) {
+            char ch = compiler->current_class_content[i];
           }
           
-          // Check character set 
-          char* ch_ptr = compiler->current_class_content;
-          while (*ch_ptr != '\0') {
+          // Check characters in source code.
+          int32_t content_offset = 0;
+          while (content_offset < class_file->content_length) {
             int32_t dst;
-            int32_t utf8_char_len = (int32_t)SPVM_UTF8_iterate((const uint8_t*)(ch_ptr), strlen(compiler->current_class_content), &dst);
+            
+            // UTF-8
+            const char* current_ch = compiler->current_class_content + content_offset;
+            int32_t utf8_char_len = (int32_t)SPVM_UTF8_iterate((const uint8_t*)(compiler->current_class_content + content_offset), class_file->content_length, &dst);
             
             if (!(utf8_char_len > 0)) {
               SPVM_COMPILER_error(compiler, "The charactor encoding of SPVM source codes must be UTF-8. The source code of the \"%s\" class in the \"%s\" file contains non-UTF8 characters.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
               return 0;
             }
             
-            if (utf8_char_len) {
+            // ASCII
+            if (utf8_char_len == 1) {
+              if (!(SPVM_TOKE_isprint_ascii(compiler, *current_ch) || SPVM_TOKE_isspace_ascii(compiler, *current_ch))) {
+                SPVM_COMPILER_error(compiler, "If a character in a SPVM source code is ASCII, it must be ASCII printable or space. The source code of the \"%s\" class in the \"%s\" file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
+                return 0;
+              }
               
+              // Check new lines
+              if (*current_ch == '\r') {
+                SPVM_COMPILER_error(compiler, "The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF. The source code of the \"%s\" class in the \"%s\" file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
+                return 0;
+              }
             }
             
-            ch_ptr += utf8_char_len;
+            content_offset += utf8_char_len;
           }
           
           // Set initial information for tokenization
@@ -2975,6 +2988,17 @@ int32_t SPVM_TOKE_islower_ascii(SPVM_COMPILER* compiler, int32_t ch) {
   int32_t islower_ascii = 0;
   
   if (isascii(ch) && islower(ch)) {
+    islower_ascii = 1;
+  }
+  
+  return islower_ascii;
+}
+
+int32_t SPVM_TOKE_isprint_ascii(SPVM_COMPILER* compiler, int32_t ch) {
+  
+  int32_t islower_ascii = 0;
+  
+  if (isascii(ch) && isprint(ch)) {
     islower_ascii = 1;
   }
   

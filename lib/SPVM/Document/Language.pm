@@ -16,23 +16,21 @@ The tokenizing the source codes of SPVM language is explained.
 
 The character encoding of SPVM source codes is UTF-8.
 
+If a character is ASCII, it must be ASCII printable characters or ASCII space characters except for ASCII C<CR>.
+
 Compilation Errors:
 
 The charactor encoding of SPVM source codes must be UTF-8. Otherwise a compilation error occurs.
 
-=head2 End of Source Code
+If a character in a SPVM source code is ASCII, it must be ASCII printable or space.
 
-A SPVM source code ends with 0x00 C<NULL> in ASCII. If a source code is loaded by a file, C<\0> is added to the end of the source code.
+The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
 
 =head2 Line Terminators
 
 The line terminators are 0x2A C<LF> of ASCII.
 
 When a line terminator appears, the current line number is incremented by 1.
-
-Compilation Errors:
-
-The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
 
 =head2 Space Character
 
