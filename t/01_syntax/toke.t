@@ -122,6 +122,21 @@ use Test::More;
     compile_not_ok($source, q|A file in a line directive must end with ".|);
   }
   
+  {
+    my $source = qq| #file "/foo/bar.txt"\nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|A file directive must begin from the beggining of the source code.|);
+  }
+  
+  {
+    my $source = qq|#file \nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|A file directive must have a file.|);
+  }
+  
+  {
+    my $source = qq|#file "/foo/bar.txt"a\nclass MyClass { static method main : void () {} }|;
+    compile_not_ok($source, q|A file directive must end with "\n".|);
+  }
+  
 }
 
 # Line number
