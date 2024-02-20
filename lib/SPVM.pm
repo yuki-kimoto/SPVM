@@ -38,15 +38,21 @@ SPVM has not yet reached a stable release of version 1.0. For now, there is curr
 
 =head1 Usage
 
-One Liner:
-  
+=head2 One Liner
+
+Run a one liner.
+
   # Hello World!
   spvm -e 'say "Hello World!";';
-  
+
+Run a one liner with loading a class.
+
   # foo,bar,baz
   spvm -M Fn -e 'say Fn->join(",", ["foo", "bar", "baz"]);'
 
-Class:
+=head2 Executing A SPVM Program
+
+Write a SPVM program.
 
   # lib/SPVM/HelloWorld.spvm
   class HelloWorld {
@@ -55,11 +61,24 @@ Class:
       say "Hello World!";
     }
   }
-  
-  # Run
+
+Run the SPVM program.
+
   spvm -I lib/SPVM HelloWorld
 
-Calling a SPVM Method from Perl:
+=head2 Generating An Executable File
+
+Generate an executable file.
+
+  spvmcc -B ~/.spvm_build -o ./hello --no-config -I lib/SPVM HelloWorld
+
+Run the executable file.
+
+  ./hello
+
+=head2 Calling a SPVM Method from Perl
+
+Write a SPVM program.
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
@@ -74,6 +93,8 @@ Calling a SPVM Method from Perl:
     }
   }
 
+Write a Perl program calling a SPVM method.
+
   # sum.pl
   use FindBin;
   use lib "$FindBin::Bin/lib";
@@ -83,7 +104,9 @@ Calling a SPVM Method from Perl:
   my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
   
   print "$total\n";
-  
+
+Run the Perl program.
+
   # Run
   perl sum.pl
 
