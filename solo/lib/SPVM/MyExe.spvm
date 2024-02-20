@@ -1,6 +1,6 @@
 class MyExe {
   use TestCase;
-  static method main : int () {
+  static method main : void () {
     TestCase->main();
   }
 }

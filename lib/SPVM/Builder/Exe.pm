@@ -653,6 +653,15 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
           fprintf(spvm_stderr, "The length of the arguments of the \\\"main\\\" method in the \\\"%s\\\" class must be 0.\\n", class_name);
           error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
         }
+        else {
+          void* return_basic_type = env->api->method->get_return_basic_type(env->runtime, method);
+          const char* return_basic_type_name = env->api->basic_type->get_name(env->runtime, return_basic_type);
+          
+          if (!(strcmp(return_basic_type_name, "void") == 0)) {
+            fprintf(spvm_stderr, "The return type of the \\\"main\\\" method in the \\\"%s\\\" class must be the void type.\\n", class_name);
+            error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+          }
+        }
       }
       else {
         fprintf(spvm_stderr, "The \\\"main\\\" method in the \\\"%s\\\" class must be a class method.\\n", class_name);

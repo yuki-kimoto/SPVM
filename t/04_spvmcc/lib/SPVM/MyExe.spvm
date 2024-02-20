@@ -10,16 +10,16 @@ class MyExe {
     $MOVE_BLOCK_ARGV_ZERO = CommandInfo->ARGV;
   }
   
-  static method main : int () {
+  static method main : void () {
     my $program_name = CommandInfo->PROGRAM_NAME;
     my $argv = CommandInfo->ARGV;
-  
+    
     my $sum = MyExe::Precompile->sum(1, 2);
     my $ret1 = TestCase::NativeAPI2->src_foo;
     my $ret2 = TestCase::NativeAPI2->src_bar;
     
     my $ret3 = MyExe::Precompile->anon_method_sum;
-
+    
     my $ret4 = TestCase::NativeAPI2->mylib2_source1_func1;
     
     my $global_program_name = CommandInfo->PROGRAM_NAME;
