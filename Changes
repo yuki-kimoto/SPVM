@@ -4,7 +4,40 @@
     * Add SPVM::Document::EnvironmentVariables.
   [New Features]
     * Add the get_file basic type native API.
+  [Bug Fix]
+    * Fix argument types and return types in argument native APIs.
     
+      -  const void* (*get_name)(void* runtime, void* arg);
+      +  const char* (*get_name)(void* runtime, void* arg);
+
+    * Fix argument types and return types in basic type native APIs.
+      
+      -  const void* (*get_name)(void* runtime, void* basic_type);
+      +  const char* (*get_name)(void* runtime, void* basic_type);
+
+      -  const void* (*get_version_string)(void* runtime, void* basic_type);
+      +  const char* (*get_version_string)(void* runtime, void* basic_type);
+
+      -  const void* (*get_class_dir)(void* runtime, void* basic_type);
+      +  const char* (*get_class_dir)(void* runtime, void* basic_type);
+
+      -  const void* (*get_class_rel_file)(void* runtime, void* basic_type);
+      +  const char* (*get_class_rel_file)(void* runtime, void* basic_type);
+
+      -  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const void* class_var_name);
+      +  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const char* class_var_name);
+
+      -  void* (*get_field_by_name)(void* runtime, void* basic_type, const void* field_name);
+      +  void* (*get_field_by_name)(void* runtime, void* basic_type, const char* field_name);
+
+      -  void* (*get_method_by_name)(void* runtime, void* basic_type, const void* method_name);
+      +  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
+
+    * Fix argument types and return types in method native APIs.
+
+      -  const void* (*get_name)(void* runtime, void* method);
+      +  const char* (*get_name)(void* runtime, void* method);
+      
 0.989077 2023-02-20
   [New Features]
     * Add file directive syntax.

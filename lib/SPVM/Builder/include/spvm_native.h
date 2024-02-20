@@ -328,7 +328,7 @@ struct spvm_api_allocator {
 };
 
 struct spvm_api_arg {
-  const void* (*get_name)(void* runtime, void* arg);
+  const char* (*get_name)(void* runtime, void* arg);
   int32_t (*get_index)(void* runtime, void* arg);
   void* (*get_basic_type)(void* runtime, void* arg);
   int32_t (*get_type_dimension)(void* runtime, void* arg);
@@ -337,29 +337,29 @@ struct spvm_api_arg {
 };
 
 struct spvm_api_basic_type {
-  const void* (*get_name)(void* runtime, void* basic_type);
+  const char* (*get_name)(void* runtime, void* basic_type);
   int32_t (*get_id)(void* runtime, void* basic_type);
   int32_t (*get_category)(void* runtime, void* basic_type);
   void* (*get_parent)(void* runtime, void* basic_type);
-  const void* (*get_version_string)(void* runtime, void* basic_type);
-  const void* (*get_class_dir)(void* runtime, void* basic_type);
-  const void* (*get_class_rel_file)(void* runtime, void* basic_type);
+  const char* (*get_version_string)(void* runtime, void* basic_type);
+  const char* (*get_class_dir)(void* runtime, void* basic_type);
+  const char* (*get_class_rel_file)(void* runtime, void* basic_type);
   int32_t (*is_pointer)(void* runtime, void* basic_type);
   int32_t (*is_anon)(void* runtime, void* basic_type);
   void* (*get_class_var_by_index)(void* runtime, void* basic_type, int32_t class_var_index);
-  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const void* class_var_name);
+  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const char* class_var_name);
   int32_t (*get_class_vars_length)(void* runtime, void* basic_type);
   void* (*get_field_by_index)(void* runtime, void* basic_type, int32_t field_index);
-  void* (*get_field_by_name)(void* runtime, void* basic_type, const void* field_name);
+  void* (*get_field_by_name)(void* runtime, void* basic_type, const char* field_name);
   int32_t (*get_fields_length)(void* runtime, void* basic_type);
   void* (*get_method_by_index)(void* runtime, void* basic_type, int32_t method_index);
-  void* (*get_method_by_name)(void* runtime, void* basic_type, const void* method_name);
+  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
   int32_t (*get_methods_length)(void* runtime, void* basic_type);
   void* (*get_anon_basic_type_by_index)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
   int32_t (*get_anon_basic_types_length)(void* runtime, void* basic_type);
   int32_t (*has_interface)(void* runtime, void* basic_type, void* interface_basic_type);
   int32_t (*is_super_class)(void* runtime, void* super_basic_type, void* child_basic_type);
-  const void* (*get_file)(void* runtime, void* basic_type);
+  const char* (*get_file)(void* runtime, void* basic_type);
 };
 
 struct spvm_api_class_file {
@@ -418,7 +418,7 @@ struct spvm_api_field {
 };
 
 struct spvm_api_method {
-  const void* (*get_name)(void* runtime, void* method);
+  const char* (*get_name)(void* runtime, void* method);
   int32_t (*get_index)(void* runtime, void* method);
   void* (*get_return_basic_type)(void* runtime, void* method);
   int32_t (*get_return_type_dimension)(void* runtime, void* method);

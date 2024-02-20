@@ -18,7 +18,7 @@ The C<class_var> is got by the L<get_basic_type_by_id|SPVM::Document::NativeAPI:
 
 =head2 get_name
 
-  const void* (*get_name)(void* runtime, void* basic_type);
+  const char* (*get_name)(void* runtime, void* basic_type);
 
 Returns the name of the basic type.
 
@@ -58,7 +58,7 @@ The C<basic_type> argument is a basic type object.
 
 =head2 get_version_string
 
-  const void* (*get_version_string)(void* runtime, void* basic_type);
+  const char* (*get_version_string)(void* runtime, void* basic_type);
 
 Returns the version string of the basic type.
 
@@ -68,7 +68,7 @@ The C<basic_type> argument is a basic type object.
 
 =head2 get_class_dir
 
-  const void* (*get_class_dir)(void* runtime, void* basic_type);
+  const char* (*get_class_dir)(void* runtime, void* basic_type);
 
 Returns the class directory of the basic type.
 
@@ -78,7 +78,7 @@ The C<basic_type> argument is a basic type object.
 
 =head2 get_class_rel_file
 
-  const void* (*get_class_rel_file)(void* runtime, void* basic_type);
+  const char* (*get_class_rel_file)(void* runtime, void* basic_type);
 
 Returns the class relative file of the basic type.
 
@@ -118,7 +118,7 @@ The C<basic_type> argument is a basic type object.
 
 =head2 get_class_var_by_name
 
-  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const void* class_var_name);
+  void* (*get_class_var_by_name)(void* runtime, void* basic_type, const char* class_var_name);
 
 Gets a class variable by a class variable name, and returns it.
 
@@ -148,7 +148,7 @@ The C<basic_type> argument is a basic type object.
 
 =head2 get_field_by_name
 
-  void* (*get_field_by_name)(void* runtime, void* basic_type, const void* field_name);
+  void* (*get_field_by_name)(void* runtime, void* basic_type, const char* field_name);
 
 Gets a field by a field name, and returns it.
 
@@ -178,7 +178,7 @@ The C<basic_type> argument is a basic type object.
 
 =head2 get_method_by_name
 
-  void* (*get_method_by_name)(void* runtime, void* basic_type, const void* method_name);
+  void* (*get_method_by_name)(void* runtime, void* basic_type, const char* method_name);
 
 Gets a method by a method name, and returns it.
 
@@ -242,7 +242,7 @@ The C<child_basic_type> argument is a basic type object.
 
 =head2 get_file
 
-C<const void* (*get_file)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<const char* (*get_file)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
 Returns the file path of the basic type.
 

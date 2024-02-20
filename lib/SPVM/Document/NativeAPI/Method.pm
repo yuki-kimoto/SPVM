@@ -18,7 +18,7 @@ The C<method> is got by the L<get_method_by_index|SPVM::Document::NativeAPI::Bas
 
 =head2 get_name
 
-  const void* (*get_name)(void* runtime, void* method);
+  const char* (*get_name)(void* runtime, void* method);
 
 Returns the name of the method.
 
