@@ -2794,7 +2794,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        const char* file = current_basic_type->class_file;
+        const char* file = current_basic_type->file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  string = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);

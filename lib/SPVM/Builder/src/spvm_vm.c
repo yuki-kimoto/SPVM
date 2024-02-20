@@ -1403,7 +1403,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         void* string = object_vars[opcode->operand0];
         int32_t line = opcode->operand1;
         
-        const char* file = current_basic_type->class_file;
+        const char* file = current_basic_type->file;
         
         SPVM_IMPLEMENT_WARN(env, stack, string, file, line);
         

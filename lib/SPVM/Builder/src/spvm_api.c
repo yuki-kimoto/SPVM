@@ -2101,7 +2101,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   const char* basic_type_name = basic_type->name;
   const char* method_name = method->name;
   
-  const char* class_file = basic_type->class_file;
+  const char* class_file = basic_type->file;
   
   // Basic type name and method name
   const char* new_line_part = "\n  ";
