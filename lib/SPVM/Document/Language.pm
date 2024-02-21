@@ -5512,7 +5512,7 @@ Examples:
     my $muldim_array : Stringer[][] = [[$cb]];
   }
 
-=head1 Type Castability
+=head2 Type Castability
 
 The castability at compile-time is explained.
 
@@ -5520,11 +5520,11 @@ Compilation Errors:
 
 The castability is false, a compilation error occurs.
 
-=head2 Type Castability to Numeric
+=head3 Type Castability to Numeric
 
 The castability to the L<numeric types|/"Numeric Type"> is explained.
 
-=head3 Type Castability from Numeric to Numeric
+=head4 Type Castability from Numeric to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Type">, the castability is true.
 
@@ -5599,7 +5599,7 @@ Examples:
   # double to int
   my $num = (int)2.5;
 
-=head3 Type Castability from NumericObject to Numeric
+=head4 Type Castability from NumericObject to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Type">, the castability is true.
 
@@ -5623,7 +5623,7 @@ Examples:
 
   my $double = (double)Double->new(3.5);
 
-=head3 Type Castability from Any Object to Numeric
+=head4 Type Castability from Any Object to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the castability is true.
 
@@ -5646,11 +5646,11 @@ Examples:
   my $object : object = Double->new(3.5);
   my $double = (double)$object;
 
-=head3 Type Castability from Others to Numeric
+=head4 Type Castability from Others to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is other than the types described above, the castability is false.
 
-=head2 Type Castability to Multi-Numeric
+=head3 Type Castability to Multi-Numeric
 
 If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the castability is true.
 
@@ -5671,7 +5671,7 @@ Examples:
   my $z1 : Complex_2d;
   my $z2 = (Complex_2d)$z1;
 
-=head2 Type Castability to Referenece
+=head3 Type Castability to Referenece
 
 If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the castability is true.
 
@@ -5692,7 +5692,7 @@ Examples:
   my $num : int = 5;
   my $num_ref = (int*)\num;
 
-=head2 Type Castability to String
+=head3 Type Castability to String
 
 If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the castability is true.
 
@@ -5729,7 +5729,7 @@ Examples:
   my $num_string = (string)3;
   my $string : string = undef;
 
-=head2 Type Castability to NumericObject
+=head3 Type Castability to NumericObject
 
 If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
@@ -5763,7 +5763,7 @@ Examples:
   my $object : object = Int->new(3);
   my $num_object = (Int)$object;
 
-=head2 Type Castability to Class
+=head3 Type Castability to Class
 
 If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
@@ -5804,7 +5804,7 @@ Examples:
 
   my $point = (Point)undef;
 
-=head2 Type Castability to Interface
+=head3 Type Castability to Interface
 
 If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type">, and the types of I<RIGHT_OPERAND>s are the following cases:
 
@@ -5845,7 +5845,7 @@ Examples:
   
   my $stringable : Stringable = undef;
 
-=head2 Type Castability to Any Object
+=head3 Type Castability to Any Object
 
 If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
@@ -5873,7 +5873,7 @@ Examples:
   my $num_object : object = 3;
   my $object : object = undef;
 
-=head2 Type Castability to Numeric Array
+=head3 Type Castability to Numeric Array
 
 If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the castability is true.
 
@@ -5911,7 +5911,7 @@ Examples:
   
   my $nums = (int[])undef;
 
-=head2 Type Castability to Multi-Numeric Array
+=head3 Type Castability to Multi-Numeric Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
@@ -5942,7 +5942,7 @@ Examples:
 
   my $nums = (Complex_2d[])undef;
 
-=head2 Type Castability to String Array
+=head3 Type Castability to String Array
 
 If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
@@ -5977,7 +5977,7 @@ Examples:
 
   my $strings  = (string[])undef;
 
-=head2 Type Castability to Class Array
+=head3 Type Castability to Class Array
 
 If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
@@ -6018,7 +6018,7 @@ Examples:
 
   my $points = (Point[])undef;
 
-=head2 Type Castability to Interface Array
+=head3 Type Castability to Interface Array
 
 If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
@@ -6059,7 +6059,7 @@ Examples:
   
   my $stringables = (Stringable[])undef;
 
-=head2 Type Castability to Any Object Array
+=head3 Type Castability to Any Object Array
 
 If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of I<RIGHT_OPERAND>s are the following cases:
 
@@ -6105,7 +6105,7 @@ Examples:
   my $strings : string[];
   my $any_object = (object[])$strings;
   
-=head2 Type Castability to Multi-Dimensional Array
+=head3 Type Castability to Multi-Dimensional Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of I<RIGHT_OPERAND>s are the following cases:
 
@@ -6562,7 +6562,7 @@ Examples:
     # not ok
   }
 
-=head3 Runtime Type Assignability
+=head2 Runtime Type Assignability
 
 The runtime type cheking is the type cheking that is performed at runtime.
 
