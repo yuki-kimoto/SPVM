@@ -4091,36 +4091,6 @@ Examples:
     
   }
 
-=head1 Array
-
-The array is the data structure for multiple values.
-
-There are the following types of array.
-
-=begin html
-
-<ul>
-  <li>
-    Numeric Array
- </li>
-  <li>
-    Object Array
- </li>
-  <li>
-    Multi-Numeric Array
- </li>
-</ul>
-
-=end html
-
-The numeric array is the array that the type of the element is the L<numeric type|/"Numeric Type">.
-
-The object array is the array that the type of the element is the L<object type|/"Object Type">.
-
-The multi-numeric array is the array that the type of the element is the L<multi-numeric type|/"Multi-Numeric Type">.
-
-See L</"Creating Array"> to create Array.
-
 =head2 Array Access
 
 Array Access is an L<operator|/"Operators"> to access the element of Array to get or set the value.
@@ -4528,6 +4498,36 @@ The array type is an L<object type|/"Object Type">.
 Compilation Errors:
 
 The maximam value of dimesions is 255. Otherwise a compilation error occurs.
+
+=head3 Array
+
+The array is the data structure for multiple values.
+
+There are the following types of array.
+
+=begin html
+
+<ul>
+  <li>
+    Numeric Array
+ </li>
+  <li>
+    Object Array
+ </li>
+  <li>
+    Multi-Numeric Array
+ </li>
+</ul>
+
+=end html
+
+The numeric array is the array that the type of the element is the L<numeric type|/"Numeric Type">.
+
+The object array is the array that the type of the element is the L<object type|/"Object Type">.
+
+The multi-numeric array is the array that the type of the element is the L<multi-numeric type|/"Multi-Numeric Type">.
+
+See L</"Creating Array"> to create Array.
 
 =head3 Numeric Array Type
 
