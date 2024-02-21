@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Document::NativeClass - Document of Native Class
+SPVM::Document::NativeClass - Native Classes
 
 =head1 Description
 
@@ -626,6 +626,42 @@ If you want to create SPVM class that have the native class, L<spvmdist> is usef
 =over 2
 
 =item * L<Examples using native methods|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>
+
+=back
+
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::NativeAPI>
+
+=item * L<SPVM::Document::NativeAPI::Method>
+
+=item * L<SPVM::Document::NativeAPI::ClassVariable>
+
+=item * L<SPVM::Document::NativeAPI::Allocator>
+
+=item * L<SPVM::Document::NativeAPI::Compiler>
+
+=item * L<SPVM::Document::NativeAPI::Internal>
+
+=item * L<SPVM::Document::NativeAPI::Mutex>
+
+=item * L<SPVM::Document::NativeAPI::Field>
+
+=item * L<SPVM::Document::NativeAPI::BasicType>
+
+=item * L<SPVM::Document::NativeAPI::Runtime>
+
+=item * L<SPVM::Document::NativeAPI::Type>
+
+=item * L<SPVM::Document::NativeAPI::StringBuffer>
+
+=item * L<SPVM::Document::NativeAPI::ModuleFile>
+
+=item * L<SPVM::Document::NativeAPI::ClassFile>
+
+=item * L<SPVM::Document::NativeAPI::Argument>
 
 =back
 
