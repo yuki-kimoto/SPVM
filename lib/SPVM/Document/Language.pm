@@ -4259,39 +4259,6 @@ See L</"Getting Array Element"> to get the element of the array.
 
 See L</"Setting Array Element"> to set the element of the array.
 
-=head1 Reference
-
-The reference is the address of a L<local variable|/"Local Variable"> on the memory.
-
-=head2 Creating Reference
-
-The L<reference operator|/"Reference Operator"> creates the reference of a L<local variable|/"Local Variable">.
-
-A reference is assigned to the L<reference type/"Reference Type">.
-
-The operand of a reference operator must be the variable of a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">.
-
-  # The reference of numeric type
-  my $num : int;
-  my $num_ref : int* = \$num;
-  
-  # The reference of multi-numeric type
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-
-The L<reference type|/"Reference Type"> can be used as the types of the arguments of a method.
-
-  # Method Definition
-  static method sum : void ($result_ref : int*, $num1 : int, $num2 : int) {
-    $$result_ref = $num1 + $num2;
-  }
-  
-  # Method Call
-  my $num1 = 1;
-  my $num2 = 2;
-  my $result_ref = \$result;
-  sum($result_ref, $num1, $num2);
-
 =head2 Dereference
 
 The dereference is the operation to get the value from a reference.
@@ -4925,9 +4892,38 @@ Reference Type can be used as Type of the L<local variable declaration|/"Local V
 
 If the Reference Type is used at an Invalid location, a compilation error occurs
 
-=head2 Reference Type
+=head3 Reference
 
-Reference Type are L<Numeric Reference Type> and L<Multi-Numeric Reference Type>.
+The reference is the address of a L<local variable|/"Local Variable"> on the memory.
+
+=head4 Creating Reference
+
+The L<reference operator|/"Reference Operator"> creates the reference of a L<local variable|/"Local Variable">.
+
+A reference is assigned to the L<reference type/"Reference Type">.
+
+The operand of a reference operator must be the variable of a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">.
+
+  # The reference of numeric type
+  my $num : int;
+  my $num_ref : int* = \$num;
+  
+  # The reference of multi-numeric type
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+
+The L<reference type|/"Reference Type"> can be used as the types of the arguments of a method.
+
+  # Method Definition
+  static method sum : void ($result_ref : int*, $num1 : int, $num2 : int) {
+    $$result_ref = $num1 + $num2;
+  }
+  
+  # Method Call
+  my $num1 = 1;
+  my $num2 = 2;
+  my $result_ref = \$result;
+  sum($result_ref, $num1, $num2);
 
 =head2 Numeric Reference Type
 
