@@ -3533,11 +3533,11 @@ And each function in the shared library is bind to the SPVM method.
 
 Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
 
-=head1 Enumeration
+=head2 Enumeration
 
 The enumeration is the syntx to defines constant values of the int type.
 
-=head2 Enumeration Definition
+=head3 Enumeration Definition
 
 The C<enum> keyword defines an enumeration. An enumeration has definitions of constant values.
 
@@ -3600,7 +3600,7 @@ Examples:
     }
   }
 
-=head2 Enumeration Attributes
+=head3 Enumeration Attributes
 
 Attributes can be specified to an enumeration definition.
 
@@ -3684,9 +3684,9 @@ An enumeration value can be used as an operand of the L<case statement|/"case St
     }
   }
 
-=head1 Local Variable
+=head2 Local Variable
 
-=head2 Local Variable Declaration
+=head3 Local Variable Declaration
 
 B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|/"Scope">. This is the same as Local Variable in C Language.
 
@@ -3755,7 +3755,7 @@ See the L<scope|/"Scope"> about the scope of the local variable.
 
 The local variable is initialized by the L<initial value/"Initial Value">.
 
-=head2 Local Variable Access
+=head3 Local Variable Access
 
 The local variable Access is an L<operator|/"Operators"> to access Local Variable to get or set the value.
 
@@ -3765,7 +3765,7 @@ L</"Setting Local Variable"> to get Local Variable value.
 
 If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
 
-=head1 Scope
+=head3 Scope
 
 A scope is the part that is surrounded by a L<scope block|/"Scope Block">.
 
@@ -3786,37 +3786,11 @@ See also L<garbage collection|/"Garbage Collection">.
 
 =head2 Block
 
-A block is the part that is enclosed by C<{> and C<}>.
-
-Blocks are the L<class block|/"Class Block">, the L<enumeration block|/"Enumeration Block">, and the L<scope blocks|/"Scope Block">.
-
-Examples:
-
-  # Blocks
-  {
-    1;
-  }
-  
-  if (true) {
-    
-  }
-  
-  while (true) {
-    
-  }
-  
-  enum {
-    ONE,
-    TWO,
-  }
-  
-  class Foo {
-    
-  }
+A block is the part enclosed by C<{> and C<}>.
 
 =head3 Class Block
 
-A class block is a L<block|/"Block">.
+A class block is a block used in a class definition.
   
   # Class block
   class Point {
@@ -3825,7 +3799,7 @@ A class block is a L<block|/"Block">.
 
 =head3 Enumeration Block
 
-An enumeration block is a L<block|/"Block">.
+An enumeration block is a block used in a enumeration definition.
 
   # Enumeration block
   enum {
@@ -3833,11 +3807,11 @@ An enumeration block is a L<block|/"Block">.
     TWO,
   }
 
-=head2 Scope Block
+=head3 Scope Block
 
 The scope block has its L<scope|/"Scope">. Zero or more L<statements|/"Statements"> are written in a scope block.
 
-=head3 Simple Block
+=head4 Simple Block
 
 The simple block is a L<scope block|/"Scope Block">.
 
@@ -3848,7 +3822,7 @@ The simple block is a L<scope block|/"Scope Block">.
 
 The simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|/"The array Initialization">.
 
-=head3 Method Block
+=head4 Method Block
 
 The method block is a L<scope block|/"Scope Block">.
 
@@ -3857,7 +3831,7 @@ The method block is a L<scope block|/"Scope Block">.
   
   }
 
-=head3 eval Block
+=head4 eval Block
 
 The C<eval> block is a L<scope block|/"Scope Block">.
 
@@ -3866,7 +3840,7 @@ The C<eval> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head3 if Block
+=head4 if Block
 
 The C<if> block is a L<scope block|/"Scope Block">.
 
@@ -3875,7 +3849,7 @@ The C<if> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head3 elsif Block
+=head4 elsif Block
 
 The C<elsif> block is a L<scope block|/"Scope Block">.
 
@@ -3884,7 +3858,7 @@ The C<elsif> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head3 else Block
+=head4 else Block
 
 The C<else> block is a L<scope block|/"Scope Block">.
 
@@ -3893,7 +3867,7 @@ The C<else> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head3 for Block
+=head4 for Block
 
 The C<for> block is a L<scope block|/"Scope Block">.
 
@@ -3902,7 +3876,7 @@ The C<for> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head3 while Block
+=head4 while Block
 
 The C<while> block is a L<scope block|/"Scope Block">.
 
@@ -3911,7 +3885,7 @@ The C<while> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head3 switch Block
+=head4 switch Block
 
 The C<switch> block is a L<scope block|/"Scope Block">.
   
@@ -3920,7 +3894,7 @@ The C<switch> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head3 case Block
+=head4 case Block
 
 The C<case> block is a L<scope block|/"Scope Block">.
   
@@ -3931,7 +3905,7 @@ The C<case> block is a L<scope block|/"Scope Block">.
     }
   }
 
-=head3 default Block
+=head4 default Block
 
 The C<default> block is a L<scope block|/"Scope Block">.
   
@@ -3942,7 +3916,7 @@ The C<default> block is a L<scope block|/"Scope Block">.
     }
   }
 
-=head2 INIT Block
+=head4 INIT Block
 
 The C<INIT> block is a L<block|/"Block"> to be executed just after the program starts.
 
