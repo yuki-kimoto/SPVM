@@ -4061,16 +4061,6 @@ The length of the string can be got using a L<string length operator|/"String Le
   my $message = "Hello"+
   my $length = length $message;
 
-=head2 Array Access
-
-Array Access is an L<operator|/"Operators"> to access the element of Array to get or set the value.
-
-  ARRAY->[INDEX]
-
-See L</"Getting Array Element"> to get the element value of Array.
-
-See L</"Setting Array Element"> to set the element value of Array.
-
 =head1 Type
 
 SPVM language has data types.
@@ -4528,6 +4518,16 @@ The object array is the array that the type of the element is the L<object type|
 The multi-numeric array is the array that the type of the element is the L<multi-numeric type|/"Multi-Numeric Type">.
 
 See L</"Creating Array"> to create Array.
+
+=head3 Array Access
+
+Array Access is an L<operator|/"Operators"> to access the element of Array to get or set the value.
+
+  ARRAY->[INDEX]
+
+See L</"Getting Array Element"> to get the element value of Array.
+
+See L</"Setting Array Element"> to set the element value of Array.
 
 =head3 Numeric Array Type
 
