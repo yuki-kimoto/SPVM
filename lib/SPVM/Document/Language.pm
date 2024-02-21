@@ -2688,7 +2688,7 @@ The type of a pointer class is the L<class type|/"Class Type">.
 
 A object of a pointer class has the pointer to a native address.
 
-=head1 Inheritance
+=head2 Inheritance
 
 A class inherits a class using the C<extends> keyword.
 
@@ -2754,11 +2754,11 @@ Examples:
     }
   }
 
-=head1 Interface
+=head2 Interface
 
 The interface syntax is described.
 
-=head2 Interface Definition
+=head3 Interface Definition
 
 An interface is defined using a L<class definition|/"Class Definition"> with a L<class attribute/"Class Attribute"> C<interface_t>.
 
@@ -2802,7 +2802,7 @@ An interface cannnot have L<field definitions|/"Field Definition">. If so, an co
 
 An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, an compilation error occurs.
 
-=head1 Duck Typing
+=head2 Duck Typing
 
 The duck typing is supported.
 
@@ -2947,11 +2947,11 @@ The following classes are loaded by default. These classes are deeply related to
 
 =back
 
-=head1 Class Variable
+=head2 Class Variable
 
 A class variable is a global variable that has the name space.
 
-=head2 Class Variable Definition
+=head3 Class Variable Definition
 
 C<our> keyword defines a class variable.
 
@@ -2988,7 +2988,7 @@ Examples:
     our $NUM_RW : rw int;
   }
 
-=head2 Class Variable Attribute
+=head3 Class Variable Attribute
 
 The list of class variable attributes.
 
@@ -3065,7 +3065,7 @@ If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error o
 
 A class variable method is a L<method|/"Method"> that gets and sets a class variable.
 
-=head3 Class Variable Getter Method
+=head4 Class Variable Getter Method
 
 A class variable getter method is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
 
@@ -3088,7 +3088,7 @@ Examples:
     }
   }
 
-=head3 Class Variable Setter Method
+=head4 Class Variable Setter Method
 
 A class variable setter method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
 
@@ -3113,7 +3113,7 @@ Examples:
     }
   }
 
-=head2 Class Variable Initial Value
+=head3 Class Variable Initial Value
 
 Each class variable is initialized with the L<initial value/"Initial Value"> just after the program starts.
 
@@ -3128,17 +3128,17 @@ This initial value can be changed by using the L<INIT block|/"INIT Block">.
     }
   }
 
-=head2 Class Variable Access
+=head3 Class Variable Access
 
 The class variable access is an L<operator|/"Operators"> to set or get a class variable.
 
 See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
 
-=head1 Field
+=head2 Field
 
 Fields are the data that an object has.
 
-=head2 Field Definition
+=head3 Field Definition
 
 The C<has> keyword defines a field.
   
@@ -3166,7 +3166,7 @@ The field names must follows the rule of the L<field name|/"Field Name">. Otherw
 
 Field names cannot be duplicated. If so, a compilation error occurs.
 
-=head2 Field Attribute
+=head3 Field Attribute
 
 The list of field attributes.
 
@@ -3263,7 +3263,7 @@ Examples:
     has num_rw : rw int;
   }
 
-=head2 Field Access
+=head3 Field Access
 
 The field access is an L<operator|/"Operators"> to get or set the field.
 
@@ -3277,7 +3277,7 @@ If the invocant is different from the following three field access, a compilatio
 
 If the field name does not found, a compilation error occurs
 
-=head3 Field Access of the class
+=head4 Field Access of the class
 
 The field access of the L<class|/"Class">.
 
@@ -3289,7 +3289,7 @@ See L</"Getting Field"> to get the field of the L<class|/"Class">.
 
 See L</"Setting Field"> to set the field of the L<class|/"Class">.
 
-=head3 Field Access of thethe multi-numeric type
+=head4 Field Access of thethe multi-numeric type
 
 The field access of the L<multi-numeric type|/"Multi-Numeric Type">.
 
@@ -3301,7 +3301,7 @@ See L</"Getting Multi-Numeric Field"> to get the field of the L<multi-numeric ty
 
 See L</"Setting Multi-Numeric Field"> to set the field of L<multi-numeric type|/"Multi-Numeric Type">.
 
-=head3 Field Access of the Multi-Numeric Reference via Derefernce
+=head4 Field Access of the Multi-Numeric Reference via Derefernce
 
 The field access of the L<multi-numeric reference|/"Multi-Numeric Reference Type"> via derefernce.
 
@@ -3314,11 +3314,11 @@ See L</"Getting Multi-Numeric Field via Dereference"> to get the field of the L<
 
 See L</"Setting Multi-Numeric Field via Dereference"> to set the field of the L<multi-numeric reference|/"Multi-Numeric Reference Type"> via dereference.
 
-=head1 Method
+=head2 Method
 
 a.
 
-=head2 Method Definition
+=head3 Method Definition
 
 The C<method> keyword defines a class method or an instance method.
   
@@ -3356,7 +3356,7 @@ The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<mult
 
 The type of the return value must be the L<void type|/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
 
-=head3 Optional Argument
+=head4 Optional Argument
 
 The optional argument is the syntax to specify optional arguments.
 
@@ -3385,7 +3385,7 @@ Examples:
   my $length = -1;
   my $substr = &substr($string, $offset, $length);
   
-=head2 Class Method
+=head3 Class Method
 
 A class method is defined with the C<static> keyword.
 
@@ -3403,7 +3403,7 @@ If the class method is belong to the current class, a class method can be called
   # Call a class method using C<&>
   my $total = &sum(1, 2);
 
-=head2 Instance Method
+=head3 Instance Method
 
 An instance method is defined without the C<static> keyword.
 
@@ -3417,7 +3417,7 @@ An instance method can be called from the object.
   my $point = Point->new;
   $point->set_x(3);
 
-=head2 Method Attributes
+=head3 Method Attributes
 
 Method attributes are attributes used in a L<method definition|/"Method Definition">.
 
@@ -3509,7 +3509,7 @@ Examples:
 
 =end html
 
-=head2 Native Method
+=head3 Native Method
 
 A native method is the L<method|/"Method"> that is written by native languages such as the C language, C<C++>.
 
@@ -3521,7 +3521,7 @@ A native method doesn't have its L<method block|/"Method Block">.
 
 About the way to write native methods, please see L<SPVM Native Class|SPVM::Document::NativeClass> and L<SPVM Native API|SPVM::Document::NativeAPI>.
 
-=head2 Precompiled Method
+=head3 Precompiled Method
 
 If the class has the C<precompile> L<class attribute|/"Class Attribute">, the methods of the class are precompiled.
 
