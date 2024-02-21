@@ -6,6 +6,8 @@
     * Improve the doc of class variable Native APIs.
   [New Features]
     * Add the get_file basic type native API.
+    * Add the new_instance_method_static to the Native::MethodCall class.
+    * Add the call_instance_method_static to the Native::MethodCall class.
   [Bug Fix]
     * Fix argument types and return types in argument native APIs.
     

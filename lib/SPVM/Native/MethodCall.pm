@@ -30,7 +30,13 @@ The Native::MethodCall class of L<SPVM> has methods to call methods.
 
 C<static method new_class_method : L<Native::MethodCall|SPVM::Native::MethodCall> ($basic_type_name : string, $method_name : string);>
 
-Create a class method call and returns it. It is a L<Native::MethodCall>.
+Create a class method call given the basic type name $basic_type_name and the method name $method_name and returns it.
+
+=head2 new_instance_method_static
+
+C<static method new_instance_method_static : Native::MethodCall ($basic_type_name : string, $method_name : string);>
+
+Create a instance method call given the basic type name $basic_type_name and the method name $method_name, and returns it.
 
 =head2 call_callback
 
@@ -91,6 +97,12 @@ If $environment is not defined, the current environment is used.
 C<static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[] = undef);>
 
 Calls a class method given the basic type name $basic_type_name, the method name $method_name, and the arguments $args.
+
+=head2 call_instance_method_static
+
+C<static method call_instance_method_static : object ($basic_type_name : string, $method_name : string, $args : object[] = undef);>
+
+Calls a instance method given the basic type name $basic_type_name, the method name $method_name, and the arguments $args.
 
 =head1 Instance Methods
 

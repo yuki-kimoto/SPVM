@@ -12,10 +12,13 @@ use SPVM 'TestCase::Module::Native::MethodCall';
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
+  ok(SPVM::TestCase::Module::Native::MethodCall->new_class_method);
+  ok(SPVM::TestCase::Module::Native::MethodCall->new_instance_method_static);
   ok(SPVM::TestCase::Module::Native::MethodCall->call);
   ok(SPVM::TestCase::Module::Native::MethodCall->call_callback);
   ok(SPVM::TestCase::Module::Native::MethodCall->call_class_method_for_env);
   ok(SPVM::TestCase::Module::Native::MethodCall->call_class_method);
+  ok(SPVM::TestCase::Module::Native::MethodCall->call_instance_method_static);
 }
 
 # All object is freed

@@ -631,6 +631,18 @@ If you want to create SPVM class that have the native class, L<spvmdist> is usef
 
 =head1 See Also
 
+=head2 Config
+
+=over 2
+
+=item * L<SPVM::Builder::Config>
+
+=item * L<SPVM::Builder::Config::Exe>
+
+=back
+
+=head2 Native APIs
+
 =over 2
 
 =item * L<SPVM::Document::NativeAPI>
