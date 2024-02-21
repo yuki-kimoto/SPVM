@@ -8,8 +8,6 @@ The basic type native APIs are the APIs for basic types.
 
 =head1 Usage
 
-  int32_t error_id
-  
   SPVM_API_BASIC_TYPE* api_basic_type = env->api->basic_type;
   
   void* basic_type = env->get_basic_type(env, stack, "Int");
