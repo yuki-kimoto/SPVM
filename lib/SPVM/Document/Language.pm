@@ -6157,11 +6157,11 @@ Examples:
     my $muldim_array : Stringer[][] = [[$cb]];
   }
 
-=head1 Type Conversion
+=head2 Type Conversion
 
 Type conversion is explained.
 
-=head2 Explicite Type Conversion
+=head3 Explicite Type Conversion
 
 The explicite type conversion is the L<type conversion|/"Type Conversion"> performed by a L<type cast|/"Type Cast"> expicitely.
 
@@ -6176,7 +6176,7 @@ Examples:
   # The explicte type conversion from string to byte[]
   my $num = (byte[])"Hello";
 
-=head2 Implicite Type Conversion
+=head3 Implicite Type Conversion
 
 The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
 
@@ -6196,11 +6196,11 @@ Examples:
   # The implicite type conversion from int to string
   my $string : string = 4;
 
-=head2 Integer Promotional Conversion
+=head3 Integer Promotional Conversion
 
 The integer promotional conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Type Within int"> to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-=head2 Numeric Widening Conversion
+=head3 Numeric Widening Conversion
 
 The numeric widening conversion is a L<type conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Type"> to a large-order L<numeric type|/"Numeric Type">.
 
@@ -6282,7 +6282,7 @@ B<long to double:>
 
 The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
 
-=head2 Numeric Narrowing Conversion
+=head3 Numeric Narrowing Conversion
 
 The numeric narrowing conversion is a L<conversion|"Type Conversion"> from a wide L<numeric type|/"Numeric Type"> to a narrow L<numeric type|/"Numeric Type">.
 
@@ -6369,7 +6369,7 @@ B<short to byte:>
 
 The numeric narrowing conversion is performed in some of the L<type casts|/"Type Cast">.
 
-=head2 Binary Numeric Conversion
+=head3 Binary Numeric Conversion
 
 The binary numeric conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of I<LEFT_OPERAND> or I<RIGHT_OPERAND> of the binary operator that operands are L<numeric types|/"Numeric Type">.
 
@@ -6383,7 +6383,7 @@ The following rules apply in order.
 
 4, Otherwise, both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are converted to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
-=head2 Numeric-to-String Conversion
+=head3 Numeric-to-String Conversion
 
 The numeric-to-string conversion is a L<type conversion|/"Type Conversion"> from a L<numeric type|/"Numeric Type"> to the L<string type|/"string Type">.
 
@@ -6413,7 +6413,7 @@ The numeric-to-string conversion is a L<type conversion|/"Type Conversion"> from
   # The string is "3.3"
   my $string_double = (string)$double;
 
-=head2 String-to-byte[] Conversion
+=head3 String-to-byte[] Conversion
 
 The String-to-byte[] conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte[] Type">.
 
@@ -6423,7 +6423,7 @@ The String-to-byte[] conversion is a L<type conversion|/"Type Conversion"> from 
 
 A new byte[] object is created and all characters in the string are copied to the elements of byte[] object.
 
-=head2 byte[]-to-string Conversion
+=head3 byte[]-to-string Conversion
 
 The byte[]-to-string conversion is a L<type conversion|/"Type Conversion"> from the L<byte[] type|/"byte[] type"> to the L<string Type|/"string Type">.
 
@@ -6436,15 +6436,15 @@ The byte[]-to-string conversion is a L<type conversion|/"Type Conversion"> from 
 
 A new string is created and all elements in the C<byte[]> object are copied to the characters of the string.
 
-=head2 Boxing Conversion
+=head3 Boxing Conversion
 
 The boxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of L<numeric type|/"Numeric Type"> to the corresponding L<numeric object type|/"Numeric Object Type">.
 
-=head2 Unboxing Conversion
+=head3 Unboxing Conversion
 
 The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of the L<numeric object type|/"Numeric Object Type"> to the value of the corresponding L<numeric type|/"Numeric Type">.
 
-=head2 Boolean Conversion
+=head3 Boolean Conversion
 
 The boolean conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
 
@@ -6524,53 +6524,13 @@ Examples:
     # not ok
   }
 
-=head2 Conditional Operand
-
-B<List of conditional operands:>
-
-The operand of the L<if statement|/"if Statement">:
-
-  if (CONDITION) {
-  
-  }
-
-The operand of the L<unless statement|/"unless Statement">:
-
-  unless (CONDITION) {
-  
-  }
-
-The second operand of the L<for statement|/"for Statement">:
-
-  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
-  
-  }
-
-The operand of the L<while statement|/"while Statement">:
-
-  while (CONDITION) {
-  
-  }
-
-The left and right operand of the L<logical AND operator|/"Logical AND Operator">:
-
-  CONDITION && CONDITION
-
-The left and right operand of the L<logical OR operator|/"Logical OR Operator">:
-
-  CONDITION || CONDITION
-
-The operand of the L<logical NOT operator|/"Logical NOT Operator">:
-
-  !CONDITION
-
-=head1 Runtime Type Checking
+=head2 Runtime Type Checking
 
 The runtime type cheking is the type cheking that is performed at runtime.
 
 The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the L<runtime assignability/"Runtime Assignability">.
 
-=head2 Runtime Assignability
+=head3 Runtime Assignability
 
 The runtime assignability is the assignability at runtime.
 
@@ -6611,7 +6571,7 @@ If the type of distribution is an L<interface type|/"Interface Type">, an L<inte
 
 (C<[]..[]> means two or more C<[]>)
 
-=head1 Type Comment
+=head2 Type Comment
 
 The type comment syntax is supported. The type comment can be written after C<of> keyword.
 
@@ -7238,6 +7198,46 @@ The empty statement C<;> does nothing.
 
   # The empty statemenet
   ;
+
+=head2 Conditional Operand
+
+B<List of conditional operands:>
+
+The operand of the L<if statement|/"if Statement">:
+
+  if (CONDITION) {
+  
+  }
+
+The operand of the L<unless statement|/"unless Statement">:
+
+  unless (CONDITION) {
+  
+  }
+
+The second operand of the L<for statement|/"for Statement">:
+
+  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
+  
+  }
+
+The operand of the L<while statement|/"while Statement">:
+
+  while (CONDITION) {
+  
+  }
+
+The left and right operand of the L<logical AND operator|/"Logical AND Operator">:
+
+  CONDITION && CONDITION
+
+The left and right operand of the L<logical OR operator|/"Logical OR Operator">:
+
+  CONDITION || CONDITION
+
+The operand of the L<logical NOT operator|/"Logical NOT Operator">:
+
+  !CONDITION
 
 =head1 Operators
 
