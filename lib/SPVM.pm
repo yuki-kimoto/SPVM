@@ -40,7 +40,7 @@ SPVM has not yet reached a stable release of version 1.0. For now, there is curr
 
 =head2 One Liner
 
-Run a one liner.
+Run a one liner using L<spvm> command.
 
   # Hello World!
   spvm -e 'say "Hello World!";';
@@ -52,7 +52,7 @@ Run a one liner with loading a class.
 
 =head2 Executing A SPVM Program
 
-Write a SPVM program.
+Write a L<SPVM class|SPVM::Document::Language::Class> to print "Hello World!" using L<the say operator|SPVM::Document::Language::Operators/"say">.
 
   # lib/SPVM/HelloWorld.spvm
   class HelloWorld {
@@ -62,13 +62,13 @@ Write a SPVM program.
     }
   }
 
-Run the SPVM program.
+Run the SPVM program using L<spvm> command.
 
   spvm -I lib/SPVM HelloWorld
 
 =head2 Generating An Executable File
 
-Generate an executable file.
+Generate an executable file using L<spvmcc> command.
 
   spvmcc -B ~/.spvm_build -o ./hello --no-config -I lib/SPVM HelloWorld
 
@@ -78,7 +78,7 @@ Run the executable file.
 
 =head2 Calling A SPVM Method from Perl
 
-Write a SPVM program.
+Write a SPVM class.
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
@@ -93,7 +93,7 @@ Write a SPVM program.
     }
   }
 
-Write a Perl program calling a SPVM method.
+Write a Perl program calling a SPVM method using L<exchange APIs|SPVM::ExchangeAPI>.
 
   # sum.pl
   use FindBin;
@@ -170,8 +170,6 @@ Run the Perl program.
 
 =back
 
-=item * L<Standard Modules|SPVM::Document::Modules>
-
 =item * L<Exchange APIs|SPVM::ExchangeAPI>
 
 =item * L<Native Classes|SPVM::Document::NativeClass>
@@ -214,15 +212,41 @@ Run the Perl program.
 
 =item * L<Environment Variables|SPVM::Document::EnvironmentVariables>
 
-=item * L<Benchmark|https://github.com/yuki-kimoto/SPVM/wiki/Benchmark> - SPVM Performance Benchmarks
+=head1 Commands
 
-=item * L<Executing SPVM Programs - spvm|spvm>
+=over 2
 
-=item * L<Generating Executable Files - spvmcc|spvmcc>
+=item * L<spvm - Executing SPVM Programs|spvm>
 
-=item * L<Executable File Configurations|SPVM::Builder::Config::Exe>
+=item * L<spvmcc - Generating Executable Files|spvmcc>
 
-=item * L<Distributing SPVM Modules - spvmdist|spvmdist>
+=item * L<spvmdist - Distributing SPVM Modules|spvmdist>
+
+=back
+
+=head1 Modules
+
+=over 2
+
+=item * L<Standard Modules|SPVM::Document::Modules>
+
+=item * L<CPAN Modules|https://github.com/yuki-kimoto/SPVM/wiki/CPAN-Modules>
+
+=back
+
+=head1 Examples
+
+=over 2
+
+=item * L<SPVM Test Cases|https://github.com/yuki-kimoto/SPVM/tree/doc/t/02_vm/lib/SPVM/TestCase>
+
+=item * L<Binding C/C++ Libraries|https://github.com/yuki-kimoto/SPVM/tree/doc/examples/native>
+
+=back
+
+=head1 Wiki
+
+=over 2
 
 =item * L<Wiki|https://github.com/yuki-kimoto/SPVM/wiki>
 

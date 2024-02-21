@@ -88,6 +88,10 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     --no-config                    No configration file is ok
     -m, --mode                     Mode
 
+=head1 Details
+
+See L<SPVM::Builder::Config::Exe> about configurations to generate an executable file.
+
 =head1 Copyright & License
 
 Copyright 2023 Yuki Kimoto. All Rights Reserved.
