@@ -154,6 +154,8 @@ Run the Perl program.
 
 =item * L<Native Classes|SPVM::Document::NativeClass>
 
+=item * L<Native Class Configurations|SPVM::Builder::Config>
+
 =item * L<Native APIs|SPVM::Document::NativeAPI>
 
 =over 2
@@ -192,11 +194,13 @@ Run the Perl program.
 
 =item * L<Benchmark|https://github.com/yuki-kimoto/SPVM/wiki/Benchmark> - SPVM Performance Benchmarks
 
-=item * L<spvm>
+=item * L<Executing SPVM Programs - spvm|spvm>
 
-=item * L<spvmcc>
+=item * L<Generating Executable Files - spvmcc|spvmcc>
 
-=item * L<spvmdist>
+=item * L<Executable File Configurations|SPVM::Builder::Config::Exe>
+
+=item * L<Distributing SPVM Modules - spvmdist|spvmdist>
 
 =back
 
