@@ -4,10 +4,12 @@ SPVM::Document::NativeAPI::BasicType - Basic Type Native APIs
 
 =head1 Description
 
-The basic type native APIs are the APIs for basic types.
+The basic type native APIs in L<SPVM> are the APIs to get definition information of basic types.
 
 =head1 Usage
 
+  int32_t error_id
+  
   SPVM_API_BASIC_TYPE* api_basic_type = env->api->basic_type;
   
   void* basic_type = env->get_basic_type(env, stack, "Int");
