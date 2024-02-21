@@ -2,16 +2,19 @@
 
 #include <string.h>
 
+static const char* FILE_NAME = "SPVM/MyOpenMP.c";
+
 int32_t SPVM__MyOpenMP__sum_vec_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
   void* obj_nums1 = stack[0].oval;
   if (obj_nums1 == NULL) {
-    return env->die(env, stack, "First argument must be not null", "SPVM/MyOpenMP.c", __LINE__);
+    return env->die(env, stack, "$nums1 must be defined.", __func__, FILE_NAME, __LINE__);
   }
   int32_t* nums1 = env->get_elems_int(env, stack, obj_nums1);
   
   void* obj_nums2 = stack[1].oval;
   if(obj_nums2 == NULL) {
-    return env->die(env, stack, "First argument must be not null", "SPVM/MyOpenMP.c", __LINE__);
+    return env->die(env, stack, "$nums2 must be defined.", __func__, FILE_NAME, __LINE__);
   }
   int32_t* nums2 = env->get_elems_int(env, stack, obj_nums2);
   
