@@ -2,6 +2,7 @@
   [Document Improvement]
     * Improve "Usage" of SPVM program.
     * Add SPVM::Document::EnvironmentVariables.
+    * Improve the doc of basic type Native APIs.
   [New Features]
     * Add the get_file basic type native API.
   [Bug Fix]
