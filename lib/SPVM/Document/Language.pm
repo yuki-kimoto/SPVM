@@ -4955,7 +4955,7 @@ Examples:
   my $message = (mutable string)"abc";
   $message->[0] = 'd';
 
-=head1 Type Inference
+=head2 Type Inference
 
 Omitting the L<type|/"Type"> when the L<local variable declaration|/"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
 
