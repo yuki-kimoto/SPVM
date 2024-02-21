@@ -9657,6 +9657,8 @@ See L</"Setting Exception Variable"> to set Exception Variable Value.
 
 =head1 Garbage Collection
 
+=head2 Reference Count GC
+
 The object is destroyed when the reference count becomes 0.
 
 If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
@@ -9667,7 +9669,7 @@ When the object has Back references of Weak Reference, Undefined Value is assign
 
 The above process is done recursively.
 
-=head1 Weak Reference
+=head2 Weak Reference
 
 Weak Reference is a reference that does not increase the reference count. Weak Reference can be used to solve the problem of circular references.
 
