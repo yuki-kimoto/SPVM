@@ -4061,36 +4061,6 @@ The length of the string can be got using a L<string length operator|/"String Le
   my $message = "Hello"+
   my $length = length $message;
 
-=head1 Undefined Value
-
-An undefined value is represented by undef.
-
-  undef
-
-An undefined value can be assigned to an L<object type|/"Object Type">.
-
-In the level of L<native APIs|SPVM:Document::NativeAPI>, undef is defined as C<(void*)NULL>.
-
-  (void*)NULL
-
-An undefined value can be compared by the C<==> operator and the C<!=> operator. An undefined value is guaranteed not to be equal to the any created object.
-
-The type of undef is L<undef type|/"undef Type">
-
-Examples:
-  
-  # Undefine values
-  my $string : string = undef;
-  
-  if (undef) {
-    
-  }
-  
-  my $message = "Hello";
-  if ($message == undef) {
-    
-  }
-
 =head2 Array Access
 
 Array Access is an L<operator|/"Operators"> to access the element of Array to get or set the value.
@@ -4433,6 +4403,36 @@ See also the L<boxing conversion|/"Boxing Conversion"> and L</"Unboxing Conversi
 =head2 undef Type
 
 The undef type is the type of L<undef|/"Undefined Value"> value.
+
+=head3 Undefined Value
+
+An undefined value is represented by C<undef>.
+
+  undef
+
+An undefined value can be assigned to an L<object type|/"Object Type">.
+
+In the level of L<native APIs|SPVM:Document::NativeAPI>, undef is defined as C<(void*)NULL>.
+
+  (void*)NULL
+
+An undefined value can be compared by the C<==> operator and the C<!=> operator. An undefined value is guaranteed not to be equal to the any created object.
+
+The type of undef is L<undef type|/"undef Type">
+
+Examples:
+  
+  # Undefine values
+  my $string : string = undef;
+  
+  if (undef) {
+    
+  }
+  
+  my $message = "Hello";
+  if ($message == undef) {
+    
+  }
 
 =head2 Interface Type
 
