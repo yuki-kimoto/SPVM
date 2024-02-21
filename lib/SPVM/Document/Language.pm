@@ -4238,53 +4238,6 @@ See L</"Getting Multi-Numeric Field"> to get the field of the multi-numeric valu
 
 See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric value.
 
-=head1 Multi-Numeric Array
-
-The L<multi-numeric values|/"Multi-Numeric Value"> can be the elements of the L<array|/"Array">.
-
-  my $zs = new Complex_2d[3];
-
-The elements of the multi-numeric array is continuous multi-numeric values.
-  
-  | Complex_2d  | Complex_2d  | Complex_2d  |
-  |  re  |  im  |  re  |  im  |  re  |  im  |
-
-=head2 Multi-Numeric Array Access
-
-The multi-numeric array access is a syntax to access the element of the multi-numeric array.
-
-  ARRAY->[INDEX]
-
-See L</"Getting Array Element"> to get the element of the array.
-
-See L</"Setting Array Element"> to set the element of the array.
-
-=head2 Dereference
-
-The dereference is the operation to get the value from a reference.
-
-A L<dereference operator|/"Dereference Operator"> perform a dereference.
-
-  # Get the value using a dereference
-  my $num2 = $$num_ref;
-  
-  # Set the value using a dereference
-  $$num_ref = 3;
-  
-  # Get the value of a multi-numeric type using a dereference
-  my $z2 = $$z_ref;
-  
-  # Set the value of a multi-numeric type using a dereference
-  $$z_ref = $z2;
-
-In the referencec of L<multi-numeric types|/"Multi-Numeric Type">, the deference can be performed using the arrow operator C<-E<gt>>.
-
-  # Get a field of a multi-numeric type using a dereference
-  my $x = $z_ref->{re};
-  
-  # Set a field of a multi-numeric type using a dereference
-  $z_ref->{re} = 1;
-
 =head1 Type
 
 SPVM language has data types.
@@ -4786,6 +4739,53 @@ For example, The byte size of the element of L<Complex_2d|SPVM::Complex_2d> is 1
 The object of the multi-numeric array type can be created by the L<new|/"Creating Array"> operator.
 
   my $complex_nums = new Complex_2d[10];
+
+=head4 Multi-Numeric Array
+
+The L<multi-numeric values|/"Multi-Numeric Value"> can be the elements of the L<array|/"Array">.
+
+  my $zs = new Complex_2d[3];
+
+The elements of the multi-numeric array is continuous multi-numeric values.
+  
+  | Complex_2d  | Complex_2d  | Complex_2d  |
+  |  re  |  im  |  re  |  im  |  re  |  im  |
+
+=head5 Multi-Numeric Array Access
+
+The multi-numeric array access is a syntax to access the element of the multi-numeric array.
+
+  ARRAY->[INDEX]
+
+See L</"Getting Array Element"> to get the element of the array.
+
+See L</"Setting Array Element"> to set the element of the array.
+
+=head2 Dereference
+
+The dereference is the operation to get the value from a reference.
+
+A L<dereference operator|/"Dereference Operator"> perform a dereference.
+
+  # Get the value using a dereference
+  my $num2 = $$num_ref;
+  
+  # Set the value using a dereference
+  $$num_ref = 3;
+  
+  # Get the value of a multi-numeric type using a dereference
+  my $z2 = $$z_ref;
+  
+  # Set the value of a multi-numeric type using a dereference
+  $$z_ref = $z2;
+
+In the referencec of L<multi-numeric types|/"Multi-Numeric Type">, the deference can be performed using the arrow operator C<-E<gt>>.
+
+  # Get a field of a multi-numeric type using a dereference
+  my $x = $z_ref->{re};
+  
+  # Set a field of a multi-numeric type using a dereference
+  $z_ref->{re} = 1;
 
 =head3 Any Object Array Type
 
