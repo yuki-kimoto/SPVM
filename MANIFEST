@@ -225,7 +225,6 @@ lib/SPVM/Complex_2f.spvm
 lib/SPVM/Dist.pm
 lib/SPVM/Document/Benchmark.pm
 lib/SPVM/Document/EnvironmentVariables.pm
-lib/SPVM/Document/ExchangeAPI.pm
 lib/SPVM/Document/Language.pm
 lib/SPVM/Document/Modules.pm
 lib/SPVM/Document/NativeAPI.pm
@@ -246,7 +245,6 @@ lib/SPVM/Document/NativeAPI/Type.pm
 lib/SPVM/Document/NativeClass.pm
 lib/SPVM/Document/Resource.pm
 lib/SPVM/Document/Tutorial.pm
-lib/SPVM/Document/Tutorial/Complex.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
