@@ -412,7 +412,7 @@ The list of the operators for tokenization:
   ->
   =>
 
-Note that the operators for tokenization are different from the operators that are explained in L<operators|/"Operator">. The operators for tokenization are only for tokenization.
+Note that the operators for tokenization are different from the operators that are explained in L<operators|/"Operators">. The operators for tokenization are only for tokenization.
 
 =head2 Comment
 
@@ -2310,13 +2310,13 @@ The list of syntax parsing tokens:
 
 =head2 Unary Operator
 
-The unary operator is the L<operator|/"Operator"> that has an operand.
+The unary operator is the L<operator|/"Operators"> that has an operand.
 
   UNARY_OPERATOR OPERAND
 
 =head2 Binary Operator
 
-The binary operator is the L<operator|/"Operator"> that has I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The binary operator is the L<operator|/"Operators"> that has I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
   LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
 
@@ -2562,7 +2562,7 @@ The retrun type must be L<void type|/"void Type">.
 
 A destructor must be an L<instance method|/"Instance Method">.
 
-If an L<exception|/"Exception"> occurs in the destructor, the exception is not thrown. Instead, a warnings message is printed to C<STDERR>.
+If an L<exception|/"Exception Handling"> occurs in the destructor, the exception is not thrown. Instead, a warnings message is printed to C<STDERR>.
 
 Compilation Errors:
 
@@ -3130,7 +3130,7 @@ This initial value can be changed by using the L<INIT block|/"INIT Block">.
 
 =head2 Class Variable Access
 
-The class variable access is an L<operator|/"Operator"> to set or get a class variable.
+The class variable access is an L<operator|/"Operators"> to set or get a class variable.
 
 See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
 
@@ -3265,7 +3265,7 @@ Examples:
 
 =head2 Field Access
 
-The field access is an L<operator|/"Operator"> to get or set the field.
+The field access is an L<operator|/"Operators"> to get or set the field.
 
   INVOCANT->{FIELD_NAME}
 
@@ -3757,7 +3757,7 @@ The local variable is initialized by the L<initial value/"Initial Value">.
 
 =head2 Local Variable Access
 
-The local variable Access is an L<operator|/"Operator"> to access Local Variable to get or set the value.
+The local variable Access is an L<operator|/"Operators"> to access Local Variable to get or set the value.
 
 See L</"Getting Local Variable"> to get Local Variable value.
 
@@ -4125,7 +4125,7 @@ See L</"Creating Array"> to create Array.
 
 =head2 Array Access
 
-Array Access is an L<operator|/"Operator"> to access the element of Array to get or set the value.
+Array Access is an L<operator|/"Operators"> to access the element of Array to get or set the value.
 
   ARRAY->[INDEX]
 
@@ -7219,9 +7219,9 @@ Examples:
   
 =head2 Operator Statement
 
-The operator statement is the L<statement|/"Statement"> to execute an L<operator|/"Operator">.
+The operator statement is the L<statement|/"Statement"> to execute an L<operator|/"Operators">.
 
-A operation statement is composed of an L<operator|/"Operator"> and C<;>.
+A operation statement is composed of an L<operator|/"Operators"> and C<;>.
   
   # The operator statemenet
   OPERATOR;
@@ -7241,7 +7241,7 @@ The empty statement C<;> is a L<statement|/"Statement"> to do nothing.
   # The empty statemenet
   ;
 
-=head1 Operator
+=head1 Operators
 
 An operator performs an operation that process something and returns a value.
 
@@ -7688,7 +7688,7 @@ Examples:
 
 =head3 Bit NOT Operator
 
-The bit NOT operator C<~> is an L<operator|/"Operator"> to perform the bit NOT operation.
+The bit NOT operator C<~> is an L<operator|/"Operators"> to perform the bit NOT operation.
 
   ~OPERAND
 
@@ -8196,7 +8196,7 @@ If I<OPERAND> is not an L<object type|/"Object Type"> or the undef type, a compi
 
 =head2 Logical Operator
 
-The logical operators are the L<operators|/"Operator"> to perform logical operations.
+The logical operators are the L<operators|/"Operators"> to perform logical operations.
 
 The logical operators are the L<logical AND operator|/"Logical AND Operator">, the L<logical OR operator|/"Logical OR Operator">, and the L<logical NOT operator|/"Logical NOT Operator">.
 
@@ -8206,7 +8206,7 @@ The logical AND operator C<&&> is a L<logical operator|/"Logical Operator"> to p
 
   LEFT_OPERAND && RIGHT_OPERAND
   
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<operator|/"Operator">.
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<operator|/"Operators">.
 
 The return type of the logical AND operator is the int type.
 
@@ -8238,7 +8238,7 @@ Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"
 
 =head2 String Concatenation Operator
 
-String concatenation operator . is an L<operator|/"Operator"> to concat two strings.
+String concatenation operator . is an L<operator|/"Operators"> to concat two strings.
 
   LEFT_OPERAND . RIGHT_OPERAND
 
@@ -8264,7 +8264,7 @@ Examples:
 
 =head2 Assignment Operator
 
-The assignment operator C<=> is an L<operator|/"Operator"> to assign a value.
+The assignment operator C<=> is an L<operator|/"Operators"> to assign a value.
 
   LEFT_OPERAND = RIGHTH_OPERAND
 
@@ -8375,17 +8375,17 @@ Examples:
 
 =head2 Array Length Operator
 
-The array length operator is an L<operator|/"Operator"> to get the length of the array.
+The array length operator is an L<operator|/"Operators"> to get the length of the array.
 
   @OPERAND
 
 The array length operator returns the int type value that is the length of the L<array|/"Array">.
 
-Array Length Operator returns the L<operator|/"Operator">
+Array Length Operator returns the L<operator|/"Operators">
 
 Compilation Errors:
 
-The operand must be an L<operator|/"Operator"> that type is an the L<array type|/"Array Type">. Otherwise a compilation error occurs.
+The operand must be an L<operator|/"Operators"> that type is an the L<array type|/"Array Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -8401,7 +8401,7 @@ Note that SPVM does not have the context different from Perl, and array length o
 
 =head2 new_string_len Operator
 
-The C<new_string_len> operator is an L<operator|/"Operator"> to create a L<string|/"String"> with the length.
+The C<new_string_len> operator is an L<operator|/"Operators"> to create a L<string|/"String"> with the length.
 
   new_string_len OPERAND
 
@@ -8426,12 +8426,12 @@ Examples:
 
 =head2 copy Operator
 
-The C<copy> operator is an L<operator|/"Operator"> to copy the object.
+The C<copy> operator is an L<operator|/"Operators"> to copy the object.
 
   copy OPERAND
 
 If the type of operand is none of the L<string type|/"string Type">, a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">,
-An L<exception|/"Exception"> is thorwn.
+An L<exception|/"Exception Handling"> is thorwn.
 
 The C<copy> operator returns the copied object.
 
@@ -8441,7 +8441,7 @@ Read-only flag of the string is dropped.
 
 Compilation Errors:
 
-The operand must be an L<operator|/"Operator"> that type is a L<object type|/"object Type">. Otherwise a compilation error occurs.
+The operand must be an L<operator|/"Operators"> that type is a L<object type|/"object Type">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -8450,7 +8450,7 @@ Examples:
 
 =head2 is_read_only Operator
 
-The C<is_read_only> is an L<operator|/"Operator"> to check if the L<string|/"String"> is read-only.
+The C<is_read_only> is an L<operator|/"Operators"> to check if the L<string|/"String"> is read-only.
 
   is_read_only OPERAND
 
@@ -8470,7 +8470,7 @@ Examples:
 
 =head2 String Length Operator
 
-The string length operator C<length> is an L<operator|/"Operator"> to get the length of the string.
+The string length operator C<length> is an L<operator|/"Operators"> to get the length of the string.
 
   length OPERAND
 
@@ -8494,7 +8494,7 @@ Examples:
 
 =head2 scalar Operator
 
-The C<scalar> operator is an L<Operator|/"Operator"> that returns I<OPERAND>.
+The C<scalar> operator is an L<Operator|/"Operators"> that returns I<OPERAND>.
 
   scalar OPERAND
 
@@ -8571,7 +8571,7 @@ Examples:
 
 =head2 Getting Local Variable
 
-The getting local variable is an L<operator|/"Operator"> to get the value of the L<local variable|/"Local Variable">.
+The getting local variable is an L<operator|/"Operators"> to get the value of the L<local variable|/"Local Variable">.
 
   $var
 
@@ -8581,7 +8581,7 @@ The return type is the type of the local variable.
 
 =head2 Setting Local Variable
 
-The setting local variable is an L<operator|/"Operator"> to set the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
+The setting local variable is an L<operator|/"Operators"> to set the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
 
   $var = VALUE
 
@@ -8599,7 +8599,7 @@ The assignment of the value must satisfy the L<assignability|/"Assignability">. 
 
 =head2 Getting Class Variable
 
-The getting class variable is an L<operator|/"Operator"> to get the value of the L<class variable|/"Class Variable">.
+The getting class variable is an L<operator|/"Operators"> to get the value of the L<class variable|/"Class Variable">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME
 
@@ -8633,7 +8633,7 @@ Examples:
 
 =head2 Setting Class Variable
 
-B<Setting Class Variable operator> is an L<operator|/"Operator"> to set L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
+B<Setting Class Variable operator> is an L<operator|/"Operators"> to set L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
@@ -8676,7 +8676,7 @@ Examples:
 
 =head2 Getting Exception Variable
 
-The setting exception variable is an L<operator|/"Operator"> to get the value of the L<exception variable|/"Exception Variable">.
+The setting exception variable is an L<operator|/"Operators"> to get the value of the L<exception variable|/"Exception Variable">.
 
   $@
 
@@ -8691,7 +8691,7 @@ Examples:
 
 =head2 Setting Exception Variable
 
-The setting exception variable is an L<operator|/"Operator"> to set the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
+The setting exception variable is an L<operator|/"Operators"> to set the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
 
   $@ = VALUE
 
@@ -8711,7 +8711,7 @@ Examples:
 
 =head2 Getting Field
 
-The getting field is an L<operator|/"Operator"> to get the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
+The getting field is an L<operator|/"Operators"> to get the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -8726,7 +8726,7 @@ Examples:
 
 =head2 Setting Field
 
-The setting field is an L<operator|/"Operator"> to set the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
+The setting field is an L<operator|/"Operators"> to set the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = VALUE
 
@@ -8751,7 +8751,7 @@ Examples:
 
 =head2 Getting Multi-Numeric Field
 
-B<Getting Multi-Numeric Field operator> is an L<operator|/"Operator"> to get Field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
+B<Getting Multi-Numeric Field operator> is an L<operator|/"Operators"> to get Field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -8772,7 +8772,7 @@ Examples:
 
 =head2 Setting Multi-Numeric Field
 
-Setting Multi-Numeric Field operator is an L<operator|/"Operator"> to set Field of the L<multi-numeric value|/"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+Setting Multi-Numeric Field operator is an L<operator|/"Operators"> to set Field of the L<multi-numeric value|/"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -8795,7 +8795,7 @@ Examples:
 
 =head2 Getting Array Element
 
-The getting array element is an L<operator|/"Operator"> to get the element of the L<array|/"Array">.
+The getting array element is an L<operator|/"Operators"> to get the element of the L<array|/"Array">.
 
   ARRAY->[INDEX]
 
@@ -8828,7 +8828,7 @@ Examples:
 
 =head2 Setting Array Element
 
-The setting array element is an L<operator|/"Operator"> to set the element of the array using the L<assignment operator|/"Assignment Operator">.
+The setting array element is an L<operator|/"Operators"> to set the element of the array using the L<assignment operator|/"Assignment Operator">.
 
   ARRAY->[INDEX] = RIGHT_OPERAND
 
@@ -8865,11 +8865,11 @@ Examples:
 
 =head2 new Operator
 
-The C<new> operator is an L<operator|/"Operator"> to create an object or an array.
+The C<new> operator is an L<operator|/"Operators"> to create an object or an array.
 
 =head3 Creating Object
 
-The creating object is an L<operator|/"Operator"> to create an object using the L<new operator|/"new Operator">.
+The creating object is an L<operator|/"Operators"> to create an object using the L<new operator|/"new Operator">.
 
   new CLASS_NAME;
 
@@ -8885,7 +8885,7 @@ Examples:
 
 =head3 Creating Array
 
-The creating array is an L<operator|/"Operator"> to create an array using the L<new operator|/"new Operator">.
+The creating array is an L<operator|/"Operators"> to create an array using the L<new operator|/"new Operator">.
 
   new BasicType[LENGTH]
 
@@ -8931,7 +8931,7 @@ The max dimention is 255.
 
 =head2 Array Initialization
 
-The array initialization is an L<operator|/"Operator"> to create an array and initialize the array easily.
+The array initialization is an L<operator|/"Operators"> to create an array and initialize the array easily.
 
   []
   [ELEMENT1, ELEMENT2, ELEMENT3]
@@ -8986,7 +8986,7 @@ Examples:
 
 =head2 Reference Operator
 
-The reference operator C<\> is the L<operator|/"Operator"> to create a L<reference|/"Reference">.
+The reference operator C<\> is the L<operator|/"Operators"> to create a L<reference|/"Reference">.
 
   \OPERAND
 
@@ -9008,15 +9008,15 @@ Examples:
 
 =head2 Dereference Operator
 
-The dereference operators are the L<operatoers|/"Operator"> to perform a deference.
+The dereference operators are the L<operatoers|/"Operators"> to perform a deference.
 
 =head3 Getting value by Dereference
 
-Obtaining a value by Dereference is an L<operator|/"Operator"> to obtain the actual value from Reference. It was designed to realize the C joint operator C<*>.
+Obtaining a value by Dereference is an L<operator|/"Operators"> to obtain the actual value from Reference. It was designed to realize the C joint operator C<*>.
 
   $VARIABLE
 
-The value obtained by Dereference returns the L<operator|/"Operator">.
+The value obtained by Dereference returns the L<operator|/"Operators">.
 
 Compilation Errors:
 
@@ -9034,11 +9034,11 @@ Examples:
 
 =head3 Setting the value with Dereference
 
-Setting a value with Dereference is an L<operator|/"Operator"> to set the actual value from Reference. It was designed to realize the C joint operator C<*>.
+Setting a value with Dereference is an L<operator|/"Operators"> to set the actual value from Reference. It was designed to realize the C joint operator C<*>.
 
   $VARIABLE = OPERAND
 
-Setting a value with Dereference returns the set value. This is the L<operator|/"Operator">.
+Setting a value with Dereference returns the set value. This is the L<operator|/"Operators">.
 
 Compilation Errors:
 
@@ -9061,7 +9061,7 @@ Examples:
 
 =head3 Getting Multi-Numeric Field via Dereference
 
-B<Getting Multi-Numeric Field via Dereference operator> is an L<operator|/"Operator"> to get Field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+B<Getting Multi-Numeric Field via Dereference operator> is an L<operator|/"Operators"> to get Field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
@@ -9083,7 +9083,7 @@ Examples:
 
 =head3 Setting Multi-Numeric Field via Dereference
 
-The setting multi-numeric field via dereference operator is an L<operator|/"Operator"> to set Field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+The setting multi-numeric field via dereference operator is an L<operator|/"Operators"> to set Field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
@@ -9131,7 +9131,7 @@ Examples:
 
 =head2 Getting Current File Name
 
-The getting current file name C<__FILE__> is an L<operator|/"Operator"> to get the current file name.
+The getting current file name C<__FILE__> is an L<operator|/"Operators"> to get the current file name.
 
   __FILE__
 
@@ -9155,7 +9155,7 @@ Examples:
 
 =head2 Getting Current Line Number
 
-The getting current line number C<__LINE__> is an L<operator|/"Operator"> to get the current line number of the current file.
+The getting current line number C<__LINE__> is an L<operator|/"Operators"> to get the current line number of the current file.
 
   __LINE__
 
@@ -9170,7 +9170,7 @@ Examples:
 
 =head2 Anon Method
 
-The anon method is an L<operator|/"Operator"> to define an L<anon calss|/"Anon Class"> and an L<instance method|/"Instance Method"> that doesn't has its L<method name|/"Method Name">.
+The anon method is an L<operator|/"Operators"> to define an L<anon calss|/"Anon Class"> and an L<instance method|/"Instance Method"> that doesn't has its L<method name|/"Method Name">.
 
 It creates an object object from the anon class by the L<new|/"Creating Object"> operator and returns the object.
   
@@ -9318,7 +9318,7 @@ This value is set to 0 at the beginning of the L<eval block|eval Block>.
 
 =head2 Type Cast
 
-The type cast is the L<operator|/"Operator"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
+The type cast is the L<operator|/"Operators"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
 
   # Type Cast
   (TYPE)OPERAND
@@ -9351,7 +9351,7 @@ Examples:
 
 =head2 Sequential Operator
 
-The sequential operator C<,> is an L<operator|/"Operator"> like the following.
+The sequential operator C<,> is an L<operator|/"Operators"> like the following.
 
   (OPERAND1, OPERAND2, ..., OPERNADN)
 
@@ -9605,7 +9605,7 @@ Examples:
   my $z : Complex_2d;
   &my_mulnum_method($z, 2);
 
-=head1 Exception
+=head1 Exception Handling
 
 Explains exceptions.
 
@@ -9620,7 +9620,7 @@ Examples:
   # Throw an exception
   die "Error";
 
-=head2 Exception Catching
+=head2 Catching Exception 
 
 You can catch an exception using an L<eval block|/"eval Block">.
 
