@@ -224,6 +224,15 @@ lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
 lib/SPVM/Dist.pm
 lib/SPVM/Document/Benchmark.pm
+lib/SPVM/Document/Document/Class.pm
+lib/SPVM/Document/Document/ExceptionHandling.pm
+lib/SPVM/Document/Document/GarbageCollection.pm
+lib/SPVM/Document/Document/Operators.pm
+lib/SPVM/Document/Document/Statements.pm
+lib/SPVM/Document/Document/SyntaxParsing.pm
+lib/SPVM/Document/Document/System.pm
+lib/SPVM/Document/Document/Tokenization.pm
+lib/SPVM/Document/Document/Types.pm
 lib/SPVM/Document/EnvironmentVariables.pm
 lib/SPVM/Document/Language.pm
 lib/SPVM/Document/Modules.pm
