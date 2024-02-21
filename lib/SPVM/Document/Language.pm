@@ -4968,7 +4968,7 @@ Omitting the L<type|/"Type"> when the L<local variable declaration|/"Local Varia
   # Foo
   my $foo = new Foo;
 
-=head1 Type Assignability
+=head2 Type Assignability
 
 The assignability at compile-time is explained.
 
@@ -4976,11 +4976,11 @@ Compilation Errors:
 
 The assignability is false, a compilation error occurs.
 
-=head2 Type Assignability to Numeric
+=head3 Type Assignability to Numeric
 
 Explains the assignability to the L<numeric types|"Numeric Type">.
 
-=head3 Type Assignability from Numeric to Numeric
+=head4 Type Assignability from Numeric to Numeric
 
 If the L<nemric type order|/"Numeric Type Order"> of I<LEFT_OPERAND> is greater than or equal to the L<nemric type order|/"Numeric Type Order"> of I<RIGHT_OPERAND>, the assignability is true.
 
@@ -5063,7 +5063,7 @@ Examples:
   # int to byte
   my $num : byte = 127;
 
-=head3 Type Assignability from NumericObject to Numeric
+=head4 Type Assignability from NumericObject to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Type">, the assignability is true.
 
@@ -5087,7 +5087,7 @@ Examples:
 
   my $double : double = Double->new(3.5);
 
-=head3 Type Assignability from Any Object to Numeric
+=head4 Type Assignability from Any Object to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the assignability is true.
 
@@ -5108,11 +5108,11 @@ Examples:
 
   my $double : double = (object)Double->new(3.5);
 
-=head3 Type Assignability from Others to Numeric
+=head4 Type Assignability from Others to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Type"> and the type of I<RIGHT_OPERAND> is other than the types described above, the assignability is false.
 
-=head2 Type Assignability to Multi-Numeric
+=head3 Type Assignability to Multi-Numeric
 
 If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignability is true.
 
@@ -5133,7 +5133,7 @@ Examples:
   my $z1 : Complex_2d;
   my $z2 : Complex_2d = $z1;
 
-=head2 Type Assignability to Referenece
+=head3 Type Assignability to Referenece
 
 If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignability is true.
 
@@ -5154,7 +5154,7 @@ Examples:
   my $num : int = 5;
   my $num_ref : int* = \num;
 
-=head2 Type Assignability to String
+=head3 Type Assignability to String
 
 If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the assignability is true.
 
@@ -5188,7 +5188,7 @@ Examples:
   my $num_string : string = 3;
   my $string : string = undef;
 
-=head2 Type Assignability to NumericObject
+=head3 Type Assignability to NumericObject
 
 If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Type"> that is corresponding to the numeric object type, or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5214,7 +5214,7 @@ Examples:
   my $num_object : Int = 3;
   my $num_object : Int = undef;
 
-=head2 Type Assignability to Class
+=head3 Type Assignability to Class
 
 If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5239,7 +5239,7 @@ Examples:
   my $point : Point = Point->new;
   my $point : Point = undef;
 
-=head2 Type Assignability to Interface
+=head3 Type Assignability to Interface
 
 If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5265,7 +5265,7 @@ Examples:
   my $stringable : Stringable = Point->new(1, 2);
   my $stringable : Stringable = undef;
 
-=head2 Type Assignability to Any Object
+=head3 Type Assignability to Any Object
 
 If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the type of I<RIGHT_OPERAND> is an L<object type|/"Object Type">, a L<numeric type|/"Numeric Type"> or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5291,7 +5291,7 @@ Examples:
   my $num_object : object = 3;
   my $object : object = undef;
 
-=head2 Type Assignability to Undefined
+=head3 Type Assignability to Undefined
 
 If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignability is false.
 
@@ -5309,7 +5309,7 @@ Examples:
   # The assignability is false
   undef = Point->new;
 
-=head2 Type Assignability to Numeric Array
+=head3 Type Assignability to Numeric Array
 
 If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5336,7 +5336,7 @@ Examples:
   my $nums : int[] = new int[3];
   my $nums : int[] = undef;
 
-=head2 Type Assignability to Multi-Numeric Array
+=head3 Type Assignability to Multi-Numeric Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5358,7 +5358,7 @@ Examples:
   my $nums : Complex_2d[] = new Complex_2d[3];
   my $nums : Complex_2d[] = undef;
 
-=head2 Type Assignability to String Array
+=head3 Type Assignability to String Array
 
 If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5380,7 +5380,7 @@ Examples:
   my $strings : string[] = ["abc", "def"];
   my $strings : string[] = undef;
 
-=head2 Type Assignability to Class Array
+=head3 Type Assignability to Class Array
 
 If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5405,7 +5405,7 @@ Examples:
   my $points : Point[] = new Point[3];
   my $points : Point[] = undef;
 
-=head2 Type Assignability to Interface Array
+=head3 Type Assignability to Interface Array
 
 If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5433,7 +5433,7 @@ Examples:
   
   my $stringables : Stringable[] = undef;
 
-=head2 Type Assignability to Any Object Array
+=head3 Type Assignability to Any Object Array
 
 If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the assignability is true.
 
@@ -5469,7 +5469,7 @@ Examples:
   my $strings : string[];
   my $any_object : object[] = $strings;
 
-=head2 Type Assignability to Multi-Dimensional Array
+=head3 Type Assignability to Multi-Dimensional Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
 
