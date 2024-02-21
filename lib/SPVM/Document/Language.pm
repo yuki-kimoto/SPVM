@@ -6446,7 +6446,45 @@ The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the
 
 =head3 Boolean Conversion
 
-The boolean conversion is a L<type conversion|/"Type Conversion"> that is performed on the L<conditional operand|/"Conditional Operand">.
+The boolean conversion converts an operand to an int value that indicates a boolean value.
+
+This conversion is performed on the follwoing operands.
+
+The operand of the L<if statement|/"if Statement">:
+
+  if (CONDITION) {
+  
+  }
+
+The operand of the L<unless statement|/"unless Statement">:
+
+  unless (CONDITION) {
+  
+  }
+
+The second operand of the L<for statement|/"for Statement">:
+
+  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
+  
+  }
+
+The operand of the L<while statement|/"while Statement">:
+
+  while (CONDITION) {
+  
+  }
+
+The left and right operand of the L<logical AND operator|/"Logical AND Operator">:
+
+  CONDITION && CONDITION
+
+The left and right operand of the L<logical OR operator|/"Logical OR Operator">:
+
+  CONDITION || CONDITION
+
+The operand of the L<logical NOT operator|/"Logical NOT Operator">:
+
+  !CONDITION
 
 The boolean conversion returns the following value corresponding to the type of the condional operand.
 
@@ -7198,46 +7236,6 @@ The empty statement C<;> does nothing.
 
   # The empty statemenet
   ;
-
-=head2 Conditional Operand
-
-B<List of conditional operands:>
-
-The operand of the L<if statement|/"if Statement">:
-
-  if (CONDITION) {
-  
-  }
-
-The operand of the L<unless statement|/"unless Statement">:
-
-  unless (CONDITION) {
-  
-  }
-
-The second operand of the L<for statement|/"for Statement">:
-
-  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
-  
-  }
-
-The operand of the L<while statement|/"while Statement">:
-
-  while (CONDITION) {
-  
-  }
-
-The left and right operand of the L<logical AND operator|/"Logical AND Operator">:
-
-  CONDITION && CONDITION
-
-The left and right operand of the L<logical OR operator|/"Logical OR Operator">:
-
-  CONDITION || CONDITION
-
-The operand of the L<logical NOT operator|/"Logical NOT Operator">:
-
-  !CONDITION
 
 =head1 Operators
 
