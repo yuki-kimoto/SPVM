@@ -3835,7 +3835,7 @@ An enumeration block is a L<block|/"Block">.
 
 =head2 Scope Block
 
-A scope block is the block that has the L<scope|/"Scope">. Zero or more L<statements|/"Statement"> are written in a scope block.
+A scope block is the block that has the L<scope|/"Scope">. Zero or more L<statements|/"Statements"> are written in a scope block.
 
 Scope blocks are the L<simple block|/"Simple Block">, the L<method block|/"Method Block">, the L<eval block|/"eval Block">, the L<if block|/"if Block">, the L<elsif block|/"elsif Block">, the L<else block|/"else Block">, the L<for block|/"for Block">, the L<while block|/"while Block"> and the L<switch block|/"switch Block">.
 
@@ -3960,7 +3960,7 @@ The C<INIT> block must be defined directly under the L<class definition|/"Class 
     }
   }
 
-Zero or more L<statements|/"Statement"> can be written in a C<INIT> block.
+Zero or more L<statements|/"Statements"> can be written in a C<INIT> block.
 
   INIT {
     my $foo = 1 + 1;
@@ -6639,7 +6639,7 @@ Compilation Errors:
 
 If the type specified as the type comment is not found, a compilation error occurs.
 
-=head1 Statement
+=head1 Statements
 
 Statements are the list of the statement.
 
@@ -6659,7 +6659,7 @@ The conditional branch is explained in the following topics.
 
 =head3 if Statement
 
-The C<if> statement is a L<statement|/"Statement"> for conditional branch.
+The C<if> statement is a L<statement|/"Statements"> for conditional branch.
 
   if (CONDITION) {
   
@@ -6695,7 +6695,7 @@ Examples:
 
 =head3 elsif Statement
 
-The C<elsif> statement is a L<statement|/"Statement"> for conditional branch used with the L<if statement|/"if Statement">.
+The C<elsif> statement is a L<statement|/"Statements"> for conditional branch used with the L<if statement|/"if Statement">.
 
   if (CONDITION1) {
   
@@ -6760,7 +6760,7 @@ Examples:
 
 =head3 else Statement
 
-The C<else> statement is a L<statement|/"Statement"> for conditional branch used with the L<if statement|if Statement> or the L<elsif statement|elsif Statement>.
+The C<else> statement is a L<statement|/"Statements"> for conditional branch used with the L<if statement|if Statement> or the L<elsif statement|elsif Statement>.
 
   if (CONDITION) {
   
@@ -6802,7 +6802,7 @@ Examples:
 
 =head3 unless Statement
 
-The C<unless> statement is a L<statement|/"Statement"> for conditional branch that does the opposite of the L<if statement|/"if Statement">.
+The C<unless> statement is a L<statement|/"Statements"> for conditional branch that does the opposite of the L<if statement|/"if Statement">.
 
   unless (CONDITION) {
     
@@ -6837,7 +6837,7 @@ Examples:
 
 =head3 switch Statement
 
-The C<switch> statement is a L<statement|/"Statement"> for conditional branch.
+The C<switch> statement is a L<statement|/"Statements"> for conditional branch.
 
   switch (CONDITION) {
     case CASE_VALUE1: {
@@ -6976,7 +6976,7 @@ Examples:
 
 =head4 case Statement
 
-The C<case> statement is the L<statement|/"Statement"> that specifies a case value and a branch of a L<switch statement|/"switch Statement">.
+The C<case> statement is the L<statement|/"Statements"> that specifies a case value and a branch of a L<switch statement|/"switch Statement">.
 
   # The case statement
   switch (CONDITION) {
@@ -6987,7 +6987,7 @@ The C<case> statement is the L<statement|/"Statement"> that specifies a case val
 
 =head4 default Statement
 
-The C<default> statement is a L<statement|/"Statement"> that specifies a default branch of a L<switch statement|/"switch Statement">.
+The C<default> statement is a L<statement|/"Statements"> that specifies a default branch of a L<switch statement|/"switch Statement">.
 
   # The default statement
   switch (CONDITION) {
@@ -6998,7 +6998,7 @@ The C<default> statement is a L<statement|/"Statement"> that specifies a default
 
 =head4 break Statement
 
-The C<break> statement is a L<statement|/"Statement"> to jump to the end of the L<switch block|/"switch Block"> of the L<switch statement|/"switch Statement">.
+The C<break> statement is a L<statement|/"Statements"> to jump to the end of the L<switch block|/"switch Block"> of the L<switch statement|/"switch Statement">.
 
   # The break statement
   break;
@@ -7007,7 +7007,7 @@ The C<break> statement is a L<statement|/"Statement"> to jump to the end of the 
 
 =head3 while Statement
 
-The C<while> statement is a L<statement|/"Statement"> for loop.
+The C<while> statement is a L<statement|/"Statements"> for loop.
 
   while (CONDITION) {
   
@@ -7070,7 +7070,7 @@ The C<while> statement is enclosed by an inbisible L<simple block|/"Simple Block
 
 =head3 for Statement
 
-The C<for> Statement is a L<statement|/"Statement"> to write loop syntax easily.
+The C<for> Statement is a L<statement|/"Statements"> to write loop syntax easily.
 
   # The for statement.
   for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
@@ -7099,7 +7099,7 @@ B<Exampels:>
 
 =head3 for-each Statement
 
-The for-each statement is a L<statement|/"Statement"> to write loop syntax easily for the simple iteration.
+The for-each statement is a L<statement|/"Statements"> to write loop syntax easily for the simple iteration.
   
   # The for-each statemenet
   for my VAR (@ARRAY) {
@@ -7127,7 +7127,7 @@ B<Example:>
 
 =head3 next Statement
 
-The C<next> statement is a L<statement|/"Statement"> to go back to the L<while statement|/"while Statement"> of the current L<while block|/"while Block">.
+The C<next> statement is a L<statement|/"Statements"> to go back to the L<while statement|/"while Statement"> of the current L<while block|/"while Block">.
 
   next;
 
@@ -7135,7 +7135,7 @@ See also the L<while statement|/"while Statement">.
 
 =head3 last Statement
 
-The C<last> statement is a L<statement|/"Statement"> to jump to the end of the current L<while block|/"while Block">.
+The C<last> statement is a L<statement|/"Statements"> to jump to the end of the current L<while block|/"while Block">.
 
   last;
 
@@ -7143,7 +7143,7 @@ See also the L<while statement|/"while Statement">.
 
 =head2 return Statement
 
-The C<return> statement is a L<statement|/"Statement"> to return a value.
+The C<return> statement is a L<statement|/"Statements"> to return a value.
   
   // void
   return;
@@ -7219,7 +7219,7 @@ Examples:
   
 =head2 Operator Statement
 
-The operator statement is the L<statement|/"Statement"> to execute an L<operator|/"Operators">.
+The operator statement is the L<statement|/"Statements"> to execute an L<operator|/"Operators">.
 
 A operation statement is composed of an L<operator|/"Operators"> and C<;>.
   
@@ -7236,7 +7236,7 @@ Examples:
 
 =head2 Empty Statement
 
-The empty statement C<;> is a L<statement|/"Statement"> to do nothing.
+The empty statement C<;> is a L<statement|/"Statements"> to do nothing.
 
   # The empty statemenet
   ;
