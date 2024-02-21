@@ -4021,46 +4021,6 @@ Examples:
     }
   }
 
-=head1 String
-
-SPVM has the L<string type|/"string Type">. A string is created by L</"String Literal"> L</"String Creating Operator"> or L</"Type Convertion"> to the string type.
-  
-  # Create a string using a string literal
-  my $string = "Hello";
-  
-  # Create a string using a string creation operator
-  my $string = new_string_len 3;
-  
-  # Create a string using the type cast to the string type
-  my $bytes = [(byte)93, 94, 95];
-  my $string = (string)$bytes;
-
-The each charcter can be get using C<-E<gt>[]>.
-
-  # String
-  my $string = "Hello";
-  my $char0 = $string->[0];
-  my $char1 = $string->[1];
-  my $char2 = $string->[2];
-
-By default, each character cannnot be set.
-  
-  # a compilation error.
-  $string_const->[0] = 'd';
-
-If you use C<mutable type qualifier|/"mutable Type Qualifier">, each character can be set.
-
-  my $string_mut = (mutable string)$string;
-  $string_mut->[0] = 'd';
-
-The created string is one more last byte that value is C<\0> on the internal memory. Although this has no meaning from SPVM language, this has meaning from L<Native APIs|SPVM:Document::NativeAPI>.
-
-The length of the string can be got using a L<string length operator|/"String Length Operator">
-  
-  # Getting the length of the string
-  my $message = "Hello"+
-  my $length = length $message;
-
 =head1 Type
 
 SPVM language has data types.
@@ -4727,6 +4687,46 @@ Examples:
   # string type
   my $message : string = "Hello";
   my $message : mutable string = new_string_len 256;
+
+=head3 String
+
+SPVM has the L<string type|/"string Type">. A string is created by L</"String Literal"> L</"String Creating Operator"> or L</"Type Convertion"> to the string type.
+  
+  # Create a string using a string literal
+  my $string = "Hello";
+  
+  # Create a string using a string creation operator
+  my $string = new_string_len 3;
+  
+  # Create a string using the type cast to the string type
+  my $bytes = [(byte)93, 94, 95];
+  my $string = (string)$bytes;
+
+The each charcter can be get using C<-E<gt>[]>.
+
+  # String
+  my $string = "Hello";
+  my $char0 = $string->[0];
+  my $char1 = $string->[1];
+  my $char2 = $string->[2];
+
+By default, each character cannnot be set.
+  
+  # a compilation error.
+  $string_const->[0] = 'd';
+
+If you use C<mutable type qualifier|/"mutable Type Qualifier">, each character can be set.
+
+  my $string_mut = (mutable string)$string;
+  $string_mut->[0] = 'd';
+
+The created string is one more last byte that value is C<\0> on the internal memory. Although this has no meaning from SPVM language, this has meaning from L<Native APIs|SPVM:Document::NativeAPI>.
+
+The length of the string can be got using a L<string length operator|/"String Length Operator">
+  
+  # Getting the length of the string
+  my $message = "Hello"+
+  my $length = length $message;
 
 =head2 Multi-Numeric Type
 
