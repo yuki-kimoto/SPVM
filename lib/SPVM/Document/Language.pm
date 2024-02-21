@@ -4131,113 +4131,6 @@ See L</"Getting Array Element"> to get the element value of Array.
 
 See L</"Setting Array Element"> to set the element value of Array.
 
-=head1 Multi-Numeric Value
-
-A multi-numeric value is a value that represents continuous multiple numeric values in memory.
-
-=head2 Multi-Numeric Type Definition
-
-A L<multi-numeric type|/"Multi-Numeric Type"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
-
-  # Continuous two 64bit floating point
-  class Complex_2d : mulnum_t {
-    re : double;
-    im : double;
-  }
-
-The type of a field must be a L<numeric type|/"Numeric Type">.
-
-The types of all fields must be the same types.
-
-The length of the fields must be less than or equal to 255.
-
-The multi-numeric type must end with the following suffix.
-
-  _[FieldsLength][TypeSuffix]
-
-The length of the fields in the suffix must be the same as the length of the fields.
-
-The type suffix in the suffix must correspond to the L<numeric type|/"Numeric Type"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix">.
-
-See the L<multi-numeric type field access|/"Multi-Numeric Type Field Access"> to get and set the field of the multi-numeric type.
-
-=head2 Multi-Numeric Type Suffix
-
-The list of the multi-numeric type suffix.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      Numeric Type
-   </th>
-    <th>
-     Type Suffix
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>byte</b>
-    </td>
-    <td>
-      b
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>short</b>
-    </td>
-    <td>
-      s
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>int</b>
-    </td>
-    <td>
-      i
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>long</b>
-    </td>
-    <td>
-      l
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>float</b>
-    </td>
-    <td>
-      f
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>double</b>
-    </td>
-    <td>
-      d
-    </td>
-  </tr>
-</table>
-
-=end html
-
-=head2 Multi-Numeric Type Field Access
-
-The multi-numeric type field access is an syntax to access the field of the multi-numeric value.
-
-  MULTI_NUMERIC_VALUE->{FIELD_NAME}
-
-See L</"Getting Multi-Numeric Field"> to get the field of the multi-numeric value.
-
-See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric value.
-
 =head1 Type
 
 SPVM language has data types.
@@ -4861,6 +4754,113 @@ The reference can be created for the value of the multi-numeric type.
   my $z_ref = \$z;
 
 L<undef|/"Undefined Value"> cannot be assigned to the multi-numeric type.
+
+=head3 Multi-Numeric Value
+
+A multi-numeric value is a value that represents continuous multiple numeric values in memory.
+
+=head4 Multi-Numeric Type Definition
+
+A L<multi-numeric type|/"Multi-Numeric Type"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
+
+  # Continuous two 64bit floating point
+  class Complex_2d : mulnum_t {
+    re : double;
+    im : double;
+  }
+
+The type of a field must be a L<numeric type|/"Numeric Type">.
+
+The types of all fields must be the same types.
+
+The length of the fields must be less than or equal to 255.
+
+The multi-numeric type must end with the following suffix.
+
+  _[FieldsLength][TypeSuffix]
+
+The length of the fields in the suffix must be the same as the length of the fields.
+
+The type suffix in the suffix must correspond to the L<numeric type|/"Numeric Type"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix">.
+
+See the L<multi-numeric type field access|/"Multi-Numeric Type Field Access"> to get and set the field of the multi-numeric type.
+
+=head3 Multi-Numeric Type Suffix
+
+The list of the multi-numeric type suffix.
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Numeric Type
+   </th>
+    <th>
+     Type Suffix
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>byte</b>
+    </td>
+    <td>
+      b
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>short</b>
+    </td>
+    <td>
+      s
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>int</b>
+    </td>
+    <td>
+      i
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>long</b>
+    </td>
+    <td>
+      l
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>float</b>
+    </td>
+    <td>
+      f
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>double</b>
+    </td>
+    <td>
+      d
+    </td>
+  </tr>
+</table>
+
+=end html
+
+=head3 Multi-Numeric Type Field Access
+
+The multi-numeric type field access is an syntax to access the field of the multi-numeric value.
+
+  MULTI_NUMERIC_VALUE->{FIELD_NAME}
+
+See L</"Getting Multi-Numeric Field"> to get the field of the multi-numeric value.
+
+See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric value.
 
 =head2 Reference Type
 
