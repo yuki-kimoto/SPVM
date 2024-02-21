@@ -3160,7 +3160,7 @@ L<Field attributes|/"Field Attribute"> can be specified.
 
 Compilation Errors:
 
-The field definition needs the L<type|/"Type">. The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
+The field definition needs the L<type|/"Types">. The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
 
 The field names must follows the rule of the L<field name|/"Field Name">. Otherwise a compilation error occurs.
 
@@ -3696,7 +3696,7 @@ The local variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L</"Local Variable Name">.
 
-the L<type|/"Type"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, the L<multi-numeric type|/"Multi-Numeric Type">, or a L<reference type|/"Reference Type">.
+the L<type|/"Types"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, the L<multi-numeric type|/"Multi-Numeric Type">, or a L<reference type|/"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
@@ -3729,7 +3729,7 @@ The initialization of the local variable can be written at the same time as the 
   # Initialized by Point object
   my $point : Point = new Point;
 
-The L<type|/"Type"> can be omitted using the L<type inference|/"Type Inference">, 
+The L<type|/"Types"> can be omitted using the L<type inference|/"Type Inference">, 
 
   # Type inference - int
   my $num = 1;
@@ -4648,7 +4648,7 @@ If a invalid type is assigned, a compilation error occurs.
 
 =head2 string Type
 
-The C<string> type is a L<type|/"Type"> for the L</"String">.
+The C<string> type is a L<type|/"Types"> for the L</"String">.
 
   string
 
@@ -4706,15 +4706,15 @@ The length of the string can be got using a L<string length operator|/"String Le
 
 The multi-numeric type is the type to represent a L<multi-numeric value|/"Multi-Numeric Value">.
 
-The multi-numeric type can be used as the L<type|/"Type"> of the L<local variable declaration|/"Local Variable Declaration">.
+The multi-numeric type can be used as the L<type|/"Types"> of the L<local variable declaration|/"Local Variable Declaration">.
 
   my $z : Complex_2d;
 
 The value is initialized by the L<initial value/"Initial Value">.
 
-The multi-numeric type can be used as an argument the L<type|/"Type"> in the L<method definition|/"Method Definition">.
+The multi-numeric type can be used as an argument the L<type|/"Types"> in the L<method definition|/"Method Definition">.
 
-The multi-numeric type can be used as the return L<type|/"Type"> of the L<method definition|/"Method Definition">.
+The multi-numeric type can be used as the return L<type|/"Types"> of the L<method definition|/"Method Definition">.
 
   static method add_double_complex : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) { ... }
 
@@ -4927,7 +4927,7 @@ Examples:
 
 =head2 Type Inference
 
-Omitting the L<type|/"Type"> when the L<local variable declaration|/"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
+Omitting the L<type|/"Types"> when the L<local variable declaration|/"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
 
   # int
   my $num = 1;
@@ -8681,7 +8681,7 @@ The getting field is an L<operator|/"Operators"> to get the L<field|/"Field"> of
 
 The type of invocant is a L<class type|/"Class Type">.
 
-The retrun type is the L<type|/"Type"> of the field.
+The retrun type is the L<type|/"Types"> of the field.
 
 Examples:
 
@@ -8723,7 +8723,7 @@ The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
   
 Getting Multi-Numeric Field operator returns the field value in the multi-numeric value.
 
-The retrun type is the L<type|/"Type"> of the field.
+The retrun type is the L<type|/"Types"> of the field.
 
 Compilation Errors:
 
@@ -9033,7 +9033,7 @@ The invocant is L</"Multi-Numeric Reference Type">.
 
 The getting multi-numeric field via dereference operator returns the field value in the multi-numeric value.
 
-The retrun type is the L<type|/"Type"> of the field.
+The retrun type is the L<type|/"Types"> of the field.
 
 Compilation Errors:
 
