@@ -6,9 +6,6 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'MyZlib';
 
-# Initialize SPVM
-
-
 my $out_file = "$ENV{HOME}/tmp/output.gz";
 
 SPVM::MyZlib->test($out_file);
