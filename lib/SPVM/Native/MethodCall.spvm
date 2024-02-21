@@ -12,6 +12,8 @@ class Native::MethodCall {
   
   native static method new_instance_method_static : Native::MethodCall ($basic_type_name : string, $method_name : string);
   
+  native static method new_instance_method : Native::MethodCall ($instance : object, $method_name : string);
+  
   native static method call_callback : void ($callback : Callback, $error_id : int*, $stack : Native::Stack = undef);
   
   native static method call_class_method_for_env : void ($basic_type_name : string, $method_name : string, $error_id : int*, $stack : Native::Stack = undef, $env : Native::Env = undef);
@@ -34,9 +36,18 @@ class Native::MethodCall {
   
   static method call_instance_method_static : object ($basic_type_name : string, $method_name : string, $args : object[] = undef) {
     
-    my $class_method = &new_instance_method_static($basic_type_name, $method_name);
+    my $instance_method = &new_instance_method_static($basic_type_name, $method_name);
     
-    my $return_value = $class_method->call($args);
+    my $return_value = $instance_method->call($args);
+    
+    return $return_value;
+  }
+  
+  static method call_instance_method : object ($method_name : string, $args : object[] = undef) {
+    
+    my $instance_method = &new_instance_method($args->[0], $method_name);
+    
+    my $return_value = $instance_method->call($args);
     
     return $return_value;
   }

@@ -34,9 +34,15 @@ Create a class method call given the basic type name $basic_type_name and the me
 
 =head2 new_instance_method_static
 
-C<static method new_instance_method_static : Native::MethodCall ($basic_type_name : string, $method_name : string);>
+C<static method new_instance_method_static : L<Native::MethodCall|SPVM::Native::MethodCall> ($basic_type_name : string, $method_name : string);>
 
 Create a instance method call given the basic type name $basic_type_name and the method name $method_name, and returns it.
+
+=head2 new_instance_method
+
+C<static method new_instance_method : L<Native::MethodCall|SPVM::Native::MethodCall> ($instance : object, $method_name : string);>
+
+Create a instance method call given the instance $instance and the method name $method_name, and returns it.
 
 =head2 call_callback
 

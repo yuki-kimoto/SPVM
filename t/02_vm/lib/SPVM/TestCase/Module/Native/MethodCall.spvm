@@ -80,6 +80,52 @@ class TestCase::Module::Native::MethodCall {
     return 1;
   }
   
+  static method new_instance_method : int () {
+    
+    {
+      {
+        my $point = Point->new(1, 2);
+        
+        my $instance_method_call = Native::MethodCall->new_instance_method($point, "clear");
+        
+        $instance_method_call->call([(object)$point]);
+        
+        unless ($point->x == 0) {
+          return 0;
+        }
+        
+        unless ($point->y == 0) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method call_instance_method : int () {
+    
+    {
+      {
+        my $point = Point->new(1, 2);
+        
+        Native::MethodCall->call_instance_method("clear", [$point]);
+        
+        unless ($point->x == 0) {
+          return 0;
+        }
+        
+        unless ($point->y == 0) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    return 1;
+  }
+  
   static method call : int () {
     
     {
