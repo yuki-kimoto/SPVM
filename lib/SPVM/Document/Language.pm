@@ -3995,7 +3995,7 @@ Examples:
     }
   }
 
-=head1 Type
+=head1 Types
 
 SPVM language has data types.
 
