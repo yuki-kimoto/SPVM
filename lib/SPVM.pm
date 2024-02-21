@@ -224,6 +224,8 @@ Run the Perl program.
 
 =item * L<Distributing SPVM Modules - spvmdist|spvmdist>
 
+=item * L<Wiki|https://github.com/yuki-kimoto/SPVM/wiki>
+
 =back
 
 =head1 Repository
