@@ -110,6 +110,12 @@ C<static method call_instance_method_static : object ($basic_type_name : string,
 
 Calls a instance method given the basic type name $basic_type_name, the method name $method_name, and the arguments $args.
 
+=head2 call_instance_method
+
+C<static method call_instance_method : object ($method_name : string, $args : object[] = undef);>
+
+Calls a instance method given the method name $method_name, and the arguments $args. The first argument in $args must be an instance.
+
 =head1 Instance Methods
 
 =head2 call
