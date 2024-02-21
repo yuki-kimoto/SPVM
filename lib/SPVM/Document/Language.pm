@@ -9481,11 +9481,11 @@ Examples:
   # unweaken
   unweaken $object->{point};
 
-=head1 Method Call
+=head2 Method Call
 
 The method call calls a L<method|/"Method">.
 
-=head2 Class Method Call
+=head3 Class Method Call
 
 A method defined as the L<class method|/"Class Method"> can be called using the class method call.
 
@@ -9525,7 +9525,7 @@ Examples:
     }
   }
 
-=head2 Instance Method Call
+=head3 Instance Method Call
 
 A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
 
@@ -9551,7 +9551,7 @@ A instance method can be called statically by specifing the calss name.
 
   $point3d->Point::clear;
 
-=head2 args_width Operator
+=head3 args_width Operator
 
 The C<args_width> operator gets the stack length of the arguments passed to the method.
 
