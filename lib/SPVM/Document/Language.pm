@@ -9723,13 +9723,11 @@ Even if there are 3 circular references, you can release them correctly by setti
 
 As a syntax related to Weak Reference, Weak Reference can be destroyed the L<weaken operator/"weaken Operator">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|/"isweak Operator">.
 
-=head1 Standard IO
+=head1 System
 
-C<stdin>, C<stdout>, C<stderr> in the C language is set to the binary mode on all systems.
+=head2 Standard IO
 
-This means the escape character of the string literal C<"\n"> is not coverted to C<"\r\n"> when it is got from C<stdin> and it is printed to C<stdout> and C<stderr>.
-
-C<stdin>, C<stdout>, C<stderr> can be changed to the text mode using the L<native class|SPVM::Document::NativeClass>, but don't do that.
+SPVM has own C<stdin>, C<stdout>, and C<stderr> that is set to the binary mode.
 
 =head1 Copyright & License
 
