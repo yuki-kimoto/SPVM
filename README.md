@@ -1,6 +1,6 @@
 # SPVM Language
 
-<img src="/logo/spvm_logo.jpg" width="120px">
+<img src="/logo/spvm_logo.jpg" width="160px">
 
 * <a href="https://metacpan.org/pod/SPVM">SPVM - CPAN</a>
 
