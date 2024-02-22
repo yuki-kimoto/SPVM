@@ -753,6 +753,24 @@ Examples:
 
 Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
 
+=head2 Sequential Operator
+
+The sequential operator C<,> is an L<operator|/"Operators"> like the following.
+
+  (OPERAND1, OPERAND2, ..., OPERNADN)
+
+The operands are evaluated from the left to the right, and return the evaluated value of the last operand.
+
+B<Exampless:>
+
+  # 3 is assigned to $foo
+  my $foo = (1, 2, 3);
+  
+  # $x is 3, $ret is 5
+  my $x = 1;
+  my $y = 2;
+  my $ret = ($x += 2, $x + $y);
+
 =head2 Comparison Operator
 
 Comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
@@ -2080,24 +2098,6 @@ The C<eval_error_id> operatoer gets the error ID of the exception caught by an e
   eval_error_id
 
 This value is set to 0 at the beginning of the L<eval block|eval Block>.
-
-=head2 Sequential Operator
-
-The sequential operator C<,> is an L<operator|/"Operators"> like the following.
-
-  (OPERAND1, OPERAND2, ..., OPERNADN)
-
-The operands are evaluated from the left to the right, and return the evaluated value of the last operand.
-
-B<Exampless:>
-
-  # 3 is assigned to $foo
-  my $foo = (1, 2, 3);
-  
-  # $x is 3, $ret is 5
-  my $x = 1;
-  my $y = 2;
-  my $ret = ($x += 2, $x + $y);
 
 =head2 warn Operator
 
