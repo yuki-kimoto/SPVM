@@ -1908,7 +1908,7 @@ Examples:
 
 =head2 Getting Multi-Numeric Field
 
-B<Getting Multi-Numeric Field operator> is an L<operator|/"Operators"> to get Field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
+B<Getting Multi-Numeric Field operator> is an L<operator|/"Operators"> to get the field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -2147,7 +2147,7 @@ Examples:
 
 =head3 Getting Multi-Numeric Field via Dereference
 
-B<Getting Multi-Numeric Field via Dereference operator> is an L<operator|/"Operators"> to get Field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+The syntax of getting multi-numeric field via dereference is an L<operator|/"Operators"> to get the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
