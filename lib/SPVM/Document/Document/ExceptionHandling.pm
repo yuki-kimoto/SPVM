@@ -26,7 +26,7 @@ If a basic type ID and a class name are not given, it is set to the basic type I
 
 =head2 Catching Exception 
 
-An L<eval block|SPVM::Document::Language::Class/"eval Block"> catches an exception.
+An eval block catches an exception.
 
   eval {
     die "This value is invalid.";
@@ -49,7 +49,7 @@ If an exception is thrown, the message passed to the die statement is set to L<$
     }
   }
 
-C<$@> is can be overwritten by the other operations, so it is good to save it into a local variable.
+C<$@> could be overwritten by the other operations, so it is good to save it into a local variable.
 
   if (my $error = $@) {
     
