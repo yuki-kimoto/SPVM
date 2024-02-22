@@ -8,53 +8,70 @@ This document describes exception handling in SPVM language.
 
 =head1 Exception Handling
 
-Explains exceptions.
-
 =head2 Throwing Exception
 
-You can throw an exception using the L<die statement|/"die Statement">.
+The L<die statement|SPVM::Document::Language::Statements/"die Statement"> throws an exception.
 
-  die OPERAND;
+  die "This value is invalid.";
 
-Examples:
+A basic type ID can be given to the die statement. This is set to C<eval_error_id> if an exception is thrown.
 
-  # Throw an exception
-  die "Error";
+  die basic_type_id Error::System, "This value is invalid.";
+
+A class name can be given to the die statement. This is the same as the above code.
+
+  die Error::System "This value is invalid.";
+
+If a basic type ID and a class name are not given, it is set to the basic type ID of the L<Error|SPVM::Error> class.
 
 =head2 Catching Exception 
 
-You can catch an exception using an L<eval block|/"eval Block">.
+An L<eval block|SPVM::Document::Language::Class/"eval Block"> catches an exception.
 
   eval {
-    die "Error";
+    die "This value is invalid.";
   }
 
-The L<undef|/"Undefined Value"> is set to the L<exception variable|/"Exception Variable"> C<$@> at the top of the L<eval block|/"eval Block">.
+C<undef> is set to L<$@|/"Exception Variable"> at the beginning of each eval block.
 
-The error message is set to the L<exception variable|/"Exception Variable"> C<$@> when the exception is thrown.
+0 is set to C<eval_error_id> at the beginning of each eval block.
 
-Examples:
-  
-  # Catch the exception
-  eval {
-    # Throw an exception
-    die "Error";
-  }
-  
-  # Check the error message
+If an exception is thrown, the message passed to the die statement is set to L<$@|/"Exception Variable">, and the basic type ID passed to the die statement is set to C<eval_error_id>.
+
   if ($@) {
-    # ...
+    # Do something if an exception is thrwon
+  }
+  
+  # If you need to check eval_error_id, write the following code.
+  if ($@) {
+    if (eval_error_id isa_error Error::System) {
+      
+    }
+  }
+
+C<$@> is can be overwritten by the other operations, so it is good to save it into a local variable.
+
+  if (my $error = $@) {
+    
   }
 
 =head2 Exception Variable
 
-B<Exception Variable> is a global variable that is represented by "B<$@>"
+C<$@> is the exception variable. This is used to save a message for an exception.
 
   $@
 
-See the L<setting class varialbe|/"Setting Class Variable"> to get Exception Variable Value.
+The type is the string type.
 
-See L</"Setting Exception Variable"> to set Exception Variable Value.
+Using the assignment operator, the value of the exception variable can be set.
+
+  $@ = "Error Message";
+  
+  $@ = undef;
+
+The exception variable is a stack variable(not a global variable).
+
+If a new stack is created for a thread, exception variables exist for each thread.
 
 =head1 Copyright & License
 
