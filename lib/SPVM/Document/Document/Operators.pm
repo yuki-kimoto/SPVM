@@ -2020,9 +2020,9 @@ Examples:
   my $objects : object[] = $points;
   $objects->[2] = Point->new(3, 5);
 
-=head2 Type Cast
+=head2 Type Cast Operator
 
-The type cast is the L<operator|/"Operators"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
+The type cast operator performs an L<explicite type conversion|SPVM::Document::Language::Types/"Explicite Type Conversion">.
 
   # Type Cast
   (TYPE)OPERAND
@@ -2030,32 +2030,27 @@ The type cast is the L<operator|/"Operators"> to perform an L<explicite type con
   # Postfix Type Cast
   OPERAND->(TYPE)
 
-A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
-
-The behaviors of type casts are explained in L</"Type Castability">.
-
 Compilation Errors:
 
-If the type cast doesn't have the L<castability|"Type Castability">, a compilation error occurs.
+If the operand of the type cast operator dose not satisfy L<type castability|"Type Castability">, a compilation error occurs.
 
 Examples:
   
-  # The explicte type conversion from long to int 
+  # long to int 
   my $num = (int)123L;
   
-  # The explicte type conversion from byte[] to string
+  # byte[] to string
   my $num = (string)new byte[3];
   
-  # The explicte type conversion from string to byte[]
+  # string to byte[]
   my $num = (byte[])"Hello";
   
   # Postfix type cast
-  my $point = Point->new;
-  my $stringable = $point->(Stringable);
+  my $stringable = Point->new->(Stringable);
 
 =head2 Method Call
 
-The method call calls a L<method|/"Method">.
+The method call syntax calls a L<method|/"Method">.
 
 =head3 Class Method Call
 
@@ -2129,7 +2124,7 @@ Setting a value with Dereference is an L<operator|/"Operators"> to set the actua
 
   $VARIABLE = OPERAND
 
-Setting a value with Dereference returns the set value. This is the L<operator|/"Operators">.
+Setting a value with Dereference returns the set value.
 
 Compilation Errors:
 
@@ -2320,7 +2315,7 @@ The above example is the same as the following codes.
 
 =head2 Reference Operator
 
-The reference operator C<\> is the L<operator|/"Operators"> to create a L<reference|/"Reference">.
+The reference operator C<\> creates a L<reference|/"Reference">.
 
   \OPERAND
 
