@@ -12,9 +12,9 @@ The unary plus operator C<+> returns I<OPERAND>.
 
   +OPERAND
 
-Before this operation, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
+Before this operation, the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on I<OPERAND>.
 
-The return type is the type after the L<integer promotional conversion|/"Integer Promotional Conversion"> has been performed.
+The return type is the type after the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> has been performed.
 
 Compilation Errors:
 
@@ -31,9 +31,9 @@ Examples:
 
 The unary minus operator C<-> returns the negative value of I<OPERAND>.
 
-Before this operation, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
+Before this operation, the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on I<OPERAND>.
 
-The return type is the type after the L<integer promotional conversion|/"Integer Promotional Conversion"> has been performed.
+The return type is the type after the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> has been performed.
 
 Compilation Errors:
 
@@ -54,9 +54,9 @@ The addition operator performs the same operation as the following C language op
 
   LEFT_OPERAND + RIGHT_OPERAND
 
-Before this operation, The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+Before this operation, The L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> has been performed.
 
 Compilation Errors:
 
@@ -74,9 +74,9 @@ The subtraction operator performs the same operation as the following C language
 
   LEFT_OPERAND - RIGHT_OPERAND
 
-Before this operation, The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+Before this operation, The L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> has been performed.
 
 Compilation Errors:
 
@@ -90,13 +90,13 @@ The multiplication operator C<*> calculates the multiplication of I<LEFT_OPERAND
 
   LEFT_OPERAND * RIGHT_OPERAND
 
-Before this operation, The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+Before this operation, The L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The multiplication operator performs the same operation as the following C language operation.
 
   LEFT_OPERAND * RIGHT_OPERAND;
 
-The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> has been performed.
 
 Compilation Errors:
 
@@ -110,13 +110,13 @@ The division operator C</> calculates the division of I<LEFT_OPERAND> and I<RIGH
 
   LEFT_OPERAND / RIGHT_OPERAND
 
-Before this operation, The L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+Before this operation, The L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The division operator performs the same operation as the following C language operation.
 
   LEFT_OPERAND / RIGHT_OPERAND;
 
-The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> has been performed.
 
 Compilation Errors:
 
@@ -126,7 +126,7 @@ The type of I<RIGHT_OPERAND> must be a numeric type. Otherwise a compilation err
 
 Exceptions:
 
-If I<LEFT_OPERAND> and I<RIGHT_OPERAND> are L<integer types|/"Integer Type"> and I<RIGHT_OPERAND> is 0, an exception is thrown.
+If I<LEFT_OPERAND> and I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Division Unsigned Int Operator
 
@@ -178,20 +178,20 @@ The modulo operator C<%> is calculates a modulo of I<LEFT_OPERAND> and I<RIGHT_O
 
   LEFT_OPERAND % RIGHT_OPERAND
 
-Before this operation, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+Before this operation, the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The modulo operator performs the same operation as the following C language operation.
 
   RETURN_VALUE = LEFT_OPERAND % RIGHT_OPERAND;
   if ((LEFT_OPERAND < 0) != (RIGHT_OPERAND < 0) && RETURN_VALUE) { RETURN_VALUE += RIGHT_OPERAND; }
 
-The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> has been performed.
+The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> has been performed.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an integer type. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an integer type. Otherwise a compilation error occurs.
 
 Exceptions:
 
@@ -403,7 +403,7 @@ The bit AND operator C<&> performes a bit AND operation.
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-Before this operation, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+Before this operation, the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
 
 The return value is the same as the follwoing operation of the C language.
 
@@ -428,7 +428,7 @@ The bit OR operator C<|> performes a bit OR operation.
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-Before this operation, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
+Before this operation, the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
 
 The return value is the same as the follwoing operation of the C language.
 
@@ -463,7 +463,7 @@ The return type is the type that the L<numeric widening conversion|/"Numeric Wid
 
 Compilation Errors:
 
-The type of I<OPERAND> must is an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must is an integer type. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -480,9 +480,9 @@ The left shift operator C<E<lt>E<lt>> performs the left bit shift.
 
   LEFT_OPERAND << RIGHT_OPERAND
 
-Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
+Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
 
-Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
+Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
 The left shift operator performs the same operation as the following C language operation.
 
@@ -492,7 +492,7 @@ The return type is the same as the type of I<LEFT_OPERAND>.
 
 Compilation Erorrs:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an integer type. Otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be an integer type within int. Otherwise a compilation error occurs.
 
@@ -502,9 +502,9 @@ The arithmetic right shift operator C<E<gt>E<gt>> performs the arithmetic right 
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
+Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
 
-Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
+Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
 The operation result of the arithmetic right shift Operator is the operation that exactly same as the following operation in the C language.
 
@@ -514,7 +514,7 @@ The return type is the same as the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an integer type. Otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be an integer type within int. Otherwise a compilation error occurs.
 
@@ -524,9 +524,9 @@ The logical right shift operator C<E<gt>E<gt>E<gt>> performs the logical right b
 
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
+Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
 
-Before this operation, the L<numeric widening conversion/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
+Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
 The operation result of logical right shift Operator is the same as the following calculation in the C language.
   
@@ -540,15 +540,13 @@ The return type is the same as the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an integer type. Otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be an integer type within int. Otherwise a compilation error occurs.
 
 =head2 Logical Operator
 
-The logical operators are the L<operators|/"Operators"> to perform logical operations.
-
-The logical operators are the L<logical AND operator|/"Logical AND Operator">, the L<logical OR operator|/"Logical OR Operator">, and the L<logical NOT operator|/"Logical NOT Operator">.
+The logical operators performs logical operations.
 
 =head3 Logical AND Operator
 
@@ -558,9 +556,9 @@ The logical AND operator C<&&> performs a logical AND operation.
   
 The return type of the logical AND operator is the int type.
 
-Thg logical AND operator performs the L<boolean conversion|/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
+Thg logical AND operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
 
-It performs the L<boolean conversion|/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise return the evaluated value.
+It performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise return the evaluated value.
 
 =head3 Logical OR Operator
 
@@ -570,9 +568,9 @@ The logical OR operator C<||> performes a logical OR operation.
 
 The return type of the logical OR operator is the int type.
 
-Thg logical OR operator performs the L<boolean conversion|/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
+Thg logical OR operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
 
-It performs the L<boolean conversion|/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise returns 0.
+It performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise returns 0.
 
 =head3 Logical NOT Operator
 
@@ -582,7 +580,7 @@ The logical NOT operator C<!> performes a logical NOT operation.
 
 The return type of the logical NOT operator is the int type.
 
-Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"> to I<OPERAND>. If the evaluated value is 0, returns 1. Otherwise returns 0.
+Thg logical NOT operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<OPERAND>. If the evaluated value is 0, returns 1. Otherwise returns 0.
 
 =head2 String Concatenation Operator
 
@@ -590,7 +588,7 @@ String concatenation operator C<.> concats two strings.
 
   LEFT_OPERAND . RIGHT_OPERAND
 
-If the type of I<OPERAND> is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
+If the type of I<OPERAND> is numeric type, a L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> is performed.
 
 The return type is the L<string type|/"string Type">.
 
@@ -602,7 +600,7 @@ If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is L<undef|/"Undefined Value">, an except
 
 Compilation Errors:
 
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, L</"byte[] Type">, or numeric type. Otherwise a compilation error occurs.
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, the byte[] type, or numeric type. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -622,7 +620,7 @@ Array Length Operator returns the L<operator|/"Operators">
 
 Compilation Errors:
 
-The type of the operand must be an L<array type|/"Array Type">. Otherwise a compilation error occurs.
+The type of the operand must be an array type. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -678,7 +676,7 @@ See L</"Setting Field">.
 
 =head2 Special Assignment Operator
 
-A special assignment operator is the alias for the combination of an operator and L</"Assignment Operator"> C<=>.
+A special assignment operator is the alias for the combination of an operator I<OPERATOR> and L</"Assignment Operator"> C<=>.
 
   LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
 
@@ -846,7 +844,7 @@ Numeric comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND> in the
 
 =end html
 
-Before this operation, the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+Before this operation, the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The numeric comparison operators performed the same operations as the following C language operations.
 
@@ -965,7 +963,7 @@ The C<isa> operator checks whether I<LEFT_OPERAND> can be assigned to the right 
 
   LEFT_OPERAND isa RIGHT_TYPE
 
-If the right type is a numeric type, a multi-numeric type, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignability|/"Type Assignability">.
+If the right type is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
 
 If the assignability without implicite convertion is true, it returns 1, otherwise returns 0.
 
@@ -1033,7 +1031,7 @@ The C<is_type> operator checks whether the type of I<LEFT_OPERAND> is equal to t
 
   LEFT_OPERAND is_type RIGHT_TYPE
 
-If the right type is a numeric type, a multi-numeric type, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the compile type of I<LEFT_OPERAND> is equal to the right type.
+If the right type is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the compile type of I<LEFT_OPERAND> is equal to the right type.
 
 If the check is true, it returns 1, otherwise returns 0.
 
@@ -1180,7 +1178,7 @@ The C<new_string_len> operator creates a L<string|/"String"> with the length.
 
   new_string_len OPERAND
 
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
+The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on I<OPERAND>.
 
 The C<new_string_len> operator returns a new string that length is the length specified by I<OPERAND> and all characters are C<\0>.
 
@@ -1291,15 +1289,13 @@ Note that the sclara operator exists only to reduce the confusion.
 
 =head2 isweak Operator
 
-The C<isweak> operator checks whether the L<field|/"Field"> is L<weak reference|/"Weak Reference.">
+The C<isweak> operator checks whether a field is referenced by a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">
 
   isweak OBJECT->{FIELD_NAME};
 
 If the field is weaken, the C<isweak> operator returns 1, otherwise returns 0.
 
 The return type of the C<isweak> operator is the int type.
-
-See L</"Weak Reference"> to know the behavior of the C<isweak> operator.
 
 Compilation Errors:
 
@@ -1330,7 +1326,7 @@ Compilation Errors:
 
 The type of I<OPERAND> must be the L<class type|/"Class Type"> or the L<interface type|/"Interface Type">. Otherwise a compilation error occurs.
 
-The METHOD_NAME must be a L<method name|/"Method Name"> or an empty string C<"">. Otherwise a compilation error occurs.
+The METHOD_NAME must be a method name or an empty string C<"">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -1442,13 +1438,11 @@ Read-only strings cannnot be cast to L<string type|/"string Type"> qualified by 
 
 =head2 weaken Operator
 
-The C<weaken> operator creates a L<weak reference|/"Weak Reference">.
+The C<weaken> operator creates a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
 
   weaken OBJECT->{FIELD_NAME};
 
 The return type is the L<void type|/"void Type">.
-
-See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
 
 Compilation Errors:
 
@@ -1465,13 +1459,11 @@ Examples:
 
 =head2 unweaken Operator
 
-The C<unweaken> operator unweakens a L<weak reference|/"Weak Reference">.
+The C<unweaken> operator unweakens a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
 
   unweaken OBJECT->{FIELD_NAME};
 
 The return type is the L<void type|/"void Type">.
-
-See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
 
 Compilation Errors:
 
@@ -1629,7 +1621,7 @@ The syntax of creating array creates an array using the L<new operator|/"new Ope
 
 The type must be a L<basic type|/"Basic Type">.
 
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the length.
+The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the length.
 
 The length must be greater than or equal to 0. Otherwise an exception is thrown.
 
@@ -1748,7 +1740,7 @@ See the L<scope|/"Scope"> to know the L<garbage collection|/"Garbage Collection"
 
 Compilation Errors:
 
-The assignment of the value must satisfy the L<assignability|/"Type Assignability">. Otherwise a compilation error occurs.
+The assignment of the value must satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">. Otherwise a compilation error occurs.
 
 =head2 Getting Class Variable
 
@@ -1790,7 +1782,7 @@ B<Setting Class Variable operator> sets L</"Class Variable"> Value using the L<a
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
-"CLASS_NAME::" can be omitted when the class Variable belongs to own L</"Class">.
+"CLASS_NAME::" can be omitted when the class Variable belongs to own class.
 
   $CLASS_VARIABLE_NAME = VALUE
 
@@ -1806,7 +1798,7 @@ If the class variable is used in an anon method and C<CLASS_NAME::> can be omitt
 
 Compilation Errors:
 
-If the assignment does not satisfy the L<assignability|/"Type Assignability">, a compilation error occurs.
+If the assignment does not satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">, a compilation error occurs.
 
 If the class variable does not found, a compilation error occurs.
 
@@ -1864,7 +1856,7 @@ Examples:
 
 =head2 Getting Field
 
-The getting field gets the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
+The getting field gets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -1879,7 +1871,7 @@ Examples:
 
 =head2 Setting Field
 
-The setting field sets the L<field|/"Field"> of the object. This is one syntax of the L<field access|/"Field Access">.
+The setting field sets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = VALUE
 
@@ -1895,7 +1887,7 @@ If an object has already been assigned to the field before the assignment, the r
 
 Compilation Errors:
 
-If the assignment does not satisfy the L<assignability|/"Type Assignability">, a compilation error occurs.
+If the assignment does not satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">, a compilation error occurs.
 
 Examples:
 
@@ -1916,7 +1908,7 @@ The retrun type is the L<type|/"Types"> of the field.
 
 Compilation Errors:
 
-If the field names does not found in the L</"Class">, a compilation error occurs
+If the field names does not found in the class, a compilation error occurs
 
 Examples:
 
@@ -1933,13 +1925,13 @@ The invocant is the multi-numeric type.
 
 Setting Multi-Numeric Field operator returns the value of the field after setting. 
 
-The assignment must satisfy the L<assignability|/"Type Assignability">.
+The assignment must satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
 
 The return type is the field type.
 
 Compilation Errors:
 
-If the field names does not found in the L</"Class">, a compilation error occurs.
+If the field names does not found in the class, a compilation error occurs.
 
 Examples:
 
@@ -1954,7 +1946,7 @@ The getting array element gets the element of the L<array|SPVM::Document::Langua
 
 The array must be an array type.
 
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
+The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the index.
 
 The getting array element returns the element that is specifed by the index.
 
@@ -1987,7 +1979,7 @@ The setting array element sets the element of the array using the L<assignment o
 
 The array must be an array type.
 
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
+The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the index.
 
 I<RIGHT_OPERAND> must satisfy L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
 
@@ -2090,7 +2082,7 @@ Examples:
 
 =head3 Instance Method Call
 
-A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
+A method defined as the instance method can be called using the instance method call.
 
   Instance->MethodName(ARGS1, ARGS2, ...);
 
@@ -2155,7 +2147,7 @@ The retrun type is the L<type|/"Types"> of the field.
 
 Compilation Errors:
 
-If the field names does not found in the L</"Class">, a compilation error occurs
+If the field names does not found in the class, a compilation error occurs
 
 Examples:
 
@@ -2173,13 +2165,13 @@ The invocant is L</"Multi-Numeric Reference Type">.
 
 The setting multi-numeric field via dereference operator returns the value of the field after setting.
 
-The assignment must satisfy the L<assignability|/"Type Assignability">.
+The assignment must satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
 
 The return type is the field type.
 
 Compilation Errors:
 
-If the field names does not found in the L</"Class">, a compilation error occurs
+If the field names does not found in the class, a compilation error occurs
 
 Examples:
 
@@ -2189,16 +2181,16 @@ Examples:
 
 =head2 Anon Method Operator
 
-The anon method operator defines an L<anon calss|/"Anon Class"> and an L<instance method|/"Instance Method"> that doesn't has its L<method name|/"Method Name">.
+The anon method operator defines an L<anon calss|SPVM::Document::Language::Class/"Anon Class"> that has an anon instance method.
 
-It creates an object from the anon class by the L<new|/"Creating Object"> operator and returns the object.
+And this operator creates an object which type is the anon class by the L<new/"new Operator"> operator, and returns it.
   
   # Anon method
   method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
   
   }
 
-The way to define the method is the same as the L<method definition|/"Method Definition">.
+The way to define the method is the same as the L<method definition|SPVM::Document::Language::Class/"Method Definition">.
 
 Examples:
   
@@ -2311,11 +2303,11 @@ The above example is the same as the following codes.
 
 =head2 Reference Operator
 
-The reference operator C<\> creates a L<reference|/"Reference">, and returns it.
+The reference operator C<\> creates a reference, and returns it.
 
   \OPERAND
 
-The return type is the L<reference type|/"Reference Type"> of I<OPERAND>.
+The return type is the reference type of I<OPERAND>.
 
 Compilation Errors:
 
@@ -2352,6 +2344,20 @@ Examples:
   my $z : Complex_2d;
   my $z_ref : Complex_2d* = \$z;
   my $z_deref : Complex_2d = $$z_ref;
+
+=See Also
+
+=over 2
+
+=item * L<Class Definition|SPVM::Document::Language::Class>
+
+=item * L<Types|SPVM::Document::Language::Types>
+
+=item * L<Exception Handling|SPVM::Document::Language::ExceptionHandling>
+
+=item * L<Garbage Collection|SPVM::Document::Language::GarbageCollection>
+
+=back
 
 =head1 Copyright & License
 
