@@ -1,3 +1,25 @@
+0.989079 2023-02-22
+  [Document Improvement]
+    * Separate SPVM::Document::Language to the following documents.
+    
+      =item * L<Lexical Tokenization|SPVM::Document::Language::Tokenization>
+
+      =item * L<Syntax Parsing|SPVM::Document::Language::SyntaxParsing>
+
+      =item * L<Class Definition|SPVM::Document::Language::Class>
+
+      =item * L<Types|SPVM::Document::Language::Types>
+
+      =item * L<Statements|SPVM::Document::Language::Statements>
+
+      =item * L<Operators|SPVM::Document::Language::Operators>
+
+      =item * L<Exception Handling|SPVM::Document::Language::ExceptionHandling>
+
+      =item * L<Garbage Collection|SPVM::Document::Language::GarbageCollection>
+
+      =item * L<System Setting|SPVM::Document::Language::System>
+      
 0.989078 2023-02-21
   [Document Improvement]
     * Improve "Usage" of SPVM program.

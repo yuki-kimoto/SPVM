@@ -548,6 +548,211 @@ The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwis
 
 The type of I<RIGHT_OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
 
+=head2 Logical Operator
+
+The logical operators are the L<operators|/"Operators"> to perform logical operations.
+
+The logical operators are the L<logical AND operator|/"Logical AND Operator">, the L<logical OR operator|/"Logical OR Operator">, and the L<logical NOT operator|/"Logical NOT Operator">.
+
+=head3 Logical AND Operator
+
+The logical AND operator C<&&> is a L<logical operator|/"Logical Operator"> to perform a logical AND operation.
+
+  LEFT_OPERAND && RIGHT_OPERAND
+  
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<operator|/"Operators">.
+
+The return type of the logical AND operator is the int type.
+
+Thg logical AND operator performs the L<boolean conversion|/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
+
+It performs the L<boolean conversion|/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise return the evaluated value.
+
+=head3 Logical OR Operator
+
+The logical OR operator C<||> is a L<logical operator|/"Logical Operator"> to performe a logical OR operation.
+
+  LEFT_OPERAND || RIGHT_OPERAND
+
+The return type of the logical OR operator is the int type.
+
+Thg logical OR operator performs the L<boolean conversion|/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
+
+It performs the L<boolean conversion|/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise returns 0.
+
+=head3 Logical NOT Operator
+
+The logical NOT operator C<!> is a L<logical operator|/"Logical Operator"> to performe a logical NOT operation.
+
+  !OPERAND
+
+The return type of the logical NOT operator is the int type.
+
+Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"> to I<OPERAND>. If the evaluated value is 0, returns 1. Otherwise returns 0.
+
+=head2 String Concatenation Operator
+
+String concatenation operator . is an L<operator|/"Operators"> to concat two strings.
+
+  LEFT_OPERAND . RIGHT_OPERAND
+
+If the type of I<OPERAND> is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
+
+The return type is the L<string type|/"string Type">.
+
+A string concatenation operator returns the result to concat two operands.
+
+If both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are a L<string literal|/"String Literal">, the two string literals are concatenated at compile-time.
+
+If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is L<undef|/"Undefined Value">, an exception occurs.
+
+Compilation Errors:
+
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+
+Examples:
+
+  my $str = "abc" . "def";
+  my $str = "def" . 34;
+  my $str = 123 . 456;
+
+=head2 Assignment Operator
+
+The assignment operator C<=> is an L<operator|/"Operators"> to assign a value.
+
+  LEFT_OPERAND = RIGHTH_OPERAND
+
+The assignment operator has different meanings depending on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+
+=head3 Local Variable Assignment
+
+See L</"Getting Local Variable"> and L</"Setting Local Variable">.
+
+=head3 Class Variable Assignment
+
+See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
+
+=head3 Array Element Assignment
+
+See L</"Getting Array Element"> and L</"Setting Array Element">.
+
+=head3 Field Assignment
+
+See L</"Getting Field"> and L</"Setting Field">.
+
+=head2 Special Assignment Operator
+
+A special assignment operator is the alias for the combination of an L<operator> and L</"Assignment Operator"> C<=>.
+
+  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
+
+Above is the alias for the following code.
+
+  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
+
+For example, See a C<byte> case.
+
+  # Addition assignment operator
+  $x += 1;
+  
+  # Above is the same as the following code.
+  $x = (byte)($x + 1)
+
+The following operators are used as the operators of the special assignment operators.
+
+=begin html
+
+<table>
+  <tr>
+    <td>Addition assignment operator</td>
+    <td>+=</td>
+  </tr>
+  <tr>
+    <td>Subtraction assignment operator</td>
+    <td>-=</td>
+  </tr>
+  <tr>
+    <td>Multiplication assignment operator</td>
+    <td>*=</td>
+  </tr>
+  <tr>
+    <td>Division assignment operator</td>
+    <td>/=</td>
+  </tr>
+  <tr>
+    <td>Modulo assignment operator</td>
+    <td>%=</td>
+  </tr>
+  <tr>
+    <td>Bit AND assignment operator</td>
+    <td>&=</td>
+  </tr>
+  <tr>
+    <td>Bit OR assignment operator</td>
+    <td>|=</td>
+  </tr>
+  <tr>
+    <td>Left shift assignment operator</td>
+    <td><<=</td>
+  </tr>
+  <tr>
+    <td>Arithmetic right shift assignment operator</td>
+    <td>>>=</td>
+  </tr>
+  <tr>
+    <td>Logical right shift assignment operator</td>
+    <td>>>>=</td>
+  </tr>
+  <tr>
+    <td>Concatenation assignment operator</td>
+    <td>.=</td>
+  </tr>
+</table>
+
+=end html
+
+Examples:
+
+  # Special assignment operators
+  $x += 1;
+  $x -= 1;
+  $x *= 1;
+  $x /= 1;
+  $x &= 1;
+  $x |= 1;
+  $x ^= 1;
+  $x %= 1;
+  $x <<= 1;
+  $x >>= 1;
+  $x >>>= 1;
+  $x .= "abc";
+
+=head2 Array Length Operator
+
+The array length operator is an L<operator|/"Operators"> to get the length of the array.
+
+  @OPERAND
+
+The array length operator returns the int type value that is the length of the L<array|/"Array">.
+
+Array Length Operator returns the L<operator|/"Operators">
+
+Compilation Errors:
+
+The operand must be an L<operator|/"Operators"> that type is an the L<array type|/"Array Type">. Otherwise a compilation error occurs.
+
+Examples:
+  
+  # Getting the length of the array.
+  my $nums = new byte[10];
+  my $length = @$nums;
+  
+  # Getting the length of the array with a scalar operator. This is exactly same as the avobe
+  my $nums = new byte[10];
+  my $length = scalar @$nums;
+
+Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
+
 =head2 Comparison Operator
 
 Comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
@@ -959,211 +1164,6 @@ Compilation Errors:
 
 If I<OPERAND> is not an L<object type|/"Object Type"> or the undef type, a compilation error occurs.
 
-=head2 Logical Operator
-
-The logical operators are the L<operators|/"Operators"> to perform logical operations.
-
-The logical operators are the L<logical AND operator|/"Logical AND Operator">, the L<logical OR operator|/"Logical OR Operator">, and the L<logical NOT operator|/"Logical NOT Operator">.
-
-=head3 Logical AND Operator
-
-The logical AND operator C<&&> is a L<logical operator|/"Logical Operator"> to perform a logical AND operation.
-
-  LEFT_OPERAND && RIGHT_OPERAND
-  
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<operator|/"Operators">.
-
-The return type of the logical AND operator is the int type.
-
-Thg logical AND operator performs the L<boolean conversion|/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
-
-It performs the L<boolean conversion|/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is 0, returns 0. Otherwise return the evaluated value.
-
-=head3 Logical OR Operator
-
-The logical OR operator C<||> is a L<logical operator|/"Logical Operator"> to performe a logical OR operation.
-
-  LEFT_OPERAND || RIGHT_OPERAND
-
-The return type of the logical OR operator is the int type.
-
-Thg logical OR operator performs the L<boolean conversion|/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
-
-It performs the L<boolean conversion|/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is not 0, return the evaluated value. Otherwise returns 0.
-
-=head3 Logical NOT Operator
-
-The logical NOT operator C<!> is a L<logical operator|/"Logical Operator"> to performe a logical NOT operation.
-
-  !OPERAND
-
-The return type of the logical NOT operator is the int type.
-
-Thg logical NOT operator performs the L<boolean conversion|/"Boolean Conversion"> to I<OPERAND>. If the evaluated value is 0, returns 1. Otherwise returns 0.
-
-=head2 String Concatenation Operator
-
-String concatenation operator . is an L<operator|/"Operators"> to concat two strings.
-
-  LEFT_OPERAND . RIGHT_OPERAND
-
-If the type of I<OPERAND> is numeric type, a L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
-
-The return type is the L<string type|/"string Type">.
-
-A string concatenation operator returns the result to concat two operands.
-
-If both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are a L<string literal|/"String Literal">, the two string literals are concatenated at compile-time.
-
-If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is L<undef|/"Undefined Value">, an exception occurs.
-
-Compilation Errors:
-
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
-
-Examples:
-
-  my $str = "abc" . "def";
-  my $str = "def" . 34;
-  my $str = 123 . 456;
-
-=head2 Assignment Operator
-
-The assignment operator C<=> is an L<operator|/"Operators"> to assign a value.
-
-  LEFT_OPERAND = RIGHTH_OPERAND
-
-The assignment operator has different meanings depending on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
-
-=head3 Local Variable Assignment
-
-See L</"Getting Local Variable"> and L</"Setting Local Variable">.
-
-=head3 Class Variable Assignment
-
-See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
-
-=head3 Array Element Assignment
-
-See L</"Getting Array Element"> and L</"Setting Array Element">.
-
-=head3 Field Assignment
-
-See L</"Getting Field"> and L</"Setting Field">.
-
-=head2 Special Assignment Operator
-
-A special assignment operator is the alias for the combination of an L<operator> and L</"Assignment Operator"> C<=>.
-
-  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
-
-Above is the alias for the following code.
-
-  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
-
-For example, See a C<byte> case.
-
-  # Addition assignment operator
-  $x += 1;
-  
-  # Above is the same as the following code.
-  $x = (byte)($x + 1)
-
-The following operators are used as the operators of the special assignment operators.
-
-=begin html
-
-<table>
-  <tr>
-    <td>Addition assignment operator</td>
-    <td>+=</td>
-  </tr>
-  <tr>
-    <td>Subtraction assignment operator</td>
-    <td>-=</td>
-  </tr>
-  <tr>
-    <td>Multiplication assignment operator</td>
-    <td>*=</td>
-  </tr>
-  <tr>
-    <td>Division assignment operator</td>
-    <td>/=</td>
-  </tr>
-  <tr>
-    <td>Modulo assignment operator</td>
-    <td>%=</td>
-  </tr>
-  <tr>
-    <td>Bit AND assignment operator</td>
-    <td>&=</td>
-  </tr>
-  <tr>
-    <td>Bit OR assignment operator</td>
-    <td>|=</td>
-  </tr>
-  <tr>
-    <td>Left shift assignment operator</td>
-    <td><<=</td>
-  </tr>
-  <tr>
-    <td>Arithmetic right shift assignment operator</td>
-    <td>>>=</td>
-  </tr>
-  <tr>
-    <td>Logical right shift assignment operator</td>
-    <td>>>>=</td>
-  </tr>
-  <tr>
-    <td>Concatenation assignment operator</td>
-    <td>.=</td>
-  </tr>
-</table>
-
-=end html
-
-Examples:
-
-  # Special assignment operators
-  $x += 1;
-  $x -= 1;
-  $x *= 1;
-  $x /= 1;
-  $x &= 1;
-  $x |= 1;
-  $x ^= 1;
-  $x %= 1;
-  $x <<= 1;
-  $x >>= 1;
-  $x >>>= 1;
-  $x .= "abc";
-
-=head2 Array Length Operator
-
-The array length operator is an L<operator|/"Operators"> to get the length of the array.
-
-  @OPERAND
-
-The array length operator returns the int type value that is the length of the L<array|/"Array">.
-
-Array Length Operator returns the L<operator|/"Operators">
-
-Compilation Errors:
-
-The operand must be an L<operator|/"Operators"> that type is an the L<array type|/"Array Type">. Otherwise a compilation error occurs.
-
-Examples:
-  
-  # Getting the length of the array.
-  my $nums = new byte[10];
-  my $length = @$nums;
-  
-  # Getting the length of the array with a scalar operator. This is exactly same as the avobe
-  my $nums = new byte[10];
-  my $length = scalar @$nums;
-
-Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
-
 =head2 new_string_len Operator
 
 The C<new_string_len> operator is an L<operator|/"Operators"> to create a L<string|/"String"> with the length.
@@ -1233,7 +1233,7 @@ Examples:
   my $message = "Hello";
   my $is_read_only = is_read_only $message;
 
-=head2 String Length Operator
+=head2 length Operator
 
 The string length operator C<length> is an L<operator|/"Operators"> to get the length of the string.
 
@@ -1933,11 +1933,11 @@ Examples:
     }
   }
 
-=head2 Anon Method
+=head2 Anon Method Operator
 
-The anon method is an L<operator|/"Operators"> to define an L<anon calss|/"Anon Class"> and an L<instance method|/"Instance Method"> that doesn't has its L<method name|/"Method Name">.
+The anon method operator is an L<operator|/"Operators"> to define an L<anon calss|/"Anon Class"> and an L<instance method|/"Instance Method"> that doesn't has its L<method name|/"Method Name">.
 
-It creates an object object from the anon class by the L<new|/"Creating Object"> operator and returns the object.
+It creates an object from the anon class by the L<new|/"Creating Object"> operator and returns the object.
   
   # Anon method
   method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
@@ -2081,39 +2081,6 @@ The C<eval_error_id> operatoer gets the error ID of the exception caught by an e
 
 This value is set to 0 at the beginning of the L<eval block|eval Block>.
 
-=head2 Type Cast
-
-The type cast is the L<operator|/"Operators"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
-
-  # Type Cast
-  (TYPE)OPERAND
-  
-  # Postfix Type Cast
-  OPERAND->(TYPE)
-
-A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
-
-The behaviors of type casts are explained in L</"Type Castability">.
-
-Compilation Errors:
-
-If the type cast doesn't have the L<castability|"Type Castability">, a compilation error occurs.
-
-Examples:
-  
-  # The explicte type conversion from long to int 
-  my $num = (int)123L;
-
-  # The explicte type conversion from byte[] to string
-  my $num = (string)new byte[3];
-
-  # The explicte type conversion from string to byte[]
-  my $num = (byte[])"Hello";
-
-  # Postfix type cast
-  my $point = Point->new;
-  my $stringable = $point->(Stringable);
-
 =head2 Sequential Operator
 
 The sequential operator C<,> is an L<operator|/"Operators"> like the following.
@@ -2248,6 +2215,58 @@ Examples:
   # unweaken
   unweaken $object->{point};
 
+=head3 args_width Operator
+
+The C<args_width> operator gets the stack length of the arguments passed to the method.
+
+  args_width
+
+Note that the stack length of the arguments is different from the length of the arguments.
+
+If the method call is the instance method call, the stack length of the arguments is the length of the arguments + 1 for the invocant.
+
+If an argument is a multi-numeric type, the stack length of the argument becomes the length of the fields.
+
+Examples:
+  
+  static method my_static_method : int ($args : int, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+  
+  # 1
+  &my_static_method(1);
+  
+  # 2
+  &my_static_method(1, 2);
+  
+  static method my_instance_method : int ($args : int, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+  
+  # 2 (1 + the invocant)
+  &my_instance_method(1);
+  
+  # 3 (2 + the invocant)
+  &my_instance_method(1, 2);
+
+  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+
+  # 2 (The length of the fields of Complex_2d)
+  my $z : Complex_2d;
+  &my_mulnum_method($z);
+  
+  # 3 (The length of the fields of Complex_2d + 1)
+  my $z : Complex_2d;
+  &my_mulnum_method($z, 2);
+
 =head2 Method Call
 
 The method call calls a L<method|/"Method">.
@@ -2318,57 +2337,38 @@ A instance method can be called statically by specifing the calss name.
 
   $point3d->Point::clear;
 
-=head3 args_width Operator
+=head2 Type Cast
 
-The C<args_width> operator gets the stack length of the arguments passed to the method.
+The type cast is the L<operator|/"Operators"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
 
-  args_width
+  # Type Cast
+  (TYPE)OPERAND
+  
+  # Postfix Type Cast
+  OPERAND->(TYPE)
 
-Note that the stack length of the arguments is different from the length of the arguments.
+A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
 
-If the method call is the instance method call, the stack length of the arguments is the length of the arguments + 1 for the invocant.
+The behaviors of type casts are explained in L</"Type Castability">.
 
-If an argument is a multi-numeric type, the stack length of the argument becomes the length of the fields.
+Compilation Errors:
+
+If the type cast doesn't have the L<castability|"Type Castability">, a compilation error occurs.
 
 Examples:
   
-  static method my_static_method : int ($args : int, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-  
-  # 1
-  &my_static_method(1);
-  
-  # 2
-  &my_static_method(1, 2);
-  
-  static method my_instance_method : int ($args : int, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-  
-  # 2 (1 + the invocant)
-  &my_instance_method(1);
-  
-  # 3 (2 + the invocant)
-  &my_instance_method(1, 2);
+  # The explicte type conversion from long to int 
+  my $num = (int)123L;
 
-  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
+  # The explicte type conversion from byte[] to string
+  my $num = (string)new byte[3];
 
-  # 2 (The length of the fields of Complex_2d)
-  my $z : Complex_2d;
-  &my_mulnum_method($z);
-  
-  # 3 (The length of the fields of Complex_2d + 1)
-  my $z : Complex_2d;
-  &my_mulnum_method($z, 2);
+  # The explicte type conversion from string to byte[]
+  my $num = (byte[])"Hello";
+
+  # Postfix type cast
+  my $point = Point->new;
+  my $stringable = $point->(Stringable);
 
 =head1 Copyright & License
 

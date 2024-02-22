@@ -52,7 +52,7 @@ Run a one liner with loading a class.
 
 =head2 Executing A SPVM Program
 
-Write a L<SPVM class|SPVM::Document::Language::Class> to print "Hello World!" using L<the say operator|SPVM::Document::Language::Operators/"say">.
+Write a L<SPVM class|SPVM::Document::Language::Class> to print "Hello World!" using L<the say operator|SPVM::Document::Language::Operators/"say Operator">.
 
   # lib/SPVM/HelloWorld.spvm
   class HelloWorld {
