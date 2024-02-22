@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 Name
 
 SPVM::Document::Language::Operators - Operators in SPVM Language
@@ -590,7 +592,7 @@ String concatenation operator C<.> concats two strings.
 
 If the type of I<OPERAND> is numeric type, a L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> is performed.
 
-The return type is the L<string type|/"string Type">.
+The return type is the string type.
 
 A string concatenation operator returns the result to concat two operands.
 
@@ -1005,7 +1007,7 @@ The C<isa_error> operator checks whether the basic type ID given by I<LEFT_OPERA
 
   LEFT_OPERAND isa RIGHT_TYPE
 
-The return type is L<int type|/"int Type">.
+The return type is int type.
 
 If the assignability is true, returns 1. Otherwise returns 0.
 
@@ -1039,7 +1041,7 @@ If the right type is another object type, this operator checks the runtime type 
 
 If the runtime check is true, it returns 1, otherwise returns 0.
 
-The return type is L<int type|/"int Type">.
+The return type is int type.
 
 Compilation Errors:
 
@@ -1069,7 +1071,7 @@ The C<is_error> operator checks whether the basic type ID given by I<LEFT_OPERAN
 
   LEFT_OPERAND isa RIGHT_TYPE
 
-The return type is L<int type|/"int Type">.
+The return type is int type.
 
 If it is ok, returns 1. Otherwise returns 0.
 
@@ -1097,7 +1099,7 @@ The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operator
 
 If the compilation-time type of I<LEFT_OPERAND> is the right type, returns 1. Otherwise returns 0.
 
-The return type is L<int type|/"int Type">.
+The return type is int type.
 
 Examples:
   
@@ -1130,7 +1132,7 @@ The C<type_name> operator returns the type name of the object.
 
 If I<OPERAND> is defined, returns the type name of the object. Otherwise returns L<undef|/"Undefined Value">.
 
-The return type is the L<string type|/"string Type">.
+The return type is the string type.
 
 Compilation Errors.
 
@@ -1148,7 +1150,7 @@ The C<compile_type_name> operator returns the type name at compilation time.
 
   type_name OPERAND
 
-The return type is the L<string type|/"string Type">.
+The return type is the string type.
 
 Examples:
   
@@ -1164,7 +1166,7 @@ The C<dump> operator gets the string representation of the object.
 
 It returns the string representation of the object.
 
-The return type is the L<string type|/"string Type">.
+The return type is the string type.
 
 The string representation may be changed. Please don't use the C<dump> operator for the purpose of the data serialization.
 
@@ -1184,7 +1186,7 @@ The C<new_string_len> operator returns a new string that length is the length sp
 
 The character just after the last character is C<\0>. The string created by the new_string_len operator can be used as the C language string ending with C<\0>.
 
-The return type is the L<string type|/"string Type">.
+The return type is the string type.
 
 The length specified by I<OPERAND> must be greater than or equal to 0. Otherwise an exception is thrown.
 
@@ -1203,7 +1205,7 @@ The C<copy> operator copies the object.
 
   copy OPERAND
 
-If the type of operand is none of the L<string type|/"string Type">, a numeric type, a multi-numeric type,
+If the type of operand is none of the string type, a numeric type, a multi-numeric type,
 An L<exception|/"Exception Handling"> is thorwn.
 
 The C<copy> operator returns the copied object.
@@ -1214,7 +1216,7 @@ Read-only flag of the string is dropped.
 
 Compilation Errors:
 
-The type of the operand must be an L<object type|/"object Type">. Otherwise a compilation error occurs.
+The type of the operand must be an object type. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -1229,7 +1231,7 @@ The C<is_read_only> operator checks if the L<string|/"String"> is read-only.
 
 If the string is read-only, the C<is_read_only> operator returns 1, otherwise returns 0.
 
-The return type is an L<int type|/"int Type">.
+The return type is an int type.
 
 Compilation Errors:
 
@@ -1299,7 +1301,7 @@ The return type of the C<isweak> operator is the int type.
 
 Compilation Errors:
 
-The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
+The type of the object must be the class type. Otherwise a compilation error occurs.
 
 If the field name is not found, a compilation error occurs.
 
@@ -1320,11 +1322,11 @@ An empty string C<""> means an L<anon method|/"Anon Method">.
 
 If I<OPERAND> can call the method given by METHOD_NAME, returns 1. Otherwise returns 0.
 
-The return type is L<int type|/"int Type">.
+The return type is int type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be the L<class type|/"Class Type"> or the L<interface type|/"Interface Type">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must be the class type or the L<interface type|/"Interface Type">. Otherwise a compilation error occurs.
 
 The METHOD_NAME must be a method name or an empty string C<"">. Otherwise a compilation error occurs.
 
@@ -1375,7 +1377,7 @@ The C<warn> operator prints a message to the standard error.
 
 If I<OPERAND> is omitted or I<OPERAND> is L<undef|/"Undefined Value">, I<OPERAND> is set to the string C<"Warning">.
 
-The return type is the L<void type|/"void Type">.
+The return type is the void type.
 
 If the end character of the OPERNAD is C<\n>, the C<warn> operator prints the OPERNAD itself.
 
@@ -1399,7 +1401,7 @@ The C<print> operator prints a L<string|/"String"> to the standard output.
 
 I<OPERAND> must be the string type.
 
-The return type is the L<void type|/"void Type">.
+The return type is the void type.
 
 If I<OPERAND> is an L<undef|/"Undefined Value">, print nothing.
 
@@ -1411,7 +1413,7 @@ The C<say> operator prints a L<string|/"String"> with a line break C<\n> to the 
 
 I<OPERAND> must be the string type.
 
-The return type is the L<void type|/"void Type">.
+The return type is the void type.
 
 If I<OPERAND> is an L<undef|/"Undefined Value">, print C<\n>.
 
@@ -1423,9 +1425,9 @@ The C<make_read_only> operator makes the L<string|/"Strings"> read-only.
 
 I<OPERAND> must be the string type.
 
-The return type is the L<void type|/"void Type">.
+The return type is the void type.
 
-Read-only strings cannnot be cast to L<string type|/"string Type"> qualified by L<mutable|/"mutable Type Qualifier">.
+Read-only strings cannnot be cast to string type qualified by L<mutable|/"mutable Type Qualifier">.
 
   # A string
   my $string = new_string_len 3;
@@ -1442,11 +1444,11 @@ The C<weaken> operator creates a L<weak reference|SPVM::Document::Language::Garb
 
   weaken OBJECT->{FIELD_NAME};
 
-The return type is the L<void type|/"void Type">.
+The return type is the void type.
 
 Compilation Errors:
 
-The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
+The type of the object must be the class type. Otherwise a compilation error occurs.
 
 If the field name is not found, a compilation error occurs.
 
@@ -1463,11 +1465,11 @@ The C<unweaken> operator unweakens a L<weak reference|SPVM::Document::Language::
 
   unweaken OBJECT->{FIELD_NAME};
 
-The return type is the L<void type|/"void Type">.
+The return type is the void type.
 
 Compilation Errors:
 
-The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
+The type of the object must be the class type. Otherwise a compilation error occurs.
 
 If the field name is not found, a compilation error occurs.
 
@@ -1827,7 +1829,7 @@ The setting exception variable gets the value of the L<exception variable|/"Exce
 
 The return value is the value of L<exception variable|/"Exception Variable">.
 
-The return type is the L<string type|/"string Type">.
+The return type is the string type.
 
 Examples:
   
@@ -1844,7 +1846,7 @@ The type of the assigned value must be the string type.
 
 The return value is the value after the setting.
 
-The return type is the L<string type|/"string Type">.
+The return type is the string type.
 
 The reference count of the assigned value is incremented by 1.
 
@@ -1860,9 +1862,9 @@ The getting field gets the field of the object. This is one syntax of the L<fiel
 
   INVOCANT->{FIELD_NAME}
 
-The type of invocant is a L<class type|/"Class Type">.
+The type of invocant is a class type.
 
-The retrun type is the L<type|/"Types"> of the field.
+The retrun type is the type of the field.
 
 Examples:
 
@@ -1875,13 +1877,13 @@ The setting field sets the field of the object. This is one syntax of the L<fiel
 
   INVOCANT->{FIELD_NAME} = VALUE
 
-The type of invocant is a L<class type|/"Class Type">.
+The type of invocant is a class type.
 
 The return value is the value after the setting. 
 
 The return type is the field type.
 
-If the type of assigned value is a L<basic object type|/"Object Type">, the reference count of the object is incremented by 1.
+If the type of assigned value is a basic object type, the reference count of the object is incremented by 1.
 
 If an object has already been assigned to the field before the assignment, the reference count of that object is decremented by 1.
 
@@ -1904,7 +1906,7 @@ The invocant is the multi-numeric type.
   
 Getting Multi-Numeric Field operator returns the field value in the multi-numeric value.
 
-The retrun type is the L<type|/"Types"> of the field.
+The retrun type is the type of the field.
 
 Compilation Errors:
 
@@ -2143,7 +2145,7 @@ The invocant is L</"Multi-Numeric Reference Type">.
 
 The getting multi-numeric field via dereference operator returns the field value in the multi-numeric value.
 
-The retrun type is the L<type|/"Types"> of the field.
+The retrun type is the type of the field.
 
 Compilation Errors:
 
@@ -2345,7 +2347,7 @@ Examples:
   my $z_ref : Complex_2d* = \$z;
   my $z_deref : Complex_2d = $$z_ref;
 
-=See Also
+=head1 See Also
 
 =over 2
 
