@@ -20,23 +20,21 @@ Statements are written direct under the scope block.
     STATEMENT3
   }
 
-=head2 Conditional Branch
-
-The conditional branch is explained in the following topics.
+=head2 Conditional Statement
 
 =head3 if Statement
 
-The C<if> statement runs conditional branch.
+The C<if> statement is a conditional statement that is executed if the condition is true.
 
   if (CONDITION) {
   
   }
 
-First, The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition.
+The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition I<CONDITION>.
 
-Next, if the condition is not 0, the execution position jumps to the beginning of the if block. Otherwise jumps to the end of the if block.
+If the condition is not 0, the program jumps to the beginning of the C<if> block. Otherwise jumps to the end of the C<if> block.
 
-The local variable declartion and the initialization in the condition of the C<if> statement are allowed.
+The local variable declartion in the condition of the C<if> statement are allowed.
 
   if (my $condition = 1) {
   
@@ -57,100 +55,21 @@ Examples:
   my $flag = 1;
   
   if ($flag == 1) {
-    print "One\n";
-  }
-
-=head3 elsif Statement
-
-The C<elsif> statement runs conditional branch used with the if statement
-
-  if (CONDITION1) {
-  
-  }
-  elsif (CONDITION2) {
-  
-  }
-
-If the C<condition 1> doesn't match, the execution position jumps to the end of the if block.
-
-Next, The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the C<condition 2>.
-
-Next, if the C<condition 2> is not 0, the execution position jumps to the beginning of the elsif block. Otherwise jumps to the end of the elsif block
-
-Multiple C<elsif> statements are allowed.
-
-  if (CONDITION1) {
-  
-  }
-  elsif (CONDITION2) {
-  
-  }
-  elsif (CONDITION3) {
-  
-  }
-
-The local variable declartion and the initialization in the condition of the C<elsif> statement are allowed.
-
-  if (my $condition = 1) {
-  
-  }
-  elsif (my $condition = 2) {
-  
-  }
-
-This is parsed as the following code.
-
-  {
-    my $condition = 1;
-    if ($condition) {
-      
-    }
-    else {
-      my $condition = 2;
-      if ($condition) {
-        
-      }
-    }
-  }
-
-Examples:
-
-  # elsif statement.
-  my $flag = 2;
-  
-  if ($flag == 1) {
-    print "One\n";
-  }
-  elsif ($flag == 2) {
-    print "Two\n";
+    say "One";
   }
 
 =head3 else Statement
 
-The C<else> statement runs conditional branch used with the if statement or the elsif statement.
+The C<else> statement is a conditional statement that is executed if the condition is false.
 
   if (CONDITION) {
-  
+    
   }
   else {
-  
+    
   }
 
-If the condition doesn't match, the execution position jumps to the end of the if block.
-
-Next, the execution position jumps to the beginning of the else block.
-
-The C<elsif> statements with the else statement are allowed.
-
-  if (CONDITION1) {
-  
-  }
-  elsif (CONDITION2) {
-  
-  }
-  else {
-  
-  }
+If the condition I<CONDITION> is evaluated 0, the program jumps to the beginning of the C<else> block.
 
 Examples:
 
@@ -158,38 +77,60 @@ Examples:
   my $flag = 3;
   
   if ($flag == 1) {
-    print "One\n";
-  }
-  elsif ($flag == 2) {
-    print "Two\n";
+    say "One";
   }
   else {
-    print "Other";
+    say "Other";
+  }
+
+=head3 elsif Statement
+
+The C<elsif> statement is a conditional statement that adds a condition branching.
+
+  if (CONDITION1) {
+  
+  }
+  elsif (CONDITION2) {
+  
+  }
+
+The C<elsif> statement is parsed as the following code.
+
+  if (CONDITION1) {
+  
+  }
+  else {
+    if (CONDITION2) {
+    
+    }
+  }
+
+Examples:
+
+  # elsif statement
+  my $flag = 2;
+  
+  if ($flag == 1) {
+    say "One";
+  }
+  elsif ($flag == 2) {
+    say "Two";
+  }
+  else {
+    say "Other";
   }
 
 =head3 unless Statement
 
-The C<unless> statement runs conditional branch that does the opposite of the if statement
+The C<unless> statement is a conditional statement that is executed if the condition is false.
 
   unless (CONDITION) {
     
   }
 
-The C<unless> statement is the same as the following if Statement.
+The C<unless> statement is parsed as the following code.
 
   if (!CONDITION) {
-    
-  }
-
-The C<unless> statements with the elsif statement and the else statement are allowed.
-
-  unless (CONDITION1) {
-    
-  }
-  elsif (CONDITION2) (
-    
-  }
-  else {
     
   }
 
@@ -199,12 +140,12 @@ Examples:
   my $flag = 1;
   
   unless ($flag == 0) {
-    print "Not Zero\n";
+    say "Not Zero";
   }
 
 =head3 switch Statement
 
-The C<switch> statement runs conditional branch.
+The C<switch> statement is a conditional statement that is executed if the condition matches an integer value.
 
   switch (CONDITION) {
     case CASE_VALUE1: {
@@ -290,24 +231,24 @@ Examples:
   my $flag = 1;
   switch ($code) {
     case 1: {
-      print "1\n";
+      say "1";
     }
     case 2: {
-      print "2\n";
+      say "2";
     }
     case 3: {
       if ($flag) {
         break;
       }
-      print "3\n";
+      say "3";
     }
     case 4:
     case 5:
     {
-      print "4 or 5\n";
+      say "4 or 5";
     }
     default: {
-      print "Other\n";
+      say "Other";
     }
   }
   
@@ -323,19 +264,19 @@ Examples:
       my $value = 1;
       switch ($value) {
         case Foo->ID1: {
-          print "1\n";
+          say "1";
         }
         case Foo->ID2: {
-          print "2\n";
+          say "2";
         }
         case Foo->ID3: {
           if ($flag) {
             break;
           }
-          print "3\n";
+          say "3";
         }
         default: {
-          print "Other\n";
+          say "Other";
         }
       }
     }
@@ -370,7 +311,7 @@ The C<break> statement is jumps to the end of the switch block of the L<switch s
   # The break statement
   break;
 
-=head2 Loop Syntax
+=head2 Loop Statement
 
 =head3 while Statement
 
@@ -392,7 +333,7 @@ Examples:
   my $i = 0;
   while ($i < 5) {
   
-    print "$i\n";
+    say "$i";
   
     $i++;
   }
@@ -417,7 +358,7 @@ The L<next statement|/"next Statement"> is used inside the while block. By The L
       next;
     }
     
-    print "$i\n";
+    say "$i";
     $i++;
   }
 
@@ -461,7 +402,7 @@ B<Exampels:>
 
   # The for statement
   for (my $i = 0; $i < 5; $i++) {
-    print "$i\n";
+    say "$i";
   }
 
 =head3 for-each Statement
@@ -489,7 +430,7 @@ B<Example:>
   # The for-each statemenet
   my $array = [1, 2, 3];
   for my $element (@$array) {
-    print "$elemenet\n";
+    say "$elemenet";
   }
 
 =head3 next Statement
@@ -586,9 +527,9 @@ Examples:
   
 =head2 Operator Statement
 
-The operator statement executes an operator.
+The operator statement executes an L<operator|/"Operators">.
 
-This operator is composed of an L<operator|/"Operators"> and C<;>.
+This operator is composed of an operator and C<;>.
   
   # The operator statemenet
   OPERATOR;

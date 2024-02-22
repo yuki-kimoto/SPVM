@@ -8,6 +8,8 @@ SPVM::Document::Language::Operators - Operators in SPVM Language
 
 This document describes operators in SPVM language.
 
+=head1 Operators
+
 =head2 Unary Plus Operator
 
 The unary plus operator C<+> returns I<OPERAND>.
