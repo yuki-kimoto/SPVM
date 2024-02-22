@@ -18,7 +18,7 @@ The return type is the type after the L<integer promotional conversion|/"Integer
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -37,7 +37,7 @@ The return type is the type after the L<integer promotional conversion|/"Integer
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -60,9 +60,9 @@ The return type is the type after the L<binary numeric conversion|/"Binary Numer
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
 =head2 Subtraction Operator
 
@@ -80,9 +80,9 @@ The return type is the type after the L<binary numeric conversion|/"Binary Numer
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
 =head2 Multiplication Operator
 
@@ -100,9 +100,9 @@ The return type is the type after the L<binary numeric conversion|/"Binary Numer
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
 =head2 Division Operator
 
@@ -120,9 +120,9 @@ The return type is the type after the L<binary numeric conversion|/"Binary Numer
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
 Exceptions:
 
@@ -142,9 +142,9 @@ The return type is the int type.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a numeric type. Otherwise a compilation error occurs.
 
 Exceptions:
 
@@ -262,7 +262,7 @@ For example, if the type of I<OPERAND> is the L<byte type|/"byte Type">, the fol
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must be a local variable, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -298,7 +298,7 @@ For example, if the type of I<OPERAND> is the L<byte type|/"byte Type">, the fol
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must be a local variable, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -338,7 +338,7 @@ For example, if the type of I<OPERAND> is the L<byte type|/"byte Type">, the fol
 
 Complation Errors:
 
-The type of I<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access">, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must be a local variable, a L<class variable|/"Class Variable">, a L<field access|/"Field Access">, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -374,7 +374,7 @@ For example, if the type of I<OPERAND> is the L<byte type|/"byte Type">, the fol
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a L<local variable|/"Local Variable">, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must be a local variable, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -494,7 +494,7 @@ Compilation Erorrs:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an integer type within int. Otherwise a compilation error occurs.
 
 =head3 Arithmetic Right Shift Operator
 
@@ -516,7 +516,7 @@ Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an integer type within int. Otherwise a compilation error occurs.
 
 =head3 Logical Right Shift Operator
 
@@ -542,7 +542,7 @@ Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|/"Integer Type">. Otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an integer type within int. Otherwise a compilation error occurs.
 
 =head2 Logical Operator
 
@@ -602,7 +602,7 @@ If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is L<undef|/"Undefined Value">, an except
 
 Compilation Errors:
 
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, L</"byte[] Type">, or L<numeric type|/"Numeric Type">. Otherwise a compilation error occurs.
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, L</"byte[] Type">, or numeric type. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -616,7 +616,7 @@ The array length operator gets the length of the array.
 
   @OPERAND
 
-The array length operator returns the int type value that is the length of the L<array|/"Array">.
+The array length operator returns the int type value that is the length of the L<array|SPVM::Document::Language::Types/"Array">.
 
 Array Length Operator returns the L<operator|/"Operators">
 
@@ -965,7 +965,7 @@ The C<isa> operator checks whether I<LEFT_OPERAND> can be assigned to the right 
 
   LEFT_OPERAND isa RIGHT_TYPE
 
-If the right type is a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignability|/"Type Assignability">.
+If the right type is a numeric type, a multi-numeric type, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignability|/"Type Assignability">.
 
 If the assignability without implicite convertion is true, it returns 1, otherwise returns 0.
 
@@ -1033,7 +1033,7 @@ The C<is_type> operator checks whether the type of I<LEFT_OPERAND> is equal to t
 
   LEFT_OPERAND is_type RIGHT_TYPE
 
-If the right type is a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the compile type of I<LEFT_OPERAND> is equal to the right type.
+If the right type is a numeric type, a multi-numeric type, a L<reference type|/"Reference Type">, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the compile type of I<LEFT_OPERAND> is equal to the right type.
 
 If the check is true, it returns 1, otherwise returns 0.
 
@@ -1136,7 +1136,7 @@ The return type is the L<string type|/"string Type">.
 
 Compilation Errors.
 
-If I<OPERAND> is not an L<object type|/"Object Type">, a compilation error occurs.
+If I<OPERAND> is not an object type, a compilation error occurs.
 
 Examples:
   
@@ -1172,7 +1172,7 @@ The string representation may be changed. Please don't use the C<dump> operator 
 
 Compilation Errors:
 
-If I<OPERAND> is not an L<object type|/"Object Type"> or the undef type, a compilation error occurs.
+If I<OPERAND> is not an object type or the undef type, a compilation error occurs.
 
 =head2 new_string_len Operator
 
@@ -1192,7 +1192,7 @@ The length specified by I<OPERAND> must be greater than or equal to 0. Otherwise
 
 Compilation Errors:
 
-The type of I<OPERAND> must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The type of I<OPERAND> must be an integer type within int. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -1205,7 +1205,7 @@ The C<copy> operator copies the object.
 
   copy OPERAND
 
-If the type of operand is none of the L<string type|/"string Type">, a L<numeric type|/"Numeric Type">, a L<multi-numeric type|/"Multi-Numeric Type">,
+If the type of operand is none of the L<string type|/"string Type">, a numeric type, a multi-numeric type,
 An L<exception|/"Exception Handling"> is thorwn.
 
 The C<copy> operator returns the copied object.
@@ -1307,7 +1307,7 @@ The type of the object must be the L<class type|/"Class Type">. Otherwise a comp
 
 If the field name is not found, a compilation error occurs.
 
-The type of the field targetted by the C<isweak> operator is not an L<object type|/"Object Type">, a compilation error occurs.
+The type of the field targetted by the C<isweak> operator is not an object type, a compilation error occurs.
 
 Examples:
 
@@ -1456,7 +1456,7 @@ The type of the object must be the L<class type|/"Class Type">. Otherwise a comp
 
 If the field name is not found, a compilation error occurs.
 
-The type of the field targetted by the C<weaken> statement is not an L<object type|/"Object Type">, a compilation error occurs.
+The type of the field targetted by the C<weaken> statement is not an object type, a compilation error occurs.
 
 Examples:
 
@@ -1479,7 +1479,7 @@ The type of the object must be the L<class type|/"Class Type">. Otherwise a comp
 
 If the field name is not found, a compilation error occurs.
 
-The type of the field targetted by the C<unweaken> statement is not an L<object type|/"Object Type">, a compilation error occurs.
+The type of the field targetted by the C<unweaken> statement is not an object type, a compilation error occurs.
 
 Examples:
 
@@ -1635,11 +1635,11 @@ The length must be greater than or equal to 0. Otherwise an exception is thrown.
 
 All elements of the array are initialized by the L<initial value|/"Initial Value">.
 
-The type of the created array is the L<array type|/"Array Type">.
+The type of the created array is an array type.
 
 Compilation Errors:
 
-The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The length must be an integer type within int. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -1674,7 +1674,7 @@ The array initialization creates an array and initialize the array easily.
   []
   [ELEMENT1, ELEMENT2, ELEMENT3]
 
-The array initialization create an L<array|/"Array"> that has the length of the elements.
+The array initialization create an L<array|SPVM::Document::Language::Types/"Array"> that has the length of the elements.
 
 And the array is initialized by the elements.
 
@@ -1724,7 +1724,7 @@ Examples:
 
 =head2 Getting Local Variable
 
-The getting local variable gets the value of the L<local variable|/"Local Variable">.
+The getting local variable gets the value of the local variable.
 
   $var
 
@@ -1740,7 +1740,7 @@ The setting local variable sets the value of L</"Local Variable"> using the L<as
 
 The return value is the value after the assignment.
 
-If the type of the assigned value is an L<object type|/"Object Type">, the reference count of the object is incremented by 1.
+If the type of the assigned value is an object type, the reference count of the object is incremented by 1.
 
 If an object has already been assigned to $var before the assignment, the reference count of the object is decremented by 1.
 
@@ -1798,7 +1798,7 @@ The return value is the value after the setting.
 
 The return type is the type of the class variable.
 
-If the type of the assigned value is an L<object type|/"Object Type">, the reference count of the object is incremented by 1.
+If the type of the assigned value is an object type, the reference count of the object is incremented by 1.
 
 If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by 1.
 
@@ -1908,7 +1908,7 @@ B<Getting Multi-Numeric Field operator> gets the field of the L<multi-numeric va
 
   INVOCANT->{FIELD_NAME}
 
-The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
+The invocant is the multi-numeric type.
   
 Getting Multi-Numeric Field operator returns the field value in the multi-numeric value.
 
@@ -1929,7 +1929,7 @@ Setting Multi-Numeric Field operator sets the field of the L<multi-numeric value
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
-The invocant is the L<multi-numeric type|/"Multi-Numeric Type">.
+The invocant is the multi-numeric type.
 
 Setting Multi-Numeric Field operator returns the value of the field after setting. 
 
@@ -1948,11 +1948,11 @@ Examples:
 
 =head2 Getting Array Element
 
-The getting array element gets the element of the L<array|/"Array">.
+The getting array element gets the element of the L<array|SPVM::Document::Language::Types/"Array">.
 
   ARRAY->[INDEX]
 
-The array must be the L<array type|/"Array Type">.
+The array must be an array type.
 
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
 
@@ -1966,7 +1966,7 @@ The index must be greater than or equal to 0. Otherwise an exception is thrown.
 
 Compilation Errors:
 
-The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The index must be an integer type within int. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -1985,11 +1985,11 @@ The setting array element sets the element of the array using the L<assignment o
 
   ARRAY->[INDEX] = RIGHT_OPERAND
 
-The array must be the L<array type|/"Array Type">.
+The array must be an array type.
 
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the index.
 
-I<RIGHT_OPERAND> must be L<assigned|/"Type Assignability"> to the element of the array.
+I<RIGHT_OPERAND> must satisfy L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
 
 The setting array element returns the value of the element that is set.
 
@@ -1997,13 +1997,13 @@ The array must be defined. Otherwise an exception is thrown.
 
 The index must be greater than or equal to 0. Otherwise an exception is thrown.
 
-If I<RIGHT_OPERAND> is an L<object type|/"Object Type">, the reference count of the object is incremented by 1.
+If I<RIGHT_OPERAND> is an object type, the reference count of the object is incremented by 1.
 
 If an object has already been assigned to the field before the assignment, the reference count of the object is decremented by 1.
 
 Compilation Errors:
 
-The index must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The index must be an integer type within int. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -2311,7 +2311,7 @@ The above example is the same as the following codes.
 
 =head2 Reference Operator
 
-The reference operator C<\> creates a L<reference|/"Reference">.
+The reference operator C<\> creates a L<reference|/"Reference">, and returns it.
 
   \OPERAND
 
@@ -2319,7 +2319,7 @@ The return type is the L<reference type|/"Reference Type"> of I<OPERAND>.
 
 Compilation Errors:
 
-The operand must be a L<local variable|/"Local Variable"> that type is a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">. Otherwise a compilation error occurs.
+The operand must be a local variable that type is a numeric type or a multi-numeric type. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -2333,11 +2333,11 @@ Examples:
 
 =head2 Dereference Operator
 
-The dereference operator C<$> gets the value referenced by a variable.
+The dereference operator C<$> returns the value referenced by the variable I<VARIABLE>.
 
   $VARIABLE
 
-The return type is the type of the value referenced by a variable.
+The return type is the type of the value referenced by I<VARIABLE>.
 
 Compilation Errors:
 
