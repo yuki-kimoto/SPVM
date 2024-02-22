@@ -6,10 +6,6 @@ SPVM::Document::Language::Operators - Operators in SPVM Language
 
 This document describes operators in SPVM language.
 
-=head1 Operators
-
-An operator performs an operation that process something and returns a value.
-
 =head2 Unary Plus Operator
 
 The unary plus operator C<+> returns I<OPERAND>.
@@ -615,117 +611,6 @@ Examples:
   my $str = "abc" . "def";
   my $str = "def" . 34;
   my $str = 123 . 456;
-
-=head2 Assignment Operator
-
-The assignment operator C<=> is an L<operator|/"Operators"> to assign a value.
-
-  LEFT_OPERAND = RIGHTH_OPERAND
-
-The assignment operator has different meanings depending on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
-
-=head3 Local Variable Assignment
-
-See L</"Getting Local Variable"> and L</"Setting Local Variable">.
-
-=head3 Class Variable Assignment
-
-See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
-
-=head3 Array Element Assignment
-
-See L</"Getting Array Element"> and L</"Setting Array Element">.
-
-=head3 Field Assignment
-
-See L</"Getting Field"> and L</"Setting Field">.
-
-=head2 Special Assignment Operator
-
-A special assignment operator is the alias for the combination of an L<operator> and L</"Assignment Operator"> C<=>.
-
-  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
-
-Above is the alias for the following code.
-
-  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
-
-For example, See a C<byte> case.
-
-  # Addition assignment operator
-  $x += 1;
-  
-  # Above is the same as the following code.
-  $x = (byte)($x + 1)
-
-The following operators are used as the operators of the special assignment operators.
-
-=begin html
-
-<table>
-  <tr>
-    <td>Addition assignment operator</td>
-    <td>+=</td>
-  </tr>
-  <tr>
-    <td>Subtraction assignment operator</td>
-    <td>-=</td>
-  </tr>
-  <tr>
-    <td>Multiplication assignment operator</td>
-    <td>*=</td>
-  </tr>
-  <tr>
-    <td>Division assignment operator</td>
-    <td>/=</td>
-  </tr>
-  <tr>
-    <td>Modulo assignment operator</td>
-    <td>%=</td>
-  </tr>
-  <tr>
-    <td>Bit AND assignment operator</td>
-    <td>&=</td>
-  </tr>
-  <tr>
-    <td>Bit OR assignment operator</td>
-    <td>|=</td>
-  </tr>
-  <tr>
-    <td>Left shift assignment operator</td>
-    <td><<=</td>
-  </tr>
-  <tr>
-    <td>Arithmetic right shift assignment operator</td>
-    <td>>>=</td>
-  </tr>
-  <tr>
-    <td>Logical right shift assignment operator</td>
-    <td>>>>=</td>
-  </tr>
-  <tr>
-    <td>Concatenation assignment operator</td>
-    <td>.=</td>
-  </tr>
-</table>
-
-=end html
-
-Examples:
-
-  # Special assignment operators
-  $x += 1;
-  $x -= 1;
-  $x *= 1;
-  $x /= 1;
-  $x &= 1;
-  $x |= 1;
-  $x ^= 1;
-  $x %= 1;
-  $x <<= 1;
-  $x >>= 1;
-  $x >>>= 1;
-  $x .= "abc";
 
 =head2 Array Length Operator
 
@@ -1352,6 +1237,495 @@ Examples:
     # ...
   }
 
+=head2 basic_type_id Operator
+
+The C<basic_type_id> operator gets the basic type ID from a type.
+
+  basic_type_id TYPE
+
+The return value is the basic type ID.
+
+The return type is the int type.
+
+Examples:
+
+  my $basic_type_id = basic_type_id int;
+  
+  my $basic_type_id = basic_type_id int[];
+  
+  my $error_basic_type_id = basic_type_id Error;
+  
+=head2 eval_error_id Operator
+
+The C<eval_error_id> operatoer gets the error ID of the exception caught by an eval block.
+
+  eval_error_id
+
+This value is set to 0 at the beginning of the L<eval block|eval Block>.
+
+=head2 warn Operator
+
+The C<warn> operator prints a message to the standard error.
+
+  warn OPERNAD;
+  warn;
+
+If I<OPERAND> is omitted or I<OPERAND> is L<undef|/"Undefined Value">, I<OPERAND> is set to the string C<"Warning">.
+
+The return type is the L<void type|/"void Type">.
+
+If the end character of the OPERNAD is C<\n>, the C<warn> operator prints the OPERNAD itself.
+
+Otherwise the current file name and the current line number by the format C<"\n  at $file_name line $line\n"> are added to the end of the OPERNAD.
+
+The buffer of the standard error is flushed after the printing.
+
+Compilation Errors:
+
+The OPERNAD must be the string type or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+
+Examples:
+
+  warn "Something is wrong.";
+
+=head2 print Operator
+
+The C<print> operator prints a L<string|/"String"> to the standard output.
+
+  print OPERAND;
+
+I<OPERAND> must be the string type.
+
+The return type is the L<void type|/"void Type">.
+
+If I<OPERAND> is an L<undef|/"Undefined Value">, print nothing.
+
+=head2 say Operator
+
+The C<say> operator prints a L<string|/"String"> with a line break C<\n> to the standard output.
+
+  say OPERAND;
+
+I<OPERAND> must be the string type.
+
+The return type is the L<void type|/"void Type">.
+
+If I<OPERAND> is an L<undef|/"Undefined Value">, print C<\n>.
+
+=head2 make_read_only Operator
+
+The C<make_read_only> operator makes the L<string|/"Strings"> read-only.
+
+  make_read_only OPERAND;
+
+I<OPERAND> must be the string type.
+
+The return type is the L<void type|/"void Type">.
+
+Read-only strings cannnot be cast to L<string type|/"string Type"> qualified by L<mutable|/"mutable Type Qualifier">.
+
+  # A string
+  my $string = new_string_len 3;
+  
+  # Make the string read-only
+  make_read_only $string;
+  
+  # The conversion to the string type qualified by mutable throw an exception.
+  my $string_mut = (mutable string)$string;
+
+=head2 weaken Operator
+
+The C<weaken> operator creates a L<weak reference|/"Weak Reference">.
+
+  weaken OBJECT->{FIELD_NAME};
+
+The return type is the L<void type|/"void Type">.
+
+See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
+
+Compilation Errors:
+
+The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
+
+If the field name is not found, a compilation error occurs.
+
+The type of the field targetted by the C<weaken> statement is not an L<object type|/"Object Type">, a compilation error occurs.
+
+Examples:
+
+  # weaken
+  weaken $object->{point};
+
+=head2 unweaken Operator
+
+The C<unweaken> operator unweakens a L<weak reference|/"Weak Reference">.
+
+  unweaken OBJECT->{FIELD_NAME};
+
+The return type is the L<void type|/"void Type">.
+
+See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
+
+Compilation Errors:
+
+The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
+
+If the field name is not found, a compilation error occurs.
+
+The type of the field targetted by the C<unweaken> statement is not an L<object type|/"Object Type">, a compilation error occurs.
+
+Examples:
+
+  # unweaken
+  unweaken $object->{point};
+
+=head3 args_width Operator
+
+The C<args_width> operator gets the stack length of the arguments passed to the method.
+
+  args_width
+
+Note that the stack length of the arguments is different from the length of the arguments.
+
+If the method call is the instance method call, the stack length of the arguments is the length of the arguments + 1 for the invocant.
+
+If an argument is a multi-numeric type, the stack length of the argument becomes the length of the fields.
+
+Examples:
+  
+  static method my_static_method : int ($args : int, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+  
+  # 1
+  &my_static_method(1);
+  
+  # 2
+  &my_static_method(1, 2);
+  
+  static method my_instance_method : int ($args : int, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+  
+  # 2 (1 + the invocant)
+  &my_instance_method(1);
+  
+  # 3 (2 + the invocant)
+  &my_instance_method(1, 2);
+
+  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+
+  # 2 (The length of the fields of Complex_2d)
+  my $z : Complex_2d;
+  &my_mulnum_method($z);
+  
+  # 3 (The length of the fields of Complex_2d + 1)
+  my $z : Complex_2d;
+  &my_mulnum_method($z, 2);
+
+=head2 __PACKAGE__ Operator
+
+The C<__PACKAGE__> operator gets the current class name.
+
+  __PACKAGE__
+
+The return type is the string type.
+
+If the __PACKAGE__ operator is used in anon method, it returns its outer class.
+
+Examples:
+
+  class Foo::Bar {
+    static method baz : void () {
+      # Foo::Bar
+      my $current_class_name = __PACKAGE__;
+      
+      my $cb = method : void () {
+        # Foo::Bar
+        my $current_class_name = __PACKAGE__;
+      };
+    }
+  }
+
+=head2 __FILE__ Operator
+
+The C<__FILE__> operator gets the current file name.
+
+  __FILE__
+
+The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
+
+Examples:
+
+  # SPVM/Foo/Bar.spvm
+  class Foo::Bar {
+    static method baz : void () {
+      # Get the current file name - SPVM/Foo/Bar.spvm
+      my $file_name == __FILE__;
+    }
+  }
+  class Foo::Bar2 {
+    static method baz : void () {
+      # Get the current file name - SPVM/Foo/Bar.spvm
+      my $file_name == __FILE__;
+    }
+  }
+
+=head2 __LINE__ Operator
+
+The C<__LINE__> operator gets the current line number of the current file.
+
+  __LINE__
+
+Examples:
+
+  class Foo::Bar {
+    static method baz : void () {
+      # Get the current line number - 4
+      my $line = __LINE__;
+    }
+  }
+
+=head2 new Operator
+
+The C<new> operator is an L<operator|/"Operators"> to create an object or an array.
+
+=head3 Creating Object
+
+The creating object is an L<operator|/"Operators"> to create an object using the L<new operator|/"new Operator">.
+
+  new CLASS_NAME;
+
+The class name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
+
+The fields of the created object are initialized by the L<initial value|/"Initial Value">.
+
+The reference count of the created object is 0. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by 1.
+
+Examples:
+
+  my $object = new Foo;
+
+=head3 Creating Array
+
+The creating array is an L<operator|/"Operators"> to create an array using the L<new operator|/"new Operator">.
+
+  new BasicType[LENGTH]
+
+The type must be a L<basic type|/"Basic Type">.
+
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the length.
+
+The length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+All elements of the array are initialized by the L<initial value|/"Initial Value">.
+
+The type of the created array is the L<array type|/"Array Type">.
+
+Compilation Errors:
+
+The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+
+Examples:
+
+  my $nums = new int[3];
+  my $objects = new Foo[3];
+  my $objects = new object[3];
+  my $values = new Complex_2d[3]
+
+=head3 Creating Multi-Dimensional Array
+
+Multi dimensional arrays can be created using the L<new operator|/"new Operator">.
+
+  new BasicType[][LENGTH]
+  new BasicType[]..[][LENGTH]
+
+(C<[]..[]> means two or more C<[]>)
+
+Examples:
+
+  # 2 dimentional int array
+  my $nums = new int[][3];
+  
+  # 3 dimentional int array
+  my $nums = new int[][][3];
+
+The max dimention is 255.
+
+=head2 Array Initialization
+
+The array initialization is an L<operator|/"Operators"> to create an array and initialize the array easily.
+
+  []
+  [ELEMENT1, ELEMENT2, ELEMENT3]
+
+The array initialization create an L<array|/"Array"> that has the length of the elements.
+
+And the array is initialized by the elements.
+
+And the created array is returned.
+
+The type of the created array is the type that 1 dimension is added to the type of the first element.
+
+If no element is specified, the type of the create array becomes L<any object type|/"Any Object Type">.
+
+Examples:
+
+  # int array
+  my $nums = [1, 2, 3];
+  
+  # double array
+  my $nums = [1.5, 2.6, 3.7];
+  
+  # string array
+  my $strings = ["foo", "bar", "baz"];
+
+The first example is the same as the following codes.
+
+  # int array
+  my $nums = new int[3];
+  $nums->[0] = 1;
+  $nums->[1] = 2;
+  $nums->[2] = 3;
+
+The array initialization has another syntax using C<{}>. 
+
+  {}
+  {ELEMENT1, ELEMENT2, ELEMENT3, ELEMENT4}
+
+This is the same as above array init syntax, but the type of the created array is always L</"Any Object Array Type"> C<object[]>.
+
+Compilation Errors:
+
+If the length of the elements is odd number, a compilation error occurs.
+
+Examples:
+
+  # Key values empty
+  my $key_values = {};
+  
+  # Key values
+  my $key_values = {foo => 1, bar => "Hello"};
+
+=head2 Assignment Operator
+
+The assignment operator C<=> is an L<operator|/"Operators"> to assign a value.
+
+  LEFT_OPERAND = RIGHTH_OPERAND
+
+The assignment operator has different meanings depending on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+
+=head3 Local Variable Assignment
+
+See L</"Getting Local Variable"> and L</"Setting Local Variable">.
+
+=head3 Class Variable Assignment
+
+See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
+
+=head3 Array Element Assignment
+
+See L</"Getting Array Element"> and L</"Setting Array Element">.
+
+=head3 Field Assignment
+
+See L</"Getting Field"> and L</"Setting Field">.
+
+=head2 Special Assignment Operator
+
+A special assignment operator is the alias for the combination of an L<operator> and L</"Assignment Operator"> C<=>.
+
+  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
+
+Above is the alias for the following code.
+
+  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
+
+For example, See a C<byte> case.
+
+  # Addition assignment operator
+  $x += 1;
+  
+  # Above is the same as the following code.
+  $x = (byte)($x + 1)
+
+The following operators are used as the operators of the special assignment operators.
+
+=begin html
+
+<table>
+  <tr>
+    <td>Addition assignment operator</td>
+    <td>+=</td>
+  </tr>
+  <tr>
+    <td>Subtraction assignment operator</td>
+    <td>-=</td>
+  </tr>
+  <tr>
+    <td>Multiplication assignment operator</td>
+    <td>*=</td>
+  </tr>
+  <tr>
+    <td>Division assignment operator</td>
+    <td>/=</td>
+  </tr>
+  <tr>
+    <td>Modulo assignment operator</td>
+    <td>%=</td>
+  </tr>
+  <tr>
+    <td>Bit AND assignment operator</td>
+    <td>&=</td>
+  </tr>
+  <tr>
+    <td>Bit OR assignment operator</td>
+    <td>|=</td>
+  </tr>
+  <tr>
+    <td>Left shift assignment operator</td>
+    <td><<=</td>
+  </tr>
+  <tr>
+    <td>Arithmetic right shift assignment operator</td>
+    <td>>>=</td>
+  </tr>
+  <tr>
+    <td>Logical right shift assignment operator</td>
+    <td>>>>=</td>
+  </tr>
+  <tr>
+    <td>Concatenation assignment operator</td>
+    <td>.=</td>
+  </tr>
+</table>
+
+=end html
+
+Examples:
+
+  # Special assignment operators
+  $x += 1;
+  $x -= 1;
+  $x *= 1;
+  $x /= 1;
+  $x &= 1;
+  $x |= 1;
+  $x ^= 1;
+  $x %= 1;
+  $x <<= 1;
+  $x >>= 1;
+  $x >>>= 1;
+  $x .= "abc";
+
 =head2 Getting Local Variable
 
 The getting local variable is an L<operator|/"Operators"> to get the value of the L<local variable|/"Local Variable">.
@@ -1646,174 +2020,108 @@ Examples:
   my $objects : object[] = $points;
   $objects->[2] = Point->new(3, 5);
 
-=head2 new Operator
+=head2 Type Cast
 
-The C<new> operator is an L<operator|/"Operators"> to create an object or an array.
+The type cast is the L<operator|/"Operators"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
 
-=head3 Creating Object
+  # Type Cast
+  (TYPE)OPERAND
+  
+  # Postfix Type Cast
+  OPERAND->(TYPE)
 
-The creating object is an L<operator|/"Operators"> to create an object using the L<new operator|/"new Operator">.
+A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
 
-  new CLASS_NAME;
-
-The class name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
-
-The fields of the created object are initialized by the L<initial value|/"Initial Value">.
-
-The reference count of the created object is 0. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by 1.
-
-Examples:
-
-  my $object = new Foo;
-
-=head3 Creating Array
-
-The creating array is an L<operator|/"Operators"> to create an array using the L<new operator|/"new Operator">.
-
-  new BasicType[LENGTH]
-
-The type must be a L<basic type|/"Basic Type">.
-
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the length.
-
-The length must be greater than or equal to 0. Otherwise an exception is thrown.
-
-All elements of the array are initialized by the L<initial value|/"Initial Value">.
-
-The type of the created array is the L<array type|/"Array Type">.
+The behaviors of type casts are explained in L</"Type Castability">.
 
 Compilation Errors:
 
-The length must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+If the type cast doesn't have the L<castability|"Type Castability">, a compilation error occurs.
 
 Examples:
-
-  my $nums = new int[3];
-  my $objects = new Foo[3];
-  my $objects = new object[3];
-  my $values = new Complex_2d[3]
-
-=head3 Creating Multi-Dimensional Array
-
-Multi dimensional arrays can be created using the L<new operator|/"new Operator">.
-
-  new BasicType[][LENGTH]
-  new BasicType[]..[][LENGTH]
-
-(C<[]..[]> means two or more C<[]>)
-
-Examples:
-
-  # 2 dimentional int array
-  my $nums = new int[][3];
   
-  # 3 dimentional int array
-  my $nums = new int[][][3];
-
-The max dimention is 255.
-
-=head2 Array Initialization
-
-The array initialization is an L<operator|/"Operators"> to create an array and initialize the array easily.
-
-  []
-  [ELEMENT1, ELEMENT2, ELEMENT3]
-
-The array initialization create an L<array|/"Array"> that has the length of the elements.
-
-And the array is initialized by the elements.
-
-And the created array is returned.
-
-The type of the created array is the type that 1 dimension is added to the type of the first element.
-
-If no element is specified, the type of the create array becomes L<any object type|/"Any Object Type">.
-
-Examples:
-
-  # int array
-  my $nums = [1, 2, 3];
+  # The explicte type conversion from long to int 
+  my $num = (int)123L;
   
-  # double array
-  my $nums = [1.5, 2.6, 3.7];
+  # The explicte type conversion from byte[] to string
+  my $num = (string)new byte[3];
   
-  # string array
-  my $strings = ["foo", "bar", "baz"];
+  # The explicte type conversion from string to byte[]
+  my $num = (byte[])"Hello";
+  
+  # Postfix type cast
+  my $point = Point->new;
+  my $stringable = $point->(Stringable);
 
-The first example is the same as the following codes.
+=head2 Method Call
 
-  # int array
-  my $nums = new int[3];
-  $nums->[0] = 1;
-  $nums->[1] = 2;
-  $nums->[2] = 3;
+The method call calls a L<method|/"Method">.
 
-The array initialization has another syntax using C<{}>. 
+=head3 Class Method Call
 
-  {}
-  {ELEMENT1, ELEMENT2, ELEMENT3, ELEMENT4}
+A method defined as the L<class method|/"Class Method"> can be called using the class method call.
 
-This is the same as above array init syntax, but the type of the created array is always L</"Any Object Array Type"> C<object[]>.
+  ClassName->MethodName(ARGS1, ARGS2, ...);
+  
+  &MethodName(ARGS1, ARGS2, ...);
+
+C<&> means the current class.
+
+If C<&> is used in anon method, it means its outer class.
 
 Compilation Errors:
 
-If the length of the elements is odd number, a compilation error occurs.
+If the number of arguments does not correct, a compilation error occurs.
+
+If the types of arguments have no type compatible, a compilation error occurs.
 
 Examples:
-
-  # Key values empty
-  my $key_values = {};
   
-  # Key values
-  my $key_values = {foo => 1, bar => "Hello"};
+  class Foo {
+    
+    static method main : void () {
+      
+      my $ret = Foo->bar(1, 2, 3);
+      
+      # Same as Foo->bar
+      my $ret = &bar(1, 2, 3);
+      
+      my $cb = method : void () {
+        # Same as Foo->bar;
+        my $ret = &foo;
+      };
+    }
+    
+    static method foo : int () {
+      return 5;
+    }
+  }
 
-=head2 Reference Operator
+=head3 Instance Method Call
 
-The reference operator C<\> is the L<operator|/"Operators"> to create a L<reference|/"Reference">.
+A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
 
-  \OPERAND
+  Instance->MethodName(ARGS1, ARGS2, ...);
 
-The return type is the L<reference type|/"Reference Type"> of I<OPERAND>.
+The called method is resolved from the type of the instance.
 
 Compilation Errors:
 
-The operand must be a L<local variable|/"Local Variable"> that type is a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">. Otherwise a compilation error occurs.
+If the number of arguments does not correct, a compilation error occurs.
+
+If the types of arguments have no type compatible, a compilation error occurs.
 
 Examples:
   
-  # Create the reference of a numeric type
-  my $num : int;
-  my $num_ref : int* = \$num;
-  
-  # Create the reference of a multi-numeric type
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
+  $object->bar(5, 3. 6);
 
-=head2 Dereference Operator
+The C<SUPER::> qualifier calls the method of the super class of the current class.
 
-The dereference operators are the L<operatoers|/"Operators"> to perform a deference.
+  $object->SUPER::bar(5, 3. 6);
 
-=head3 Getting value by Dereference
+A instance method can be called statically by specifing the calss name.
 
-Obtaining a value by Dereference is an L<operator|/"Operators"> to obtain the actual value from Reference. It was designed to realize the C joint operator C<*>.
-
-  $VARIABLE
-
-The value obtained by Dereference returns the L<operator|/"Operators">.
-
-Compilation Errors:
-
-The variable Type must be Reference Type. Otherwise a compilation error occurs.
-
-Examples:
-
-  my $num : int;
-  my $num_ref : int* = \$num;
-  my $num_deref : int = $$num_ref;
-  
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-  my $z_deref : Complex_2d = $$z_ref;
+  $point3d->Point::clear;
 
 =head3 Setting the value with Dereference
 
@@ -1887,366 +2195,6 @@ Examples:
   my $z : Complex_2d;
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
-
-=head2 basic_type_id Operator
-
-The C<basic_type_id> operator gets the basic type ID from a type.
-
-  basic_type_id TYPE
-
-The return value is the basic type ID.
-
-The return type is the int type.
-
-Examples:
-
-  my $basic_type_id = basic_type_id int;
-  
-  my $basic_type_id = basic_type_id int[];
-  
-  my $error_basic_type_id = basic_type_id Error;
-  
-=head2 eval_error_id Operator
-
-The C<eval_error_id> operatoer gets the error ID of the exception caught by an eval block.
-
-  eval_error_id
-
-This value is set to 0 at the beginning of the L<eval block|eval Block>.
-
-=head2 warn Operator
-
-The C<warn> operator prints a message to the standard error.
-
-  warn OPERNAD;
-  warn;
-
-If I<OPERAND> is omitted or I<OPERAND> is L<undef|/"Undefined Value">, I<OPERAND> is set to the string C<"Warning">.
-
-The return type is the L<void type|/"void Type">.
-
-If the end character of the OPERNAD is C<\n>, the C<warn> operator prints the OPERNAD itself.
-
-Otherwise the current file name and the current line number by the format C<"\n  at $file_name line $line\n"> are added to the end of the OPERNAD.
-
-The buffer of the standard error is flushed after the printing.
-
-Compilation Errors:
-
-The OPERNAD must be the string type or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
-
-Examples:
-
-  warn "Something is wrong.";
-
-=head2 print Operator
-
-The C<print> operator prints a L<string|/"String"> to the standard output.
-
-  print OPERAND;
-
-I<OPERAND> must be the string type.
-
-The return type is the L<void type|/"void Type">.
-
-If I<OPERAND> is an L<undef|/"Undefined Value">, print nothing.
-
-=head2 say Operator
-
-The C<say> operator prints a L<string|/"String"> with a line break C<\n> to the standard output.
-
-  say OPERAND;
-
-I<OPERAND> must be the string type.
-
-The return type is the L<void type|/"void Type">.
-
-If I<OPERAND> is an L<undef|/"Undefined Value">, print C<\n>.
-
-=head2 make_read_only Operator
-
-The C<make_read_only> operator makes the L<string|/"Strings"> read-only.
-
-  make_read_only OPERAND;
-
-I<OPERAND> must be the string type.
-
-The return type is the L<void type|/"void Type">.
-
-Read-only strings cannnot be cast to L<string type|/"string Type"> qualified by L<mutable|/"mutable Type Qualifier">.
-
-  # A string
-  my $string = new_string_len 3;
-  
-  # Make the string read-only
-  make_read_only $string;
-  
-  # The conversion to the string type qualified by mutable throw an exception.
-  my $string_mut = (mutable string)$string;
-
-=head2 weaken Operator
-
-The C<weaken> operator creates a L<weak reference|/"Weak Reference">.
-
-  weaken OBJECT->{FIELD_NAME};
-
-The return type is the L<void type|/"void Type">.
-
-See L</"Weak Reference"> to know the behavior of the C<weaken> statement.
-
-Compilation Errors:
-
-The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
-
-If the field name is not found, a compilation error occurs.
-
-The type of the field targetted by the C<weaken> statement is not an L<object type|/"Object Type">, a compilation error occurs.
-
-Examples:
-
-  # weaken
-  weaken $object->{point};
-
-=head2 unweaken Operator
-
-The C<unweaken> operator unweakens a L<weak reference|/"Weak Reference">.
-
-  unweaken OBJECT->{FIELD_NAME};
-
-The return type is the L<void type|/"void Type">.
-
-See L</"Weak Reference"> to know the behavior of the C<unweaken> statement.
-
-Compilation Errors:
-
-The type of the object must be the L<class type|/"Class Type">. Otherwise a compilation error occurs.
-
-If the field name is not found, a compilation error occurs.
-
-The type of the field targetted by the C<unweaken> statement is not an L<object type|/"Object Type">, a compilation error occurs.
-
-Examples:
-
-  # unweaken
-  unweaken $object->{point};
-
-=head3 args_width Operator
-
-The C<args_width> operator gets the stack length of the arguments passed to the method.
-
-  args_width
-
-Note that the stack length of the arguments is different from the length of the arguments.
-
-If the method call is the instance method call, the stack length of the arguments is the length of the arguments + 1 for the invocant.
-
-If an argument is a multi-numeric type, the stack length of the argument becomes the length of the fields.
-
-Examples:
-  
-  static method my_static_method : int ($args : int, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-  
-  # 1
-  &my_static_method(1);
-  
-  # 2
-  &my_static_method(1, 2);
-  
-  static method my_instance_method : int ($args : int, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-  
-  # 2 (1 + the invocant)
-  &my_instance_method(1);
-  
-  # 3 (2 + the invocant)
-  &my_instance_method(1, 2);
-
-  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-
-  # 2 (The length of the fields of Complex_2d)
-  my $z : Complex_2d;
-  &my_mulnum_method($z);
-  
-  # 3 (The length of the fields of Complex_2d + 1)
-  my $z : Complex_2d;
-  &my_mulnum_method($z, 2);
-
-=head2 __PACKAGE__ Operator
-
-The C<__PACKAGE__> operator gets the current class name.
-
-  __PACKAGE__
-
-The return type is the string type.
-
-If the __PACKAGE__ operator is used in anon method, it returns its outer class.
-
-Examples:
-
-  class Foo::Bar {
-    static method baz : void () {
-      # Foo::Bar
-      my $current_class_name = __PACKAGE__;
-      
-      my $cb = method : void () {
-        # Foo::Bar
-        my $current_class_name = __PACKAGE__;
-      };
-    }
-  }
-
-=head2 __FILE__ Operator
-
-The C<__FILE__> operator gets the current file name.
-
-  __FILE__
-
-The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
-
-Examples:
-
-  # SPVM/Foo/Bar.spvm
-  class Foo::Bar {
-    static method baz : void () {
-      # Get the current file name - SPVM/Foo/Bar.spvm
-      my $file_name == __FILE__;
-    }
-  }
-  class Foo::Bar2 {
-    static method baz : void () {
-      # Get the current file name - SPVM/Foo/Bar.spvm
-      my $file_name == __FILE__;
-    }
-  }
-
-=head2 __LINE__ Operator
-
-The C<__LINE__> operator gets the current line number of the current file.
-
-  __LINE__
-
-Examples:
-
-  class Foo::Bar {
-    static method baz : void () {
-      # Get the current line number - 4
-      my $line = __LINE__;
-    }
-  }
-
-=head2 Method Call
-
-The method call calls a L<method|/"Method">.
-
-=head3 Class Method Call
-
-A method defined as the L<class method|/"Class Method"> can be called using the class method call.
-
-  ClassName->MethodName(ARGS1, ARGS2, ...);
-  
-  &MethodName(ARGS1, ARGS2, ...);
-
-C<&> means the current class.
-
-If C<&> is used in anon method, it means its outer class.
-
-Compilation Errors:
-
-If the number of arguments does not correct, a compilation error occurs.
-
-If the types of arguments have no type compatible, a compilation error occurs.
-
-Examples:
-  
-  class Foo {
-    
-    static method main : void () {
-      
-      my $ret = Foo->bar(1, 2, 3);
-      
-      # Same as Foo->bar
-      my $ret = &bar(1, 2, 3);
-      
-      my $cb = method : void () {
-        # Same as Foo->bar;
-        my $ret = &foo;
-      };
-    }
-    
-    static method foo : int () {
-      return 5;
-    }
-  }
-
-=head3 Instance Method Call
-
-A method defined as the L<instance method|/"Instance Method"> can be called using the instance method call.
-
-  Instance->MethodName(ARGS1, ARGS2, ...);
-
-The called method is resolved from the type of the instance.
-
-Compilation Errors:
-
-If the number of arguments does not correct, a compilation error occurs.
-
-If the types of arguments have no type compatible, a compilation error occurs.
-
-Examples:
-  
-  $object->bar(5, 3. 6);
-
-The C<SUPER::> qualifier calls the method of the super class of the current class.
-
-  $object->SUPER::bar(5, 3. 6);
-
-A instance method can be called statically by specifing the calss name.
-
-  $point3d->Point::clear;
-
-=head2 Type Cast
-
-The type cast is the L<operator|/"Operators"> to perform an L<explicite type conversion|/"Explicite Type Conversion">.
-
-  # Type Cast
-  (TYPE)OPERAND
-  
-  # Postfix Type Cast
-  OPERAND->(TYPE)
-
-A type cast performs a L<type conversion|/"Type Conversion">, merely copying, or copying with a runtime type checking.
-
-The behaviors of type casts are explained in L</"Type Castability">.
-
-Compilation Errors:
-
-If the type cast doesn't have the L<castability|"Type Castability">, a compilation error occurs.
-
-Examples:
-  
-  # The explicte type conversion from long to int 
-  my $num = (int)123L;
-  
-  # The explicte type conversion from byte[] to string
-  my $num = (string)new byte[3];
-  
-  # The explicte type conversion from string to byte[]
-  my $num = (byte[])"Hello";
-  
-  # Postfix type cast
-  my $point = Point->new;
-  my $stringable = $point->(Stringable);
 
 =head2 Anon Method Operator
 
@@ -2369,6 +2317,54 @@ The above example is the same as the following codes.
       print "$bar\n";
     }
   }
+
+=head2 Reference Operator
+
+The reference operator C<\> is the L<operator|/"Operators"> to create a L<reference|/"Reference">.
+
+  \OPERAND
+
+The return type is the L<reference type|/"Reference Type"> of I<OPERAND>.
+
+Compilation Errors:
+
+The operand must be a L<local variable|/"Local Variable"> that type is a L<numeric type|/"Numeric Type"> or a L<multi-numeric type|/"Multi-Numeric Type">. Otherwise a compilation error occurs.
+
+Examples:
+  
+  # Create the reference of a numeric type
+  my $num : int;
+  my $num_ref : int* = \$num;
+  
+  # Create the reference of a multi-numeric type
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+
+=head2 Dereference Operator
+
+The dereference operators are the L<operatoers|/"Operators"> to perform a deference.
+
+=head3 Getting value by Dereference
+
+Obtaining a value by Dereference is an L<operator|/"Operators"> to obtain the actual value from Reference. It was designed to realize the C joint operator C<*>.
+
+  $VARIABLE
+
+The value obtained by Dereference returns the L<operator|/"Operators">.
+
+Compilation Errors:
+
+The variable Type must be Reference Type. Otherwise a compilation error occurs.
+
+Examples:
+
+  my $num : int;
+  my $num_ref : int* = \$num;
+  my $num_deref : int = $$num_ref;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+  my $z_deref : Complex_2d = $$z_ref;
 
 =head1 Copyright & License
 
