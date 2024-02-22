@@ -1888,69 +1888,6 @@ Examples:
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
 
-=head2 Getting Current Class Name
-
-The C<__PACKAGE__> operator gets the current class name.
-
-  __PACKAGE__
-
-The return type is the string type.
-
-If the __PACKAGE__ operator is used in anon method, it returns its outer class.
-
-Examples:
-
-  class Foo::Bar {
-    static method baz : void () {
-      # Foo::Bar
-      my $current_class_name = __PACKAGE__;
-      
-      my $cb = method : void () {
-        # Foo::Bar
-        my $current_class_name = __PACKAGE__;
-      };
-    }
-  }
-
-=head2 Getting Current File Name
-
-The getting current file name C<__FILE__> is an L<operator|/"Operators"> to get the current file name.
-
-  __FILE__
-
-The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
-
-Examples:
-
-  # SPVM/Foo/Bar.spvm
-  class Foo::Bar {
-    static method baz : void () {
-      # Get the current file name - SPVM/Foo/Bar.spvm
-      my $file_name == __FILE__;
-    }
-  }
-  class Foo::Bar2 {
-    static method baz : void () {
-      # Get the current file name - SPVM/Foo/Bar.spvm
-      my $file_name == __FILE__;
-    }
-  }
-
-=head2 Getting Current Line Number
-
-The getting current line number C<__LINE__> is an L<operator|/"Operators"> to get the current line number of the current file.
-
-  __LINE__
-
-Examples:
-
-  class Foo::Bar {
-    static method baz : void () {
-      # Get the current line number - 4
-      my $line = __LINE__;
-    }
-  }
-
 =head2 basic_type_id Operator
 
 The C<basic_type_id> operator gets the basic type ID from a type.
@@ -2144,6 +2081,69 @@ Examples:
   # 3 (The length of the fields of Complex_2d + 1)
   my $z : Complex_2d;
   &my_mulnum_method($z, 2);
+
+=head2 __PACKAGE__ Operator
+
+The C<__PACKAGE__> operator gets the current class name.
+
+  __PACKAGE__
+
+The return type is the string type.
+
+If the __PACKAGE__ operator is used in anon method, it returns its outer class.
+
+Examples:
+
+  class Foo::Bar {
+    static method baz : void () {
+      # Foo::Bar
+      my $current_class_name = __PACKAGE__;
+      
+      my $cb = method : void () {
+        # Foo::Bar
+        my $current_class_name = __PACKAGE__;
+      };
+    }
+  }
+
+=head2 __FILE__ Operator
+
+The C<__FILE__> operator gets the current file name.
+
+  __FILE__
+
+The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
+
+Examples:
+
+  # SPVM/Foo/Bar.spvm
+  class Foo::Bar {
+    static method baz : void () {
+      # Get the current file name - SPVM/Foo/Bar.spvm
+      my $file_name == __FILE__;
+    }
+  }
+  class Foo::Bar2 {
+    static method baz : void () {
+      # Get the current file name - SPVM/Foo/Bar.spvm
+      my $file_name == __FILE__;
+    }
+  }
+
+=head2 __LINE__ Operator
+
+The C<__LINE__> operator gets the current line number of the current file.
+
+  __LINE__
+
+Examples:
+
+  class Foo::Bar {
+    static method baz : void () {
+      # Get the current line number - 4
+      my $line = __LINE__;
+    }
+  }
 
 =head2 Method Call
 
