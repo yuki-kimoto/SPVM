@@ -10,71 +10,70 @@ This document describes garbage collection in SPVM language.
 
 =head2 Reference Count GC
 
-The object is destroyed when the reference count becomes 0.
+Garbage collection in SPVM is a reference counted GC.
 
-If the object is an Array that has Object Type values ​​as elements, the reference count of all Array elements that are not Undefined Value is decremented by 1 before Garbage Collection
+The object is destroyed when its reference count reaches 0.
 
-When an object is a L<class type|/"Class Type"> and has a field of Object Type, the reference count of the objects owned by all fields of Object Type that are not Undefined Value is decremented by 1 before Garbage Collection. If Weak Reference is set to the object saved in Field, Weak Reference is destroyed before the reference count is decremented by 1.
+The reference count of an object assigned by the L<assignment operator|SPVM::Document::Language::Operators/"assignment Operator"> is incremented by 1.
+  
+  # The reference count is incremented by 1
+  my $object = Point->new;
 
-When the object has Back references of Weak Reference, Undefined Value is assigned to all fields registered as back References and all back References are deleted.
+The reference count of an object whose assignment is removed by an assignment operator is decreased by 1.
 
-The above process is done recursively.
+  # The reference count is decremented by 1
+  $object = undef;
+
+Reference counts incremented by assignments to local variables are decremented at the end of its scope.
+
+  {
+    # The reference count is incremented by 1
+    my $object = Point->new;
+    
+    # The reference count of $object is decremented by 1 at the end of this scope
+  }
 
 =head2 Weak Reference
 
-Weak Reference is a reference that does not increase the reference count. Weak Reference can be used to solve the problem of circular references.
+SPVM supports weak references. Weak references are used to avoid circular references.
 
-SPVM has GC of the reference count Type. In the GC of the reference count Type, the object is automatically destroyed when the reference count becomes 0, but when the circular reference occurs, the reference count does not become 0 and the object is automatically destroyed. not.
-
-This is an example when the field of the object is circularly referenced.
+This is an example that objects have circular references.
 
   {
     my $foo = new Foo;
     my $bar = new Bar;
-  
+    
     $foo->{bar} = $bar;
     $bar->{foo} = $foo;
   }
 
-In this case, both objects are not destroyed when the Scope ends. This is because a circular reference has occurred and the reference count does not become 0.
-
-Weak Reference is a function to correctly destroy objects when a circular reference occurs in a programming language that has the reference count GC.
-
-In such a case, it is possible to release correctly by setting one Field to Weak Reference using the L<weaken operator/"weaken Operator">.
+The L<weaken operator|SPVM::Document::Language::Operators/"weaken Operator"> converts a reference to a weak reference.
 
   {
     my $foo = new Foo;
     my $bar = new Bar;
-  
+    
     $foo->{bar} = $bar;
     $bar->{foo} = $foo;
-  
+    
     weaken $foo->{bar};
   }
 
-Before the weaken statement is executed, $foo has the reference count of 2 and $bar has the reference count of 2.
+If a reference is convertd to a weak reference, the reference count of the referenced object is decremented by 1.
 
-If there is no weaken statement, the reference count of $foo and the reference count of $bar will not be 0 and will not be destroyed even if the scope ends.
+And the weaken flag of the field trun on, and the back reference from the field is added to the referenced object.
 
-When a weaken statement is executed, $foo has the reference count of 2 and $bar has the reference count of 1.
+The L<isweak operator|SPVM::Document::Language::Operators/"isweak Operator"> checks if the weaken flag of the field turn on.
 
-When the Scope ends, the reference count of $bar is decremented by 1 and becomes 0, so it is destroyed correctly.
+  my $isweak = isweaken $foo->{bar};
 
-Even if there are 3 circular references, you can release them correctly by setting Weak Reference in 1 Field.
+The L<unweaken operator|SPVM::Document::Language::Operators/"unweaken Operator"> converts a weak reference to a reference.
 
-  {
-    my $foo = new Foo;
-    my $bar = new Bar;
-    my $baz = new Baz;
-  
-    $foo->{bar} = $bar;
-    $bar->{baz} = $baz;
-    $baz->{foo} = $foo;
-  
-    weaken $foo->{bar};
-  }
+  unweaken $foo->{bar};
 
-As a syntax related to Weak Reference, Weak Reference can be destroyed the L<weaken operator/"weaken Operator">, and it can be confirmed whether Field is Weak Reference the L<isweak operator|/"isweak Operator">.
+If a weak reference is convertd to a reference, the reference count of the referenced object is incremented by 1.
+
+And the weaken flag of the field trun off, and the back reference from the field is removed from the referenced object.
 
 =head1 Copyright & License
 
