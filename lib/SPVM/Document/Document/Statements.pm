@@ -10,7 +10,7 @@ This document describes statements in SPVM language.
 
 Statements are the list of the statement.
 
-Statements are written direct under the L<scope block|/"Scope Block">.
+Statements are written direct under the scope block.
   
   # Scope block
   {
@@ -32,11 +32,11 @@ The C<if> statement runs conditional branch.
   
   }
 
-First, The L<boolean conversion|/"Boolean Conversion"> is performed on the condition.
+First, The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition.
 
-Next, if the condition is not 0, the execution position jumps to the beginning of the L<if block|/"if Block">. Otherwise jumps to the end of the L<if block|/"if Block">.
+Next, if the condition is not 0, the execution position jumps to the beginning of the if block. Otherwise jumps to the end of the if block.
 
-The L<local variable declartion|/"Local Variable Declaration"> and the initialization in the condition of the C<if> statement are allowed.
+The local variable declartion and the initialization in the condition of the C<if> statement are allowed.
 
   if (my $condition = 1) {
   
@@ -62,7 +62,7 @@ Examples:
 
 =head3 elsif Statement
 
-The C<elsif> statement runs conditional branch used with the L<if statement|/"if Statement">.
+The C<elsif> statement runs conditional branch used with the if statement
 
   if (CONDITION1) {
   
@@ -71,11 +71,11 @@ The C<elsif> statement runs conditional branch used with the L<if statement|/"if
   
   }
 
-If the C<condition 1> doesn't match, the execution position jumps to the end of the L<if block|/"if Block">.
+If the C<condition 1> doesn't match, the execution position jumps to the end of the if block.
 
-Next, The L<boolean conversion|/"Boolean Conversion"> is performed on the C<condition 2>.
+Next, The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the C<condition 2>.
 
-Next, if the C<condition 2> is not 0, the execution position jumps to the beginning of the L<elsif block|/"elsif Block">. Otherwise jumps to the end of the L<elsif block|/"elsif Block">
+Next, if the C<condition 2> is not 0, the execution position jumps to the beginning of the elsif block. Otherwise jumps to the end of the elsif block
 
 Multiple C<elsif> statements are allowed.
 
@@ -89,7 +89,7 @@ Multiple C<elsif> statements are allowed.
   
   }
 
-The L<local variable declartion|/"Local Variable Declaration"> and the initialization in the condition of the C<elsif> statement are allowed.
+The local variable declartion and the initialization in the condition of the C<elsif> statement are allowed.
 
   if (my $condition = 1) {
   
@@ -127,7 +127,7 @@ Examples:
 
 =head3 else Statement
 
-The C<else> statement runs conditional branch used with the L<if statement|if Statement> or the L<elsif statement|elsif Statement>.
+The C<else> statement runs conditional branch used with the if statement or the elsif statement.
 
   if (CONDITION) {
   
@@ -136,11 +136,11 @@ The C<else> statement runs conditional branch used with the L<if statement|if St
   
   }
 
-If the condition doesn't match, the execution position jumps to the end of the L<if block|/"if Block">.
+If the condition doesn't match, the execution position jumps to the end of the if block.
 
-Next, the execution position jumps to the beginning of the L<else block|/"else Block">.
+Next, the execution position jumps to the beginning of the else block.
 
-The C<elsif> statements with the L<else statement|/"else Statement"> are allowed.
+The C<elsif> statements with the else statement are allowed.
 
   if (CONDITION1) {
   
@@ -169,19 +169,19 @@ Examples:
 
 =head3 unless Statement
 
-The C<unless> statement runs conditional branch that does the opposite of the L<if statement|/"if Statement">.
+The C<unless> statement runs conditional branch that does the opposite of the if statement
 
   unless (CONDITION) {
     
   }
 
-The C<unless> statement is the same as the following L<if Statement|/"if Statement">.
+The C<unless> statement is the same as the following if Statement.
 
   if (!CONDITION) {
     
   }
 
-The C<unless> statements with the L<elsif statement|/"elsif Statement"> and the L<else statement|/"else  Statement"> are allowed.
+The C<unless> statements with the elsif statement and the else statement are allowed.
 
   unless (CONDITION1) {
     
@@ -223,19 +223,19 @@ The C<switch> statement runs conditional branch.
 
 The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the condition.
 
-The value of the L<case statement|/"case Statement"> must be one of the L<character literal|/"Character Literal">, the L<integer literal|/"Integer Literal"> or the L<getting enumeration value|/"Getting Enumeration Value">.
+The value of the case statement must be one of the L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literal"> or the L<getting enumeration value|SPVM::Document::Language::Operators/"Getting Enumeration Value">.
 
-If it is a L<character literal|/"Character Literal">, the value is converted to the int type at compile-time.
+If it is a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the value is converted to the int type at compile-time.
 
-If the condition matches the value of a C<case> statement, the program jumps to the beginning of the L<case block|/"case Block">.
+If the condition matches the value of a C<case> statement, the program jumps to the beginning of the case block.
 
-If the condition doesn't match any C<case> statements and the default statement exists, the program jumps to the beginning the L<default block|/"default Block">.
+If the condition doesn't match any C<case> statements and the default statement exists, the program jumps to the beginning the default block.
 
-If the condition doesn't match any C<case> statements and the default statement doesn't exists, the program jumps to the end of the L<switch block|/"switch Block">.
+If the condition doesn't match any C<case> statements and the default statement doesn't exists, the program jumps to the end of the switch block.
 
 The C<case> statements and the default statement can be ommited.
 
-The C<break> statement jumps to the end of the L<switch block|/"switch Block">.
+The C<break> statement jumps to the end of the switch block.
 
   switch (CONDITION) {
     case CASE_VALUE1: {
@@ -252,7 +252,7 @@ The C<break> statement jumps to the end of the L<switch block|/"switch Block">.
     }
   }
 
-If the last statment of the L<case block|/"case Block"> is not the C<break> statement, a C<break> statement is added to the end of the L<case block|/"case Block">.
+If the last statment of the case block is not the C<break> statement, a C<break> statement is added to the end of the case block.
   
   # The break statement is ommitted.
   switch (CONDITION) {
@@ -267,7 +267,7 @@ If the last statment of the L<case block|/"case Block"> is not the C<break> stat
     }
   }
 
-Multiple C<case> statements before a L<case block|/"case Block"> can be specified at once.
+Multiple C<case> statements before a case block can be specified at once.
 
   switch (CONDITION) {
     case CASE_VALUE1:
@@ -279,7 +279,7 @@ Multiple C<case> statements before a L<case block|/"case Block"> can be specifie
 
 Compilation Errors:
 
-The condition must be an L<integer type within int|/"Integer Type Within int">. Otherwise a compilation error occurs.
+The condition must be an integer type within int. Otherwise a compilation error occurs.
 
 The values of the case statements cannnot be duplicated. If so, a compilation error occurs.
 
@@ -365,7 +365,7 @@ The C<default> statement specifies a default branch of a L<switch statement|/"sw
 
 =head4 break Statement
 
-The C<break> statement is jumps to the end of the L<switch block|/"switch Block"> of the L<switch statement|/"switch Statement">.
+The C<break> statement is jumps to the end of the switch block of the L<switch statement|/"switch Statement">.
 
   # The break statement
   break;
@@ -380,11 +380,11 @@ The C<while> statement runs loop.
   
   }
 
-First, The L<boolean conversion|/"Boolean Conversion"> is performed on the condition.
+First, The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition.
 
-Next, If the condition is 0, the program jumps to the end of the L<while block|/"while Block">. Otherwise the program goes to the beginning of the L<while block|/"while Block">.
+Next, If the condition is 0, the program jumps to the end of the while block. Otherwise the program goes to the beginning of the while block.
 
-When the program reaches the end of the L<while block|/"while Block">, it jumps back to the while statement and evaluates the condition again.
+When the program reaches the end of the while block, it jumps back to the while statement and evaluates the condition again.
 
 Examples:
 
@@ -397,7 +397,7 @@ Examples:
     $i++;
   }
 
-The L<last statement|/"last Statement"> is used inside the L<while block|/"while Block">. By The L<last statement|/"last Statement">, the program jumps to the end of the current L<while block|/"while Block">.
+The L<last statement|/"last Statement"> is used inside the while block. By The L<last statement|/"last Statement">, the program jumps to the end of the current while block.
   
   # The last statement
   while (1) {
@@ -405,7 +405,7 @@ The L<last statement|/"last Statement"> is used inside the L<while block|/"while
     last;
   }
 
-The L<next statement|/"next Statement"> is used inside the L<while block|/"while Block">. By The L<last statement|/"last Statement">, the program goes back to the C<while> statement of the current L<while block|/"while Block">.
+The L<next statement|/"next Statement"> is used inside the while block. By The L<last statement|/"last Statement">, the program goes back to the C<while> statement of the current while block.
 
   my $i = 0;
   while ($i < 5) {
@@ -421,7 +421,7 @@ The L<next statement|/"next Statement"> is used inside the L<while block|/"while
     $i++;
   }
 
-The C<while> statement is enclosed by an inbisible L<simple block|/"Simple Block">.
+The C<while> statement is enclosed by an inbisible simple block.
   
   # The while statement
   while (1) {
@@ -494,7 +494,7 @@ B<Example:>
 
 =head3 next Statement
 
-The C<next> statement goes back to the L<while statement|/"while Statement"> of the current L<while block|/"while Block">.
+The C<next> statement goes back to the L<while statement|/"while Statement"> of the current while block.
 
   next;
 
@@ -502,7 +502,7 @@ See also the L<while statement|/"while Statement">.
 
 =head3 last Statement
 
-The C<last> statement jumps to the end of the current L<while block|/"while Block">.
+The C<last> statement jumps to the end of the current while block.
 
   last;
 
@@ -520,15 +520,15 @@ The C<return> statement returns a value.
 
 Compilation Errors:
 
-If the return type of the current L<method|/"Method Definition"> is the L<void type|/"void Type">, I<OPERAND> cannnot exist. If so, a compilation error occurs.
+If the return type of the current L<method|SPVM::Document::Language::Class/"Method Definition"> is the void typ, I<OPERAND> cannnot exist. If so, a compilation error occurs.
 
-If the return type of the current L<method|/"Method Definition"> is the non-void type, I<OPERAND> must exist. Otherwise a compilation error occurs.
+If the return type of the current L<method|SPVM::Document::Language::Class/"Method Definition"> is the non-void type, I<OPERAND> must exist. Otherwise a compilation error occurs.
 
-The type of I<OPERAND> must be able to L<assign|/"Type Assignability"> to the return type of the current method. Otherwise a compilation error occurs.
+The type of I<OPERAND> must satisfy L<type assignability|SPVM::Document::Language::Types/"Type Assignability"> to the return type of the current method. Otherwise a compilation error occurs.
 
 =head2 die Statement
 
-The C<die> statement throws an L<exception|/"Throwing Exception">.
+The C<die> statement throws an L<exception|SPVM::Document::Language::ExceptionHandling/"Throwing Exception">.
 
   die OPERAND_MESSAGE
   die
@@ -536,19 +536,19 @@ The C<die> statement throws an L<exception|/"Throwing Exception">.
   die ERROR_TYPE
   die OPERAND_ERROR_ID ',' OPERAND_MESSAGE
 
-OPERAND_MESSAGE is an error message. The error message is set to the L<exception variable|/"Exception Variable"> C<$@>.
+OPERAND_MESSAGE is an error message. The error message is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@>.
 
 If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error ID 255.
 
-If OPERAND_MESSAGE is omitted or L<undef|/"Undefined Value">, "Error" is set to the L<exception variable|/"Exception Variable"> C<$@>.
+If OPERAND_MESSAGE is omitted or C<undef>, "Error" is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@>.
 
-ERROR_TYPE is a class type. If ERROR_TYPE is given, the basic type ID of the class is the value got by the L</"eval_error_id Operator">.
+ERROR_TYPE is a class type. If ERROR_TYPE is given, the basic type ID of the class is the value got by the L<eval_error_id operator|SPVM::Document::Language::Operators/"eval_error_id Operator">.
 
-OPERAND_ERROR_ID is an integer value within int type. If OPERAND_ERROR_ID is given, it is the value got by the L</"eval_error_id Operator">.
+OPERAND_ERROR_ID is an integer value within int type. If OPERAND_ERROR_ID is given, it is the value got by the L<eval_error_id operator|SPVM::Document::Language::Operators/"eval_error_id Operator">.
 
-the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on OPERAND_ERROR_ID.
+the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on OPERAND_ERROR_ID.
 
-The return type is the L<void type|/"void Type">.
+The return type is the void typ.
 
 The following one is an example of a stack trace. Each line of the stack trace constains the class name, the method name, the file name and the line number of the caller.
 
@@ -556,11 +556,11 @@ The following one is an example of a stack trace. Each line of the stack trace c
     TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
     TestCase->main at SPVM/TestCase.spvm line 1198
 
-The exception can be caught by the L<eval block|/"Exception Catching">.
+The exception can be caught by the eval block.
 
 Comlication Errors:
 
-OPERAND_MESSAGE must be the string type or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+OPERAND_MESSAGE must be the string type or the undef type. Otherwise a compilation error occurs.
 
 ERROR_TYPE must be a class type. Otherwise a compilation error occurs.
 
