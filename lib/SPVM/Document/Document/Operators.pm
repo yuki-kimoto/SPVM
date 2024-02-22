@@ -656,6 +656,117 @@ B<Exampless:>
   my $y = 2;
   my $ret = ($x += 2, $x + $y);
 
+=head2 Assignment Operator
+
+The assignment operator C<=> is an L<operator|/"Operators"> to assign a value.
+
+  LEFT_OPERAND = RIGHTH_OPERAND
+
+The assignment operator has different meanings depending on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+
+=head3 Local Variable Assignment
+
+See L</"Setting Local Variable">.
+
+=head3 Class Variable Assignment
+
+See L</"Setting Class Variable">.
+
+=head3 Array Element Assignment
+
+See L</"Setting Array Element">.
+
+=head3 Field Assignment
+
+See L</"Setting Field">.
+
+=head2 Special Assignment Operator
+
+A special assignment operator is the alias for the combination of an L<operator> and L</"Assignment Operator"> C<=>.
+
+  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
+
+Above is the alias for the following code.
+
+  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
+
+For example, See a C<byte> case.
+
+  # Addition assignment operator
+  $x += 1;
+  
+  # Above is the same as the following code.
+  $x = (byte)($x + 1)
+
+The following operators are used as the operators of the special assignment operators.
+
+=begin html
+
+<table>
+  <tr>
+    <td>Addition assignment operator</td>
+    <td>+=</td>
+  </tr>
+  <tr>
+    <td>Subtraction assignment operator</td>
+    <td>-=</td>
+  </tr>
+  <tr>
+    <td>Multiplication assignment operator</td>
+    <td>*=</td>
+  </tr>
+  <tr>
+    <td>Division assignment operator</td>
+    <td>/=</td>
+  </tr>
+  <tr>
+    <td>Modulo assignment operator</td>
+    <td>%=</td>
+  </tr>
+  <tr>
+    <td>Bit AND assignment operator</td>
+    <td>&=</td>
+  </tr>
+  <tr>
+    <td>Bit OR assignment operator</td>
+    <td>|=</td>
+  </tr>
+  <tr>
+    <td>Left shift assignment operator</td>
+    <td><<=</td>
+  </tr>
+  <tr>
+    <td>Arithmetic right shift assignment operator</td>
+    <td>>>=</td>
+  </tr>
+  <tr>
+    <td>Logical right shift assignment operator</td>
+    <td>>>>=</td>
+  </tr>
+  <tr>
+    <td>Concatenation assignment operator</td>
+    <td>.=</td>
+  </tr>
+</table>
+
+=end html
+
+Examples:
+
+  # Special assignment operators
+  $x += 1;
+  $x -= 1;
+  $x *= 1;
+  $x /= 1;
+  $x &= 1;
+  $x |= 1;
+  $x ^= 1;
+  $x %= 1;
+  $x <<= 1;
+  $x >>= 1;
+  $x >>>= 1;
+  $x .= "abc";
+
 =head2 Comparison Operator
 
 Comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
@@ -1615,117 +1726,6 @@ Examples:
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
 
-=head2 Assignment Operator
-
-The assignment operator C<=> is an L<operator|/"Operators"> to assign a value.
-
-  LEFT_OPERAND = RIGHTH_OPERAND
-
-The assignment operator has different meanings depending on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
-
-=head3 Local Variable Assignment
-
-See L</"Getting Local Variable"> and L</"Setting Local Variable">.
-
-=head3 Class Variable Assignment
-
-See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
-
-=head3 Array Element Assignment
-
-See L</"Getting Array Element"> and L</"Setting Array Element">.
-
-=head3 Field Assignment
-
-See L</"Getting Field"> and L</"Setting Field">.
-
-=head2 Special Assignment Operator
-
-A special assignment operator is the alias for the combination of an L<operator> and L</"Assignment Operator"> C<=>.
-
-  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
-
-Above is the alias for the following code.
-
-  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
-
-For example, See a C<byte> case.
-
-  # Addition assignment operator
-  $x += 1;
-  
-  # Above is the same as the following code.
-  $x = (byte)($x + 1)
-
-The following operators are used as the operators of the special assignment operators.
-
-=begin html
-
-<table>
-  <tr>
-    <td>Addition assignment operator</td>
-    <td>+=</td>
-  </tr>
-  <tr>
-    <td>Subtraction assignment operator</td>
-    <td>-=</td>
-  </tr>
-  <tr>
-    <td>Multiplication assignment operator</td>
-    <td>*=</td>
-  </tr>
-  <tr>
-    <td>Division assignment operator</td>
-    <td>/=</td>
-  </tr>
-  <tr>
-    <td>Modulo assignment operator</td>
-    <td>%=</td>
-  </tr>
-  <tr>
-    <td>Bit AND assignment operator</td>
-    <td>&=</td>
-  </tr>
-  <tr>
-    <td>Bit OR assignment operator</td>
-    <td>|=</td>
-  </tr>
-  <tr>
-    <td>Left shift assignment operator</td>
-    <td><<=</td>
-  </tr>
-  <tr>
-    <td>Arithmetic right shift assignment operator</td>
-    <td>>>=</td>
-  </tr>
-  <tr>
-    <td>Logical right shift assignment operator</td>
-    <td>>>>=</td>
-  </tr>
-  <tr>
-    <td>Concatenation assignment operator</td>
-    <td>.=</td>
-  </tr>
-</table>
-
-=end html
-
-Examples:
-
-  # Special assignment operators
-  $x += 1;
-  $x -= 1;
-  $x *= 1;
-  $x /= 1;
-  $x &= 1;
-  $x |= 1;
-  $x ^= 1;
-  $x %= 1;
-  $x <<= 1;
-  $x >>= 1;
-  $x >>>= 1;
-  $x .= "abc";
-
 =head2 Getting Local Variable
 
 The getting local variable is an L<operator|/"Operators"> to get the value of the L<local variable|/"Local Variable">.
@@ -2133,7 +2133,7 @@ Setting a value with Dereference returns the set value. This is the L<operator|/
 
 Compilation Errors:
 
-The variable Type must be Reference Type. Otherwise a compilation error occurs.
+The variable type must be a reference type. Otherwise a compilation error occurs.
 
 The type of operator must match the type of the variable when dereferenced. Otherwise a compilation error occurs.
 
@@ -2342,19 +2342,15 @@ Examples:
 
 =head2 Dereference Operator
 
-The dereference operators are the L<operatoers|/"Operators"> to perform a deference.
-
-=head3 Getting value by Dereference
-
-Obtaining a value by Dereference is an L<operator|/"Operators"> to obtain the actual value from Reference. It was designed to realize the C joint operator C<*>.
+The dereference operator C<$> gets the value referenced by a variable.
 
   $VARIABLE
 
-The value obtained by Dereference returns the L<operator|/"Operators">.
+The return type is the type of the value referenced by a variable.
 
 Compilation Errors:
 
-The variable Type must be Reference Type. Otherwise a compilation error occurs.
+The type of the variable must be a reference type. Otherwise a compilation error occurs.
 
 Examples:
 
