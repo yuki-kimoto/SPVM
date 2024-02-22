@@ -6,7 +6,9 @@ SPVM::Document::Language::System - System Setting in SPVM Language
 
 This document describes system setting in SPVM language.
 
-=head1 Standard IO
+=head1 System Setting
+
+=head2 Standard IO
 
 SPVM has own C<stdin>, C<stdout>, and C<stderr>. These are set to the binary mode.
 
