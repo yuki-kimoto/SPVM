@@ -19,7 +19,9 @@
       =item * L<Garbage Collection|SPVM::Document::Language::GarbageCollection>
 
       =item * L<System Setting|SPVM::Document::Language::System>
-      
+    * Improve many docs.
+  [Test Improvement]
+    * Add tests for native APIs.
 0.989078 2023-02-21
   [Document Improvement]
     * Improve "Usage" of SPVM program.
