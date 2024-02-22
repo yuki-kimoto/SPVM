@@ -1,7 +1,6 @@
 # SPVM Language
 
-{: align="center"}
-![my image](/logo/spvm_logo.jpg)
+<img src="/logo/spvm_logo.jpg" width="120px">
 
 * <a href="https://metacpan.org/pod/SPVM">SPVM - CPAN</a>
 
