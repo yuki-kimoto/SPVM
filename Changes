@@ -1,3 +1,7 @@
+0.989080 2023-02-23
+  [Document Fix]
+    * Fix language specification document pathes.
+    
 0.989079 2023-02-22
   [Document Improvement]
     * Separate SPVM::Document::Language to the following documents.

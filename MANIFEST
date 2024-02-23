@@ -224,17 +224,17 @@ lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
 lib/SPVM/Dist.pm
 lib/SPVM/Document/Benchmark.pm
-lib/SPVM/Document/Document/Class.pm
-lib/SPVM/Document/Document/ExceptionHandling.pm
-lib/SPVM/Document/Document/GarbageCollection.pm
-lib/SPVM/Document/Document/Operators.pm
-lib/SPVM/Document/Document/Statements.pm
-lib/SPVM/Document/Document/SyntaxParsing.pm
-lib/SPVM/Document/Document/System.pm
-lib/SPVM/Document/Document/Tokenization.pm
-lib/SPVM/Document/Document/Types.pm
 lib/SPVM/Document/EnvironmentVariables.pm
 lib/SPVM/Document/Language.pm
+lib/SPVM/Document/Language/Class.pm
+lib/SPVM/Document/Language/ExceptionHandling.pm
+lib/SPVM/Document/Language/GarbageCollection.pm
+lib/SPVM/Document/Language/Operators.pm
+lib/SPVM/Document/Language/Statements.pm
+lib/SPVM/Document/Language/SyntaxParsing.pm
+lib/SPVM/Document/Language/System.pm
+lib/SPVM/Document/Language/Tokenization.pm
+lib/SPVM/Document/Language/Types.pm
 lib/SPVM/Document/Modules.pm
 lib/SPVM/Document/NativeAPI.pm
 lib/SPVM/Document/NativeAPI/Allocator.pm
@@ -392,6 +392,7 @@ lib/SPVM/Sync/Mutex.config
 lib/SPVM/Sync/Mutex.pm
 lib/SPVM/Sync/Mutex.spvm
 LICENSE
+logo/spvm_logo.jpg
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
