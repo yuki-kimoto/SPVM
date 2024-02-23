@@ -10,24 +10,6 @@
 
 ## Documents
 
-<<<<<<< HEAD
-* <a href="https://metacpan.org/pod/SPVM::Document::Tutorial">Tutorial</a>
-* <a href="https://metacpan.org/pod/SPVM::Document::Language">Language Specification</a>
-* <a href="https://metacpan.org/pod/SPVM::Document::Benchmark">Benchmark</a>
-* <a href="https://metacpan.org/pod/SPVM::Document::ExchangeAPI">Exchange API</a>
-* <a href="https://metacpan.org/pod/SPVM::Document::NativeAPI">Native API</a>
-* <a href="https://metacpan.org/pod/SPVM::Document::NativeModule">Native Module</a>
-* <a href="https://metacpan.org/pod/SPVM::Document::Resource">Resource</a>
-
-## Wiki
-
-* <a href="https://github.com/yuki-kimoto/SPVM/wiki">Wiki</a>
-
-## Standard Modules
-
-* <a href="https://metacpan.org/pod/SPVM::Document::Modules">SPVM Standard Modules</a>
-
-=======
 <ul>
 
 <li><p><a href="https://metacpan.org/pod/SPVM::Document::Language">Language Specification</a></p>
@@ -174,4 +156,4 @@
 
 </li>
 </ul>
->>>>>>> cb7e769d68d38744e7d92222c679988015bca652
+
