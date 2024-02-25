@@ -223,6 +223,7 @@ lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
 lib/SPVM/Dist.pm
+lib/SPVM/Document.pm
 lib/SPVM/Document/Benchmark.pm
 lib/SPVM/Document/EnvironmentVariables.pm
 lib/SPVM/Document/Language.pm
