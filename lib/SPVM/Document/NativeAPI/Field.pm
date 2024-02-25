@@ -4,87 +4,61 @@ SPVM::Document::NativeAPI::Field - Field Native APIs
 
 =head1 Description
 
-The field native APIs of L<SPVM> are the APIs to manipulate information of fields.
+The field native APIs in L<SPVM> are the APIs to get definition information for fields.
 
 =head1 Usage
 
   SPVM_API_FIELD* api_field = env->api->field;
   
-  const char* field_name = api_field->get_name(runtime, field);
-
-The C<field> is got by the L<get_field_by_index|SPVM::Document::NativeAPI::BasicType/"get_field_by_index"> and the L<get_field_by_name|SPVM::Document::NativeAPI::BasicType/"get_field_by_name"> basic type native API.
+  void* basic_type = env->get_basic_type(env, stack, "Foo");
+  
+  void* field = env->api->basic_type->get_field_by_name(env->runtime, basic_type, "value");
+  
+  const char* field_name = api_field->get_name(env->runtime, field);
 
 =head1 Native APIs
 
 =head2 get_name
 
-  const char* (*get_name)(void* runtime, void* field);
+C<const char* (*get_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the name of the field.
 
-The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
-
-The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
-
 =head2 get_index
 
-  int32_t (*get_index)(void* runtime, void* field);
+C<int32_t (*get_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the index of the field.
 
-The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
-
-The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
-
 =head2 get_offset
 
-  int32_t (*get_offset)(void* runtime, void* field);
+C<int32_t (*get_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the offset of the field.
-
-The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
-
-The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+Returns the byte offset of the field. The byte offset is the position in bytes where the field is allocated in its belonging class.
 
 =head2 get_basic_type
 
-  void* (*get_basic_type)(void* runtime, void* field);
+C<void* (*get_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the field.
 
-The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
-
-The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
-
 =head2 get_type_dimension
 
-  int32_t (*get_type_dimension)(void* runtime, void* field);
+C<int32_t (*get_type_dimension)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
 Returns the type dimension of the field.
 
-The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
-
-The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
-
 =head2 get_type_flag
 
-  int32_t (*get_type_flag)(void* runtime, void* field);
+C<int32_t (*get_type_flag)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the type flag of the field.
-
-The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
-
-The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the field.
 
 =head2 get_current_basic_type
 
-  void* (*get_current_basic_type)(void* runtime, void* field);
+C<void* (*get_current_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the current L<basic type|SPVM::Document::NativeAPI::BasicType> of the field.
-
-The C<runtime> argument is a L<runtime|SPVM::Document::NativeAPI::Runtime> object.
-
-The C<field> argument is a L<field|SPVM::Document::NativeAPI::Field> object.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> where the field I<field> is defined.
 
 =head1 Native API IDs
 
