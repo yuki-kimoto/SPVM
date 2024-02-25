@@ -28,9 +28,7 @@ Returns the name of the class variable.
 
 C<int32_t (*get_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the index of the class variable.
-
-The C<class_var> argument is a L<class_var|SPVM::Document::NativeAPI::ClassVar> object.
+Returns the index of the class variable. This index is the position of the class variable in its belonging class.
 
 =head2 get_basic_type
 
@@ -54,7 +52,7 @@ Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the cla
 
 C<void* (*get_current_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> the class variable I<class_var> is defined.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> where the class variable I<class_var> is defined.
 
 =head1 Native API IDs
 
