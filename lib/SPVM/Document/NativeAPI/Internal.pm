@@ -4,7 +4,9 @@ SPVM::Document::NativeAPI::Internal - Internal Native APIs
 
 =head1 Description
 
-The internal native APIs of L<SPVM> are the APIs for internal operations.
+The internal native APIs in L<SPVM> are the APIs for internal operations.
+
+These APIs are used for the implementation of the SPVM language, so they should not be used.
 
 =head1 Usage
 
@@ -34,7 +36,7 @@ Decrements the reference count of the object.
 
   void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
 
-Leaves scope.
+Performs leaveing scope operation for local variables.
 
 =head1 Native API IDs
 
