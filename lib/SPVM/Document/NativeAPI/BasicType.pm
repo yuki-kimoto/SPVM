@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::BasicType - Basic Type Native APIs
 
 =head1 Description
 
-The basic type native APIs in L<SPVM> are the APIs to get definition information of basic types.
+The basic type native APIs in L<SPVM> are the APIs to get definition information for basic types.
 
 =head1 Usage
 
@@ -188,6 +188,20 @@ This can be changed by a file directive.
   20 has_interface
   21 is_super_class
   22 get_file
+
+=head1 See Aloso
+
+=over 2
+
+=item * L<SPVM::Document::NativeAPI>
+
+=item * L<SPVM::Document::NativeAPI::Type>
+
+=item * L<SPVM::Document::NativeClass>
+
+=item * L<SPVM::Document>
+
+=back
 
 =head1 Copyright & License
 
