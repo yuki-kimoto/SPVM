@@ -118,49 +118,49 @@ If the method is an enumeration, returns 1, otherwise returns 0.
 
 C<int32_t (*get_byte_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the total byte size of the byte variables allocated by the method.
+Returns the length of the variables of the C<byte> type allocated by the method.
 
 =head2 get_short_vars_width
 
 C<int32_t (*get_short_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the total byte size of the short variables allocated by the method.
+Returns the length of the variables of the C<short> type allocated by the method.
 
 =head2 get_int_vars_width
 
 C<int32_t (*get_int_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the total byte size of the int variables allocated by the method.
+Returns the length of the variables of the C<int> type allocated by the method.
 
 =head2 get_long_vars_width
 
 C<int32_t (*get_long_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the total byte size of the long variables allocated by the method.
+Returns the length of the variables of the C<long> type allocated by the method.
 
 =head2 get_float_vars_width
 
 C<int32_t (*get_float_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the total byte size of the float variables allocated by the method.
+Returns the length of the variables of the C<float> type allocated by the method.
 
 =head2 get_double_vars_width
 
 C<int32_t (*get_double_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the total byte size of the double variables allocated by the method.
+Returns the length of the variables of the C<double> type allocated by the method.
 
 =head2 get_object_vars_width
 
 C<int32_t (*get_object_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the total byte size of the variables allocated by the method.
+Returns the length of the variables of the object type allocated by the method.
 
 =head2 get_ref_vars_width
 
 C<int32_t (*get_ref_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the total byte size of the reference variables allocated by the method.
+Returns the length of the variables of the reference type allocated by the method.
 
 =head2 get_mortal_stack_length
 
