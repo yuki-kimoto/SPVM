@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::Allocator - Allocator Native APIs
 
 =head1 Description
 
-The allocator native APIs of L<SPVM> are the APIs to manipulate memory allocators.
+The allocator native APIs in L<SPVM> are the APIs for memory allocators.
 
 =head1 Usage
 
@@ -20,18 +20,32 @@ The allocator native APIs of L<SPVM> are the APIs to manipulate memory allocator
 
   void* (*new_instance)(void);
 
-Creates a new allocator object and returns it.
+Creates a new memory allocator and returns it.
 
 =head2 free_instance
 
   void (*free_instance)(void* allocator);
 
-Frees an allocator object.
+Frees the memory allocator.
 
 =head1 Native API IDs
 
   0 new_instance
   1 free_instance
+
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::NativeAPI>
+
+=item * L<SPVM::Document::NativeAPI::StringBuffer>
+
+=item * L<SPVM::Document::NativeClass>
+
+=item * L<SPVM::Document>
+
+=back
 
 =head1 Copyright & License
 
