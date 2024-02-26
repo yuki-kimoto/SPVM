@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::Runtime - Runtime Native APIs
 
 =head1 Description
 
-The runtime native APIs of L<SPVM> are the APIs to manipulate information of runtime.
+The runtime native APIs of L<SPVM> are the APIs for SPVM runtimes.
 
 =head1 Usage
 
@@ -16,95 +16,89 @@ The runtime native APIs of L<SPVM> are the APIs to manipulate information of run
 
 =head2 get_object_data_offset
 
-  int32_t (*get_object_data_offset)(void* runtime);
+C<int32_t (*get_object_data_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns the offset of the data of the C<SPVM_OBJECT> type.
+Returns the offset of data area in the data structure C<SPVM_OBJECT>.
 
-The C<runtime> argument is a runtime object.
+The data structure C<SPVM_OBJECT> is a data structure in the C language for SPVM objects.
+
+Elements in an array or fields or a pointer in a pointer class is stored into the data area.
 
 =head2 get_object_ref_count_offset
 
-  int32_t (*get_object_ref_count_offset)(void* runtime);
+C<int32_t (*get_object_ref_count_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns the offset of the C<ref_count> member variable of the C<SPVM_OBJECT> type.
+Returns the offset of the C<ref_count> member variable in the data structure C<SPVM_OBJECT>.
 
-The C<runtime> argument is a runtime object.
+The data structure C<SPVM_OBJECT> is a data structure in the C language for SPVM objects.
 
 =head2 get_object_length_offset
 
-  int32_t (*get_object_length_offset)(void* runtime);
+C<int32_t (*get_object_length_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns the offset of the C<length> member variable of the C<SPVM_OBJECT> type.
+Returns the offset of the C<length> member variable in the data structure C<SPVM_OBJECT>.
 
-The C<runtime> argument is a runtime object.
+The data structure C<SPVM_OBJECT> is a data structure in the C language for SPVM objects.
 
 =head2 get_basic_type_by_id
 
-  void* (*get_basic_type_by_id)(void* runtime, int32_t basic_type_id);
+C<void* (*get_basic_type_by_id)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, int32_t basic_type_id);>
 
-Gets a L<basic type|SPVM::Document::NativeAPI::BasicType> object by a basic type ID and returns it.
-
-The C<runtime> argument is a runtime object.
+Returns a L<basic type|SPVM::Document::NativeAPI::BasicType> object given the basic type ID.
 
 =head2 get_basic_type_by_name
 
-  void* (*get_basic_type_by_name)(void* runtime, const char* basic_type_name);
+C<void* (*get_basic_type_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, const char* basic_type_name);>
 
-Gets a L<basic type|SPVM::Document::NativeAPI::BasicType> object by a basic type name and returns it.
-
-The C<runtime> argument is a runtime object.
+Returns a L<basic type|SPVM::Document::NativeAPI::BasicType> object given the basic type name.
 
 =head2 get_basic_types_length
 
-  int32_t (*get_basic_types_length)(void* runtime);
+C<int32_t (*get_basic_types_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Gets the length of the basic types.
-
-The C<runtime> argument is a runtime object.
+Returns the length of the basic types defined in the SPVM runtime.
 
 =head2 build_precompile_class_source
 
-  void (*build_precompile_class_source)(void* runtime, void* string_buffer, void* module_basic_type);
+C<void (*build_precompile_class_source)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* string_buffer|SPVM::Document::NativeAPI::StringBuffer>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Builds the C source code of a precompiled module, and saves it to the string buffer.
-
-The C<runtime> argument is a runtime object.
-
-The C<string_buffer> argument is a L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
-
-The C<module_basic_type> argument is a L<basic type|SPVM::Document::NativeAPI::BasicType> object.
+Creates the C source code for a precompiled methods defined in the basic type, and saves it to the string buffer.
 
 =head2 build_precompile_method_source
 
-  void (*build_precompile_method_source)(void* runtime, void* string_buffer, void* method);
-  
-Builds the C source code of a precompiled method, and saves it to the string buffer.
+C<void (*build_precompile_method_source)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* string_buffer|SPVM::Document::NativeAPI::StringBuffer>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-The C<runtime> argument is a runtime object.
-
-The C<string_buffer> argument is a L<string buffer|SPVM::Document::NativeAPI::StringBuffer> object.
-
-The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
+Creates the C source code for a precompiled method, and saves it to the string buffer.
 
 =head2 get_compiler
 
-  void* (*get_compiler)(void* runtime);
+C<void* (*get_compiler)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Returns the compiler.
 
 =head2 set_compiler
 
-  void (*set_compiler)(void* runtime, void* compiler);
+C<void (*set_compiler)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
+
+Sets the compiler.
 
 =head2 get_spvm_stdin
 
-  FILE* (*get_spvm_stdin)(void* runtime);
+C<FILE* (*get_spvm_stdin)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Returns SPVM's C<stdin>.
 
 =head2 get_spvm_stdout
 
-  FILE* (*get_spvm_stdout)(void* runtime);
+C<FILE* (*get_spvm_stdout)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Returns SPVM's C<stdout>.
 
 =head2 get_spvm_stderr
 
-  FILE* (*get_spvm_stderr)(void* runtime);
+C<FILE* (*get_spvm_stderr)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
+
+Returns SPVM's C<stderr>.
 
 =head1 Native API IDs
 
@@ -121,6 +115,26 @@ The C<method> argument is a L<method|SPVM::Document::NativeAPI::Method> object.
   10 get_spvm_stdin
   11 get_spvm_stdout
   12 get_spvm_stderr
+
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::NativeAPI>
+
+=item * L<SPVM::Document::NativeAPI::BasicType>
+
+=item * L<SPVM::Document::NativeAPI::Method>
+
+=item * L<SPVM::Document::NativeAPI::StringBuffer>
+
+=item * L<SPVM::Document::NativeAPI::Compiler>
+
+=item * L<SPVM::Document::NativeClass>
+
+=item * L<SPVM::Document>
+
+=back
 
 =head1 Copyright & License
 
