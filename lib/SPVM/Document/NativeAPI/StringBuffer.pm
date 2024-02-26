@@ -4,45 +4,49 @@ SPVM::Document::NativeAPI::StringBuffer - String Buffer Native APIs
 
 =head1 Description
 
-The string buffer native APIs of L<SPVM> are the APIs to manipulate string buffers
+The string buffer native APIs in L<SPVM> are the APIs for string buffers
 
 =head1 Usage
 
   SPVM_API_STRING_BUFFER* string_buffer_api = env->api->string_buffer;
   
-  void* string_buffer = string_buffer_api->new_instance();
+  SPVM_API_ALLOCATOR* api_allocator = env->api->allocator;
+  
+  void* allocator = api_allocator->new_instance();
+  
+  int32_t capacity = 100;
+  
+  void* string_buffer = string_buffer_api->new_instance(allocator, capacity);
   
   string_buffer_api->free_instance(string_buffer);
+  
+  api_allocator->free_instance(allocator);
 
 =head1 Native APIs
 
 =head2 new_instance
 
-  void* (*new_instance)(void* allocator, int32_t capacity);
+C<void* (*new_instance)(L<void* allocator|SPVM::Document::NativeAPI::Allocator>, int32_t capacity);>
 
-Creates a new string buffer object and returns it.
-
-The C<allocator> argument is an L<allocator|SPVM::Document::NativeAPI::Allocator> object.
-
-The C<capacity> argument is the capacity of the string buffer.
+Creates a new L<string buffer|SPVM::Document::NativeAPI::StringBuffer> given the capacity and returns it.
 
 =head2 free_instance
 
-  void (*free_instance)(void* string_buffer);
+C<void (*free_instance)(L<void* string_buffer|SPVM::Document::NativeAPI::StringBuffer>);>
 
-Frees a string buffer object.
+Frees a string buffer.
 
 =head2 get_string
 
-  const char* (*get_string)(void* string_buffer);
+C<const char* (*get_string)(L<void* string_buffer|SPVM::Document::NativeAPI::StringBuffer>);>
 
-Gets the string in the string buffer object.
+Returns the string stored in the string buffer.
 
 =head2 get_length
 
-  int32_t (*get_length)(void* string_buffer);
+C<int32_t (*get_length)(L<void* string_buffer|SPVM::Document::NativeAPI::StringBuffer>);>
 
-Gets the length of the string in the string buffer object.
+Returns the length of the string stored in the string buffer.
 
 =head1 Native API IDs
 
@@ -50,6 +54,20 @@ Gets the length of the string in the string buffer object.
   1 free_instance
   2 get_string
   3 get_length
+
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::NativeAPI>
+
+=item * L<SPVM::Document::NativeAPI::Allocator>
+
+=item * L<SPVM::Document::NativeClass>
+
+=item * L<SPVM::Document>
+
+=back
 
 =head1 Copyright & License
 
