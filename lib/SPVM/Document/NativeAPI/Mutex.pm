@@ -4,7 +4,7 @@ SPVM::Document::NativeAPI::Mutex - Mutex Native APIs
 
 =head1 Description
 
-The mutex native APIs of L<SPVM> are the APIs to manipulate mutex.
+The mutex native APIs in L<SPVM> are the APIs for mutex.
 
 =head1 Usage
 
@@ -14,35 +14,63 @@ The mutex native APIs of L<SPVM> are the APIs to manipulate mutex.
   
   api_mutex->free_instance(mutex);
 
+=head1 Details
+
+These APIs implements read-write locks in Linux/UNIX and L<slim reader/writer (SRW) locks|https://learn.microsoft.com/en-us/windows/win32/sync/slim-reader-writer--srw--locks> in Windows.
+
 =head1 Native APIs
 
 =head2 new_instance
 
-  void* (*new_instance)(SPVM_ENV* env, SPVM_VALUE* stack);
+C<void* (*new_instance)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
-Creates a new mutex object and returns it.
+Creates a new mutex object and initialize it, and returns it.
 
 =head2 free_instance
 
-  void (*free_instance)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+C<void (*free_instance)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
 
-Frees a mutex object.
+Destroies the mutex object and frees it.
 
 =head2 lock
 
-  void (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+C<void (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+
+Locks the mutex.
+
+Calls the L<pthread_rwlock_wrlock|https://linux.die.net/man/3/pthread_rwlock_wrlock> function in Linux/UNIX.
+
+Calls the L<AcquireSRWLockExclusive|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-acquiresrwlockexclusive> function in Windows.
 
 =head2 unlock
 
-  void (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+C<void (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+
+Unlocks the mutex.
+
+Calls the L<pthread_rwlock_unlock|https://linux.die.net/man/3/pthread_rwlock_unlock> function in Linux/UNIX.
+
+Calls the L<ReleaseSRWLockExclusive|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-releasesrwlockexclusive> function in Windows.
 
 =head2 reader_lock
 
-  void (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+C<void (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+
+Locks the mutex for reading.
+
+Calls the L<pthread_rwlock_rdlock|https://linux.die.net/man/3/pthread_rwlock_rdlock> function in Linux/UNIX.
+
+Calls the L<AcquireSRWLockShared|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-acquiresrwlockshared> function in Windows.
 
 =head2 reader_unlock
 
-  void (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);
+C<void (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+
+Unlocks the mutex for reading.
+
+Calls the L<pthread_rwlock_unlock|https://linux.die.net/man/3/pthread_rwlock_unlock> function in Linux/UNIX.
+
+Calls the L<ReleaseSRWLockShared|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-releasesrwlockshared> function in Windows.
 
 =head1 Native API IDs
 
@@ -52,6 +80,18 @@ Frees a mutex object.
   3 unlock
   4 reader_lock
   5 reader_unlock
+
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::NativeAPI>
+
+=item * L<SPVM::Document::NativeClass>
+
+=item * L<SPVM::Document>
+
+=back
 
 =head1 Copyright & License
 

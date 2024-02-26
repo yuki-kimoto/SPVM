@@ -70,7 +70,7 @@ Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> where the field I
   5 get_type_flag
   6 get_current_basic_type
 
-=head1 See Aloso
+=head1 See Also
 
 =over 2
 

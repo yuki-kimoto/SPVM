@@ -57,7 +57,7 @@ If the type is the any object array type C<objct[]>, returns 1, otherwise return
   4 is_object_array_type
   5 is_any_object_array_type
 
-=head1 See Aloso
+=head1 See Also
 
 =over 2
 

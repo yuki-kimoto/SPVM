@@ -224,7 +224,7 @@ Sets the starting address of the machine code of the precompiled method.
   27 get_precompile_address
   28 set_precompile_address
 
-=head1 See Aloso
+=head1 See Also
 
 =over 2
 

@@ -96,7 +96,7 @@ Sets the length of a content.
   9 get_content_length
   10 set_content_length
 
-=head1 See Aloso
+=head1 See Also
 
 =over 2
 
