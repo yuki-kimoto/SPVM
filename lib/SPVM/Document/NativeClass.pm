@@ -182,9 +182,9 @@ The included header file C<spvm_native.h> is the header file of L<SPVM Native AP
 
 A native implementation function has two arguments.
 
-The first argument is the C<SPVM_ENV*> type and it should be named C<env>. This is an L<execution environment|Execution Environment>.
+The first argument is the C<SPVM_ENV*> type and it should be named C<env>. This is an L<runtime environment|Runtime Environment>.
 
-The second argument is the C<SPVM_VALUE*> type and it should be named C<stack>. This is an L<call stack|Call Stack>.
+The second argument is the C<SPVM_VALUE*> type and it should be named C<stack>. This is an L<runtime stack|Runtime Stack>.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
@@ -220,9 +220,9 @@ The generated shared libraries exists under "work/lib" under the build directory
   # Windows
   ~/.spvm_build/work/object/MyClass.dll
 
-=head1 Execution Environment
+=head1 Runtime Environment
 
-The object of the C<SPVM_ENV*> type is an execution environement.
+The object of the C<SPVM_ENV*> type is an runtime environement.
 
   SPVM_ENV* env;
 
@@ -232,9 +232,9 @@ This object is passed as the first argument of a Native API.
   
   }
 
-=head1 Call Stack
+=head1 Runtime Stack
 
-A call stack is passed to the second argument of the definition of the native method.. Stack is used getting arguments and return the value.
+A runtime stack is passed to the second argument of the definition of the native method. A runtime stack is used getting arguments and return the value.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
     
