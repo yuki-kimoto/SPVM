@@ -70,6 +70,18 @@ Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> where the field I
   5 get_type_flag
   6 get_current_basic_type
 
+=head1 See Aloso
+
+=over 2
+
+=item * L<SPVM::Document::NativeAPI>
+
+=item * L<SPVM::Document::NativeClass>
+
+=item * L<SPVM::Document>
+
+=back
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
