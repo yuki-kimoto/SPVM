@@ -156,7 +156,9 @@ C<void* (*get_basic_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"R
 
 Returns a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type name.
 
-If an exception is thrown, C<error_id> is set to non-zero value. Otherwise it is set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it is set to 0.
 
 =head2 get_basic_type_by_id
 
@@ -180,7 +182,9 @@ C<int32_t (*get_basic_type_id_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Returns a basic type ID by a basic type name.
 
-If an exception is thrown, C<error_id> is set to non-zero value. Otherwise it is set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it is set to 0.
 
 =head2 get_class_var
 
@@ -328,7 +332,9 @@ C<int8_t (*get_class_var_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Returns the value of a class variable of the byte type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -342,7 +348,9 @@ C<int16_t (*get_class_var_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeC
 
 Returns the value of a class variable of the short type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -356,7 +364,9 @@ C<int32_t (*get_class_var_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Returns the value of a class variable of the int type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -370,7 +380,9 @@ C<int64_t (*get_class_var_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCl
 
 Returns the value of a class variable of the long type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -384,7 +396,9 @@ C<float (*get_class_var_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Returns the value of a class variable of the float type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -398,7 +412,9 @@ C<double (*get_class_var_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeC
 
 Returns the value of a class variable of the double type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -412,7 +428,9 @@ C<void* (*get_class_var_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCl
 
 Returns the value of a class variable of the object type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
   
@@ -430,7 +448,9 @@ C<void (*set_class_var_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Sets the value I<value> to the class variable I<class_var> of the byte type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -444,7 +464,9 @@ C<void (*set_class_var_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 Sets the value I<value> to the class variable I<class_var> of the short type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -458,7 +480,9 @@ C<void (*set_class_var_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Sets the value I<value> to the class variable I<class_var> of the int type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -472,7 +496,9 @@ C<void (*set_class_var_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Sets the value I<value> to the class variable I<class_var> of the long type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -486,7 +512,9 @@ C<void (*set_class_var_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 Sets the value I<value> to the class variable I<class_var> of the float type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -500,7 +528,9 @@ C<void (*set_class_var_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Sets the value I<value> to the class variable I<class_var> of the double type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -514,7 +544,9 @@ C<void (*set_class_var_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Sets the value I<value> to the class variable I<class_var> of the object type given the basic type name I<basic_type_name> and the class variable name I<class_var_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -676,7 +708,9 @@ C<int8_t (*get_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Returns the value of the field I<field> of the byte type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -690,7 +724,9 @@ C<int16_t (*get_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Returns the value of the field I<field> of the short type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -704,7 +740,9 @@ C<int32_t (*get_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Returns the value of the field I<field> of the int type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -718,7 +756,9 @@ C<int64_t (*get_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Returns the value of the field I<field> of the long type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -732,7 +772,9 @@ C<float (*get_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Returns the value of the field I<field> of the float type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -746,7 +788,9 @@ C<double (*get_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Returns the value of the field I<field> of the double type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -760,7 +804,9 @@ C<void* (*get_field_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Returns the value of the field I<field> of the object type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -778,7 +824,9 @@ C<void (*set_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Ru
 
 Sets the value of the field I<field> of the byte type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -792,7 +840,9 @@ C<void (*set_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"R
 
 Sets the value of the field I<field> of the short type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -806,7 +856,9 @@ C<void (*set_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Run
 
 Sets the value of the field I<field> of the int type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -820,7 +872,9 @@ C<void (*set_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Ru
 
 Sets the value of the field I<field> of the long type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -834,7 +888,9 @@ C<void (*set_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"R
 
 Sets the value of the field I<field> of the float type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -848,7 +904,9 @@ C<void (*set_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Sets the value of the field I<field> of the double type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -862,7 +920,9 @@ C<void (*set_field_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Sets the value of the field I<field> of the object type given the basic type name I<basic_type_name> of the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 Examples:
 
@@ -1373,7 +1433,9 @@ C<void* (*new_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runti
 
 This is the same as the L</"new_object"> Native API, but you can specify basic type name directly.
 
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it is set to 0.
 
 Examples:
 
@@ -1386,6 +1448,8 @@ Examples:
 C<void (*call_class_method_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Calls a class method given the basic type name and method name.
+
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
 
 Examples:
   
@@ -1406,9 +1470,17 @@ C<void (*call_instance_method_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeCla
 
 Calls an instance method given the method name.
 
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it is set to 0.
+
 =head2 get_field_string_chars_by_name
 
 C<const char* (*get_field_string_chars_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it is set to 0.
 
 =head2 dump_no_mortal
 
@@ -1656,7 +1728,9 @@ C<void* (*new_pointer_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 This is the same as L</"new_pointer"> function, but you can specify basic type name directly.
 
-If function is succeeded, C<error> is set to 0. If a exception occurs, C<error> is set to 1. 
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it is set to 0.
 
   int32_t error_id = 0;
   void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &error_id, __func__, __FILE__, __LINE__);
@@ -1695,6 +1769,10 @@ If the object I<object> is C<NULL>, returns 0.
 C<void (*call_instance_method_static_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
 Calls an instance method by the basic type name and the method name.
+
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it is set to 0.
 
 Examples:
   
@@ -1810,7 +1888,11 @@ C<void* (*new_mulnum_array_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 =head2 get_field_object_defined_and_has_pointer_by_name
 
-C<void* (*get_field_object_defined_and_has_pointer_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);>
+C<void* (*get_field_object_defined_and_has_pointer_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it is set to 0.
 
 =head2 get_field_object_ref
 
@@ -1826,7 +1908,9 @@ C<void** (*get_field_object_ref_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeC
 
 Returns the address of the value of the field I<field> of the object type given the object I<object> and the field name I<field_name>.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to non-zero value, otherwise set to 0.
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
 =head2 check_stack_env
 
