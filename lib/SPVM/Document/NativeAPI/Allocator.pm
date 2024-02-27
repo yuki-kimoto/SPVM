@@ -26,7 +26,7 @@ Creates a new L<memory allocator|SPVM::Document::NativeAPI::Allocator> and retur
 
 C<void (*free_instance)(L<void* allocator|SPVM::Document::NativeAPI::Allocator>);>
 
-Frees the memory allocator.
+Frees the memory allocator I<allocator>.
 
 =head1 Native API IDs
 
