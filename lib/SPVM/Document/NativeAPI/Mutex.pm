@@ -30,13 +30,13 @@ Creates a new mutex object and initialize it, and returns it.
 
 C<void (*free_instance)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
 
-Destroies the mutex object and frees it.
+Destroys the mutex I<mutex> and frees it.
 
 =head2 lock
 
 C<void (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
 
-Locks the mutex.
+Locks the mutex I<mutex>.
 
 Calls the L<pthread_rwlock_wrlock|https://linux.die.net/man/3/pthread_rwlock_wrlock> function in Linux/UNIX.
 
@@ -46,7 +46,7 @@ Calls the L<AcquireSRWLockExclusive|https://learn.microsoft.com/en-us/windows/wi
 
 C<void (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
 
-Unlocks the mutex.
+Unlocks the mutex I<mutex>.
 
 Calls the L<pthread_rwlock_unlock|https://linux.die.net/man/3/pthread_rwlock_unlock> function in Linux/UNIX.
 
@@ -56,7 +56,7 @@ Calls the L<ReleaseSRWLockExclusive|https://learn.microsoft.com/en-us/windows/wi
 
 C<void (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
 
-Locks the mutex for reading.
+Locks the mutex I<mutex> for reading.
 
 Calls the L<pthread_rwlock_rdlock|https://linux.die.net/man/3/pthread_rwlock_rdlock> function in Linux/UNIX.
 
@@ -66,7 +66,7 @@ Calls the L<AcquireSRWLockShared|https://learn.microsoft.com/en-us/windows/win32
 
 C<void (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
 
-Unlocks the mutex for reading.
+Unlocks the mutex I<mutex> for reading.
 
 Calls the L<pthread_rwlock_unlock|https://linux.die.net/man/3/pthread_rwlock_unlock> function in Linux/UNIX.
 
