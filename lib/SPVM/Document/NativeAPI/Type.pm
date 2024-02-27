@@ -14,39 +14,39 @@ The type native APIs in L<SPVM> are the APIs to get type information.
 
 =head2 can_assign
 
-  int32_t (*can_assign)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* dist_basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t dist_type_dimension, int32_t dist_type_flag, L<void* src_basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t src_type_dimension, int32_t src_type_flag);
+C<int32_t (*can_assign)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* dist_basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t dist_type_dimension, int32_t dist_type_flag, L<void* src_basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t src_type_dimension, int32_t src_type_flag);>
 
 If the source type given by I<src_basic_type>, I<src_type_dimension>, and I<src_type_flag> can be assigned to the dist type given by I<dist_basic_type>, I<dist_type_dimension>, and I<dist_type_flag> , returns 1, otherwise returns 0.
 
 =head2 get_type_width
 
-  int32_t (*get_type_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t dimension, int32_t flag);
+C<int32_t (*get_type_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
-Culcurates the the type width, and returns it. The type width is the length in the size of the L<SPVM_VALUE|SPVM::Document::NativeClass/"Runtime Stack"> type.
+Returns the L<type width|SPVM::Document::Language::Types/"Type Width"> of the type given by I<basic_type>, I<type_dimension>, and I<type_flag>.
 
 =head2 is_object_type
 
-  int32_t (*is_object_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t flag);
+C<int32_t (*is_object_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
-If the type is an object type, returns 1, otherwise returns 0.
+If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is an object type, returns 1, otherwise returns 0.
 
 =head2 is_any_object_type
 
-  int32_t (*is_any_object_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t flag);
+C<int32_t (*is_any_object_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
-If the type is the any object type C<objct>, returns 1, otherwise returns 0.
+If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is the any object type C<objct>, returns 1, otherwise returns 0.
 
 =head2 is_object_array_type
 
-  int32_t (*is_object_array_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t dimension, int32_t flag);
+C<int32_t (*is_object_array_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
-If the type is an object array type, returns 1, otherwise returns 0.
+If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is an object array type, returns 1, otherwise returns 0.
 
 =head2 is_any_object_array_type
 
-  int32_t (*is_any_object_array_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t flag);
+C<int32_t (*is_any_object_array_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t type_flag);>
 
-If the type is the any object array type C<objct[]>, returns 1, otherwise returns 0.
+If the type given by I<basic_type>, I<type_dimension>, and I<type_flag> is the any object array type C<objct[]>, returns 1, otherwise returns 0.
 
 =head1 Native API IDs
 

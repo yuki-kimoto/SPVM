@@ -2614,6 +2614,12 @@ Compilation Errors:
 
 If the type specified as the type comment is not found, a compilation error occurs.
 
+=head2 Type Width
+
+The type width is the required length of the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> for the type.
+
+If the type is a multi-numeric type, it is the length of the fields, owhterwise it is 1.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
