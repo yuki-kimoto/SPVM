@@ -22,37 +22,37 @@ The field native APIs in L<SPVM> are the APIs to get definition information for 
 
 C<const char* (*get_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the name of the field.
+Returns the name of the field I<field>.
 
 =head2 get_index
 
 C<int32_t (*get_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the index of the field.
+Returns the index of the field I<field>.
 
 =head2 get_offset
 
 C<int32_t (*get_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the byte offset of the field. The byte offset is the position in bytes where the field is allocated in its belonging class.
+Returns the byte offset of the field I<field>. The byte offset is the position in bytes where the field is allocated in its belonging class.
 
 =head2 get_basic_type
 
 C<void* (*get_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the field.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the field I<field>.
 
 =head2 get_type_dimension
 
 C<int32_t (*get_type_dimension)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the type dimension of the field.
+Returns the type dimension of the field I<field>.
 
 =head2 get_type_flag
 
 C<int32_t (*get_type_flag)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the field.
+Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the field I<field>.
 
 =head2 get_current_basic_type
 
