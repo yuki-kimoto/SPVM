@@ -14,7 +14,7 @@ These APIs are available in L<native classes|SPVM::Document::NativeClass>.
 
 C<void* runtime;>
 
-The runtime for this L<runtime environment|>.
+The runtime for this L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment">.
 
 Examples:
 
@@ -64,57 +64,57 @@ Examples:
 
 C<SPVM_ENV* (*new_env)();>
 
-Creates a new environment.
+Creates a new L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment">.
 
 =head2 free_env
 
 C<void (*free_env)(SPVM_ENV* env);>
 
-Frees an environment.
+Frees an L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment">.
 
 =head2 call_init_methods
   
 C<int32_t (*call_init_methods)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
-Calls all C<INIT> methods defined by C<INIT> blocks.
+Calls the C<INIT> blocks of all classes.
 
-If an exception is thrown, returns non-zero value. Otherwise returns 0.
+If an exception is thrown, returns non-zero value, otherwise returns 0.
 
 =head2 set_command_info_program_name
 
 C<int32_t (*set_command_info_program_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_program_name);>
 
-Sets the L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable to the program name.
+Sets the L<PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable in the CommandInfo class to the program name.
 
-If an exception is thrown, returns non-zero value. Otherwise returns 0.
+If an exception is thrown, returns non-zero value, otherwise returns 0.
 
 =head2 set_command_info_argv
 
 C<int32_t (*set_command_info_argv)(SPVM_ENV* env, SPVM_VALUE* stack, void* obj_argv);>
 
-Sets the L<CommandInfo->PROGRAM_NAME|SPVM::CommandInfo/"ARGV"> class variable to the command line arguments.
+Sets the L<ARGV|SPVM::CommandInfo/"ARGV"> class variable in the CommandInfo class to the command line arguments.
 
-If an exception is thrown, returns non-zero value. Otherwise returns 0.
+If an exception is thrown, returns non-zero value, otherwise returns 0.
 
 =head2 set_command_info_base_time
 
 C<int32_t (*set_command_info_base_time)(SPVM_ENV* env, SPVM_VALUE* stack, int64_t base_time);>
 
-Sets the L<CommandInfo->BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable to the time when the program starts.
+Sets the L<BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable in the CommandInfo class to the base time.
 
-If an exception is thrown, returns non-zero value. Otherwise returns 0.
+If an exception is thrown, returns non-zero value, otherwise returns 0.
 
 =head2 destroy_class_vars
   
 C<void (*destroy_class_vars)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
-Destroys all class variables.
+Destroys the class variables of all classes.
 
 =head2 args_width
 
 C<int32_t (*args_width)(SPVM_ENV* env, SPVM_VALUE* stack);>
 
-Returns the total width of the arguments given by the caller.
+Returns the L<width of the arguments|SPVM::Document::NativeClass/"Arguments Width"> given by the caller. 
 
 Examples:
 
@@ -914,7 +914,7 @@ Creates a new object with a basic type. The basic type must be the correct basic
 
 C<void* (*new_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type);>
 
-The same as C<new_object_no_mortal>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_no_mortal>.
+The same as C<new_object_no_mortal>, and add the created object to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_object_no_mortal>.
 
 Examples:
 
@@ -931,7 +931,7 @@ Creates a new byte[] type array by specifying the length.
 
 C<void* (*new_byte_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
-The same as C<new_byte_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_byte_array_no_mortal>.
+The same as C<new_byte_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_byte_array_no_mortal>.
 
 Examples:
 
@@ -947,7 +947,7 @@ Creates a new short[] type array by specifying the length.
 
 C<void* (*new_short_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
-The same as C<new_short_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_short_array_no_mortal>.
+The same as C<new_short_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_short_array_no_mortal>.
 
 Examples:
 
@@ -963,7 +963,7 @@ Creates a new int[] type array by specifying the length.
 
 C<void* (*new_int_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
-The same as C<new_int_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_int_array_no_mortal>.
+The same as C<new_int_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_int_array_no_mortal>.
 
 Examples:
 
@@ -979,7 +979,7 @@ Creates a new long[] type array by specifying the length.
 
 C<void* (*new_long_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
-The same as C<new_long_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_long_array_no_mortal>.
+The same as C<new_long_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_long_array_no_mortal>.
 
 Examples:
 
@@ -995,7 +995,7 @@ Creates a new float[] type array by specifying the length.
 
 C<void* (*new_float_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
-The same as C<new_float_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_float_array_no_mortal>.
+The same as C<new_float_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_float_array_no_mortal>.
 
 Examples:
 
@@ -1011,7 +1011,7 @@ Creates a new double[] type array by specifying the length.
 
 C<void* (*new_double_array)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);>
 
-The same as C<new_double_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_double_array_no_mortal>.
+The same as C<new_double_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_double_array_no_mortal>.
 
 Examples:
 
@@ -1027,7 +1027,7 @@ Creates a new object type array by specifying the basic type and the array lengt
 
 C<void* (*new_object_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);>
 
-The same as C<new_object_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_no_mortal>.
+The same as C<new_object_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_object_array_no_mortal>.
 
 Examples:
 
@@ -1044,7 +1044,7 @@ Creates a new multi-dimensional array by specifying the basic type and the type 
 
 C<void* (*new_muldim_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t type_dimension, int32_t length);>
 
-The same as C<new_muldim_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_no_mortal>.
+The same as C<new_muldim_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_muldim_array_no_mortal>.
 
 Examples:
 
@@ -1062,7 +1062,7 @@ Creates a new multi-numeric array by specifying the basic type and the array len
 
 C<void* (*new_mulnum_array)(SPVM_ENV* env, SPVM_VALUE* stack, void* basic_type, int32_t length);>
 
-The same as C<new_mulnum_array_no_mortal>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_no_mortal>.
+The same as C<new_mulnum_array_no_mortal>, and add the created array to the mortal stack of the runtime environment. Use this function in normal use instead of C<new_mulnum_array_no_mortal>.
 
 Examples:
 
@@ -1554,7 +1554,7 @@ Creates a new memory block that is managed by the call stack with the byte size 
 
 The count of the memory block that is managed by the stack is incremented by 1.
 
-The count of the memory block that is managed by the environment is incremented by 1.
+The count of the memory block that is managed by the runtime environment is incremented by 1.
 
 =head2 free_memory_block
 
@@ -1564,7 +1564,7 @@ Frees the memory block that is managed by the call stack.
 
 The count of the memory block that is managed by the stack is decremented by 1.
 
-The count of the memory block that is managed by the environment is decremented by 1.
+The count of the memory block that is managed by the runtime environment is decremented by 1.
 
 =head2 get_memory_blocks_count
 
@@ -2311,6 +2311,8 @@ Sets the pointer I<pointer> in the object I<object>.
 
 =over 2
 
+=over 2
+
 =item * L<SPVM::Document::NativeAPI::Allocator>
 
 =item * L<SPVM::Document::NativeAPI::StringBuffer>
@@ -2336,6 +2338,10 @@ Sets the pointer I<pointer> in the object I<object>.
 =item * L<SPVM::Document::NativeAPI::Internal>
 
 =item * L<SPVM::Document::NativeAPI::Mutex>
+
+=item * L<SPVM::Document::NativeClass>
+
+=item * L<SPVM::Document>
 
 =back
 

@@ -457,6 +457,10 @@ The return value of the method is stored in the first element of the stack.
 
   int32_t total = stack[0].ival;
 
+=head2 Arguments Width
+
+The width of the arguments is the length in units of the L<SPVM_VALUE|SPVM::Document::NativeClass/"Runtime Stack"> type.
+
 =head1 Scope
 
 Native method are entirely enclosed in scope.
