@@ -148,13 +148,13 @@ Returns the type dimension of the object I<object>.
 
 C<void* (*get_basic_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name);>
 
-Returns a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type name.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type name I<basic_type_name>.
 
 =head2 get_basic_type_by_name
 
 C<void* (*get_basic_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type name.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type name I<basic_type_name>.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
 
@@ -164,13 +164,13 @@ If an exception is thrown, C<error_id> is set to a non-zero value. Otherwise it 
 
 C<void* (*get_basic_type_by_id)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t basic_type_id);>
 
-Returns a L<basic type|SPVM::Document::NativeAPI::BasicType> by a basic type ID.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> given the  basic type ID I<basic_type_id>.
 
 =head2 get_basic_type_id
 
 C<int32_t (*get_basic_type_id)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name);>
 
-Returns a basic type ID by a basic type name.
+Returns the basic type ID given the basic type name I<basic_type_name>.
 
 Examples:
 
@@ -180,7 +180,7 @@ Examples:
 
 C<int32_t (*get_basic_type_id_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns a basic type ID by a basic type name.
+Returns a basic type ID given the basic type name I<basic_type_name>.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the information of the exception stack trace.
 
