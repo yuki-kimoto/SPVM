@@ -26,37 +26,37 @@ The argument native APIs in L<SPVM> are the APIs to get definition information f
 
 C<const char* (*get_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
 
-Returns the name of the argument.
+Returns the name of the argument I<arg>.
 
 =head2 get_index
 
 C<int32_t (*get_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
 
-Returns the index of the argument.
+Returns the index of the argument I<arg>.
 
 =head2 get_basic_type
 
 C<void* (*get_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the argument.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the argument I<arg>.
 
 =head2 get_type_dimension
 
 C<int32_t (*get_type_dimension)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
 
-Returns the type dimention of the argument.
+Returns the type dimention of the argument I<arg>.
 
 =head2 get_type_flag
 
 C<int32_t (*get_type_flag)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
 
-Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the argument.
+Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the argument I<arg>.
 
 =head2 get_stack_index
 
 C<int32_t (*get_stack_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
 
-Gets the stack index of the argument. The stack index is the position in a L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">.
+Gets the stack index of the argument I<arg>. The stack index is the position in a L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">.
 
 =head1 Native API IDs
 
