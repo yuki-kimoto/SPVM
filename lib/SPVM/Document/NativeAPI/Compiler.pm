@@ -26,37 +26,37 @@ The compiler native APIs in L<SPVM> are the APIs for SPVM compilers.
 
 C<void* (*new_instance)(void);>
 
-Creates a L<compiler|SPVM::Document::NativeAPI::Compiler> and returns it.
+Creates a new L<compiler|SPVM::Document::NativeAPI::Compiler> and returns it.
 
 =head2 free_instance
 
 C<void (*free_instance)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Frees a compiler.
+Frees the compiler I<compiler>.
 
 =head2 get_start_line
 
 C<int32_t (*get_start_line)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Returns the start line.
+Returns the value of the C<start_line> field. The starting line for an exception call stack is stored to this field.
 
 =head2 set_start_line
 
 C<void (*set_start_line)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, int32_t start_line);>
 
-Sets the start line I<start_line>.
+Sets I<start_line> to the C<start_line> field.
 
 =head2 get_start_file
 
 C<const char* (*get_start_file)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Returns the start file.
+Returns the value of the C<start_file> field. The starting file path for an exception call stack is stored to this field.
 
 =head2 set_start_file
 
 C<void (*set_start_file)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* start_file);>
 
-Set the start file I<start_file>.
+Sets I<start_file> to the C<start_file> field.
 
 =head2 get_include_dirs_length
 
@@ -68,19 +68,15 @@ Returns the length of the class searching directories.
 
 C<const char* (*get_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, int32_t index);>
 
-Returns a class searching directory given the index I<index>, and returns it.
+Searches a class searching directory given the index I<index>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 add_include_dir
   
 C<void (*add_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* include_dir);>
 
-Adds the class searching directory I<include_dir> at the end of class searching directories.
-
-=head2 prepend_include_dir
-  
-C<void (*prepend_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* include_dir);>
-
-Prepends the class searching directory I<include_dir>.
+Adds I<include_dir> at the end of the class searching directories.
 
 =head2 clear_include_dirs
   
@@ -92,7 +88,7 @@ Removes all class searching directories.
 
 C<void (*add_class_file)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* class_name);>
 
-Creates the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class given by I<class_name>, and sets it.
+Creates the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class given by I<class_name>, and adds it to the symbol table of the compiler I<compiler>.
 
 If the class file already exists, nothing is performed.
 
@@ -100,19 +96,21 @@ If the class file already exists, nothing is performed.
 
 C<void (*delete_class_file)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* class_name);>
   
-Removes the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class given by I<class_name>.
+Removes the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class given by the class name I<class_name>.
 
 =head2 get_class_file
 
 C<void* (*get_class_file)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* class_name);>
 
-Returns the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class given by I<class_name>.
+Returns the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class given by the class name I<class_name>.
 
 =head2 compile
   
 C<int32_t (*compile)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* class_name);>
 
-Compiles a SPVM class. Classes loaded in the class and loaded classes are also compiled. The L<runtime|/"get_runtime"> is updated.
+Compiles the SPVM class given by the class name I<class_name>. Classes loaded by the class and classes subsequently loaded are also compiled.
+
+The L<runtime|/"get_runtime"> is build.
 
 If the compilation is successful, returns 0, otherwise returns a non-zero value.
 
@@ -125,26 +123,36 @@ C<int32_t (*get_error_messages_length)(L<void* compiler|SPVM::Document::NativeAP
 Returns the length of the compilation error messages.
 
 =head2 get_error_message
-  
+
 C<const char* (*get_error_message)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, int32_t index);>
 
-Returns the compiler error message given the index I<index>.
+Searches the compiler error message given the index I<index>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_runtime
 
 C<void* (*get_runtime)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Returns the L<runtime|SPVM::Document::NativeAPI::Runtime>.
+Returns the L<runtime|SPVM::Document::NativeAPI::Runtime> that is build by the compiler I<compiler>.
+
+=head2 prepend_include_dir
+  
+C<void (*prepend_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* include_dir);>
+
+Prepends I<include_dir> to the class searching directory.
 
 =head2 compile_anon_class
   
 C<int32_t (*compile_anon_class)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* source, const char** anon_basic_type_name_ptr);>
 
-Compiles a SPVM anon class given the source code I<source>. Classes loaded in the class and loaded classes are also compiled. The L<runtime|/"get_runtime"> is updated.
+Compiles a SPVM anon class given the source code I<source>. Classes loaded by the class and classes subsequently loaded are also compiled.
+
+The L<runtime|/"get_runtime"> is build.
 
 If the compilation is successful, returns 0, otherwise returns a non-zero value.
 
-The generated anon class name is set to I<anon_basic_type_name_ptr>.
+The generated anon class name is set to the value referenced by I<anon_basic_type_name_ptr>.
 
 This native API can be called repeatedly to compile other classes.
 
@@ -168,6 +176,7 @@ This native API can be called repeatedly to compile other classes.
   15 get_error_messages_length
   16 get_runtime
   17 prepend_include_dir
+  18 compile_anon_class
 
 =head1 See Also
 

@@ -78,7 +78,7 @@ Returns the value of the C<compiler> field. The compiler that build the runtime 
 
 C<void (*set_compiler)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Sets I<compiler> to the C<compiler> field of the runtime I<runtime>.
+Sets I<compiler> to the C<compiler> field.
 
 =head2 get_spvm_stdin
 
