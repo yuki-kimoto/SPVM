@@ -12,6 +12,10 @@ The mutex native APIs in L<SPVM> are the APIs for mutex.
   
   void* mutex = api_mutex->new_instance();
   
+  api_mutex->lock(env, stack, mutex);
+  
+  api_mutex->unlock(env, stack, mutex);
+  
   api_mutex->free_instance(mutex);
 
 =head1 Details
@@ -22,19 +26,19 @@ These APIs implements read-write locks in Linux/UNIX and L<slim reader/writer (S
 
 =head2 new_instance
 
-C<void* (*new_instance)(SPVM_ENV* env, SPVM_VALUE* stack);>
+C<void* (*new_instance)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Creates a new mutex object and initialize it, and returns it.
+Creates a new mutex and initialize it, and returns it.
 
 =head2 free_instance
 
-C<void (*free_instance)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+C<void (*free_instance)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* mutex);>
 
 Destroys the mutex I<mutex> and frees it.
 
 =head2 lock
 
-C<void (*lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+C<void (*lock)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* mutex);>
 
 Locks the mutex I<mutex>.
 
@@ -44,7 +48,7 @@ Calls the L<AcquireSRWLockExclusive|https://learn.microsoft.com/en-us/windows/wi
 
 =head2 unlock
 
-C<void (*unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+C<void (*unlock)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* mutex);>
 
 Unlocks the mutex I<mutex>.
 
@@ -54,7 +58,7 @@ Calls the L<ReleaseSRWLockExclusive|https://learn.microsoft.com/en-us/windows/wi
 
 =head2 reader_lock
 
-C<void (*reader_lock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+C<void (*reader_lock)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* mutex);>
 
 Locks the mutex I<mutex> for reading.
 
@@ -64,7 +68,7 @@ Calls the L<AcquireSRWLockShared|https://learn.microsoft.com/en-us/windows/win32
 
 =head2 reader_unlock
 
-C<void (*reader_unlock)(SPVM_ENV* env, SPVM_VALUE* stack, void* mutex);>
+C<void (*reader_unlock)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* mutex);>
 
 Unlocks the mutex I<mutex> for reading.
 
