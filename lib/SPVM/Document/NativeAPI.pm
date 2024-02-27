@@ -1500,7 +1500,7 @@ Creates a new array that have the type of the given array and the given length.
 
 The given array must be the object that is an array type.
 
-If the given array is L<NULL>, returns C<NULL>.
+If the given array is C<NULL>, returns C<NULL>.
 
 If the given length is lower than 0, returns C<NULL>.
 
@@ -1510,7 +1510,7 @@ C<void* (*copy)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment
 
 Copy the object. The type of the object must be a string type, a numeric array, or a multi numeric array.
 
-If the given object is L<NULL>, returns L<NULL>.
+If the given object is C<NULL>, returns C<NULL>.
 
 =head2 shorten
 
