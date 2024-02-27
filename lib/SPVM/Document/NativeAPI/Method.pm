@@ -54,6 +54,8 @@ C<void* (*get_arg_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>,
 
 Gets the L<argument|SPVM::Document::NativeAPI::Argument> at the index I<arg_index>, and returns it.
 
+If I<arg_index> is less than 0 or greater than or equal to the length of the arguments, returns C<NULL>.
+
 =head2 get_args_length
 
 C<int32_t (*get_args_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
