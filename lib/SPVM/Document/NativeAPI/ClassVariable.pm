@@ -22,31 +22,31 @@ The class variable native APIs in L<SPVM> are the APIs to get definition informa
 
 C<const char* (*get_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the name of the class variable.
+Returns the name of the class variable I<class_var>.
 
 =head2 get_index
 
 C<int32_t (*get_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the index of the class variable. This index is the position of the class variable in its belonging class.
+Returns the index of the class variable I<class_var>. This index is the position of the class variable in its belonging class.
 
 =head2 get_basic_type
 
 C<void* (*get_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the class variable.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the class variable I<class_var>.
 
 =head2 get_type_dimension
 
 C<int32_t (*get_type_dimension)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the type dimension of the class variable.
+Returns the type dimension of the class variable I<class_var>.
 
 =head2 get_type_flag
 
 C<int32_t (*get_type_flag)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the class variable.
+Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the class variable I<class_var>.
 
 =head2 get_current_basic_type
 
