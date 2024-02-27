@@ -124,25 +124,25 @@ Examples:
 
 C<void* (*get_object_basic_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the object.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the object I<object>.
 
 =head2 get_object_basic_type_id
 
 C<int32_t (*get_object_basic_type_id)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns the basic type ID of the object.
+Returns the basic type ID of the object I<object>.
 
 =head2 get_object_basic_type_name
 
 C<const char* (*get_object_basic_type_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns the basic type name of the object.
+Returns the basic type name of the object I<object>.
 
 =head2 get_object_type_dimension
 
 C<int32_t (*get_object_type_dimension)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns the type dimension of the object.
+Returns the type dimension of the object I<object>.
 
 =head2 get_basic_type
 
@@ -530,7 +530,7 @@ The same as L</"set_class_var_object_by_name">.
 
 C<void* (*get_field_by_index)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name);>
 
-Returns a L<field|SPVM::Document::NativeAPI::Field> object by its basic type name of the object and field name, and returns it.
+Returns a L<field|SPVM::Document::NativeAPI::Field> object by its basic type name of the object I<object> and field name, and returns it.
 
 If the field does not exist, returns NULL.
 
@@ -674,7 +674,7 @@ The same as L<"set_field_object">.
 
 C<int8_t (*get_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the value of a field of the byte type by its basic type name of the object and field name.
+Returns the value of a field of the byte type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -688,7 +688,7 @@ Examples:
 
 C<int16_t (*get_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the value of a field of the short type by its basic type name of the object and field name.
+Returns the value of a field of the short type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -702,7 +702,7 @@ Examples:
 
 C<int32_t (*get_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the value of a field of the int type by its basic type name of the object and field name.
+Returns the value of a field of the int type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -716,7 +716,7 @@ Examples:
 
 C<int64_t (*get_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the value of a field of the long type by its basic type name of the object and field name.
+Returns the value of a field of the long type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -730,7 +730,7 @@ Examples:
 
 C<float (*get_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the value of a field of the float type by its basic type name of the object and field name.
+Returns the value of a field of the float type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -744,7 +744,7 @@ Examples:
 
 C<double (*get_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the value of a field of the double type by its basic type name of the object and field name.
+Returns the value of a field of the double type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -758,7 +758,7 @@ Examples:
 
 C<void* (*get_field_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the value of a field of the object type by its basic type name of the object and field name.
+Returns the value of a field of the object type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -776,7 +776,7 @@ The same as L</"get_field_object_by_name">.
 
 C<void (*set_field_byte_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int8_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the value of a field of the byte type by its basic type name of the object and field name.
+Sets the value of a field of the byte type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -790,7 +790,7 @@ Examples:
 
 C<void (*set_field_short_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int16_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the value of a field of the short type by its basic type name of the object and field name.
+Sets the value of a field of the short type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -804,7 +804,7 @@ Examples:
 
 C<void (*set_field_int_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the value of a field of the int type by its basic type name of the object and field name.
+Sets the value of a field of the int type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -818,7 +818,7 @@ Examples:
 
 C<void (*set_field_long_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int64_t value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the value of a field of the long type by its basic type name of the object and field name.
+Sets the value of a field of the long type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -832,7 +832,7 @@ Examples:
 
 C<void (*set_field_float_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, float value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the value of a field of the float type by its basic type name of the object and field name.
+Sets the value of a field of the float type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -846,7 +846,7 @@ Examples:
 
 C<void (*set_field_double_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, double value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the value of a field of the double type by its basic type name of the object and field name.
+Sets the value of a field of the double type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -860,7 +860,7 @@ Examples:
 
 C<void (*set_field_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, void* value, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Sets the value of a field of the object type by its basic type name of the object and field name.
+Sets the value of a field of the object type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
@@ -898,7 +898,7 @@ Examples:
 
 C<void* (*get_instance_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* method_name);>
 
-Returns an instance method address by the object and the method name. If the instance method does not exist, a negative value is returned.
+Returns an instance method address by the object I<object> and the method name. If the instance method does not exist, a negative value is returned.
 
 Examples:
 
@@ -1227,7 +1227,7 @@ Examples:
 
 C<void* (*get_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* pointer_object);>
 
-Specifies a pointer object and return the C language pointer stored inside the object.
+Specifies a pointer object and return the C language pointer stored inside the object I<pointer_object>.
 
 Examples:
 
@@ -1285,7 +1285,7 @@ Specifies a scope ID to exit that scope and decrement the object's reference cou
 
 C<int32_t (*isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, void* cast_basic_type, int32_t cast_type_dimension);>
 
-Checks if the object C<object> can be assigned to the type given by the basic type C<cast_basic_type> and the type dimension C<cast_type_dimension>.
+Checks if the object I<object> C<object> can be assigned to the type given by the basic type C<cast_basic_type> and the type dimension C<cast_type_dimension>.
 
 If it is ok, returns 1. Otherwise returns 0.
 
@@ -1301,15 +1301,15 @@ If it is ok, returns 1. Otherwise returns 0.
 
 C<int32_t (*is_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension);>
 
-Given an object and a basic type and a type dimension, returns a nonzero value if the object matches both the basic type and the type dimension, and 0 otherwise.
+Given an object and a basic type and a type dimension, returns a nonzero value if the object I<object> matches both the basic type and the type dimension, and 0 otherwise.
 
 =head2 is_object_array
 
 C<int32_t (*is_object_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object is a object array, returns 1, otherwise returns 0.
+If the object I<object> is a object array, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns 0.
+If the object I<object> is C<NULL>, returns 0.
 
 =head2 weaken
 
@@ -1333,7 +1333,7 @@ Unweakens the reference C<ref>.
 
 C<void* (*get_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns a new C<string> object that is the type name of the object.
+Returns a new C<string> object that is the type name of the object I<object>.
 
 This function does not add the returned object to the mortal stack, so use the L<get_type_name> Native API for normal use to avoid memory leaks.
 
@@ -1341,7 +1341,7 @@ This function does not add the returned object to the mortal stack, so use the L
 
 C<void* (*get_type_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns a new C<string> object that is the type name of the object.
+Returns a new C<string> object that is the type name of the object I<object>.
 
 =head2 get_chars
 
@@ -1414,7 +1414,7 @@ C<const char* (*get_field_string_chars_by_name)(L<SPVM_ENV* env|SPVM::Document::
 
 C<void* (*dump_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns the string which dump the object. The string is the same as the return value of C<dump> operator.
+Returns the string which dump the object I<object>. The string is the same as the return value of C<dump> operator.
 
 =head2 dump
 
@@ -1458,33 +1458,33 @@ If the string is read-only, returns 1, otherwise returns 0.
 
 C<int32_t (*is_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object is an array, returns 1, otherwise returns 0.
+If the object I<object> is an array, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns 0.
+If the object I<object> is C<NULL>, returns 0.
 
 =head2 is_string
 
 C<int32_t (*is_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object is a string, returns 1, otherwise returns 0.
+If the object I<object> is a string, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns 0.
+If the object I<object> is C<NULL>, returns 0.
 
 =head2 is_numeric_array
 
 C<int32_t (*is_numeric_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object is a numeric array, returns 1, otherwise returns 0.
+If the object I<object> is a numeric array, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns 0.
+If the object I<object> is C<NULL>, returns 0.
 
 =head2 is_mulnum_array
 
 C<int32_t (*is_mulnum_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object is a multi numeric array, returns 1, otherwise returns 0.
+If the object I<object> is a multi numeric array, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns 0.
+If the object I<object> is C<NULL>, returns 0.
 
 =head2 get_elem_size
 
@@ -1508,7 +1508,7 @@ If the given length is lower than 0, returns C<NULL>.
 
 C<void* (*copy)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Copy the object. The type of the object must be a string type, a numeric array, or a multi numeric array.
+Copy the object I<object>. The type of the object I<object> must be a string type, a numeric array, or a multi numeric array.
 
 If the given object is C<NULL>, returns C<NULL>.
 
@@ -1678,17 +1678,17 @@ The same as L</"set_elem_object">.
 
 C<int32_t (*is_class)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object is an instance of a class, returns 1, otherwise returns 0.
+If the object I<object> is an instance of a class, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns 0.
+If the object I<object> is C<NULL>, returns 0.
 
 =head2 is_pointer_class
 
 C<int32_t (*is_pointer_class)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object is an instance of a pointer class, returns 1, otherwise returns 0.
+If the object I<object> is an instance of a pointer class, returns 1, otherwise returns 0.
 
-If the object is C<NULL>, returns 0.
+If the object I<object> is C<NULL>, returns 0.
 
 =head2 call_instance_method_static_by_name
 
@@ -1824,7 +1824,7 @@ The argument C<field> must be a valid L<field|SPVM::Document::NativeAPI::Field> 
 
 C<void** (*get_field_object_ref_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the address of the value of a field of the object type by its basic type name of the object and field name.
+Returns the address of the value of a field of the object type by its basic type name of the object I<object> and field name.
 
 If an excetpion is thrown because the field does not exist or other errors occur, the argument C<error_id> is set to non-zero value. Otherwise set to 0.
 
