@@ -22,19 +22,19 @@ The basic type native APIs in L<SPVM> are the APIs to get definition information
 
 C<const char* (*get_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the name of the basic type.
+Returns the name of the basic type I<basic_type>.
 
 =head2 get_id
 
 C<int32_t (*get_id)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the ID of the basic type.
+Returns the ID of the basic type I<basic_type>.
 
 =head2 get_category
 
 C<int32_t (*get_category)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the L<base type category ID|SPVM::Document::NativeAPI/"Basic Type Category IDs"> of the basic type.
+Returns the L<base type category ID|SPVM::Document::NativeAPI/"Basic Type Category IDs"> of the basic type I<basic_type>.
 
 =head2 get_parent
 
@@ -46,19 +46,19 @@ Returns the parent L<basic type|SPVM::Document::NativeAPI::BasicType> object of 
 
 C<const char* (*get_version_string)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the version string of the basic type.
+Returns the version string of the basic type I<basic_type>.
 
 =head2 get_class_dir
 
 C<const char* (*get_class_dir)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the class directory of the basic type.
+Returns the class directory of the basic type I<basic_type>.
 
 =head2 get_class_rel_file
 
 C<const char* (*get_class_rel_file)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the class relative file of the basic type.
+Returns the class relative file of the basic type I<basic_type>.
 
 =head2 is_pointer
 
@@ -76,13 +76,13 @@ If the basic type is an anon class, returns 1. Otherwise returns 0.
 
 C<void* (*get_class_var_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t class_var_index);>
 
-Gets a L<class variable|SPVM::Document::NativeAPI::ClassVariable> defined in the basic type I<basic_type> given a class variable index I<class_var_index>, and returns it.
+Returns the L<class variable|SPVM::Document::NativeAPI::ClassVariable> defined in the basic type I<basic_type> given the class variable index I<class_var_index>, and returns it.
 
 =head2 get_class_var_by_name
 
 C<void* (*get_class_var_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* class_var_name);>
 
-Gets a L<class variable|SPVM::Document::NativeAPI::ClassVariable> defined in the basic type I<basic_type> given a class variable name I<class_var_name>, and returns it.
+Returns the L<class variable|SPVM::Document::NativeAPI::ClassVariable> defined in the basic type I<basic_type> given the class variable name I<class_var_name>, and returns it.
 
 =head2 get_class_vars_length
 
@@ -94,13 +94,13 @@ Returns the length of the class variables defined in the basic type I<basic_type
 
 C<void* (*get_field_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t field_index);>
 
-Gets a L<field|SPVM::Document::NativeAPI::Field> defined in the basic type I<basic_type> given a field index I<field_index>, and returns it.
+Returns the L<field|SPVM::Document::NativeAPI::Field> defined in the basic type I<basic_type> given the field index I<field_index>, and returns it.
 
 =head2 get_field_by_name
 
 C<void* (*get_field_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* field_name);>
 
-Gets a L<field|SPVM::Document::NativeAPI::Field> defined in the basic type I<basic_type> given a field name I<field_name>, and returns it.
+Returns the L<field|SPVM::Document::NativeAPI::Field> defined in the basic type I<basic_type> given the field name I<field_name>, and returns it.
 
 =head2 get_fields_length
 
@@ -112,13 +112,13 @@ Returns the length of the fields defined in the basic type I<basic_type>.
 
 C<void* (*get_method_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t method_index);>
 
-Gets a L<method|SPVM::Document::NativeAPI::Method> defined in the basic type I<basic_type> given a method index I<method_index>, and returns it.
+Returns the L<method|SPVM::Document::NativeAPI::Method> defined in the basic type I<basic_type> given the method index I<method_index>, and returns it.
 
 =head2 get_method_by_name
 
 C<void* (*get_method_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* method_name);>
 
-Gets a L<method|SPVM::Document::NativeAPI::Method> defined in the basic type I<basic_type> given a method name I<method_name>, and returns it.
+Returns the L<method|SPVM::Document::NativeAPI::Method> defined in the basic type I<basic_type> given the method name I<method_name>, and returns it.
 
 =head2 get_methods_length
 
@@ -130,7 +130,7 @@ Returns the length of the methods defined in the basic type I<basic_type>.
 
 C<void* (*get_anon_basic_type_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t anon_basic_type_index);>
 
-Gets a anon L<basic type|SPVM::Document::NativeAPI::BasicType> defined in the basic type I<basic_type> given an anon basic type index, and returns it.
+Returns the anon L<basic type|SPVM::Document::NativeAPI::BasicType> defined in the basic type I<basic_type> given an anon basic type index, and returns it.
 
 =head2 get_anon_basic_types_length
 
@@ -154,7 +154,7 @@ If I<super_basic_type> is a super class of I<child_basic_type>, returns 1. Other
 
 C<const char* (*get_file)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the file path of the basic type.
+Returns the file path of the basic type I<basic_type>.
 
 This can be changed by a file directive.
 

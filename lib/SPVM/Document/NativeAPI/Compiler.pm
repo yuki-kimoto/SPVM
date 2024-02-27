@@ -38,7 +38,7 @@ Frees a compiler.
 
 C<int32_t (*get_start_line)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Gets the start line.
+Returns the start line.
 
 =head2 set_start_line
 
@@ -50,7 +50,7 @@ Sets the start line I<start_line>.
 
 C<const char* (*get_start_file)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Gets the start file.
+Returns the start file.
 
 =head2 set_start_file
 
@@ -68,7 +68,7 @@ Returns the length of the class searching directories.
 
 C<const char* (*get_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, int32_t index);>
 
-Gets a class searching directory given the index I<index>, and returns it.
+Returns a class searching directory given the index I<index>, and returns it.
 
 =head2 add_include_dir
   
@@ -106,7 +106,7 @@ Removes the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class giv
 
 C<void* (*get_class_file)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* class_name);>
 
-Gets the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class given by I<class_name>.
+Returns the L<class file|SPVM::Document::NativeAPI::ClassFile> for the class given by I<class_name>.
 
 =head2 compile
   
@@ -122,19 +122,19 @@ This native API can be called repeatedly to compile other classes.
   
 C<int32_t (*get_error_messages_length)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Gets the length of the compilation error messages.
+Returns the length of the compilation error messages.
 
 =head2 get_error_message
   
 C<const char* (*get_error_message)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, int32_t index);>
 
-Gets the compiler error message given the index I<index>.
+Returns the compiler error message given the index I<index>.
 
 =head2 get_runtime
 
 C<void* (*get_runtime)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Gets the L<runtime|SPVM::Document::NativeAPI::Runtime>.
+Returns the L<runtime|SPVM::Document::NativeAPI::Runtime>.
 
 =head2 compile_anon_class
   

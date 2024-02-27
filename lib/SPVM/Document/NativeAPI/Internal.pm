@@ -18,7 +18,7 @@ These APIs are used for the implementation of the SPVM language, so they should 
 
 C<int32_t (*get_ref_count)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Gets the reference count of the object I<object>.
+Returns the reference count of the object I<object>.
 
 =head2 inc_ref_count
 

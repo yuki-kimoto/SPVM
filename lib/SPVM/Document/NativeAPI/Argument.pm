@@ -56,7 +56,7 @@ Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the arg
 
 C<int32_t (*get_stack_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
 
-Gets the stack index of the argument I<arg>. The stack index is the position in a L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">.
+Returns the stack index of the argument I<arg>. The stack index is the position in a L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">.
 
 =head1 Native API IDs
 

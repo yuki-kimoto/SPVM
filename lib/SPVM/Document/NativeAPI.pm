@@ -938,7 +938,7 @@ The same as L</"set_field_object_by_name">.
 
 C<void* (*get_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
 
-Returns a method given a basic type name and a method name. If the method does not exists, returns NULL.
+Returns a method given the basic type name and a method name. If the method does not exists, returns NULL.
 
 Examples:
 
@@ -948,7 +948,7 @@ Examples:
 
 C<void* (*get_class_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
 
-Returns a class method given a basic type name and a method name. If the class method does not exists, returns NULL.
+Returns a class method given the basic type name and a method name. If the class method does not exists, returns NULL.
 
 Examples:
 
@@ -1498,7 +1498,7 @@ The same as C<dump_no_mortal>, and push the created object to the mortal stack. 
 
 C<void* (*get_instance_method_static)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
 
-Returns an instance method given a basic type name and a method name. If the instance method does not exists, returns NULL.
+Returns an instance method given the basic type name and a method name. If the instance method does not exists, returns NULL.
 
 Examples:
   
