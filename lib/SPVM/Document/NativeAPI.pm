@@ -4,9 +4,9 @@ SPVM::Document::NativeAPI - Native APIs
 
 =head1 Description
 
-The native APIs in L<SPVM> are the APIs written by the C language for various operations.
+The native APIs in L<SPVM> are the APIs written by the C language for SPVM operations.
 
-These APIs are used in L<native classes|SPVM::Document::NativeClass>.
+These APIs are available in L<native classes|SPVM::Document::NativeClass>.
 
 =head1 Native APIs
 
@@ -14,95 +14,51 @@ These APIs are used in L<native classes|SPVM::Document::NativeClass>.
 
 C<void* runtime;>
 
-The runtime object for this environment.
+The runtime for this L<runtime environment|>.
 
 Examples:
 
-  env->runtime;
+  void* runtime = env->runtime;
 
 =head2 api
 
-C<void* api;>
+C<SPVM_ENV_API* api;>
 
-Access to other native APIs.
+Gets the C<SPVM_ENV_API> object. This object have the following member variables for other native APIs.
 
-=head3 Allocator Native API
-  
-  env->api->allocator;
+=over 2
 
-L<SPVM::Document::NativeAPI::Allocator>
+=item * L<SPVM_API_ALLOCATOR* allocator|SPVM::Document::NativeAPI::Allocator>
 
-=head3 String Buffer Native API
+=item * L<SPVM_API_STRING_BUFFER* string_buffer|SPVM::Document::NativeAPI::StringBuffer>
 
-  env->api->string_buffer;
+=item * L<SPVM_API_COMPILER* compiler|SPVM::Document::NativeAPI::Compiler>
 
-L<SPVM::Document::NativeAPI::StringBuffer>
+=item * L<SPVM_API_CLASS_FILE* class_file|SPVM::Document::NativeAPI::ClassFile>
 
-=head3 Compiler Native API
+=item * L<SPVM_API_RUNTIME* runtime|SPVM::Document::NativeAPI::Runtime>
 
-  env->api->compiler;
+=item * L<SPVM_API_BASIC_TYPE* basic_type|SPVM::Document::NativeAPI::BasicType>
 
-L<SPVM::Document::NativeAPI::Compiler>
+=item * L<SPVM_API_CLASS_VAR* class_var|SPVM::Document::NativeAPI::ClassVariable>
 
-=head3 Class File Native API
+=item * L<SPVM_API_FIELD* field|SPVM::Document::NativeAPI::Field>
 
-  env->api->class_file;
+=item * L<SPVM_API_METHOD* method|SPVM::Document::NativeAPI::Method>
 
-L<SPVM::Document::NativeAPI::ClassFile>
+=item * L<SPVM_API_ARG* arg|SPVM::Document::NativeAPI::Argument>
 
-=head3 Runtime Native API
+=item * L<SPVM_API_TYPE* type|SPVM::Document::NativeAPI::Type>
 
-  env->api->runtime;
+=item * L<SPVM_API_INTERNAL* internal|SPVM::Document::NativeAPI::Internal>
 
-L<SPVM::Document::NativeAPI::Runtime>
+=item * L<SPVM_API_MUTEX* mutex|SPVM::Document::NativeAPI::Mutex>
 
-=head3 Basic Type Native API
+=back
 
-  env->api->basic_type;
+Examples:
 
-L<SPVM::Document::NativeAPI::BasicType>
-
-=head3 Class Variable Native API
-
-  env->api->clsas_var;
-
-L<SPVM::Document::NativeAPI::ClassVariable>
-
-=head3 Field Native API
-
-  env->api->field;
-
-L<SPVM::Document::NativeAPI::Field>
-
-=head3 Method Native API
-
-  env->api->method;
-
-L<SPVM::Document::NativeAPI::Method>
-
-=head3 Argument Native API
-
-  env->api->arg;
-
-L<SPVM::Document::NativeAPI::Argument>
-
-=head3 Type Native API
-
-  env->api->type;
-
-L<SPVM::Document::NativeAPI::Type>
-
-=head3 Internal Native API
-
-  env->api->internal;
-
-L<SPVM::Document::NativeAPI::Internal>
-
-=head3 Mutex Native API
-
-  env->api->mutex;
-
-L<SPVM::Document::NativeAPI::Mutex>
+  SPVM_API_BASIC_TYPE* api_basic_type = env->api->basic_type;
 
 =head2 new_env
 
@@ -2348,6 +2304,38 @@ Sets the pointer I<pointer> in the object I<object>.
 =over 2
 
 =item * L<Examples using SPVM native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>
+
+=back
+
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::NativeAPI::Allocator>
+
+=item * L<SPVM::Document::NativeAPI::StringBuffer>
+
+=item * L<SPVM::Document::NativeAPI::Compiler>
+
+=item * L<SPVM::Document::NativeAPI::ClassFile>
+
+=item * L<SPVM::Document::NativeAPI::Runtime>
+
+=item * L<SPVM::Document::NativeAPI::BasicType>
+
+=item * L<SPVM::Document::NativeAPI::ClassVariable>
+
+=item * L<SPVM::Document::NativeAPI::Field>
+
+=item * L<SPVM::Document::NativeAPI::Method>
+
+=item * L<SPVM::Document::NativeAPI::Argument>
+
+=item * L<SPVM::Document::NativeAPI::Type>
+
+=item * L<SPVM::Document::NativeAPI::Internal>
+
+=item * L<SPVM::Document::NativeAPI::Mutex>
 
 =back
 
