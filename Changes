@@ -3,6 +3,7 @@
     * Improve the documents of native APIs.
   [Bug Fix]
     * Fix the error id set by native APIs. This was wrongly 1. The correct value is the basic type ID of the Error class.
+    * Fix the error id set by spvm_vm.c. This was wrongly 1. The correct value is the basic type ID of the Error class.
   [Exception Messages Changes]
     * Symbol names in exception messages in native APIs are quoted by "".
     

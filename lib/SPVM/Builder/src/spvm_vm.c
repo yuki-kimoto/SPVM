@@ -128,7 +128,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     if (call_stack == NULL) {
       void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_STACK_ALLOCATION_FAILED]);
       env->set_exception(env, stack, exception);
-      error_id = 1;
+      error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       return error_id;
     }
 
