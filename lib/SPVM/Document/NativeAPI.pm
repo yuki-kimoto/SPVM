@@ -148,7 +148,10 @@ Returns the type dimension of the object I<object>.
 
 C<void* (*get_basic_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type name I<basic_type_name>.
+Searches the L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type name I<basic_type_name>.
+
+If it is found, returns it, otherwise returns C<NULL>.
+
 
 =head2 get_basic_type_by_name
 

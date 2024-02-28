@@ -1,3 +1,9 @@
+0.989081 2023-02-28
+  [Document Improvement]
+    * Improve the documents of native APIs.
+  [Exception Messages Changes]
+    * Symbol names in exception messages in native APIs are quoted by "".
+    
 0.989080 2023-02-23
   [Document Improvement]
     * Add SPVM::Document page.
