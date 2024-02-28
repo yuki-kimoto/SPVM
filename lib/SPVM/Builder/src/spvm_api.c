@@ -3251,12 +3251,6 @@ void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  assert(size > 0);
-  
-  if ((uint64_t)size > (uint64_t)SIZE_MAX) {
-    return NULL;
-  }
-  
   void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged((size_t)size);
   
   if (block) {

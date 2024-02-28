@@ -33,11 +33,11 @@ void* SPVM_ALLOCATOR_alloc_memory_block_unmanaged(size_t size) {
     return NULL;
   }
   
-  if ((size_t)size > SIZE_MAX) {
+  if (size > SIZE_MAX) {
     return NULL;
   }
   
-  void* block = calloc(1, (size_t)size);
+  void* block = calloc(1, size);
   
   return block;
 }
