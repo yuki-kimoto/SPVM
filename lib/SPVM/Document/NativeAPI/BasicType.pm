@@ -76,7 +76,7 @@ If the basic type I<basic_type> is an anon class, returns 1, otherwise returns 0
 
 C<void* (*get_class_var_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t class_var_index);>
 
-Searches the L<class variable|SPVM::Document::NativeAPI::ClassVariable> owned by the basic type I<basic_type> given the class variable index I<class_var_index>.
+Searches a L<class variable|SPVM::Document::NativeAPI::ClassVariable> owned by the basic type I<basic_type> given the class variable index I<class_var_index>.
 
 If it is found, returns it, otherwise returns C<NULL>.
 
@@ -84,7 +84,7 @@ If it is found, returns it, otherwise returns C<NULL>.
 
 C<void* (*get_class_var_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* class_var_name);>
 
-Searches the L<class variable|SPVM::Document::NativeAPI::ClassVariable> owned by the basic type I<basic_type> given the class variable name I<class_var_name>.
+Searches a L<class variable|SPVM::Document::NativeAPI::ClassVariable> owned by the basic type I<basic_type> given the class variable name I<class_var_name>.
 
 If it is found, returns it, otherwise returns C<NULL>.
 
@@ -98,7 +98,7 @@ Returns the length of the class variables owned by the basic type I<basic_type>.
 
 C<void* (*get_field_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t field_index);>
 
-Searches the L<field|SPVM::Document::NativeAPI::Field> owned by the basic type I<basic_type> given the field index I<field_index>.
+Searches a L<field|SPVM::Document::NativeAPI::Field> owned by the basic type I<basic_type> given the field index I<field_index>.
 
 If it is found, returns it, otherwise returns C<NULL>.
 
@@ -106,7 +106,7 @@ If it is found, returns it, otherwise returns C<NULL>.
 
 C<void* (*get_field_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* field_name);>
 
-Searches the L<field|SPVM::Document::NativeAPI::Field> owned by the basic type I<basic_type> given the field name I<field_name>.
+Searches a L<field|SPVM::Document::NativeAPI::Field> owned by the basic type I<basic_type> given the field name I<field_name>.
 
 If it is found, returns it, otherwise returns C<NULL>.
 
@@ -120,7 +120,7 @@ Returns the length of the fields owned by the basic type I<basic_type>.
 
 C<void* (*get_method_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t method_index);>
 
-Searches the L<method|SPVM::Document::NativeAPI::Method> owned by the basic type I<basic_type> given the method index I<method_index>.
+Searches a L<method|SPVM::Document::NativeAPI::Method> owned by the basic type I<basic_type> given the method index I<method_index>.
 
 If it is found, returns it, otherwise returns C<NULL>.
 
@@ -128,7 +128,7 @@ If it is found, returns it, otherwise returns C<NULL>.
 
 C<void* (*get_method_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* method_name);>
 
-Searches the L<method|SPVM::Document::NativeAPI::Method> owned by the basic type I<basic_type> given the method name I<method_name>.
+Searches a L<method|SPVM::Document::NativeAPI::Method> owned by the basic type I<basic_type> given the method name I<method_name>.
 
 If it is found, returns it, otherwise returns C<NULL>.
 
@@ -142,7 +142,7 @@ Returns the length of the methods owned by the basic type I<basic_type>.
 
 C<void* (*get_anon_basic_type_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t anon_basic_type_index);>
 
-Searches the anon L<basic type|SPVM::Document::NativeAPI::BasicType> owned by the basic type I<basic_type> given an anon basic type index I<anon_basic_type_index>.
+Searches an anon L<basic type|SPVM::Document::NativeAPI::BasicType> owned by the basic type I<basic_type> given an anon basic type index I<anon_basic_type_index>.
 
 If it is found, returns it, otherwise returns C<NULL>.
 

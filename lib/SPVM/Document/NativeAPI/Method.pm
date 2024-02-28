@@ -22,63 +22,65 @@ The method native APIs in L<SPVM> are the APIs to get definition information for
 
 C<const char* (*get_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the name of the method.
+Returns the name of the method I<method>.
 
 =head2 get_index
 
 C<int32_t (*get_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the index of the method. This index is the position of the method in its belonging class.
+Returns the index of the method I<method>. This index is the position of the method I<method> in its belonging class.
 
 =head2 get_return_basic_type
 
 C<void* (*get_return_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the return type of the method.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the return type of the method I<method>.
 
 =head2 get_return_type_dimension
 
 C<int32_t (*get_return_type_dimension)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the type dimention of the return type of the method.
+Returns the type dimention of the return type of the method I<method>.
 
 =head2 get_return_type_flag
 
 C<int32_t (*get_return_type_flag)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the return type of the method.
+Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the return type of the method I<method>.
 
 =head2 get_arg_by_index
 
 C<void* (*get_arg_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t arg_index);>
 
-Gets the L<argument|SPVM::Document::NativeAPI::Argument> at the index I<arg_index>, and returns it.
+Searches a L<argument|SPVM::Document::NativeAPI::Argument> at the index I<arg_index>.
 
-If I<arg_index> is less than 0 or greater than or equal to the length of the arguments, returns C<NULL>.
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_args_length
 
 C<int32_t (*get_args_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the arguments of the method.
+Returns the length of the arguments of the method I<method>.
 
 =head2 get_required_args_length
 
 C<int32_t (*get_required_args_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the required arguments of the method.
+Returns the length of the required arguments of the method I<method>.
 
 =head2 get_current_basic_type
 
 C<void* (*get_current_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the method where the method I<method> is defined.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the method I<method> where the method I<method> I<method> is defined.
 
 =head2 get_opcode_by_index
 
 C<void* (*get_opcode_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t opcode_index);>
 
-Gets the operation code at the index I<opcode_index>, and returns it.
+Searches an operation code at the index I<opcode_index>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_opcodes_length
 
@@ -90,109 +92,109 @@ Returns the length of operation codes.
 
 C<int32_t (*is_class_method)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method is a class method, returns 1, otherwise returns 0.
+If the method I<method> is a class method, returns 1, otherwise returns 0.
 
 =head2 is_anon
 
 C<int32_t (*is_anon)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method is a anon method, returns 1, otherwise returns 0.
+If the method I<method> is an anon method, returns 1, otherwise returns 0.
 
 =head2 is_native
 
 C<int32_t (*is_native)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method is a native method, returns 1, otherwise returns 0.
+If the method I<method> is a native method, returns 1, otherwise returns 0.
 
 =head2 is_precompile
 
 C<int32_t (*is_precompile)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method is a method with the C<precompile> attribute, returns 1, otherwise returns 0.
+If the method I<method> is a method with the C<precompile> attribute, returns 1, otherwise returns 0.
 
 =head2 is_enum
 
 C<int32_t (*is_enum)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method is an enumeration, returns 1, otherwise returns 0.
+If the method I<method> is an enumeration, returns 1, otherwise returns 0.
 
 =head2 get_byte_vars_width
 
 C<int32_t (*get_byte_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the variables of the C<byte> type allocated by the method.
+Returns the length of the variables of the C<byte> type allocated by the method I<method>.
 
 =head2 get_short_vars_width
 
 C<int32_t (*get_short_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the variables of the C<short> type allocated by the method.
+Returns the length of the variables of the C<short> type allocated by the method I<method>.
 
 =head2 get_int_vars_width
 
 C<int32_t (*get_int_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the variables of the C<int> type allocated by the method.
+Returns the length of the variables of the C<int> type allocated by the method I<method>.
 
 =head2 get_long_vars_width
 
 C<int32_t (*get_long_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the variables of the C<long> type allocated by the method.
+Returns the length of the variables of the C<long> type allocated by the method I<method>.
 
 =head2 get_float_vars_width
 
 C<int32_t (*get_float_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the variables of the C<float> type allocated by the method.
+Returns the length of the variables of the C<float> type allocated by the method I<method>.
 
 =head2 get_double_vars_width
 
 C<int32_t (*get_double_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the variables of the C<double> type allocated by the method.
+Returns the length of the variables of the C<double> type allocated by the method I<method>.
 
 =head2 get_object_vars_width
 
 C<int32_t (*get_object_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the variables of the object type allocated by the method.
+Returns the length of the variables of the object type allocated by the method I<method>.
 
 =head2 get_ref_vars_width
 
 C<int32_t (*get_ref_vars_width)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the variables of the reference type allocated by the method.
+Returns the length of the variables of the reference type allocated by the method I<method>.
 
 =head2 get_mortal_stack_length
 
 C<int32_t (*get_mortal_stack_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the length of the mortal stack of the method.
+Returns the length of the mortal stack of the method I<method>.
 
 =head2 get_native_address
 
 C<void* (*get_native_address)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the starting address of the machine code of the native method.
+Returns the C<native_address> field of the method I<method>. The address of the machine code for a native method is stored to this field.
 
 =head2 set_native_address
 
 C<void (*set_native_address)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>, void* address);>
 
-Sets the starting address of the machine code of the native method.
+Sets I<address> to the C<native_address> field of the method I<method>.
 
 =head2 get_precompile_address
 
 C<void* (*get_precompile_address)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the starting address of the machine code of the precompiled method.
+Returns the C<precompile_address> field of the method I<method>. The address of the machine code for a precompiled method is stored to this field.
 
 =head2 set_precompile_address
 
 C<void (*set_precompile_address)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>, void* address);>
 
-Sets the starting address of the machine code of the precompiled method.
+Sets I<address> to the C<precompile_address> field of the method I<method>.
 
 =head1 Native API IDs
 
