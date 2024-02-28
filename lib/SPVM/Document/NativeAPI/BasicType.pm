@@ -64,91 +64,105 @@ Returns the class relative file of the basic type I<basic_type>.
 
 C<int32_t (*is_pointer)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If the basic type is a pointer class, returns 1. Otherwise returns 0.
+If the basic type I<basic_type> is a pointer class, returns 1, otherwise returns 0.
 
 =head2 is_anon
 
 C<int32_t (*is_anon)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If the basic type is an anon class, returns 1. Otherwise returns 0.
+If the basic type I<basic_type> is an anon class, returns 1, otherwise returns 0.
 
 =head2 get_class_var_by_index
 
 C<void* (*get_class_var_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t class_var_index);>
 
-Returns the L<class variable|SPVM::Document::NativeAPI::ClassVariable> defined in the basic type I<basic_type> given the class variable index I<class_var_index>, and returns it.
+Searches the L<class variable|SPVM::Document::NativeAPI::ClassVariable> owned by the basic type I<basic_type> given the class variable index I<class_var_index>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_class_var_by_name
 
 C<void* (*get_class_var_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* class_var_name);>
 
-Returns the L<class variable|SPVM::Document::NativeAPI::ClassVariable> defined in the basic type I<basic_type> given the class variable name I<class_var_name>, and returns it.
+Searches the L<class variable|SPVM::Document::NativeAPI::ClassVariable> owned by the basic type I<basic_type> given the class variable name I<class_var_name>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_class_vars_length
 
 C<int32_t (*get_class_vars_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the length of the class variables defined in the basic type I<basic_type>.
+Returns the length of the class variables owned by the basic type I<basic_type>.
 
 =head2 get_field_by_index
 
 C<void* (*get_field_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t field_index);>
 
-Returns the L<field|SPVM::Document::NativeAPI::Field> defined in the basic type I<basic_type> given the field index I<field_index>, and returns it.
+Searches the L<field|SPVM::Document::NativeAPI::Field> owned by the basic type I<basic_type> given the field index I<field_index>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_field_by_name
 
 C<void* (*get_field_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* field_name);>
 
-Returns the L<field|SPVM::Document::NativeAPI::Field> defined in the basic type I<basic_type> given the field name I<field_name>, and returns it.
+Searches the L<field|SPVM::Document::NativeAPI::Field> owned by the basic type I<basic_type> given the field name I<field_name>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_fields_length
 
 C<int32_t (*get_fields_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the length of the fields defined in the basic type I<basic_type>.
+Returns the length of the fields owned by the basic type I<basic_type>.
 
 =head2 get_method_by_index
 
 C<void* (*get_method_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t method_index);>
 
-Returns the L<method|SPVM::Document::NativeAPI::Method> defined in the basic type I<basic_type> given the method index I<method_index>, and returns it.
+Searches the L<method|SPVM::Document::NativeAPI::Method> owned by the basic type I<basic_type> given the method index I<method_index>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_method_by_name
 
 C<void* (*get_method_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, const char* method_name);>
 
-Returns the L<method|SPVM::Document::NativeAPI::Method> defined in the basic type I<basic_type> given the method name I<method_name>, and returns it.
+Searches the L<method|SPVM::Document::NativeAPI::Method> owned by the basic type I<basic_type> given the method name I<method_name>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_methods_length
 
 C<int32_t (*get_methods_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the length of the methods defined in the basic type I<basic_type>.
+Returns the length of the methods owned by the basic type I<basic_type>.
 
 =head2 get_anon_basic_type_by_index
 
 C<void* (*get_anon_basic_type_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t anon_basic_type_index);>
 
-Returns the anon L<basic type|SPVM::Document::NativeAPI::BasicType> defined in the basic type I<basic_type> given an anon basic type index, and returns it.
+Searches the anon L<basic type|SPVM::Document::NativeAPI::BasicType> owned by the basic type I<basic_type> given an anon basic type index I<anon_basic_type_index>.
+
+If it is found, returns it, otherwise returns C<NULL>.
 
 =head2 get_anon_basic_types_length
 
 C<int32_t (*get_anon_basic_types_length)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the length of the anon basic types defined in the basic type I<basic_type>.
+Returns the length of the anon basic types owned by the basic type I<basic_type>.
 
 =head2 has_interface
 
 C<int32_t (*has_interface)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* interface_basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If the basic type I<basic_type> has an interface I<interface_basic_type>, returns 1. Otherwise returns 0.
+If the basic type I<basic_type> has an interface I<interface_basic_type>, returns 1, otherwise returns 0.
 
 =head2 is_super_class
 
 C<int32_t (*is_super_class)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* super_basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* child_basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If I<super_basic_type> is a super class of I<child_basic_type>, returns 1. Otherwise returns 0.
+If I<super_basic_type> is a super class of I<child_basic_type>, returns 1, otherwise returns 0.
 
 =head2 get_file
 
