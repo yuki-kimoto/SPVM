@@ -1929,37 +1929,13 @@ C<int32_t (*is_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtim
 
 The feature is the same as the L</"is_type">, but the basic type name can be given. If the basic type name is not found, returns 0.
 
-=head2 new_stack_trace_raw_by_name
-
-C<void* (*new_stack_trace_raw_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception, const char* basic_type_name, const char* method_name, int32_t line);>
-
-Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
-
-=head2 new_stack_trace_by_name
-
-C<void* (*new_stack_trace_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception, const char* basic_type_name, const char* method_name, int32_t line);>
-
-The same as L</"new_stack_trace_raw_by_name">, and push the created object to the mortal stack.
-
-=head2 new_object_array_raw_by_name
-
-C<void* (*new_object_array_raw_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t length);>
-
 =head2 new_object_array_by_name
 
 C<void* (*new_object_array_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t length);>
 
-=head2 new_muldim_array_raw_by_name
-
-C<void* (*new_muldim_array_raw_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t element_dimension, int32_t length);>
-
 =head2 new_muldim_array_by_name
 
 C<void* (*new_muldim_array_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t element_dimension, int32_t length);>
-
-=head2 new_mulnum_array_raw_by_name
-
-C<void* (*new_mulnum_array_raw_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t length);>
 
 =head2 new_mulnum_array_by_name
 
