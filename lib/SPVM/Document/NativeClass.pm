@@ -481,6 +481,10 @@ Use "leave_scope" to leave the scope. For the argument, it is necessary to speci
 
   env->leave_scope(env, stack, scope_id);
 
+=head2 Mortal Stack
+
+A mortal stack is created for a stack. A mortal stack is the stack to push local variables to destroy at the end of the scope.
+
 =head1 Exception
 
 In the native method, it is the return value that indicates whether an exception has occurred.
