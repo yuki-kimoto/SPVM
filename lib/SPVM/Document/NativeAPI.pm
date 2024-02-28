@@ -1036,7 +1036,7 @@ Examples:
 
 C<void* (*new_byte_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new byte[] type array by specifying the length.
+Creates a new byte[] type array given the length I<length>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_byte_array"> instead.
 
@@ -1054,7 +1054,7 @@ Examples:
 
 C<void* (*new_short_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new short[] type array by specifying the length.
+Creates a new short[] type array given the length I<length>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_short_array"> instead.
 
@@ -1072,7 +1072,7 @@ Examples:
 
 C<void* (*new_int_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new int[] type array by specifying the length.
+Creates a new int[] type array given the length I<length>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_int_array"> instead.
 
@@ -1090,7 +1090,7 @@ Examples:
 
 C<void* (*new_long_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new long[] type array by specifying the length.
+Creates a new long[] type array given the length I<length>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_long_array"> instead.
 
@@ -1108,7 +1108,7 @@ Examples:
 
 C<void* (*new_float_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new float[] type array by specifying the length.
+Creates a new float[] type array given the length I<length>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_float_array"> instead.
 
@@ -1126,7 +1126,7 @@ Examples:
 
 C<void* (*new_double_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new double[] type array by specifying the length.
+Creates a new double[] type array given the length I<length>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_double_array"> instead.
 
@@ -1144,7 +1144,7 @@ Examples:
 
 C<void* (*new_object_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
 
-Creates a new object type array by specifying the basic type and the array length. The basic type must be the correct basic type got by the L</"get_basic_type"> Native API.
+Creates a new object type array given the basic type I<basic_type> and the array length I<length>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_object_array"> instead.
 
@@ -1163,7 +1163,9 @@ Examples:
 
 C<void* (*new_muldim_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t length);>
 
-Creates a new multi-dimensional array by specifying the basic type and the type dimension, and the array length. The basic type must be the correct basic type got bu the L</"get_basic_type_id"> Native API. the type dimension of the element must be less than or equals to 255.
+Creates a new multi-dimensional array given the basic type I<basic_type>, the type dimension I<type_dimension>, and the array length I<length>.
+
+I<type_dimension> must be less than or equals to 255.
 
 This native API should not be used unless special purposes are intended. Use L</"new_muldim_array"> instead.
 
@@ -1183,7 +1185,7 @@ Examples:
 
 C<void* (*new_mulnum_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
 
-Creates a new multi-numeric array by specifying the basic type and the array length. The basic type must be the correct basic type got by the L</"basic_type_id"> Native API.
+Creates a new multi-numeric array given the basic type I<basic_type> and the array length I<length>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_mulnum_array"> instead.
 
@@ -1202,7 +1204,7 @@ Examples:
 
 C<void* (*new_string_nolen_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* bytes);>
 
-Creates a new string object by specifying C language char* type value. this value must end with "\0".
+Creates a new string object given a C string I<bytes>. I<bytes> must end with "\0".
 
 This native API should not be used unless special purposes are intended. Use L</"new_string_nolen"> instead.
 
@@ -1220,9 +1222,9 @@ Examples:
 
 C<void* (*new_string_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* bytes, int32_t length);>
 
-Creates a new string object with the bytes and the length.
+Creates a new string object given the C string I<bytes> and the length I<length>.
 
-If the length of bytes is lower than the specified length or the bytes is NULL, The part that longer than the length of bytes will be filled with C<\0>. 
+If the length of I<bytes> is lower than I<length> or I<bytes> is NULL, The part that longer than the length of I<bytes> is filled with C<\0>. 
 
 This native API should not be used unless special purposes are intended. Use L</"new_string"> instead.
 
@@ -1240,7 +1242,7 @@ Examples:
 
 C<void* (*concat_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string1, void* string2);>
 
-Concats two strings.
+Concats two strings I<string1> and I<string2>.
 
 This native API should not be used unless special purposes are intended. Use L</"concat"> instead.
 
@@ -1254,7 +1256,9 @@ Calls L</"concat_no_mortal"> and add its return value to the L<mortal stack|SPVM
 
 C<void* (*new_stack_trace_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t line);>
 
-Creates a string object that represents a stack trace by adding the file and line the method is called to the end of the exception message.
+Add a string line of a stack trace given the file I<file> and the line I<line> to the end of the exception I<exception>, and returns it.
+
+I<exception> is a SPVM string. The return value is a SPVM string.
 
 This native API should not be used unless special purposes are intended. Use L</"new_stack_trace"> instead.
 
@@ -1268,7 +1272,7 @@ Calls L</"new_stack_trace_no_mortal"> and add its return value to the L<mortal s
 
 C<int32_t (*length)(SPVM_ENV*, void* array);>
 
-If you specify an array, the length of the array is returned.
+Returns the length of the array I<array>.
 
 Examples:
 
@@ -1278,7 +1282,7 @@ Examples:
 
 C<int8_t* (*get_elems_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-If you specify a byte[] type array, the pointer at the beginning of the internally stored C language int8_t[] type array is returned.  
+Returns the pointer of the array elements for a byte array.
 
 Examples:
 
@@ -1289,7 +1293,7 @@ Examples:
 
 C<int16_t* (*get_elems_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-If a short[] type array is specified, the pointer at the beginning of the internally stored C language int16_t[] type array is returned.
+Returns the pointer of the array elements for a short array.
 
 Examples:
 
@@ -1300,7 +1304,7 @@ Examples:
 
 C<int32_t* (*get_elems_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-When an int[] type array is specified, the pointer at the beginning of the internally stored C language int32_t[] type array is returned.
+Returns the pointer of the array elements for an int array.
 
 Examples:
 
@@ -1311,7 +1315,7 @@ Examples:
 
 C<int64_t* (*get_elems_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-When a long[] type array is specified, the pointer at the beginning of the internally stored C language int64_t[] type array is returned.
+Returns the pointer of the array elements for a long array.
 
 Examples:
 
@@ -1322,7 +1326,7 @@ Examples:
 
 C<float* (*get_elems_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-When a float[] type array is specified, the pointer at the beginning in the C language float[] type array internally held is returned.
+Returns the pointer of the array elements for a float array.
 
 Examples:
 
@@ -1333,7 +1337,7 @@ Examples:
 
 C<double* (*get_elems_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-If a double[] type array is specified, the pointer at the beginning of the internally stored C double[] type array is returned.
+Returns the pointer of the array elements for a double array.
 
 Examples:
 
@@ -1344,7 +1348,7 @@ Examples:
 
 C<void* (*get_elem_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t index);>
 
-Returns an object of an element given an array of object types and a methodscript. If the element is a weak reference, the weak reference is removed.
+Returns the element given the array I<array> and the index I<index>.
 
 Examples:
 
@@ -1354,7 +1358,9 @@ Examples:
 
 C<void (*set_elem_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t index, void* object);>
 
-If you specify an array of object type and methodscript and element objects, the element object is assigned to the corresponding methodscript position. If the element's object has a weak reference, the weak reference is removed. The reference count of the originally assigned object is decremented by 1.
+Sets I<object> to the element given the array I<array> and the index I<index>.
+
+If this element is a weak reference, the weak reference is removed.
 
 Examples:
 
@@ -1364,7 +1370,7 @@ Examples:
 
 C<void* (*get_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* pointer_object);>
 
-Specifies a pointer object and return the C language pointer stored inside the object I<pointer_object>.
+Returns the pointer to a native data stored in the object I<pointer_object>.
 
 Examples:
 
@@ -1374,13 +1380,15 @@ Examples:
 
 C<void (*set_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* pointer_object, void* pointer);>
 
-If you specify a pointer object and a C language pointer, the C language pointer is saved in the internal data of the pointer type object.
+Set I<pointer> to the pointer to a native data stored in the object I<pointer_object>.
 
 =head2 call_method_no_mortal
 
 C<int32_t (*call_method_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width);>
 
-Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
+Calls the method I<method> given the L<width of the argument|SPVM::Document::NativeClass/"Arguments Width"> I<args_width>.
+
+If an exception is thrown in the method, The return value is a basci type ID, otherwise returns 0.
 
 The return value of the method is set to stack[0].
 
@@ -1390,13 +1398,17 @@ This native API should not be used unless special purposes are intended. Use L</
 
 C<void* (*get_exception)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns a exception message which type is byte[].
+Returns the current exception message.
+
+The return value is a SVPM string.
 
 =head2 set_exception
 
 C<void (*set_exception)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception);>
 
-Sets a exception message which type is byte[].
+Sets I<exception> to the current exception message.
+
+I<exception> is a SPVM string.
 
 =head2 enter_scope
 
@@ -1667,7 +1679,7 @@ If the given object is C<NULL>, returns C<NULL>.
 
 C<void (*shorten)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string, int32_t new_length);>
 
-Shorten the string with the given length.
+Shorten the string to the length I<length>.
 
 If the string is null, does nothing.
 
@@ -1701,7 +1713,7 @@ C<void (*free_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Enviro
 
 C<void* (*new_memory_block)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, size_t size);>
 
-Creates a new memory block that is managed by the call stack with the byte size and return the address. If it fails, return C<NULL>.
+Creates a new memory block that is managed by the call stack given the byte size I<size> and return the address. If it fails, return C<NULL>.
 
 The count of the memory block that is managed by the stack is incremented by 1.
 
@@ -1787,7 +1799,7 @@ The alias for the following code using L</"dump">.
 
 C<void* (*new_pointer_object_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, void* pointer);>
 
-Creates a pointer object by specifying a basic type and a C language pointer. The basic type must be the correct basic type got by the L</"get_basic_type"> Native API.
+Creates a pointer object given the basic type I<basic_type> and a C language pointer I<pointer>.
 
 =head2 new_pointer_object
 
@@ -1911,11 +1923,7 @@ If the version string in the basic_type is not defined, returns -1.
 
 C<int32_t (*call_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width);>
 
-Call a method by specifying the method address and the stack length of the argument. If an exception occurs in the method, The return value is 1. If not, return 0.
-
-The return value of the method is set to stack[0].
-
-If stack[0] is a value of an object type, the object is pushed to the mortal stack.
+Calls L</"call_method_no_mortal"> and if the type of the its return value is an object type, it is added to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
 
 =head2 isa_by_name
 
