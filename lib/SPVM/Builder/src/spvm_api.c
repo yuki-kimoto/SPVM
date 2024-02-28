@@ -3259,15 +3259,13 @@ void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
   
   void* block = SPVM_ALLOCATOR_alloc_memory_block_unmanaged((size_t)size);
   
-  SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
-  {
+  if (block) {
+    SPVM_MUTEX* runtime_mutex_atomic = runtime->mutex_atomic;
+    
     SPVM_MUTEX_lock(runtime_mutex_atomic);
     
     runtime->memory_blocks_count++;
     
-    SPVM_MUTEX_unlock(runtime_mutex_atomic);
-  }
-  
 #ifdef SPVM_DEBUG_MEMORY
     {
       SPVM_MUTEX_reader_lock(runtime_mutex_atomic);
@@ -3275,6 +3273,10 @@ void* SPVM_API_new_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, size_t size) {
       SPVM_MUTEX_reader_unlock(runtime_mutex_atomic);
     }
 #endif
+    
+    SPVM_MUTEX_unlock(runtime_mutex_atomic);
+    
+  }
   
   return block;
 }
@@ -3293,9 +3295,6 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
       
       runtime->memory_blocks_count--;
       
-      SPVM_MUTEX_unlock(runtime_mutex_atomic);
-    }
-    
 #ifdef SPVM_DEBUG_MEMORY
     {
       SPVM_MUTEX_reader_lock(runtime_mutex_atomic);
@@ -3303,6 +3302,9 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, SPVM_VALUE* stack, void* block) {
       SPVM_MUTEX_reader_unlock(runtime_mutex_atomic);
     }
 #endif
+      
+      SPVM_MUTEX_unlock(runtime_mutex_atomic);
+    }
   }
 }
 

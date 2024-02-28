@@ -1282,7 +1282,7 @@ Examples:
 
 C<int8_t* (*get_elems_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer of the array elements for a byte array.
+Returns the pointer to the array elements for a byte array.
 
 Examples:
 
@@ -1293,7 +1293,7 @@ Examples:
 
 C<int16_t* (*get_elems_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer of the array elements for a short array.
+Returns the pointer to the array elements for a short array.
 
 Examples:
 
@@ -1304,7 +1304,7 @@ Examples:
 
 C<int32_t* (*get_elems_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer of the array elements for an int array.
+Returns the pointer to the array elements for an int array.
 
 Examples:
 
@@ -1315,7 +1315,7 @@ Examples:
 
 C<int64_t* (*get_elems_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer of the array elements for a long array.
+Returns the pointer to the array elements for a long array.
 
 Examples:
 
@@ -1326,7 +1326,7 @@ Examples:
 
 C<float* (*get_elems_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer of the array elements for a float array.
+Returns the pointer to the array elements for a float array.
 
 Examples:
 
@@ -1337,7 +1337,7 @@ Examples:
 
 C<double* (*get_elems_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer of the array elements for a double array.
+Returns the pointer to the array elements for a double array.
 
 Examples:
 
@@ -1414,23 +1414,21 @@ I<exception> is a SPVM string.
 
 C<int32_t (*enter_scope)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Creates a new scope and return the scope ID.
+Returns the top position of the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">. This value is used as an argument to the L</"leave_scope"> native API.
 
 =head2 push_mortal
 
 C<int32_t (*push_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Add an object to the mortal stack.
+Pushes the object I<object> to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">.
 
-If this method succeed, return 0.
-
-If this method don't alloc memory for new mortal information, return 1.
+If successful, returns 0, otherwise returns -1.
 
 =head2 leave_scope
 
 C<void (*leave_scope)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t scope_id);>
 
-Specifies a scope ID to exit that scope and decrement the object's reference count stored in the mortal stack. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
+Specifies a scope ID to exit that scope and decrement the object's reference count stored in the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
 
 =head2 isa
 
@@ -1486,7 +1484,7 @@ C<void* (*get_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Returns a new C<string> object that is the type name of the object I<object>.
 
-This function does not add the returned object to the mortal stack, so use the L<get_type_name> Native API for normal use to avoid memory leaks.
+This function does not add the returned object to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, so use the L<get_type_name> Native API for normal use to avoid memory leaks.
 
 =head2 get_type_name
 
@@ -1883,7 +1881,7 @@ C<void* (*get_compile_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::Nativ
 
 Returns a new C<string> object that is the compile-time type name given the basic type name I<basic_type_name>, a type dimension, a type flag.
 
-This function does not add the returned object to the mortal stack, so use the L<get_compile_type_name> Native API for normal use to avoid memory leaks.
+This function does not add the returned object to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, so use the L<get_compile_type_name> Native API for normal use to avoid memory leaks.
 
 =head2 get_compile_type_name
 
