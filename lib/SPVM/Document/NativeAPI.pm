@@ -1711,21 +1711,25 @@ C<void (*free_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Enviro
 
 C<void* (*new_memory_block)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, size_t size);>
 
-Creates a new memory block that is managed by the call stack given the byte size I<size> and return the address. If it fails, return C<NULL>.
+Creates a new memory block given the byte size I<size> and returns its address.
 
-The count of the memory block that is managed by the stack is incremented by 1.
+If I<size> is 0, retunrs C<NULL>.
 
-The count of the memory block that is managed by the runtime environment is incremented by 1.
+If I<size> is greater than C<SIZE_MAX> defined in the sysmte, returns C<NULL>.
+
+If the system memory allocation function returns C<NULL>, this native API returns C<NULL>.
+
+The count of the memory blocks managed by this runtime is incremented by 1.
 
 =head2 free_memory_block
 
 C<void (*free_memory_block)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* block);>
 
-Frees the memory block that is managed by the call stack.
+Frees the memory block I<block>.
 
-The count of the memory block that is managed by the stack is decremented by 1.
+If I<block> is C<NULL>, nothing is performed.
 
-The count of the memory block that is managed by the runtime environment is decremented by 1.
+The count of the memory blocks managed by this runtime is decremented by 1.
 
 =head2 get_memory_blocks_count
 
