@@ -595,6 +595,11 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   
   void* object = SPVM_API_new_object(env, stack, basic_type);
   
+  if (!object) {
+    *error_id = SPVM_API_die(env, stack, "The memory allocation for an object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    return NULL;
+  }
+  
   return object;
 }
 
