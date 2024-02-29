@@ -596,7 +596,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   // Set the program name and the command line arguments
   {
-    int32_t scope_id = env->enter_scope(env, stack);
+    int32_t mortal_stack_top = env->enter_scope(env, stack);
     
     void* obj_program_name = env->new_string(env, stack, command_args[0], strlen(command_args[0]));
     
@@ -631,7 +631,7 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
       }
     }
     
-    env->leave_scope(env, stack, scope_id);
+    env->leave_scope(env, stack, mortal_stack_top);
   }
   
   if (!error_id) {

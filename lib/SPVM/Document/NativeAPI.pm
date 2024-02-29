@@ -1442,7 +1442,7 @@ I<exception> is a SPVM string.
 
 C<int32_t (*enter_scope)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the top position of the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">. This value is used as an argument to the L</"leave_scope"> native API.
+Performs an L<enterring scope|SPVM::Document::Language::GarbageCollection/"Entering Scope"> operation and returns the top position of the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">. This value is used as an argument to the L</"leave_scope"> native API.
 
 =head2 push_mortal
 
@@ -1456,9 +1456,11 @@ If successful, returns 0, otherwise returns a non-zero value.
 
 =head2 leave_scope
 
-C<void (*leave_scope)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t scope_id);>
+C<void (*leave_scope)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t mortal_stack_top);>
 
-Specifies a scope ID to exit that scope and decrement the object's reference count stored in the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
+Performs a L<leaving scope operation|SPVM::Document::Language::GarbageCollection/"Leaving Scope"> given the top position of the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack"> I<mortal_stack_top>.
+
+I<mortal_stack_top> is the return value of the L</"enter_scope"> native API.
 
 =head2 isa
 

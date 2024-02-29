@@ -475,11 +475,11 @@ Native APIs that normally create an object such as "new_object" will add the aut
 
 Use "enter_scope" to create a scope. The return value is the ID of that scope.
 
-  int32_t scope_id = env->enter_scope(env, stack);
+  int32_t mortal_stack_top = env->enter_scope(env, stack);
 
 Use "leave_scope" to leave the scope. For the argument, it is necessary to specify the scope ID obtained in "enter_scope".
 
-  env->leave_scope(env, stack, scope_id);
+  env->leave_scope(env, stack, mortal_stack_top);
 
 =head2 Mortal Stack
 

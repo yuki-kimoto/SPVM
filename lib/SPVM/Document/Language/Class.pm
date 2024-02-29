@@ -1344,7 +1344,7 @@ An enumeration value can be used as an operand of the L<case statement|/"case St
 
 =head3 Local Variable Declaration
 
-B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|/"Scope">. This is the same as Local Variable in C Language.
+B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. This is the same as Local Variable in C Language.
 
 The local variable is declared using B<my> L</"Keyword">.
 
@@ -1405,7 +1405,7 @@ The local variable declaration returns the value of the local variable. The retu
   
   }
 
-See the L<scope|/"Scope"> about the scope of the local variable.
+See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
 
 =head2 Local Variable Initial Value
 
@@ -1420,25 +1420,6 @@ See L</"Getting Local Variable"> to get Local Variable value.
 L</"Setting Local Variable"> to get Local Variable value.
 
 If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
-
-=head3 Scope
-
-A scope is the part that is surrounded by a L<scope block|/"Scope Block">.
-
-  # Scope block
-  {
-    # Beginning of scope
-    
-    my $point = Point->new;
-    
-    # End of scope
-  }
-
-When a object that is not L<undef|/"Undefined Value"> is assigned to a L<local variable|/"Local Variable">, the reference count is incremented by 1.
-
-At the end of scope, the reference count is decremented by 1. If the reference count becomes 0, the object will be destroyed.
-
-See also L<garbage collection|/"Garbage Collection">.
 
 =head2 Block
 
@@ -1465,7 +1446,7 @@ An enumeration block is a block used in a enumeration definition.
 
 =head3 Scope Block
 
-The scope block has its L<scope|/"Scope">. Zero or more L<statements|/"Statements"> are written in a scope block.
+The scope block has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. Zero or more L<statements|/"Statements"> are written in a scope block.
 
 =head4 Simple Block
 

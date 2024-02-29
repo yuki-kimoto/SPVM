@@ -1931,14 +1931,14 @@ int32_t SPVM__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_V
   int32_t before_enter_memory_blocks_count = env->get_memory_blocks_count(env, stack);
   int32_t before_leave_memory_blocks_count;
   {
-    int32_t scope_id = env->enter_scope(env, stack);
+    int32_t mortal_stack_top = env->enter_scope(env, stack);
 
     env->new_int_array(env, stack, length);
     env->new_int_array(env, stack, length);
     env->new_int_array(env, stack, length);
     
     before_leave_memory_blocks_count = env->get_memory_blocks_count(env, stack);
-    env->leave_scope(env, stack, scope_id);
+    env->leave_scope(env, stack, mortal_stack_top);
   }
   
   int32_t after_leave_memory_blocks_counts = env->get_memory_blocks_count(env, stack);

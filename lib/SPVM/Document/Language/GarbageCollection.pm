@@ -33,6 +33,37 @@ Reference counts incremented by assignments to local variables are decremented a
     # The reference count of $object is decremented by 1 at the end of this scope
   }
 
+=head2 Scope
+
+A scope is the part surrounded by a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
+
+  # Scope block
+  {
+    # Beginning of scope
+    
+    my $point = Point->new;
+    
+    # End of scope
+  }
+
+=head3 Entering Scope
+
+The entering scope operation is the operation at the start of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
+
+Memorizes the current top position of the L<mortal stack|/"Mortal Stack">.
+
+=head2 Mortal Stack
+
+The mortal stack is the stack that stores objects that are decremented by 1 at the end of the scope.
+
+Local variables of the object type are pushed to the mortal stack at the same time as its declaration.
+
+=head3 Leaving Scope
+
+The leaving scope operation is the operation at the end of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
+
+Reference count of the objects from the top position memorized by the L<entering scope|/"Entering Scope"> operation to the current top position of the L<mortal stack|/"Mortal Stack"> are decremented by 1.
+
 =head2 Weak Reference
 
 SPVM supports weak references. Weak references are used to avoid circular references.
