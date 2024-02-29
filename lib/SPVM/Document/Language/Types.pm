@@ -2549,23 +2549,23 @@ The runtime type cheking is the type cheking that is performed at runtime.
 
 The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the runtime type assignability.
 
-The runtime assignability is the assignability at runtime.
+The runtime type assignability is the assignability at runtime.
 
-The L<isa operator|/"isa Operator"> checks the L<runtime assignability/"Runtime Type Assignability">
+The L<isa operator|/"isa Operator"> checks the L<runtime type assignability/"Runtime Type Assignability">
 
-The runtime assignability is false, an exception is thrown.
+The runtime type assignability is false, an exception is thrown.
 
-If the type of the distribution is an L<object type|/"Object Type"> and the type of the source is L<undef|/"undef Type">, the runtime assignability is true.
+If the type of the distribution is an L<object type|/"Object Type"> and the type of the source is L<undef|/"undef Type">, the runtime type assignability is true.
 
-If the type of the distribution is the same as the type of the source, the runtime assignability is true.
+If the type of the distribution is the same as the type of the source, the runtime type assignability is true.
 
-If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Type">, the runtime assignability is true.
+If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Type">, the runtime type assignability is true.
 
-If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime assignability is true.
+If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime type assignability is true.
 
-If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime assignability is true.
+If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime type assignability is true.
 
-If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime assignability is true.
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
 
 =begin html
 

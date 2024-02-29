@@ -596,7 +596,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   void* object = SPVM_API_new_object(env, stack, basic_type);
   
   if (!object) {
-    *error_id = SPVM_API_die(env, stack, "Creating an object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The creation of the object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
     return NULL;
   }
   
@@ -614,7 +614,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stac
   SPVM_OBJECT* object = SPVM_API_new_pointer_object(env, stack, basic_type, pointer);
   
   if (!object) {
-    *error_id = SPVM_API_die(env, stack, "Creating an object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The creation of the object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
     return NULL;
   }
   
@@ -633,7 +633,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   void* array = SPVM_API_new_object_array(env, stack, basic_type, length);
   
   if (!array) {
-    *error_id = SPVM_API_die(env, stack, "Creating an array of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The creation of the array of the \"%s\" class failed.", basic_type_name, func_name, file, line);
     return NULL;
   }
   
@@ -651,7 +651,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   void* object = SPVM_API_new_muldim_array(env, stack, basic_type, type_dimension, length);
   
   if (!object) {
-    *error_id = SPVM_API_die(env, stack, "Creating a multi-dimensional array of the \"%s\" class with the dimension %d failed.", basic_type_name, type_dimension, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The creation of the multi-dimensional array of the \"%s\" class with the dimension %d failed.", basic_type_name, type_dimension, func_name, file, line);
     return NULL;
   }
   
@@ -670,7 +670,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   void* array = SPVM_API_new_mulnum_array(env, stack, basic_type, length);
   
   if (!array) {
-    *error_id = SPVM_API_die(env, stack, "Creating a multi-numeric array of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "The creation of the multi-numeric array of the \"%s\" class failed.", basic_type_name, func_name, file, line);
     return NULL;
   }
   
@@ -1082,49 +1082,49 @@ void SPVM_API_set_class_var_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, con
 }
 
 int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
-
+  
   int8_t value = *(int8_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-
+  
   return value;
 }
 
 int16_t SPVM_API_get_field_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
-
+  
   int16_t value = *(int16_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
   return value;
 }
 
 int32_t SPVM_API_get_field_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
-
+  
   int32_t value = *(int32_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
   return value;
 }
 
 int64_t SPVM_API_get_field_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
-
+  
   int64_t value = *(int64_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
   return value;
 }
 
 float SPVM_API_get_field_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
-
+  
   float value = *(float*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
   return value;
 }
 
 double SPVM_API_get_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
-
+  
   double value = *(double*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
   return value;
 }
 
 SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
-
+  
   SPVM_OBJECT* value_maybe_weaken = *(SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   SPVM_OBJECT* value = SPVM_API_get_object_no_weaken_address(env, stack, value_maybe_weaken);
   
@@ -1132,7 +1132,7 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 SPVM_OBJECT** SPVM_API_get_field_object_ref(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
-
+  
   SPVM_OBJECT** object_ref = (SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
   return object_ref;
@@ -1146,46 +1146,39 @@ SPVM_OBJECT* SPVM_API_get_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 }
 
 void SPVM_API_set_field_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int8_t value) {
-
-  // Get field value
+  
   *(int8_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
 }
 
 void SPVM_API_set_field_short(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int16_t value) {
-
-  // Get field value
+  
   *(int16_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
 }
 
 void SPVM_API_set_field_int(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int32_t value) {
-
-  // Get field value
+  
   *(int32_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
 }
 
 void SPVM_API_set_field_long(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, int64_t value) {
-
-  // Get field value
+  
   *(int64_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
 }
 
 void SPVM_API_set_field_float(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, float value) {
-
-  // Get field value
+  
   *(float*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
 }
 
 void SPVM_API_set_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, double value) {
-
-  // Get field value
+  
   *(double*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset) = value;
 }
 
 void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
-
-  // Get field value
+  
   void* object_ref = (void**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
-
+  
   SPVM_API_assign_object(env, stack, object_ref, value);
 }
 
@@ -3466,7 +3459,6 @@ int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, 
 
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension) {
   
-  // Object must be not null
   assert(object);
   
   int32_t is_type = 0;
