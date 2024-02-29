@@ -25,7 +25,7 @@
       new_muldim_array_by_name
       
       new_mulnum_array_by_name
-
+   * Check assignability in the call_instance_method_static_by_name native API.
 0.989080 2023-02-23
   [Document Improvement]
     * Add SPVM::Document page.

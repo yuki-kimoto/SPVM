@@ -539,8 +539,8 @@ void SPVM_API_call_instance_method_static_by_name(SPVM_ENV* env, SPVM_VALUE* sta
     return;
   };
   
-  if (object->type_dimension > 0) {
-    *error_id = SPVM_API_die(env, stack, "The type dimension of the invocant must be equal to 0.", func_name, file, line);
+  if (!SPVM_API_isa(env, stack, object, basic_type, 0)) {
+    *error_id = SPVM_API_die(env, stack, "The invocant must be assigned to the \"%s\" class.", basic_type_name, func_name, file, line);
     return;
   };
   

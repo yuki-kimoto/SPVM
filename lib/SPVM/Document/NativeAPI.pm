@@ -1648,6 +1648,14 @@ Calls a class method given the basic type name I<basic_type_name> and the method
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
 
+If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+
+If the method given by I<method_name> is not found, an exception is thrown.
+
+If the found method is not a class method, an exception is thrown.
+
+If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
+
 Examples:
   
   int32_t error_id = 0;
@@ -1661,6 +1669,38 @@ Examples:
     output = stack[0].ival;
   }
 
+=head2 call_instance_method_static_by_name
+
+C<void (*call_instance_method_static_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+Calls an instance method by the basic type name I<basic_type_name> and the method name I<method_name>.
+
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+
+If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+
+If the method given by I<method_name> is not found, an exception is thrown.
+
+If the found method is not an instance method, an exception is thrown.
+
+If I<object> is C<NULL>, an exception is thrown.
+
+If I<object> cannot be assigned to the class given by I<basic_type_name>, an exception is thrown.
+
+If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
+
+Examples:
+  
+  int32_t error_id = 0;
+  int32_t output;
+  {
+    int32_t args_width = 1;
+    stack[0].oval = obj_point;
+    env->call_instance_method_static_by_name(env, stack, "Point", "x", args_width, &error_id, __func__, __FILE__, __LINE__);
+    if (error_id) { return error_id; }
+    output = stack[0].ival;
+  }
+
 =head2 call_instance_method_by_name
 
 C<void (*call_instance_method_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
@@ -1670,6 +1710,12 @@ Calls an instance method given the method name I<method_name>.
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
 
 An instance must be set to C<stack[0].oval>.
+
+If the method given by I<method_name> is not found, an exception is thrown.
+
+If the found method is not a class method, an exception is thrown.
+
+If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
 
 If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
 
@@ -1964,28 +2010,6 @@ If the object I<object> is not C<NULL> and its type is a class type, returns 1, 
 C<int32_t (*is_pointer_class)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
 If the object I<object> is not C<NULL> and the class of I<object> has the C<pointer> attribute, returns 1, otherwise returns 0.
-
-=head2 call_instance_method_static_by_name
-
-C<void (*call_instance_method_static_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name, int32_t args_width, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
-
-Calls an instance method by the basic type name I<basic_type_name> and the method name I<method_name>.
-
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
-
-If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
-
-Examples:
-  
-  int32_t error_id = 0;
-  int32_t output;
-  {
-    int32_t args_width = 1;
-    stack[0].oval = obj_point;
-    env->call_instance_method_static_by_name(env, stack, "Point", "x", args_width, &error_id, __func__, __FILE__, __LINE__);
-    if (error_id) { return error_id; }
-    output = stack[0].ival;
-  }
 
 =head2 get_compile_type_name_no_mortal
 
