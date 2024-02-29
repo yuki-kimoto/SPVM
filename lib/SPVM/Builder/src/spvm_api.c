@@ -3047,8 +3047,12 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
 }
 
 SPVM_OBJECT* SPVM_API_new_array_proto_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t length) {
-
+  
   if (array == NULL) {
+    return NULL;
+  }
+  
+  if (SPVM_API_is_array(env, stack, array)) {
     return NULL;
   }
   

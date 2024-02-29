@@ -1029,6 +1029,12 @@ The function name I<func_name>, the file path I<file>, and the line number I<lin
 
 If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
+=head2 get_field_string_chars_by_name
+
+C<const char* (*get_field_string_chars_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+Calls the L</"get_field_string_by_name">. If the return value is C<NULL>, returns C<NULL>, otherwise calls the L</"get_chars"> given the return value, and returns the return value of the L</"get_chars"> native API.
+
 =head2 get_method
 
 C<void* (*get_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
@@ -1044,7 +1050,6 @@ Examples:
 =head2 get_class_method
 
 C<void* (*get_class_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
-
 Searches a class L<method|SPVM::Document::NativeAPI::Method> given the basic type name I<basic_type_name> and the method name I<method_name>.
 
 If it is found, returns it, otherwise returns C<NULL>.
@@ -1052,6 +1057,18 @@ If it is found, returns it, otherwise returns C<NULL>.
 Examples:
 
   void* method = env->get_class_method(env, stack, "Foo", "get");
+
+=head2 get_instance_method_static
+
+C<void* (*get_instance_method_static)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
+
+Searches an instance method given the basic type name I<basic_type_name> and the method name I<method_name>.
+
+If found, returns it, otherwise returns C<NULL>.
+
+Examples:
+  
+  void* method = env->get_instance_method_static(env, stack, "Foo", "get");
 
 =head2 get_instance_method
 
@@ -1073,7 +1090,7 @@ Creates a new object given the basic type I<basic_type>.
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_object"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_object"> native API.
 
 =head2 new_object
 
@@ -1094,7 +1111,7 @@ Creates a new byte[] type array given the length I<length>.
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_byte_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_byte_array"> native API.
 
 =head2 new_byte_array
 
@@ -1114,7 +1131,7 @@ Creates a new short[] type array given the length I<length>.
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_short_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_short_array"> native API.
 
 =head2 new_short_array
 
@@ -1134,7 +1151,7 @@ Creates a new int[] type array given the length I<length>.
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_int_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_int_array"> native API.
 
 =head2 new_int_array
 
@@ -1154,7 +1171,7 @@ Creates a new long[] type array given the length I<length>.
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_long_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_long_array"> native API.
 
 =head2 new_long_array
 
@@ -1174,7 +1191,7 @@ Creates a new float[] type array given the length I<length>.
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_float_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_float_array"> native API.
 
 =head2 new_float_array
 
@@ -1194,7 +1211,7 @@ Creates a new double[] type array given the length I<length>.
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_double_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_double_array"> native API.
 
 =head2 new_double_array
 
@@ -1214,7 +1231,7 @@ Creates a new object type array given the basic type I<basic_type> and the array
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_object_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_object_array"> native API.
 
 =head2 new_object_array
 
@@ -1237,7 +1254,7 @@ If its memory allocation failed, returns C<NULL>.
 
 I<type_dimension> must be less than or equals to 255.
 
-This native API should not be used unless special purposes are intended. Use L</"new_muldim_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_muldim_array"> native API.
 
 =head2 new_muldim_array
 
@@ -1259,7 +1276,7 @@ Creates a new multi-numeric array given the basic type I<basic_type> and the arr
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_mulnum_array"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_mulnum_array"> native API.
 
 =head2 new_mulnum_array
 
@@ -1280,7 +1297,7 @@ Creates a new string object given a C string I<bytes>. I<bytes> must end with "\
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"new_string_nolen"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_string_nolen"> native API.
 
 =head2 new_string_nolen
 
@@ -1302,7 +1319,7 @@ If its memory allocation failed, returns C<NULL>.
 
 If the length of I<bytes> is lower than I<length> or I<bytes> is NULL, The part that longer than the length of I<bytes> is filled with C<\0>. 
 
-This native API should not be used unless special purposes are intended. Use L</"new_string"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_string"> native API.
 
 =head2 new_string
 
@@ -1322,7 +1339,7 @@ Creates a new string concating two strings I<string1> and I<string2>, and return
 
 If its memory allocation failed, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Use L</"concat"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"concat"> native API.
 
 =head2 concat
 
@@ -1340,7 +1357,7 @@ If its memory allocation failed, returns C<NULL>.
 
 I<exception> is a SPVM string. The return value is a SPVM string.
 
-This native API should not be used unless special purposes are intended. Use L</"new_stack_trace"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_stack_trace"> native API.
 
 =head2 new_stack_trace
 
@@ -1472,7 +1489,7 @@ If the method throws an exception, returns a basic type ID of an error class, ot
 
 The return value of the method is set to stack[0].
 
-This native API should not be used unless special purposes are intended. Use L</"call_method"> instead.
+This native API should not be used unless special purposes are intended. Normally, use the L</"call_method"> native API.
 
 =head2 get_exception
 
@@ -1589,6 +1606,8 @@ Creates a new string that is the type name of the object I<object>.
 If its memory allocation failed, returns C<NULL>.
 
 This function does not add the returned object to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, so use the L<get_type_name> Native API for normal use to avoid memory leaks.
+
+This native API should not be used unless special purposes are intended. Normally, use the L</"get_type_name"> native API.
 
 =head2 get_type_name
 
@@ -1709,45 +1728,29 @@ Calls an instance method given the method name I<method_name>.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
 
-An instance must be set to C<stack[0].oval>.
+If I<object> is C<NULL>, an exception is thrown.
 
-If the method given by I<method_name> is not found, an exception is thrown.
+The type dimension of I<object> must be 0, otherwise an exception is thrown.
 
-If the found method is not a class method, an exception is thrown.
+If the basic type given by I<basic_type_name> is not found, an exception is thrown.
+
+If the instance method given by I<method_name> is not found in the class or super classes, an exception is thrown.
 
 If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
-
-If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
-
-=head2 get_field_string_chars_by_name
-
-C<const char* (*get_field_string_chars_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
-
-Calls the L</"get_field_string_by_name">. If the return value is C<NULL>, returns C<NULL>, otherwise calls the L</"get_chars"> given the return value, and returns the return value of the L</"get_chars"> native API.
 
 =head2 dump_no_mortal
 
 C<void* (*dump_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Performs the L<dump|SPVM::Document::Language::Operators/"dump"> operator, and returns its return value.
+Performs the L<dump|SPVM::Document::Language::Operators/"dump"> operation, and returns its return value.
+
+This native API should not be used unless special purposes are intended. Normally, use the L</"dump"> native API.
 
 =head2 dump
 
 C<void* (*dump)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
 Calls the L</"dump_no_mortal"> native API and push its return value to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
-
-=head2 get_instance_method_static
-
-C<void* (*get_instance_method_static)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
-
-Searches an instance method given the basic type name I<basic_type_name> and the method name I<method_name>.
-
-If found, returns it, otherwise returns C<NULL>.
-
-Examples:
-  
-  void* method = env->get_instance_method_static(env, stack, "Foo", "get");
 
 =head2 get_bool_object_value
 
@@ -1797,25 +1800,33 @@ If the object I<object> is not C<NULL> and its type is a numeric array type, ret
 
 C<int32_t (*is_mulnum_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is a multi-numeric array, returns 1, otherwise returns 0.
+If the object I<object> is not C<NULL> and its type is a multi-numeric array type, returns 1, otherwise returns 0.
 
 =head2 get_elem_size
 
 C<int32_t (*get_elem_size)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the byte size of the element of the array.
+Returns the byte size of the element of the array I<array>.
+
+=head2 new_array_proto_no_mortal
+
+C<void* (*new_array_proto_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);>
+
+Creates a new array given the prototype array I<array> and the length I<length>, and returns it.
+
+If I<array> is C<NULL>, returns C<NULL>.
+
+If the type of I<array> is not an array type, returns C<NULL>.
+
+If I<length> is lower than 0, returns C<NULL>.
+
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_array_proto"> native API.
 
 =head2 new_array_proto
 
 C<void* (*new_array_proto)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t length);>
 
-Creates a new array that have the type of the given array and the given length.
-
-The given array must be the object that is an array type.
-
-If the given array is C<NULL>, returns C<NULL>.
-
-If the given length is lower than 0, returns C<NULL>.
+Calls the L</"new_array_proto_no_mortal"> native API and push its return value to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
 
 =head2 copy
 
@@ -1929,17 +1940,19 @@ C<const char* (*strerror_nolen)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Run
 
 Calls the L</"strerror"> function given I<length> 0, and returns its return value.
 
-=head2 new_string_array
-
-C<void* (*new_string_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
-
-Calls the L</"new_string_array_no_mortal"> native API and calls the L</"push_mortal"> native API given the return value.
-
 =head2 new_string_array_no_mortal
 
 C<void* (*new_string_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
 Creates a new string array.
+
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_string_array"> native API.
+
+=head2 new_string_array
+
+C<void* (*new_string_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
+
+Calls the L</"new_string_array_no_mortal"> native API and calls the L</"push_mortal"> native API given the return value.
 
 =head2 dumpc
 
