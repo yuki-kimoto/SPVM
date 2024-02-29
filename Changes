@@ -6,6 +6,7 @@
     * Fix the error id set by spvm_vm.c. This was wrongly 1. The correct value is the basic type ID of the Error class.
     * Fix the error id set by spvm_implement.h. This was wrongly 1. The correct value is the basic type ID of the Error class.
     * Fix the bug that the count of memory blocks is incremented when the memory is not allocated in some errors.
+    * Fix the bug that even if an object creating failed and logic access to object.
   [Exception Messages Changes]
     * Symbol names in exception messages in native APIs are quoted by "".
   [Changes]

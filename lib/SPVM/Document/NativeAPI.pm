@@ -1019,6 +1019,8 @@ C<void* (*new_object_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Run
 
 Creates a new object given the basic type I<basic_type>.
 
+If its memory allocation failed, returns C<NULL>.
+
 This native API should not be used unless special purposes are intended. Use L</"new_object"> instead.
 
 =head2 new_object
@@ -1038,6 +1040,8 @@ C<void* (*new_byte_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/
 
 Creates a new byte[] type array given the length I<length>.
 
+If its memory allocation failed, returns C<NULL>.
+
 This native API should not be used unless special purposes are intended. Use L</"new_byte_array"> instead.
 
 =head2 new_byte_array
@@ -1055,6 +1059,8 @@ Examples:
 C<void* (*new_short_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
 Creates a new short[] type array given the length I<length>.
+
+If its memory allocation failed, returns C<NULL>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_short_array"> instead.
 
@@ -1074,6 +1080,8 @@ C<void* (*new_int_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Creates a new int[] type array given the length I<length>.
 
+If its memory allocation failed, returns C<NULL>.
+
 This native API should not be used unless special purposes are intended. Use L</"new_int_array"> instead.
 
 =head2 new_int_array
@@ -1091,6 +1099,8 @@ Examples:
 C<void* (*new_long_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
 Creates a new long[] type array given the length I<length>.
+
+If its memory allocation failed, returns C<NULL>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_long_array"> instead.
 
@@ -1110,6 +1120,8 @@ C<void* (*new_float_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass
 
 Creates a new float[] type array given the length I<length>.
 
+If its memory allocation failed, returns C<NULL>.
+
 This native API should not be used unless special purposes are intended. Use L</"new_float_array"> instead.
 
 =head2 new_float_array
@@ -1127,6 +1139,8 @@ Examples:
 C<void* (*new_double_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
 Creates a new double[] type array given the length I<length>.
+
+If its memory allocation failed, returns C<NULL>.
 
 This native API should not be used unless special purposes are intended. Use L</"new_double_array"> instead.
 
@@ -1146,6 +1160,8 @@ C<void* (*new_object_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 Creates a new object type array given the basic type I<basic_type> and the array length I<length>.
 
+If its memory allocation failed, returns C<NULL>.
+
 This native API should not be used unless special purposes are intended. Use L</"new_object_array"> instead.
 
 =head2 new_object_array
@@ -1164,6 +1180,8 @@ Examples:
 C<void* (*new_muldim_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t length);>
 
 Creates a new multi-dimensional array given the basic type I<basic_type>, the type dimension I<type_dimension>, and the array length I<length>.
+
+If its memory allocation failed, returns C<NULL>.
 
 I<type_dimension> must be less than or equals to 255.
 
@@ -1187,6 +1205,8 @@ C<void* (*new_mulnum_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 Creates a new multi-numeric array given the basic type I<basic_type> and the array length I<length>.
 
+If its memory allocation failed, returns C<NULL>.
+
 This native API should not be used unless special purposes are intended. Use L</"new_mulnum_array"> instead.
 
 =head2 new_mulnum_array
@@ -1206,6 +1226,8 @@ C<void* (*new_string_nolen_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 
 Creates a new string object given a C string I<bytes>. I<bytes> must end with "\0".
 
+If its memory allocation failed, returns C<NULL>.
+
 This native API should not be used unless special purposes are intended. Use L</"new_string_nolen"> instead.
 
 =head2 new_string_nolen
@@ -1223,6 +1245,8 @@ Examples:
 C<void* (*new_string_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* bytes, int32_t length);>
 
 Creates a new string object given the C string I<bytes> and the length I<length>.
+
+If its memory allocation failed, returns C<NULL>.
 
 If the length of I<bytes> is lower than I<length> or I<bytes> is NULL, The part that longer than the length of I<bytes> is filled with C<\0>. 
 
@@ -1242,7 +1266,9 @@ Examples:
 
 C<void* (*concat_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string1, void* string2);>
 
-Concats two strings I<string1> and I<string2>.
+Creates a new string concating two strings I<string1> and I<string2>, and returns it.
+
+If its memory allocation failed, returns C<NULL>.
 
 This native API should not be used unless special purposes are intended. Use L</"concat"> instead.
 
@@ -1256,7 +1282,9 @@ Calls L</"concat_no_mortal"> and add its return value to the L<mortal stack|SPVM
 
 C<void* (*new_stack_trace_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* exception, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t line);>
 
-Add a string line of a stack trace given the file I<file> and the line I<line> to the end of the exception I<exception>, and returns it.
+Creates a new string adding a string line of a stack trace given the file I<file> and the line I<line> to the end of the exception I<exception>, and returns it.
+
+If its memory allocation failed, returns C<NULL>.
 
 I<exception> is a SPVM string. The return value is a SPVM string.
 
@@ -1388,7 +1416,7 @@ C<int32_t (*call_method_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 
 Calls the method I<method> given the L<width of the argument|SPVM::Document::NativeClass/"Arguments Width"> I<args_width>.
 
-If an exception is thrown in the method, The return value is a basci type ID, otherwise returns 0.
+If the method throws an exception, returns a basic type ID of an error class, otherwise returns 0.
 
 The return value of the method is set to stack[0].
 
@@ -1422,7 +1450,9 @@ C<int32_t (*push_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime En
 
 Pushes the object I<object> to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">.
 
-If successful, returns 0, otherwise returns -1.
+If I<object> is NULL, nothing is performed.
+
+If successful, returns 0, otherwise returns a non-zero value.
 
 =head2 leave_scope
 
@@ -1482,7 +1512,9 @@ Unweakens the reference C<ref>.
 
 C<void* (*get_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns a new C<string> object that is the type name of the object I<object>.
+Creates a new string that is the type name of the object I<object>.
+
+If its memory allocation failed, returns C<NULL>.
 
 This function does not add the returned object to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, so use the L<get_type_name> Native API for normal use to avoid memory leaks.
 

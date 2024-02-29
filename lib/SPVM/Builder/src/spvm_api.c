@@ -1958,7 +1958,6 @@ int32_t SPVM_API_enter_scope(SPVM_ENV* env, SPVM_VALUE* stack){
 
 SPVM_OBJECT* SPVM_API_get_type_name_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  
   assert(object);
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -1976,16 +1975,18 @@ SPVM_OBJECT* SPVM_API_get_type_name_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, 
   
   void* obj_type_name = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
   
-  char* type_name = (char*)SPVM_API_get_chars(env, stack, obj_type_name);
-  
-  int32_t type_name_index = 0;
-  sprintf((char*)type_name, "%s", basic_type_name);
-  type_name_index += strlen(basic_type_name);
-  
-  int32_t dim_index;
-  for (dim_index = 0; dim_index < type_dimension; dim_index++) {
-    sprintf((char*)(type_name + type_name_index), "[]");
-    type_name_index += 2;
+  if (obj_type_name) {
+    char* type_name = (char*)SPVM_API_get_chars(env, stack, obj_type_name);
+    
+    int32_t type_name_index = 0;
+    sprintf((char*)type_name, "%s", basic_type_name);
+    type_name_index += strlen(basic_type_name);
+    
+    int32_t dim_index;
+    for (dim_index = 0; dim_index < type_dimension; dim_index++) {
+      sprintf((char*)(type_name + type_name_index), "[]");
+      type_name_index += 2;
+    }
   }
   
   return obj_type_name;
@@ -2030,29 +2031,31 @@ SPVM_OBJECT* SPVM_API_get_compile_type_name_no_mortal(SPVM_ENV* env, SPVM_VALUE*
   
   void* obj_compile_type_name = SPVM_API_new_string_no_mortal(env, stack, NULL, compile_type_name_length);
   
-  char* compile_type_name = (char*)SPVM_API_get_chars(env, stack, obj_compile_type_name);
-  
-  if (type_flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
-    sprintf(compile_type_name, "mutable ");
-    compile_type_name += strlen("mutable ");
+  if (obj_compile_type_name) {
+    char* compile_type_name = (char*)SPVM_API_get_chars(env, stack, obj_compile_type_name);
+    
+    if (type_flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE) {
+      sprintf(compile_type_name, "mutable ");
+      compile_type_name += strlen("mutable ");
+    }
+    
+    sprintf(compile_type_name, "%s", basic_type_name);
+    compile_type_name += strlen(basic_type_name);
+    
+    for (int32_t type_dimension_index = 0; type_dimension_index < type_dimension; type_dimension_index++) {
+      sprintf(compile_type_name, "[]");
+      compile_type_name += 2;
+    }
+    
+    // Reference
+    if (type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
+      sprintf(compile_type_name, "*");
+      compile_type_name += 1;
+    }
+    
+    *compile_type_name = '\0';
+    compile_type_name++;
   }
-  
-  sprintf(compile_type_name, "%s", basic_type_name);
-  compile_type_name += strlen(basic_type_name);
-  
-  for (int32_t type_dimension_index = 0; type_dimension_index < type_dimension; type_dimension_index++) {
-    sprintf(compile_type_name, "[]");
-    compile_type_name += 2;
-  }
-  
-  // Reference
-  if (type_flag & SPVM_NATIVE_C_TYPE_FLAG_REF) {
-    sprintf(compile_type_name, "*");
-    compile_type_name += 1;
-  }
-  
-  *compile_type_name = '\0';
-  compile_type_name++;
   
   return obj_compile_type_name;
 }
@@ -2108,26 +2111,29 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   
   // Create exception message
   void* new_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
-  const char* new_exception_bytes = SPVM_API_get_chars(env, stack, new_exception);
   
-  memcpy(
-    (void*)(new_exception_bytes),
-    (void*)(exception_bytes),
-    exception_length
-  );
-  
-  sprintf(
-    (char*)new_exception_bytes + exception_length,
-    "%s%s%s%s%s%s%s%" PRId32,
-    new_line_part,
-    basic_type_name,
-    arrow_part,
-    method_name,
-    at_part,
-    class_file,
-    line_part,
-    line
-  );
+  if (new_exception) {
+    const char* new_exception_bytes = SPVM_API_get_chars(env, stack, new_exception);
+    
+    memcpy(
+      (void*)(new_exception_bytes),
+      (void*)(exception_bytes),
+      exception_length
+    );
+    
+    sprintf(
+      (char*)new_exception_bytes + exception_length,
+      "%s%s%s%s%s%s%s%" PRId32,
+      new_line_part,
+      basic_type_name,
+      arrow_part,
+      method_name,
+      at_part,
+      class_file,
+      line_part,
+      line
+    );
+  }
   
   return new_exception;
 }
@@ -2216,15 +2222,17 @@ SPVM_OBJECT* SPVM_API_concat_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_API_new_string_no_mortal(env, stack, NULL, string3_length);
   
-  const char* string1_bytes = SPVM_API_get_chars(env, stack, string1);
-  const char* string2_bytes = SPVM_API_get_chars(env, stack, string2);
-  char* string3_bytes = (char*)SPVM_API_get_chars(env, stack, string3);
-  
-  if (string1_length > 0) {
-    memcpy(string3_bytes, string1_bytes, string1_length);
-  }
-  if (string2_length) {
-    memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
+  if (string3) {
+    const char* string1_bytes = SPVM_API_get_chars(env, stack, string1);
+    const char* string2_bytes = SPVM_API_get_chars(env, stack, string2);
+    char* string3_bytes = (char*)SPVM_API_get_chars(env, stack, string3);
+    
+    if (string1_length > 0) {
+      memcpy(string3_bytes, string1_bytes, string1_length);
+    }
+    if (string2_length) {
+      memcpy(string3_bytes + string1_length, string2_bytes, string2_length);
+    }
   }
   
   return string3;
@@ -2752,7 +2760,9 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_no_mortal(SPVM_ENV* env, SPVM_VALUE* st
   
   void* obj_object = SPVM_API_new_object_no_mortal(env, stack, basic_type);
   
-  SPVM_API_set_pointer(env, stack, obj_object, pointer);
+  if (obj_object) {
+    SPVM_API_set_pointer(env, stack, obj_object, pointer);
+  }
   
   return obj_object;
 }
@@ -2774,8 +2784,10 @@ SPVM_OBJECT* SPVM_API_new_string_nolen_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
   
   SPVM_OBJECT* object = SPVM_API_new_string_no_mortal(env, stack, NULL, length);
   
-  if (bytes != NULL && length > 0) {
-    memcpy((void*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)), (char*)bytes, length);
+  if (object) {
+    if (bytes != NULL && length > 0) {
+      memcpy((void*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)), (char*)bytes, length);
+    }
   }
   
   return object;
@@ -2792,7 +2804,6 @@ SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, SPVM_VALUE* stack, const c
 }
 
 SPVM_OBJECT* SPVM_API_new_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length) {
-  
   
   if (length < 0) {
     return NULL;
@@ -2847,6 +2858,10 @@ SPVM_OBJECT* SPVM_API_new_byte_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack,
 
 SPVM_OBJECT* SPVM_API_new_short_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
   
+  if (length < 0) {
+    return NULL;
+  }
+  
   size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + sizeof(int16_t) * (length + 1);
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT);
@@ -2857,6 +2872,10 @@ SPVM_OBJECT* SPVM_API_new_short_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
 }
 
 SPVM_OBJECT* SPVM_API_new_int_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
+  
+  if (length < 0) {
+    return NULL;
+  }
   
   size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + sizeof(int32_t) * (length + 1);
   
@@ -2884,6 +2903,10 @@ SPVM_OBJECT* SPVM_API_new_long_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack,
 
 SPVM_OBJECT* SPVM_API_new_float_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
   
+  if (length < 0) {
+    return NULL;
+  }
+  
   size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + sizeof(float) * (length + 1);
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT);
@@ -2895,6 +2918,10 @@ SPVM_OBJECT* SPVM_API_new_float_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
 
 SPVM_OBJECT* SPVM_API_new_double_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length) {
   
+  if (length < 0) {
+    return NULL;
+  }
+  
   size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + sizeof(double) * (length + 1);
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type_by_id(env, stack, SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE);
@@ -2905,6 +2932,10 @@ SPVM_OBJECT* SPVM_API_new_double_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
 }
 
 SPVM_OBJECT* SPVM_API_new_object_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t length) {
+  
+  if (length < 0) {
+    return NULL;
+  }
   
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -2940,6 +2971,10 @@ SPVM_OBJECT* SPVM_API_new_object_array(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
 
 SPVM_OBJECT* SPVM_API_new_muldim_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension, int32_t length) {
   
+  if (length < 0) {
+    return NULL;
+  }
+  
   if (type_dimension < 2) {
     return NULL;
   }
@@ -2947,11 +2982,12 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_no_mortal(SPVM_ENV* env, SPVM_VALUE* stac
     return NULL;
   }
   
-  size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + sizeof(void*) * (length + 1);
-  
   if (!basic_type) {
     return NULL;
   }
+  
+  size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + sizeof(void*) * (length + 1);
+  
   SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, basic_type, type_dimension, length, 0);
   
   return object;
@@ -3824,12 +3860,11 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
 
 int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
   
-  
-  SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
-  int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
-  int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
-  
   if (object != NULL) {
+    SPVM_OBJECT*** current_mortal_stack_ptr = (SPVM_OBJECT***)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK];
+    int32_t* current_mortal_stack_top_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_TOP];
+    int32_t* current_mortal_stack_capacity_ptr = (int32_t*)&stack[SPVM_API_C_STACK_INDEX_MORTAL_STACK_CAPACITY];
+    
     // Extend mortal stack
     if (*current_mortal_stack_top_ptr >= *current_mortal_stack_capacity_ptr) {
       int32_t new_mortal_stack_capacity = *current_mortal_stack_capacity_ptr * 2;
