@@ -1735,7 +1735,7 @@ The count of the memory blocks managed by this runtime is decremented by 1.
 
 C<int32_t (*get_memory_blocks_count)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the count of memory blocks the current runtime allocates.
+Returns the count of the memory blocks managed by this runtime.
 
 =head2 strerror_string
 
