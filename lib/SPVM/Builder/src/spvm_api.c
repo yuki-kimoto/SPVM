@@ -596,7 +596,7 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
   void* object = SPVM_API_new_object(env, stack, basic_type);
   
   if (!object) {
-    *error_id = SPVM_API_die(env, stack, "The memory allocation for an object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    *error_id = SPVM_API_die(env, stack, "Creating an object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
     return NULL;
   }
   
@@ -613,6 +613,11 @@ SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stac
   };
   SPVM_OBJECT* object = SPVM_API_new_pointer_object(env, stack, basic_type, pointer);
   
+  if (!object) {
+    *error_id = SPVM_API_die(env, stack, "Creating an object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    return NULL;
+  }
+  
   return object;
 }
 
@@ -625,9 +630,14 @@ SPVM_OBJECT* SPVM_API_new_object_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return NULL;
   };
   
-  void* object = SPVM_API_new_object_array(env, stack, basic_type, length);
+  void* array = SPVM_API_new_object_array(env, stack, basic_type, length);
   
-  return object;
+  if (!array) {
+    *error_id = SPVM_API_die(env, stack, "Creating an array of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    return NULL;
+  }
+  
+  return array;
 }
 
 SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t type_dimension, int32_t length, int32_t* error_id, const char* func_name, const char* file, int32_t line) {  *error_id = 0;
@@ -639,6 +649,11 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
   };
   
   void* object = SPVM_API_new_muldim_array(env, stack, basic_type, type_dimension, length);
+  
+  if (!object) {
+    *error_id = SPVM_API_die(env, stack, "Creating a multi-dimensional array of the \"%s\" class with the dimension %d failed.", basic_type_name, type_dimension, func_name, file, line);
+    return NULL;
+  }
   
   return object;
 }
@@ -652,9 +667,14 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_by_name(SPVM_ENV* env, SPVM_VALUE* stack,
     return NULL;
   };
   
-  void* object = SPVM_API_new_mulnum_array(env, stack, basic_type, length);
+  void* array = SPVM_API_new_mulnum_array(env, stack, basic_type, length);
   
-  return object;
+  if (!array) {
+    *error_id = SPVM_API_die(env, stack, "Creating a multi-numeric array of the \"%s\" class failed.", basic_type_name, func_name, file, line);
+    return NULL;
+  }
+  
+  return array;
 }
 
 int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {

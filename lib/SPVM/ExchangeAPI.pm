@@ -1051,7 +1051,7 @@ Examples:
 
   my $spvm_array = $api->new_muldim_array_len($type_name, $length);
 
-Creates a SPVM multi-dimentional array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of $type_name.
+Creates a SPVM multi-dimensional array with the type name $type_name and the length $length, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object of $type_name.
 
 Exceptions:
 

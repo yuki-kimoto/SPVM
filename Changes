@@ -8,7 +8,19 @@
     * Fix the bug that the count of memory blocks is incremented when the memory is not allocated in some errors.
   [Exception Messages Changes]
     * Symbol names in exception messages in native APIs are quoted by "".
+  [Changes]
+    * Add the logic to thrown an exception in the following native APIs when creating object failed.
     
+      new_object_by_name
+      
+      new_pointer_object_by_name
+      
+      new_object_array_by_name
+      
+      new_muldim_array_by_name
+      
+      new_mulnum_array_by_name
+
 0.989080 2023-02-23
   [Document Improvement]
     * Add SPVM::Document page.
