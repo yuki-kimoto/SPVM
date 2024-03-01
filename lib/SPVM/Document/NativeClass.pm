@@ -4,11 +4,11 @@ SPVM::Document::NativeClass - Native Classes
 
 =head1 Description
 
-A native class is the class that is implemented by a native language such as the C language or C++.
+A native class is the class implemented by a native language such as the C language and C++.
 
 =head1 Native Method Definition
 
-A native method is defined by the C<native> method attribute in a SPVM class file. It ends with a semicolon. The method cannnot have the block. 
+A native method is defined by the L<native method attribute|SPVM::Document::Language::Class/"Method Attributes"> in a SPVM class file. It ends with a semicolon. A native method does not have its block. 
 
   # SPVM/MyClass.spvm
   class MyClass {
@@ -17,28 +17,22 @@ A native method is defined by the C<native> method attribute in a SPVM class fil
 
 =head1 Native Config File
 
-A native config file is needed for a native class. The name of the config file is the SPVM class file extension replaced by the C<.config>.
+A native config file is needed for a native class. The name of the config file is the same as the SPVM class name, but the extension C<.spvm> is replaced with C<.config>. 
 
-  # Native config file
+  # The name of a native config file
   SPVM/MyClass.config
 
-If the native config file does not exist, an exception occurs.
+A native config file is writen by Perl. It must end with a L<Builder::Config|SPVM::Builder::Config> object.
 
-A native config file is writen by Perl. It must return L<Builder::Config|SPVM::Builder::Config> object. Otherwise an exception is thrown.
+A config file is executed by Perl's L<do|https://perldoc.perl.org/functions/do> function. The returned L<Builder::Config|SPVM::Builder::Config> object is used as the config of a native class.
+
+Exceptions:
+
+If the native config file does not exist, an exception is thrown.
+
+A config file must end with a L<Builder::Config|SPVM::Builder::Config> object, otherwise an exception is thrown.
 
 Examples:
-
-C99:
-
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
-  
-  $config;
-
-C11:
-
-  my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
-  
-  $config;
 
 GNU C99:
 
@@ -52,57 +46,19 @@ C++:
   
   $config;
 
-C++11:
-
-  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
-  
-  $config;
-
-CUDA/nvcc:
-
-  my $config = SPVM::Builder::Config->new(file => __FILE__);
-  
-  # Compiler and Linker common
-  my @ccldflags = qw(--compiler-options '-fPIC');
-  
-  # Compiler
-  $config->cc('nvcc');
-  $config->add_ccflag(@ccldflags);
-  $config->ext('cu');
-  
-  # Linker
-  $config->ld('nvcc');
-  $config->add_ldflag('-shared', @ccldflags);
-  
-  $config;
-
-Outputting messages of the compiler and the linker:
-
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
-
-  $config->quiet(0);
-
-  $config;
-
-Forcing the compilation and the link:
-
-  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
-  
-  $config->force(1);
-  
-  $config;
+See also L<Builder::Config|SPVM::Builder::Config/"Examples">.
 
 =head1 Native Class
 
-A native class is the class that is implemented by a native language such as the C language or C++.
+A native class is the class implemented by a native language such as the C language and C++.
 
-The name of the native class file is the SPVM class file extension replaced by the L<extension of the native class|/"Native Class File Extension">.
+The name of the native class file is the same as the SPVM class name, but the extension C<.spvm> is replaced with C<.> and the L<extension of the native class|/"Native Class File Extension">.
 
   SPVM/MyClass.c
 
 =head2 Native Class File Extension
 
-The file extension of a native class is defined in the config using the L<ext|SPVM::Builder::Config/"ext"> field.
+The file extension of a native class is defined by the L<ext|SPVM::Builder::Config/"ext"> field in a config file .
 
 Examples:
 
@@ -113,11 +69,17 @@ Examples:
   $config->ext('cc');
   
   $config->ext('cu');
-  
-=head2 Native Implementation Function
 
-This is an example of SPVM natvie class. The config file is C99.
-  
+Exceptions:
+
+If the L<ext|SPVM::Builder::Config/"ext"> is defined, but its corresponding config file does not exist, an exception is thrown.
+
+=head2 Native Function
+
+A native function is the function defined in a native class.
+
+Examples:
+
   // SPVM/MyClass.c
   
   #include "spvm_native.h"
@@ -134,53 +96,49 @@ This is an example of SPVM natvie class. The config file is C99.
     return 0;
   }
 
-=head3 Native Implementation Function Name
+=head3 Native Function Name
 
-A native implementation function must have a name created with the following steps.
+A native function must have the name following the rules below.
 
 =over 2
 
-=item * 1. C<::> in the SPVM basic type name is replaced with C<__>.
+=item * 1. Starts with C<SPVM__>.
 
-=item * 2. C<SPVM__> is added at the beginning.
+=item * 2. Followed by the SPVM class name, but C<::> is replaced with C<__>.
 
-=item * 3. The name of the native method is added at the end.
+=item * 3. Followed by C<__>.
+
+=item * 3. Followed by the name of the method.
 
 =back
 
-If the name of a native implementation function is invalid, an exception is thrown.
+Exceptions:
+
+If the name of a native function is invalid, an exception is thrown.
 
 Examples:
 
-MyClass:
+For example, if the class is C<MyClass::Math> and the method name is C<sum_value>, the name of the native function is C<SPVM__MyClass__Math__sum_value>.
+  
+  # SPVM class
+  class MyClass::Math {
+    native method sum_value : void ();
+  }
+  
+  // Native class
+  SPVM__MyClass__Math__sum_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  }
 
-  class MyClass {
-    native method foo : void ();
-  }
-  
-  SPVM__MyClass__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  }
-  
-Foo::Bar:
-
-  class Foo::Bar {
-    native method foo : void ();
-  }
-  
-  SPVM__Foo__Bar__foo(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  }
-  
 =head3 Native API Header
 
   #include "spvm_native.h"
 
-The included header file C<spvm_native.h> is the header file of L<SPVM Native API|SPVM::Document::NativeAPI>.
+C<spvm_native.h> is the header file for L<SPVM Native API|SPVM::Document::NativeAPI>.
 
-=head3 Native Implementation Function Arguments
+=head3 Native Function Arguments
 
-A native implementation function has two arguments.
+A native function has two arguments.
 
 The first argument is the C<SPVM_ENV*> type and it should be named C<env>. This is an L<runtime environment|Runtime Environment>.
 
@@ -190,9 +148,9 @@ The second argument is the C<SPVM_VALUE*> type and it should be named C<stack>. 
   
   }
 
-=head2 Native Implementation Function Return Value
+=head2 Native Function Return Value
 
-The type of return value of native implementation function is C<int32_t>. If the method succeeds, the method must return 1.  If the method fails, the method must return 0.
+The type of return value of native function is C<int32_t>. If the method succeeds, the method must return 1.  If the method fails, the method must return 0.
 
 Note that this is B<not> the return value of the SPVM native method, such as the total value in the above example.
 
@@ -495,7 +453,7 @@ In the native method, it is the return value that indicates whether an exception
 
 If no exception occurs, "0" is returned. This is defined as "0".
 
-If an exception occurs, "1" is returned. It is defined as a value other than "0".
+If an exception is thrown, "1" is returned. It is defined as a value other than "0".
 
 If you want to set the exception message yourself, you can create an exception message with "new_string_nolen" and set it with "set_exception".
 
@@ -615,13 +573,35 @@ Native API can be called from "SPVM_ENV* env" passed as an argument. Note that y
 
   int32_t basic_type_id = env->get_basic_type_id(env, "Int");
 
-=head1 Utilities
+=head1 Resource
 
-Utilities.
+A native class uses native headers and native source files writen by native langauges such as the C language and C++ using the L<use_resource|SPVM::Builder::Config/"use_resource"> method in SPVM::Builder::Config class.
 
-=head2 spvmdist
+  # MyClass.config
+  $config->use_resource("Resource::Zlib");
+  
+  // MyClass.c
+  #include "zlib.h"
 
-If you want to create SPVM class that have the native class, L<spvmdist> is useful.
+For details, see L<SPVM::Document::Resource>.
+
+=head1 Distribution
+
+A distribution for a native class can be generated by the L<spvmdist> command.
+  
+  # C
+  spvmdist --native c --user-name="Yuki Kimoto" --user-email="kimoto.yuki@gmail.com" MyNativeClass
+  
+  # C++
+  spvmdist --native c++ --user-name="Yuki Kimoto" --user-email="kimoto.yuki@gmail.com" MyNativeClass
+
+Only a native class file and a config file can be added to an existing distribution.
+
+  # C
+  spvmdist --only-lib-files --native c --user-name="Yuki Kimoto" --user-email="kimoto.yuki@gmail.com" MyNativeClass lib
+  
+  # C++
+  spvmdist --only-lib-files --native c++ --user-name="Yuki Kimoto" --user-email="kimoto.yuki@gmail.com" MyNativeClass lib
 
 =over 2
 
@@ -629,15 +609,15 @@ If you want to create SPVM class that have the native class, L<spvmdist> is usef
 
 =back
 
-=head1 Examples
+=head1 See Also
+
+=head2 Documents
 
 =over 2
 
-=item * L<Examples using native methods|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>
+=item * L<SPVM::Document::Language::Class>
 
 =back
-
-=head1 See Also
 
 =head2 Config
 
@@ -682,6 +662,16 @@ If you want to create SPVM class that have the native class, L<spvmdist> is usef
 =item * L<SPVM::Document::NativeAPI::ClassFile>
 
 =item * L<SPVM::Document::NativeAPI::Argument>
+
+=item * L<Examples using native methods|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>
+
+=back
+
+=head2 Resource
+
+=over 2
+
+=item * L<SPVM::Document::Resource>
 
 =back
 

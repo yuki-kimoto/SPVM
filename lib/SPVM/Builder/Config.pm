@@ -1887,6 +1887,38 @@ Returns the config files loaded by the L</"load_config"> method.
 
 Clones the L<SPVM::Builder::Config> object, and returns it.
 
+=head2 Examples
+
+GNU C99:
+
+  my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+
+C99:
+
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+
+C11:
+
+  my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
+
+C++:
+
+  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
+  
+  $config;
+
+C++11:
+
+  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
+
+Output messages from the compiler and the linker:
+
+  $config->quiet(0);
+
+Force the compilation and the link:
+
+  $config->force(1);
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
