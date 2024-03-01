@@ -1632,6 +1632,20 @@ Examples:
     }
   }
 
+=head2 Bootstrap Method
+
+A bootstrap method is the methods where the program start.
+
+  void main : void () {
+    
+  }
+
+The method name is C<main>.
+
+The return type is the void type.
+
+It has no arguments.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
