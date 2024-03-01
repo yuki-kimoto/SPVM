@@ -1,6 +1,8 @@
 0.989082 2023-02-29
   [Document Improvement and Fix]
     * Fix and improve the documents of native APIs.
+  [Bug Fix]
+    * Fix the bug that the shorten native API cannot culcurate the length of \0 filling.
     
 0.989081 2023-02-29
   [Document Improvement]

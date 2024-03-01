@@ -3021,6 +3021,26 @@ class TestCase::Module::Fn {
       }
     }
     
+    {
+      my $string = copy "";
+      
+      Fn->shorten((mutable string)$string, 0);
+      
+      unless ($string eq "") {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = copy "";
+      
+      Fn->shorten((mutable string)$string, 1);
+      
+      unless ($string eq "") {
+        return 0;
+      }
+    }
+    
     # Bad cases
     {
       my $string = copy "abc";

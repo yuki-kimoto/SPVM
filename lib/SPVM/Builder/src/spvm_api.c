@@ -3423,27 +3423,35 @@ SPVM_OBJECT* SPVM_API_copy(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object
 
 void SPVM_API_shorten(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, int32_t new_length) {
   
-  
-  if (string != NULL) {
-    if (SPVM_API_is_string(env, stack, string)) {
-      if (!SPVM_API_is_read_only(env, stack, string)) {
-        int32_t length = SPVM_API_length(env, stack, string);
-        
-        if (new_length > length) {
-          new_length = length;
-        }
-        else if (new_length < 0) {
-          new_length = 0;
-        }
-        
-        SPVM_API_set_length(env, stack, string, new_length);
-        char* chars = (char*)SPVM_API_get_chars(env, stack, string);
-        if (new_length > length) {
-          memset(chars + new_length, 0, new_length - length);
-        }
-      }
-    }
+  if (!string) {
+    return;
   }
+  
+  if (!SPVM_API_is_string(env, stack, string)) {
+    return;
+  }
+  
+  if (SPVM_API_is_read_only(env, stack, string)) {
+    return;
+  }
+  
+  int32_t length = SPVM_API_length(env, stack, string);
+  
+  if (!(new_length >= 0)) {
+    return;
+  }
+  
+  if (!(new_length < length)) {
+    return;
+  }
+  
+  SPVM_API_set_length(env, stack, string, new_length);
+  
+  char* chars = (char*)SPVM_API_get_chars(env, stack, string);
+  
+  assert(length - new_length > 0);
+  
+  memset(chars + new_length, 0, length - new_length);
 }
 
 int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, SPVM_OBJECT* element) {

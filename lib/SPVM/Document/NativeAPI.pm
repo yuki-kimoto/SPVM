@@ -1852,13 +1852,17 @@ C<void (*shorten)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environme
 
 Shorten the string C<string> to the length I<length>.
 
-If the string C<string> is C<NULL>, does nothing.
+Characters whose index is greater than 3 are are filled with C<\0>.
 
-If the given length is greater than the length of the string, does nothing.
+If the string C<string> is C<NULL>, nothing is performed.
 
-If the given length is lower than 0, the given length become 0.
+If the type of C<string> is not the string type, nothing is performed.
 
-The charaters of the after the given length are filled with C<\0>.
+If C<string> is read-only, nothing is performed.
+
+If I<length> is not greater than or equal to 0, nothing is performed.
+
+If I<length> is less than the length of I<string>, nothing is performed.
 
 =head2 print
 
