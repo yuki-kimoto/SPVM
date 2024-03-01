@@ -1936,9 +1936,9 @@ Prints the string I<string> and C<\n> to SPVM's L<stdout|SPVM::Document::Languag
 
 =head2 warn
 
-C<void (*warn)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string, const char* file, int32_t line);>
+C<void (*warn)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string, const char* basic_type_name, const char* method_name, const char* file, int32_t line);>
 
-Performs the L<warn|SPVM::Document::Language::Class/"warn"> operation given the string I<string>, the file path I<file>, and the line number I<line>.
+Performs the L<warn|SPVM::Document::Language::Class/"warn"> operation given the string I<string>, the basic type name I<basic_type_name>, the method name I<method_name>, the file path I<file>, and the line number I<line>.
 
 =head2 new_stack
 

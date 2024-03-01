@@ -1445,11 +1445,11 @@ static inline void SPVM_IMPLEMENT_SAY(SPVM_ENV* env, SPVM_VALUE* stack, void* st
 }
 
 static inline void SPVM_IMPLEMENT_WARN(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* file, int32_t line) {
-  env->warn(env, stack, string, file, line);
+  env->warn(env, stack, string, NULL, NULL, file, line);
 }
 
 static inline void SPVM_IMPLEMENT_WARN_V2(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* basic_type_name, const char* method_name, const char* file, int32_t line) {
-  env->warn(env, stack, string, file, line);
+  env->warn(env, stack, string, basic_type_name, method_name, file, line);
 }
 
 #define SPVM_IMPLEMENT_CLEAR_EVAL_ERROR_ID(eval_error_id) (eval_error_id = 0)

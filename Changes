@@ -1,8 +1,14 @@
 0.989082 2023-02-29
   [New Features]
-    * the spvm_warn function in native APIs outputs the function name, the file name, and the line number.
-    * the spvm_warnf function in native APIs outputs the function name, the file name, and the line number.
-    
+    * The spvm_warn function in native APIs outputs the function name, the file name, and the line number.
+    * The spvm_warnf function in native APIs outputs the function name, the file name, and the line number.
+  [New Features and Incompatible Changes and Breaking Binary Compatibility]
+    * The warn operator outputs the function name. This change cuases breaking binary compatibility of the warn operator.
+    * Change the definition of the warn native API.
+      [Before]
+      void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* file, int32_t line);
+      [After]
+      void (*warn)(SPVM_ENV* env, SPVM_VALUE* stack, void* string, const char* basic_type_name, const char* method_name, const char* file, int32_t line);
   [Document Improvement and Fix]
     * Fix and improve the documents of native APIs.
   [Bug Fix]

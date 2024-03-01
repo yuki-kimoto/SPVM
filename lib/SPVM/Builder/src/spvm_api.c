@@ -2164,7 +2164,7 @@ void SPVM_API_say(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string) {
   fputc('\n', runtime->spvm_stdout);
 }
 
-void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const char* file, int32_t line) {
+void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const char* basic_type_name, const char* method_name, const char* file, int32_t line) {
   
   FILE* spvm_stderr = SPVM_API_RUNTIME_get_spvm_stderr(env->runtime);
   
@@ -2179,7 +2179,7 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
       // Add line and file information if last character is not '\n'
       int32_t add_line_file;
       if (bytes[string_length - 1] != '\n') {
-        fprintf(spvm_stderr, "\n  at %s line %d\n", file, line);
+        fprintf(spvm_stderr, "\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
       }
     }
     else {
@@ -2191,7 +2191,7 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
   }
   
   if (empty_or_undef) {
-    fprintf(spvm_stderr, "Warning\n  at %s line %d\n", file, line);
+    fprintf(spvm_stderr, "Warning\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
   }
 }
 
