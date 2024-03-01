@@ -24,7 +24,7 @@ Examples:
 
 C<SPVM_ENV_API* api;>
 
-Returns the C<SPVM_ENV_API> object. This object have the following member variables for other native APIs.
+Returns the C<SPVM_ENV_API> object. This object have the following fields for other native APIs.
 
 =over 2
 
@@ -66,11 +66,15 @@ C<SPVM_ENV* (*new_env)();>
 
 Creates a new L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment">.
 
+This native API should not be used unless special purposes are intended.
+
 =head2 free_env
 
 C<void (*free_env)(SPVM_ENV* env);>
 
-Frees an L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment">.
+Frees the L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment"> I<env>.
+
+This native API should not be used unless special purposes are intended.
 
 =head2 call_init_methods
   
@@ -78,37 +82,47 @@ C<int32_t (*call_init_methods)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runt
 
 Calls the C<INIT> blocks of all classes.
 
-If an exception is thrown, returns non-zero value, otherwise returns 0.
+If an exception is thrown, returns a non-zero value, otherwise returns 0.
+
+This native API should not be used unless special purposes are intended.
 
 =head2 set_command_info_program_name
 
 C<int32_t (*set_command_info_program_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* obj_program_name);>
 
-Sets the L<PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable in the CommandInfo class to the program name.
+Sets the program name I<obj_program_name> to the L<PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable in the CommandInfo class.
 
-If an exception is thrown, returns non-zero value, otherwise returns 0.
+If an exception is thrown, returns a non-zero value, otherwise returns 0.
+
+This native API should not be used unless special purposes are intended.
 
 =head2 set_command_info_argv
 
 C<int32_t (*set_command_info_argv)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* obj_argv);>
 
-Sets the L<ARGV|SPVM::CommandInfo/"ARGV"> class variable in the CommandInfo class to the command line arguments.
+Sets the command line arguments I<obj_argv> to the L<ARGV|SPVM::CommandInfo/"ARGV"> class variable.
 
-If an exception is thrown, returns non-zero value, otherwise returns 0.
+If an exception is thrown, returns a non-zero value, otherwise returns 0.
+
+This native API should not be used unless special purposes are intended.
 
 =head2 set_command_info_base_time
 
 C<int32_t (*set_command_info_base_time)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int64_t base_time);>
 
-Sets the L<BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable in the CommandInfo class to the base time.
+Sets the base time I<base_time> to the L<BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable.
 
-If an exception is thrown, returns non-zero value, otherwise returns 0.
+If an exception is thrown, returns a non-zero value, otherwise returns 0.
+
+This native API should not be used unless special purposes are intended.
 
 =head2 destroy_class_vars
   
 C<void (*destroy_class_vars)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
 Destroys the class variables of all classes.
+
+This native API should not be used unless special purposes are intended.
 
 =head2 args_width
 
@@ -735,7 +749,7 @@ Sets I<value> to the field I<field> of the object I<object> interpreting its typ
 
 C<void (*set_field_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>, void* value);>
 
-Sets I<value> to the field I<field> of the string type.
+Sets I<value> to the field I<field> interpreting its type is the string type.
 
 =head2 get_field_byte_by_name
 
@@ -897,7 +911,9 @@ Returns the address where the value of the field I<field> is stored.
 
 C<void** (*get_field_object_ref_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the address the address where the value of the field I<field> is stored given the object I<object> and the field name I<field_name>.
+Searches a field field given the object I<object> and the field name I<field_name>.
+
+If it is found, the address where the value of the field I<field> is stored, otherwise an exception is thrown.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
 
@@ -1078,6 +1094,7 @@ Examples:
 =head2 get_class_method
 
 C<void* (*get_class_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, const char* method_name);>
+
 Searches a class L<method|SPVM::Document::NativeAPI::Method> given the basic type name I<basic_type_name> and the method name I<method_name>.
 
 If it is found, returns it, otherwise returns C<NULL>.
@@ -1139,7 +1156,7 @@ Examples:
 
 C<void* (*new_byte_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new byte[] type array given the length I<length>.
+Creates a new array of the byte[] type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1159,7 +1176,7 @@ Examples:
 
 C<void* (*new_short_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new short[] type array given the length I<length>.
+Creates a new array of the short[] type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1179,7 +1196,7 @@ Examples:
 
 C<void* (*new_int_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new int[] type array given the length I<length>.
+Creates a new array of the int[] type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1199,7 +1216,7 @@ Examples:
 
 C<void* (*new_long_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new long[] type array given the length I<length>.
+Creates a new array of the long[] type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1219,7 +1236,7 @@ Examples:
 
 C<void* (*new_float_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new float[] type array given the length I<length>.
+Creates a new array of float[] type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1239,7 +1256,7 @@ Examples:
 
 C<void* (*new_double_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new double[] type array given the length I<length>.
+Creates a new array of double[] type given the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1259,7 +1276,7 @@ Examples:
 
 C<void* (*new_object_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
 
-Creates a new object type array given the basic type I<basic_type> and the array length I<length>.
+Creates a new array of an object type given the basic type I<basic_type> and the array length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1280,7 +1297,7 @@ Examples:
 
 C<void* (*new_muldim_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension, int32_t length);>
 
-Creates a new multi-dimensional array given the basic type I<basic_type>, the type dimension I<type_dimension>, and the array length I<length>.
+Creates a new multi-dimensional array given the basic type I<basic_type>, the type dimension I<type_dimension>, and the array length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1304,7 +1321,7 @@ Examples:
 
 C<void* (*new_mulnum_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t length);>
 
-Creates a new multi-numeric array given the basic type I<basic_type> and the array length I<length>.
+Creates a new multi-numeric array given the basic type I<basic_type> and the array length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1325,7 +1342,7 @@ Examples:
 
 C<void* (*new_string_nolen_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* bytes);>
 
-Creates a new string object given a C string I<bytes>. I<bytes> must end with "\0".
+Creates a new string object given a C string I<bytes>. I<bytes> must end with C<\0>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1345,7 +1362,7 @@ Examples:
 
 C<void* (*new_string_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* bytes, int32_t length);>
 
-Creates a new string object given the C string I<bytes> and the length I<length>.
+Creates a new string object given the C string I<bytes> and the length I<length>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1411,7 +1428,7 @@ Examples:
 
 C<int8_t* (*get_elems_byte)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer to the array elements for a byte array.
+Returns the pointer to the elements of the byte array I<array>.
 
 Examples:
 
@@ -1422,7 +1439,7 @@ Examples:
 
 C<int16_t* (*get_elems_short)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer to the array elements for a short array.
+Returns the pointer to the elements of the short array I<array>.
 
 Examples:
 
@@ -1433,7 +1450,7 @@ Examples:
 
 C<int32_t* (*get_elems_int)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer to the array elements for an int array.
+Returns the pointer to the elements of the int array I<array>.
 
 Examples:
 
@@ -1444,7 +1461,7 @@ Examples:
 
 C<int64_t* (*get_elems_long)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer to the array elements for a long array.
+Returns the pointer to the elements of the long array I<array>.
 
 Examples:
 
@@ -1455,7 +1472,7 @@ Examples:
 
 C<float* (*get_elems_float)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer to the array elements for a float array.
+Returns the pointer to the elements of the float array I<array>.
 
 Examples:
 
@@ -1466,7 +1483,7 @@ Examples:
 
 C<double* (*get_elems_double)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array);>
 
-Returns the pointer to the array elements for a double array.
+Returns the pointer to the elements of the double array I<array>.
 
 Examples:
 
@@ -1477,7 +1494,7 @@ Examples:
 
 C<void* (*get_elem_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t index);>
 
-Returns the element given the array I<array> and the index I<index>.
+Returns the element of the array I<array> at the index I<index>.
 
 Examples:
 
@@ -1487,9 +1504,7 @@ Examples:
 
 C<void (*set_elem_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t index, void* object);>
 
-Sets I<object> to the element given the array I<array> and the index I<index>.
-
-If this element is a weak reference, the weak reference is removed.
+Sets I<object> to the element of the array I<array> at the index I<index>.
 
 Examples:
 
@@ -1499,17 +1514,17 @@ Examples:
 
 C<void* (*get_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* pointer_object);>
 
-Returns the pointer to a native data stored in the object I<pointer_object>.
+Returns the value of the C<pointer> field of the object I<pointer_object>.
 
 Examples:
 
-  strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
+  strcut tm* tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
 
 =head2 set_pointer
 
 C<void (*set_pointer)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* pointer_object, void* pointer);>
 
-Set I<pointer> to the pointer to a native data stored in the object I<pointer_object>.
+Sets I<pointer> to the C<pointer> field of the object I<pointer_object>.
 
 =head2 call_method_no_mortal
 
@@ -1519,7 +1534,7 @@ Calls the method I<method> given the L<width of the argument|SPVM::Document::Nat
 
 If the method throws an exception, returns a basic type ID of an error class, otherwise returns 0.
 
-The return value of the method is set to stack[0].
+The return value of the method is set to C<stack[0]>.
 
 This native API should not be used unless special purposes are intended. Normally, use the L</"call_method"> native API.
 
@@ -1571,9 +1586,9 @@ Normally, I<mortal_stack_top> is a return value from the L</"enter_scope"> nativ
 
 =head2 isa
 
-C<int32_t (*isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, void* cast_basic_type, int32_t cast_type_dimension);>
+C<int32_t (*isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, void* basic_type, int32_t type_dimension);>
 
-If the object I<object> satisfies the L<runtime type assignability|SPVM::Document::Language::Types/"Runtime Type Assignability"> to the type given by the basic type C<cast_basic_type> and the type dimension C<cast_type_dimension>, returns 1, otherwise returns 0.
+If the object I<object> satisfies the L<runtime type assignability|SPVM::Document::Language::Types/"Runtime Type Assignability"> to the type given by the basic type C<basic_type> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 isa_by_name
 
@@ -1581,7 +1596,7 @@ C<int32_t (*isa_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime En
 
 If the basic type given by the basic type name I<basic_type_name> is not found, returns 0.
 
-If the object I<object> satisfies the L<runtime type assignability|SPVM::Document::Language::Types/"Runtime Type Assignability"> to the type given by the basic type name C<basic_type_name> and the type dimension C<cast_type_dimension>, returns 1, otherwise returns 0.
+If the object I<object> satisfies the L<runtime type assignability|SPVM::Document::Language::Types/"Runtime Type Assignability"> to the type given by the basic type name C<basic_type_name> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 elem_isa
 
@@ -1655,7 +1670,7 @@ See L<SPVM::Document::Language::GarbageCollection|/"Weak Reference"> about weak 
 
 C<void* (*get_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Creates a new string that is the type name of the object I<object>.
+Creates a new string that is the type name of the object I<object>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -1675,7 +1690,7 @@ Returns the pointer to the characters stored in the string C<string_object>.
 
 Examples:
 
-C<const char* chars = env->get_chars(env, stack, string_object);>
+  const char* chars = env->get_chars(env, stack, string_object);
 
 =head2 die
 
@@ -1754,9 +1769,9 @@ If the method given by I<method_name> is not found, an exception is thrown.
 
 If the found method is not an instance method, an exception is thrown.
 
-If I<object> is C<NULL>, an exception is thrown.
+If C<stack[0].oval> is C<NULL>, an exception is thrown.
 
-If I<object> cannot be assigned to the class given by I<basic_type_name>, an exception is thrown.
+If C<stack[0].oval> cannot be assigned to the class given by I<basic_type_name>, an exception is thrown.
 
 If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
 
@@ -1780,9 +1795,9 @@ Calls an instance method given the method name I<method_name>.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
 
-If I<object> is C<NULL>, an exception is thrown.
+If C<stack[0].oval> is C<NULL>, an exception is thrown.
 
-The type dimension of I<object> must be 0, otherwise an exception is thrown.
+The type dimension of C<stack[0].oval> must be 0, otherwise an exception is thrown.
 
 If the basic type given by I<basic_type_name> is not found, an exception is thrown.
 
@@ -1898,13 +1913,15 @@ This native API should not be used unless special purposes are intended. Normall
 
 C<void* (*copy)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
+Calls the L</"copy_no_mortal"> native API and push its return value to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
+
 =head2 shorten
 
 C<void (*shorten)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string, int32_t new_length);>
 
 Shorten the string C<string> to the length I<length>.
 
-Characters whose index is greater than 3 are are filled with C<\0>.
+Characters whose index is greater than I<length> are are filled with C<\0>.
 
 If the string C<string> is C<NULL>, nothing is performed.
 
@@ -1938,7 +1955,7 @@ Prints the string I<string> and C<\n> to SPVM's L<stdout|SPVM::Document::Languag
 
 C<void (*warn)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string, const char* basic_type_name, const char* method_name, const char* file, int32_t line);>
 
-Performs the L<warn|SPVM::Document::Language::Class/"warn"> operation given the string I<string>, the basic type name I<basic_type_name>, the method name I<method_name>, the file path I<file>, and the line number I<line>.
+Performs the L<warn|SPVM::Document::Language::Operators/"warn"> operation given the string I<string>, the basic type name I<basic_type_name>, the method name I<method_name>, the file path I<file>, and the line number I<line>.
 
 =head2 new_stack
 
@@ -2069,7 +2086,7 @@ C<void* (*new_pointer_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClas
 Calls the L</"new_object_by_name"> native API and sets the pointer I<pointer> to a native data to the created object, and returns it.
 
   int32_t error_id = 0;
-  void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &error_id, __func__, __FILE__, __LINE__);
+  void* minimal = env->new_pointer_object_by_name(env, stack, "TestCase::Pointer", pointer, &error_id, __func__, __FILE__, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 get_elem_string
@@ -2100,7 +2117,7 @@ If the object I<object> is not C<NULL> and the class of I<object> has the C<poin
 
 C<void* (*get_compile_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);>
 
-Creates a new string that is the the compile-time type name of the type given by the basic type name I<basic_type_name>, the type dimension I<type_dimension>, the type flag I<type_flag>.
+Creates a new string that is the the compile-time type name of the type given by the basic type name I<basic_type_name>, the type dimension I<type_dimension>, the type flag I<type_flag>, and returns it.
 
 If its memory allocation failed, returns C<NULL>.
 
@@ -2114,7 +2131,7 @@ Calls the L</"get_compile_type_name_no_mortal"> native API and push its return v
 
 =head2 get_spvm_version_string
 
-  const char* (*get_spvm_version_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);
+C<const char* (*get_spvm_version_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
 Returns the L<version string|SPVM::Document::Language::Class/"Version String"> of the SPVM language.
 
@@ -2126,7 +2143,7 @@ Calls the L</"get_spvm_version_string"> native API and converts its return value
 
 =head2 get_version_string
 
-  const char* (*get_version_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);
+C<const char* (*get_version_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
 Returns the L<version string|SPVM::Document::Language::Class/"Version String"> of the basic type I<basic_type>.
 
@@ -2192,7 +2209,7 @@ If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it 
 
 C<int32_t (*check_stack_env)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-If the env referenced by the stack I<stack> is equal to the env I<env>, returns 1, otherwise returns 0.
+If the L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment"> referenced by the stack I<stack> is equal to the runtime environment I<env>, returns 1, otherwise returns 0.
 
 =head2 assign_object
 

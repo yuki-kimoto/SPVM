@@ -52,7 +52,7 @@ The entering scope operation is the operation at the start of a L<scope block|SP
 
 Memorizes the current top position of the L<mortal stack|/"Mortal Stack">.
 
-=head2 Mortal Stack
+=head3 Mortal Stack
 
 The mortal stack is the stack that stores objects that are decremented by 1 at the end of the scope.
 
