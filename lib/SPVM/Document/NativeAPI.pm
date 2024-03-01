@@ -2593,6 +2593,8 @@ Native APIs have its IDs.
 
 =head2 SPVM_NATIVE_VERSION_NUMBER
 
+C<SPVM_NATIVE_VERSION_NUMBER>
+
 The version number of the SPVM language.
 
 Examples:
@@ -2602,7 +2604,9 @@ Examples:
 
 =head2 SPVM_NATIVE_VERSION_STRING
 
-The version string of the SPVM language. This is a string constant.
+C<SPVM_NATIVE_VERSION_STRING>
+
+The version string of the SPVM language. This is a constant string.
 
 Examples:
   
@@ -2613,9 +2617,9 @@ Examples:
 
 =head2 spvm_warn
 
-  #define spvm_warn(format, ...)
+C<#define spvm_warn(format, ...)>
 
-Prints the formatted message I<format> to C<stderr> with a new line.
+Prints the formatted message I<format> to C<stderr> with the current function name, the current file name, and the current line number.
 
 I<format> must be the C<char*> type.
 
@@ -2626,9 +2630,9 @@ Examples:
 
 =head2 spvm_warnf
 
-  #define spvm_warnf(stream, format, ...)
+C<#define spvm_warnf(stream, format, ...)>
 
-Prints the formatted message I<format> to the stream I<stream> with a new line.
+Prints the formatted message I<format> to the stream I<stream> with the current function name, the current file name, and the current line number.
 
 I<format> must be the C<char*> type.
 
@@ -2643,13 +2647,15 @@ Examples:
 
 C<#define SPVM_NATIVE_GET_POINTER(object)>
 
-Returns the pointer stored in the object I<object> and returns it. The return type is the void* type.
+Returns the pointer stored in the object I<object> and returns it.
+
+The return type is the C<void*> type.
 
 =head2 SPVM_NATIVE_SET_POINTER
 
 C<#define SPVM_NATIVE_SET_POINTER(object, pointer)>
 
-Sets the pointer I<pointer> in the object I<object>.
+Sets the pointer I<pointer> of the object I<object>.
 
 =head1 See Also
 
