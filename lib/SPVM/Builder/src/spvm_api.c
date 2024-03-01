@@ -3377,6 +3377,7 @@ int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 SPVM_OBJECT* SPVM_API_copy_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
   if (!object) {
     return NULL;
   }
@@ -3404,7 +3405,7 @@ SPVM_OBJECT* SPVM_API_copy_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     memcpy(new_object_bytes, object_bytes, element_size * length);
   }
   else {
-    new_object = NULL;
+    assert(0);
   }
   
   return new_object;

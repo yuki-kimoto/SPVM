@@ -1828,13 +1828,23 @@ C<void* (*new_array_proto)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime 
 
 Calls the L</"new_array_proto_no_mortal"> native API and push its return value to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
 
+=head2 copy_no_mortal
+
+C<void* (*copy_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);>
+
+The type of the object I<object> must be a string type, a numeric array type, or a multi-numeric array type.
+
+If the type of the object I<object> is the string type, creates a string and copies the characters stored in I<object> to the created string, and returns the created object.
+
+If the type of the object I<object> is a numeric array type or a multi-numeric array type, creates an array using type of I<object> as a prototype and copies the elements stored in I<object> to the created array, and returns the created array.
+
+If I<object> is C<NULL>, returns C<NULL>.
+
+This native API should not be used unless special purposes are intended. Normally, use the L</"copy"> native API.
+
 =head2 copy
 
 C<void* (*copy)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
-
-Copy the object I<object>. The type of the object I<object> must be a string type, a numeric array, or a multi numeric array.
-
-If the given object is C<NULL>, returns C<NULL>.
 
 =head2 shorten
 
