@@ -360,6 +360,10 @@ ok(SPVM::TestCase::NativeAPI->spvm_stdout);
 
 ok(SPVM::TestCase::NativeAPI->spvm_stderr);
 
+ok(SPVM::TestCase::NativeAPI->spvm_warn);
+
+ok(SPVM::TestCase::NativeAPI->spvm_warnf);
+
 # Clear exception
 SPVM::api->set_exception(undef);
 

@@ -1,4 +1,8 @@
 0.989082 2023-02-29
+  [New Features]
+    * the spvm_warn function in native APIs outputs the function name, the file name, and the line number.
+    * the spvm_warnf function in native APIs outputs the function name, the file name, and the line number.
+    
   [Document Improvement and Fix]
     * Fix and improve the documents of native APIs.
   [Bug Fix]

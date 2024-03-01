@@ -587,8 +587,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_constant_values(SPVM_ENV* en
 
 int32_t SPVM__TestCase__NativeAPI__spvm_warn(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  spvm_warn("spvm_warn test: %s %d", "aaa", 3);
-  spvm_warn("spvm_warn test:Foo");
+  spvm_warn("[Test Output]spvm_warn: %s %d", "aaa", 3);
+  spvm_warn("[Test Output]spvm_warn:Foo");
   
   stack[0].ival = 1;
   
@@ -597,8 +597,8 @@ int32_t SPVM__TestCase__NativeAPI__spvm_warn(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM__TestCase__NativeAPI__spvm_warnf(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  spvm_warnf(env->api->runtime->get_spvm_stderr(env->runtime), "spvm_warnf test: %s %d", "aaa", 3);
-  spvm_warnf(env->api->runtime->get_spvm_stderr(env->runtime), "spvm_warnf test:Foo");
+  spvm_warnf(env->spvm_stderr(env, stack), "[Test Output]spvm_warnf: %s %d", "aaa", 3);
+  spvm_warnf(env->spvm_stderr(env, stack), "[Test Output]spvm_warnf:Foo");
   
   stack[0].ival = 1;
   

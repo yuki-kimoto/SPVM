@@ -1548,4 +1548,8 @@ class TestCase::NativeAPI {
   method instance_method : void () {}
   
   static method class_method : void () {}
+  
+  native static method spvm_warn : int ();
+  
+  native static method spvm_warnf : int ();
 }

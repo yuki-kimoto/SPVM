@@ -15,9 +15,9 @@
 
 #define SPVM_NATIVE_SET_POINTER(object, pointer) (*(void**)object = pointer)
 
-#define spvm_warn(format, ...) fprintf(stderr, format "\n", ##__VA_ARGS__)
+#define spvm_warnf(stream, format, ...) fprintf(stream, format "\n  %s at %s line %d\n", ##__VA_ARGS__, __func__, __FILE__, __LINE__)
 
-#define spvm_warnf(stream, format, ...) fprintf(stream, format "\n", ##__VA_ARGS__)
+#define spvm_warn(format, ...) spvm_warnf(stderr, format, ##__VA_ARGS__)
 
 typedef union spvm_value SPVM_VALUE;
 
