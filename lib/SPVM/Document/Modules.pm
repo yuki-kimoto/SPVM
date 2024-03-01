@@ -4,7 +4,7 @@ SPVM::Document::Modules - SPVM Standard Modules
 
 =head1 Description
 
-The list of SPVM Standard Modules. All Standard classes are yet experimental status.
+This document lists standard modules in the SPVM language. Standard modules are the modules contained in the distribution of the SPVM language.
 
 =head1 Standard Modules
 
