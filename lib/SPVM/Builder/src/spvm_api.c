@@ -3476,6 +3476,7 @@ int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, 
 int32_t SPVM_API_is_type_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* basic_type_name, int32_t type_dimension) {
   
   SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
+  
   if (!basic_type) {
     return 0;
   };
@@ -3636,19 +3637,9 @@ double SPVM_API_get_version_number(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   
   int32_t version_string_length = strlen(version_string);
   
-  char version_string_without_hyphen[20] = {0};
-  int32_t version_string_without_hyphen_length = 0;
-  for (int32_t i = 0; i < version_string_length; i++) {
-    char ch = version_string[i];
-    if (!(ch == '_')) {
-      version_string_without_hyphen[version_string_without_hyphen_length] = ch;
-      version_string_without_hyphen_length++;
-    }
-  }
-  
   char *end;
   errno = 0;
-  double version_number = strtod(version_string_without_hyphen, &end);
+  double version_number = strtod(version_string, &end);
   assert(*end == '\0');
   assert(errno == 0);
   

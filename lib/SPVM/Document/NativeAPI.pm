@@ -1495,6 +1495,12 @@ The return value of the method is set to stack[0].
 
 This native API should not be used unless special purposes are intended. Normally, use the L</"call_method"> native API.
 
+=head2 call_method
+
+C<int32_t (*call_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width);>
+
+Calls the L</"call_method_no_mortal"> native API and if the type of the its return value is an object type, it is push to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
+
 =head2 get_exception
 
 C<void* (*get_exception)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
@@ -1541,6 +1547,14 @@ C<int32_t (*isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environmen
 
 If the object I<object> satisfies the L<runtime type assignability|SPVM::Document::Language::Types/"Runtime Type Assignability"> to the type given by the basic type C<cast_basic_type> and the type dimension C<cast_type_dimension>, returns 1, otherwise returns 0.
 
+=head2 isa_by_name
+
+C<int32_t (*isa_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* basic_type_name, int32_t type_dimension);>
+
+If the basic type given by the basic type name I<basic_type_name> is not found, returns 0.
+
+If the object I<object> satisfies the L<runtime type assignability|SPVM::Document::Language::Types/"Runtime Type Assignability"> to the type given by the basic type name C<basic_type_name> and the type dimension C<cast_type_dimension>, returns 1, otherwise returns 0.
+
 =head2 elem_isa
 
 C<int32_t (*elem_isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, void* element);>
@@ -1554,6 +1568,14 @@ C<int32_t (*is_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Enviro
 If the type of the object I<object> is equal to the type given by the basic type I<basic_type> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
 
 I<object> must not be C<NULL>.
+
+=head2 is_type_by_name
+
+C<int32_t (*is_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* basic_type_name, int32_t type_dimension);>
+
+If the basic type given by the basic type name I<basic_type_name> is not found, returns 0.
+
+If the object I<object> is not C<NULL> and its type of the object I<object> is equal to the basic type given by the basic type name I<basic_type_name> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 is_object_array
 
@@ -1608,8 +1630,6 @@ C<void* (*get_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"
 Creates a new string that is the type name of the object I<object>.
 
 If its memory allocation failed, returns C<NULL>.
-
-This function does not add the returned object to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, so use the L<get_type_name> Native API for normal use to avoid memory leaks.
 
 This native API should not be used unless special purposes are intended. Normally, use the L</"get_type_name"> native API.
 
@@ -2040,61 +2060,45 @@ If the object I<object> is not C<NULL> and the class of I<object> has the C<poin
 
 C<void* (*get_compile_type_name_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);>
 
-Returns a new C<string> object that is the compile-time type name given the basic type name I<basic_type_name>, a type dimension, a type flag.
+Creates a new string that is the the compile-time type name of the type given by the basic type name I<basic_type_name>, the type dimension I<type_dimension>, the type flag I<type_flag>.
 
-This function does not add the returned object to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, so use the L<get_compile_type_name> Native API for normal use to avoid memory leaks.
+If its memory allocation failed, returns C<NULL>.
+
+This native API should not be used unless special purposes are intended. Normally, use the L</"get_compile_type_name"> native API.
 
 =head2 get_compile_type_name
 
 C<void* (*get_compile_type_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, int32_t type_dimension, int32_t type_flag);>
 
-Returns a new C<string> object that is the compile-time type name given the basic type name I<basic_type_name>, a type dimension, a type flag.
+Calls the L</"get_compile_type_name_no_mortal"> native API and push its return value to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
 
 =head2 get_spvm_version_string
 
   const char* (*get_spvm_version_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);
 
-Returns the L<version string|SPVM::Document::Language/"Version String"> of the SPVM language.
+Returns the L<version string|SPVM::Document::Language::Class/"Version String"> of the SPVM language.
 
 =head2 get_spvm_version_number
 
 C<double (*get_spvm_version_number)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the L<version number|SPVM::Document::Language/"Version Number"> of the SPVM language.
+Calls the L</"get_spvm_version_string"> native API and converts its return value to a double value.
 
 =head2 get_version_string
 
   const char* (*get_version_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);
 
-Returns the version string of a basic_type. The C<basic_type_id> must be a valid basic type.
+Returns the L<version string|SPVM::Document::Language::Class/"Version String"> of the basic type I<basic_type>.
 
-If the version string in the basic_type is not defined, returns NULL.
+If the version string is not defined, returns C<NULL>.
 
 =head2 get_version_number
 
 C<double (*get_version_number)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-Returns the version number of a basic_type. The C<basic_type_id> must be a valid basic type.
+Calls the L</"get_version_string"> native API and converts its return value to a double value.
 
-If the version string in the basic_type is not defined, returns -1.
-
-=head2 call_method
-
-C<int32_t (*call_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* method|SPVM::Document::NativeAPI::Method>, int32_t args_width);>
-
-Calls the L</"call_method_no_mortal"> native API and if the type of the its return value is an object type, it is push to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
-
-=head2 isa_by_name
-
-C<int32_t (*isa_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* basic_type_name, int32_t type_dimension);>
-
-The feature is the same as the L</"isa">, but the basic type name can be given. If the basic type name is not found, returns 0.
-
-=head2 is_type_by_name
-
-C<int32_t (*is_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* basic_type_name, int32_t type_dimension);>
-
-If the object I<object> is not C<NULL> and its type of the object I<object> is equal to the type given by the basic type I<basic_type> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
+If the version string is not defined, returns -1.
 
 =head2 new_object_array_by_name
 
