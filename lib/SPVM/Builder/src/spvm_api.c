@@ -1355,12 +1355,15 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
   };
   
   SPVM_RUNTIME_FIELD* field = SPVM_API_get_field(env, stack, object, field_name);
+  
   if (!field) {
     const char* basic_type_name = SPVM_API_get_object_basic_type_name(env, stack, object);
     *error_id = SPVM_API_die(env, stack, "The \"%s\" field is not found in the \"%s\" class or its super class.", field_name, basic_type_name, func_name, file, line);
     return NULL;
   };
+  
   SPVM_OBJECT** object_ref = SPVM_API_get_field_object_ref(env, stack, object, field);
+  
   return object_ref;
 }
 
@@ -1368,23 +1371,22 @@ SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV*
   
   *error_id = 0;
   
-  void* obj_runtime = env->get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file_name, line);
+  void* obj_field = env->get_field_object_by_name(env, stack, object, field_name, error_id, func_name, file_name, line);
   
   if (*error_id) { return NULL; }
   
-  if (!obj_runtime) {
+  if (!obj_field) {
     *error_id = env->die(env, stack, "The \"%s\" field must be defined.", field_name, func_name, file_name, line);
-    return NULL;
+    return obj_field;
   }
   
-  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  void* field = env->get_pointer(env, stack, obj_field);
   
-  if (!runtime) {
-    *error_id = env->die(env, stack, "The pointer of the %s field must be defined.", field_name, func_name, file_name, line);
-    return NULL;
+  if (!field) {
+    *error_id = env->die(env, stack, "The pointer of the \"%s\" field must be defined.", field_name, func_name, file_name, line);
   }
   
-  return obj_runtime;
+  return obj_field;
 }
 
 SPVM_OBJECT* SPVM_API_get_field_string_by_name(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line) {

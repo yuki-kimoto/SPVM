@@ -262,7 +262,7 @@ Returns the value of the class variable I<class_var> interpreting its type is th
 
 C<void** (*get_class_var_object_ref)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the address of the class variable I<class_var> interpreting its type is an object type.
+Returns the address where the value of the class variable I<class_var> is stored.
 
 =head2 set_class_var_byte
 
@@ -2152,6 +2152,12 @@ If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it 
 
 C<void* (*get_field_object_defined_and_has_pointer_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
+Calls the L</"get_field_object_by_name"> native API, and returns its return value.
+
+If the return value is C<NULL>, an exception is thrown.
+
+If the pointer stored in the return value is C<NULL>, an exception is thrown.
+
 =head2 get_field_object_ref
 
 C<void** (*get_field_object_ref)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
@@ -2162,11 +2168,11 @@ Returns the address where the value of the field I<field> is stored.
 
 C<void** (*get_field_object_ref_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-Returns the address of the field I<field> of an object type given the object I<object> and the field name I<field_name>.
+Returns the address the address where the value of the field I<field> is stored given the object I<object> and the field name I<field_name>.
 
 The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
 
-If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
+If I<object> is C<NULL>, an exception is thrown.
 
 =head2 check_stack_env
 
