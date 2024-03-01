@@ -3377,6 +3377,7 @@ int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 SPVM_OBJECT* SPVM_API_copy_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
   if (!object) {
     return NULL;
   }
@@ -3403,8 +3404,16 @@ SPVM_OBJECT* SPVM_API_copy_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     
     memcpy(new_object_bytes, object_bytes, element_size * length);
   }
+  else if (SPVM_API_is_object_array(env, stack, object)) {
+    new_object = SPVM_API_new_array_proto_no_mortal(env, stack, object, length);
+    
+    for (int32_t i = 0; i < length; i++) {
+      void* obj_element = env->get_elem_object(env, stack, object, i);
+      env->set_elem_object(env, stack, new_object, i, obj_element);
+    }
+  }
   else {
-    new_object = NULL;
+    assert(0);
   }
   
   return new_object;
