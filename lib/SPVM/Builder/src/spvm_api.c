@@ -3052,7 +3052,7 @@ SPVM_OBJECT* SPVM_API_new_array_proto_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
     return NULL;
   }
   
-  if (SPVM_API_is_array(env, stack, array)) {
+  if (!SPVM_API_is_array(env, stack, array)) {
     return NULL;
   }
   
