@@ -1088,6 +1088,10 @@ C<void* (*new_object_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Run
 
 Creates a new object given the basic type I<basic_type>.
 
+I<basic_type> must not be C<NULL>.
+
+I<basic_type> must be a class type.
+
 If its memory allocation failed, returns C<NULL>.
 
 This native API should not be used unless special purposes are intended. Normally, use the L</"new_object"> native API.
@@ -1868,21 +1872,25 @@ If I<length> is less than the length of I<string>, nothing is performed.
 
 C<void (*print)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
-Prints a string to stdout. This is the same operator as the print operator.
+Prints the string I<string> to SPVM's L<stdout|SPVM::Document::Language::System/"Standard IO">.
 
 =head2 print_stderr
 
 C<void (*print_stderr)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
-Prints a string to stderr. This is the same operator as the print operator except for the destination of the output.
+Prints the string I<string> to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
 
 =head2 new_stack
 
 C<SPVM_VALUE* (*new_stack)(SPVM_ENV* env);>
 
+Creates a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">, and returns it.
+
 =head2 free_stack
 
 C<void (*free_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+
+Frees the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> I<stack>.
 
 =head2 new_memory_block
 
@@ -1924,7 +1932,7 @@ Calls the L</"strerror"> function and push its return value to the L<mortal stac
 
 C<void* (*strerror_string_nolen)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t errno_value);>
 
-Calls the L</"strerror_string"> function given I<length> 0, and returns its return value.
+Calls the L</"strerror_string"> function given 0 to I<length>, and returns its return value.
 
 =head2 strerror
 
@@ -1934,31 +1942,31 @@ Returns the return value of the L<strerror|https://linux.die.net/man/3/strerror>
 
 If the length is 0, the length is set to 128.
 
-If the C<strerror> function failed, C<errno> is set to the an appropriate positive value.
+If the C<strerror> function failed, C<errno> is set to the a positive value.
 
-This function is thread-safe.
+This native API is thread-safe.
 
-This function actually is implemented by the following functions:
+This native API is implemented by the following functions:
 
 Windows:
 
-C<errno_t L<strerror_s|https://learn.microsoft.com/ja-jp/cpp/c-runtime-library/reference/strerror-s-strerror-s-wcserror-s-wcserror-s?view=msvc-170>(char *buffer, size_t sizeInBytes, int errnum);>
+L<strerror_s|https://learn.microsoft.com/ja-jp/cpp/c-runtime-library/reference/strerror-s-strerror-s-wcserror-s-wcserror-s?view=msvc-170>
 
-Other OSs:
+Linux/UNIX:
 
-C<int L<strerror_r|https://linux.die.net/man/3/strerror_r>(int errnum, char *buf, size_t buflen); /* XSI-compliant */>
+L<strerror_r - XSI-compliant|https://linux.die.net/man/3/strerror_r>
 
 =head2 strerror_nolen
 
 C<const char* (*strerror_nolen)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t errno_value);>
 
-Calls the L</"strerror"> function given I<length> 0, and returns its return value.
+Calls the L</"strerror"> function given 0 to I<length>, and returns its return value.
 
 =head2 new_string_array_no_mortal
 
 C<void* (*new_string_array_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int32_t length);>
 
-Creates a new string array.
+Creates a new string array given the length I<length>, and returns it.
 
 This native API should not be used unless special purposes are intended. Normally, use the L</"new_string_array"> native API.
 
@@ -1972,15 +1980,15 @@ Calls the L</"new_string_array_no_mortal"> native API and calls the L</"push_mor
 
 C<const char* (*dumpc)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-The alias for the following code using L</"dump">.
-
-  const char* ret = env->get_chars(env, stack, env->dump(env, stack, object));
+Calls the L</"dump"> native API and calls the L</"get_chars"> native API given the return value of C<dump> to I<string>, and returns the return value of C<get_chars>.
 
 =head2 new_pointer_object_no_mortal
 
 C<void* (*new_pointer_object_no_mortal)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, void* pointer);>
 
-Creates a pointer object given the basic type I<basic_type> and a C language pointer I<pointer>.
+Calls the L</"new_object_no_mortal"> native API and sets the pointer I<pointer> to a native data to the created object, and returns it.
+
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_pointer_object"> native API.
 
 =head2 new_pointer_object
 
@@ -1990,25 +1998,15 @@ Calls the L</"new_pointer_no_mortal"> native API and push its return value to th
 
 Examples:
 
-  void* basic_type = env->get_basic_type(env, stack, "MyTime");
-  void* pointer = malloc(sizeof (struct tm));
-  void* pointer_obj = env->new_pointer(env, stack, basic_type, pointer);
+  void* basic_type = env->get_basic_type(env, stack, "MyTm");
+  void* st_tm = env->new_memory_block(env, stack, sizeof (struct tm));
+  void* obj_st_tm = env->new_pointer(env, stack, basic_type, st_tm);
 
 =head2 new_pointer_object_by_name
 
 C<void* (*new_pointer_object_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name, void* pointer, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
 
-This is the same as L</"new_pointer"> function, but you can specify basic type name directly.
-
-The create object is pushed to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">.
-
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
-
-If the basic type given by I<basic_type_name> is not found, an exception is thrown.
-
-If the creation of the object failed, an exception is thrown.
-
-If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
+Calls the L</"new_object_by_name"> native API and sets the pointer I<pointer> to a native data to the created object, and returns it.
 
   int32_t error_id = 0;
   void* minimal = env->new_pointer_by_name(env, stack, "TestCase::Pointer", pointer, &error_id, __func__, __FILE__, __LINE__);
@@ -2018,13 +2016,13 @@ If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it 
 
 C<void* (*get_elem_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t index);>
 
-The same as L</"get_elem_object">.
+Calls the L</"get_elem_object"> native API, and returns its return value.
 
 =head2 set_elem_string
 
 C<void (*set_elem_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, int32_t index, void* string);>
 
-The same as L</"set_elem_object">.
+Calls the L</"set_elem_object"> native API.
 
 =head2 is_class
 

@@ -604,18 +604,11 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* 
 }
 
 SPVM_OBJECT* SPVM_API_new_pointer_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, void* pointer, int32_t* error_id, const char* func_name, const char* file, int32_t line) {
-  *error_id = 0;
   
-  void* basic_type = SPVM_API_get_basic_type(env, stack, basic_type_name);
-  if (!basic_type) {
-    *error_id = SPVM_API_die(env, stack, "The \"%s\" class is not found.", basic_type_name, func_name, file, line);
-    return NULL;
-  };
-  SPVM_OBJECT* object = SPVM_API_new_pointer_object(env, stack, basic_type, pointer);
+  void* object = SPVM_API_new_object_by_name(env, stack, basic_type_name, error_id, func_name, file, line);
   
-  if (!object) {
-    *error_id = SPVM_API_die(env, stack, "The creation of the object of the \"%s\" class failed.", basic_type_name, func_name, file, line);
-    return NULL;
+  if (object) {
+    SPVM_API_set_pointer(env, stack, object, pointer);
   }
   
   return object;
@@ -2729,11 +2722,11 @@ SPVM_OBJECT* SPVM_API_new_object_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   SPVM_RUNTIME* runtime = env->runtime;
   
   if (!basic_type) {
-    return NULL;
+    assert(0);
   }
   
   if (basic_type->category != SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-    return NULL;
+    assert(0);
   }
   
   // Alloc body length + 1
@@ -2741,9 +2734,6 @@ SPVM_OBJECT* SPVM_API_new_object_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPV
   
   size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + basic_type->fields_size + 1;
   
-  if (!basic_type) {
-    return NULL;
-  }
   SPVM_OBJECT* object = SPVM_API_new_object_common(env, stack, alloc_size, basic_type, 0, fields_length, 0);
   
   return object;
