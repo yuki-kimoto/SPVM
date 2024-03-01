@@ -877,6 +877,34 @@ Examples:
   void* object_minimal = env->get_field_object_by_name(env, stack, object_simple, "object_value", &error_id, __func__, __FILE__, __LINE__);
   if (error_id) { return error_id; }
 
+=head2 get_field_object_defined_and_has_pointer_by_name
+
+C<void* (*get_field_object_defined_and_has_pointer_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+Calls the L</"get_field_object_by_name"> native API, and returns its return value.
+
+If the return value is C<NULL>, an exception is thrown.
+
+If the pointer stored in the return value is C<NULL>, an exception is thrown.
+
+=head2 get_field_object_ref
+
+C<void** (*get_field_object_ref)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
+
+Returns the address where the value of the field I<field> is stored.
+
+=head2 get_field_object_ref_by_name
+
+C<void** (*get_field_object_ref_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
+
+Returns the address the address where the value of the field I<field> is stored given the object I<object> and the field name I<field_name>.
+
+The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
+
+If the field given by I<field_name> is not found, an exception is thrown.
+
+If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
+
 =head2 get_field_string_by_name
 
 C<void* (*get_field_string_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
@@ -1900,6 +1928,18 @@ C<void (*print_stderr)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Envi
 
 Prints the string I<string> to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
 
+=head2 say
+
+C<void (*say)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
+
+Prints the string I<string> and C<\n> to SPVM's L<stdout|SPVM::Document::Language::System/"Standard IO">.
+
+=head2 warn
+
+C<void (*warn)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string, const char* file, int32_t line);>
+
+Performs the L<warn|SPVM::Document::Language::Class/"warn"> operation given the string I<string>, the file path I<file>, and the line number I<line>.
+
 =head2 new_stack
 
 C<SPVM_VALUE* (*new_stack)(SPVM_ENV* env);>
@@ -2148,85 +2188,51 @@ If the creation of the array failed, an exception is thrown.
 
 If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it is set to 0.
 
-=head2 get_field_object_defined_and_has_pointer_by_name
-
-C<void* (*get_field_object_defined_and_has_pointer_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
-
-Calls the L</"get_field_object_by_name"> native API, and returns its return value.
-
-If the return value is C<NULL>, an exception is thrown.
-
-If the pointer stored in the return value is C<NULL>, an exception is thrown.
-
-=head2 get_field_object_ref
-
-C<void** (*get_field_object_ref)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* field|SPVM::Document::NativeAPI::Field>);>
-
-Returns the address where the value of the field I<field> is stored.
-
-=head2 get_field_object_ref_by_name
-
-C<void** (*get_field_object_ref_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);>
-
-Returns the address the address where the value of the field I<field> is stored given the object I<object> and the field name I<field_name>.
-
-The function name I<func_name>, the file path I<file>, and the line number I<line> must be given for the exception stack trace.
-
-If I<object> is C<NULL>, an exception is thrown.
-
 =head2 check_stack_env
 
 C<int32_t (*check_stack_env)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-If the env of the stack is equal to the env, returns 1, otherwise returns 0.
+If the env referenced by the stack I<stack> is equal to the env I<env>, returns 1, otherwise returns 0.
 
 =head2 assign_object
 
 C<void (*assign_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void** ref, void* object);>
 
-Assigns an object C<object> to the place referred by the reference C<ref>.
+Assigns the object C<object> to the place referenced by the reference C<ref>.
 
-=head2 say
-
-C<void (*say)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
-
-Prints a string and C<\n> to stdout. This is the same operator as the say operator.
-
-=head2 warn
-
-C<void (*warn)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string, const char* file, int32_t line);>
-
-Operates the warn operator.
+This native API should not be used unless special purposes are intended.
 
 =head2 spvm_stdin
 
 C<FILE* (*spvm_stdin)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the standard input opened for SPVM.
+Returns SPVM's L<stdin|SPVM::Document::Language::System/"Standard IO">.
 
 =head2 spvm_stdout
 
 C<FILE* (*spvm_stdout)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the standard output opened for SPVM.
+Returns SPVM's L<stdout|SPVM::Document::Language::System/"Standard IO">.
 
 =head2 spvm_stderr
 
 C<FILE* (*spvm_stderr)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Returns the standard error opened for SPVM.
+Returns SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
 
 =head2 check_bootstrap_method
 
 C<int32_t (*check_bootstrap_method)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, const char* basic_type_name);>
 
-Checks the definition of the bootstrap method.
+Checks the definition of the L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">.
 
-If it is invalid, returns a non-zero value, otherwise returns 0.
+If it is invalid, an exception is thrown.
+
+If an exception is thrown, returns a non-zero value, otherwise returns 0.
 
 =head1 Native API IDs
 
-Native APIs have its IDs. These IDs are permanently same for the binary compatibility after the future release C<v1.0>.
+Native APIs have its IDs.
 
   0 runtime
   1 api
@@ -2645,14 +2651,6 @@ C<#define SPVM_NATIVE_SET_POINTER(object, pointer)>
 
 Sets the pointer I<pointer> in the object I<object>.
 
-=head1 Examples
-
-=over 2
-
-=item * L<Examples using SPVM native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>
-
-=back
-
 =head1 See Also
 
 =over 2
@@ -2686,6 +2684,8 @@ Sets the pointer I<pointer> in the object I<object>.
 =item * L<SPVM::Document::NativeClass>
 
 =item * L<SPVM::Document>
+
+=item * L<Examples using SPVM native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>
 
 =back
 
