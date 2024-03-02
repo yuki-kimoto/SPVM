@@ -130,185 +130,124 @@ For example, if the class is C<MyClass::Math> and the method name is C<sum_value
   
   }
 
-=head3 Native API Header
+=head2 Native API Header
 
   #include "spvm_native.h"
 
 C<spvm_native.h> is the header file for L<SPVM Native API|SPVM::Document::NativeAPI>.
 
-=head3 Native Function Arguments
+=head2 Native Function Arguments
 
-A native function has two arguments.
-
-The first argument is the C<SPVM_ENV*> type and it should be named C<env>. This is an L<runtime environment|Runtime Environment>.
-
-The second argument is the C<SPVM_VALUE*> type and it should be named C<stack>. This is an L<runtime stack|Runtime Stack>.
+A native function must has two arguments.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   }
+
+The first argument C<env> is the current L<runtime environment|Runtime Environment>. Its type is the C<SPVM_ENV*> type.
+
+The second argument C<stack> is the current L<runtime stack|Runtime Stack>. Its type is the C<SPVM_VALUE*> type.
+
+C<stack> is the pointer to the arguments given to this native function.
+
+See L</"Getting Argument"> to get the values of the arguments.
 
 =head2 Native Function Return Value
 
-The type of return value of native function is C<int32_t>. If the method succeeds, the method must return 1.  If the method fails, the method must return 0.
-
-Note that this is B<not> the return value of the SPVM native method, such as the total value in the above example.
-
-=head1 Compile Native Method
-
-Native methods are compiled into a shared libraries. teay are shared libraries (.so) on Unix/Linux, dynamic link libraries (.dll) on Windows or etc corresponding to your os.
-
-The compilation is done when SPVM is compiled. The build directory must exist, otherwise an exception occures.
-
-The default build directory is the "~/.spvm_build" directory in the directory containing the executed Perl script, and can be changed with the environment variable "SPVM_BUILD_DIR".
-
-If you want to use SPVM Native Method from Perl, create a "~/.spvm_build" directory in the directory where the executed Perl script exists.
-
-  ~/.spvm_build
-
-The generated object files exists under "work/object" under the build directory. The object file name is the name which the extension of the SPVM basic type name is changed to ".o".
-
-  ~/.spvm_build/work/object/MyClass.o
-
-The generated shared libraries exists under "work/lib" under the build directory. The name of shared library is the name which the extension of the SPVM basic type name is changed to ".so", or etc corresponding to your os.
-
-  # Unix/Linux
-  ~/.spvm_build/work/object/MyClass.so
-
-  # Windows
-  ~/.spvm_build/work/object/MyClass.dll
-
-=head1 Runtime Environment
-
-The object of the C<SPVM_ENV*> type is an runtime environement.
-
-  SPVM_ENV* env;
-
-This object is passed as the first argument of a Native API.
-
-  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  }
-
-=head1 Runtime Stack
-
-A runtime stack is passed to the second argument of the definition of the native method. A runtime stack is used getting arguments and return the value.
+A native function must return a value of the C<int32_t> type.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
     
-  }
-
-SPVM_VALUE is a union type of C language to store SPVM values. You can save integral value, floating point value, object value, and reference value to it.
-
-For example, to get the value of the first argument(0th) of int type, write as follows.
-
-  int32_t args0 = stack[0].ival;
-
-For example, to get the value of the second argument(1th) of long type, write as follows.
-
-  int64_t args1 = stack[1].lval;
-
-For example, to return a value of double type, write as follows.
-
-  stack[0].dval = 0.5;
-
-Examples:
-
-  #include "spvm_native.h"
-
-  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-    int32_t num1 = stack[0].ival;
-    int32_t num2 = stakc[1].ival;
-    
-    int32_t total = num1 + num2;
-    
-    stack[0].ival = total;
+    # ...
     
     return 0;
   }
+  
+If an exception is thrown in this native function, a native function must return a basic type ID of an error class, otherwise return 0.
 
-=head1 Getting Argument
+See L</"Exception"> for exception handling in a native class.
 
-=head2 Getting byte Type Argument
+=head2 Getting Argument
+
+=head3 Getting byte Type Argument
 
 To get the SPVM byte argument, access the bval field. Assign to the C language int8_t type.
 
   int8_t args0 = stack[0].bval;
 
-=head2 Getting short Type Argument
+=head3 Getting short Type Argument
 
 To get the short argument of SPVM, access the sval field. Assign it to the C language int16_t type.
 
   int16_t args0 = stack[0].sval;
 
-=head2 Getting int Type Argument
+=head3 Getting int Type Argument
 
 To get the SPVM int type argument, access the ival field. Assign to the C language int32_t type.
 
   int32_t args0 = stack[0].ival;
 
-=head2 Getting long Type Argument
+=head3 Getting long Type Argument
 
 To get the long argument of SPVM, access the lval field. Assign to the C language int64_t type.
 
   int64_t args0 = stack[0].lval;
 
-=head2 Getting float Type Argument
+=head3 Getting float Type Argument
 
 To get the SPVM float type argument, access the fval field. Assign to float type of C language.
 
   float args0 = stack[0].fval;
 
-=head2 Getting double Type Argument
+=head3 Getting double Type Argument
 
 To get the SPVM double argument, access the dval field. Assign to the C language double type.
 
   double args0 = stack[0].dval;
 
-=head2 Getting Object Type Argument
+=head3 Getting Object Type Argument
 
 To get the SPVM object type argument, access the oval field. Assign it to void* type in C language.
 
   void* args0 = stack[0].oval;
 
-=head2 Getting byte Reference Type Argument
+=head3 Getting byte Reference Type Argument
 
 If you get SPVM byte Reference Type argument, use "bref" field. it can be assinged to the value of C language int8_t* type.
 
   int8_t* args0 = stack[0].bref;
 
-=head2 Getting short Reference Type Argument
+=head3 Getting short Reference Type Argument
 
 If you get SPVM short Reference Type argument, use "sref" field. it can be assinged to the value of C language int16_t* type.
 
   int16_t* args0 = stack[0].sref;
 
-=head2 Getting int Reference Type Argument
+=head3 Getting int Reference Type Argument
 
 If you get SPVM int Reference Type argument, use "iref" field. it can be assinged to the value of C language int32_t* type.
 
   int32_t* args0 = stack[0].iref;
 
-=head2 Getting long Reference Type Argument
+=head3 Getting long Reference Type Argument
 
 If you get SPVM long Reference Type argument, use "lref" field. it can be assinged to the value of C language int64_t* type.
 
   int64_t* args0 = stack[0].lref;
 
-=head2 Getting float Reference Type Argument
+=head3 Getting float Reference Type Argument
 
 If you get SPVM float Reference Type argument, use "fref" field. it can be assinged to the value of C language float* type.
 
   float* args0 = stack[0].fref;
 
-=head2 Getting double Reference Type Argument
+=head3 Getting double Reference Type Argument
 
 If you get SPVM double Reference Type Argument, use "dref" field. it can be assinged to the value of C language double* type.
 
   double* args0 = stack[0].dref;
 
-=head2 Getting Multi-Numeric Type Arguments
+=head3 Getting Multi-Numeric Type Arguments
 
 In a Native Method, multiple numeric type arguments are assigned to the coresponding multiple arguments.
 
@@ -319,58 +258,58 @@ For example, In the case of the argument values of L<Complex_2d|SPVM::Complex_2d
 
 Note that you cannot access the values by the field name of L<Complex_2d|SPVM::Complex_2d>.
 
-=head1 Return Value
+=head2 Return Value
   
-=head2 Setting Return Value of byte Type
+=head3 Setting Return Value of byte Type
 
 Use C<bval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<byte>. This is corresponding to C<int8_t> type of C language.
 
   int8_t retval;
   stack[0].bval = retval;
 
-=head2 Setting Return Value of short Type
+=head3 Setting Return Value of short Type
 
 Use C<sval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<short>. This is corresponding to C<int16_t> type of C language.
 
   int16_t retval;
   stack[0].sval = retval;
 
-=head2 Setting Return Value of int Type
+=head3 Setting Return Value of int Type
 
 Use C<ival> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<int>. This is corresponding to C<int32_t> type of C language.
 
   int32_t retval;
   stack[0].ival = retval;
 
-=head2 Setting Return Value of long Type
+=head3 Setting Return Value of long Type
 
 Use C<lval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<long>. This is corresponding to C<int64_t> type of C language.
 
   int64_t retval;
   stack[0].lval = retval;
 
-=head2 Setting Return Value of float Type
+=head3 Setting Return Value of float Type
 
 Use C<fval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<float>. This is corresponding to C<float> type of C language.
 
   float retval;
   stack[0].fval = retval;
 
-=head2 Setting Return Value of double Type
+=head3 Setting Return Value of double Type
 
 Use C<dval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<double>. This is corresponding to C<double> type of C language.
 
   double retval;
   stack[0].dval = retval;
 
-=head2 Setting Return Value of Object Type
+=head3 Setting Return Value of Object Type
 
 Use C<oval> field of C<SPVM_VALUE> to set a return value which type of SPVM is object. This is corresponding to C<void*> type of C language.
 
   void* retval;
   stack[0].oval = retval;
 
-=head2 Setting Return Value of Multi-Numeric Type
+=head3 Setting Return Value of Multi-Numeric Type
 
 If you set multiple numeric return value in native method, set multiple return values.
 
@@ -381,7 +320,13 @@ For example, in the case of L<Complex_2d|SPVM::Complex_2d>, do the following.
   stack[0].dval = retval_x;
   stack[1].dval = retval_y;
 
-=head1 Calling Method
+=head2 Calling Native API
+
+Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
+
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
+
+=head2 Calling Method
 
 If you want to call a method, you get a method id using L<get_class_method|"get_class_method"> or L<get_instance_method|"get_instance_method">.
 
@@ -415,35 +360,7 @@ The return value of the method is stored in the first element of the stack.
 
   int32_t total = stack[0].ival;
 
-=head2 Arguments Width
-
-The width of the arguments is the length in units of the L<SPVM_VALUE|SPVM::Document::NativeClass/"Runtime Stack"> type.
-
-=head1 Scope
-
-Native method are entirely enclosed in scope.
-
-Objects added to the mortal stack will automatically have their reference count decremented by 1 when the native method ends. When the reference count reaches 0, it is released.
-
-Use push_mortal to add objects to the mortal stack.
-
-  env->push_mortal(env, stack, object);
-
-Native APIs that normally create an object such as "new_object" will add the automatically created object to the mortal stack so you don't need to use this.
-
-Use "enter_scope" to create a scope. The return value is the ID of that scope.
-
-  int32_t mortal_stack_top = env->enter_scope(env, stack);
-
-Use "leave_scope" to leave the scope. For the argument, it is necessary to specify the scope ID obtained in "enter_scope".
-
-  env->leave_scope(env, stack, mortal_stack_top);
-
-=head2 Mortal Stack
-
-A mortal stack is created for a stack. A mortal stack is the stack to push local variables to destroy at the end of the scope.
-
-=head1 Exception
+=head2 Exception
 
 In the native method, it is the return value that indicates whether an exception has occurred.
 
@@ -470,7 +387,7 @@ L<die|"die""> can be used in the same way as the C language sprintf function. Be
 
 The exception is stored in env.
 
-=head1 Pointer Type
+=head Pointer Class
 
 There is a type called pointer type in SPVM, but I will explain how to use it.
 
@@ -567,11 +484,103 @@ The last is the destructor. Be sure to define a destructor, as the allocated mem
 
 Execute the free_memory_block function to free the memory. Be sure to free the memory allocated by new_memory_block with the free_memory_block function. Releases the memory and decrements the memory block count by one.
 
-=head1 Calling Native API
+=head2 Scope
 
-Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
+Native method are entirely enclosed in scope.
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
+Objects added to the mortal stack will automatically have their reference count decremented by 1 when the native method ends. When the reference count reaches 0, it is released.
+
+Use push_mortal to add objects to the mortal stack.
+
+  env->push_mortal(env, stack, object);
+
+Native APIs that normally create an object such as "new_object" will add the automatically created object to the mortal stack so you don't need to use this.
+
+Use "enter_scope" to create a scope. The return value is the ID of that scope.
+
+  int32_t mortal_stack_top = env->enter_scope(env, stack);
+
+Use "leave_scope" to leave the scope. For the argument, it is necessary to specify the scope ID obtained in "enter_scope".
+
+  env->leave_scope(env, stack, mortal_stack_top);
+
+=head3 Mortal Stack
+
+A mortal stack is created for a stack. A mortal stack is the stack to push local variables to destroy at the end of the scope.
+
+=head2 Runtime Environment
+
+The object of the C<SPVM_ENV*> type is an runtime environement.
+
+  SPVM_ENV* env;
+
+This object is passed as the first argument of a Native API.
+
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  }
+
+=head2 Runtime Stack
+
+A runtime stack is passed to the second argument of the definition of the native method. A runtime stack is used getting arguments and return the value.
+
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
+  }
+
+SPVM_VALUE is a union type of C language to store SPVM values. You can save integral value, floating point value, object value, and reference value to it.
+
+For example, to get the value of the first argument(at index 0) of int type, write as follows.
+
+  int32_t args0 = stack[0].ival;
+
+For example, to get the value of the second argument(at index 1) of long type, write as follows.
+
+  int64_t args1 = stack[1].lval;
+
+For example, to return a value of double type, write as follows.
+
+  stack[0].dval = 0.5;
+
+Examples:
+
+  #include "spvm_native.h"
+
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+    int32_t num1 = stack[0].ival;
+    int32_t num2 = stakc[1].ival;
+    
+    int32_t total = num1 + num2;
+    
+    stack[0].ival = total;
+    
+    return 0;
+  }
+
+=head2 Arguments Width
+
+The width of the arguments is the length in units of the L<SPVM_VALUE|SPVM::Document::NativeClass/"Runtime Stack"> type.
+
+=head1 Compilation and Link
+
+A native class and native source files are compiled to object files and are linked and a shared library is generated.
+
+The extension of a shared library is C<.so> in Linux/UNIX, C<.dylib> in Mac, C<.dll> in Windows.
+
+A build directoy path must be set to the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable.
+
+Normally, C<~/.spvm_build> is set to it.
+
+  ~/.spvm_build
+
+Object files and a shared library file are output to the build directory.
+
+If the build directory does not exist, it is created.
+
+Exceptions:
+
+A string of non-zero length must be set to the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable, otherwise an exception is thrown.
 
 =head1 Resource
 
