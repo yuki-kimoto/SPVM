@@ -169,6 +169,31 @@ See L</"Exception"> for exception handling in a native class.
 
 =head2 Getting Argument
 
+Arguments given to a native function are stored in the L<runtime stack|Runtime Stack> I<stack>.
+
+  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  }
+
+Consider the following method definition.
+
+  method foo ($args0 : int, $args1 : Point, $arg2 : Complex_2d);
+
+To get the value of $args0 of the int type, do the following using C<ival> field. 
+
+  int32_t args0 = stack[0].ival;
+
+To get the value of $args1 of the L<Point|SPVM::Point> type, do the following, using C<oval> field. 
+
+  int64_t args1 = stack[1].oval;
+
+To get the values of $args2 of the L<Complex_2d|SPVM::Complex_2d> multi-numeric type, do the following.
+
+Note that the values of the multi-numeric type are stored in the values of the length of the fields of the multi-numeric type.
+
+  double args2_re = stack[2].dval;
+  double args2_im = stack[3].dval;
+
 =head3 Getting byte Type Argument
 
 To get the SPVM byte argument, access the bval field. Assign to the C language int8_t type.
@@ -387,7 +412,7 @@ L<die|"die""> can be used in the same way as the C language sprintf function. Be
 
 The exception is stored in env.
 
-=head Pointer Class
+=head2 Pointer Class
 
 There is a type called pointer type in SPVM, but I will explain how to use it.
 
@@ -529,34 +554,6 @@ A runtime stack is passed to the second argument of the definition of the native
   }
 
 SPVM_VALUE is a union type of C language to store SPVM values. You can save integral value, floating point value, object value, and reference value to it.
-
-For example, to get the value of the first argument(at index 0) of int type, write as follows.
-
-  int32_t args0 = stack[0].ival;
-
-For example, to get the value of the second argument(at index 1) of long type, write as follows.
-
-  int64_t args1 = stack[1].lval;
-
-For example, to return a value of double type, write as follows.
-
-  stack[0].dval = 0.5;
-
-Examples:
-
-  #include "spvm_native.h"
-
-  int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-    int32_t num1 = stack[0].ival;
-    int32_t num2 = stakc[1].ival;
-    
-    int32_t total = num1 + num2;
-    
-    stack[0].ival = total;
-    
-    return 0;
-  }
 
 =head2 Arguments Width
 
