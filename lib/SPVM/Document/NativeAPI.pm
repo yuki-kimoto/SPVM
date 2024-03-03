@@ -1133,15 +1133,17 @@ If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it 
 
 Examples:
   
+  // Call a class method
   int32_t error_id = 0;
-  int32_t output;
+  int32_t total;
   {
-    int32_t args_width = 1;
+    int32_t args_width = 2;
     stack[0].ival = 5;
-    env->call_class_method_by_name(env, stack, "TestCase::NativeAPI", "my_value", args_width, &error_id, __func__, __FILE__, __LINE__);
+    stack[1].ival = 10;
+    env->call_class_method_by_name(env, stack, "MyClass", "sum", args_width, &error_id, __func__, __FILE__, __LINE__);
     if (error_id) { return error_id; }
     
-    output = stack[0].ival;
+    total = stack[0].ival;
   }
 
 =head2 call_instance_method_static_by_name
@@ -1238,7 +1240,7 @@ If an exception is thrown, C<error_id> is set to a non-zero value, otherwise it 
 Examples:
 
   int32_t error_id = 0;
-  void* minimal = env->new_object_by_name(env, stack, "TestCase::Minimal", &error_id, __func__, __FILE__, __LINE__);
+  void* obj_point = env->new_object_by_name(env, stack, "Point", &error_id, __func__, __FILE__, __LINE__);
   if (error_id) { return error_id; }
 
 =head2 new_pointer_object_no_mortal
@@ -1705,7 +1707,7 @@ Returns the pointer to the characters stored in the string C<string_object>.
 
 Examples:
 
-  const char* chars = env->get_chars(env, stack, string_object);
+  const char* chars = env->get_chars(env, stack, obj_string);
 
 =head2 get_bool_object_value
 

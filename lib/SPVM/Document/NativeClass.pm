@@ -146,9 +146,9 @@ A native function must has two arguments.
 
 The first argument C<env> is the current L<runtime environment|Runtime Environment>. Its type is the C<SPVM_ENV*> type.
 
-The second argument C<stack> is the current L<runtime stack|Runtime Stack>. Its type is the C<SPVM_VALUE*> type.
+The second argument C<stack> is the current L<runtime stack|Runtime Stack>. Its type is the pointer to an array of L<SPVM_VALUE/"SPVM_VALUE type"> type.
 
-C<stack> is the pointer to the arguments given to this native function.
+The arguments given to this native function are stored in the stack.
 
 See L</"Getting Argument"> to get the values of the arguments.
 
@@ -167,6 +167,28 @@ If an exception is thrown in this native function, a native function must return
 
 See L</"Exception"> for exception handling in a native class.
 
+=head2 SPVM_VALUE type
+
+C<SPVM_VALUE> type is an union type in the C language.
+
+  typedef union spvm_value SPVM_VALUE;
+  
+  union spvm_value {
+    int8_t bval;
+    int16_t sval;
+    int32_t ival;
+    int64_t lval;
+    float fval;
+    double dval;
+    void* oval;
+    int8_t* bref;
+    int16_t* sref;
+    int32_t* iref;
+    int64_t* lref;
+    float* fref;
+    double* dref;
+  };
+
 =head2 Getting Argument
 
 Arguments given to a native function are stored in the L<runtime stack|Runtime Stack> I<stack>.
@@ -179,11 +201,11 @@ Consider the following method definition.
 
   method foo ($args0 : int, $args1 : Point, $arg2 : Complex_2d);
 
-To get the value of $args0 of the int type, do the following using C<ival> field. 
+To get the value of $args0 of the int type, do the following using C<ival> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type. 
 
   int32_t args0 = stack[0].ival;
 
-To get the value of $args1 of the L<Point|SPVM::Point> type, do the following, using C<oval> field. 
+To get the value of $args1 of the L<Point|SPVM::Point> type, do the following, using C<oval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type. 
 
   int64_t args1 = stack[1].oval;
 
@@ -196,194 +218,185 @@ Note that the values of the multi-numeric type are stored in the values of the l
 
 =head3 Getting byte Type Argument
 
-To get the SPVM byte argument, access the bval field. Assign to the C language int8_t type.
+Use the C<bval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<byte> type from an argument, 
 
   int8_t args0 = stack[0].bval;
 
 =head3 Getting short Type Argument
 
-To get the short argument of SPVM, access the sval field. Assign it to the C language int16_t type.
+Use the C<sval> field to get the short argument of SPVM, 
 
   int16_t args0 = stack[0].sval;
 
 =head3 Getting int Type Argument
 
-To get the SPVM int type argument, access the ival field. Assign to the C language int32_t type.
+Use the C<ival> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<int> type from an argument, 
 
   int32_t args0 = stack[0].ival;
 
 =head3 Getting long Type Argument
 
-To get the long argument of SPVM, access the lval field. Assign to the C language int64_t type.
+Use the C<lval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<long> type from an argument, 
 
   int64_t args0 = stack[0].lval;
 
 =head3 Getting float Type Argument
 
-To get the SPVM float type argument, access the fval field. Assign to float type of C language.
+Use the C<fval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<float> type from an argument.
 
   float args0 = stack[0].fval;
 
 =head3 Getting double Type Argument
 
-To get the SPVM double argument, access the dval field. Assign to the C language double type.
+Use the C<dval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<double> type from an argument, 
 
   double args0 = stack[0].dval;
 
 =head3 Getting Object Type Argument
 
-To get the SPVM object type argument, access the oval field. Assign it to void* type in C language.
+Use the C<oval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of an SPVM object type from an argument, 
 
   void* args0 = stack[0].oval;
 
 =head3 Getting byte Reference Type Argument
 
-If you get SPVM byte Reference Type argument, use "bref" field. it can be assinged to the value of C language int8_t* type.
+Use the C<bref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<byte> reference type from an argument, 
 
   int8_t* args0 = stack[0].bref;
 
 =head3 Getting short Reference Type Argument
 
-If you get SPVM short Reference Type argument, use "sref" field. it can be assinged to the value of C language int16_t* type.
+Use the C<sref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<short> reference type from an argument, 
 
   int16_t* args0 = stack[0].sref;
 
 =head3 Getting int Reference Type Argument
 
-If you get SPVM int Reference Type argument, use "iref" field. it can be assinged to the value of C language int32_t* type.
+Use the C<iref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<int> reference type from an argument, 
 
   int32_t* args0 = stack[0].iref;
 
 =head3 Getting long Reference Type Argument
 
-If you get SPVM long Reference Type argument, use "lref" field. it can be assinged to the value of C language int64_t* type.
+Use the C<lref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<long> reference type from an argument, 
 
   int64_t* args0 = stack[0].lref;
 
 =head3 Getting float Reference Type Argument
 
-If you get SPVM float Reference Type argument, use "fref" field. it can be assinged to the value of C language float* type.
+Use the C<fref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<float> reference type from an argument, 
 
   float* args0 = stack[0].fref;
 
 =head3 Getting double Reference Type Argument
 
-If you get SPVM double Reference Type Argument, use "dref" field. it can be assinged to the value of C language double* type.
+To get the value of an SPVM C<double> reference type from an argument, use C<dref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type.
 
   double* args0 = stack[0].dref;
 
 =head3 Getting Multi-Numeric Type Arguments
 
-In a Native Method, multiple numeric type arguments are assigned to the coresponding multiple arguments.
+The values of an SPVM multi-numeric type from an argument are assigned multiple fields of the L<SPVM_VALUE/"SPVM_VALUE type"> type, which length is the same as the length of the fields of the SPVM multi-numeric type.
 
-For example, In the case of the argument values of L<Complex_2d|SPVM::Complex_2d> type, you can get them by the following way.
+For example, if the argument type is the L<Complex_2d|SPVM::Complex_2d> type, these values are assinged to multiple fields of the L<SPVM_VALUE/"SPVM_VALUE type"> type.
 
-  double args_re = stack[0].dval;
-  double args_im = stack[1].dval;
-
-Note that you cannot access the values by the field name of L<Complex_2d|SPVM::Complex_2d>.
+  double args0_re = stack[0].dval;
+  double args0_im = stack[1].dval;
 
 =head2 Return Value
+
+A return value of a SPVM method can be set to the first argument of the L<runtime stack|Runtime Stack>.
   
+  int32_t return_value = 5;
+  
+  stack[0].ival = return_value;
+
 =head3 Setting Return Value of byte Type
 
-Use C<bval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<byte>. This is corresponding to C<int8_t> type of C language.
+Use the C<bval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value of the SPVM C<byte> type.
 
-  int8_t retval;
-  stack[0].bval = retval;
+  stack[0].bval = return_value;
 
 =head3 Setting Return Value of short Type
 
-Use C<sval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<short>. This is corresponding to C<int16_t> type of C language.
+Use the C<sval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value of the SPVM C<short> type.
 
-  int16_t retval;
-  stack[0].sval = retval;
+  stack[0].sval = return_value;
 
 =head3 Setting Return Value of int Type
 
-Use C<ival> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<int>. This is corresponding to C<int32_t> type of C language.
+Use the C<ival> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value of the SPVM C<int> type.
 
-  int32_t retval;
-  stack[0].ival = retval;
+  stack[0].ival = return_value;
 
 =head3 Setting Return Value of long Type
 
-Use C<lval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<long>. This is corresponding to C<int64_t> type of C language.
+Use the C<lval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value of the SPVM C<long> type.
 
-  int64_t retval;
-  stack[0].lval = retval;
+  stack[0].lval = return_value;
 
 =head3 Setting Return Value of float Type
 
-Use C<fval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<float>. This is corresponding to C<float> type of C language.
+Use the C<fval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value of the SPVM C<float> type.
 
-  float retval;
-  stack[0].fval = retval;
+  stack[0].fval = return_value;
 
 =head3 Setting Return Value of double Type
 
-Use C<dval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<double>. This is corresponding to C<double> type of C language.
+Use the C<dval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value of the SPVM C<double> type.
 
-  double retval;
-  stack[0].dval = retval;
+  stack[0].dval = return_value;
 
 =head3 Setting Return Value of Object Type
 
-Use C<oval> field of C<SPVM_VALUE> to set a return value which type of SPVM is object. This is corresponding to C<void*> type of C language.
+Use the C<oval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value which type of SPVM is object.
 
-  void* retval;
-  stack[0].oval = retval;
+  stack[0].oval = return_value;
 
 =head3 Setting Return Value of Multi-Numeric Type
 
-If you set multiple numeric return value in native method, set multiple return values.
+Return value of the multi-numeric type are needed to be set to multiple fields of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type, which length is the same as the fields of the multi-numeric type.
 
-For example, in the case of L<Complex_2d|SPVM::Complex_2d>, do the following.
+There is an example in the case that the return type is the L<Complex_2d|SPVM::Complex_2d>.
 
-  double retval_x;
-  double retval_y;
-  stack[0].dval = retval_x;
-  stack[1].dval = retval_y;
+  double return_value_x;
+  double return_value_y;
+  stack[0].dval = return_value_x;
+  stack[1].dval = return_value_y;
 
-=head2 Calling Native API
+=head2 Native APIs
 
-Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
+L<Native APIs|SPVM::Document::NativeAPI> are the APIs written by the C language for SPVM operations. Native APIs can be called in native classes. 
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
+=head2 Examples of Native APIs:
 
-=head2 Calling Method
-
-If you want to call a method, you get a method id using L<get_class_method|"get_class_method"> or L<get_instance_method|"get_instance_method">.
-
-L<get_class_method|"get_class_method"> get a method id of a class method.
-
-L<get_instance_method|"get_instance_method"> get a method id of a instance method.
-
-  // Get method id of class method
-  int32_t basic_type_id = env->get_basic_type_id(env, "MyClass");
-  void* method = env->get_class_method(env, basic_type_id, "sum");
+Create a Point object.
   
-  // Get method id of instance method
-  int32_t method = env->get_instance_method(env, object, "sum");
+  int32_t error_id = 0;
+  void* obj_point = env->new_object_by_name(env, stack, "Point", &error_id, __func__, __FILE__, __LINE__);
+  if (error_id) { return error_id; }
 
-If method is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
+Call a class method.
 
-  if (!method) { return env->die(env, stack, "Can't find method id", __func__, "MyClass.c", __LINE__); }
+  int32_t error_id = 0;
+  int32_t total;
+  {
+    int32_t args_width = 2;
+    stack[0].ival = 5;
+    stack[1].ival = 10;
+    env->call_class_method_by_name(env, stack, "MyClass", "sum", args_width, &error_id, __func__, __FILE__, __LINE__);
+    if (error_id) { return error_id; }
+    
+    total = stack[0].ival;
+  }
 
-Set the SPVM method argument to stack before calling the method.
+Get the characters of a string.
 
-  stack[0].ival = 1;
-  stack[0].ival = 2;
+  const char* chars = env->get_chars(env, stack, obj_string);
 
-To call a SPVM method, use the <a href="#native-api-native-sub-api-call_method">call_method</a> function.
+Get the elements of an array of the int type.
 
-  int32_t error = env->call_method(env, method, stack);
-
-Nonzero if the method raised an exception, 0 if no exception occurred.
-
-The return value of the method is stored in the first element of the stack.
-
-  int32_t total = stack[0].ival;
+  int32_t* values = env->get_elems_int(env, stack, obj_array);
 
 =head2 Exception
 
