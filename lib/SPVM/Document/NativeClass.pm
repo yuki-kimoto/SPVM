@@ -163,9 +163,9 @@ A native function must return a value of the C<int32_t> type.
     return 0;
   }
   
-If an exception is thrown in this native function, a native function must return a basic type ID of an error class, otherwise return 0.
+If an exception is thrown in this native method, the native function must return a non-zero value, otherwise must return 0.
 
-See L</"Exception"> for exception handling in a native class.
+See L</"Exception"> for exception handling in native classes.
 
 =head2 SPVM_VALUE type
 
@@ -373,7 +373,7 @@ L<Native APIs|SPVM::Document::NativeAPI> are the APIs written by the C language 
 Create a Point object.
   
   int32_t error_id = 0;
-  void* obj_point = env->new_object_by_name(env, stack, "Point", &error_id, __func__, __FILE__, __LINE__);
+  void* obj_point = env->new_object_by_name(env, stack, "Point", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
 
 Call a class method.
@@ -384,7 +384,7 @@ Call a class method.
     int32_t args_width = 2;
     stack[0].ival = 5;
     stack[1].ival = 10;
-    env->call_class_method_by_name(env, stack, "MyClass", "sum", args_width, &error_id, __func__, __FILE__, __LINE__);
+    env->call_class_method_by_name(env, stack, "MyClass", "sum", args_width, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     
     total = stack[0].ival;
@@ -400,30 +400,17 @@ Get the elements of an array of the int type.
 
 =head2 Exception
 
-In the native method, it is the return value that indicates whether an exception has occurred.
+If a native method throws an exception, a message is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> and the native function must return a non-zero value, normally the basic type ID of an error class.
 
-  return 0;
+  env->set_exception(env, stack, env->new_string_nolen(env, stack, "An exception is thrown."));
+  
+  return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
 
-  return 1;
+If no message is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">, a default exception message is set to it.
 
-If no exception occurs, "0" is returned. This is defined as "0".
+The L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an exception easily.
 
-If an exception is thrown, "1" is returned. It is defined as a value other than "0".
-
-If you want to set the exception message yourself, you can create an exception message with "new_string_nolen" and set it with "set_exception".
-
-  env->set_exception(env, stack, env->new_string_nolen(env, stack, "Exception occur");
-  return 1;
-
-If no exception message is set, a default exception message will be set.
-
-Usually, L<die|"die"">  is defined to make it easier to use, so it is better to use this.
-
-  return env->die("Error. Values must be %d and %d", 3, 5, __func__, "MyClass.c", __LINE__);
-
-L<die|"die""> can be used in the same way as the C language sprintf function. Be sure to include this file name in the second from the end, and the line number in the last argument. If the message exceeds 255 bytes, the excess is truncated.
-
-The exception is stored in env.
+  return env->die("The value must be %d.", 3, __func__, FILE_NAME, __LINE__);
 
 =head2 Pointer Class
 
@@ -431,11 +418,11 @@ There is a type called pointer type in SPVM, but I will explain how to use it.
 
 The pointer type definition specifies the pointer attribute in the SPVM class definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
 
-  # SPVM/MyTimeInfo.spvm
-  class MyTimeInfo : pointer {
+  # SPVM/MyTm.spvm
+  class MyTm : pointer {
 
     # Constructor
-    native static method new : MyTimeInfo ();
+    native static method new : MyTm ();
 
     # Get second
     native method sec : int ();
@@ -448,22 +435,22 @@ It defines a new constructor, a method that takes seconds information called sec
 
 Next is the definition on the C language side.
 
-  # SPVM/MyTimeInfo.c
+  # SPVM/MyTm.c
 
-  int32_t SPVM__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__MyTm__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     // Alloc strcut tm
     void* tm_ptr = env->new_memory_block(env, stack, sizeof (struct tm));
 
     // Create strcut tm instance
-    void* tm_obj = env->new_pointer_object(env, stack, "MyTimeInfo", tm_ptr);
+    void* tm_obj = env->new_pointer_object(env, stack, "MyTm", tm_ptr);
 
     stack[0].oval = tm_obj;
 
     return 0;
   }
 
-  int32_t SPVM__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__MyTm__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
     void* tm_obj = stack[0].oval;
 
     strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
@@ -473,7 +460,7 @@ Next is the definition on the C language side.
     return 0;
   }
 
-  int32_t SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__MyTm__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     void* tm_obj = stack[0].oval;
     strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
@@ -488,10 +475,10 @@ In the constructor new, the memory of "struct tm" is first allocated by the new_
   // Alloc strcut tm
   void* tm_ptr = env->new_memory_block(env, stack, sizeof (struct tm));
 
-Next, use the new_pointer_object function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
+Next, use the new_pointer_object function to create a new pointer type object with MyTm associated with it in the allocated memory.
 
   // Create strcut tm instance
-  void* tm_obj = env->new_pointer_object(env, stack, "MyTimeInfo", tm_ptr);
+  void* tm_obj = env->new_pointer_object(env, stack, "MyTm", tm_ptr);
 
 If you return this as a return value, the constructor is complete.
 
@@ -509,7 +496,7 @@ Next, let's get the value of tm_sec. sec method. The get_pointer function can be
 
 The last is the destructor. Be sure to define a destructor, as the allocated memory will not be released automatically.
 
-  int32_t SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__MyTm__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     void* tm_obj = stack[0].oval;
 
