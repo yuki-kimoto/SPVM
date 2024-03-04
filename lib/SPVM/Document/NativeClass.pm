@@ -443,12 +443,12 @@ SPVM/MyTm.c
     
     int32_t error_id = 0;
     
-    void* tm = env->new_memory_block(env, stack, sizeof (struct tm));
+    strcut tm* st_tm = (struct tm*)env->new_memory_block(env, stack, sizeof (struct tm));
     
     void* obj_tm = env->new_object_by_name(env, stack, "MyTm", error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     
-    env->set_pointer(env, stack, obj_tm, tm);
+    env->set_pointer(env, stack, obj_tm, st_tm);
     
     stack[0].oval = obj_tm;
     
@@ -456,11 +456,12 @@ SPVM/MyTm.c
   }
   
   int32_t SPVM__MyTm__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
     void* obj_tm = stack[0].oval;
     
-    strcut tm* tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
+    strcut tm* st_tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
     
-    stack[0].ival = tm->tm_sec;
+    stack[0].ival = st_tm->tm_sec;
     
     return 0;
   }
@@ -469,9 +470,9 @@ SPVM/MyTm.c
     
     void* obj_tm = stack[0].oval;
     
-    strcut tm* tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
+    strcut tm* st_tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
     
-    env->free_memory_block(env, stack, tm);
+    env->free_memory_block(env, stack, st_tm);
     
     return 0;
   }
