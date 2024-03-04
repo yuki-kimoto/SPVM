@@ -10,14 +10,14 @@ SPVM::List - Dynamic Object Array
   
   use List;
   
-  # Create a object list
+  # Create an object list
   my $list = List->new;
   my $list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
 
   # Create a Int list
   my $list = List->new([Int->new(1), Int->new(2), Int->new(3)]);
   
-  # Create a object list with length
+  # Create an object list with length
   my $list = List->new_len([], 3);
 
   # Create a Int list with length

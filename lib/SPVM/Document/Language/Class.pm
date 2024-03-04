@@ -342,7 +342,7 @@ The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Clas
 
 The type of a pointer class is the L<class type|/"Class Type">.
 
-A object of a pointer class has the pointer to a native address.
+An object of a pointer class has the pointer to a native address.
 
 =head2 Inheritance
 
@@ -481,7 +481,7 @@ The duck typing is supported.
   my $stringable = (Stringable)Point->new(1, 2);
   my $string = $stringable->to_string;
 
-The Point class have no interfaces, but A object of the Point class can be assigned to a Stringable interface
+The Point class have no interfaces, but An object of the Point class can be assigned to a Stringable interface
 because the to_string method in the Point class has the method compatibility of the to_string method in the Strigable interface.
 
 =head2 Class File Name

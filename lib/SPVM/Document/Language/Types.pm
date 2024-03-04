@@ -259,7 +259,7 @@ Basic object types are the L<class type|/"Class Type">, the L<array type|/"Array
 
 Object types are the L<basic object types|/"Basic Object Type"> and the L<array types|/"Array Type">.
 
-A object type can be assigned to a L<any object type|/"Any Object Type">.
+An object type can be assigned to a L<any object type|/"Any Object Type">.
 
   my $object: object = new Foo;
   my $object: object = "abc";

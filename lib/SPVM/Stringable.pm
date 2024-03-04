@@ -23,7 +23,7 @@ C<method to_string : string ();>
 
 =head1 Description
 
-L<Stringable|SPVM::Stringable> is an interface type to stringify a object.
+L<Stringable|SPVM::Stringable> is an interface type to stringify an object.
 
 =head1 Interface Methods
 
