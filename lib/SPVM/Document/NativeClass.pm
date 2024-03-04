@@ -24,7 +24,7 @@ A native config file is needed for a native class. The name of the config file i
 
 A native config file is writen by Perl. It must end with a L<Builder::Config|SPVM::Builder::Config> object.
 
-A config file is executed by Perl's L<do|https://perldoc.perl.org/functions/do> function. The returned L<Builder::Config|SPVM::Builder::Config> object is used as the config of a native class.
+A config file is executed by Perl's L<do|https://perldoc.perl.org/functions/do> function. The returned L<Builder::Config|SPVM::Builder::Config> object is used as the config for a native class.
 
 Exceptions:
 
@@ -46,8 +46,6 @@ C++:
   
   $config;
 
-See also L<Builder::Config|SPVM::Builder::Config/"Examples">.
-
 =head1 Native Class
 
 A native class is the class implemented by a native language such as the C language and C++.
@@ -58,7 +56,7 @@ The name of the native class file is the same as the SPVM class name, but the ex
 
 =head2 Native Class File Extension
 
-The file extension of a native class is defined by the L<ext|SPVM::Builder::Config/"ext"> field in a config file .
+The file extension of a native class is defined by the L<ext|SPVM::Builder::Config/"ext"> field in the C<Builder::Config> class in a config file.
 
 Examples:
 
@@ -76,7 +74,7 @@ If the L<ext|SPVM::Builder::Config/"ext"> is defined, but its corresponding conf
 
 =head2 Native Function
 
-A native function is the function defined in a native class.
+A native function is a function defined in a native class.
 
 Examples:
 
@@ -134,21 +132,21 @@ For example, if the class is C<MyClass::Math> and the method name is C<sum_value
 
   #include "spvm_native.h"
 
-C<spvm_native.h> is the header file for L<SPVM Native API|SPVM::Document::NativeAPI>.
+C<spvm_native.h> is the header file for L<SPVM Native APIs|SPVM::Document::NativeAPI>.
 
 =head2 Native Function Arguments
 
-A native function must has two arguments.
+A native function must have two arguments.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   }
 
-The first argument C<env> is the current L<runtime environment|Runtime Environment>. Its type is the C<SPVM_ENV*> type.
+The first argument C<env> is the current L<runtime environment|/"Runtime Environment">. This is the pointer to a value of the C<SPVM_ENV> type.
 
-The second argument C<stack> is the current L<runtime stack|Runtime Stack>. Its type is the pointer to an array of L<SPVM_VALUE/"SPVM_VALUE type"> type.
+The second argument C<stack> is the current L<runtime stack|/"Runtime Stack">. This is is the pointer to the values of L<SPVM_VALUE|/"SPVM_VALUE Type"> type.
 
-The arguments given to this native function are stored in the stack.
+The arguments given to this native function have been stored in the runtime stack.
 
 See L</"Getting Argument"> to get the values of the arguments.
 
@@ -167,7 +165,7 @@ If an exception is thrown in this native method, the native function must return
 
 See L</"Exception"> for exception handling in native classes.
 
-=head2 SPVM_VALUE type
+=head2 SPVM_VALUE Type
 
 C<SPVM_VALUE> type is an union type in the C language.
 
@@ -191,7 +189,7 @@ C<SPVM_VALUE> type is an union type in the C language.
 
 =head2 Getting Argument
 
-Arguments given to a native function are stored in the L<runtime stack|Runtime Stack> I<stack>.
+Arguments given to a native function have been stored in the L<runtime stack|/"Runtime Stack"> I<stack>.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
@@ -201,112 +199,112 @@ Consider the following method definition.
 
   method foo ($args0 : int, $args1 : Point, $arg2 : Complex_2d);
 
-To get the value of $args0 of the int type, do the following using C<ival> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type. 
+Do the following using the C<ival> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of $args0 which type is the int type.
 
   int32_t args0 = stack[0].ival;
 
-To get the value of $args1 of the L<Point|SPVM::Point> type, do the following, using C<oval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type. 
+Do the following using the C<oval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of $args1 which type is the L<Point|SPVM::Point> type.
 
   int64_t args1 = stack[1].oval;
 
-To get the values of $args2 of the L<Complex_2d|SPVM::Complex_2d> multi-numeric type, do the following.
-
-Note that the values of the multi-numeric type are stored in the values of the length of the fields of the multi-numeric type.
+Do the following to get the values of $args2 which type is the L<Complex_2d|SPVM::Complex_2d> multi-numeric type.
 
   double args2_re = stack[2].dval;
   double args2_im = stack[3].dval;
 
+Note that the values of the multi-numeric type have been stored in the multiple values in the runtime stack. The length of the value in the runtime stack is the same as the length of the fields of the multi-numeric type.
+
 =head3 Getting byte Type Argument
 
-Use the C<bval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<byte> type from an argument, 
+Use the C<bval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of the SPVM C<byte> type from an argument.
 
   int8_t args0 = stack[0].bval;
 
 =head3 Getting short Type Argument
 
-Use the C<sval> field to get the short argument of SPVM, 
+Use the C<sval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of the SPVM C<short> type from an argument.
 
   int16_t args0 = stack[0].sval;
 
 =head3 Getting int Type Argument
 
-Use the C<ival> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<int> type from an argument, 
+Use the C<ival> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of the SPVM C<int> type from an argument.
 
   int32_t args0 = stack[0].ival;
 
 =head3 Getting long Type Argument
 
-Use the C<lval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<long> type from an argument, 
+Use the C<lval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of the SPVM C<long> type from an argument.
 
   int64_t args0 = stack[0].lval;
 
 =head3 Getting float Type Argument
 
-Use the C<fval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<float> type from an argument.
+Use the C<fval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of the SPVM C<float> type from an argument.
 
   float args0 = stack[0].fval;
 
 =head3 Getting double Type Argument
 
-Use the C<dval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of the SPVM C<double> type from an argument, 
+Use the C<dval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of the SPVM C<double> type from an argument.
 
   double args0 = stack[0].dval;
 
 =head3 Getting Object Type Argument
 
-Use the C<oval> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of an SPVM object type from an argument, 
+Use the C<oval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of an SPVM object type from an argument.
 
   void* args0 = stack[0].oval;
 
 =head3 Getting byte Reference Type Argument
 
-Use the C<bref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<byte> reference type from an argument, 
+Use the C<bref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<byte> reference type from an argument.
 
   int8_t* args0 = stack[0].bref;
 
 =head3 Getting short Reference Type Argument
 
-Use the C<sref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<short> reference type from an argument, 
+Use the C<sref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<short> reference type from an argument.
 
   int16_t* args0 = stack[0].sref;
 
 =head3 Getting int Reference Type Argument
 
-Use the C<iref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<int> reference type from an argument, 
+Use the C<iref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<int> reference type from an argument.
 
   int32_t* args0 = stack[0].iref;
 
 =head3 Getting long Reference Type Argument
 
-Use the C<lref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<long> reference type from an argument, 
+Use the C<lref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<long> reference type from an argument.
 
   int64_t* args0 = stack[0].lref;
 
 =head3 Getting float Reference Type Argument
 
-Use the C<fref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type to get the value of a SPVM C<float> reference type from an argument, 
+Use the C<fref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<float> reference type from an argument.
 
   float* args0 = stack[0].fref;
 
 =head3 Getting double Reference Type Argument
 
-To get the value of an SPVM C<double> reference type from an argument, use C<dref> field of the L<SPVM_VALUE/"SPVM_VALUE type"> type.
+Use the C<dref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of an SPVM C<double> reference type from an argument.
 
   double* args0 = stack[0].dref;
 
 =head3 Getting Multi-Numeric Type Arguments
 
-The values of an SPVM multi-numeric type from an argument are assigned multiple fields of the L<SPVM_VALUE/"SPVM_VALUE type"> type, which length is the same as the length of the fields of the SPVM multi-numeric type.
+The values of an SPVM multi-numeric type from an argument have been stored to the multiple values in the L<runtime stack|/"Runtime Stack">. the length of the values in the runtime stack is the same as the length of the fields of the SPVM multi-numeric type.
 
-For example, if the argument type is the L<Complex_2d|SPVM::Complex_2d> type, these values are assinged to multiple fields of the L<SPVM_VALUE/"SPVM_VALUE type"> type.
+For example, if the argument type is the L<Complex_2d|SPVM::Complex_2d> type, these values have been stored to multiple fields the multiple values in the runtime stack.
 
   double args0_re = stack[0].dval;
   double args0_im = stack[1].dval;
 
 =head2 Return Value
 
-A return value of a SPVM method can be set to the first argument of the L<runtime stack|Runtime Stack>.
-  
+If the reutrn type of a SPVM method is not the C<void> type, a return value must be set to the first argument of the L<runtime stack|/"Runtime Stack"> .
+
   int32_t return_value = 5;
   
   stack[0].ival = return_value;
@@ -349,13 +347,13 @@ Use the C<dval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a retu
 
 =head3 Setting Return Value of Object Type
 
-Use the C<oval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value which type of SPVM is object.
+Use the C<oval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a return value of an SPVM object type.
 
   stack[0].oval = return_value;
 
 =head3 Setting Return Value of Multi-Numeric Type
 
-Return value of the multi-numeric type are needed to be set to multiple fields of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type, which length is the same as the fields of the multi-numeric type.
+Return value of the multi-numeric type are needed to be set to the multiple values in the L<runtime stack|/"Runtime Stack">. the length of the values in the runtime stack is the same as the length of the fields of the SPVM multi-numeric type.
 
 There is an example in the case that the return type is the L<Complex_2d|SPVM::Complex_2d>.
 
@@ -368,7 +366,7 @@ There is an example in the case that the return type is the L<Complex_2d|SPVM::C
 
 L<Native APIs|SPVM::Document::NativeAPI> are the APIs written by the C language for SPVM operations. Native APIs can be called in native classes. 
 
-=head2 Examples of Native APIs:
+=head3 Examples of Native APIs
 
 Create a Point object.
   
@@ -400,13 +398,13 @@ Get the elements of an array of the int type.
 
 =head2 Exception
 
-If a native method throws an exception, a message is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> and the native function must return a non-zero value, normally the basic type ID of an error class.
+If a native method throws an exception, the native function must return a non-zero value, normally the basic type ID of an error class.
+
+A message can be set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">. If no message is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">, a default exception message is set to it.
 
   env->set_exception(env, stack, env->new_string_nolen(env, stack, "An exception is thrown."));
   
   return SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-
-If no message is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">, a default exception message is set to it.
 
 The L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an exception easily.
 
@@ -485,7 +483,7 @@ The L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API is called 
 
 The L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API is called after the call of the native function.
 
-You can create a scope and push objects to the the L<mortal stack/"Mortal Stack">.
+You can create a scope and push objects to the the L<mortal stack|/"Mortal Stack">.
 
   int32_t mortal_stack_top = env->enter_scope(env, stack);
   
@@ -495,9 +493,9 @@ You can create a scope and push objects to the the L<mortal stack/"Mortal Stack"
 
 =head3 Mortal Stack
 
-A mortal stack is created for a L<runtime stack/"Runtime Stack">.
+A mortal stack is created for a L<runtime stack|/"Runtime Stack">.
 
-A mortal stack is the stack to push local variables to destroy at the end of the scope.
+A mortal stack is the stack to save local variables to be destroyed at the end of the scope.
 
 =head2 Runtime Environment
 
@@ -515,7 +513,7 @@ A runtime environement is given to the first argument of a native function.
 
 =head2 Runtime Stack
 
-A runtime stack is created for a native thread.
+A runtime stack is created for a native thread. A SPVM runtime creates a runtime stack for the main thread.
 
 A runtime stack is used to get values of arguments and return a value, and it also stored its own data such as the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 
@@ -533,7 +531,9 @@ A runtime stack can be created and freed using the L<new_stack|SPVM::Document::N
 
 =head2 Arguments Width
 
-The width of the arguments is the length in units of the L<SPVM_VALUE|SPVM::Document::NativeClass/"Runtime Stack"> type.
+The width of the arguments is the length in units of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type.
+
+If the type is a multi-numeric type, the width of the arguments is the length of the fields of the multi-numeric type, otherwise it is 1.
 
 Consider the following method definition.
 
@@ -541,9 +541,9 @@ Consider the following method definition.
 
 The argument width of the C<int> type is 1.
 
-The argument width of an object type is 1.
+The argument width of the object type L<Point|SPVM::Point> is 1.
 
-The argument width of the multi-numeric type is the length of its field. It is 2 in this example.
+The argument width of the multi-numeric type L<Complex_2d|SPVM::Complex_2d> is the length of its field. It is 2.
 
 So the width of the arguments is totally 4. 
 
@@ -569,7 +569,7 @@ A string of non-zero length must be set to the L<SPVM_BUILD_DIR|SPVM::Document::
 
 =head1 Resource
 
-A native class uses native headers and native source files writen by native langauges such as the C language and C++ using the L<use_resource|SPVM::Builder::Config/"use_resource"> method in SPVM::Builder::Config class.
+A native class can use native headers and native source files writen by native langauges such as the C language and C++ using the L<use_resource|SPVM::Builder::Config/"use_resource"> method in SPVM::Builder::Config class.
 
   # MyClass.config
   $config->use_resource("Resource::Zlib");
@@ -589,7 +589,7 @@ A distribution for a native class can be generated by the L<spvmdist> command.
   # C++
   spvmdist --native c++ --user-name="Yuki Kimoto" --user-email="kimoto.yuki@gmail.com" MyNativeClass
 
-Only a native class file and a config file can be added to an existing distribution.
+A native class file and a config file only can be added to an existing distribution.
 
   # C
   spvmdist --only-lib-files --native c --user-name="Yuki Kimoto" --user-email="kimoto.yuki@gmail.com" MyNativeClass lib
