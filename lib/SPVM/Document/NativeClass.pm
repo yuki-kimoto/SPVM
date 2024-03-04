@@ -626,7 +626,7 @@ If 1 is set to the L<force|SPVM::Builder::Config/"force"> field in the C<SPVM::B
 
 =head1 Resource
 
-A native class can use native headers and native source files writen by native langauges such as the C language and C++ using the L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Builder::Config class.
+A native class can use native header files and native source files writen by native langauges such as the C language and C++ using the L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Builder::Config class.
 
   # MyClass.config
   $config->use_resource("Resource::Zlib");
