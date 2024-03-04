@@ -251,7 +251,7 @@ sub bind_to_perl {
     eval $code;
     
     if (my $error = $@) {
-      confess $error;
+      confess($error);
     }
     
     my $methods_length = $basic_type->get_methods_length;
@@ -288,7 +288,7 @@ sub bind_to_perl {
           eval { $return_value = SPVM::api()->call_method($class_name_string, $method_name_string, @_) };
           my $error = $@;
           if ($error) {
-            confess $error;
+            confess($error);
           }
           $return_value;
         };

@@ -14,7 +14,7 @@ sub __api {
   }
 }
 
-sub __get_type_name { my $ret; eval { $ret =  shift->_xs___get_type_name(@_) }; if ($@) { confess $@ } $ret; }
+sub __get_type_name { my $ret; eval { $ret =  shift->_xs___get_type_name(@_) }; if ($@) { confess($@) } $ret; }
 
 1;
 

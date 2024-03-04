@@ -18,9 +18,9 @@ use overload fallback => 1;
 
 use SPVM::ExchangeAPI;
 
-sub length { my $ret; eval { $ret =  shift->_xs_length(@_) }; if ($@) { confess $@ } $ret; }
+sub length { my $ret; eval { $ret =  shift->_xs_length(@_) }; if ($@) { confess($@) } $ret; }
 
-sub to_elems { my $ret; eval { $ret =  shift->_xs_to_elems(@_) }; if ($@) { confess $@ } $ret; }
+sub to_elems { my $ret; eval { $ret =  shift->_xs_to_elems(@_) }; if ($@) { confess($@) } $ret; }
 
 sub to_strings {
   my $self = shift;
@@ -42,11 +42,11 @@ sub to_bins {
   return $binaries;
 }
 
-sub to_bin { my $ret; eval { $ret =  shift->_xs_to_bin(@_) }; if ($@) { confess $@ } $ret; }
+sub to_bin { my $ret; eval { $ret =  shift->_xs_to_bin(@_) }; if ($@) { confess($@) } $ret; }
 
-sub set { my $ret; eval { $ret =  shift->_xs_set(@_) }; if ($@) { confess $@ } $ret; }
+sub set { my $ret; eval { $ret =  shift->_xs_set(@_) }; if ($@) { confess($@) } $ret; }
 
-sub get { my $ret; eval { $ret =  shift->_xs_get(@_) }; if ($@) { confess $@ } $ret; }
+sub get { my $ret; eval { $ret =  shift->_xs_get(@_) }; if ($@) { confess($@) } $ret; }
 
 1;
 

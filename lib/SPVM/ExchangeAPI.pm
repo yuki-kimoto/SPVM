@@ -69,16 +69,16 @@ sub new_object_array {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the class name could not be extracted";
+    confess("The type name \$type_name was parsed, but the class name could not be extracted");
   }
   
   unless ($type_dimension == 1) {
-    confess "The dimension of the type \$type_name must be 1";
+    confess("The dimension of the type \$type_name must be 1");
   }
   
   my $ret;
   eval { $ret = $self->_xs_new_object_array($basic_type_name, $array) };
-  if ($@) { confess $@ }
+  if ($@) { confess($@) }
   
   return $ret;
 }
@@ -89,16 +89,16 @@ sub new_object_array_len {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the class name could not be extracted";
+    confess("The type name \$type_name was parsed, but the class name could not be extracted");
   }
   
   unless ($type_dimension == 1) {
-    confess "The dimension of the type \$type_name must be 1";
+    confess("The dimension of the type \$type_name must be 1");
   }
   
   my $ret;
   eval { $ret = $self->_xs_new_object_array_len($basic_type_name, $length) };
-  if ($@) { confess $@ }
+  if ($@) { confess($@) }
   
   return $ret;
 }
@@ -125,7 +125,7 @@ sub new_options {
   my ($self, $options) = @_;
   
   unless (ref $options eq 'HASH') {
-    confess "\$options must be a hash reference";
+    confess("\$options must be a hash reference");
   }
   
   my $array_ref = [];
@@ -134,7 +134,7 @@ sub new_options {
     my $value = $options->{$name};
     if (defined $value) {
       unless (blessed $value && $value->isa('SPVM::BlessedObject')) {
-        confess "The value of \$options must be an SPVM::BlessedObject object";
+        confess("The value of \$options must be an SPVM::BlessedObject object");
       }
     }
     push @$array_ref, $obj_name, $value;
@@ -151,16 +151,16 @@ sub new_mulnum_array {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the class name could not be extracted";
+    confess("The type name \$type_name was parsed, but the class name could not be extracted");
   }
   
   unless ($type_dimension == 1) {
-    confess "The dimension of the type \$type_name must be 1";
+    confess("The dimension of the type \$type_name must be 1");
   }
   
   my $ret;
   eval { $ret = $self->_xs_new_mulnum_array($basic_type_name, $array) };
-  if ($@) { confess $@ }
+  if ($@) { confess($@) }
   
   return $ret;
 }
@@ -171,16 +171,16 @@ sub new_mulnum_array_len {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the class name could not be extracted";
+    confess("The type name \$type_name was parsed, but the class name could not be extracted");
   }
   
   unless ($type_dimension == 1) {
-    confess "The dimension of the type \$type_name must be 1";
+    confess("The dimension of the type \$type_name must be 1");
   }
   
   my $ret;
   eval { $ret = $self->_xs_new_mulnum_array_len($basic_type_name, $length) };
-  if ($@) { confess $@ }
+  if ($@) { confess($@) }
   
   return $ret;
 }
@@ -191,15 +191,15 @@ sub new_mulnum_array_from_bin {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the class name could not be extracted";
+    confess("The type name \$type_name was parsed, but the class name could not be extracted");
   }
   
   unless ($type_dimension == 1) {
-    confess "The dimension of the type \$type_name must be 1";
+    confess("The dimension of the type \$type_name must be 1");
   }
   my $ret;
   eval { $ret = $self->_xs_new_mulnum_array_from_bin($basic_type_name, $binary) };
-  if ($@) { confess $@ }
+  if ($@) { confess($@) }
   
   return $ret;
 }
@@ -210,16 +210,16 @@ sub new_muldim_array {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the class name could not be extracted";
+    confess("The type name \$type_name was parsed, but the class name could not be extracted");
   }
   
   unless ($type_dimension >= 2 && $type_dimension <= 255) {
-    confess "The dimension of the type \$type_name must be greater than or equal to 2 and less than or equal to 255";
+    confess("The dimension of the type \$type_name must be greater than or equal to 2 and less than or equal to 255");
   }
   
   my $ret;
   eval { $ret = $self->_xs_new_muldim_array($basic_type_name, $type_dimension, $array) };
-  if ($@) { confess $@ }
+  if ($@) { confess($@) }
   
   return $ret;
 }
@@ -230,16 +230,16 @@ sub new_muldim_array_len {
   my ($basic_type_name, $type_dimension) = $self->_parse_type_name($type_name);
   
   unless (defined $basic_type_name) {
-    confess "The type name \$type_name was parsed, but the class name could not be extracted";
+    confess("The type name \$type_name was parsed, but the class name could not be extracted");
   }
   
   unless ($type_dimension >= 2 && $type_dimension <= 255) {
-    confess "The dimension of the type \$type_name must be greater than or equal to 2 and less than or equal to 255";
+    confess("The dimension of the type \$type_name must be greater than or equal to 2 and less than or equal to 255");
   }
   
   my $ret;
   eval { $ret = $self->_xs_new_muldim_array_len($basic_type_name, $type_dimension, $length) };
-  if ($@) { confess $@ }
+  if ($@) { confess($@) }
   
   return $ret;
 }
@@ -262,37 +262,37 @@ sub new_error {
 
 # other functions is implemented in SPVM.xs
 
-sub new_string { my $ret; eval { $ret =  &_xs_new_string(@_) }; if ($@) { confess $@ } $ret}
-sub new_address_object { my $ret; eval { $ret =  &_xs_new_address_object(@_) }; if ($@) { confess $@ } $ret}
-sub new_byte_array { my $ret; eval { $ret =  &_xs_new_byte_array(@_) }; if ($@) { confess $@ } $ret}
-sub new_byte_array_unsigned { my $ret; eval { $ret =  &_xs_new_byte_array_unsigned(@_) }; if ($@) { confess $@ } $ret}
-sub new_byte_array_len { my $ret; eval { $ret =  &_xs_new_byte_array_len(@_) }; if ($@) { confess $@ } $ret}
-sub new_byte_array_from_bin { my $ret; eval { $ret =  &_xs_new_byte_array_from_bin(@_) }; if ($@) { confess $@ } $ret}
-sub new_short_array { my $ret; eval { $ret =  &_xs_new_short_array(@_) }; if ($@) { confess $@ } $ret}
-sub new_short_array_unsigned { my $ret; eval { $ret =  &_xs_new_short_array_unsigned(@_) }; if ($@) { confess $@ } $ret}
-sub new_short_array_len { my $ret; eval { $ret =  &_xs_new_short_array_len(@_) }; if ($@) { confess $@ } $ret}
-sub new_short_array_from_bin { my $ret; eval { $ret =  &_xs_new_short_array_from_bin(@_) }; if ($@) { confess $@ } $ret}
-sub new_int_array { my $ret; eval { $ret =  &_xs_new_int_array(@_) }; if ($@) { confess $@ } $ret}
-sub new_int_array_unsigned { my $ret; eval { $ret =  &_xs_new_int_array_unsigned(@_) }; if ($@) { confess $@ } $ret}
-sub new_int_array_len { my $ret; eval { $ret =  &_xs_new_int_array_len(@_) }; if ($@) { confess $@ } $ret}
-sub new_int_array_from_bin { my $ret; eval { $ret =  &_xs_new_int_array_from_bin(@_) }; if ($@) { confess $@ } $ret}
-sub new_long_array { my $ret; eval { $ret =  &_xs_new_long_array(@_) }; if ($@) { confess $@ } $ret}
-sub new_long_array_unsigned { my $ret; eval { $ret =  &_xs_new_long_array_unsigned(@_) }; if ($@) { confess $@ } $ret}
-sub new_long_array_len { my $ret; eval { $ret =  &_xs_new_long_array_len(@_) }; if ($@) { confess $@ } $ret}
-sub new_long_array_from_bin { my $ret; eval { $ret =  &_xs_new_long_array_from_bin(@_) }; if ($@) { confess $@ } $ret}
-sub new_double_array { my $ret; eval { $ret =  &_xs_new_double_array(@_) }; if ($@) { confess $@ } $ret}
-sub new_double_array_len { my $ret; eval { $ret =  &_xs_new_double_array_len(@_) }; if ($@) { confess $@ } $ret}
-sub new_double_array_from_bin { my $ret; eval { $ret =  &_xs_new_double_array_from_bin(@_) }; if ($@) { confess $@ } $ret}
-sub new_float_array { my $ret; eval { $ret =  &_xs_new_float_array(@_) }; if ($@) { confess $@ } $ret}
-sub new_float_array_len { my $ret; eval { $ret =  &_xs_new_float_array_len(@_) }; if ($@) { confess $@ } $ret}
-sub new_float_array_from_bin { my $ret; eval { $ret =  &_xs_new_float_array_from_bin(@_) }; if ($@) { confess $@ } $ret}
-sub new_string_array { my $ret; eval { $ret =  &_xs_new_string_array(@_) }; if ($@) { confess $@ } $ret}
-sub new_string_array_len { my $ret; eval { $ret =  &_xs_new_string_array_len(@_) }; if ($@) { confess $@ } $ret}
-sub dump { my $ret; eval { $ret =  &_xs_dump(@_) }; if ($@) { confess $@ } $ret}
-sub get_exception { my $ret; eval { $ret =  &_xs_get_exception(@_) }; if ($@) { confess $@ } $ret}
-sub set_exception { my $ret; eval { $ret =  &_xs_set_exception(@_) }; if ($@) { confess $@ } $ret}
-sub get_memory_blocks_count { my $ret; eval { $ret =  &_xs_get_memory_blocks_count(@_) }; if ($@) { confess $@ } $ret}
-sub call_method { my $ret; eval { $ret =  &_xs_call_method(@_) }; if ($@) { confess $@ } $ret}
+sub new_string { my $ret; eval { $ret =  &_xs_new_string(@_) }; if ($@) { confess($@) } $ret}
+sub new_address_object { my $ret; eval { $ret =  &_xs_new_address_object(@_) }; if ($@) { confess($@) } $ret}
+sub new_byte_array { my $ret; eval { $ret =  &_xs_new_byte_array(@_) }; if ($@) { confess($@) } $ret}
+sub new_byte_array_unsigned { my $ret; eval { $ret =  &_xs_new_byte_array_unsigned(@_) }; if ($@) { confess($@) } $ret}
+sub new_byte_array_len { my $ret; eval { $ret =  &_xs_new_byte_array_len(@_) }; if ($@) { confess($@) } $ret}
+sub new_byte_array_from_bin { my $ret; eval { $ret =  &_xs_new_byte_array_from_bin(@_) }; if ($@) { confess($@) } $ret}
+sub new_short_array { my $ret; eval { $ret =  &_xs_new_short_array(@_) }; if ($@) { confess($@) } $ret}
+sub new_short_array_unsigned { my $ret; eval { $ret =  &_xs_new_short_array_unsigned(@_) }; if ($@) { confess($@) } $ret}
+sub new_short_array_len { my $ret; eval { $ret =  &_xs_new_short_array_len(@_) }; if ($@) { confess($@) } $ret}
+sub new_short_array_from_bin { my $ret; eval { $ret =  &_xs_new_short_array_from_bin(@_) }; if ($@) { confess($@) } $ret}
+sub new_int_array { my $ret; eval { $ret =  &_xs_new_int_array(@_) }; if ($@) { confess($@) } $ret}
+sub new_int_array_unsigned { my $ret; eval { $ret =  &_xs_new_int_array_unsigned(@_) }; if ($@) { confess($@) } $ret}
+sub new_int_array_len { my $ret; eval { $ret =  &_xs_new_int_array_len(@_) }; if ($@) { confess($@) } $ret}
+sub new_int_array_from_bin { my $ret; eval { $ret =  &_xs_new_int_array_from_bin(@_) }; if ($@) { confess($@) } $ret}
+sub new_long_array { my $ret; eval { $ret =  &_xs_new_long_array(@_) }; if ($@) { confess($@) } $ret}
+sub new_long_array_unsigned { my $ret; eval { $ret =  &_xs_new_long_array_unsigned(@_) }; if ($@) { confess($@) } $ret}
+sub new_long_array_len { my $ret; eval { $ret =  &_xs_new_long_array_len(@_) }; if ($@) { confess($@) } $ret}
+sub new_long_array_from_bin { my $ret; eval { $ret =  &_xs_new_long_array_from_bin(@_) }; if ($@) { confess($@) } $ret}
+sub new_double_array { my $ret; eval { $ret =  &_xs_new_double_array(@_) }; if ($@) { confess($@) } $ret}
+sub new_double_array_len { my $ret; eval { $ret =  &_xs_new_double_array_len(@_) }; if ($@) { confess($@) } $ret}
+sub new_double_array_from_bin { my $ret; eval { $ret =  &_xs_new_double_array_from_bin(@_) }; if ($@) { confess($@) } $ret}
+sub new_float_array { my $ret; eval { $ret =  &_xs_new_float_array(@_) }; if ($@) { confess($@) } $ret}
+sub new_float_array_len { my $ret; eval { $ret =  &_xs_new_float_array_len(@_) }; if ($@) { confess($@) } $ret}
+sub new_float_array_from_bin { my $ret; eval { $ret =  &_xs_new_float_array_from_bin(@_) }; if ($@) { confess($@) } $ret}
+sub new_string_array { my $ret; eval { $ret =  &_xs_new_string_array(@_) }; if ($@) { confess($@) } $ret}
+sub new_string_array_len { my $ret; eval { $ret =  &_xs_new_string_array_len(@_) }; if ($@) { confess($@) } $ret}
+sub dump { my $ret; eval { $ret =  &_xs_dump(@_) }; if ($@) { confess($@) } $ret}
+sub get_exception { my $ret; eval { $ret =  &_xs_get_exception(@_) }; if ($@) { confess($@) } $ret}
+sub set_exception { my $ret; eval { $ret =  &_xs_set_exception(@_) }; if ($@) { confess($@) } $ret}
+sub get_memory_blocks_count { my $ret; eval { $ret =  &_xs_get_memory_blocks_count(@_) }; if ($@) { confess($@) } $ret}
+sub call_method { my $ret; eval { $ret =  &_xs_call_method(@_) }; if ($@) { confess($@) } $ret}
 
 1;
 

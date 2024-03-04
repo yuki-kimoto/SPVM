@@ -24,7 +24,7 @@ sub get_spvm_version_header_file {
   my $spvm_version_header_file = "$builder_dir/include/spvm_version.h";
   
   unless (-f $spvm_version_header_file) {
-    confess "The SPVM version header file \"$spvm_version_header_file\" is not found.";
+    confess("The SPVM version header file \"$spvm_version_header_file\" is not found.");
   }
   
   return $spvm_version_header_file;
@@ -145,7 +145,7 @@ sub slurp_binary {
   my ($file) = @_;
   
   open my $fh, '<', $file
-    or confess "Can't open file \"$file\":$!";
+    or confess("Can't open file \"$file\":$!");
     
   my $content = do { local $/; <$fh> };
   
@@ -179,13 +179,13 @@ sub spurt_binary {
   my ($file, $content) = @_;
   
   unless (defined $file) {
-    confess "A file must be defined.";
+    confess("A file must be defined.");
   }
   
   mkpath dirname $file;
   
   open my $fh, '>:raw', $file
-    or confess "Can't open file \"$file\":$!";
+    or confess("Can't open file \"$file\":$!");
     
   print $fh $content;
 }
@@ -534,7 +534,7 @@ sub get_version_string {
   }
 
   unless (defined $version_string) {
-    confess "The version string can't be find in $spvm_class_file file";
+    confess("The version string can't be find in $spvm_class_file file");
   }
   
   return $version_string;
@@ -555,7 +555,7 @@ sub get_spvm_version_string {
   }
   
   unless (defined $version_string) {
-    confess "The version string can't be found in \"$spvm_version_header_file\"";
+    confess("The version string can't be found in \"$spvm_version_header_file\"");
   }
   
   return $version_string;
@@ -645,16 +645,16 @@ int32_t $cfunc_name(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 $dl_error
 EOS
-            confess $error;
+            confess($error);
           }
         }
         else {
           my $dl_error = DynaLoader::dl_error();
-          confess "The DynaLoader::dl_load_file function failed:Can't load the \"$dynamic_lib_file\" file for $category methods in $class_name class: $dl_error";
+          confess("The DynaLoader::dl_load_file function failed:Can't load the \"$dynamic_lib_file\" file for $category methods in $class_name class: $dl_error");
         }
       }
       else {
-        confess "DLL file is not specified";
+        confess("DLL file is not specified");
       }
       
       $method_addresses->{$method_name} = $cfunc_address;

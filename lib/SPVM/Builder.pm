@@ -153,7 +153,7 @@ sub build {
     unless (defined $config_file) {
       my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
       
-      confess "A config file \"$config_rel_file\" is not found in (@INC)";
+      confess("A config file \"$config_rel_file\" is not found in (@INC)");
     }
     
     $config = SPVM::Builder::Config->load_config($config_file);
@@ -177,13 +177,13 @@ sub build {
   }
   
   unless (defined $build_dir) {
-    confess "A build directory must be defined. Perhaps the SPVM_BUILD_DIR environment variable is not set.";
+    confess("A build directory must be defined. Perhaps the SPVM_BUILD_DIR environment variable is not set.");
   }
   
   mkpath $build_dir;
   
   unless (-d $build_dir) {
-    confess "[Unexpected Error]A build directory must exists.";
+    confess("[Unexpected Error]A build directory must exists.");
   }
   
   my $cc = SPVM::Builder::CC->new(%$cc_options);

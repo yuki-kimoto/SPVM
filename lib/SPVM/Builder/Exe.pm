@@ -155,7 +155,7 @@ sub new {
   # Target class name
   my $class_name = $self->{class_name};
   unless (defined $class_name) {
-    confess "A class name not specified";
+    confess("A class name not specified");
   }
   
   # Excutable file name
@@ -204,13 +204,13 @@ sub new {
     else {
       unless (defined $config_file) {
         my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name, 'config');
-        confess "A config file \"$config_rel_file\" is not found in (@INC).";
+        confess("A config file \"$config_rel_file\" is not found in (@INC).");
       }
     }
   }
   
   unless ($config->output_type eq 'exe') {
-    confess "Config file \"$config_file\" is not the config to create the executable file";
+    confess("Config file \"$config_file\" is not the config to create the executable file");
   }
   
   $config->class_name($class_name);
@@ -320,7 +320,7 @@ sub get_required_resources {
           $class_file =~ s/\.config$/\.spvm/;
         }
         else {
-          confess "The class file \"$class_file\" is not found";
+          confess("The class file \"$class_file\" is not found");
         }
       }
       
@@ -922,7 +922,7 @@ sub compile_bootstrap_source_file {
   
   my $config = $config_exe->config_bootstrap;
   unless ($config) {
-    confess "The config_bootstrap field in the SPVM::Builder::Config class must be defined";
+    confess("The config_bootstrap field in the SPVM::Builder::Config class must be defined");
   }
   
   # Compile
@@ -958,7 +958,7 @@ sub compile_spvm_core_source_files {
   # Config
   my $config = $config_exe->config_spvm_core;
   unless ($config) {
-    confess "The config_spvm_core field in the SPVM::Builder::Config class must be defined";
+    confess("The config_spvm_core field in the SPVM::Builder::Config class must be defined");
   }
   
   # Compile source files

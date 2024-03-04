@@ -451,7 +451,7 @@ sub new {
   
   my $file = $self->file;
   if (!$file_optional && !defined $file) {
-    confess "The \"file\" field must be defined";
+    confess("The \"file\" field must be defined");
   }
   
   # cc
@@ -820,16 +820,16 @@ sub load_config {
   my ($self, $config_file, @args) = @_;
 
   unless (-f $config_file) {
-    confess "The config file \"$config_file\" must exist";
+    confess("The config file \"$config_file\" must exist");
   }
   local @ARGV = @args;
   my $config = do File::Spec->rel2abs($config_file);
   if ($@) {
-    confess "The config file \"$config_file\" can't be parsed: $@";
+    confess("The config file \"$config_file\" can't be parsed: $@");
   }
   
   unless (defined $config && $config->isa('SPVM::Builder::Config')) {
-    confess "The config file must be an SPVM::Builder::Config object";
+    confess("The config file must be an SPVM::Builder::Config object");
   }
   
   push @{$config->get_loaded_config_files}, $config_file;
@@ -847,7 +847,7 @@ sub load_mode_config {
   $mode_config_file .= ".config";
   
   unless (-f $mode_config_file) {
-    confess "Can't find the config file \"$mode_config_file\"";
+    confess("Can't find the config file \"$mode_config_file\"");
   }
   
   my $config = $self->load_config($mode_config_file, @argv);
@@ -902,7 +902,7 @@ sub use_resource {
   unless (defined $config_file) {
     my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($resource_class_name, 'config');
     
-    confess "A config file \"$config_rel_file\" is not found in (@INC)";
+    confess("A config file \"$config_rel_file\" is not found in (@INC)");
   }
   
   my $config = $self->load_config($config_file, @$resource_argv);

@@ -75,7 +75,7 @@ sub new {
   my $config = $self->config;
   
   unless ($config) {
-    confess "The \"config\" field must be defined.";
+    confess("The \"config\" field must be defined.");
   }
   
   unless (defined $self->is_static) {

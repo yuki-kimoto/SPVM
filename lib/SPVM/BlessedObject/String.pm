@@ -19,13 +19,13 @@ sub to_string {
   my $success = utf8::decode($string);
   
   unless ($success) {
-    confess "The SPVM::BlessedObject::String object cannnot be decoded to Perl string";
+    confess("The SPVM::BlessedObject::String object cannnot be decoded to Perl string");
   }
   
   return $string;
 }
 
-sub to_bin { my $ret; eval { $ret =  shift->_xs_to_bin(@_) }; if ($@) { confess $@ } $ret; }
+sub to_bin { my $ret; eval { $ret =  shift->_xs_to_bin(@_) }; if ($@) { confess($@) } $ret; }
 
 1;
 

@@ -48,7 +48,7 @@ sub compile_not_ok {
     
     mkpath dirname $class_file;
     open my $class_fh, '>', $class_file
-      or confess "Can't open file \"$class_file\":$!";
+      or confess("Can't open file \"$class_file\":$!");
     
     binmode $class_fh;
     
@@ -141,7 +141,7 @@ sub compile_ok {
     
     mkpath dirname $class_file;
     open my $class_fh, '>', $class_file
-      or confess "Can't open file \"$class_file\":$!";
+      or confess("Can't open file \"$class_file\":$!");
     
     binmode $class_fh;
     

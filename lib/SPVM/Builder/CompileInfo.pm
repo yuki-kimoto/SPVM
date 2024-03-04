@@ -62,7 +62,7 @@ sub new {
   my $config = $self->config;
   
   unless ($config) {
-    confess "The \"config\" field must be defined.";
+    confess("The \"config\" field must be defined.");
   }
   
   my $after_create_compile_info_cbs = $config->after_create_compile_info_cbs;

@@ -221,7 +221,7 @@ sub compile_source_file {
         $message = "[Compile a native source file for the \"$config_class_name\" class using the config file \"$config_file\"]";
       }
       else {
-        confess "[Unexpected Error]Invalid compile info category.";
+        confess("[Unexpected Error]Invalid compile info category.");
       }
     }
     
@@ -247,18 +247,18 @@ sub compile_source_file {
   }
   
   $cbuilder->do_system(@$cc_cmd)
-    or confess "$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n";
+    or confess("$source_file file cannnot be compiled by the following command:\n@$cc_cmd\n");
 }
 
 sub compile_class {
   my ($self, $class_name, $options) = @_;
   
   unless (defined $class_name) {
-    confess "A class name must be defined.";
+    confess("A class name must be defined.");
   }
   
   if (ref $class_name) {
-    confess "[Unexpected Error]A class name must be non-reference.";
+    confess("[Unexpected Error]A class name must be non-reference.");
   }
   
   $options ||= {};
@@ -266,11 +266,11 @@ sub compile_class {
   my $build_dir = $self->build_dir;
   
   unless (defined $build_dir) {
-    confess "[Unexpected Error]A build directory must be defined.";
+    confess("[Unexpected Error]A build directory must be defined.");
   }
   
   unless (-d $build_dir) {
-    confess "[Unexpected Error]A build directory must exists.";
+    confess("[Unexpected Error]A build directory must exists.");
   }
   
   # Config
@@ -317,7 +317,7 @@ sub compile_class {
     $class_file = "$config_file_dirname/$config_file_basename.spvm";
     
     unless (-f $class_file) {
-      confess "The resource \"$class_name\" must have its SPVM class file \"$class_file\".";
+      confess("The resource \"$class_name\" must have its SPVM class file \"$class_file\".");
     }
   }
   else {
@@ -346,7 +346,7 @@ sub compile_class {
   }
   
   unless (defined $class_file) {
-    confess "[Unexpected Error]The class file is not defined.";
+    confess("[Unexpected Error]The class file is not defined.");
   }
   
   # Check if a config file and an SPVM class file are in the same directory.
@@ -362,7 +362,7 @@ sub compile_class {
     my $class_file_cannonpath_without_ext_quotemeta = quotemeta $class_file_cannonpath_without_ext;
     
     unless ($config_file_abs =~ /^$class_file_cannonpath_without_ext_quotemeta\./) {
-      confess "The config file \"$config_file_abs\" is not compatible with the SPVM file \"$class_file_cannonpath\".";
+      confess("The config file \"$config_file_abs\" is not compatible with the SPVM file \"$class_file_cannonpath\".");
     }
   }
   
@@ -434,7 +434,7 @@ sub compile_class {
       
       unless (-f $native_class_source_file) {
         unless ($config->isa('SPVM::Builder::Config::Exe')) {
-          confess "Can't find source file $native_class_source_file";
+          confess("Can't find source file $native_class_source_file");
         }
       }
     }
@@ -598,7 +598,7 @@ sub _runtime_build_precompile_class_source {
     $precompile_source = $runtime->build_precompile_class_source($basic_type)->to_string;
   }
   else {
-    confess "[Unexpected Error]Invalid object type.";
+    confess("[Unexpected Error]Invalid object type.");
   }
   
   return $precompile_source;
@@ -621,7 +621,7 @@ sub _runtime_get_class_file {
     $class_file = "$spvm_class_dir/$spvm_class_rel_file";
   }
   else {
-    confess "[Unexpected Error]Invalid object type.";
+    confess("[Unexpected Error]Invalid object type.");
   }
   
   return $class_file;
@@ -645,7 +645,7 @@ sub _runtime_get_method_names {
     }
   }
   else {
-    confess "[Unexpected Error]Invalid object type.";
+    confess("[Unexpected Error]Invalid object type.");
   }
   
   return $method_names;
@@ -655,11 +655,11 @@ sub link {
   my ($self, $class_name, $object_files, $options) = @_;
   
   unless (defined $class_name) {
-    confess "A class name must be defined.";
+    confess("A class name must be defined.");
   }
   
   if (ref $class_name) {
-    confess "[Unexpected Error]A class name must be non-reference.";
+    confess("[Unexpected Error]A class name must be non-reference.");
   }
   
   unless (@$object_files) {
@@ -671,17 +671,17 @@ sub link {
   my $build_dir = $self->build_dir;
   
   unless (defined $build_dir) {
-    confess "[Unexpected Error]A build directory must be defined.";
+    confess("[Unexpected Error]A build directory must be defined.");
   }
   
   unless (-d $build_dir) {
-    confess "[Unexpected Error]A build directory must exists.";
+    confess("[Unexpected Error]A build directory must exists.");
   }
   
   my $config = $options->{config};
   
   unless ($config) {
-    confess "[Unexpected Error]A config must be defined.";
+    confess("[Unexpected Error]A config must be defined.");
   }
   
   my $category = $config->category;
@@ -779,7 +779,7 @@ sub link {
       }
       
       $cbuilder->do_system(@ar_cmd)
-        or confess "Can't execute command @ar_cmd";
+        or confess("Can't execute command @ar_cmd");
     }
     # Create an executable file
     elsif ($output_type eq 'exe') {
@@ -798,7 +798,7 @@ sub link {
       );
     }
     else {
-      confess "Unknown output_type \"$output_type\"";
+      confess("Unknown output_type \"$output_type\"");
     }
     
     if ($self->debug) {
@@ -911,7 +911,7 @@ sub create_link_info {
         $output_dir = SPVM::Builder::Util::create_build_lib_path($build_dir);
       }
       else {
-        confess "[Unexpected Error]A output directory must exists.";
+        confess("[Unexpected Error]A output directory must exists.");
       }
     }
     
