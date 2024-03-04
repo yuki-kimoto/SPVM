@@ -986,11 +986,11 @@ sub _remove_ext_from_config_file {
 
 =head1 Name
 
-SPVM::Builder::Config - Compiler and Linker Configuration for Native Classes
+SPVM::Builder::Config - Compiler and Linker Config for Native Classes
 
 =head1 Description
 
-The SPVM::Builder::Config class has methods to manipulate compiler and linker configuration for L<native classes|SPVM::Document::NativeClass>.
+The SPVM::Builder::Config class has methods to manipulate compiler and linker config for L<native classes|SPVM::Document::NativeClass>.
 
 =head1 Usage
 
@@ -1035,7 +1035,7 @@ The SPVM::Builder::Config class has methods to manipulate compiler and linker co
 
 =head1 Details
 
-See L<SPVM::Document::NativeClass> about creating native classes and those configuration.
+See L<SPVM::Document::NativeClass> about creating native classes and those config.
 
 =head1 Fields
 

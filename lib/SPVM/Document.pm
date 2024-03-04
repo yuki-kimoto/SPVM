@@ -40,7 +40,7 @@ This document contains all documents for SPVM.
 
 =item * L<Native Classes|SPVM::Document::NativeClass>
 
-=item * L<Native Class Configurations|SPVM::Builder::Config>
+=item * L<Native Class Configs|SPVM::Builder::Config>
 
 =item * L<Native APIs|SPVM::Document::NativeAPI>
 
