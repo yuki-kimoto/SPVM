@@ -479,35 +479,35 @@ SPVM/MyTm.c
 
 =head2 Scope
 
-Native method are entirely enclosed in scope.
+A native function has its scope.
 
-Objects added to the mortal stack will automatically have their reference count decremented by 1 when the native method ends. When the reference count reaches 0, it is released.
+The L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API is called before the call of the native function.
 
-Use push_mortal to add objects to the mortal stack.
+The L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API is called after the call of the native function.
 
-  env->push_mortal(env, stack, object);
-
-Native APIs that normally create an object such as "new_object" will add the automatically created object to the mortal stack so you don't need to use this.
-
-Use "enter_scope" to create a scope. The return value is the ID of that scope.
+You can create a scope and push objects to the the L<mortal stack/"Mortal Stack">.
 
   int32_t mortal_stack_top = env->enter_scope(env, stack);
-
-Use "leave_scope" to leave the scope. For the argument, it is necessary to specify the scope ID obtained in "enter_scope".
-
+  
+  env->push_mortal(env, stack, object);
+  
   env->leave_scope(env, stack, mortal_stack_top);
 
 =head3 Mortal Stack
 
-A mortal stack is created for a stack. A mortal stack is the stack to push local variables to destroy at the end of the scope.
+A mortal stack is created for a L<runtime stack/"Runtime Stack">.
+
+A mortal stack is the stack to push local variables to destroy at the end of the scope.
 
 =head2 Runtime Environment
 
-The object of the C<SPVM_ENV*> type is an runtime environement.
+A runtime environement is created for a SPVM runtime.
+
+This is the pointer to the value of the C<SPVM_ENV> type, normally named C<env>.
 
   SPVM_ENV* env;
 
-This object is passed as the first argument of a Native API.
+A runtime environement is given to the first argument of a native function.
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
@@ -515,19 +515,39 @@ This object is passed as the first argument of a Native API.
 
 =head2 Runtime Stack
 
-A runtime stack is passed to the second argument of the definition of the native method. A runtime stack is used getting arguments and return the value.
+A runtime stack is created for a native thread.
+
+A runtime stack is used to get values of arguments and return a value, and it also stored its own data such as the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
+
+This is the pointer to the values of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type, normally named C<stack>.
+
+  SPVM_VALUE* stack;
+
+A runtime stack is given to the second argument of a native function. 
 
   int32_t SPVM__MyClass__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
     
   }
 
-SPVM_VALUE is a union type of C language to store SPVM values. You can save integral value, floating point value, object value, and reference value to it.
+A runtime stack can be created and freed using the L<new_stack|SPVM::Document::NativeAPI/"new_stack"> native API and the L<free_stack|SPVM::Document::NativeAPI/"free_stack"> native API.
 
 =head2 Arguments Width
 
 The width of the arguments is the length in units of the L<SPVM_VALUE|SPVM::Document::NativeClass/"Runtime Stack"> type.
 
-=head1 Compilation and Link
+Consider the following method definition.
+
+  method foo ($args0 : int, $args1 : Point, $arg2 : Complex_2d);
+
+The argument width of the C<int> type is 1.
+
+The argument width of an object type is 1.
+
+The argument width of the multi-numeric type is the length of its field. It is 2 in this example.
+
+So the width of the arguments is totally 4. 
+
+=head2 Compilation and Link
 
 A native class and native source files are compiled to object files and are linked and a shared library is generated.
 
