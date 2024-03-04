@@ -42,7 +42,7 @@ SPVM::BlessedObject::Class - SPVM Class
 
 =head1 Description
 
-The object of the C<SPVM::BlessedObject::Class> class holds an instance of a SPVM class.
+The object of the C<SPVM::BlessedObject::Class> class holds an instance of an SPVM class.
 
 =head1 Usage
 
@@ -63,7 +63,7 @@ The object of the C<SPVM::BlessedObject::Class> class holds an instance of a SPV
   # Static instance method call
   my $ret = $blessed_object_class->SPVM::MyClass::foo(@args);
 
-Calls a SPVM instance method using L<SPVM::ExchangeAPI/"call_method"> with the arguments, and returns the return value.
+Calls an SPVM instance method using L<SPVM::ExchangeAPI/"call_method"> with the arguments, and returns the return value.
 
 The static instance method call is allowed.
 
@@ -75,7 +75,7 @@ Examples:
 
   use SPVM 'Point';
   
-  # Creates a SPVM::BlessedObject::Class object of the Point class.
+  # Creates an SPVM::BlessedObject::Class object of the Point class.
   my $point = Point->new;
   
   # Calls instance methods in the Point class.

@@ -1875,7 +1875,7 @@ C<void (*set_exception)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Env
 
 Sets I<exception> to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 
-I<exception> is a SPVM string.
+I<exception> is an SPVM string.
 
 =head2 new_stack_trace_no_mortal
 
@@ -1885,7 +1885,7 @@ Creates a new string adding a string line of a stack trace given the file I<file
 
 If its memory allocation failed, returns C<NULL>.
 
-I<exception> is a SPVM string. The return value is a SPVM string.
+I<exception> is an SPVM string. The return value is an SPVM string.
 
 This native API should not be used unless special purposes are intended. Normally, use the L</"new_stack_trace"> native API.
 

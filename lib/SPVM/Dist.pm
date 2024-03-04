@@ -1221,7 +1221,7 @@ SPVM::Dist - Generating SPVM Distrubution
 
 =head2 Description
 
-The SPVM::Dist class has methods to generate a SPVM Distrubution.
+The SPVM::Dist class has methods to generate an SPVM Distrubution.
 
 =head2 Usage
 

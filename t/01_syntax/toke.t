@@ -643,7 +643,7 @@ use Test::More;
 {
   {
     my $source = "class MyClass { \x01 }";
-    compile_not_ok($source, q|If a character in a SPVM source code is ASCII, it must be ASCII printable or space.|);
+    compile_not_ok($source, q|If a character in an SPVM source code is ASCII, it must be ASCII printable or space.|);
   }
 }
 

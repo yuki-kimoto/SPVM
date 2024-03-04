@@ -24,7 +24,7 @@ SPVM::BlessedObject - SPVM object
 
 =head1 Description
 
-The object of the C<SPVM::BlessedObject> class holds a SPVM object.
+The object of the C<SPVM::BlessedObject> class holds an SPVM object.
 
 =head1 Instance Methods
 

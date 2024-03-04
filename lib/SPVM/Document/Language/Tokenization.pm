@@ -20,7 +20,7 @@ Compilation Errors:
 
 The charactor encoding of SPVM source codes must be UTF-8. Otherwise a compilation error occurs.
 
-If a character in a SPVM source code is ASCII, it must be ASCII printable or space.
+If a character in an SPVM source code is ASCII, it must be ASCII printable or space.
 
 The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
 

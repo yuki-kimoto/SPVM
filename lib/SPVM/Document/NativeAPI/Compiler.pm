@@ -146,7 +146,7 @@ Prepends I<include_dir> to the class searching directory.
   
 C<int32_t (*compile_anon_class)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* source, const char** anon_basic_type_name_ptr);>
 
-Compiles a SPVM anon class given the source code I<source>. Classes loaded by the class and classes subsequently loaded are also compiled.
+Compiles an SPVM anon class given the source code I<source>. Classes loaded by the class and classes subsequently loaded are also compiled.
 
 The L<runtime|/"get_runtime"> is build.
 

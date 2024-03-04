@@ -209,7 +209,7 @@ SPVM::Builder - Build Dynamic Libraries for SPVM Distribution
 
 =head1 Description
 
-The SPVM::Builder class has methods to build dynamic librares for a SPVM distribution.
+The SPVM::Builder class has methods to build dynamic librares for an SPVM distribution.
 
 =head1 Copyright & License
 

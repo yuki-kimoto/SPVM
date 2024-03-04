@@ -50,7 +50,7 @@ Run a one liner with loading a class.
   # foo,bar,baz
   spvm -M Fn -e 'say Fn->join(",", ["foo", "bar", "baz"]);'
 
-=head2 Executing A SPVM Program
+=head2 Executing An SPVM Program
 
 Write a L<SPVM class|SPVM::Document::Language::Class> to print "Hello World!" using L<the say operator|SPVM::Document::Language::Operators/"say Operator">.
 
@@ -76,9 +76,9 @@ Run the executable file.
 
   ./hello
 
-=head2 Calling A SPVM Method from Perl
+=head2 Calling An SPVM Method from Perl
 
-Write a SPVM class.
+Write an SPVM class.
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
@@ -93,7 +93,7 @@ Write a SPVM class.
     }
   }
 
-Write a Perl program calling a SPVM method using L<exchange APIs|SPVM::ExchangeAPI>.
+Write a Perl program calling an SPVM method using L<exchange APIs|SPVM::ExchangeAPI>.
 
   # sum.pl
   use FindBin;

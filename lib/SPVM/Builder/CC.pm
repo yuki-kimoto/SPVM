@@ -206,7 +206,7 @@ sub compile_source_file {
       my $config_file = $config->file;
       
       if ($compile_info_category eq 'spvm_core') {
-        $message = "[Compile a SPVM core source file]";
+        $message = "[Compile an SPVM core source file]";
       }
       elsif ($compile_info_category eq 'bootstrap') {
         $message = "[Compile a bootstrap source file for an excutable file]";
@@ -349,7 +349,7 @@ sub compile_class {
     confess "[Unexpected Error]The class file is not defined.";
   }
   
-  # Check if a config file and a SPVM class file are in the same directory.
+  # Check if a config file and an SPVM class file are in the same directory.
   if (defined $config->file) {
     my $config_file = $config->file;
     
@@ -956,7 +956,7 @@ SPVM::Builder::CC - Compilation and Link of Native Class
 
 =head1 Description
 
-The SPVM::Builder::CC class has methods to compile and link a SPVM native class.
+The SPVM::Builder::CC class has methods to compile and link an SPVM native class.
 
 =head1 Copyright & License
 

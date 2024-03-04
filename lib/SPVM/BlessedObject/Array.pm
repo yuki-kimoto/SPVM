@@ -56,7 +56,7 @@ SPVM::BlessedObject::Array - SPVM Array
 
 =head2 DESCRIPTION
 
-The object of the C<SPVM::BlessedObject::Array> class holds a SPVM array.
+The object of the C<SPVM::BlessedObject::Array> class holds an SPVM array.
 
 =head1 Usage
 
@@ -66,10 +66,10 @@ The object of the C<SPVM::BlessedObject::Array> class holds a SPVM array.
   # Sets an element of the array
   $blessed_object_array->set(2 => 5);
   
-  # Converts a SPVM array to a Perl array reference
+  # Converts an SPVM array to a Perl array reference
   my $elems = $blessed_object_array->to_elems;
   
-  # Converts a SPVM array to a binary
+  # Converts an SPVM array to a binary
   my $binary = $blessed_object_array->to_bin;
 
 =head1 Methods
@@ -92,13 +92,13 @@ If $elem cannnot be assigned to the element of the array, an exception is thrown
 
   my $elems = $blessed_object_array->to_elems;
 
-Converts a SPVM array to a Perl array reference and returns it.
+Converts an SPVM array to a Perl array reference and returns it.
 
 =head2 to_bin
 
   my $binary = $blessed_object_array->to_bin;
 
-Converts a SPVM array to a binary and returns it.
+Converts an SPVM array to a binary and returns it.
 
 This binary is unpacked by L<unpack|https://perldoc.perl.org/functions/unpack> function.
 
@@ -128,7 +128,7 @@ Examples:
 
   my $elems = $blessed_object_array->to_strings;
 
-Converts a SPVM string array to a Perl array reference and returns it.
+Converts an SPVM string array to a Perl array reference and returns it.
 
 Each element calls L<to_string|SPVM::BlessedObject::String/"to_string"> method.
 
@@ -136,7 +136,7 @@ Each element calls L<to_string|SPVM::BlessedObject::String/"to_string"> method.
 
   my $elems = $blessed_object_array->to_bins;
 
-Converts a SPVM string array to Perl array reference and returns it.
+Converts an SPVM string array to Perl array reference and returns it.
 
 Each element calls L<to_bin|SPVM::BlessedObject::String/"to_bin"> method.
 

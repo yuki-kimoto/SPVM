@@ -2799,7 +2799,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
             // ASCII
             if (utf8_char_len == 1) {
               if (!(SPVM_TOKE_isprint_ascii(compiler, *current_ch) || SPVM_TOKE_isspace_ascii(compiler, *current_ch))) {
-                SPVM_COMPILER_error(compiler, "If a character in a SPVM source code is ASCII, it must be ASCII printable or space. The source code of the \"%s\" class in the \"%s\" file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
+                SPVM_COMPILER_error(compiler, "If a character in an SPVM source code is ASCII, it must be ASCII printable or space. The source code of the \"%s\" class in the \"%s\" file contains it.\n  at %s line %d", basic_type_name, compiler->current_file, op_use->file, op_use->line);
                 return 0;
               }
               

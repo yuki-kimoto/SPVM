@@ -8,7 +8,7 @@ A native class is the class implemented by a native language such as the C langu
 
 =head1 Native Method Definition
 
-A native method is defined by the L<native method attribute|SPVM::Document::Language::Class/"Method Attributes"> in a SPVM class file. It ends with a semicolon. A native method does not have its block. 
+A native method is defined by the L<native method attribute|SPVM::Document::Language::Class/"Method Attributes"> in an SPVM class file. It ends with a semicolon. A native method does not have its block. 
 
   # SPVM/MyClass.spvm
   class MyClass {
@@ -258,31 +258,31 @@ Use the C<oval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the va
 
 =head3 Getting byte Reference Type Argument
 
-Use the C<bref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<byte> reference type from an argument.
+Use the C<bref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of an SPVM C<byte> reference type from an argument.
 
   int8_t* args0 = stack[0].bref;
 
 =head3 Getting short Reference Type Argument
 
-Use the C<sref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<short> reference type from an argument.
+Use the C<sref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of an SPVM C<short> reference type from an argument.
 
   int16_t* args0 = stack[0].sref;
 
 =head3 Getting int Reference Type Argument
 
-Use the C<iref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<int> reference type from an argument.
+Use the C<iref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of an SPVM C<int> reference type from an argument.
 
   int32_t* args0 = stack[0].iref;
 
 =head3 Getting long Reference Type Argument
 
-Use the C<lref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<long> reference type from an argument.
+Use the C<lref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of an SPVM C<long> reference type from an argument.
 
   int64_t* args0 = stack[0].lref;
 
 =head3 Getting float Reference Type Argument
 
-Use the C<fref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of a SPVM C<float> reference type from an argument.
+Use the C<fref> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of an SPVM C<float> reference type from an argument.
 
   float* args0 = stack[0].fref;
 
@@ -303,7 +303,7 @@ For example, if the argument type is the L<Complex_2d|SPVM::Complex_2d> type, th
 
 =head2 Return Value
 
-If the reutrn type of a SPVM method is not the C<void> type, a return value must be set to the first argument of the L<runtime stack|/"Runtime Stack"> .
+If the reutrn type of an SPVM method is not the C<void> type, a return value must be set to the first argument of the L<runtime stack|/"Runtime Stack"> .
 
   int32_t return_value = 5;
   
@@ -412,7 +412,7 @@ The L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an ex
 
 =head2 Pointer Class
 
-A SPVM object can store a pointer to a native data. The class that have a pointer to a native data is called the pointer class.
+An SPVM object can store a pointer to a native data. The class that have a pointer to a native data is called the pointer class.
 
 The L<set_pointer|SPVM::Document::NativeAPI/"set_pointer"> native API sets a pointer to a native data.
 
@@ -532,7 +532,7 @@ A mortal stack is the stack to save local variables to be destroyed at the end o
 
 =head2 Runtime Environment
 
-A runtime environement is created for a SPVM runtime.
+A runtime environement is created for an SPVM runtime.
 
 This is the pointer to the value of the C<SPVM_ENV> type, normally named C<env>.
 
@@ -546,7 +546,7 @@ A runtime environement is given to the first argument of a native function.
 
 =head2 Runtime Stack
 
-A runtime stack is created for a native thread. A SPVM runtime creates a runtime stack for the main thread.
+A runtime stack is created for a native thread. An SPVM runtime creates a runtime stack for the main thread.
 
 A runtime stack is used to get values of arguments and return a value, and it also stored its own data such as the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 

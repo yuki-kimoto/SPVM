@@ -829,7 +829,7 @@ sub load_config {
   }
   
   unless (defined $config && $config->isa('SPVM::Builder::Config')) {
-    confess "The config file must be a SPVM::Builder::Config object";
+    confess "The config file must be an SPVM::Builder::Config object";
   }
   
   push @{$config->get_loaded_config_files}, $config_file;

@@ -460,7 +460,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
     {
       my $spvm_value = 1;
       eval { SPVM::TestCase::ExchangeAPI->return_any_object_only($spvm_value) };
-      like($@, qr|The 1th argument of the "return_any_object_only" method in the "TestCase::ExchangeAPI" class must be a SPVM::BlessedObject object or a string or undef|);
+      like($@, qr|The 1th argument of the "return_any_object_only" method in the "TestCase::ExchangeAPI" class must be an SPVM::BlessedObject object or a string or undef|);
     }
   }
   
