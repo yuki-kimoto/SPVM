@@ -1,3 +1,7 @@
+0.989083 2023-03-05
+  [Internal Changes]
+    * Add parentheses to the confess function so that Perl does not interpret it as the indirect syntax.
+    
 0.989082 2023-03-01
   [New Features]
     * The spvm_warn function in native APIs outputs the function name, the file name, and the line number.
