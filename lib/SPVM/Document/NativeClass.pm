@@ -414,100 +414,67 @@ The L<die|SPVM::Document::NativeAPI/"die"> native API can be used to throw an ex
 
 =head2 Pointer Class
 
-There is a type called pointer type in SPVM, but I will explain how to use it.
+A SPVM object can store a pointer to a native data. The class that have a pointer to a native data is called the pointer class.
 
-The pointer type definition specifies the pointer attribute in the SPVM class definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
+The L<set_pointer|SPVM::Document::NativeAPI/"set_pointer"> native API sets a pointer to a native data.
 
-  # SPVM/MyTm.spvm
+The L<get_pointer|SPVM::Document::NativeAPI/"get_pointer"> native API gets a pointer to a native data.
+
+The L<pointer|SPVM::Document::Language::Class/"Class Attributes"> class attribute indicates this class is a pointer class.
+
+The following class is an example of a pointer class.
+
+SPVM/MyTm.spvm
+
   class MyTm : pointer {
-
-    # Constructor
+    
     native static method new : MyTm ();
-
-    # Get second
+    
     native method sec : int ();
-
-    # Destructor
+    
     native method DESTROY : ();
   }
 
-It defines a new constructor, a method that takes seconds information called sec, and a destructor called DESTROY. These are Native Method.
-
-Next is the definition on the C language side.
-
-  # SPVM/MyTm.c
-
-  int32_t SPVM__MyTm__new(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-    // Alloc strcut tm
-    void* tm_ptr = env->new_memory_block(env, stack, sizeof (struct tm));
-
-    // Create strcut tm instance
-    void* tm_obj = env->new_pointer_object(env, stack, "MyTm", tm_ptr);
-
-    stack[0].oval = tm_obj;
-
-    return 0;
-  }
-
-  int32_t SPVM__MyTm__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
-    void* tm_obj = stack[0].oval;
-
-    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
-
-    stack[0].ival = tm_ptr-> tm_sec;
-
-    return 0;
-  }
-
-  int32_t SPVM__MyTm__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-    void* tm_obj = stack[0].oval;
-    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
-
-    env->free_memory_block(tm_ptr);
-
-    return 0;
-  }
-
-In the constructor new, the memory of "struct tm" is first allocated by the new_memory_block function. This is a function that reserves one memory block in SPVM. Similar to malloc, this function increments the memory block count by one, making it easier to spot memory leaks.
-
-  // Alloc strcut tm
-  void* tm_ptr = env->new_memory_block(env, stack, sizeof (struct tm));
-
-Next, use the new_pointer_object function to create a new pointer type object with MyTm associated with it in the allocated memory.
-
-  // Create strcut tm instance
-  void* tm_obj = env->new_pointer_object(env, stack, "MyTm", tm_ptr);
-
-If you return this as a return value, the constructor is complete.
-
-  stack[0].ival = tm_ptr-> tm_sec;
+SPVM/MyTm.c
   
-  return 0;
-
-Next, let's get the value of tm_sec. sec method. The get_pointer function can be used to get a pointer to the memory allocated as a "struct tm" from a pointer type object.
-
-  void* tm_obj = stack[0].oval;
-
-  strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
-
-  stack[0].ival = tm_ptr-> tm_sec;
-
-The last is the destructor. Be sure to define a destructor, as the allocated memory will not be released automatically.
-
-  int32_t SPVM__MyTm__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-    void* tm_obj = stack[0].oval;
-
-    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, stack, tm_obj);
-
-    env->free_memory_block(tm_ptr);
-
+  static const char* FILE_NAME = "MyTm.c";
+  
+  int32_t SPVM__MyTm__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
+    int32_t error_id = 0;
+    
+    void* tm = env->new_memory_block(env, stack, sizeof (struct tm));
+    
+    void* obj_tm = env->new_object_by_name(env, stack, "MyTm", error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    env->set_pointer(env, stack, obj_tm, tm);
+    
+    stack[0].oval = obj_tm;
+    
     return 0;
   }
-
-Execute the free_memory_block function to free the memory. Be sure to free the memory allocated by new_memory_block with the free_memory_block function. Releases the memory and decrements the memory block count by one.
+  
+  int32_t SPVM__MyTm__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+    void* obj_tm = stack[0].oval;
+    
+    strcut tm* tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
+    
+    stack[0].ival = tm->tm_sec;
+    
+    return 0;
+  }
+  
+  int32_t SPVM__MyTm__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
+    void* obj_tm = stack[0].oval;
+    
+    strcut tm* tm = (struct tm*)env->get_pointer(env, stack, obj_tm);
+    
+    env->free_memory_block(env, stack, tm);
+    
+    return 0;
+  }
 
 =head2 Scope
 

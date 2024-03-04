@@ -30,7 +30,7 @@ Examples:
   
   }
 
-L<Class attributes|/"Class Attribute"> are written after C<:>.
+L<Class attributes|/"Class Attributes"> are written after C<:>.
 
   class CLASS_NAME : CLASS_ATTRIBUTE {
   
@@ -119,7 +119,7 @@ The version number is a floating point number created by the following way.
 
 A L<version string/"Version Declaration"> is converted to a floating point number by the C<strtod> C function.
 
-=head2 Class Attribute
+=head2 Class Attributes
 
 The list of class attributes.
 
@@ -333,7 +333,7 @@ L<Examples:>
 
 =head2 Pointer Class
 
-The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Class Attribute"> C<pointer>.
+The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Class Attributes"> C<pointer>.
 
   # Pointer Class
   class Foo : pointer {
@@ -416,7 +416,7 @@ The interface syntax is described.
 
 =head3 Interface Definition
 
-An interface is defined using a L<class definition|/"Class Definition"> with a L<class attribute/"Class Attribute"> C<interface_t>.
+An interface is defined using a L<class definition|/"Class Definition"> with a L<class attribute/"Class Attributes"> C<interface_t>.
 
   class Stringable: interface_t {
     required method to_string : string ();
@@ -1179,7 +1179,7 @@ About the way to write native methods, please see L<SPVM Native Class|SPVM::Docu
 
 =head3 Precompiled Method
 
-If the class has the C<precompile> L<class attribute|/"Class Attribute">, the methods of the class are precompiled.
+If the class has the C<precompile> L<class attribute|/"Class Attributes">, the methods of the class are precompiled.
 
 The source code of each precompiled method is translated to C source code and is compiled to the machine code such as C<MyMath.o>.
 
