@@ -765,6 +765,18 @@ sub add_lib {
   push @{$self->{libs}}, @libs;
 }
 
+sub add_lib_abs {
+  my ($self, @libs) = @_;
+  
+  $self->_add_lib_info({is_abs => 1}, @libs);
+}
+
+sub add_static_lib_abs {
+  my ($self, @libs) = @_;
+  
+  $self->_add_lib_info({is_static => 1, is_abs => 1}, @libs);
+}
+
 sub add_static_lib {
   my ($self, @libs) = @_;
   
@@ -1814,6 +1826,12 @@ Examples:
     SPVM::Builder::LibInfo->new(config => $config, name => 'z', abs => 1),
   );
 
+=head2 add_lib_abs
+
+  $config->add_lib_abs(@libs);
+
+Adds @libs to the end of the L</"libs"> field with the C<is_abs|SPVM::Builder::LibInfo/"is_abs"> field of C<SPVM::Builder::LibInfo> set to a true value.
+
 =head2 add_static_lib
 
   $config->add_static_lib(@libs);
@@ -1824,6 +1842,12 @@ Examples:
 
   $config->add_static_lib('gsl');
   $config->add_static_lib('gsl', 'z');
+
+=head2 add_static_lib_abs
+
+  $config->add_static_lib_abs(@libs);
+
+Adds @libs to the end of the L</"libs"> field with the C<is_static|SPVM::Builder::LibInfo/"is_static"> field and the C<is_abs|SPVM::Builder::LibInfo/"is_abs"> field of C<SPVM::Builder::LibInfo> set to a true value.
 
 =head2 add_before_link_cb
 
