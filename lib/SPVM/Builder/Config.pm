@@ -768,22 +768,31 @@ sub add_lib {
 sub add_static_lib {
   my ($self, @libs) = @_;
   
-  my @static_libs;
+  $self->_add_lib_info({is_static => 1}, @libs);
+}
+
+sub _add_lib_info {
+  my ($self, $options, @libs) = @_;
+  
+  my @lib_infos;
   for my $lib (@libs) {
-    my $static_lib;
+    my $lib_info;
     if (ref $lib eq 'SPVM::Builder::LibInfo') {
-      $static_lib = $lib->is_static(1);
+      $lib_info = $lib;
     }
     else {
       my $lib_name = $lib;
-      $static_lib = SPVM::Builder::LibInfo->new(config => $self);
-      $static_lib->name($lib_name);
-      $static_lib->is_static(1);
+      $lib_info = SPVM::Builder::LibInfo->new(config => $self, name => $lib_name);
     }
-    push @static_libs, $static_lib;
+    
+    $lib_info->is_static($options->{is_static});
+    
+    $lib_info->is_abs($options->{is_abs});
+    
+    push @lib_infos, $lib_info;
   }
   
-  $self->add_lib(@static_libs);
+  $self->add_lib(@lib_infos);
 }
 
 sub add_source_file {
