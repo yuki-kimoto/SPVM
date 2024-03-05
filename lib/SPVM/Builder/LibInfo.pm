@@ -185,7 +185,7 @@ Gets and sets the C<is_abs> field. If this field is a true value, the library is
 
   my $lib_info = SPVM::Builder::LibInfo->new(%fields);
 
-Creates a new L<SPVM::Builder::LibInfo> object given the fileds L</"Fields">.
+Creates a new L<SPVM::Builder::LibInfo> object given L<fields|/"Fields">.
 
 The C<config> field must be defined.
 
@@ -193,7 +193,7 @@ Field Default Values:
 
 =over 2
 
-=item All Fields
+=item * All Fields
 
   undef
 
