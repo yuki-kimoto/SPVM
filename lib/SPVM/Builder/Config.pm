@@ -1089,7 +1089,7 @@ Examples:
   my $include_dirs = $config->include_dirs;
   $config->include_dirs($include_dirs);
 
-Gets and sets the C<include_dirs> field, an array reference of header file searching directories.
+Gets and sets the C<include_dirs> field, an array reference of header file search directories.
 
 The values of this field are converted to the C<-I> options for the compiler L</"cc">.
 

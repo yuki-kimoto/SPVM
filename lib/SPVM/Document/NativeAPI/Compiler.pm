@@ -62,13 +62,13 @@ Sets I<start_file> to the C<start_file> field.
 
 C<int32_t (*get_include_dirs_length)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>);>
 
-Returns the length of the class searching directories.
+Returns the length of the class search directories.
 
 =head2 get_include_dir
 
 C<const char* (*get_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, int32_t index);>
 
-Searches a class searching directory given the index I<index>.
+Searches a class search directory given the index I<index>.
 
 If it is found, returns it, otherwise returns C<NULL>.
 
@@ -76,13 +76,13 @@ If it is found, returns it, otherwise returns C<NULL>.
   
 C<void (*add_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* include_dir);>
 
-Adds I<include_dir> at the end of the class searching directories.
+Adds I<include_dir> at the end of the class search directories.
 
 =head2 clear_include_dirs
   
 C<void (*clear_include_dirs)(SPVM_COMPILER* compiler);>
 
-Removes all class searching directories.
+Removes all class search directories.
 
 =head2 add_class_file
 
@@ -140,7 +140,7 @@ Returns the L<runtime|SPVM::Document::NativeAPI::Runtime> that is build by the c
   
 C<void (*prepend_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Compiler>, const char* include_dir);>
 
-Prepends I<include_dir> to the class searching directory.
+Prepends I<include_dir> to the class search directory.
 
 =head2 compile_anon_class
   
