@@ -986,11 +986,11 @@ sub _remove_ext_from_config_file {
 
 =head1 Name
 
-SPVM::Builder::Config - Compiler and Linker Config for Native Classes
+SPVM::Builder::Config - Config for Compiling and Linking Native Classes
 
 =head1 Description
 
-The SPVM::Builder::Config class has methods to manipulate compiler and linker config for L<native classes|SPVM::Document::NativeClass>.
+The SPVM::Builder::Config class has methods to get and set config for compiling and linking L<native classes|SPVM::Document::NativeClass>.
 
 =head1 Usage
 
@@ -1015,27 +1015,26 @@ The SPVM::Builder::Config class has methods to manipulate compiler and linker co
   my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
   
   # Optimize
-  $config->optimize('-O2');
+  $config->optimize("-O2");
   
   # Optimize with debug mode
-  $config->optimize('-O0 -g');
+  $config->optimize("-O0 -g");
+  
+  # Add ccflag
+  $config->add_ccflag("-DFOO");
   
   # Add libraries
-  $config->add_lib('gdi32', 'd2d1', 'Dwrite');
-
+  $config->add_lib("gdi32", "d2d1", "Dwrite");
+  
   # Add source files
-  $config->add_source_file('foo.c', 'bar.c', 'baz/baz.c');
+  $config->add_source_file("foo.c", "bar.c", "baz/baz.c");
   
   # Use resource
-  $config->use_resource('TestCase::Resource::Zlib');
-  $config->use_resource('TestCase::Resource::Foo1', mode => 'mode1', argv => ['args1', 'args2']);
+  $config->use_resource("TestCase::Resource::Zlib");
+  $config->use_resource("TestCase::Resource::Foo1", mode => "mode1", argv => ["option1_name" => "option1_value"]);
   
   # Get resouce information
-  my $resource = $config->get_resource('TestCase::Resource::Zlib');
-
-=head1 Details
-
-See L<SPVM::Document::NativeClass> about creating native classes and those config.
+  my $resource = $config->get_resource("TestCase::Resource::Zlib");
 
 =head1 Fields
 
@@ -1047,12 +1046,21 @@ See L<SPVM::Document::NativeClass> about creating native classes and those confi
 Gets and sets the C<ext> field, the extension of a native class.
 
 Examples:
-  
-  # Foo/Bar.c
+
+  # MyClass.c
   $config->ext('c');
   
-  # Foo/Bar.cpp
+  # MyClass.cpp
   $config->ext('cpp');
+  
+  # MyClass.cc
+  $config->ext('cc');
+  
+  # MyClass.cu
+  $config->ext('cu');
+  
+  # MyClass.m
+  $config->ext('m');
 
 =head2 cc
 
@@ -1081,7 +1089,7 @@ Examples:
   my $include_dirs = $config->include_dirs;
   $config->include_dirs($include_dirs);
 
-Gets and sets the C<include_dirs> field, an array reference of header file search directories.
+Gets and sets the C<include_dirs> field, an array reference of header file searching directories.
 
 The values of this field are converted to the C<-I> options for the compiler L</"cc">.
 
