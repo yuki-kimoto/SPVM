@@ -303,7 +303,7 @@ For example, if the argument type is the L<Complex_2d|SPVM::Complex_2d> type, th
 
 =head2 Return Value
 
-If the reutrn type of an SPVM method is not the C<void> type, a return value must be set to the first argument of the L<runtime stack|/"Runtime Stack"> .
+If the reutrn type of an SPVM method is not the C<void> type, the first argument of the L<runtime stack|/"Runtime Stack"> must be set to a return value.
 
   int32_t return_value = 5;
   
@@ -353,7 +353,7 @@ Use the C<oval> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to set a retu
 
 =head3 Setting Return Value of Multi-Numeric Type
 
-Return value of the multi-numeric type are needed to be set to the multiple values in the L<runtime stack|/"Runtime Stack">. the length of the values in the runtime stack is the same as the length of the fields of the SPVM multi-numeric type.
+Multiple values in the L<runtime stack|/"Runtime Stack"> are needed to be set to values of the field type of the multi-numeric type. The length of the values in the runtime stack is the same as the length of the fields of the SPVM multi-numeric type.
 
 There is an example in the case that the return type is the L<Complex_2d|SPVM::Complex_2d>.
 
@@ -586,7 +586,7 @@ A native class and native source files are compiled to object files and are link
 
 The extension of a shared library is C<.so> in Linux/UNIX, C<.dylib> in Mac, C<.dll> in Windows.
 
-A build directoy path must be set to the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable.
+The L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable must be set to a build directoy path.
 
 Normally, C<~/.spvm_build> is set to it.
 
@@ -620,7 +620,7 @@ The dependencies of compilation and link of a L<native class|/"Native Class">, L
 
 =back
 
-If 1 is set to the L<force|SPVM::Builder::Config/"force"> field in the C<SPVM::Builder::Config> class, the compilation and the link are forced.
+If the L<force|SPVM::Builder::Config/"force"> in the C<SPVM::Builder::Config> class field is set to 1, the compilation and the link are forced.
 
   $config->force(1);
 

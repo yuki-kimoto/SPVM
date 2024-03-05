@@ -1105,7 +1105,7 @@ Calls the method I<method> given the L<width of the argument|SPVM::Document::Nat
 
 If the method throws an exception, returns a basic type ID of an error class, otherwise returns 0.
 
-The return value of the method is set to C<stack[0]>.
+C<stack[0]> is set to the return value of the method.
 
 This native API should not be used unless special purposes are intended. Normally, use the L</"call_method"> native API.
 
