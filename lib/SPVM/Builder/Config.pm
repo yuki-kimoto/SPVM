@@ -1274,15 +1274,15 @@ The values of this field are converted to the C<-L> options when the arguments o
   my $libs = $config->libs;
   $config->libs($libs);
 
-Gets and sets the C<libs> field, an array reference containing library names or L<SPVM::Builder::LibInfo> objects.
+Gets and sets the C<libs> field, an array reference containing library names such as C<z>, C<png> or L<SPVM::Builder::LibInfo> objects.
 
 The values of this field are converted to C<-l> options when the arguments of the linker L</"ld"> are created.
 
-See L</"Library Search"> for details on how to search libraries.
+See L</"Library Path Resolution"> about resolving library paths.
 
 Examples:
 
-  # -l path/libz -l path/libpng
+  # -l libz -l libpng
   $config->libs(['z', 'png']);
 
 =head2 ldflags
@@ -1830,13 +1830,23 @@ Examples:
 
   $config->add_lib_abs(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the C<is_abs|SPVM::Builder::LibInfo/"is_abs"> field of C<SPVM::Builder::LibInfo> set to a true value.
+Adds @libs to the end of the L</"libs"> field with the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field of L<SPVM::Builder::LibInfo> set to a true value.
+
+If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created given the library name.
+
+If the library is located in your user directory, it is good to use the L</"add_lib_abs"> method instead of the L</"add_lib"> method.
+
+This is because if the generated dynamic link library has a relative path, that path cannot be resolved when it is loaded.
+
+For system libraries, there is no problem because the linker knows the search directory for the library.
 
 =head2 add_static_lib
 
   $config->add_static_lib(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the C<is_static|SPVM::Builder::LibInfo/"is_static"> field of C<SPVM::Builder::LibInfo> set to a true value.
+Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static"> field of L<SPVM::Builder::LibInfo> set to a true value.
+
+If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created given the library name.
 
 Examples:
 
@@ -1847,7 +1857,9 @@ Examples:
 
   $config->add_static_lib_abs(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the C<is_static|SPVM::Builder::LibInfo/"is_static"> field and the C<is_abs|SPVM::Builder::LibInfo/"is_abs"> field of C<SPVM::Builder::LibInfo> set to a true value.
+Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static"> field and the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field of C<SPVM::Builder::LibInfo> set to a true value.
+
+If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created given the library name.
 
 =head2 add_before_link_cb
 
@@ -1994,9 +2006,23 @@ The L<spvmcc> command also has the C<--config-argv-option> option to write confi
 
   spvmcc -o myexe --config-argv-option option_name=option_value MyExe
 
-=head1 Library Search
+=head1 Library Path Resolution
 
+If the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a false value, the linker L</"ld"> resolves libaray paths.
 
+If the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a true value, libaray paths are resolved by the following rules.
+
+A library is searched from the beginning of the L</"lib_dir"> field.
+
+If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field is a false value, the search is performed in the order of a dynamic library, a static library.
+
+If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field is a true value, the search is performed only in static libraries.
+
+If found, the C<-l> option of the linker L</"ld"> is created using the found absolute path.
+
+=item 4. 
+
+=back
 
 =head1 Examples
 
