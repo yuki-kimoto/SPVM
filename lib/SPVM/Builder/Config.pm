@@ -1520,7 +1520,7 @@ Creates a new C<SPVM::Builder::Config> object with L<fields|/"Fields">, and retu
 
 The C<file> field must be defined.
 
-Default Values for Fields:
+Field Default Values:
 
 =over 2
 
