@@ -539,11 +539,6 @@ sub new {
     $self->before_compile_cbs([]);
   }
   
-  # resources
-  unless (defined $self->{resources}) {
-    $self->{resources} = {};
-  }
-  
   # ld
   unless (defined $self->{ld}) {
     $self->ld($Config{ld});
@@ -552,11 +547,6 @@ sub new {
   # ldflags
   unless (defined $self->{ldflags}) {
     $self->ldflags([]);
-  }
-  
-  # output_type
-  unless (defined $self->output_type) {
-    $self->output_type('dynamic_lib');
   }
   
   # dynamic_lib_ldflags
@@ -611,13 +601,23 @@ sub new {
     $self->before_link_cbs([]);
   }
   
-  unless (defined $self->{_loaded_config_files}) {
-    $self->{_loaded_config_files} = [];
+  # output_type
+  unless (defined $self->output_type) {
+    $self->output_type('dynamic_lib');
   }
   
   # category
   unless (defined $self->{category}) {
     $self->category('native');
+  }
+  
+  unless (defined $self->{_loaded_config_files}) {
+    $self->{_loaded_config_files} = [];
+  }
+  
+  # resources
+  unless (defined $self->{resources}) {
+    $self->{resources} = {};
   }
   
   return $self;
@@ -1457,7 +1457,7 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<config_exe> field.
 
-If the L<spvmcc> command generates an excutable file, a L<SPVM::Builder::Config::Exe> object is set to this field.
+If the L<spvmcc> command generates an excutable file, this field is set to a L<SPVM::Builder::Config::Exe> object.
 
 This field is set by default and users nomally do not change it.
 
@@ -1518,33 +1518,11 @@ This field is set by default and users nomally do not change it.
 
 Creates a new C<SPVM::Builder::Config> object with L<fields|/"Fields">, and returns it.
 
-If a field is not defined, the field is set to the following default value.
+The C<file> field must be defined.
+
+Default Values for Fields:
 
 =over 2
-
-=item * L</"class_name">
-
-undef
-
-=item * L</"file">
-
-undef
-
-=item * L</"file_optional">
-
-0
-
-=item * L</"ext">
-
-undef
-
-=item * L</"quiet">
-
-undef
-
-=item * L</"force">
-
-undef
 
 =item * L</"cc">
 
@@ -1552,75 +1530,67 @@ The C<$Config{cc}> of the L<Config> class.
 
 =item * L</"ccflags">
 
-[]
+  []
 
 =item * L</"dynamic_lib_ccflags">
 
 Windows:
 
-[]
+  []
 
 Other OSs:
 
-["-fPIC"]
+  ["-fPIC"]
 
 =item * L</"thread_ccflags">
 
 Windows:
 
-[]
+  []
 
 Other OSs:
 
-["-pthread"]
-
-=item * L</"std">
-
-undef
+  ["-pthread"]
 
 =item * L</"optimize">
 
-"-O3"
+  "-O3"
 
 =item * L</"include_dirs">
 
-[]
+  []
 
 =item * L</"spvm_core_include_dir">
 
 The SPVM core header file search directory.
 
-This is generated from the path of the config file L</"file">.
-
-This is something like C</path/SPVM/Builder/include>.
-
 =item * L</"native_include_dir">
 
-The header file search directory for this natvie class.
+The directory described in L<SPVM::Document::NativeClass/"Native Header Files">.
 
-This is generated from the path of the config file L</"file">.
+Examples:
 
-This is something like C</path/Foo.native/include>.
+  MyClass.naitve/include
 
 =item * L</"native_src_dir">
 
-The source file search directory for this natvie class.
+The directory described in L<SPVM::Document::NativeClass/"Native Source Files">.
 
-This is generated from the path of the config file L</"file">.
+Examples:
 
-This is something like C</path/Foo.native/src>.
+  MyClass.naitve/src
 
 =item * L</"source_files">
 
-[]
+  []
 
 =item * L</"after_create_compile_info_cbs">
 
-[]
+  []
 
 =item * L</"before_compile_cbs">
 
-[]
+  []
 
 =item * L</"ld">
 
@@ -1628,63 +1598,79 @@ The C<$Config{ld}> of the L<Config> class.
 
 =item * L</"ldflags">
 
-[]
+  []
 
 =item * L</"dynamic_lib_ldflags">
 
 Windows:
 
-["-mdll", "-s"]
+  ["-mdll", "-s"]
 
 Other OSs:
 
-["-shared"]
+  ["-shared"]
 
 =item * L</"thread_ldflags">
 
 Windows:
 
-[]
+  []
 
 Other OSs:
 
-["-pthread"]
+  ["-pthread"]
   
 =item * L</"static_lib_ldflag">
 
-["-Wl,-Bstatic", "-Wl,-Bdynamic"]
+  ["-Wl,-Bstatic", "-Wl,-Bdynamic"]
 
 =item * L</"ld_optimize">
 
-"-O2"
+  "-O2"
 
 =item * L</"lib_dirs">
 
-[]
+  []
 
 =item * L</"libs">
 
-[]
+  []
+
+=item * L</"after_create_link_info_cbs">
+
+  []
 
 =item * L</"before_link_cbs">
 
-[]
+  []
 
 =item * L</"output_type">
 
-"dynamic_lib"
+  "dynamic_lib"
+
+=item * L</"category">
+
+  "native"
+
+=item Other Fields
+
+  undef
 
 =back
 
 Exceptions:
 
-The \"file" field must be defined. Otherwise an exception is thrown.
+The "file" field must be defined, otherwise an exception is thrown.
+
+Exampels:
+
+  my $config = SPVM::Builder::Config->new(file => __FILE__);
 
 =head2 new_c
   
   my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
-Calls the L</"new"> method and sets the L</"ext"> field to C<c>, and returns the return value of the L</"new_c"> method.
+Calls the L</"new"> method and sets the L</"ext"> field to C<c>, and returns the return value of the L</"new"> method.
 
 =head2 new_c99
   
