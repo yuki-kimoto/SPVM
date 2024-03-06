@@ -4,7 +4,12 @@
   [New Features]
     * Add the add_lib_abs method to the SPVM::Builder::Config class.
     * Add the add_static_lib_abs method to the SPVM::Builder::Config class.
-  
+  [Document Improvement]
+    * Improve and fix the document of the SPVM::Builder::Config class.
+    * Improve and fix the document of the SPVM::Builder::API class.
+    * Improve and fix the document of the SPVM::Builder::Util::API class.
+    * Improve and fix SPVM::Document::NativeClass.
+    
 0.989082 2023-03-01
   [New Features]
     * The spvm_warn function in native APIs outputs the function name, the file name, and the line number.
