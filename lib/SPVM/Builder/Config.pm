@@ -1020,11 +1020,11 @@ The SPVM::Builder::Config class has methods to get and set config for compiling 
   # Create a config
   my $config = SPVM::Builder::Config->new(file => __FILE__);
   
-  # C99
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
-  
   # GNU C99
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
+  
+  # C99
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
   
   # C++
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
@@ -1041,22 +1041,21 @@ The SPVM::Builder::Config class has methods to get and set config for compiling 
   # Optimize with debug mode
   $config->optimize("-O0 -g");
   
-  # Add ccflag
+  # Add ccflags
   $config->add_ccflag("-DFOO");
-  
-  # Add libraries
-  $config->add_lib("gdi32", "d2d1", "Dwrite");
   
   # Add source files
   $config->add_source_file("foo.c", "bar.c", "baz/baz.c");
   
-  # Use resource
-  $config->use_resource("TestCase::Resource::Zlib");
-  $config->use_resource("TestCase::Resource::Foo1", mode => "mode1", argv => ["option1_name" => "option1_value"]);
+  # Add libraries
+  $config->add_lib("gdi32", "d2d1", "Dwrite");
   
-  # Get resouce information
-  my $resource = $config->get_resource("TestCase::Resource::Zlib");
-
+  # Add ldflags
+  $config->add_ldflag("-pthread");
+  
+  # Use resource
+  $config->use_resource("Resource::MyResource");
+  
 =head1 Fields
 
 =head2 ext
@@ -1126,7 +1125,7 @@ Gets and sets the C<spvm_core_include_dir> field, an SPVM core header file searc
 
 The value of this field is converted to the C<-I> option when the arguments of the compiler L</"cc"> are created.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 native_include_dir
 
@@ -1137,7 +1136,7 @@ Gets and sets the C<native_include_dir> field, a L<native header file|SPVM::Docu
 
 The value of this field is converted to the C<-I> option when the arguments of the compiler L</"cc"> are created.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 native_src_dir
 
@@ -1146,32 +1145,32 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<native_src_dir> field, a L<native source file|SPVM::Document::NativeClass/"Native Source Files"> search directory.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 ccflags
 
   my $ccflags = $config->ccflags;
   $config->ccflags($ccflags);
 
-Gets and sets the C<ccflags> field, an array reference containing the arugments of the compiler L</"cc">.
+Gets and sets the C<ccflags> field, an array reference containing arugments of the compiler L</"cc">.
 
 =head2 dynamic_lib_ccflags
 
   my $dynamic_lib_ccflags = $config->dynamic_lib_ccflags;
   $config->dynamic_lib_ccflags($dynamic_lib_ccflags);
 
-Gets and sets the C<dynamic_lib_ccflags> field, an array reference containing the arugments of the compiler L</"cc"> for dynamic linking.
+Gets and sets the C<dynamic_lib_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for dynamic linking.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 thread_ccflags
 
   my $thread_ccflags = $config->thread_ccflags;
   $config->thread_ccflags($thread_ccflags);
 
-Gets and sets the C<thread_ccflags> field, an array reference containing the arugments of the compiler L</"cc"> for threads.
+Gets and sets the C<thread_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for threads.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 std
 
@@ -1217,7 +1216,7 @@ Examples:
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Gets and sets the C<source_files> field, an array reference containing relative pathes of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from the L</"native_src_dir"> field.
+Gets and sets the C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from the L</"native_src_dir"> field.
 
 =head2 after_create_compile_info_cbs
 
@@ -1274,7 +1273,7 @@ The values of this field are converted to the C<-L> options when the arguments o
   my $libs = $config->libs;
   $config->libs($libs);
 
-Gets and sets the C<libs> field, an array reference containing library names such as C<z>, C<png> or L<SPVM::Builder::LibInfo> objects.
+Gets and sets the C<libs> field, an array reference containing library names such as C<z>, and C<png> or L<SPVM::Builder::LibInfo> objects.
 
 The values of this field are converted to C<-l> options when the arguments of the linker L</"ld"> are created.
 
@@ -1299,7 +1298,7 @@ Gets and sets the C<ldflags> field, an array reference containing arguments of t
 
 Gets and sets the C<dynamic_lib_ldflags> field, an array reference containing arguments of the linker L</"ld"> for dynamic libraries.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 thread_ldflags
 
@@ -1308,7 +1307,7 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<thread_ldflags> field, an array reference containing arguments of the linker L</"ld"> for threads.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 static_lib_ldflag
 
@@ -1317,28 +1316,30 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<static_lib_ldflag> field, an array reference containing a pair of arguments to start statically linking and end it.
 
-The library names added by the L</"add_static_lib"> are surrounded by the values of the pair.
+The library name added by the L</"add_static_lib"> are surrounded by the values of the pair.
 
-This field is set by default and users nomally do not change it.
-
-This field only works correctly on Linux/Unix.
-
-Mac does not support these options. 
-
-MinGW on Windows supports these options, but instead of linking statically, it links dynamically with absolute paths. This is usually not the intended behavior. If you want to do static linking on Windows, you need to use the C<--static> option.
-
-Examples:
-  
-  # -Wl,-Bstatic -lfoo -Wl,-Bdynamic
+  # -Wl,-Bstatic -llibfoo -Wl,-Bdynamic
   $config->static_lib_ldflag(['-Wl,-Bstatic', '-Wl,-Bdynamic']);
   $config->add_static_lib('foo');
+
+This field is automatically set and users nomally do not change it.
+
+This field only works correctly in Linux/Unix.
+
+Mac does not support these options. If you want to search a static library, create a new library search directory, copy a static library to there, and add the new library search directory.
+  
+  # /path_for_static_lib/libz.a
+  $config->add_lib_dir('/path_for_static_lib');
+  $config->add_lib('z');
+
+MinGW on Windows supports these options, but instead of linking statically, it links dynamically with absolute paths. This is usually not the intended behavior. If you want to do static linking on Windows, you need to use the C<--static> option.
 
 =head2 ld_optimize
 
   my $ld_optimize = $config->ld_optimize;
   $config->ld_optimize($ld_optimize);
 
-Gets and sets the C<ld_optimize> field, an array reference containing arguments of the linker L</"ld"> for optimization.
+Gets and sets the C<ld_optimize> field, an argument of the linker L</"ld"> for optimization.
 
 Examples:
 
@@ -1379,9 +1380,9 @@ Gets and sets the C<force> field.
 
 If this field is a true value, the compilation and the linking are forced.
 
-If this field is a false value except for undef, the compilation and linking are performed following the rule of the L<SPVM::Document::NativeClass|/"Dependency Resolution/">
+If this field is a false value except for undef, the compilation and linking are performed following the rule of the L<dependency resolution|SPVM::Document::NativeClass/"Dependency Resolution">.
 
-If this field is undef, this config do not specify whether the compilation and linking are perfomed.
+If this field is undef, this config does not specify whether the compilation and linking are perfomed.
 
 =head2 quiet
 
@@ -1390,20 +1391,20 @@ If this field is undef, this config do not specify whether the compilation and l
 
 Gets and sets the C<quiet> field.
 
-If this field is a true value, the messages from the compiler and the linker are output.
+If this field is a true value, the messages from the compiler and the linker are output to C<stderr>.
 
 If this field is a false value except for undef, the messages from the compiler and the linker are not output.
 
-If this field is undef, this config do not specify whether the messages from the compiler and the linker are output.
+If this field is undef, this config does specify whether the messages from the compiler and the linker are output.
 
 =head2 class_name
 
   my $class_name = $config->class_name;
   $config->class_name($class_name);
 
-Gets and sets the C<class_name> field, the class name configured by this config.
+Gets and sets the C<class_name> field, the name of the class configured by this config.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 file
 
@@ -1421,14 +1422,14 @@ This field is set by the L</"new"> method and users nomally do not change it.
 
 Gets and sets the C<file_optional> field.
 
-If this field is a true value, even if the L<file|/"file"> field is not given to the L</"new"> method, an exception is not thrown.
+If this field is a true value, even if the L<file|/"file"> field is not given to the L</"new"> method, the exception is not thrown.
 
 =head2 output_type
 
   my $output_type = $config->output_type;
   $config->output_type($output_type);
 
-Gets and sets the C<output_type> field, an output type of the output file generated by the linker L</"ld">.
+Gets and sets the C<output_type> field, a type of the output file L</"output_file"> generated by the linker L</"ld">.
 
 If thie field is C<dynamic_lib>, the output file is a dynamic link library.
 
@@ -1436,7 +1437,7 @@ If thie field is C<static_lib>, the output file is a static link library.
 
 If thie field is C<exe>, the output file is an executable file.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 no_compile_resource
 
@@ -1445,9 +1446,9 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<no_compile_resource> field.
 
-If this value is a true value, all resources loaded by the L</"use_resource"> method are not compiled.
+If this value is a true value, no L<native source files|SPVM::Document::NativeClass/"Native Source Files"> of resources loaded by the L</"use_resource"> method are compiled.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 resource_loader_config
 
@@ -1456,7 +1457,7 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<resource_loader_config> field, the config file of the class that loaded a resource by the L</"use_resource"> method.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 category
 
@@ -1467,9 +1468,9 @@ Gets and sets the C<category> field.
 
 If this field is C<precompile>, this config is for precompilation, 
 
-if this field is C<native>, this config is for a native class.
+If this field is C<native>, this config is for a native class.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 config_exe
 
@@ -1480,7 +1481,7 @@ Gets and sets the C<config_exe> field.
 
 If the L<spvmcc> command generates an excutable file, this field is set to a L<SPVM::Builder::Config::Exe> object.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 cc_input_dir
 
@@ -1489,7 +1490,7 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<cc_input_dir> field, an input directory for the compiler L</"cc">.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 cc_output_dir
 
@@ -1498,9 +1499,7 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<cc_output_dir> field, an output directory for the compiler L</"cc">.
 
-This field is set by default and users nomally do not change it.
-
-This field is automatically set.
+This field is automatically set and users nomally do not change it.
 
 =head2 output_dir
 
@@ -1509,7 +1508,7 @@ This field is automatically set.
 
 Gets and sets the C<output_dir> field, an output directory for the linker L</"ld">.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 output_file
 
@@ -1518,7 +1517,7 @@ This field is set by default and users nomally do not change it.
 
 Gets and sets the C<output_file> field. A path of a dinamic link library or an executable file generated by the linker L</"ld">.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head2 used_as_resource
 
@@ -1529,7 +1528,7 @@ Gets and sets the C<used_as_resource> field.
 
 If this field is true, this config is used as a resource.
 
-This field is set by default and users nomally do not change it.
+This field is automatically set and users nomally do not change it.
 
 =head1 Class Methods
 
@@ -1547,7 +1546,7 @@ Field Default Values:
 
 =item * L</"cc">
 
-The C<$Config{cc}> of the L<Config> class.
+The C<$Config{cc}> of the L<Config> module.
 
 =item * L</"ccflags">
 
@@ -1673,7 +1672,7 @@ Other OSs:
 
   "native"
 
-=item Other Fields
+=item * Other Fields
 
   undef
 
@@ -1903,8 +1902,8 @@ An array reference contains L<config arguments|/"Config Arguments"> for the reso
 
 Examples:
 
-  $config->use_resource('Resource::Zlib');
-  $config->use_resource('Resource::Foo', mode => 'mode1', argv => ["option1_name" => "option1_value"]);
+  $config->use_resource('Resource::MyResource');
+  $config->use_resource('Resource::MyResource', mode => 'mode1', argv => ["option1_name" => "option1_value"]);
 
 =head2 get_resource
 
@@ -2019,10 +2018,6 @@ If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field is a false value, t
 If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field is a true value, the search is performed only in static libraries.
 
 If found, the C<-l> option of the linker L</"ld"> is created using the found absolute path.
-
-=item 4. 
-
-=back
 
 =head1 Examples
 
