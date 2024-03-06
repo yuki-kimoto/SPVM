@@ -3,78 +3,73 @@
 use strict;
 use warnings;
 
-my $help;
-my $show_version;
-my @include_dirs;
-
 use SPVM::Builder::Util;
 use SPVM::Global;
 
 my $class_name;
-my $program_source;
-my @use_class_names;
 
-BEGIN {
-  SPVM::Builder::Util::getopt
-    'h|help'          => \my $help,
-    'v|version'       => \my $show_version,
-    'B|build-dir=s'   => \my $build_dir,
-    'I|include-dir=s' => \my @include_dirs,
-    'e=s' => \$program_source,
-    '-M=s' => \@use_class_names,
-  ;
+SPVM::Builder::Util::getopt
+  # spvmcc and spvm shared
+  'h|help'          => \my $help,
+  'v|version'       => \my $show_version,
+  'I|include-dir=s' => \my @include_dirs,
+  'B|build-dir=s'   => \my $build_dir,
   
-  my @original_include_dirs = @include_dirs;
-  push @include_dirs, map { "$_/SPVM" } @INC;
-  unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
-  
-  if ($help) {
-    print SPVM::Builder::Util::extract_usage;
-    exit 0;
-  }
-  elsif ($show_version) {
-    my $version_string = "spvm v$SPVM::VERSION";
-    print "$version_string\n";
-    exit 0;
-  }
-  else {
-    unless (defined $program_source) {
-      $class_name = shift;
-      
-      unless (defined $class_name) {
-        die SPVM::Builder::Util::extract_usage;
-      }
+  # spvm only
+  'e=s' => \my $program_source,
+  '-M=s' => \my @use_class_names,
+;
+
+my @original_include_dirs = @include_dirs;
+push @include_dirs, map { "$_/SPVM" } @INC;
+unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
+
+if ($help) {
+  print SPVM::Builder::Util::extract_usage;
+  exit 0;
+}
+elsif ($show_version) {
+  my $version_string = "spvm v$SPVM::VERSION";
+  print "$version_string\n";
+  exit 0;
+}
+else {
+  unless (defined $program_source) {
+    $class_name = shift;
+    
+    unless (defined $class_name) {
+      die SPVM::Builder::Util::extract_usage;
     }
   }
+}
+
+if (defined $build_dir) {
+  $ENV{SPVM_BUILD_DIR} = $build_dir;
+}
+
+for my $use_class_name (@use_class_names) {
+  SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
+}
+
+SPVM::Global::build_class('Native', __FILE__, __LINE__);
+
+SPVM::Global::build_class('Native::Compiler', __FILE__, __LINE__);
+
+if (defined $program_source) {
+  my $current_compiler = SPVM::Native->get_current_compiler;
   
-  if (defined $build_dir) {
-    $ENV{SPVM_BUILD_DIR} = $build_dir;
-  }
+  $current_compiler->set_start_file(__FILE__);
+  $current_compiler->set_start_line(__LINE__ + 1);
+  $current_compiler->eval_string($program_source);
+}
+else {
+  SPVM::Global::build_class($class_name, __FILE__, __LINE__);
   
-  for my $use_class_name (@use_class_names) {
-    SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
-  }
+  my $spvm_class_name = "SPVM::$class_name";
   
-  SPVM::Global::build_class('Native', __FILE__, __LINE__);
+  SPVM::Native->check_bootstrap_method($class_name);
   
-  SPVM::Global::build_class('Native::Compiler', __FILE__, __LINE__);
-  
-  if (defined $program_source) {
-    my $current_compiler = SPVM::Native->get_current_compiler;
-    
-    $current_compiler->set_start_file(__FILE__);
-    $current_compiler->set_start_line(__LINE__ + 1);
-    $current_compiler->eval_string($program_source);
-  }
-  else {
-    SPVM::Global::build_class($class_name, __FILE__, __LINE__);
-    
-    my $spvm_class_name = "SPVM::$class_name";
-    
-    SPVM::Native->check_bootstrap_method($class_name);
-    
-    $spvm_class_name->main;
-  }
+  $spvm_class_name->main;
 }
 
 =encoding utf8

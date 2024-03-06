@@ -8,11 +8,14 @@ use SPVM::Builder::Exe;
 use SPVM::Builder::Util;
 
 SPVM::Builder::Util::getopt
+  # spvmcc and spvm shared
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
-  'o|output=s'        => \my $output_file,
-  'B|build-dir=s'   => \my $build_dir,
   'I|include-dir=s' => \my @include_dirs,
+  'B|build-dir=s'   => \my $build_dir,
+  
+  # spvmcc only
+  'o|output=s'        => \my $output_file,
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
   'r|required-resources' => \my $print_required_resources,
