@@ -8,6 +8,7 @@ my $show_version;
 my @include_dirs;
 
 use SPVM::Builder::Util;
+use SPVM::Global;
 
 my $class_name;
 my $program_source;
@@ -51,14 +52,12 @@ BEGIN {
   }
   
   for my $use_class_name (@use_class_names) {
-    eval "use SPVM '$use_class_name'";
+    SPVM::Global::build_class($use_class_name, __FILE__, __LINE__);
   }
   
-  eval "use SPVM 'Native'";
-  if ($@) { confess $@ }
+  SPVM::Global::build_class('Native', __FILE__, __LINE__);
   
-  eval "use SPVM 'Native::Compiler'";
-  if ($@) { confess $@ }
+  SPVM::Global::build_class('Native::Compiler', __FILE__, __LINE__);
   
   if (defined $program_source) {
     my $current_compiler = SPVM::Native->get_current_compiler;
@@ -68,8 +67,7 @@ BEGIN {
     $current_compiler->eval_string($program_source);
   }
   else {
-    eval "use SPVM '$class_name'";
-    if ($@) { confess $@ }
+    SPVM::Global::build_class($class_name, __FILE__, __LINE__);
     
     my $spvm_class_name = "SPVM::$class_name";
     
