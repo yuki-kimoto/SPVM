@@ -157,7 +157,7 @@ sub optimize {
   }
 }
 
-# Methods
+# Class Methods
 sub new {
   my $class = shift;
   
@@ -247,6 +247,27 @@ sub new {
   return $self;
 }
 
+sub parse_config_argv_option {
+  my ($class, $config_argv_option) = @_;
+  
+  my $name;
+  my $value;
+  if ($config_argv_option =~ /^(.+?)(=(.+)?)?$/) {
+    $name = $1;
+    $value = $2;
+    
+    unless (defined $value) {
+      $value = '';
+    }
+  }
+  else {
+    confess("[Unexpected Error]The regex for --config-argv-option does not match.");
+  }
+  
+  return ($name, $value);
+}
+
+# Instance Methods
 sub build_exe_file {
   my ($self) = @_;
   

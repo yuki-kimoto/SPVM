@@ -18,10 +18,10 @@ SPVM::Builder::Util::getopt
   'o|output=s'        => \my $output_file,
   'q|quiet'   => \my $quiet,
   'f|force' => \my $force,
-  'r|required-resources' => \my $print_required_resources,
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
   'optimize=s' => \my $optimize,
+  'r|required-resources' => \my $print_required_resources,
 ;
 
 if ($help) {
@@ -88,9 +88,9 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     -B, --build-dir <directory>    Build diretory
     -q, --quiet                    Stops the output of messages
     -f, --force                    Forces the compile and link
-    -r, --required-resources       Prints required resources in JSON lines
     --no-config                    No configration file is ok
     -m, --mode                     Mode
+    -r, --required-resources       Prints required resources in JSON lines
 
 =head1 Details
 
