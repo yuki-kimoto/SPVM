@@ -14,25 +14,25 @@ sub create_default_config { SPVM::Builder::Util::create_default_config(@_) }
 
 =head1 Name
 
-SPVM::Builder::Util::API - Defining Public Functions of SPVM::Builder::Util
+SPVM::Builder::Util::API - Builder Utility APIs
 
 =head1 Description
 
-The SPVM::Builder::Util::API class defines the public functions of the L<SPVM::Builder::Util> class.
+The SPVM::Builder::Util::API module has the public utility functions to build SPVM native classes and SPVM precompilation classes.
 
 =head1 Usage
 
-  my $native_make_rule = SPVM::Builder::Util::API::create_make_rule_native('Foo');
+  my $native_make_rule = SPVM::Builder::Util::API::create_make_rule_native('MyClass');
   
-  my $precompile_make_rule = SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
+  my $precompile_make_rule = SPVM::Builder::Util::API::create_make_rule_precompile('MyClass');
 
 =head1 Functions
 
 =head2 create_make_rule_native
 
-  my $make_rule = SPVM::Builder::Util::API::create_make_rule_native($basic_type_name);
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_native($class_name);
 
-Creates a rule written by C<make> commands to generate a dynamic library for the class $basic_type_name that contains native methods, and returns the rule.
+Creates a string of C<make> commands for generating a dynamic library for a L<native class|SPVM::Document::NativeClass> given the class name $class_name, and returns it.
 
 Examples:
 
@@ -49,9 +49,9 @@ Examples:
 
 =head2 create_make_rule_precompile
 
-  my $make_rule = SPVM::Builder::Util::API::create_make_rule_precompile($basic_type_name);
+  my $make_rule = SPVM::Builder::Util::API::create_make_rule_precompile($class_name);
 
-Creates a rule written by C<make> commands to generate a dynamic library for the class $basic_type_name that contains precompiled methods, and returns the rule.
+Creates a string of C<make> commands for generating a dynamic library for a precompilation class given the class name $class_name, and returns it.
 
 Examples:
 
@@ -70,9 +70,9 @@ Examples:
 
   my $config = SPVM::Builder::Util::API::create_default_config();
 
-Creates a default config, and returns it. The config is a L<SPVM::Builder::Config> object.
+Creates a default config, and returns it. It is a L<SPVM::Builder::Config> object.
 
-The current implementation is the following one.
+Currently the default config is created by the following operation.
 
   my $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
 
