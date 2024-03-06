@@ -128,7 +128,7 @@ The list of class attributes.
 <table>
   <tr>
     <th>
-      Class attributes
+      Class Attributes
    </th>
     <th>
       Descriptions
@@ -617,7 +617,7 @@ A Class variable must be defined directly under the L<class definition|/"Class D
 
 The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">.
 
-L<Class variable attributes|/"Class Variable Attribute"> can be specified.
+L<Class variable attributes|/"Class Variable Attributes"> can be specified.
 
   our CLASS_VARIABLE_NAME : ATTRIBUTE TYPE;
   our CLASS_VARIABLE_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTE3 TYPE;
@@ -644,7 +644,7 @@ Examples:
     our $NUM_RW : rw int;
   }
 
-=head3 Class Variable Attribute
+=head3 Class Variable Attributes
 
 The list of class variable attributes.
 
@@ -812,7 +812,7 @@ The field is defined directly under the L<class block|/"Class Block">.
     has name : string;
   }
 
-L<Field attributes|/"Field Attribute"> can be specified.
+L<Field attributes|/"Field Attributes"> can be specified.
 
 Compilation Errors:
 
@@ -822,7 +822,7 @@ The field names must follows the rule of the L<field name|/"Field Name">. Otherw
 
 Field names cannot be duplicated. If so, a compilation error occurs.
 
-=head3 Field Attribute
+=head3 Field Attributes
 
 The list of field attributes.
 
@@ -831,7 +831,7 @@ The list of field attributes.
 <table>
   <tr>
     <th>
-      Attributes
+      Field Attributes
    </th>
     <th>
       Descriptions
@@ -1082,7 +1082,7 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
 <table>
   <tr>
     <th>
-      Attributes
+      Method Attributes
    </th>
     <th>
       Descriptions
