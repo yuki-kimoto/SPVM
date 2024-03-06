@@ -83,7 +83,7 @@ Gets and sets the C<compile_info> field, a L<SPVM::Builder::CompileInfo> object.
 
 Creates a new L<SPVM::Builder::ObjectFileInfo> object, and returns it.
 
-If a field is not defined, the field is set to the following default value.
+Field Default Values:
 
 =over 2
 

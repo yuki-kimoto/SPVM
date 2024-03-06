@@ -134,7 +134,7 @@ Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
 
 Creates a new L<SPVM::Builder::Resource> object with L</"Fields">.
 
-If a field is not defined, the field is set to the following default value.
+Field Default Values:
 
 =over 2
 

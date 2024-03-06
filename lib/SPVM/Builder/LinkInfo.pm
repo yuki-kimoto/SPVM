@@ -173,7 +173,7 @@ Gets and sets the C<object_files> field, an array reference of L<SPVM::Builder::
 
 Creates a new C<SPVM::Builder::LinkInfo> object given L</"Fields">.
 
-If a field is not defined, the field is set to the following default value.
+Field Default Values:
 
 =over 2
 

@@ -221,7 +221,7 @@ These are C<precompile_class>, C<native_class>, C<native_source>, C<spvm_core>, 
 
 Creates a new L<SPVM::Builder::CompileInfo> object given L</"Fields">.
 
-If a field is not defined, the field is set to the following default value.
+Field Default Values:
 
 =over 2
 
