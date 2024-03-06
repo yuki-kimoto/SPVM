@@ -135,6 +135,17 @@ sub mode {
   }
 }
 
+sub argv {
+  my $self = shift;
+  if (@_) {
+    $self->{argv} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{argv};
+  }
+}
+
 sub optimize {
   my $self = shift;
   if (@_) {
@@ -150,7 +161,10 @@ sub optimize {
 sub new {
   my $class = shift;
   
-  my $self = {@_};
+  my $self = {
+    argv => [],
+    @_
+  };
   
   # Target class name
   my $class_name = $self->{class_name};
@@ -188,14 +202,16 @@ sub new {
   # Config file
   my $allow_no_config_file = $self->{allow_no_config_file};
   
-  my $mode = $self->{mode};
+  my $config_mode = $self->{mode};
+  
+  my $config_argv = $self->{argv};
   
   # Config
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   
   my $config;
   if (defined $config_file) {
-    $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $mode);
+    $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $config_mode, @$config_argv);
   }
   else {
     if ($allow_no_config_file) {
