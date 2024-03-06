@@ -26,42 +26,43 @@ SPVM::Builder::Util::getopt
 
 if ($help) {
   print SPVM::Builder::Util::extract_usage;
+  exit 0;
 }
 elsif ($show_version) {
   my $version_string = "spvmcc v$SPVM::VERSION";
   print "$version_string\n";
-}
-else {
-  my $class_name = shift;
-  unless (defined $class_name) {
-    die SPVM::Builder::Util::extract_usage;
-  }
-  
-  my @original_include_dirs = @include_dirs;
-  push @include_dirs, map { "$_/SPVM" } @INC;
-  unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
-  
-  my $build_exe = SPVM::Builder::Exe->new(
-    class_name => $class_name,
-    build_dir => $build_dir,
-    include_dirs => \@include_dirs,
-    output_file => $output_file,
-    quiet => $quiet,
-    force => $force,
-    allow_no_config_file => $allow_no_config_file,
-    mode => $mode,
-    optimize => $optimize,
-  );
-  
-  if ($print_required_resources) {
-    my $lines = $build_exe->get_required_resource_json_lines;
-    print "$_\n" for @$lines;
-  }
-  else {
-    $build_exe->build_exe_file;
-  }
+  exit 0;
 }
 
+my $class_name = shift;
+
+unless (defined $class_name) {
+  die SPVM::Builder::Util::extract_usage;
+}
+
+my @original_include_dirs = @include_dirs;
+push @include_dirs, map { "$_/SPVM" } @INC;
+unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
+
+my $build_exe = SPVM::Builder::Exe->new(
+  class_name => $class_name,
+  build_dir => $build_dir,
+  include_dirs => \@include_dirs,
+  output_file => $output_file,
+  quiet => $quiet,
+  force => $force,
+  allow_no_config_file => $allow_no_config_file,
+  mode => $mode,
+  optimize => $optimize,
+);
+
+if ($print_required_resources) {
+  my $lines = $build_exe->get_required_resource_json_lines;
+  print "$_\n" for @$lines;
+  exit 0;
+}
+
+$build_exe->build_exe_file;
 
 =encoding utf8
 
