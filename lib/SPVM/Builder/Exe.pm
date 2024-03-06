@@ -161,10 +161,10 @@ sub optimize {
 sub new {
   my $class = shift;
   
-  my $self = {
+  my $self = bless {
     argv => [],
     @_
-  };
+  }, $class;
   
   # Target class name
   my $class_name = $self->{class_name};
@@ -244,7 +244,7 @@ sub new {
     $config->set_global_optimize($optimize);
   }
   
-  return bless $self, $class;
+  return $self;
 }
 
 sub build_exe_file {
