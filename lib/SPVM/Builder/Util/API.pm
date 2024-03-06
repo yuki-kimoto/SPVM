@@ -34,6 +34,8 @@ The SPVM::Builder::Util::API module has the public utility functions to build SP
 
 Creates a string of C<make> commands for generating a dynamic library for a L<native class|SPVM::Document::NativeClass> given the class name $class_name, and returns it.
 
+A native class must have at least one method with the L<native attribute|SPVM::Document::Language::Class/"Method Attributes">.
+
 Examples:
 
   # Makefile.PL
@@ -52,6 +54,8 @@ Examples:
   my $make_rule = SPVM::Builder::Util::API::create_make_rule_precompile($class_name);
 
 Creates a string of C<make> commands for generating a dynamic library for a precompilation class given the class name $class_name, and returns it.
+
+A precompilation class must have at least one method with the L<precompile attribute|SPVM::Document::Language::Class/"Method Attributes">.
 
 Examples:
 
