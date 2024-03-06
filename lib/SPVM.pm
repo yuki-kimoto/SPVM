@@ -172,8 +172,6 @@ L<All SPVM Documents|SPVM::Document>
 
 =back
 
-=item * L<Exchange APIs|SPVM::ExchangeAPI>
-
 =item * L<Native Classes|SPVM::Document::NativeClass>
 
 =item * L<Native Class Config|SPVM::Builder::Config>
@@ -213,6 +211,24 @@ L<All SPVM Documents|SPVM::Document>
 =item * L<Resources|SPVM::Document::Resource>
 
 =item * L<Environment Variables|SPVM::Document::EnvironmentVariables>
+
+=back
+
+=head1 Exchange APIs
+
+=over 2
+
+=item * L<Exchange APIs|SPVM::ExchangeAPI>
+
+=back
+
+=head1 Builder APIs
+
+=over 2
+
+=item * L<Builder APIs|SPVM::Builder::API>
+
+=item * L<Builder Utility APIs|SPVM::Builder::Util::API>
 
 =back
 
