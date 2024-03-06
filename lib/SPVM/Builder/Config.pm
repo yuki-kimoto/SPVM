@@ -2001,11 +2001,11 @@ The L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Bui
 
   $config->use_resource('Resource::MyResource', argv => [option_name => "option_value"]);
 
-The L<spvmcc> command has the C<--config-argv> option for giving config arguments.
+The L<spvmcc> command has the C<--config-argv> option(released in the near future) for giving config arguments.
 
   spvmcc -o myexe --config-argv option_name --config-argv option_value MyExe
 
-The L<spvmcc> command also has the C<--config-argv-option> option to write config arguments easily.
+The L<spvmcc> command also has the C<--config-argv-option> option(released in the near future) to write config arguments easily.
 
   spvmcc -o myexe --config-argv-option option_name=option_value MyExe
 
