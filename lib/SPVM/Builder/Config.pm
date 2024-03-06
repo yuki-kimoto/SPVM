@@ -1378,7 +1378,7 @@ The 2th argument of the callback is a L<SPVM::Builder::LinkInfo> object.
 
 Gets and sets the C<force> field.
 
-If this field is a true value, the compilation and the linking are forced.
+If this field is a true value, the compilation and linking are forced.
 
 If this field is a false value except for undef, the compilation and linking are performed following the rule of the L<dependency resolution|SPVM::Document::NativeClass/"Dependency Resolution">.
 
@@ -1614,7 +1614,7 @@ Examples:
 
 =item * L</"ld">
 
-The C<$Config{ld}> of the L<Config> class.
+The C<$Config{ld}> of the L<Config> module.
 
 =item * L</"ldflags">
 
@@ -1639,7 +1639,7 @@ Windows:
 Other OSs:
 
   ["-pthread"]
-  
+
 =item * L</"static_lib_ldflag">
 
   ["-Wl,-Bstatic", "-Wl,-Bdynamic"]
@@ -1822,16 +1822,16 @@ Examples:
   $config->add_lib('gsl', 'z');
   $config->add_lib(
     SPVM::Builder::LibInfo->new(config => $config, name => 'gsl'),
-    SPVM::Builder::LibInfo->new(config => $config, name => 'z', abs => 1),
+    SPVM::Builder::LibInfo->new(config => $config, name => 'z', is_abs => 1),
   );
 
 =head2 add_lib_abs
 
   $config->add_lib_abs(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field of L<SPVM::Builder::LibInfo> set to a true value.
+Adds @libs to the end of the L</"libs"> field with the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field in the C<SPVM::Builder::LibInfo> class set to a true value.
 
-If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created given the library name.
+If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
 If the library is located in your user directory, it is good to use the L</"add_lib_abs"> method instead of the L</"add_lib"> method.
 
@@ -1843,9 +1843,9 @@ For system libraries, there is no problem because the linker knows the search di
 
   $config->add_static_lib(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static"> field of L<SPVM::Builder::LibInfo> set to a true value.
+Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static">  field in the C<SPVM::Builder::LibInfo> class set to a true value.
 
-If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created given the library name.
+If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
 Examples:
 
@@ -1856,9 +1856,9 @@ Examples:
 
   $config->add_static_lib_abs(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static"> field and the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field of C<SPVM::Builder::LibInfo> set to a true value.
+Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static"> field and the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field  field in the C<SPVM::Builder::LibInfo> class set to a true value.
 
-If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created given the library name.
+If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
 =head2 add_before_link_cb
 
@@ -1882,9 +1882,7 @@ Examples:
   my $resource = $config->use_resource($resource_name);
   my $resource = $config->use_resource($resource_name, %options);
 
-Loads a resource(a L<SPVM::Builder::Resource> object) given a resource name and options, and returns it.
-
-See L<SPVM::Document::Resource> for details of resources.
+Loads a L<resource|SPVM::Document::Resource> given a resource name and options, and returns it. The return value is a L<SPVM::Builder::Resource> object.
 
 Options:
 
@@ -1909,7 +1907,7 @@ Examples:
 
   my $resource = $config->get_resource($resource_name);
 
-Gets a resource(a L<SPVM::Builder::Resource> object) loaded by the L</"use_resource"> method given a resource name, and returns it.
+Gets a resource loaded by the L</"use_resource"> method given a resource name, and returns it. The return value is a L<SPVM::Builder::Resource> object.
 
 =head2 get_resource_names
 
@@ -1923,13 +1921,13 @@ Returns resource names loaded by the L</"use_resource"> method.
 
 Loads a config file, and returns a L<SPVM::Builder::Config> object.
 
-The @argv is set to the @ARGV of the config file.
+@argv is set to the @ARGV of the config file.
 
 =head2 load_base_config
 
   my $config = $config->load_base_config($config_file, @argv);
 
-Creates the basic config file path from the config file path $config_file, and calls the L</"load_config"> method given the base config file path and config arguments, and returns its return value.
+Creates the base config file path from the config file path $config_file, and calls the L</"load_config"> method given the base config file path and config arguments, and returns its return value.
 
 A base config file is the config file that removes its mode.
 
@@ -1938,7 +1936,7 @@ A base config file is the config file that removes its mode.
   
   # Base config file
   MyClass.config
-  
+
 Examples:
 
   my $config = SPVM::Builder::Config::Exe->load_base_config(__FILE__);
@@ -1963,9 +1961,11 @@ Clones the L<SPVM::Builder::Config> object, and returns it.
 
 =head1 Config Mode
 
-Config files of executable files generated by the L<spvmcc> command and config files of L<resources|SPVM::Document::Resource> have its mode.
+A config can have its mode if the config is one for an executable file generated by the L<spvmcc> command and for a L<resource|SPVM::Document::Resource>.
 
-The mode is written in the format C<.> and the mode name just before the C<.config> extension.
+The mode is written in the format C<.MODE_NAME> just before the C<.config> extension of a config file.
+
+C<MODE_NAME> must consist of C<a-zA-Z0-9_>.
 
 Examples:
   
@@ -1975,29 +1975,33 @@ Examples:
   # devel mode
   MyClass.devel.config
 
-The L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Builder::Config class has the C<mode> option for config modes.
+Use the L</"mode"> field to get the config mode.
+
+  my $modle = $config->mode;
+
+The L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Builder::Config class has the C<mode> option for giving a config mode.
 
   $config->use_resource('Resource::MyResource', mode => 'production');
 
-The L<spvmcc> command has the C<--mode> option for config modes.
+The L<spvmcc> command has the C<--mode> option for giving a config mode.
 
   spvmcc -o myexe --mode production MyExe
 
 =head1 Config Arguments
 
-Config files of executable files generated by the L<spvmcc> command and config files of L<resources|SPVM::Document::Resource> can receive arguments from command line arguments C<@ARGV>.
+A config file can receive its argments.
 
-Using key-value pairs as the values of C<@ARGV> are recommended because they can be assigned to a Perl hash.
+Key-value pairs are recommended as the values of C<@ARGV> because they are normally assigned to a Perl hash.
 
   my %options = @ARGV;
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-The L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Builder::Config class has the C<argv> option for config arguments.
+The L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Builder::Config class has the C<argv> option for giving config arguments.
 
   $config->use_resource('Resource::MyResource', argv => [option_name => "option_value"]);
 
-The L<spvmcc> command has the C<--config-argv> option for config arguments.
+The L<spvmcc> command has the C<--config-argv> option for giving config arguments.
 
   spvmcc -o myexe --config-argv option_name --config-argv option_value MyExe
 
@@ -2007,17 +2011,21 @@ The L<spvmcc> command also has the C<--config-argv-option> option to write confi
 
 =head1 Library Path Resolution
 
-If the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a false value, the linker L</"ld"> resolves libaray paths.
+The following is the rule of library path resolution.
 
-If the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a true value, libaray paths are resolved by the following rules.
+Library names are converted to L<SPVM::Builder::LibInfo> objects.
 
-A library is searched from the beginning of the L</"lib_dir"> field.
+If the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field in C<SPVM::Builder::LibInfo> is a false value, the linker L</"ld"> resolves libaray paths.
 
-If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field is a false value, the search is performed in the order of a dynamic library, a static library.
+If the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field in C<SPVM::Builder::LibInfo> is a true value, libaray paths are resolved by the following rules.
 
-If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field is a true value, the search is performed only in static libraries.
+A library is searched in the library search directories contained in the L</"lib_dir"> field from the beginning.
 
-If found, the C<-l> option of the linker L</"ld"> is created using the found absolute path.
+If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field in C<SPVM::Builder::LibInfo> is a false value, the search is performed in the order of a dynamic library, a static library.
+
+If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field in C<SPVM::Builder::LibInfo> is a true value, the search is performed only in static libraries.
+
+If a library is found, the C<-l> option of the linker L</"ld"> is created using the found absolute path.
 
 =head1 Examples
 
@@ -2036,18 +2044,16 @@ C11:
 C++:
 
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
-  
-  $config;
 
 C++11:
 
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
-Output messages from the compiler and the linker:
+Output messages to C<stderr> from the compiler and the linker:
 
   $config->quiet(0);
 
-Force the compilation and the link:
+Force the compilation and link:
 
   $config->force(1);
 
