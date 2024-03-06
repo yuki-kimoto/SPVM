@@ -41,11 +41,11 @@ sub build_dynamic_lib_dist_native {
 
 =head1 Name
 
-SPVM::Builder::API - Defining Public Functions of SPVM::Builder
+SPVM::Builder::API - Builder APIs
 
 =head1 Description
 
-The SPVM::Builder::API class defines the public methods of the L<SPVM::Builder> class.
+The SPVM::Builder::API class has the public methods to build SPVM native classes and SPVM precompilation classes.
 
 =head1 Usage
   
@@ -54,6 +54,7 @@ The SPVM::Builder::API class defines the public methods of the L<SPVM::Builder> 
   );
   
   $builder->build_dynamic_lib_dist_precompile('MyClass');
+  
   $builder->build_dynamic_lib_dist_native('MyClass');
 
 =head1 Class Methods
@@ -62,7 +63,7 @@ The SPVM::Builder::API class defines the public methods of the L<SPVM::Builder> 
 
   my $builder = SPVM::Builder::API->new(%options);
 
-Creates a new L<SPVM::Builder::API> object.
+Creates a new L<SPVM::Builder::API> object, and returns it.
 
 Options:
 
@@ -70,7 +71,7 @@ Options:
 
 =item * C<build_dir>
 
-The building directory.
+A build directory.
 
 =back
 
@@ -78,21 +79,43 @@ The building directory.
 
 =head2 build_dynamic_lib_dist_precompile
 
+  $builder->build_dynamic_lib_dist_precompile($class_name)
   $builder->build_dynamic_lib_dist_precompile($class_name, $options)
 
-Generates a dynamic library for a class $class_name that has C<precompile> methods, and copies it to the C<blib/lib> directory.
+Generates a dynamic library for a L<native class|SPVM::Document::NativeClass> given by the class name $class_name, and copies it into the C<blib/lib> directory.
 
-$options is a hash reference.
+A native class must have at least one method with the L<native attribute|SPVM::Document::Language::Class/"Method Attributes">.
 
-If the C<force> option is a true value, the compilation and link are forced.
+Options:
+
+$options is a hash reference. This is optional.
+
+=over 2
+
+=item * C<force>
+
+If this option is a true value, the compilation and link are forced.
+
+=back
 
 =head2 build_dynamic_lib_dist_native
 
+  $builder->build_dynamic_lib_dist_native($class_name)
   $builder->build_dynamic_lib_dist_native($class_name, $options)
 
-Generates a dynamic library for a class $class_name that has C<native> methods, and copies it to the C<blib/lib> directory.
+Generates a dynamic library for a precompilation class $class_name that has C<native> methods, and copies it into the C<blib/lib> directory.
 
-$options is a hash reference.
+A precompilation class must have at least one method with the L<precompile attribute|SPVM::Document::Language::Class/"Method Attributes">.
 
-If the C<force> option is a true value, the compilation and link are forced.
+Options:
+
+$options is a hash reference. This is optional.
+
+=over 2
+
+=item * C<force>
+
+If this option is a true value, the compilation and link are forced.
+
+=back
 
