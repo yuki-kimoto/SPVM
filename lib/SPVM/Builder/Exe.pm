@@ -211,7 +211,7 @@ sub new {
   
   my $config;
   if (defined $config_file) {
-    $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $config_mode, @$config_argv);
+    $config = SPVM::Builder::Config::Exe->load_mode_config($config_file, $config_mode, $config_argv);
   }
   else {
     if ($allow_no_config_file) {

@@ -1,7 +1,28 @@
 0.989084 2023-03-06
   [New Features]
     * Add -B and --build-dir to the spvm command.
-    
+  [Incompatible Changes]
+    * An argument of the load_config method in the SPVM::Builder::Config class is changed.
+      [Before]
+      my $config = $config->load_config($config_file, @argv);
+      
+      [After]
+      my $config = $config->load_config($config_file, $argv);
+      
+    * An argument of the load_base_config method in the SPVM::Builder::Config class is changed.
+      [Before]
+      my $config = $config->load_base_config($config_file, @argv);
+      
+      [After]
+      my $config = $config->load_base_config($config_file, $argv);
+      
+    * An argument of the load_mode_config method in the SPVM::Builder::Config class is changed.
+      [Before]
+      my $config = $config->load_mode_config($config_file, $mode, @argv);
+      
+      [After]
+      my $config = $config->load_mode_config($config_file, $mode, $argv);
+      
 0.989083 2023-03-06
   [Internal Changes]
     * Add parentheses to the confess function so that Perl does not interpret it as the indirect syntax.

@@ -838,13 +838,22 @@ sub add_before_link_cb {
 }
 
 sub load_config {
-  my ($self, $config_file, @args) = @_;
-
+  my ($self, $config_file, $argv) = @_;
+  
+  unless (defined $argv) {
+    $argv = [];
+  }
+  
   unless (-f $config_file) {
     confess("The config file \"$config_file\" must exist");
   }
-  local @ARGV = @args;
-  my $config = do File::Spec->rel2abs($config_file);
+  
+  my $config;
+  {
+    local @ARGV = @$argv;
+    $config = do File::Spec->rel2abs($config_file);
+  }
+  
   if ($@) {
     confess("The config file \"$config_file\" can't be parsed: $@");
   }
@@ -859,7 +868,7 @@ sub load_config {
 }
 
 sub load_mode_config {
-  my ($self, $config_file, $mode, @argv) = @_;
+  my ($self, $config_file, $mode, $argv) = @_;
   
   my $mode_config_file = $self->_remove_ext_from_config_file($config_file);
   if (defined $mode) {
@@ -871,15 +880,15 @@ sub load_mode_config {
     confess("Can't find the config file \"$mode_config_file\"");
   }
   
-  my $config = $self->load_config($mode_config_file, @argv);
+  my $config = $self->load_config($mode_config_file, $argv);
   
   return $config;
 }
 
 sub load_base_config {
-  my ($self, $config_file, @args) = @_;
+  my ($self, $config_file, $args) = @_;
   
-  my $config = $self->load_mode_config($config_file, undef, @args);
+  my $config = $self->load_mode_config($config_file, undef, $args);
 
   return $config;
 }
@@ -926,7 +935,7 @@ sub use_resource {
     confess("A config file \"$config_rel_file\" is not found in (@INC)");
   }
   
-  my $config = $self->load_config($config_file, @$resource_argv);
+  my $config = $self->load_config($config_file, $resource_argv);
   $config->file($config_file);
   
   $resource->config($config);
@@ -1917,15 +1926,17 @@ Returns resource names loaded by the L</"use_resource"> method.
 
 =head2 load_config
 
-  my $config = $config->load_config($config_file, @argv);
+  my $config = $config->load_config($config_file);
+  my $config = $config->load_config($config_file, $argv);
 
-Loads a config file, and returns a L<SPVM::Builder::Config> object.
+Loads a config file given a config file path and an optional array refernce containing L<config arguments|/"Config Arguments">, and returns a L<SPVM::Builder::Config> object.
 
-@argv is set to the @ARGV of the config file.
+The values referenced by $argv is set to the @ARGV of the config file.
 
 =head2 load_base_config
 
-  my $config = $config->load_base_config($config_file, @argv);
+  my $config = $config->load_base_config($config_file);
+  my $config = $config->load_base_config($config_file, $argv);
 
 Creates the base config file path from the config file path $config_file, and calls the L</"load_config"> method given the base config file path and config arguments, and returns its return value.
 
@@ -1943,7 +1954,8 @@ Examples:
 
 =head2 load_mode_config
 
-  my $config = $config->load_mode_config($config_file, $mode, @argv);
+  my $config = $config->load_mode_config($config_file, $mode);
+  my $config = $config->load_mode_config($config_file, $mode, $argv);
 
 Creates the L<mode config file|/"Config Mode"> path from the config file path $config_file, and calls the L</"load_config"> method given the mode config file path and config arguments, and returns its return value.
 
