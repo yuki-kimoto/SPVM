@@ -6,6 +6,7 @@
     * Add the add_static_lib_abs method to the SPVM::Builder::Config class.
   [Document Improvement]
     * Improve and fix the document of the SPVM::Builder::Config class.
+    * Improve and fix the document of the SPVM::Builder::Config::Exe class.
     * Improve and fix the document of the SPVM::Builder::API class.
     * Improve and fix the document of the SPVM::Builder::Util::API class.
     * Improve and fix SPVM::Document::NativeClass.
