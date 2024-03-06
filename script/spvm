@@ -17,6 +17,7 @@ BEGIN {
   SPVM::Builder::Util::getopt
     'h|help'          => \my $help,
     'v|version'       => \my $show_version,
+    'B|build-dir=s'   => \my $build_dir,
     'I|include-dir=s' => \my @include_dirs,
     'e=s' => \$program_source,
     '-M=s' => \@use_class_names,
@@ -43,6 +44,10 @@ BEGIN {
         die SPVM::Builder::Util::extract_usage;
       }
     }
+  }
+  
+  if (defined $build_dir) {
+    $ENV{SPVM_BUILD_DIR} = $build_dir;
   }
   
   for my $use_class_name (@use_class_names) {
@@ -94,6 +99,7 @@ The spvm command is a SPVM compiler and linker to generate an executable file.
     -h, --help                     Shows this message
     -v, --version                  Shows the version
     -I, --include-dir <directory>  Adds a include directory
+    -B, --build-dir <directory>    Build diretory
     -e <source>                    Executes a program source code using
                                    the eval_string method in the Compiler class
 

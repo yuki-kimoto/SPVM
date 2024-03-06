@@ -37,9 +37,26 @@ my $dev_null = File::Spec->devnull;
     ok(1);
   }
   
-  # -e
   {
-    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -I solo/lib/SPVM -e "warn q'[Test Output]spvmcc -e option';" MyExe);
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvmcc command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # -B
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm -B $build_dir -I solo/lib/SPVM MyExe foo bar);
+    system($spvm_cmd) == 0
+     or die "Can't execute spvmcc command $spvm_cmd:$!";
+    
+    ok(1);
+  }
+  
+  # --build-dir
+  {
+    my $spvm_cmd = qq($^X -Mblib blib/script/spvm --build-dir $build_dir -I solo/lib/SPVM -e "warn q'[Test Output]spvmcc -e option';" MyExe);
     system($spvm_cmd) == 0
      or die "Can't execute spvmcc command $spvm_cmd:$!";
     
