@@ -1192,6 +1192,18 @@ $offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
 $offset + $length must be less than or equal to the length of $string. Otherwise an exception is thrown.
 
+=head2 or
+
+C<static method or : object ($left : object, $right : object);>
+
+If $left is a true value, returns $left, otherwise returns $right;
+
+=head2 if
+
+C<static method if : object ($condition : int, $left : object, $right : object);>
+
+If $condition is a true value, returns $left, otherwise returns $right;
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

@@ -1265,4 +1265,25 @@ class Fn {
     }
   }
   
+  static method or : object ($left : object, $right : object) {
+    
+    if ($left) {
+      return $left;
+    }
+    else {
+      return $right;
+    }
+  }
+  
+  
+  static method if : object ($condition : int, $left : object, $right : object) {
+    
+    if ($condition) {
+      return $left;
+    }
+    else {
+      return $right;
+    }
+  }
+  
 }

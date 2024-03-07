@@ -4719,4 +4719,79 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method or : int () {
+    
+    {
+      my $left = "a";
+      my $right = "b";
+      
+      my $ret = Fn->or($left, $right);
+      
+      unless ($ret is_compile_type object) {
+        return 0;
+      }
+    }
+    
+    {
+      my $left = "a";
+      my $right = "b";
+      
+      my $ret = Fn->or($left, $right);
+      
+      unless ($ret == $left) {
+        return 0;
+      }
+    }
+    
+    {
+      my $left = (string)undef;
+      my $right = "b";
+      
+      my $ret = Fn->or($left, $right);
+      
+      unless ($ret == $right) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method if : int () {
+    
+    {
+      my $left = "a";
+      my $right = "b";
+      
+      my $ret = Fn->if(1, $left, $right);
+      
+      unless ($ret is_compile_type object) {
+        return 0;
+      }
+    }
+    
+    {
+      my $left = "a";
+      my $right = "b";
+      
+      my $ret = Fn->if(1, $left, $right);
+      
+      unless ($ret == $left) {
+        return 0;
+      }
+    }
+    
+    {
+      my $left = "a";
+      my $right = "b";
+      
+      my $ret = Fn->if(0, $left, $right);
+      
+      unless ($ret == $right) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

@@ -1,3 +1,8 @@
+0.989085 2023-03-08
+  [New Features]
+    * Add the or method to the Fn class.
+    * Add the if method to the Fn class.
+    
 0.989084 2023-03-07
   [New Features]
     * Add -B and --build-dir to the spvm command.
