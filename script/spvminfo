@@ -1,0 +1,121 @@
+#!perl
+
+use strict;
+use warnings;
+
+use SPVM();
+use SPVM::Builder::Exe;
+use SPVM::Builder::Util;
+
+my @argv;
+
+SPVM::Builder::Util::getopt
+  # spvminfo and spvm shared
+  'h|help'          => \my $help,
+  'v|version'       => \my $show_version,
+  'I|include-dir=s' => \my @include_dirs,
+  'B|build-dir=s'   => \my $build_dir,
+  
+  # spvminfo only
+  'o|output=s'        => \my $output_file,
+  'q|quiet'   => \my $quiet,
+  'f|force' => \my $force,
+  'no-config' => \my $allow_no_config_file,
+  'm|mode=s' => \my $mode,
+  'optimize=s' => \my $optimize,
+  'r|required-resources' => \my $print_required_resources,
+  'config-argv=s' => \@argv,
+  'config-argv-option=s' => sub {
+    my ($opt_name, $opt_value) = @_;
+    push @argv, SPVM::Builder::Exe->parse_config_argv_option($opt_value);
+  },
+;
+
+if ($help) {
+  print SPVM::Builder::Util::extract_usage;
+  exit 0;
+}
+elsif ($show_version) {
+  my $version_string = "spvminfo v$SPVM::VERSION";
+  print "$version_string\n";
+  exit 0;
+}
+
+my $class_name = shift;
+
+unless (defined $class_name) {
+  warn "<class name> is required.\n\n";
+  warn SPVM::Builder::Util::extract_usage;
+  exit 255;
+}
+
+unless (defined $output_file) {
+  warn "-o, --output option is required.\n\n";
+  warn SPVM::Builder::Util::extract_usage;
+  exit 255;
+}
+
+my @original_include_dirs = @include_dirs;
+push @include_dirs, map { "$_/SPVM" } @INC;
+unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
+
+my $build_exe = SPVM::Builder::Exe->new(
+  class_name => $class_name,
+  build_dir => $build_dir,
+  include_dirs => \@include_dirs,
+  output_file => $output_file,
+  quiet => $quiet,
+  force => $force,
+  allow_no_config_file => $allow_no_config_file,
+  mode => $mode,
+  optimize => $optimize,
+  argv => \@argv,
+);
+
+if ($print_required_resources) {
+  my $lines = $build_exe->get_required_resource_json_lines;
+  print "$_\n" for @$lines;
+  exit 0;
+}
+
+$build_exe->build_exe_file;
+
+=encoding utf8
+
+=head1 Name
+
+spvminfo - Generating Excutable File
+
+=head1 Description
+
+The spvminfo command is a SPVM compiler and linker to generate an executable file.
+
+=head1 Usage
+
+  usage: spvminfo [<options>] <class name>
+    
+    spvminfo -I lib/SPVM -o myapp Myapp
+  
+  options:
+    -h, --help                     Shows this message
+    -v, --version                  Shows the version
+    -o, --output                   The output file name
+    -I, --include-dir <directory>  Adds a include directory
+    -B, --build-dir <directory>    Build diretory
+    -q, --quiet                    Stops the output of messages
+    -f, --force                    Forces the compile and link
+    --no-config                    No configration file is ok
+    -m, --mode                     Config mode
+    --config-argv                  Config arguments
+    --config-argv-option           Key-value config arguments such as NAME=VALUE
+    -r, --required-resources       Prints required resources in JSON lines
+
+=head1 Details
+
+See L<SPVM::Builder::Config::Exe> about configurations to generate an executable file.
+
+=head1 Copyright & License
+
+Copyright 2023 Yuki Kimoto. All Rights Reserved.
+
+MIT License.

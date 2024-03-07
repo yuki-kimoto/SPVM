@@ -133,6 +133,7 @@ lib/SPVM/Builder/include/spvm_vm.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
+lib/SPVM/Builder/Info.pm
 lib/SPVM/Builder/LibInfo.pm
 lib/SPVM/Builder/LinkInfo.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
@@ -400,6 +401,7 @@ README.md
 script/spvm
 script/spvmcc
 script/spvmdist
+script/spvminfo
 solo/lib/SPVM/MyExe.config
 solo/lib/SPVM/MyExe.debug.config
 solo/lib/SPVM/MyExe.debug_memory_count.config
