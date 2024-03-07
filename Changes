@@ -4,6 +4,8 @@
     * Add the if method to the Fn class.
   [Incompatible Changes]
     * The argument $argv in the load_config method in the SPVM::Builder::Config class must be defined.
+  [Changes]
+    * Change segfault to an exeption if an native address is not found.
 0.989084 2023-03-07
   [New Features]
     * Add -B and --build-dir to the spvm command.
