@@ -2233,12 +2233,6 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_LONG(SPVM_ENV* env, 
     
     char *end;
     num = strtoll(string, &end, 10);
-    if (num > INT64_MAX) {
-      num = INT64_MAX;
-    }
-    else if (num < INT64_MIN) {
-      num = INT64_MIN;
-    }
   }
   
   *out = (int64_t)num;

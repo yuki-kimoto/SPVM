@@ -1249,4 +1249,49 @@ class TestCase::TypeConversion {
     return 1;
   }
   
+  static method convert_string_to_long : long () {
+    
+    {
+      my $string = (string)undef;
+      
+      my $num = (long)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"";
+      
+      my $num = (long)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)Fn->LONG_MAX;
+      
+      my $num = (long)$string;
+      
+      unless ($num == Fn->LONG_MAX) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)Fn->LONG_MIN;
+      
+      my $num = (long)$string;
+      
+      unless ($num == Fn->LONG_MIN) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

@@ -2460,10 +2460,6 @@ If the string is C<undef>, returns 0.
 
 If not, the string is coverted to a number by the C<strtoll> function in the C language.
 
-The number is greater than C<INT64_MAX>, the number is set to C<INT64_MAX>.
-
-The number is less than C<INT64_MIN>, the number is set to C<INT64_MIN>.
-
 And returns the number.
 
 =head3 String-to-float Conversion
