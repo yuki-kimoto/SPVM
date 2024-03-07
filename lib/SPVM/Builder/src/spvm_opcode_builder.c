@@ -1457,17 +1457,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       // String length logic is same as ARRAY_LENGTH opcode
                       SPVM_OPCODE opcode = {0};
                       
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_LENGTH);
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LENGTH);
                       
                       int32_t runtime_var_index_out = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_dist);
                       int32_t runtime_var_index_in = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_assign_src->first);
                       
                       opcode.operand0 = runtime_var_index_out;
                       opcode.operand1 = runtime_var_index_in;
-
+                      
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-
-                      SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
+                      
                       break;
                     }
                     case SPVM_OP_C_ID_ARRAY_LENGTH : {
@@ -1480,9 +1479,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       opcode.operand0 = runtime_var_index_out;
                       opcode.operand1 = runtime_var_index_in;
-
+                      
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-
+                      
                       SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, unresolved_goto_end_of_eval_on_exception_opcode_index_stack, unresolved_goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
                       break;
                     }

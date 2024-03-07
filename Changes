@@ -25,6 +25,8 @@
       [After]
       my $config = $config->load_mode_config($config_file, $mode, $argv);
     * The spvmcc command must be given the -o, --output option.
+  [Incompatible Changes and Breaking Binary Compatibility]
+    * The length operator returns 0 if the operand is undef.
   [Changes]
     * Chaingin --optimize option in the spvmcc command is detected.
   [Internal Changes]

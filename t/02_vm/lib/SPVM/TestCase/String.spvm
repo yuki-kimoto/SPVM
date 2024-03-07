@@ -96,7 +96,7 @@ class TestCase::String {
   }
   
   static method string_length : int () {
-    # String length
+    # length Operator
     {
       my $string_length = length "abc";
       
@@ -106,7 +106,30 @@ class TestCase::String {
       
       return 1;
     }
+    
+    {
+      my $string_length = length "";
+      
+      unless ($string_length == 0) {
+        return 0;
+      }
+      
+      return 1;
+    }
+    
+    {
+      my $string = (string)undef;
+      my $string_length = length $string;
+      
+      unless ($string_length == 0) {
+        return 0;
+      }
+      
+      return 1;
+    }
+    
   }
+  
   static method basic : int () {
     
     # Assign byte array to string

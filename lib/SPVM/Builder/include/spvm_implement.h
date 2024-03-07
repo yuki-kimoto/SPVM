@@ -1159,6 +1159,15 @@ static inline void SPVM_IMPLEMENT_ARRAY_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack,
   }
 }
 
+static inline void SPVM_IMPLEMENT_STRING_LENGTH(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* string, int32_t object_length_offset) {
+  if (string == NULL) {
+    *out = 0;
+  }
+  else {
+    *out = *(int32_t*)((intptr_t)string + object_length_offset);
+  }
+}
+
 static inline void SPVM_IMPLEMENT_GET_FIELD_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* object, int32_t field_offset, int32_t* error_id, int32_t object_data_offset) {
   
   if (__builtin_expect(object == NULL, 0)) {

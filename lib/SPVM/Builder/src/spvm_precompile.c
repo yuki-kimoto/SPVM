@@ -2217,6 +2217,16 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ", array, &error_id, object_length_offset);\n");
         break;
       }
+      case SPVM_OPCODE_C_ID_STRING_LENGTH: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  string = ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_STRING_LENGTH(env, stack, ");
+        SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", string, object_length_offset);\n");
+        break;
+      }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE:
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT:
       case SPVM_OPCODE_C_ID_GET_FIELD_INT:

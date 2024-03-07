@@ -1247,13 +1247,15 @@ Examples:
 
 =head2 length Operator
 
-The string length operator C<length> gets the length of the string.
+The string length operator C<length> returns the length of I<OPERAND> of the string type.
 
   length OPERAND
 
-The returned length is the byte size. Note that the length is not the count of UTF-8 characters.
+The returned length is the byte size of I<OPERAND>. Note that this is not the length of characters of UTF-8.
 
 The return type is the int type.
+
+If I<OPERAND> is C<undef>, returns 0.
 
 Compilation Errors:
 
@@ -1261,11 +1263,11 @@ The type of I<OPERAND> must be the string type. Otherwise a compilation error oc
 
 Examples:
   
-  # Getting the string length. The length is 5.
+  # The length is 5
   my $message = "Hello";
   my $length = length $message;
   
-  # Getting the string length of UTF-8. The length is 9.
+  # The length is 9
   my $message = "あいう";
   my $length = length $message;
 
