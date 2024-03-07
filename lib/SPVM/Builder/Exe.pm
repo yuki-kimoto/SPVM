@@ -912,6 +912,7 @@ sub create_bootstrap_source {
   
   $bootstrap_source .= $self->create_bootstrap_get_runtime_source;
   
+  # Detect chaging program names and command line arguments
   if (defined $config_exe->file) {
     $bootstrap_source .= "\n// " . $config_exe->file;
   }

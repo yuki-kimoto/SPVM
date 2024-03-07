@@ -7,6 +7,8 @@ use SPVM();
 use SPVM::Builder::Exe;
 use SPVM::Builder::Util;
 
+my @argv;
+
 SPVM::Builder::Util::getopt
   # spvmcc and spvm shared
   'h|help'          => \my $help,
@@ -22,6 +24,11 @@ SPVM::Builder::Util::getopt
   'm|mode=s' => \my $mode,
   'optimize=s' => \my $optimize,
   'r|required-resources' => \my $print_required_resources,
+  'config-argv=s' => \@argv,
+  'config-argv-option=s' => sub {
+    my ($opt_name, $opt_value) = @_;
+    push @argv, SPVM::Builder::Exe->parse_config_argv_option($opt_value);
+  },
 ;
 
 if ($help) {
@@ -62,6 +69,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   allow_no_config_file => $allow_no_config_file,
   mode => $mode,
   optimize => $optimize,
+  argv => \@argv,
 );
 
 if ($print_required_resources) {
@@ -97,7 +105,9 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     -q, --quiet                    Stops the output of messages
     -f, --force                    Forces the compile and link
     --no-config                    No configration file is ok
-    -m, --mode                     Mode
+    -m, --mode                     Config mode
+    --config-argv                  Config arguments
+    --config-argv-option           Key-value config arguments such as NAME=VALUE
     -r, --required-resources       Prints required resources in JSON lines
 
 =head1 Details
