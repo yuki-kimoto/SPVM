@@ -1118,7 +1118,7 @@ class TestCase::TypeConversion {
     
     return 1;
   }
-
+  
   static method convert_string_to_short : int () {
     
     {
@@ -1183,4 +1183,70 @@ class TestCase::TypeConversion {
     
     return 1;
   }
+  
+  static method convert_string_to_int : int () {
+    
+    {
+      my $string = (string)undef;
+      
+      my $num = (int)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"";
+      
+      my $num = (int)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)Fn->INT_MAX;
+      
+      my $num = (int)$string;
+      
+      unless ($num == Fn->INT_MAX) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)((long)Fn->INT_MAX + 1);
+      
+      my $num = (int)$string;
+      
+      unless ($num == Fn->INT_MAX) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)(Fn->INT_MIN);
+      
+      my $num = (int)$string;
+      
+      unless ($num == Fn->INT_MIN) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)((long)Fn->INT_MIN - 1);
+      
+      my $num = (int)$string;
+      
+      unless ($num == Fn->INT_MIN) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
