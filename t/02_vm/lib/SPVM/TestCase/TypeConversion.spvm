@@ -1207,6 +1207,16 @@ class TestCase::TypeConversion {
     }
     
     {
+      my $string = (string)"1A";
+      
+      my $num = (int)$string;
+      
+      unless ($num == 1) {
+        return 0;
+      }
+    }
+    
+    {
       my $string = (string)Fn->INT_MAX;
       
       my $num = (int)$string;
