@@ -161,9 +161,16 @@ sub optimize {
 sub new {
   my $class = shift;
   
+  my %options = @_;
+  
+  my $include_dirs = delete $options{include_dirs};
+  
+  my $build_dir = delete $options{build_dir};
+  
   my $self = bless {
+    include_dirs => [],
     argv => [],
-    @_
+    %options
   }, $class;
   
   # Target class name
@@ -180,17 +187,8 @@ sub new {
     $self->{output_file} = $output_file;
   }
   
-  # Build directory
-  my $build_dir = delete $self->{build_dir};
-  
   unless (defined $build_dir) {
     $build_dir = '.spvm_build';
-  }
-  
-  # Class paths
-  my $include_dirs = delete $self->{include_dirs};
-  unless (defined $include_dirs) {
-    $include_dirs = [];
   }
   
   # New SPVM::Builder object
