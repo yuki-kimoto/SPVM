@@ -1077,41 +1077,41 @@ class TestCase::TypeConversion {
     }
     
     {
-      my $string = (string)"127";
+      my $string = (string)Fn->BYTE_MAX;
       
       my $num = (byte)$string;
       
-      unless ($num == 127) {
+      unless ($num == Fn->BYTE_MAX) {
         return 0;
       }
     }
     
     {
-      my $string = (string)"128";
+      my $string = (string)(Fn->BYTE_MAX + 1);
       
       my $num = (byte)$string;
       
-      unless ($num == 127) {
+      unless ($num == Fn->BYTE_MAX) {
         return 0;
       }
     }
     
     {
-      my $string = (string)"-128";
+      my $string = (string)(Fn->BYTE_MIN);
       
       my $num = (byte)$string;
       
-      unless ($num == -128) {
+      unless ($num == Fn->BYTE_MIN) {
         return 0;
       }
     }
     
     {
-      my $string = (string)"-129";
+      my $string = (string)(Fn->BYTE_MIN - 1);
       
       my $num = (byte)$string;
       
-      unless ($num == -128) {
+      unless ($num == Fn->BYTE_MIN) {
         return 0;
       }
     }
@@ -1119,4 +1119,68 @@ class TestCase::TypeConversion {
     return 1;
   }
 
+  static method convert_string_to_short : int () {
+    
+    {
+      my $string = (string)undef;
+      
+      my $num = (short)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"";
+      
+      my $num = (short)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)Fn->SHORT_MAX;
+      
+      my $num = (short)$string;
+      
+      unless ($num == Fn->SHORT_MAX) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)(Fn->SHORT_MAX + 1);
+      
+      my $num = (short)$string;
+      
+      unless ($num == Fn->SHORT_MAX) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)(Fn->SHORT_MIN);
+      
+      my $num = (short)$string;
+      
+      unless ($num == Fn->SHORT_MIN) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)(Fn->SHORT_MIN - 1);
+      
+      my $num = (short)$string;
+      
+      unless ($num == Fn->SHORT_MIN) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }
