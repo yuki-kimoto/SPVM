@@ -1,4 +1,4 @@
-0.989084 2023-03-06
+0.989084 2023-03-07
   [New Features]
     * Add -B and --build-dir to the spvm command.
     * Add the --config-argv option to the spvmcc command.
@@ -25,6 +25,11 @@
       [After]
       my $config = $config->load_mode_config($config_file, $mode, $argv);
     * The spvmcc command must be given the -o, --output option.
+  [Changes]
+    * Chaingin --optimize option in the spvmcc command is detected.
+  [Internal Changes]
+    * mode changes in the spvmcc command are detected by --mode option.
+    
     
 0.989083 2023-03-06
   [Internal Changes]

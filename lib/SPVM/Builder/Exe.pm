@@ -287,19 +287,19 @@ sub build_exe_file {
   # Object files
   my $object_files = [];
   
-  # Compile SPVM core source files
-  my $spvm_core_object_files = $self->compile_spvm_core_source_files;
-  push @$object_files, @$spvm_core_object_files;
-  
-  my $classes_object_files = $self->compile_classes;
-  push @$object_files, @$classes_object_files;
-  
   # Create bootstrap C source
   $self->create_bootstrap_source;
   
   # Compile bootstrap C source
   my $bootstrap_object_file = $self->compile_bootstrap_source_file;
   push @$object_files, $bootstrap_object_file;
+  
+  # Compile SPVM core source files
+  my $spvm_core_object_files = $self->compile_spvm_core_source_files;
+  push @$object_files, @$spvm_core_object_files;
+  
+  my $classes_object_files = $self->compile_classes;
+  push @$object_files, @$classes_object_files;
   
   # Link and generate executable file
   my $config_linker = $self->config->clone;
@@ -912,10 +912,25 @@ sub create_bootstrap_source {
   
   $bootstrap_source .= $self->create_bootstrap_get_runtime_source;
   
-  # Detect chaging program names and command line arguments
-  if (defined $config_exe->file) {
-    $bootstrap_source .= "\n// " . $config_exe->file;
+  $bootstrap_source .= "\n";
+  
+  # For detecting chaging config mode
+  my $mode_string = $self->mode;
+  unless (defined $mode_string) {
+    $mode_string = '';
   }
+  $bootstrap_source .= "// mode : $mode_string\n";
+  
+  # For detecting chaging config arguments
+  my $argv = $self->argv;
+  $bootstrap_source .= "// argv : @$argv\n";
+  
+  # For detecting chaging optimize
+  my $optimize_string = $self->optimize;
+  unless (defined $optimize_string) {
+    $optimize_string = '';
+  }
+  $bootstrap_source .= "// optimize : $optimize_string\n";
   
   my $bootstrap_source_original;
   if (-f $bootstrap_source_file) {
