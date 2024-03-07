@@ -361,7 +361,7 @@ sub get_required_resources {
       
       unless ($class_name eq $self->class_name) {
         
-        my $config_exe = SPVM::Builder::Config->load_config($config_file);
+        my $config_exe = SPVM::Builder::Config->load_config($config_file, []);
         
         my $resource_names = $config_exe->get_resource_names;
         for my $resource_name (@$resource_names) {
@@ -1096,7 +1096,7 @@ sub compile_native_class {
       $mode = $self->{mode};
     }
     
-    my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode);
+    my $config = SPVM::Builder::Config->load_mode_config($config_file, $mode, []);
     
     # In an executable file, only resources used in the config of the class for generate an executable file are compiled.
     unless ($class_name eq $self->class_name) {

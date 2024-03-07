@@ -330,7 +330,7 @@ sub get_dependent_files {
     my $config_file = "$spvm_class_file_without_ext.config";
     my @mode_config_files = glob "$spvm_class_file_without_ext.*.config";
     push @dependent_files, $config_file, @mode_config_files;
-    my $config = SPVM::Builder::Config->load_config($config_file);
+    my $config = SPVM::Builder::Config->load_config($config_file, []);
     
     # Native class
     my $native_class_file_ext = $config->ext;

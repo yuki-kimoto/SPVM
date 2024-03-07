@@ -156,7 +156,7 @@ sub build {
       confess("A config file \"$config_rel_file\" is not found in (@INC)");
     }
     
-    $config = SPVM::Builder::Config->load_config($config_file);
+    $config = SPVM::Builder::Config->load_config($config_file, []);
   }
   elsif ($category eq 'precompile') {
     $config = SPVM::Builder::Util::API::create_default_config();

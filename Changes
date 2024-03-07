@@ -2,7 +2,8 @@
   [New Features]
     * Add the or method to the Fn class.
     * Add the if method to the Fn class.
-    
+  [Incompatible Changes]
+    * The argument $argv in the load_config method in the SPVM::Builder::Config class must be defined.
 0.989084 2023-03-07
   [New Features]
     * Add -B and --build-dir to the spvm command.
