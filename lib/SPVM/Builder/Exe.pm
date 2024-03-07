@@ -941,6 +941,7 @@ sub create_bootstrap_source {
   
   if (defined $bootstrap_source_original && $bootstrap_source ne $bootstrap_source_original) {
     $force = 1;
+    $self->force($force);
   }
   
   my $need_generate = SPVM::Builder::Util::need_generate({
