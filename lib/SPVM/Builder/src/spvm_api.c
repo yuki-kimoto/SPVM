@@ -3791,7 +3791,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         // Call native method
         int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = method->native_address;
         if (!native_address) {
-          error_id = SPVM_API_die(env, stack, "The native address of the \"%s\" method in the \"%s\" class must not be NULL. Loading the dynamic link library maybe failed.", method->name, method->current_basic_type->name, __func__, FILE_NAME, __LINE__);
+          error_id = SPVM_API_die(env, stack, "The execution address of the \"%s\" native method in the \"%s\" class must not be NULL. Loading the dynamic link library maybe failed.", method->name, method->current_basic_type->name, __func__, FILE_NAME, __LINE__);
         }
         
         if (!error_id) {
@@ -3827,17 +3827,21 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           }
         }
       }
-      else {
-        // Call precompiled method
+      else if (method->is_precompile) {
         void* method_precompile_address = method->precompile_address;
         if (method_precompile_address) {
           int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
           error_id = (*precompile_address)(env, stack);
         }
-        // Call sub virtual machine
-        else {
+        else if (method->is_precompile_fallback) {
           error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
         }
+        else {
+          error_id = SPVM_API_die(env, stack, "The execution address of the \"%s\" precompilation method in the \"%s\" class must not be NULL. Loading the dynamic link library maybe failed.", method->name, method->current_basic_type->name, __func__, FILE_NAME, __LINE__);
+        }
+      }
+      else {
+        error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
       }
       
       if (!error_id && mortal && method_return_type_is_object) {
