@@ -22,7 +22,7 @@
       
       [After]
       my $config = $config->load_mode_config($config_file, $mode, $argv);
-      
+    * The spvmcc command must be given the -o, --output option.
 0.989083 2023-03-06
   [Internal Changes]
     * Add parentheses to the confess function so that Perl does not interpret it as the indirect syntax.

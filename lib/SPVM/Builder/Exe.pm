@@ -176,15 +176,13 @@ sub new {
   # Target class name
   my $class_name = $self->{class_name};
   unless (defined $class_name) {
-    confess("A class name not specified");
+    confess("A class name must be defined.");
   }
   
   # Excutable file name
   my $output_file = $self->{output_file};
   unless (defined $output_file) {
-    $output_file = $class_name;
-    $output_file =~ s/::/__/g;
-    $self->{output_file} = $output_file;
+    confess("A output file must be defined.");
   }
   
   unless (defined $build_dir) {

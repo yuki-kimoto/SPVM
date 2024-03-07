@@ -37,7 +37,15 @@ elsif ($show_version) {
 my $class_name = shift;
 
 unless (defined $class_name) {
-  die SPVM::Builder::Util::extract_usage;
+  warn "<class name> is required.\n\n";
+  warn SPVM::Builder::Util::extract_usage;
+  exit 255;
+}
+
+unless (defined $output_file) {
+  warn "-o, --output option is required.\n\n";
+  warn SPVM::Builder::Util::extract_usage;
+  exit 255;
 }
 
 my @original_include_dirs = @include_dirs;
