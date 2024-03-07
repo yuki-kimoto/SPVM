@@ -5,6 +5,7 @@
 #define SPVM_IMPLEMENT_H
 
 #include <inttypes.h>
+#include <stdlib.h>
 
 enum {
   SPVM_IMPLEMENT_C_STRING_CALL_STACK_ALLOCATION_FAILED,
@@ -2165,6 +2166,96 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int8_t* out, void* src_string) {
+  
+  int64_t num = 0;
+  if (src_string) {
+    char *end;
+    num = strtoll(src_string, &end, 10);
+    if (num > INT8_MAX) {
+      num = INT8_MAX;
+    }
+    else if (num < INT8_MIN) {
+      num = INT8_MIN;
+    }
+  }
+  
+  *out = (int8_t)num;
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_SHORT(SPVM_ENV* env, SPVM_VALUE* stack, int16_t* out, void* src_string) {
+  
+  int64_t num = 0;
+  if (src_string) {
+    char *end;
+    num = strtoll(src_string, &end, 10);
+    if (num > INT16_MAX) {
+      num = INT16_MAX;
+    }
+    else if (num < INT16_MIN) {
+      num = INT16_MIN;
+    }
+  }
+  
+  *out = (int16_t)num;
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_INT(SPVM_ENV* env, SPVM_VALUE* stack, int32_t* out, void* src_string) {
+  
+  int64_t num = 0;
+  if (src_string) {
+    char *end;
+    num = strtoll(src_string, &end, 10);
+    if (num > INT32_MAX) {
+      num = INT32_MAX;
+    }
+    else if (num < INT32_MIN) {
+      num = INT32_MIN;
+    }
+  }
+  
+  *out = (int32_t)num;
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_LONG(SPVM_ENV* env, SPVM_VALUE* stack, int64_t* out, void* src_string) {
+  
+  int64_t num = 0;
+  if (src_string) {
+    char *end;
+    num = strtoll(src_string, &end, 10);
+    if (num > INT64_MAX) {
+      num = INT64_MAX;
+    }
+    else if (num < INT64_MIN) {
+      num = INT64_MIN;
+    }
+  }
+  
+  *out = (int64_t)num;
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_FLOAT(SPVM_ENV* env, SPVM_VALUE* stack, float* out, void* src_string) {
+  
+  float num = 0;
+  if (src_string) {
+    char *end;
+    num = strtof(src_string, &end);
+  }
+  
+  *out = (int8_t)num;
+}
+
+static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* src_string) {
+  
+  double num = 0;
+  if (src_string) {
+    char *end;
+    num = strtod(src_string, &end);
+  }
+  
+  *out = (int8_t)num;
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_string) {

@@ -3,6 +3,14 @@
     * Add -B and --build-dir to the spvm command.
     * Add the --config-argv option to the spvmcc command.
     * Add the --config-argv-option option to the spvmcc command.
+  [Incompatible Changes and New Features]
+    * The string-to-byte type conversion is added.
+    * The string-to-short type conversion is added.
+    * The string-to-int type conversion is added.
+    * The string-to-long type conversion is added.
+    * The string-to-float type conversion is added.
+    * The string-to-double type conversion is added.
+    
   [Incompatible Changes]
     * An argument of the load_config method in the SPVM::Builder::Config class is changed.
       [Before]

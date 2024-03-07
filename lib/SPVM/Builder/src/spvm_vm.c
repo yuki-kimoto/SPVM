@@ -2041,6 +2041,36 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(env, stack, &object_vars[opcode->operand0], double_vars[opcode->operand1], tmp_buffer, sizeof(tmp_buffer));
         break;
       }
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE: {
+        void* src_string = object_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE(env, stack, &byte_vars[opcode->operand0], src_string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_SHORT: {
+        void* src_string = object_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_SHORT(env, stack, &short_vars[opcode->operand0], src_string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_INT: {
+        void* src_string = object_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_INT(env, stack, &int_vars[opcode->operand0], src_string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_LONG: {
+        void* src_string = object_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_LONG(env, stack, &long_vars[opcode->operand0], src_string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_FLOAT: {
+        void* src_string = object_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_FLOAT(env, stack, &float_vars[opcode->operand0], src_string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_DOUBLE: {
+        void* src_string = object_vars[opcode->operand1];
+        SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(env, stack, &double_vars[opcode->operand0], src_string);
+        break;
+      }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY: {
         void* src_string = object_vars[opcode->operand1];
         SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(env, stack, &object_vars[opcode->operand0], src_string);

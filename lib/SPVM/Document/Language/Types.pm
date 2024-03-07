@@ -2394,6 +2394,106 @@ The numeric-to-string conversion is a L<type conversion|/"Type Conversion"> from
   # The string is "3.3"
   my $string_double = (string)$double;
 
+=head3 String-to-byte Conversion
+
+The String-to-byte conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte Type">.
+
+  # The String-to-byte conversion
+  my $string : string = "Hello";
+  my $num : byte = (byte)$string;
+
+If the string is C<undef>, returns 0.
+
+If not, the string is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT8_MAX>, the number is set to C<INT8_MAX>.
+
+The number is less than C<INT8_MIN>, the number is set to C<INT8_MIN>.
+
+And returns the number.
+
+=head3 String-to-short Conversion
+
+The String-to-short conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"short Type">.
+
+  # The String-to-short conversion
+  my $string : string = "Hello";
+  my $num : short = (short)$string;
+
+If the string is C<undef>, returns 0.
+
+If not, the string is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT16_MAX>, the number is set to C<INT16_MAX>.
+
+The number is less than C<INT16_MIN>, the number is set to C<INT16_MIN>.
+
+And returns the number.
+
+=head3 String-to-int Conversion
+
+The String-to-int conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"int Type">.
+
+  # The String-to-int conversion
+  my $string : string = "Hello";
+  my $num : int = (int)$string;
+
+If the string is C<undef>, returns 0.
+
+If not, the string is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT32_MAX>, the number is set to C<INT32_MAX>.
+
+The number is less than C<INT32_MIN>, the number is set to C<INT32_MIN>.
+
+And returns the number.
+
+=head3 String-to-long Conversion
+
+The String-to-long conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"long Type">.
+
+  # The String-to-long conversion
+  my $string : string = "Hello";
+  my $num : long = (long)$string;
+
+If the string is C<undef>, returns 0.
+
+If not, the string is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT64_MAX>, the number is set to C<INT64_MAX>.
+
+The number is less than C<INT64_MIN>, the number is set to C<INT64_MIN>.
+
+And returns the number.
+
+=head3 String-to-float Conversion
+
+The String-to-float conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"float Type">.
+
+  # The String-to-float conversion
+  my $string : string = "Hello";
+  my $float : float = (float)$string;
+
+If the string is C<undef>, returns 0.
+
+If not, the string is coverted to a number by the C<strtof> function in the C language.
+
+And returns the number.
+
+=head3 String-to-double Conversion
+
+The String-to-double conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"double Type">.
+
+  # The String-to-double conversion
+  my $string : string = "Hello";
+  my $num : double = (double)$string;
+
+If the string is C<undef>, returns 0.
+
+If not, the string is coverted to a number by the C<strtod> function in the C language.
+
+And returns the number.
+
 =head3 String-to-byte[] Conversion
 
 The String-to-byte[] conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte[] Type">.

@@ -69,14 +69,42 @@ use Test::More;
       my $source = 'class MyClass { static method main : void () { my $source : int[]; my $dist = (int)$source; } }';
       compile_not_ok($source, q|type cast|);
     }
+    
     {
       my $source = 'class MyClass { static method main : void () { my $source : int*; my $dist = (int)$source; } }';
       compile_not_ok($source, q|type cast|);
     }
+    
     {
       my $source = 'class MyClass { static method main : void () { my $source : string; my $dist = (byte)$source; } }';
-      compile_not_ok($source, qr|type cast|);
+      compile_ok($source, qr|type cast|);
     }
+    
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string; my $dist = (short)$source; } }';
+      compile_ok($source, qr|type cast|);
+    }
+    
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string; my $dist = (int)$source; } }';
+      compile_ok($source, qr|type cast|);
+    }
+    
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string; my $dist = (long)$source; } }';
+      compile_ok($source, qr|type cast|);
+    }
+    
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string; my $dist = (float)$source; } }';
+      compile_ok($source, qr|type cast|);
+    }
+    
+    {
+      my $source = 'class MyClass { static method main : void () { my $source : string; my $dist = (double)$source; } }';
+      compile_ok($source, qr|type cast|);
+    }
+    
   }
 }
 
