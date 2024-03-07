@@ -248,7 +248,7 @@ sub parse_config_argv_option {
   
   my $name;
   my $value;
-  if ($config_argv_option =~ /^(.+?)(=(.+)?)?$/) {
+  if ($config_argv_option =~ /^(.+?)(?:=(.+)?)?$/) {
     $name = $1;
     $value = $2;
     

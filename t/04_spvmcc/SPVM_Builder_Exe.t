@@ -67,6 +67,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
     my $compile_info = $main::MYEXE_COMPILE_INFO_GLOBAL_BEFORE_COMPILE;
     ok(ref $compile_info eq 'SPVM::Builder::CompileInfo');
   }
+  
 }
 
 # Exe name contain sub directory

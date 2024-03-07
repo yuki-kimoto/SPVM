@@ -235,9 +235,9 @@ my $dev_null = File::Spec->devnull;
     }
   }
   
-  # debug config -O0 -g
+  # debug config -O0 -g, --config-argv, --config-argv-option
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --mode debug MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe --mode debug --config-argv ARG0 --config-argv ARG1 --config-argv-option NAME=VALUE MyExe);
     my $spvmcc_output = `$spvmcc_cmd 2>&1 1>$dev_null`;
     like($spvmcc_output, qr/NativeAPI2\.o/);
     like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
@@ -245,6 +245,7 @@ my $dev_null = File::Spec->devnull;
     like($spvmcc_output, qr/-L\./);
     like($spvmcc_output, qr/-lm\b/);
     like($spvmcc_output, qr/-std=gnu99/);
+    like($spvmcc_output, qr/ARG0 ARG1 NAME VALUE/);
     
     # Note: Arguments of the link command(these contain -l flags) must be
     # after object file names for resolving symbol names properly
