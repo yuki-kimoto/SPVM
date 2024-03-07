@@ -1294,4 +1294,74 @@ class TestCase::TypeConversion {
     return 1;
   }
   
+  static method convert_string_to_float : float () {
+    
+    {
+      my $string = (string)undef;
+      
+      my $num = (float)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"";
+      
+      my $num = (float)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)0.5;
+      
+      my $num = (float)$string;
+      
+      unless ($num == 0.5) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method convert_string_to_double : double () {
+    
+    {
+      my $string = (string)undef;
+      
+      my $num = (double)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"";
+      
+      my $num = (double)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "2147483647.5";
+      
+      my $num = (double)$string;
+      
+      unless ($num == 2147483647.5) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

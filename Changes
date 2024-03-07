@@ -41,7 +41,6 @@
     * mode changes in the spvmcc command are detected by --mode option.
   [Fix Bug]
     * Fix the bug that if spvmcc mode and optimize does not work in compiling native classes and precompilation classes.
-    
 0.989083 2023-03-06
   [Internal Changes]
     * Add parentheses to the confess function so that Perl does not interpret it as the indirect syntax.

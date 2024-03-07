@@ -2248,7 +2248,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_FLOAT(SPVM_ENV* env,
     num = strtof(string, &end);
   }
   
-  *out = (int8_t)num;
+  *out = (float)num;
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env, SPVM_VALUE* stack, double* out, void* src_string) {
@@ -2261,7 +2261,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env
     num = strtod(string, &end);
   }
   
-  *out = (int8_t)num;
+  *out = (double)num;
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_string) {
