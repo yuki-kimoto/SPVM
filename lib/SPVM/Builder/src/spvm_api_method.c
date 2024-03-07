@@ -42,6 +42,8 @@ SPVM_API_METHOD* SPVM_API_METHOD_new_api() {
     SPVM_API_METHOD_set_native_address,
     SPVM_API_METHOD_get_precompile_address,
     SPVM_API_METHOD_set_precompile_address,
+    SPVM_API_METHOD_is_precompile,
+    SPVM_API_METHOD_set_is_precompile_fallback,
   };
   
   SPVM_API_METHOD* native_apis = calloc(1, sizeof(native_apis_init));
@@ -221,5 +223,15 @@ void* SPVM_API_METHOD_get_precompile_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME
 void SPVM_API_METHOD_set_precompile_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address) {
 
   method->precompile_address = address;
+}
+
+int32_t SPVM_API_METHOD_is_precompile_fallback(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
+  
+  return method->is_precompile_fallback;
+}
+
+void SPVM_API_METHOD_set_is_precompile_fallback(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t is_precompile_fallback) {
+  
+  method->is_precompile_fallback = is_precompile_fallback;
 }
 

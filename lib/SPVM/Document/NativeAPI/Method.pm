@@ -196,6 +196,20 @@ C<void (*set_precompile_address)(L<void* runtime|SPVM::Document::NativeAPI::Runt
 
 Sets I<address> to the C<precompile_address> field of the method I<method>.
 
+=head2 is_precompile_fallback
+
+C<int32_t (*is_precompile_fallback)(void* runtime, void* method);>
+
+Gets the C<is_precompile_fallback> field.
+
+If this field is a true value, the precompilation method that does not have the execution address is fallback to the vm method.
+
+=head2 
+
+C<void (*set_is_precompile_fallback)(void* runtime, void* method, int32_t is_precompile_fallback);>
+
+Sets the C<is_precompile_fallback> field to I<is_precompile_fallback>. 
+
 =head1 Native API IDs
 
   0 get_name
@@ -227,6 +241,8 @@ Sets I<address> to the C<precompile_address> field of the method I<method>.
   26 set_native_address
   27 get_precompile_address
   28 set_precompile_address
+  29 is_precompile_fallback
+  30 set_is_precompile_fallback
 
 =head1 See Also
 

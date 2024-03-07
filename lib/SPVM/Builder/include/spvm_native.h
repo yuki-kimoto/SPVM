@@ -447,6 +447,8 @@ struct spvm_api_method {
   void (*set_native_address)(void* runtime, void* method, void* address);
   void* (*get_precompile_address)(void* runtime, void* method);
   void (*set_precompile_address)(void* runtime, void* method, void* address);
+  int32_t (*is_precompile_fallback)(void* runtime, void* method);
+  void (*set_is_precompile_fallback)(void* runtime, void* method, int32_t is_precompile_fallback);
 };
 
 struct spvm_api_runtime {

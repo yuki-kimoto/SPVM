@@ -162,6 +162,18 @@ Sets the precompiled L<address|SPVM::Address>.
 
 If a memory error occurs, an exception is thrown.
 
+=head2 is_precompile_fallback
+
+C<method is_precompile_fallback : int ();>
+
+Gets the C<is_precompile_fallback>.
+
+=head2 set_is_precompile_fallback
+
+C<method set_is_precompile_fallback : void ($is_precompile_fallback : int);>
+
+Sets the C<is_precompile_fallback>.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

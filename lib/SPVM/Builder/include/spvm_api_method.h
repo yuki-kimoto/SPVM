@@ -69,4 +69,8 @@ void* SPVM_API_METHOD_get_precompile_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME
 
 void SPVM_API_METHOD_set_precompile_address(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, void* address);
 
+int32_t SPVM_API_METHOD_is_precompile_fallback(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method);
+
+void SPVM_API_METHOD_set_is_precompile_fallback(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method, int32_t is_precompile_fallback);
+
 #endif

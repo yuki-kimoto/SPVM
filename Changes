@@ -2,6 +2,13 @@
   [New Features]
     * Add the or method to the Fn class.
     * Add the if method to the Fn class.
+    * Add the following native APIs.
+      int32_t (*is_precompile_fallback)(void* runtime, void* method);
+      void (*set_is_precompile_fallback)(void* runtime, void* method, int32_t is_precompile_fallback);
+    * Add the following method to the Native::Method class.
+      method is_precompile_fallback : int ();
+      method set_is_precompile_fallback : void ($is_precompile_fallback : int);
+    
   [Incompatible Changes]
     * The argument $argv in the load_config method in the SPVM::Builder::Config class must be defined.
   [Changes]

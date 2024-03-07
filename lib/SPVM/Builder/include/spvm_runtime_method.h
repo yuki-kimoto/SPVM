@@ -38,6 +38,7 @@ struct spvm_runtime_method {
   int8_t is_init;
   int8_t is_destructor;
   int8_t is_required;
+  int8_t is_precompile_fallback;
 };
 
 #endif

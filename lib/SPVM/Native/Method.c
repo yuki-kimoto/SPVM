@@ -425,3 +425,43 @@ int32_t SPVM__Native__Method__set_precompile_address(SPVM_ENV* env, SPVM_VALUE* 
   return 0;
 }
 
+int32_t SPVM__Native__Method__is_precompile_fallback(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  int32_t is_precompile = env->api->method->is_precompile_fallback(runtime, method);
+  
+  stack[0].ival = is_precompile;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__Method__set_is_precompile_fallback(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self = stack[0].oval;
+  
+  void* method = env->get_pointer(env, stack, obj_self);
+  
+  int32_t is_precompile_fallback = stack[1].ival;
+  
+  void* obj_runtime = get_field_native_object_by_name(env, stack, obj_self, "runtime", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* runtime = env->get_pointer(env, stack, obj_runtime);
+  
+  env->api->method->set_is_precompile_fallback(runtime, method, is_precompile_fallback);
+  
+  return 0;
+}
+
