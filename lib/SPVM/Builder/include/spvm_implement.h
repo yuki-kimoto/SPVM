@@ -2265,12 +2265,18 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE_ARRAY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_string) {
-  int32_t src_string_length = env->length(env, stack, src_string);
-  const char* src_string_data = env->get_chars(env, stack, src_string);
-  void* byte_array = env->new_byte_array_no_mortal(env, stack, src_string_length);
-  int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);
-  memcpy(byte_array_data, src_string_data, src_string_length);
-  env->assign_object(env, stack, out, byte_array);
+  
+  if (src_string) {
+    int32_t src_string_length = env->length(env, stack, src_string);
+    const char* src_string_data = env->get_chars(env, stack, src_string);
+    void* byte_array = env->new_byte_array_no_mortal(env, stack, src_string_length);
+    int8_t* byte_array_data = env->get_elems_byte(env, stack, byte_array);
+    memcpy(byte_array_data, src_string_data, src_string_length);
+    env->assign_object(env, stack, out, byte_array);
+  }
+  else {
+    env->assign_object(env, stack, out, NULL);
+  }
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_ARRAY_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* src_byte_array) {

@@ -1364,4 +1364,43 @@ class TestCase::TypeConversion {
     return 1;
   }
   
+  static method convert_string_to_byte_array : int () {
+    
+    {
+      my $string = (string)undef;
+      
+      my $byte_array = (byte[])$string;
+      
+      unless ($byte_array == undef) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"";
+      
+      my $byte_array = (byte[])$string;
+      
+      unless ($byte_array eq "") {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"abc";
+      
+      my $byte_array = (byte[])$string;
+      
+      if ($byte_array == $string) {
+        return 0;
+      }
+      
+      unless ($byte_array eq "abc") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }

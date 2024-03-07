@@ -135,6 +135,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::TypeConversion->convert_string_to_long);
   ok(SPVM::TestCase::TypeConversion->convert_string_to_float);
   ok(SPVM::TestCase::TypeConversion->convert_string_to_double);
+  ok(SPVM::TestCase::TypeConversion->convert_string_to_byte_array);
 }
 
 # Convert to string
