@@ -20,72 +20,72 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
  
 # Convert type - floating point narrowing convertion
 {
-  ok(SPVM::TestCase::TypeConversion->convert_float_to_byte());
-  ok(SPVM::TestCase::TypeConversion->convert_float_to_short());
-  ok(SPVM::TestCase::TypeConversion->convert_float_to_int());
-  ok(SPVM::TestCase::TypeConversion->convert_float_to_long());
-  ok(SPVM::TestCase::TypeConversion->convert_double_to_byte());
-  ok(SPVM::TestCase::TypeConversion->convert_double_to_short());
-  ok(SPVM::TestCase::TypeConversion->convert_double_to_int());
-  ok(SPVM::TestCase::TypeConversion->convert_double_to_long());
-  ok(SPVM::TestCase::TypeConversion->convert_double_to_float());
+  ok(SPVM::TestCase::TypeConversion->convert_float_to_byte);
+  ok(SPVM::TestCase::TypeConversion->convert_float_to_short);
+  ok(SPVM::TestCase::TypeConversion->convert_float_to_int);
+  ok(SPVM::TestCase::TypeConversion->convert_float_to_long);
+  ok(SPVM::TestCase::TypeConversion->convert_double_to_byte);
+  ok(SPVM::TestCase::TypeConversion->convert_double_to_short);
+  ok(SPVM::TestCase::TypeConversion->convert_double_to_int);
+  ok(SPVM::TestCase::TypeConversion->convert_double_to_long);
+  ok(SPVM::TestCase::TypeConversion->convert_double_to_float);
 }
 
 # Convert type - floating point widening convertion
 {
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_float());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_float());
-  ok(SPVM::TestCase::TypeConversion->convert_int_to_float());
-  ok(SPVM::TestCase::TypeConversion->convert_long_to_float());
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_double());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_double());
-  ok(SPVM::TestCase::TypeConversion->convert_int_to_double());
-  ok(SPVM::TestCase::TypeConversion->convert_long_to_double());
-  ok(SPVM::TestCase::TypeConversion->convert_float_to_double());
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_float);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_float);
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_float);
+  ok(SPVM::TestCase::TypeConversion->convert_long_to_float);
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_double);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_double);
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_double);
+  ok(SPVM::TestCase::TypeConversion->convert_long_to_double);
+  ok(SPVM::TestCase::TypeConversion->convert_float_to_double);
 }
 
 # Convert type - integral number widning convertion
 {
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_short_plus());
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_short_minus());
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_int_plus());
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_int_minus());
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_long_plus());
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_long_minus());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_int_plus());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_int_minus());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_long_plus());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_long_minus());
-  ok(SPVM::TestCase::TypeConversion->convert_int_to_long_plus());
-  ok(SPVM::TestCase::TypeConversion->convert_int_to_long_minus());
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_short_plus);
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_short_minus);
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_int_plus);
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_int_minus);
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_long_plus);
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_long_minus);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_int_plus);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_int_minus);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_long_plus);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_long_minus);
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_long_plus);
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_long_minus);
 }
 
 # Convert type - same type
 {
-  ok(SPVM::TestCase::TypeConversion->convert_long_to_long());
-  ok(SPVM::TestCase::TypeConversion->convert_int_to_int());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_short());
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_byte());
+  ok(SPVM::TestCase::TypeConversion->convert_long_to_long);
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_int);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_short);
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_byte);
 }
 
 # Convert type - integral number narrowing convertion
 {
-  ok(SPVM::TestCase::TypeConversion->convert_long_to_int());
-  ok(SPVM::TestCase::TypeConversion->convert_long_to_short());
-  ok(SPVM::TestCase::TypeConversion->convert_long_to_byte());
-  ok(SPVM::TestCase::TypeConversion->convert_int_to_short());
-  ok(SPVM::TestCase::TypeConversion->convert_int_to_byte());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_byte());
+  ok(SPVM::TestCase::TypeConversion->convert_long_to_int);
+  ok(SPVM::TestCase::TypeConversion->convert_long_to_short);
+  ok(SPVM::TestCase::TypeConversion->convert_long_to_byte);
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_short);
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_byte);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_byte);
 }
 
 # Convert to string
 {
-  ok(SPVM::TestCase::TypeConversion->convert_byte_to_string());
-  ok(SPVM::TestCase::TypeConversion->convert_short_to_string());
-  ok(SPVM::TestCase::TypeConversion->convert_int_to_string());
-  ok(SPVM::TestCase::TypeConversion->convert_long_to_string());
-  ok(SPVM::TestCase::TypeConversion->convert_float_to_string());
-  ok(SPVM::TestCase::TypeConversion->convert_double_to_string());
+  ok(SPVM::TestCase::TypeConversion->convert_byte_to_string);
+  ok(SPVM::TestCase::TypeConversion->convert_short_to_string);
+  ok(SPVM::TestCase::TypeConversion->convert_int_to_string);
+  ok(SPVM::TestCase::TypeConversion->convert_long_to_string);
+  ok(SPVM::TestCase::TypeConversion->convert_float_to_string);
+  ok(SPVM::TestCase::TypeConversion->convert_double_to_string);
 }
 
 {
@@ -125,6 +125,11 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::TypeConversion->convert_any_object_to_long);
   ok(SPVM::TestCase::TypeConversion->convert_any_object_to_float);
   ok(SPVM::TestCase::TypeConversion->convert_any_object_to_double);
+}
+
+# Convert to string
+{
+  ok(SPVM::TestCase::TypeConversion->convert_string_to_byte);
 }
 
 # Convert to string

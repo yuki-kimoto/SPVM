@@ -1054,4 +1054,69 @@ class TestCase::TypeConversion {
     return 1;
   }
 
+  static method convert_string_to_byte : int () {
+    
+    {
+      my $string = (string)undef;
+      
+      my $num = (byte)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"";
+      
+      my $num = (byte)$string;
+      
+      unless ($num == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"127";
+      
+      my $num = (byte)$string;
+      
+      unless ($num == 127) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"128";
+      
+      my $num = (byte)$string;
+      
+      unless ($num == 127) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"-128";
+      
+      my $num = (byte)$string;
+      
+      unless ($num == -128) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = (string)"-129";
+      
+      my $num = (byte)$string;
+      
+      unless ($num == -128) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
 }

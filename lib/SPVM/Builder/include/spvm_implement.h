@@ -2172,8 +2172,10 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_BYTE(SPVM_ENV* env, 
   
   int64_t num = 0;
   if (src_string) {
+    const char* string = env->get_chars(env, stack, src_string);
+    
     char *end;
-    num = strtoll(src_string, &end, 10);
+    num = strtoll(string, &end, 10);
     if (num > INT8_MAX) {
       num = INT8_MAX;
     }
@@ -2189,8 +2191,10 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_SHORT(SPVM_ENV* env,
   
   int64_t num = 0;
   if (src_string) {
+    const char* string = env->get_chars(env, stack, src_string);
+    
     char *end;
-    num = strtoll(src_string, &end, 10);
+    num = strtoll(string, &end, 10);
     if (num > INT16_MAX) {
       num = INT16_MAX;
     }
@@ -2206,8 +2210,10 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_INT(SPVM_ENV* env, S
   
   int64_t num = 0;
   if (src_string) {
+    const char* string = env->get_chars(env, stack, src_string);
+    
     char *end;
-    num = strtoll(src_string, &end, 10);
+    num = strtoll(string, &end, 10);
     if (num > INT32_MAX) {
       num = INT32_MAX;
     }
@@ -2223,8 +2229,10 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_LONG(SPVM_ENV* env, 
   
   int64_t num = 0;
   if (src_string) {
+    const char* string = env->get_chars(env, stack, src_string);
+    
     char *end;
-    num = strtoll(src_string, &end, 10);
+    num = strtoll(string, &end, 10);
     if (num > INT64_MAX) {
       num = INT64_MAX;
     }
@@ -2240,8 +2248,10 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_FLOAT(SPVM_ENV* env,
   
   float num = 0;
   if (src_string) {
+    const char* string = env->get_chars(env, stack, src_string);
+    
     char *end;
-    num = strtof(src_string, &end);
+    num = strtof(string, &end);
   }
   
   *out = (int8_t)num;
@@ -2251,8 +2261,10 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_STRING_TO_DOUBLE(SPVM_ENV* env
   
   double num = 0;
   if (src_string) {
+    const char* string = env->get_chars(env, stack, src_string);
+    
     char *end;
-    num = strtod(src_string, &end);
+    num = strtod(string, &end);
   }
   
   *out = (int8_t)num;
