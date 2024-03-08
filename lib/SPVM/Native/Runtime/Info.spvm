@@ -20,14 +20,16 @@ class Native::Runtime::Info {
   
   method get_class_names : string[] () {
     
-    my $basic_types_length = $self->get_basic_types_length;
+    my $runtime = $self->{runtime};
+    
+    my $basic_types_length = $runtime->get_basic_types_length;
     
     my $user_defined_basic_type_names_tmp = new string [$basic_types_length];
     
     my $user_defined_basic_type_names_length = 0;
     
     for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
-      my $basic_type = $self->get_basic_type_by_id($basic_type_id);
+      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $basic_type_name = $basic_type->get_name;
       if (($basic_type_name->[0] >= 'A' && $basic_type_name->[0] <= 'Z') && !Fn->contains($basic_type_name, "::anon::")) {
         $user_defined_basic_type_names_tmp->[$user_defined_basic_type_names_length] = $basic_type_name;

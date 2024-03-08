@@ -12,6 +12,7 @@ use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
 
 use SPVM 'Native::Compiler';
+use SPVM 'Native::Runtime::Info';
 
 # Fields
 sub builder {
@@ -110,6 +111,17 @@ sub runtime {
   }
   else {
     return $self->{runtime};
+  }
+}
+
+sub runtime_info {
+  my $self = shift;
+  if (@_) {
+    $self->{runtime_info} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{runtime_info};
   }
 }
 
@@ -439,6 +451,9 @@ sub compile {
   my $runtime = $compiler->get_runtime;
   
   $self->runtime($runtime);
+  
+  my $runtime_info = SPVM::Native::Runtime::Info->new($runtime);
+  $self->runtime_info($runtime_info);
   
   $self->{finish_compile} = 1;
 }
