@@ -18,6 +18,23 @@ class Native::Runtime::Info {
     return $self;
   }
   
+  method get_basic_type_names : string[] () {
+    
+    my $runtime = $self->{runtime};
+    
+    my $basic_types_length = $runtime->get_basic_types_length;
+    
+    my $basic_type_names = new string [$basic_types_length];
+    
+    for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
+      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+      my $basic_type_name = $basic_type->get_name;
+      $basic_type_names->[$basic_type_id] = $basic_type_name;
+    }
+    
+    return $basic_type_names;
+  }
+  
   method get_class_names : string[] () {
     
     my $runtime = $self->{runtime};
