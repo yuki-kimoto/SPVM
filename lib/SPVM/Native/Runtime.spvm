@@ -29,7 +29,7 @@ class Native::Runtime : pointer {
   
   # Private Instance Methods - Only used in core.
   
-  method _get_user_defined_basic_type_names : string[] () {
+  method _get_class_names : string[] () {
     
     my $basic_types_length = $self->get_basic_types_length;
     
