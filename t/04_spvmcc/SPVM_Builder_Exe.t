@@ -1,3 +1,6 @@
+# For add_before_link_cb and add_before_compile_cb
+BEGIN { $ENV{SPVM_CC_FORCE} = 1; }
+
 use lib "t/testlib";
 use TestAuto;
 
@@ -36,7 +39,7 @@ my $build_dir = $ENV{SPVM_BUILD_DIR};
   );
   
   $builder_exe->build_exe_file;
-
+  
   {
     no warnings 'once';
     my $link_info = $main::MYEXE_LINK_INFO;
