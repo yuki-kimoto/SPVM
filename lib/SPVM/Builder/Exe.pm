@@ -348,7 +348,7 @@ sub get_required_resources {
   
   my $runtime = $self->runtime;
   
-  my $class_names = $runtime->_get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names->to_strings;
   my $all_object_files = [];
   for my $class_name (@$class_names) {
     
@@ -461,7 +461,7 @@ sub compile {
 sub compile_classes {
   my ($self) = @_;
   
-  my $class_names = $self->runtime->_get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names->to_strings;
   
   my $object_files = [];
   for my $class_name (@$class_names) {
@@ -538,7 +538,7 @@ sub create_bootstrap_header_source {
 
   my $class_name = $self->class_name;
 
-  my $class_names = $self->runtime->_get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names->to_strings;
   
   my $source = '';
   
@@ -614,7 +614,7 @@ sub create_bootstrap_main_func_source {
 
   my $class_name = $self->class_name;
 
-  my $class_names = $self->runtime->_get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names->to_strings;
 
   my $source = '';
 
@@ -740,7 +740,7 @@ static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler) {
   
 EOS
   
-  my $class_names = $self->runtime->_get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names->to_strings;
   
   my $compiler = $self->compiler;
   
@@ -818,7 +818,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $class_names = $self->runtime->_get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names->to_strings;
 
   my $source = '';
 
@@ -850,7 +850,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $class_names = $self->runtime->_get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names->to_strings;
 
   my $source = '';
 
@@ -884,7 +884,7 @@ sub create_bootstrap_source {
   
   my $class_name = $self->class_name;
   
-  my $class_names = $self->runtime->_get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names->to_strings;
   
   my $class_files = [];
   for my $class_name (@$class_names) {
