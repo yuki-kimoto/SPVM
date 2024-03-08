@@ -241,8 +241,6 @@ sub convert_class_name_to_dynamic_lib_rel_file {
 sub convert_class_name_to_category_rel_file {
   my ($class_name, $category, $ext) = @_;
   
-  $class_name =~ s/^SPVM:://;
-  
   my $rel_file_with_ext = "SPVM::$class_name";
   $rel_file_with_ext =~ s/::/\//g;
   $rel_file_with_ext .= $category eq 'native' ? "" : ".$category";
@@ -256,8 +254,6 @@ sub convert_class_name_to_category_rel_file {
 sub convert_class_name_to_rel_dir {
   my ($class_name) = @_;
   
-  $class_name =~ s/^SPVM:://;
-  
   my $rel_dir;
   my $rel_file = "SPVM::$class_name";
   $rel_file =~ s/::/\//g;
@@ -268,8 +264,6 @@ sub convert_class_name_to_rel_dir {
 
 sub convert_class_name_to_rel_file {
   my ($class_name, $ext) = @_;
-
-  $class_name =~ s/^SPVM:://;
   
   my $rel_file_with_ext = "SPVM::$class_name";
   $rel_file_with_ext =~ s/::/\//g;
@@ -399,11 +393,6 @@ sub create_make_rule {
   my ($class_name, $category, $options) = @_;
   
   $options ||= {};
-  
-  # Deprecated
-  if ($class_name =~ s/^SPVM:://) {
-    warn "The SPVM:: prefix is no more required in the class name given to the create_make_rule function.";
-  }
   
   # Shared library file
   my $dynamic_lib_rel_file = &convert_class_name_to_dynamic_lib_rel_file($class_name, $category);
