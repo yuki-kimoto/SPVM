@@ -1,4 +1,4 @@
-package SPVM::SPVM::Native::Runtime::Info;
+package SPVM::Native::Runtime::Info;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::SPVM::Native::Runtime::Info;
 
 =head1 Name
 
-SPVM::SPVM::Native::Runtime::Info - Short Description
+SPVM::Native::Runtime::Info - Short Description
 
 =head1 Description
 
-The SPVM::Native::Runtime::Info class in L<SPVM> has methods to do someting.
+The Native::Runtime::Info class in L<SPVM> has methods to do someting.
 
 =head1 Usage
 
-  use SPVM::Native::Runtime::Info;
+  use Native::Runtime::Info;
 
 =head1 Details
 
