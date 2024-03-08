@@ -15,6 +15,10 @@
     * A precompilation method is not fallback to the vm method by default.
   [Changes]
     * Change segfault to an exeption if an native address is not found.
+  
+  [Ingernal Changes]
+    * Remove removing "SPVM::" from from class names in arguments.
+    
 0.989084 2023-03-07
   [New Features]
     * Add -B and --build-dir to the spvm command.
