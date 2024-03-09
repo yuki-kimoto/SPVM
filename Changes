@@ -10,6 +10,7 @@
       method set_is_precompile_fallback : void ($is_precompile_fallback : int);
     * Add the spvminfo command.
     * Add the Native::Runtime::Info class is added.
+    * Add the info method to the Native class.
   [Incompatible Changes]
     * The argument $argv in the load_config method in the SPVM::Builder::Config class must be defined.
     * A precompilation method is not fallback to the vm method by default.

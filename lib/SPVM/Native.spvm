@@ -6,6 +6,7 @@ class Native {
   use Native::Stack;
   use Native::Runtime;
   use Native::Compiler;
+  use Native::Runtime::Info;
   
   # Class methods
   native static method get_current_env : Native::Env ();
@@ -34,4 +35,10 @@ class Native {
   
   native static method check_bootstrap_method : void ($basic_type_name : string);
   
+  static method info : Native::Runtime::Info () {
+    
+    my $runtime_info = Native::Runtime::Info->new(&get_current_runtime);
+    
+    return $runtime_info;
+  }
 }

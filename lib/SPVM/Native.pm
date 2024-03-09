@@ -48,6 +48,12 @@ C<static method check_bootstrap_method : void ($basic_type_name : string);>
 
 Check the bootstrap method in the basic type $basic_type_name.
 
+=head2 info
+
+C<static method info : L<Native::Runtime::Info|SPVM::Native::Runtime::Info> ();>
+
+Creates a new L<Native::Runtime::Info|SPVM::Native::Runtime::Info> object from the return value of the L</"get_current_runtime"> method, and returns it.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
