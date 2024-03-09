@@ -3,6 +3,7 @@
 
 class Native::Runtime::Info {
   
+  use Native::BasicType;
   use Native::Runtime::Info;
   use StringList;
   
@@ -51,6 +52,25 @@ class Native::Runtime::Info {
     my $class_names = $class_names_list->to_array;
     
     return $class_names;
+  }
+  
+  method get_method_names : string[] ($class_name : string) {
+    
+    my $runtime = $self->{runtime};
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $methods_length = $basic_type->get_methods_length;
+    
+    my $method_names = new string[$methods_length];
+    
+    for (my $index = 0; $index < $methods_length; $index++) {
+      my $method = $basic_type->get_method_by_index($index);
+      my $method_name = $method->get_name;
+      $method_names->[$index] = $method_name;
+    }
+    
+    return $method_names;
   }
   
 }
