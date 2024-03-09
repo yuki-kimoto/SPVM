@@ -403,7 +403,6 @@ README.md
 script/spvm
 script/spvmcc
 script/spvmdist
-script/spvminfo
 solo/lib/SPVM/MyExe.config
 solo/lib/SPVM/MyExe.debug.config
 solo/lib/SPVM/MyExe.debug_memory_count.config

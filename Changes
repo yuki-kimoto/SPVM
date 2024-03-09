@@ -8,7 +8,6 @@
     * Add the following method to the Native::Method class.
       method is_precompile_fallback : int ();
       method set_is_precompile_fallback : void ($is_precompile_fallback : int);
-    * Add the spvminfo command.
     * Add the Native::Runtime::Info class is added.
     * Add the info method to the Native class.
   [Incompatible Changes]
