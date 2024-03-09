@@ -4,6 +4,7 @@
 class Native::Runtime::Info {
   
   use Native::Runtime::Info;
+  use StringList;
   
   # Fields
   has runtime : Native::Runtime;
@@ -37,30 +38,19 @@ class Native::Runtime::Info {
   
   method get_class_names : string[] () {
     
-    my $runtime = $self->{runtime};
+    my $class_names_list = StringList->new;
     
-    my $basic_types_length = $runtime->get_basic_types_length;
+    my $basic_type_names = $self->get_basic_type_names;
     
-    my $user_defined_basic_type_names_tmp = new string [$basic_types_length];
-    
-    my $user_defined_basic_type_names_length = 0;
-    
-    for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
-      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-      my $basic_type_name = $basic_type->get_name;
+    for my $basic_type_name (@$basic_type_names) {
       if (($basic_type_name->[0] >= 'A' && $basic_type_name->[0] <= 'Z') && !Fn->contains($basic_type_name, "::anon::")) {
-        $user_defined_basic_type_names_tmp->[$user_defined_basic_type_names_length] = $basic_type_name;
-        $user_defined_basic_type_names_length++;
+        $class_names_list->push($basic_type_name);
       }
     }
     
-    my $user_defined_basic_type_names = new string [$user_defined_basic_type_names_length];
+    my $class_names = $class_names_list->to_array;
     
-    for (my $i = 0; $i < $user_defined_basic_type_names_length; $i++) {
-      $user_defined_basic_type_names->[$i] = $user_defined_basic_type_names_tmp->[$i];
-    }
-    
-    return $user_defined_basic_type_names;
+    return $class_names;
   }
   
 }
