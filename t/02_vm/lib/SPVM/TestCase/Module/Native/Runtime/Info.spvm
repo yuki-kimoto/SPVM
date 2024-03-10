@@ -1,0 +1,16 @@
+class TestCase::Module::Native::Compiler {
+  use Native;
+  use Fn;
+  use Array;
+  
+  static method compile : int () {
+    
+    {
+      my $current_runtime_info = Native->info;
+      
+      my $class_names = $current_runtime_info->get_class_names;
+    }
+    
+    return 1;
+  }
+}

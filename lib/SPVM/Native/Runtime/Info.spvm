@@ -73,4 +73,41 @@ class Native::Runtime::Info {
     return $method_names;
   }
   
+  method get_field_names : string[] ($class_name : string) {
+    
+    my $runtime = $self->{runtime};
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $fields_length = $basic_type->get_fields_length;
+    
+    my $field_names = new string[$fields_length];
+    
+    for (my $index = 0; $index < $fields_length; $index++) {
+      my $field = $basic_type->get_field_by_index($index);
+      my $field_name = $field->get_name;
+      $field_names->[$index] = $field_name;
+    }
+    
+    return $field_names;
+  }
+  
+  method get_class_var_names : string[] ($class_name : string) {
+    
+    my $runtime = $self->{runtime};
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $class_vars_length = $basic_type->get_class_vars_length;
+    
+    my $class_var_names = new string[$class_vars_length];
+    
+    for (my $index = 0; $index < $class_vars_length; $index++) {
+      my $class_var = $basic_type->get_class_var_by_index($index);
+      my $class_var_name = $class_var->get_name;
+      $class_var_names->[$index] = $class_var_name;
+    }
+    
+    return $class_var_names;
+  }
 }

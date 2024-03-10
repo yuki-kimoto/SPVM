@@ -692,6 +692,7 @@ t/02_vm/08_module/Long.t
 t/02_vm/08_module/LongList.t
 t/02_vm/08_module/Native/Compiler.t
 t/02_vm/08_module/Native/MethodCall.t
+t/02_vm/08_module/Native/Runtime/Info.t
 t/02_vm/08_module/Point.t
 t/02_vm/08_module/Point3D.t
 t/02_vm/08_module/Scope_Guard.t
@@ -817,6 +818,7 @@ t/02_vm/lib/SPVM/TestCase/Module/LongList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Mutex.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Native/Compiler.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Native/MethodCall.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Native/Runtime/Info.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Point3D.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Scope/Guard.spvm
