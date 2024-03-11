@@ -12,6 +12,9 @@ class Fn {
   use Callback;
   use Format;
   use Error::Unicode::InvalidUTF8;
+  use Callback::Grep;
+  use Callback::Map;
+  use Callback::MapExpand;
   
   static method BYTE_MAX : int () { return 127; }
   static method BYTE_MIN : int () { return -128; }

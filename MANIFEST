@@ -202,6 +202,12 @@ lib/SPVM/ByteList.pm
 lib/SPVM/ByteList.spvm
 lib/SPVM/Callback.pm
 lib/SPVM/Callback.spvm
+lib/SPVM/Callback/Grep.pm
+lib/SPVM/Callback/Grep.spvm
+lib/SPVM/Callback/Map.pm
+lib/SPVM/Callback/Map.spvm
+lib/SPVM/Callback/MapExpand.pm
+lib/SPVM/Callback/MapExpand.spvm
 lib/SPVM/Cloneable.pm
 lib/SPVM/Cloneable.spvm
 lib/SPVM/Cloner.pm

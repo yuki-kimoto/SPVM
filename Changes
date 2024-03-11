@@ -13,6 +13,9 @@
       to_array_long
       to_array_float
       to_array_double
+    * Add the Callback::Grep class.
+    * Add the Callback::Map class.
+    * Add the Callback::MapExpand class.
     
 0.989085 2023-03-08
   [New Features]
