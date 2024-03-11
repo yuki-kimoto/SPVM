@@ -31,7 +31,16 @@ my $class_name = 'TestCase::UseResource::Basic';
   is_deeply($resource_loader_class_names, ['TestCase::UseResource::Basic']);
 }
 
-# get_get_config_file
+# has_config_file
+{
+  my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
+  
+  ok($builder_info->has_config_file('TestCase::UseResource::Basic'));
+  
+  ok(!$builder_info->has_config_file('Byte'));
+}
+
+# get_config_file
 {
   my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
   

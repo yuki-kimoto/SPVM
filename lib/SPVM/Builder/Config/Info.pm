@@ -152,6 +152,20 @@ sub get_resource_loader_class_names {
   return $resource_loader_class_names;
 }
 
+sub has_config_file {
+  my ($self, $class_name) = @_;
+  
+  unless (defined $class_name) {
+    confess("The class name \$class_name must be defined.");
+  }
+  
+  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  
+  my $has_config_file = defined $config_file;
+  
+  return $has_config_file;
+}
+
 sub get_config_file {
   my ($self, $class_name) = @_;
   
@@ -225,6 +239,10 @@ Returns the class names. This method is the same as the L<get_class_names|Native
   my $resource_loader_class_names = $builder_info->get_resource_loader_class_names;
 
 Returns the class names that load resources.
+
+=head2 has_config_file
+
+If the class given by the class name has a config file, returns 1, otherwise returns 0.
 
 =head2 get_config_file
 
