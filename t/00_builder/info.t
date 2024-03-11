@@ -11,19 +11,55 @@ use SPVM::Builder::Info;
 
 my $class_name = 'TestCase::UseResource::Basic';
 
-my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+# get_class_names
+{
+  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  
+  my $class_names = $builder_info->get_class_names;
+  
+  ok(grep { $_ eq 'TestCase::UseResource::Basic' } @$class_names);
+  
+  ok(grep { $_ eq 'Int' } @$class_names);
+}
 
-my $resource_loader_class_names = $builder_info->get_resource_loader_class_names;
+# get_resource_loader_class_names
+{
+  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  
+  my $resource_loader_class_names = $builder_info->get_resource_loader_class_names;
+  
+  is_deeply($resource_loader_class_names, ['TestCase::UseResource::Basic']);
+}
 
-is_deeply($resource_loader_class_names, ['TestCase::UseResource::Basic']);
+# get_get_config_file
+{
+  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  
+  my $config_file = $builder_info->get_config_file($class_name);
+  
+  my $class_rel_file = $class_name;
+  $class_rel_file =~ s|::|/|g;
+  
+  like($config_file, qr/$class_rel_file\.config/);
+}
 
-my $config_content = $builder_info->get_config_content($class_name);
+# get_config_content
+{
+  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  
+  my $config_content = $builder_info->get_config_content($class_name);
+  
+  like($config_content, qr/use_resource.+TestCase::Resource::Mylib1/);
+}
 
-like($config_content, qr/use_resource.+TestCase::Resource::Mylib1/);
-
-my $config_resource_names = $builder_info->get_config_resource_names($class_name);
-
-is_deeply($config_resource_names, ['TestCase::Resource::Mylib1']);
+# get_config_resource_names
+{
+  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  
+  my $config_resource_names = $builder_info->get_config_resource_names($class_name);
+  
+  is_deeply($config_resource_names, ['TestCase::Resource::Mylib1']);
+}
 
 ok(1);
 

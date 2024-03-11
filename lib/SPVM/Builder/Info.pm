@@ -112,6 +112,18 @@ sub compile {
   
 }
 
+sub get_class_names {
+  my ($self) = @_;
+  
+  my $runtime = $self->runtime;
+  
+  my $runtime_info = SPVM::Native::Runtime::Info->new($runtime);
+  
+  my $class_names = $runtime_info->get_class_names->to_strings;
+  
+  return $class_names;
+}
+
 sub get_resource_loader_class_names {
   my ($self) = @_;
   
@@ -140,8 +152,26 @@ sub get_resource_loader_class_names {
   return $resource_loader_class_names;
 }
 
+sub get_config_file {
+  my ($self, $class_name) = @_;
+  
+  unless (defined $class_name) {
+    confess("The class name \$class_name must be defined.");
+  }
+  
+  my $runtime = $self->runtime;
+  
+  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  
+  return $config_file;
+}
+
 sub get_config_content {
   my ($self, $class_name) = @_;
+  
+  unless (defined $class_name) {
+    confess("The class name \$class_name must be defined.");
+  }
   
   my $runtime = $self->runtime;
   
@@ -154,6 +184,10 @@ sub get_config_content {
 
 sub get_config_resource_names {
   my ($self, $class_name) = @_;
+  
+  unless (defined $class_name) {
+    confess("The class name \$class_name must be defined.");
+  }
   
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   
@@ -186,11 +220,23 @@ Creates a L<SPVM::Builder::Info> object given the class name $class_name and ret
 
 =head1 Instance Methods
 
+=head2 get_class_names
+
+  my $class_names = $builder_info->get_class_names;
+
+Returns the class names. This method is the same as the L<get_class_names|Native::Runtime::Info/"get_class_names"> method in the C<Native::Runtime::Info>, but the return value is converted to an array reference of strings.
+
 =head2 get_resource_loader_class_names
 
   my $resource_loader_class_names = $builder_info->get_resource_loader_class_names;
 
 Returns the class names that load resources.
+
+=head2 get_config_file
+
+  my $config_file = $builder_info->get_config_file($class_name);
+
+Returns the file path of the config for the class given by the class name $class_name.
 
 =head2 get_config_content
 
