@@ -6,6 +6,7 @@ class Native::Runtime::Info {
   use Native::BasicType;
   use Native::Runtime::Info;
   use StringList;
+  use Fn;
   
   # Fields
   has runtime : Native::Runtime;
@@ -110,4 +111,5 @@ class Native::Runtime::Info {
     
     return $class_var_names;
   }
+  
 }

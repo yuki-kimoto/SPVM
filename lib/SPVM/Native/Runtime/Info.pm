@@ -50,7 +50,19 @@ These contains the names of interface types and multi-numeric types.
 
 C<method get_method_names : string[] ($class_name : string);>
 
-Gets all method names owned by the class given the class name $class_name.
+Returns all method names owned by the class given the class name $class_name.
+
+=head2 get_field_names
+
+  method get_field_names : string[] ($class_name : string) {
+
+Returnsall field names owned by the class given the class name $class_name.
+
+=head2 get_class_var_names
+
+  method get_class_var_names : string[] ($class_name : string) {
+
+Returnsall class variable names owned by the class given the class name $class_name.
 
 =head1 Copyright & License
 

@@ -15,6 +15,10 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 {
   ok(SPVM::TestCase::Module::Native::Runtime::Info->get_class_names);
+  ok(SPVM::TestCase::Module::Native::Runtime::Info->get_basic_type_names);
+  ok(SPVM::TestCase::Module::Native::Runtime::Info->get_method_names);
+  ok(SPVM::TestCase::Module::Native::Runtime::Info->get_field_names);
+  ok(SPVM::TestCase::Module::Native::Runtime::Info->get_class_var_names);
 }
 
 # All object is freed
