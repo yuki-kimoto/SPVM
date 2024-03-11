@@ -168,7 +168,41 @@ sub get_config_resource_names {
 
 =head1 Name
 
-SPVM::Builder::Info - Creating Executable File
+SPVM::Builder::Info - Class Information
+
+=head1 Description
+
+=head1 Usage
+
+  my $builder_info = SPVM::Builder::Info->new(class_name => "Foo");
+
+=head1 Class Methods
+
+=head2 new
+
+  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+
+Creates a L<SPVM::Builder::Info> object given the class name $class_name and returns it.
+
+=head1 Instance Methods
+
+=head2 get_resource_loader_class_names
+
+  my $resource_loader_class_names = $builder_info->get_resource_loader_class_names;
+
+Returns the class names that load resources.
+
+=head2 get_config_content
+
+  my $config_content = $builder_info->get_config_content($class_name);
+
+Returns the content of the config for the class given by the class name $class_name.
+
+=head2 get_config_resource_names
+
+  my $config_resource_names = $builder_info->get_config_resource_names($class_name);
+
+Returns the resource names loaded in the config for the class given by the class name $class_name.
 
 =head1 Copyright & License
 
