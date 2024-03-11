@@ -181,6 +181,8 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->grep);
     
+    ok(SPVM::TestCase::Module::Fn->map);
+    
   }
   
   # Extra

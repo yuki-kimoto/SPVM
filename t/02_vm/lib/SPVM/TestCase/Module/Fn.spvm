@@ -4837,4 +4837,41 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method map : int () {
+    
+    {
+      my $array = ["a", "b", "c"];
+      
+      my $array_out = (string[])Fn->map($array, method : object ($element : object) {
+        return "a" . $element->(string);
+      });
+      
+      unless (Array->equals_string($array_out, ["aa", "ab", "ac"])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->map(undef, method : object ($array : object) {}); };
+        unless (Fn->contains($@, "The array \$array must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->map(["a"], undef); };
+        unless (Fn->contains($@, "The callback \$callback must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
 }
