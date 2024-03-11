@@ -1368,4 +1368,6 @@ class Fn {
     return $new_array;
   }
   
+  native static method get_compile_type_name : string ($basic_type_name : string, $type_dimension : int, $type_flag : int);
+  
 }

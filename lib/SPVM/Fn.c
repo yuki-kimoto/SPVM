@@ -720,3 +720,28 @@ int32_t SPVM__Fn__get_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_basic_type_name = stack[0].oval;
+  
+  if (!obj_basic_type_name) {
+    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
+  
+  int32_t type_dimension = stack[1].ival;
+  
+  if (!(type_dimension >= 0 && type_dimension <= 255)) {
+    return env->die(env, stack, "The type dimension $type_dimension must be grether than or equal to 0 and less than or equal to 255.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t type_flag = stack[2].ival;
+  
+  void* obj_compile_type_name = env->get_compile_type_name(env, stack, basic_type_name, type_dimension, type_flag);
+  
+  stack[0].oval = obj_compile_type_name;
+  
+  return 0;
+}

@@ -16,6 +16,7 @@
     * Add the Callback::Grep class.
     * Add the Callback::Map class.
     * Add the Callback::MapExpand class.
+    * Add the get_compile_type_name method to the Fn class.
     
 0.989085 2023-03-08
   [New Features]

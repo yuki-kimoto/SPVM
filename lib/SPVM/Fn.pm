@@ -1240,6 +1240,30 @@ The array $array must be defined, otherwise an exception is thrown.
 
 The callback $callback must be defined, otherwise an exception is thrown.
 
+=head2 get_compile_type_name
+
+C<static method get_compile_type_name : string ($basic_type_name : string, $type_dimension : int, $type_flag : int);>
+
+Create a compile-time type name given the basic type name $basic_type_name, the type dimension $type_dimension, the type flag $type_flag, and returns it.
+
+If C<$type_flag & 1> is true, the type is a reference type.
+
+If C<$type_flag & 2> is true, the type is one that have a mutable qualifier.
+
+Examples:
+  
+  # int[][]
+  my $compile_type_name = Fn->get_compile_type_name("int", 2, 0);
+  
+  # int*
+  my $compile_type_name = Fn->get_compile_type_name("int", 0, 1);
+
+Exceptions:
+
+The basic type name $basic_type_name must be defined.
+
+The type dimension $type_dimension must be grether than or equal to 0 and less than or equal to 255.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

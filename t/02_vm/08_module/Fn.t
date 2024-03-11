@@ -185,6 +185,8 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->map_expand);
     
+    ok(SPVM::TestCase::Module::Fn->get_compile_type_name);
+    
   }
   
   # Extra
