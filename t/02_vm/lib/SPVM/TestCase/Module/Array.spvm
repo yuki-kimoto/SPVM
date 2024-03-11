@@ -5507,4 +5507,267 @@ class TestCase::Module::Array {
     return 1;
   }
   
+  static method to_array_byte : int () {
+    
+    {
+      my $array = [(Byte)(byte)1, (Byte)(byte)2, (Byte)(byte)Fn->BYTE_MIN];
+      my $array_out = Array->to_array_byte($array);
+      
+      unless ($array_out isa byte[]) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+      
+      unless ($array_out->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array_out->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] == Fn->BYTE_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Array->to_array_byte(undef); };
+        unless (Fn->contains($@, "The array \$object_array must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method to_array_short : int () {
+    
+    {
+      my $array = [(Short)(short)1, (Short)(short)2, (Short)(short)Fn->SHORT_MIN];
+      my $array_out = Array->to_array_short($array);
+      
+      unless ($array_out isa short[]) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+      
+      unless ($array_out->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array_out->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] == Fn->SHORT_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Array->to_array_short(undef); };
+        unless (Fn->contains($@, "The array \$object_array must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method to_array_int : int () {
+    
+    {
+      my $array = [(Int)1, 2, (Int)Fn->INT_MIN];
+      my $array_out = Array->to_array_int($array);
+      
+      unless ($array_out isa int[]) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+      
+      unless ($array_out->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array_out->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] == Fn->INT_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Array->to_array_int(undef); };
+        unless (Fn->contains($@, "The array \$object_array must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method to_array_long : int () {
+    
+    {
+      my $array = [(Long)(long)1, (Long)(long)2, (Long)(long)Fn->LONG_MIN];
+      my $array_out = Array->to_array_long($array);
+      
+      unless ($array_out isa long[]) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+      
+      unless ($array_out->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array_out->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] == Fn->LONG_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Array->to_array_long(undef); };
+        unless (Fn->contains($@, "The array \$object_array must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method to_array_float : int () {
+    
+    {
+      my $array = [(Float)(float)1, (Float)(float)2, (Float)(float)Fn->FLOAT_MIN];
+      my $array_out = Array->to_array_float($array);
+      
+      unless ($array_out isa float[]) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+      
+      unless ($array_out->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array_out->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] == Fn->FLOAT_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Array->to_array_float(undef); };
+        unless (Fn->contains($@, "The array \$object_array must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method to_array_double : int () {
+    
+    {
+      my $array = [(Double)(double)1, (Double)(double)2, (Double)(double)Fn->DOUBLE_MIN];
+      my $array_out = Array->to_array_double($array);
+      
+      unless ($array_out isa double[]) {
+        return 0;
+      }
+      
+      unless (@$array_out == 3) {
+        return 0;
+      }
+      
+      unless ($array_out->[0] == 1) {
+        return 0;
+      }
+      
+      unless ($array_out->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] == Fn->DOUBLE_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Array->to_array_double(undef); };
+        unless (Fn->contains($@, "The array \$object_array must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }
