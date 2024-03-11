@@ -142,4 +142,70 @@ class TestCase::Module::Native::Runtime::Info {
     return 1;
   }
   
+  static method get_method : int () {
+    
+    {
+      my $current_runtime_info = Native->info;
+      
+      my $method = $current_runtime_info->get_method("Fn", "join");
+      
+      unless ($method is_type Native::Method) {
+        return 0;
+      }
+      
+      {
+        unless ($method->get_name eq "join") {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method get_field : int () {
+    
+    {
+      my $current_runtime_info = Native->info;
+      
+      my $field = $current_runtime_info->get_field("Point", "x");
+      
+      unless ($field is_type Native::Field) {
+        return 0;
+      }
+      
+      {
+        unless ($field->get_name eq "x") {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method get_class_var : int () {
+    
+    {
+      my $current_runtime_info = Native->info;
+      
+      my $class_var = $current_runtime_info->get_class_var("Bool", "\$TRUE");
+      
+      unless ($class_var is_type Native::ClassVar) {
+        return 0;
+      }
+      
+      {
+        unless ($class_var->get_name eq "\$TRUE") {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
 }

@@ -21,6 +21,9 @@
       get_method_names
       get_field_names
       get_class_var_names
+      get_method
+      get_field
+      get_class_var
 
 0.989085 2023-03-08
   [New Features]

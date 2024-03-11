@@ -5,6 +5,9 @@ class Native::Runtime::Info {
   
   use Native::BasicType;
   use Native::Runtime::Info;
+  use Native::Method;
+  use Native::Field;
+  use Native::ClassVar;
   use StringList;
   use Fn;
   
@@ -110,6 +113,39 @@ class Native::Runtime::Info {
     }
     
     return $class_var_names;
+  }
+  
+  method get_method : Native::Method ($class_name : string, $method_name : string) {
+    
+    my $runtime = $self->{runtime};
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $method = $basic_type->get_method_by_name($method_name);
+    
+    return $method;
+  }
+  
+  method get_field : Native::Field ($class_name : string, $field_name : string) {
+    
+    my $runtime = $self->{runtime};
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $field = $basic_type->get_field_by_name($field_name);
+    
+    return $field;
+  }
+  
+  method get_class_var : Native::ClassVar ($class_name : string, $class_var_name : string) {
+    
+    my $runtime = $self->{runtime};
+    
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $class_var = $basic_type->get_class_var_by_name($class_var_name);
+    
+    return $class_var;
   }
   
 }

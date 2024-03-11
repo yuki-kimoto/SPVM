@@ -54,15 +54,33 @@ Returns all method names owned by the class given the class name $class_name.
 
 =head2 get_field_names
 
-  method get_field_names : string[] ($class_name : string) {
+C<method get_field_names : string[] ($class_name : string);>
 
 Returnsall field names owned by the class given the class name $class_name.
 
 =head2 get_class_var_names
 
-  method get_class_var_names : string[] ($class_name : string) {
+C<method get_class_var_names : string[] ($class_name : string);>
 
 Returnsall class variable names owned by the class given the class name $class_name.
+
+=head2 get_method
+
+C<method get_method : L<Native::Method|SPVM::Native::Method> ($class_name : string, $method_name : string);>
+
+Gets a method given the class name $class_name and the method name $method_name, returns it.
+
+=head2 get_field
+
+C<method get_field : L<Native::Field|SPVM::Native::Field> ($class_name : string, $field_name : string);>
+
+Gets a field given the class name $class_name and the method name $method_name, returns it.
+
+=head2 get_class_var
+
+C<method get_class_var : L<Native::ClassVar|SPVM::Native::ClassVar> ($class_name : string, $class_var_name : string);>
+
+Gets a class variable given the class name $class_name and the method name $method_name, returns it.
 
 =head1 Copyright & License
 
