@@ -9,7 +9,6 @@ use File::Basename 'basename';
 use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
-use SPVM::Builder::Config::Exe;
 
 use SPVM 'Native::Compiler';
 use SPVM 'Native::Runtime::Info';
@@ -160,7 +159,7 @@ sub get_config_content {
   return $config_content;
 }
 
-sub get_resource_names {
+sub get_config_resource_names {
   my ($self, $class_name) = @_;
   
   unless ($self->{finish_compile}) {
@@ -171,9 +170,9 @@ sub get_resource_names {
   
   my $config = SPVM::Builder::Config->load_config($config_file, []);
   
-  my $resource_names = $config->get_resource_names;
+  my $config_resource_names = $config->get_resource_names;
   
-  return $resource_names;
+  return $config_resource_names;
 }
 
 1;

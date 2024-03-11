@@ -21,9 +21,9 @@ my $config_content = $builder_info->get_config_content($class_name);
 
 like($config_content, qr/use_resource.+TestCase::Resource::Mylib1/);
 
-my $resource_names = $builder_info->get_resource_names($class_name);
+my $config_resource_names = $builder_info->get_config_resource_names($class_name);
 
-is_deeply($resource_names, ['TestCase::Resource::Mylib1']);
+is_deeply($config_resource_names, ['TestCase::Resource::Mylib1']);
 
 ok(1);
 
