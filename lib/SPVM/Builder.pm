@@ -42,6 +42,7 @@ sub new {
   my $class = shift;
   
   my $self = {
+    build_dir => $ENV{SPVM_BUILD_DIR},
     include_dirs => [map { "$_/SPVM" } @INC],
     @_
   };
