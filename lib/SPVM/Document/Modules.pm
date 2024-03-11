@@ -22,6 +22,12 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<Callback|SPVM::Callback>
 
+=item * L<Callback::Grep|SPVM::Callback::Grep>
+
+=item * L<Callback::Map|SPVM::Callback::Map>
+
+=item * L<Callback::MapExpand|SPVM::Callback::MapExpand>
+
 =item * L<Cloneable|SPVM::Cloneable>
 
 =item * L<Cloner|SPVM::Cloner>
@@ -123,6 +129,8 @@ This document lists standard modules in the SPVM language. Standard modules are 
 =item * L<Native::MethodCall|SPVM::Native::MethodCall>
 
 =item * L<Native::Runtime|SPVM::Native::Runtime>
+
+=item * L<Native::Runtime::Info|SPVM::Native::Runtime::Info>
 
 =item * L<Native::Stack|SPVM::Native::Stack>
 
