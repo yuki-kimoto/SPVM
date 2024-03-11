@@ -79,6 +79,8 @@ sub new {
   $compiler->add_include_dir($_) for @{$builder->include_dirs};
   $self->{compiler} = $compiler;
   
+  $self->compile;
+  
   return $self;
 }
 
@@ -108,15 +110,10 @@ sub compile {
   
   $self->runtime($runtime);
   
-  $self->{finish_compile} = 1;
 }
 
 sub get_resource_loader_class_names {
   my ($self) = @_;
-  
-  unless ($self->{finish_compile}) {
-    $self->compile;
-  }
   
   my $runtime = $self->runtime;
   
@@ -146,10 +143,6 @@ sub get_resource_loader_class_names {
 sub get_config_content {
   my ($self, $class_name) = @_;
   
-  unless ($self->{finish_compile}) {
-    $self->compile;
-  }
-  
   my $runtime = $self->runtime;
   
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
@@ -161,10 +154,6 @@ sub get_config_content {
 
 sub get_config_resource_names {
   my ($self, $class_name) = @_;
-  
-  unless ($self->{finish_compile}) {
-    $self->compile;
-  }
   
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
   
