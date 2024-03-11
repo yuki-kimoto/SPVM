@@ -1289,7 +1289,7 @@ class Fn {
     }
   }
   
-  static method grep : object[] ($array : object[], $callback : Callback::Grep) {
+  precompile static method grep : object[] ($array : object[], $callback : Callback::Grep) {
     
     unless ($array) {
       die "The array \$array must be defined.";
@@ -1316,7 +1316,7 @@ class Fn {
     return $new_array;
   }
   
-  static method map : object[] ($array : object[], $callback : Callback::Map) {
+  precompile static method map : object[] ($array : object[], $callback : Callback::Map) {
     
     unless ($array) {
       die "The array \$array must be defined.";
@@ -1341,7 +1341,7 @@ class Fn {
     return $new_array;
   }
   
-  static method map_expand : object[] ($array : object[], $callback : Callback::MapExpand) {
+  precompile static method map_expand : object[] ($array : object[], $callback : Callback::MapExpand) {
     
     unless ($array) {
       die "The array \$array must be defined.";
