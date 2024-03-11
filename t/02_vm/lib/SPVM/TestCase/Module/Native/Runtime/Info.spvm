@@ -1,14 +1,34 @@
-class TestCase::Module::Native::Compiler {
+class TestCase::Module::Native::Runtime::Info {
   use Native;
   use Fn;
   use Array;
   
-  static method compile : int () {
+  static method get_class_names : int () {
     
     {
       my $current_runtime_info = Native->info;
       
       my $class_names = $current_runtime_info->get_class_names;
+      
+      {
+        my $callback = method : int ($element : object) {
+          if ($element->(string) eq "Fn") { return 1; }
+        };
+        
+        unless (@{Fn->grep($class_names, $callback)}) {
+          return 0;
+        }
+      }
+      
+      {
+        my $callback = method : int ($element : object) {
+          if ($element->(string) eq "Array") { return 1; }
+        };
+        
+        unless (@{Fn->grep($class_names, $callback)}) {
+          return 1;
+        }
+      }
     }
     
     return 1;

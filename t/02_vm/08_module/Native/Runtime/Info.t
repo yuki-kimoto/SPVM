@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Module::Native::Compiler';
+use SPVM 'TestCase::Module::Native::Runtime::Info';
 
 my $api = SPVM::api;
 
@@ -14,7 +14,7 @@ my $api = SPVM::api;
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 {
-  ok(SPVM::TestCase::Module::Native::Compiler->compile);
+  ok(SPVM::TestCase::Module::Native::Runtime::Info->get_class_names);
 }
 
 # All object is freed
