@@ -1289,4 +1289,83 @@ class Fn {
     }
   }
   
+  static method grep : object[] ($array : object[], $callback : Callback::Grep) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $proto_array = Array->new_proto($array, 0);
+    
+    my $list = List->new($proto_array);
+    
+    for my $element (@$array) {
+      my $ok = $callback->($element);
+      
+      if ($ok) {
+        $list->push($element);
+      }
+    }
+    
+    my $new_array = $list->to_array;
+    
+    return $new_array;
+  }
+  
+  static method map : object[] ($array : object[], $callback : Callback::Map) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $proto_array = Array->new_proto($array, 0);
+    
+    my $list = List->new($proto_array);
+    
+    for my $element (@$array) {
+      my $new_element = $callback->($element);
+      
+      $list->push($new_element);
+    }
+    
+    my $new_array = $list->to_array;
+    
+    return $new_array;
+  }
+  
+  static method map_expand : object[] ($array : object[], $callback : Callback::MapExpand) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless ($callback) {
+      die "The callback \$callback must be defined.";
+    }
+    
+    my $proto_array = Array->new_proto($array, 0);
+    
+    my $list = List->new($proto_array);
+    
+    for my $element (@$array) {
+      my $new_elements = $callback->($element);
+      
+      for my $new_element (@$new_elements) {
+        $list->push($new_element);
+      }
+    }
+    
+    my $new_array = $list->to_array;
+    
+    return $new_array;
+  }
+  
 }

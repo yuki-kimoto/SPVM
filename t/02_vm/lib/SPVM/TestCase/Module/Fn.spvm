@@ -4794,4 +4794,47 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  
+  static method grep : int () {
+    
+    {
+      my $array = ["a", "b", "c"];
+      
+      my $array_out = (string[])Fn->grep($array, method : int ($element : object) {
+        if ($element->(string) eq "c") {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      });
+      
+      unless (Array->equals_string($array_out, ["c"])) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        eval { Fn->grep(undef, method : int ($array : object) {}); };
+        unless (Fn->contains($@, "The array \$array must be defined.")) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { Fn->grep(["a"], undef); };
+        unless (Fn->contains($@, "The callback \$callback must be defined.")) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
 }

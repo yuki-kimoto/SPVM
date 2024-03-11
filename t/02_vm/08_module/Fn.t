@@ -178,6 +178,9 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->or);
     
     ok(SPVM::TestCase::Module::Fn->if);
+    
+    ok(SPVM::TestCase::Module::Fn->grep);
+    
   }
   
   # Extra

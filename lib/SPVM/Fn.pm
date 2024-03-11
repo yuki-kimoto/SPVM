@@ -1204,6 +1204,42 @@ C<static method if : object ($condition : int, $left : object, $right : object);
 
 If $condition is a true value, returns $left, otherwise returns $right;
 
+=head2 grep
+
+C<static method grep : object[] ($array : object[], $callback : L<Callback::Grep|SPVM::Callback::Grep>);>
+
+Returns a new array containing only the elements of the array $array for which the callback $callback returned a true value.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+The callback $callback must be defined, otherwise an exception is thrown.
+
+=head2 map
+
+C<static method map : object[] ($array : object[], $callback : L<Callback::Map|SPVM::Callback::Map>);>
+
+Returns a new array with each element of the array $array processed in the callback $callback.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+The callback $callback must be defined, otherwise an exception is thrown.
+
+=head2 map_expand
+
+C<static method map_expand : object[] ($array : object[], $callback : L<Callback::MapExpand|SPVM::Callback::MapExpand>);>
+
+Returns a new array with each element of the array $array processed in the callback $callback which returns multiple values.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+The callback $callback must be defined, otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
