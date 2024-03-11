@@ -202,9 +202,11 @@ sub get_config_resource_names {
 
 =head1 Name
 
-SPVM::Builder::Config::Info - Class Information
+SPVM::Builder::Config::Info - Config Information
 
 =head1 Description
+
+The SPVM::Builder::Config::Info class has methods to manipulate config information.
 
 =head1 Usage
 
@@ -217,6 +219,8 @@ SPVM::Builder::Config::Info - Class Information
   my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
 
 Creates a L<SPVM::Builder::Config::Info> object given the class name $class_name and returns it.
+
+The class specified by $class_name and classes loaded by the class are compiled and the runtime is generated.
 
 =head1 Instance Methods
 
