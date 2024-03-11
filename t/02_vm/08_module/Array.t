@@ -76,6 +76,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->repeat_string);
   ok(SPVM::TestCase::Module::Array->copy_object_with_proto);
   ok(SPVM::TestCase::Module::Array->copy_object_address_with_proto);
+  ok(SPVM::TestCase::Module::Array->to_object_array_byte);
 }
 
 # All object is freed
