@@ -1,4 +1,4 @@
-package SPVM::Builder::Exe;
+package SPVM::Builder::Info;
 
 use strict;
 use warnings;
@@ -1137,7 +1137,7 @@ sub compile_native_class {
 
 =head1 Name
 
-SPVM::Builder::Exe - Creating Executable File
+SPVM::Builder::Info - Creating Executable File
 
 =head1 Copyright & License
 
