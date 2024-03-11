@@ -11,18 +11,18 @@ class TestCase::Module::Array {
       my $array = [(byte)1, 2, (byte)Fn->BYTE_MIN];
       my $array_out = Array->copy_byte($array);
       
-      unless ($array isa byte[]) {
+      unless ($array_out isa byte[]) {
         return 0;
       }
-      unless ($array->[0] == 1) {
-        return 0;
-      }
-      
-      unless ($array->[1] == 2) {
+      unless ($array_out->[0] == 1) {
         return 0;
       }
       
-      unless ($array->[2] == Fn->BYTE_MIN) {
+      unless ($array_out->[1] == 2) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] == Fn->BYTE_MIN) {
         return 0;
       }
       
@@ -94,19 +94,19 @@ class TestCase::Module::Array {
       my $array = [(double)0.5, 0.25, Fn->DOUBLE_MIN];
       my $array_out = Array->copy_double($array);
       
-      unless ($array isa double[]) {
+      unless ($array_out isa double[]) {
         return 0;
       }
       
-      unless ($array->[0] == 0.5) {
+      unless ($array_out->[0] == 0.5) {
         return 0;
       }
       
-      unless ($array->[1] == 0.25) {
+      unless ($array_out->[1] == 0.25) {
         return 0;
       }
       
-      unless ($array->[2] == Fn->DOUBLE_MIN) {
+      unless ($array_out->[2] == Fn->DOUBLE_MIN) {
         return 0;
       }
       
@@ -178,19 +178,19 @@ class TestCase::Module::Array {
       my $array = [(float)0.5f, 0.25f, Fn->FLOAT_MIN];
       my $array_out = Array->copy_float($array);
       
-      unless ($array isa float[]) {
+      unless ($array_out isa float[]) {
         return 0;
       }
       
-      unless ($array->[0] == 0.5) {
+      unless ($array_out->[0] == 0.5) {
         return 0;
       }
       
-      unless ($array->[1] == 0.25) {
+      unless ($array_out->[1] == 0.25) {
         return 0;
       }
       
-      unless ($array->[2] == Fn->FLOAT_MIN) {
+      unless ($array_out->[2] == Fn->FLOAT_MIN) {
         return 0;
       }
       
@@ -262,19 +262,19 @@ class TestCase::Module::Array {
       my $array = [(int)1, 2, Fn->INT_MIN];
       my $array_out = Array->copy_int($array);
       
-      unless ($array isa int[]) {
+      unless ($array_out isa int[]) {
         return 0;
       }
       
-      unless ($array->[0] == 1) {
+      unless ($array_out->[0] == 1) {
         return 0;
       }
       
-      unless ($array->[1] == 2) {
+      unless ($array_out->[1] == 2) {
         return 0;
       }
       
-      unless ($array->[2] == Fn->INT_MIN) {
+      unless ($array_out->[2] == Fn->INT_MIN) {
         return 0;
       }
       
@@ -346,19 +346,19 @@ class TestCase::Module::Array {
       my $array = [(long)1, 2, Fn->LONG_MIN];
       my $array_out = Array->copy_long($array);
       
-      unless ($array isa long[]) {
+      unless ($array_out isa long[]) {
         return 0;
       }
       
-      unless ($array->[0] == 1) {
+      unless ($array_out->[0] == 1) {
         return 0;
       }
       
-      unless ($array->[1] == 2) {
+      unless ($array_out->[1] == 2) {
         return 0;
       }
       
-      unless ($array->[2] == Fn->LONG_MIN) {
+      unless ($array_out->[2] == Fn->LONG_MIN) {
         return 0;
       }
       
@@ -434,19 +434,19 @@ class TestCase::Module::Array {
         return $new_int_obj;
       });
       
-      unless ($array isa object[]) {
+      unless ($array_out isa object[]) {
         return 0;
       }
       
-      if ($array->[0] == $array_out->[0]) {
+      if ($array_out->[0] == $array->[0]) {
         return 0;
       }
       
-      if ($array->[1] == $array_out->[1]) {
+      if ($array_out->[1] == $array->[1]) {
         return 0;
       }
       
-      if ($array->[2] == $array_out->[2]) {
+      if ($array_out->[2] == $array->[2]) {
         return 0;
       }
       
@@ -656,15 +656,15 @@ class TestCase::Module::Array {
       my $array = [(short)1, 2, (short)Fn->SHORT_MIN];
       my $array_out = Array->copy_short($array);
 
-      unless ($array->[0] == 1) {
+      unless ($array_out->[0] == 1) {
         return 0;
       }
       
-      unless ($array->[1] == 2) {
+      unless ($array_out->[1] == 2) {
         return 0;
       }
       
-      unless ($array->[2] == Fn->SHORT_MIN) {
+      unless ($array_out->[2] == Fn->SHORT_MIN) {
         return 0;
       }
       
@@ -740,25 +740,25 @@ class TestCase::Module::Array {
       unless ($value0 != $array_out->[0]) {
         return 0;
       }
-      unless ($array->[0] eq $array_out->[0]) {
+      unless ($array_out->[0] eq $array->[0]) {
         return 0;
       }
-      unless ($array->[1] eq $array_out->[1]) {
+      unless ($array_out->[1] eq $array->[1]) {
         return 0;
       }
-      unless ($array->[2] eq $array_out->[2]) {
-        return 0;
-      }
-      
-      unless ($array->[0] != $array_out->[0]) {
+      unless ($array_out->[2] eq $array->[2]) {
         return 0;
       }
       
-      unless ($array->[1] != $array_out->[1]) {
+      unless ($array_out->[0] != $array->[0]) {
         return 0;
       }
       
-      unless ($array->[2] != $array_out->[2]) {
+      unless ($array_out->[1] != $array->[1]) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] != $array->[2]) {
         return 0;
       }
       
@@ -845,13 +845,13 @@ class TestCase::Module::Array {
       unless ($value0 == $array_out->[0]) {
         return 0;
       }
-      unless ($array->[0] == $array_out->[0]) {
+      unless ($array_out->[0] == $array_out->[0]) {
         return 0;
       }
-      unless ($array->[1] == $array_out->[1]) {
+      unless ($array_out->[1] == $array_out->[1]) {
         return 0;
       }
-      unless ($array->[2] == $array_out->[2]) {
+      unless ($array_out->[2] == $array_out->[2]) {
         return 0;
       }
       
