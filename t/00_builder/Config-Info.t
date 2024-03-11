@@ -52,11 +52,15 @@ my $class_name = 'TestCase::UseResource::Basic';
   like($config_content, qr/use_resource.+TestCase::Resource::Mylib1/);
 }
 
-# get_config_resource_names
+# get_config
 {
   my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
   
-  my $config_resource_names = $builder_info->get_config_resource_names($class_name);
+  my $config = $builder_info->get_config($class_name);
+  
+  ok($config->isa('SPVM::Builder::Config'));
+  
+  my $config_resource_names = $config->get_resource_names($class_name);
   
   is_deeply($config_resource_names, ['TestCase::Resource::Mylib1']);
 }

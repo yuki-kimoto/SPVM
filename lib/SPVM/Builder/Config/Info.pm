@@ -159,9 +159,11 @@ sub get_config_file {
     confess("The class name \$class_name must be defined.");
   }
   
-  my $runtime = $self->runtime;
-  
   my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  
+  unless ($config_file) {
+    confess("The config file for the class \"$class_name\" is not found.");
+  }
   
   return $config_file;
 }
@@ -169,33 +171,21 @@ sub get_config_file {
 sub get_config_content {
   my ($self, $class_name) = @_;
   
-  unless (defined $class_name) {
-    confess("The class name \$class_name must be defined.");
-  }
-  
-  my $runtime = $self->runtime;
-  
-  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  my $config_file = $self->get_config_file($class_name);
   
   my $config_content = SPVM::Builder::Util::slurp_binary($config_file);
   
   return $config_content;
 }
 
-sub get_config_resource_names {
+sub get_config {
   my ($self, $class_name) = @_;
   
-  unless (defined $class_name) {
-    confess("The class name \$class_name must be defined.");
-  }
-  
-  my $config_file = SPVM::Builder::Util::search_config_file($class_name);
+  my $config_file = $self->get_config_file($class_name);
   
   my $config = SPVM::Builder::Config->load_config($config_file, []);
   
-  my $config_resource_names = $config->get_resource_names;
-  
-  return $config_resource_names;
+  return $config;
 }
 
 1;
@@ -248,11 +238,11 @@ Returns the file path of the config for the class given by the class name $class
 
 Returns the content of the config for the class given by the class name $class_name.
 
-=head2 get_config_resource_names
+=head2 get_config
 
-  my $config_resource_names = $builder_info->get_config_resource_names($class_name);
+  my $config = $builder_info->get_config($class_name);
 
-Returns the resource names loaded in the config for the class given by the class name $class_name.
+Returns the L<config|SPVM::Builder::Config> for the class given by the class name $class_name.
 
 =head1 Copyright & License
 
