@@ -24,7 +24,8 @@
       get_method
       get_field
       get_class_var
-
+  [OS Support]
+    * Makefile.PL does not thrown the "OS unsupported" exception when the OS is Alpine Linux.
 0.989085 2023-03-08
   [New Features]
     * Add the or method to the Fn class.
