@@ -109,9 +109,6 @@ sub compile {
   
   $self->runtime($runtime);
   
-  my $runtime_info = SPVM::Native::Runtime::Info->new($runtime);
-  $self->runtime_info($runtime_info);
-  
   $self->{finish_compile} = 1;
 }
 
@@ -133,12 +130,14 @@ sub get_resource_loader_class_names {
     
     my $config_file = SPVM::Builder::Util::search_config_file($class_name);
     
-    my $config = SPVM::Builder::Config->load_config($config_file, []);
-    
-    my $resource_names = $config->get_resource_names;
-    
-    if (@$resource_names) {
-      push @$resource_loader_class_names, $class_name;
+    if (defined $config_file && -f $config_file) {
+      my $config = SPVM::Builder::Config->load_config($config_file, []);
+      
+      my $resource_names = $config->get_resource_names;
+      
+      if (@$resource_names) {
+        push @$resource_loader_class_names, $class_name;
+      }
     }
   }
   
