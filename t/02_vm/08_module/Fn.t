@@ -183,6 +183,8 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->map);
     
+    ok(SPVM::TestCase::Module::Fn->map_expand);
+    
   }
   
   # Extra
