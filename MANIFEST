@@ -62,6 +62,7 @@ lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Compiler.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
+lib/SPVM/Builder/Config/Info.pm
 lib/SPVM/Builder/Env.pm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allocator.h
@@ -133,7 +134,6 @@ lib/SPVM/Builder/include/spvm_vm.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
-lib/SPVM/Builder/Info.pm
 lib/SPVM/Builder/LibInfo.pm
 lib/SPVM/Builder/LinkInfo.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
@@ -449,13 +449,21 @@ solo/lib/SPVM/TestCase/Simple.spvm
 solo/lib/SPVM/TestCase/Weaken.spvm
 solo/lib/SPVM/TestCase/Weaken2.spvm
 SPVM.xs
+t/00_builder/CC.t
 t/00_builder/cc.t
+t/00_builder/Config-Exe.t
+t/00_builder/Config-Info.t
+t/00_builder/Config.t
 t/00_builder/config.t
 t/00_builder/config_exe.t
+t/00_builder/info.t
 t/00_builder/link_info.t
+t/00_builder/LinkInfo.t
 t/00_builder/makefile.t
 t/00_builder/object_file_info.t
+t/00_builder/ObjectFileInfo.t
 t/00_builder/util.t
+t/00_builder/Util.t
 t/01_syntax/check.t
 t/01_syntax/dist.pl
 t/01_syntax/extra_definition.t

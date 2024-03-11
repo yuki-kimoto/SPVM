@@ -7,13 +7,13 @@ use warnings;
 
 use Test::More;
 
-use SPVM::Builder::Info;
+use SPVM::Builder::Config::Info;
 
 my $class_name = 'TestCase::UseResource::Basic';
 
 # get_class_names
 {
-  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
   
   my $class_names = $builder_info->get_class_names;
   
@@ -24,7 +24,7 @@ my $class_name = 'TestCase::UseResource::Basic';
 
 # get_resource_loader_class_names
 {
-  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
   
   my $resource_loader_class_names = $builder_info->get_resource_loader_class_names;
   
@@ -33,7 +33,7 @@ my $class_name = 'TestCase::UseResource::Basic';
 
 # get_get_config_file
 {
-  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
   
   my $config_file = $builder_info->get_config_file($class_name);
   
@@ -45,7 +45,7 @@ my $class_name = 'TestCase::UseResource::Basic';
 
 # get_config_content
 {
-  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
   
   my $config_content = $builder_info->get_config_content($class_name);
   
@@ -54,7 +54,7 @@ my $class_name = 'TestCase::UseResource::Basic';
 
 # get_config_resource_names
 {
-  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
   
   my $config_resource_names = $builder_info->get_config_resource_names($class_name);
   

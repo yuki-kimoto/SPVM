@@ -230,7 +230,7 @@ L<All SPVM Documents|SPVM::Document>
 
 =item * L<Builder Utility APIs|SPVM::Builder::Util::API>
 
-=item * L<Class Information|SPVM::Builder::Info>
+=item * L<Class Information|SPVM::Builder::Config::Info>
 
 =back
 

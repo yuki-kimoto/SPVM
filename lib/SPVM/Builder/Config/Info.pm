@@ -1,4 +1,4 @@
-package SPVM::Builder::Info;
+package SPVM::Builder::Config::Info;
 
 use strict;
 use warnings;
@@ -202,21 +202,21 @@ sub get_config_resource_names {
 
 =head1 Name
 
-SPVM::Builder::Info - Class Information
+SPVM::Builder::Config::Info - Class Information
 
 =head1 Description
 
 =head1 Usage
 
-  my $builder_info = SPVM::Builder::Info->new(class_name => "Foo");
+  my $builder_info = SPVM::Builder::Config::Info->new(class_name => "Foo");
 
 =head1 Class Methods
 
 =head2 new
 
-  my $builder_info = SPVM::Builder::Info->new(class_name => $class_name);
+  my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
 
-Creates a L<SPVM::Builder::Info> object given the class name $class_name and returns it.
+Creates a L<SPVM::Builder::Config::Info> object given the class name $class_name and returns it.
 
 =head1 Instance Methods
 
