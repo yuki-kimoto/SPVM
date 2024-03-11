@@ -1121,4 +1121,209 @@ class Array {
   static method copy_object_address_with_proto : object[] ($array : object[], $proto : object[], $offset : int = 0, $length : int = -1) {
     return &copy_object_with_proto($array, $proto, undef, $offset, $length);
   }
+  
+  precompile static method to_object_array_byte : Byte[] ($array : byte[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $object_array = new Byte[$array_length];
+    
+    for (my $i = 0; $i < $array_length; $i++) {
+      $object_array->[$i] = (Byte)$array->[$i];
+    }
+    
+    return $object_array;
+  }
+  
+  precompile static method to_object_array_short : Short[] ($array : short[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $object_array = new Short[$array_length];
+    
+    for (my $i = 0; $i < $array_length; $i++) {
+      $object_array->[$i] = (Short)$array->[$i];
+    }
+    
+    return $object_array;
+  }
+  
+  precompile static method to_object_array_int : Int[] ($array : int[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $object_array = new Int[$array_length];
+    
+    for (my $i = 0; $i < $array_length; $i++) {
+      $object_array->[$i] = (Int)$array->[$i];
+    }
+    
+    return $object_array;
+  }
+  
+  precompile static method to_object_array_long : Long[] ($array : long[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $object_array = new Long[$array_length];
+    
+    for (my $i = 0; $i < $array_length; $i++) {
+      $object_array->[$i] = (Long)$array->[$i];
+    }
+    
+    return $object_array;
+  }
+  
+  precompile static method to_object_array_float : Float[] ($array : float[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $object_array = new Float[$array_length];
+    
+    for (my $i = 0; $i < $array_length; $i++) {
+      $object_array->[$i] = (Float)$array->[$i];
+    }
+    
+    return $object_array;
+  }
+  
+  precompile static method to_object_array_double : Double[] ($array : double[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $array_length = @$array;
+    
+    my $object_array = new Double[$array_length];
+    
+    for (my $i = 0; $i < $array_length; $i++) {
+      $object_array->[$i] = (Double)$array->[$i];
+    }
+    
+    return $object_array;
+  }
+  
+  precompile static method to_array_byte : byte[] ($object_array : Byte[]) {
+    
+    unless ($object_array) {
+      die "The array \$object_array must be defined.";
+    }
+    
+    my $object_array_length = @$object_array;
+    
+    my $array = new byte[$object_array_length];
+    
+    for (my $i = 0; $i < $object_array_length; $i++) {
+      $array->[$i] = (byte)$object_array->[$i];
+    }
+    
+    return $array;
+  }
+  
+  precompile static method to_array_short : short[] ($object_array : Short[]) {
+    
+    unless ($object_array) {
+      die "The array \$object_array must be defined.";
+    }
+    
+    my $object_array_length = @$object_array;
+    
+    my $array = new short[$object_array_length];
+    
+    for (my $i = 0; $i < $object_array_length; $i++) {
+      $array->[$i] = (short)$object_array->[$i];
+    }
+    
+    return $array;
+  }
+  
+  precompile static method to_array_int : int[] ($object_array : Int[]) {
+    
+    unless ($object_array) {
+      die "The array \$object_array must be defined.";
+    }
+    
+    my $object_array_length = @$object_array;
+    
+    my $array = new int[$object_array_length];
+    
+    for (my $i = 0; $i < $object_array_length; $i++) {
+      $array->[$i] = (int)$object_array->[$i];
+    }
+    
+    return $array;
+  }
+  
+  precompile static method to_array_long : long[] ($object_array : Long[]) {
+    
+    unless ($object_array) {
+      die "The array \$object_array must be defined.";
+    }
+    
+    my $object_array_length = @$object_array;
+    
+    my $array = new long[$object_array_length];
+    
+    for (my $i = 0; $i < $object_array_length; $i++) {
+      $array->[$i] = (long)$object_array->[$i];
+    }
+    
+    return $array;
+  }
+  
+  precompile static method to_array_float : float[] ($object_array : Float[]) {
+    
+    unless ($object_array) {
+      die "The array \$object_array must be defined.";
+    }
+    
+    my $object_array_length = @$object_array;
+    
+    my $array = new float[$object_array_length];
+    
+    for (my $i = 0; $i < $object_array_length; $i++) {
+      $array->[$i] = (float)$object_array->[$i];
+    }
+    
+    return $array;
+  }
+  
+  precompile static method to_array_double : double[] ($object_array : Double[]) {
+    
+    unless ($object_array) {
+      die "The array \$object_array must be defined.";
+    }
+    
+    my $object_array_length = @$object_array;
+    
+    my $array = new double[$object_array_length];
+    
+    for (my $i = 0; $i < $object_array_length; $i++) {
+      $array->[$i] = (double)$object_array->[$i];
+    }
+    
+    return $array;
+  }
+  
 }

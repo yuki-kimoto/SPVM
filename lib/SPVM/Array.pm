@@ -967,6 +967,122 @@ C<static method copy_object_address_with_proto : object[] ($array : object[], $p
 
 The same as L</"copy_object_address">, but can give the prototype array $proto for the copied array.
 
+=head2 to_object_array_byte
+
+C<static method to_object_array_byte : L<Byte|SPVM::Byte>[] ($array : byte[]);>
+
+Creates a new L<Byte|SPVM::Byte> array with the same length as the byte array $array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+=head2 to_object_array_short
+
+C<static method to_object_array_short : L<Short|SPVM::Short>[] ($array : short[]);>
+
+Creates a new L<Short|SPVM::Short> array with the same length as the short array $array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+=head2 to_object_array_int
+
+C<static method to_object_array_int : L<Int|SPVM::Int>[] ($array : int[]);>
+
+Creates a new L<Int|SPVM::Int> array with the same length as the int array $array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+=head2 to_object_array_long
+
+C<static method to_object_array_long : L<Long|SPVM::Long>[] ($array : long[]);>
+
+Creates a new L<Long|SPVM::Long> array with the same length as the long array $array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+=head2 to_object_array_float
+
+C<static method to_object_array_float : L<Float|SPVM::Float>[] ($array : float[]);>
+
+Creates a new L<Float|SPVM::Float> array with the same length as the float array $array, copies the elements in $array to it, and returns it.
+
+=head2 to_object_array_double
+
+C<static method to_object_array_double : L<Double|SPVM::Double>[] ($array : double[]);>
+
+Creates a new L<Double|SPVM::Double> array with the same length as the double array $array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+=head2 to_array_byte
+
+C<static method to_array_byte : byte[] ($object_array : L<Byte|SPVM::Byte>[]);>
+
+Creates a new byte array with the same length as the L<Byte|SPVM::Byte> array $object_array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $array must be defined, otherwise an exception is thrown.
+
+=head2 to_array_short
+
+C<static method to_array_short : short[] ($object_array : L<Short|SPVM::Short>[]);>
+
+Creates a new short array with the same length as the L<Short|SPVM::Short>> array $object_array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $object_array must be defined, otherwise an exception is thrown.
+
+=head2 to_array_int
+
+C<static method to_array_int : int[] ($object_array : L<Int|SPVM::Int>[]>);>
+
+Creates a new int array with the same length as the L<Int|SPVM::Int> array $object_array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $object_array must be defined, otherwise an exception is thrown.
+
+=head2 to_array_long
+
+C<static method to_array_long : long[] ($object_array : L<Long|SPVM::Long>[]);>
+
+Creates a new long array with the same length as the L<Long|SPVM::Long> array $object_array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $object_array must be defined, otherwise an exception is thrown.
+
+=head2 to_array_float
+
+C<static method to_array_float : float[] ($object_array : L<Float|SPVM::Float>[]);>
+
+Creates a new float array with the same length as the L<Float|SPVM::Float> array $object_array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $object_array must be defined, otherwise an exception is thrown.
+
+=head2 to_array_double
+
+C<static method to_array_double : double[] ($object_array : L<Double|SPVM::Double>[]);>
+
+Creates a new double[ array with the same length as the L<Double|SPVM::Double> array $object_array, copies the elements in $array to it, and returns it.
+
+Exceptions:
+
+The array $object_array must be defined, otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

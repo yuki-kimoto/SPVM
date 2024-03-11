@@ -1,3 +1,19 @@
+0.989086 2023-03-11
+  [New Features]
+    * Add the following methods to the Array class.
+      to_object_array_byte
+      to_object_array_short
+      to_object_array_int
+      to_object_array_long
+      to_object_array_float
+      to_object_array_double
+      to_array_byte
+      to_array_short
+      to_array_int
+      to_array_long
+      to_array_float
+      to_array_double
+    
 0.989085 2023-03-08
   [New Features]
     * Add the or method to the Fn class.
