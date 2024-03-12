@@ -32,7 +32,7 @@ The C<if> statement is a conditional statement that is executed if the condition
 
 The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition I<CONDITION>.
 
-If the condition is not 0, the program jumps to the beginning of the C<if> block. Otherwise jumps to the end of the C<if> block.
+If the condition is not 0, the program jumps to the beginning of the C<if> block, otherwise jumps to the end of the C<if> block.
 
 The local variable declartion in the condition of the C<if> statement are allowed.
 
@@ -145,16 +145,17 @@ Examples:
 
 =head3 switch Statement
 
-The C<switch> statement is a conditional statement that is executed if the condition matches an integer value.
-
+The C<switch> statement is a conditional statement with the following syntax.
+  
+  # The switch statement
   switch (CONDITION) {
-    case CASE_VALUE1: {
+    case CASE1: {
       # ...
     }
-    case CASE_VALUE2: {
+    case CASE2: {
       # ...
     }
-    case CASE_VALUE3: {
+    case CASEn: {
       # ...
     }
     default: {
@@ -162,57 +163,34 @@ The C<switch> statement is a conditional statement that is executed if the condi
     }
   }
 
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the condition.
+The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the condition I<CONDITION>.
 
-The value of the case statement must be one of the L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literal"> or the L<getting enumeration value|SPVM::Document::Language::Operators/"Getting Enumeration Value">.
+The operand of the case statement I<CASEn> must be a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literal"> and an L<enumeration value|SPVM::Document::Language::Class/"Getting Enumeration Value">.
 
-If it is a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the value is converted to the int type at compile-time.
+If I<CASEn> is a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the value is converted to the int type at compile-time.
 
-If the condition matches the value of a C<case> statement, the program jumps to the beginning of the case block.
+The C<case> statements and the C<default> statement are optional.
 
-If the condition doesn't match any C<case> statements and the default statement exists, the program jumps to the beginning the default block.
+If I<CONDITION> matches I<CASEn>, the program jumps to the beginning of the case block of I<CASEn>.
 
-If the condition doesn't match any C<case> statements and the default statement doesn't exists, the program jumps to the end of the switch block.
+If there are no case statements and no default statement, the program jumps to the end of the C<switch> block.
 
-The C<case> statements and the default statement can be ommited.
+If there is the C<default> statement and I<CONDITION> dose not matches I<CASEn>, the program jumps to the beginning of the C<default> block.
 
-The C<break> statement jumps to the end of the switch block.
+If there is no C<default> statement and I<CONDITION> dose not matches I<CASEn>, the program jumps to the end of the C<switch> block.
 
-  switch (CONDITION) {
-    case CASE_VALUE1: {
-      break;
-    }
-    case CASE_VALUE2: {
-      break;
-    }
-    case CASE_VALUE3: {
-      break;
-    }
-    default: {
-      
-    }
+A L<break|/"break Statement"> statement is implicitly added to the end of the statements in every C<case> block.
+
+  case CASEn: {
+    # A break statement is added implicitly to the end of the statements
+    break;
   }
 
-If the last statment of the case block is not the C<break> statement, a C<break> statement is added to the end of the case block.
-  
-  # The break statement is ommitted.
-  switch (CONDITION) {
-    case CASE_VALUE1: {
-    }
-  }
-  
-  # The above becomes the following.
-  switch (CONDITION) {
-    case CASE_VALUE1: {
-      break;
-    }
-  }
-
-Multiple C<case> statements before a case block can be specified at once.
+It is allowed to jump multiple case statements into a single block.
 
   switch (CONDITION) {
-    case CASE_VALUE1:
-    case CASE_VALUE2:
+    case CASE1:
+    case CASE2:
     {
       # ...
     }
@@ -220,7 +198,7 @@ Multiple C<case> statements before a case block can be specified at once.
 
 Compilation Errors:
 
-The condition must be an integer type within int. Otherwise a compilation error occurs.
+I<CONDITION> must be an integer type within int, otherwise a compilation error occurs.
 
 The values of the case statements cannnot be duplicated. If so, a compilation error occurs.
 
@@ -284,18 +262,18 @@ Examples:
 
 =head4 case Statement
 
-The C<case> statement specifies a case value and a branch of a L<switch statement|/"switch Statement">.
+The C<case> statement specifies a case in the L<switch statement|/"switch Statement">.
 
   # The case statement
   switch (CONDITION) {
-    case CASE_VALUE1: {
+    case CASEn: {
       # ...
     }
   }
 
 =head4 default Statement
 
-The C<default> statement specifies a default branch of a L<switch statement|/"switch Statement">.
+The C<default> statement specifies a default case in the L<switch statement|/"switch Statement">.
 
   # The default statement
   switch (CONDITION) {
@@ -306,10 +284,28 @@ The C<default> statement specifies a default branch of a L<switch statement|/"sw
 
 =head4 break Statement
 
-The C<break> statement is jumps to the end of the switch block of the L<switch statement|/"switch Statement">.
+The C<break> statement makes the program jump to the end of the L<switch||/"switch Statement"> block.
 
   # The break statement
   break;
+
+Examples:
+
+  my $code = 2;
+  my $flag = 1;
+  switch ($code) {
+    case 3: {
+      if ($flag) {
+        # The break statement makes the program jump to the end of the switch block
+        break;
+      }
+      say "3";
+    }
+    default: {
+      say "Other";
+    }
+  }
+  # The end of the switch block
 
 =head2 Loop Statement
 
@@ -323,7 +319,7 @@ The C<while> statement runs loop.
 
 First, The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition.
 
-Next, If the condition is 0, the program jumps to the end of the while block. Otherwise the program goes to the beginning of the while block.
+Next, If the condition is 0, the program jumps to the end of the while block, otherwise the program goes to the beginning of the while block.
 
 When the program reaches the end of the while block, it jumps back to the while statement and evaluates the condition again.
 
@@ -463,9 +459,9 @@ Compilation Errors:
 
 If the return type of the current L<method|SPVM::Document::Language::Class/"Method Definition"> is the void typ, I<OPERAND> cannnot exist. If so, a compilation error occurs.
 
-If the return type of the current L<method|SPVM::Document::Language::Class/"Method Definition"> is the non-void type, I<OPERAND> must exist. Otherwise a compilation error occurs.
+If the return type of the current L<method|SPVM::Document::Language::Class/"Method Definition"> is the non-void type, I<OPERAND> must exist, otherwise a compilation error occurs.
 
-The type of I<OPERAND> must satisfy L<type assignability|SPVM::Document::Language::Types/"Type Assignability"> to the return type of the current method. Otherwise a compilation error occurs.
+The type of I<OPERAND> must satisfy L<type assignability|SPVM::Document::Language::Types/"Type Assignability"> to the return type of the current method, otherwise a compilation error occurs.
 
 =head2 die Statement
 
@@ -501,11 +497,11 @@ The exception can be caught by the eval block.
 
 Comlication Errors:
 
-OPERAND_MESSAGE must be the string type or the undef type. Otherwise a compilation error occurs.
+OPERAND_MESSAGE must be the string type or the undef type, otherwise a compilation error occurs.
 
-ERROR_TYPE must be a class type. Otherwise a compilation error occurs.
+ERROR_TYPE must be a class type, otherwise a compilation error occurs.
 
-OPERAND_ERROR_ID must be an integer type within int. Otherwise a compilation error occurs.
+OPERAND_ERROR_ID must be an integer type within int, otherwise a compilation error occurs.
 
 Examples:
   
