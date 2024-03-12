@@ -8,10 +8,10 @@ This document describes statements in SPVM language.
 
 =head1 Statements
 
-Statements are the list of the statement.
+A statement is a basic instruction that tells the program what to do.
 
-Statements are written direct under the scope block.
-  
+Statements can be written direct under the L<scope block|SPVM::Document::Language::Class/"Scope Block">.
+
   # Scope block
   {
     # Statements
@@ -20,32 +20,81 @@ Statements are written direct under the scope block.
     STATEMENT3
   }
 
-=head2 Conditional Statement
+=head2 Conditional Statements
 
 =head3 if Statement
 
-The C<if> statement is a conditional statement that is executed if the condition is true.
+The C<if> statement is a conditional statement with the following syntax.
+
+  if (CONDITION1) {
+    
+  }
+  elsif (CONDITION2) {
+    
+  }
+  elsif (CONDITIONn) {
+    
+  }
+  else {
+    
+  }
+
+The C<elsif> statement and the C<else> statement are optional.
+
+At first, all C<elsif> statements are expanded to the following code using C<if> - C<else> statements.
+
+  if (CONDITION1) {
+    
+  }
+  else {
+    if (CONDITION2) {
+      
+    }
+    else {
+      if (CONDITIONn) {
+        
+      }
+      else {
+        
+      }
+    }
+  }
+
+The C<if> statement is converted to simple C<if> - C<else> statements, so see a simple C<if> - C<else> statement.
 
   if (CONDITION) {
-  
+    
+  }
+  else {
+    
   }
 
 The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition I<CONDITION>.
 
-If the condition is not 0, the program jumps to the beginning of the C<if> block, otherwise jumps to the end of the C<if> block.
+If the evaluated value is not 0, the program jumps to the beginning of the C<if> block.
 
-The local variable declartion in the condition of the C<if> statement are allowed.
+If the evaluated value is 0 and there is the C<else> block, the program jumps to the beginning of the C<else> block.
+
+If the evaluated value is 0 and there is no C<else> block, the program jumps to the end of the C<if> block.
+
+Local variable declartions in I<CONDITION> are allowed.
 
   if (my $condition = 1) {
-  
+    
+  }
+  else {
+    
   }
 
-This is parsed as the following code.
+This is expanded to the following code.
 
   {
     my $condition = 1;
     if ($condition) {
-    
+      
+    }
+    else {
+      
     }
   }
 
@@ -57,57 +106,8 @@ Examples:
   if ($flag == 1) {
     say "One";
   }
-
-=head3 else Statement
-
-The C<else> statement is a conditional statement that is executed if the condition is false.
-
-  if (CONDITION) {
-    
-  }
-  else {
-    
-  }
-
-If the condition I<CONDITION> is evaluated 0, the program jumps to the beginning of the C<else> block.
-
-Examples:
-
-  # else statement.
-  my $flag = 3;
   
-  if ($flag == 1) {
-    say "One";
-  }
-  else {
-    say "Other";
-  }
-
-=head3 elsif Statement
-
-The C<elsif> statement is a conditional statement that adds a condition branching.
-
-  if (CONDITION1) {
-  
-  }
-  elsif (CONDITION2) {
-  
-  }
-
-The C<elsif> statement is parsed as the following code.
-
-  if (CONDITION1) {
-  
-  }
-  else {
-    if (CONDITION2) {
-    
-    }
-  }
-
-Examples:
-
-  # elsif statement
+  # if statement with elsif and else
   my $flag = 2;
   
   if ($flag == 1) {
@@ -116,19 +116,44 @@ Examples:
   elsif ($flag == 2) {
     say "Two";
   }
+  elsif ($flag == 3) {
+    say "Three";
+  }
   else {
     say "Other";
   }
 
+=head3 else Statement
+
+The C<else> statement is a conditional statement used in the L<if statement|/"if Statement">.
+
+  if (CONDITION) {
+    
+  }
+  else {
+    
+  }
+
+=head3 elsif Statement
+
+The C<elsif> statement is a conditional statement used in the L<if statement|/"if Statement">.
+
+  if (CONDITION1) {
+  
+  }
+  elsif (CONDITION2) {
+  
+  }
+
 =head3 unless Statement
 
-The C<unless> statement is a conditional statement that is executed if the condition is false.
+The C<unless> statement is a conditional statement with the following syntax.
 
   unless (CONDITION) {
     
   }
 
-The C<unless> statement is parsed as the following code.
+The C<unless> statement is expanded to the following code.
 
   if (!CONDITION) {
     
@@ -307,7 +332,7 @@ Examples:
   }
   # The end of the switch block
 
-=head2 Loop Statement
+=head2 Loop Statements
 
 =head3 while Statement
 
