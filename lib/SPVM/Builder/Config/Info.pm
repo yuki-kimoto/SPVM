@@ -124,34 +124,6 @@ sub get_class_names {
   return $class_names;
 }
 
-sub get_resource_loader_class_names {
-  my ($self) = @_;
-  
-  my $runtime = $self->runtime;
-  
-  my $runtime_info = SPVM::Native::Runtime::Info->new($runtime);
-  
-  my $class_names = $runtime_info->get_class_names->to_strings;
-  
-  my $resource_loader_class_names = [];
-  for my $class_name (@$class_names) {
-    
-    my $config_file = SPVM::Builder::Util::search_config_file($class_name);
-    
-    if (defined $config_file && -f $config_file) {
-      my $config = SPVM::Builder::Config->load_config($config_file, []);
-      
-      my $resource_names = $config->get_resource_names;
-      
-      if (@$resource_names) {
-        push @$resource_loader_class_names, $class_name;
-      }
-    }
-  }
-  
-  return $resource_loader_class_names;
-}
-
 sub has_config_file {
   my ($self, $class_name) = @_;
   
@@ -274,12 +246,6 @@ The "class_name" option must be defined, otherwise an exception is thrown.
 Returns the all class names loaded by the runtime.
 
 This method is the same as the L<get_class_names|Native::Runtime::Info/"get_class_names"> method in the C<Native::Runtime::Info>, but the return value is converted to an array reference of strings.
-
-=head2 get_resource_loader_class_names
-
-  my $resource_loader_class_names = $builder_info->get_resource_loader_class_names;
-
-Returns an array reference containing the class names that load resources.
 
 =head2 has_config_file
 

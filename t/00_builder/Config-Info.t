@@ -22,20 +22,11 @@ my $class_name = 'TestCase::UseResource::Basic';
   ok(grep { $_ eq 'Int' } @$class_names);
 }
 
-# get_resource_loader_class_names
-{
-  my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
-  
-  my $resource_loader_class_names = $builder_info->get_resource_loader_class_names;
-  
-  is_deeply($resource_loader_class_names, ['TestCase::UseResource::Basic']);
-}
-
 # is_resource_loader
 {
   my $builder_info = SPVM::Builder::Config::Info->new(class_name => $class_name);
   
-  my $resource_loader_class_names = [grep { $builder_info->is_resource_loader($_) } $builder_info->get_class_names];
+  my $resource_loader_class_names = [grep { $builder_info->is_resource_loader($_) } @{$builder_info->get_class_names}];
   
   is_deeply($resource_loader_class_names, ['TestCase::UseResource::Basic']);
 }
