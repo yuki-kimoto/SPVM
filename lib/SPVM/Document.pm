@@ -2,7 +2,7 @@
 
 =head1 Name
 
-SPVM - SPVM Documents
+SPVM::Document - SPVM Documents
 
 =head1 Description
 

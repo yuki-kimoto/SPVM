@@ -16,6 +16,16 @@ The say operator and the print operator output to this SPVM's C<stdout>.
 
 The warn operator outputs to this SPVM's C<stderr>.
 
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::Language>
+
+=item * L<SPVM::Document>
+
+=back
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

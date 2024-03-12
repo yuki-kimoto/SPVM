@@ -1,18 +1,18 @@
 =head1 Name
 
-SPVM::Document::Language::SyntaxParsing - Syntax Parsing in SPVM Language
+SPVM::Document::Language::SyntaxParsing - Syntax Parsing in The SPVM Language
 
 =head1 Description
 
-This document describes syntax parsing in SPVM language.
+This document describes syntax parsing in the SPVM language.
 
 =head1 Syntax Parsing
 
-The SPVM language is assumed to be parsed by yacc/bison.
+Syntax parsing is the next step to build an AST after L<tokenization|SPVM::Document::Language::Tokenization>.
 
-=head2 Syntax Parsing Definition
+=head2 Syntax Parsing Rule
 
-The definition of syntax parsing of SPVM language. This is written by yacc/bison syntax.
+The rule of the syntax parsing of the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
   %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL
@@ -540,13 +540,13 @@ The definition of syntax parsing of SPVM language. This is written by yacc/bison
 
 =head2 Syntax Parsing Token
 
-The list of syntax parsing tokens:
+These are the values of the tokens used in L</"Syntax Parsing Rule">.
 
 =begin html
 
 <table>
   <tr>
-    <th>Tokens</td><th>Keywords or operators</th>
+    <th>Tokens</td><th>Token Values</th>
   </tr>
   <tr>
     <td>ALIAS</td><td>alias</td>
@@ -597,10 +597,10 @@ The list of syntax parsing tokens:
     <td>COMPILE_TYPE_NAME</td><td>compile_type_name</td>
   </tr>
   <tr>
-    <td>CONSTANT</td><td>Literal</td>
+    <td>CONSTANT</td><td>A literal</td>
   </tr>
   <tr>
-    <td>CONVERT</td><td>(TypeName)</td>
+    <td>CONVERT</td><td>(TYPE_NAME)</td>
   </tr>
   <tr>
     <td>COPY</td><td>copy</td>
@@ -621,7 +621,7 @@ The list of syntax parsing tokens:
     <td>DEREF</td><td>$</td>
   </tr>
   <tr>
-    <td>ATTRIBUTE</td><td>The name of a attribute</td>
+    <td>ATTRIBUTE</td><td>An attribute name</td>
   </tr>
   <tr>
     <td>DIE</td><td>die</td>
@@ -825,13 +825,13 @@ The list of syntax parsing tokens:
     <td>SELF</td><td>self</td>
   </tr>
   <tr>
-    <td>SHIFT</td><td>&lt;&lt;  &gt;&gt;  &gt;&gt;&gt;</td>
+    <td>SHIFT</td><td>&lt;&lt;<br>&gt;&gt;<br>&gt;&gt;&gt;</td>
   </tr>
   <tr>
     <td>SHORT</td><td>short</td>
   </tr>
   <tr>
-    <td>SPECIAL_ASSIGN</td><td>+=  -=  *=  /=  &=  |=  ^=  %=  &lt;&lt;=  &gt;&gt;=  &gt;&gt;&gt;= .=</td>
+    <td>SPECIAL_ASSIGN</td><td>+=<br>-=<br>*=<br>/=<br>&=<br>|=<br>^=<br>%=<br>&lt;&lt;=<br>&gt;&gt;=<br>&gt;&gt;&gt;=<br>.=</td>
   </tr>
   <tr>
     <td>SRING_CMP</td><td>cmp</td>
@@ -897,21 +897,9 @@ The list of syntax parsing tokens:
 
 =end html
 
-=head2 Unary Operator
-
-The unary operator is the L<operator|/"Operators"> that has an operand.
-
-  UNARY_OPERATOR OPERAND
-
-=head2 Binary Operator
-
-The binary operator is the L<operator|/"Operators"> that has I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
-
-  LEFT_OPERAND BINARY_OPERATOR RIGHT_OPERAND
-
 =head2 Operator Precidence
 
-The definition of the precidence of operators. This is written by yacc/bison syntax.
+The operator precidence in the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
 
 The bottom is the highest precidence and the top is the lowest precidence.
   
@@ -929,8 +917,6 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
-See also L<syntax parsing token|/"Syntax Parsing Token"> to know real operators.
-
 The operator precidence can be increased using C<()>.
 
   #  a * b is calculated at first
@@ -938,6 +924,18 @@ The operator precidence can be increased using C<()>.
   
   # b + c is calculated at first
   a * (b + c)
+
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::Language::Tokenization>
+
+=item * L<SPVM::Document::Language>
+
+=item * L<SPVM::Document>
+
+=back
 
 =head1 Copyright & License
 

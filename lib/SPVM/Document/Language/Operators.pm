@@ -2355,6 +2355,8 @@ Examples:
 
 =over 2
 
+=item * L<Class Definition|SPVM::Document::Language::Statements>
+
 =item * L<Class Definition|SPVM::Document::Language::Class>
 
 =item * L<Types|SPVM::Document::Language::Types>
@@ -2362,6 +2364,10 @@ Examples:
 =item * L<Exception Handling|SPVM::Document::Language::ExceptionHandling>
 
 =item * L<Garbage Collection|SPVM::Document::Language::GarbageCollection>
+
+=item * L<SPVM::Document::Language>
+
+=item * L<SPVM::Document>
 
 =back
 
