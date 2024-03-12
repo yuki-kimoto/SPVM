@@ -1,10 +1,10 @@
 =head1 Name
 
-SPVM::Document::Language::Types - Types in SPVM Language
+SPVM::Document::Language::Types - Types in The SPVM Language
 
 =head1 Description
 
-This document describes types in SPVM language.
+This document describes types in the SPVM language.
 
 =head1 Types
 

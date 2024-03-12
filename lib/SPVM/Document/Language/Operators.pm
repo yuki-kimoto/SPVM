@@ -2,11 +2,11 @@
 
 =head1 Name
 
-SPVM::Document::Language::Operators - Operators in SPVM Language
+SPVM::Document::Language::Operators - Operators in The SPVM Language
 
 =head1 Description
 
-This document describes operators in SPVM language.
+This document describes operators in the SPVM language.
 
 =head1 Operators
 

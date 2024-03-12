@@ -1,10 +1,10 @@
 =head1 Name
 
-SPVM::Document::Language::System - System Setting in SPVM Language
+SPVM::Document::Language::System - System Setting in The SPVM Language
 
 =head1 Description
 
-This document describes system setting in SPVM language.
+This document describes system setting in the SPVM language.
 
 =head1 System Setting
 

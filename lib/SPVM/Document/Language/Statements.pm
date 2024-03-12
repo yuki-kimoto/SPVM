@@ -1,10 +1,10 @@
 =head1 Name
 
-SPVM::Document::Language::Statements - Statements in SPVM Language
+SPVM::Document::Language::Statements - Statements in The SPVM Language
 
 =head1 Description
 
-This document describes statements in SPVM language.
+This document describes statements in the SPVM language.
 
 =head1 Statements
 

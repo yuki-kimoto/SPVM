@@ -1,10 +1,10 @@
 =head1 Name
 
-SPVM::Document::Language::ExceptionHandling - Exception Handling in SPVM Language
+SPVM::Document::Language::ExceptionHandling - Exception Handling in The SPVM Language
 
 =head1 Description
 
-This document describes exception handling in SPVM language.
+This document describes exception handling in the SPVM language.
 
 =head1 Exception Handling
 

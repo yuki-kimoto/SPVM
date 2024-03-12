@@ -1,10 +1,10 @@
 =head1 Name
 
-SPVM::Document::Language::Class - Class Definition in SPVM Language
+SPVM::Document::Language::Class - Class Definition in The SPVM Language
 
 =head1 Description
 
-This document describes class definition in SPVM language.
+This document describes class definition in the SPVM language.
 
 =head1 Class
 

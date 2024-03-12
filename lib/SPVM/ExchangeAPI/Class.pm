@@ -64,7 +64,7 @@ C<SPVM::BlessedObject::Class> is a class object to call class methods.
 
 =head1 Usage
   
-  # The same as the Int->__new(1) in SPVM language
+  # The same as the Int->__new(1) in the SPVM language
   my $class = SPVM::ExchangeAPI::Class->__new(__name => 'Int', __api => $api);
   my $value = $class->new(1);
 

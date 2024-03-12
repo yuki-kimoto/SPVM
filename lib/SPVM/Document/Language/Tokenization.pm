@@ -1,10 +1,10 @@
 =head1 Name
 
-SPVM::Document::Language::Tokenization - Lexical Tokenization in SPVM Language
+SPVM::Document::Language::Tokenization - Lexical Tokenization in The SPVM Language
 
 =head1 Description
 
-This document describes lexical tokenization in SPVM language.
+This document describes lexical tokenization in the SPVM language.
 
 =head1 Tokenization
 
