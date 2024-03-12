@@ -288,10 +288,6 @@ Examples:
   my $stringable = (Stringable)Point->new(1, 2);
   my $string = $stringable->to_string;
 
-=head2 Method Compatibility
-
-(TODO)
-
 =head2 Anon Class
 
 The anon class is the class that do not has its class name.
@@ -972,8 +968,6 @@ See L</"Setting Multi-Numeric Field via Dereference"> to set the field of the L<
 
 =head2 Method
 
-a.
-
 =head3 Method Definition
 
 The C<method> keyword defines a class method or an instance method.
@@ -1188,6 +1182,10 @@ And it is linked to a shared library such as C<MyMath.so> on Linux/Unix, C<MyMat
 And each function in the shared library is bind to the SPVM method.
 
 Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
+
+=head3 Method Compatibility
+
+(TODO)
 
 =head2 Enumeration
 

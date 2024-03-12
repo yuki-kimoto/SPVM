@@ -2044,7 +2044,7 @@ Examples:
 
 =head2 Method Call
 
-The method call syntax calls a L<method|/"Method">.
+The method call syntax calls a L<method|SPVM::Document::Language::Class/"Method">.
 
 =head3 Class Method Call
 

@@ -456,7 +456,7 @@ Example:
 
 =head2 return Statement
 
-The C<return> statement returns a value.
+The C<return> statement returns a value for a L<method|SPVM::Document::Language::Class/"Method">.
   
   // void
   return;
@@ -466,76 +466,77 @@ The C<return> statement returns a value.
 
 Compilation Errors:
 
-If the return type of the current L<method|SPVM::Document::Language::Class/"Method Definition"> is the void typ, I<OPERAND> cannnot exist. If so, a compilation error occurs.
+If the return type of the current method is the void typ, I<OPERAND> cannnot exist. If so, a compilation error occurs.
 
-If the return type of the current L<method|SPVM::Document::Language::Class/"Method Definition"> is the non-void type, I<OPERAND> must exist, otherwise a compilation error occurs.
+If the return type of the current method is the non-void type, I<OPERAND> must exist, otherwise a compilation error occurs.
 
-The type of I<OPERAND> must satisfy L<type assignability|SPVM::Document::Language::Types/"Type Assignability"> to the return type of the current method, otherwise a compilation error occurs.
+The type of I<OPERAND> must satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability"> to the return type of the current method, otherwise a compilation error occurs.
 
 =head2 die Statement
 
 The C<die> statement throws an L<exception|SPVM::Document::Language::ExceptionHandling/"Throwing Exception">.
-
-  die OPERAND_MESSAGE
+  
+  # The die statement
   die
-  die ERROR_TYPE OPERAND_MESSAGE
-  die ERROR_TYPE
-  die OPERAND_ERROR_ID ',' OPERAND_MESSAGE
+  die OPERAND_MESSAGE
+  
+  # The die statement with an error class
+  die ERROR_CLASS
+  die ERROR_CLASS OPERAND_MESSAGE
+  
+  # The die statement with the basic type ID of an error class
+  die OPERAND_ERROR_ID, OPERAND_MESSAGE
 
-OPERAND_MESSAGE is an error message. The error message is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@>.
+I<OPERAND_MESSAGE> is a string of the string type for an error message. If the exception thrown by the C<die> statement is catched, the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@> is set to I<OPERAND_MESSAGE> with stack traces added.
 
-If an exception is thrown, the program prints the error message to the standard error with the stack traces and finishes with error ID 255.
+If the exception is not catched, the program prints it to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">, and finishes the program with an error ID.
 
-If OPERAND_MESSAGE is omitted or C<undef>, "Error" is set to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@>.
-
-ERROR_TYPE is a class type. If ERROR_TYPE is given, the basic type ID of the class is the value got by the L<eval_error_id operator|SPVM::Document::Language::Operators/"eval_error_id Operator">.
-
-OPERAND_ERROR_ID is an integer value within int type. If OPERAND_ERROR_ID is given, it is the value got by the L<eval_error_id operator|SPVM::Document::Language::Operators/"eval_error_id Operator">.
-
-the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on OPERAND_ERROR_ID.
-
-The return type is the void typ.
-
-The following one is an example of a stack trace. Each line of the stack trace constains the class name, the method name, the file name and the line number of the caller.
+The following is an example of stack traces of an exception message.
 
   Error
     TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
     TestCase->main at SPVM/TestCase.spvm line 1198
 
-The exception can be caught by the eval block.
+If I<OPERAND_MESSAGE> is not given or C<undef>, I<OPERAND_MESSAGE> is set to C<"Error">.
+
+I<ERROR_CLASS> is a class name, normally of the L<Error|SPVM::Error> class, or its child class. If the exception thrown by the C<die> statement is catched, the L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to the basic type ID of I<ERROR_CLASS>.
+
+The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on I<OPERAND_ERROR_ID>.
+
+I<OPERAND_ERROR_ID> is an integer value within int type. If it is given and the exception thrown by the C<die> statement is catched, the L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to I<OPERAND_ERROR_ID>.
+
+See also L<Exception Handling|SPVM::Document::Language::ExceptionHandling> for exception handling using the C<die> statement.
 
 Comlication Errors:
 
-OPERAND_MESSAGE must be the string type or the undef type, otherwise a compilation error occurs.
+I<OPERAND_MESSAGE> must be the string type or the undef type, otherwise a compilation error occurs.
 
-ERROR_TYPE must be a class type, otherwise a compilation error occurs.
+I<ERROR_CLASS> must be a class type, otherwise a compilation error occurs.
 
-OPERAND_ERROR_ID must be an integer type within int, otherwise a compilation error occurs.
+I<OPERAND_ERROR_ID> must be an integer type within int, otherwise a compilation error occurs.
 
 Examples:
   
-  # Catch the exception
+  # The die statement with exception handling
   eval {
-    # Throw an exception
     die "Error";
   }
   
-  # Check the exception
   if ($@) {
     # ...
   }
   
+  # The die statement with an error class
   die Error::System "System Error";
   
-  my $error_id = 10;
-  die $error_id, "Some Error";
-  
+  # The die statement with the basic type ID of an error class
+  my $error_id = Fn->get_basic_type_id("Error::System");
+  die $error_id, "System Error";
+
 =head2 Operator Statement
 
-The operator statement executes an L<operator|/"Operators">.
+The operator statement operates an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
-This operator is composed of an operator and C<;>.
-  
   # The operator statemenet
   OPERATOR;
 
@@ -549,7 +550,7 @@ Examples:
 
 =head2 Empty Statement
 
-The empty statement C<;> does nothing.
+The empty statement operates nothing.
 
   # The empty statemenet
   ;
