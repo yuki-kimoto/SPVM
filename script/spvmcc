@@ -23,7 +23,6 @@ SPVM::Builder::Util::getopt
   'no-config' => \my $allow_no_config_file,
   'm|mode=s' => \my $mode,
   'optimize=s' => \my $optimize,
-  'r|required-resources' => \my $print_required_resources,
   'config-argv=s' => \@argv,
   'config-argv-option=s' => sub {
     my ($opt_name, $opt_value) = @_;
@@ -72,12 +71,6 @@ my $build_exe = SPVM::Builder::Exe->new(
   argv => \@argv,
 );
 
-if ($print_required_resources) {
-  my $lines = $build_exe->get_required_resource_json_lines;
-  print "$_\n" for @$lines;
-  exit 0;
-}
-
 $build_exe->build_exe_file;
 
 =encoding utf8
@@ -108,7 +101,6 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     -m, --mode                     Config mode
     --config-argv                  Config arguments
     --config-argv-option           Key-value config arguments such as NAME=VALUE
-    -r, --required-resources       Prints required resources in JSON lines
 
 =head1 Details
 

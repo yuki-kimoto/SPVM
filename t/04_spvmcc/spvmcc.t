@@ -191,21 +191,13 @@ my $dev_null = File::Spec->devnull;
 
 {
   mkpath $exe_dir;
-
-  # --required-resources, -r
-  for my $option ('--required-resources', '-r'){
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -I $test_dir/lib/SPVM --include-dir t/02_vm/lib/SPVM $option --no-config -o $exe_dir/myexe MyExe);
-    my @lines = `$spvmcc_cmd`;
-    is($lines[0], '{"argv":["args1","args2"],"class_name":"TestCase::Resource::Mylib1","mode":"mode1","resource_loader_class_name":"TestCase::NativeAPI2"}' . "\n");
-    is($lines[1], '{"class_name":"TestCase::Resource::Mylib2","resource_loader_class_name":"TestCase::NativeAPI2"}' . "\n");
-  }
   
   # Basic
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I $test_dir/lib/SPVM -o $exe_dir/myexe MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
-
+    
     my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe/);
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0

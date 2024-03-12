@@ -27,6 +27,15 @@
     * Add the SPVM::Builder::Config::Info module.
   [OS Support]
     * Makefile.PL does not thrown the "OS unsupported" exception when the OS is Alpine Linux.
+  [Incompatible Changes]
+    * Remove --required-resources, -r options from the spvmcc command.
+      
+      As alternative way, SPVM::Builder::Config::Info is added.
+      
+      How to dump resource information - SPVM Wiki
+      
+      https://github.com/yuki-kimoto/SPVM/wiki/Config
+      
 0.989085 2023-03-08
   [New Features]
     * Add the or method to the Fn class.
