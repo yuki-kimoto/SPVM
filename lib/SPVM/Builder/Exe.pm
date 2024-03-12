@@ -252,6 +252,8 @@ sub new {
     $config->set_global_optimize($optimize);
   }
   
+  $self->compile;
+  
   return $self;
 }
 
@@ -279,15 +281,9 @@ sub parse_config_argv_option {
 sub build_exe_file {
   my ($self) = @_;
   
-  # Builder
   my $builder = $self->builder;
   
   my $class_name = $self->{class_name};
-  
-  # Build runtime
-  unless ($self->{finish_compile}) {
-    $self->compile;
-  }
   
   my $class = $self->runtime->get_basic_type_by_name($class_name);
   
@@ -352,8 +348,6 @@ sub compile {
   
   my $runtime_info = SPVM::Native::Runtime::Info->new($runtime);
   $self->runtime_info($runtime_info);
-  
-  $self->{finish_compile} = 1;
 }
 
 sub compile_classes {
