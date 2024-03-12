@@ -77,20 +77,10 @@ If the evaluated value is 0 and there is the C<else> block, the program jumps to
 
 If the evaluated value is 0 and there is no C<else> block, the program jumps to the end of the C<if> block.
 
-Local variable declartions in I<CONDITION> are allowed.
-
-  if (my $condition = 1) {
-    
-  }
-  else {
-    
-  }
-
-This is expanded to the following code.
+A C<if> - C<else> statement is enclosed by an invisible simple block.
 
   {
-    my $condition = 1;
-    if ($condition) {
+    if (CONDITION) {
       
     }
     else {
@@ -336,46 +326,56 @@ Examples:
 
 =head3 while Statement
 
-The C<while> statement runs loop.
+The C<while> statement is a loop statement with the following syntax.
 
+  # The while statement
   while (CONDITION) {
   
   }
 
-First, The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition.
+The L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> is performed on the condition I<CONDITION>.
 
-Next, If the condition is 0, the program jumps to the end of the while block, otherwise the program goes to the beginning of the while block.
+If the evaluated value is 0, the program jumps to the end of the C<while> block, otherwise the program jumps to the beginning of the C<while> block.
 
-When the program reaches the end of the while block, it jumps back to the while statement and evaluates the condition again.
+When the program reaches the end of the C<while> block, it jumps to the beginning of the C<while> statement.
 
 Examples:
 
   # The while statement
   my $i = 0;
   while ($i < 5) {
-  
+    
     say "$i";
-  
+    
     $i++;
   }
 
-The L<last statement|/"last Statement"> is used inside the while block. By The L<last statement|/"last Statement">, the program jumps to the end of the current while block.
+The C<while> statement is enclosed by an invisible simple block.
   
-  # The last statement
-  while (1) {
-    # The program jumps to the end fo the current while block.
-    last;
+  {
+    while (CONDITION) {
+    
+    }
   }
 
-The L<next statement|/"next Statement"> is used inside the while block. By The L<last statement|/"last Statement">, the program goes back to the C<while> statement of the current while block.
+=head3 next Statement
+
+The C<next> statement makes the program jump to the beginning of the current L<while statement|/"while Statement">.
+
+  # The next statement
+  next;
+
+Examples:
 
   my $i = 0;
+  
+  # The beginning of the while statement
   while ($i < 5) {
   
     if ($i == 3) {
       $i++;
       
-      # the program goes back to the while statement of the current while block.
+      # The next statement makes the program jump to the beginning of the current while statement.
       next;
     }
     
@@ -383,43 +383,43 @@ The L<next statement|/"next Statement"> is used inside the while block. By The L
     $i++;
   }
 
-The C<while> statement is enclosed by an inbisible simple block.
-  
-  # The while statement
-  while (1) {
-    
-  }
+=head3 last Statement
 
-  # The above is the same as the following.
-  {
-    while (1) {
-      
-    }
+The C<last> statement makes the program jump to the end of the current L<while statement|/"while Statement">.
+
+  # The last statement
+  last;
+
+Examples:
+
+  while (1) {
+    # The last statement makes the program jump to the end fo the current while statement.
+    last;
   }
+  # The end fo the while statement
 
 =head3 for Statement
 
-The C<for> Statement writes loop syntax easily.
+The C<for> statement is a loop statement with the following syntax.
 
-  # The for statement.
-  for (INIT_STATEMENT; CONDITION; INCREMENT_STATEMENT) {
+  # The for statement
+  for (INIT; CONDITION; INCREMENT) {
   
   }
 
-The C<for> statement is the alias for the C<while> statement.
+A C<for> statement is expanded to the following code using a L<while statement|/"while Statement">.
   
-  # The above for statemenet is the same as the following while statemenet.
   {
-    INIT_STATEMENT;
+    INIT;
     while (CONDITION) {
       
       # ...
       
-      INCREMENT_STATEMENT;
+      INCREMENT;
     }
   }
 
-B<Exampels:>
+Exampels:
 
   # The for statement
   for (my $i = 0; $i < 5; $i++) {
@@ -428,47 +428,31 @@ B<Exampels:>
 
 =head3 for-each Statement
 
-The for-each statement writes loop syntax easily for the simple iteration.
+The for-each statement is a loop statement with the following syntax.
   
   # The for-each statemenet
   for my VAR (@ARRAY) {
-  
+    
   }
   
   for my VAR (@{ARRAY}) {
     
   }
 
-The above for-each statement is the same as the following the L<for statement|/"for Statement">.
+A for-each statement is expanded to the following code using a L<for statement|/"for Statement">.
 
-  for (my $i = 0; $i < @ARRAY; $i++) {
+  for (my $i = 0; $i < @{ARRAY}; $i++) {
     my VAR = ARRAY->[$i];
     
   }
 
-B<Example:>
+Example:
 
   # The for-each statemenet
   my $array = [1, 2, 3];
   for my $element (@$array) {
     say "$elemenet";
   }
-
-=head3 next Statement
-
-The C<next> statement goes back to the L<while statement|/"while Statement"> of the current while block.
-
-  next;
-
-See also the L<while statement|/"while Statement">.
-
-=head3 last Statement
-
-The C<last> statement jumps to the end of the current while block.
-
-  last;
-
-See also the L<while statement|/"while Statement">.
 
 =head2 return Statement
 
