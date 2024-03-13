@@ -16,6 +16,7 @@ An operator is a basic instruction that normally a return value.
 
 The unary plus operator C<+> is a unary operator that returns its operand.
 
+  # The unary plus operator
   +OPERAND
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, and returns it.
@@ -28,16 +29,16 @@ The type of I<OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/
 
 Examples:
   
-  # The unary plus operator
   my $num = +10;
 
 =head2 Unary Minus Operator
 
 The unary minus operator C<-> is a unary operator that returns the negated value of its operand.
 
+  # The unary minus operator
   -OPERAND
 
-Thie operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, negate I<OPERAND> and returns it.
+Thie operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, negates it, and returns it.
 
 The return type is the type after the conversion is performed.
 
@@ -47,7 +48,6 @@ The type of I<OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/
 
 Examples:
 
-  # A unary minus operator
   my $num = -10;
 
 =head2 Addition Operator
