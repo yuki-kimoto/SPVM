@@ -931,28 +931,28 @@ Omitting the L<type|/"Types"> when the L<local variable declaration|/"Local Vari
   # Foo
   my $foo = new Foo;
 
-=head1 Type Assignability
+=head1 Assignment Requirement
 
-The assignability at compile-time is explained.
+The assignment requirement at compile-time is explained.
 
 Compilation Errors:
 
-The assignability is false, a compilation error occurs.
+The assignment requirement is false, a compilation error occurs.
 
-=head2 Type Assignability to Numeric
+=head2 Assignment Requirement to Numeric
 
-Explains the assignability to the L<numeric types|"Numeric Types">.
+Explains the assignment requirement to the L<numeric types|"Numeric Types">.
 
-=head3 Type Assignability from Numeric to Numeric
+=head3 Assignment Requirement from Numeric to Numeric
 
-If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than or equal to the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignability is true.
+If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than or equal to the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is true.
 
 If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
   <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
   <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
@@ -992,7 +992,7 @@ Examples:
   # float to double
   my $num : double = 4.5f;
 
-If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignability is conditional true.
+If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is conditional true.
 
 The condition is that I<RIGHT_OPERAND> is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of I<LEFT_OPERAND>.
 
@@ -1001,7 +1001,7 @@ If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>Conditional True</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
@@ -1026,14 +1026,14 @@ Examples:
   # int to byte
   my $num : byte = 127;
 
-=head3 Type Assignability from NumericObject to Numeric
+=head3 Assignment Requirement from NumericObject to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Types">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Types">, the assignment requirement is true.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
   <tr><td>True</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
   <tr><td>True</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
@@ -1050,16 +1050,16 @@ Examples:
 
   my $double : double = Double->new(3.5);
 
-=head3 Type Assignability from Any Object to Numeric
+=head3 Assignment Requirement from Any Object to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the assignment requirement is true.
 
 The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric type is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
@@ -1071,20 +1071,20 @@ Examples:
 
   my $double : double = (object)Double->new(3.5);
 
-=head3 Type Assignability from Others to Numeric
+=head3 Assignment Requirement from Others to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is other than the types described above, the assignability is false.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is other than the types described above, the assignment requirement is false.
 
-=head2 Type Assignability to Multi-Numeric
+=head2 Assignment Requirement to Multi-Numeric
 
-If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -1096,16 +1096,16 @@ Examples:
   my $z1 : Complex_2d;
   my $z2 : Complex_2d = $z1;
 
-=head2 Type Assignability to Referenece
+=head2 Assignment Requirement to Referenece
 
-If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
   <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -1117,22 +1117,22 @@ Examples:
   my $num : int = 5;
   my $num_ref : int* = \num;
 
-=head2 Type Assignability to String
+=head2 Assignment Requirement to String
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the assignment requirement is true.
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier">, the assignment requirement is true.
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the assignability is false.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the assignment requirement is false.
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
   <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
   <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
@@ -1151,18 +1151,18 @@ Examples:
   my $num_string : string = 3;
   my $string : string = undef;
 
-=head2 Type Assignability to NumericObject
+=head2 Assignment Requirement to NumericObject
 
-If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
@@ -1177,18 +1177,18 @@ Examples:
   my $num_object : Int = 3;
   my $num_object : Int = undef;
 
-=head2 Type Assignability to Class
+=head2 Assignment Requirement to Class
 
-If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-If the type of I<LEFT_OPERAND> is a super class of the type of I<RIGHT_OPERAND>, the assignability is true.
+If the type of I<LEFT_OPERAND> is a super class of the type of I<RIGHT_OPERAND>, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>None</td></tr>
@@ -1202,18 +1202,18 @@ Examples:
   my $point : Point = Point->new;
   my $point : Point = undef;
 
-=head2 Type Assignability to Interface
+=head2 Assignment Requirement to Interface
 
-If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class has the same interface of I<LEFT_OPERAND>, the assignability is true.
+If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class has the same interface of I<LEFT_OPERAND>, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
@@ -1228,18 +1228,18 @@ Examples:
   my $stringable : Stringable = Point->new(1, 2);
   my $stringable : Stringable = undef;
 
-=head2 Type Assignability to Any Object
+=head2 Assignment Requirement to Any Object
 
-If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the type of I<RIGHT_OPERAND> is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the type of I<RIGHT_OPERAND> is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
@@ -1254,14 +1254,14 @@ Examples:
   my $num_object : object = 3;
   my $object : object = undef;
 
-=head2 Type Assignability to Undefined
+=head2 Assignment Requirement to Undefined
 
-If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignability is false.
+If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>False</td><td>undef Type</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -1269,19 +1269,19 @@ If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignabi
 
 Examples:
 
-  # The assignability is false
+  # The assignment requirement is false
   undef = Point->new;
 
-=head2 Type Assignability to Numeric Array
+=head2 Assignment Requirement to Numeric Array
 
-If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>byte[]</td><td>byte[]</td><td>None</td></tr>
   <tr><td>True</td><td>short[]</td><td>short[]</td><td>None</td></tr>
   <tr><td>True</td><td>int[]</td><td>int[]</td><td>None</td></tr>
@@ -1299,16 +1299,16 @@ Examples:
   my $nums : int[] = new int[3];
   my $nums : int[] = undef;
 
-=head2 Type Assignability to Multi-Numeric Array
+=head2 Assignment Requirement to Multi-Numeric Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
@@ -1321,16 +1321,16 @@ Examples:
   my $nums : Complex_2d[] = new Complex_2d[3];
   my $nums : Complex_2d[] = undef;
 
-=head2 Type Assignability to String Array
+=head2 Assignment Requirement to String Array
 
-If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
   <tr><td>True</td><td>string[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
@@ -1343,18 +1343,18 @@ Examples:
   my $strings : string[] = ["abc", "def"];
   my $strings : string[] = undef;
 
-=head2 Type Assignability to Class Array
+=head2 Assignment Requirement to Class Array
 
-If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-If the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is an super class of the type of I<RIGHT_OPERAND>, the assignability is true.
+If the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is an super class of the type of I<RIGHT_OPERAND>, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td></tr>
@@ -1368,18 +1368,18 @@ Examples:
   my $points : Point[] = new Point[3];
   my $points : Point[] = undef;
 
-=head2 Type Assignability to Interface Array
+=head2 Assignment Requirement to Interface Array
 
-If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Types"> can assign to the basic type of I<LEFT_OPERAND>, the assignability is true.
+If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Types"> can assign to the basic type of I<LEFT_OPERAND>, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td><td>None</td></tr>
@@ -1396,16 +1396,16 @@ Examples:
   
   my $stringables : Stringable[] = undef;
 
-=head2 Type Assignability to Any Object Array
+=head2 Assignment Requirement to Any Object Array
 
-If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
@@ -1432,20 +1432,20 @@ Examples:
   my $strings : string[];
   my $any_object : object[] = $strings;
 
-=head2 Type Assignability to Multi-Dimensional Array
+=head2 Assignment Requirement to Multi-Dimensional Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignability is true.
+If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the assignability is true.
+If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the assignment requirement is true.
 
-If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> has the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the assignability is true.
+If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> has the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the assignment requirement is true.
 
-Otherwise, the assignability is false.
+Otherwise, the assignment requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Assignability</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
   <tr><td>True</td><td>X[]..[]</td><td>X[]..[]</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X[]..[]</td><td>CLASS_Y[]..[]</td><td>None</td></tr>
@@ -1659,7 +1659,7 @@ Examples:
 
 If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the castability is true.
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
@@ -1702,7 +1702,7 @@ The type of I<RIGHT_OPERAND> is other than above, the castability is false.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
-If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -1738,7 +1738,7 @@ If the type of I<RIGHT_OPERAND> is a super class of the type of left operand, th
 
 Otherwise, the castability is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -1777,7 +1777,7 @@ If the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class h
 
 Otherwise, the castability is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -1848,7 +1848,7 @@ Otherwise, the castability is false.
 
 If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -1882,7 +1882,7 @@ If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any o
 
 Otherwise, the castability is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -1913,7 +1913,7 @@ If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any o
 
 Otherwise, the castability is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -1952,7 +1952,7 @@ If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any o
 
 Otherwise, the castability is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -1995,9 +1995,9 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 Otherwise, the castability is false.
 
-If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Type">, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -2032,7 +2032,7 @@ If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the
 
 Otherwise, the castability is false.
 
-If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the L<runtime type checking|/"Runtime Type Assignability"> is performed.
+If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
@@ -2143,7 +2143,7 @@ Examples:
 
 The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
 
-See L<"Type Assignability"> if you know when implicite type conversion is performed.
+See L<"Assignment Requirement"> if you know when implicite type conversion is performed.
 
 Examples:
   
@@ -2621,34 +2621,34 @@ Examples:
     # not ok
   }
 
-=head1 Runtime Type Assignability
+=head1 Runtime Assignment Requirement
 
 The runtime type cheking is the type cheking that is performed at runtime.
 
-The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the runtime type assignability.
+The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the runtime assignment requirement.
 
-The runtime type assignability is the assignability at runtime.
+The runtime assignment requirement is the assignment requirement at runtime.
 
-The L<isa operator|/"isa Operator"> checks the L<runtime type assignability/"Runtime Type Assignability">
+The L<isa operator|/"isa Operator"> checks the L<runtime assignment requirement/"Runtime Assignment Requirement">
 
-The runtime type assignability is false, an exception is thrown.
+The runtime assignment requirement is false, an exception is thrown.
 
-If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|/"undef Type">, the runtime type assignability is true.
+If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|/"undef Type">, the runtime assignment requirement is true.
 
-If the type of the distribution is the same as the type of the source, the runtime type assignability is true.
+If the type of the distribution is the same as the type of the source, the runtime assignment requirement is true.
 
-If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime type assignability is true.
+If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime assignment requirement is true.
 
-If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime type assignability is true.
+If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime assignment requirement is true.
 
-If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime type assignability is true.
+If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime assignment requirement is true.
 
-If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime type assignability is true.
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime assignment requirement is true.
 
 =begin html
 
 <table>
-  <tr><th>Runtime Type Assignability</th><th>To</th><th>From</th></tr>
+  <tr><th>Runtime Assignment Requirement</th><th>To</th><th>From</th></tr>
   <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
   <tr><td>True</td><td>OBJECT_X</td><td>OBJECT_X</td></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_Y</td></tr>

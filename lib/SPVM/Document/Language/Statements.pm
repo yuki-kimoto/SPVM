@@ -470,7 +470,7 @@ If the return type of the current method is the void typ, I<OPERAND> cannnot exi
 
 If the return type of the current method is the non-void type, I<OPERAND> must exist, otherwise a compilation error occurs.
 
-The type of I<OPERAND> must satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability"> to the return type of the current method, otherwise a compilation error occurs.
+The type of I<OPERAND> must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to the return type of the current method, otherwise a compilation error occurs.
 
 =head2 die Statement
 

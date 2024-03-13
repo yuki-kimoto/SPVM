@@ -1098,19 +1098,19 @@ The C<isa> operator checks whether I<LEFT_OPERAND> can be assigned to the right 
 
   LEFT_OPERAND isa RIGHT_TYPE
 
-If the right type is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
+If the right type is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
-If the assignability without implicite convertion is true, it returns 1, otherwise returns 0.
+If the assignment requirement without implicite convertion is true, it returns 1, otherwise returns 0.
 
-If the right type is another object type, this operator checks the L<runtime assignability|/"Runtime Type Assignability">.
+If the right type is another object type, this operator checks the L<runtime assignment requirement|/"Runtime Assignment Requirement">.
 
-If the runtime assignability is true, it returns 1, otherwise returns 0.
+If the runtime assignment requirement is true, it returns 1, otherwise returns 0.
 
 The return type is the int type.
 
 Compilation Errors:
 
-If the runtime assignability is checked, I<LEFT_OPERAND> of the isa operator must be an object type, otherwise a compilation error occurs.
+If the runtime assignment requirement is checked, I<LEFT_OPERAND> of the isa operator must be an object type, otherwise a compilation error occurs.
 
 Examples:
   
@@ -1142,7 +1142,7 @@ The C<isa_error> operator checks whether the basic type ID given by I<LEFT_OPERA
 
 The return type is int type.
 
-If the assignability is true, returns 1, otherwise returns 0.
+If the assignment requirement is true, returns 1, otherwise returns 0.
 
 Compilation Errors:
 
@@ -1878,7 +1878,7 @@ See the L<scope|/"Scope"> to know the L<garbage collection|/"Garbage Collection"
 
 Compilation Errors:
 
-The assignment of the value must satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">, otherwise a compilation error occurs.
+The assignment of the value must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
 =head2 Getting Class Variable
 
@@ -1936,7 +1936,7 @@ If the class variable is used in an anon method and C<CLASS_NAME::> can be omitt
 
 Compilation Errors:
 
-If the assignment does not satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">, a compilation error occurs.
+If the assignment does not satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, a compilation error occurs.
 
 If the class variable does not found, a compilation error occurs.
 
@@ -2025,7 +2025,7 @@ If an object has already been assigned to the field before the assignment, the r
 
 Compilation Errors:
 
-If the assignment does not satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">, a compilation error occurs.
+If the assignment does not satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, a compilation error occurs.
 
 Examples:
 
@@ -2063,7 +2063,7 @@ The invocant is the multi-numeric type.
 
 Setting Multi-Numeric Field operator returns the value of the field after setting. 
 
-The assignment must satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 The return type is the field type.
 
@@ -2119,7 +2119,7 @@ The array must be an array type.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the index I<INDEX>.
 
-I<RIGHT_OPERAND> must satisfy L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
+I<RIGHT_OPERAND> must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 The setting array element returns the value of the element that is set.
 
@@ -2303,7 +2303,7 @@ The invocant is L</"Multi-Numeric Reference Type">.
 
 The setting multi-numeric field via dereference operator returns the value of the field after setting.
 
-The assignment must satisfy the L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 The return type is the field type.
 
