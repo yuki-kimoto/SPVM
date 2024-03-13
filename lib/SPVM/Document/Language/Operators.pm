@@ -29,6 +29,7 @@ The type of I<OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/
 
 Examples:
   
+  # Examples of the unary plus operator
   my $num = +10;
 
 =head2 Unary Minus Operator
@@ -48,15 +49,17 @@ The type of I<OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/
 
 Examples:
 
+  # Examples of the unary minus operator
   my $num = -10;
 
 =head2 Addition Operator
 
 The addition operator C<+> adds two operands.
-
+  
+  # The addition operator
   LEFT_OPERAND + RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -69,14 +72,20 @@ Compilation Errors:
 The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+
+Examples:
+
+  # Examples of the addition operator
+  my $result = 1 + 2;
 
 =head2 Subtraction Operator
 
 The subtraction operator C<-> subtracts its right operand from its left operand.
-
+  
+  # The subtraction operator
   LEFT_OPERAND - RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -90,13 +99,19 @@ The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::T
 
 The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
+Examples:
+
+  # Examples of the subtraction operator
+  my $result = 1 - 2;
+
 =head2 Multiplication Operator
 
 The multiplication operator C<*> multiplies two operands.
-
+  
+  # The multiplication operator
   LEFT_OPERAND * RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -110,13 +125,19 @@ The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::T
 
 The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
+Examples:
+
+  # Examples of the multiplication operator
+  my $result = 1 * 2;
+
 =head2 Division Operator
 
 The division operator C</> divides its left operand by its right operand.
-
+  
+  # The division operator
   LEFT_OPERAND / RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -132,15 +153,21 @@ The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::
 
 Exceptions:
 
-If the type of I<LEFT_OPERAND> and I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
+If the type of the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
+
+Examples:
+
+  # Examples of the division operator
+  my $result = 1 / 2;
 
 =head2 Division Unsigned Int Operator
 
 The division unsigned int operator C<div_uint> interprets its two operands as unsigned 32bit integers, and divides its left operand by its right operand.
-
+  
+  # The division unsigned int operator
   LEFT_OPERAND div_uint RIGHT_OPERAND
 
-It performs the same operation as the following operation in the C language, and returns its return value.
+This operator performs the same operation as the following operation in the C language, and returns its return value.
 
   (uint32_t)LEFT_OPERAND / (uint32_t)RIGHT_OPERAND;
 
@@ -156,13 +183,19 @@ Exceptions:
 
 If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
+Examples:
+
+  # Examples of the division unsigned int operator
+  my $result = 1 div_uint 2;
+
 =head2 Division Unsigned Long Operator
 
 The division unsigned long operator C<div_ulong> interprets its two operands as unsigned 64bit integers, and divides its left operand by its right operand.
 
+  # The division unsigned long operator
   LEFT_OPERAND div_ulong RIGHT_OPERAND
 
-It performs the same operation as the following operation in the C language, and returns its return value.
+This operator performs the same operation as the following operation in the C language, and returns its return value.
 
   (uint64_t)LEFT_OPERAND / (uint64_t)RIGHT_OPERAND;
 
@@ -178,13 +211,19 @@ Exceptions:
 
 If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
+Examples:
+
+  # Examples of the division unsigned long operator
+  my $result = 1L div_ulong 2L;
+
 =head2 Modulo Operator
 
 The modulo operator C<%> calculates the modulo of the division of its two operands.
-
+  
+  # The modulo operator
   LEFT_OPERAND % RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -203,13 +242,19 @@ Exceptions:
 
 If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
+Examples:
+
+  # Examples of the modulo operator
+  my $result = 1 % 2;
+
 =head2 Modulo Unsigned Int Operator
 
 The modulo unsigned int operator C<mod_uint> interprets its two operands as unsigned 32bit integers, and calculates the modulo of the division of its two operands.
-
+  
+  # The modulo unsigned int operator
   LEFT_OPERAND mod_uint RIGHT_OPERAND
 
-It performs the same operation as the following operation in the C language, and returns its return value.
+This operator performs the same operation as the following operation in the C language, and returns its return value.
 
   (uint32_t)LEFT_OPERAND % (uint32_t)RIGHT_OPERAND;
 
@@ -225,13 +270,19 @@ Exceptions:
 
 If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
+Examples:
+
+  # Examples of the modulo unsigned int operator
+  my $result = 1 mod_uint 2;
+
 =head2 Modulo Unsigned Long Operator
 
 The modulo unsigned long operator C<mod_ulong> interprets its two operands as unsigned 64bit integers, and calculates the modulo of the division of its two operands.
-
+  
+  # The modulo unsigned long operator
   LEFT_OPERAND mod_ulong RIGHT_OPERAND
 
-It performs the same operation as the following operation in the C language, and returns its return value.
+This operator performs the same operation as the following operation in the C language, and returns its return value.
 
   (uint64_t)LEFT_OPERAND % (uint64_t)RIGHT_OPERAND;
 
@@ -247,169 +298,169 @@ Exceptions:
 
 If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
-=head2 Increment Operator
+Examples:
 
-Increment operators are the L<pre-increment operator|/"Pre-Increment Operator"> and L<post-increment operator|/"Post-Increment Operator">.
+  # Examples of the modulo unsigned long operator
+  my $result = 1L mod_ulong 2L;
+
+=head2 Increment Operators
 
 =head3 Pre-Increment Operator
 
-The pre-increment operator adds 1 to I<OPERAND> and returns the value after the incrementation.
-  
-  # Pre-increment operator
+The pre-increment operator C<++> increases the value of an operand by 1, and returns it.
+
+  # The pre-increment operator
   ++OPERAND
 
-The pre-increment operator performs the same operation as the following.
+This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, and returns it.
 
-  (OPERAND = (TYPE_OF_OPERAND)(OPERAND + 1))
-
-For example, if the type of I<OPERAND> is the L<byte type|SPVM::Document::Language::Types/"byte Type">, the following operation is performed.
-
-  ($num = (byte)($num + 1))
+The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a local variable, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an array access, a dereference, otherwise a compilation error occurs.
+
+The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
 Examples:
   
-  # Pre-increment of a local variable
+  # Examples of the pre-increment operator
+  
+  # A local variable
   ++$num;
   
-  # Pre-increment of a class variable
+  # A class variable
   ++$NUM;
   
-  # Pre-increment of an element of an array
+  # A field access
   ++$point->{x};
   
-  # Pre-increment of a field
+  # An array access
   ++$nums->[0];
   
-  # Pre-increment of a dereferenced value
+  # A dereference
   ++$$num_ref;
 
 =head3 Post-Increment Operator
 
-The post-increment operator adds 1 to I<OPERAND> and returns the value before the incrementation.
-  
-  # Post-increment operator
+The post-increment operator C<++> increases the value of an operand by 1, and returns the value before performing the incrementation.
+
+  # The post-increment operator
   OPERAND++
 
-The post-increment operator performs the same operation as the following.
+This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it to I<OPERAND>, and returns I<OPERAND> before performing the incrementation.
 
-  (my TMP_VARIABLE = OPERAND, OPERAND = (TYPE_OF_OPERAND)(OPERAND + 1), TMP_VARIABLE)
-
-For example, if the type of I<OPERAND> is the L<byte type|SPVM::Document::Language::Types/"byte Type">, the following operation is performed.
-
-  (my $tmp = $num, $num = (byte)($num + 1), $tmp)
+The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a local variable, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an array access, a dereference, otherwise a compilation error occurs.
+
+The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
 Examples:
   
-  # Post-increment of a local variable
+  # Examples of the post-increment operator
+  
+  # A local variable
   $num++;
   
-  # Post-increment of a class variable
+  # A class variable
   $NUM++;
   
-  # Post-increment of an element of an array
+  # A field access
   $point->{x}++;
   
-  # Post-increment of a field
+  # An array access
   $nums->[0]++;
   
-  # Post-increment of a dereferenced value
+  # A dereference
   $$num_ref++;
 
-=head2 Decrement Operator
-
-Decrement operators are the L<pre-decrement operator|/"Pre-Decrement Operator"> and L<post-decrement operator|/"Post-Decrement Operator">.
+=head2 Decrement Operators
 
 =head3 Pre-Decrement Operator
 
-The pre-decrement operator subtracts 1 to I<OPERAND> and returns the value after the decrementation.
-  
-  # Pre-decrement operator
+The pre-decrement operator C<--> decreases the value of an operand by 1, and returns it.
+
+  # The pre-decrement operator
   --OPERAND
 
-The pre-decrement operator performs the same operation as the following.
+This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, and returns it.
 
-  (OPERAND = (TYPE_OF_OPERAND)(OPERAND - 1))
-
-For example, if the type of I<OPERAND> is the L<byte type|SPVM::Document::Language::Types/"byte Type">, the following operation is performed.
-
-  ($num = (byte)($num - 1))
+The return type is the type of I<OPERAND>.
 
 Complation Errors:
 
-The type of I<OPERAND> must be a local variable, a L<class variable|/"Class Variable">, a L<field access|/"Field Access">, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an array access, a dereference, otherwise a compilation error occurs.
+
+The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
 Examples:
   
-  # Pre-decrement of a local variable
+  # Examples of the pre-decrement operator
+  
+  # A local variable
   --$num;
   
-  # Pre-decrement of a class variable
+  # A class variable
   --$NUM;
   
-  # Pre-decrement of an element of an array
+  # A field access
   --$point->{x};
   
-  # Pre-decrement of a field
+  # An array access
   --$nums->[0];
   
-  # Pre-decrement of a dereferenced value
+  # A dereferenced value
   --$$num_ref;
 
 =head3 Post-Decrement Operator
 
-The post-decrement operator subtracts 1 to I<OPERAND> and returns the value before the decrementation.
-  
-  # Post-decrement operator
+The post-increment operator C<--> decreases the value of an operand by 1, and returns the value before performing the decrementation.
+
+  # The post-decrement operator
   OPERAND--
 
-The post-decrement operator performs the same operation as the following.
+This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it to I<OPERAND>, and returns I<OPERAND> before performing the decrementation.
 
-  (my TMP_VARIABLE = OPERAND, OPERAND = (TYPE_OF_OPERAND)(OPERAND - 1), TMP_VARIABLE)
-
-For example, if the type of I<OPERAND> is the L<byte type|SPVM::Document::Language::Types/"byte Type">, the following operation is performed.
-
-  (my $tmp = $num, $num = (byte)($num - 1), $tmp)
+The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a local variable, a L<class variable|/"Class Variable">, a L<field access|/"Field Access"></a>, an L<array access|/"The array Access">, a L<dereference|/"Dereference">, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an array access, a dereference, otherwise a compilation error occurs.
+
+The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
 Examples:
   
-  # Post-decrement of a local variable
+  # Examples of the post-decrement operator
+  
+  # A local variable
   $num--;
   
-  # Post-decrement of a class variable
+  # A class variable
   $NUM--;
   
-  # Post-decrement of an element of an array
+  # A field access
   $point->{x}--;
   
-  # Post-decrement of a field
+  # An array access
   $nums->[0]--;
   
-  # Post-decrement of a dereferenced value
+  # A dereference
   $$num_ref--;
 
-=head2 Bit Operator
+=head2 Bitwise Operators
 
-Bit operators perform bit operations.
+=head3 Bitwise AND Operator
 
-=head3 Bit AND Operator
+The bitwise AND operator C<&> performs the L<bitwise AND operation|https://en.wikipedia.org/wiki/Bitwise_operation#AND>.
 
-The bit AND operator C<&> performes a bit AND operation.
-
+  # The bitwise AND operator
   LEFT_OPERAND & RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -419,22 +470,23 @@ The return type is the type after the L<binary numeric widening conversion|/"Bin
 
 Compilation Errors:
 
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<integer type/"Integer Type">, otherwise a compilation error occurs.
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
 Examples:
   
-  # The bit AND operator
+  # Examples of the bitwise AND operator
   my $num1 = 0xff;
   my $num2 = 0x12;
   my $result = $num1 & $num2;
+
+=head3 Bitwise OR Operator
+
+The bitwise OR operator C<|> performs the L<bitwise OR operation|https://en.wikipedia.org/wiki/Bitwise_operation#OR>.
   
-=head3 Bit OR Operator
-
-The bit OR operator C<|> performes a bit OR operation.
-
+  # The bitwise OR operator
   LEFT_OPERAND | RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -444,22 +496,23 @@ The return type is the type after the L<binary numeric widening conversion|/"Bin
 
 Compilation Errors:
 
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<integer type/"Integer Type">, otherwise a compilation error occurs.
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
 Examples:
   
-  # The bit OR operator
+  # Examples of the bitwise OR operator
   my $num1 = 0xff;
   my $num2 = 0x12;
   my $result = $num1 | $num2;
 
-=head3 Bit NOT Operator
+=head3 Bitwise NOT Operator
 
-The bit NOT operator C<~> performs the bit NOT operation.
-
+The bitwise NOT operator C<~> performs the L<bitwise NOT operation|https://en.wikipedia.org/wiki/Bitwise_operation#NOT>.
+  
+  # The bitwise NOT operator
   ~OPERAND
 
-The L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
+This operator performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the operand I<OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -469,86 +522,103 @@ The return type is the type that the L<numeric widening conversion|/"Numeric Wid
 
 Compilation Errors:
 
-The type of I<OPERAND> must is an integer type, otherwise a compilation error occurs.
+The type of I<OPERAND>must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
 Examples:
   
-  # The bit NOT operator
-  my $num = ~0xFF0A;
+  # Examples of the bitwise NOT operator
+  my $result = ~0xFF0A;
 
-=head2 Shift Operator
-
-Shift operators perform bit shift operations.
+=head2 Shift Operators
 
 =head3 Left Shift Operator
 
-The left shift operator C<E<lt>E<lt>> performs the left bit shift.
+The left shift operator C<E<lt>E<lt>> performs the L<arithmetic left shift|https://en.wikipedia.org/wiki/Bitwise_operation#Arithmetic_shift>.
 
+  # The left shift operator
   LEFT_OPERAND << RIGHT_OPERAND
 
-Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
+This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
 
-Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
+And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND << RIGHT_OPERAND;
 
-The return type is the same as the type of I<LEFT_OPERAND>.
+The return type is the type of I<LEFT_OPERAND>.
 
 Compilation Erorrs:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">, otherwise a compilation error occurs.
+
+Examples:
+
+  # Examples of the left shift operator
+  my $result = 0xFF0A << 3;
 
 =head3 Arithmetic Right Shift Operator
 
-The arithmetic right shift operator C<E<gt>E<gt>> performs the arithmetic right bit shift.
+The arithmetic right shift operator C<E<gt>E<gt>> performs the L<arithmetic right shift|https://en.wikipedia.org/wiki/Bitwise_operation#Arithmetic_shift>.
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
+This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
 
-Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
+And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND >> RIGHT_OPERNAD;
 
-The return type is the same as the type of I<LEFT_OPERAND>.
+The return type is the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">, otherwise a compilation error occurs.
+
+Examples:
+
+  # Examples of the arithmetic right shift operator
+  my $result = 0xFF0A >> 3;
 
 =head3 Logical Right Shift Operator
 
-The logical right shift operator C<E<gt>E<gt>E<gt>> performs the logical right bit shift.
-
+The logical right shift operator C<E<gt>E<gt>E<gt>> performs the L<logical right shift|https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shift>.
+  
+  # The logical right shift operator
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<LEFT_OPERAND>.
+This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
 
-Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
+And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And if the type of I<LEFT_OPERAND> is the int type, it performs the same operation as the following operation in the C language
 
-  // The type of LEFT_OPERAND is the int type
   (uint32_t)LEFT_OPERAND >> RIGHT_OPERAND;
 
-  // The type of LEFT_OPERAND is the long type
+If the type of I<LEFT_OPERAND> is the long type, it performs the same operation as the following operation in the C language.
+
   (uint64_t)LEFT_OPERAND >> RIGHT_OPERAND;
 
-The return type is the same as the type of I<LEFT_OPERAND>.
+And returns its return value.
+
+The return type is the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">, otherwise a compilation error occurs.
+
+Examples:
+
+  # Examples of the logical right shift operator
+  my $result = 0xFF0A >>> 3;
 
 =head2 Logical Operator
 
@@ -559,7 +629,7 @@ The logical operators performs logical operations.
 The logical AND operator C<&&> performs a logical AND operation.
 
   LEFT_OPERAND && RIGHT_OPERAND
-  
+
 The return type of the logical AND operator is the int type.
 
 Thg logical AND operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is 0, returns 0, otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
@@ -600,7 +670,7 @@ The return type is the string type.
 
 A string concatenation operator returns the result to concat two operands.
 
-If both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are a L<string literal|/"String Literal">, the two string literals are concatenated at compile-time.
+If both the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> are a L<string literal|/"String Literal">, the two string literals are concatenated at compile-time.
 
 If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is L<undef|/"Undefined Value">, an exception occurs.
 
@@ -654,7 +724,7 @@ B<Exampless:>
   # $x is 3, $ret is 5
   my $x = 1;
   my $y = 2;
-  my $ret = ($x += 2, $x + $y);
+  my $result = ($x += 2, $x + $y);
 
 =head2 Assignment Operator
 
@@ -662,7 +732,7 @@ The assignment operator C<=> assigns a value.
 
   LEFT_OPERAND = RIGHTH_OPERAND
 
-The assignment operator has different meanings depending on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The assignment operator has different meanings depending on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 =head3 Local Variable Assignment
 
@@ -724,11 +794,11 @@ The following operators are used as the operators of the special assignment oper
     <td>%=</td>
   </tr>
   <tr>
-    <td>Bit AND assignment operator</td>
+    <td>Bitwise AND assignment operator</td>
     <td>&=</td>
   </tr>
   <tr>
-    <td>Bit OR assignment operator</td>
+    <td>Bitwise OR assignment operator</td>
     <td>|=</td>
   </tr>
   <tr>
@@ -769,11 +839,11 @@ Examples:
 
 =head2 Comparison Operator
 
-Comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+Comparison operators compare the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 =head3 Numeric Comparison Operator
 
-Numeric comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND> in the numeric order.
+Numeric comparison operators compare the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> in the numeric order.
 
   LEFT_OPERAND == RIGHT_OPERAND
   LEFT_OPERAND != RIGHT_OPERAND
@@ -850,7 +920,7 @@ Numeric comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND> in the
 
 =end html
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
@@ -878,7 +948,7 @@ The type of I<RIGHT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, t
 
 =head3 String Comparison Operator
 
-String comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND> in the dictionary order.
+String comparison operators compare the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> in the dictionary order.
 
   LEFT_OPERAND eq RIGHT_OPERAND
   LEFT_OPERAND ne RIGHT_OPERAND
@@ -1184,7 +1254,7 @@ The C<new_string_len> operator creates a L<string|/"String"> with the length.
 
   new_string_len OPERAND
 
-The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on I<OPERAND>.
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
 
 The C<new_string_len> operator returns a new string that length is the length specified by I<OPERAND> and all characters are C<\0>.
 
@@ -1205,8 +1275,9 @@ Examples:
 
 =head2 copy Operator
 
-The C<copy> operator copies the object.
-
+The C<copy> operator copies an object.
+  
+  # The copy operator
   copy OPERAND
 
 If the type of operand is none of the string type, a numeric type, a multi-numeric type,
@@ -1214,7 +1285,7 @@ An L<exception|/"Exception Handling"> is thorwn.
 
 The C<copy> operator returns the copied object.
 
-The return type is the same as the type of operand.
+The return type is the type of I<OPERAND>.
 
 Read-only flag of the string is dropped.
 
@@ -1629,7 +1700,7 @@ The syntax of creating array creates an array using the L<new operator|/"new Ope
 
 The type must be a L<basic type|SPVM::Document::Language::Types/"Basic Types">.
 
-The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the length.
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length.
 
 The length must be greater than or equal to 0, otherwise an exception is thrown.
 
@@ -1954,7 +2025,7 @@ The getting array element gets the element of the L<array|SPVM::Document::Langua
 
 The array must be an array type.
 
-The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the index.
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the index I<INDEX>.
 
 The getting array element returns the element that is specifed by the index.
 
@@ -1987,7 +2058,7 @@ The setting array element sets the element of the array using the L<assignment o
 
 The array must be an array type.
 
-The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the index.
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the index I<INDEX>.
 
 I<RIGHT_OPERAND> must satisfy L<type assignability|SPVM::Document::Language::Types/"Type Assignability">.
 
@@ -2072,14 +2143,14 @@ Examples:
     
     static method main : void () {
       
-      my $ret = Foo->bar(1, 2, 3);
+      my $result = Foo->bar(1, 2, 3);
       
       # Same as Foo->bar
-      my $ret = &bar(1, 2, 3);
+      my $result = &bar(1, 2, 3);
       
       my $cb = method : void () {
         # Same as Foo->bar;
-        my $ret = &foo;
+        my $result = &foo;
       };
     }
     
