@@ -2158,7 +2158,7 @@ The type cast operator performs an L<explicite type conversion|SPVM::Document::L
 
 Compilation Errors:
 
-If the operand of the type cast operator dose not satisfy L<type castability|"Type Castability">, a compilation error occurs.
+If the operand of the type cast operator dose not satisfy L<cast requirement|"Cast Requirement">, a compilation error occurs.
 
 Examples:
   

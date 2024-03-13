@@ -1475,21 +1475,21 @@ Examples:
     my $muldim_array : Stringer[][] = [[$cb]];
   }
 
-=head1 Type Castability
+=head1 Cast Requirement
 
-The castability at compile-time is explained.
+The cast requirement at compile-time is explained.
 
 Compilation Errors:
 
-The castability is false, a compilation error occurs.
+The cast requirement is false, a compilation error occurs.
 
-=head2 Type Castability to Numeric
+=head2 Cast Requirement to Numeric
 
-The castability to the L<numeric types|/"Numeric Types"> is explained.
+The cast requirement to the L<numeric types|/"Numeric Types"> is explained.
 
-=head3 Type Castability from Numeric to Numeric
+=head3 Cast Requirement from Numeric to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the cast requirement is true.
 
 If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
@@ -1500,7 +1500,7 @@ If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is equal t
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
   <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
   <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
@@ -1562,14 +1562,14 @@ Examples:
   # double to int
   my $num = (int)2.5;
 
-=head3 Type Castability from NumericObject to Numeric
+=head3 Cast Requirement from NumericObject to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Types">, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Types">, the cast requirement is true.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
   <tr><td>True</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
   <tr><td>True</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
@@ -1586,16 +1586,16 @@ Examples:
 
   my $double = (double)Double->new(3.5);
 
-=head3 Type Castability from Any Object to Numeric
+=head3 Cast Requirement from Any Object to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the cast requirement is true.
 
 The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric type is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
@@ -1609,20 +1609,20 @@ Examples:
   my $object : object = Double->new(3.5);
   my $double = (double)$object;
 
-=head3 Type Castability from Others to Numeric
+=head3 Cast Requirement from Others to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is other than the types described above, the castability is false.
+If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is other than the types described above, the cast requirement is false.
 
-=head2 Type Castability to Multi-Numeric
+=head2 Cast Requirement to Multi-Numeric
 
-If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -1634,16 +1634,16 @@ Examples:
   my $z1 : Complex_2d;
   my $z2 = (Complex_2d)$z1;
 
-=head2 Type Castability to Referenece
+=head2 Cast Requirement to Referenece
 
-If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the castability is true.
+If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
   <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -1655,24 +1655,24 @@ Examples:
   my $num : int = 5;
   my $num_ref = (int*)\num;
 
-=head2 Type Castability to String
+=head2 Cast Requirement to String
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the castability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the cast requirement is true.
 
 If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<undef type|/"undef Type">, or the L<any object type|/"Any Object Type"> C<object>, the castability is true.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<undef type|/"undef Type">, or the L<any object type|/"Any Object Type"> C<object>, the cast requirement is true.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the castability is true and the runtime type checking is performed.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the cast requirement is true and the runtime type checking is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
   <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
   <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
@@ -1692,13 +1692,13 @@ Examples:
   my $num_string = (string)3;
   my $string : string = undef;
 
-=head2 Type Castability to NumericObject
+=head2 Cast Requirement to NumericObject
 
 If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"undef Type">, the cast requirement is true.
 
-The type of I<RIGHT_OPERAND> is other than above, the castability is false.
+The type of I<RIGHT_OPERAND> is other than above, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
@@ -1707,7 +1707,7 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1726,24 +1726,24 @@ Examples:
   my $object : object = Int->new(3);
   my $num_object = (Int)$object;
 
-=head2 Type Castability to Class
+=head2 Cast Requirement to Class
 
 If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-If the type of I<LEFT_OPERAND> is a super class of the type of right operand, the castability is true.
+If the type of I<LEFT_OPERAND> is a super class of the type of right operand, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is a super class of the type of left operand, the castability is true.
+If the type of I<RIGHT_OPERAND> is a super class of the type of left operand, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X</td><td>SUPER_CLASS_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1767,22 +1767,22 @@ Examples:
 
   my $point = (Point)undef;
 
-=head2 Type Castability to Interface
+=head2 Cast Requirement to Interface
 
 If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type">, and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class has the interface of I<LEFT_OPERAND>, the castability is true.
+If the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class has the interface of I<LEFT_OPERAND>, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1808,20 +1808,20 @@ Examples:
   
   my $stringable : Stringable = undef;
 
-=head2 Type Castability to Any Object
+=head2 Cast Requirement to Any Object
 
 If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
-If the type of I<RIGHT_OPERAND> is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
@@ -1836,15 +1836,15 @@ Examples:
   my $num_object : object = 3;
   my $object : object = undef;
 
-=head2 Type Castability to Numeric Array
+=head2 Cast Requirement to Numeric Array
 
-If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the castability is true.
+If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the cast requirement is true.
 
 If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
 
@@ -1853,7 +1853,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Conversion</a></td></tr>
   <tr><td>True</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1874,20 +1874,20 @@ Examples:
   
   my $nums = (int[])undef;
 
-=head2 Type Castability to Multi-Numeric Array
+=head2 Cast Requirement to Multi-Numeric Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
@@ -1905,20 +1905,20 @@ Examples:
 
   my $nums = (Complex_2d[])undef;
 
-=head2 Type Castability to String Array
+=head2 Cast Requirement to String Array
 
 If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
   <tr><td>True</td><td>string[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>string[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1940,24 +1940,24 @@ Examples:
 
   my $strings  = (string[])undef;
 
-=head2 Type Castability to Class Array
+=head2 Cast Requirement to Class Array
 
 If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the castability is true.
+If the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the cast requirement is true.
 
-If the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the castability is true.
+If the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>SUPER_CLASS_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1981,19 +1981,19 @@ Examples:
 
   my $points = (Point[])undef;
 
-=head2 Type Castability to Interface Array
+=head2 Cast Requirement to Interface Array
 
 If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Types"> has the interface of the basic type of I<LEFT_OPERAND>, the castability is true.
+If the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Types"> has the interface of the basic type of I<LEFT_OPERAND>, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is an differnt type of L<interface array type|/"Interface Array Type">, the castability is also true.
+If the type of I<RIGHT_OPERAND> is an differnt type of L<interface array type|/"Interface Array Type">, the cast requirement is also true.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"undef Type">, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
@@ -2002,7 +2002,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFAECE_HAVING_Y[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -2022,22 +2022,22 @@ Examples:
   
   my $stringables = (Stringable[])undef;
 
-=head2 Type Castability to Any Object Array
+=head2 Cast Requirement to Any Object Array
 
 If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -2068,26 +2068,26 @@ Examples:
   my $strings : string[];
   my $any_object = (object[])$strings;
   
-=head2 Type Castability to Multi-Dimensional Array
+=head2 Cast Requirement to Multi-Dimensional Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the castability is true.
+If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the cast requirement is true.
 
-If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the castability is true.
+If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the cast requirement is true.
 
-If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the castability is true.
+If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the cast requirement is true.
 
-If the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the dimension of the type of I<RIGHT_OPERAND> is the same as the dimension of the type left oerand and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> has the interface of the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> , the castability is true.
+If the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the dimension of the type of I<RIGHT_OPERAND> is the same as the dimension of the type left oerand and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> has the interface of the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> , the cast requirement is true.
 
-Otherwise, the castability is false.
+Otherwise, the cast requirement is false.
 
 =begin html
 
 <table>
-  <tr><th>Type Castability</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>True</td><td>ANY_X[]..[]</td><td>ANY_X[]..[]</td><td>None</td></tr>
   <tr><td>True</td><td>ANY_X[]..[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>True</td><td>ANY_X[]..[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
