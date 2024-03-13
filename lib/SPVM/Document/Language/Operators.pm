@@ -348,7 +348,7 @@ The post-increment operator C<++> increases the value of an operand by 1, and re
   # The post-increment operator
   OPERAND++
 
-This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it to I<OPERAND>, and returns I<OPERAND> before performing the incrementation.
+This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it on I<OPERAND>, and returns I<OPERAND> before performing the incrementation.
 
 The return type is the type of I<OPERAND>.
 
@@ -422,7 +422,7 @@ The post-increment operator C<--> decreases the value of an operand by 1, and re
   # The post-decrement operator
   OPERAND--
 
-This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it to I<OPERAND>, and returns I<OPERAND> before performing the decrementation.
+This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it on I<OPERAND>, and returns I<OPERAND> before performing the decrementation.
 
 The return type is the type of I<OPERAND>.
 
@@ -622,67 +622,100 @@ Examples:
 
 =head2 Logical Operator
 
-The logical operators performs logical operations.
-
 =head3 Logical AND Operator
 
 The logical AND operator C<&&> performs a logical AND operation.
-
+  
+  # The logical AND operator
   LEFT_OPERAND && RIGHT_OPERAND
 
-The return type of the logical AND operator is the int type.
+This operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the left operand I<LEFT_OPERAND>.
 
-Thg logical AND operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is 0, returns 0, otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
+If the evaluated value is 0, it returns 0, otherwise performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the right operand I<RIGHT_OPERAND>.
 
-It performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is 0, returns 0, otherwise return the evaluated value.
+And it returns the evaluated value of I<RIGHT_OPERAND>.
+
+The return type is the int type.
+
+Examples:
+
+  # Examples of the logical AND operator
+  if (1 && 0) {
+    
+  }
 
 =head3 Logical OR Operator
 
 The logical OR operator C<||> performes a logical OR operation.
 
+  # The logical OR operator
   LEFT_OPERAND || RIGHT_OPERAND
 
-The return type of the logical OR operator is the int type.
+Thg logical OR operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the left operand I<LEFT_OPERAND>.
 
-Thg logical OR operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<LEFT_OPERAND>. If the evaluated value is not 0, return the evaluated value, otherwise proceed to the evaluation of I<RIGHT_OPERAND>.
+If the evaluated value is not 0, it returns the evaluated value, otherwise performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the right operand I<RIGHT_OPERAND>.
 
-It performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<RIGHT_OPERAND>. If the evaluated value is not 0, return the evaluated value, otherwise returns 0.
+And it returns the evaluated value of I<RIGHT_OPERAND>.
+
+The return type is the int type.
+
+Examples:
+
+  # Examples of the logical OR operator
+  if (1 || 0) {
+    
+  }
 
 =head3 Logical NOT Operator
 
 The logical NOT operator C<!> performes a logical NOT operation.
 
+  # The logical NOT operator
   !OPERAND
 
-The return type of the logical NOT operator is the int type.
+Thg logical NOT operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the operand I<OPERAND>.
 
-Thg logical NOT operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> to I<OPERAND>. If the evaluated value is 0, returns 1, otherwise returns 0.
+If the evaluated value is 0, returns 1, otherwise returns 0.
+
+The return type is the int type.
+
+  # Examples of the logical NOT operator
+  if (!1) {
+    
+  }
 
 =head2 String Concatenation Operator
 
-String concatenation operator C<.> concats two strings.
-
+The string concatenation operator C<.> concats two strings.
+  
+  # The string concatenation operator
   LEFT_OPERAND . RIGHT_OPERAND
 
-If the type of I<OPERAND> is numeric type, a L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> is performed.
+This operator performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the left operand I<LEFT_OPERAND> if the type of I<LEFT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
+
+And it performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the right operand I<RIGHT_OPERAND> if the type of I<RIGHT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
+
+And it concats L<LEFT_OPERAND> and L<RIGHT_OPERAND>, and returns its return value.
+
+The type of L<LEFT_OPERAND> and L<RIGHT_OPERAND> are allowed to be the byte[] type.
 
 The return type is the string type.
 
-A string concatenation operator returns the result to concat two operands.
-
-If both the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> are a L<string literal|/"String Literal">, the two string literals are concatenated at compile-time.
-
-If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is L<undef|/"Undefined Value">, an exception occurs.
-
 Compilation Errors:
 
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, the byte[] type, or numeric type, otherwise a compilation error occurs.
+I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, or the byte[] type, or a numeric type, otherwise a compilation error occurs.
+
+Exceptions:
+
+I<LEFT_OPERAND> must be defined, otherwise an exception is thrown.
+
+I<RIGHT_OPERAND> must be defined, otherwise an exception is thrown.
 
 Examples:
-
-  my $str = "abc" . "def";
-  my $str = "def" . 34;
-  my $str = 123 . 456;
+  
+  # Examples of the string concatenation operator
+  my $result = "abc" . "def";
+  my $result = "def" . 34;
 
 =head2 Array Length Operator
 
