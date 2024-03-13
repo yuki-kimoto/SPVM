@@ -8,7 +8,7 @@ This document describes class definition in the SPVM language.
 
 =head1 Class
 
-A class defines its L<class type|/"Class Type">, its L<class variables|/"Class Variable">, its L<fields|/"Field"> and its L<methods|/"Method">.
+A class defines its L<class type|SPVM::Document::Language::Types/"Class Type">, its L<class variables|/"Class Variable">, its L<fields|/"Field"> and its L<methods|/"Method">.
 
 The object can be created from a class using L<new operator|/"Creating Object">.
 
@@ -214,7 +214,7 @@ The name of the destructor must be C<DESTROY>.
 
 A destructor cannnot have its arguments.
 
-The retrun type must be L<void type|/"void Type">.
+The retrun type must be L<void type|SPVM::Document::Language::Types/"void Type">.
 
 A destructor must be an L<instance method|/"Instance Method">.
 
@@ -336,7 +336,7 @@ The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Clas
   
   }
 
-The type of a pointer class is the L<class type|/"Class Type">.
+The type of a pointer class is the L<class type|SPVM::Document::Language::Types/"Class Type">.
 
 An object of a pointer class has the pointer to a native address.
 
@@ -360,7 +360,7 @@ The class can call instance methods of the super classes. The searching order is
 
 Compilation Errors:
 
-The parant class must be a L<class type|/"Class Type">. Otherwise a compilation error occurs.
+The parant class must be a L<class type|SPVM::Document::Language::Types/"Class Type">. Otherwise a compilation error occurs.
 
 The name of the parant class must be different from the name of the class. Otherwise a compilation error occurs.
 
@@ -423,7 +423,7 @@ An interface can have interface methods. An interface method does not need its m
 
 An interface can have required interface methods by using the L<method attribute|/"Method Attributes"> C<required>.
 
-The type of the interface is the L<interface type|/"Interface Type">.
+The type of the interface is the L<interface type|SPVM::Document::Language::Types/"Interface Type">.
 
 An interface can have L<interface statements|/"interface Statement">.
 
@@ -611,7 +611,7 @@ C<our> keyword defines a class variable.
 
 A Class variable must be defined directly under the L<class definition|/"Class Definition">.
 
-The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">.
+The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|/"Object Types">.
 
 L<Class variable attributes|/"Class Variable Attributes"> can be specified.
 
@@ -721,9 +721,9 @@ A class variable method is a L<method|/"Method"> that gets and sets a class vari
 
 A class variable getter method is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
 
-It has no arguments. The return type is the same as the type of the class variable except that the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>.
+It has no arguments. The return type is the same as the type of the class variable except that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
 
-If the type of the class variable is the L<byte type|/"byte Type"> or the L<short type|short Type>, the return type is the int type.
+If the type of the class variable is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>, the return type is the int type.
 
 It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
@@ -744,11 +744,11 @@ Examples:
 
 A class variable setter method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
 
-The return type is the L<void type|/"void Type">.
+The return type is the L<void type|SPVM::Document::Language::Types/"void Type">.
 
-It has an argument that type is the same as the type of the class variableexcept that the type of the field is the L<byte type|/"byte Type"> or the L<short type|short Type>.
+It has an argument that type is the same as the type of the class variableexcept that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
 
-If the type of the class variable is the L<byte type|/"byte Type"> or the L<short type|short Type>, the argument type is the int type.
+If the type of the class variable is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>, the argument type is the int type.
 
 It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
@@ -767,7 +767,7 @@ Examples:
 
 =head3 Class Variable Initial Value
 
-Each class variable is initialized with the L<initial value/"Initial Value"> just after the program starts.
+Each class variable is initialized with the L<initial value|SPVM::Document::Language::Types"Type Initial Value"> just after the program starts.
 
 This initial value can be changed by using the L<INIT block|/"INIT Block">.
 
@@ -812,7 +812,7 @@ L<Field attributes|/"Field Attributes"> can be specified.
 
 Compilation Errors:
 
-The field definition needs the L<type|/"Types">. The type must be a L<numeric type|/"Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
+The field definition needs the L<type|/"Types">. The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|/"Object Types">. Otherwise a compilation error occurs.
 
 The field names must follows the rule of the L<field name|/"Field Name">. Otherwise a compilation error occurs.
 
@@ -889,7 +889,7 @@ A field getter method is an L<instance method|/"Instance Method">. It has no arg
 
 If the type of the field is the C<byte> or C<short> type, The return type of a field getter method is the C<int> type.
 
-A field setter method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|/"void Type">.
+A field setter method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|SPVM::Document::Language::Types/"void Type">.
 
 If the type of the field is the C<byte> or C<short> type, The argument type of a field setter method is the C<int> type.
 
@@ -1002,9 +1002,9 @@ A method has L</"Method Block"> except for the case that the method has the C<na
 
 Compilation Errors:
 
-The types of the arguments must be a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Type">, or a L<reference type|/"Reference Type">. Otherwise a compilation error occurs.
+The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">. Otherwise a compilation error occurs.
 
-The type of the return value must be the L<void type|/"void Type">, a L<numeric type|/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Type">. Otherwise a compilation error occurs.
+The type of the return value must be the L<void type|SPVM::Document::Language::Types/"void Type">, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Types">. Otherwise a compilation error occurs.
 
 =head4 Optional Argument
 
@@ -1350,7 +1350,7 @@ The local variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L</"Local Variable Name">.
 
-the L<type|/"Types"> must be specified. Type must be a L<numeric type|/"Numeric Type">, an L<object type|/"Object Type">, the L<multi-numeric type|/"Multi-Numeric Type">, or a L<reference type|/"Reference Type">.
+the L<type|/"Types"> must be specified. Type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, an L<object type|/"Object Types">, the L<multi-numeric type|/"Multi-Numeric Type">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
@@ -1407,7 +1407,7 @@ See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the s
 
 =head2 Local Variable Initial Value
 
-The local variable is initialized by the L<initial value/"Initial Value">.
+The local variable is initialized by the L<initial value|SPVM::Document::Language::Types/"Type Initial Value">.
 
 =head3 Local Variable Access
 
@@ -1643,6 +1643,32 @@ The method name is C<main>.
 The return type is the void type.
 
 It has no arguments.
+
+=head2 Multi-Numeric Types Definition
+
+A L<multi-numeric type|/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
+
+  # Continuous two 64bit floating point
+  class Complex_2d : mulnum_t {
+    re : double;
+    im : double;
+  }
+
+The type of a field must be a L<numeric type|/"Numeric Types">.
+
+The types of all fields must be the same types.
+
+The length of the fields must be less than or equal to 255.
+
+The multi-numeric type must end with the following suffix.
+
+  _[FieldsLength][TypeSuffix]
+
+The length of the fields in the suffix must be the same as the length of the fields.
+
+The type suffix in the suffix must correspond to the L<numeric type|/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
+
+See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> to get and set the field of the multi-numeric type.
 
 =head1 Copyright & License
 
