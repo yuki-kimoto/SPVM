@@ -38,7 +38,7 @@ The unary minus operator C<-> is a unary operator that returns the negated value
   # The unary minus operator
   -OPERAND
 
-Thie operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, negates it, and returns it.
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, negates it, and returns it.
 
 The return type is the type after the conversion is performed.
 
@@ -52,53 +52,53 @@ Examples:
 
 =head2 Addition Operator
 
-The addition operator C<+> calculates the addition of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The addition operator C<+> adds two operands.
 
   LEFT_OPERAND + RIGHT_OPERAND
 
-The addition operator performs the same operation as the following C language operation.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND + RIGHT_OPERAND
-
-Before this operation, The L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
 =head2 Subtraction Operator
 
-The subtraction operator C<-> calculates the subtraction of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The subtraction operator C<-> subtracts its right operand from its left operand.
 
   LEFT_OPERAND - RIGHT_OPERAND
 
-The subtraction operator performs the same operation as the following C language operation.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND - RIGHT_OPERAND
-
-Before this operation, The L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
 The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
 =head2 Multiplication Operator
 
-The multiplication operator C<*> calculates the multiplication of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The multiplication operator C<*> multiplies two operands.
 
   LEFT_OPERAND * RIGHT_OPERAND
 
-Before this operation, The L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-The multiplication operator performs the same operation as the following C language operation.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND * RIGHT_OPERAND;
 
@@ -106,19 +106,19 @@ The return type is the type after the L<binary numeric conversion|SPVM::Document
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
 =head2 Division Operator
 
-The division operator C</> calculates the division of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The division operator C</> divides its left operand by its right operand.
 
   LEFT_OPERAND / RIGHT_OPERAND
 
-Before this operation, The L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-The division operator performs the same operation as the following C language operation.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND / RIGHT_OPERAND;
 
@@ -126,21 +126,21 @@ The return type is the type after the L<binary numeric conversion|SPVM::Document
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
 Exceptions:
 
-If I<LEFT_OPERAND> and I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
+If the type of I<LEFT_OPERAND> and I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Division Unsigned Int Operator
 
-The division unsigned int operator C<div_uint> calculates the unsigned int division of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The division unsigned int operator C<div_uint> interprets its two operands as unsigned 32bit integers, and divides its left operand by its right operand.
 
   LEFT_OPERAND div_uint RIGHT_OPERAND
 
-The division unsigned int operator performs the same operation as the following C language operation.
+It performs the same operation as the following operation in the C language, and returns its return value.
 
   (uint32_t)LEFT_OPERAND / (uint32_t)RIGHT_OPERAND;
 
@@ -148,9 +148,9 @@ The return type is the int type.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the int type, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be the int type, otherwise a compilation error occurs.
 
 Exceptions:
 
@@ -158,15 +158,15 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Division Unsigned Long Operator
 
-The division unsigned long operator C<div_ulong> calculates the unsigned long division of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The division unsigned long operator C<div_ulong> interprets its two operands as unsigned 64bit integers, and divides its left operand by its right operand.
 
   LEFT_OPERAND div_ulong RIGHT_OPERAND
 
-The division unsigned long operator performs the same operation as the following C language operation.
+It performs the same operation as the following operation in the C language, and returns its return value.
 
   (uint64_t)LEFT_OPERAND / (uint64_t)RIGHT_OPERAND;
 
-The return type of the division operator is the long type.
+The return type is the long type.
 
 Compilation Errors:
 
@@ -180,13 +180,13 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Modulo Operator
 
-The modulo operator C<%> is calculates a modulo of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The modulo operator C<%> calculates the modulo of the division of its two operands.
 
   LEFT_OPERAND % RIGHT_OPERAND
 
-Before this operation, the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-The modulo operator performs the same operation as the following C language operation.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   RETURN_VALUE = LEFT_OPERAND % RIGHT_OPERAND;
   if ((LEFT_OPERAND < 0) != (RIGHT_OPERAND < 0) && RETURN_VALUE) { RETURN_VALUE += RIGHT_OPERAND; }
@@ -195,9 +195,9 @@ The return type is the type after the L<binary numeric conversion|SPVM::Document
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an integer type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an integer type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
 Exceptions:
 
@@ -205,11 +205,11 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Modulo Unsigned Int Operator
 
-The modulo unsigned int operator C<mod_uint> calculates a unsigned int modulo of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The modulo unsigned int operator C<mod_uint> interprets its two operands as unsigned 32bit integers, and calculates the modulo of the division of its two operands.
 
   LEFT_OPERAND mod_uint RIGHT_OPERAND
 
-The modulo unsigned int operator performs the same operation as the following C language operation.
+It performs the same operation as the following operation in the C language, and returns its return value.
 
   (uint32_t)LEFT_OPERAND % (uint32_t)RIGHT_OPERAND;
 
@@ -227,15 +227,15 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 =head2 Modulo Unsigned Long Operator
 
-The modulo unsigned long operator C<mod_ulong> calculates a unsigned long modulo of I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+The modulo unsigned long operator C<mod_ulong> interprets its two operands as unsigned 64bit integers, and calculates the modulo of the division of its two operands.
 
   LEFT_OPERAND mod_ulong RIGHT_OPERAND
 
-The modulo unsigned long operator performs the same operation as the following C language operation.
+It performs the same operation as the following operation in the C language, and returns its return value.
 
   (uint64_t)LEFT_OPERAND % (uint64_t)RIGHT_OPERAND;
 
-The return type of the modulo unsigned long operator is the long type.
+The return type is is the long type.
 
 Compilation Errors:
 
@@ -409,9 +409,9 @@ The bit AND operator C<&> performes a bit AND operation.
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-Before this operation, the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-The return value is the same as the follwoing operation of the C language.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND & RIGHT_OPERAND;
 
@@ -434,9 +434,9 @@ The bit OR operator C<|> performes a bit OR operation.
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-Before this operation, the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-The return value is the same as the follwoing operation of the C language.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND | RIGHT_OPERAND;
 
@@ -461,7 +461,7 @@ The bit NOT operator C<~> performs the bit NOT operation.
 
 The L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
-The return value is the same as the follwoing operation of the C language.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   ~OPERAND
 
@@ -490,7 +490,7 @@ Before this operation, the L<numeric widening conversion|SPVM::Document::Languag
 
 Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
-The left shift operator performs the same operation as the following C language operation.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND << RIGHT_OPERAND;
 
@@ -498,9 +498,9 @@ The return type is the same as the type of I<LEFT_OPERAND>.
 
 Compilation Erorrs:
 
-The type of I<LEFT_OPERAND> must be an integer type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an integer type within int, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 =head3 Arithmetic Right Shift Operator
 
@@ -512,7 +512,7 @@ Before this operation, the L<numeric widening conversion|SPVM::Document::Languag
 
 Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
-The operation result of the arithmetic right shift Operator is the operation that exactly same as the following operation in the C language.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   LEFT_OPERAND >> RIGHT_OPERNAD;
 
@@ -520,9 +520,9 @@ The return type is the same as the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an integer type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an integer type within int, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 =head3 Logical Right Shift Operator
 
@@ -534,8 +534,8 @@ Before this operation, the L<numeric widening conversion|SPVM::Document::Languag
 
 Before this operation, the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed on I<RIGHT_OPERAND>.
 
-The operation result of logical right shift Operator is the same as the following calculation in the C language.
-  
+And it performs the same operation as the following operation in the C language, and returns its return value.
+
   // The type of LEFT_OPERAND is the int type
   (uint32_t)LEFT_OPERAND >> RIGHT_OPERAND;
 
@@ -546,9 +546,9 @@ The return type is the same as the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an integer type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an integer type within int, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 =head2 Logical Operator
 
@@ -850,9 +850,9 @@ Numeric comparison operators compare I<LEFT_OPERAND> and I<RIGHT_OPERAND> in the
 
 =end html
 
-Before this operation, the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on I<LEFT_OPERAND> and I<RIGHT_OPERAND>.
 
-The numeric comparison operators performed the same operations as the following C language operations.
+And it performs the same operation as the following operation in the C language, and returns its return value.
 
   (int32_t)(LEFT_OPERAND == RIGHT_OPERAND);
   (int32_t)(LEFT_OPERAND != RIGHT_OPERAND);
@@ -866,15 +866,15 @@ The return type is the int type.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> of the C<==> operator and the C<!=> operator must be a numeric type, an object type, or an reference type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> of the C<==> operator and the C<!=> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an object type, or an reference type, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> of the C<==> operator and the C<!=> operator must be a numeric type, an object type, or an reference type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> of the C<==> operator and the C<!=> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an object type, or an reference type, otherwise a compilation error occurs.
 
 If the type of I<RIGHT_OPERAND> of the C<==> operator and the C<!=> operator is an object type or an reference type, and the type of I<LEFT_OPERAND> is different from the type of I<RIGHT_OPERAND>, a compilation error occurs.
 
-The type of I<LEFT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a numeric type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a numeric type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
 =head3 String Comparison Operator
 
@@ -1017,7 +1017,7 @@ If the assignability is true, returns 1, otherwise returns 0.
 
 Compilation Errors:
 
-I<LEFT_OPERAND> of the isa_error operator must be an integer type within int, otherwise a compilation error occurs.
+I<LEFT_OPERAND> of the isa_error operator must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 I<RIGHT_OPERAND> of the isa_error operator must be a class type, otherwise a compilation error occurs.
 
@@ -1081,7 +1081,7 @@ If it is ok, returns 1, otherwise returns 0.
 
 Compilation Errors:
 
-I<LEFT_OPERAND> of the is_error operator must be an integer type within int, otherwise a compilation error occurs.
+I<LEFT_OPERAND> of the is_error operator must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 I<RIGHT_OPERAND> of the is_error operator must be a class type, otherwise a compilation error occurs.
 
@@ -1196,7 +1196,7 @@ The length specified by I<OPERAND> must be greater than or equal to 0, otherwise
 
 Compilation Errors:
 
-The type of I<OPERAND> must be an integer type within int, otherwise a compilation error occurs.
+The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 Examples:
   
@@ -1639,7 +1639,7 @@ The type of the created array is an array type.
 
 Compilation Errors:
 
-The length must be an integer type within int, otherwise a compilation error occurs.
+The length must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 Examples:
 
@@ -1966,7 +1966,7 @@ The index must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
-The index must be an integer type within int, otherwise a compilation error occurs.
+The index must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 Examples:
 
@@ -2003,7 +2003,7 @@ If an object has already been assigned to the field before the assignment, the r
 
 Compilation Errors:
 
-The index must be an integer type within int, otherwise a compilation error occurs.
+The index must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 Examples:
 
