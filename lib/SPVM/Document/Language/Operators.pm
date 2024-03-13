@@ -719,38 +719,45 @@ Examples:
 
 =head2 Array Length Operator
 
-The array length operator gets the length of the array.
-
+The array length operator C<@> gets the length of an array.
+  
+  # The array length operator
   @OPERAND
+  @{OPERAND}
 
-The array length operator returns the int type value that is the length of the L<array|SPVM::Document::Language::Types/"Array">.
+This operator returns the length the array I<OPERAND>.
 
-Array Length Operator returns the L<operator|/"Operators">
+The return type is the int type.
 
 Compilation Errors:
 
-The type of the operand must be an array type, otherwise a compilation error occurs.
+The type of I<OPERAND> must be an array type, otherwise a compilation error occurs.
+
+Exceptions:
+
+I<OPERAND> must be defined, otherwise an exception is thrown.
 
 Examples:
   
-  # Getting the length of the array.
-  my $nums = new byte[10];
+  # Examples of the array length operator
+  my $nums = new int[10];
   my $length = @$nums;
-  
-  # Getting the length of the array with a scalar operator. This is exactly same as the avobe
-  my $nums = new byte[10];
-  my $length = scalar @$nums;
-
-Note that SPVM does not have the context different from Perl, and array length operators always return the length of the array.
 
 =head2 Sequential Operator
 
-The sequential operator evaluates operands from left to right, and returns the value of the rightmost operand.
+The sequential operator is an operator with the following syntax.
+  
+  # The sequential operator
+  (OPERAND1, OPERAND2, ..., OPERNADn)
 
-  (OPERAND1, OPERAND2, ..., OPERNADN)
+This operator evaluates operands C<OPERAND1>, C<OPERAND1> ... C<OPERNADn> from left to right, and returns the value of the rightmost operand C<OPERNADn>.
 
-B<Exampless:>
+The return type is the type of C<OPERNADn>.
 
+Examples:
+
+  # Examples of the sequential operator
+  
   # 3 is assigned to $foo
   my $foo = (1, 2, 3);
   
@@ -761,27 +768,46 @@ B<Exampless:>
 
 =head2 Assignment Operator
 
-The assignment operator C<=> assigns a value.
-
+The assignment operator C<=> performs an assignment.
+  
+  # The assignment operator
   LEFT_OPERAND = RIGHTH_OPERAND
 
-The assignment operator has different meanings depending on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+The assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
 
-=head3 Local Variable Assignment
+If I<LEFT_OPERAND> is a local variable, this operator performs the operation that L<sets a local variable|/"Setting A Local Variable">.
 
-See L</"Setting Local Variable">.
+If I<LEFT_OPERAND> is a class variable, this operator performs the operation that L<sets a class variable|/"Setting A Class Variable">.
 
-=head3 Class Variable Assignment
+If I<LEFT_OPERAND> is an array access, this operator performs the operation that L<sets an array element|/"Setting An Array Element">.
 
-See L</"Setting Class Variable">.
+If I<LEFT_OPERAND> is a field access, this operator performs the operation that L<sets a field|/"Setting A Field">.
 
-=head3 Array Element Assignment
+If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L<sets a referenced value|/"Setting A Referenced Value">.
 
-See L</"Setting Array Element">.
+If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Setting The Exception Variable">.
 
-=head3 Field Assignment
-
-See L</"Setting Field">.
+Examples:
+  
+  # Examples of the assignment operator
+  
+  # A local variable
+  $num = 1;
+  
+  # A class variable
+  $NUM = 1;
+  
+  # A field access
+  $point->{x} = 1;
+  
+  # An array access
+  $nums->[0] = 1;
+  
+  # A dereference
+  $$num_ref = 1;
+  
+  # The exception variable
+  $@ = 2;
 
 =head2 Special Assignment Operator
 
@@ -1197,7 +1223,7 @@ Examples:
   if (eval_error_id is_error Error::System) {
     
   }
-  
+
 =head2 is_compile_type Operator
 
 The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the compilation-time type of I<LEFT_OPERAND> is the right type.
@@ -1230,7 +1256,7 @@ Examples:
       # Pass
     }
   }
-  
+
 =head2 type_name Operator
 
 The C<type_name> operator returns the type name of the object.
@@ -1469,7 +1495,7 @@ Examples:
   my $basic_type_id = basic_type_id int[];
   
   my $error_basic_type_id = basic_type_id Error;
-  
+
 =head2 eval_error_id Operator
 
 The C<eval_error_id> operatoer gets the error ID of the exception caught by an eval block.
@@ -1836,7 +1862,7 @@ The return value is the value of the local variable.
 
 The return type is the type of the local variable.
 
-=head2 Setting Local Variable
+=head2 Setting A Local Variable
 
 The setting local variable sets the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
 
@@ -1888,9 +1914,9 @@ Examples:
     }
   }
 
-=head2 Setting Class Variable
+=head2 Setting A Class Variable
 
-B<Setting Class Variable operator> sets L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
+B<Setting A Class Variable operator> sets L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
@@ -1946,9 +1972,9 @@ Examples:
   # Getting the exception variable
   my $message = $@;
 
-=head2 Setting Exception Variable
+=head2 Setting The Exception Variable
 
-The setting exception variable sets the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
+The operation that sets the exception variable sets the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
 
   $@ = VALUE
 
@@ -1981,7 +2007,7 @@ Examples:
   my $point = Point->new;
   my $x = $point->{x};
 
-=head2 Setting Field
+=head2 Setting A Field
 
 The setting field sets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
@@ -2083,7 +2109,7 @@ Examples:
   my $objects : object[] = $points;
   my $object = (Point)$objects->[1];
 
-=head2 Setting Array Element
+=head2 Setting An Array Element
 
 The setting array element sets the element of the array using the L<assignment operator|/"Assignment Operator">.
 
@@ -2207,7 +2233,7 @@ If the number of arguments does not correct, a compilation error occurs.
 If the types of arguments have no type compatible, a compilation error occurs.
 
 Examples:
-  
+
   $object->bar(5, 3. 6);
 
 The C<SUPER::> qualifier calls the method of the super class of the current class.
@@ -2218,9 +2244,9 @@ A instance method can be called statically by specifing the calss name.
 
   $point3d->Point::clear;
 
-=head3 Setting the value with Dereference
+=head3 Setting A Referenced Value
 
-Setting a value with Dereference sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
+The operation for setting the referenced value sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
 
   $VARIABLE = OPERAND
 
