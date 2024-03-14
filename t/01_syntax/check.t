@@ -1253,10 +1253,18 @@ use Test::More;
   
   {
     my $source = [
+      'class MyClass2 extends MyClass { use Point; use Point3D; method main : void ($point : Point3D) {} }',
+      'class MyClass { use Point; use Point3D; overridden method main : void ($point : Point) {} }',
+    ];
+    compile_not_ok($source, q|The 1th argument of the "main" method in the "MyClass" class which argument type is "Point" must be able to be assigned to the 1th argument of the "main" method in the "MyClass2" class which argument type is "Point3D".|);
+  }
+  
+  {
+    my $source = [
       'class MyClass2 extends MyClass { use Point; use Point3D; method main : void ($point : Point) {} }',
       'class MyClass { use Point; use Point3D; overridden method main : void ($point : Point3D) {} }',
     ];
-    compile_not_ok($source, q|The 1th argument of the "main" method in the "MyClass2" class which argument type is "Point" must be able to be assigned to the 1th argument of the "main" method in the "MyClass" class which argument type is "Point3D".|);
+    compile_ok($source);
   }
   
   {
@@ -1298,13 +1306,15 @@ use Test::More;
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
     compile_not_ok($source, q|The "to_string" method in the "MyClass" class must be an instance method, which is defined as an interface method in the "Stringable" interface.|);
   }
+  
   {
     my $source = [
       'class MyClass { interface MyInterface; method foo : void ($arg1 : int, $arg2 : long) {} }',
       'class MyInterface : interface_t { required method foo : void ($arg1 : int, $arg2 : int); }',
     ];
-    compile_not_ok($source, q|The 2th argument of the "foo" method in the "MyClass" class which argument type is "long" must be able to be assigned to the 2th argument of the "foo" method in the "MyInterface" interface which argument type is "int".|);
+    compile_not_ok($source, q|The 2th argument of the "foo" method in the "MyInterface" class which argument type is "int" must be able to be assigned to the 2th argument of the "foo" method in the "MyClass" interface which argument type is "long".|);
   }
+  
   {
     my $source = [
       'class MyClass { interface MyInterface; method foo : MyClass () {} }',
