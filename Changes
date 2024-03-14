@@ -2,6 +2,7 @@
   [Document Improvement and Changes]
     * The heading "Type Assignability" to "Assignment Requirement".
     * The heading "Type Castability" to "Cast Requirement".
+    * Add the heading "Method Override".
 0.989086 2023-03-11
   [New Features]
     * Add the following methods to the Array class.

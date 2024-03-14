@@ -1183,7 +1183,31 @@ And each function in the shared library is bind to the SPVM method.
 
 Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
 
-=head3 Method Compatibility
+=head2 Method Override
+
+An instance method in a parent class can be overridden by an instance method with the same name.
+
+  class MyClass extends ParentClass {
+    # Method override
+    method clear : void () {
+      # ...
+    }
+  }
+
+  class ParentClass {
+    
+    method clear : void () {
+      # ...
+    }
+  }
+  
+Compilation Errors:
+
+The overridding method must satisfy the L<method override requirement|/"Method Override Requirement">, otherwise a compilation error occurs.
+
+=head3 Method Override Requirement
+
+Both the overridding method and the method in its parent class must be instance methods.
 
 (TODO)
 
