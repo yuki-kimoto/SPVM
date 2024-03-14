@@ -677,6 +677,11 @@ use Test::More;
     my $source = 'class Tmp { static method main : void () { _-123; } }';
     compile_not_ok($source, qr/\n  at .+ line /);
   }
+  
+  {
+    my $source = "class MyClass { override method main : void () {} }";
+    compile_ok($source);
+  }
 }
 
 

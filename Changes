@@ -3,6 +3,9 @@
     * The heading "Type Assignability" to "Assignment Requirement".
     * The heading "Type Castability" to "Cast Requirement".
     * Add the heading "Method Override".
+    * Improve the document of SPVM::Document::Language::Types.
+    * Improve the document of SPVM::Document::Language::Operators.
+    * Improve the document of SPVM::Document::Language::Class.
   [New Features and Future Plan]
     * Add the override method attribute. This does nothing now, but method override will be enabled when the override attribute is given.
     
