@@ -3,6 +3,9 @@
     * The heading "Type Assignability" to "Assignment Requirement".
     * The heading "Type Castability" to "Cast Requirement".
     * Add the heading "Method Override".
+  [New Features and Future Plan]
+    * Add the override method attribute. This does nothing now, but method override will be enabled when the override attribute is given.
+    
 0.989086 2023-03-11
   [New Features]
     * Add the following methods to the Array class.

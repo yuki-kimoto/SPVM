@@ -256,6 +256,7 @@ The list of keywords:
 
   alias
   allow
+  args_width
   as
   basic_type_id
   break
@@ -296,19 +297,18 @@ The list of keywords:
   is_type
   is_error
   is_read_only
-  args_width
   last
   length
   lt
   le
   long
   make_read_only
-  my
-  mulnum_t
   method
   mod_uint
   mod_ulong
+  mulnum_t
   mutable
+  my
   native
   ne
   next
@@ -317,6 +317,7 @@ The list of keywords:
   of
   our
   object
+  override
   print
   private
   protected
