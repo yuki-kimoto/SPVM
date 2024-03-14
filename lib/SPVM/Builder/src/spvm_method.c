@@ -64,9 +64,9 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
       SPVM_TYPE* src_method_var_decl_type = src_method_var_decl->type;
       SPVM_TYPE* dist_method_var_decl_type = dist_method_var_decl->type;
       
-      int32_t assignability_for_method = SPVM_TYPE_satisfy_assignment_requirement_for_method_override(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag, src_method_var_decl_type->basic_type->id, src_method_var_decl_type->dimension, src_method_var_decl_type->flag);
+      int32_t can_assign = SPVM_TYPE_satisfy_assignment_requirement_for_interface_method(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag, src_method_var_decl_type->basic_type->id, src_method_var_decl_type->dimension, src_method_var_decl_type->flag);
       
-      if (!assignability_for_method) {
+      if (!can_assign) {
         const char* src_method_var_decl_type_name = SPVM_TYPE_new_type_name(compiler, src_method_var_decl_type->basic_type->id, src_method_var_decl_type->dimension, src_method_var_decl_type->flag);
         const char* dist_method_var_decl_type_name = SPVM_TYPE_new_type_name(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag);
         
@@ -78,13 +78,13 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
     SPVM_TYPE* src_method_return_type = src_method->return_type;
     SPVM_TYPE* dist_method_return_type = dist_method->return_type;
     
-    int32_t assignability_for_method_definition = SPVM_TYPE_satisfy_assignment_requirement_for_method_override(
+    int32_t can_assign = SPVM_TYPE_satisfy_assignment_requirement_for_interface_method(
       compiler,
       dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag,
       src_method_return_type->basic_type->id, src_method_return_type->dimension, src_method_return_type->flag
     );
     
-    if (!assignability_for_method_definition) {
+    if (!can_assign) {
       const char* src_method_return_type_name = SPVM_TYPE_new_type_name(compiler, src_method_return_type->basic_type->id, src_method_return_type->dimension, src_method_return_type->flag);
       const char* dist_method_return_type_name = SPVM_TYPE_new_type_name(compiler, dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag);
       
