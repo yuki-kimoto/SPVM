@@ -1426,6 +1426,10 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
           method->is_class_method = 1;
           break;
         }
+        case SPVM_ATTRIBUTE_C_ID_OVERRIDE: {
+          method->is_override_method = 1;
+          break;
+        }
         default: {
           SPVM_COMPILER_error(compiler, "Invalid method attribute \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, attribute->id), op_attributes->file, op_attributes->line);
         }
