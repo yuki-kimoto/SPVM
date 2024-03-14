@@ -239,7 +239,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_HASH_get(basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
       
-      int32_t can_override = SPVM_METHOD_satisfy_method_override_requirement(compiler, basic_type, method, interface_basic_type, interface_method, "interface");
+      int32_t can_override = SPVM_METHOD_satisfy_method_override_requirement(compiler, interface_basic_type, interface_method, basic_type, method, "interface");
       
       if (can_override == 0) {
         return 0;

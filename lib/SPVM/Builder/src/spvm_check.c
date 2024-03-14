@@ -584,7 +584,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
           SPVM_METHOD* parent_method = SPVM_HASH_get(parent_basic_type->method_symtable, method->name, strlen(method->name));
           
           if (parent_method) {
-            int32_t can_override = SPVM_METHOD_satisfy_method_override_requirement(compiler, basic_type, method, parent_basic_type, parent_method, "class");
+            int32_t can_override = SPVM_METHOD_satisfy_method_override_requirement(compiler, parent_basic_type, parent_method, basic_type, method, "class");
             
             if (can_override == 0) {
               return;
@@ -613,7 +613,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
           SPVM_METHOD* parent_method = SPVM_HASH_get(parent_basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
           
           if (parent_method) {
-            int32_t can_override = SPVM_METHOD_satisfy_method_override_requirement(compiler, parent_basic_type, parent_method, interface_basic_type, interface_method, "interface");
+            int32_t can_override = SPVM_METHOD_satisfy_method_override_requirement(compiler, interface_basic_type, interface_method, parent_basic_type, parent_method, "interface");
             
             if (can_override == 0) {
               return;
