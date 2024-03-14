@@ -450,8 +450,9 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
     }
     
     // Check methods
-    for (int32_t i = 0; i < basic_type->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
+    SPVM_LIST* methods = basic_type->methods;
+    for (int32_t i = 0; i < methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(methods, i);
       
       // Argument limit check
       int32_t args_width = 0;
@@ -540,11 +541,9 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       }
     }
     
-    SPVM_LIST* methods = basic_type->methods;
-    
     // Add variable declarations if the block does not exist
-    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+    for (int32_t method_index = 0; method_index < methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
       if (!method->op_block) {
         for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
@@ -558,8 +557,8 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
     qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_CHECK_method_name_compare_cb);
     
     // Check method overide requirements
-    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
+    for (int32_t method_index = 0; method_index < methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
       if (!method->is_class_method) {
         SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
@@ -612,8 +611,8 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
     }
     
     // Set is_precompile field of methods
-    for (int32_t i = 0; i < basic_type->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
+    for (int32_t i = 0; i < methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(methods, i);
       
       if (basic_type->is_precompile) {
         int32_t can_precompile;
@@ -637,8 +636,8 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
     }
     
     // Create method IDs
-    for (int32_t i = 0; i < basic_type->methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, i);
+    for (int32_t i = 0; i < methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(methods, i);
       
       method->index = i;
     }
