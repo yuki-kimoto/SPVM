@@ -590,33 +590,24 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         }
       }
       assert(method->current_basic_type->file);
-    }
-    
-    // Check interface method overide requirement
-    for (int32_t interface_basic_type_index = 0; interface_basic_type_index < basic_type->interface_basic_types->length; interface_basic_type_index++) {
       
-      SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_basic_type_index);
-      for (int32_t interface_method_index = 0; interface_method_index < interface_basic_type->methods->length; interface_method_index++) {
-        SPVM_METHOD* interface_method = SPVM_LIST_get(interface_basic_type->methods, interface_method_index);
+      // Check interface method overide requirement
+      for (int32_t interface_basic_type_index = 0; interface_basic_type_index < basic_type->interface_basic_types->length; interface_basic_type_index++) {
         
-        SPVM_BASIC_TYPE* parent_basic_type = basic_type;
-        while (1) {
-          if (!parent_basic_type) {
-            break;
-          }
+        SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_basic_type_index);
+        for (int32_t interface_method_index = 0; interface_method_index < interface_basic_type->methods->length; interface_method_index++) {
+          SPVM_METHOD* interface_method = SPVM_LIST_get(interface_basic_type->methods, interface_method_index);
           
-          SPVM_METHOD* parent_method = SPVM_HASH_get(parent_basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
-          
-          if (parent_method) {
-            int32_t can_override = SPVM_METHOD_satisfy_method_override_requirement(compiler, interface_basic_type, interface_method, parent_basic_type, parent_method, "interface");
+          if (strcmp(method->name, interface_method->name) == 0) {
+            int32_t can_override = SPVM_METHOD_satisfy_method_override_requirement(compiler, interface_basic_type, interface_method, basic_type, method, "interface");
             
             if (can_override == 0) {
               return;
             }
           }
-          parent_basic_type = parent_basic_type->parent;
         }
       }
+      
     }
     
     // Sort methods by name
