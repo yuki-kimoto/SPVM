@@ -10,7 +10,7 @@ struct spvm_var_decl {
   SPVM_OP* op_var_decl;
   SPVM_TYPE* type;
   SPVM_VAR* var;
-  SPVM_OP* op_optional_arg_default;
+  SPVM_OP* op_arg_default;
   const char* name;
   int32_t index;
   int32_t runtime_var_index;

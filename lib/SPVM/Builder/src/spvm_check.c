@@ -466,18 +466,18 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         int32_t is_arg_type_is_mulnum_type = SPVM_TYPE_is_mulnum_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
         // Optional argument
-        SPVM_OP* op_optional_arg_default = arg_var_decl->op_optional_arg_default;
-        if (op_optional_arg_default) {
+        SPVM_OP* op_arg_default = arg_var_decl->op_arg_default;
+        if (op_arg_default) {
           found_optional_arg = 1;
           if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-            if (op_optional_arg_default->id != SPVM_OP_C_ID_CONSTANT) {
+            if (op_arg_default->id != SPVM_OP_C_ID_CONSTANT) {
               SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be a constant value.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
               return;
             }
             else {
-              SPVM_TYPE* constant_type = SPVM_CHECK_get_type(compiler, op_optional_arg_default);
+              SPVM_TYPE* constant_type = SPVM_CHECK_get_type(compiler, op_arg_default);
               int32_t need_implicite_conversion = 0;
-              int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, arg_type, op_optional_arg_default);
+              int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, arg_type, op_arg_default);
               int32_t assignability = SPVM_TYPE_satisfy_assignment_requirement(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
@@ -492,7 +492,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
             }
           }
           else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
-            if (op_optional_arg_default->id != SPVM_OP_C_ID_UNDEF) {
+            if (op_arg_default->id != SPVM_OP_C_ID_UNDEF) {
               SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be undef.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
               return;
             }

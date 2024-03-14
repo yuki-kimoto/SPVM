@@ -1474,7 +1474,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
       SPVM_VAR_DECL* arg_var_decl = op_arg->uv.var->var_decl;
       if (!found_optional_arg) {
-        if (arg_var_decl->op_optional_arg_default) {
+        if (arg_var_decl->op_arg_default) {
           found_optional_arg = 1;
         }
         else {
@@ -1615,11 +1615,11 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   return op_method;
 }
 
-SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_attributes, SPVM_OP* op_optional_arg_default) {
+SPVM_OP* SPVM_OP_build_arg(SPVM_COMPILER* compiler, SPVM_OP* op_var, SPVM_OP* op_type, SPVM_OP* op_attributes, SPVM_OP* op_arg_default) {
   
   SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl_arg(compiler, op_var->file, op_var->line);
   
-  op_var_decl->uv.var_decl->op_optional_arg_default = op_optional_arg_default;
+  op_var_decl->uv.var_decl->op_arg_default = op_arg_default;
   
   op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, op_attributes);
   
