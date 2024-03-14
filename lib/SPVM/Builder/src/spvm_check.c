@@ -539,22 +539,36 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
         SPVM_BASIC_TYPE* anon_method_defined_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->outer_basic_type_name, strlen(method->outer_basic_type_name));
         basic_type->is_precompile = anon_method_defined_basic_type->is_precompile;
       }
-    }
-    
-    // Add variable declarations if the block does not exist
-    for (int32_t method_index = 0; method_index < methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
+      // Add variable declarations if the block does not exist
       if (!method->op_block) {
         for (int32_t arg_index = 0; arg_index < method->args_length; arg_index++) {
           SPVM_VAR_DECL* arg_var_decl = SPVM_LIST_get(method->var_decls, arg_index);
           SPVM_LIST_push(method->var_decls, arg_var_decl);
         }
       }
+      
+      // Set is_precompile field of methods
+      if (basic_type->is_precompile) {
+        int32_t can_precompile;
+        if (method->is_init) {
+          can_precompile = 0;
+        }
+        else if (method->is_enum) {
+          can_precompile = 0;
+        }
+        else if (!method->op_block) {
+          can_precompile = 0;
+        }
+        else {
+          can_precompile = 1;
+        }
+        
+        if (can_precompile) {
+          method->is_precompile = 1;
+        }
+      }
     }
-    
-    // Sort methods by name
-    qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_CHECK_method_name_compare_cb);
     
     // Check method overide requirements
     for (int32_t method_index = 0; method_index < methods->length; method_index++) {
@@ -610,30 +624,8 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
       }
     }
     
-    // Set is_precompile field of methods
-    for (int32_t i = 0; i < methods->length; i++) {
-      SPVM_METHOD* method = SPVM_LIST_get(methods, i);
-      
-      if (basic_type->is_precompile) {
-        int32_t can_precompile;
-        if (method->is_init) {
-          can_precompile = 0;
-        }
-        else if (method->is_enum) {
-          can_precompile = 0;
-        }
-        else if (!method->op_block) {
-          can_precompile = 0;
-        }
-        else {
-          can_precompile = 1;
-        }
-        
-        if (can_precompile) {
-          method->is_precompile = 1;
-        }
-      }
-    }
+    // Sort methods by name
+    qsort(methods->values, methods->length, sizeof(SPVM_METHOD*), &SPVM_CHECK_method_name_compare_cb);
     
     // Create method IDs
     for (int32_t i = 0; i < methods->length; i++) {
