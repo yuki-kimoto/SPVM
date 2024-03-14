@@ -568,12 +568,8 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
           method->is_precompile = 1;
         }
       }
-    }
-    
-    // Check method overide requirements
-    for (int32_t method_index = 0; method_index < methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_LIST_get(methods, method_index);
       
+      // Check method overide requirements
       if (!method->is_class_method) {
         SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
         while (1) {
@@ -593,7 +589,6 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
           parent_basic_type = parent_basic_type->parent;
         }
       }
-      
       assert(method->current_basic_type->file);
     }
     
