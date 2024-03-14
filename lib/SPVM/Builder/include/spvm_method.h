@@ -46,4 +46,6 @@ struct spvm_method {
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
 
+int32_t SPVM_METHOD_satisfy_method_override_requirement(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method, SPVM_BASIC_TYPE* dist_basic_type, SPVM_METHOD* dist_method, const char* type_desc);
+
 #endif
