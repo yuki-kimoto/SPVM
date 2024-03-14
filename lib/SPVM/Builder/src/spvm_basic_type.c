@@ -239,7 +239,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_HASH_get(basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
       
-      int32_t method_compatibility = SPVM_BASIC_TYPE_check_method_compatibility(compiler, basic_type, method, interface_basic_type, interface_method, "interface");
+      int32_t method_compatibility = SPVM_BASIC_TYPE_satisfy_method_override_requirement(compiler, basic_type, method, interface_basic_type, interface_method, "interface");
       
       if (method_compatibility == 0) {
         return 0;
@@ -250,7 +250,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
   return 1;
 }
 
-int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method, SPVM_BASIC_TYPE* dist_basic_type, SPVM_METHOD* dist_method, const char* type_desc) {
+int32_t SPVM_BASIC_TYPE_satisfy_method_override_requirement(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method, SPVM_BASIC_TYPE* dist_basic_type, SPVM_METHOD* dist_method, const char* type_desc) {
   
   if (dist_method->is_required && !method) {
     if (!dist_method->is_class_method) {
