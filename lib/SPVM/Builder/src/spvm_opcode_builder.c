@@ -1174,7 +1174,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                       
                       SPVM_METHOD* method_call_method = SPVM_HASH_get(call_method->method->current_basic_type->method_symtable, call_method_method_name, strlen(call_method_method_name));
                       
-                      int32_t first_arg_runtime_var_index = -1;
                       SPVM_OP* op_term_args = op_assign_src->first;
                       SPVM_OP* op_term_arg = op_term_args->first;
 
@@ -1267,14 +1266,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                           }
                           // Object type
                           else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+                            
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_OBJECT);
                             int32_t runtime_var_index_arg = SPVM_OPCODE_BUILDER_get_runtime_var_index(compiler, op_term_arg);
                             
                             opcode.operand0 = runtime_var_index_arg;
                             
-                            if (arg_index == 0) {
-                              first_arg_runtime_var_index = runtime_var_index_arg;
-                            }
                             SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                           }
                           // Numeric type
@@ -1317,9 +1314,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
                             
                             opcode.operand0 = runtime_var_index_arg;
                             
-                            if (arg_index == 0) {
-                              first_arg_runtime_var_index = runtime_var_index_arg;
-                            }
                             SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                           }
                           else {
