@@ -289,7 +289,7 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
       SPVM_TYPE* method_var_decl_type = method_var_decl->type;
       SPVM_TYPE* dist_method_var_decl_type = dist_method_var_decl->type;
       
-      int32_t assignability_for_method = SPVM_TYPE_can_assign_for_method_definition(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag);
+      int32_t assignability_for_method = SPVM_TYPE_satisfy_assignment_requirement_for_method_definition(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag);
       
       if (!assignability_for_method) {
         const char* method_var_decl_type_name = SPVM_TYPE_new_type_name(compiler, method_var_decl_type->basic_type->id, method_var_decl_type->dimension, method_var_decl_type->flag);
@@ -303,7 +303,7 @@ int32_t SPVM_BASIC_TYPE_check_method_compatibility(SPVM_COMPILER* compiler, SPVM
     SPVM_TYPE* method_return_type = method->return_type;
     SPVM_TYPE* dist_method_return_type = dist_method->return_type;
     
-    int32_t assignability_for_method_definition = SPVM_TYPE_can_assign_for_method_definition(
+    int32_t assignability_for_method_definition = SPVM_TYPE_satisfy_assignment_requirement_for_method_definition(
       compiler,
       dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag,
       method_return_type->basic_type->id, method_return_type->dimension, method_return_type->flag

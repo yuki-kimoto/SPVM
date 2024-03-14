@@ -172,14 +172,14 @@ int32_t SPVM_TYPE_is_unknown_type(SPVM_COMPILER* compiler, int32_t basic_type_id
 
 int32_t SPVM_TYPE_is_string_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
-int32_t SPVM_TYPE_can_assign(
+int32_t SPVM_TYPE_satisfy_assignment_requirement(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
   int32_t* need_implicite_conversion, int32_t allow_narrowing_conversion
 );
 
-int32_t SPVM_TYPE_can_assign_for_method_definition (
+int32_t SPVM_TYPE_satisfy_assignment_requirement_for_method_definition (
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag

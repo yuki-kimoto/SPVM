@@ -477,7 +477,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
               SPVM_TYPE* constant_type = SPVM_CHECK_get_type(compiler, op_optional_arg_default);
               int32_t need_implicite_conversion = 0;
               int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, arg_type, op_optional_arg_default);
-              int32_t assignability = SPVM_TYPE_can_assign(
+              int32_t assignability = SPVM_TYPE_satisfy_assignment_requirement(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
@@ -1984,7 +1984,7 @@ void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE*
               int32_t need_implicite_conversion = 0;
               int32_t allow_narrowing_conversion = 0;
               
-              int32_t assignability = SPVM_TYPE_can_assign(
+              int32_t assignability = SPVM_TYPE_satisfy_assignment_requirement(
                 compiler,
                 right_type->basic_type->id, right_type->dimension, right_type->flag,
                 left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag,
@@ -3977,7 +3977,7 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
   int32_t need_implicite_conversion = 0;
   int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, dist_type, op_src);
   
-  int32_t assignability = SPVM_TYPE_can_assign(
+  int32_t assignability = SPVM_TYPE_satisfy_assignment_requirement(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
