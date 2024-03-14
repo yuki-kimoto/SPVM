@@ -1254,7 +1254,7 @@ use Test::More;
   {
     my $source = [
       'class MyClass2 extends MyClass { use Point; use Point3D; method main : void ($point : Point) {} }',
-      'class MyClass { use Point; use Point3D; method main : void ($point : Point3D) {} }',
+      'class MyClass { use Point; use Point3D; overridden method main : void ($point : Point3D) {} }',
     ];
     compile_not_ok($source, q|The 1th argument of the "main" method in the "MyClass2" class which argument type is "Point" must be able to be assigned to the 1th argument of the "main" method in the "MyClass" class which argument type is "Point3D".|);
   }
@@ -1421,7 +1421,7 @@ use Test::More;
   {
     my $source = [
       'class MyClass extends MyClass2 { method x : int ($args : int) {} }',
-      'class MyClass2 { method x : int () {} }',
+      'class MyClass2 { overridden method x : int () {} }',
     ];
     compile_not_ok($source, qr|The length of the required arguments of the "x" method in the "MyClass" class must be equal to the length of the required arguments of the "x" method in the "MyClass2" class|);
   }
@@ -1429,7 +1429,7 @@ use Test::More;
     my $source = [
       'class MyClass extends MyClass2 { method x : int ($args : int) {} }',
       'class MyClass2 extends MyClass3 { }',
-      'class MyClass3 { method x : int () {} }',
+      'class MyClass3 { overridden method x : int () {} }',
     ];
     compile_not_ok($source, qr|The length of the required arguments of the "x" method in the "MyClass" class must be equal to the length of the required arguments of the "x" method in the "MyClass3" class|);
   }

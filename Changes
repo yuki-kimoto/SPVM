@@ -1,3 +1,6 @@
+0.989088 2023-03-14
+  [Incompatible Changes]
+    * Methods only that have the overridden attribute is chacked for the interface method requirement.
 0.989087 2023-03-14
   [Document Improvement and Changes]
     * The heading "Type Assignability" to "Assignment Requirement".
