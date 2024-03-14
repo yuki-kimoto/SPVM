@@ -7,7 +7,7 @@
     * Improve the document of SPVM::Document::Language::Operators.
     * Improve the document of SPVM::Document::Language::Class.
   [New Features and Future Plan]
-    * Add the override method attribute. This does nothing now, but method override will be enabled when the override attribute is given.
+    * Add the overriden method attribute. This does nothing now, but method override will be enabled when the overriden attribute is given.
     
 0.989086 2023-03-11
   [New Features]

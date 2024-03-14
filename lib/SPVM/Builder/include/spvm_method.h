@@ -42,7 +42,7 @@ struct spvm_method {
   int8_t is_anon;
   int8_t is_required;
   int8_t access_control_type;
-  int8_t is_override_method;
+  int8_t is_overridden_method;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);

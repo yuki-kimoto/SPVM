@@ -2280,8 +2280,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_OBJECT);
                   keyword_token = OBJECT;
                 }
-                else if (strcmp(symbol_name, "override") == 0) {
-                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_OVERRIDE, compiler->current_file, compiler->current_line);
+                else if (strcmp(symbol_name, "overridden") == 0) {
+                  SPVM_OP* op_attribute = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_OVERRIDDEN, compiler->current_file, compiler->current_line);
                   yylvalp->opval = op_attribute;
                   keyword_token = ATTRIBUTE;
                 }

@@ -679,7 +679,7 @@ use Test::More;
   }
   
   {
-    my $source = "class MyClass { override method main : void () {} }";
+    my $source = "class MyClass { overridden method main : void () {} }";
     compile_ok($source);
   }
 }

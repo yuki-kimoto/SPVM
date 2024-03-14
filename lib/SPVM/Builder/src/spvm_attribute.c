@@ -24,7 +24,7 @@ const char* const* SPVM_ATTRIBUTE_C_ID_NAMES(void) {
     "static",
     "interface_t",
     "required",
-    "override",
+    "overridden",
   };
   
   return id_names;

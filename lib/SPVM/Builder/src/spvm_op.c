@@ -1426,8 +1426,8 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
           method->is_class_method = 1;
           break;
         }
-        case SPVM_ATTRIBUTE_C_ID_OVERRIDE: {
-          method->is_override_method = 1;
+        case SPVM_ATTRIBUTE_C_ID_OVERRIDDEN: {
+          method->is_overridden_method = 1;
           break;
         }
         default: {
