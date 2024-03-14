@@ -454,6 +454,10 @@ An interface cannnot have L<field definitions|/"Field Definition">. If so, an co
 
 An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, an compilation error occurs.
 
+=head3 Interface Method Requirement
+
+(TODO)
+
 =head2 Duck Typing
 
 The duck typing is supported.
@@ -1185,10 +1189,10 @@ Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<
 
 =head2 Method Override
 
-An instance method in a parent class can be overridden by an instance method with the same name.
+An instance method in a parent class can be overridden by an instance method with the same name in a child class.
 
-  class MyClass extends ParentClass {
-    # Method override
+  class ChildClass extends ParentClass {
+    # Method Override
     method clear : void () {
       # ...
     }
@@ -1200,16 +1204,12 @@ An instance method in a parent class can be overridden by an instance method wit
       # ...
     }
   }
-  
+
+The overridding method in the child class must satisfy the L<interface method requirement|/"Interface Method Requirement"> to the parent method.
+
 Compilation Errors:
 
-The overridding method must satisfy the L<method override requirement|/"Method Override Requirement">, otherwise a compilation error occurs.
-
-=head3 Method Override Requirement
-
-Both the overridding method and the method in its parent class must be instance methods.
-
-(TODO)
+The overridding method in the child class must satisfy the L<interface method requirement|/"Interface Method Requirement"> to the parent method, otherwise a compilation error occurs.
 
 =head2 Enumeration
 

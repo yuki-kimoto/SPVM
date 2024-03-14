@@ -2621,7 +2621,9 @@ Examples:
     # not ok
   }
 
-=head1 Method Override Assignment Requirement
+=head1 Assignment Requirement for Interface Method Requirement
+
+This section describes assignment requirements used to check a return type and argument types for L<interface method requirement|SPVM::Document::Language::Class/"Interface Method Requirement">.
 
 (TODO)
 
