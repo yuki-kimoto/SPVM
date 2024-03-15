@@ -22,6 +22,6 @@ void SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(
 
 int32_t SPVM_OPCODE_BUILDER_get_runtime_var_index(SPVM_COMPILER* compiler, SPVM_OP* op);
 
-SPVM_OP* SPVM_OPCODE_BUILDER_get_returned_op_var(SPVM_COMPILER* compiler, SPVM_OP* op);
+SPVM_OP* SPVM_OPCODE_BUILDER_get_op_var(SPVM_COMPILER* compiler, SPVM_OP* op);
 
 #endif
