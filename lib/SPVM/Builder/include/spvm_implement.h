@@ -357,9 +357,9 @@ static inline void SPVM_IMPLEMENT_MOVE_MULNUM_DOUBLE_ZERO(SPVM_ENV* env, SPVM_VA
 #define SPVM_IMPLEMENT_MOVE_DOUBLE(out, in) (out = in)
 #define SPVM_IMPLEMENT_MOVE_OBJECT(env, stack, out, in) (env->assign_object(env, stack, out, in))
 
-static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, void* cast_basic_type, int32_t cast_type_dimension, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in, void* dist_basic_type, int32_t dist_type_dimension, int32_t* error_id) {
   void* object = in;
-  int32_t isa = env->isa(env, stack, object, cast_basic_type, cast_type_dimension);
+  int32_t isa = env->isa(env, stack, object, dist_basic_type, dist_type_dimension);
   if (isa) {
     env->assign_object(env, stack, out, in);
   }
