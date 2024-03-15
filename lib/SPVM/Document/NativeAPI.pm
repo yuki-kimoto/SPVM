@@ -2260,9 +2260,9 @@ If it is invalid, an exception is thrown.
 
 If an exception is thrown, returns a non-zero value, otherwise returns 0.
 
-=head2 new_array_proto_from_element_no_mortal
+=head2 new_array_proto_element_no_mortal
 
-C<void* (*new_array_proto_from_element_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);>
+C<void* (*new_array_proto_element_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);>
 
 Creates a new array given the prototype element I<element> and the length I<length>, and returns it.
 
@@ -2272,13 +2272,13 @@ If the type of I<element> must be an object type.
 
 If I<length> is lower than 0, returns C<NULL>.
 
-This native API should not be used unless special purposes are intended. Normally, use the L</"new_array_proto_from_element"> native API.
+This native API should not be used unless special purposes are intended. Normally, use the L</"new_array_proto_element"> native API.
 
-=head2 new_array_proto_from_element
+=head2 new_array_proto_element
 
-C<void* (*new_array_proto_from_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);>
+C<void* (*new_array_proto_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);>
 
-Calls the L</"new_array_proto_from_element_no_mortal"> native API and push its return value to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
+Calls the L</"new_array_proto_element_no_mortal"> native API and push its return value to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
 
 =head1 Native API IDs
 

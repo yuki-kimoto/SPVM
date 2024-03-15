@@ -350,8 +350,8 @@ FILE* SPVM_API_spvm_stderr(SPVM_ENV* env, SPVM_VALUE* stack);
 
 int32_t SPVM_API_check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
 
-SPVM_OBJECT* SPVM_API_new_array_proto_from_element_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* element, int32_t length);
+SPVM_OBJECT* SPVM_API_new_array_proto_element_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* element, int32_t length);
 
-SPVM_OBJECT* SPVM_API_new_array_proto_from_element(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* element, int32_t length);
+SPVM_OBJECT* SPVM_API_new_array_proto_element(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* element, int32_t length);
 
 #endif
