@@ -509,7 +509,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
           }
         }
         
-        arg_var_decl->arg_stack_index = args_width;
+        arg_var_decl->stack_index = args_width;
         
         if (is_arg_type_is_mulnum_type) {
           args_width += arg_type->basic_type->unmerged_fields->length;

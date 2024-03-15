@@ -1215,8 +1215,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         
                         SPVM_OPCODE opcode = {0};
                         
-                        int32_t arg_stack_index = args_width;
-                        opcode.operand3 = arg_stack_index;
+                        int32_t stack_index = args_width;
+                        opcode.operand3 = stack_index;
                         
                         if (SPVM_TYPE_is_undef_type(compiler, term_arg_type->basic_type->id, term_arg_type->dimension, term_arg_type->flag)) {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_SET_STACK_UNDEF);
