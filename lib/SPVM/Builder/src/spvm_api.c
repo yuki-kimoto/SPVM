@@ -313,6 +313,8 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_spvm_stdout,
     SPVM_API_spvm_stderr,
     SPVM_API_check_bootstrap_method,
+    SPVM_API_new_array_proto_from_element_no_mortal,
+    SPVM_API_new_array_proto_from_element,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -4358,3 +4360,32 @@ int32_t SPVM_API_check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack, const 
   return error_id;
 }
 
+SPVM_OBJECT* SPVM_API_new_array_proto_from_element_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* element, int32_t length) {
+  
+  if (element == NULL) {
+    return NULL;
+  }
+  
+  if (length < 0) {
+    return NULL;
+  }
+  
+  size_t element_size = 1;
+  
+  size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + element_size * (length + 1);
+  
+  SPVM_RUNTIME_BASIC_TYPE* element_basic_type = SPVM_API_get_object_basic_type(env, stack, element);
+  SPVM_OBJECT* new_array = SPVM_API_new_object_common(env, stack, alloc_size, element_basic_type, element->type_dimension + 1, length, 0);
+  
+  return new_array;
+}
+
+SPVM_OBJECT* SPVM_API_new_array_proto_from_element(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* element, int32_t length) {
+  
+  
+  SPVM_OBJECT* new_array = SPVM_API_new_array_proto_from_element_no_mortal(env, stack, element, length);
+  
+  SPVM_API_push_mortal(env, stack, new_array);
+  
+  return new_array;
+}
