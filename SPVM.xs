@@ -4753,6 +4753,42 @@ get_error_messages(...)
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
+get_method_is_class_method(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV* sv_class_name = ST(1);
+  SV* sv_method_name = ST(2);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  const char* class_name = SvPV_nolen(sv_class_name);
+  
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, class_name);
+  
+  assert(basic_type);
+  
+  void* method = env_api->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
+  
+  assert(method);
+  
+  int32_t is_class_method = env_api->api->method->is_class_method(runtime, method);
+  
+  SV* sv_is_class_method = sv_2mortal(newSViv(is_class_method));
+  
+  XPUSHs(sv_is_class_method);
+  XSRETURN(1);
+}
+
+SV*
 get_method_names(...)
   PPCODE:
 {
@@ -4764,7 +4800,6 @@ get_method_names(...)
   SV* sv_basic_type_name = ST(1);
   SV* sv_category = ST(2);
   
-  // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
@@ -4800,6 +4835,81 @@ get_method_names(...)
 }
 
 SV*
+get_parent_basic_type_name(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV* sv_basic_type_name = ST(1);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
+  
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  
+  void* parent_basic_type = env_api->api->basic_type->get_parent(runtime, basic_type);
+  
+  SV* sv_parent_basic_type_name = &PL_sv_undef;
+  if (parent_basic_type) {
+    const char* parent_basic_type_name = env_api->api->basic_type->get_name(runtime, parent_basic_type);
+    sv_parent_basic_type_name = sv_2mortal(newSVpv(parent_basic_type_name, 0));
+  }
+  
+  XPUSHs(sv_parent_basic_type_name);
+  XSRETURN(1);
+}
+
+SV*
+get_anon_basic_type_names(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV* sv_basic_type_name = ST(1);
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
+  
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  
+  int32_t methods_length = env_api->api->basic_type->get_methods_length(runtime, basic_type);
+  
+  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
+    
+    void* method = env_api->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
+    int32_t is_anon_method = env_api->api->method->is_anon(runtime, method);
+    
+    if (is_anon_method) {
+      void* anon_basic_type = env_api->api->method->get_current_basic_type(runtime, method);
+      const char* anon_basic_type_name = env_api->api->basic_type->get_name(runtime, anon_basic_type);
+      SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
+      av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
+    }
+  }
+  
+  XPUSHs(sv_anon_basic_type_names);
+  XSRETURN(1);
+}
+
+SV*
 get_basic_type_names(...)
   PPCODE:
 {
@@ -4825,6 +4935,27 @@ get_basic_type_names(...)
   }
   
   XPUSHs(sv_basic_type_names);
+  XSRETURN(1);
+}
+
+SV*
+get_basic_types_length(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  int32_t basic_types_length = env_api->api->runtime->get_basic_types_length(runtime);
+  
+  SV* sv_basic_types_length = sv_2mortal(newSViv(basic_types_length));
+  
+  XPUSHs(sv_basic_types_length);
   XSRETURN(1);
 }
 
@@ -4909,6 +5040,44 @@ set_native_method_address(...)
   env_api->api->method->set_native_address(runtime, method, native_address);
   
   assert(native_address == env_api->api->method->get_native_address(runtime, method));
+  
+  XSRETURN(0);
+}
+
+SV*
+set_precompile_method_address(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_method_name = ST(2);
+  SV* sv_precompile_address = ST(3);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  // Basic type name
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Method
+  void* method = env_api->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
+  
+  // Native address
+  void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
+  
+  env_api->api->method->set_precompile_address(runtime, method, precompile_address);
+  
+  assert(precompile_address == env_api->api->method->get_precompile_address(runtime, method));
   
   XSRETURN(0);
 }
