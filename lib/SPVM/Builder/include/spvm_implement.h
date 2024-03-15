@@ -2458,6 +2458,19 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_OBJECT_TO_DOUBLE(SPVM_E
 #define SPVM_IMPLEMENT_SET_STACK_REF(stack, stack_index, in) (*(void**)&stack[stack_index] = in)
 #define SPVM_IMPLEMENT_SET_STACK_UNDEF(stack, stack_index) (*(void**)&stack[stack_index] = NULL)
 
+static inline void SPVM_IMPLEMENT_SET_STACK_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_index, void* in, void* dist_basic_type, int32_t dist_type_dimension, int32_t* error_id) {
+  void* object = in;
+  int32_t isa = env->isa(env, stack, object, dist_basic_type, dist_type_dimension);
+  if (isa) {
+    *(void**)&stack[stack_index] = object;
+  }
+  else {
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE]);
+    env->set_exception(env, stack, exception);
+    *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
+  }
+}
+
 static inline void SPVM_IMPLEMENT_SET_STACK_MULNUM_BYTE(SPVM_ENV* env, SPVM_VALUE* stack, int32_t stack_base, int32_t args_width, int8_t* in) {
   for (int32_t stack_index = 0; stack_index < args_width; stack_index++) {
     *(int8_t*)&stack[stack_base + stack_index] = *(in + stack_index);
