@@ -341,6 +341,10 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         basic_type_id = opcode->operand2;
         break;
       }
+      case SPVM_OPCODE_C_ID_SET_STACK_OBJECT_WITH_TYPE_CHECK: {
+        basic_type_id = opcode->operand1;
+        break;
+      }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         basic_type_id = opcode->operand1;
         break;
@@ -4757,6 +4761,34 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_STACK_OBJECT_WITH_TYPE_CHECK:
+      {
+        int32_t dist_basic_type_id = opcode->operand1;
+        int32_t dist_type_dimension = opcode->operand2;
+        
+        SPVM_RUNTIME_BASIC_TYPE* dist_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, dist_basic_type_id);
+        const char* dist_basic_type_name = dist_basic_type->name;
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)dist_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
+        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, dist_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+                                              
+        SPVM_STRING_BUFFER_add(string_buffer, "  dist_type_dimension = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, dist_type_dimension);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_SET_STACK_OBJECT_WITH_TYPE_CHECK(env, stack, ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
+        SPVM_STRING_BUFFER_add(string_buffer, ", ");
+        SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ", basic_type, dist_type_dimension, &error_id);\n");
+        
         break;
       }
       case SPVM_OPCODE_C_ID_SET_STACK_REF:

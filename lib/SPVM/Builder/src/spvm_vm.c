@@ -2272,6 +2272,15 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_SET_STACK_OBJECT(stack, opcode->operand3, object_vars[opcode->operand0]);
         break;
       }
+      case SPVM_OPCODE_C_ID_SET_STACK_OBJECT_WITH_TYPE_CHECK: {
+        int32_t dist_basic_type_id = opcode->operand1;
+        int32_t dist_type_dimension = opcode->operand2;
+        
+        void* dist_basic_type = env->api->runtime->get_basic_type_by_id(env->runtime, dist_basic_type_id);
+        
+        SPVM_IMPLEMENT_SET_STACK_OBJECT_WITH_TYPE_CHECK(env, stack, opcode->operand3, object_vars[opcode->operand1], dist_basic_type, dist_type_dimension, &error_id);
+        break;
+      }
       case SPVM_OPCODE_C_ID_SET_STACK_REF: {
         SPVM_IMPLEMENT_SET_STACK_REF(stack, opcode->operand3, ref_vars[opcode->operand0]);
         break;
