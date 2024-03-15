@@ -128,4 +128,8 @@ class TestCase::Simple : public {
   method arg_object : object ($object : object) {
     return $object;
   }
+  
+  method arg_object_option : object () {
+    return undef;
+  }
 }

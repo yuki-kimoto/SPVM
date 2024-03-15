@@ -22,4 +22,8 @@ class TestCase::SimpleChild extends TestCase::Simple {
   method arg_object : string ($string : string) {
     return $string;
   }
+  
+  method arg_object_option : string ($string : string = undef) {
+    return $string;
+  }
 }

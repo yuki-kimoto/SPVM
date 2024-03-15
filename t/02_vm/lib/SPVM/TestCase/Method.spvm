@@ -1728,80 +1728,132 @@ class TestCase::Method {
     
     # Type checking of object argument 
     {
-      
       {
-        my $simple = TestCase::Simple->new;
-        
-        my $input = "aaa";
-        
-        my $result = $simple->arg_object($input);
-        
-        unless ($result is_compile_type object) {
-          return 0;
+        {
+          my $simple = TestCase::Simple->new;
+          
+          my $input = "aaa";
+          
+          my $result = $simple->arg_object($input);
+          
+          unless ($result is_compile_type object) {
+            return 0;
+          }
+          
+          unless ($result is_type string) {
+            return 0;
+          }
+          
+          unless ($result == $input) {
+            return 0;
+          }
         }
         
-        unless ($result is_type string) {
-          return 0;
+        {
+          my $simple = TestCase::SimpleChild->new;
+          
+          my $input = "aaa";
+          
+          my $result = $simple->arg_object($input);
+          
+          unless ($result is_compile_type string) {
+            return 0;
+          }
+          
+          unless ($result is_type string) {
+            return 0;
+          }
+          
+          unless ($result == $input) {
+            return 0;
+          }
         }
         
-        unless ($result == $input) {
-          return 0;
+        {
+          my $simple = TestCase::SimpleChild->new;
+          
+          my $input = "aaa";
+          
+          my $result = $simple->(TestCase::Simple)->arg_object($input);
+          
+          unless ($result is_compile_type object) {
+            return 0;
+          }
+          
+          unless ($result is_type string) {
+            return 0;
+          }
+          
+          unless ($result == $input) {
+            return 0;
+          }
+        }
+        
+        {
+          my $simple = TestCase::SimpleChild->new;
+          
+          my $input = Int->new(1);
+          
+          eval { $simple->(TestCase::Simple)->arg_object($input); }
+          
+          unless (Fn->contains($@, q'The object given in the 1th argument must be assigned to the type of the 1th argument of the "arg_object" method in the "TestCase::SimpleChild" class.')) {
+            return 0;
+          }
         }
       }
       
       {
-        my $simple = TestCase::SimpleChild->new;
-        
-        my $input = "aaa";
-        
-        my $result = $simple->arg_object($input);
-        
-        unless ($result is_compile_type string) {
-          return 0;
+        {
+          my $simple = TestCase::Simple->new;
+          
+          my $result = $simple->arg_object_option;
+          
+          unless ($result is_compile_type object) {
+            return 0;
+          }
+          
+          unless ($result == undef) {
+            return 0;
+          }
         }
         
-        unless ($result is_type string) {
-          return 0;
+        {
+          my $simple = TestCase::SimpleChild->new;
+          
+          my $input = "aaa";
+          
+          my $result = $simple->arg_object_option($input);
+          
+          unless ($result is_compile_type string) {
+            return 0;
+          }
+          
+          unless ($result is_type string) {
+            return 0;
+          }
+          
+          unless ($result == $input) {
+            return 0;
+          }
         }
         
-        unless ($result == $input) {
-          return 0;
+        {
+          my $simple = TestCase::SimpleChild->new;
+          
+          my $result = $simple->(TestCase::Simple)->arg_object_option;
+          
+          unless ($result is_compile_type object) {
+            return 0;
+          }
+          
+          unless ($result == undef) {
+            return 0;
+          }
         }
+        
       }
-      
-      {
-        my $simple = TestCase::SimpleChild->new;
-        
-        my $input = "aaa";
-        
-        my $result = $simple->(TestCase::Simple)->arg_object($input);
-        
-        unless ($result is_compile_type object) {
-          return 0;
-        }
-        
-        unless ($result is_type string) {
-          return 0;
-        }
-        
-        unless ($result == $input) {
-          return 0;
-        }
-      }
-      
-      {
-        my $simple = TestCase::SimpleChild->new;
-        
-        my $input = Int->new(1);
-        
-        eval { $simple->(TestCase::Simple)->arg_object($input); }
-        
-        unless (Fn->contains($@, q'The object given in the 1th argument must be assigned to the type of the 1th argument of the "arg_object" method in the "TestCase::SimpleChild" class.')) {
-          return 0;
-        }
-      }
-      
     }
+    
     $@ = undef;
     
     return 1;

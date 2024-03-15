@@ -3696,9 +3696,16 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
       int32_t args_length = method->args_length;
       for (int32_t arg_index = 0; arg_index < args_length; arg_index++) {
         SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
+        
+        int32_t stack_index = arg->stack_index;
+        
+        if (!(stack_index < args_width)) {
+          break;
+        }
+        
         int32_t arg_is_object_type = SPVM_API_TYPE_is_object_type(env->runtime, arg->basic_type, arg->type_dimension, arg->type_flag);
         if (arg_is_object_type) {
-          SPVM_OBJECT* obj_arg = stack[arg->stack_index].oval;
+          SPVM_OBJECT* obj_arg = stack[stack_index].oval;
           
           if (obj_arg) {
             int32_t can_assign = SPVM_API_isa(env, stack, obj_arg, arg->basic_type, arg->type_dimension);
