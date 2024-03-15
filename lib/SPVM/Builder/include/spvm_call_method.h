@@ -13,7 +13,7 @@ struct spvm_call_method {
   int32_t args_length;
   int8_t is_class_method;
   int8_t call_super;
-  int8_t is_class_method_instance_method_call;
+  int8_t is_instance_method_static;
   int8_t is_current;
 };
 

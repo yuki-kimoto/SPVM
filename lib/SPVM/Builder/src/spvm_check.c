@@ -985,7 +985,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
     char* last_colon_pos = strrchr(method_name, ':');
     if (last_colon_pos) {
       const char* abs_method_name = method_name;
-      call_method->is_class_method_instance_method_call = 1;
+      call_method->is_instance_method_static = 1;
       method_name = last_colon_pos + 1;
       int32_t basic_type_name_length = (last_colon_pos - 1) - abs_method_name;
       
