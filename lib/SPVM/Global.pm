@@ -7,6 +7,7 @@ use SPVM::Builder;
 use SPVM::ExchangeAPI;
 
 my $API;
+my $BUILDER_COMPILER;
 
 END {
   
@@ -16,6 +17,8 @@ END {
     my $stack = delete $API->{stack};
     
     $env->destroy_class_vars($stack);
+    
+    $BUILDER_COMPILER = undef;
   }
 }
 
@@ -80,6 +83,8 @@ sub init_api {
     my $builder_compiler = SPVM::Builder::Compiler->new(
       include_dirs => $builder->include_dirs
     );
+    
+    $BUILDER_COMPILER = $builder_compiler;
     
     my @native_compiler_class_name_names = qw(
       Native::Compiler
