@@ -1177,6 +1177,24 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OP* op_term_args = op_assign_src->first;
                       SPVM_OP* op_term_arg = op_term_args->first;
 
+                      // Call method
+                      SPVM_OPCODE opcode = {0};
+                      
+                      int32_t opcode_id = -1;
+                      if (call_method->is_class_method) {
+                        opcode_id = SPVM_OPCODE_C_ID_CALL_CLASS_METHOD;
+                      }
+                      else {
+                        if (call_method->is_class_method_instance_method_call) {
+                          opcode_id = SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC;
+                        }
+                        else {
+                          opcode_id = SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD;
+                        }
+                      }
+                      
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, opcode_id);
+                      
                       SPVM_LIST* args = method_call_method->var_decls;
                       int32_t args_width = 0;
                       
@@ -1328,20 +1346,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       // Return
                       SPVM_TYPE* call_method_return_type = call_method->method->return_type;
-                      // Call method
-                      SPVM_OPCODE opcode = {0};
                       
-                      if (call_method->is_class_method) {
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_CLASS_METHOD);
-                      }
-                      else {
-                        if (call_method->is_class_method_instance_method_call) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD_STATIC);
-                        }
-                        else {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD);
-                        }
-                      }
                       opcode.operand0 = call_method->method->current_basic_type->id;
                       opcode.operand1 = call_method->method->index;
                       opcode.operand2 = args_width;
