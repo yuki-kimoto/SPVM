@@ -39,7 +39,7 @@
 #include "spvm_string.h"
 #include "spvm_dumper.h"
 
-void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler) {
+void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
   
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);

@@ -234,7 +234,7 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
       }
       else {
         int32_t build_opcode_list_start_memory_blocks_count_tmp = compiler->current_each_compile_allocator->memory_blocks_count_tmp;
-        SPVM_OPCODE_BUILDER_build_opcode_list(compiler);
+        SPVM_OPCODE_BUILDER_build_opcodes(compiler);
         assert(compiler->current_each_compile_allocator->memory_blocks_count_tmp == build_opcode_list_start_memory_blocks_count_tmp);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }

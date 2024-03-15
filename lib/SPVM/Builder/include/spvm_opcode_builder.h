@@ -6,7 +6,7 @@
 
 #include "spvm_typedecl.h"
 
-void SPVM_OPCODE_BUILDER_build_opcode_list(SPVM_COMPILER* compiler);
+void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler);
 
 void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opcode, int32_t opcode_id);
 
