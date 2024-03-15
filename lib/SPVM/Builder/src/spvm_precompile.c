@@ -262,7 +262,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, "  void* src_byte_array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  void* byte_array = NULL;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t elem_isa = 0;\n");
-  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t cast_type_dimension = 0;\n");
+  SPVM_STRING_BUFFER_add(string_buffer, "  int32_t dist_type_dimension = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t type_dimension = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_type_dimension_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t runtime_assignability = 0;\n");
@@ -892,21 +892,21 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECK: {
-        int32_t cast_basic_type_id = opcode->operand2;
-        int32_t cast_type_dimension = opcode->operand3;
+        int32_t dist_basic_type_id = opcode->operand2;
+        int32_t dist_type_dimension = opcode->operand3;
         
-        SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, cast_basic_type_id);
-        const char* cast_basic_type_name = cast_basic_type->name;
+        SPVM_RUNTIME_BASIC_TYPE* dist_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, dist_basic_type_id);
+        const char* dist_basic_type_name = dist_basic_type->name;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)cast_basic_type_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)dist_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  basic_type = ");
-        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, cast_basic_type_name);
+        SPVM_PRECOMPILE_add_basic_type(precompile, string_buffer, dist_basic_type_name);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
                                               
-        SPVM_STRING_BUFFER_add(string_buffer, "  cast_type_dimension = ");
+        SPVM_STRING_BUFFER_add(string_buffer, "  dist_type_dimension = ");
         SPVM_STRING_BUFFER_add_int(string_buffer, opcode->operand3);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
@@ -914,7 +914,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
-        SPVM_STRING_BUFFER_add(string_buffer, ", basic_type, cast_type_dimension, &error_id);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ", basic_type, dist_type_dimension, &error_id);\n");
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
