@@ -113,7 +113,15 @@ class List {
     }
     
     my $remove_length = 0;
-    $self->replace($index, $remove_length, [$element]);
+    
+    my $array = (object[])undef;
+    
+    if ($element) {
+      $array = Array->new_array_proto_element($element, 1);
+      $array->[0] = $element;
+    }
+    
+    $self->replace($index, $remove_length, $array);
   }
   
   method pop : object () {
