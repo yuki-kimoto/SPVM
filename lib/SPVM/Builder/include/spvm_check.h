@@ -26,13 +26,13 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler);
 
 void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_check_basic_types_class_var(SPVM_COMPILER* compiler);
+void SPVM_CHECK_check_class_vars(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler);
+void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler);
+void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_check_basic_types_ast(SPVM_COMPILER* compiler);
+void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler);
 
 void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 

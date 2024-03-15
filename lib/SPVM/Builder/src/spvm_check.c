@@ -66,22 +66,22 @@ void SPVM_CHECK_check_basic_types(SPVM_COMPILER* compiler) {
     return;
   }
   
-  SPVM_CHECK_check_basic_types_class_var(compiler);
+  SPVM_CHECK_check_class_vars(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
   
-  SPVM_CHECK_check_basic_types_field(compiler);
+  SPVM_CHECK_check_fields(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
   
-  SPVM_CHECK_check_basic_types_method(compiler);
+  SPVM_CHECK_check_methods(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
   
-  SPVM_CHECK_check_basic_types_ast(compiler);
+  SPVM_CHECK_check_asts(compiler);
   if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
     return;
   }
@@ -207,7 +207,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_CHECK_check_basic_types_class_var(SPVM_COMPILER* compiler) {
+void SPVM_CHECK_check_class_vars(SPVM_COMPILER* compiler) {
   
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     int32_t compile_error = 0;
@@ -229,7 +229,7 @@ void SPVM_CHECK_check_basic_types_class_var(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
+void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     int32_t compile_error = 0;
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
@@ -404,7 +404,7 @@ void SPVM_CHECK_check_basic_types_field(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
+void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
 
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     int32_t compile_error = 0;
@@ -624,7 +624,7 @@ void SPVM_CHECK_check_basic_types_method(SPVM_COMPILER* compiler) {
 }
 
   
-void SPVM_CHECK_check_basic_types_ast(SPVM_COMPILER* compiler) {
+void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
     
