@@ -18,4 +18,8 @@ class TestCase::SimpleChild extends TestCase::Simple {
     $TestCase::Simple::DESTROY_VALUE += 2;
     
   }
+  
+  method arg_object : string ($string : string) {
+    return $string;
+  }
 }

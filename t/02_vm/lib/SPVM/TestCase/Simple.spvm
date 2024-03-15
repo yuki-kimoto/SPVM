@@ -124,4 +124,8 @@ class TestCase::Simple : public {
     
     return $self;
   }
+  
+  method arg_object : object ($object : object) {
+    return $object;
+  }
 }

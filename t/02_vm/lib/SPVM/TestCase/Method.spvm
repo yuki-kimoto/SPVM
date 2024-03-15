@@ -1,6 +1,8 @@
 class TestCase::Method {
   interface TestCase::InterfaceType;
   
+  use TestCase::Simple;
+  use TestCase::SimpleChild;
   use TestCase::Minimal;
   use TestCase::Point_3b;
   use TestCase::Point_3s;
@@ -1717,6 +1719,103 @@ class TestCase::Method {
       return 0;
     }
     
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method inheritance : int () {
+    
+    # Type checking of object argument 
+    {
+      
+      warn;
+      
+      {
+        my $simple = TestCase::Simple->new;
+        
+        my $input = "aaa";
+        
+        my $result = $simple->arg_object($input);
+        
+        unless ($result is_compile_type object) {
+          return 0;
+        }
+        
+        unless ($result is_type string) {
+          return 0;
+        }
+        
+        unless ($result == $input) {
+          return 0;
+        }
+      }
+      
+      warn;
+      
+      {
+        my $simple = TestCase::SimpleChild->new;
+        
+        my $input = "aaa";
+        
+        my $result = $simple->arg_object($input);
+        
+        unless ($result is_compile_type string) {
+          return 0;
+        }
+        
+        unless ($result is_type string) {
+          return 0;
+        }
+        
+        unless ($result == $input) {
+          return 0;
+        }
+      }
+      
+      warn;
+      
+      {
+        my $simple = TestCase::SimpleChild->new;
+        
+        my $input = "aaa";
+        
+        my $result = $simple->(TestCase::Simple)->arg_object($input);
+        
+        unless ($result is_compile_type object) {
+          return 0;
+        }
+        
+        unless ($result is_type string) {
+          return 0;
+        }
+        
+        unless ($result == $input) {
+          return 0;
+        }
+      }
+      
+      warn;
+
+=pod TODO
+
+      {
+        my $simple = TestCase::SimpleChild->new;
+        
+        my $input = Int->new(1);
+        
+        $simple->(TestCase::Simple)->arg_object($input);
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      warn;
+
+=cut
+
+    }
     $@ = undef;
     
     return 1;
