@@ -1326,4 +1326,6 @@ class Array {
     return $array;
   }
   
+  native static method new_array_proto_element : object[] ($proto_element : object, $length : int);
+  
 }

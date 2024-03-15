@@ -5770,4 +5770,54 @@ class TestCase::Module::Array {
     
     return 1;
   }
+  
+  static method new_array_proto_element : int () {
+    {
+      my $minimal = new TestCase::Minimal;
+      my $new_array = Array->new_array_proto_element($minimal, 2);
+      unless ($new_array isa TestCase::Minimal[]) {
+        return 0;
+      }
+      my $new_minimals = (TestCase::Minimal[])$new_array;
+      unless (@$new_minimals == 2) {
+        return 0;
+      }
+    }
+    
+    # Zero length
+    {
+      my $minimal = new TestCase::Minimal;
+      my $new_array = Array->new_array_proto_element($minimal, 0);
+      unless ($new_array isa TestCase::Minimal[]) {
+        return 0;
+      }
+      my $new_minimals = (TestCase::Minimal[])$new_array;
+      unless (@$new_minimals == 0) {
+        return 0;
+      }
+    }
+    
+    # Exception
+    {
+      {
+        eval { my $new_array = Array->new_array_proto_element(undef, 2); };
+        unless (Fn->contains($@, q'The prototype element $prototype_element must be defined.')) {
+          return 0;
+        }
+      }
+      
+      {
+        eval { my $new_array = Array->new_array_proto_element(new TestCase::Minimal, -1); };
+        unless (Fn->contains($@, q'The length $length must be greater than or equal to 0.')) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
 }

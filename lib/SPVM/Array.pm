@@ -1083,6 +1083,18 @@ Exceptions:
 
 The array $object_array must be defined, otherwise an exception is thrown.
 
+=head2 new_array_proto_element
+
+C<static method new_array_proto_element : object[] ($proto_element : object, $length : int);>
+
+Create a new object array of the type when the prototype element $proto_element are arrayed with the length $length.
+
+Exceptions:
+
+The prototype element $proto_element must be defined. Otherwise an exception is thrown.
+
+The length $length must be greater than or equal to 0. Otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
