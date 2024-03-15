@@ -34,15 +34,15 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler);
 
 void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler);
 
-void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
-void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
 void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
-void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
-void SPVM_CHECK_check_ast_check_index_by_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
+void SPVM_CHECK_check_ast_index_by_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method);
 
 int SPVM_CHECK_method_name_compare_cb(const void* method1_ptr, const void* method2_ptr);
 

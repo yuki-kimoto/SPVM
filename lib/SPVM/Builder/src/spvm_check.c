@@ -666,13 +666,13 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       // AST traversals
       if (method->op_block) {
-        SPVM_CHECK_check_ast_check_op_types(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_op_types(compiler, basic_type, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
         
         // AST traversal - Check syntax and generate some operations
-        SPVM_CHECK_check_ast_check_syntax(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_syntax(compiler, basic_type, method);
         if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
           return;
         }
@@ -682,11 +682,11 @@ void SPVM_CHECK_check_asts(SPVM_COMPILER* compiler) {
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check if a block needs "leave scope" operation
-        SPVM_CHECK_check_ast_check_if_block_need_leave_scope(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_if_block_need_leave_scope(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
         
         // AST traversal - Check call stack ids of variable declarations
-        SPVM_CHECK_check_ast_check_index_by_types(compiler, basic_type, method);
+        SPVM_CHECK_check_ast_index_by_types(compiler, basic_type, method);
         assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
       }
     }
@@ -1047,7 +1047,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
   }
 }
 
-void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   // Run OPs
   SPVM_OP* op_root = method->op_block;
@@ -1142,7 +1142,7 @@ void SPVM_CHECK_check_ast_check_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYP
   }
 }
 
-void SPVM_CHECK_check_ast_check_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   if (!method->op_block) {
     return;
@@ -3367,7 +3367,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
   }
 }
 
-void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_if_block_need_leave_scope(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   // Block stack
   SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
@@ -3467,7 +3467,7 @@ void SPVM_CHECK_check_ast_check_if_block_need_leave_scope(SPVM_COMPILER* compile
   SPVM_LIST_free(op_block_stack);
 }
 
-void SPVM_CHECK_check_ast_check_index_by_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
+void SPVM_CHECK_check_ast_index_by_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type, SPVM_METHOD* method) {
   
   SPVM_LIST* tmp_var_decl_stack = SPVM_LIST_new(compiler->current_each_compile_allocator, 0, SPVM_ALLOCATOR_C_ALLOC_TYPE_TMP);
 
