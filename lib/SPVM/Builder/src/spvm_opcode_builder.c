@@ -5206,9 +5206,9 @@ void SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_ex
     
     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
     
-    int32_t goto_end_of_eval_on_exception_opcode_index = opcode_list->length - 1;
+    int32_t opcode_index = opcode_list->length - 1;
     
-    SPVM_LIST_push(unresolved_goto_end_of_eval_on_exception_opcode_index_stack, (void*)(intptr_t)goto_end_of_eval_on_exception_opcode_index);
+    SPVM_LIST_push(unresolved_goto_end_of_eval_on_exception_opcode_index_stack, (void*)(intptr_t)opcode_index);
   }
   else {
     SPVM_OPCODE opcode = {0};
@@ -5217,9 +5217,9 @@ void SPVM_OPCODE_BUILDER_push_unresolved_goto_end_of_eval_or_end_of_method_on_ex
     opcode.operand2 = line;
     SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
     
-    int32_t goto_end_of_method_on_exception_opcode_index = opcode_list->length - 1;
+    int32_t opcode_index = opcode_list->length - 1;
     
-    SPVM_LIST_push(unresolved_goto_end_of_method_on_exception_opcode_index_stack, (void*)(intptr_t)(goto_end_of_method_on_exception_opcode_index));
+    SPVM_LIST_push(unresolved_goto_end_of_method_on_exception_opcode_index_stack, (void*)(intptr_t)(opcode_index));
   }
 }
 
