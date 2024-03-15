@@ -1729,8 +1729,6 @@ class TestCase::Method {
     # Type checking of object argument 
     {
       
-      warn;
-      
       {
         my $simple = TestCase::Simple->new;
         
@@ -1750,8 +1748,6 @@ class TestCase::Method {
           return 0;
         }
       }
-      
-      warn;
       
       {
         my $simple = TestCase::SimpleChild->new;
@@ -1773,8 +1769,6 @@ class TestCase::Method {
         }
       }
       
-      warn;
-      
       {
         my $simple = TestCase::SimpleChild->new;
         
@@ -1795,26 +1789,18 @@ class TestCase::Method {
         }
       }
       
-      warn;
-
-=pod TODO
-
       {
         my $simple = TestCase::SimpleChild->new;
         
         my $input = Int->new(1);
         
-        $simple->(TestCase::Simple)->arg_object($input);
+        eval { $simple->(TestCase::Simple)->arg_object($input); }
         
-        unless ($@) {
+        unless (Fn->contains($@, q'The object given in the 1th argument must be assigned to the type of the 1th argument of the "arg_object" method in the "TestCase::SimpleChild" class.')) {
           return 0;
         }
       }
       
-      warn;
-
-=cut
-
     }
     $@ = undef;
     
