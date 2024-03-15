@@ -230,8 +230,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->spvm_stdout != &env_array[210]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->spvm_stderr != &env_array[211]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->check_bootstrap_method != &env_array[212]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_array_proto_element_no_mortal != &env_array[131]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->new_array_proto_element != &env_array[132]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_array_proto_element_no_mortal != &env_array[213]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->new_array_proto_element != &env_array[214]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

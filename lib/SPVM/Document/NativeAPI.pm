@@ -2497,6 +2497,8 @@ Native APIs have its IDs.
   210 spvm_stdout,
   211 spvm_stderr,
   212 check_bootstrap_method
+  213 new_array_proto_element_no_mortal
+  214 new_array_proto_element
 
 =head1 Constant Values
 
