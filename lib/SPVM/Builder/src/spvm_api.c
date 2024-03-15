@@ -3066,11 +3066,11 @@ SPVM_OBJECT* SPVM_API_new_array_proto_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
 SPVM_OBJECT* SPVM_API_new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t length) {
   
   
-  SPVM_OBJECT* object = SPVM_API_new_array_proto_no_mortal(env, stack, array, length);
+  SPVM_OBJECT* new_array = SPVM_API_new_array_proto_no_mortal(env, stack, array, length);
   
-  SPVM_API_push_mortal(env, stack, object);
+  SPVM_API_push_mortal(env, stack, new_array);
   
-  return object;
+  return new_array;
 }
 
 int32_t SPVM_API_get_object_basic_type_id(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
@@ -4357,3 +4357,4 @@ int32_t SPVM_API_check_bootstrap_method(SPVM_ENV* env, SPVM_VALUE* stack, const 
   
   return error_id;
 }
+
