@@ -4372,7 +4372,7 @@ SPVM_OBJECT* SPVM_API_new_array_proto_element_no_mortal(SPVM_ENV* env, SPVM_VALU
   
   size_t element_size = 1;
   
-  size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + element_size * (length + 1);
+  size_t alloc_size = (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + sizeof(void*) * (length + 1);
   
   SPVM_RUNTIME_BASIC_TYPE* element_basic_type = SPVM_API_get_object_basic_type(env, stack, element);
   SPVM_OBJECT* new_array = SPVM_API_new_object_common(env, stack, alloc_size, element_basic_type, element->type_dimension + 1, length, 0);
