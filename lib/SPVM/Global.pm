@@ -39,39 +39,43 @@ sub build_class {
   my $build_success;
   if (defined $class_name) {
     
-    my $env = $API->env;
-    
-    my $compiler = $env->runtime->get_compiler;
-    
-    my $start_runtime = $compiler->get_runtime;
-    my $start_basic_types_length = $start_runtime->get_basic_types_length;
-    
-    $compiler->set_start_file($file);
-    $compiler->set_start_line($line);
-    eval { $compiler->compile($class_name) };
-    if ($@) {
-      my $error_messages = $compiler->get_error_messages;
-      for my $error_message (@$error_messages) {
-        printf STDERR "[CompileError]$error_message\n";
+    # TODO - this compilation is removed in the near feature
+    #        because the SPVM language must be compile by C and Perl only.
+    {
+      my $env = $API->env;
+      
+      my $compiler = $env->runtime->get_compiler;
+      
+      my $start_runtime = $compiler->get_runtime;
+      my $start_basic_types_length = $start_runtime->get_basic_types_length;
+      
+      $compiler->set_start_file($file);
+      $compiler->set_start_line($line);
+      eval { $compiler->compile($class_name) };
+      if ($@) {
+        my $error_messages = $compiler->get_error_messages;
+        for my $error_message (@$error_messages) {
+          printf STDERR "[CompileError]$error_message\n";
+        }
+        $compiler = undef;
+        exit(255);
       }
-      $compiler = undef;
-      exit(255);
+      
+      my $runtime = $compiler->get_runtime;
+      
+      my $basic_types_length = $runtime->get_basic_types_length;
+      
+      for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
+        my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+        &load_dynamic_lib($runtime, $basic_type->get_name->to_string);
+      }
+      
+      &bind_to_perl($class_name);
+      
+      my $stack = $API->stack;
+      
+      $env->call_init_methods($stack);
     }
-    
-    my $runtime = $compiler->get_runtime;
-    
-    my $basic_types_length = $runtime->get_basic_types_length;
-    
-    for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
-      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-      &load_dynamic_lib($runtime, $basic_type->get_name->to_string);
-    }
-    
-    &bind_to_perl($class_name);
-    
-    my $stack = $API->stack;
-    
-    $env->call_init_methods($stack);
   }
 }
 
