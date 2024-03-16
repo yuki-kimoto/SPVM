@@ -4753,6 +4753,28 @@ get_error_messages(...)
 MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
 
 SV*
+get_compiler(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_api_env_ptr = hv_fetch(hv_self, "api_env", strlen("api_env"), 0);
+  SV* sv_api_env = sv_api_env_ptr ? *sv_api_env_ptr : &PL_sv_undef;
+  SPVM_ENV* api_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_api_env)));
+  
+  void* compiler = api_env->api->runtime->get_compiler(runtime);
+  
+  SV* sv_compiler = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ compiler, "SPVM::Builder::Compiler");
+  
+  XPUSHs(sv_compiler);
+  
+  XSRETURN(1);
+}
+
+SV*
 get_method_is_class_method(...)
   PPCODE:
 {
