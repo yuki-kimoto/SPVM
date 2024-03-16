@@ -107,9 +107,10 @@ sub init_api {
       Native::Env
     );
     
+    my $builder_runtime = $builder_compiler->get_runtime;
+    
     for my $native_compiler_class_name_name (@native_compiler_class_name_names) {
       $builder_compiler->compile_with_exit($native_compiler_class_name_name, __FILE__, __LINE__);
-      my $builder_runtime = $builder_compiler->get_runtime;
       
       # Load dinamic libnaray - native only
       {
