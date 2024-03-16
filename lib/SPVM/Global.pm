@@ -18,7 +18,13 @@ END {
     
     $env->destroy_class_vars($stack);
     
-    $BUILDER_API = undef;
+    {
+      my $builder_env = $BUILDER_API->{env};
+      my $builder_stack = $BUILDER_API->{stack};
+      
+      $builder_env->destroy_class_vars($builder_stack);
+      
+    }
   }
 }
 
