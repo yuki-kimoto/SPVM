@@ -12,11 +12,15 @@ my $BUILDER_API;
 END {
   
   if ($API) {
-    # Remove circular reference
-    my $env = delete $API->{env};
-    my $stack = delete $API->{stack};
-    
-    $env->destroy_class_vars($stack);
+    # TODO - this compilation is removed in the near feature
+    #        because the SPVM language must be compile by C and Perl only.
+    {
+      # Remove circular reference
+      my $env = delete $API->{env};
+      my $stack = delete $API->{stack};
+      
+      $env->destroy_class_vars($stack);
+    }
     
     {
       my $builder_env = $BUILDER_API->{env};
