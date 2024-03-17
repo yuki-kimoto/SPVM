@@ -5143,6 +5143,34 @@ build_precompile_class_source(...)
   XSRETURN(1);
 }
 
+SV*
+get_basic_type_by_name(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV* sv_basic_type_name = ST(1);
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  void* basic_type = env_api->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
+  
+  SV* sv_basic_type = &PL_sv_undef;
+  
+  if (basic_type) {
+    sv_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type, "SPVM::Builder::BasicType");
+  }
+  
+  XPUSHs(sv_basic_type);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
 
 SV*
