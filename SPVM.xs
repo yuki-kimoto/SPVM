@@ -5448,7 +5448,11 @@ get_method_by_index(...)
   
   void* method = env_api->api->basic_type->get_method_by_index(runtime, basic_type, index);
   
-  SV* sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+  SV* sv_method = &PL_sv_undef;
+  
+  if (method) {
+    sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+  }
   
   XPUSHs(sv_method);
   XSRETURN(1);
