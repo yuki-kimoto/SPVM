@@ -5347,4 +5347,30 @@ MODULE = SPVM::Builder::BasicType		PACKAGE = SPVM::Builder::BasicType
 
 MODULE = SPVM::Builder::Method		PACKAGE = SPVM::Builder::Method
 
+SV*
+get_name(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* method = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  const char* name = env_api->api->method->get_name(runtime, method);
+  
+  SV* sv_name = sv_2mortal(newSVpv(name, 0));
+  
+  XPUSHs(sv_name);
+  XSRETURN(1);
+}
+
 MODULE = SPVM		PACKAGE = SPVM

@@ -1,5 +1,10 @@
 package SPVM::Builder::BasicType;
 
+use strict;
+use warnings;
+
+sub runtime { shift->{runtime} }
+
 1;
 
 =head1 Name
