@@ -5434,8 +5434,8 @@ get_method_by_index(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV* sv_index = ST(1);
-  int32_t index = SvIV(sv_index);
+  SV* sv_method_index = ST(1);
+  int32_t method_index = SvIV(sv_method_index);
   
   SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
   SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
@@ -5446,7 +5446,40 @@ get_method_by_index(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
-  void* method = env_api->api->basic_type->get_method_by_index(runtime, basic_type, index);
+  void* method = env_api->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
+  
+  SV* sv_method = &PL_sv_undef;
+  
+  if (method) {
+    sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+  }
+  
+  XPUSHs(sv_method);
+  XSRETURN(1);
+}
+
+SV*
+get_method_by_name(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV* sv_method_name = ST(1);
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  void* method = env_api->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
   
   SV* sv_method = &PL_sv_undef;
   
