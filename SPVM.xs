@@ -5373,4 +5373,30 @@ get_name(...)
   XSRETURN(1);
 }
 
+SV*
+is_native(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* method = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  int32_t is_native = env_api->api->method->is_native(runtime, method);
+  
+  SV* sv_is_native = sv_2mortal(newSViv(is_native));
+  
+  XPUSHs(sv_is_native);
+  XSRETURN(1);
+}
+
 MODULE = SPVM		PACKAGE = SPVM
