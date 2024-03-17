@@ -5346,6 +5346,32 @@ DESTROY(...)
 MODULE = SPVM::Builder::BasicType		PACKAGE = SPVM::Builder::BasicType
 
 SV*
+get_methods_length(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  int32_t methods_length = env_api->api->basic_type->get_methods_length(runtime, basic_type);
+  
+  SV* sv_methods_length = sv_2mortal(newSViv(methods_length));
+  
+  XPUSHs(sv_methods_length);
+  XSRETURN(1);
+}
+
+SV*
 get_method_by_index(...)
   PPCODE:
 {
