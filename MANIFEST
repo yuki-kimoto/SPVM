@@ -57,6 +57,7 @@ lib/SPVM/BlessedObject/String.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/API.pm
+lib/SPVM/Builder/BasicType.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Compiler.pm
@@ -136,6 +137,7 @@ lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
 lib/SPVM/Builder/LibInfo.pm
 lib/SPVM/Builder/LinkInfo.pm
+lib/SPVM/Builder/Method.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm
 lib/SPVM/Builder/Runtime.pm

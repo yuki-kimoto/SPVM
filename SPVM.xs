@@ -5343,4 +5343,8 @@ DESTROY(...)
   XSRETURN(0);
 }
 
+MODULE = SPVM::Builder::BasicType		PACKAGE = SPVM::Builder::BasicType
+
+MODULE = SPVM::Builder::Method		PACKAGE = SPVM::Builder::Method
+
 MODULE = SPVM		PACKAGE = SPVM
