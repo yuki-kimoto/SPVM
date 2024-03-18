@@ -101,6 +101,7 @@ sub build_class {
       
       my $env = $api->env;
       
+      my $runtime = $compiler->get_runtime;
     }
   }
 }
