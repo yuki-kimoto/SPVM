@@ -5669,11 +5669,11 @@ get_file(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
   
-  const char* file = env_api->api->class_file->get_file(runtime, class_file);
+  const char* file = env_api->api->class_file->get_file(compiler, class_file);
   
   SV* sv_file = &PL_sv_undef;
   
@@ -5698,11 +5698,11 @@ get_dir(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
   
-  const char* dir = env_api->api->class_file->get_dir(runtime, class_file);
+  const char* dir = env_api->api->class_file->get_dir(compiler, class_file);
   
   SV* sv_dir = &PL_sv_undef;
   
