@@ -96,6 +96,15 @@ sub build_class {
       $env->call_init_methods($stack);
     }
     
+    {
+      my $api = $BUILDER_API;
+      my $compiler = $BUILDER_COMPILER;
+      
+      my $env = $api->env;
+      
+      my $runtime = $compiler->get_runtime;
+      my $start_basic_types_length = $runtime->get_basic_types_length;
+    }
   }
 }
 
