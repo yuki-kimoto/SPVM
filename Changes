@@ -4,12 +4,15 @@
     * Add the SPVM::Builder::Method module.
     * Add the SPVM::Builder::ClassFile module.
   [Incompatible Changes]
-    * Change the defenition of the new method in the Native::Compiler class.
+    * Change the defenition of the new method in the Native::Env class.
       [Before]
       static method new : Native::Env ($compiler : Native::Compiler = undef);
       [After]
       static method new : Native::Env ($compiler : Native::Compiler);
-      
+    * The new method in the Native::Env class throws an exception.
+    
+      The compiler $compiler must be defined, otherwise an exception is thrown.
+    
 0.989087 2023-03-14
   [Document Improvement and Changes]
     * The heading "Type Assignability" to "Assignment Requirement".

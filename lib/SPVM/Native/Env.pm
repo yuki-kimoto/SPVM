@@ -40,6 +40,10 @@ C<static method new : L<Native::Env|SPVM::Native::Env> ($compiler : L<Native::Co
 
 Creates a new L<Native::Env|SPVM::Native::Env> ojbect, and returns it.
 
+Exceptions:
+
+The compiler $compiler must be defined, otherwise an exception is thrown.
+
 =head1 Instance Methods
 
 =head2 set_command_info
