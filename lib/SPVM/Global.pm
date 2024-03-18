@@ -95,6 +95,11 @@ sub build_class {
       
       $env->call_init_methods($stack);
     }
+    
+    {
+      my $env = $BUILDER_API->env;
+      
+    }
   }
 }
 
