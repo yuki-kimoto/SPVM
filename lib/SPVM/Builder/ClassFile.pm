@@ -3,7 +3,38 @@ package SPVM::Builder::ClassFile;
 use strict;
 use warnings;
 
-sub runtime { shift->{runtime} }
+sub pointer {
+  my $self = shift;
+  if (@_) {
+    $self->{pointer} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{pointer};
+  }
+}
+
+sub env_api {
+  my $self = shift;
+  if (@_) {
+    $self->{env_api} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env_api};
+  }
+}
+
+sub compiler {
+  my $self = shift;
+  if (@_) {
+    $self->{compiler} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{compiler};
+  }
+}
 
 1;
 

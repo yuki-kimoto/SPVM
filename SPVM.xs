@@ -5410,14 +5410,13 @@ get_class_dir(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   const char* class_dir = env_api->api->basic_type->get_class_dir(runtime, basic_type);
   
@@ -5436,14 +5435,13 @@ get_class_rel_file(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   const char* class_rel_file = env_api->api->basic_type->get_class_rel_file(runtime, basic_type);
   
@@ -5462,14 +5460,13 @@ get_name(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   const char* name = env_api->api->basic_type->get_name(runtime, basic_type);
   
@@ -5488,14 +5485,13 @@ get_methods_length(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   int32_t methods_length = env_api->api->basic_type->get_methods_length(runtime, basic_type);
   
@@ -5517,14 +5513,13 @@ get_method_by_index(...)
   SV* sv_method_index = ST(1);
   int32_t method_index = SvIV(sv_method_index);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   void* method = env_api->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
   
@@ -5550,14 +5545,13 @@ get_method_by_name(...)
   SV* sv_method_name = ST(1);
   const char* method_name = SvPV_nolen(sv_method_name);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   void* method = env_api->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
   
@@ -5582,14 +5576,13 @@ get_name(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* method = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   const char* name = env_api->api->method->get_name(runtime, method);
   
@@ -5608,14 +5601,13 @@ is_native(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* method = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   int32_t is_native = env_api->api->method->is_native(runtime, method);
   
@@ -5634,14 +5626,13 @@ is_precompile(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* method = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
   int32_t is_precompile = env_api->api->method->is_precompile(runtime, method);
   

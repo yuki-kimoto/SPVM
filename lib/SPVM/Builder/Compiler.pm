@@ -9,17 +9,6 @@ use SPVM::Builder::Runtime;
 
 sub get_runtime { shift->{runtime} }
 
-sub env_api {
-  my $self = shift;
-  if (@_) {
-    $self->{env_api} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{env_api};
-  }
-}
-
 sub pointer {
   my $self = shift;
   if (@_) {
@@ -28,6 +17,17 @@ sub pointer {
   }
   else {
     return $self->{pointer};
+  }
+}
+
+sub env_api {
+  my $self = shift;
+  if (@_) {
+    $self->{env_api} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env_api};
   }
 }
 
