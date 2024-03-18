@@ -2,6 +2,7 @@
   [Internal Changes]
     * Add the SPVM::Builder::BasicType module.
     * Add the SPVM::Builder::Method module.
+    * Add the SPVM::Builder::ClassFile module.
 
 0.989087 2023-03-14
   [Document Improvement and Changes]

@@ -5197,6 +5197,10 @@ get_basic_type_by_name(...)
   
   if (basic_type) {
     sv_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type, "SPVM::Builder::BasicType");
+    
+    (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
+    
+    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_self), 0);
   }
   
   XPUSHs(sv_basic_type);
@@ -5404,6 +5408,39 @@ DESTROY(...)
 }
 
 MODULE = SPVM::Builder::BasicType		PACKAGE = SPVM::Builder::BasicType
+
+SV*
+get_parent(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  void* parent_basic_type = env_api->api->basic_type->get_parent(runtime, basic_type);
+  
+  SV* sv_parent_basic_type = &PL_sv_undef;
+  
+  if (parent_basic_type) {
+    sv_parent_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ parent_basic_type, "SPVM::Builder::BasicType");
+    
+    (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
+    
+    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  }
+  
+  XPUSHs(sv_parent_basic_type);
+  XSRETURN(1);
+}
 
 SV*
 get_class_dir(...)
