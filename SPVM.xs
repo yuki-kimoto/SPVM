@@ -4766,7 +4766,7 @@ get_class_file_v2(...)
   SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
   SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
-  void* class_file = env_api->api->compiler->get_class_file_by(runtime, compiler, class_name);
+  void* class_file = env_api->api->compiler->get_class_file(compiler, class_name);
   
   SV* sv_class_file = &PL_sv_undef;
   
@@ -5424,32 +5424,6 @@ get_class_dir(...)
   SV* sv_class_dir = sv_2mortal(newSVpv(class_dir, 0));
   
   XPUSHs(sv_class_dir);
-  XSRETURN(1);
-}
-
-SV*
-get_class_rel_file(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
-  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
-  HV* hv_runtime = (HV*)SvRV(sv_runtime);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "env_api", strlen("env_api"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
-  const char* class_rel_file = env_api->api->basic_type->get_class_rel_file(runtime, basic_type);
-  
-  SV* sv_class_rel_file = sv_2mortal(newSVpv(class_rel_file, 0));
-  
-  XPUSHs(sv_class_rel_file);
   XSRETURN(1);
 }
 
