@@ -104,6 +104,11 @@ sub build_class {
       
       my $runtime = $compiler->get_runtime;
       my $start_basic_types_length = $runtime->get_basic_types_length;
+      
+      $compiler->compile_with_exit($class_name, __FILE__, __LINE__);
+      
+      my $basic_types_length = $runtime->get_basic_types_length;
+      
     }
   }
 }
