@@ -6,7 +6,10 @@ use Carp 'confess';
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
 
+my $COMPILER;
 my $API;
+
+my $BUILDER_COMPILER;
 my $BUILDER_API;
 
 END {
@@ -22,6 +25,9 @@ END {
       $env->destroy_class_vars($stack);
     }
     
+    $API = undef;
+    $COMPILER = undef;
+    
     {
       # Remove circular reference
       my $env = delete $BUILDER_API->{env};
@@ -31,6 +37,7 @@ END {
     }
     
     $BUILDER_API = undef;
+    $BUILDER_COMPILER = undef;
   }
 }
 
@@ -143,6 +150,7 @@ sub init_api {
     
     my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
     
+    $BUILDER_COMPILER = $builder_compiler;
     $BUILDER_API = $builder_api;
     
     my $compiler = $builder_api->class("Native::Compiler")->new;
@@ -156,6 +164,7 @@ sub init_api {
     
     my $stack = $env->new_stack;
     
+    $COMPILER = $compiler;
     $API = SPVM::ExchangeAPI->new(env => $env, stack => $stack);
     
     $env->set_command_info_program_name($stack, $0);
