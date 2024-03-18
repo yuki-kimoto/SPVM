@@ -63,7 +63,9 @@ sub build_class {
     {
       my $env = $API->env;
       
-      my $compiler = $env->runtime->get_compiler;
+      my $runtime = $env->runtime;
+      
+      my $compiler = $runtime->get_compiler;
       
       my $start_runtime = $compiler->get_runtime;
       my $start_basic_types_length = $start_runtime->get_basic_types_length;
