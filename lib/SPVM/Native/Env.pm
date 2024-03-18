@@ -36,7 +36,7 @@ Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::Native
 
 =head1 Class Methods
 
-C<static method new : L<Native::Env|SPVM::Native::Env> ($compiler : L<Native::Compiler|SPVM::Native::Compiler>);>
+C<static method new : L<Native::Env|SPVM::Native::Env> ($runtime : L<Native::Runtime|SPVM::Native::Runtime>);>
 
 Creates a new L<Native::Env|SPVM::Native::Env> ojbect, and returns it.
 

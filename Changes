@@ -9,6 +9,11 @@
       static method new : Native::Env ($compiler : Native::Compiler = undef);
       [After]
       static method new : Native::Env ($compiler : Native::Compiler);
+    * Change the defenition of the new method in the Native::Env class.
+      [Before]
+      static method new : Native::Env ($compiler : Native::Compiler);
+      [After]
+      static method new : Native::Env ($runtime : Native::Runtime);
     * The new method in the Native::Env class throws an exception.
     
       The compiler $compiler must be defined, otherwise an exception is thrown.

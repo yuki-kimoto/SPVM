@@ -17,15 +17,16 @@ END {
   if ($API) {
     # TODO - this compilation is removed in the near feature
     #        because the SPVM language must be compile by C and Perl only.
+    
     {
       # Remove circular reference
       my $env = delete $API->{env};
       my $stack = delete $API->{stack};
-      
       $env->destroy_class_vars($stack);
     }
     
     $API = undef;
+    
     $COMPILER = undef;
     
     {
@@ -37,6 +38,7 @@ END {
     }
     
     $BUILDER_API = undef;
+    
     $BUILDER_COMPILER = undef;
   }
 }
@@ -80,7 +82,6 @@ sub build_class {
         $compiler = undef;
         exit(255);
       }
-      
       my $basic_types_length = $runtime->get_basic_types_length;
       
       for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
@@ -95,15 +96,6 @@ sub build_class {
       $env->call_init_methods($stack);
     }
     
-    {
-      my $api = $BUILDER_API;
-      my $compiler = $BUILDER_COMPILER;
-      
-      my $env = $api->env;
-      
-      my $runtime = $compiler->get_runtime;
-      my $start_basic_types_length = $runtime->get_basic_types_length;
-    }
   }
 }
 
@@ -169,7 +161,9 @@ sub init_api {
     
     $compiler->compile(undef);
     
-    my $env = $builder_api->class("Native::Env")->new($compiler);
+    my $runtime = $compiler->get_runtime;
+    
+    my $env = $builder_api->class("Native::Env")->new($runtime);
     
     my $stack = $env->new_stack;
     

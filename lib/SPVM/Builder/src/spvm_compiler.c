@@ -81,7 +81,11 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_use_stack = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   compiler->op_types = SPVM_LIST_new_list_permanent(compiler->global_allocator, 0);
   
-  compiler->runtime = SPVM_RUNTIME_new();
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_new();
+  
+  compiler->runtime = runtime;
+  
+  runtime->compiler = compiler;
   
   int32_t compiler_mutex_compile_size = SPVM_MUTEX_size();
   void* compiler_mutex_compile = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->global_allocator, compiler_mutex_compile_size);

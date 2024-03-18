@@ -199,6 +199,7 @@ int32_t SPVM__Native__Compiler__prepend_include_dir(SPVM_ENV* env, SPVM_VALUE* s
   if (obj_include_dir) {
     include_dir = env->get_chars(env, stack, obj_include_dir);
   }
+  
   env->api->compiler->prepend_include_dir(compiler, include_dir);
   
   return 0;
