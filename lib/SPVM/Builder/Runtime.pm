@@ -25,6 +25,17 @@ sub env_api {
   }
 }
 
+sub compiler {
+  my $self = shift;
+  if (@_) {
+    $self->{compiler} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{compiler};
+  }
+}
+
 1;
 
 =head1 Name
