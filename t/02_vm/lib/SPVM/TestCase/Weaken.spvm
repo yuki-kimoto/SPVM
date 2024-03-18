@@ -561,7 +561,27 @@ class TestCase::Weaken {
         }
       }
     }
-
+    
+    return 1;
+  }
+  
+  static method new_cross_reference_object : int () {
+    my $child = TestCase::Data::Weaken->new;
+    
+    my $parent = TestCase::Data::Weaken->new_cross_reference_object($child);
+    
+    unless ($parent) {
+      return 0;
+    }
+    
+    unless ($parent->{child}) {
+      return 0;
+    }
+    
+    unless (isweak $child->{parent}) {
+      return 0;
+    }
+    
     return 1;
   }
 }

@@ -6,6 +6,8 @@ class TestCase::Data::Weaken : public {
   has test_case : public TestCase::Weaken;
   has weaken2 : public TestCase::Data::Weaken;
   has test_cases : public TestCase::Weaken[];
+  has child : public TestCase::Data::Weaken;
+  has parent : public TestCase::Data::Weaken;
   
   static method new : TestCase::Data::Weaken () {
     return new TestCase::Data::Weaken;
@@ -14,4 +16,17 @@ class TestCase::Data::Weaken : public {
   method weaken_test_case : void () {
     weaken $self->{test_case};
   }
+  
+  static method new_cross_reference_object : TestCase::Data::Weaken ($child : TestCase::Data::Weaken) {
+    
+    my $parent = new TestCase::Data::Weaken;
+    
+    $parent->{child} = $child;
+    
+    $child->{parent} = $parent;
+    weaken $child->{parent};
+    
+    return $parent;
+  }
+  
 }
