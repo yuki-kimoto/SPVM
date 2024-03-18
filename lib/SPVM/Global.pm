@@ -61,9 +61,10 @@ sub build_class {
     # TODO - this compilation is removed in the near feature
     #        because the SPVM language must be compile by C and Perl only.
     {
-      my $env = $API->env;
-      
+      my $api = $API;
       my $compiler = $COMPILER;
+      
+      my $env = $api->env;
       
       my $runtime = $compiler->get_runtime;
       my $start_basic_types_length = $runtime->get_basic_types_length;
@@ -89,7 +90,7 @@ sub build_class {
       
       &bind_to_perl($class_name);
       
-      my $stack = $API->stack;
+      my $stack = $api->stack;
       
       $env->call_init_methods($stack);
     }
