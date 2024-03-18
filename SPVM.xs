@@ -5714,4 +5714,33 @@ get_dir(...)
   XSRETURN(1);
 }
 
+SV*
+get_rel_file(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* class_file = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
+  
+  const char* rel_file = env_api->api->class_file->get_rel_file(compiler, class_file);
+  
+  SV* sv_rel_file = &PL_sv_undef;
+  
+  if (rel_file) {
+    sv_rel_file = sv_2mortal(newSVpv(rel_file, 0));
+  }
+  
+  XPUSHs(sv_rel_file);
+  XSRETURN(1);
+}
+
 MODULE = SPVM		PACKAGE = SPVM
