@@ -5654,4 +5654,35 @@ is_precompile(...)
   XSRETURN(1);
 }
 
+MODULE = SPVM::Builder::ClassFile		PACKAGE = SPVM::Builder::ClassFile
+
+SV*
+get_file(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* class_file = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "env_api", strlen("env_api"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* env_api = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  const char* file = env_api->api->class_file->get_file(runtime, class_file);
+  
+  SV* sv_file = &PL_sv_undef;
+  
+  if (file) {
+    sv_file = sv_2mortal(newSVpv(file, 0));
+  }
+  
+  XPUSHs(sv_file);
+  XSRETURN(1);
+}
+
 MODULE = SPVM		PACKAGE = SPVM
