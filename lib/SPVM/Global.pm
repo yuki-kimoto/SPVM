@@ -96,7 +96,10 @@ sub build_class {
     }
     
     {
-      my $env = $BUILDER_API->env;
+      my $api = $BUILDER_API;
+      my $compiler = $BUILDER_COMPILER;
+      
+      my $env = $api->env;
       
     }
   }
