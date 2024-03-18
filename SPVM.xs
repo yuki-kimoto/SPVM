@@ -4772,6 +4772,10 @@ get_class_file_v2(...)
   
   if (class_file) {
     sv_class_file = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ class_file, "SPVM::Builder::ClassFile");
+    
+    (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
+    
+    (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_self), 0);
   }
   
   XPUSHs(sv_class_file);
@@ -5527,6 +5531,10 @@ get_method_by_index(...)
   
   if (method) {
     sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+    
+    (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
+    
+    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
   
   XPUSHs(sv_method);
@@ -5559,6 +5567,10 @@ get_method_by_name(...)
   
   if (method) {
     sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+    
+    (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
+    
+    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
   
   XPUSHs(sv_method);
