@@ -187,6 +187,14 @@ sub init_api {
     $BUILDER_COMPILER = $builder_compiler;
     $BUILDER_API = $builder_api;
     
+    {
+      $builder_env->set_command_info_program_name($builder_stack, $0);
+      
+      $builder_env->set_command_info_argv($builder_stack, \@ARGV);
+      my $base_time = $^T + 0; # For Perl 5.8.9
+      $builder_env->set_command_info_base_time($builder_stack, $base_time);
+    }
+    
     my $compiler = $builder_api->class("Native::Compiler")->new;
     for my $include_dir (@{$builder->include_dirs}) {
       $compiler->add_include_dir($include_dir);
