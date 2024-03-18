@@ -22,6 +22,14 @@ END {
       $env->destroy_class_vars($stack);
     }
     
+    {
+      # Remove circular reference
+      my $env = delete $BUILDER_API->{env};
+      my $stack = delete $BUILDER_API->{stack};
+      
+      $env->destroy_class_vars($stack);
+    }
+    
     $BUILDER_API = undef;
   }
 }
