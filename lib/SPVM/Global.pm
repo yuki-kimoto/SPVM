@@ -109,6 +109,25 @@ sub build_class {
       
       my $basic_types_length = $runtime->get_basic_types_length;
       
+      # Load dynamic library
+      for my $category ('precompile', 'native') {
+        my $method_names = $runtime->get_method_names($class_name, $category);
+        
+        if (@$method_names) {
+          # Build classes - Compile C source codes and link them generating a dynamic link library
+          my $class_file = $runtime->get_class_file($class_name);
+          my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
+          
+          if (-f $dynamic_lib_file) {
+            my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
+            
+            for my $method_name (sort keys %$method_addresses) {
+              my $cfunc_address = $method_addresses->{$method_name};
+              $runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
+            }
+          }
+        }
+      }
     }
   }
 }
