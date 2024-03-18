@@ -102,6 +102,7 @@ sub build_class {
       my $env = $api->env;
       
       my $runtime = $compiler->get_runtime;
+      my $start_basic_types_length = $runtime->get_basic_types_length;
     }
   }
 }
