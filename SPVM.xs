@@ -4589,6 +4589,7 @@ create_native_compiler(...)
   void* runtime = env_api->api->compiler->get_runtime(compiler);
   
   SV* sv_runtime = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ runtime, "SPVM::Builder::Runtime");
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
   (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   
   XSRETURN(0);

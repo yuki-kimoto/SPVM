@@ -2,6 +2,7 @@ package SPVM::Builder::Compiler;
 
 use strict;
 use warnings;
+use Scalar::Util 'weaken';
 
 use SPVM::Builder::Runtime;
 
@@ -65,6 +66,10 @@ sub new {
   $self->create_native_compiler;
   
   my $runtime = $self->get_runtime;
+  
+  $runtime->{compiler} = $self;
+  
+  weaken $runtime->{compiler};
   
   $runtime->env_api($env_api);
   
