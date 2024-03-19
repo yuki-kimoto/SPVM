@@ -133,9 +133,6 @@ sub build_class {
           }
         }
       }
-      my $stack = $api->stack;
-      
-      $env->call_init_methods($stack);
     }
     
     &bind_to_perl($class_name);
