@@ -4919,35 +4919,6 @@ get_anon_basic_type_names(...)
 }
 
 SV*
-get_basic_type_names(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
-  AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
-  
-  int32_t basic_types_length = boot_env->api->runtime->get_basic_types_length(runtime);
-  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
-    void* basic_type = boot_env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
-    int32_t basic_type_category = boot_env->api->basic_type->get_category(runtime, basic_type);
-    const char* basic_type_name = boot_env->api->basic_type->get_name(runtime, basic_type);
-    SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-    av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
-  }
-  
-  XPUSHs(sv_basic_type_names);
-  XSRETURN(1);
-}
-
-SV*
 get_basic_types_length(...)
   PPCODE:
 {
@@ -5820,6 +5791,38 @@ get_content_length(...)
 }
 
 MODULE = SPVM::Builder::Native::Runtime::Info		PACKAGE = SPVM::Builder::Native::Runtime::Info
+
+SV*
+get_basic_type_names(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
+  
+  int32_t basic_types_length = boot_env->api->runtime->get_basic_types_length(runtime);
+  for (int32_t basic_type_id = 0; basic_type_id < basic_types_length; basic_type_id++) {
+    void* basic_type = boot_env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
+    int32_t basic_type_category = boot_env->api->basic_type->get_category(runtime, basic_type);
+    const char* basic_type_name = boot_env->api->basic_type->get_name(runtime, basic_type);
+    SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+    av_push(av_basic_type_names, SvREFCNT_inc(sv_basic_type_name));
+  }
+  
+  XPUSHs(sv_basic_type_names);
+  XSRETURN(1);
+}
 
 SV*
 get_method_names(...)
