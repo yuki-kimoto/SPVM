@@ -514,13 +514,13 @@ sub create_bootstrap_main_func_source {
 
 int32_t main(int32_t command_args_length, const char *command_args[]) {
   
-  SPVM_ENV* env_api = SPVM_NATIVE_new_env();
+  SPVM_ENV* boot_env = SPVM_NATIVE_new_env();
   
-  void* compiler = env_api->api->compiler->new_instance();
+  void* compiler = boot_env->api->compiler->new_instance();
   
-  void* runtime = SPVM_BOOTSTRAP_get_runtime(env_api, compiler);
+  void* runtime = SPVM_BOOTSTRAP_get_runtime(boot_env, compiler);
   
-  SPVM_ENV* env = env_api->new_env();
+  SPVM_ENV* env = boot_env->new_env();
   
   env->runtime = runtime;
   
@@ -608,9 +608,9 @@ int32_t main(int32_t command_args_length, const char *command_args[]) {
   
   env->free_env(env);
   
-  env_api->api->compiler->free_instance(compiler);
+  boot_env->api->compiler->free_instance(compiler);
   
-  env_api->free_env(env_api);
+  boot_env->free_env(boot_env);
   
   return error_id;
 }

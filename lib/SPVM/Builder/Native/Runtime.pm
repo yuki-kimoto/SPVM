@@ -14,14 +14,14 @@ sub pointer {
   }
 }
 
-sub env_api {
+sub boot_env {
   my $self = shift;
   if (@_) {
-    $self->{env_api} = $_[0];
+    $self->{boot_env} = $_[0];
     return $self;
   }
   else {
-    return $self->{env_api};
+    return $self->{boot_env};
   }
 }
 

@@ -21,14 +21,14 @@ sub pointer {
   }
 }
 
-sub env_api {
+sub boot_env {
   my $self = shift;
   if (@_) {
-    $self->{env_api} = $_[0];
+    $self->{boot_env} = $_[0];
     return $self;
   }
   else {
-    return $self->{env_api};
+    return $self->{boot_env};
   }
 }
 
@@ -59,9 +59,9 @@ sub new {
   
   bless $self, $class;
   
-  my $env_api = SPVM::Builder::Native::Env->new;
+  my $boot_env = SPVM::Builder::Native::Env->new;
   
-  $self->env_api($env_api);
+  $self->boot_env($boot_env);
   
   $self->create_native_compiler;
   
@@ -71,7 +71,7 @@ sub new {
   
   weaken $runtime->{compiler};
   
-  $runtime->env_api($env_api);
+  $runtime->boot_env($boot_env);
   
   return $self;
 }
