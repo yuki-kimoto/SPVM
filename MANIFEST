@@ -136,12 +136,14 @@ lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
 lib/SPVM/Builder/LibInfo.pm
 lib/SPVM/Builder/LinkInfo.pm
+lib/SPVM/Builder/Native/API.pm
 lib/SPVM/Builder/Native/BasicType.pm
 lib/SPVM/Builder/Native/ClassFile.pm
 lib/SPVM/Builder/Native/Compiler.pm
 lib/SPVM/Builder/Native/Env.pm
 lib/SPVM/Builder/Native/Method.pm
 lib/SPVM/Builder/Native/Runtime.pm
+lib/SPVM/Builder/Native/Runtime/Info.pm
 lib/SPVM/Builder/Native/Stack.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm
