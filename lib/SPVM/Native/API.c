@@ -103,9 +103,7 @@ int32_t SPVM__Native__API__set_command_info_program_name(SPVM_ENV* env, SPVM_VAL
   
   void* obj_program_name = stack[1].oval;
   
-  void* obj_probram_name_copy = env->copy(env, stack, obj_program_name);
-  
-  error_id = api_env->set_command_info_program_name(api_env, api_stack, obj_probram_name_copy);
+  error_id = api_env->set_command_info_program_name(api_env, api_stack, obj_program_name);
   if (error_id) { return error_id; }
   
   return 0;
@@ -130,15 +128,7 @@ int32_t SPVM__Native__API__set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stac
   
   void* obj_argv = stack[1].oval;
   
-  void* obj_argv_copy = NULL;
-  {
-    stack[0].oval = obj_argv;
-    env->call_class_method_by_name(env, stack, "Array", "copy_string", 1, &error_id, __func__, FILE_NAME, __LINE__);
-    if (error_id) { return error_id; }
-    obj_argv_copy = stack[0].oval;
-  }
-  
-  error_id = api_env->set_command_info_argv(api_env, api_stack, obj_argv_copy);
+  error_id = api_env->set_command_info_argv(api_env, api_stack, obj_argv);
   if (error_id) { return error_id; }
   
   return 0;
@@ -186,9 +176,7 @@ int32_t SPVM__Native__API__get_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_exception = api_env->get_exception(api_env, api_stack);
   
-  void* obj_exception_copy = env->copy(env, stack, obj_exception_copy);
-  
-  stack[0].oval = obj_exception_copy;
+  stack[0].oval = obj_exception;
   
   return 0;
 }
@@ -197,9 +185,7 @@ int32_t SPVM__Native__API__set_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_exception = stack[0].oval;
   
-  void* obj_exception_copy = env->copy(env, stack, obj_exception);
-  
-  env->set_exception(env, stack, obj_exception_copy);
+  env->set_exception(env, stack, obj_exception);
   
   return 0;
 }
