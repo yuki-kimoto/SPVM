@@ -114,25 +114,36 @@ sub build_class {
       
       my $basic_types_length = $runtime->get_basic_types_length;
       
-      # Load dynamic library
-      for my $category ('precompile', 'native') {
-        my $method_names = $runtime->get_method_names($class_name, $category);
+      for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
+        my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+        my $class_name = $basic_type->get_name;
         
-        if (@$method_names) {
-          # Build classes - Compile C source codes and link them generating a dynamic link library
-          my $class_file = $runtime->get_class_file($class_name);
-          my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
+        for my $category ('precompile', 'native') {
+          my $method_names = $runtime->get_method_names($class_name, $category);
           
-          if (-f $dynamic_lib_file) {
-            my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
+          if (@$method_names) {
+            # Build classes - Compile C source codes and link them generating a dynamic link library
+            my $class_file = $runtime->get_class_file($class_name);
+            my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
             
-            for my $method_name (sort keys %$method_addresses) {
-              my $cfunc_address = $method_addresses->{$method_name};
-              $runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
+            if (-f $dynamic_lib_file) {
+              my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
+              
+              for my $method_name (sort keys %$method_addresses) {
+                my $cfunc_address = $method_addresses->{$method_name};
+                if ($category eq 'precompile') {
+                  $runtime->set_precompile_method_address($class_name, $method_name, $cfunc_address);
+                }
+                elsif ($category eq 'native') {
+                  $runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
+                }
+              }
             }
           }
         }
       }
+      
+      my $stack = $api->stack;
     }
     
     &bind_to_perl($class_name);
