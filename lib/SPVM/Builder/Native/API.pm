@@ -1,10 +1,10 @@
-package SPVM::Builder::Native::Env;
+package SPVM::Builder::Native::API;
 
 1;
 
 =head1 Name
 
-SPVM::Builder::Native::Env - Runtime Environment
+SPVM::Builder::Native::API - Native APIs
 
 =head1 Copyright & License
 

@@ -4,7 +4,7 @@ package SPVM::Builder::Native::Stack;
 
 =head1 Name
 
-SPVM::Builder::Native::Stack - SPVM Builder Stack
+SPVM::Builder::Native::Stack - Runtime Stack
 
 =head1 Copyright & License
 

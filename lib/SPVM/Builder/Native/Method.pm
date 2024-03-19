@@ -41,7 +41,7 @@ sub runtime {
 
 =head1 Name
 
-SPVM::Builder::Method - Method Builder APIs
+SPVM::Builder::Method - Method Native APIs
 
 =head1 Copyright & License
 

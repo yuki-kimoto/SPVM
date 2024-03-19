@@ -90,7 +90,7 @@ sub compile_with_exit {
 
 =head1 Name
 
-SPVM::Builder::Native::Compiler - SPVM Builder Compiler
+SPVM::Builder::Native::Compiler - Compiler Native APIs
 
 =head1 Copyright & License
 

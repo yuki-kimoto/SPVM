@@ -40,7 +40,7 @@ sub compiler {
 
 =head1 Name
 
-SPVM::Builder::Native::Runtime - SPVM Builder Runtime
+SPVM::Builder::Native::Runtime - Runtime
 
 =head1 Copyright & License
 

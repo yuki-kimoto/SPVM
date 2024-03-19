@@ -5,6 +5,7 @@
     * Add the SPVM::Builder::Native::BasicType module.
     * Add the SPVM::Builder::Native::Method module.
     * Add the SPVM::Builder::Native::ClassFile module.
+    * Add the SPVM::Builder::Native::API module.
     * Rename SPVM::Builder::Compiler to SPVM::Builder::Native::Compiler
     * Rename SPVM::Builder::Runtime to SPVM::Builder::Native::Runtime
     * Rename SPVM::Builder::Env to SPVM::Builder::Native::Env

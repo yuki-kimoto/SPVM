@@ -40,7 +40,7 @@ sub runtime {
 
 =head1 Name
 
-SPVM::Builder::Native::BasicType - Basic Type Builder APIs
+SPVM::Builder::Native::BasicType - Basic Type Native APIs
 
 =head1 Copyright & License
 

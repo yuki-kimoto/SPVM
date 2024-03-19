@@ -40,7 +40,7 @@ sub compiler {
 
 =head1 Name
 
-SPVM::Builder::Native::ClassFile - Class File Builder APIs
+SPVM::Builder::Native::ClassFile - Class File Native APIs
 
 =head1 Copyright & License
 
