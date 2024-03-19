@@ -36,7 +36,13 @@ C<static method new : Native::API ($env : Native::Env, $stack : Native::Stack);>
 
 C<method set_command_info_program_name : void ($program_name : string);>
 
-Copies the program name $program_name and sets the L<program_name|CommandInfo/"program_name"> class variable in this instance in the C<CommandInfo> class to it.
+Copies the program name $program_name and sets the L<program_name|CommandInfo/"program_name"> class variable in the C<CommandInfo> in this instance class to it.
+
+=head2 set_command_info_argv
+
+C<method set_command_info_argv : void ($argv : string[]);>
+
+Copies the command line arguments $argv and sets the L<argv|CommandInfo/"argv"> class variable in the C<CommandInfo> class in this instance to it.
 
 =head2 call_init_methods
 
