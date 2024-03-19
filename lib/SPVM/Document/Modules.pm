@@ -130,8 +130,6 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<Native::Runtime|SPVM::Native::Runtime>
 
-=item * L<Native::Runtime::Info|SPVM::Native::Runtime::Info>
-
 =item * L<Native::Stack|SPVM::Native::Stack>
 
 =item * L<Point|SPVM::Point>

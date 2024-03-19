@@ -6,7 +6,6 @@ class Native {
   use Native::Stack;
   use Native::Runtime;
   use Native::Compiler;
-  use Native::Runtime::Info;
   
   # Class methods
   native static method get_current_env : Native::Env ();

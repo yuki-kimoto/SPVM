@@ -11,7 +11,6 @@ use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 
 use SPVM 'Native::Compiler';
-use SPVM 'Native::Runtime::Info';
 
 # Fields
 sub builder {
@@ -117,9 +116,7 @@ sub get_class_names {
   
   my $runtime = $self->runtime;
   
-  my $runtime_info = SPVM::Native::Runtime::Info->new($runtime);
-  
-  my $class_names = $runtime_info->get_class_names->to_strings;
+  my $class_names = $runtime->get_class_names->to_strings;
   
   return $class_names;
 }
@@ -245,7 +242,7 @@ The "class_name" option must be defined, otherwise an exception is thrown.
 
 Returns the all class names loaded by the runtime.
 
-This method is the same as the L<get_class_names|Native::Runtime::Info/"get_class_names"> method in the C<Native::Runtime::Info>, but the return value is converted to an array reference of strings.
+This method is the same as the L<get_class_names|Native::Runtime/"get_class_names"> method in the C<Native::Runtime>, but the return value is converted to an array reference of strings.
 
 =head2 has_config_file
 
