@@ -55,7 +55,7 @@ sub get_native_method_names {
   return $native_method_names;
 }
 
-sub _get_precompile_method_names {
+sub get_precompile_method_names {
   my ($self) = @_;
   
   my $methods_length = $self->get_methods_length;

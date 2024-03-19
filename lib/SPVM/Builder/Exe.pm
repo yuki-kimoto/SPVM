@@ -430,7 +430,7 @@ EOS
   $source .= "// precompile functions declaration\n";
   for my $class_name (@$class_names) {
     my $class = $self->runtime->get_basic_type_by_name($class_name);
-    my $precompile_method_names = $class->_get_precompile_method_names;
+    my $precompile_method_names = $class->get_precompile_method_names;
     for my $method_name (@$precompile_method_names) {
       my $method_cname = $class_name;
       $method_cname =~ s/::/__/g;
@@ -697,7 +697,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
     my $method_cname = $class_name;
     $method_cname =~ s/::/__/g;
     
-    my $precompile_method_names = $class->_get_precompile_method_names;
+    my $precompile_method_names = $class->get_precompile_method_names;
     
     for my $precompile_method_name (@$precompile_method_names) {
       $source .= <<"EOS";
