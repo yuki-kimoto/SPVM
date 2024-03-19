@@ -1390,7 +1390,6 @@ _xs_call_method(...)
                 spvm_value = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_value);
               }
               else if (created_as_string) {
-                warn("AAA");
                 STRLEN length = -1;
                 const char* string = SvPV(sv_value, length);
                 spvm_value = env->new_string_no_mortal(env, stack, string, (int32_t)length);
@@ -5169,10 +5168,11 @@ get_basic_type_by_name(...)
   
   if (basic_type) {
     sv_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type, "SPVM::Builder::Native::BasicType");
+    HV* hv_basic_type = (HV*)SvRV(sv_basic_type);
     
-    (void)hv_store(hv_self, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
+    (void)hv_store(hv_basic_type, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
-    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_self), 0);
+    (void)hv_store(hv_basic_type, "runtime", strlen("runtime"), SvREFCNT_inc(sv_self), 0);
   }
   
   XPUSHs(sv_basic_type);
@@ -5445,10 +5445,11 @@ get_parent(...)
   
   if (parent_basic_type) {
     sv_parent_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ parent_basic_type, "SPVM::Builder::Native::BasicType");
+    HV* hv_parent_basic_type = (HV*)SvRV(sv_parent_basic_type);
     
-    (void)hv_store(hv_self, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
+    (void)hv_store(hv_parent_basic_type, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
-    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+    (void)hv_store(hv_parent_basic_type, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
   
   XPUSHs(sv_parent_basic_type);
@@ -5581,10 +5582,11 @@ get_method_by_index(...)
   
   if (method) {
     sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+    HV* hv_method = (HV*)SvRV(sv_method);
     
-    (void)hv_store(hv_self, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
+    (void)hv_store(hv_method, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
-    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+    (void)hv_store(hv_method, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
   
   XPUSHs(sv_method);
@@ -5617,10 +5619,11 @@ get_method_by_name(...)
   
   if (method) {
     sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+    HV* hv_method = (HV*)SvRV(sv_method);
     
-    (void)hv_store(hv_self, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
+    (void)hv_store(hv_method, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
-    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+    (void)hv_store(hv_method, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
   
   XPUSHs(sv_method);
