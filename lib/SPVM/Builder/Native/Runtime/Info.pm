@@ -3,17 +3,6 @@ package SPVM::Builder::Native::Runtime::Info;
 use strict;
 use warnings;
 
-sub pointer {
-  my $self = shift;
-  if (@_) {
-    $self->{pointer} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{pointer};
-  }
-}
-
 sub boot_env {
   my $self = shift;
   if (@_) {
@@ -34,6 +23,17 @@ sub runtime {
   else {
     return $self->{runtime};
   }
+}
+
+# Class Methods
+sub new {
+  my $class = shift;
+  
+  my $self = bless {
+    @_;
+  }, __PACKAGE__;
+  
+  return $self;
 }
 
 1;

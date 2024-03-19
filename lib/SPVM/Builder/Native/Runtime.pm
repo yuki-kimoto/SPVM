@@ -3,6 +3,7 @@ package SPVM::Builder::Native::Runtime;
 use strict;
 use warnings;
 
+# Fields
 sub pointer {
   my $self = shift;
   if (@_) {
