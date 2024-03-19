@@ -187,7 +187,7 @@ sub init_api {
       }
     }
     
-    my $builder_env = SPVM::Builder::Native::Env->new($builder_runtime);
+    my $builder_env = $builder_runtime->new_env;
     
     my $builder_stack = $builder_env->new_stack;
     

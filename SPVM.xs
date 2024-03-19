@@ -5179,6 +5179,27 @@ get_basic_type_by_name(...)
   XSRETURN(1);
 }
 
+SV*
+new_env(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  
+  SPVM_ENV* new_env = SPVM_NATIVE_new_env();
+  
+  SV* sv_env = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Native::Env");
+  HV* hv_env = (HV*)SvRV(sv_env);
+  
+  if (SvOK(sv_self)) {
+    void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+    new_env->runtime = runtime;
+    (void)hv_store(hv_env, "runtime", strlen("runtime"), SvREFCNT_inc(sv_self), 0);
+  }
+  
+  XPUSHs(sv_env);
+  XSRETURN(1);
+}
+
 MODULE = SPVM::Builder::Native::Env		PACKAGE = SPVM::Builder::Native::Env
 
 SV*
@@ -5187,18 +5208,10 @@ new(...)
 {
   SV* sv_class = ST(0);
   
-  SV* sv_runtime = ST(1);
-  
   SPVM_ENV* new_env = SPVM_NATIVE_new_env();
   
   SV* sv_self = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Native::Env");
   HV* hv_self = (HV*)SvRV(sv_self);
-  
-  if (SvOK(sv_runtime)) {
-    void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
-    new_env->runtime = runtime;
-    (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
-  }
   
   XPUSHs(sv_self);
   XSRETURN(1);
