@@ -135,7 +135,7 @@ sub build_class {
       }
     }
     
-    &bind_to_perl_v2($class_name);
+    &bind_to_perl($class_name);
   }
 }
 
@@ -308,7 +308,7 @@ sub load_dynamic_lib {
 }
 
 my $BIND_TO_PERL_CLASS_NAME_H = {};
-sub bind_to_perl_v2 {
+sub bind_to_perl {
   my ($class_name) = @_;
   
   my $env = $BUILDER_API->env;
