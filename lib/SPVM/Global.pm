@@ -93,7 +93,9 @@ sub build_class {
       
       my $stack = $api->stack;
       
-      $env->call_init_methods($stack);
+      my $native_api = $BUILDER_API->class("Native::API")->new($env, $stack);
+      
+      $native_api->call_init_methods;
     }
     
     {

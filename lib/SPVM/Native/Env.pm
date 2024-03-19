@@ -30,12 +30,6 @@ Its insntace has the pointer to an object of the L<SPVM_ENV|SPVM::Document::Nati
 
 =head1 Instance Methods
 
-=head2 call_init_methods
-
-C<method call_init_methods : void ();>
-
-Calls all L<INIT blocks|SPVM::Document::Language/"INIT Block">.
-
 =head2 get_exception
 
 C<method get_exception : string ();>
