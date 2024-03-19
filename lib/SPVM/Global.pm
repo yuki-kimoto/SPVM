@@ -93,8 +93,6 @@ sub build_class {
         &load_dynamic_lib($runtime, $basic_type->get_name->to_string);
       }
       
-      &bind_to_perl($class_name);
-      
       my $stack = $api->stack;
       
       my $native_api = $BUILDER_API->class("Native::API")->new($env, $stack);
@@ -136,6 +134,8 @@ sub build_class {
         }
       }
     }
+    
+    &bind_to_perl($class_name);
   }
 }
 
