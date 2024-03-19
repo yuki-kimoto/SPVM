@@ -176,7 +176,7 @@ sub load_dynamic_lib {
     my $category_method_names;
     
     if ($category eq 'native') {
-      $category_method_names = $basic_type->_get_native_method_names;
+      $category_method_names = $basic_type->get_native_method_names;
     }
     elsif ($category eq 'precompile') {
       $category_method_names = $basic_type->_get_precompile_method_names;

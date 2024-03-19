@@ -638,7 +638,7 @@ sub _runtime_get_method_names {
     my $basic_type = $runtime->get_basic_type_by_name($class_name);
     
     if ($category eq 'native') {
-      $method_names = $basic_type->_get_native_method_names;
+      $method_names = $basic_type->get_native_method_names;
     }
     elsif ($category eq 'precompile') {
       $method_names = $basic_type->_get_precompile_method_names;
