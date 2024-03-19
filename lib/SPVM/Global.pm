@@ -205,7 +205,7 @@ sub init_api {
     
     my $runtime = $compiler->get_runtime;
     
-    my $env = $builder_api->class("Native::Env")->new($runtime);
+    my $env = $runtime->new_env;
     
     my $stack = $env->new_stack;
     
