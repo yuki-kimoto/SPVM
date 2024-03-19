@@ -5111,6 +5111,39 @@ build_precompile_class_source(...)
 }
 
 SV*
+get_basic_type_by_id(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV* sv_basic_type_id = ST(1);
+  int32_t basic_type_id = SvIV(sv_basic_type_id);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  void* basic_type = boot_env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
+  
+  SV* sv_basic_type = &PL_sv_undef;
+  
+  if (basic_type) {
+    sv_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type, "SPVM::Builder::Native::BasicType");
+    HV* hv_basic_type = (HV*)SvRV(sv_basic_type);
+    
+    (void)hv_store(hv_basic_type, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
+    
+    (void)hv_store(hv_basic_type, "runtime", strlen("runtime"), SvREFCNT_inc(sv_self), 0);
+  }
+  
+  XPUSHs(sv_basic_type);
+  XSRETURN(1);
+}
+
+SV*
 get_basic_type_by_name(...)
   PPCODE:
 {
