@@ -4,7 +4,6 @@ use warnings;
 use Carp 'confess';
 
 use SPVM::Builder;
-use SPVM::Builder::Native::Runtime::Info;
 use SPVM::Builder::Native::Env;
 use SPVM::ExchangeAPI;
 
@@ -86,8 +85,6 @@ sub init_api {
     my @native_compiler_class_name_names = qw(Int);
     
     my $builder_runtime = $builder_compiler->get_runtime;
-    
-    my $builder_runtime_info = SPVM::Builder::Native::Runtime::Info->new(boot_env => $builder_runtime->boot_env, runtime => $builder_runtime);
     
     my $start_basic_types_length = $builder_runtime->get_basic_types_length;
     
