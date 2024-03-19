@@ -11,8 +11,10 @@ use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
 
-use SPVM 'Native::Compiler';
-use SPVM 'Native::Runtime::Info';
+use SPVM::Builder::Native::Compiler;
+use SPVM::Builder::Native::Runtime::Info;
+use SPVM::Builder::Native::BasicType;
+use SPVM::Builder::Native::ClassFile;
 
 # Fields
 sub builder {
@@ -243,8 +245,8 @@ sub new {
   
   $self->{builder} = $builder;
   
-  my $compiler = SPVM::Native::Compiler->new;
-  $compiler->add_include_dir($_) for @{$builder->include_dirs};
+  my $compiler = SPVM::Builder::Native::Compiler->new;
+  $compiler->include_dirs($builder->include_dirs);
   $self->{compiler} = $compiler;
   
   my $optimize = $self->{optimize};
@@ -331,29 +333,21 @@ sub compile {
   
   my $compiler = $self->compiler;
   
-  $compiler->set_start_file(__FILE__);
-  $compiler->set_start_line(__LINE__ + 1);
-  eval { $compiler->compile($class_name) };
+  $compiler->compile_with_exit($class_name, __FILE__, __LINE__);
   
-  if ($@) {
-    my $error_messages = $compiler->get_error_messages;
-    for my $error_message (@$error_messages) {
-      print STDERR "$error_message\n";
-    }
-    exit(255);
-  }
   my $runtime = $compiler->get_runtime;
   
   $self->runtime($runtime);
   
-  my $runtime_info = SPVM::Native::Runtime::Info->new($runtime);
+  my $runtime_info = SPVM::Builder::Native::Runtime::Info->new(boot_env => $runtime->boot_env, runtime => $runtime);
   $self->runtime_info($runtime_info);
+  
 }
 
 sub compile_classes {
   my ($self) = @_;
   
-  my $class_names = $self->runtime_info->get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names;
   
   my $object_files = [];
   for my $class_name (@$class_names) {
@@ -430,7 +424,7 @@ sub create_bootstrap_header_source {
 
   my $class_name = $self->class_name;
 
-  my $class_names = $self->runtime_info->get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names;
   
   my $source = '';
   
@@ -506,7 +500,7 @@ sub create_bootstrap_main_func_source {
 
   my $class_name = $self->class_name;
 
-  my $class_names = $self->runtime_info->get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names;
 
   my $source = '';
 
@@ -632,21 +626,16 @@ static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler) {
   
 EOS
   
-  my $class_names = $self->runtime_info->get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names;
   
   my $compiler = $self->compiler;
   
   for my $class_name (@$class_names) {
     my $class = $self->runtime->get_basic_type_by_name($class_name);
-    
     my $class_file = $compiler->get_class_file($class_name);
-    
     my $class_file_rel_file = $class_file->get_rel_file;
-    
     my $class_file_content = $class_file->get_content;
-    
     my $class_file_content_length = $class_file->get_content_length;
-    
     my $source_class_file = '';
     
     $source_class_file .= qq|  {\n|;
@@ -710,7 +699,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $class_names = $self->runtime_info->get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names;
 
   my $source = '';
 
@@ -742,7 +731,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $class_names = $self->runtime_info->get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names;
 
   my $source = '';
 
@@ -776,7 +765,7 @@ sub create_bootstrap_source {
   
   my $class_name = $self->class_name;
   
-  my $class_names = $self->runtime_info->get_class_names->to_strings;
+  my $class_names = $self->runtime_info->get_class_names;
   
   my $class_files = [];
   for my $class_name (@$class_names) {
@@ -860,6 +849,7 @@ sub create_bootstrap_source {
   if ($need_generate) {
     SPVM::Builder::Util::spurt_binary($bootstrap_source_file, $bootstrap_source);
   }
+  
 }
 
 sub compile_bootstrap_source_file {

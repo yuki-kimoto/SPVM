@@ -26,7 +26,8 @@
     * Remove the destroy_class_vars in the Native::Env and add the destroy_class_vars method to the Native::API class.
     * Remove the get_exception in the Native::Env and add the get_exception method to the Native::API class.
     * Remove the set_exception in the Native::Env and add the set_exception method to the Native::API class.
-  
+  [Bug Fix]
+    * Fix bug that the SPVM language is not build by only Perl and the C language.
 0.989087 2023-03-14
   [Document Improvement and Changes]
     * The heading "Type Assignability" to "Assignment Requirement".

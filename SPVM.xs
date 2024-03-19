@@ -4712,10 +4712,11 @@ get_class_file(...)
   
   if (class_file) {
     sv_class_file = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ class_file, "SPVM::Builder::Native::ClassFile");
+    HV* hv_class_file = (HV*)SvRV(sv_class_file);
     
-    (void)hv_store(hv_self, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
+    (void)hv_store(hv_class_file, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
-    (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_self), 0);
+    (void)hv_store(hv_class_file, "compiler", strlen("compiler"), SvREFCNT_inc(sv_self), 0);
   }
   
   XPUSHs(sv_class_file);
