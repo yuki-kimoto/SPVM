@@ -3,7 +3,7 @@
 
 #include "spvm_native.h"
 
-static const char* FILE_NAME = "Native::Env.c";
+static const char* FILE_NAME = "Native/Env.c";
 
 int32_t SPVM__Native__Env__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   

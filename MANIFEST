@@ -59,6 +59,7 @@ lib/SPVM/Builder.pm
 lib/SPVM/Builder/API.pm
 lib/SPVM/Builder/BasicType.pm
 lib/SPVM/Builder/CC.pm
+lib/SPVM/Builder/ClassFile.pm
 lib/SPVM/Builder/CompileInfo.pm
 lib/SPVM/Builder/Compiler.pm
 lib/SPVM/Builder/Config.pm
@@ -331,6 +332,10 @@ lib/SPVM/Native.c
 lib/SPVM/Native.config
 lib/SPVM/Native.pm
 lib/SPVM/Native.spvm
+lib/SPVM/Native/API.c
+lib/SPVM/Native/API.config
+lib/SPVM/Native/API.pm
+lib/SPVM/Native/API.spvm
 lib/SPVM/Native/Arg.c
 lib/SPVM/Native/Arg.config
 lib/SPVM/Native/Arg.pm

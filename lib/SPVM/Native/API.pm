@@ -6,52 +6,55 @@ package SPVM::Native::API;
 
 =head1 Name
 
-SPVM::Native::API - Short Description
+SPVM::Native::API - Native APIs
 
 =head1 Description
 
-The Native::API class in L<SPVM> has methods to do someting.
+The Native::API class in L<SPVM> has methods to call native APIs.
 
 =head1 Usage
 
   use Native::API;
 
-=head1 Details
-
-
-
-=head1 Inheritance
-
-
-
-=head1 Interfaces
-
-
-
-=head1 Enumerations
-
-
-
 =head1 Fields
 
+=head2 env
 
+C<has env : L<Native::Env|SPVM::Native::Env>;>
+
+=head2 stack
+
+C<has stack : L<Native::Stack|SPVM::Native::Stack>;>
 
 =head1 Class Methods
 
-
+C<static method new : Native::API ($env : Native::Env, $stack : Native::Stack);>
 
 =head1 Instance Methods
 
+=head2 set_command_info
 
+C<method set_command_info : void ($program_name : string, $argv : string[]);>
 
+Sets command line information.
 
-=head1 Repository
+=head2 call_init_methods
 
+C<method call_init_methods : void ();>
 
+Calls all L<INIT blocks|SPVM::Document::Language/"INIT Block">.
 
-=head1 Author
+=head2 get_exception
 
-Yuki Kimoto C<kimoto.yuki@gmail.com>
+C<method get_exception : string ();>
+
+Gets the excetpion.
+
+=head2 set_exception
+
+C<method set_exception : void ($exception : string);>
+
+Sets an excetpion.
 
 =head1 Copyright & License
 

@@ -3,4 +3,33 @@
 
 class Native::API {
   
+  use Native::Env;
+  use Native::Stack;
+  
+  # Fields
+  has env : Native::Env;
+  
+  has stack : Native::Stack;
+  
+  # Class Methods
+  native static method new : Native::API ($env : Native::Env, $stack : Native::Stack);
+  
+  # Instance Methods
+  native method new_env : Native::Env ();
+  
+  native method set_command_info_program_name : void ($program_name : string);
+  
+  native method set_command_info_argv : void ($argv : string[]);
+  
+  native method set_command_info_base_time : void ($base_time : long);
+  
+  native method call_init_methods : void ();
+  
+  native method destroy_class_vars : void ();
+  
+  native method new_stack : Native::Stack ();
+  
+  native method get_exception : string ();
+  
+  native method set_exception : void ($exception : string);
 }

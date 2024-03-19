@@ -30,7 +30,7 @@ A call stack is build by the L<new_stack|/"new_stack"> method in this class.
 
 The C<Native::Env> class is a L<pointer class|SPVM::Document::Language/"Pointer Class">.
 
-Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::NativeAPI/"Execution Native::Environment"> type.
+Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::NativeClass/"Execution Native::Environment"> type.
 
 =head1 Fields
 
@@ -58,14 +58,6 @@ C<method call_init_methods : void ();>
 
 Calls all L<INIT blocks|SPVM::Document::Language/"INIT Block">.
 
-=head2 new_stack
-
-C<method new_stack : L<Native::Stack|SPVM::Native::Stack> ();>
-
-Builds a call stack and returns it.
-
-The return type is the L<Native::Stack|SPVM::Native::Stack> class.
-
 =head2 get_exception
 
 C<method get_exception : string ();>
@@ -83,6 +75,14 @@ Sets an excetpion.
 C<method DESTROY : void ();>
 
 The destructor.
+
+=head2 new_stack
+
+C<method new_stack : L<Native::Stack|SPVM::Native::Stack> ();>
+
+Builds a call stack and returns it.
+
+The return type is the L<Native::Stack|SPVM::Native::Stack> class.
 
 =head1 See Also
 

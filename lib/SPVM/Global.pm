@@ -148,6 +148,7 @@ sub init_api {
       Native::BasicType
       Native::Stack
       Native::Env
+      Native::API
     );
     
     my $builder_runtime = $builder_compiler->get_runtime;
