@@ -16,7 +16,7 @@ The Native::Env class in L<SPVM> represents an L<runtime environment|SPVM::Docum
 
   use Native::Env;
   
-  my $env = $runtime->get_env;
+  my $env = $runtime->new_env;
   
   my $stack = $env->new_stack;
 
@@ -28,19 +28,11 @@ Its insntace has the pointer to an object of the L<SPVM_ENV|SPVM::Document::Nati
 
 =head1 Fields
 
+C<has runtime : ro Native::Runtime;>
+
+The runtime for this runtime environment.
+
 =head1 Instance Methods
-
-=head2 get_exception
-
-C<method get_exception : string ();>
-
-Gets the excetpion.
-
-=head2 set_exception
-
-C<method set_exception : void ($exception : string);>
-
-Sets an excetpion.
 
 =head2 DESTROY
 

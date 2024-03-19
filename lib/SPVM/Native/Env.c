@@ -5,22 +5,6 @@
 
 static const char* FILE_NAME = "Native/Env.c";
 
-int32_t SPVM__Native__Env__get_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  stack[0].oval = env->get_exception(env, stack);
-  
-  return 0;
-}
-
-int32_t SPVM__Native__Env__set_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* obj_exception = stack[0].oval;
-  
-  env->set_exception(env, stack, obj_exception);
-  
-  return 0;
-}
-
 int32_t SPVM__Native__Env__new_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id = 0;
