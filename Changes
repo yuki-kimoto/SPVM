@@ -4,6 +4,7 @@
     * Remove the Native::Runtime::Info class and its methods are moved to the Native::Runtime::Class.
     * Remove the info method in the Native class.
   [Internal Changes]
+    * Remove the SPVM::Builder::Native::Runtime::Info module.
   
 0.989088 2023-03-19
   [New Features]

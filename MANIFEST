@@ -143,7 +143,6 @@ lib/SPVM/Builder/Native/Compiler.pm
 lib/SPVM/Builder/Native/Env.pm
 lib/SPVM/Builder/Native/Method.pm
 lib/SPVM/Builder/Native/Runtime.pm
-lib/SPVM/Builder/Native/Runtime/Info.pm
 lib/SPVM/Builder/Native/Stack.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm
