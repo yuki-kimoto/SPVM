@@ -167,6 +167,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Method');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::Arg');
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::MethodCall');
+    $make_rule .= SPVM::Builder::Util::API::create_make_rule_native('Native::API');
     
     # Build precompile
     $make_rule .= SPVM::Builder::Util::API::create_make_rule_precompile('Fn');

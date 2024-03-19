@@ -28,7 +28,7 @@ int32_t SPVM__Native__API__new(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, stack, "The runtime stack $stack must be defined.", __func__, __FILE__, __LINE__);
   }
   
-  SPVM_VALUE* api_stack = stack->get_pointer(stack, stack, obj_api_stack);
+  SPVM_VALUE* api_stack = env->get_pointer(env, stack, obj_api_stack);
   
   env->set_field_object_by_name(env, stack, obj_self, "stack", obj_api_stack, &error_id, __func__, FILE_NAME, __LINE__);
   
@@ -54,10 +54,10 @@ int32_t SPVM__Native__API__call_init_methods(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_ENV* api_env = env->get_pointer(env, stack, obj_api_env);
   
-  void* obj_api_stack = stack->get_field_object_by_name(stack, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_api_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  SPVM_VALUE* api_stack = stack->get_pointer(stack, stack, obj_api_stack);
+  SPVM_VALUE* api_stack = env->get_pointer(env, stack, obj_api_stack);
   
   api_env->call_init_methods(api_env, api_stack);
   
@@ -75,10 +75,10 @@ int32_t SPVM__Native__API__destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   SPVM_ENV* api_env = env->get_pointer(env, stack, obj_api_env);
   
-  void* obj_api_stack = stack->get_field_object_by_name(stack, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_api_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  SPVM_VALUE* api_stack = stack->get_pointer(stack, stack, obj_api_stack);
+  SPVM_VALUE* api_stack = env->get_pointer(env, stack, obj_api_stack);
   
   api_env->destroy_class_vars(api_env, api_stack);
   
@@ -96,10 +96,10 @@ int32_t SPVM__Native__API__set_command_info_program_name(SPVM_ENV* env, SPVM_VAL
   
   SPVM_ENV* api_env = env->get_pointer(env, stack, obj_api_env);
   
-  void* obj_api_stack = stack->get_field_object_by_name(stack, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_api_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  SPVM_VALUE* api_stack = stack->get_pointer(stack, stack, obj_api_stack);
+  SPVM_VALUE* api_stack = env->get_pointer(env, stack, obj_api_stack);
   
   void* obj_program_name = stack[1].oval;
   
@@ -123,16 +123,16 @@ int32_t SPVM__Native__API__set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stac
   
   SPVM_ENV* api_env = env->get_pointer(env, stack, obj_api_env);
   
-  void* obj_api_stack = stack->get_field_object_by_name(stack, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_api_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  SPVM_VALUE* api_stack = stack->get_pointer(stack, stack, obj_api_stack);
+  SPVM_VALUE* api_stack = env->get_pointer(env, stack, obj_api_stack);
   
   void* obj_argv = stack[1].oval;
   
   void* obj_argv_copy = NULL;
   {
-    stack[0].oval = obj_program_name;
+    stack[0].oval = obj_argv;
     env->call_class_method_by_name(env, stack, "Array", "copy_string", 1, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
     obj_argv_copy = stack[0].oval;
@@ -155,10 +155,10 @@ int32_t SPVM__Native__API__set_command_info_base_time(SPVM_ENV* env, SPVM_VALUE*
   
   SPVM_ENV* api_env = env->get_pointer(env, stack, obj_api_env);
   
-  void* obj_api_stack = stack->get_field_object_by_name(stack, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_api_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  SPVM_VALUE* api_stack = stack->get_pointer(stack, stack, obj_api_stack);
+  SPVM_VALUE* api_stack = env->get_pointer(env, stack, obj_api_stack);
   
   int64_t base_time = stack[1].lval;
   
@@ -179,10 +179,10 @@ int32_t SPVM__Native__API__get_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   SPVM_ENV* api_env = env->get_pointer(env, stack, obj_api_env);
   
-  void* obj_api_stack = stack->get_field_object_by_name(stack, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  void* obj_api_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
   
-  SPVM_VALUE* api_stack = stack->get_pointer(stack, stack, obj_api_stack);
+  SPVM_VALUE* api_stack = env->get_pointer(env, stack, obj_api_stack);
   
   void* obj_exception = api_env->get_exception(api_env, api_stack);
   

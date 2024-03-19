@@ -6,17 +6,11 @@ package SPVM::Native::Env;
 
 =head1 Name
 
-SPVM::Native::Env - Execution Native::Environment
+SPVM::Native::Env - Runtime Environment
 
 =head1 Description
 
-C<SPVM::Native::Env> is the C<Native::Env> class in the L<SPVM> language. 
-
-The instance is an execution environemnt. It has the Native APIs and the data of class variables.
-
-An instance of the C<Native::Env> class is build by the L<get_env|SPVM::Native::Runtime/"get_env"> method in the L<Native::Runtime|SPVM::Native::Runtime> class.
-
-A call stack is build by the L<new_stack|/"new_stack"> method in this class.
+The Native::Env class in L<SPVM> represents an L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment">.
 
 =head1 Usage
 
@@ -26,21 +20,15 @@ A call stack is build by the L<new_stack|/"new_stack"> method in this class.
   
   my $stack = $env->new_stack;
 
-=head1 Pointer
+=head1 Details
 
-The C<Native::Env> class is a L<pointer class|SPVM::Document::Language/"Pointer Class">.
+This class is a pointer class.
 
-Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::NativeClass/"Execution Native::Environment"> type.
+Its insntace has the pointer to an object of the L<SPVM_ENV|SPVM::Document::NativeClass/"Runtime Environment"> type.
 
 =head1 Fields
 
 =head1 Instance Methods
-
-=head2 set_command_info
-
-C<method set_command_info : void ($program_name : string, $argv : string[]);>
-
-Sets command line information.
 
 =head2 call_init_methods
 

@@ -15,8 +15,6 @@ class Native::API {
   native static method new : Native::API ($env : Native::Env, $stack : Native::Stack);
   
   # Instance Methods
-  native method new_env : Native::Env ();
-  
   native method set_command_info_program_name : void ($program_name : string);
   
   native method set_command_info_argv : void ($argv : string[]);
@@ -26,8 +24,6 @@ class Native::API {
   native method call_init_methods : void ();
   
   native method destroy_class_vars : void ();
-  
-  native method new_stack : Native::Stack ();
   
   native method get_exception : string ();
   

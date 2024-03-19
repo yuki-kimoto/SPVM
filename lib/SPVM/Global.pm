@@ -212,7 +212,9 @@ sub init_api {
     $COMPILER = $compiler;
     $API = SPVM::ExchangeAPI->new(env => $env, stack => $stack);
     
-    $env->set_command_info_program_name($stack, $0);
+    my $native_api = $builder_api->class("Native::API")->new($env, $stack);
+    
+    $native_api->set_command_info_program_name($0);
     
     $env->set_command_info_argv($stack, \@ARGV);
     my $base_time = $^T + 0; # For Perl 5.8.9

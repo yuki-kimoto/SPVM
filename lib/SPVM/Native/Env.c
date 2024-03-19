@@ -31,25 +31,6 @@ int32_t SPVM__Native__Env__destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack) 
   return 0;
 }
 
-int32_t SPVM__Native__Env__set_command_info_program_name(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id;
-  
-  void* obj_my_env = stack[0].oval;
-  SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
-  
-  void* obj_my_stack = stack[1].oval;
-  SPVM_VALUE* my_stack = env->get_pointer(env, stack, obj_my_stack);
-  
-  void* obj_program_name = stack[2].oval;
-  
-  error_id = my_env->set_command_info_program_name(my_env, my_stack, obj_program_name);
-  if (error_id) { return error_id; }
-  
-  return 0;
-}
-
-
 int32_t SPVM__Native__Env__set_command_info_argv(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_id;
