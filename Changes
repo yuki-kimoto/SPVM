@@ -20,6 +20,7 @@
     * The new method in the Native::Env class throws an exception.
     
       The compiler $compiler must be defined, otherwise an exception is thrown.
+    * Remove the new method in the Native::Env.
     
 0.989087 2023-03-14
   [Document Improvement and Changes]

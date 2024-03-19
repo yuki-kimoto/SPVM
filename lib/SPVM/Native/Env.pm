@@ -34,16 +34,6 @@ Its insntace has a pointer to an object of the L<SPVM_ENV|SPVM::Document::Native
 
 =head1 Fields
 
-=head1 Class Methods
-
-C<static method new : L<Native::Env|SPVM::Native::Env> ($runtime : L<Native::Runtime|SPVM::Native::Runtime>);>
-
-Creates a new L<Native::Env|SPVM::Native::Env> ojbect, and returns it.
-
-Exceptions:
-
-The runtime $runtime must be defined, otherwise an exception is thrown.
-
 =head1 Instance Methods
 
 =head2 set_command_info
