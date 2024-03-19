@@ -42,7 +42,7 @@ Creates a new L<Native::Env|SPVM::Native::Env> ojbect, and returns it.
 
 Exceptions:
 
-The compiler $compiler must be defined, otherwise an exception is thrown.
+The runtime $runtime must be defined, otherwise an exception is thrown.
 
 =head1 Instance Methods
 

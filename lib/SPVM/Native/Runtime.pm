@@ -78,6 +78,12 @@ C<method get_compiler : L<Native::Compiler|SPVM::Native::Compiler> ();>
 
 Gets the compiler that built this runtime.
 
+=head2 new_env
+
+C<static method new_env : L<Native::Env|SPVM::Native::Env> ();>
+
+Creates a new L<Native::Env|SPVM::Native::Env> ojbect, and returns it.
+
 =head1 See Also
 
 =head2 Native::Compiler

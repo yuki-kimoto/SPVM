@@ -56,4 +56,6 @@ class Native::Runtime : pointer {
   }
   
   native method get_compiler : Native::Compiler ();
+  
+  native method new_env : Native::Env ();
 }
