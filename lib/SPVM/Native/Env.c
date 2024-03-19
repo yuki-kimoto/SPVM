@@ -5,19 +5,6 @@
 
 static const char* FILE_NAME = "Native/Env.c";
 
-int32_t SPVM__Native__Env__destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* obj_my_env = stack[0].oval;
-  SPVM_ENV* my_env = env->get_pointer(env, stack, obj_my_env);
-  
-  void* obj_my_stack = stack[1].oval;
-  SPVM_VALUE* my_stack = env->get_pointer(env, stack, obj_my_stack);
-  
-  my_env->destroy_class_vars(my_env, my_stack);
-  
-  return 0;
-}
-
 int32_t SPVM__Native__Env__get_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = env->get_exception(env, stack);

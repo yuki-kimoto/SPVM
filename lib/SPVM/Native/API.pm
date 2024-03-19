@@ -56,6 +56,12 @@ C<method call_init_methods : void ();>
 
 Calls all L<INIT blocks|SPVM::Document::Language::Class/"INIT Block"> in this instance.
 
+=head2 destroy_class_vars
+
+C<method destroy_class_vars : void ();>
+
+Destroys all class variables in this instance.
+
 =head2 get_exception
 
 C<method get_exception : string ();>

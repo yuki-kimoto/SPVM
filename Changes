@@ -16,6 +16,7 @@
     * Remove the set_command_info_argv in the Native::Env and add the set_command_info_argv method to the Native::API class.
     * Remove the set_command_info_base_time in the Native::Env and add the set_command_info_base_time method to the Native::API class.
     * Remove the call_init_methods in the Native::Env and add the call_init_methods method to the Native::API class.
+    * Remove the destroy_class_vars in the Native::Env and add the destroy_class_vars method to the Native::API class.
   
 0.989087 2023-03-14
   [Document Improvement and Changes]

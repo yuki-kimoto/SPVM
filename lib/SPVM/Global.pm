@@ -22,7 +22,10 @@ END {
       # Remove circular reference
       my $env = delete $API->{env};
       my $stack = delete $API->{stack};
-      $env->destroy_class_vars($stack);
+      
+      my $native_api = $BUILDER_API->class("Native::API")->new($env, $stack);
+      
+      $native_api->destroy_class_vars;
     }
     
     $API = undef;
