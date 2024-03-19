@@ -44,6 +44,12 @@ C<method set_command_info_argv : void ($argv : string[]);>
 
 Copies the command line arguments $argv and sets the L<argv|CommandInfo/"argv"> class variable in the C<CommandInfo> class in this instance to it.
 
+=head2 set_command_info_base_time
+
+C<method set_command_info_base_time : void ($base_time : long);>
+
+Sets the L<base_time|CommandInfo/"base_time"> class variable in the C<CommandInfo> in this instance class to the base time $base_time.
+
 =head2 call_init_methods
 
 C<method call_init_methods : void ();>

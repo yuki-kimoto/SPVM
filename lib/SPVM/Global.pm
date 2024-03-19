@@ -219,7 +219,7 @@ sub init_api {
     $native_api->set_command_info_argv(\@ARGV);
     
     my $base_time = $^T + 0; # +0 is for Perl 5.8.9
-    $env->set_command_info_base_time($stack, $base_time);
+    $native_api->set_command_info_base_time($base_time);
   }
 }
 
