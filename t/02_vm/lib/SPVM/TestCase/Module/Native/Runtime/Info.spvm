@@ -142,12 +142,12 @@ class TestCase::Module::Native::Runtime::Info {
     return 1;
   }
   
-  static method get_method : int () {
+  static method get_method_by_name : int () {
     
     {
       my $current_runtime_info = Native->info;
       
-      my $method = $current_runtime_info->get_method("Fn", "join");
+      my $method = $current_runtime_info->get_method_by_name("Fn", "join");
       
       unless ($method is_type Native::Method) {
         return 0;
@@ -164,12 +164,12 @@ class TestCase::Module::Native::Runtime::Info {
     return 1;
   }
   
-  static method get_field : int () {
+  static method get_field_by_name : int () {
     
     {
       my $current_runtime_info = Native->info;
       
-      my $field = $current_runtime_info->get_field("Point", "x");
+      my $field = $current_runtime_info->get_field_by_name("Point", "x");
       
       unless ($field is_type Native::Field) {
         return 0;
@@ -186,12 +186,12 @@ class TestCase::Module::Native::Runtime::Info {
     return 1;
   }
   
-  static method get_class_var : int () {
+  static method get_class_var_by_name : int () {
     
     {
       my $current_runtime_info = Native->info;
       
-      my $class_var = $current_runtime_info->get_class_var("Bool", "\$TRUE");
+      my $class_var = $current_runtime_info->get_class_var_by_name("Bool", "\$TRUE");
       
       unless ($class_var is_type Native::ClassVar) {
         return 0;

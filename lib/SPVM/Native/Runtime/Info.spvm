@@ -115,7 +115,7 @@ class Native::Runtime::Info {
     return $class_var_names;
   }
   
-  method get_method : Native::Method ($class_name : string, $method_name : string) {
+  method get_method_by_name : Native::Method ($class_name : string, $method_name : string) {
     
     my $runtime = $self->{runtime};
     
@@ -126,7 +126,7 @@ class Native::Runtime::Info {
     return $method;
   }
   
-  method get_field : Native::Field ($class_name : string, $field_name : string) {
+  method get_field_by_name : Native::Field ($class_name : string, $field_name : string) {
     
     my $runtime = $self->{runtime};
     
@@ -137,7 +137,7 @@ class Native::Runtime::Info {
     return $field;
   }
   
-  method get_class_var : Native::ClassVar ($class_name : string, $class_var_name : string) {
+  method get_class_var_by_name : Native::ClassVar ($class_name : string, $class_var_name : string) {
     
     my $runtime = $self->{runtime};
     
