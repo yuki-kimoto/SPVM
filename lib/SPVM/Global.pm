@@ -11,40 +11,20 @@ use SPVM::ExchangeAPI;
 my $COMPILER;
 my $API;
 
-my $BUILDER_COMPILER;
-my $BUILDER_API;
-
 END {
   
   if ($API) {
-    # TODO - this compilation is removed in the near feature
-    #        because the SPVM language must be compile by C and Perl only.
-    
     {
       # Remove circular reference
       my $env = delete $API->{env};
       my $stack = delete $API->{stack};
       
-      my $native_api = $BUILDER_API->class("Native::API")->new($env, $stack);
-      
-      $native_api->destroy_class_vars;
+      $env->destroy_class_vars($stack);
     }
     
     $API = undef;
     
     $COMPILER = undef;
-    
-    {
-      # Remove circular reference
-      my $env = delete $BUILDER_API->{env};
-      my $stack = delete $BUILDER_API->{stack};
-      
-      $env->destroy_class_vars($stack);
-    }
-    
-    $BUILDER_API = undef;
-    
-    $BUILDER_COMPILER = undef;
   }
 }
 
@@ -65,45 +45,9 @@ sub build_class {
   my $build_success;
   if (defined $class_name) {
     
-    # TODO - this compilation is removed in the near feature
-    #        because the SPVM language must be compile by C and Perl only.
     {
       my $api = $API;
       my $compiler = $COMPILER;
-      
-      my $env = $api->env;
-      
-      my $runtime = $compiler->get_runtime;
-      my $start_basic_types_length = $runtime->get_basic_types_length;
-      
-      $compiler->set_start_file($file);
-      $compiler->set_start_line($line);
-      eval { $compiler->compile($class_name) };
-      if ($@) {
-        my $error_messages = $compiler->get_error_messages;
-        for my $error_message (@$error_messages) {
-          printf STDERR "[CompileError]$error_message\n";
-        }
-        $compiler = undef;
-        exit(255);
-      }
-      my $basic_types_length = $runtime->get_basic_types_length;
-      
-      for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
-        my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-        &load_dynamic_lib($runtime, $basic_type->get_name->to_string);
-      }
-      
-      my $stack = $api->stack;
-      
-      my $native_api = $BUILDER_API->class("Native::API")->new($env, $stack);
-      
-      $native_api->call_init_methods;
-    }
-    
-    {
-      my $api = $BUILDER_API;
-      my $compiler = $BUILDER_COMPILER;
       
       my $env = $api->env;
       
@@ -139,15 +83,7 @@ sub init_api {
       include_dirs => $builder->include_dirs
     );
     
-    my @native_compiler_class_name_names = qw(
-      Native::Compiler
-      Native::Method
-      Native::Runtime
-      Native::BasicType
-      Native::Stack
-      Native::Env
-      Native::API
-    );
+    my @native_compiler_class_name_names = qw(Int);
     
     my $builder_runtime = $builder_compiler->get_runtime;
     
@@ -174,8 +110,8 @@ sub init_api {
     
     my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
     
-    $BUILDER_COMPILER = $builder_compiler;
-    $BUILDER_API = $builder_api;
+    $COMPILER = $builder_compiler;
+    $API = $builder_api;
     
     {
       $builder_env->set_command_info_program_name($builder_stack, $0);
@@ -184,31 +120,6 @@ sub init_api {
       my $base_time = $^T + 0; # For Perl 5.8.9
       $builder_env->set_command_info_base_time($builder_stack, $base_time);
     }
-    
-    my $compiler = $builder_api->class("Native::Compiler")->new;
-    for my $include_dir (@{$builder->include_dirs}) {
-      $compiler->add_include_dir($include_dir);
-    }
-    
-    $compiler->compile(undef);
-    
-    my $runtime = $compiler->get_runtime;
-    
-    my $env = $runtime->new_env;
-    
-    my $stack = $env->new_stack;
-    
-    $COMPILER = $compiler;
-    $API = SPVM::ExchangeAPI->new(env => $env, stack => $stack);
-    
-    my $native_api = $builder_api->class("Native::API")->new($env, $stack);
-    
-    $native_api->set_command_info_program_name($0);
-    
-    $native_api->set_command_info_argv(\@ARGV);
-    
-    my $base_time = $^T + 0; # +0 is for Perl 5.8.9
-    $native_api->set_command_info_base_time($base_time);
   }
 }
 
@@ -222,6 +133,20 @@ sub load_dynamic_lib_v2 {
       # Build classes - Compile C source codes and link them generating a dynamic link library
       my $class_file = $runtime->get_class_file($class_name);
       my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
+      
+      # Try to build the shared library at runtime if shared library is not found
+      unless (-f $dynamic_lib_file) {
+        my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
+        my $builder = SPVM::Builder->new(build_dir => $build_dir);
+        $dynamic_lib_file = $builder->build_jit(
+          $class_name,
+          {
+            runtime => $runtime,
+            class_file => $class_file,
+            category => $category,
+          }
+        );
+      }
       
       if (-f $dynamic_lib_file) {
         my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
@@ -319,7 +244,7 @@ my $BIND_TO_PERL_CLASS_NAME_H = {};
 sub bind_to_perl {
   my ($class_name) = @_;
   
-  my $env = $BUILDER_API->env;
+  my $env = $API->env;
   
   my $runtime = $env->runtime;
   
