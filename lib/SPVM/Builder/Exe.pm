@@ -12,7 +12,7 @@ use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
 
 use SPVM::Builder::Native::Compiler;
-use SPVM::Builder::Native::Runtime::Info;
+use SPVM::Builder::Native::Runtime;
 use SPVM::Builder::Native::BasicType;
 use SPVM::Builder::Native::ClassFile;
 
@@ -113,17 +113,6 @@ sub runtime {
   }
   else {
     return $self->{runtime};
-  }
-}
-
-sub runtime_info {
-  my $self = shift;
-  if (@_) {
-    $self->{runtime_info} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{runtime_info};
   }
 }
 
@@ -339,15 +328,12 @@ sub compile {
   
   $self->runtime($runtime);
   
-  my $runtime_info = SPVM::Builder::Native::Runtime::Info->new(boot_env => $runtime->boot_env, runtime => $runtime);
-  $self->runtime_info($runtime_info);
-  
 }
 
 sub compile_classes {
   my ($self) = @_;
   
-  my $class_names = $self->runtime_info->get_class_names;
+  my $class_names = $self->runtime->get_class_names;
   
   my $object_files = [];
   for my $class_name (@$class_names) {
@@ -424,7 +410,7 @@ sub create_bootstrap_header_source {
 
   my $class_name = $self->class_name;
 
-  my $class_names = $self->runtime_info->get_class_names;
+  my $class_names = $self->runtime->get_class_names;
   
   my $source = '';
   
@@ -500,7 +486,7 @@ sub create_bootstrap_main_func_source {
 
   my $class_name = $self->class_name;
 
-  my $class_names = $self->runtime_info->get_class_names;
+  my $class_names = $self->runtime->get_class_names;
 
   my $source = '';
 
@@ -626,7 +612,7 @@ static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler) {
   
 EOS
   
-  my $class_names = $self->runtime_info->get_class_names;
+  my $class_names = $self->runtime->get_class_names;
   
   my $compiler = $self->compiler;
   
@@ -699,7 +685,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $class_names = $self->runtime_info->get_class_names;
+  my $class_names = $self->runtime->get_class_names;
 
   my $source = '';
 
@@ -731,7 +717,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $class_names = $self->runtime_info->get_class_names;
+  my $class_names = $self->runtime->get_class_names;
 
   my $source = '';
 
@@ -765,7 +751,7 @@ sub create_bootstrap_source {
   
   my $class_name = $self->class_name;
   
-  my $class_names = $self->runtime_info->get_class_names;
+  my $class_names = $self->runtime->get_class_names;
   
   my $class_files = [];
   for my $class_name (@$class_names) {
