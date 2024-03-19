@@ -4,6 +4,7 @@ use warnings;
 use Carp 'confess';
 
 use SPVM::Builder;
+use SPVM::Builder::Native::Runtime::Info;
 use SPVM::ExchangeAPI;
 
 my $COMPILER;
@@ -158,6 +159,8 @@ sub init_api {
     
     my $builder_runtime = $builder_compiler->get_runtime;
     
+    my $builder_runtime_info = SPVM::Builder::Native::Runtime::Info->new(boot_env => $builder_runtime->boot_env, runtime => $builder_runtime);
+    
     for my $native_compiler_class_name_name (@native_compiler_class_name_names) {
       $builder_compiler->compile_with_exit($native_compiler_class_name_name, __FILE__, __LINE__);
       
@@ -165,7 +168,7 @@ sub init_api {
       {
         my $class_name = $native_compiler_class_name_name;
         my $category = 'native';
-        my $method_names = $builder_runtime->get_method_names($class_name, $category);
+        my $method_names = $builder_runtime_info->get_method_names($class_name, $category);
         
         if (@$method_names) {
           # Build classes - Compile C source codes and link them generating a dynamic link library

@@ -30,8 +30,8 @@ sub new {
   my $class = shift;
   
   my $self = bless {
-    @_;
-  }, __PACKAGE__;
+    @_
+  }, ref $class || $class;
   
   return $self;
 }
