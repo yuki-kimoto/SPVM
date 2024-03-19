@@ -14,6 +14,7 @@
       static method new_env : Native::Env ();
     * Remove the set_command_info_program_name method in the Native::Env and add the set_command_info_program_name method to the Native::API class.
     * Remove the set_command_info_argv in the Native::Env and add the set_command_info_argv method to the Native::API class.
+    * Remove the set_command_info_base_time in the Native::Env and add the set_command_info_base_time method to the Native::API class.
   
 0.989087 2023-03-14
   [Document Improvement and Changes]
