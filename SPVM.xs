@@ -4807,42 +4807,6 @@ get_compiler(...)
 }
 
 SV*
-get_method_is_class_method(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
-  const char* class_name = SvPV_nolen(sv_class_name);
-  
-  const char* method_name = SvPV_nolen(sv_method_name);
-  
-  void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, class_name);
-  
-  assert(basic_type);
-  
-  void* method = boot_env->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
-  
-  assert(method);
-  
-  int32_t is_class_method = boot_env->api->method->is_class_method(runtime, method);
-  
-  SV* sv_is_class_method = sv_2mortal(newSViv(is_class_method));
-  
-  XPUSHs(sv_is_class_method);
-  XSRETURN(1);
-}
-
-SV*
 get_method_names(...)
   PPCODE:
 {
@@ -5704,6 +5668,31 @@ is_precompile(...)
   SV* sv_is_precompile = sv_2mortal(newSViv(is_precompile));
   
   XPUSHs(sv_is_precompile);
+  XSRETURN(1);
+}
+
+SV*
+is_class_method(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* method = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  int32_t is_class_method = boot_env->api->method->is_class_method(runtime, method);
+  
+  SV* sv_is_class_method = sv_2mortal(newSViv(is_class_method));
+  
+  XPUSHs(sv_is_class_method);
   XSRETURN(1);
 }
 
