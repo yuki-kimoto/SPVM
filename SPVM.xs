@@ -4722,66 +4722,6 @@ get_class_file(...)
   XSRETURN(1);
 }
 
-SV*
-get_class_file_h(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  SV* sv_class_name = ST(1);
-  const char* class_name = SvPV_nolen(sv_class_name);
-  
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env_api)));
-  
-  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  void* class_file = boot_env->api->compiler->get_class_file(compiler, class_name);
-  SV* sv_class_file = &PL_sv_undef;
-  if (class_file) {
-    HV* hv_class_file = (HV*)sv_2mortal((SV*)newHV());
-    
-    (void)hv_store(hv_class_file, "class_name", strlen("class_name"), SvREFCNT_inc(sv_class_name), 0);
-    
-    const char* file = boot_env->api->class_file->get_file(compiler, class_file);
-    if (file) {
-      SV* sv_file = sv_2mortal(newSVpv(file, 0));
-      (void)hv_store(hv_class_file, "file", strlen("file"), SvREFCNT_inc(sv_file), 0);
-    }
-    
-    const char* dir = boot_env->api->class_file->get_dir(compiler, class_file);
-    if (dir) {
-      SV* sv_dir = sv_2mortal(newSVpv(dir, 0));
-      (void)hv_store(hv_class_file, "dir", strlen("dir"), SvREFCNT_inc(sv_dir), 0);
-    }
-    
-    const char* rel_file = boot_env->api->class_file->get_rel_file(compiler, class_file);
-    if (rel_file) {
-      SV* sv_rel_file = sv_2mortal(newSVpv(rel_file, 0));
-      (void)hv_store(hv_class_file, "rel_file", strlen("rel_file"), SvREFCNT_inc(sv_rel_file), 0);
-    }
-    
-    const char* content = boot_env->api->class_file->get_content(compiler, class_file);
-    if (content) {
-      SV* sv_content = sv_2mortal(newSVpv(content, 0));
-      (void)hv_store(hv_class_file, "content", strlen("content"), SvREFCNT_inc(sv_content), 0);
-    }
-    
-    int32_t content_length = boot_env->api->class_file->get_content_length(compiler, class_file);
-    SV* sv_content_length = sv_2mortal(newSViv(content_length));
-    (void)hv_store(hv_class_file, "content_length", strlen("content_length"), SvREFCNT_inc(sv_content_length), 0);
-    
-    sv_class_file = sv_2mortal(newRV_inc((SV*)hv_class_file));
-  }
-  
-  XPUSHs(sv_class_file);
-  
-  XSRETURN(1);
-}
-
 MODULE = SPVM::Builder::Native::Runtime		PACKAGE = SPVM::Builder::Native::Runtime
 
 SV*
