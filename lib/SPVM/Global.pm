@@ -114,9 +114,8 @@ sub build_class {
       my $basic_types_length = $runtime->get_basic_types_length;
       
       # Load dynamic library
-      my $builder_runtime_info = SPVM::Builder::Native::Runtime::Info->new(boot_env => $runtime->boot_env, runtime => $runtime);
       for my $category ('precompile', 'native') {
-        my $method_names = $builder_runtime_info->get_method_names($class_name, $category);
+        my $method_names = $runtime->get_method_names($class_name, $category);
         
         if (@$method_names) {
           # Build classes - Compile C source codes and link them generating a dynamic link library
