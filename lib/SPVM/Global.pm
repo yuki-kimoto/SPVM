@@ -5,6 +5,7 @@ use Carp 'confess';
 
 use SPVM::Builder;
 use SPVM::Builder::Native::Runtime::Info;
+use SPVM::Builder::Native::Env;
 use SPVM::ExchangeAPI;
 
 my $COMPILER;
@@ -134,7 +135,7 @@ sub build_class {
       }
     }
     
-    &bind_to_perl($class_name);
+    &bind_to_perl_v2($class_name);
   }
 }
 
@@ -391,9 +392,7 @@ sub bind_to_perl_v2 {
   
   my $env = $BUILDER_API->env;
   
-  my $compiler = $env->runtime->get_compiler;
-  
-  my $runtime = $compiler->get_runtime;
+  my $runtime = $env->runtime;
   
   my $basic_type = $runtime->get_basic_type_by_name($class_name);
   
@@ -421,6 +420,7 @@ sub bind_to_perl_v2 {
     }
     
     my $methods_length = $basic_type->get_methods_length;
+    
     for (my $method_index = 0; $method_index < $methods_length; $method_index++) {
       my $method = $basic_type->get_method_by_index($method_index);
       
