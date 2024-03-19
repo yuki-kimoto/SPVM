@@ -1,4 +1,4 @@
-package SPVM::Builder::Method;
+package SPVM::Builder::Native::Method;
 
 use strict;
 use warnings;
@@ -41,7 +41,7 @@ sub runtime {
 
 =head1 Name
 
-SPVM::Builder::Method - Method Native APIs
+SPVM::Builder::Native::Method - Method Native APIs
 
 =head1 Copyright & License
 

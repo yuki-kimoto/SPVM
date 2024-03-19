@@ -5581,7 +5581,7 @@ get_method_by_index(...)
   SV* sv_method = &PL_sv_undef;
   
   if (method) {
-    sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+    sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Native::Method");
     HV* hv_method = (HV*)SvRV(sv_method);
     
     (void)hv_store(hv_method, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
@@ -5618,7 +5618,7 @@ get_method_by_name(...)
   SV* sv_method = &PL_sv_undef;
   
   if (method) {
-    sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Method");
+    sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Native::Method");
     HV* hv_method = (HV*)SvRV(sv_method);
     
     (void)hv_store(hv_method, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
@@ -5630,7 +5630,7 @@ get_method_by_name(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Builder::Method		PACKAGE = SPVM::Builder::Method
+MODULE = SPVM::Builder::Native::Method		PACKAGE = SPVM::Builder::Native::Method
 
 SV*
 get_name(...)
