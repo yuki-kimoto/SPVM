@@ -37,6 +37,22 @@ sub compiler {
   }
 }
 
+sub get_class_names {
+  my ($self) = @_;
+  
+  my $class_names = [];
+  
+  my $basic_type_names = $self->get_basic_type_names;
+  
+  for my $basic_type_name (@$basic_type_names) {
+    if ($basic_type_name =~ /^[A-Z]/ && $basic_type_name !~ /::anon::/) {
+      push @$class_names, $basic_type_name;
+    }
+  }
+  
+  return $class_names;
+}
+
 1;
 
 =head1 Name
