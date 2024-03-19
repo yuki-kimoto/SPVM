@@ -1,5 +1,52 @@
 package SPVM::Builder::Native::API;
 
+use strict;
+use warnings;
+
+sub pointer {
+  my $self = shift;
+  if (@_) {
+    $self->{pointer} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{pointer};
+  }
+}
+
+sub boot_env {
+  my $self = shift;
+  if (@_) {
+    $self->{boot_env} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{boot_env};
+  }
+}
+
+sub env {
+  my $self = shift;
+  if (@_) {
+    $self->{env} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env};
+  }
+}
+
+sub stack {
+  my $self = shift;
+  if (@_) {
+    $self->{stack} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{stack};
+  }
+}
+
 1;
 
 =head1 Name
