@@ -173,14 +173,20 @@ sub init_api {
     
     my $builder_runtime_info = SPVM::Builder::Native::Runtime::Info->new(boot_env => $builder_runtime->boot_env, runtime => $builder_runtime);
     
+    my $start_basic_types_length = $builder_runtime->get_basic_types_length;
+    
     for my $native_compiler_class_name_name (@native_compiler_class_name_names) {
       $builder_compiler->compile_with_exit($native_compiler_class_name_name, __FILE__, __LINE__);
+    }
+    
+    my $basic_types_length = $builder_runtime->get_basic_types_length;
+    
+    for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
+      my $basic_type = $builder_runtime->get_basic_type_by_id($basic_type_id);
+      my $class_name = $basic_type->get_name;
       
-      # Load dinamic libnaray - native only
-      {
-        my $class_name = $native_compiler_class_name_name;
-        my $category = 'native';
-        my $method_names = $builder_runtime_info->get_method_names($class_name, $category);
+      for my $category ('precompile', 'native') {
+        my $method_names = $builder_runtime->get_method_names($class_name, $category);
         
         if (@$method_names) {
           # Build classes - Compile C source codes and link them generating a dynamic link library
@@ -192,7 +198,12 @@ sub init_api {
             
             for my $method_name (sort keys %$method_addresses) {
               my $cfunc_address = $method_addresses->{$method_name};
-              $builder_runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
+              if ($category eq 'precompile') {
+                $builder_runtime->set_precompile_method_address($class_name, $method_name, $cfunc_address);
+              }
+              elsif ($category eq 'native') {
+                $builder_runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
+              }
             }
           }
         }
