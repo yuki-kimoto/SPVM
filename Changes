@@ -1,27 +1,18 @@
 0.989088 2023-03-18
   [New Features]
     * Add the Native::API class.
-    * Add the new_env method to the Native::Runtime class.
   [Internal Changes]
     * Add the SPVM::Builder::BasicType module.
     * Add the SPVM::Builder::Method module.
     * Add the SPVM::Builder::ClassFile module.
   [Incompatible Changes]
-    * Change the defenition of the new method in the Native::Env class.
-      [Before]
+    * Remove the new method in the Native::Env and add the new_env method to the Native::Runtime class.
+      [Removed]Native::Env
       static method new : Native::Env ($compiler : Native::Compiler = undef);
-      [After]
-      static method new : Native::Env ($compiler : Native::Compiler);
-    * Change the defenition of the new method in the Native::Env class.
-      [Before]
-      static method new : Native::Env ($compiler : Native::Compiler);
-      [After]
-      static method new : Native::Env ($runtime : Native::Runtime);
-    * The new method in the Native::Env class throws an exception.
-    
-      The compiler $compiler must be defined, otherwise an exception is thrown.
-    * Remove the new method in the Native::Env.
-    
+      
+      [Added]Native::Runtime
+      static method new_env : Native::Env ();
+      
 0.989087 2023-03-14
   [Document Improvement and Changes]
     * The heading "Type Assignability" to "Assignment Requirement".
