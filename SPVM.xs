@@ -53,7 +53,7 @@ void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_blessed_object) {
 SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   
   SPVM_ENV* env;
-  if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::Builder::Env")) {
+  if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::Builder::Native::Env")) {
     env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
   }
   else if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
@@ -72,7 +72,7 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
 SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   
   SPVM_VALUE* stack;
-  if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Stack")) {
+  if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Native::Stack")) {
     stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   }
   else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
@@ -4545,7 +4545,7 @@ get_basic_type_name(...)
 }
 
 
-MODULE = SPVM::Builder::Compiler		PACKAGE = SPVM::Builder::Compiler
+MODULE = SPVM::Builder::Native::Compiler		PACKAGE = SPVM::Builder::Native::Compiler
 
 SV*
 DESTROY(...)
@@ -4588,7 +4588,7 @@ create_native_compiler(...)
   
   void* runtime = env_api->api->compiler->get_runtime(compiler);
   
-  SV* sv_runtime = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ runtime, "SPVM::Builder::Runtime");
+  SV* sv_runtime = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ runtime, "SPVM::Builder::Native::Runtime");
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   
@@ -4772,7 +4772,7 @@ get_class_file_v2(...)
   SV* sv_class_file = &PL_sv_undef;
   
   if (class_file) {
-    sv_class_file = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ class_file, "SPVM::Builder::ClassFile");
+    sv_class_file = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ class_file, "SPVM::Builder::Native::ClassFile");
     
     (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
     
@@ -4783,7 +4783,7 @@ get_class_file_v2(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Builder::Runtime		PACKAGE = SPVM::Builder::Runtime
+MODULE = SPVM::Builder::Native::Runtime		PACKAGE = SPVM::Builder::Native::Runtime
 
 SV*
 get_compiler(...)
@@ -4800,7 +4800,7 @@ get_compiler(...)
   
   void* compiler = api_env->api->runtime->get_compiler(runtime);
   
-  SV* sv_compiler = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ compiler, "SPVM::Builder::Compiler");
+  SV* sv_compiler = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ compiler, "SPVM::Builder::Native::Compiler");
   
   XPUSHs(sv_compiler);
   
@@ -5197,7 +5197,7 @@ get_basic_type_by_name(...)
   SV* sv_basic_type = &PL_sv_undef;
   
   if (basic_type) {
-    sv_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type, "SPVM::Builder::BasicType");
+    sv_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type, "SPVM::Builder::Native::BasicType");
     
     (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
     
@@ -5208,7 +5208,7 @@ get_basic_type_by_name(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Builder::Env		PACKAGE = SPVM::Builder::Env
+MODULE = SPVM::Builder::Native::Env		PACKAGE = SPVM::Builder::Native::Env
 
 SV*
 new(...)
@@ -5220,7 +5220,7 @@ new(...)
   
   SPVM_ENV* new_env = SPVM_NATIVE_new_env();
   
-  SV* sv_self = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Env");
+  SV* sv_self = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ new_env, "SPVM::Builder::Native::Env");
   HV* hv_self = (HV*)SvRV(sv_self);
   
   if (SvOK(sv_compiler)) {
@@ -5405,7 +5405,7 @@ new_stack(...)
 
   // Create native_stack
   SPVM_VALUE* stack = env->new_stack(env);
-  SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ stack, "SPVM::Builder::Stack");
+  SV* sv_stack = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ stack, "SPVM::Builder::Native::Stack");
   HV* hv_stack = (HV*)SvRV(sv_stack);
 
   (void)hv_store(hv_stack, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
@@ -5414,7 +5414,7 @@ new_stack(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Builder::Stack		PACKAGE = SPVM::Builder::Stack
+MODULE = SPVM::Builder::Native::Stack		PACKAGE = SPVM::Builder::Native::Stack
 
 SV*
 DESTROY(...)
@@ -5438,7 +5438,7 @@ DESTROY(...)
   XSRETURN(0);
 }
 
-MODULE = SPVM::Builder::BasicType		PACKAGE = SPVM::Builder::BasicType
+MODULE = SPVM::Builder::Native::BasicType		PACKAGE = SPVM::Builder::Native::BasicType
 
 SV*
 get_parent(...)
@@ -5462,7 +5462,7 @@ get_parent(...)
   SV* sv_parent_basic_type = &PL_sv_undef;
   
   if (parent_basic_type) {
-    sv_parent_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ parent_basic_type, "SPVM::Builder::BasicType");
+    sv_parent_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ parent_basic_type, "SPVM::Builder::Native::BasicType");
     
     (void)hv_store(hv_self, "env_api", strlen("env_api"), SvREFCNT_inc(sv_env_api), 0);
     
@@ -5722,7 +5722,7 @@ is_precompile(...)
   XSRETURN(1);
 }
 
-MODULE = SPVM::Builder::ClassFile		PACKAGE = SPVM::Builder::ClassFile
+MODULE = SPVM::Builder::Native::ClassFile		PACKAGE = SPVM::Builder::Native::ClassFile
 
 SV*
 get_file(...)

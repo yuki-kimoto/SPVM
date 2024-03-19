@@ -589,7 +589,7 @@ sub _runtime_build_precompile_class_source {
   my ($runtime, $class_name, $category) = @_;
   
   my $precompile_source;
-  if ($runtime->isa('SPVM::Builder::Runtime')) {
+  if ($runtime->isa('SPVM::Builder::Native::Runtime')) {
     $precompile_source = $runtime->build_precompile_class_source($class_name);
   }
   elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
@@ -608,7 +608,7 @@ sub _runtime_get_class_file {
   my ($runtime, $class_name, $category) = @_;
   
   my $class_file;
-  if ($runtime->isa('SPVM::Builder::Runtime')) {
+  if ($runtime->isa('SPVM::Builder::Native::Runtime')) {
     $class_file = $runtime->get_class_file($class_name, $category);
   }
   elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
@@ -631,7 +631,7 @@ sub _runtime_get_method_names {
   my ($runtime, $class_name, $category) = @_;
   
   my $method_names;
-  if ($runtime->isa('SPVM::Builder::Runtime')) {
+  if ($runtime->isa('SPVM::Builder::Native::Runtime')) {
     $method_names = $runtime->get_method_names($class_name, $category);
   }
   elsif ($runtime->isa('SPVM::BlessedObject::Class')) {

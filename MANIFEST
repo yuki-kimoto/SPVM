@@ -1,3 +1,5 @@
+assign
+assign_object
 benchmark/benchmark-synopsys.pl
 benchmark/lib/SPVM/MyMath.spvm
 benchmark/lib/SPVM/MyMathNative.c
@@ -57,15 +59,11 @@ lib/SPVM/BlessedObject/String.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/API.pm
-lib/SPVM/Builder/BasicType.pm
 lib/SPVM/Builder/CC.pm
-lib/SPVM/Builder/ClassFile.pm
 lib/SPVM/Builder/CompileInfo.pm
-lib/SPVM/Builder/Compiler.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Config/Info.pm
-lib/SPVM/Builder/Env.pm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
@@ -138,10 +136,15 @@ lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
 lib/SPVM/Builder/LibInfo.pm
 lib/SPVM/Builder/LinkInfo.pm
-lib/SPVM/Builder/Method.pm
+lib/SPVM/Builder/Native/BasicType.pm
+lib/SPVM/Builder/Native/ClassFile.pm
+lib/SPVM/Builder/Native/Compiler.pm
+lib/SPVM/Builder/Native/Env.pm
+lib/SPVM/Builder/Native/Method.pm
+lib/SPVM/Builder/Native/Runtime.pm
+lib/SPVM/Builder/Native/Stack.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/Resource.pm
-lib/SPVM/Builder/Runtime.pm
 lib/SPVM/Builder/src/spvm_allocator.c
 lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
@@ -197,7 +200,6 @@ lib/SPVM/Builder/src/spvm_var_decl.c
 lib/SPVM/Builder/src/spvm_vm.c
 lib/SPVM/Builder/src/spvm_yacc.c
 lib/SPVM/Builder/src/spvm_yacc_util.c
-lib/SPVM/Builder/Stack.pm
 lib/SPVM/Builder/Util.pm
 lib/SPVM/Builder/Util/API.pm
 lib/SPVM/Byte.pm

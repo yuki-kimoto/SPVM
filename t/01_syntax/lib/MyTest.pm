@@ -91,7 +91,7 @@ sub compile_not_ok_file {
     unshift @{$builder->include_dirs}, $include_dir;
   }
 
-  my $compiler = SPVM::Builder::Compiler->new(
+  my $compiler = SPVM::Builder::Native::Compiler->new(
     include_dirs => $builder->include_dirs
   );
   
@@ -184,7 +184,7 @@ sub compile_ok_file {
     unshift @{$builder->include_dirs}, $include_dir;
   }
   
-  my $compiler = SPVM::Builder::Compiler->new(
+  my $compiler = SPVM::Builder::Native::Compiler->new(
     include_dirs => $builder->include_dirs
   );
   my $success = $compiler->compile($basic_type_name, $file, $line);

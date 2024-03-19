@@ -142,7 +142,7 @@ sub init_api {
     my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
     my $builder = SPVM::Builder->new(build_dir => $build_dir);
     
-    my $builder_compiler = SPVM::Builder::Compiler->new(
+    my $builder_compiler = SPVM::Builder::Native::Compiler->new(
       include_dirs => $builder->include_dirs
     );
     
@@ -184,7 +184,7 @@ sub init_api {
       }
     }
     
-    my $builder_env = SPVM::Builder::Env->new($builder_compiler);
+    my $builder_env = SPVM::Builder::Native::Env->new($builder_compiler);
     
     my $builder_stack = $builder_env->new_stack;
     

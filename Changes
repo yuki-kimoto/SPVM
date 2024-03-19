@@ -5,6 +5,13 @@
     * Add the SPVM::Builder::BasicType module.
     * Add the SPVM::Builder::Method module.
     * Add the SPVM::Builder::ClassFile module.
+    * Rename SPVM::Builder::BasicType to SPVM::Builder::Native::BasicType
+    * Rename SPVM::Builder::ClassFile to SPVM::Builder::Native::ClassFile
+    * Rename SPVM::Builder::Compiler to SPVM::Builder::Native::Compiler
+    * Rename SPVM::Builder::Runtime to SPVM::Builder::Native::Runtime
+    * Rename SPVM::Builder::Env to SPVM::Builder::Native::Env
+    * Rename SPVM::Builder::Stack to SPVM::Builder::Native::Stack
+
   [Incompatible Changes]
     * Remove the new method in the Native::Env and add the new_env method to the Native::Runtime class.
       [Removed]Native::Env
