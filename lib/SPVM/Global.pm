@@ -118,29 +118,7 @@ sub build_class {
         my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
         my $class_name = $basic_type->get_name;
         
-        for my $category ('precompile', 'native') {
-          my $method_names = $runtime->get_method_names($class_name, $category);
-          
-          if (@$method_names) {
-            # Build classes - Compile C source codes and link them generating a dynamic link library
-            my $class_file = $runtime->get_class_file($class_name);
-            my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
-            
-            if (-f $dynamic_lib_file) {
-              my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
-              
-              for my $method_name (sort keys %$method_addresses) {
-                my $cfunc_address = $method_addresses->{$method_name};
-                if ($category eq 'precompile') {
-                  $runtime->set_precompile_method_address($class_name, $method_name, $cfunc_address);
-                }
-                elsif ($category eq 'native') {
-                  $runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
-                }
-              }
-            }
-          }
-        }
+        &load_dynamic_lib_v2($runtime, $class_name);
       }
       
       my $stack = $api->stack;
@@ -185,29 +163,7 @@ sub init_api {
       my $basic_type = $builder_runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
       
-      for my $category ('precompile', 'native') {
-        my $method_names = $builder_runtime->get_method_names($class_name, $category);
-        
-        if (@$method_names) {
-          # Build classes - Compile C source codes and link them generating a dynamic link library
-          my $class_file = $builder_runtime->get_class_file($class_name);
-          my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
-          
-          if (-f $dynamic_lib_file) {
-            my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
-            
-            for my $method_name (sort keys %$method_addresses) {
-              my $cfunc_address = $method_addresses->{$method_name};
-              if ($category eq 'precompile') {
-                $builder_runtime->set_precompile_method_address($class_name, $method_name, $cfunc_address);
-              }
-              elsif ($category eq 'native') {
-                $builder_runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
-              }
-            }
-          }
-        }
-      }
+      &load_dynamic_lib_v2($builder_runtime, $class_name);
     }
     
     my $builder_env = $builder_runtime->new_env;
@@ -251,6 +207,34 @@ sub init_api {
     
     my $base_time = $^T + 0; # +0 is for Perl 5.8.9
     $native_api->set_command_info_base_time($base_time);
+  }
+}
+
+sub load_dynamic_lib_v2 {
+  my ($runtime, $class_name) = @_;
+  
+  for my $category ('precompile', 'native') {
+    my $method_names = $runtime->get_method_names($class_name, $category);
+    
+    if (@$method_names) {
+      # Build classes - Compile C source codes and link them generating a dynamic link library
+      my $class_file = $runtime->get_class_file($class_name);
+      my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
+      
+      if (-f $dynamic_lib_file) {
+        my $method_addresses = SPVM::Builder::Util::get_method_addresses($dynamic_lib_file, $class_name, $method_names, $category);
+        
+        for my $method_name (sort keys %$method_addresses) {
+          my $cfunc_address = $method_addresses->{$method_name};
+          if ($category eq 'precompile') {
+            $runtime->set_precompile_method_address($class_name, $method_name, $cfunc_address);
+          }
+          elsif ($category eq 'native') {
+            $runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
+          }
+        }
+      }
+    }
   }
 }
 
