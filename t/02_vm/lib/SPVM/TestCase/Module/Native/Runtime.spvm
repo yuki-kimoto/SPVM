@@ -1,4 +1,4 @@
-class TestCase::Module::Native::Runtime::Info {
+class TestCase::Module::Native::Runtime {
   use Native;
   use Fn;
   use Array;
@@ -7,7 +7,7 @@ class TestCase::Module::Native::Runtime::Info {
   static method get_basic_type_names : int () {
     
     {
-      my $current_runtime_info = Native->info;
+      my $current_runtime_info = Native->get_current_runtime;
       
       my $basic_type_names = $current_runtime_info->get_basic_type_names;
       
@@ -48,7 +48,7 @@ class TestCase::Module::Native::Runtime::Info {
   static method get_class_names : int () {
     
     {
-      my $current_runtime_info = Native->info;
+      my $current_runtime_info = Native->get_current_runtime;
       
       my $class_names = $current_runtime_info->get_class_names;
       
@@ -79,7 +79,7 @@ class TestCase::Module::Native::Runtime::Info {
   static method get_method_names : int () {
     
     {
-      my $current_runtime_info = Native->info;
+      my $current_runtime_info = Native->get_current_runtime;
       
       my $method_names = $current_runtime_info->get_method_names("Fn");
       
@@ -101,7 +101,7 @@ class TestCase::Module::Native::Runtime::Info {
   static method get_field_names : int () {
     
     {
-      my $current_runtime_info = Native->info;
+      my $current_runtime_info = Native->get_current_runtime;
       
       my $field_names = $current_runtime_info->get_field_names("Point");
       
@@ -123,7 +123,7 @@ class TestCase::Module::Native::Runtime::Info {
   static method get_class_var_names : int () {
     
     {
-      my $current_runtime_info = Native->info;
+      my $current_runtime_info = Native->get_current_runtime;
       
       my $class_var_names = $current_runtime_info->get_class_var_names("Bool");
       
@@ -145,7 +145,7 @@ class TestCase::Module::Native::Runtime::Info {
   static method get_method_by_name : int () {
     
     {
-      my $current_runtime_info = Native->info;
+      my $current_runtime_info = Native->get_current_runtime;
       
       my $method = $current_runtime_info->get_method_by_name("Fn", "join");
       
@@ -167,7 +167,7 @@ class TestCase::Module::Native::Runtime::Info {
   static method get_field_by_name : int () {
     
     {
-      my $current_runtime_info = Native->info;
+      my $current_runtime_info = Native->get_current_runtime;
       
       my $field = $current_runtime_info->get_field_by_name("Point", "x");
       
@@ -189,7 +189,7 @@ class TestCase::Module::Native::Runtime::Info {
   static method get_class_var_by_name : int () {
     
     {
-      my $current_runtime_info = Native->info;
+      my $current_runtime_info = Native->get_current_runtime;
       
       my $class_var = $current_runtime_info->get_class_var_by_name("Bool", "\$TRUE");
       

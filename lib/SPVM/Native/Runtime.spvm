@@ -58,4 +58,115 @@ class Native::Runtime : pointer {
   native method get_compiler : Native::Compiler ();
   
   native method new_env : Native::Env ();
+  
+  method get_basic_type_names : string[] () {
+    
+    my $basic_types_length = $self->get_basic_types_length;
+    
+    my $basic_type_names = new string [$basic_types_length];
+    
+    for (my $basic_type_id = 0; $basic_type_id < $basic_types_length; $basic_type_id++) {
+      my $basic_type = $self->get_basic_type_by_id($basic_type_id);
+      my $basic_type_name = $basic_type->get_name;
+      $basic_type_names->[$basic_type_id] = $basic_type_name;
+    }
+    
+    return $basic_type_names;
+  }
+  
+  method get_class_names : string[] () {
+    
+    my $class_names_list = StringList->new;
+    
+    my $basic_type_names = $self->get_basic_type_names;
+    
+    for my $basic_type_name (@$basic_type_names) {
+      if (($basic_type_name->[0] >= 'A' && $basic_type_name->[0] <= 'Z') && !Fn->contains($basic_type_name, "::anon::")) {
+        $class_names_list->push($basic_type_name);
+      }
+    }
+    
+    my $class_names = $class_names_list->to_array;
+    
+    return $class_names;
+  }
+  
+  method get_method_names : string[] ($class_name : string) {
+    
+    my $basic_type = $self->get_basic_type_by_name($class_name);
+    
+    my $methods_length = $basic_type->get_methods_length;
+    
+    my $method_names = new string[$methods_length];
+    
+    for (my $index = 0; $index < $methods_length; $index++) {
+      my $method = $basic_type->get_method_by_index($index);
+      my $method_name = $method->get_name;
+      $method_names->[$index] = $method_name;
+    }
+    
+    return $method_names;
+  }
+  
+  method get_field_names : string[] ($class_name : string) {
+    
+    my $basic_type = $self->get_basic_type_by_name($class_name);
+    
+    my $fields_length = $basic_type->get_fields_length;
+    
+    my $field_names = new string[$fields_length];
+    
+    for (my $index = 0; $index < $fields_length; $index++) {
+      my $field = $basic_type->get_field_by_index($index);
+      my $field_name = $field->get_name;
+      $field_names->[$index] = $field_name;
+    }
+    
+    return $field_names;
+  }
+  
+  method get_class_var_names : string[] ($class_name : string) {
+    
+    my $basic_type = $self->get_basic_type_by_name($class_name);
+    
+    my $class_vars_length = $basic_type->get_class_vars_length;
+    
+    my $class_var_names = new string[$class_vars_length];
+    
+    for (my $index = 0; $index < $class_vars_length; $index++) {
+      my $class_var = $basic_type->get_class_var_by_index($index);
+      my $class_var_name = $class_var->get_name;
+      $class_var_names->[$index] = $class_var_name;
+    }
+    
+    return $class_var_names;
+  }
+  
+  method get_method_by_name : Native::Method ($class_name : string, $method_name : string) {
+    
+    my $basic_type = $self->get_basic_type_by_name($class_name);
+    
+    my $method = $basic_type->get_method_by_name($method_name);
+    
+    return $method;
+  }
+  
+  method get_field_by_name : Native::Field ($class_name : string, $field_name : string) {
+    
+    my $basic_type = $self->get_basic_type_by_name($class_name);
+    
+    my $field = $basic_type->get_field_by_name($field_name);
+    
+    return $field;
+  }
+  
+  method get_class_var_by_name : Native::ClassVar ($class_name : string, $class_var_name : string) {
+    
+    my $basic_type = $self->get_basic_type_by_name($class_name);
+    
+    my $class_var = $basic_type->get_class_var_by_name($class_var_name);
+    
+    return $class_var;
+  }
+  
 }

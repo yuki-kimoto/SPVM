@@ -1,6 +1,8 @@
 0.989089 2023-03-19
   [Incompatible Changes]
     * Rename the get_method, get_field, get_class_var methods from the Native::Runtime::Info class to get_method_by_name, get_field_by_name, get_class_var_by_name.
+    * Remove the Native::Runtime::Info class and its methods are moved to the Native::Runtime::Class.
+    * Remove the info method in the Native class.
 0.989088 2023-03-19
   [New Features]
     * Add the Native::API class.
