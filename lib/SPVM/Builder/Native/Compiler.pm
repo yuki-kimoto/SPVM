@@ -32,17 +32,6 @@ sub boot_env {
   }
 }
 
-sub include_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{include_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{include_dirs};
-  }
-}
-
 sub print_error_messages {
   my ($self, $fh) = @_;
 

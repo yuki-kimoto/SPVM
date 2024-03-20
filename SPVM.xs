@@ -4631,35 +4631,14 @@ compile(...)
 {
   
   SV* sv_self = ST(0);
-  SV* sv_basic_type_name = ST(1);
-  
   HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SV* sv_basic_type_name = ST(1);
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  // Include directries
-  SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
-  SV* sv_include_dirs = sv_include_dirs_ptr ? *sv_include_dirs_ptr : &PL_sv_undef;
-  
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
   SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
-  
-  // Add include paths
-  AV* av_include_dirs;
-  if (SvOK(sv_include_dirs)) {
-    av_include_dirs = (AV*)SvRV(sv_include_dirs);
-  }
-  else {
-    av_include_dirs = (AV*)sv_2mortal((SV*)newAV());
-  }
-  int32_t av_include_dirs_length = (int32_t)av_len(av_include_dirs) + 1;
-  for (int32_t i = 0; i < av_include_dirs_length; i++) {
-    SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
-    SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
-    char* include_dir = SvPV_nolen(sv_include_dir);
-    boot_env->api->compiler->add_include_dir(compiler, include_dir);
-  }
   
   int32_t status = boot_env->api->compiler->compile(compiler, basic_type_name);
   
