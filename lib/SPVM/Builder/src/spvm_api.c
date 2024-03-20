@@ -2171,30 +2171,31 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
   
   FILE* spvm_stderr = SPVM_API_RUNTIME_get_spvm_stderr(env->runtime);
   
-  int32_t empty_or_undef = 0;
   if (string) {
-    const char* bytes =SPVM_API_get_chars(env, stack, string);
-    int32_t string_length = SPVM_API_length(env, stack, string);
-    
-    if (string_length > 0) {
-      size_t ret = fwrite(bytes, 1, string_length, spvm_stderr);
+    if (env->is_type_by_name(env, stack, string, "string", 0)) {
+      const char* chars =SPVM_API_get_chars(env, stack, string);
+      
+      int32_t string_length = SPVM_API_length(env, stack, string);
+      
+      if (string_length > 0) {
+        size_t ret = fwrite(chars, 1, string_length, spvm_stderr);
+      }
       
       // Add line and file information if last character is not '\n'
-      int32_t add_line_file;
-      if (bytes[string_length - 1] != '\n') {
+      if (string_length == 0 || chars[string_length - 1] != '\n') {
         fprintf(spvm_stderr, "\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
       }
     }
     else {
-      empty_or_undef = 1;
+      void* obj_type_name = env->get_type_name(env, stack, string);
+      const char* type_name = env->get_chars(env, stack, obj_type_name);
+      
+      fprintf(spvm_stderr, "%s", type_name);
+      fprintf(spvm_stderr, "(0x%" PRIxPTR ")\n  %s->%s at %s line %d\n", (uintptr_t)string, basic_type_name, method_name, file, line);
     }
   }
   else {
-    empty_or_undef = 1;
-  }
-  
-  if (empty_or_undef) {
-    fprintf(spvm_stderr, "Warning\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
+    fprintf(spvm_stderr, "undef\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
   }
 }
 

@@ -1511,23 +1511,36 @@ The C<warn> operator prints a message to the standard error.
   warn OPERNAD;
   warn;
 
-If I<OPERAND> is omitted or I<OPERAND> is L<undef|/"Undefined Value">, I<OPERAND> is set to the string C<"Warning">.
+If I<OPERAND> is omitted or I<OPERAND> is L<undef|SPVM::Document::Language::Types/"Undefined Value">, I<OPERAND> is set to the string C<"Warning">.
+
+This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
+
+If I<OPERAND> is not defined at runtime, this operator prints C<"undef">.
+
+If I<OPERAND> is defined at runtime and the runtime type is the string type, this operator prints I<OPERAND>.
+
+If I<OPERAND> is defined at runtime and the runtime type is not the string type, this operator prints the type name and address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
+
+If the end character of the I<OPERNAD> is not C<\n>, this operator prints a new line, two tabs and the stack trace information following the output above.
+
+A stack trace information consists of the current method name, file name, and line number.
+
+  MyClass->test at path/MyClass.spvm line 33
 
 The return type is the void type.
 
-If the end character of the OPERNAD is C<\n>, the C<warn> operator prints the OPERNAD itself.
-
-Otherwise the current file name and the current line number by the format C<"\n  at $file_name line $line\n"> are added to the end of the OPERNAD.
-
-The buffer of the standard error is flushed after the printing.
-
 Compilation Errors:
 
-The OPERNAD must be the string type or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
+The type of I<OPERNAD> must be the object type or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
 
 Examples:
-
+  
+  warn;
   warn "Something is wrong.";
+  
+  # Point(0x55d8a44ed090)
+  my $point = Point->new;
+  warn $point;
 
 =head2 print Operator
 

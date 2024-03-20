@@ -100,7 +100,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Warning\n  TestCase::Warn->test_warn_empty at .*TestCase/Warn.spvm line 21|);
+      like($output, qr|\n  TestCase::Warn->test_warn_empty at .*TestCase/Warn.spvm line 21|);
     }
 
     # test_test_warn_undef
@@ -109,7 +109,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Warning\n  TestCase::Warn->test_warn_undef at .*TestCase/Warn.spvm line 27|);
+      like($output, qr|undef\n  TestCase::Warn->test_warn_undef at .*TestCase/Warn.spvm line 27|);
     }
 
     # test_test_warn_no_operand
@@ -128,6 +128,15 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       like($output, qr|Warning\n  TestCase::Warn->test_warn_undef_type at .*TestCase/Warn.spvm line 39|);
+    }
+    
+    # test_test_warn_undef_type
+    {
+      my $func_call = 'SPVM::TestCase::Warn->test_warn_object_type';
+      write_script_file($script_file, $func_call);
+      system("$^X -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      like($output, qr|^Int\(0x[0-9a-fA-F]+\)\n  TestCase::Warn->test_warn_object_type at .*TestCase/Warn.spvm line 45|);
     }
   }
 }

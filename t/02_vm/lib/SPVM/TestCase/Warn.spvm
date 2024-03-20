@@ -1,5 +1,5 @@
 class TestCase::Warn {
-
+  
   static method test_warn : int () {
     warn "Hello";
     
@@ -37,6 +37,12 @@ class TestCase::Warn {
   
   static method test_warn_undef_type : int () {
     warn undef;
+    
+    return 1;
+  }
+  
+  static method test_warn_object_type : int () {
+    warn Int->new(1);
     
     return 1;
   }

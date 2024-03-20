@@ -2598,22 +2598,25 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_WARN: {
-            SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-              SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
-              if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+            if (op_cur->first) {
+              SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
+                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
+                  return;
+                }
+              }
+              
+              first_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              
+              if (!(SPVM_TYPE_is_object_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)
+                || SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag))) {
+                SPVM_COMPILER_error(compiler, "The operand of the warn operator must be an object type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }
             
-            first_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            
-            if (!(SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)
-              || SPVM_TYPE_is_undef_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag))) {
-              SPVM_COMPILER_error(compiler, "The operand of the warn operator must be the string type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
             break;
           }
           case SPVM_OP_C_ID_PRINT: {
