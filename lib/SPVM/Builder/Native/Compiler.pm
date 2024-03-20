@@ -71,8 +71,6 @@ sub new {
   
   weaken $runtime->{compiler};
   
-  $runtime->boot_env($boot_env);
-  
   return $self;
 }
 

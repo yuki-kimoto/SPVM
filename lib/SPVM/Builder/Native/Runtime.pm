@@ -15,17 +15,6 @@ sub pointer {
   }
 }
 
-sub boot_env {
-  my $self = shift;
-  if (@_) {
-    $self->{boot_env} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{boot_env};
-  }
-}
-
 sub compiler {
   my $self = shift;
   if (@_) {
