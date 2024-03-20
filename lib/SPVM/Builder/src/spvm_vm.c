@@ -1413,7 +1413,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         const char* file = current_basic_type->file;
         
-        SPVM_IMPLEMENT_WARN_V2(env, stack, string, basic_type_name, method_name, file, line);
+        SPVM_IMPLEMENT_WARN(env, stack, string, basic_type_name, method_name, file, line);
         
         break;
       }
