@@ -14,9 +14,8 @@ END {
   
   if ($API) {
     {
-      # Remove circular reference
-      my $env = delete $API->{env};
-      my $stack = delete $API->{stack};
+      my $env = $API->{env};
+      my $stack = $API->{stack};
       
       $env->destroy_class_vars($stack);
     }
