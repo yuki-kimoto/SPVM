@@ -78,9 +78,11 @@ sub init_api {
     my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
     my $builder = SPVM::Builder->new(build_dir => $build_dir);
     
-    my $builder_compiler = SPVM::Builder::Native::Compiler->new(
-      include_dirs => $builder->include_dirs
-    );
+    my $builder_compiler = SPVM::Builder::Native::Compiler->new;
+    
+    for my $include_dir (@{$builder->include_dirs}) {
+      $builder_compiler->add_include_dir($include_dir);
+    }
     
     my @native_compiler_class_name_names = qw(Int);
     

@@ -80,10 +80,11 @@ sub build_dynamic_lib_dist {
   
   $options = {%$options};
   
-  # Create the compiler
-  my $compiler = SPVM::Builder::Native::Compiler->new(
-    include_dirs => $self->include_dirs
-  );
+  my $compiler = SPVM::Builder::Native::Compiler->new;
+  
+  for my $include_dir (@{$self->include_dirs}) {
+    $compiler->add_include_dir($include_dir);
+  }
   
   $compiler->set_start_file(__FILE__);
   $compiler->set_start_line(__LINE__ + 1);

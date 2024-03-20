@@ -235,7 +235,10 @@ sub new {
   $self->{builder} = $builder;
   
   my $compiler = SPVM::Builder::Native::Compiler->new;
-  $compiler->include_dirs($builder->include_dirs);
+  for my $include_dir (@{$builder->include_dirs}) {
+    $compiler->add_include_dir($include_dir);
+  }
+  
   $self->{compiler} = $compiler;
   
   my $optimize = $self->{optimize};
