@@ -1446,7 +1446,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             
             if (!is_valid_type) {
-              SPVM_COMPILER_error(compiler, "The type of the operand of the bool type conversion must be a numeric type or an object type or the reference type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The type of the operand of the bool type conversion must be a numeric type or an object type or a reference type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
@@ -2759,7 +2759,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               // Type cannnot be detected
               if (!op_cur->is_dist && var_decl->type == NULL) {
-                SPVM_COMPILER_error(compiler, "The type of the variable \"%s\" must be defined.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                SPVM_COMPILER_error(compiler, "The type of the variable \"%s\" is not resolved.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                 return;
               }
             }

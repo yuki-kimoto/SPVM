@@ -136,7 +136,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use Complex_2d; static method main : void () { my $var : Complex_2d; !$var; } }';
-    compile_not_ok($source, qr'The type of the operand of the bool type conversion must be a numeric type or an object type or the reference type or the undef type');
+    compile_not_ok($source, qr'The type of the operand of the bool type conversion must be a numeric type or an object type or a reference type or the undef type');
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 0; my $var_ref = \$var; !$var_ref; } }';
@@ -801,7 +801,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var; } }';
-    compile_not_ok($source, q|The type of the variable "$var" must be defined|);
+    compile_not_ok($source, q|The type of the variable "$var" is not resolved.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { $var; } }';
