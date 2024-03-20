@@ -169,10 +169,6 @@ sub load_dynamic_lib {
   
   for my $category ('precompile', 'native') {
     
-    my $get_method_names_options = $runtime->__api->new_options({
-      $category => $runtime->__api->class('Int')->new(1)
-    });
-    
     my $category_method_names;
     
     if ($category eq 'native') {
