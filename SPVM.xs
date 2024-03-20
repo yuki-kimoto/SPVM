@@ -5948,9 +5948,7 @@ get_method_names(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
