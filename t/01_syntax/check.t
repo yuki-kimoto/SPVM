@@ -152,7 +152,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 == undef; } }';
-    compile_not_ok($source, qr'The left operand of the == operator must be an object type');
+    compile_not_ok($source, qr'The type of the left operand of the == operator must be an object type');
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 == Int->new(1); } }';
@@ -168,7 +168,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 != undef; } }';
-    compile_not_ok($source, qr'The left operand of the != operator must be an object type');
+    compile_not_ok($source, qr'The type of the left operand of the != operator must be an object type');
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 != Int->new(1); } }';
@@ -180,7 +180,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" > 1; } }';
-    compile_not_ok($source, qr'The left operand of the > operator must be a numeric type');
+    compile_not_ok($source, qr'The type of the left operand of the > operator must be a numeric type');
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 > "foo"; } }';
@@ -192,7 +192,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" >= 1; } }';
-    compile_not_ok($source, qr'The left operand of the >= operator must be a numeric type');
+    compile_not_ok($source, qr'The type of the left operand of the >= operator must be a numeric type');
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 >= "foo"; } }';
@@ -204,7 +204,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" < 1; } }';
-    compile_not_ok($source, qr'The left operand of the < operator must be a numeric type');
+    compile_not_ok($source, qr'The type of the left operand of the < operator must be a numeric type');
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 < "foo"; } }';
@@ -216,7 +216,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" <= 1; } }';
-    compile_not_ok($source, qr'The left operand of the <= operator must be a numeric type');
+    compile_not_ok($source, qr'The type of the left operand of the <= operator must be a numeric type');
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 <= "foo"; } }';
@@ -228,7 +228,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" <=> 1; } }';
-    compile_not_ok($source, qr'The left operand of the <=> operator must be a numeric type');
+    compile_not_ok($source, qr'The type of the left operand of the <=> operator must be a numeric type');
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 <=> "foo"; } }';
@@ -240,7 +240,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 gt "foo"; } }';
-    compile_not_ok($source, 'The left operand of the gt operator must be the string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of the gt operator must be the string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" gt 1; } }';
@@ -252,7 +252,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 ge "foo"; } }';
-    compile_not_ok($source, 'The left operand of the ge operator must be the string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of the ge operator must be the string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" ge 1; } }';
@@ -264,7 +264,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 lt "foo"; } }';
-    compile_not_ok($source, 'The left operand of the lt operator must be the string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of the lt operator must be the string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" lt 1; } }';
@@ -276,7 +276,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 le "foo"; } }';
-    compile_not_ok($source, 'The left operand of the le operator must be the string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of the le operator must be the string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" le 1; } }';
@@ -288,7 +288,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 cmp "foo"; } }';
-    compile_not_ok($source, 'The left operand of the cmp operator must be the string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of the cmp operator must be the string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" cmp 1; } }';
@@ -300,7 +300,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { Int->new(1) . "foo"; } }';
-    compile_not_ok($source, 'The left operand of the . operator must be the string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of the . operator must be the string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" . Int->new(1); } }';
@@ -359,7 +359,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 isa Int; } }';
-    compile_not_ok($source, 'The left operand of the isa operator must be an object type');
+    compile_not_ok($source, 'The type of the left operand of the isa operator must be an object type');
   }
 }
 
@@ -382,7 +382,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { 1L isa_error Error; } }';
-    compile_not_ok($source, 'The left operand of the isa_error operator must be an integer type within int.');
+    compile_not_ok($source, 'The type of the left operand of the isa_error operator must be an integer type within int.');
   }
   
   {
@@ -400,7 +400,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 is_type Int; } }';
-    compile_not_ok($source, 'The left operand of the is_type operator must be an object type');
+    compile_not_ok($source, 'The type of the left operand of the is_type operator must be an object type');
   }
 }
 
@@ -423,7 +423,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { 1L is_error Error; } }';
-    compile_not_ok($source, 'The left operand of the is_error operator must be an integer type within int.');
+    compile_not_ok($source, 'The type of the left operand of the is_error operator must be an integer type within int.');
   }
   
   {
@@ -538,7 +538,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" + 1; } }';
-    compile_not_ok($source, q|The left operand of the + operator must be a numeric type|);
+    compile_not_ok($source, q|The type of the left operand of the + operator must be a numeric type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 + "foo"; } }';
@@ -550,7 +550,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" - 1; } }';
-    compile_not_ok($source, q|The left operand of the - operator must be a numeric type|);
+    compile_not_ok($source, q|The type of the left operand of the - operator must be a numeric type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 - "foo"; } }';
@@ -562,7 +562,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" * 1; } }';
-    compile_not_ok($source, q|The left operand of the * operator must be a numeric type|);
+    compile_not_ok($source, q|The type of the left operand of the * operator must be a numeric type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 * "foo"; } }';
@@ -574,7 +574,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" / 1; } }';
-    compile_not_ok($source, q|The left operand of the / operator must be a numeric type|);
+    compile_not_ok($source, q|The type of the left operand of the / operator must be a numeric type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 / "foo"; } }';
@@ -586,7 +586,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1L div_uint 1; } }';
-    compile_not_ok($source, q|The left operand of the div_uint operator must be the int type|);
+    compile_not_ok($source, q|The type of the left operand of the div_uint operator must be the int type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 div_uint 1L; } }';
@@ -598,7 +598,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 div_ulong 1L; } }';
-    compile_not_ok($source, q|The left operand of the div_ulong operator must be the long type|);
+    compile_not_ok($source, q|The type of the left operand of the div_ulong operator must be the long type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1L div_ulong 1; } }';
@@ -610,7 +610,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" % 1; } }';
-    compile_not_ok($source, q|The left operand of the % operator must be an integer type|);
+    compile_not_ok($source, q|The type of the left operand of the % operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 % "foo"; } }';
@@ -622,7 +622,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1L mod_uint 1; } }';
-    compile_not_ok($source, q|The left operand of the mod_uint operator must be the int type|);
+    compile_not_ok($source, q|The type of the left operand of the mod_uint operator must be the int type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 mod_uint 1L; } }';
@@ -634,7 +634,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 mod_ulong 1L; } }';
-    compile_not_ok($source, q|The left operand of the mod_ulong operator must be the long type|);
+    compile_not_ok($source, q|The type of the left operand of the mod_ulong operator must be the long type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1L mod_ulong 1; } }';
@@ -646,7 +646,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" & 1; } }';
-    compile_not_ok($source, q|The left operand of the & operator must be an integer type|);
+    compile_not_ok($source, q|The type of the left operand of the & operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 & "foo"; } }';
@@ -658,7 +658,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" | 1; } }';
-    compile_not_ok($source, q|The left operand of the \| operator must be an integer type|);
+    compile_not_ok($source, q|The type of the left operand of the \| operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 | "foo"; } }';
@@ -670,7 +670,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" << 1; } }';
-    compile_not_ok($source, q|The left operand of the << operator must be an integer type|);
+    compile_not_ok($source, q|The type of the left operand of the << operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 << 1d; } }';
@@ -686,7 +686,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" >> 1; } }';
-    compile_not_ok($source, q|The left operand of the >> operator must be an integer type|);
+    compile_not_ok($source, q|The type of the left operand of the >> operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 >> 1d; } }';
@@ -702,7 +702,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { "foo" >>> 1; } }';
-    compile_not_ok($source, q|The left operand of the >>> operator must be an integer type|);
+    compile_not_ok($source, q|The type of the left operand of the >>> operator must be an integer type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 >>> 1d; } }';
@@ -1380,6 +1380,11 @@ use Test::More;
       ];
       compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass" class must be greather than or equal to the length of the arguments of the "foo" method in the "MyClass::Interface|);
     }
+  }
+  
+  {
+    my $source = 'class MyClass : interface_t { static method foo : void () { new MyClass; } }';
+    compile_not_ok($source, q|The type of the operand of the new operator cannnot be an interface type.|);
   }
 }
 
