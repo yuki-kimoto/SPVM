@@ -188,7 +188,7 @@ class List {
       die "The remove length \$remove_length must be greater than or equal to 0.";
     }
     unless ($index + $remove_length <= $self->{length}) {
-      die "\$index + \$removing length must be less than or equal to the length of \$list.";
+      die "The index \$index + the removal length \$remove_length must be less than or equal to the length of this list.";
     }
     
     my $replace_length = 0;
