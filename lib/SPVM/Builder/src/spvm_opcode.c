@@ -297,7 +297,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "PRINT",
     "SAY",
     "WARN",
-    "WARN_ADDRESS",
     "DIE",
     "GET_DIE_ERROR_ID",
     "SET_DIE_ERROR_ID",
