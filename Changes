@@ -5,6 +5,12 @@
       $length must be greater than or equal to 0.
       [After]
       The length $length must be greater than or equal to 0.
+  [Compilation Error Message Improvement]
+    * Improve compilation error messages.
+      [Before]
+      The operand of the type_name operator must be an object type.
+      [After]
+      The type of the operand of the type_name operator must be an object type.
   [New Features with Incompatible Changes]
     * The warn operator output undef if the operand is an object type and the value in runtime is undef.
     * The warn operator output the type and the address if the operand is an object type that is not the string type.
