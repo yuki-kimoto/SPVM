@@ -4634,7 +4634,11 @@ compile(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SV* sv_basic_type_name = ST(1);
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  const char* basic_type_name = NULL;
+  if (SvOK(sv_basic_type_name)) {
+    basic_type_name = SvPV_nolen(sv_basic_type_name);
+  }
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   

@@ -84,15 +84,11 @@ sub init_api {
       $compiler->add_include_dir($include_dir);
     }
     
-    my @native_compiler_class_name_names = qw(Int);
-    
     my $runtime = $compiler->get_runtime;
     
     my $start_basic_types_length = $runtime->get_basic_types_length;
     
-    for my $native_compiler_class_name_name (@native_compiler_class_name_names) {
-      $compiler->compile_with_exit($native_compiler_class_name_name, __FILE__, __LINE__);
-    }
+    $compiler->compile_with_exit(undef, __FILE__, __LINE__);
     
     my $basic_types_length = $runtime->get_basic_types_length;
     
