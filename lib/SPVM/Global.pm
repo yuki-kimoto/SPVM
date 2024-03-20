@@ -78,46 +78,46 @@ sub init_api {
     my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
     my $builder = SPVM::Builder->new(build_dir => $build_dir);
     
-    my $builder_compiler = SPVM::Builder::Native::Compiler->new;
+    my $compiler = SPVM::Builder::Native::Compiler->new;
     
     for my $include_dir (@{$builder->include_dirs}) {
-      $builder_compiler->add_include_dir($include_dir);
+      $compiler->add_include_dir($include_dir);
     }
     
     my @native_compiler_class_name_names = qw(Int);
     
-    my $builder_runtime = $builder_compiler->get_runtime;
+    my $runtime = $compiler->get_runtime;
     
-    my $start_basic_types_length = $builder_runtime->get_basic_types_length;
+    my $start_basic_types_length = $runtime->get_basic_types_length;
     
     for my $native_compiler_class_name_name (@native_compiler_class_name_names) {
-      $builder_compiler->compile_with_exit($native_compiler_class_name_name, __FILE__, __LINE__);
+      $compiler->compile_with_exit($native_compiler_class_name_name, __FILE__, __LINE__);
     }
     
-    my $basic_types_length = $builder_runtime->get_basic_types_length;
+    my $basic_types_length = $runtime->get_basic_types_length;
     
     for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
-      my $basic_type = $builder_runtime->get_basic_type_by_id($basic_type_id);
+      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
       
-      &load_dynamic_lib($builder_runtime, $class_name);
+      &load_dynamic_lib($runtime, $class_name);
     }
     
-    my $builder_env = $builder_runtime->new_env;
+    my $env = $runtime->new_env;
     
-    my $builder_stack = $builder_env->new_stack;
+    my $stack = $env->new_stack;
     
-    my $builder_api = SPVM::ExchangeAPI->new(env => $builder_env, stack => $builder_stack);
+    my $api = SPVM::ExchangeAPI->new(env => $env, stack => $stack);
     
-    $COMPILER = $builder_compiler;
-    $API = $builder_api;
+    $COMPILER = $compiler;
+    $API = $api;
     
     {
-      $builder_env->set_command_info_program_name($builder_stack, $0);
+      $env->set_command_info_program_name($stack, $0);
       
-      $builder_env->set_command_info_argv($builder_stack, \@ARGV);
+      $env->set_command_info_argv($stack, \@ARGV);
       my $base_time = $^T + 0; # For Perl 5.8.9
-      $builder_env->set_command_info_base_time($builder_stack, $base_time);
+      $env->set_command_info_base_time($stack, $base_time);
     }
   }
 }
