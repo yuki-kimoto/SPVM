@@ -61,7 +61,7 @@ sub build_class {
         my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
         my $class_name = $basic_type->get_name;
         
-        &load_dynamic_lib_v2($runtime, $class_name);
+        &load_dynamic_lib($runtime, $class_name);
       }
       
       my $stack = $api->stack;
@@ -98,7 +98,7 @@ sub init_api {
       my $basic_type = $builder_runtime->get_basic_type_by_id($basic_type_id);
       my $class_name = $basic_type->get_name;
       
-      &load_dynamic_lib_v2($builder_runtime, $class_name);
+      &load_dynamic_lib($builder_runtime, $class_name);
     }
     
     my $builder_env = $builder_runtime->new_env;
@@ -120,7 +120,7 @@ sub init_api {
   }
 }
 
-sub load_dynamic_lib_v2 {
+sub load_dynamic_lib {
   my ($runtime, $class_name) = @_;
   
   for my $category ('precompile', 'native') {
