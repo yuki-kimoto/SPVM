@@ -168,7 +168,7 @@ $index must be less than the length of $list.
 
 C<method replace : void ($offset : int, $remove_length : int, $replace : int[]);>
 
-Replaces the elements of the range specified by $offset and $lenght with $replace array.
+Replaces the elements of the range specified by $offset and $length with $replace array.
 
 Exceptions:
 
@@ -176,7 +176,7 @@ $offset must be greater than or equal to 0.
 
 $remove_length must be greater than or equal to 0.
 
-$offset + $removing lenght must be less than or equal to the length of $list.
+$offset + $removing length must be less than or equal to the length of $list.
 
 =head2 reserve
 

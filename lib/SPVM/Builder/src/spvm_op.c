@@ -2163,7 +2163,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
   }
   
   if (is_key_value_pairs && length % 2 != 0) {
-    SPVM_COMPILER_error(compiler, "The lenght of the elements in {} of the array initialization must be an even number.\n  at %s line %d", op_list_elements->file, op_list_elements->line);
+    SPVM_COMPILER_error(compiler, "The length of the elements in {} of the array initialization must be an even number.\n  at %s line %d", op_list_elements->file, op_list_elements->line);
     return op_array_init;
   }
   

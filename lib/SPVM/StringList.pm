@@ -158,7 +158,7 @@ $index must be less than the length of $list. Otherwise an exception is thrown.
 
 C<method replace : void ($index : int, $remove_length : int, $replace : string[]);>
 
-Replaces the elements of the range specified by $index and $lenght with $replace array.
+Replaces the elements of the range specified by $index and $length with $replace array.
 
 Exceptions:
 
@@ -166,7 +166,7 @@ $index must be greater than or equal to 0. Otherwise an exception is thrown.
 
 $remove_length must be greater than or equal to 0. Otherwise an exception is thrown.
 
-$index + $removing lenght must be less than or equal to the length of $list.
+$index + $removing length must be less than or equal to the length of $list.
 
 =head2 set
 

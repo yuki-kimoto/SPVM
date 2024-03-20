@@ -476,7 +476,7 @@ class TestCase::Module::IntList {
     {
       my $list = IntList->new([(int)1, 2, 3, 4]);
       eval { $list->replace(2, 3, [(int)30, 40, 50]); };
-      unless (Fn->contains($@, "\$offset + \$removing lenght must be less than or equal to the length of \$list")) {
+      unless (Fn->contains($@, "\$offset + \$removing length must be less than or equal to the length of \$list")) {
         return 0;
       }
     }
@@ -492,14 +492,14 @@ class TestCase::Module::IntList {
     {
       my $list = IntList->new([(int)1]);
       eval { $list->replace(2, 0, [(int)1, 2]); };
-      unless (Fn->contains($@, "\$offset + \$removing lenght must be less than or equal to the length of \$list")) {
+      unless (Fn->contains($@, "\$offset + \$removing length must be less than or equal to the length of \$list")) {
         return 0;
       }
     }
     {
       my $list = IntList->new([(int)1]);
       eval { $list->replace(1, 2, [(int)1, 2]); };
-      unless (Fn->contains($@, "\$offset + \$removing lenght must be less than or equal to the length of \$list")) {
+      unless (Fn->contains($@, "\$offset + \$removing length must be less than or equal to the length of \$list")) {
         return 0;
       }
     }
@@ -507,7 +507,7 @@ class TestCase::Module::IntList {
     {
       my $list = IntList->new([(int)1]);
       eval { $list->replace(2, 2, [(int)1, 2]); };
-      unless (Fn->contains($@, "\$offset + \$removing lenght must be less than or equal to the length of \$list")) {
+      unless (Fn->contains($@, "\$offset + \$removing length must be less than or equal to the length of \$list")) {
         return 0;
       }
     }
