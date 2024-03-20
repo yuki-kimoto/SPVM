@@ -147,7 +147,7 @@ class TestCase::Module::Sort {
             return $a <=> $b;
           }, 3, 3);
         };
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$array")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array")) {
           return 0;
         }
       }
@@ -320,7 +320,7 @@ class TestCase::Module::Sort {
             return $a <=> $b;
           }, 3, 3);
         };
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$array")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array")) {
           return 0;
         }
       }
@@ -496,7 +496,7 @@ class TestCase::Module::Sort {
             return $a <=> $b;
           }, 3, 3);
         };
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$array")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array")) {
           return 0;
         }
       }
@@ -669,7 +669,7 @@ class TestCase::Module::Sort {
             return $a <=> $b;
           }, 3, 3);
         };
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$array")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array")) {
           return 0;
         }
       }
@@ -832,7 +832,7 @@ class TestCase::Module::Sort {
             return $a <=> $b;
           }, 3, 3);
         };
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$array")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array")) {
           return 0;
         }
       }
@@ -1029,7 +1029,7 @@ class TestCase::Module::Sort {
             return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
           }, 3, 3);
         };
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$array")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array")) {
           return 0;
         }
       }
@@ -1174,7 +1174,7 @@ class TestCase::Module::Sort {
             return $a <=> $b;
           }, 3, 3);
         };
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$array")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array")) {
           return 0;
         }
       }
@@ -1361,7 +1361,7 @@ class TestCase::Module::Sort {
             return $a cmp $b;
           }, 3, 3);
         };
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$array")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array")) {
           return 0;
         }
       }
