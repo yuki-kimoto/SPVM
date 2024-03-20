@@ -40,7 +40,6 @@ sub build_class {
   
   &init_api();
   
-  # Add module informations
   my $build_success;
   if (defined $class_name) {
     
@@ -121,11 +120,10 @@ sub load_dynamic_lib {
     my $method_names = $runtime->get_method_names($class_name, $category);
     
     if (@$method_names) {
-      # Build classes - Compile C source codes and link them generating a dynamic link library
       my $class_file = $runtime->get_class_file($class_name);
       my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
       
-      # Try to build the shared library at runtime if shared library is not found
+      # Try to build a shared library if shared library is not found
       unless (-f $dynamic_lib_file) {
         my $build_dir = SPVM::Builder::Util::get_normalized_env('SPVM_BUILD_DIR');
         my $builder = SPVM::Builder->new(build_dir => $build_dir);
@@ -173,7 +171,6 @@ sub bind_to_perl {
     
     my $parent_basic_type = $basic_type->get_parent;
     
-    # The inheritance
     my @isa;
     if (defined $parent_basic_type) {
       my $parent_basic_type_name = $parent_basic_type->get_name;
@@ -196,11 +193,9 @@ sub bind_to_perl {
       
       my $method_name = $method->get_name;
       
-      # Destrutor is skip
       if ($method_name eq 'DESTROY') {
         next;
       }
-      # Anon method is skip
       elsif (length $method_name == 0) {
         next;
       }
@@ -209,10 +204,8 @@ sub bind_to_perl {
       my $is_class_method = $method->is_class_method;
       
       if ($is_class_method) {
-        # Define Perl method
         no strict 'refs';
         
-        # Suppress refer to objects
         my $class_name_string = "$class_name";
         my $method_name_string = "$method_name";
         
