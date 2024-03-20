@@ -4742,6 +4742,66 @@ get_class_file(...)
   XSRETURN(1);
 }
 
+SV*
+set_start_file(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  
+  SV* sv_start_file = ST(1);
+  
+  const char* start_file = SvPV_nolen(sv_start_file);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  boot_env->api->compiler->set_start_file(compiler, start_file);
+  
+  XSRETURN(0);
+}
+
+SV*
+set_start_line(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  
+  SV* sv_start_line = ST(1);
+  
+  int32_t start_line = SvIV(sv_start_line);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  boot_env->api->compiler->set_start_line(compiler, start_line);
+  
+  XSRETURN(0);
+}
+
+SV*
+add_include_dir(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  
+  SV* sv_include_dir = ST(1);
+  
+  const char* include_dir = SvPV_nolen(sv_include_dir);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  boot_env->api->compiler->add_include_dir(compiler, include_dir);
+  
+  XSRETURN(0);
+}
+
 MODULE = SPVM::Builder::Native::Runtime		PACKAGE = SPVM::Builder::Native::Runtime
 
 SV*
