@@ -1380,7 +1380,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               )
             ))
             {
-              SPVM_COMPILER_error(compiler, "The type of the operand of the case statement must be an integer literal of the int type, a character litaral, or an enumeration value.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The operand of the case statement must be an integer literal of the int type, a character litaral, or an enumeration value.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
