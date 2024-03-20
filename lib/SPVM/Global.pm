@@ -20,8 +20,9 @@ END {
       $env->destroy_class_vars($stack);
     }
     
+    # $API must be destroyed before destroying $COMPILER
+    # because $COMPILER is weak referenced by the runtime owned by $env onwed by $API.
     $API = undef;
-    
     $COMPILER = undef;
   }
 }
