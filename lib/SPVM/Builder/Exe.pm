@@ -278,7 +278,7 @@ sub build_exe_file {
   
   my $class = $self->runtime->get_basic_type_by_name($class_name);
   
-  my $class_file = $class->_get_class_file;
+  my $class_file = $class->get_class_file;
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -757,7 +757,7 @@ sub create_bootstrap_source {
   for my $class_name (@$class_names) {
     my $class = $self->runtime->get_basic_type_by_name($class_name);
     if ($class->get_class_dir) {
-      my $class_file = $class->_get_class_file;
+      my $class_file = $class->get_class_file;
       push @$class_files, $class_file;
     }
   }

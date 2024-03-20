@@ -73,7 +73,7 @@ sub get_precompile_method_names {
   return $precompile_method_names;
 }
 
-sub _get_class_file {
+sub get_class_file {
   my ($self) = @_;
   
   my $class_dir = $self->get_class_dir;
