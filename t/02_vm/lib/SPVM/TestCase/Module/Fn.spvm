@@ -3366,7 +3366,7 @@ class TestCase::Module::Fn {
         eval {
           Fn->split($sep, $string, $limit);
         };
-        unless (Fn->contains($@, "The length of \$separator must be greater than 0")) {
+        unless (Fn->contains($@, "The length of the separator \$separator must be greater than 0")) {
           return 0;
         }
       }
@@ -4320,13 +4320,13 @@ class TestCase::Module::Fn {
     {
       {
         eval { Fn->merge_options(["a"], {}); };
-        unless (Fn->contains($@, "The length of \$options1 must be an even number")) {
+        unless (Fn->contains($@, "The length of the options1 \$options1 must be an even number")) {
           return 0;
         }
       }
       {
         eval { Fn->merge_options({}, ["a"]); };
-        unless (Fn->contains($@, "The length of \$options2 must be an even number")) {
+        unless (Fn->contains($@, "The length of the options2 \$options2 must be an even number")) {
           return 0;
         }
       }

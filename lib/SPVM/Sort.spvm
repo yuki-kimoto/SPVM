@@ -687,7 +687,7 @@ class Sort {
     
     my $options_length = @$options;
     unless ($options_length % 2 == 0) {
-      die "The length of \$options must be an even number.";
+      die "The length of the options \$options must be an even number.";
     }
     
     my $sorted_options_h = Hash->new;

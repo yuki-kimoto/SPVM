@@ -259,7 +259,7 @@ class TestCase::Module::List {
     {
       my $list = StringList->new_len(0);
       eval { $list->pop; };
-      unless (Fn->contains($@, "The length of \$list must be greater than 0")) {
+      unless (Fn->contains($@, "The length of the list \$list must be greater than 0")) {
         return 0;
       }
     }

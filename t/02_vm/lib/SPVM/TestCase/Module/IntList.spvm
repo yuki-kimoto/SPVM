@@ -317,7 +317,7 @@ class TestCase::Module::IntList {
       {
         my $list = IntList->new_len(0);
         eval { $list->pop; };
-        unless (Fn->contains($@, "The length of \$list must be greater than 0")) {
+        unless (Fn->contains($@, "The length of the list \$list must be greater than 0")) {
           return 0;
         }
       }
@@ -714,7 +714,7 @@ class TestCase::Module::IntList {
       }
       
       eval { $list->shift; };
-      unless (Fn->contains($@, "The length of \$list must be greater than 0")) {
+      unless (Fn->contains($@, "The length of the list \$list must be greater than 0")) {
         return 0;
       }
       $@ = undef;

@@ -745,7 +745,7 @@ class Fn {
     my $separator_length = length $separator;
     
     unless ($separator_length > 0) {
-      die "The length of \$separator must be greater than 0.";
+      die "The length of the separator \$separator must be greater than 0.";
     }
     
     my $parts_list = StringList->new_len(0);
@@ -1188,12 +1188,12 @@ class Fn {
     
     my $options1_length = @$options1;
     unless ($options1_length % 2 == 0) {
-      die "The length of \$options1 must be an even number.";
+      die "The length of the options1 \$options1 must be an even number.";
     }
     
     my $options2_length = @$options2;
     unless ($options2_length % 2 == 0) {
-      die "The length of \$options2 must be an even number.";
+      die "The length of the options2 \$options2 must be an even number.";
     }
     
     my $merged_options = Array->merge_object($options1, $options2);

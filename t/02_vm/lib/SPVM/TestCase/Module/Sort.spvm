@@ -1436,7 +1436,7 @@ class TestCase::Module::Sort {
       
       {
         eval { Sort->sort_options_asc([(object)"key1" => 1, "key2"]); };
-        unless (Fn->contains($@, "The length of \$options must be an even number")) {
+        unless (Fn->contains($@, "The length of the options \$options must be an even number")) {
           return 0;
         }
       }
