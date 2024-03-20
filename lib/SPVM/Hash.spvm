@@ -46,7 +46,7 @@ class Hash {
     }
     
     if ($length % 2 != 0) {
-      die "The length of the elements in \$key_values must be an even number.";
+      die "The length of the elements in the key-value pairs \$key_values must be an even number.";
     }
     
     if ($key_values) {
@@ -54,7 +54,7 @@ class Hash {
         my $key = (string)$key_values->[$i];
         my $value = $key_values->[$i + 1];
         unless ($key isa string) {
-          die "The key in \$key_values must be string.";
+          die "The key in the key-value pairs \$key_values must be string.";
         }
         
         $self->set($key => $value);
