@@ -33,6 +33,54 @@ void* SPVM_XS_UTIL_get_pointer(pTHX_ SV* sv_data) {
   }
 }
 
+SPVM_ENV* SPVM_XS_UTIL_get_boot_env(pTHX_ SV* sv_invocant) {
+  
+  SPVM_ENV* boot_env = NULL;
+  if (SvOK(sv_invocant)) {
+    HV* hv_invocant = (HV*)SvRV(sv_invocant);
+    
+    SV* sv_compiler = &PL_sv_undef;
+    
+    if (sv_isobject(sv_invocant) && sv_derived_from(sv_invocant, "SPVM::Builder::Native::Compiler")) {
+      sv_compiler = sv_invocant;
+    }
+    
+    if (!SvOK(sv_compiler)) {
+      SV** sv_compiler_ptr = hv_fetch(hv_invocant, "compiler", strlen("compiler"), 0);
+      sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+    }
+    
+    if (!SvOK(sv_compiler)) {
+      SV** sv_runtime_ptr = hv_fetch(hv_invocant, "runtime", strlen("runtime"), 0);
+      SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+      HV* hv_runtime = (HV*)SvRV(sv_runtime);
+      
+      SV** sv_compiler_ptr = hv_fetch(hv_runtime, "compiler", strlen("compiler"), 0);
+      sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+    }
+    
+    if (!SvOK(sv_compiler)) {
+      croak("[Unexpected Error]boot_env is not found.");
+    }
+    
+    HV* hv_compiler = (HV*)SvRV(sv_compiler);
+    SV** sv_boot_env_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
+    SV* sv_boot_env = sv_boot_env_ptr ? *sv_boot_env_ptr : &PL_sv_undef;
+    
+    if (!SvOK(sv_boot_env)) {
+      croak("[Unexpected Error]boot_env is not defined.");
+    }
+    
+    boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_boot_env);
+    
+  }
+  else {
+    croak("[Unexpected Error]The invocant sv_invocant must be defined.");
+  }
+  
+  return boot_env;
+}
+
 void* SPVM_XS_UTIL_get_spvm_object(pTHX_ SV* sv_blessed_object) {
   
   if (SvOK(sv_blessed_object)) {
