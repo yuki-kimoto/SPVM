@@ -4590,13 +4590,10 @@ DESTROY(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  // Free compiler
   boot_env->api->compiler->free_instance(compiler);
   
   XSRETURN(0);
@@ -4610,9 +4607,7 @@ create_native_compiler(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* compiler = boot_env->api->compiler->new_instance();
   
@@ -4648,18 +4643,13 @@ compile(...)
   SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
   SV* sv_include_dirs = sv_include_dirs_ptr ? *sv_include_dirs_ptr : &PL_sv_undef;
   
-  // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  // File
   const char* start_file = SvPV_nolen(sv_start_file);
   
-  // Line
   int32_t start_line = (int32_t)SvIV(sv_start_line);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   // Set starting file
   boot_env->api->compiler->set_start_file(compiler, start_file);
@@ -4683,7 +4673,6 @@ compile(...)
     boot_env->api->compiler->add_include_dir(compiler, include_dir);
   }
   
-  // Compile SPVM
   int32_t status = boot_env->api->compiler->compile(compiler, basic_type_name);
   
   SV* sv_success = &PL_sv_undef;
@@ -4705,9 +4694,7 @@ get_error_messages(...)
   
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
@@ -4738,9 +4725,7 @@ get_class_file(...)
   SV* sv_class_name = ST(1);
   const char* class_name = SvPV_nolen(sv_class_name);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* class_file = boot_env->api->compiler->get_class_file(compiler, class_name);
   
@@ -4749,8 +4734,6 @@ get_class_file(...)
   if (class_file) {
     sv_class_file = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ class_file, "SPVM::Builder::Native::ClassFile");
     HV* hv_class_file = (HV*)SvRV(sv_class_file);
-    
-    (void)hv_store(hv_class_file, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
     (void)hv_store(hv_class_file, "compiler", strlen("compiler"), SvREFCNT_inc(sv_self), 0);
   }
@@ -4797,9 +4780,7 @@ get_method_names(...)
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
@@ -4840,9 +4821,7 @@ get_parent_basic_type_name(...)
   
   SV* sv_basic_type_name = ST(1);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
@@ -4876,9 +4855,7 @@ get_anon_basic_type_names(...)
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
@@ -4913,9 +4890,7 @@ get_basic_types_length(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   int32_t basic_types_length = boot_env->api->runtime->get_basic_types_length(runtime);
   
@@ -4936,12 +4911,9 @@ get_class_file(...)
   
   SV* sv_basic_type_name = ST(1);
   
-  // Name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
@@ -4985,22 +4957,16 @@ set_native_method_address(...)
   SV* sv_method_name = ST(2);
   SV* sv_native_address = ST(3);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
-  // Basic type name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  // Method name
   const char* method_name = SvPV_nolen(sv_method_name);
   
-  // Method
   void* method = boot_env->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
   
-  // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
   boot_env->api->method->set_native_address(runtime, method, native_address);
@@ -5023,22 +4989,16 @@ set_precompile_method_address(...)
   SV* sv_method_name = ST(2);
   SV* sv_precompile_address = ST(3);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
-  // Basic type name
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
   void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  // Method name
   const char* method_name = SvPV_nolen(sv_method_name);
   
-  // Method
   void* method = boot_env->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
   
-  // Native address
   void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
   
   boot_env->api->method->set_precompile_address(runtime, method, precompile_address);
@@ -5059,14 +5019,10 @@ build_precompile_class_source(...)
   SV* sv_basic_type_name = ST(1);
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
-  // New allocator
   void* allocator = boot_env->api->allocator->new_instance();
   
-  // New string buffer
   void* string_buffer = boot_env->api->string_buffer->new_instance(allocator, 0);
   
   void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
@@ -5077,10 +5033,8 @@ build_precompile_class_source(...)
   int32_t string_buffer_length = boot_env->api->string_buffer->get_length(string_buffer);
   SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
   
-  // Free string buffer
   boot_env->api->string_buffer->free_instance(string_buffer);
   
-  // Free allocator
   boot_env->api->allocator->free_instance(allocator);
   
   XPUSHs(sv_precompile_source);
@@ -5099,9 +5053,7 @@ get_basic_type_by_id(...)
   SV* sv_basic_type_id = ST(1);
   int32_t basic_type_id = SvIV(sv_basic_type_id);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* basic_type = boot_env->api->runtime->get_basic_type_by_id(runtime, basic_type_id);
   
@@ -5110,8 +5062,6 @@ get_basic_type_by_id(...)
   if (basic_type) {
     sv_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type, "SPVM::Builder::Native::BasicType");
     HV* hv_basic_type = (HV*)SvRV(sv_basic_type);
-    
-    (void)hv_store(hv_basic_type, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
     (void)hv_store(hv_basic_type, "runtime", strlen("runtime"), SvREFCNT_inc(sv_self), 0);
   }
@@ -5132,9 +5082,7 @@ get_basic_type_by_name(...)
   SV* sv_basic_type_name = ST(1);
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
@@ -5143,8 +5091,6 @@ get_basic_type_by_name(...)
   if (basic_type) {
     sv_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ basic_type, "SPVM::Builder::Native::BasicType");
     HV* hv_basic_type = (HV*)SvRV(sv_basic_type);
-    
-    (void)hv_store(hv_basic_type, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
     (void)hv_store(hv_basic_type, "runtime", strlen("runtime"), SvREFCNT_inc(sv_self), 0);
   }
@@ -5184,9 +5130,7 @@ get_basic_type_names(...)
   
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
@@ -5440,9 +5384,7 @@ get_parent(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* parent_basic_type = boot_env->api->basic_type->get_parent(runtime, basic_type);
   
@@ -5451,8 +5393,6 @@ get_parent(...)
   if (parent_basic_type) {
     sv_parent_basic_type = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ parent_basic_type, "SPVM::Builder::Native::BasicType");
     HV* hv_parent_basic_type = (HV*)SvRV(sv_parent_basic_type);
-    
-    (void)hv_store(hv_parent_basic_type, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
     (void)hv_store(hv_parent_basic_type, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
@@ -5475,9 +5415,7 @@ get_class_dir(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* class_dir = boot_env->api->basic_type->get_class_dir(runtime, basic_type);
   
@@ -5501,9 +5439,7 @@ get_class_rel_file(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* class_rel_file = boot_env->api->basic_type->get_class_rel_file(runtime, basic_type);
   
@@ -5527,9 +5463,7 @@ get_name(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* name = boot_env->api->basic_type->get_name(runtime, basic_type);
   
@@ -5553,9 +5487,7 @@ get_methods_length(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   int32_t methods_length = boot_env->api->basic_type->get_methods_length(runtime, basic_type);
   
@@ -5582,9 +5514,7 @@ get_method_by_index(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* method = boot_env->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
   
@@ -5593,8 +5523,6 @@ get_method_by_index(...)
   if (method) {
     sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Native::Method");
     HV* hv_method = (HV*)SvRV(sv_method);
-    
-    (void)hv_store(hv_method, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
     (void)hv_store(hv_method, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
@@ -5620,9 +5548,7 @@ get_method_by_name(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   void* method = boot_env->api->basic_type->get_method_by_name(runtime, basic_type, method_name);
   
@@ -5631,8 +5557,6 @@ get_method_by_name(...)
   if (method) {
     sv_method = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ method, "SPVM::Builder::Native::Method");
     HV* hv_method = (HV*)SvRV(sv_method);
-    
-    (void)hv_store(hv_method, "boot_env", strlen("boot_env"), SvREFCNT_inc(sv_env_api), 0);
     
     (void)hv_store(hv_method, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
   }
@@ -5657,9 +5581,7 @@ get_name(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* name = boot_env->api->method->get_name(runtime, method);
   
@@ -5683,9 +5605,7 @@ is_native(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   int32_t is_native = boot_env->api->method->is_native(runtime, method);
   
@@ -5709,9 +5629,7 @@ is_precompile(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   int32_t is_precompile = boot_env->api->method->is_precompile(runtime, method);
   
@@ -5735,9 +5653,7 @@ is_class_method(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   int32_t is_class_method = boot_env->api->method->is_class_method(runtime, method);
   
@@ -5763,9 +5679,7 @@ get_file(...)
   HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* file = boot_env->api->class_file->get_file(compiler, class_file);
   
@@ -5793,9 +5707,7 @@ get_dir(...)
   HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* dir = boot_env->api->class_file->get_dir(compiler, class_file);
   
@@ -5823,9 +5735,7 @@ get_rel_file(...)
   HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* rel_file = boot_env->api->class_file->get_rel_file(compiler, class_file);
   
@@ -5853,9 +5763,7 @@ get_content(...)
   HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   const char* content = boot_env->api->class_file->get_content(compiler, class_file);
   
@@ -5883,9 +5791,7 @@ get_content_length(...)
   HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   int32_t content_length = boot_env->api->class_file->get_content_length(compiler, class_file);
   
@@ -5910,9 +5816,7 @@ get_basic_type_names(...)
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_runtime, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
   AV* av_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_basic_type_names = sv_2mortal(newRV_inc((SV*)av_basic_type_names));
