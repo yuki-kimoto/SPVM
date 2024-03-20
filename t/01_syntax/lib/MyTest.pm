@@ -95,7 +95,9 @@ sub compile_not_ok_file {
     include_dirs => $builder->include_dirs
   );
   
-  my $success = $compiler->compile($basic_type_name, $file, $line);
+  $compiler->set_start_file(__FILE__);
+  $compiler->set_start_line(__LINE__ + 1);
+  my $success = $compiler->compile($basic_type_name);
   ok(!$success);
   my $error_messages = $compiler->get_error_messages;
   my $first_error_message = $error_messages->[0];
@@ -187,7 +189,9 @@ sub compile_ok_file {
   my $compiler = SPVM::Builder::Native::Compiler->new(
     include_dirs => $builder->include_dirs
   );
-  my $success = $compiler->compile($basic_type_name, $file, $line);
+  $compiler->set_start_file(__FILE__);
+  $compiler->set_start_line(__LINE__ + 1);
+  my $success = $compiler->compile($basic_type_name);
   ok($success);
   
   if (!$success) {

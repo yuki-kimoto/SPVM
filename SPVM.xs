@@ -4632,8 +4632,6 @@ compile(...)
   
   SV* sv_self = ST(0);
   SV* sv_basic_type_name = ST(1);
-  SV* sv_start_file = ST(2);
-  SV* sv_start_line = ST(3);
   
   HV* hv_self = (HV*)SvRV(sv_self);
   
@@ -4645,17 +4643,7 @@ compile(...)
   
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  const char* start_file = SvPV_nolen(sv_start_file);
-  
-  int32_t start_line = (int32_t)SvIV(sv_start_line);
-  
   SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
-  
-  // Set starting file
-  boot_env->api->compiler->set_start_file(compiler, start_file);
-  
-  // Set starting line
-  boot_env->api->compiler->set_start_line(compiler, start_line);
   
   // Add include paths
   AV* av_include_dirs;

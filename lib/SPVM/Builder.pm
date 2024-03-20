@@ -85,7 +85,9 @@ sub build_dynamic_lib_dist {
     include_dirs => $self->include_dirs
   );
   
-  my $success = $compiler->compile($class_name, __FILE__, __LINE__);
+  $compiler->set_start_file(__FILE__);
+  $compiler->set_start_line(__LINE__ + 1);
+  my $success = $compiler->compile($class_name);
   unless ($success) {
     $compiler->print_error_messages(*STDERR);
     exit(255);

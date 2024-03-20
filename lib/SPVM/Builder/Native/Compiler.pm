@@ -77,7 +77,11 @@ sub new {
 sub compile_with_exit {
   my ($self, $class_name, $file, $line) = @_;
   
-  my $success = $self->compile($class_name, __FILE__, __LINE__);
+  $self->set_start_file($file);
+  
+  $self->set_start_line($line);
+  
+  my $success = $self->compile($class_name);
   unless ($success) {
     $self->print_error_messages(*STDERR);
     exit(255);
