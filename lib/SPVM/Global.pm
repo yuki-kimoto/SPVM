@@ -44,30 +44,28 @@ sub build_class {
   my $build_success;
   if (defined $class_name) {
     
-    {
-      my $api = $API;
-      my $compiler = $COMPILER;
+    my $api = $API;
+    my $compiler = $COMPILER;
+    
+    my $env = $api->env;
+    
+    my $runtime = $compiler->get_runtime;
+    my $start_basic_types_length = $runtime->get_basic_types_length;
+    
+    $compiler->compile_with_exit($class_name, __FILE__, __LINE__);
+    
+    my $basic_types_length = $runtime->get_basic_types_length;
+    
+    for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
+      my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
+      my $class_name = $basic_type->get_name;
       
-      my $env = $api->env;
-      
-      my $runtime = $compiler->get_runtime;
-      my $start_basic_types_length = $runtime->get_basic_types_length;
-      
-      $compiler->compile_with_exit($class_name, __FILE__, __LINE__);
-      
-      my $basic_types_length = $runtime->get_basic_types_length;
-      
-      for (my $basic_type_id = $start_basic_types_length; $basic_type_id < $basic_types_length; $basic_type_id++) {
-        my $basic_type = $runtime->get_basic_type_by_id($basic_type_id);
-        my $class_name = $basic_type->get_name;
-        
-        &load_dynamic_lib($runtime, $class_name);
-      }
-      
-      my $stack = $api->stack;
-      
-      $env->call_init_methods($stack);
+      &load_dynamic_lib($runtime, $class_name);
     }
+    
+    my $stack = $api->stack;
+    
+    $env->call_init_methods($stack);
     
     &bind_to_perl($class_name);
   }
@@ -108,13 +106,11 @@ sub init_api {
     $COMPILER = $compiler;
     $API = $api;
     
-    {
-      $env->set_command_info_program_name($stack, $0);
-      
-      $env->set_command_info_argv($stack, \@ARGV);
-      my $base_time = $^T + 0; # For Perl 5.8.9
-      $env->set_command_info_base_time($stack, $base_time);
-    }
+    $env->set_command_info_program_name($stack, $0);
+    
+    $env->set_command_info_argv($stack, \@ARGV);
+    my $base_time = $^T + 0; # For Perl 5.8.9
+    $env->set_command_info_base_time($stack, $base_time);
   }
 }
 
