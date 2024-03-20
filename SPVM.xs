@@ -56,14 +56,8 @@ SPVM_ENV* SPVM_XS_UTIL_get_env(pTHX_ SV* sv_env) {
   if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::Builder::Native::Env")) {
     env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env);
   }
-  else if (sv_isobject(sv_env) && sv_derived_from(sv_env, "SPVM::BlessedObject::Class")) {
-    void* spvm_env = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_env);
-    
-    SPVM_ENV* boot_env = SPVM_NATIVE_new_env();
-    
-    env = boot_env->get_pointer(boot_env, NULL, spvm_env);
-    
-    boot_env->free_env(boot_env);
+  else {
+    croak("[Unexpected Error]The runtime environemnt must be a SPVM::Builder::Native::Env object.");
   }
   
   return env;
@@ -75,14 +69,8 @@ SPVM_VALUE* SPVM_XS_UTIL_get_stack(pTHX_ SV* sv_stack) {
   if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::Builder::Native::Stack")) {
     stack = SPVM_XS_UTIL_get_pointer(aTHX_ sv_stack);
   }
-  else if (sv_isobject(sv_stack) && sv_derived_from(sv_stack, "SPVM::BlessedObject::Class")) {
-    void* spvm_stack = SPVM_XS_UTIL_get_spvm_object(aTHX_ sv_stack);
-    
-    SPVM_ENV* boot_env = SPVM_NATIVE_new_env();
-    
-    stack = boot_env->get_pointer(boot_env, NULL, spvm_stack);
-    
-    boot_env->free_env(boot_env);
+  else {
+    croak("[Unexpected Error]The runtime stack must be a SPVM::Builder::Native::Stack object.");
   }
   
   return stack;
