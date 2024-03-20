@@ -167,7 +167,7 @@ class TestCase::Module::StringBuffer {
         my $length = 4;
         eval { $buffer->push ($string, $offset, $length); };
         
-        unless (Fn->contains($@, "\$offset + \$length must be less than or equal to the length of \$string")) {
+        unless (Fn->contains($@, "The offset \$offset + the length \$length must be less than or equal to the length of the string $string")) {
           return 0;
         }
       }

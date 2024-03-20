@@ -73,7 +73,7 @@ class StringBuffer {
     }
     
     unless ($offset + $length <= $string_length) {
-      die "\$offset + \$length must be less than or equal to the length of \$string.";
+      die "The offset \$offset + the length \$length must be less than or equal to the length of the string $string.";
     }
     
     my $buffer_length = $self->{length};
