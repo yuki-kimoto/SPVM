@@ -5710,13 +5710,14 @@ get_file(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* class_file = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   const char* file = boot_env->api->class_file->get_file(compiler, class_file);
   
@@ -5739,13 +5740,14 @@ get_dir(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* class_file = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   const char* dir = boot_env->api->class_file->get_dir(compiler, class_file);
   
@@ -5768,13 +5770,14 @@ get_rel_file(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* class_file = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   const char* rel_file = boot_env->api->class_file->get_rel_file(compiler, class_file);
   
@@ -5797,13 +5800,14 @@ get_content(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* class_file = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   const char* content = boot_env->api->class_file->get_content(compiler, class_file);
   
@@ -5826,13 +5830,14 @@ get_content_length(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   void* class_file = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
-  SV** sv_env_api_ptr = hv_fetch(hv_self, "boot_env", strlen("boot_env"), 0);
-  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
-  
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  HV* hv_compiler = (HV*)SvRV(sv_compiler);
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_compiler);
+  
+  SV** sv_env_api_ptr = hv_fetch(hv_compiler, "boot_env", strlen("boot_env"), 0);
+  SV* sv_env_api = sv_env_api_ptr ? *sv_env_api_ptr : &PL_sv_undef;
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_env_api);
   
   int32_t content_length = boot_env->api->class_file->get_content_length(compiler, class_file);
   
