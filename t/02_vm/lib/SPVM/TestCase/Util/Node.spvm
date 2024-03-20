@@ -18,11 +18,11 @@ class TestCase::Util::Node : public {
   private static method copy_object_with_proto : object[] ($array : object[], $proto : object[], $cloner : Cloner = undef, $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;

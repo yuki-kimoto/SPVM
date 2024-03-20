@@ -32,7 +32,7 @@ class Immutable::ByteList {
     my $self = new Immutable::ByteList;
     
     unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
+      die "The length \$length must be greater than or equal to 0.";
     }
     
     $self->{length} = $length;
@@ -46,11 +46,11 @@ class Immutable::ByteList {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
+      die "The index \$index must be less than the length of \$list.";
     }
     
     my $element = $self->{array}[$index];

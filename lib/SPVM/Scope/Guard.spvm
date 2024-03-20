@@ -10,7 +10,7 @@ class Scope::Guard {
   static method new : Scope::Guard ($callback : Callback) {
     
     unless ($callback) {
-      die "\$callback must be defined.";
+      die "The callback \$callback must be defined.";
     }
     
     my $self = new Scope::Guard;

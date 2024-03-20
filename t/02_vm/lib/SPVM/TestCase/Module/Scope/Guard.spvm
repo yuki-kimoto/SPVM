@@ -54,7 +54,7 @@ class TestCase::Module::Scope::Guard {
     {
       my $callback : Callback;
       eval { Scope::Guard->new($callback); } ;
-      unless (Fn->contains($@, "\$callback must be defined")) {
+      unless (Fn->contains($@, "The callback \$callback must be defined")) {
         return 0;
       }
     }

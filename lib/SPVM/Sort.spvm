@@ -13,15 +13,15 @@ class Sort {
   
   static method sort_byte : void ($array : byte[], $comparator : Comparator::Int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($comparator) {
-      die "\$comparator must be defined.";
+      die "The comparator \$comparator must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -49,15 +49,15 @@ class Sort {
   }
   static method sort_double : void ($array : double[], $comparator : Comparator::Double, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($comparator) {
-      die "\$comparator must be defined.";
+      die "The comparator \$comparator must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -85,15 +85,15 @@ class Sort {
   }
   static method sort_float : void ($array : float[], $comparator : Comparator::Float, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($comparator) {
-      die "\$comparator must be defined.";
+      die "The comparator \$comparator must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -121,15 +121,15 @@ class Sort {
   }
   static method sort_int : void ($array : int[], $comparator : Comparator::Int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($comparator) {
-      die "\$comparator must be defined.";
+      die "The comparator \$comparator must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -157,15 +157,15 @@ class Sort {
   }
   static method sort_long : void ($array : long[], $comparator : Comparator::Long, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($comparator) {
-      die "\$comparator must be defined.";
+      die "The comparator \$comparator must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -193,15 +193,15 @@ class Sort {
   }
   static method sort_object : void ($array : object[], $comparator : Comparator, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($comparator) {
-      die "\$comparator must be defined.";
+      die "The comparator \$comparator must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -224,15 +224,15 @@ class Sort {
   
   static method sort_short : void ($array : short[], $comparator : Comparator::Int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($comparator) {
-      die "\$comparator must be defined.";
+      die "The comparator \$comparator must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -260,15 +260,15 @@ class Sort {
   }
   static method sort_string : void ($array : string[], $comparator : Comparator::String, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($comparator) {
-      die "\$comparator must be defined.";
+      die "The comparator \$comparator must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -682,7 +682,7 @@ class Sort {
   
   precompile static method sort_options_asc : void ($options : object[]) {
     unless ($options) {
-      die "\$options must be defined.";
+      die "The options \$options must be defined.";
     }
     
     my $options_length = @$options;

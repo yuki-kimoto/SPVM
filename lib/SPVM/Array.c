@@ -16,23 +16,23 @@ int32_t SPVM__Array__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -67,23 +67,23 @@ int32_t SPVM__Array__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -118,23 +118,23 @@ int32_t SPVM__Array__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -169,23 +169,23 @@ int32_t SPVM__Array__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -220,23 +220,23 @@ int32_t SPVM__Array__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -271,23 +271,23 @@ int32_t SPVM__Array__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -322,23 +322,23 @@ int32_t SPVM__Array__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -373,23 +373,23 @@ int32_t SPVM__Array__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -424,23 +424,23 @@ int32_t SPVM__Array__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -475,23 +475,23 @@ int32_t SPVM__Array__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -526,23 +526,23 @@ int32_t SPVM__Array__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -577,23 +577,23 @@ int32_t SPVM__Array__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "$dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
-    return env->die(env, stack, "$source must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source $source must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(dest_offset >= 0)) {
-    return env->die(env, stack, "$dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The dest offset $dest_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(source_offset >= 0)) {
-    return env->die(env, stack, "$source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The source offset $source_offset must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   if (length == 0) {
@@ -629,7 +629,7 @@ int32_t SPVM__Array__new_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
 
   if (!(length >= 0)) {
-    return env->die(env, stack, "$length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
   
   void* new_object_array = env->new_array_proto(env, stack, array, length);

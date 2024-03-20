@@ -11,11 +11,11 @@ class Array {
   static method copy_byte : byte[] ($array : byte[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -37,11 +37,11 @@ class Array {
   static method copy_double : double[] ($array : double[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -63,11 +63,11 @@ class Array {
   static method copy_float : float[] ($array : float[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -89,11 +89,11 @@ class Array {
   static method copy_int : int[] ($array : int[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -115,11 +115,11 @@ class Array {
   static method copy_long : long[] ($array : long[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -141,7 +141,7 @@ class Array {
   precompile static method copy_object : object[] ($array : object[], $cloner : Cloner = undef, $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     my $proto = &new_proto($array, 0);
@@ -158,11 +158,11 @@ class Array {
   static method copy_short : short[] ($array : short[], $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -183,11 +183,11 @@ class Array {
   
   precompile static method copy_string : string[] ($array : string[], $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -210,11 +210,11 @@ class Array {
   
   static method copy_string_address : string[] ($array : string[], $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -573,21 +573,21 @@ class Array {
   }
   precompile static method memcpy_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
-      die "\$dest must be defined.";
+      die "The dest \$dest must be defined.";
     }
     unless ($source) {
-      die "\$source must be defined.";
+      die "The source \$source must be defined.";
     }
     unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
+      die "The length \$length must be greater than or equal to 0.";
     }
     
     unless ($dest_offset >= 0) {
-      die "\$dest_offset must be greater than or equal to 0.";
+      die "The dest offset \$dest_offset must be greater than or equal to 0.";
     }
     
     unless ($source_offset >= 0) {
-      die "\$source_offset must be greater than or equal to 0.";
+      die "The source offset \$source_offset must be greater than or equal to 0.";
     }
     
     my $dest_length = @$dest;
@@ -619,21 +619,21 @@ class Array {
   }
   static method memmove_object_address : void ($dest : object[], $dest_offset : int, $source : object[], $source_offset : int, $length : int) {
     unless ($dest) {
-      die "\$dest must be defined.";
+      die "The dest \$dest must be defined.";
     }
     unless ($source) {
-      die "\$source must be defined.";
+      die "The source \$source must be defined.";
     }
     unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
+      die "The length \$length must be greater than or equal to 0.";
     }
     
     unless ($dest_offset >= 0) {
-      die "\$dest_offset must be greater than or equal to 0.";
+      die "The dest offset \$dest_offset must be greater than or equal to 0.";
     }
     
     unless ($source_offset >= 0) {
-      die "\$source_offset must be greater than or equal to 0.";
+      die "The source offset \$source_offset must be greater than or equal to 0.";
     }
     
     my $dest_length = @$dest;
@@ -665,11 +665,11 @@ class Array {
   
   precompile static method memset_byte : void ($array : byte[], $element : int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -688,11 +688,11 @@ class Array {
   
   precompile static method memset_double : void ($array : double[], $element : double, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -711,11 +711,11 @@ class Array {
   
   precompile static method memset_float : void ($array : float[], $element : float, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -734,11 +734,11 @@ class Array {
   
   precompile static method memset_int : void ($array : int[], $element : int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -757,11 +757,11 @@ class Array {
   
   precompile static method memset_long : void ($array : long[], $element : long, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -780,11 +780,11 @@ class Array {
   
   precompile static method memset_object : void ($array : object[], $element : object, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -803,11 +803,11 @@ class Array {
   
   precompile static method memset_short : void ($array : short[], $element : int, $offset : int = 0, $length : int = -1) {
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;
@@ -830,11 +830,11 @@ class Array {
   
   precompile static method merge_byte : byte[] ($array1 : byte[], $array2 : byte[]) {
     unless ($array1) {
-      die "\$array1 must be defined.";
+      die "The array1 \$array1 must be defined.";
     }
     
     unless ($array2) {
-      die "\$array2 must be defined.";
+      die "The array2 \$array2 must be defined.";
     }
     
     my $array1_length = @$array1;
@@ -856,11 +856,11 @@ class Array {
   
   precompile static method merge_short : short[] ($array1 : short[], $array2 : short[]) {
     unless ($array1) {
-      die "\$array1 must be defined.";
+      die "The array1 \$array1 must be defined.";
     }
     
     unless ($array2) {
-      die "\$array2 must be defined.";
+      die "The array2 \$array2 must be defined.";
     }
     
     my $array1_length = @$array1;
@@ -882,11 +882,11 @@ class Array {
   
   precompile static method merge_int : int[] ($array1 : int[], $array2 : int[]) {
     unless ($array1) {
-      die "\$array1 must be defined.";
+      die "The array1 \$array1 must be defined.";
     }
     
     unless ($array2) {
-      die "\$array2 must be defined.";
+      die "The array2 \$array2 must be defined.";
     }
     
     my $array1_length = @$array1;
@@ -908,11 +908,11 @@ class Array {
   
   precompile static method merge_long : long[] ($array1 : long[], $array2 : long[]) {
     unless ($array1) {
-      die "\$array1 must be defined.";
+      die "The array1 \$array1 must be defined.";
     }
     
     unless ($array2) {
-      die "\$array2 must be defined.";
+      die "The array2 \$array2 must be defined.";
     }
     
     my $array1_length = @$array1;
@@ -934,11 +934,11 @@ class Array {
   
   precompile static method merge_float : float[] ($array1 : float[], $array2 : float[]) {
     unless ($array1) {
-      die "\$array1 must be defined.";
+      die "The array1 \$array1 must be defined.";
     }
     
     unless ($array2) {
-      die "\$array2 must be defined.";
+      die "The array2 \$array2 must be defined.";
     }
     
     my $array1_length = @$array1;
@@ -960,11 +960,11 @@ class Array {
   
   precompile static method merge_double : double[] ($array1 : double[], $array2 : double[]) {
     unless ($array1) {
-      die "\$array1 must be defined.";
+      die "The array1 \$array1 must be defined.";
     }
     
     unless ($array2) {
-      die "\$array2 must be defined.";
+      die "The array2 \$array2 must be defined.";
     }
     
     my $array1_length = @$array1;
@@ -986,11 +986,11 @@ class Array {
   
   precompile static method merge_string : string[] ($array1 : string[], $array2 : string[]) {
     unless ($array1) {
-      die "\$array1 must be defined.";
+      die "The array1 \$array1 must be defined.";
     }
     
     unless ($array2) {
-      die "\$array2 must be defined.";
+      die "The array2 \$array2 must be defined.";
     }
     
     my $array1_length = @$array1;
@@ -1012,11 +1012,11 @@ class Array {
   
   precompile static method merge_object : object[] ($array1 : object[], $array2 : object[]) {
     unless ($array1) {
-      die "\$array1 must be defined.";
+      die "The array1 \$array1 must be defined.";
     }
     
     unless ($array2) {
-      die "\$array2 must be defined.";
+      die "The array2 \$array2 must be defined.";
     }
     
     my $array1_length = @$array1;
@@ -1041,7 +1041,7 @@ class Array {
   static method shuffle_object : void ($array : object[], $seed_ref : int*) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     my $array_length = @$array;
@@ -1061,11 +1061,11 @@ class Array {
   precompile static method repeat_string : string[] ($strings : string[], $count : int) {
     
     unless ($strings) {
-      die "\$strings must be defined.";
+      die "The strings \$strings must be defined.";
     }
     
     unless ($count >= 0) {
-      die "\$count must be greater than or equal to 0.";
+      die "The count \$count must be greater than or equal to 0.";
     }
     
     my $string_list = StringList->new;
@@ -1084,11 +1084,11 @@ class Array {
   static method copy_object_with_proto : object[] ($array : object[], $proto : object[], $cloner : Cloner = undef, $offset : int = 0, $length : int = -1) {
     
     unless ($array) {
-      die "\$array must be defined.";
+      die "The array \$array must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $array_length = @$array;

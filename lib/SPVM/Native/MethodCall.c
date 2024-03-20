@@ -14,7 +14,7 @@ int32_t SPVM__Native__MethodCall__new_class_method(SPVM_ENV* env, SPVM_VALUE* st
   void* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return env->die(env, stack, "$basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
@@ -22,7 +22,7 @@ int32_t SPVM__Native__MethodCall__new_class_method(SPVM_ENV* env, SPVM_VALUE* st
   void* obj_method_name = stack[1].oval;
   
   if (!obj_method_name) {
-    return env->die(env, stack, "$method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* method_name = env->get_chars(env, stack, obj_method_name);
@@ -53,7 +53,7 @@ int32_t SPVM__Native__MethodCall__new_instance_method_static(SPVM_ENV* env, SPVM
   void* obj_basic_type_name = stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return env->die(env, stack, "$basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
@@ -61,7 +61,7 @@ int32_t SPVM__Native__MethodCall__new_instance_method_static(SPVM_ENV* env, SPVM
   void* obj_method_name = stack[1].oval;
   
   if (!obj_method_name) {
-    return env->die(env, stack, "$method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* method_name = env->get_chars(env, stack, obj_method_name);
@@ -92,13 +92,13 @@ int32_t SPVM__Native__MethodCall__new_instance_method(SPVM_ENV* env, SPVM_VALUE*
   void* obj_instance = stack[0].oval;
   
   if (!obj_instance) {
-    return env->die(env, stack, "$instance must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The instance $instance must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   void* obj_method_name = stack[1].oval;
   
   if (!obj_method_name) {
-    return env->die(env, stack, "$method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* method_name = env->get_chars(env, stack, obj_method_name);
@@ -739,7 +739,7 @@ int32_t SPVM__Native__MethodCall__call_callback(SPVM_ENV* current_env, SPVM_VALU
   void* obj_callback = current_stack[0].oval;
   
   if (!obj_callback) {
-    return current_env->die(current_env, current_stack, "$callback must be defined.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "The callback $callback must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t* error_id_ref = current_stack[1].iref;
@@ -777,7 +777,7 @@ int32_t SPVM__Native__MethodCall__call_class_method_for_env(SPVM_ENV* current_en
   void* obj_basic_type_name = current_stack[0].oval;
   
   if (!obj_basic_type_name) {
-    return current_env->die(current_env, current_stack, "$basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   const char* basic_type_name = current_env->get_chars(current_env, current_stack, obj_basic_type_name);
@@ -785,7 +785,7 @@ int32_t SPVM__Native__MethodCall__call_class_method_for_env(SPVM_ENV* current_en
   void* obj_method_name = current_stack[1].oval;
   
   if (!obj_method_name) {
-    return current_env->die(current_env, current_stack, "$method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    return current_env->die(current_env, current_stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   int32_t* error_id_ref = current_stack[2].iref;

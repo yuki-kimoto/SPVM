@@ -37,7 +37,7 @@ class Native::Compiler : pointer {
   method eval_string : string ($main_source : string) {
     
     unless ($main_source) {
-      die "\$main_source must be defined.";
+      die "The main source \$main_source must be defined.";
     }
     
     my $source = "

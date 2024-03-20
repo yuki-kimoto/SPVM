@@ -62,7 +62,7 @@ class List {
     }
     
     unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
+      die "The length \$length must be greater than or equal to 0.";
     }
     
     if ($capacity < 0) {
@@ -83,11 +83,11 @@ class List {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
+      die "The index \$index must be less than the length of \$list.";
     }
     
     my $offset = $self->{offset};
@@ -105,11 +105,11 @@ class List {
     my $length = $self->{length};
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($index <= $length) {
-      die "\$index must be less than or equal to the length of \$list.";
+      die "The index \$index must be less than or equal to the length of \$list.";
     }
     
     my $remove_length = 0;
@@ -162,13 +162,13 @@ class List {
   method remove : object ($index : int) {
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     my $length = $self->{length};
     
     unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
+      die "The index \$index must be less than the length of \$list.";
     }
     
     my $remove_value = $self->get($index);
@@ -181,11 +181,11 @@ class List {
   
   method replace : void ($index : int, $remove_length : int, $replace : object[]) {
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($remove_length >= 0) {
-      die "\$remove_length must be greater than or equal to 0.";
+      die "The remove length \$remove_length must be greater than or equal to 0.";
     }
     unless ($index + $remove_length <= $self->{length}) {
       die "\$index + \$removing lenght must be less than or equal to the length of \$list.";
@@ -242,7 +242,7 @@ class List {
   
   method resize : void ($new_length : int) {
     unless ($new_length >= 0) {
-      die "\$new_length must be greater than or equal to 0.";
+      die "The new length \$new_length must be greater than or equal to 0.";
     }
     
     my $length = $self->{length};
@@ -263,11 +263,11 @@ class List {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
+      die "The index \$index must be less than the length of \$list.";
     }
     
     my $offset = $self->{offset};

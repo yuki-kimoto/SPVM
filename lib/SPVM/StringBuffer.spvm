@@ -37,7 +37,7 @@ class StringBuffer {
   static method new_len : StringBuffer ($length : int, $capacity : int = -1) {
     
     unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
+      die "The length \$length must be greater than or equal to 0.";
     }
     
     if ($capacity < 0) {
@@ -60,12 +60,12 @@ class StringBuffer {
   method push : void ($string : string, $offset : int = 0, $length : int = -1) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     my $string_length = length $string;
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     if ($length == -1) {
@@ -96,11 +96,11 @@ class StringBuffer {
   
   method replace : void ($offset : int, $remove_length : int, $replace : string) {
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     unless ($remove_length >= 0) {
-      die "\$remove_length must be greater than or equal to 0.";
+      die "The remove length \$remove_length must be greater than or equal to 0.";
     }
     unless ($offset + $remove_length <= $self->{length}) {
       die "\$offset + \$removing lenght must be less than or equal to the length of \$string buffer.";
@@ -126,7 +126,7 @@ class StringBuffer {
   
   method reserve : void ($new_capacity : int) {
     unless ($new_capacity >= 0) {
-      die "\$new_capacity must be greater than or equal to 0.";
+      die "The new capacity \$new_capacity must be greater than or equal to 0.";
     }
     
     my $capacity = $self->{capacity};
@@ -175,7 +175,7 @@ class StringBuffer {
   method set_length : void ($length : int) {
     
     unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
+      die "The length \$length must be greater than or equal to 0.";
     }
     
     $self->_maybe_extend($length);

@@ -87,7 +87,7 @@ class Hash {
   
   method set : void ($key : string, $value : object) {
     unless ($key) {
-      die "\$key must be defined.";
+      die "The key \$key must be defined.";
     }
     
     # Rehash
@@ -102,7 +102,7 @@ class Hash {
   
   precompile method get : object ($key : string) {
     unless ($key) {
-      die "\$key must be defined.";
+      die "The key \$key must be defined.";
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});
@@ -123,7 +123,7 @@ class Hash {
   
   precompile method exists : int ($key : string) {
     unless ($key) {
-      die "\$key must be defined.";
+      die "The key \$key must be defined.";
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});
@@ -145,7 +145,7 @@ class Hash {
   
   precompile method delete : object ($key : string) {
     unless ($key) {
-      die "\$key must be defined.";
+      die "The key \$key must be defined.";
     }
     
     my $index = $self->_index_by_key($key, @{$self->{entries}});

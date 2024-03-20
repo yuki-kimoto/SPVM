@@ -65,7 +65,7 @@ class Fn {
   static method chomp : void ($string : mutable string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $length = length $string;
@@ -79,7 +79,7 @@ class Fn {
   
   static method chompr : string ($string : string) {
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $new_string = (mutable string)copy $string;
@@ -112,19 +112,19 @@ class Fn {
 
   precompile static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int) {
     unless ($string1) {
-      die "\$string1 must be defined.";
+      die "The string1 \$string1 must be defined.";
     }
     
     unless ($string2) {
-      die "\$string2 must be defined.";
+      die "The string2 \$string2 must be defined.";
     }
     
     unless ($string1_offset >= 0) {
-      die "\$string1_offset must be greater than or equal to 0.";
+      die "The string1 offset \$string1_offset must be greater than or equal to 0.";
     }
     
     unless ($string2_offset >= 0) {
-      die "\$string2_offset must be greater than or equal to 0.";
+      die "The string2 offset \$string2_offset must be greater than or equal to 0.";
     }
     
     my $string1_length = length $string1;
@@ -193,15 +193,15 @@ class Fn {
   precompile static method index : int ($string : string, $substring : string, $begin : int = 0, $end : int = -1) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     unless ($substring) {
-      die "\$substring must be defined.";
+      die "The substring \$substring must be defined.";
     }
     
     unless ($begin >= 0 && $begin <= length $string) {
-      die "\$begin must be between 0 and the length of \$string.";
+      die "The begin \$begin must be between 0 and the length of \$string.";
     }
     
     my $string_length = length $string;
@@ -211,11 +211,11 @@ class Fn {
     }
     
     unless ($end <= length $string) {
-      die "\$end must be less than or equal to the length of \$string.";
+      die "The end \$end must be less than or equal to the length of \$string.";
     }
     
     unless ($end >= $begin) {
-      die "\$end must be greater than or equal to \$begin.";
+      die "The end \$end must be greater than or equal to \$begin.";
     }
     
     my $substring_length = length $substring;
@@ -254,7 +254,7 @@ class Fn {
 
   precompile static method init_string : void ($string : mutable string, $ascii_code : int = 0, $offset : int = 0, $length : int = -1) {
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     my $string_length = length $string;
     
@@ -465,11 +465,11 @@ class Fn {
   
   precompile static method join : string ($separator : string, $strings : string[]) {
     unless ($separator) {
-      die "\$separator must be defined.";
+      die "The separator \$separator must be defined.";
     }
     
     unless ($strings) {
-      die "\$strings must be defined.";
+      die "The strings \$strings must be defined.";
     }
     
     my $join_buffer = StringBuffer->new;
@@ -507,7 +507,7 @@ class Fn {
   precompile static method lc : string ($string : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $length = length $string;
@@ -527,7 +527,7 @@ class Fn {
   static method lcfirst : string ($string : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $length = length $string;
@@ -615,7 +615,7 @@ class Fn {
   precompile static method repeat : string ($string : string, $count : int) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     unless ($count >= 0) {
@@ -634,7 +634,7 @@ class Fn {
   precompile static method replace_chars : void ($string : mutable string, $from_ch : int, $to_ch : int) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $string_length = length $string;
@@ -648,15 +648,15 @@ class Fn {
   precompile static method rindex : int ($string : string, $substring : string, $end : int = -1, $begin : int = 0) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     unless ($substring) {
-      die "\$substring must be defined.";
+      die "The substring \$substring must be defined.";
     }
     
     unless ($begin >= 0 && $begin <= length $string) {
-      die "\$begin must be between 0 and the length of \$string.";
+      die "The begin \$begin must be between 0 and the length of \$string.";
     }
     
     my $string_length = length $string;
@@ -666,11 +666,11 @@ class Fn {
     }
     
     unless ($end <= length $string) {
-      die "\$end must be less than or equal to the length of \$string.";
+      die "The end \$end must be less than or equal to the length of \$string.";
     }
     
     unless ($end >= $begin) {
-      die "\$end must be greater than or equal to \$begin.";
+      die "The end \$end must be greater than or equal to \$begin.";
     }
     
     my $substring_length = length $substring;
@@ -715,7 +715,7 @@ class Fn {
   precompile static method shorten_null_char : void ($string : mutable string) {
     
     if (!$string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $null_char_offset = -1;
@@ -734,11 +734,11 @@ class Fn {
   
   precompile static method split : string[] ($separator : string, $string : string, $limit : int = 0) {
     unless ($separator) {
-      die "\$separator must be defined.";
+      die "The separator \$separator must be defined.";
     }
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $string_length = length $string;
@@ -795,11 +795,11 @@ class Fn {
   static method substr : string ($string : string, $offset : int, $length : int = -1, $replacement : string = undef) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $string_length = length $string;
@@ -827,7 +827,7 @@ class Fn {
   precompile static method to_code_points : int[] ($string : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $string_length = length $string;
@@ -878,7 +878,7 @@ class Fn {
   precompile static method to_utf8_chars : string[] ($string : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $string_length = length $string;
@@ -900,15 +900,15 @@ class Fn {
   precompile static method tr : string ($string : string, $pattern : string, $replace : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     unless ($pattern) {
-      die "\$pattern must be defined.";
+      die "The pattern \$pattern must be defined.";
     }
     
     unless ($replace) {
-      die "\$replace must be defined.";
+      die "The replace \$replace must be defined.";
     }
     
     my $replace_length = length $pattern;
@@ -957,7 +957,7 @@ class Fn {
   precompile static method trim : string ($string : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $length = length $string;
@@ -1008,7 +1008,7 @@ class Fn {
   precompile static method uc : string ($string : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $length = length $string;
@@ -1028,7 +1028,7 @@ class Fn {
   static method ucfirst : string ($string : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $length = length $string;
@@ -1050,7 +1050,7 @@ class Fn {
   precompile static method utf8_length : int ($string : string) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     my $string_length = length $string;
@@ -1068,11 +1068,11 @@ class Fn {
   precompile static method utf8_substr : string ($string : string, $utf8_offset : int, $utf8_length : int = -1) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     unless ($utf8_offset >= 0) {
-      die "\$utf8_offset must be greater than or equal to 0.";
+      die "The utf8 offset \$utf8_offset must be greater than or equal to 0.";
     }
     
     my $string_length = length $string;
@@ -1246,11 +1246,11 @@ class Fn {
   precompile static method memset_char : void ($string : mutable string, $char : int, $offset : int = 0, $length : int = -1) {
     
     unless ($string) {
-      die "\$string must be defined.";
+      die "The string \$string must be defined.";
     }
     
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     my $string_length = length $string;

@@ -3475,7 +3475,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stdout(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_path = stack[0].oval;
   
   if (!obj_path) {
-    return env->die(env, stack, "$path must be defined.");
+    return env->die(env, stack, "The path $path must be defined.");
   }
   
   const char* path = env->get_chars(env, stack, obj_path);
@@ -3515,7 +3515,7 @@ int32_t SPVM__TestCase__NativeAPI__freopen_stderr(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_path = stack[0].oval;
   
   if (!obj_path) {
-    return env->die(env, stack, "$path must be defined.");
+    return env->die(env, stack, "The path $path must be defined.");
   }
   
   const char* path = env->get_chars(env, stack, obj_path);

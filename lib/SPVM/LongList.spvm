@@ -38,7 +38,7 @@ class LongList {
     my $self = new LongList;
     
     unless ($length >= 0) {
-      die "\$length must be greater than or equal to 0.";
+      die "The length \$length must be greater than or equal to 0.";
     }
     
     if ($capacity < 0) {
@@ -61,11 +61,11 @@ class LongList {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
+      die "The index \$index must be less than the length of \$list.";
     }
     
     my $element = $self->{array}[$index];
@@ -77,11 +77,11 @@ class LongList {
     my $length = $self->{length};
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($index <= $length) {
-      die "\$index must be less than or equal to the length of \$list.";
+      die "The index \$index must be less than or equal to the length of \$list.";
     }
     
     my $new_length = $length + 1;
@@ -129,11 +129,11 @@ class LongList {
     my $length = $self->{length};
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
+      die "The index \$index must be less than the length of \$list.";
     }
     
     my $elements = $self->{array};
@@ -151,11 +151,11 @@ class LongList {
   
   method replace : void ($offset : int, $remove_length : int, $replace : long[]) {
     unless ($offset >= 0) {
-      die "\$offset must be greater than or equal to 0.";
+      die "The offset \$offset must be greater than or equal to 0.";
     }
     
     unless ($remove_length >= 0) {
-      die "\$remove_length must be greater than or equal to 0.";
+      die "The remove length \$remove_length must be greater than or equal to 0.";
     }
     unless ($offset + $remove_length <= $self->{length}) {
       die "\$offset + \$removing lenght must be less than or equal to the length of \$list.";
@@ -181,7 +181,7 @@ class LongList {
   
   method reserve : void ($new_capacity : int) {
     unless ($new_capacity >= 0) {
-      die "\$new_capacity must be greater than or equal to 0.";
+      die "The new capacity \$new_capacity must be greater than or equal to 0.";
     }
     
     my $capacity = $self->{capacity};
@@ -197,7 +197,7 @@ class LongList {
   
   method resize : void ($new_length : int) {
     unless ($new_length >= 0) {
-      die "\$new_length must be greater than or equal to 0.";
+      die "The new length \$new_length must be greater than or equal to 0.";
     }
     
     my $length = $self->{length};
@@ -217,11 +217,11 @@ class LongList {
     my $length = $self->length;
     
     unless ($index >= 0) {
-      die "\$index must be greater than or equal to 0.";
+      die "The index \$index must be greater than or equal to 0.";
     }
     
     unless ($index < $length) {
-      die "\$index must be less than the length of \$list.";
+      die "The index \$index must be less than the length of \$list.";
     }
     
     $self->{array}[$index] = $element;

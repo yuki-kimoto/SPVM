@@ -125,7 +125,7 @@ sub new_options {
   my ($self, $options) = @_;
   
   unless (ref $options eq 'HASH') {
-    confess("\$options must be a hash reference");
+    confess("The options \$options must be a hash reference");
   }
   
   my $array_ref = [];

@@ -99,7 +99,7 @@ class TestCase::Module::StringBuffer {
     }
     {
       eval { StringBuffer->new_len(-1); };
-      unless (Fn->contains($@, "\$length must be greater than or equal to 0")) {
+      unless (Fn->contains($@, "The length \$length must be greater than or equal to 0")) {
         return 0;
       }
     }
@@ -145,7 +145,7 @@ class TestCase::Module::StringBuffer {
         my $length = 2;
         eval { $buffer->push ($string, $offset, $length); };
         
-        unless (Fn->contains($@, "\$string must be defined")) {
+        unless (Fn->contains($@, "The string \$string must be defined")) {
           return 0;
         }
       }
@@ -156,7 +156,7 @@ class TestCase::Module::StringBuffer {
         my $length = 2;
         eval { $buffer->push ($string, $offset, $length); };
         
-        unless (Fn->contains($@, "\$offset must be greater than or equal to 0")) {
+        unless (Fn->contains($@, "The offset \$offset must be greater than or equal to 0")) {
           return 0;
         }
       }
@@ -272,7 +272,7 @@ class TestCase::Module::StringBuffer {
       my $target = StringBuffer->new;
       $target->push("abcd");
       eval { $target->replace(-1, 3, "xyz"); };
-      unless (Fn->contains($@, "\$offset must be greater than or equal to 0")) {
+      unless (Fn->contains($@, "The offset \$offset must be greater than or equal to 0")) {
         return 0;
       }
     }
@@ -414,7 +414,7 @@ class TestCase::Module::StringBuffer {
         
         eval { $buffer->set_length(-1); }
         
-        unless (Fn->contains($@, "\$length must be greater than or equal to 0.")) {
+        unless (Fn->contains($@, "The length \$length must be greater than or equal to 0.")) {
           return 0;
         }
       }
