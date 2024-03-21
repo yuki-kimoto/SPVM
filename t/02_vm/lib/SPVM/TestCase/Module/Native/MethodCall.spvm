@@ -927,17 +927,25 @@ class TestCase::Module::Native::MethodCall {
       
       $@ = "Current Stack Error";
       
-      my $error_id = -1;
-      Native::MethodCall->call_callback(
-        method : void () {
-          die "Call Back Error";
-          TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
-        },
-        \$error_id,
+      my $error_id_ref = [-1];
+      my $callback = method : void () {
+        die "Call Back Error";
+        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+      };
+      my $args = [(object)$callback];
+      my $instance_method_call = Native::MethodCall->new_instance_method_with_env_stack(
+        undef,
         $stack,
+        $callback,
+        "",
       );
+      eval { $instance_method_call->call($args, $error_id_ref); }
       
-      if ($error_id == 0) {
+      unless (eval_error_id isa_error Native::MethodCall::Error::ExceptionThrown) {
+        return 0;
+      }
+      
+      unless ($error_id_ref->[0] == basic_type_id Error) {
         return 0;
       }
       
@@ -945,7 +953,7 @@ class TestCase::Module::Native::MethodCall {
         return 0;
       }
       
-      unless ($@ eq "Current Stack Error") {
+      unless (Fn->contains($@, "Call Back Error")) {
         return 0;
       }
       

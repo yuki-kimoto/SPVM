@@ -615,7 +615,6 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (self_error_id) {
-    spvm_warn("%d %s", self_error_id, env->get_chars(env, stack, env->get_exception(env, self_stack)));
     env->set_exception(env, stack, env->get_exception(env, self_stack));
     return error_id_exception_thrown;
   }
