@@ -300,6 +300,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_basic_type_ids(SPVM_ENV* env
   if ((void*)&env->api->basic_type->has_interface != &env_array[20]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->basic_type->is_super_class != &env_array[21]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->basic_type->get_file != &env_array[22]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->basic_type->get_current_runtime != &env_array[23]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

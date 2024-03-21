@@ -3,6 +3,7 @@
     * The check_stack_env native API is renamed to is_binary_compatible_stack.
   [New Features]
     * Add the get_current_method argument native API.
+    * Add the get_current_runtime basic type native API.
     
 0.989090 2023-03-20
   [Exception Message Improvement]

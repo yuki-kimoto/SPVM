@@ -363,6 +363,7 @@ struct spvm_api_basic_type {
   int32_t (*has_interface)(void* runtime, void* basic_type, void* interface_basic_type);
   int32_t (*is_super_class)(void* runtime, void* super_basic_type, void* child_basic_type);
   const char* (*get_file)(void* runtime, void* basic_type);
+  void* (*get_current_runtime)(void* runtime, void* basic_type);
 };
 
 struct spvm_api_class_file {

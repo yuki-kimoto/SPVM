@@ -67,4 +67,6 @@ int32_t SPVM_API_BASIC_TYPE_can_assign_for_method_definition (
 
 const char* SPVM_API_BASIC_TYPE_get_file(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
 
+SPVM_RUNTIME* SPVM_API_BASIC_TYPE_get_current_runtime(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
+
 #endif

@@ -177,6 +177,12 @@ This can be changed by a file directive.
   
   }
 
+=head2 get_current_runtime
+
+C<void* (*get_current_runtime)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
+
+Returns the runtime that owns the basic type I<basic_type>.
+
 =head1 Native API IDs
 
   0 get_name
@@ -202,6 +208,7 @@ This can be changed by a file directive.
   20 has_interface
   21 is_super_class
   22 get_file
+  23 get_current_runtime
 
 =head1 See Aloso
 
