@@ -5,7 +5,13 @@ class Native::MethodCall {
   use Native::Method;
   use Callback;
   
+  has env : Native::Env;
+  
+  has stack : Native::Stack;
+  
   has method : Native::Method;
+  
+  has method_v2 : Address;
   
   # Class Methods
   native static method new_class_method : Native::MethodCall ($basic_type_name : string, $method_name : string);
@@ -51,4 +57,11 @@ class Native::MethodCall {
     
     return $return_value;
   }
+  
+  native static method new_class_method_with_env_stack : Native::MethodCall ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string);
+  
+  native static method new_instance_method_static_with_env_stack : Native::MethodCall ($env : Native::Env, $stack : Native::Stack, $basic_type_name : string, $method_name : string);
+  
+  native static method new_instance_method_with_env_stack : Native::MethodCall ($env : Native::Env, $stack : Native::Stack, $instance : object, $method_name : string);
+  
 }

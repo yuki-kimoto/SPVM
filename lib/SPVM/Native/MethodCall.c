@@ -946,3 +946,153 @@ int32_t SPVM__Native__MethodCall__set_exception(SPVM_ENV* current_env, SPVM_VALU
   
   return 0;
 }
+
+int32_t SPVM__Native__MethodCall__new_method_with_env_stack_common(SPVM_ENV* env, SPVM_VALUE* stack, int32_t method_call_type) {
+  
+  int32_t error_id = 0;
+  
+  void* obj_self_env = stack[0].oval;
+  SPVM_ENV* self_env = NULL;
+  if (obj_self_env) {
+    self_env = env->get_pointer(env, stack, obj_self_env);
+  }
+  else {
+    self_env = env;
+    
+    obj_self_env = env->new_pointer_object_by_name(env, stack, "Native::Env", self_env, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    env->set_field_byte_by_name(env, stack, obj_self_env, "no_destroy", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+  }
+  
+  void* obj_self_stack = stack[1].oval;
+  SPVM_VALUE* self_stack = NULL;
+  if (obj_self_stack) {
+    self_stack = env->get_pointer(env, stack, obj_self_stack);
+  }
+  else {
+    self_stack = stack;
+    
+    obj_self_stack = env->new_pointer_object_by_name(env, stack, "Native::Stack", self_stack, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+    
+    env->set_field_byte_by_name(env, stack, obj_self_stack, "no_destroy", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    if (error_id) { return error_id; }
+  }
+  
+  int32_t is_binary_compatible_stack = env->is_binary_compatible_stack(self_env, self_stack);
+  
+  if (!is_binary_compatible_stack) {
+    return env->die(env, stack, "The runtime stack $stack is not compatible with the runtime environemnt $env.", __func__, __FILE__, __LINE__);
+  }
+  
+  void* method = NULL;
+  
+  const char* method_disp = NULL;
+  if (method_call_type == 0) {
+    void* obj_basic_type_name = stack[2].oval;
+    
+    if (!obj_basic_type_name) {
+      return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    }
+    
+    const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
+    
+    void* obj_method_name = stack[3].oval;
+    
+    if (!obj_method_name) {
+      return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    }
+    
+    const char* method_name = env->get_chars(env, stack, obj_method_name);
+    
+    method = self_env->get_class_method(self_env, self_stack, basic_type_name, method_name);
+    if (!method) {
+      return env->die(env, stack, "The \"%s\" class method in the \"%s\" class cannot be found.", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
+    }
+  }
+  else if (method_call_type == 1) {
+    void* obj_basic_type_name = stack[2].oval;
+    
+    if (!obj_basic_type_name) {
+      return env->die(env, stack, "The basic type name $basic_type_name must be defined.", __func__, FILE_NAME, __LINE__);
+    }
+    
+    const char* basic_type_name = env->get_chars(env, stack, obj_basic_type_name);
+    
+    void* obj_method_name = stack[3].oval;
+    
+    if (!obj_method_name) {
+      return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    }
+    
+    const char* method_name = env->get_chars(env, stack, obj_method_name);
+    
+    method = self_env->get_instance_method_static(self_env, self_stack, basic_type_name, method_name);
+    if (!method) {
+      return env->die(env, stack, "The \"%s\" instance method in the \"%s\" class cannot be found.", method_name, basic_type_name, __func__, FILE_NAME, __LINE__);
+    }
+  }
+  else if (method_call_type == 2) {
+    void* obj_instance = stack[2].oval;
+    
+    if (!obj_instance) {
+      return env->die(env, stack, "The instance $instance must be defined.", __func__, FILE_NAME, __LINE__);
+    }
+    
+    void* obj_method_name = stack[3].oval;
+    
+    if (!obj_method_name) {
+      return env->die(env, stack, "The method name $method_name must be defined.", __func__, FILE_NAME, __LINE__);
+    }
+    
+    const char* method_name = env->get_chars(env, stack, obj_method_name);
+    
+    method = self_env->get_instance_method(self_env, self_stack, obj_instance, method_name);
+    if (!method) {
+      return env->die(env, stack, "The \"%s\" instance method cannot be found.", method_name, __func__, FILE_NAME, __LINE__);
+    }
+  }
+  
+  void* obj_method = env->new_pointer_object_by_name(env, stack, "Address", method, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  void* obj_self = env->new_pointer_object_by_name(env, stack, "Native::MethodCall", method, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_self, "method_v2", obj_method, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_self, "env", obj_self_env, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  env->set_field_object_by_name(env, stack, obj_self, "stack", obj_self_stack, &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
+  stack[0].oval = obj_self;
+  
+  return 0;
+}
+
+int32_t SPVM__Native__MethodCall__new_class_method_with_env_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = SPVM__Native__MethodCall__new_method_with_env_stack_common(env, stack, 0);
+  
+  return error_id;
+}
+
+int32_t SPVM__Native__MethodCall__new_instance_method_static_with_env_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = SPVM__Native__MethodCall__new_method_with_env_stack_common(env, stack, 1);
+  
+  return error_id;
+}
+
+int32_t SPVM__Native__MethodCall__new_instance_method_with_env_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = SPVM__Native__MethodCall__new_method_with_env_stack_common(env, stack, 2);
+  
+  return error_id;
+}
+
