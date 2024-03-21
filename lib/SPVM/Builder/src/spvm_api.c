@@ -437,8 +437,8 @@ void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
       
       int32_t class_var_type_is_object = SPVM_API_TYPE_is_object_type(runtime, class_var_basic_type, class_var_type_dimension, class_var_type_flag);
       if (class_var_type_is_object) {
-        SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&class_var->data;
-        SPVM_API_assign_object(env, stack, object_ref, NULL);
+        SPVM_OBJECT** ref = (SPVM_OBJECT**)&class_var->data;
+        SPVM_API_assign_object(env, stack, ref, NULL);
       }
     }
   }
@@ -741,9 +741,9 @@ SPVM_OBJECT** SPVM_API_get_class_var_object_ref(SPVM_ENV* env, SPVM_VALUE* stack
   
   assert(class_var);
   
-  SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&class_var->data.oval;
+  SPVM_OBJECT** ref = (SPVM_OBJECT**)&class_var->data.oval;
   
-  return object_ref;
+  return ref;
 }
 
 SPVM_OBJECT* SPVM_API_get_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var) {
@@ -797,8 +797,8 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   
   assert(class_var);
   
-  void* object_ref = &class_var->data.oval;
-  SPVM_API_assign_object(env, stack, object_ref, value);
+  SPVM_OBJECT** ref = &class_var->data.oval;
+  SPVM_API_assign_object(env, stack, ref, value);
 }
 
 void SPVM_API_set_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value) {
@@ -1129,9 +1129,9 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OB
 
 SPVM_OBJECT** SPVM_API_get_field_object_ref(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
   
-  SPVM_OBJECT** object_ref = (SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+  SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
-  return object_ref;
+  return ref;
 }
 
 SPVM_OBJECT* SPVM_API_get_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field) {
@@ -1173,9 +1173,9 @@ void SPVM_API_set_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
 
 void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
   
-  void* object_ref = (void**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+  SPVM_OBJECT** ref = (void**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
-  SPVM_API_assign_object(env, stack, object_ref, value);
+  SPVM_API_assign_object(env, stack, ref, value);
 }
 
 void SPVM_API_set_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
@@ -1365,9 +1365,9 @@ SPVM_OBJECT** SPVM_API_get_field_object_ref_by_name(SPVM_ENV* env, SPVM_VALUE* s
     return NULL;
   };
   
-  SPVM_OBJECT** object_ref = SPVM_API_get_field_object_ref(env, stack, object, field);
+  SPVM_OBJECT** ref = SPVM_API_get_field_object_ref(env, stack, object, field);
   
-  return object_ref;
+  return ref;
 }
 
 SPVM_OBJECT* SPVM_API_get_field_object_defined_and_has_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line) {
@@ -3153,9 +3153,9 @@ SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJ
 
 void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* object) {
   
-  void* object_ref = &((void**)((intptr_t)array + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index];
+  SPVM_OBJECT** ref = &((SPVM_OBJECT**)((intptr_t)array + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index];
   
-  SPVM_API_assign_object(env, stack, object_ref, object);
+  SPVM_API_assign_object(env, stack, ref, object);
 }
 
 SPVM_OBJECT* SPVM_API_get_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
@@ -3830,7 +3830,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
             // Increment ref count of return value
             if (!error_id) {
               if (method_return_type_is_object) {
-                SPVM_OBJECT* return_object = *(void**)&stack[0];
+                SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
                 if (return_object != NULL) {
                   SPVM_API_inc_ref_count(env, stack, return_object);
                 }
@@ -3843,7 +3843,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
             // Decrement ref count of return value
             if (!error_id) {
               if (method_return_type_is_object) {
-                SPVM_OBJECT* return_object = *(void**)&stack[0];
+                SPVM_OBJECT* return_object = *(SPVM_OBJECT**)&stack[0];
                 if (return_object != NULL) {
                   SPVM_API_dec_ref_count(env, stack, return_object);
                 }
@@ -3927,9 +3927,9 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
   int32_t mortal_stack_index;
   for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
     
-    SPVM_OBJECT** object_ref = &(*current_mortal_stack_ptr)[mortal_stack_index];
+    SPVM_OBJECT** ref = &(*current_mortal_stack_ptr)[mortal_stack_index];
     
-    SPVM_API_assign_object(env, stack, object_ref, NULL);
+    SPVM_API_assign_object(env, stack, ref, NULL);
     
   }
   
@@ -3940,9 +3940,9 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
   
   for (int32_t mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *mortal_stack_top_ptr; mortal_stack_index++) {
     int32_t var_index = mortal_stack[mortal_stack_index];
-    SPVM_OBJECT** object_ref = (SPVM_OBJECT**)&object_vars[var_index];
-    if (*object_ref != NULL) {
-      SPVM_API_assign_object(env, stack, object_ref, NULL);
+    SPVM_OBJECT** ref = (SPVM_OBJECT**)&object_vars[var_index];
+    if (*ref != NULL) {
+      SPVM_API_assign_object(env, stack, ref, NULL);
     }
   }
   *mortal_stack_top_ptr = original_mortal_stack_top;

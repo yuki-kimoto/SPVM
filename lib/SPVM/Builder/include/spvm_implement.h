@@ -1338,7 +1338,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_OBJECT(SPVM_ENV* env, SPVM_VALUE* st
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void* ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
     env->assign_object(env, stack, ref, in);
   }
 }
@@ -1351,7 +1351,7 @@ static inline void SPVM_IMPLEMENT_SET_FIELD_UNDEF(SPVM_ENV* env, SPVM_VALUE* sta
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else {
-    void* ref = (void**)((intptr_t)object + object_data_offset + field_offset);
+    void** ref = (void**)((intptr_t)object + object_data_offset + field_offset);
     env->assign_object(env, stack, ref, NULL);
   }
 }
