@@ -587,8 +587,16 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t stack_length = stack_index;
   
-  error_id = env->call_method(env, stack, method, stack_length);
+  void* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
   if (error_id) { return error_id; }
+  SPVM_ENV* self_env = env->get_pointer(env, stack, obj_self_env);
+  
+  void* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  SPVM_VALUE* self_stack = env->get_pointer(env, stack, obj_self_stack);
+  
+  int32_t self_error_id = self_env->call_method(self_env, self_stack, method, stack_length);
+  if (self_error_id) { return self_error_id; }
   
   void* method_return_basic_type = env->api->method->get_return_basic_type(runtime, method);
   int32_t method_return_basic_type_id = env->api->basic_type->get_id(runtime, method_return_basic_type);
