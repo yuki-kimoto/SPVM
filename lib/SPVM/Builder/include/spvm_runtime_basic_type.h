@@ -21,6 +21,7 @@ struct spvm_runtime_basic_type {
   SPVM_RUNTIME_METHOD* init_method;
   SPVM_RUNTIME_METHOD* destructor_method;
   SPVM_RUNTIME_BASIC_TYPE** anon_basic_types;
+  SPVM_RUNTIME* current_runtime;
   int32_t id;
   int32_t category;
   int32_t string_pool_length;
