@@ -822,15 +822,19 @@ class TestCase::Module::Native::MethodCall {
   static method call_callback : int () {
     
     {
-      my $error_id = -1;
-      Native::MethodCall->call_callback(
-        method : void () {
-          TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
-        },
-        \$error_id,
+      my $error_id_ref = [-1];
+      Native::MethodCall->call_instance_method(
+        "",
+        [
+          (object)
+          method : void () {
+            TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+          },
+        ],
+        $error_id_ref,
       );
       
-      unless ($error_id == 0) {
+      unless ($error_id_ref->[0] == 0) {
         return 0;
       }
       
@@ -848,16 +852,20 @@ class TestCase::Module::Native::MethodCall {
       
       $@ = "Current Stack Error";
       
-      my $error_id = -1;
-      Native::MethodCall->call_callback(
-        method : void () {
-          TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
-        },
-        \$error_id,
-        $stack,
-      );
+      my $error_id_ref = [-1];
+      my $callback = method : void () {
+        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+      };
+      my $args = [(object)$callback];
       
-      unless ($error_id == 0) {
+      Native::MethodCall->new_instance_method_with_env_stack(
+        undef,
+        $stack,
+        $callback,
+        "",
+      )->call($args, $error_id_ref);
+      
+      unless ($error_id_ref->[0] == 0) {
         return 0;
       }
       
