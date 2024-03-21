@@ -31,10 +31,6 @@ class Native::MethodCall {
     return &new_instance_method_with_env_stack(undef, undef, $instance, $method_name);
   }
   
-  native static method get_exception : string ($stack : Native::Stack = undef, $env : Native::Env = undef);
-  
-  native static method set_exception : void ($exception : string, $stack : Native::Stack = undef, $env : Native::Env = undef);
-  
   # Instance Methods
   native method call : object ($args : object[] = undef, $error_id_ref : int[] = undef);
   
@@ -64,5 +60,9 @@ class Native::MethodCall {
     
     return $return_value;
   }
+  
+  native method get_exception : string ();
+  
+  native method set_exception : void ($exception : string);
   
 }

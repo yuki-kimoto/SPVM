@@ -3,6 +3,16 @@
     * The check_stack_env native API is renamed to is_binary_compatible_stack.
     * Remove the call_class_method_for_env method in the Native::MethodCall class.
     * Remove the call_callback method in the Native::MethodCall class.
+    * Change the set_exception method in the Native::MethodCall class.
+      [Before]
+        static method set_exception : void ($exception : string, $);
+      [After]
+        static method set_exception : void ($exception : string, $stack : Native::Stack = undef, $env : Native::Env = undef);
+    * Change the get_exception method in the Native::MethodCall class.
+      [Before]
+        static method get_exception : string ($stack : Native::Stack = undef, $env : Native::Env = undef);
+      [After]
+        method get_exception : string ();
   [New Features]
     * Add the get_current_method argument native API.
     * Add the get_current_runtime basic type native API.

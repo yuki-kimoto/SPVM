@@ -259,15 +259,15 @@ class TestCase::Module::Native::MethodCall {
         return 0;
       }
       
-      my $stack_exception = Native::MethodCall->get_exception($stack);
+      my $stack_exception = $instance_method_call->get_exception;
       
       unless (Fn->contains($stack_exception, "Call Back Error")) {
         return 0;
       }
       
-      Native::MethodCall->set_exception(undef, $stack);
+      $instance_method_call->set_exception(undef);
       
-      if (Native::MethodCall->get_exception($stack)) {
+      if ($instance_method_call->get_exception) {
         return 0;
       }
       

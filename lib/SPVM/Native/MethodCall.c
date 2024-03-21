@@ -795,94 +795,44 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__MethodCall__get_exception(SPVM_ENV* current_env, SPVM_VALUE* current_stack) {
-
-  int32_t current_error_id = 0;
+int32_t SPVM__Native__MethodCall__get_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_stack = current_stack[0].oval;
+  int32_t error_id = 0;
   
-  SPVM_VALUE* stack = NULL;
-  if (obj_stack) {
-    stack = current_env->get_pointer(current_env, current_stack, obj_stack);
-  }
-  else {
-    stack = current_stack;
-  }
+  void* obj_self = stack[0].oval;
   
-  void* obj_env = current_stack[1].oval;
+  void* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  SPVM_ENV* self_env = env->get_pointer(env, stack, obj_self_env);
   
-  SPVM_ENV* env = NULL;
-  if (obj_env) {
-    env = current_env->get_pointer(current_env, current_stack, obj_env);
-  }
-  else {
-    env = current_env;
-  }
+  void* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  SPVM_VALUE* self_stack = env->get_pointer(env, stack, obj_self_stack);
   
-  int32_t is_valid_env = env->is_binary_compatible_stack(env, stack);
+  void* obj_exception = self_env->get_exception(self_env, self_stack);
   
-  if (!is_valid_env) {
-    return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  void* obj_exception = env->get_exception(env, stack);
-  
-  void* obj_exception_clone = NULL;
-  if (obj_exception) {
-    const char* exception = env->get_chars(env, stack, obj_exception);
-    
-    int32_t exception_length = env->length(env, stack, obj_exception);
-    
-    obj_exception_clone = current_env->new_string(current_env, current_stack, exception, exception_length);
-  }
-  
-  current_stack[0].oval = obj_exception_clone;
+  stack[0].oval = obj_exception;
   
   return 0;
 }
 
-int32_t SPVM__Native__MethodCall__set_exception(SPVM_ENV* current_env, SPVM_VALUE* current_stack) {
+int32_t SPVM__Native__MethodCall__set_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t current_error_id = 0;
+  int32_t error_id = 0;
   
-  void* obj_exception = current_stack[0].oval;
+  void* obj_self = stack[0].oval;
   
-  void* obj_stack = current_stack[1].oval;
+  void* obj_exception = stack[1].oval;
   
-  SPVM_VALUE* stack = NULL;
-  if (obj_stack) {
-    stack = current_env->get_pointer(current_env, current_stack, obj_stack);
-  }
-  else {
-    stack = current_stack;
-  }
+  void* obj_self_env = env->get_field_object_by_name(env, stack, obj_self, "env", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  SPVM_ENV* self_env = env->get_pointer(env, stack, obj_self_env);
   
-  void* obj_env = current_stack[2].oval;
+  void* obj_self_stack = env->get_field_object_by_name(env, stack, obj_self, "stack", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  SPVM_VALUE* self_stack = env->get_pointer(env, stack, obj_self_stack);
   
-  SPVM_ENV* env = NULL;
-  if (obj_env) {
-    env = current_env->get_pointer(current_env, current_stack, obj_env);
-  }
-  else {
-    env = current_env;
-  }
-  
-  int32_t is_valid_env = env->is_binary_compatible_stack(env, stack);
-  
-  if (!is_valid_env) {
-    return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  void* obj_exception_clone = NULL;
-  if (obj_exception) {
-    const char* exception = current_env->get_chars(current_env, current_stack, obj_exception);
-    
-    int32_t exception_length = current_env->length(current_env, current_stack, obj_exception);
-    
-    obj_exception_clone = env->new_string(env, stack, exception, exception_length);
-  }
-  
-  env->set_exception(env, stack, obj_exception_clone);
+  self_env->set_exception(self_env, self_stack, obj_exception);
   
   return 0;
 }
