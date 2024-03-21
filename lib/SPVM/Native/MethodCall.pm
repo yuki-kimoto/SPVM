@@ -75,18 +75,6 @@ C<static method new_instance_method : L<Native::MethodCall|SPVM::Native::MethodC
 
 Calls the L</"new_instance_method_with_env_stack"> method given $env to undef and $stack to undef, and returns its return value.
 
-=head2 call_callback
-
-C<static method call_callback : void ($callback : L<Callback|SPVM::Callback>, $error_id : int*, $stack = undef : L<Native::Stack|SPVM::Native::Stack>);>
-
-Calls a callback with a stack. If $stack is not defined, the current stack is used.
-
-The stack is a L<Native::Stack|SPVM::Native::Stack> object.
-
-The callback is a L<Callback|SPVM::Callback> object.
-
-If the callback throw exception, the error id is set to $error_id. Otherwise 0 is set to $error_id.
-
 =head2 get_exception
 
 C<static method get_exception : string ($stack : L<Native::Stack|SPVM::Native::Stack> = undef, $env : L<Native::Env|SPVM::Native::Env> = undef);>
