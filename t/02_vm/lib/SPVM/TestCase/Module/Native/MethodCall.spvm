@@ -123,6 +123,157 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    {
+      my $error_id_ref = [-1];
+      Native::MethodCall->call_instance_method(
+        "",
+        [
+          (object)
+          method : void () {
+            TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+          },
+        ],
+        $error_id_ref,
+      );
+      
+      unless ($error_id_ref->[0] == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 1) {
+        return 0;
+      }
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
+    }
+    
+    {
+      my $current_env = Native->get_current_env;
+      
+      my $stack = $current_env->new_stack;
+      
+      $@ = "Current Stack Error";
+      
+      my $error_id_ref = [-1];
+      my $callback = method : void () {
+        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+      };
+      my $args = [(object)$callback];
+      
+      Native::MethodCall->new_instance_method_with_env_stack(
+        undef,
+        $stack,
+        $callback,
+        "",
+      )->call($args, $error_id_ref);
+      
+      unless ($error_id_ref->[0] == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 1) {
+        return 0;
+      }
+      
+      unless ($@ eq "Current Stack Error") {
+        return 0;
+      }
+      
+      $@ = undef;
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
+    }
+    
+    {
+      my $current_env = Native->get_current_env;
+      
+      my $stack = $current_env->new_stack;
+      
+      $@ = "Current Stack Error";
+      
+      my $error_id_ref = [-1];
+      my $callback = [has value : int = 2] method : void () {
+        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE($self->{value});
+      };
+      my $args = [(object)$callback];
+      my $instance_method_call = Native::MethodCall->new_instance_method_with_env_stack(
+        undef,
+        $stack,
+        $callback,
+        "",
+      );
+      $instance_method_call->call($args, $error_id_ref);
+      
+      unless ($error_id_ref->[0] == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 2) {
+        return 0;
+      }
+      
+      unless ($@ eq "Current Stack Error") {
+        return 0;
+      }
+      
+      $@ = undef;
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
+    }
+    
+    # Exceptions
+    {
+      my $current_env = Native->get_current_env;
+      
+      my $stack = $current_env->new_stack;
+      
+      $@ = "Current Stack Error";
+      
+      my $error_id_ref = [-1];
+      my $callback = method : void () {
+        die "Call Back Error";
+        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
+      };
+      my $args = [(object)$callback];
+      my $instance_method_call = Native::MethodCall->new_instance_method_with_env_stack(
+        undef,
+        $stack,
+        $callback,
+        "",
+      );
+      eval { $instance_method_call->call($args, $error_id_ref); }
+      
+      unless (eval_error_id isa_error Native::MethodCall::Error::ExceptionThrown) {
+        return 0;
+      }
+      
+      unless ($error_id_ref->[0] == basic_type_id Error) {
+        return 0;
+      }
+      
+      unless ($CALL_CALLBACK_VALUE == 0) {
+        return 0;
+      }
+      
+      unless (Fn->contains($@, "Call Back Error")) {
+        return 0;
+      }
+      
+      my $stack_exception = Native::MethodCall->get_exception($stack);
+      
+      unless (Fn->contains($stack_exception, "Call Back Error")) {
+        return 0;
+      }
+      
+      Native::MethodCall->set_exception(undef, $stack);
+      
+      if (Native::MethodCall->get_exception($stack)) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
     return 1;
   }
   
@@ -817,162 +968,6 @@ class TestCase::Module::Native::MethodCall {
     my $ret = Point->new($x_total, $y_total);
     
     return $ret;
-  }
-  
-  static method call_callback : int () {
-    
-    {
-      my $error_id_ref = [-1];
-      Native::MethodCall->call_instance_method(
-        "",
-        [
-          (object)
-          method : void () {
-            TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
-          },
-        ],
-        $error_id_ref,
-      );
-      
-      unless ($error_id_ref->[0] == 0) {
-        return 0;
-      }
-      
-      unless ($CALL_CALLBACK_VALUE == 1) {
-        return 0;
-      }
-      
-      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
-    }
-    
-    {
-      my $current_env = Native->get_current_env;
-      
-      my $stack = $current_env->new_stack;
-      
-      $@ = "Current Stack Error";
-      
-      my $error_id_ref = [-1];
-      my $callback = method : void () {
-        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
-      };
-      my $args = [(object)$callback];
-      
-      Native::MethodCall->new_instance_method_with_env_stack(
-        undef,
-        $stack,
-        $callback,
-        "",
-      )->call($args, $error_id_ref);
-      
-      unless ($error_id_ref->[0] == 0) {
-        return 0;
-      }
-      
-      unless ($CALL_CALLBACK_VALUE == 1) {
-        return 0;
-      }
-      
-      unless ($@ eq "Current Stack Error") {
-        return 0;
-      }
-      
-      $@ = undef;
-      
-      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
-    }
-    
-    {
-      my $current_env = Native->get_current_env;
-      
-      my $stack = $current_env->new_stack;
-      
-      $@ = "Current Stack Error";
-      
-      my $error_id_ref = [-1];
-      my $callback = [has value : int = 2] method : void () {
-        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE($self->{value});
-      };
-      my $args = [(object)$callback];
-      my $instance_method_call = Native::MethodCall->new_instance_method_with_env_stack(
-        undef,
-        $stack,
-        $callback,
-        "",
-      );
-      $instance_method_call->call($args, $error_id_ref);
-      
-      unless ($error_id_ref->[0] == 0) {
-        return 0;
-      }
-      
-      unless ($CALL_CALLBACK_VALUE == 2) {
-        return 0;
-      }
-      
-      unless ($@ eq "Current Stack Error") {
-        return 0;
-      }
-      
-      $@ = undef;
-      
-      TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(0);
-    }
-    
-    # Exceptions
-    {
-      my $current_env = Native->get_current_env;
-      
-      my $stack = $current_env->new_stack;
-      
-      $@ = "Current Stack Error";
-      
-      my $error_id_ref = [-1];
-      my $callback = method : void () {
-        die "Call Back Error";
-        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE(1);
-      };
-      my $args = [(object)$callback];
-      my $instance_method_call = Native::MethodCall->new_instance_method_with_env_stack(
-        undef,
-        $stack,
-        $callback,
-        "",
-      );
-      eval { $instance_method_call->call($args, $error_id_ref); }
-      
-      unless (eval_error_id isa_error Native::MethodCall::Error::ExceptionThrown) {
-        return 0;
-      }
-      
-      unless ($error_id_ref->[0] == basic_type_id Error) {
-        return 0;
-      }
-      
-      unless ($CALL_CALLBACK_VALUE == 0) {
-        return 0;
-      }
-      
-      unless (Fn->contains($@, "Call Back Error")) {
-        return 0;
-      }
-      
-      my $stack_exception = Native::MethodCall->get_exception($stack);
-      
-      unless (Fn->contains($stack_exception, "Call Back Error")) {
-        return 0;
-      }
-      
-      Native::MethodCall->set_exception(undef, $stack);
-      
-      if (Native::MethodCall->get_exception($stack)) {
-        return 0;
-      }
-      
-      $@ = undef;
-    }
-    
-    return 1;
   }
   
   static method call_class_method_for_env : int () {

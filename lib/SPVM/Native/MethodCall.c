@@ -795,44 +795,6 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__MethodCall__call_callback(SPVM_ENV* current_env, SPVM_VALUE* current_stack) {
-
-  int32_t current_error_id = 0;
-  
-  void* obj_callback = current_stack[0].oval;
-  
-  if (!obj_callback) {
-    return current_env->die(current_env, current_stack, "The callback $callback must be defined.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  int32_t* error_id_ref = current_stack[1].iref;
-  
-  void* obj_stack = current_stack[2].oval;
-  
-  SPVM_VALUE* stack = NULL;
-  if (obj_stack) {
-    stack = current_env->get_pointer(current_env, current_stack, obj_stack);
-  }
-  else {
-    stack = current_stack;
-  }
-  
-  SPVM_ENV* env = current_env;
-  
-  int32_t is_valid_env = env->is_binary_compatible_stack(env, stack);
-  
-  if (!is_valid_env) {
-    return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the current environment.", __func__, FILE_NAME, __LINE__);
-  }
-  
-  *error_id_ref = 0;
-  
-  stack[0].oval = obj_callback;
-  env->call_instance_method_by_name(env, stack, "", 0, error_id_ref, __func__, FILE_NAME, __LINE__);
-  
-  return 0;
-}
-
 int32_t SPVM__Native__MethodCall__get_exception(SPVM_ENV* current_env, SPVM_VALUE* current_stack) {
 
   int32_t current_error_id = 0;
