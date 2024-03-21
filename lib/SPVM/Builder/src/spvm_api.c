@@ -797,7 +797,7 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   
   assert(class_var);
   
-  SPVM_OBJECT** ref = &class_var->data.oval;
+  SPVM_OBJECT** ref = (SPVM_OBJECT**)&class_var->data.oval;
   SPVM_API_assign_object(env, stack, ref, value);
 }
 
@@ -1173,7 +1173,7 @@ void SPVM_API_set_field_double(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
 
 void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
   
-  SPVM_OBJECT** ref = (void**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+  SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
   SPVM_API_assign_object(env, stack, ref, value);
 }
