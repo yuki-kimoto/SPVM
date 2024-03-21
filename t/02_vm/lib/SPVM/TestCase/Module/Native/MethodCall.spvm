@@ -889,16 +889,20 @@ class TestCase::Module::Native::MethodCall {
       
       $@ = "Current Stack Error";
       
-      my $error_id = -1;
-      Native::MethodCall->call_callback(
-        [has value : int = 2] method : void () {
-          TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE($self->{value});
-        },
-        \$error_id,
+      my $error_id_ref = [-1];
+      my $callback = [has value : int = 2] method : void () {
+        TestCase::Module::Native::MethodCall->SET_CALL_CALLBACK_VALUE($self->{value});
+      };
+      my $args = [(object)$callback];
+      my $instance_method_call = Native::MethodCall->new_instance_method_with_env_stack(
+        undef,
         $stack,
+        $callback,
+        "",
       );
+      $instance_method_call->call($args, $error_id_ref);
       
-      unless ($error_id == 0) {
+      unless ($error_id_ref->[0] == 0) {
         return 0;
       }
       
