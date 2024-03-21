@@ -35,7 +35,7 @@ int32_t SPVM__Native__API__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t check_ok = env->is_binary_compatible_stack(api_env, api_stack);
   
   if (!check_ok) {
-    return env->die(env, stack, "The runtime stack $stack must be created by the runtime environemnt $env.", __func__, __FILE__, __LINE__);
+    return env->die(env, stack, "The runtime stack $stack is not compatible with the runtime environemnt $env.", __func__, __FILE__, __LINE__);
   }
   
   stack[0].oval = obj_self;
