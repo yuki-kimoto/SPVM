@@ -957,55 +957,6 @@ class TestCase::Module::Native::MethodCall {
   
   static method call_class_method_for_env : int () {
     
-    {
-      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
-      
-      my $error_id = -1;
-      Native::MethodCall->call_class_method_for_env("TestCase::Module::Native::MethodCall", "set_class_var", \$error_id);
-      
-      unless ($error_id == 0) {
-        return 0;
-      }
-      
-      unless ($CALL_CLASS_METHOD_VALUE == 1) {
-        return 0;
-      }
-    }
-    
-    {
-      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
-      my $error_id = -1;
-      my $stack = Native->get_current_stack;
-      Native::MethodCall->call_class_method_for_env("TestCase::Module::Native::MethodCall", "set_class_var", \$error_id, $stack);
-      
-      unless ($error_id == 0) {
-        return 0;
-      }
-      
-      unless ($CALL_CLASS_METHOD_VALUE == 1) {
-        return 0;
-      }
-    }
-    
-    {
-      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
-      
-      my $error_id = -1;
-      my $stack = Native->get_current_stack;
-      my $env = Native->get_current_env;
-      Native::MethodCall->call_class_method_for_env("TestCase::Module::Native::MethodCall", "set_class_var", \$error_id, $stack, $env);
-      
-      unless ($error_id == 0) {
-        return 0;
-      }
-      
-      unless ($CALL_CLASS_METHOD_VALUE == 1) {
-        return 0;
-      }
-      
-      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
-    }
-    
     return 1;
   }
   
@@ -1033,6 +984,55 @@ class TestCase::Module::Native::MethodCall {
       unless ((int)$ret == 1) {
         return 0;
       }
+    }
+    
+    {
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
+      
+      my $error_id_ref = [-1];
+      Native::MethodCall->new_class_method_with_env_stack(undef, undef, "TestCase::Module::Native::MethodCall", "set_class_var")->call(undef, $error_id_ref);
+      
+      unless ($error_id_ref->[0] == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CLASS_METHOD_VALUE == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
+      my $error_id_ref = [-1];
+      my $stack = Native->get_current_stack;
+      Native::MethodCall->new_class_method_with_env_stack(undef, $stack, "TestCase::Module::Native::MethodCall", "set_class_var")->call(undef, $error_id_ref);
+      
+      unless ($error_id_ref->[0] == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CLASS_METHOD_VALUE == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
+      
+      my $error_id_ref = [-1];
+      my $stack = Native->get_current_stack;
+      my $env = Native->get_current_env;
+      Native::MethodCall->new_class_method_with_env_stack($env, $stack, "TestCase::Module::Native::MethodCall", "set_class_var")->call(undef, $error_id_ref);
+      
+      unless ($error_id_ref->[0] == 0) {
+        return 0;
+      }
+      
+      unless ($CALL_CLASS_METHOD_VALUE == 1) {
+        return 0;
+      }
+      
+      TestCase::Module::Native::MethodCall->SET_CALL_CLASS_METHOD_VALUE(0);
     }
     
     return 1;
