@@ -4,6 +4,7 @@
 class Native::MethodCall {
   use Native::Method;
   use Callback;
+  use Native::MethodCall::Error::ExceptionThrown;
   
   has env : Native::Env;
   
@@ -39,31 +40,31 @@ class Native::MethodCall {
   native static method set_exception : void ($exception : string, $stack : Native::Stack = undef, $env : Native::Env = undef);
   
   # Instance Methods
-  native method call : object ($args : object[] = undef);
+  native method call : object ($args : object[] = undef, $error_id_ref : int[] = undef);
   
-  static method call_class_method : object ($basic_type_name : string, $method_name : string, $args : object[] = undef) {
+  static method call_class_method : object ($basic_type_name : string, $method_name : string, $args : object[] = undef, $error_id_ref : int[] = undef) {
     
     my $class_method = &new_class_method($basic_type_name, $method_name);
     
-    my $return_value = $class_method->call($args);
+    my $return_value = $class_method->call($args, $error_id_ref);
     
     return $return_value;
   }
   
-  static method call_instance_method_static : object ($basic_type_name : string, $method_name : string, $args : object[] = undef) {
+  static method call_instance_method_static : object ($basic_type_name : string, $method_name : string, $args : object[] = undef, $error_id_ref : int[] = undef) {
     
     my $instance_method = &new_instance_method_static($basic_type_name, $method_name);
     
-    my $return_value = $instance_method->call($args);
+    my $return_value = $instance_method->call($args, $error_id_ref);
     
     return $return_value;
   }
   
-  static method call_instance_method : object ($method_name : string, $args : object[] = undef) {
+  static method call_instance_method : object ($method_name : string, $args : object[] = undef, $error_id_ref : int[] = undef) {
     
     my $instance_method = &new_instance_method($args->[0], $method_name);
     
-    my $return_value = $instance_method->call($args);
+    my $return_value = $instance_method->call($args, $error_id_ref);
     
     return $return_value;
   }

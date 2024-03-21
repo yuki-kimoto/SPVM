@@ -131,19 +131,19 @@ If $environment is not defined, the current environment is used.
 
 =head2 call_class_method
 
-C<static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[] = undef);>
+C<static method call_class_method : void ($basic_type_name : string, $method_name : string, $args : object[] = undef, $error_id_ref : int[] = undef);>
 
 Calls a class method given the basic type name $basic_type_name, the method name $method_name, and the arguments $args.
 
 =head2 call_instance_method_static
 
-C<static method call_instance_method_static : object ($basic_type_name : string, $method_name : string, $args : object[] = undef);>
+C<static method call_instance_method_static : object ($basic_type_name : string, $method_name : string, $args : object[] = undef, $error_id_ref : int[] = undef);>
 
 Calls a instance method given the basic type name $basic_type_name, the method name $method_name, and the arguments $args.
 
 =head2 call_instance_method
 
-C<static method call_instance_method : object ($method_name : string, $args : object[] = undef);>
+C<static method call_instance_method : object ($method_name : string, $args : object[] = undef, $error_id_ref : int[] = undef);>
 
 Calls a instance method given the method name $method_name, and the arguments $args. The first argument in $args must be an instance.
 
@@ -151,7 +151,7 @@ Calls a instance method given the method name $method_name, and the arguments $a
 
 =head2 call
 
-C<method call : object ($args : object[] = undef);>
+C<method call : object ($args : object[] = undef, $error_id_ref : int[] = undef);>
 
 Calls a method with arguments and returns the return value.
 

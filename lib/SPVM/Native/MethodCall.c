@@ -164,6 +164,16 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_args = stack[1].oval;
   
+  void* obj_error_id_ref = stack[2].oval;
+  
+  if (obj_error_id_ref) {
+    int32_t error_id_ref_length = env->length(env, stack, obj_error_id_ref);
+    
+    if (!(error_id_ref_length == 1)) {
+      return env->die(env, stack, "If the reference to an error id $error_id_ref exists, the length of it must be 1.", __func__, FILE_NAME, __LINE__);
+    }
+  }
+  
   if (!obj_args) {
     obj_args = env->new_object_array_by_name(env, stack, "object", 0, &error_id, __func__, FILE_NAME, __LINE__);
     if (error_id) { return error_id; }
@@ -595,8 +605,18 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (error_id) { return error_id; }
   SPVM_VALUE* self_stack = env->get_pointer(env, stack, obj_self_stack);
   
+  int32_t error_id_exception_thrown = env->get_basic_type_id_by_name(env, stack, "Native::MethodCall::Error::ExceptionThrown", &error_id, __func__, FILE_NAME, __LINE__);
+  if (error_id) { return error_id; }
+  
   int32_t self_error_id = self_env->call_method(self_env, self_stack, method, stack_length);
-  if (self_error_id) { return self_error_id; }
+  if (obj_error_id_ref) {
+    int32_t* error_id_ref = env->get_elems_int(env, stack, obj_error_id_ref);
+    *error_id_ref = self_error_id;
+  }
+  
+  if (self_error_id) {
+    return error_id_exception_thrown;
+  }
   
   void* method_return_basic_type = env->api->method->get_return_basic_type(runtime, method);
   int32_t method_return_basic_type_id = env->api->basic_type->get_id(runtime, method_return_basic_type);

@@ -5,6 +5,8 @@
     * Add the get_current_method argument native API.
     * Add the get_current_runtime basic type native API.
     * Add the new_class_method_with_env_stack, new_instance_method_static_with_env_stack, new_instance_method_with_env_stack methods to the Native::MethodCall class.
+    * Add the Native::MethodCall::Error::ExceptionThrown class.
+    * Add the optional argument $error_id_ref to the call, call_class_method, call_instance_method_static, call_instance_method.
 0.989090 2023-03-20
   [Exception Message Improvement]
     * Improve exception messages in Modules.
