@@ -239,6 +239,12 @@ int32_t SPVM__Native__MethodCall__call(SPVM_ENV* env, SPVM_VALUE* stack) {
         if (!can_assign) {
           return env->die(env, stack, "The %dth argument cannot be assigned.", arg_index + 1, __func__, FILE_NAME, __LINE__);
         }
+        
+        int32_t is_binary_compatible_object = self_env->is_binary_compatible_object(self_env, self_stack, obj_arg);
+        
+        if (!is_binary_compatible_object) {
+          return env->die(env, stack, "The object of the %dth argument is not binary compatible.", arg_index + 1, __func__, FILE_NAME, __LINE__);
+        }
       }
       
       self_stack[stack_index].oval = obj_arg;
