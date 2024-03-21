@@ -58,6 +58,12 @@ C<int32_t (*get_stack_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>
 
 Returns the stack index of the argument I<arg>. The stack index is the position in a L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">.
 
+=head2 get_current_method
+
+C<void* (*get_current_method)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+
+Returns the L<method|SPVM::Document::NativeAPI::Method> that owns the argment I<arg>.
+
 =head1 Native API IDs
 
   0 get_name
@@ -66,6 +72,7 @@ Returns the stack index of the argument I<arg>. The stack index is the position 
   3 get_type_dimension
   4 get_type_flag
   5 get_stack_index
+  6 get_current_method
 
 =head1 See Aloso
 

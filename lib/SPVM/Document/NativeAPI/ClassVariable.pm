@@ -52,7 +52,7 @@ Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the cla
 
 C<void* (*get_current_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* class_var|SPVM::Document::NativeAPI::ClassVariable>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> where the class variable I<class_var> is defined.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> that owns the class variable I<class_var>.
 
 =head1 Native API IDs
 

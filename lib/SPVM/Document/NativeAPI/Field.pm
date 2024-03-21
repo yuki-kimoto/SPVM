@@ -58,7 +58,7 @@ Returns the L<type flag ID|SPVM::Document::NativeAPI/"Type Flag IDs"> of the fie
 
 C<void* (*get_current_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* field|SPVM::Document::NativeAPI::Field>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> where the field I<field> is defined.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> that owns the field I<field>.
 
 =head1 Native API IDs
 

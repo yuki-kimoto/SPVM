@@ -72,7 +72,7 @@ Returns the length of the required arguments of the method I<method>.
 
 C<void* (*get_current_basic_type)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> of the method I<method> where the method I<method> I<method> is defined.
+Returns the L<basic type|SPVM::Document::NativeAPI::BasicType> that owns the method I<method>.
 
 =head2 get_opcode_by_index
 
