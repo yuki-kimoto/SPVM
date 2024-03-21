@@ -294,7 +294,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_strerror_string_nolen,
     SPVM_API_strerror,
     SPVM_API_strerror_nolen,
-    NULL, // reserved194,
+    SPVM_API_is_binary_compatible_object,
     NULL, // reserved195,
     SPVM_API_new_stack,
     SPVM_API_free_stack,
@@ -3670,12 +3670,12 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
 
 int32_t SPVM_API_is_binary_compatible_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t is_valid = 0;
+  int32_t is_binary_compatible_stack = 0;
   if (stack[SPVM_API_C_STACK_INDEX_ENV].oval == env) {
-    is_valid = 1;
+    is_binary_compatible_stack = 1;
   }
   
-  return is_valid;
+  return is_binary_compatible_stack;
 }
 
 int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal) {
@@ -4389,4 +4389,35 @@ SPVM_OBJECT* SPVM_API_new_array_proto_element(SPVM_ENV* env, SPVM_VALUE* stack, 
   SPVM_API_push_mortal(env, stack, new_array);
   
   return new_array;
+}
+
+int32_t SPVM_API_is_binary_compatible_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
+  
+  int32_t is_binary_compatible_object = 0;
+  
+  int32_t is_binary_compatible_stack = SPVM_API_is_binary_compatible_stack(env, stack);
+  
+  if (is_binary_compatible_stack) {
+    int32_t basic_type_id = object->basic_type->id;
+    
+    int32_t is_shareable_type = 0;
+    switch (basic_type_id) {
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
+      case SPVM_NATIVE_C_BASIC_TYPE_ID_STRING:
+      {
+        is_shareable_type = 1;
+      }
+    }
+    
+    if (is_shareable_type || object->basic_type->current_runtime == env->runtime) {
+      is_binary_compatible_object = 1;
+    }
+  }
+  
+  return is_binary_compatible_object;
 }

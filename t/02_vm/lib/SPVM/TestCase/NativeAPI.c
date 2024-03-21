@@ -211,7 +211,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->strerror_string_nolen != &env_array[191]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->strerror != &env_array[192]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->strerror_nolen != &env_array[193]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->reserved194 != &env_array[194]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_binary_compatible_object != &env_array[194]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->reserved195 != &env_array[195]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_stack != &env_array[196]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->free_stack != &env_array[197]) { stack[0].ival = 0; return 0; }

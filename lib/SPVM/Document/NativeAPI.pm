@@ -2115,11 +2115,11 @@ C<const char* (*strerror_nolen)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Run
 
 Calls the L</"strerror"> function given 0 to I<length>, and returns its return value.
 
-=head2 reserved194
+=head2 is_binary_compatible_object
 
-C<void* reserved194;>
+C<int32_t (*is_binary_compatible_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Reserved for the future use.
+If the object I<object> is binary compatible with the runtime environment I<runtime> and the runtime stack I<stack>, returns 1, otherwise returns 0.
 
 =head2 reserved195
 
@@ -2173,7 +2173,7 @@ If an excetpion is thrown, the value referenced by C<error_id> is set to a non-z
 
 C<int32_t (*is_binary_compatible_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-If the runtime stack I<stack> is binary compatible with the environemnt runtime I<runtime>, returns 1, otherwise returns 0.
+If the runtime stack I<stack> is binary compatible with the runtime environment I<runtime>, returns 1, otherwise returns 0.
 
 =head2 assign_object
 
@@ -2478,7 +2478,7 @@ Native APIs have its IDs.
   191 strerror_string_nolen,
   192 strerror,
   193 strerror_nolen,
-  194 reserved194,
+  194 is_binary_compatible_object,
   195 reserved195,
   196 new_stack,
   197 free_stack,
