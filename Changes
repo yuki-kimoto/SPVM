@@ -1,3 +1,6 @@
+0.989091 2023-03-21
+  [Incompatible Changes]
+    * The check_stack_env native API is renamed to is_binary_compatible_stack.
 0.989090 2023-03-20
   [Exception Message Improvement]
     * Improve exception messages in Modules.

@@ -32,7 +32,7 @@ int32_t SPVM__Native__API__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   env->set_field_object_by_name(env, stack, obj_self, "stack", obj_api_stack, &error_id, __func__, FILE_NAME, __LINE__);
   
-  int32_t check_ok = env->check_stack_env(api_env, api_stack);
+  int32_t check_ok = env->is_binary_compatible_stack(api_env, api_stack);
   
   if (!check_ok) {
     return env->die(env, stack, "The runtime stack $stack must be created by the runtime environemnt $env.", __func__, __FILE__, __LINE__);

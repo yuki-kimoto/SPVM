@@ -301,7 +301,7 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_get_field_object_defined_and_has_pointer_by_name,
     SPVM_API_get_field_object_ref,
     SPVM_API_get_field_object_ref_by_name,
-    SPVM_API_check_stack_env,
+    SPVM_API_is_binary_compatible_stack,
     SPVM_API_assign_object,
     SPVM_API_new_string_array_no_mortal,
     SPVM_API_new_memory_block,
@@ -3668,7 +3668,7 @@ SPVM_OBJECT* SPVM_API_new_object_common(SPVM_ENV* env, SPVM_VALUE* stack, size_t
   return object;
 }
 
-int32_t SPVM_API_check_stack_env(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM_API_is_binary_compatible_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t is_valid = 0;
   if (stack[SPVM_API_C_STACK_INDEX_ENV].oval == env) {

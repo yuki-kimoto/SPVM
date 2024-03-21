@@ -756,7 +756,7 @@ int32_t SPVM__Native__MethodCall__call_callback(SPVM_ENV* current_env, SPVM_VALU
   
   SPVM_ENV* env = current_env;
   
-  int32_t is_valid_env = env->check_stack_env(env, stack);
+  int32_t is_valid_env = env->is_binary_compatible_stack(env, stack);
   
   if (!is_valid_env) {
     return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the current environment.", __func__, FILE_NAME, __LINE__);
@@ -812,7 +812,7 @@ int32_t SPVM__Native__MethodCall__call_class_method_for_env(SPVM_ENV* current_en
     env = current_env;
   }
   
-  int32_t is_valid_env = env->check_stack_env(env, stack);
+  int32_t is_valid_env = env->is_binary_compatible_stack(env, stack);
   
   if (!is_valid_env) {
     return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
@@ -879,7 +879,7 @@ int32_t SPVM__Native__MethodCall__get_exception(SPVM_ENV* current_env, SPVM_VALU
     env = current_env;
   }
   
-  int32_t is_valid_env = env->check_stack_env(env, stack);
+  int32_t is_valid_env = env->is_binary_compatible_stack(env, stack);
   
   if (!is_valid_env) {
     return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);
@@ -927,7 +927,7 @@ int32_t SPVM__Native__MethodCall__set_exception(SPVM_ENV* current_env, SPVM_VALU
     env = current_env;
   }
   
-  int32_t is_valid_env = env->check_stack_env(env, stack);
+  int32_t is_valid_env = env->is_binary_compatible_stack(env, stack);
   
   if (!is_valid_env) {
     return current_env->die(current_env, current_stack, "The environment of $stack is not equal to the environment.", __func__, FILE_NAME, __LINE__);

@@ -218,7 +218,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_ids(SPVM_ENV* env, SPVM_VALU
   if ((void*)&env->get_field_object_defined_and_has_pointer_by_name != &env_array[198]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_object_ref != &env_array[199]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_object_ref_by_name != &env_array[200]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->check_stack_env != &env_array[201]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->is_binary_compatible_stack != &env_array[201]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->assign_object != &env_array[202]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_string_array_no_mortal != &env_array[203]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_memory_block != &env_array[204]) { stack[0].ival = 0; return 0; }

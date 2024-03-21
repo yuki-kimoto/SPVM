@@ -2169,11 +2169,11 @@ If the field given by I<field_name> is not found, an exception is thrown.
 
 If an excetpion is thrown, the value referenced by C<error_id> is set to a non-zero value, otherwise set to 0.
 
-=head2 check_stack_env
+=head2 is_binary_compatible_stack
 
-C<int32_t (*check_stack_env)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
+C<int32_t (*is_binary_compatible_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-If the L<runtime environment|SPVM::Document::NativeClass/"Runtime Environment"> referenced by the stack I<stack> is equal to the runtime environment I<env>, returns 1, otherwise returns 0.
+If the runtime stack I<stack> is binary compatible with the environemnt runtime I<runtime>, returns 1, otherwise returns 0.
 
 =head2 assign_object
 
@@ -2485,7 +2485,7 @@ Native APIs have its IDs.
   198 get_field_object_defined_and_has_pointer_by_name,
   199 get_field_object_ref,
   200 get_field_object_ref_by_name,
-  201 check_stack_env,
+  201 is_binary_compatible_stack,
   202 assign_object,
   203 new_string_array_no_mortal,
   204 new_memory_block,
