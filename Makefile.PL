@@ -141,6 +141,10 @@ sub MY::postamble {
   # The content of Makefile
   my $make_rule = '';
   
+  # Update spvm_version.h
+  $make_rule .= "dynamic :: \n";
+  $make_rule .= qq|\tperl -e "utime(undef, undef, 'blib/lib/SPVM/Builder/include/spvm_version.h')"\n|;
+  
   unless ($no_build_spvm_modules) {
     require SPVM::Builder::Util::API;
     

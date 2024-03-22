@@ -21,7 +21,8 @@
   [Bug Fix]
     * Fix the bug that the is_read_only operator set the internal condition flag.
     * Fix the bug that the isweak operator set the internal condition flag.
-    
+  [Internal Changes]
+    * Runtime precompilation can be detected in easy way that update blib/lib/SPVM/Builder/include/spvm_version.h in Makefile.PL.
 0.989091 2023-03-21
   [Incompatible Changes]
     * The check_stack_env native API is renamed to is_binary_compatible_stack.
