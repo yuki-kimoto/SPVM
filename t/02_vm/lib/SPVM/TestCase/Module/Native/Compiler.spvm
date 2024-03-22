@@ -14,8 +14,6 @@ class TestCase::Module::Native::Compiler {
       my $current_stack = Native->get_current_stack;
       
       my $current_runtime = $current_env->runtime;
-      
-      my $class_names = $current_runtime->get_class_names;
     }
     
     my $current_compiler = Native->get_current_compiler;
