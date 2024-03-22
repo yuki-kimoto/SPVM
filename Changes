@@ -1,4 +1,9 @@
 0.989092 2023-03-22
+  [New Features]
+    * Add the get_basic_types method to the Native::Runtime class.
+    * Add the get_methods method to the Native::BasicType class.
+    * Add the get_fields method to the Native::BasicType class.
+    * Add the get_class_vars method to the Native::BasicType class.
   [Incompatible Changes]
     * Add the Native::Constant class.
     

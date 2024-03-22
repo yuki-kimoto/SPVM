@@ -709,6 +709,7 @@ t/02_vm/08_module/IntList.t
 t/02_vm/08_module/List.t
 t/02_vm/08_module/Long.t
 t/02_vm/08_module/LongList.t
+t/02_vm/08_module/Native/BasicType.t
 t/02_vm/08_module/Native/Compiler.t
 t/02_vm/08_module/Native/MethodCall.t
 t/02_vm/08_module/Native/Runtime.t
@@ -835,6 +836,7 @@ t/02_vm/lib/SPVM/TestCase/Module/List.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Long.spvm
 t/02_vm/lib/SPVM/TestCase/Module/LongList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Mutex.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Native/BasicType.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Native/Compiler.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Native/MethodCall.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Native/Runtime.spvm

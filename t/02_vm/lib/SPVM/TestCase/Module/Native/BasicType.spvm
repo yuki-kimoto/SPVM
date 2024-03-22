@@ -1,0 +1,77 @@
+class TestCase::Module::Native::BasicType {
+  use Native;
+  use Fn;
+  use Array;
+  use Point;
+  use Native::Constant;
+
+  static method get_methods : int () {
+    
+    {
+      my $current_rntime = Native->get_current_runtime;
+      
+      my $basic_type = $current_rntime->get_basic_type_by_name("Int");
+      
+      my $methods = $basic_type->get_methods;
+      
+      {
+        my $callback = method : int ($element : object) {
+          if ($element->(Native::Method)->get_name eq "value") { return 1; }
+        };
+        
+        unless (@{Fn->grep($methods, $callback)}) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method get_fields : int () {
+    
+    {
+      my $current_rntime = Native->get_current_runtime;
+      
+      my $basic_type = $current_rntime->get_basic_type_by_name("Int");
+      
+      my $fields = $basic_type->get_fields;
+      
+      {
+        my $callback = method : int ($element : object) {
+          if ($element->(Native::Field)->get_name eq "value") { return 1; }
+        };
+        
+        unless (@{Fn->grep($fields, $callback)}) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method get_class_vars : int () {
+    
+    {
+      my $current_rntime = Native->get_current_runtime;
+      
+      my $basic_type = $current_rntime->get_basic_type_by_name("Bool");
+      
+      my $class_vars = $basic_type->get_class_vars;
+      
+      {
+        my $callback = method : int ($element : object) {
+          if ($element->(Native::ClassVar)->get_name eq "\$TRUE") { return 1; }
+        };
+        
+        unless (@{Fn->grep($class_vars, $callback)}) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+}

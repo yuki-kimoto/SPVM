@@ -162,7 +162,7 @@ Gets the length of the methods.
 
 If a memory error occurs, an exception is thrown.
 
-=head2 
+=head2 get_anon_basic_type_by_index
 
 C<method get_anon_basic_type_by_index : L<Native::BasicType|SPVM::Native::BasicType> ($anon_basic_type_index : int);>
 
@@ -170,13 +170,31 @@ Gets a anon L<basic type|SPVM::Native::BasicType> object defined in this basic t
 
 If a memory error occurs, an exception is thrown.
 
-=head2 
+=head2 get_anon_basic_types_length
 
 C<method get_anon_basic_types_length : int ();>
   
 Gets the length of the anon basic types defined in this basic type.
 
 If a memory error occurs, an exception is thrown.
+
+=head2 get_methods
+
+C<method get_methods :  L<Native::Method|SPVM::Native::Method>[] ($options : object[] = undef);>
+
+Returns methods.
+
+=head2 get_fields
+
+C<method get_fields : L<Native::Field|SPVM::Native::Field>[] ($options : object[] = undef);>
+
+Returns fields.
+
+=head2 get_class_vars
+
+C<method get_class_vars : L<Native::ClassVar|SPVM::Native::ClassVar>[] ($options : object[] = undef);>
+
+Returns class variables.
 
 =head1 Copyright & License
 

@@ -6,6 +6,7 @@ class Native::BasicType {
   use Native::ClassVar;
   use Native::Field;
   use Native::Method;
+  use List;
   
   has runtime : Native::Runtime;
   
@@ -49,4 +50,51 @@ class Native::BasicType {
   
   native method get_anon_basic_types_length : int ();
   
+  method get_methods : Native::Method[] ($options : object[] = undef) {
+    
+    my $methods_length = $self->get_methods_length;
+    
+    my $methods_list = List->new(new Native::Method[0]);
+    
+    for (my $index = 0; $index < $methods_length; $index++) {
+      my $method = $self->get_method_by_index($index);
+      $methods_list->push($method);
+    }
+    
+    my $methods = (Native::Method[])$methods_list->to_array;
+    
+    return $methods;
+  }
+  
+  method get_fields : Native::Field[] ($options : object[] = undef) {
+    
+    my $fields_length = $self->get_fields_length;
+    
+    my $fields_list = List->new(new Native::Field[0]);
+    
+    for (my $index = 0; $index < $fields_length; $index++) {
+      my $field = $self->get_field_by_index($index);
+      $fields_list->push($field);
+    }
+    
+    my $fields = (Native::Field[])$fields_list->to_array;
+    
+    return $fields;
+  }
+  
+  method get_class_vars : Native::ClassVar[] ($options : object[] = undef) {
+    
+    my $class_vars_length = $self->get_class_vars_length;
+    
+    my $class_vars_list = List->new(new Native::ClassVar[0]);
+    
+    for (my $index = 0; $index < $class_vars_length; $index++) {
+      my $class_var = $self->get_class_var_by_index($index);
+      $class_vars_list->push($class_var);
+    }
+    
+    my $class_vars = (Native::ClassVar[])$class_vars_list->to_array;
+    
+    return $class_vars;
+  }
 }

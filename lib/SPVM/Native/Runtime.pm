@@ -90,14 +90,6 @@ C<method get_basic_type_names : string[] ();>
 
 Gets all basic type names owned by the runtime, and return it.
 
-=head2 get_class_names
-
-C<method get_class_names : string[] ();>
-
-Gets all basic type names by defined C<class> keyword owned by the runtime, and return it.
-
-These contains the names of interface types and multi-numeric types.
-
 =head2 get_method_names
 
 C<method get_method_names : string[] ($class_name : string);>
@@ -133,6 +125,12 @@ Gets a field given the class name $class_name and the method name $method_name, 
 C<method get_class_var_by_name : L<Native::ClassVar|SPVM::Native::ClassVar> ($class_name : string, $class_var_name : string);>
 
 Gets a class variable given the class name $class_name and the method name $method_name, returns it.
+
+=head2 get_basic_types
+
+C<method get_basic_types : L<Native::BasicType|SPVM::Native::BasicType>[] ($options : object[] = undef);>
+
+Returns basic types.
 
 =head1 See Also
 

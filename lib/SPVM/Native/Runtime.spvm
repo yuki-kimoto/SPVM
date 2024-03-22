@@ -169,4 +169,20 @@ class Native::Runtime : pointer {
     return $class_names;
   }
   
+  method get_basic_types : Native::BasicType[] ($options : object[] = undef) {
+    
+    my $basic_types_length = $self->get_basic_types_length;
+    
+    my $basic_types_list = List->new(new Native::BasicType[0]);
+    
+    for (my $id = 0; $id < $basic_types_length; $id++) {
+      my $basic_type = $self->get_basic_type_by_id($id);
+      $basic_types_list->push($basic_type);
+    }
+    
+    my $basic_types = (Native::BasicType[])$basic_types_list->to_array;
+    
+    return $basic_types;
+  }
+  
 }
