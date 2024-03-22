@@ -848,7 +848,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_IS_READ_ONLY: {
-        SPVM_IMPLEMENT_IS_READ_ONLY(env, stack, int_vars[0], object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_IS_READ_ONLY(env, stack, int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_MAKE_READ_ONLY: {

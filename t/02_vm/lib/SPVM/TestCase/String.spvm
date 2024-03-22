@@ -2,6 +2,7 @@ class TestCase::String {
   use Fn;
   use Array;
   static method string_access : int () {
+    
     # Read-only strings cannnot be converted to mutable strings
     {
       eval { (mutable string)"abc"; };
@@ -17,7 +18,7 @@ class TestCase::String {
         return 0;
       }
     }
-
+    
     # make_read_only
     {
       my $string = Fn->copy_string("abc");

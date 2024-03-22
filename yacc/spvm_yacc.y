@@ -46,7 +46,7 @@
 %type <opval> new array_init die warn opt_extends
 %type <opval> var_decl var interface union_type
 %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
-%type <opval> field_name method_name alias_name is_read_only
+%type <opval> field_name method_name alias_name
 %type <opval> type qualified_type basic_type array_type class_type opt_class_type
 %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
 
@@ -822,7 +822,6 @@ operator
     {
       $$ = SPVM_OP_new_op_false(compiler, $1);
     }
-  | is_read_only
   | can
   | logical_operator
   | BASIC_TYPE_ID type
@@ -907,11 +906,9 @@ unary_operator
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
-
-is_read_only
-  : IS_READ_ONLY operator
+  | IS_READ_ONLY operator
     {
-      $$ = SPVM_OP_build_is_read_only(compiler, $1, $2);
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
 
 inc

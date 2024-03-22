@@ -2453,7 +2453,6 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
 
 SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {
   
-  // Build op
   SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_first);
   
   return op_unary;
