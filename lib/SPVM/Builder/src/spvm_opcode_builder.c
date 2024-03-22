@@ -4283,6 +4283,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_ERROR);
                       }
                       
+                      int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                      opcode.operand0 = index_by_type_out;
                       opcode.operand1 = index_by_type_in;
                       
                       opcode.operand2 = type->basic_type->id;

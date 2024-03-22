@@ -1345,7 +1345,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_ISA(env, stack, &int_vars[0], object, basic_type, type_dimension);
+        SPVM_IMPLEMENT_ISA(env, stack, &int_vars[opcode->operand0], object, basic_type, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_ISA_ERROR: {
@@ -1357,7 +1357,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_ISA_ERROR(env, stack, &int_vars[0], src_basic_type, basic_type, type_dimension);
+        SPVM_IMPLEMENT_ISA_ERROR(env, stack, &int_vars[opcode->operand0], src_basic_type, basic_type, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_TYPE: {
@@ -1367,7 +1367,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(env->runtime, basic_type_id);
         
-        SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[0], object, basic_type, type_dimension);
+        SPVM_IMPLEMENT_IS_TYPE(env, stack, &int_vars[opcode->operand0], object, basic_type, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_ERROR: {
@@ -1379,7 +1379,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         void* src_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, src_basic_type_id);
         
-        SPVM_IMPLEMENT_IS_ERROR(env, stack, &int_vars[0], src_basic_type, basic_type, type_dimension);
+        SPVM_IMPLEMENT_IS_ERROR(env, stack, &int_vars[opcode->operand0], src_basic_type, basic_type, type_dimension);
         break;
       }
       case SPVM_OPCODE_C_ID_CAN: {

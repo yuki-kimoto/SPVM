@@ -2451,25 +2451,12 @@ SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, 
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_comparison_op(SPVM_COMPILER* compiler, SPVM_OP* op_comparison, SPVM_OP* op_first, SPVM_OP* op_last) {
-
-  SPVM_OP_insert_child(compiler, op_comparison, op_comparison->last, op_first);
-  SPVM_OP_insert_child(compiler, op_comparison, op_comparison->last, op_last);
-  
-  return op_comparison;
-}
-
 SPVM_OP* SPVM_OP_build_binary_is(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   SPVM_OP_insert_child(compiler, op_is, op_is->last, op_first);
   SPVM_OP_insert_child(compiler, op_is, op_is->last, op_last);
   
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_is->file, op_is->line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_is->file, op_is->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var, op_is);
-  
-  return op_assign;
+  return op_is;
 }
 
 SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_operand, SPVM_OP* op_type) {

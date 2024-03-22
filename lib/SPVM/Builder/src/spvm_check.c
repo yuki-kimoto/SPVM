@@ -3272,6 +3272,11 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_STRING_LT:
               case SPVM_OP_C_ID_STRING_LE:
               case SPVM_OP_C_ID_STRING_CMP:
+              case SPVM_OP_C_ID_ISA:
+              case SPVM_OP_C_ID_ISA_ERROR:
+              case SPVM_OP_C_ID_IS_TYPE:
+              case SPVM_OP_C_ID_IS_ERROR:
+              case SPVM_OP_C_ID_IS_COMPILE_TYPE:
               {
                 convert_to_assign = 1;
                 break;
@@ -3307,11 +3312,6 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
                 // Do nothing
                 break;
               }
-              case SPVM_OP_C_ID_ISA:
-              case SPVM_OP_C_ID_ISA_ERROR:
-              case SPVM_OP_C_ID_IS_TYPE:
-              case SPVM_OP_C_ID_IS_ERROR:
-              case SPVM_OP_C_ID_IS_COMPILE_TYPE:
               case SPVM_OP_C_ID_BOOL:
               {
                 assert(0);
