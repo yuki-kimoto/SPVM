@@ -74,23 +74,6 @@ class Native::Runtime : pointer {
     return $basic_type_names;
   }
   
-  method get_class_names : string[] () {
-    
-    my $class_names_list = StringList->new;
-    
-    my $basic_type_names = $self->get_basic_type_names;
-    
-    for my $basic_type_name (@$basic_type_names) {
-      if (($basic_type_name->[0] >= 'A' && $basic_type_name->[0] <= 'Z') && !Fn->contains($basic_type_name, "::anon::")) {
-        $class_names_list->push($basic_type_name);
-      }
-    }
-    
-    my $class_names = $class_names_list->to_array;
-    
-    return $class_names;
-  }
-  
   method get_method_names : string[] ($class_name : string) {
     
     my $basic_type = $self->get_basic_type_by_name($class_name);
@@ -167,6 +150,23 @@ class Native::Runtime : pointer {
     my $class_var = $basic_type->get_class_var_by_name($class_var_name);
     
     return $class_var;
+  }
+  
+  method get_class_names : string[] () {
+    
+    my $class_names_list = StringList->new;
+    
+    my $basic_type_names = $self->get_basic_type_names;
+    
+    for my $basic_type_name (@$basic_type_names) {
+      if (($basic_type_name->[0] >= 'A' && $basic_type_name->[0] <= 'Z') && !Fn->contains($basic_type_name, "::anon::")) {
+        $class_names_list->push($basic_type_name);
+      }
+    }
+    
+    my $class_names = $class_names_list->to_array;
+    
+    return $class_names;
   }
   
 }
