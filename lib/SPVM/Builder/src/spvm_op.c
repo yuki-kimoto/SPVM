@@ -2825,25 +2825,20 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
       IF            if2
         CONDITION
           last
-        BOOL
-          1         true
         DO_NOTHING  do_nothing2
+        DO_NOTHING  do_nothing3
       DO_NOTHING    do_nothing1
   */
   
-  SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_logical_and->file, op_logical_and->line);
-  
-  SPVM_OP* op_name_var_true = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_logical_and->file, op_logical_and->line);
-  SPVM_OP* op_var_true = SPVM_OP_new_op_var(compiler, op_name_var_true);
-  SPVM_OP* op_bool_true = SPVM_OP_new_op_bool(compiler, op_var_true, op_if1->file, op_if1->line);
-  
-  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if1->file, op_if1->line);
-  
   SPVM_OP* op_do_nothing1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_logical_and->file, op_logical_and->line);
   SPVM_OP* op_do_nothing2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_logical_and->file, op_logical_and->line);
+  SPVM_OP* op_do_nothing3 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_logical_and->file, op_logical_and->line);
+  
+  SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_logical_and->file, op_logical_and->line);
+  SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if1->file, op_if1->line);
   
   int32_t no_scope = 1;
-  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_bool_true, op_do_nothing2, no_scope);
+  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_do_nothing2, op_do_nothing3, no_scope);
   SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_do_nothing1, no_scope);
   
   SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_logical_and->file, op_logical_and->line);
