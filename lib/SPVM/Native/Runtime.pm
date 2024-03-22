@@ -106,7 +106,27 @@ Gets a class variable given the class name $class_name and the method name $meth
 
 C<method get_basic_types : L<Native::BasicType|SPVM::Native::BasicType>[] ($options : object[] = undef);>
 
-Returns basic types.
+Returns basic types given the options $options.
+
+Options:
+
+Options $options is key-value pairs.
+
+=over 2
+
+=item * C<category> : int[]
+
+If the category ID of the basic type matches a value in this option values, only they are extracted.
+
+For constant values, see L<Basic Type Category IDs|SPVM::Native::Constant/"Basic Type Category IDs">.
+
+=item * C<is_anon> : Int
+
+If this option is a true value, only anon basic types are extracted.
+
+If this option is a false value, only non-anon basic types are extracted.
+
+=back
 
 =head1 See Also
 
