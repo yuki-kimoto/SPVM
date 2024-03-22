@@ -5231,7 +5231,6 @@ void SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(
 }
 
 int32_t SPVM_OPCODE_BUILDER_get_index_by_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
   
   switch (op->id) {
     case SPVM_OP_C_ID_BOOL:
@@ -5254,8 +5253,6 @@ int32_t SPVM_OPCODE_BUILDER_get_index_by_type(SPVM_COMPILER* compiler, SPVM_OP* 
     case SPVM_OP_C_ID_IS_TYPE:
     case SPVM_OP_C_ID_IS_ERROR:
     case SPVM_OP_C_ID_IS_COMPILE_TYPE:
-    case SPVM_OP_C_ID_ISWEAK_FIELD:
-    case SPVM_OP_C_ID_CAN:
     {
       return 0;
     }
@@ -5297,7 +5294,6 @@ int32_t SPVM_OPCODE_BUILDER_get_index_by_type(SPVM_COMPILER* compiler, SPVM_OP* 
 }
 
 SPVM_OP* SPVM_OPCODE_BUILDER_get_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  (void)compiler;
   
   SPVM_OP* op_var;
   if (op->id == SPVM_OP_C_ID_VAR) {
