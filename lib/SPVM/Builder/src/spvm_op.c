@@ -2314,18 +2314,6 @@ SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_can, SPVM_OP* op
   return op_assign;
 }
 
-SPVM_OP* SPVM_OP_build_is_read_only(SPVM_COMPILER* compiler, SPVM_OP* op_is_read_only, SPVM_OP* op_operand) {
-  
-  SPVM_OP_insert_child(compiler, op_is_read_only, op_is_read_only->last, op_operand);
-  
-  SPVM_OP* op_name_var_condition = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_operand->file, op_operand->line);
-  SPVM_OP* op_var_condition = SPVM_OP_new_op_var(compiler, op_name_var_condition);
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_operand->file, op_operand->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var_condition, op_is_read_only);
-  
-  return op_assign;
-}
-
 SPVM_OP* SPVM_OP_build_weaken_field(SPVM_COMPILER* compiler, SPVM_OP* op_weaken, SPVM_OP* op_field_access) {
   
   SPVM_OP* op_weaken_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_WEAKEN_FIELD, op_weaken->file, op_weaken->line);
