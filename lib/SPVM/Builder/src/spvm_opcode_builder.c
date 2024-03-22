@@ -1586,52 +1586,50 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       else if (op_assign_src->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_UNWEAKEN) {
                         SPVM_OPCODE opcode = {0};
                         
-
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_UNWEAKEN_FIELD);
                         
                         SPVM_OP* op_term_invocant = op_assign_src->first;
                         int32_t index_by_type_invocant = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_term_invocant);
-
+                        
                         SPVM_FIELD* field = op_assign_src->uv.field_access->field;
                         
                         opcode.operand0 = index_by_type_invocant;
                         opcode.operand2 = field->current_basic_type->id;
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-
+                        
                         SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign_src->line);
                       }
                       else if (op_assign_src->flag & SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK) {
                         SPVM_OPCODE opcode = {0};
                         
-
+                        int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                        
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ISWEAK_FIELD);
                         
                         SPVM_OP* op_term_invocant = op_assign_src->first;
                         int32_t index_by_type_invocant = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_term_invocant);
-
+                        
                         SPVM_FIELD* field = op_assign_src->uv.field_access->field;
                         
+                        opcode.operand0 = index_by_type_out;
                         opcode.operand1 = index_by_type_invocant;
                         opcode.operand2 = field->current_basic_type->id;
                         opcode.operand3 = (uint16_t)field->index;
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
-
+                        
                         SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign_src->line);
                       }
                       else {
-                        // $VAR = $VAR_OBJECT->{NAME}
                         SPVM_OP* op_field_access = op_assign_src;
                         SPVM_OP* op_term_invocant = op_field_access->first;
                         
-                        // Call field
                         SPVM_FIELD_ACCESS* field_access = op_field_access->uv.field_access;
                         
                         SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, op_field_access);
-
+                        
                         SPVM_TYPE* invocant_type = SPVM_CHECK_get_type(compiler, op_term_invocant);
-
-                        // Value field dereference access
+                        
                         if (SPVM_TYPE_is_mulnum_ref_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                           SPVM_FIELD* field = field_access->field;
                           

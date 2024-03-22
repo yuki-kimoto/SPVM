@@ -1173,7 +1173,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_RUNTIME_FIELD* field = SPVM_API_BASIC_TYPE_get_field_by_index(env->runtime, field_current_basic_type, field_index);
         int32_t field_offset = field->offset;
         
-        SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[0], object, field_offset, &error_id, object_data_offset);
+        SPVM_IMPLEMENT_ISWEAK_FIELD(env, stack, &int_vars[opcode->operand0], object, field_offset, &error_id, object_data_offset);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {

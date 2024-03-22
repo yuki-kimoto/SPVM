@@ -3213,6 +3213,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_SAY:
               case SPVM_OP_C_ID_MAKE_READ_ONLY:
               case SPVM_OP_C_ID_IS_READ_ONLY:
+              case SPVM_OP_C_ID_ISWEAK_FIELD:
               case SPVM_OP_C_ID_ADD:
               case SPVM_OP_C_ID_SUBTRACT:
               case SPVM_OP_C_ID_MULTIPLY:

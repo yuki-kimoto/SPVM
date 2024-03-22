@@ -145,7 +145,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 # isweak
 {
-  ok(SPVM::TestCase::Weaken->isweak_test);
+  ok(SPVM::TestCase::Weaken->isweak);
 }
 
 # All object is freed

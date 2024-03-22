@@ -19,7 +19,8 @@
       [After]
       Returns the all class and interface names except for anon classes loaded by the runtime.
   [Bug Fix]
-    * Fix the bug that the is_read_only operator set the internal condition flag. This operator is a unary operator.
+    * Fix the bug that the is_read_only operator set the internal condition flag.
+    * Fix the bug that the isweak operator set the internal condition flag.
     
 0.989091 2023-03-21
   [Incompatible Changes]

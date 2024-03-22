@@ -2339,13 +2339,8 @@ SPVM_OP* SPVM_OP_build_isweak_field(SPVM_COMPILER* compiler, SPVM_OP* op_isweak,
   SPVM_OP* op_isweak_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ISWEAK_FIELD, op_isweak->file, op_isweak->line);
   SPVM_OP_insert_child(compiler, op_isweak_field, op_isweak_field->last, op_field_access);
   op_field_access->flag |= SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK;
-
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_field_access->file, op_field_access->line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_field_access->file, op_field_access->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var, op_field_access);
   
-  return op_assign;
+  return op_field_access;
 }
 
 SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast, SPVM_OP* op_type, SPVM_OP* op_operand, SPVM_OP* op_attributes) {
@@ -2520,7 +2515,6 @@ SPVM_OP* SPVM_OP_build_is_compile_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_c
 
 SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
   
-  // Build op
   SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_first);
   SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_last);
   
