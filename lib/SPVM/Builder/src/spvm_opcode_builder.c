@@ -3761,20 +3761,23 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       if (op_assign_src->first->id == SPVM_OP_C_ID_UNDEF || op_assign_src->last->id == SPVM_OP_C_ID_UNDEF) {
                         SPVM_OPCODE opcode = {0};
                         
-
                         int32_t index_by_type_in;
-
+                        
                         SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_UNDEF);
                         if (op_assign_src->first->id == SPVM_OP_C_ID_UNDEF) {
                           index_by_type_in = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_src->last);
                           
+                          int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                          opcode.operand0 = index_by_type_out;
                           opcode.operand1 = index_by_type_in;
-
+                          
                           SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                         }
                         else {
                           index_by_type_in = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_src->first);
                           
+                          int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                          opcode.operand0 = index_by_type_out;
                           opcode.operand1 = index_by_type_in;
                           
                           SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
@@ -3833,9 +3836,11 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                         
+                        int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                        opcode.operand0 = index_by_type_out;
                         opcode.operand1 = index_by_type_in1;
                         opcode.operand2 = index_by_type_in2;
-
+                        
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       }
                       break;
@@ -3858,6 +3863,10 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           
                           opcode.operand1 = index_by_type_in;
                         }
+                        
+                        int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                        opcode.operand0 = index_by_type_out;
+                        
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       }
                       else {
@@ -3913,6 +3922,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           assert(0);
                         }
                         
+                        int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                        opcode.operand0 = index_by_type_out;
                         opcode.operand1 = index_by_type_in1;
                         opcode.operand2 = index_by_type_in2;
 
@@ -3954,6 +3965,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           assert(0);
                       }
                       
+                      int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                      opcode.operand0 = index_by_type_out;
                       opcode.operand1 = index_by_type_in1;
                       opcode.operand2 = index_by_type_in2;
 
@@ -3994,6 +4007,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           assert(0);
                       }
                       
+                      int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                      opcode.operand0 = index_by_type_out;
                       opcode.operand1 = index_by_type_in1;
                       opcode.operand2 = index_by_type_in2;
 
@@ -4034,6 +4049,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           assert(0);
                       }
                       
+                      int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                      opcode.operand0 = index_by_type_out;
                       opcode.operand1 = index_by_type_in1;
                       opcode.operand2 = index_by_type_in2;
 
@@ -4074,6 +4091,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           assert(0);
                       }
                       
+                      int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                      opcode.operand0 = index_by_type_out;
                       opcode.operand1 = index_by_type_in1;
                       opcode.operand2 = index_by_type_in2;
 
@@ -4114,6 +4133,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           assert(0);
                       }
                       
+                      int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                      opcode.operand0 = index_by_type_out;
                       opcode.operand1 = index_by_type_in1;
                       opcode.operand2 = index_by_type_in2;
 
@@ -4168,6 +4189,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       int32_t index_by_type_in1 = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_src->first);
                       int32_t index_by_type_in2 = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_src->last);
                       
+                      int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                      opcode.operand0 = index_by_type_out;
                       opcode.operand1 = index_by_type_in1;
                       opcode.operand2 = index_by_type_in2;
                       
@@ -4226,6 +4249,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         else {
                           assert(0);
                         }
+                        int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
+                        opcode.operand0 = index_by_type_out;
                         opcode.operand1 = index_by_type_in;
 
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
@@ -5234,20 +5259,6 @@ int32_t SPVM_OPCODE_BUILDER_get_index_by_type(SPVM_COMPILER* compiler, SPVM_OP* 
   
   switch (op->id) {
     case SPVM_OP_C_ID_BOOL:
-    case SPVM_OP_C_ID_NUMERIC_EQ:
-    case SPVM_OP_C_ID_NUMERIC_NE:
-    case SPVM_OP_C_ID_NUMERIC_GT:
-    case SPVM_OP_C_ID_NUMERIC_GE:
-    case SPVM_OP_C_ID_NUMERIC_LT:
-    case SPVM_OP_C_ID_NUMERIC_LE:
-    case SPVM_OP_C_ID_NUMERIC_CMP:
-    case SPVM_OP_C_ID_STRING_EQ:
-    case SPVM_OP_C_ID_STRING_NE:
-    case SPVM_OP_C_ID_STRING_GT:
-    case SPVM_OP_C_ID_STRING_GE:
-    case SPVM_OP_C_ID_STRING_LT:
-    case SPVM_OP_C_ID_STRING_LE:
-    case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
     case SPVM_OP_C_ID_ISA_ERROR:
     case SPVM_OP_C_ID_IS_TYPE:

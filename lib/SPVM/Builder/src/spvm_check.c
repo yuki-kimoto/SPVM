@@ -3258,6 +3258,20 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_TRUE:
               case SPVM_OP_C_ID_FALSE:
               case SPVM_OP_C_ID_CONSTANT:
+              case SPVM_OP_C_ID_NUMERIC_EQ:
+              case SPVM_OP_C_ID_NUMERIC_NE:
+              case SPVM_OP_C_ID_NUMERIC_GT:
+              case SPVM_OP_C_ID_NUMERIC_GE:
+              case SPVM_OP_C_ID_NUMERIC_LT:
+              case SPVM_OP_C_ID_NUMERIC_LE:
+              case SPVM_OP_C_ID_NUMERIC_CMP:
+              case SPVM_OP_C_ID_STRING_EQ:
+              case SPVM_OP_C_ID_STRING_NE:
+              case SPVM_OP_C_ID_STRING_GT:
+              case SPVM_OP_C_ID_STRING_GE:
+              case SPVM_OP_C_ID_STRING_LT:
+              case SPVM_OP_C_ID_STRING_LE:
+              case SPVM_OP_C_ID_STRING_CMP:
               {
                 convert_to_assign = 1;
                 break;
@@ -3293,20 +3307,6 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
                 // Do nothing
                 break;
               }
-              case SPVM_OP_C_ID_NUMERIC_EQ:
-              case SPVM_OP_C_ID_NUMERIC_NE:
-              case SPVM_OP_C_ID_NUMERIC_GT:
-              case SPVM_OP_C_ID_NUMERIC_GE:
-              case SPVM_OP_C_ID_NUMERIC_LT:
-              case SPVM_OP_C_ID_NUMERIC_LE:
-              case SPVM_OP_C_ID_NUMERIC_CMP:
-              case SPVM_OP_C_ID_STRING_EQ:
-              case SPVM_OP_C_ID_STRING_NE:
-              case SPVM_OP_C_ID_STRING_GT:
-              case SPVM_OP_C_ID_STRING_GE:
-              case SPVM_OP_C_ID_STRING_LT:
-              case SPVM_OP_C_ID_STRING_LE:
-              case SPVM_OP_C_ID_STRING_CMP:
               case SPVM_OP_C_ID_ISA:
               case SPVM_OP_C_ID_ISA_ERROR:
               case SPVM_OP_C_ID_IS_TYPE:

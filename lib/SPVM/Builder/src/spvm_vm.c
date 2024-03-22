@@ -605,167 +605,167 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_INT: {
-        SPVM_IMPLEMENT_EQ_INT(int_vars[0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_EQ_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_LONG: {
-        SPVM_IMPLEMENT_EQ_LONG(int_vars[0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_EQ_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_FLOAT: {
-        SPVM_IMPLEMENT_EQ_FLOAT(int_vars[0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_EQ_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_DOUBLE: {
-        SPVM_IMPLEMENT_EQ_DOUBLE(int_vars[0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_EQ_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_OBJECT: {
-        SPVM_IMPLEMENT_EQ_OBJECT(int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_EQ_OBJECT(int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_REF: {
-        SPVM_IMPLEMENT_EQ_REF(int_vars[0], ref_vars[opcode->operand1], ref_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_EQ_REF(int_vars[opcode->operand0], ref_vars[opcode->operand1], ref_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NE_INT: {
-        SPVM_IMPLEMENT_NE_INT(int_vars[0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_NE_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NE_LONG: {
-        SPVM_IMPLEMENT_NE_LONG(int_vars[0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_NE_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NE_FLOAT: {
-        SPVM_IMPLEMENT_NE_FLOAT(int_vars[0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_NE_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NE_DOUBLE: {
-        SPVM_IMPLEMENT_NE_DOUBLE(int_vars[0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_NE_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NE_OBJECT: {
-        SPVM_IMPLEMENT_NE_OBJECT(int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_NE_OBJECT(int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NE_REF: {
-        SPVM_IMPLEMENT_NE_REF(int_vars[0], ref_vars[opcode->operand1], ref_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_NE_REF(int_vars[opcode->operand0], ref_vars[opcode->operand1], ref_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_GT_INT: {
-        SPVM_IMPLEMENT_GT_INT(int_vars[0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_GT_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_GT_LONG: {
-        SPVM_IMPLEMENT_GT_LONG(int_vars[0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_GT_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_GT_FLOAT: {
-        SPVM_IMPLEMENT_GT_FLOAT(int_vars[0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_GT_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_GT_DOUBLE: {
-        SPVM_IMPLEMENT_GT_DOUBLE(int_vars[0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_GT_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_GE_INT: {
-        SPVM_IMPLEMENT_GE_INT(int_vars[0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_GE_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_GE_LONG: {
-        SPVM_IMPLEMENT_GE_LONG(int_vars[0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_GE_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_GE_FLOAT: {
-        SPVM_IMPLEMENT_GE_FLOAT(int_vars[0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_GE_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_GE_DOUBLE: {
-        SPVM_IMPLEMENT_GE_DOUBLE(int_vars[0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_GE_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LT_INT: {
-        SPVM_IMPLEMENT_LT_INT(int_vars[0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_LT_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LT_LONG: {
-        SPVM_IMPLEMENT_LT_LONG(int_vars[0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_LT_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LT_FLOAT: {
-        SPVM_IMPLEMENT_LT_FLOAT(int_vars[0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_LT_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LT_DOUBLE: {
-        SPVM_IMPLEMENT_LT_DOUBLE(int_vars[0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_LT_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LE_INT: {
-        SPVM_IMPLEMENT_LE_INT(int_vars[0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_LE_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LE_LONG: {
-        SPVM_IMPLEMENT_LE_LONG(int_vars[0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_LE_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LE_FLOAT: {
-        SPVM_IMPLEMENT_LE_FLOAT(int_vars[0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_LE_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_LE_DOUBLE: {
-        SPVM_IMPLEMENT_LE_DOUBLE(int_vars[0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_LE_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_CMP_INT: {
-        SPVM_IMPLEMENT_CMP_INT(int_vars[0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_CMP_INT(int_vars[opcode->operand0], int_vars[opcode->operand1], int_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_CMP_LONG: {
-        SPVM_IMPLEMENT_CMP_LONG(int_vars[0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_CMP_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1], long_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_CMP_FLOAT: {
-        SPVM_IMPLEMENT_CMP_FLOAT(int_vars[0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_CMP_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1], float_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_CMP_DOUBLE: {
-        SPVM_IMPLEMENT_CMP_DOUBLE(int_vars[0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_CMP_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1], double_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_UNDEF: {
-        SPVM_IMPLEMENT_IS_UNDEF(int_vars[0], object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_IS_UNDEF(int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_IS_NOT_UNDEF: {
-        SPVM_IMPLEMENT_IS_NOT_UNDEF(int_vars[0], object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_IS_NOT_UNDEF(int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_EQ: {
-        SPVM_IMPLEMENT_STRING_EQ(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_EQ(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_NE: {
-        SPVM_IMPLEMENT_STRING_NE(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_NE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_GT: {
-        SPVM_IMPLEMENT_STRING_GT(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_GT(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_GE: {
-        SPVM_IMPLEMENT_STRING_GE(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_GE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_LT: {
-        SPVM_IMPLEMENT_STRING_LT(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_LT(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_LE: {
-        SPVM_IMPLEMENT_STRING_LE(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_LE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_CMP: {
-        SPVM_IMPLEMENT_STRING_CMP(env, stack, &int_vars[0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+        SPVM_IMPLEMENT_STRING_CMP(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
