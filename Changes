@@ -6,7 +6,12 @@
     * Add the get_class_vars method to the Native::BasicType class.
   [Incompatible Changes]
     * Add the Native::Constant class.
-    
+    * Remove the get_class_names in the Native::Runtime class.
+    * Remove the get_basic_type_names in the Native::Runtime class.
+    * Remove the get_method_names in the Native::Runtime class.
+    * Remove the get_field_names in the Native::Runtime class.
+    * Remove the get_class_var_names in the Native::Runtime class.
+    * Remove the  in the Native::Runtime class.
 0.989091 2023-03-21
   [Incompatible Changes]
     * The check_stack_env native API is renamed to is_binary_compatible_stack.

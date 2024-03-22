@@ -84,30 +84,6 @@ C<static method new_env : L<Native::Env|SPVM::Native::Env> ();>
 
 Creates a new L<Native::Env|SPVM::Native::Env> ojbect, and returns it.
 
-=head2 get_basic_type_names
-
-C<method get_basic_type_names : string[] ();>
-
-Gets all basic type names owned by the runtime, and return it.
-
-=head2 get_method_names
-
-C<method get_method_names : string[] ($class_name : string);>
-
-Returns all method names owned by the class given the class name $class_name.
-
-=head2 get_field_names
-
-C<method get_field_names : string[] ($class_name : string);>
-
-Returnsall field names owned by the class given the class name $class_name.
-
-=head2 get_class_var_names
-
-C<method get_class_var_names : string[] ($class_name : string);>
-
-Returnsall class variable names owned by the class given the class name $class_name.
-
 =head2 get_method_by_name
 
 C<method get_method_by_name : L<Native::Method|SPVM::Native::Method> ($class_name : string, $method_name : string);>
