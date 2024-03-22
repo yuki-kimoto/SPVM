@@ -999,59 +999,59 @@ binary_operator
 comparison_operator
   : operator NUMEQ operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator NUMNE operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator NUMGT operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator NUMGE operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator NUMLT operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator NUMLE operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator NUMERIC_CMP operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator STREQ operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator STRNE operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator STRGT operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator STRGE operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator STRLT operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator STRLE operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | operator STRING_CMP operator
     {
-      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
 
 isa

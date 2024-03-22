@@ -1920,7 +1920,7 @@ SPVM_OP* SPVM_OP_build_foreach_statement(SPVM_COMPILER* compiler, SPVM_OP* op_fo
   SPVM_OP* op_var_init_for_condition = SPVM_OP_clone_op_var(compiler, op_var_init_orig);
   SPVM_OP* op_var_array_length_for_condition = SPVM_OP_clone_op_var(compiler, op_var_array_length_orig);
   SPVM_OP* op_numlt = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NUMERIC_LT, op_for->file, op_for->line);
-  SPVM_OP* op_numlt_comparison = SPVM_OP_build_comparison_op(compiler, op_numlt, op_var_init_for_condition, op_var_array_length_for_condition);
+  SPVM_OP* op_numlt_comparison = SPVM_OP_build_binary_op(compiler, op_numlt, op_var_init_for_condition, op_var_array_length_for_condition);
   
   // $.array->[$.i]
   SPVM_OP* op_var_init_for_array_access = SPVM_OP_clone_op_var(compiler, op_var_init_orig);
