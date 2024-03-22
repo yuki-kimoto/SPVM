@@ -358,6 +358,10 @@ lib/SPVM/Native/Compiler.c
 lib/SPVM/Native/Compiler.config
 lib/SPVM/Native/Compiler.pm
 lib/SPVM/Native/Compiler.spvm
+lib/SPVM/Native/Constant.c
+lib/SPVM/Native/Constant.config
+lib/SPVM/Native/Constant.pm
+lib/SPVM/Native/Constant.spvm
 lib/SPVM/Native/Env.c
 lib/SPVM/Native/Env.config
 lib/SPVM/Native/Env.pm
