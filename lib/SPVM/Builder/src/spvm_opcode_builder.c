@@ -5261,11 +5261,6 @@ int32_t SPVM_OPCODE_BUILDER_get_index_by_type(SPVM_COMPILER* compiler, SPVM_OP* 
   
   switch (op->id) {
     case SPVM_OP_C_ID_BOOL:
-    case SPVM_OP_C_ID_ISA:
-    case SPVM_OP_C_ID_ISA_ERROR:
-    case SPVM_OP_C_ID_IS_TYPE:
-    case SPVM_OP_C_ID_IS_ERROR:
-    case SPVM_OP_C_ID_IS_COMPILE_TYPE:
     {
       return 0;
     }
