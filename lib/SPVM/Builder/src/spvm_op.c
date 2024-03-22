@@ -2812,25 +2812,25 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
 SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_and, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Convert && to if statement
-  /* before
+  /* [Before]
     AND
       first
       last
   */
   
-  /* after 
+  /* [After]
     IF              if1
       CONDITION
         first
       IF            if2
         CONDITION
           last
-        TYPE_CONVERTION_BOOL
-          condition_flag  true
-        TYPE_CONVERTION_BOOL
-          0               false1
-      TYPE_CONVERTION_BOOL
-        0                 false2
+        BOOL
+          1         true
+        BOOL
+          0         false1
+      BOOL
+        0           false2
   */
   
   SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_logical_and->file, op_logical_and->line);
@@ -2855,7 +2855,7 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
   int32_t no_scope = 1;
   SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_assign_bool_true, op_assign_bool_false1, no_scope);
   SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_assign_bool_false2, no_scope);
-
+  
   SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_logical_and->file, op_logical_and->line);
   SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_and->file, op_logical_and->line);
@@ -2867,22 +2867,22 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
 SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_or, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Convert || to if statement
-  // before
+  // [Before]
   //  OR
   //    first
   //    last
   
-  // after 
-  //  IF      if1
+  // [After]
+  //  IF           if1
   //    first
-  //    TYPE_CONVERTION_BOOL
-  //      condition_flag     true1
-  //    IF    if2
+  //    BOOL
+  //      1        true1
+  //    IF         if2
   //      last
-  //      TYPE_CONVERTION_BOOL
-  //        condition_flag   true2
-  //      TYPE_CONVERTION_BOOL
-  //        0                false
+  //      BOOL
+  //        1      true2
+  //      BOOL
+  //        0      false
   
   SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_logical_or->file, op_logical_or->line);
   
@@ -2926,9 +2926,9 @@ SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPV
   // after 
   //  IF
   //    first
-  //    TYPE_CONVERTION_BOOL
+  //    BOOL
   //      0
-  //    TYPE_CONVERTION_BOOL
+  //    BOOL
   //      1
   
   SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_not->file, op_not->line);
