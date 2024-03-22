@@ -12,6 +12,13 @@
     * Remove the get_field_names in the Native::Runtime class.
     * Remove the get_class_var_names in the Native::Runtime class.
     * Remove the  in the Native::Runtime class.
+    * Change the return values of the get_class_names method in the SPVM::Builder::Config::Info.
+      [Before]
+      This method is the same as the L<get_class_names|Native::Runtime/"get_class_names"> method in the C<Native::Runtime>, but the return value is converted to an array reference of strings.
+      
+      [After]
+      Returns the all class and interface names except for anon classes loaded by the runtime.
+
 0.989091 2023-03-21
   [Incompatible Changes]
     * The check_stack_env native API is renamed to is_binary_compatible_stack.
