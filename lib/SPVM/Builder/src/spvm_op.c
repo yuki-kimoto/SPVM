@@ -2811,23 +2811,25 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_and, SPVM_OP* op_first, SPVM_OP* op_last) {
   
-  // Convert && to if statement
-  /* [Before]
+  /*
+    [Before]
     AND
       first
       last
   */
   
-  /* [After]
-    IF              if1
-      CONDITION
-        first
-      IF            if2
+  /*
+    [After]
+    BOOL              op_bool
+      IF              op_if1
         CONDITION
-          last
-        DO_NOTHING  do_nothing2
-        DO_NOTHING  do_nothing3
-      DO_NOTHING    do_nothing1
+          first
+        IF            op_if2
+          CONDITION
+            last
+          DO_NOTHING  op_do_nothing2
+          DO_NOTHING  op_do_nothing3
+        DO_NOTHING    op_do_nothing1
   */
   
   SPVM_OP* op_do_nothing1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_logical_and->file, op_logical_and->line);
@@ -2848,22 +2850,26 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
 
 SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_or, SPVM_OP* op_first, SPVM_OP* op_last) {
   
-  // Convert || to if statement
-  // [Before]
-  //  OR
-  //    first
-  //    last
+  /*
+    [Before]
+    OR
+      first
+      last
+  */
   
-  // [After]
-  //  IF              if1
-  //    CONDITION
-  //      first
-  //    DO_NOTHING    do_nothing1
-  //    IF            if2
-  //      CONDITION
-  //        last
-  //      DO_NOTHING do_nothing2
-  //      DO_NOTHING do_nothing3
+  /*
+    [After]
+    BOOL              op_bool
+      IF              op_if1
+        CONDITION
+          first
+        DO_NOTHING    op_do_nothing1
+        IF            op_if2
+          CONDITION
+            last
+          DO_NOTHING  op_do_nothing2
+          DO_NOTHING  op_do_nothing3
+  */
   
   SPVM_OP* op_do_nothing1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_logical_or->file, op_logical_or->line);
   SPVM_OP* op_do_nothing2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_logical_or->file, op_logical_or->line);
@@ -2885,41 +2891,40 @@ SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_o
   return op_bool;
 }
 
-SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op_first) {
+SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_logical_not, SPVM_OP* op_first) {
   
-  // Convert ! to if statement
-  // before
-  //  LOGICAL_NOT
-  //    first
+  /*
+    [Before]
+    LOGICAL_NOT
+      first
+  */
   
-  // after 
-  //  IF
-  //    first
-  //    BOOL
-  //      0
-  //    BOOL
-  //      1
+  /*
+    [After]
+    BOOL         op_bool
+      IF           op_if
+        CONDITION
+          first
+        BOOL       op_bool_false
+          0
+        BOOL       op_bool_true
+          1
+  */
   
-  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_not->file, op_not->line);
+  SPVM_OP* op_if = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_logical_not->file, op_logical_not->line);
   
-  // Constant false
   SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_if->file, op_if->line);
   SPVM_OP* op_bool_false = SPVM_OP_new_op_bool(compiler, op_constant_false, op_if->file, op_if->line);
-
-  // Constant true
+  
   SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_if->file, op_if->line);
   SPVM_OP* op_bool_true = SPVM_OP_new_op_bool(compiler, op_constant_true, op_if->file, op_if->line);
   
-  // Build if tree
   int32_t no_scope = 1;
   SPVM_OP_build_if_statement(compiler, op_if, op_first, op_bool_false, op_bool_true, no_scope);
-
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_not->file, op_not->line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_not->file, op_not->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var, op_if);
   
-  return op_assign;
+  SPVM_OP* op_bool = SPVM_OP_new_op_bool(compiler, op_if, op_logical_not->file, op_logical_not->line);
+  
+  return op_bool;
 }
 
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_dist, SPVM_OP* op_src) {
