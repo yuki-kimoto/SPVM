@@ -2880,12 +2880,9 @@ SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_o
   SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_do_nothing2, op_do_nothing3, no_scope);
   SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_do_nothing1, op_if2, no_scope);
   
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_or->file, op_logical_or->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var, op_if1);
+  SPVM_OP* op_bool = SPVM_OP_new_op_bool(compiler, op_if1, op_logical_or->file, op_logical_or->line);
   
-  return op_assign;
+  return op_bool;
 }
 
 SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_not, SPVM_OP* op_first) {
