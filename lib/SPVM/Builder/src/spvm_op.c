@@ -3662,35 +3662,6 @@ int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
   return 0;
 }
 
-int32_t SPVM_OP_is_comparison_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
-  
-  switch (op->id) {
-    case SPVM_OP_C_ID_NUMERIC_EQ:
-    case SPVM_OP_C_ID_NUMERIC_NE:
-    case SPVM_OP_C_ID_NUMERIC_GT:
-    case SPVM_OP_C_ID_NUMERIC_GE:
-    case SPVM_OP_C_ID_NUMERIC_LT:
-    case SPVM_OP_C_ID_NUMERIC_LE:
-    case SPVM_OP_C_ID_NUMERIC_CMP:
-    case SPVM_OP_C_ID_STRING_EQ:
-    case SPVM_OP_C_ID_STRING_NE:
-    case SPVM_OP_C_ID_STRING_GT:
-    case SPVM_OP_C_ID_STRING_GE:
-    case SPVM_OP_C_ID_STRING_LT:
-    case SPVM_OP_C_ID_STRING_LE:
-    case SPVM_OP_C_ID_STRING_CMP:
-    case SPVM_OP_C_ID_ISA:
-    case SPVM_OP_C_ID_ISA_ERROR:
-    case SPVM_OP_C_ID_IS_TYPE:
-    case SPVM_OP_C_ID_IS_ERROR:
-    {
-      return 1;
-    }
-  }
-  
-  return 0;
-}
-
 SPVM_OP* SPVM_OP_get_parent(SPVM_COMPILER* compiler, SPVM_OP* op_target) {
   
   SPVM_OP* op_parent;
