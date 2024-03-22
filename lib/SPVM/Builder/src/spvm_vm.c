@@ -1383,13 +1383,13 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_CAN: {
-        void* object = object_vars[opcode->operand0];
+        void* object = object_vars[opcode->operand1];
         
         int32_t can_method_name_constant_string_index = opcode->operand2;
         SPVM_RUNTIME_STRING* can_method_name_constant_string = &current_basic_type->constant_strings[can_method_name_constant_string_index];
         const char* can_method_name = can_method_name_constant_string->value;
         
-        SPVM_IMPLEMENT_CAN(env, stack, int_vars[0], object, can_method_name);
+        SPVM_IMPLEMENT_CAN(env, stack, int_vars[opcode->operand0], object, can_method_name);
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {

@@ -21,6 +21,7 @@
   [Bug Fix]
     * Fix the bug that the is_read_only operator set the internal condition flag.
     * Fix the bug that the isweak operator set the internal condition flag.
+    * Fix the bug that the can operator set the internal condition flag.
   [Internal Changes]
     * Runtime precompilation can be detected in easy way that update blib/lib/SPVM/Builder/include/spvm_version.h in Makefile.PL.
     * The can operator receive the constant string ID for method name.

@@ -4288,7 +4288,8 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CAN);
                       
-                      opcode.operand0 = index_by_type_in;
+                      opcode.operand0 = index_by_type_out;
+                      opcode.operand1 = index_by_type_in;
                       opcode.operand2 = can_method_name_constant_string->index;
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
