@@ -245,6 +245,23 @@ class TestCase::LogicalOperator {
       }
     }
     
+    # !!0
+    {
+      my $value = 0;
+      my $result = !!$value;
+      unless ($result == 0) {
+        return 0;
+      }
+    }
+    
+    # !!1
+    {
+      my $value = 1;
+      my $result = !!$value;
+      unless ($result == 1) {
+        return 0;
+      }
+    }
     return 1;
   }
 
