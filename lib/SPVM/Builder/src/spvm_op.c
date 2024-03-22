@@ -2829,8 +2829,6 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
           1         true
         BOOL
           0         false1
-      BOOL
-        0           false2
   */
   
   SPVM_OP* op_if1 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_logical_and->file, op_logical_and->line);
@@ -2844,17 +2842,15 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
   SPVM_OP* op_constant_false1 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
   SPVM_OP* op_bool_false1 = SPVM_OP_new_op_bool(compiler, op_constant_false1, op_if1->file, op_if1->line);
   
-  // Constant false 2
-  SPVM_OP* op_constant_false2 = SPVM_OP_new_op_constant_int(compiler, 0, op_if1->file, op_if1->line);
-  SPVM_OP* op_bool_false2 = SPVM_OP_new_op_bool(compiler, op_constant_false2, op_if1->file, op_if1->line);
-  
   // if2
   SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if1->file, op_if1->line);
+  
+  SPVM_OP* op_do_nothing2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, op_logical_and->file, op_logical_and->line);
   
   // Build if tree
   int32_t no_scope = 1;
   SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_bool_true, op_bool_false1, no_scope);
-  SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_bool_false2, no_scope);
+  SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_do_nothing2, no_scope);
   
   SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_logical_and->file, op_logical_and->line);
   SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
