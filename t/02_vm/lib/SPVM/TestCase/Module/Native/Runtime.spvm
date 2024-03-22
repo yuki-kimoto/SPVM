@@ -3,7 +3,8 @@ class TestCase::Module::Native::Runtime {
   use Fn;
   use Array;
   use Point;
-  
+  use Native::Constant;
+
   static method get_basic_type_names : int () {
     
     {
