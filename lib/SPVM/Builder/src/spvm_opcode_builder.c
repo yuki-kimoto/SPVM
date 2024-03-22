@@ -4271,23 +4271,25 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                     }
                     case SPVM_OP_C_ID_CAN: {
                       SPVM_OP* op_var = op_assign_src->first;
+                      
+                      int32_t index_by_type_out = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_assign_dist);
                       int32_t index_by_type_in = SPVM_OPCODE_BUILDER_get_index_by_type(compiler, op_var);
                       
-                      SPVM_TYPE* invocant_decl_type = SPVM_CHECK_get_type(compiler, op_var);
-                      SPVM_BASIC_TYPE* invocant_decl_basic_type = invocant_decl_type->basic_type;
-                      SPVM_OP* op_name_decl_method = op_assign_src->last;
+                      SPVM_OP* op_name_can_method = op_assign_src->last;
                       
-                      const char* decl_method_name = op_name_decl_method->uv.name;
-                      SPVM_METHOD* decl_method = SPVM_HASH_get(invocant_decl_basic_type->method_symtable, decl_method_name, strlen(decl_method_name));
+                      const char* can_method_name = op_name_can_method->uv.name;
                       
                       SPVM_OPCODE opcode = {0};
                       
+                      SPVM_STRING* can_method_name_constant_string = SPVM_HASH_get(basic_type->constant_string_symtable, can_method_name, strlen(can_method_name));
+                      assert(can_method_name_constant_string);
+                      
+                      assert(can_method_name_constant_string->index >= 0);
                       
                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CAN);
                       
                       opcode.operand0 = index_by_type_in;
-                      opcode.operand1 = invocant_decl_basic_type->id;
-                      opcode.operand2 = decl_method->index;
+                      opcode.operand2 = can_method_name_constant_string->index;
                       
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       

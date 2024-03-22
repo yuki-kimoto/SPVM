@@ -2765,20 +2765,16 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         break;
       }
       case SPVM_OPCODE_C_ID_CAN: {
-        int32_t decl_basic_type_id = opcode->operand1;
-        int32_t decl_method_index = opcode->operand2;
-        
-        SPVM_RUNTIME_BASIC_TYPE* decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, decl_basic_type_id);
-        SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, decl_basic_type, decl_method_index);
-        SPVM_RUNTIME_BASIC_TYPE* method_current_basic_type = method->current_basic_type;
-        const char* method_name = method->name;
+        int32_t can_method_name_constant_string_index = opcode->operand2;
+        SPVM_RUNTIME_STRING* can_method_name_constant_string = &current_basic_type->constant_strings[can_method_name_constant_string_index];
+        const char* can_method_name = can_method_name_constant_string->value;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  object = ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  method_name = \"");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
+        SPVM_STRING_BUFFER_add(string_buffer, (char*)can_method_name);
         SPVM_STRING_BUFFER_add(string_buffer, "\";\n");
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CAN(env, stack, ");

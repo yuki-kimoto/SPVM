@@ -3087,27 +3087,29 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_OP* op_var = op_cur->first;
             SPVM_OP* op_name_method = op_cur->last;
             
-            SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_var);
+            SPVM_TYPE* var_type = SPVM_CHECK_get_type(compiler, op_var);
             
-            if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
+            if (!(SPVM_TYPE_is_class_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_interface_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
               SPVM_COMPILER_error(compiler, "The invocant of the can operator must be a class type or an interface type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
-            const char* basic_type_name = type->basic_type->name;
-            SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+            const char* var_basic_type_name = var_type->basic_type->name;
+            SPVM_BASIC_TYPE* var_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, var_basic_type_name, strlen(var_basic_type_name));
             
             const char* method_name = op_name_method->uv.name;
             SPVM_METHOD* found_method = SPVM_HASH_get(
-              basic_type->method_symtable,
+              var_basic_type->method_symtable,
               method_name,
               strlen(method_name)
             );
             
             if (!found_method) {
-              SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class checked by the can operator must be defined.\n  at %s line %d", method_name, basic_type_name, op_name_method->file, op_name_method->line);
+              SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class checked by the can operator must be defined.\n  at %s line %d", method_name, var_basic_type_name, op_name_method->file, op_name_method->line);
               return;
             }
+            
+            SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method_name, strlen(method_name));
             
             break;
           }
@@ -3214,6 +3216,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_MAKE_READ_ONLY:
               case SPVM_OP_C_ID_IS_READ_ONLY:
               case SPVM_OP_C_ID_ISWEAK_FIELD:
+              case SPVM_OP_C_ID_CAN:
               case SPVM_OP_C_ID_ADD:
               case SPVM_OP_C_ID_SUBTRACT:
               case SPVM_OP_C_ID_MULTIPLY:

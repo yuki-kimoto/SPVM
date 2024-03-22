@@ -1384,13 +1384,12 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
       }
       case SPVM_OPCODE_C_ID_CAN: {
         void* object = object_vars[opcode->operand0];
-        int32_t invocant_decl_basic_type_id = opcode->operand1;
-        int32_t decl_method_index = opcode->operand2;
         
-        SPVM_RUNTIME_BASIC_TYPE* invocant_decl_basic_type = SPVM_API_RUNTIME_get_basic_type_by_id(runtime, invocant_decl_basic_type_id);
-        SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, invocant_decl_basic_type, decl_method_index);
-        const char* method_name = method->name;
-        SPVM_IMPLEMENT_CAN(env, stack, int_vars[0], object, method_name);
+        int32_t can_method_name_constant_string_index = opcode->operand2;
+        SPVM_RUNTIME_STRING* can_method_name_constant_string = &current_basic_type->constant_strings[can_method_name_constant_string_index];
+        const char* can_method_name = can_method_name_constant_string->value;
+        
+        SPVM_IMPLEMENT_CAN(env, stack, int_vars[0], object, can_method_name);
         break;
       }
       case SPVM_OPCODE_C_ID_PRINT: {
