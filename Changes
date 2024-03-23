@@ -1,4 +1,4 @@
-0.989092 2023-03-22
+0.989092 2023-03-23
   [New Features]
     * Add the get_basic_types method to the Native::Runtime class.
     * Add the get_methods method to the Native::BasicType class.
@@ -24,6 +24,7 @@
     * Fix the bug that the can operator set the internal condition flag.
     * Fix the bug that the string comparison operators and the numeric comparison operators set the internal condition flag.
     * Fix the bug that the isa, isa_error, is_type, is_error, is_compile_type operators set the internal condition flag.
+    * Fix the bug that the logical operator set the internal condition flag where it should not be changed.
 
   [Internal Changes]
     * Runtime precompilation can be detected in easy way that update blib/lib/SPVM/Builder/include/spvm_version.h in Makefile.PL.
