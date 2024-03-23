@@ -93,11 +93,7 @@ class Native::Runtime : pointer {
         my $basic_type_name = $basic_type->get_name;
         my $basic_type_is_anon = $basic_type->is_anon;
         
-        # TODO: Logical operator bugs. The following code returns a wrong result.
-        # my $is_anon_match = !!$basic_type->is_anon == !!$is_anon;
-        my $left = !!$basic_type->is_anon;
-        my $rigth = !!$is_anon;
-        my $is_anon_match = $left == $rigth;
+        my $is_anon_match = !!$basic_type->is_anon == !!$is_anon;
         
         unless ($is_anon_match) {
           next;
