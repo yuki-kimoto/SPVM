@@ -577,31 +577,38 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_INT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_INT(int_vars[0], int_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_INT(int_vars[opcode->operand0], int_vars[opcode->operand1]);
+        int_vars[0] = int_vars[opcode->operand0];
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_LONG: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_LONG(int_vars[0], long_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1]);
+        int_vars[0] = int_vars[opcode->operand0];
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_FLOAT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_FLOAT(int_vars[0], float_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1]);
+        int_vars[0] = int_vars[opcode->operand0];
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_DOUBLE: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_DOUBLE(int_vars[0], double_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1]);
+        int_vars[0] = int_vars[opcode->operand0];
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_OBJECT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_OBJECT(int_vars[0], object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_OBJECT(int_vars[opcode->operand0], object_vars[opcode->operand1]);
+        int_vars[0] = int_vars[opcode->operand0];
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_REF: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_REF(int_vars[0], ref_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_REF(int_vars[opcode->operand0], ref_vars[opcode->operand1]);
+        int_vars[0] = int_vars[opcode->operand0];
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_BOOL_OBJECT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_BOOL_OBJECT(env, stack, int_vars[0], object_vars[opcode->operand1]);
+        SPVM_IMPLEMENT_BOOL_CONVERSION_BOOL_OBJECT(env, stack, int_vars[opcode->operand0], object_vars[opcode->operand1]);
+        int_vars[0] = int_vars[opcode->operand0];
         break;
       }
       case SPVM_OPCODE_C_ID_EQ_INT: {

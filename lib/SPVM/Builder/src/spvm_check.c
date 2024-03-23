@@ -3277,6 +3277,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_IS_TYPE:
               case SPVM_OP_C_ID_IS_ERROR:
               case SPVM_OP_C_ID_IS_COMPILE_TYPE:
+              case SPVM_OP_C_ID_BOOL:
               {
                 convert_to_assign = 1;
                 break;
@@ -3310,11 +3311,6 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_UNWEAKEN_FIELD:
               {
                 // Do nothing
-                break;
-              }
-              case SPVM_OP_C_ID_BOOL:
-              {
-                assert(0);
                 break;
               }
               default: {

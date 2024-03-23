@@ -5260,10 +5260,6 @@ void SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(
 int32_t SPVM_OPCODE_BUILDER_get_index_by_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   switch (op->id) {
-    case SPVM_OP_C_ID_BOOL:
-    {
-      return 0;
-    }
     default: {
       SPVM_OP* op_var;
       if (op->id == SPVM_OP_C_ID_VAR) {
