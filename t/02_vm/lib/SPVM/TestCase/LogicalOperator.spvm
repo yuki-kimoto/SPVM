@@ -771,4 +771,28 @@ class TestCase::LogicalOperator {
     
     return 1;
   }
+  
+  static method extra : int () {
+    
+    # https://github.com/yuki-kimoto/SPVM/issues/499
+    {
+      {
+        my $ret = !!1 == !!0;
+        
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = !!0 == !!1;
+        
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
 }

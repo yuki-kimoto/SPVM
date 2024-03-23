@@ -51,6 +51,11 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     ok(SPVM::TestCase::LogicalOperator->combination);
   }
   
+  # Extra
+  {
+    ok(SPVM::TestCase::LogicalOperator->extra);
+  }
+  
 }
 
 # All object is freed
