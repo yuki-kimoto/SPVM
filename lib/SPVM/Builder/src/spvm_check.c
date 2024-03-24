@@ -2100,10 +2100,10 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_ARRAY_LENGTH: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
             // First value must be an array
-            if (!SPVM_TYPE_is_array_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The right operand of the @ operator must be an array type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
@@ -2111,10 +2111,10 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_STRING_LENGTH: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
             // First must be the string type
-            if (!SPVM_TYPE_is_string_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the length operator must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
@@ -2188,9 +2188,9 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_PLUS: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the unary + operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
@@ -2203,9 +2203,9 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_MINUS: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_numeric_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the unary - operator must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
@@ -2218,9 +2218,9 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_COPY: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_object_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the copy operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
@@ -2228,9 +2228,9 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_BIT_NOT: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_integer_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_integer_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the ~ operator must be an integer type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
@@ -2576,18 +2576,18 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_DIE: {
-            SPVM_TYPE* right_type = SPVM_CHECK_get_type(compiler, op_cur->last);
+            SPVM_TYPE* error_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
             // Type
             if (op_cur->last->id == SPVM_OP_C_ID_TYPE) {
-              if (!SPVM_TYPE_is_class_type(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
+              if (!SPVM_TYPE_is_class_type(compiler, error_type->basic_type->id, error_type->dimension, error_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The error class of the die statement must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }
             // Basic type ID
             else {
-              if (!SPVM_TYPE_is_integer_type_within_int(compiler, right_type->basic_type->id, right_type->dimension, right_type->flag)) {
+              if (!SPVM_TYPE_is_integer_type_within_int(compiler, error_type->basic_type->id, error_type->dimension, error_type->flag)) {
                 SPVM_COMPILER_error(compiler, "The error ID must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
@@ -2599,19 +2599,19 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           }
           case SPVM_OP_C_ID_WARN: {
             if (op_cur->first) {
-              SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
               
-              if (SPVM_TYPE_is_numeric_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+              if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
                 SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
                 if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                   return;
                 }
               }
               
-              left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+              operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
               
-              if (!(SPVM_TYPE_is_object_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)
-                || SPVM_TYPE_is_undef_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag))) {
+              if (!(SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
+                || SPVM_TYPE_is_undef_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
                 SPVM_COMPILER_error(compiler, "The type of the operand of the warn operator must be an object type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
@@ -2620,58 +2620,58 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_PRINT: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (SPVM_TYPE_is_numeric_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
             }
             
-            left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_string_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the print operator must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             break;
           }
           case SPVM_OP_C_ID_SAY: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (SPVM_TYPE_is_numeric_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (SPVM_TYPE_is_numeric_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_CHECK_perform_numeric_to_string_conversion(compiler, op_cur->first);
               if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
                 return;
               }
             }
             
-            left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_string_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the say operator must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             break;
           }
           case SPVM_OP_C_ID_MAKE_READ_ONLY: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_string_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the make_read_only operator must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             break;
           }
           case SPVM_OP_C_ID_IS_READ_ONLY: {
-            SPVM_TYPE* left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            left_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_string_type(compiler, left_type->basic_type->id, left_type->dimension, left_type->flag)) {
+            if (!SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the is_read_only operator must be the string type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
