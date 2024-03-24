@@ -1453,7 +1453,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_NUMERIC_EQ: {
-            SPVM_OP* op_left = op_cur->first;
+            SPVM_OP* op_left_operand = op_cur->first;
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
@@ -1462,7 +1462,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
               // Constant 1
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              SPVM_OP* op_constant_one = SPVM_OP_new_op_constant_int(compiler, 1, op_left->file, op_left->line);
+              SPVM_OP* op_constant_one = SPVM_OP_new_op_constant_int(compiler, 1, op_left_operand->file, op_left_operand->line);
               SPVM_OP_replace_op(compiler, op_stab, op_constant_one);
               op_cur = op_constant_one;
             }
@@ -1517,7 +1517,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             break;
           }
           case SPVM_OP_C_ID_NUMERIC_NE: {
-            SPVM_OP* op_left = op_cur->first;
+            SPVM_OP* op_left_operand = op_cur->first;
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
@@ -1526,7 +1526,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
               // Constant 0
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-              SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_left->file, op_left->line);
+              SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_left_operand->file, op_left_operand->line);
               SPVM_OP_replace_op(compiler, op_stab, op_constant_zero);
               op_cur = op_constant_zero;
             }
@@ -3809,45 +3809,45 @@ void SPVM_CHECK_perform_integer_promotional_conversion(SPVM_COMPILER* compiler, 
   }
 }
 
-void SPVM_CHECK_perform_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_left, SPVM_OP* op_right) {
+void SPVM_CHECK_perform_binary_numeric_conversion(SPVM_COMPILER* compiler, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand) {
   
-  SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_left);
-  SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_right);
+  SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_left_operand);
+  SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_right_operand);
   
   SPVM_TYPE* dist_type;
   if ((left_operand_type->dimension == 0 && left_operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) || (right_operand_type->dimension == 0 && right_operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE)) {
-    SPVM_OP* op_dist_type = SPVM_OP_new_op_double_type(compiler, op_left->file, op_left->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_double_type(compiler, op_left_operand->file, op_left_operand->line);
     dist_type = op_dist_type->uv.type;
   }
   else if ((left_operand_type->dimension == 0 && left_operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) || (right_operand_type->dimension == 0 && right_operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT)) {
-    SPVM_OP* op_dist_type = SPVM_OP_new_op_float_type(compiler, op_left->file, op_left->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_float_type(compiler, op_left_operand->file, op_left_operand->line);
     dist_type = op_dist_type->uv.type;
   }
   else if ((left_operand_type->dimension == 0 && left_operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) || (right_operand_type->dimension == 0 && right_operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG)) {
-    SPVM_OP* op_dist_type = SPVM_OP_new_op_long_type(compiler, op_left->file, op_left->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_long_type(compiler, op_left_operand->file, op_left_operand->line);
     dist_type = op_dist_type->uv.type;
   }
   else {
-    SPVM_OP* op_dist_type = SPVM_OP_new_op_int_type(compiler, op_left->file, op_left->line);
+    SPVM_OP* op_dist_type = SPVM_OP_new_op_int_type(compiler, op_left_operand->file, op_left_operand->line);
     dist_type = op_dist_type->uv.type;
   }
   
   if (!(left_operand_type->basic_type->id == dist_type->basic_type->id && left_operand_type->dimension == dist_type->dimension)) {
-    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_left);
+    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_left_operand);
     
-    SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_left->file, op_left->line);
-    SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, op_left->file, op_left->line);
-    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_left, NULL);
+    SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_left_operand->file, op_left_operand->line);
+    SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, op_left_operand->file, op_left_operand->line);
+    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_left_operand, NULL);
     
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
   }
   
   if (!(right_operand_type->basic_type->id == dist_type->basic_type->id && right_operand_type->dimension == dist_type->dimension)) {
-    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_right);
+    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_right_operand);
     
-    SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_right->file, op_right->line);
-    SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, op_right->file, op_right->line);
-    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_right, NULL);
+    SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_right_operand->file, op_right_operand->line);
+    SPVM_OP* op_dist_type = SPVM_CHECK_new_op_type_shared(compiler, dist_type, op_right_operand->file, op_right_operand->line);
+    SPVM_OP_build_type_cast(compiler, op_type_cast, op_dist_type, op_right_operand, NULL);
     SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
   }
 }
