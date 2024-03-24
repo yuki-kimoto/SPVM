@@ -1776,18 +1776,18 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_
   if (op_block) {
     SPVM_OP* op_statements = op_block->first;
     if (op_statements) {
-      SPVM_OP* op_last_statement = op_statements->last;
+      SPVM_OP* op_right_statement = op_statements->last;
       
       // Add "break" statement if it doesn't exist
       {
         // No statement
-        if (!op_last_statement) {
+        if (!op_right_statement) {
           SPVM_OP* op_break = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BREAK, op_statements->file, op_statements->line);
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_break);
         }
         // The last statement is not "break" statement
-        else if (op_last_statement->id != SPVM_OP_C_ID_BREAK) {
-          SPVM_OP* op_break = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BREAK, op_last_statement->file, op_last_statement->line + 1);
+        else if (op_right_statement->id != SPVM_OP_C_ID_BREAK) {
+          SPVM_OP* op_break = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BREAK, op_right_statement->file, op_right_statement->line + 1);
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_break);
         }
       }
@@ -2451,10 +2451,10 @@ SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, 
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_first, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_first, SPVM_OP* op_right) {
   
   SPVM_OP_insert_child(compiler, op_is, op_is->last, op_first);
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_last);
+  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_right);
   
   return op_is;
 }
@@ -2484,10 +2484,10 @@ SPVM_OP* SPVM_OP_build_is_compile_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_c
   return SPVM_OP_build_type_check(compiler, op_is_compile_type, op_operand, op_compile_type);
 }
 
-SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_right) {
   
   SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_first);
-  SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_last);
+  SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_right);
   
   return op_bin;
 }
@@ -2809,7 +2809,7 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   return op_dec;
 }
 
-SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_and, SPVM_OP* op_first, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_and, SPVM_OP* op_first, SPVM_OP* op_right) {
   
   /*
     [Before]
@@ -2840,7 +2840,7 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
   SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if1->file, op_if1->line);
   
   int32_t no_scope = 1;
-  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_do_nothing2, op_do_nothing3, no_scope);
+  SPVM_OP_build_if_statement(compiler, op_if2, op_right, op_do_nothing2, op_do_nothing3, no_scope);
   SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_if2, op_do_nothing1, no_scope);
   
   SPVM_OP* op_bool = SPVM_OP_new_op_bool(compiler, op_if1, op_logical_and->file, op_logical_and->line);
@@ -2848,7 +2848,7 @@ SPVM_OP* SPVM_OP_build_logical_and(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
   return op_bool;
 }
 
-SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_or, SPVM_OP* op_first, SPVM_OP* op_last) {
+SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_or, SPVM_OP* op_first, SPVM_OP* op_right) {
   
   /*
     [Before]
@@ -2883,7 +2883,7 @@ SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_o
   SPVM_OP* op_if2 = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF, op_if1->file, op_if1->line);
   
   int32_t no_scope = 1;
-  SPVM_OP_build_if_statement(compiler, op_if2, op_last, op_do_nothing2, op_do_nothing3, no_scope);
+  SPVM_OP_build_if_statement(compiler, op_if2, op_right, op_do_nothing2, op_do_nothing3, no_scope);
   SPVM_OP_build_if_statement(compiler, op_if1, op_first, op_do_nothing1, op_if2, no_scope);
   
   SPVM_OP* op_bool = SPVM_OP_new_op_bool(compiler, op_if1, op_logical_or->file, op_logical_or->line);
