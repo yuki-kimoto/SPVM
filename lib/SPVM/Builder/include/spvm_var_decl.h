@@ -13,7 +13,7 @@ struct spvm_var_decl {
   const char* name;
   SPVM_OP* op_arg_default;
   int32_t index;
-  int32_t index_by_type;
+  int32_t typed_var_index;
   int32_t stack_index;
   int8_t is_arg;
 };

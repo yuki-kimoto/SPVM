@@ -441,7 +441,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       }
     }
     
-    fprintf(stderr, " %d\n", var_decl->index_by_type);
+    fprintf(stderr, " %d\n", var_decl->typed_var_index);
   }
   else {
     fprintf(stderr, "          (Unexpected)\n");
