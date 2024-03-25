@@ -3174,22 +3174,11 @@ SPVM_OP* SPVM_OP_build_array_type(SPVM_COMPILER* compiler, SPVM_OP* op_type_elem
 }
 
 SPVM_OP* SPVM_OP_new_op_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line) {
+  
   SPVM_OP* op_bool = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BOOL, file, line);
   SPVM_OP_insert_child(compiler, op_bool, op_bool->last, op_operand);
   
-  SPVM_OP* op_name_var_condition = SPVM_OP_new_op_name(compiler, "$.condition_flag", file, line);
-  SPVM_OP* op_var_condition = SPVM_OP_new_op_var(compiler, op_name_var_condition);
-  SPVM_OP* op_assign_condition = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-  SPVM_OP_build_assign(compiler, op_assign_condition, op_var_condition, op_bool);
-  
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name_tmp_var(compiler, file, line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, file, line);
-  SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, NULL, NULL);
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var, op_assign_condition);
-  
-  return op_assign;
+  return op_bool;
 }
 
 SPVM_OP* SPVM_OP_new_op_var_decl(SPVM_COMPILER* compiler, const char* file, int32_t line) {
