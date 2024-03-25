@@ -43,10 +43,9 @@ sub get_class_names {
 }
 
 sub get_basic_types {
-  
   my ($self, $options) = @_;
   
-  $options || = {}
+  $options ||= {};
   
   my $basic_types_length = $self->get_basic_types_length;
   
@@ -57,8 +56,8 @@ sub get_basic_types {
   for (my $id = 0; $id < $basic_types_length; $id++) {
     my $basic_type = $self->get_basic_type_by_id($id);
     
-    if (exists $options->{category})) {
-      my $categories = $options->{category});
+    if (exists $options->{category}) {
+      my $categories = $options->{category};
       
       my $category_match = 0;
       for my $category (@$categories) {

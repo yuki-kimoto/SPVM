@@ -1,4 +1,6 @@
 0.989094 2023-03-26
+  [Internal Changes]
+    * SPVM::Builder::Config::Info does not depend on the SPVM::Native::Compiler.
 0.989093 2023-03-25
   [Bug Fix]
     * Fix the bug that the logical OR operator set the internal condition flag where it should not be changed.

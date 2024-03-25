@@ -10,10 +10,6 @@ use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 
-use SPVM 'Native::Compiler';
-use SPVM 'Native::Constant';
-use SPVM 'Int';
-
 # Fields
 sub builder {
   my $self = shift;
@@ -76,7 +72,7 @@ sub new {
   
   $self->{builder} = $builder;
   
-  my $compiler = SPVM::Native::Compiler->new;
+  my $compiler = SPVM::Builder::Native::Compiler->new;
   $compiler->add_include_dir($_) for @{$builder->include_dirs};
   $self->{compiler} = $compiler;
   
@@ -120,14 +116,12 @@ sub get_class_names {
   
   my $api = SPVM::api;
   
-  my $category = $api->new_int_array([
-    SPVM::Native::Constant->SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS,
-    SPVM::Native::Constant->SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE,
-  ]);
+  my $category = [
+    6, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS,
+    7, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE,
+  ];
   
-  my $options = $api->new_options({category => $category, is_anon => SPVM::Int->new(0)});
-  
-  my $basic_types = $runtime->get_basic_types($options);
+  my $basic_types = $runtime->get_basic_types({category => $category, is_anon => 0});
   
   my $class_names = [map { $_->get_name } @$basic_types];
   
