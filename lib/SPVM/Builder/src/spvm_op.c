@@ -2172,8 +2172,8 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
   else if (length > 0) {
     {
       SPVM_OP* op_pushmark = op_list_elements->first;
-      SPVM_OP* op_left_operand_element = SPVM_OP_sibling(compiler, op_pushmark);
-      if (op_left_operand_element->id == SPVM_OP_C_ID_UNDEF) {
+      SPVM_OP* op_element_element = SPVM_OP_sibling(compiler, op_pushmark);
+      if (op_element_element->id == SPVM_OP_C_ID_UNDEF) {
         SPVM_COMPILER_error(compiler, "The first element in the array initialization must be defined.\n  at %s line %d", op_array_init->file, op_array_init->line);
         return op_array_init;
       }
@@ -2181,18 +2181,18 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
     
     if (is_key_value_pairs) {
       SPVM_OP* op_pushmark = op_list_elements->first;
-      SPVM_OP* op_left_operand_element = SPVM_OP_sibling(compiler, op_pushmark);
+      SPVM_OP* op_element_element = SPVM_OP_sibling(compiler, op_pushmark);
       if (is_key_value_pairs) {
         SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, op_array_init->file, op_array_init->line);
         SPVM_OP* op_type_for_cast = SPVM_OP_new_op_any_object_type(compiler, op_array_init->file, op_array_init->line);
-        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_left_operand_element);
-        SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_left_operand_element, NULL);
+        SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_element_element);
+        SPVM_OP_build_type_cast(compiler, op_type_cast, op_type_for_cast, op_element_element, NULL);
         SPVM_OP_replace_op(compiler, op_stab, op_type_cast);
       }
     }
     
     SPVM_OP* op_pushmark = op_list_elements->first;
-    SPVM_OP* op_left_operand_element = SPVM_OP_sibling(compiler, op_pushmark);
+    SPVM_OP* op_element_element = SPVM_OP_sibling(compiler, op_pushmark);
     
     SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, op_array_init->file, op_array_init->line);
     
@@ -2202,8 +2202,8 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
     SPVM_OP* op_var_decl_first_element = SPVM_OP_new_op_var_decl_arg(compiler, op_array_init->file, op_array_init->line);
     op_var_first_element = SPVM_OP_build_var_decl(compiler, op_var_decl_first_element, op_var_first_element, NULL, NULL);
     SPVM_OP* op_assign_first_element = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_array_init->file, op_array_init->line);
-    SPVM_OP_cut_op(compiler, op_left_operand_element);
-    SPVM_OP_build_assign(compiler, op_assign_first_element, op_var_first_element, op_left_operand_element);
+    SPVM_OP_cut_op(compiler, op_element_element);
+    SPVM_OP_build_assign(compiler, op_assign_first_element, op_var_first_element, op_element_element);
     SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_first_element);
     
     // my $array = new $first_element;
@@ -2423,14 +2423,14 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
   return op_call_method;
 }
 
-SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_left_operand) {
+SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_operand) {
   
-  SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_left_operand);
+  SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_operand);
   
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_left_operand) {
+SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_operand) {
   
   const char* op_name = SPVM_OP_get_op_name(compiler, op_unary->id);
   char op_name_lc[16] = {0};
@@ -2441,20 +2441,20 @@ SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, 
     }
   }
   
-  if (op_left_operand->id != SPVM_OP_C_ID_VAR) {
-    SPVM_COMPILER_error(compiler, "The operand of the %s operator must be a variable.\n  at %s line %d", op_name_lc, op_left_operand->file, op_left_operand->line);
+  if (op_operand->id != SPVM_OP_C_ID_VAR) {
+    SPVM_COMPILER_error(compiler, "The operand of the %s operator must be a variable.\n  at %s line %d", op_name_lc, op_operand->file, op_operand->line);
   }
   
   // Build op
-  SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_left_operand);
+  SPVM_OP_insert_child(compiler, op_unary, op_unary->last, op_operand);
   
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand) {
+SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_operand, SPVM_OP* op_type) {
   
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_left_operand);
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_right_operand);
+  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_operand);
+  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_type);
   
   return op_is;
 }
