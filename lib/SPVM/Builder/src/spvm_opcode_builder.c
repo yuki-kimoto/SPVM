@@ -3799,22 +3799,22 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                           else if (operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_INT);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_INT);
                             typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                             typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           }
                           else if (operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_LONG);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_LONG);
                             typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                             typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           }
                           else if (operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_FLOAT);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_FLOAT);
                             typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                             typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           }
                           else if (operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_DOUBLE);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_DOUBLE);
                             typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                             typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           }
@@ -3823,12 +3823,12 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           }
                         }
                         else if (SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_OBJECT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_OBJECT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                         }
                         else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_EQ_REF);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_REF);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                         }
@@ -3885,22 +3885,22 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                           else if (operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_INT);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_INT);
                             typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                             typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           }
                           else if (operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_LONG) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_LONG);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_LONG);
                             typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                             typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           }
                           else if (operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_FLOAT);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_FLOAT);
                             typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                             typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           }
                           else if (operand_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
-                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_DOUBLE);
+                            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_DOUBLE);
                             typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                             typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           }
@@ -3909,12 +3909,12 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           }
                         }
                         else if (SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_OBJECT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_OBJECT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                         }
                         else if (SPVM_TYPE_is_ref_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NE_REF);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_REF);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                         }
@@ -3942,22 +3942,22 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       int32_t typed_var_index_in2;
                       switch (operand_type->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GT_INT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GT_INT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GT_LONG);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GT_LONG);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GT_FLOAT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GT_FLOAT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GT_DOUBLE);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GT_DOUBLE);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
@@ -3984,22 +3984,22 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       int32_t typed_var_index_in2;
                       switch (operand_type->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GE_INT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GE_INT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GE_LONG);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GE_LONG);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GE_FLOAT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GE_FLOAT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GE_DOUBLE);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GE_DOUBLE);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
@@ -4026,22 +4026,22 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       int32_t typed_var_index_in2;
                       switch (operand_type->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LT_INT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LT_INT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LT_LONG);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LT_LONG);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LT_FLOAT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LT_FLOAT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LT_DOUBLE);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LT_DOUBLE);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
@@ -4068,22 +4068,22 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       int32_t typed_var_index_in2;
                       switch (operand_type->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LE_INT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LE_INT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LE_LONG);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LE_LONG);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LE_FLOAT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LE_FLOAT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_LE_DOUBLE);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LE_DOUBLE);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
@@ -4110,22 +4110,22 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       int32_t typed_var_index_in2;
                       switch (operand_type->basic_type->id) {
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_INT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CMP_INT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_CMP_INT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CMP_LONG);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_CMP_LONG);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CMP_FLOAT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_CMP_FLOAT);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;
                         case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE:
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CMP_DOUBLE);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_CMP_DOUBLE);
                           typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);
                           typed_var_index_in2 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->last);
                           break;

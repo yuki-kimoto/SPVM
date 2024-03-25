@@ -1394,8 +1394,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         
         break;
       }
-      case SPVM_OPCODE_C_ID_EQ_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_EQ_INT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_INT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1404,8 +1404,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_EQ_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_EQ_LONG(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_LONG(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -1414,8 +1414,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_EQ_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_EQ_FLOAT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_FLOAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_FLOAT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -1424,8 +1424,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_EQ_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_EQ_DOUBLE(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_DOUBLE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_DOUBLE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
@@ -1434,8 +1434,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_EQ_OBJECT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_EQ_OBJECT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_OBJECT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_OBJECT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -1444,8 +1444,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_EQ_REF: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_EQ_REF(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_REF: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_REF(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
@@ -1454,8 +1454,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_NE_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NE_INT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_INT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1464,8 +1464,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_NE_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NE_LONG(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_LONG(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -1474,8 +1474,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_NE_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NE_FLOAT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_FLOAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_FLOAT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -1484,8 +1484,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_NE_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NE_DOUBLE(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_DOUBLE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_DOUBLE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
@@ -1494,8 +1494,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_NE_OBJECT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NE_OBJECT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_OBJECT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_OBJECT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
@@ -1504,8 +1504,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_NE_REF: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NE_REF(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_NE_REF: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_NE_REF(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand1);
@@ -1514,8 +1514,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GT_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GT_INT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GT_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_GT_INT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1524,8 +1524,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GT_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GT_LONG(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GT_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_GT_LONG(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -1534,8 +1534,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GT_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GT_FLOAT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GT_FLOAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_GT_FLOAT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -1544,8 +1544,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GT_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GT_DOUBLE(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GT_DOUBLE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_GT_DOUBLE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
@@ -1554,8 +1554,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GE_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GE_INT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GE_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_GE_INT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1564,8 +1564,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GE_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GE_LONG(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GE_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_GE_LONG(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -1574,8 +1574,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GE_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GE_FLOAT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GE_FLOAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_GE_FLOAT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -1584,8 +1584,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_GE_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_GE_DOUBLE(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_GE_DOUBLE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_GE_DOUBLE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
@@ -1594,8 +1594,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LT_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LT_INT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LT_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_LT_INT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1604,8 +1604,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LT_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LT_LONG(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LT_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_LT_LONG(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -1614,8 +1614,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LT_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LT_FLOAT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LT_FLOAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_LT_FLOAT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -1624,8 +1624,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LT_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LT_DOUBLE(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LT_DOUBLE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_LT_DOUBLE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
@@ -1634,8 +1634,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LE_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LE_INT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LE_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_LE_INT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1644,8 +1644,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LE_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LE_LONG(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LE_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_LE_LONG(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -1654,8 +1654,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LE_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LE_FLOAT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LE_FLOAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_LE_FLOAT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -1664,8 +1664,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_LE_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_LE_DOUBLE(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_LE_DOUBLE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_LE_DOUBLE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
@@ -1674,8 +1674,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_CMP_INT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CMP_INT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_CMP_INT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_INT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand1);
@@ -1684,8 +1684,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_CMP_LONG: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CMP_LONG(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_CMP_LONG: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_LONG(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand1);
@@ -1694,8 +1694,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_CMP_FLOAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CMP_FLOAT(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_CMP_FLOAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_FLOAT(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand1);
@@ -1704,8 +1704,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_CMP_DOUBLE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CMP_DOUBLE(");
+      case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_CMP_DOUBLE: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_NUMERIC_COMPARISON_CMP_DOUBLE(");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand1);
