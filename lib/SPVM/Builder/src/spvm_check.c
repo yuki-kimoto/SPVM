@@ -4176,7 +4176,6 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_BIT_NOT:
     case SPVM_OP_C_ID_PLUS:
     case SPVM_OP_C_ID_MINUS:
-    case SPVM_OP_C_ID_CHECK_CONVERT:
     case SPVM_OP_C_ID_ARRAY_INIT:
     case SPVM_OP_C_ID_COPY:
     {
