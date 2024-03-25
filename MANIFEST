@@ -645,6 +645,8 @@ t/02_vm/05_op/dump.t
 t/02_vm/05_op/extra.t
 t/02_vm/05_op/field.t
 t/02_vm/05_op/increment.t
+t/02_vm/05_op/is_compile_type.t
+t/02_vm/05_op/is_type.t
 t/02_vm/05_op/local_var.t
 t/02_vm/05_op/logical_operator.t
 t/02_vm/05_op/method_call.t

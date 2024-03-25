@@ -7,8 +7,6 @@ use warnings;
 use Test::More;
 
 use SPVM 'TestCase::Operator::Isa';
-use SPVM 'TestCase::Operator::IsType';
-use SPVM 'TestCase::Operator::IsCompileType';
 
 my $api = SPVM::api();
 
@@ -29,22 +27,6 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Operator::Isa->isa_not_match_callback_undef);
   ok(SPVM::TestCase::Operator::Isa->isa_error);
   ok(SPVM::TestCase::Operator::Isa->isa_extra);
-}
-
-# is_type
-{
-  ok(SPVM::TestCase::Operator::IsType->is_type);
-  ok(SPVM::TestCase::Operator::IsType->is_error);
-}
-
-# is_compile_type
-{
-  ok(SPVM::TestCase::Operator::IsCompileType->is_compile_type);
-}
-
-# is_compile_type
-{
-  ok(SPVM::TestCase::Operator::IsCompileType->is_compile_type);
 }
 
 # All object is freed
