@@ -4154,31 +4154,31 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       
                       switch (op_assign_src->id) {
                         case SPVM_OP_C_ID_STRING_COMPARISON_EQ: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_EQ);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_COMPARISON_EQ);
                           break;
                         }
                         case SPVM_OP_C_ID_STRING_COMPARISON_NE: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_NE);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_COMPARISON_NE);
                           break;
                         }
                         case SPVM_OP_C_ID_STRING_COMPARISON_GT: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_GT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_COMPARISON_GT);
                           break;
                         }
                         case SPVM_OP_C_ID_STRING_COMPARISON_GE: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_GE);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_COMPARISON_GE);
                           break;
                         }
                         case SPVM_OP_C_ID_STRING_COMPARISON_LT: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LT);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_COMPARISON_LT);
                           break;
                         }
                         case SPVM_OP_C_ID_STRING_COMPARISON_LE: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LE);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_COMPARISON_LE);
                           break;
                         }
                         case SPVM_OP_C_ID_STRING_COMPARISON_CMP: {
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_CMP);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_COMPARISON_CMP);
                           break;
                         }
                         default: {

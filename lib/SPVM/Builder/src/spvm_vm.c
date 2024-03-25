@@ -740,32 +740,32 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_IS_NOT_UNDEF(int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_STRING_EQ: {
-        SPVM_IMPLEMENT_STRING_EQ(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+      case SPVM_OPCODE_C_ID_STRING_COMPARISON_EQ: {
+        SPVM_IMPLEMENT_STRING_COMPARISON_EQ(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
-      case SPVM_OPCODE_C_ID_STRING_NE: {
-        SPVM_IMPLEMENT_STRING_NE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+      case SPVM_OPCODE_C_ID_STRING_COMPARISON_NE: {
+        SPVM_IMPLEMENT_STRING_COMPARISON_NE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
-      case SPVM_OPCODE_C_ID_STRING_GT: {
-        SPVM_IMPLEMENT_STRING_GT(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+      case SPVM_OPCODE_C_ID_STRING_COMPARISON_GT: {
+        SPVM_IMPLEMENT_STRING_COMPARISON_GT(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
-      case SPVM_OPCODE_C_ID_STRING_GE: {
-        SPVM_IMPLEMENT_STRING_GE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+      case SPVM_OPCODE_C_ID_STRING_COMPARISON_GE: {
+        SPVM_IMPLEMENT_STRING_COMPARISON_GE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
-      case SPVM_OPCODE_C_ID_STRING_LT: {
-        SPVM_IMPLEMENT_STRING_LT(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+      case SPVM_OPCODE_C_ID_STRING_COMPARISON_LT: {
+        SPVM_IMPLEMENT_STRING_COMPARISON_LT(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
-      case SPVM_OPCODE_C_ID_STRING_LE: {
-        SPVM_IMPLEMENT_STRING_LE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+      case SPVM_OPCODE_C_ID_STRING_COMPARISON_LE: {
+        SPVM_IMPLEMENT_STRING_COMPARISON_LE(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
-      case SPVM_OPCODE_C_ID_STRING_CMP: {
-        SPVM_IMPLEMENT_STRING_CMP(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
+      case SPVM_OPCODE_C_ID_STRING_COMPARISON_CMP: {
+        SPVM_IMPLEMENT_STRING_COMPARISON_CMP(env, stack, &int_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2]);
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {

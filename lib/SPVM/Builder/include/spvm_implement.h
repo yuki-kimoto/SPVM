@@ -70,13 +70,13 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
 };
 
 enum {
-  SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_EQ,
-  SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_NE,
-  SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GT,
-  SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GE,
-  SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LT,
-  SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LE,
-  SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_CMP,
+  SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ,
+  SPVM_IMPLEMENT_C_STRING_COMPARISON_NE,
+  SPVM_IMPLEMENT_C_STRING_COMPARISON_GT,
+  SPVM_IMPLEMENT_C_STRING_COMPARISON_GE,
+  SPVM_IMPLEMENT_C_STRING_COMPARISON_LT,
+  SPVM_IMPLEMENT_C_STRING_COMPARISON_LE,
+  SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP,
 };
 
 static inline void* SPVM_IMPLEMENT_GET_BASIC_TYPE_BY_NAME(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, char* message, int32_t* error_id) {
@@ -460,38 +460,38 @@ static inline void SPVM_IMPLEMENT_STRING_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack
 #define SPVM_IMPLEMENT_IS_UNDEF(out, in) (out = in == NULL)
 #define SPVM_IMPLEMENT_IS_NOT_UNDEF(out, in) (out = in != NULL)
 
-static inline void SPVM_IMPLEMENT_STRING_COMPARISON_OP(SPVM_ENV* env, SPVM_VALUE* stack, int32_t comparison_op_id, int32_t* out, void* in1, void* in2, int32_t object_length_offset) {
+static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* stack, int32_t comparison_op_id, int32_t* out, void* in1, void* in2, int32_t object_length_offset) {
   void* object1 = in1;
   void* object2 = in2;
   
   int32_t flag = 0;
   if (object1 == NULL && object2 == NULL) {
    switch (comparison_op_id) {
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_EQ: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_NE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GT: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LT: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_CMP: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
         flag = 0;
         break;
       }
@@ -499,31 +499,31 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON_OP(SPVM_ENV* env, SPVM_VALUE
   }
   else if (object1 != NULL && object2 == NULL) {
     switch (comparison_op_id) {
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_EQ: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_NE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GT: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LT: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_CMP: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
         flag = 1;
         break;
       }
@@ -531,31 +531,31 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON_OP(SPVM_ENV* env, SPVM_VALUE
   }
   else if (object1 == NULL && object2 != NULL) {
     switch (comparison_op_id) {
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_EQ: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_NE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GT: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
         flag = 0;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LT: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
         flag = 1;
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_CMP: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
         flag = -1;
         break;
       }
@@ -580,31 +580,31 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON_OP(SPVM_ENV* env, SPVM_VALUE
     }
     
     switch (comparison_op_id) {
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_EQ: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
         flag = (cmp == 0);
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_NE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
         flag = (cmp != 0);
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GT: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
         flag = (cmp == 1);
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
         flag = (cmp >= 0);
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LT: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
         flag = (cmp == -1);
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LE: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
         flag = (cmp <= 0);
         break;
       }
-      case SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_CMP: {
+      case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
         flag = cmp;
         break;
       }
@@ -614,13 +614,13 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON_OP(SPVM_ENV* env, SPVM_VALUE
   *out = flag;
 }
 
-#define SPVM_IMPLEMENT_STRING_EQ(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON_OP(env, stack, SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_EQ, out, in1, in2, object_length_offset))
-#define SPVM_IMPLEMENT_STRING_NE(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON_OP(env, stack, SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_NE, out, in1, in2, object_length_offset))
-#define SPVM_IMPLEMENT_STRING_GT(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON_OP(env, stack, SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GT, out, in1, in2, object_length_offset))
-#define SPVM_IMPLEMENT_STRING_GE(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON_OP(env, stack, SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_GE, out, in1, in2, object_length_offset))
-#define SPVM_IMPLEMENT_STRING_LT(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON_OP(env, stack, SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LT, out, in1, in2, object_length_offset))
-#define SPVM_IMPLEMENT_STRING_LE(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON_OP(env, stack, SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_LE, out, in1, in2, object_length_offset))
-#define SPVM_IMPLEMENT_STRING_CMP(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON_OP(env, stack, SPVM_IMPLEMENT_C_COMPARISON_OP_STRING_CMP, out, in1, in2, object_length_offset))
+#define SPVM_IMPLEMENT_STRING_COMPARISON_EQ(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON(env, stack, SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ, out, in1, in2, object_length_offset))
+#define SPVM_IMPLEMENT_STRING_COMPARISON_NE(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON(env, stack, SPVM_IMPLEMENT_C_STRING_COMPARISON_NE, out, in1, in2, object_length_offset))
+#define SPVM_IMPLEMENT_STRING_COMPARISON_GT(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON(env, stack, SPVM_IMPLEMENT_C_STRING_COMPARISON_GT, out, in1, in2, object_length_offset))
+#define SPVM_IMPLEMENT_STRING_COMPARISON_GE(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON(env, stack, SPVM_IMPLEMENT_C_STRING_COMPARISON_GE, out, in1, in2, object_length_offset))
+#define SPVM_IMPLEMENT_STRING_COMPARISON_LT(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON(env, stack, SPVM_IMPLEMENT_C_STRING_COMPARISON_LT, out, in1, in2, object_length_offset))
+#define SPVM_IMPLEMENT_STRING_COMPARISON_LE(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON(env, stack, SPVM_IMPLEMENT_C_STRING_COMPARISON_LE, out, in1, in2, object_length_offset))
+#define SPVM_IMPLEMENT_STRING_COMPARISON_CMP(env, stack, out, in1, in2) (SPVM_IMPLEMENT_STRING_COMPARISON(env, stack, SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP, out, in1, in2, object_length_offset))
 
 static inline void SPVM_IMPLEMENT_NEW_OBJECT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* basic_type, int32_t* error_id) {
   void* object = env->new_object_no_mortal(env, stack, basic_type);
