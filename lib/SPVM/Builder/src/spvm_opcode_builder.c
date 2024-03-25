@@ -4252,8 +4252,20 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                         opcode.operand0 = typed_var_index_out;
                         opcode.operand1 = typed_var_index_in;
-
+                        
                         SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                        
+                        // Set $.condition_flag
+                        {
+                          SPVM_OPCODE opcode = {0};
+                          
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_INT);
+                          
+                          opcode.operand0 = 0;
+                          opcode.operand1 = typed_var_index_out;
+                          
+                          SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
+                        }
                       }
                       
                       break;
