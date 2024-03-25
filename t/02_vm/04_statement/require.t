@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::IfRequire';
+use SPVM 'TestCase::Statement::IfRequire';
 
 
 
@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Import sub
 {
-  ok(SPVM::TestCase::IfRequire->if_require);
+  ok(SPVM::TestCase::Statement::IfRequire->if_require);
 }
 
 # All object is freed

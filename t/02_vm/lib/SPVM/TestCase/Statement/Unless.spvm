@@ -1,4 +1,4 @@
-class TestCase::Unless {
+class TestCase::Statement::Unless {
   
   static method true_condition : int ()  {
     unless(1) {

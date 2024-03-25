@@ -6,17 +6,17 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Unless';
+use SPVM 'TestCase::Statement::Unless';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # unless Statement
 {
-  ok(SPVM::TestCase::Unless->true_condition);
-  ok(SPVM::TestCase::Unless->false_condition);
-  ok(SPVM::TestCase::Unless->elsif);
-  ok(SPVM::TestCase::Unless->else);
+  ok(SPVM::TestCase::Statement::Unless->true_condition);
+  ok(SPVM::TestCase::Statement::Unless->false_condition);
+  ok(SPVM::TestCase::Statement::Unless->elsif);
+  ok(SPVM::TestCase::Statement::Unless->else);
 }
 
 # All object is freed

@@ -1,4 +1,4 @@
-class TestCase::Init {
+class TestCase::Statement::TypeDefaultValue {
   use Mutex;
   use TestCase::Util::Trhead;
   

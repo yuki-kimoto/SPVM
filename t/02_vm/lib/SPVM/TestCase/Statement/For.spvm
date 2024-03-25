@@ -1,4 +1,4 @@
-class TestCase::For {
+class TestCase::Statement::For {
   use TestCase::Minimal;
 
   static method omit_init_inc : int () {

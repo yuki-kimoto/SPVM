@@ -1,4 +1,4 @@
-class TestCase::IfRequire {
+class TestCase::Statement::IfRequire {
   
   static method if_require : int () {
     

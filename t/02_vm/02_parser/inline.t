@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Inline';
+use SPVM 'TestCase::InlineExpansion';
 
 
 
@@ -15,15 +15,15 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Inline constant sub
 {
-  ok(SPVM::TestCase::Inline->constant_method);
-  ok(SPVM::TestCase::Inline->constant_method_return_double == 0.25);
+  ok(SPVM::TestCase::InlineExpansion->constant_method);
+  ok(SPVM::TestCase::InlineExpansion->constant_method_return_double == 0.25);
 }
 
 # Inline new
 {
-  ok(SPVM::TestCase::Inline->new_inline);
-  ok(SPVM::TestCase::Inline->new);
-  isa_ok(SPVM::TestCase::Inline->new, "SPVM::BlessedObject::Class");
+  ok(SPVM::TestCase::InlineExpansion->new_inline);
+  ok(SPVM::TestCase::InlineExpansion->new);
+  isa_ok(SPVM::TestCase::InlineExpansion->new, "SPVM::BlessedObject::Class");
 }
 
 # All object is freed

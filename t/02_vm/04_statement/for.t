@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::For';
+use SPVM 'TestCase::Statement::For';
 
 
 
@@ -15,14 +15,14 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # for
 {
-  ok(SPVM::TestCase::For->basic);
-  ok(SPVM::TestCase::For->next_statement);
-  ok(SPVM::TestCase::For->nested_last);
-  ok(SPVM::TestCase::For->nested_next);
-  ok(SPVM::TestCase::For->nested_last_with_switch);
-  ok(SPVM::TestCase::For->omit_init_inc);
-  ok(SPVM::TestCase::For->condition_my);
-  ok(SPVM::TestCase::For->foreach);
+  ok(SPVM::TestCase::Statement::For->basic);
+  ok(SPVM::TestCase::Statement::For->next_statement);
+  ok(SPVM::TestCase::Statement::For->nested_last);
+  ok(SPVM::TestCase::Statement::For->nested_next);
+  ok(SPVM::TestCase::Statement::For->nested_last_with_switch);
+  ok(SPVM::TestCase::Statement::For->omit_init_inc);
+  ok(SPVM::TestCase::Statement::For->condition_my);
+  ok(SPVM::TestCase::Statement::For->foreach);
 }
 
 # All object is freed

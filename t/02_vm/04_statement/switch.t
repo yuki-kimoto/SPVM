@@ -6,15 +6,15 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Switch';
+use SPVM 'TestCase::Statement::Switch';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Switch
 {
-  ok(SPVM::TestCase::Switch->switch);
-  ok(SPVM::TestCase::Switch->switch_extra);
+  ok(SPVM::TestCase::Statement::Switch->switch);
+  ok(SPVM::TestCase::Statement::Switch->switch_extra);
 }
 
 

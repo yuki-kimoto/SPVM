@@ -1,4 +1,4 @@
-class TestCase::If {
+class TestCase::Statement::If {
   use Point;
   
   static method condition_types : int () {

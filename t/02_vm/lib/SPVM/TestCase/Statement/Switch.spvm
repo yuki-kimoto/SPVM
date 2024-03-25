@@ -1,4 +1,4 @@
-class TestCase::Switch {
+class TestCase::Statement::Switch {
   
   enum {
     VALUE0,
@@ -318,7 +318,7 @@ class TestCase::Switch {
     
     # return statement in the switch statement
     {
-      my $ret = TestCase::Switch->switch_return_method();
+      my $ret = TestCase::Statement::Switch->switch_return_method();
       
       unless ($ret == 5) {
         return 0;

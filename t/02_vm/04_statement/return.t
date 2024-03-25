@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Return';
+use SPVM 'TestCase::Statement::Return';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -14,7 +14,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 # Optional tests
 {
   {
-    ok(SPVM::TestCase::Return->return_implicite_convertion);
+    ok(SPVM::TestCase::Statement::Return->return_implicite_convertion);
   }
 }
 

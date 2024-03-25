@@ -1,4 +1,4 @@
-class TestCase::While {
+class TestCase::Statement::While {
   use TestCase::Minimal;
 
   static method condition_my_var_mem_id : int () {
