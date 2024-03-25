@@ -561,7 +561,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // ==
           if (*compiler->ch_ptr == '=') {
             compiler->ch_ptr++;
-            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COMPARISON_NUMERIC_EQ);
+            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_EQ);
             yylvalp->opval = op;
             return NUMEQ;
           }
@@ -720,13 +720,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // <=>
           if (*compiler->ch_ptr == '>') {
             compiler->ch_ptr++;
-            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COMPARISON_NUMERIC_CMP);
+            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_CMP);
             yylvalp->opval = op;
             return NUMERIC_CMP;
           }
           // <=
           else {
-            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COMPARISON_NUMERIC_LE);
+            SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_LE);
             yylvalp->opval = op;
             return NUMLE;
           }
@@ -734,7 +734,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // <
         else {
           compiler->ch_ptr++;
-          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COMPARISON_NUMERIC_LT);
+          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_LT);
           yylvalp->opval = op;
           return NUMLT;
         }
@@ -786,14 +786,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // >=
         else if (*compiler->ch_ptr == '=') {
           compiler->ch_ptr++;
-          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COMPARISON_NUMERIC_GE);
+          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_GE);
           yylvalp->opval = op;
           return NUMGE;
         }
         // >
         else {
           compiler->ch_ptr++;
-          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COMPARISON_NUMERIC_GT);
+          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_GT);
           yylvalp->opval = op;
           return NUMGT;
         }
@@ -804,7 +804,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         if (*compiler->ch_ptr == '=') {
           compiler->ch_ptr++;
-          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_COMPARISON_NUMERIC_NE);
+          SPVM_OP* op = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_NUMERIC_COMPARISON_NE);
           yylvalp->opval = op;
           return NUMNE;
         }

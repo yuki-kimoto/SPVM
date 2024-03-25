@@ -1452,7 +1452,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_COMPARISON_NUMERIC_EQ: {
+          case SPVM_OP_C_ID_NUMERIC_COMPARISON_EQ: {
             SPVM_OP* op_left_operand = op_cur->first;
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
@@ -1516,7 +1516,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_COMPARISON_NUMERIC_NE: {
+          case SPVM_OP_C_ID_NUMERIC_COMPARISON_NE: {
             SPVM_OP* op_left_operand = op_cur->first;
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
@@ -1580,7 +1580,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_COMPARISON_NUMERIC_GT: {
+          case SPVM_OP_C_ID_NUMERIC_COMPARISON_GT: {
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
@@ -1605,7 +1605,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_COMPARISON_NUMERIC_GE: {
+          case SPVM_OP_C_ID_NUMERIC_COMPARISON_GE: {
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
@@ -1630,7 +1630,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_COMPARISON_NUMERIC_LT: {
+          case SPVM_OP_C_ID_NUMERIC_COMPARISON_LT: {
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
@@ -1655,7 +1655,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
 
             break;
           }
-          case SPVM_OP_C_ID_COMPARISON_NUMERIC_LE: {
+          case SPVM_OP_C_ID_NUMERIC_COMPARISON_LE: {
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
@@ -1680,7 +1680,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_COMPARISON_NUMERIC_CMP: {
+          case SPVM_OP_C_ID_NUMERIC_COMPARISON_CMP: {
 
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
@@ -3258,13 +3258,13 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_TRUE:
               case SPVM_OP_C_ID_FALSE:
               case SPVM_OP_C_ID_CONSTANT:
-              case SPVM_OP_C_ID_COMPARISON_NUMERIC_EQ:
-              case SPVM_OP_C_ID_COMPARISON_NUMERIC_NE:
-              case SPVM_OP_C_ID_COMPARISON_NUMERIC_GT:
-              case SPVM_OP_C_ID_COMPARISON_NUMERIC_GE:
-              case SPVM_OP_C_ID_COMPARISON_NUMERIC_LT:
-              case SPVM_OP_C_ID_COMPARISON_NUMERIC_LE:
-              case SPVM_OP_C_ID_COMPARISON_NUMERIC_CMP:
+              case SPVM_OP_C_ID_NUMERIC_COMPARISON_EQ:
+              case SPVM_OP_C_ID_NUMERIC_COMPARISON_NE:
+              case SPVM_OP_C_ID_NUMERIC_COMPARISON_GT:
+              case SPVM_OP_C_ID_NUMERIC_COMPARISON_GE:
+              case SPVM_OP_C_ID_NUMERIC_COMPARISON_LT:
+              case SPVM_OP_C_ID_NUMERIC_COMPARISON_LE:
+              case SPVM_OP_C_ID_NUMERIC_COMPARISON_CMP:
               case SPVM_OP_C_ID_STRING_COMPARISON_EQ:
               case SPVM_OP_C_ID_STRING_COMPARISON_NE:
               case SPVM_OP_C_ID_STRING_COMPARISON_GT:
@@ -4101,13 +4101,13 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = SPVM_TYPE_new_int_type(compiler);
       break;
     }
-    case SPVM_OP_C_ID_COMPARISON_NUMERIC_EQ:
-    case SPVM_OP_C_ID_COMPARISON_NUMERIC_NE:
-    case SPVM_OP_C_ID_COMPARISON_NUMERIC_GT:
-    case SPVM_OP_C_ID_COMPARISON_NUMERIC_GE:
-    case SPVM_OP_C_ID_COMPARISON_NUMERIC_LT:
-    case SPVM_OP_C_ID_COMPARISON_NUMERIC_LE:
-    case SPVM_OP_C_ID_COMPARISON_NUMERIC_CMP:
+    case SPVM_OP_C_ID_NUMERIC_COMPARISON_EQ:
+    case SPVM_OP_C_ID_NUMERIC_COMPARISON_NE:
+    case SPVM_OP_C_ID_NUMERIC_COMPARISON_GT:
+    case SPVM_OP_C_ID_NUMERIC_COMPARISON_GE:
+    case SPVM_OP_C_ID_NUMERIC_COMPARISON_LT:
+    case SPVM_OP_C_ID_NUMERIC_COMPARISON_LE:
+    case SPVM_OP_C_ID_NUMERIC_COMPARISON_CMP:
     case SPVM_OP_C_ID_BOOL:
     case SPVM_OP_C_ID_STRING_COMPARISON_EQ:
     case SPVM_OP_C_ID_STRING_COMPARISON_NE:

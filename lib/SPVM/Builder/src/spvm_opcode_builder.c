@@ -3757,7 +3757,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_ID_COMPARISON_NUMERIC_EQ : {
+                    case SPVM_OP_C_ID_NUMERIC_COMPARISON_EQ : {
                       if (op_assign_src->first->id == SPVM_OP_C_ID_UNDEF || op_assign_src->last->id == SPVM_OP_C_ID_UNDEF) {
                         SPVM_OPCODE opcode = {0};
                         
@@ -3845,7 +3845,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_ID_COMPARISON_NUMERIC_NE : {
+                    case SPVM_OP_C_ID_NUMERIC_COMPARISON_NE : {
                       if (op_assign_src->first->id == SPVM_OP_C_ID_UNDEF ||op_assign_src->last->id == SPVM_OP_C_ID_UNDEF) {
                         SPVM_OPCODE opcode = {0};
                         
@@ -3931,7 +3931,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_ID_COMPARISON_NUMERIC_GT : {
+                    case SPVM_OP_C_ID_NUMERIC_COMPARISON_GT : {
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -3973,7 +3973,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       break;
                     }
-                    case SPVM_OP_C_ID_COMPARISON_NUMERIC_GE : {
+                    case SPVM_OP_C_ID_NUMERIC_COMPARISON_GE : {
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -4015,7 +4015,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       break;
                     }
-                    case SPVM_OP_C_ID_COMPARISON_NUMERIC_LT : {
+                    case SPVM_OP_C_ID_NUMERIC_COMPARISON_LT : {
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -4057,7 +4057,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       break;
                     }
-                    case SPVM_OP_C_ID_COMPARISON_NUMERIC_LE : {
+                    case SPVM_OP_C_ID_NUMERIC_COMPARISON_LE : {
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -4099,7 +4099,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       break;
                     }
-                    case SPVM_OP_C_ID_COMPARISON_NUMERIC_CMP : {
+                    case SPVM_OP_C_ID_NUMERIC_COMPARISON_CMP : {
                       
                       SPVM_OPCODE opcode = {0};
                       
