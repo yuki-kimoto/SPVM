@@ -98,7 +98,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // "aaa $foo bar" is interupted "aaa $foo" . " bar"
     if (compiler->ch_ptr == compiler->next_string_literal_ch_ptr) {
       compiler->next_string_literal_ch_ptr = NULL;
-      var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT;
+      var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_STRING_CONCAT;
     }
     
     // Current character
@@ -111,7 +111,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           ch = (uint8_t)*compiler->ch_ptr;
           break;
         }
-        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT: {
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_STRING_CONCAT: {
           ch = '.';
           break;
         }
@@ -119,7 +119,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           ch = (uint8_t)*compiler->ch_ptr;
           break;
         }
-        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT: {
+        case  SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_STRING_CONCAT: {
           ch = '.';
           break;
         }
@@ -167,15 +167,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       // Cancat
       case '.': {
         // Variable expansion "." before the variable
-        if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
+        if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_STRING_CONCAT) {
           compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_VAR;
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CONCAT);
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_STRING_CONCAT);
           return '.';
         }
         // Variable expansion second "." after the variable
-        else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_CONCAT) {
+        else if (var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_SECOND_STRING_CONCAT) {
           compiler->var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_BEGIN_NEXT_STRING_LITERAL;
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CONCAT);
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_STRING_CONCAT);
           return '.';
         }
         else {
@@ -183,14 +183,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           if (*compiler->ch_ptr == '=') {
             compiler->ch_ptr++;
             SPVM_OP* op_special_assign = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
-            op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT;
+            op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_STRING_CONCAT;
             
             yylvalp->opval = op_special_assign;
             
             return SPECIAL_ASSIGN;
           }
           else {
-            yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CONCAT);
+            yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_STRING_CONCAT);
             return '.';
           }
         }
@@ -936,7 +936,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               else {
                 string_literal_finished = 1;
-                next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT;
+                next_var_expansion_state = SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_STRING_CONCAT;
                 
                 // Proceed through a variable expansion and find the position of the next string literal
                 char* next_string_literal_ch_ptr = compiler->ch_ptr + 1;
@@ -1318,7 +1318,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         yylvalp->opval = op_constant;
         
         // Next is start from $
-        if (next_var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_CONCAT) {
+        if (next_var_expansion_state == SPVM_TOKE_C_VAR_EXPANSION_STATE_FIRST_STRING_CONCAT) {
           compiler->var_expansion_state = next_var_expansion_state;
           compiler->ch_ptr--;
         }

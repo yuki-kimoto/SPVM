@@ -1831,7 +1831,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_CONCAT: {
+          case SPVM_OP_C_ID_STRING_CONCAT: {
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
@@ -3242,7 +3242,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_BASIC_TYPE_ID:
               case SPVM_OP_C_ID_EVAL_ERROR_ID:
               case SPVM_OP_C_ID_ARGS_WIDTH:
-              case SPVM_OP_C_ID_CONCAT:
+              case SPVM_OP_C_ID_STRING_CONCAT:
               case SPVM_OP_C_ID_TYPE_NAME:
               case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
               case SPVM_OP_C_ID_DUMP:
@@ -4248,7 +4248,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
-    case SPVM_OP_C_ID_CONCAT:
+    case SPVM_OP_C_ID_STRING_CONCAT:
     case SPVM_OP_C_ID_TYPE_NAME:
     case SPVM_OP_C_ID_COMPILE_TYPE_NAME:
     case SPVM_OP_C_ID_DUMP:

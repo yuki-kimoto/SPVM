@@ -1060,14 +1060,14 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   SPVM_TYPE* type_dist = SPVM_CHECK_get_type(compiler, op_assign_dist);
                   
                   switch (op_assign_src->id) {
-                    case SPVM_OP_C_ID_CONCAT: {
+                    case SPVM_OP_C_ID_STRING_CONCAT: {
                       SPVM_TYPE* first_type = SPVM_CHECK_get_type(compiler, op_assign_src->first);
                       
                       assert(SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag));
                       
                       SPVM_OPCODE opcode = {0};
                       
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CONCAT);
+                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_CONCAT);
                       
                       int32_t typed_var_index_out = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_dist);
                       int32_t typed_var_index_in1 = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_assign_src->first);

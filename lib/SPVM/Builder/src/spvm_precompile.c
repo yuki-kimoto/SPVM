@@ -1321,8 +1321,8 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
       }
-      case SPVM_OPCODE_C_ID_CONCAT: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_CONCAT(env, stack, ");
+      case SPVM_OPCODE_C_ID_STRING_CONCAT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_IMPLEMENT_STRING_CONCAT(env, stack, ");
         SPVM_PRECOMPILE_add_operand_address(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", ");
         SPVM_PRECOMPILE_add_operand(precompile, string_buffer, SPVM_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);

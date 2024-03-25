@@ -572,8 +572,8 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_NEGATE_DOUBLE(double_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_CONCAT: {
-        SPVM_IMPLEMENT_CONCAT(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2], &error_id);
+      case SPVM_OPCODE_C_ID_STRING_CONCAT: {
+        SPVM_IMPLEMENT_STRING_CONCAT(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2], &error_id);
         break;
       }
       case SPVM_OPCODE_C_ID_BOOL_CONVERSION_INT: {

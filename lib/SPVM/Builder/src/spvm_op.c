@@ -195,7 +195,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "ISWEAK",
     "ISWEAK_FIELD",
     "SPECIAL_ASSIGN",
-    "CONCAT",
+    "STRING_CONCAT",
     "CLASS_VAR",
     "CLASS_VAR_ACCESS",
     "ARRAY_INIT",
@@ -2601,8 +2601,8 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
           culc_op_id = SPVM_OP_C_ID_BIT_AND;
           break;
         }
-        case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_CONCAT: {
-          culc_op_id = SPVM_OP_C_ID_CONCAT;
+        case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_STRING_CONCAT: {
+          culc_op_id = SPVM_OP_C_ID_STRING_CONCAT;
           break;
         }
         default: {

@@ -12,8 +12,8 @@ enum {
   SPVM_IMPLEMENT_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE,
   SPVM_IMPLEMENT_C_STRING_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE,
   SPVM_IMPLEMENT_C_STRING_DIVIDE_ZERO,
-  SPVM_IMPLEMENT_C_STRING_CONCAT_LEFT_UNDEFINED,
-  SPVM_IMPLEMENT_C_STRING_CONCAT_RIGHT_UNDEFINED,
+  SPVM_IMPLEMENT_C_STRING_STRING_CONCAT_LEFT_UNDEFINED,
+  SPVM_IMPLEMENT_C_STRING_STRING_CONCAT_RIGHT_UNDEFINED,
   SPVM_IMPLEMENT_C_STRING_NEW_OBJECT_FAILED,
   SPVM_IMPLEMENT_C_STRING_NEW_ARRAY_FAILED,
   SPVM_IMPLEMENT_C_STRING_ARRRAY_LENGTH_SMALL,
@@ -391,16 +391,16 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY(SPVM_ENV* env, SPV
 #define SPVM_IMPLEMENT_NEGATE_FLOAT(out, in) (out = -in)
 #define SPVM_IMPLEMENT_NEGATE_DOUBLE(out, in) (out = -in)
 
-static inline void SPVM_IMPLEMENT_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in1, void* in2, int32_t* error_id) {
+static inline void SPVM_IMPLEMENT_STRING_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* in1, void* in2, int32_t* error_id) {
   void* string1 = in1;
   void* string2 = in2;
   if (string1 == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CONCAT_LEFT_UNDEFINED]);
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_STRING_CONCAT_LEFT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
   else if (string2 == NULL) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CONCAT_RIGHT_UNDEFINED]);
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_STRING_CONCAT_RIGHT_UNDEFINED]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
