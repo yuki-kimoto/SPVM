@@ -1,4 +1,4 @@
-class TestCase::Method {
+class TestCase::MethodCall {
   interface TestCase::InterfaceType;
   
   use TestCase::Simple;
@@ -34,7 +34,7 @@ class TestCase::Method {
     
     # Call a static method with parenthes
     {
-      my $num = TestCase::Method->int();
+      my $num = TestCase::MethodCall->int();
       unless ($num == 5) {
         return 0;
       }
@@ -42,7 +42,7 @@ class TestCase::Method {
     
     # Call a static method without parenthes
     {
-      my $num = TestCase::Method->int;
+      my $num = TestCase::MethodCall->int;
       unless ($num == 5) {
         return 0;
       }
@@ -66,7 +66,7 @@ class TestCase::Method {
     
     # Call a instance method with parenthes
     {
-      my $method = new TestCase::Method;
+      my $method = new TestCase::MethodCall;
       my $num = $method->if();
       unless ($num == 3) {
         return 0;
@@ -75,7 +75,7 @@ class TestCase::Method {
 
     # Call a instance method without parenthes
     {
-      my $method = new TestCase::Method;
+      my $method = new TestCase::MethodCall;
       my $num = $method->if;
       unless ($num == 3) {
         return 0;
@@ -226,7 +226,7 @@ class TestCase::Method {
   }
   
   static method return_mulnum_byte : int () {
-    my $value : TestCase::Point_3b = TestCase::Method->return_mulnum_byte_method();
+    my $value : TestCase::Point_3b = TestCase::MethodCall->return_mulnum_byte_method();
     
     if ($value->{x} == Fn->INT8_MIN) {
       if ($value->{y} == 1) {
@@ -249,7 +249,7 @@ class TestCase::Method {
   }
   
   static method return_mulnum_short : int () {
-    my $value : TestCase::Point_3s = TestCase::Method->return_mulnum_short_method();
+    my $value : TestCase::Point_3s = TestCase::MethodCall->return_mulnum_short_method();
     
     if ($value->{x} == Fn->INT16_MIN) {
       if ($value->{y} == 1) {
@@ -272,7 +272,7 @@ class TestCase::Method {
   }
   
   static method return_mulnum_int : int () {
-    my $value : TestCase::Point_3i = TestCase::Method->return_mulnum_int_method();
+    my $value : TestCase::Point_3i = TestCase::MethodCall->return_mulnum_int_method();
     
     if ($value->{x} == Fn->INT32_MIN) {
       if ($value->{y} == 1) {
@@ -295,7 +295,7 @@ class TestCase::Method {
   }
   
   static method return_mulnum_long : int () {
-    my $value : TestCase::Point_3l = TestCase::Method->return_mulnum_long_method();
+    my $value : TestCase::Point_3l = TestCase::MethodCall->return_mulnum_long_method();
     
     if ($value->{x} == Fn->INT64_MIN) {
       if ($value->{y} == 1) {
@@ -318,7 +318,7 @@ class TestCase::Method {
   }
   
   static method return_mulnum_float : int () {
-    my $value : TestCase::Point_3f = TestCase::Method->return_mulnum_float_method();
+    my $value : TestCase::Point_3f = TestCase::MethodCall->return_mulnum_float_method();
     
     if ($value->{x} == Fn->FLT_MIN) {
       if ($value->{y} == 0.25f) {
@@ -341,7 +341,7 @@ class TestCase::Method {
   }
   
   static method return_mulnum_double : int () {
-    my $value : TestCase::Point_3d = TestCase::Method->return_mulnum_double_method();
+    my $value : TestCase::Point_3d = TestCase::MethodCall->return_mulnum_double_method();
     
     if ($value->{x} == Fn->DBL_MIN) {
       if ($value->{y} == 0.25) {
@@ -360,7 +360,7 @@ class TestCase::Method {
 
   static method push_arg_undef : int () {
   
-    my $minimal = TestCase::Method->method_push_arg_undef(undef);
+    my $minimal = TestCase::MethodCall->method_push_arg_undef(undef);
     
     if ($minimal == undef) {
       return 1;
@@ -372,8 +372,8 @@ class TestCase::Method {
   # Default return value empty
   static method default_return_mulnum_byte : int () {
     
-    if (TestCase::Method->default_return_mulnum_byte_method() == 0) {
-      if (TestCase::Method->default_return_mulnum_byte_method_empty() == 0) {
+    if (TestCase::MethodCall->default_return_mulnum_byte_method() == 0) {
+      if (TestCase::MethodCall->default_return_mulnum_byte_method_empty() == 0) {
         return 1;
       }
     }
@@ -388,8 +388,8 @@ class TestCase::Method {
   }
   static method default_return_mulnum_short : int () {
     
-    if ((int)TestCase::Method->default_return_mulnum_short_method() == (int)(short)0) {
-      if ((int)TestCase::Method->default_return_mulnum_short_method_empty() == (int)(short)0) {
+    if ((int)TestCase::MethodCall->default_return_mulnum_short_method() == (int)(short)0) {
+      if ((int)TestCase::MethodCall->default_return_mulnum_short_method_empty() == (int)(short)0) {
         return 1;
       }
     }
@@ -404,8 +404,8 @@ class TestCase::Method {
   }
   static method default_return_mulnum_int : int () {
     
-    if (TestCase::Method->default_return_mulnum_int_method() == (int)0) {
-      if (TestCase::Method->default_return_mulnum_int_method_empty() == (int)0) {
+    if (TestCase::MethodCall->default_return_mulnum_int_method() == (int)0) {
+      if (TestCase::MethodCall->default_return_mulnum_int_method_empty() == (int)0) {
         return 1;
       }
     }
@@ -420,8 +420,8 @@ class TestCase::Method {
   }
   static method default_return_mulnum_long : int () {
     
-    if (TestCase::Method->default_return_mulnum_long_method() == (long)0) {
-      if (TestCase::Method->default_return_mulnum_long_method_empty() == (long)0) {
+    if (TestCase::MethodCall->default_return_mulnum_long_method() == (long)0) {
+      if (TestCase::MethodCall->default_return_mulnum_long_method_empty() == (long)0) {
         return 1;
       }
     }
@@ -436,8 +436,8 @@ class TestCase::Method {
   }
   static method default_return_mulnum_float : int () {
     
-    if (TestCase::Method->default_return_mulnum_float_method() == (float)0) {
-      if (TestCase::Method->default_return_mulnum_float_method_empty() == (float)0) {
+    if (TestCase::MethodCall->default_return_mulnum_float_method() == (float)0) {
+      if (TestCase::MethodCall->default_return_mulnum_float_method_empty() == (float)0) {
         return 1;
       }
     }
@@ -452,8 +452,8 @@ class TestCase::Method {
   }
   static method default_return_mulnum_double : int () {
     
-    if (TestCase::Method->default_return_mulnum_double_method() == (double)0) {
-      if (TestCase::Method->default_return_mulnum_double_method_empty() == (double)0) {
+    if (TestCase::MethodCall->default_return_mulnum_double_method() == (double)0) {
+      if (TestCase::MethodCall->default_return_mulnum_double_method_empty() == (double)0) {
         return 1;
       }
     }
@@ -468,8 +468,8 @@ class TestCase::Method {
   }
   static method default_return_mulnum_object : int () {
     
-    if (TestCase::Method->default_return_mulnum_object_method() == undef) {
-      if (TestCase::Method->default_return_mulnum_object_method_empty() == undef) {
+    if (TestCase::MethodCall->default_return_mulnum_object_method() == undef) {
+      if (TestCase::MethodCall->default_return_mulnum_object_method_empty() == undef) {
         return 1;
       }
     }
@@ -490,7 +490,7 @@ class TestCase::Method {
   static method call_void : int () {
     my $nums = [1];
     
-    TestCase::Method->call_void_method($nums);
+    TestCase::MethodCall->call_void_method($nums);
     
     if ($nums->[0] == 5) {
       return 1;
@@ -499,7 +499,7 @@ class TestCase::Method {
   }
   
   static method call_method_nest : int () {
-    my $total = TestCase::Method->call_method_nest_sum( TestCase::Method->call_method_nest_sum(1, 2), TestCase::Method->call_method_nest_sum(3, 4));
+    my $total = TestCase::MethodCall->call_method_nest_sum( TestCase::MethodCall->call_method_nest_sum(1, 2), TestCase::MethodCall->call_method_nest_sum(3, 4));
     
     if ($total == 10) {
       return 1;
@@ -518,7 +518,7 @@ class TestCase::Method {
     # Constant assignment
     my $success_constant_narrow = 0;
     {
-      my $return_mulnum1 = TestCase::Method->call_method_args_convertion_stab1(1, 2, 3, 2, 8, 16);
+      my $return_mulnum1 = TestCase::MethodCall->call_method_args_convertion_stab1(1, 2, 3, 2, 8, 16);
       if ($return_mulnum1 == 32) {
         $success_constant_narrow = 1;
       }
@@ -527,7 +527,7 @@ class TestCase::Method {
     # Widning
     my $success_constant_wide = 0;
     {
-      my $return_mulnum1 = TestCase::Method->call_method_args_convertion_stab1((byte)1, (byte)2, (byte)3, (byte)2, (byte)8, (byte)16);
+      my $return_mulnum1 = TestCase::MethodCall->call_method_args_convertion_stab1((byte)1, (byte)2, (byte)3, (byte)2, (byte)8, (byte)16);
       
       if ($return_mulnum1 == 32) {
         $success_constant_wide = 1;
@@ -812,7 +812,7 @@ class TestCase::Method {
 
   static method call_method_last_camma : int () {
     
-    my $total =  TestCase::Method->sum_int(3, 4,);
+    my $total =  TestCase::MethodCall->sum_int(3, 4,);
     
     if ($total == 7) {
       return 1;
@@ -1647,7 +1647,7 @@ class TestCase::Method {
     }
     
     {
-      my $object = new TestCase::Method;
+      my $object = new TestCase::MethodCall;
       my $args_length = $object->instance_method_args_width_2(0);
       unless ($args_length == 2) {
         return 0;
@@ -1655,7 +1655,7 @@ class TestCase::Method {
     }
     
     {
-      my $object = new TestCase::Method;
+      my $object = new TestCase::MethodCall;
       my $args_length = $object->instance_method_args_width_2(0, 0);
       unless ($args_length == 3) {
         return 0;
@@ -1687,7 +1687,7 @@ class TestCase::Method {
   
   static method call_interface_method_exception : int () {
     {
-      my $self = new TestCase::Method;
+      my $self = new TestCase::MethodCall;
       my $interface = (TestCase::InterfaceType)$self;
       
       eval { $interface->to_string; }

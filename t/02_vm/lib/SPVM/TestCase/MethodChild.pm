@@ -1,3 +1,3 @@
-class TestCase::MethodChild : extends TestCase::Method {
+class TestCase::MethodCallChild : extends TestCase::MethodCall {
   
 }
