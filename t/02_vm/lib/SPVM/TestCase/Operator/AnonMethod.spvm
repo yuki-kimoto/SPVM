@@ -1,0 +1,272 @@
+class TestCase::Operator::AnonMethod {
+  use TestCase::Minimal;
+  use TestCase::Operator::AnonMethod::AnonMethod;
+  use TestCase::Operator::AnonMethod::ImplementAnonMethod1;
+  use TestCase::Operator::AnonMethod::ImplementAnonMethod2;
+  use Comparator;
+  use Stringer;
+  use Point;
+  
+  our $var_prec : int;
+  our $ANON_RESULT : int;
+  INIT {
+    $var_prec = 5;
+  }
+
+  static method anon_method_field_definition : int () {
+    {
+      my $default1 = 7;
+      my $default2 = 10;
+      my $object = [has default1 : int = $default1, has default2 : int = $default2] method : int () {
+        
+        my $total = $self->{default1} + $self->{default2};
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 17) {
+        return 0;
+      }
+    }
+    
+    {
+      my $default1 = 7;
+      my $default2 = 10;
+      my $object = [has var1 : int = $default1, has var2 : int = $default2] method : int () {
+        
+        my $total = $self->{var1} + $self->{var2};
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 17) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = [has var1 : Int = Int->new(3), has var2 : Int = Int->new(7)] method : int () {
+        
+        my $total = $self->{var1}->value + $self->{var2}->value;
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 10) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = [has var1 : int, has var2 : int] method : int () {
+        
+        my $total = $self->{var1} + $self->{var2};
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $object = [has var1 : int, has var2 : int] method : int () {
+        
+        my $total = $self->{var1} + $self->{var2};
+        
+        return $total;
+      };
+      $object->{var1} = 3;
+      $object->{var2} = 7;
+      
+      my $total = $object->();
+      unless ($total == 10) {
+        return 0;
+      }
+    }
+    
+    {
+      my $default1 = 7;
+      my $default2 = 10;
+      my $object = [$default1 : int, $default2 : int] method : int () {
+        
+        my $total = $default1 + $default2;
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 17) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method sort_objects : void ($values : object[], $comparator : Comparator) {
+
+    my $change_cnt = @$values - 1;
+    while( $change_cnt > 0){
+      for (my $i = 0; $i < $change_cnt; $i++) {
+        my $ret = $comparator->($values->[$i], $values->[$i + 1]);
+        
+        if ($comparator->($values->[$i], $values->[$i + 1]) == 1) {
+          my $tmp_value = $values->[$i];
+          $values->[$i] = $values->[$i + 1];
+          $values->[$i + 1] = $tmp_value;
+        }
+      }
+      $change_cnt--;
+    }
+  }
+  
+  static method comparator : int () {
+      my $comparator = method : int ($object1 : object, $object2 : object) {
+        my $minimal1 = (TestCase::Minimal)$object1;
+        my $minimal2 = (TestCase::Minimal)$object2;
+        
+        my $x1 = $minimal1->{x};
+        my $x2 = $minimal2->{x};
+        
+        if ($x1 > $x2) {
+          return 1;
+        }
+        elsif ($x1 < $x2) {
+          return -1;
+        }
+        else {
+          return 0;
+        }
+      };
+      
+      my $minimals = new TestCase::Minimal[3];
+      $minimals->[0] = TestCase::Minimal->new;
+      $minimals->[0]{x} = 3;
+      $minimals->[1] = TestCase::Minimal->new;
+      $minimals->[1]{x} = 1;
+      $minimals->[2] = TestCase::Minimal->new;
+      $minimals->[2]{x} = 2;
+      
+      TestCase::Operator::AnonMethod->sort_objects($minimals, $comparator);
+      
+      if ($minimals->[0]{x} == 1 && $minimals->[1]{x} == 2 && $minimals->[2]{x} == 3) {
+        return 1;
+      }
+      
+      return 0;
+  }
+
+  static method basic : int () {
+    my $object : object = TestCase::Minimal->new;
+    my $implement_callback1 : TestCase::Operator::AnonMethod::AnonMethod = TestCase::Operator::AnonMethod::ImplementAnonMethod1->new;
+    my $implement_callback2 : TestCase::Operator::AnonMethod::AnonMethod = TestCase::Operator::AnonMethod::ImplementAnonMethod2->new;
+    
+    my $num1 = $implement_callback1->(0, 0);
+    my $num2 = $implement_callback2->(0, 0);
+    
+    my $minimal = (TestCase::Minimal)$object;
+    $minimal->{x} = 4;
+    
+    unless ($num1 == 1) {
+      return 0;
+    }
+    
+    unless ($num2 == 2) {
+      return 0;
+    }
+    
+    unless ($minimal->{x} == 4) {
+      return 0;
+    }
+    
+    # Call a method in current class in anon method
+    {
+      my $anon_result_ref = new int[1];
+      
+      my $cb = [$anon_result_ref : int[]] method : void () {
+        $anon_result_ref->[0] = &foo;
+      };
+      
+      $cb->();
+      
+      unless ($anon_result_ref->[0] == 5) {
+        return 0;
+      }
+    }
+    
+    # Use a class var in current class in anon method
+    {
+      my $cb = method : void () {
+        $ANON_RESULT = 3;
+      };
+      
+      $cb->();
+      
+      unless ($ANON_RESULT == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method foo : int () {
+    
+    return 5;
+  }
+
+  static method callback_array : int () {
+
+    {
+      my $stringers : Stringer[] = new Stringer[3];
+    }
+    
+    {
+      my $cb = method : string ($object : object) {
+        my $point = (Point)$object;
+        return $point->to_string;
+      };
+      my $stringers : Stringer[] = [$cb];
+      
+      unless ($stringers->[0]->(Point->new(1, 2)) eq "(1,2)") {
+        return 0;
+      }
+    }
+
+    {
+      my $cb = method : string ($object : object) {
+        my $point = (Point)$object;
+        return $point->to_string;
+      };
+      my $stringers : Stringer[] = [(Stringer)$cb];
+      
+      unless ($stringers->[0]->(Point->new(1, 2)) eq "(1,2)") {
+        return 0;
+      }
+    }
+    
+    {
+      my $stringers : Stringer[] = undef;
+    }
+    
+    # Multi-dimensional array
+    {
+      my $cb = method : string ($object : object) {
+        my $point = (Point)$object;
+        return $point->to_string;
+      };
+      my $stringers_2dim : Stringer[][] = [[$cb]];
+      unless ($stringers_2dim->[0][0]->(Point->new(1, 2)) eq "(1,2)") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

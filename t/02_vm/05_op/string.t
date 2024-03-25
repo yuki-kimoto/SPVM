@@ -7,7 +7,7 @@ use utf8;
 
 use Test::More;
 
-use SPVM 'TestCase::String';
+use SPVM 'TestCase::Operator::String';
 
 
 
@@ -16,13 +16,13 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # String access, make_read_only, is_read_only
 {
-  ok(SPVM::TestCase::String->string_access);
+  ok(SPVM::TestCase::Operator::String->string_access);
 }
 
 {
-  ok(SPVM::TestCase::String->string_length);
-  ok(SPVM::TestCase::String->basic);
-  ok(SPVM::TestCase::String->new_string_len);
+  ok(SPVM::TestCase::Operator::String->string_length);
+  ok(SPVM::TestCase::Operator::String->basic);
+  ok(SPVM::TestCase::Operator::String->new_string_len);
 }
 
 # All object is freed

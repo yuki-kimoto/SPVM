@@ -1,0 +1,83 @@
+class TestCase::Operator::BasicTypeId {
+  use Point;
+  static method basic : int () {
+
+    {
+      unless (basic_type_id byte == 3) {
+        return 0;
+      }
+      unless (basic_type_id short == 4) {
+        return 0;
+      }
+      unless (basic_type_id int == 5) {
+        return 0;
+      }
+      unless (basic_type_id long == 6) {
+        return 0;
+      }
+      unless (basic_type_id float == 7) {
+        return 0;
+      }
+      unless (basic_type_id double == 8) {
+        return 0;
+      }
+      unless (basic_type_id string == 9) {
+        return 0;
+      }
+      unless (basic_type_id object == 10) {
+        return 0;
+      }
+      unless (basic_type_id Byte == 11) {
+        return 0;
+      }
+      unless (basic_type_id Short == 12) {
+        return 0;
+      }
+      unless (basic_type_id Int == 13) {
+        return 0;
+      }
+      unless (basic_type_id Long == 14) {
+        return 0;
+      }
+      unless (basic_type_id Float == 15) {
+        return 0;
+      }
+      unless (basic_type_id Double == 16) {
+        return 0;
+      }
+      unless (basic_type_id Bool == 17) {
+        return 0;
+      }
+      unless (basic_type_id Error == 18) {
+        return 0;
+      }
+      unless (basic_type_id Error::System == 19) {
+        return 0;
+      }
+      unless (basic_type_id Error::NotSupported == 20) {
+        return 0;
+      }
+      unless (basic_type_id CommandInfo == 21) {
+        return 0;
+      }
+      unless (basic_type_id Address == 22) {
+        return 0;
+      }
+    }
+    
+    {
+      unless (basic_type_id byte[] == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $basic_type_id_point = basic_type_id Point;
+      unless ($basic_type_id_point > 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

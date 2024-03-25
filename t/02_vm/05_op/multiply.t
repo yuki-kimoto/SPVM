@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Multiply';
+use SPVM 'TestCase::Operator::Multiply';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -15,32 +15,32 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # Multiply - Operation
   {
-    ok(SPVM::TestCase::Multiply->multiply_byte_byte);
-    ok(SPVM::TestCase::Multiply->multiply_short_short);
-    ok(SPVM::TestCase::Multiply->multiply_int_byte);
-    ok(SPVM::TestCase::Multiply->multiply_int_short);
-    ok(SPVM::TestCase::Multiply->multiply_byte_int);
-    ok(SPVM::TestCase::Multiply->multiply_short_int);
-    ok(SPVM::TestCase::Multiply->multiply_int_int);
-    ok(SPVM::TestCase::Multiply->multiply_long_long);
-    ok(SPVM::TestCase::Multiply->multiply_int_float);
-    ok(SPVM::TestCase::Multiply->multiply_int_double);
-    ok(SPVM::TestCase::Multiply->multiply_float_float);
-    ok(SPVM::TestCase::Multiply->multiply_double_double);
-    ok(SPVM::TestCase::Multiply->multiply_double_double_big);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_byte_byte);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_short_short);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_int_byte);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_int_short);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_byte_int);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_short_int);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_int_int);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_long_long);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_int_float);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_int_double);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_float_float);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_double_double);
+    ok(SPVM::TestCase::Operator::Multiply->multiply_double_double_big);
   }
 }
 
 # Optional tests
 {
-  ok(SPVM::TestCase::Multiply->multiply());
+  ok(SPVM::TestCase::Operator::Multiply->multiply());
 
-  is(SPVM::TestCase::Multiply->multiply_int_plus(), 1073741824);
-  is(SPVM::TestCase::Multiply->multiply_int_minus(), -1073741824);
-  is(SPVM::TestCase::Multiply->multiply_int_overflow(), -2147483648);
-  is(SPVM::TestCase::Multiply->multiply_long_plus(), 4611686018427387904);
-  is(SPVM::TestCase::Multiply->multiply_long_minus(), -4611686018427387904);
-  is(SPVM::TestCase::Multiply->multiply_long_overflow(), -9223372036854775808);
+  is(SPVM::TestCase::Operator::Multiply->multiply_int_plus(), 1073741824);
+  is(SPVM::TestCase::Operator::Multiply->multiply_int_minus(), -1073741824);
+  is(SPVM::TestCase::Operator::Multiply->multiply_int_overflow(), -2147483648);
+  is(SPVM::TestCase::Operator::Multiply->multiply_long_plus(), 4611686018427387904);
+  is(SPVM::TestCase::Operator::Multiply->multiply_long_minus(), -4611686018427387904);
+  is(SPVM::TestCase::Operator::Multiply->multiply_long_overflow(), -9223372036854775808);
 }
 
 # All object is freed

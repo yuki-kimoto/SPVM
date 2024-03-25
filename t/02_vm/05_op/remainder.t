@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Modulo';
+use SPVM 'TestCase::Operator::Modulo';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -15,26 +15,26 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # Modulo - Operation
   {
-    ok(SPVM::TestCase::Modulo->modulo_byte_byte);
-    ok(SPVM::TestCase::Modulo->modulo_short_short);
-    ok(SPVM::TestCase::Modulo->modulo_int_byte);
-    ok(SPVM::TestCase::Modulo->modulo_int_short);
-    ok(SPVM::TestCase::Modulo->modulo_byte_int);
-    ok(SPVM::TestCase::Modulo->modulo_short_int);
-    ok(SPVM::TestCase::Modulo->modulo_int_int);
-    ok(SPVM::TestCase::Modulo->modulo_long_long);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_byte_byte);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_short_short);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_int_byte);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_int_short);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_byte_int);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_short_int);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_int_int);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_long_long);
   }
 
   # Divide Unsinged operator
   {
-    ok(SPVM::TestCase::Modulo->modulo_unsigned_int);
-    ok(SPVM::TestCase::Modulo->modulo_unsigned_long);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_unsigned_int);
+    ok(SPVM::TestCase::Operator::Modulo->modulo_unsigned_long);
   }
 }
 
 # Optional tests
 {
-  ok(SPVM::TestCase::Modulo->modulo());
+  ok(SPVM::TestCase::Operator::Modulo->modulo());
 }
 
 # All object is freed

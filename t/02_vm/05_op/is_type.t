@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::IsType';
+use SPVM 'TestCase::Operator::IsType';
 
 my $api = SPVM::api();
 
@@ -15,8 +15,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # is_type
 {
-  ok(SPVM::TestCase::IsType->is_type);
-  ok(SPVM::TestCase::IsType->is_error);
+  ok(SPVM::TestCase::Operator::IsType->is_type);
+  ok(SPVM::TestCase::Operator::IsType->is_error);
 }
 
 # All object is freed

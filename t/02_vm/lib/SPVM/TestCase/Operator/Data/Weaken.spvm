@@ -1,0 +1,32 @@
+class TestCase::Operator::Data::Weaken : public {
+  use TestCase::Operator::Weaken;
+
+  has data_weaken : public TestCase::Operator::Data::Weaken;
+  has x : public int;
+  has test_case : public TestCase::Operator::Weaken;
+  has weaken2 : public TestCase::Operator::Data::Weaken;
+  has test_cases : public TestCase::Operator::Weaken[];
+  has child : public TestCase::Operator::Data::Weaken;
+  has parent : public TestCase::Operator::Data::Weaken;
+  
+  static method new : TestCase::Operator::Data::Weaken () {
+    return new TestCase::Operator::Data::Weaken;
+  }
+  
+  method weaken_test_case : void () {
+    weaken $self->{test_case};
+  }
+  
+  static method new_cross_reference_object : TestCase::Operator::Data::Weaken ($child : TestCase::Operator::Data::Weaken) {
+    
+    my $parent = new TestCase::Operator::Data::Weaken;
+    
+    $parent->{child} = $child;
+    
+    $child->{parent} = $parent;
+    weaken $child->{parent};
+    
+    return $parent;
+  }
+  
+}

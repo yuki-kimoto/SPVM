@@ -1,0 +1,88 @@
+class TestCase::Operator::NumericOperator {
+  # Negate
+  static method negate : int () {
+    my $num_byte = (byte)1;
+    my $num_short = (short)1;
+    my $num_int = 1;
+    my $num_long = 1L;
+    my $num_float = 1f;
+    my $num_double = 1d;
+    
+    my $num_byte_negate : int = -$num_byte;
+    my $num_short_negate : int = -$num_short;
+    my $num_int_negate = -$num_int;
+    my $num_long_negate = -$num_long;
+    my $num_float_negate = -$num_float;
+    my $num_double_negate = -$num_double;
+    
+    unless ($num_byte_negate == -1) {
+      return 0;
+    }
+    
+    unless ($num_short_negate == -1) {
+      return 0;
+    }
+    
+    unless ($num_int_negate == -1) {
+      return 0;
+    }
+    
+    unless ($num_long_negate == -1L) {
+      return 0;
+    }
+    
+    unless ($num_float_negate == -1f) {
+      return 0;
+    }
+    
+    unless ($num_double_negate == -1d) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  # Negate
+  static method plus : int () {
+    my $num_byte = (byte)1;
+    my $num_short = (short)1;
+    my $num_int = 1;
+    my $num_long = 1L;
+    my $num_float = 1f;
+    my $num_double = 1d;
+    
+    my $num_byte_plus : int = +$num_byte;
+    my $num_short_plus : int = +$num_short;
+    my $num_int_plus = +$num_int;
+    my $num_long_plus = +$num_long;
+    my $num_float_plus = +$num_float;
+    my $num_double_plus = +$num_double;
+    
+    unless ($num_byte_plus == 1) {
+      return 0;
+    }
+    
+    unless ($num_short_plus == 1) {
+      return 0;
+    }
+    
+    unless ($num_int_plus == 1) {
+      return 0;
+    }
+    
+    unless ($num_long_plus == 1L) {
+      return 0;
+    }
+    
+    unless ($num_float_plus == 1f) {
+      return 0;
+    }
+    
+    unless ($num_double_plus == 1d) {
+      return 0;
+    }
+  
+    return 1;
+  }
+  
+}

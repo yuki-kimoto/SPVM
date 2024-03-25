@@ -192,7 +192,7 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
 
   // Exception
   // volatile attribute is not needed, but the environment "FreeBSD 9.1" and "gcc 4.2.1" seems to performe wrong optimisation
-  // in double pointer logic. volatile attribute fixed the test "ref.t" "SPVM::TestCase::Ref->test_pass_mulnum_ref_byte".
+  // in double pointer logic. volatile attribute fixed the test "ref.t" "SPVM::TestCase::Operator::Ref->test_pass_mulnum_ref_byte".
   // SPVM_STRING_BUFFER_add(string_buffer, "  volatile int32_t error_id = 0;\n");
   
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t error_id = 0;\n");

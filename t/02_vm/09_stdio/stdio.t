@@ -8,7 +8,7 @@ use File::Path 'mkpath';
 use Test::More;
 
 use TestFile;
-use SPVM 'TestCase::Stdio';
+use SPVM 'TestCase::Operator::Stdio';
 use SPVM 'TestCase::NativeAPI';
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
@@ -31,7 +31,7 @@ use TestAuto;
 use strict;
 use warnings;
 
-use SPVM 'TestCase::Stdio';
+use SPVM 'TestCase::Operator::Stdio';
 
 
 
@@ -68,7 +68,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   {
     # print "\n" to stdout
     {
-      my $func_call = 'SPVM::TestCase::Stdio->print_line_feed_to_stdout';
+      my $func_call = 'SPVM::TestCase::Operator::Stdio->print_line_feed_to_stdout';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -80,7 +80,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   {
     # print "\n" to stderr
     {
-      my $func_call = 'SPVM::TestCase::Stdio->print_line_feed_to_stderr';
+      my $func_call = 'SPVM::TestCase::Operator::Stdio->print_line_feed_to_stderr';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);

@@ -7,13 +7,13 @@ use utf8;
 
 use Test::More;
 
-use SPVM 'TestCase::Copy';
+use SPVM 'TestCase::Operator::Copy';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
-  ok(SPVM::TestCase::Copy->copy);
+  ok(SPVM::TestCase::Operator::Copy->copy);
 }
 
 # All object is freed

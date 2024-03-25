@@ -8,7 +8,7 @@ use File::Path 'mkpath';
 use Test::More;
 
 use TestFile;
-use SPVM 'TestCase::Warn';
+use SPVM 'TestCase::Operator::Warn';
 
 
 
@@ -32,7 +32,7 @@ use TestAuto;
 use strict;
 use warnings;
 
-use SPVM 'TestCase::Warn';
+use SPVM 'TestCase::Operator::Warn';
 
 
 
@@ -69,16 +69,16 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   {
     # test_warn
     {
-      my $func_call = 'SPVM::TestCase::Warn->test_warn';
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Hello\n  TestCase::Warn->test_warn at .*TestCase/Warn.spvm line 4|);
+      like($output, qr|Hello\n  TestCase::Operator::Warn->test_warn at .*TestCase/Operator/Warn.spvm line 4|);
     }
 
     # test_warn_newline
     {
-      my $func_call = 'SPVM::TestCase::Warn->test_warn_newline';
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_newline';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
@@ -87,7 +87,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     
     # test_warn_long_lines
     {
-      my $func_call = 'SPVM::TestCase::Warn->test_warn_long_lines';
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_long_lines';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
@@ -96,47 +96,47 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
     # test_warn_empty
     {
-      my $func_call = 'SPVM::TestCase::Warn->test_warn_empty';
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_empty';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|\n  TestCase::Warn->test_warn_empty at .*TestCase/Warn.spvm line 21|);
+      like($output, qr|\n  TestCase::Operator::Warn->test_warn_empty at .*TestCase/Operator/Warn.spvm line 21|);
     }
 
     # test_test_warn_undef
     {
-      my $func_call = 'SPVM::TestCase::Warn->test_warn_undef';
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_undef';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|undef\n  TestCase::Warn->test_warn_undef at .*TestCase/Warn.spvm line 27|);
+      like($output, qr|undef\n  TestCase::Operator::Warn->test_warn_undef at .*TestCase/Operator/Warn.spvm line 27|);
     }
 
     # test_test_warn_no_operand
     {
-      my $func_call = 'SPVM::TestCase::Warn->test_warn_no_operand';
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_no_operand';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Warning\n  TestCase::Warn->test_warn_no_operand at .*TestCase/Warn.spvm line 33|);
+      like($output, qr|Warning\n  TestCase::Operator::Warn->test_warn_no_operand at .*TestCase/Operator/Warn.spvm line 33|);
     }
     
     # test_test_warn_undef_type
     {
-      my $func_call = 'SPVM::TestCase::Warn->test_warn_undef_type';
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_undef_type';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Warning\n  TestCase::Warn->test_warn_undef_type at .*TestCase/Warn.spvm line 39|);
+      like($output, qr|Warning\n  TestCase::Operator::Warn->test_warn_undef_type at .*TestCase/Operator/Warn.spvm line 39|);
     }
     
     # test_test_warn_undef_type
     {
-      my $func_call = 'SPVM::TestCase::Warn->test_warn_object_type';
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_warn_object_type';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|^Int\(0x[0-9a-fA-F]+\)\n  TestCase::Warn->test_warn_object_type at .*TestCase/Warn.spvm line 45|);
+      like($output, qr|^Int\(0x[0-9a-fA-F]+\)\n  TestCase::Operator::Warn->test_warn_object_type at .*TestCase/Operator/Warn.spvm line 45|);
     }
   }
 }

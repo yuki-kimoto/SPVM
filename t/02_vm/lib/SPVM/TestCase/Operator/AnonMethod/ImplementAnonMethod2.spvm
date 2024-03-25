@@ -1,0 +1,11 @@
+class TestCase::Operator::AnonMethod::ImplementAnonMethod2 {
+  use TestCase::Minimal;
+
+  static method new : TestCase::Operator::AnonMethod::ImplementAnonMethod2 () {
+    return new TestCase::Operator::AnonMethod::ImplementAnonMethod2;
+  }
+  
+  method : int ($var1 : int, $var2 : long) {
+    return 2;
+  }
+}

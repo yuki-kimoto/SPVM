@@ -8,7 +8,7 @@ use File::Path 'mkpath';
 use Test::More;
 
 use TestFile;
-use SPVM 'TestCase::Print';
+use SPVM 'TestCase::Operator::Print';
 
 my $test_dir = $ENV{SPVM_TEST_DIR};
 my $build_dir = $ENV{SPVM_BUILD_DIR};
@@ -30,7 +30,7 @@ use TestAuto;
 use strict;
 use warnings;
 
-use SPVM 'TestCase::Print';
+use SPVM 'TestCase::Operator::Print';
 
 
 
@@ -67,7 +67,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   {
     # test_print
     {
-      my $func_call = 'SPVM::TestCase::Print->print';
+      my $func_call = 'SPVM::TestCase::Operator::Print->print';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -76,7 +76,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
     # test_print_newline
     {
-      my $func_call = 'SPVM::TestCase::Print->print_newline';
+      my $func_call = 'SPVM::TestCase::Operator::Print->print_newline';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -85,7 +85,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     
     # test_print_long_lines
     {
-      my $func_call = 'SPVM::TestCase::Print->print_long_lines';
+      my $func_call = 'SPVM::TestCase::Operator::Print->print_long_lines';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -93,7 +93,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     }
     # test_print_empty
     {
-      my $func_call = 'SPVM::TestCase::Print->print_empty';
+      my $func_call = 'SPVM::TestCase::Operator::Print->print_empty';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -101,7 +101,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
     }
     # test_print_undef
     {
-      my $func_call = 'SPVM::TestCase::Print->print_undef';
+      my $func_call = 'SPVM::TestCase::Operator::Print->print_undef';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);

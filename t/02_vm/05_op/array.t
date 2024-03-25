@@ -6,76 +6,76 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Array';
+use SPVM 'TestCase::Operator::Array';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Fat camma
 {
-  ok(SPVM::TestCase::Array->array_init_fatcamma);
+  ok(SPVM::TestCase::Operator::Array->array_init_fatcamma);
 }
 
 # Array
 {
-  ok(SPVM::TestCase::Array->array());
-  ok(SPVM::TestCase::Array->array_store_undef());
+  ok(SPVM::TestCase::Operator::Array->array());
+  ok(SPVM::TestCase::Operator::Array->array_store_undef());
 }
 
 # Array length
 {
-  ok(SPVM::TestCase::Array->array_length_atmark());
-  ok(SPVM::TestCase::Array->array_length_atmark_brace());
-  ok(SPVM::TestCase::Array->array_length_scalar_atmark());
-  ok(SPVM::TestCase::Array->array_length_scalar_atmark_brace());
-  ok(SPVM::TestCase::Array->array_length_undef());
+  ok(SPVM::TestCase::Operator::Array->array_length_atmark());
+  ok(SPVM::TestCase::Operator::Array->array_length_atmark_brace());
+  ok(SPVM::TestCase::Operator::Array->array_length_scalar_atmark());
+  ok(SPVM::TestCase::Operator::Array->array_length_scalar_atmark_brace());
+  ok(SPVM::TestCase::Operator::Array->array_length_undef());
 }
 
 # [] Array initialization
 {
-  ok(SPVM::TestCase::Array->array_init_empty());
-  ok(SPVM::TestCase::Array->array_init_byte());
-  ok(SPVM::TestCase::Array->array_init_short());
-  ok(SPVM::TestCase::Array->array_init_int());
-  ok(SPVM::TestCase::Array->array_init_long());
-  ok(SPVM::TestCase::Array->array_init_float());
-  ok(SPVM::TestCase::Array->array_init_double());
-  ok(SPVM::TestCase::Array->array_init_object());
+  ok(SPVM::TestCase::Operator::Array->array_init_empty());
+  ok(SPVM::TestCase::Operator::Array->array_init_byte());
+  ok(SPVM::TestCase::Operator::Array->array_init_short());
+  ok(SPVM::TestCase::Operator::Array->array_init_int());
+  ok(SPVM::TestCase::Operator::Array->array_init_long());
+  ok(SPVM::TestCase::Operator::Array->array_init_float());
+  ok(SPVM::TestCase::Operator::Array->array_init_double());
+  ok(SPVM::TestCase::Operator::Array->array_init_object());
 }
 
 # {} Array initialization
 {
-  ok(SPVM::TestCase::Array->array_init_key_values_empty());
-  ok(SPVM::TestCase::Array->array_init_key_values());
+  ok(SPVM::TestCase::Operator::Array->array_init_key_values_empty());
+  ok(SPVM::TestCase::Operator::Array->array_init_key_values());
 }
 
 # Array default
 {
-  ok(SPVM::TestCase::Array->array_default_zero_memory_pool());
-  ok(SPVM::TestCase::Array->array_default_zero_not_memory_pool());
+  ok(SPVM::TestCase::Operator::Array->array_default_zero_memory_pool());
+  ok(SPVM::TestCase::Operator::Array->array_default_zero_not_memory_pool());
 }
 
 # array - set and get array element, first element
 {
-  my $element = SPVM::TestCase::Array->array_set_and_get_array_element_first();
+  my $element = SPVM::TestCase::Operator::Array->array_set_and_get_array_element_first();
   is($element, 345);
 }
 
 # array - set and get array element, last element
 {
-  my $element = SPVM::TestCase::Array->array_set_and_get_array_element_last();
+  my $element = SPVM::TestCase::Operator::Array->array_set_and_get_array_element_last();
   is($element, 298);
 }
 
 # array - culcurate sum by for
 {
-  my $total = SPVM::TestCase::Array->array_culcurate_sum_by_for();
+  my $total = SPVM::TestCase::Operator::Array->array_culcurate_sum_by_for();
   is($total, 6);
 }
 
 # any object array
 {
-  ok(SPVM::TestCase::Array->any_object_array);
+  ok(SPVM::TestCase::Operator::Array->any_object_array);
 }
 
 # Clear exception

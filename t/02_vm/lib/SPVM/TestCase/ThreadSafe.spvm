@@ -3,7 +3,7 @@ class TestCase::ThreadSafe {
   use TestCase::Util::Thread;
   use TestCase::Util::Thread::ID;
   use TestCase::Util::Thread::ThisThread;
-  use TestCase::Data::Weaken;
+  use TestCase::Operator::Data::Weaken;
   
   static method assign : int () {
     
@@ -71,10 +71,10 @@ class TestCase::ThreadSafe {
 
   static method weaken : int () {
 
-    my $object1 = new TestCase::Data::Weaken;
+    my $object1 = new TestCase::Operator::Data::Weaken;
     $object1->{x} =1;
     
-    my $object2 = new TestCase::Data::Weaken;
+    my $object2 = new TestCase::Operator::Data::Weaken;
     $object2->{x} = 2;
     
     # Circular reference
@@ -82,9 +82,9 @@ class TestCase::ThreadSafe {
     $object1->{data_weaken} = $object2;
     
     {
-      my $object_ref = [(TestCase::Data::Weaken)$object1, $object2];
+      my $object_ref = [(TestCase::Operator::Data::Weaken)$object1, $object2];
       
-      my $thread = TestCase::Util::Thread->new([$object_ref : TestCase::Data::Weaken[]] method : void () {
+      my $thread = TestCase::Util::Thread->new([$object_ref : TestCase::Operator::Data::Weaken[]] method : void () {
         
         for (my $i = 0; $i < 10000; $i++) {
           my $object = $object_ref->[0];
@@ -96,7 +96,7 @@ class TestCase::ThreadSafe {
         }
       });
       
-      my $thread2 = TestCase::Util::Thread->new([$object_ref : TestCase::Data::Weaken[]] method : void () {
+      my $thread2 = TestCase::Util::Thread->new([$object_ref : TestCase::Operator::Data::Weaken[]] method : void () {
         
         for (my $i = 0; $i < 10000; $i++) {
           my $object = $object_ref->[0];

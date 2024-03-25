@@ -1,0 +1,587 @@
+class TestCase::Operator::Weaken {
+  use TestCase::Operator::Data::Weaken;
+  use TestCase::Util::Node;
+  
+  has x_int : int;
+  has x_self : TestCase::Operator::Weaken;
+  has x_weaken : TestCase::Operator::Data::Weaken;
+  has weaken1 : TestCase::Operator::Data::Weaken;
+  has weaken2 : TestCase::Operator::Data::Weaken;
+  has weaken3 : TestCase::Operator::Data::Weaken;
+  has weaken4 : TestCase::Operator::Data::Weaken;
+
+  static method weaken_field_cross_reference_weaken_both : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} = 1;
+
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken both
+    weaken $weaken2->{data_weaken};
+    
+    return 0;
+  }
+
+  static method weaken_field_cross_reference : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    
+    # Exists object
+    if ($weaken1->{x} == 1) {
+      if ($weaken2->{x} == 2) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  static method weaken_field_cross_reference_weaken_twice : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} = 1;
+
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken twice
+    weaken $weaken1->{data_weaken};
+    weaken $weaken1->{data_weaken};
+
+    # Exists object
+    if ($weaken1->{x} == 1) {
+      if ($weaken2->{x} == 2) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  static method weaken_field_self_reference : int () {
+    my $self = new TestCase::Operator::Weaken;
+    $self->{x_int} = 5;
+    
+    # Self reference
+    $self->{x_self} = $self;
+    
+    # Weaken
+    weaken $self->{x_self};
+    
+    # Exists object
+    if ($self->{x_int} == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  static method weaken_field_weaken_ref_count1_object : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # object reference count become 1.
+    $weaken1 = undef;
+    
+    # Weaken(data_weaken is freed because data_weaken reference count is 1);
+    weaken $weaken2->{data_weaken};
+    
+    if ($weaken2->{data_weaken} == undef) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  static method weaken_field_circular_reference : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} =1;
+    
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    my $weaken3 = new TestCase::Operator::Data::Weaken;
+    $weaken3->{x} = 3;
+    
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
+    
+    # Weaken
+    weaken $weaken3->{data_weaken};
+    
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  static method weaken_field_circular_reference_weaken_twice : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} =1;
+    
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    my $weaken3 = new TestCase::Operator::Data::Weaken;
+    $weaken3->{x} = 3;
+    
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
+    
+    # Weaken
+    weaken $weaken3->{data_weaken};
+    weaken $weaken2->{data_weaken};
+    
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  static method weaken_field_circular_reference_weaken_triple : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} =1;
+    
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    my $weaken3 = new TestCase::Operator::Data::Weaken;
+    $weaken3->{x} = 3;
+    
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
+    
+    # Weaken
+    weaken $weaken3->{data_weaken};
+    weaken $weaken2->{data_weaken};
+    weaken $weaken1->{data_weaken};
+    
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  static method weaken_field_assign_undef_to_weakened_field : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken2->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    
+    weaken $weaken2->{data_weaken};
+    $weaken2->{data_weaken} = undef;
+    
+    if ($weaken2->{data_weaken} == undef) {
+      if ($weaken2->{x} == 2) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+  
+  static method weaken_field_assign_undef_to_assinged_object : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+
+    $weaken2->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    
+    weaken $weaken2->{data_weaken};
+    $weaken1 = undef;
+    
+    if ($weaken2->{data_weaken} == undef) {
+      return 1;
+    }
+    return 0;
+  }
+
+  static method weaken_field_undef : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    weaken $weaken1->{data_weaken};
+    
+    unless ($weaken1->{data_weaken}) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  static method weaken_field_cross_reference_assign_var : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    
+    # Assign var($var isn't weak reference)
+    my $var = $weaken1->{data_weaken};
+    
+    return 1;
+  }
+
+  static method isweak : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    
+    unless (isweak $weaken1->{data_weaken}) {
+      return 0;
+    }
+
+    if (isweak $weaken2->{data_weaken}) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method unweaken_test : int () {
+    my $weaken1 = new TestCase::Operator::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new TestCase::Operator::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    unweaken $weaken1->{data_weaken};
+    
+    if (isweak $weaken1->{data_weaken}) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method dom_tree : int () {
+    
+    {
+      my $node = new TestCase::Util::Node;
+      
+      my $child_nodes = [new TestCase::Util::Node, new TestCase::Util::Node];
+      
+      my $child_nodes_length = @$child_nodes;
+      
+      $node->{first_child} = $child_nodes->[0];
+      
+      $node->{last_child} = $child_nodes->[$child_nodes_length - 1];
+      
+      for (my $i = 0; $i < $child_nodes_length; $i++) {
+        my $child_node = $child_nodes->[$i];
+        
+        $child_node->{parent_node} = $node;
+        weaken $child_node->{parent_node};
+        
+        if ($i + 1 < $child_nodes_length) {
+          $child_node->{next_sibling} = $child_nodes->[$i + 1];
+        }
+        
+        if ($i - 1 >= 0) {
+          $child_node->{previous_sibling} = $child_nodes->[$i - 1];
+          weaken $child_node->{previous_sibling};
+        }
+      }
+      
+      {
+        my $nodes_count = 0;
+        
+        my $node_root = (TestCase::Util::Node)$node;
+        my $node_cur = $node_root;
+        my $finish = 0;
+        while ($node_cur) {
+          
+          # [START]Preorder traversal position
+          
+          if ($node_cur->{first_child}) {
+            $node_cur = (TestCase::Util::Node)$node_cur->{first_child};
+          }
+          else {
+            while (1) {
+              # [START]Postorder traversal position
+              $nodes_count++;
+              
+              if ($node_cur == $node_root) {
+                
+                $finish = 1;
+                
+                last;
+              }
+              
+              # Next sibling
+              if ($node_cur->{next_sibling}) {
+                $node_cur = $node_cur->{next_sibling};
+                last;
+              }
+              # Next is parent
+              else {
+                $node_cur = $node_cur->{parent_node};
+              }
+            }
+            if ($finish) {
+              last;
+            }
+          }
+        }
+        
+        unless ($nodes_count == 3) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $node = new TestCase::Util::Node;
+      
+      my $child_nodes = [new TestCase::Util::Node, new TestCase::Util::Node, new TestCase::Util::Node];
+      
+      my $child_nodes_length = @$child_nodes;
+      
+      $node->{first_child} = $child_nodes->[0];
+      
+      $node->{last_child} = $child_nodes->[$child_nodes_length - 1];
+      
+      for (my $i = 0; $i < $child_nodes_length; $i++) {
+        my $child_node = $child_nodes->[$i];
+        
+        $child_node->{parent_node} = $node;
+        weaken $child_node->{parent_node};
+        
+        if ($i + 1 < $child_nodes_length) {
+          $child_node->{next_sibling} = $child_nodes->[$i + 1];
+        }
+        
+        if ($i - 1 >= 0) {
+          $child_node->{previous_sibling} = $child_nodes->[$i - 1];
+          weaken $child_node->{previous_sibling};
+        }
+      }
+      
+      {
+        my $nodes_count = 0;
+        
+        my $node_root = (TestCase::Util::Node)$node;
+        my $node_cur = $node_root;
+        my $finish = 0;
+        while ($node_cur) {
+          
+          # [START]Preorder traversal position
+          
+          if ($node_cur->{first_child}) {
+            $node_cur = (TestCase::Util::Node)$node_cur->{first_child};
+          }
+          else {
+            while (1) {
+              # [START]Postorder traversal position
+              $nodes_count++;
+              
+              if ($node_cur == $node_root) {
+                
+                $finish = 1;
+                
+                last;
+              }
+              
+              # Next sibling
+              if ($node_cur->{next_sibling}) {
+                $node_cur = $node_cur->{next_sibling};
+                last;
+              }
+              # Next is parent
+              else {
+                $node_cur = $node_cur->{parent_node};
+              }
+            }
+            if ($finish) {
+              last;
+            }
+          }
+        }
+        
+        unless ($nodes_count == 4) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $node = TestCase::Util::Node->new([
+        TestCase::Util::Node->new,
+        TestCase::Util::Node->new,
+        TestCase::Util::Node->new
+      ]);
+      
+      {
+        my $nodes_count = 0;
+        
+        my $node_root = (TestCase::Util::Node)$node;
+        my $node_cur = $node_root;
+        my $finish = 0;
+        while ($node_cur) {
+          
+          # [START]Preorder traversal position
+          
+          if ($node_cur->{first_child}) {
+            $node_cur = (TestCase::Util::Node)$node_cur->{first_child};
+          }
+          else {
+            while (1) {
+              # [START]Postorder traversal position
+              $nodes_count++;
+              
+              if ($node_cur == $node_root) {
+                
+                $finish = 1;
+                
+                last;
+              }
+              
+              # Next sibling
+              if ($node_cur->{next_sibling}) {
+                $node_cur = $node_cur->{next_sibling};
+                last;
+              }
+              # Next is parent
+              else {
+                $node_cur = $node_cur->{parent_node};
+              }
+            }
+            if ($finish) {
+              last;
+            }
+          }
+        }
+        
+        unless ($nodes_count == 4) {
+          return 0;
+        }
+      }
+    }
+
+    {
+      my $node = TestCase::Util::Node->new([
+        TestCase::Util::Node->new([TestCase::Util::Node->new]),
+        TestCase::Util::Node->new,
+        TestCase::Util::Node->new
+      ]);
+      
+      {
+        my $nodes_count = 0;
+        
+        my $node_root = (TestCase::Util::Node)$node;
+        my $node_cur = $node_root;
+        my $finish = 0;
+        while ($node_cur) {
+          
+          # [START]Preorder traversal position
+          
+          if ($node_cur->{first_child}) {
+            $node_cur = (TestCase::Util::Node)$node_cur->{first_child};
+          }
+          else {
+            while (1) {
+              # [START]Postorder traversal position
+              $nodes_count++;
+              
+              if ($node_cur == $node_root) {
+                
+                $finish = 1;
+                
+                last;
+              }
+              
+              # Next sibling
+              if ($node_cur->{next_sibling}) {
+                $node_cur = $node_cur->{next_sibling};
+                last;
+              }
+              # Next is parent
+              else {
+                $node_cur = $node_cur->{parent_node};
+              }
+            }
+            if ($finish) {
+              last;
+            }
+          }
+        }
+        unless ($nodes_count == 5) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method new_cross_reference_object : int () {
+    my $child = TestCase::Operator::Data::Weaken->new;
+    
+    my $parent = TestCase::Operator::Data::Weaken->new_cross_reference_object($child);
+    
+    unless ($parent) {
+      return 0;
+    }
+    
+    unless ($parent->{child}) {
+      return 0;
+    }
+    
+    unless (isweak $child->{parent}) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

@@ -1,0 +1,24 @@
+class TestCase::Operator::CURRENT_CLASS_NAME {
+  static method current_outer_class_name : int () {
+    my $current_basic_type_name = __PACKAGE__;
+    
+    unless ($current_basic_type_name eq "TestCase::Operator::CURRENT_CLASS_NAME") {
+      return 0;
+    }
+    
+    my $anon_result_ref = new string[1];
+    
+    my $cb = [$anon_result_ref : string[]] method : void () {
+      my $current_basic_type_name = __PACKAGE__;
+      $anon_result_ref->[0] = $current_basic_type_name;
+    };
+    
+    $cb->();
+    
+    unless ($anon_result_ref->[0] eq "TestCase::Operator::CURRENT_CLASS_NAME") {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

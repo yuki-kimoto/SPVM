@@ -6,13 +6,13 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::BasicTypeId';
+use SPVM 'TestCase::Operator::BasicTypeId';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
-  ok(SPVM::TestCase::BasicTypeId->basic);
+  ok(SPVM::TestCase::Operator::BasicTypeId->basic);
 }
 
 # All object is freed

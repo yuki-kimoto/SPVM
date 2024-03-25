@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Field';
+use SPVM 'TestCase::Operator::Field';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -24,17 +24,17 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Field name
 {
-  ok(SPVM::TestCase::Field->get_and_set_field_same_name_as_keyword);
+  ok(SPVM::TestCase::Operator::Field->get_and_set_field_same_name_as_keyword);
 }
 
 # Field access
 {
-  ok(SPVM::TestCase::Field->get_field_chain);
-  ok(SPVM::TestCase::Field->core_func_name_field_name());
-  ok(SPVM::TestCase::Field->object_field_set_and_get());
-  ok(SPVM::TestCase::Field->object_field_set_and_get());
-  ok(SPVM::TestCase::Field->object_field_set_and_get_again());
-  ok(SPVM::TestCase::Field->object_field_initialized_zero());
+  ok(SPVM::TestCase::Operator::Field->get_field_chain);
+  ok(SPVM::TestCase::Operator::Field->core_func_name_field_name());
+  ok(SPVM::TestCase::Operator::Field->object_field_set_and_get());
+  ok(SPVM::TestCase::Operator::Field->object_field_set_and_get());
+  ok(SPVM::TestCase::Operator::Field->object_field_set_and_get_again());
+  ok(SPVM::TestCase::Operator::Field->object_field_initialized_zero());
 }
 
 # All object is freed

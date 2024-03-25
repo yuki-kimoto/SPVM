@@ -7,7 +7,7 @@ use utf8;
 
 use Test::More;
 
-use SPVM 'TestCase::Seqop';
+use SPVM 'TestCase::Operator::Seqop';
 
 
 
@@ -15,7 +15,7 @@ use SPVM 'TestCase::Seqop';
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 {
-  ok(SPVM::TestCase::Seqop->seqop);
+  ok(SPVM::TestCase::Operator::Seqop->seqop);
 }
 
 # All object is freed

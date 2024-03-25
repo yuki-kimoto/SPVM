@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::ArrayMiddleSize';
+use SPVM 'TestCase::Operator::ArrayMiddleSize';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -22,12 +22,12 @@ SKIP: {
     skip "Memory must need at least $at_least_memory_size", 6;
   }
   
-  ok(SPVM::TestCase::ArrayMiddleSize->array_middle_index_byte);
-  ok(SPVM::TestCase::ArrayMiddleSize->array_middle_index_short);
-  ok(SPVM::TestCase::ArrayMiddleSize->array_middle_index_int);
-  ok(SPVM::TestCase::ArrayMiddleSize->array_middle_index_long);
-  ok(SPVM::TestCase::ArrayMiddleSize->array_middle_index_float);
-  ok(SPVM::TestCase::ArrayMiddleSize->array_middle_index_double);
+  ok(SPVM::TestCase::Operator::ArrayMiddleSize->array_middle_index_byte);
+  ok(SPVM::TestCase::Operator::ArrayMiddleSize->array_middle_index_short);
+  ok(SPVM::TestCase::Operator::ArrayMiddleSize->array_middle_index_int);
+  ok(SPVM::TestCase::Operator::ArrayMiddleSize->array_middle_index_long);
+  ok(SPVM::TestCase::Operator::ArrayMiddleSize->array_middle_index_float);
+  ok(SPVM::TestCase::Operator::ArrayMiddleSize->array_middle_index_double);
 };
 
 # All object is freed

@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::BitOperator';
+use SPVM 'TestCase::Operator::BitOperator';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -15,32 +15,32 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # Bit not - Operation
   {
-    ok(SPVM::TestCase::BitOperator->bit_not_byte);
-    ok(SPVM::TestCase::BitOperator->bit_not_short);
-    ok(SPVM::TestCase::BitOperator->bit_not_int);
-    ok(SPVM::TestCase::BitOperator->bit_not_int_theory);
-    ok(SPVM::TestCase::BitOperator->bit_not_long);
+    ok(SPVM::TestCase::Operator::BitOperator->bit_not_byte);
+    ok(SPVM::TestCase::Operator::BitOperator->bit_not_short);
+    ok(SPVM::TestCase::Operator::BitOperator->bit_not_int);
+    ok(SPVM::TestCase::Operator::BitOperator->bit_not_int_theory);
+    ok(SPVM::TestCase::Operator::BitOperator->bit_not_long);
   }
 
   # Extra
   {
-    ok(SPVM::TestCase::BitOperator->complement());
+    ok(SPVM::TestCase::Operator::BitOperator->complement());
   }
 }
 
 # Bit and
 {
-  ok(SPVM::TestCase::BitOperator->bit_and());
+  ok(SPVM::TestCase::Operator::BitOperator->bit_and());
 }
 
 # Bit or
 {
-  ok(SPVM::TestCase::BitOperator->bit_or());
+  ok(SPVM::TestCase::Operator::BitOperator->bit_or());
 }
 
 # Bit xor
 {
-  ok(SPVM::TestCase::BitOperator->bit_xor());
+  ok(SPVM::TestCase::Operator::BitOperator->bit_xor());
 }
 
 # All object is freed

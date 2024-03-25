@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::Divide';
+use SPVM 'TestCase::Operator::Divide';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
@@ -15,31 +15,31 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # Division operator
   {
-    ok(SPVM::TestCase::Divide->divide_byte_byte);
-    ok(SPVM::TestCase::Divide->divide_short_short);
-    ok(SPVM::TestCase::Divide->divide_int_byte);
-    ok(SPVM::TestCase::Divide->divide_int_short);
-    ok(SPVM::TestCase::Divide->divide_byte_int);
-    ok(SPVM::TestCase::Divide->divide_short_int);
-    ok(SPVM::TestCase::Divide->divide_int_int);
-    ok(SPVM::TestCase::Divide->divide_long_long);
-    ok(SPVM::TestCase::Divide->divide_int_float);
-    ok(SPVM::TestCase::Divide->divide_int_double);
-    ok(SPVM::TestCase::Divide->divide_float_float);
-    ok(SPVM::TestCase::Divide->divide_double_double);
-    ok(SPVM::TestCase::Divide->divide_double_double_big);
+    ok(SPVM::TestCase::Operator::Divide->divide_byte_byte);
+    ok(SPVM::TestCase::Operator::Divide->divide_short_short);
+    ok(SPVM::TestCase::Operator::Divide->divide_int_byte);
+    ok(SPVM::TestCase::Operator::Divide->divide_int_short);
+    ok(SPVM::TestCase::Operator::Divide->divide_byte_int);
+    ok(SPVM::TestCase::Operator::Divide->divide_short_int);
+    ok(SPVM::TestCase::Operator::Divide->divide_int_int);
+    ok(SPVM::TestCase::Operator::Divide->divide_long_long);
+    ok(SPVM::TestCase::Operator::Divide->divide_int_float);
+    ok(SPVM::TestCase::Operator::Divide->divide_int_double);
+    ok(SPVM::TestCase::Operator::Divide->divide_float_float);
+    ok(SPVM::TestCase::Operator::Divide->divide_double_double);
+    ok(SPVM::TestCase::Operator::Divide->divide_double_double_big);
   }
 
   # Divide Unsinged operator
   {
-    ok(SPVM::TestCase::Divide->divide_unsigned_int);
-    ok(SPVM::TestCase::Divide->divide_unsigned_long);
+    ok(SPVM::TestCase::Operator::Divide->divide_unsigned_int);
+    ok(SPVM::TestCase::Operator::Divide->divide_unsigned_long);
   }
 }
 
 # Optional tests
 {
-  ok(SPVM::TestCase::Divide->divide());
+  ok(SPVM::TestCase::Operator::Divide->divide());
 }
 
 # All object is freed

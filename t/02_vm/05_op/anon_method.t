@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::AnonMethod';
+use SPVM 'TestCase::Operator::AnonMethod';
 
 my $api = SPVM::api();
 
@@ -14,18 +14,18 @@ my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 {
-  ok(SPVM::TestCase::AnonMethod->basic);
-  ok(SPVM::TestCase::AnonMethod->callback_array);
-  ok(SPVM::TestCase::AnonMethod->comparator);
-  ok(SPVM::TestCase::AnonMethod->anon_method_field_definition);
+  ok(SPVM::TestCase::Operator::AnonMethod->basic);
+  ok(SPVM::TestCase::Operator::AnonMethod->callback_array);
+  ok(SPVM::TestCase::Operator::AnonMethod->comparator);
+  ok(SPVM::TestCase::Operator::AnonMethod->anon_method_field_definition);
 }
 
 # Check the precompile source
 {
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    my $callback_precompile_source_file = "$ENV{SPVM_BUILD_DIR}/work/src/SPVM/TestCase/AnonMethod.precompile.c";
+    my $callback_precompile_source_file = "$ENV{SPVM_BUILD_DIR}/work/src/SPVM/TestCase/Operator/AnonMethod.precompile.c";
     my $content = do { open my $fh, '<', $callback_precompile_source_file; local $/; <$fh>; };
-    like($content, qr/TestCase__AnonMethod__anon__\d+__\d+/);
+    like($content, qr/TestCase__Operator__AnonMethod__anon__\d+__\d+/);
   }
 }
 

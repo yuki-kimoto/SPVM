@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'TestCase::LogicalOperator';
+use SPVM 'TestCase::Operator::LogicalOperator';
 
 
 
@@ -17,43 +17,43 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # logical and
   {
-    ok(SPVM::TestCase::LogicalOperator->logical_and);
-    ok(SPVM::TestCase::LogicalOperator->logical_and_both_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_and_left_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_and_right_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_and_both_false);
-    ok(SPVM::TestCase::LogicalOperator->logical_and_push_mortal_leave_scope);
-    ok(SPVM::TestCase::LogicalOperator->logical_and_nagate);
-    ok(SPVM::TestCase::LogicalOperator->logical_and_assign);
-    ok(SPVM::TestCase::LogicalOperator->logical_and_type);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and_both_true);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and_left_true);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and_right_true);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and_both_false);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and_push_mortal_leave_scope);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and_nagate);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and_assign);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_and_type);
   }
   
   # logical or
   {
-    ok(SPVM::TestCase::LogicalOperator->logical_or);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_both_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_left_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_right_true);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_both_false);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_assign);
-    ok(SPVM::TestCase::LogicalOperator->logical_or_type);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_or);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_or_both_true);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_or_left_true);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_or_right_true);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_or_both_false);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_or_assign);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_or_type);
   }
   
   # logical not
   {
-    ok(SPVM::TestCase::LogicalOperator->logical_not_operator);
-    ok(SPVM::TestCase::LogicalOperator->logical_not_false);
-    ok(SPVM::TestCase::LogicalOperator->logical_not_assign);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_not_operator);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_not_false);
+    ok(SPVM::TestCase::Operator::LogicalOperator->logical_not_assign);
   }
   
   # logical operator - combination
   {
-    ok(SPVM::TestCase::LogicalOperator->combination);
+    ok(SPVM::TestCase::Operator::LogicalOperator->combination);
   }
   
   # Extra
   {
-    ok(SPVM::TestCase::LogicalOperator->extra);
+    ok(SPVM::TestCase::Operator::LogicalOperator->extra);
   }
   
 }

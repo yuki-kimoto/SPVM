@@ -7,7 +7,7 @@ use warnings;
 use Test::More;
 
 use SPVM 'TestCase::TypeConversion';
-use SPVM 'TestCase::TypeCast';
+use SPVM 'TestCase::Operator::TypeCast';
 
 
 # Start objects count
@@ -147,10 +147,10 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 {
   # TypeCast
   {
-    ok(SPVM::TestCase::TypeCast->to_numeric_type);
-    ok(SPVM::TestCase::TypeCast->to_mulnum_type);
-    ok(SPVM::TestCase::TypeCast->to_reference_type);
-    ok(SPVM::TestCase::TypeCast->to_string);
+    ok(SPVM::TestCase::Operator::TypeCast->to_numeric_type);
+    ok(SPVM::TestCase::Operator::TypeCast->to_mulnum_type);
+    ok(SPVM::TestCase::Operator::TypeCast->to_reference_type);
+    ok(SPVM::TestCase::Operator::TypeCast->to_string);
   }
 }
 

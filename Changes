@@ -5,6 +5,8 @@
   [Internal Changes]
     * Remove REFCNT operation in syntax parsing.
     * Operations are reorder and renamed in syntax parsing.
+  [Test Cleanup]
+    * Cleanup tests for operators
 0.989092 2023-03-23
   [New Features]
     * Add the get_basic_types method to the Native::Runtime class.

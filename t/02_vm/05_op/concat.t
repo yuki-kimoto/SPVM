@@ -7,7 +7,7 @@ use utf8;
 
 use Test::More;
 
-use SPVM 'TestCase::Concat';
+use SPVM 'TestCase::Operator::Concat';
 
 
 
@@ -16,16 +16,16 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Concat
 {
-  ok(SPVM::TestCase::Concat->concat_empty_string);
-  ok(SPVM::TestCase::Concat->concat_string);
-  ok(SPVM::TestCase::Concat->concat_left_is_number);
-  ok(SPVM::TestCase::Concat->concat_right_is_number);
+  ok(SPVM::TestCase::Operator::Concat->concat_empty_string);
+  ok(SPVM::TestCase::Operator::Concat->concat_string);
+  ok(SPVM::TestCase::Operator::Concat->concat_left_is_number);
+  ok(SPVM::TestCase::Operator::Concat->concat_right_is_number);
 }
 
 # Concat exception
 {
-  ok(SPVM::TestCase::Concat->concat_left_is_undef);
-  ok(SPVM::TestCase::Concat->concat_right_is_undef);
+  ok(SPVM::TestCase::Operator::Concat->concat_left_is_undef);
+  ok(SPVM::TestCase::Operator::Concat->concat_right_is_undef);
 }
 
 # All object is freed

@@ -5,9 +5,9 @@ class TestCase::NativeAPI {
   use TestCase::Pointer;
   use TestCase::PointerChild;
   use TestCase::PointerEmpty;
-  use TestCase::AnonMethod::AnonMethod;
-  use TestCase::AnonMethod::ImplementAnonMethod1;
-  use TestCase::AnonMethod::ImplementAnonMethod2;
+  use TestCase::Operator::AnonMethod::AnonMethod;
+  use TestCase::Operator::AnonMethod::ImplementAnonMethod1;
+  use TestCase::Operator::AnonMethod::ImplementAnonMethod2;
   use Fn;
   use Array;
   use Error;
