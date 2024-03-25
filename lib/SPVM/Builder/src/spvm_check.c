@@ -3992,7 +3992,7 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
 
 int32_t SPVM_CHECK_get_var_index_by_type(SPVM_COMPILER* compiler, SPVM_LIST* runtime_vars, SPVM_VAR_DECL* var_decl) {
   
-  int32_t found_index_by_type = -1;
+  int32_t found_var_index_by_type = -1;
   
   SPVM_TYPE* var_decl_type = var_decl->type;
 
@@ -4000,11 +4000,11 @@ int32_t SPVM_CHECK_get_var_index_by_type(SPVM_COMPILER* compiler, SPVM_LIST* run
   
   // Search free memory
   int32_t found = 0;
-  for (int32_t index_by_type = 0; index_by_type < runtime_vars->length; index_by_type++) {
-    if (index_by_type + var_width <= runtime_vars->length) {
+  for (int32_t var_index_by_type = 0; var_index_by_type < runtime_vars->length; var_index_by_type++) {
+    if (var_index_by_type + var_width <= runtime_vars->length) {
       int32_t is_used = 0;
       for (int32_t i = 0; i < var_width; i++) {
-        int32_t var_decl_id = (intptr_t)SPVM_LIST_get(runtime_vars, index_by_type + i);
+        int32_t var_decl_id = (intptr_t)SPVM_LIST_get(runtime_vars, var_index_by_type + i);
         if (var_decl_id >= 0) {
           is_used = 1;
           break;
@@ -4012,9 +4012,9 @@ int32_t SPVM_CHECK_get_var_index_by_type(SPVM_COMPILER* compiler, SPVM_LIST* run
       }
       if (!is_used) {
         found = 1;
-        found_index_by_type = index_by_type;
+        found_var_index_by_type = var_index_by_type;
         for (int32_t i = 0; i < var_width; i++) {
-          runtime_vars->values[index_by_type + i] = (void*)(intptr_t)var_decl->index;
+          runtime_vars->values[var_index_by_type + i] = (void*)(intptr_t)var_decl->index;
         }
         break;
       }
@@ -4027,13 +4027,13 @@ int32_t SPVM_CHECK_get_var_index_by_type(SPVM_COMPILER* compiler, SPVM_LIST* run
   
   // Add stack
   if (!found) {
-    found_index_by_type = runtime_vars->length;
+    found_var_index_by_type = runtime_vars->length;
     for (int32_t i = 0; i < var_width; i++) {
       SPVM_LIST_push(runtime_vars, (void*)(intptr_t)var_decl->index);
     }
   }
   
-  return found_index_by_type;
+  return found_var_index_by_type;
 }
 
 SPVM_OP* SPVM_CHECK_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_TYPE* type, SPVM_METHOD* method, const char* file, int32_t line) {
