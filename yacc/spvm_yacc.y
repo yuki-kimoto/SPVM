@@ -30,27 +30,32 @@
 %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_classes classes class class_block version_decl
+%type <opval> field_name method_name class_name
+%type <opval> type qualified_type basic_type array_type class_type opt_class_type
+%type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
+%type <opval> opt_classes classes class class_block opt_extends version_decl
 %type <opval> opt_definitions definitions definition
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> method anon_method opt_args args arg use require alias our has has_for_anon_list has_for_anon
+%type <opval> method anon_method opt_args args arg use require class_alias our has has_for_anon_list has_for_anon interface allow
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
+%type <opval> die
+%type <opval> var_decl var
+%type <opval> operator opt_operators operators opt_operator
+%type <opval> void_return_operator warn 
 %type <opval> unary_operator array_length
-%type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation_operator logical_operator
-%type <opval> type_check
-%type <opval> call_method sequential
-%type <opval> array_access field_access weaken_field unweaken_field isweak_field convert
-%type <opval> assign inc dec allow can
-%type <opval> new array_init die warn opt_extends
-%type <opval> var_decl var interface union_type
-%type <opval> operator opt_operators operators opt_operator void_return_operator
-%type <opval> field_name method_name alias_name
-%type <opval> type qualified_type basic_type array_type class_type opt_class_type
-%type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
+%type <opval> inc dec
+%type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator
+%type <opval> assign
+%type <opval> new array_init
+%type <opval> type_check type_cast can
+%type <opval> call_method
+%type <opval> array_access field_access
+%type <opval> weaken_field unweaken_field isweak_field
+%type <opval> sequential
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
 %left <opval> LOGICAL_OR
@@ -70,6 +75,148 @@
 
 grammar
   : opt_classes
+
+field_name
+  : SYMBOL_NAME
+
+method_name
+  : SYMBOL_NAME
+
+class_name
+  : SYMBOL_NAME
+
+qualified_type
+  : type
+  | MUTABLE type {
+    $$ = SPVM_OP_build_mutable_type(compiler, $2);
+  }
+
+type
+  : basic_type
+  | array_type
+  | ref_type
+
+class_type
+  : basic_type
+
+basic_type
+  : SYMBOL_NAME
+    {
+      $$ = SPVM_OP_build_basic_type(compiler, $1);
+    }
+  | BYTE
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_byte_type(compiler, $1->file, $1->line);
+      
+      $$ = op_type;
+    }
+  | SHORT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_short_type(compiler, $1->file, $1->line);
+      
+      $$ = op_type;
+    }
+  | INT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, $1->file, $1->line);
+      
+      $$ = op_type;
+    }
+  | LONG
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_long_type(compiler, $1->file, $1->line);
+      
+      $$ = op_type;
+    }
+  | FLOAT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_float_type(compiler, $1->file, $1->line);
+      
+      $$ = op_type;
+    }
+  | DOUBLE
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_double_type(compiler, $1->file, $1->line);
+      
+      $$ = op_type;
+    }
+  | OBJECT
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
+      $$ = op_type;
+    }
+  | STRING
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_string_type(compiler, $1->file, $1->line);
+      
+      $$ = op_type;
+    }
+
+ref_type
+  : basic_type '*'
+    {
+      $$ = SPVM_OP_build_ref_type(compiler, $1);
+    }
+
+array_type
+  : basic_type '[' ']'
+    {
+      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
+    }
+  | array_type '[' ']'
+    {
+      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
+    }
+
+array_type_with_length
+  : basic_type '[' operator ']'
+    {
+      $$ = SPVM_OP_build_array_type(compiler, $1, $3);
+    }
+  | array_type '[' operator ']'
+    {
+      $$ = SPVM_OP_build_array_type(compiler, $1, $3);
+    }
+
+return_type
+  : qualified_type opt_type_comment
+  | VOID
+    {
+      $$ = SPVM_OP_new_op_void_type(compiler, compiler->current_file, compiler->current_line);
+    }
+
+opt_type_comment
+  : /* Empty */
+    {
+      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
+    }
+  | type_comment
+
+type_comment
+  : OF union_type
+    {
+      $$ = $2;
+    }
+
+union_type
+  : union_type BIT_OR type
+    {
+      SPVM_OP* op_list;
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
+      
+      $$ = op_list;
+    }
+  | type
+    {
+      $$ = $1;
+    }
 
 opt_classes
   : /* Empty */
@@ -184,7 +331,7 @@ definitions
 definition
   : version_decl
   | use
-  | alias
+  | class_alias
   | allow
   | interface
   | init_block
@@ -209,10 +356,10 @@ use
   : USE basic_type ';'
     {
       int32_t is_require = 0;
-      SPVM_OP* op_name_alias = NULL;
-      $$ = SPVM_OP_build_use(compiler, $1, $2, op_name_alias, is_require);
+      SPVM_OP* op_name_class_alias = NULL;
+      $$ = SPVM_OP_build_use(compiler, $1, $2, op_name_class_alias, is_require);
     }
-  | USE basic_type AS alias_name ';'
+  | USE basic_type AS class_name ';'
     {
       int32_t is_require = 0;
       $$ = SPVM_OP_build_use(compiler, $1, $2, $4, is_require);
@@ -226,8 +373,8 @@ require
       $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, is_require);
     }
 
-alias
-  : ALIAS basic_type AS alias_name ';'
+class_alias
+  : ALIAS basic_type AS class_name ';'
     {
       SPVM_OP* op_use = SPVM_OP_new_op_use(compiler, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_alias(compiler, op_use, $2, $4);
@@ -750,6 +897,22 @@ eval_block
       $$ = SPVM_OP_build_eval(compiler, $1, $2);
     }
 
+var_decl
+  : MY var ':' qualified_type opt_type_comment
+    {
+      $$ = SPVM_OP_build_var_decl(compiler, $1, $2, $4, NULL);
+    }
+  | MY var
+    {
+      $$ = SPVM_OP_build_var_decl(compiler, $1, $2, NULL, NULL);
+    }
+
+var
+  : VAR_NAME
+    {
+      $$ = SPVM_OP_build_var(compiler, $1);
+    }
+
 opt_operators
   : /* Empty */
     {
@@ -779,7 +942,7 @@ operator
   | EXCEPTION_VAR
   | CONSTANT
   | UNDEF
-  | convert
+  | type_cast
   | new
   | var_decl
   | EVAL_ERROR_ID
@@ -959,7 +1122,7 @@ binary_operator
   : arithmetic_operator
   | bit_operator
   | comparison_operator
-  | string_concatenation_operator
+  | string_concatenation
   | logical_operator
 
 arithmetic_operator
@@ -1079,7 +1242,7 @@ comparison_operator
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
 
-string_concatenation_operator
+string_concatenation
   : operator '.' operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
@@ -1119,6 +1282,28 @@ type_check
   | operator IS_COMPILE_TYPE type
     {
       $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
+    }
+
+type_cast
+  : '(' qualified_type ')' operator %prec CONVERT
+    {
+      SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, $2->file, $2->line);
+      $$ = SPVM_OP_build_type_cast(compiler, op_type_cast, $2, $4, NULL);
+    }
+  | operator ARROW '(' qualified_type ')' %prec CONVERT
+    {
+      SPVM_OP* op_type_cast = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, $4->file, $4->line);
+      $$ = SPVM_OP_build_type_cast(compiler, op_type_cast, $4, $1, NULL);
+    }
+
+can
+  : operator CAN method_name
+    {
+      $$ = SPVM_OP_build_can(compiler, $2, $1, $3);
+    }
+  | operator CAN CONSTANT
+    {
+      $$ = SPVM_OP_build_can(compiler, $2, $1, $3);
     }
 
 assign
@@ -1166,18 +1351,6 @@ array_init
       int32_t is_key_values = 1;
       SPVM_OP* op_list_elements = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
       $$ = SPVM_OP_build_array_init(compiler, op_array_init, op_list_elements, is_key_values);
-    }
-
-convert
-  : '(' qualified_type ')' operator %prec CONVERT
-    {
-      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, $2->file, $2->line);
-      $$ = SPVM_OP_build_type_cast(compiler, op_convert, $2, $4, NULL);
-    }
-  | operator ARROW '(' qualified_type ')' %prec CONVERT
-    {
-      SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_TYPE_CAST, $4->file, $4->line);
-      $$ = SPVM_OP_build_type_cast(compiler, op_convert, $4, $1, NULL);
     }
 
 call_method
@@ -1279,173 +1452,5 @@ isweak_field
       SPVM_OP_build_field_access(compiler, op_field_access, $2, $5);
       $$ = SPVM_OP_build_isweak_field(compiler, $1, op_field_access);
     }
-
-can
-  : operator CAN method_name
-    {
-      $$ = SPVM_OP_build_can(compiler, $2, $1, $3);
-    }
-  | operator CAN CONSTANT
-    {
-      $$ = SPVM_OP_build_can(compiler, $2, $1, $3);
-    }
-
-var_decl
-  : MY var ':' qualified_type opt_type_comment
-    {
-      $$ = SPVM_OP_build_var_decl(compiler, $1, $2, $4, NULL);
-    }
-  | MY var
-    {
-      $$ = SPVM_OP_build_var_decl(compiler, $1, $2, NULL, NULL);
-    }
-
-var
-  : VAR_NAME
-    {
-      $$ = SPVM_OP_build_var(compiler, $1);
-    }
-
-qualified_type
-  : type
-  | MUTABLE type {
-    $$ = SPVM_OP_build_mutable_type(compiler, $2);
-  }
-
-type
-  : basic_type
-  | array_type
-  | ref_type
-
-class_type
-  : basic_type
-
-basic_type
-  : SYMBOL_NAME
-    {
-      $$ = SPVM_OP_build_basic_type(compiler, $1);
-    }
-  | BYTE
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_byte_type(compiler, $1->file, $1->line);
-      
-      $$ = op_type;
-    }
-  | SHORT
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_short_type(compiler, $1->file, $1->line);
-      
-      $$ = op_type;
-    }
-  | INT
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, $1->file, $1->line);
-      
-      $$ = op_type;
-    }
-  | LONG
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_long_type(compiler, $1->file, $1->line);
-      
-      $$ = op_type;
-    }
-  | FLOAT
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_float_type(compiler, $1->file, $1->line);
-      
-      $$ = op_type;
-    }
-  | DOUBLE
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_double_type(compiler, $1->file, $1->line);
-      
-      $$ = op_type;
-    }
-  | OBJECT
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_any_object_type(compiler, $1->file, $1->line);
-      $$ = op_type;
-    }
-  | STRING
-    {
-      SPVM_OP* op_type = SPVM_OP_new_op_string_type(compiler, $1->file, $1->line);
-      
-      $$ = op_type;
-    }
-
-ref_type
-  : basic_type '*'
-    {
-      $$ = SPVM_OP_build_ref_type(compiler, $1);
-    }
-
-array_type
-  : basic_type '[' ']'
-    {
-      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
-    }
-  | array_type '[' ']'
-    {
-      $$ = SPVM_OP_build_array_type(compiler, $1, NULL);
-    }
-
-array_type_with_length
-  : basic_type '[' operator ']'
-    {
-      $$ = SPVM_OP_build_array_type(compiler, $1, $3);
-    }
-  | array_type '[' operator ']'
-    {
-      $$ = SPVM_OP_build_array_type(compiler, $1, $3);
-    }
-
-return_type
-  : qualified_type opt_type_comment
-  | VOID
-    {
-      $$ = SPVM_OP_new_op_void_type(compiler, compiler->current_file, compiler->current_line);
-    }
-
-opt_type_comment
-  : /* Empty */
-    {
-      $$ = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DO_NOTHING, compiler->current_file, compiler->current_line);
-    }
-  | type_comment
-
-type_comment
-  : OF union_type
-    {
-      $$ = $2;
-    }
-
-union_type
-  : union_type BIT_OR type
-    {
-      SPVM_OP* op_list;
-      if ($1->id == SPVM_OP_C_ID_LIST) {
-        op_list = $1;
-      }
-      else {
-        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
-      }
-      SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
-      
-      $$ = op_list;
-    }
-  | type
-    {
-      $$ = $1;
-    }
-
-field_name
-  : SYMBOL_NAME
-
-method_name
-  : SYMBOL_NAME
-
-alias_name
-  : SYMBOL_NAME
 
 %%
