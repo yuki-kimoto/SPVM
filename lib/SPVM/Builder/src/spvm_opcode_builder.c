@@ -621,10 +621,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               {
                 
                 int32_t opcode_index = opcode_list->length;
-
+                
                 SPVM_OPCODE opcode = {0};
                 
-
                 if (op_cur->id == SPVM_OP_C_ID_CONDITION) {
                   SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EQ_ZERO);
                 }
@@ -642,6 +641,10 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   
                   opcode.operand0 = loop_first_goto_opcode_index + 1;
                 }
+                
+                int32_t typed_var_index_in = SPVM_OPCODE_BUILDER_get_typed_var_index(compiler, op_cur->first);
+                
+                opcode.operand1 = typed_var_index_in;
                 
                 SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                 

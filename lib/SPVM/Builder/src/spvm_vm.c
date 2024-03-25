@@ -198,14 +198,14 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         continue;
       }
       case SPVM_OPCODE_C_ID_IF_EQ_ZERO: {
-        if (int_vars[0] == 0) {
+        if (int_vars[opcode->operand1] == 0) {
           opcode_rel_index = opcode->operand0;
           continue;
         }
         break;
       }
       case SPVM_OPCODE_C_ID_IF_NE_ZERO: {
-        if (int_vars[0] != 0) {
+        if (int_vars[opcode->operand1] != 0) {
           opcode_rel_index = opcode->operand0;
           continue;
         }
