@@ -22,25 +22,32 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
   %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
   %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
-  %type <opval> opt_classes classes class class_block version_decl
+  %type <opval> field_name method_name class_name
+  %type <opval> type qualified_type basic_type array_type class_type opt_class_type
+  %type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
+  %type <opval> opt_classes classes class class_block opt_extends version_decl
   %type <opval> opt_definitions definitions definition
   %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-  %type <opval> method anon_method opt_args args arg use require alias our has has_for_anon_list has_for_anon
+  %type <opval> method anon_method opt_args args arg use require class_alias our has has_for_anon_list has_for_anon interface allow
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
   %type <opval> for_statement while_statement foreach_statement
   %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
   %type <opval> block eval_block init_block switch_block if_require_statement
-  %type <opval> unary_operator binary_operator comparison_operator isa isa_error is_type is_error is_compile_type
+  %type <opval> die
+  %type <opval> var_decl var
+  %type <opval> operator opt_operators operators opt_operator
+  %type <opval> void_return_operator warn
+  %type <opval> unary_operator array_length
+  %type <opval> inc dec
+  %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation logical_operator
+  %type <opval> assign
+  %type <opval> new array_init
+  %type <opval> type_check type_cast can
   %type <opval> call_method
-  %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-  %type <opval> assign inc dec allow can
-  %type <opval> new array_init die warn opt_extends
-  %type <opval> var_decl var interface union_type
-  %type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
-  %type <opval> field_name method_name alias_name is_read_only
-  %type <opval> type qualified_type basic_type array_type class_type opt_class_type
-  %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
+  %type <opval> array_access field_access
+  %type <opval> weaken_field unweaken_field isweak_field
+  %type <opval> sequential
   %right <opval> ASSIGN SPECIAL_ASSIGN
   %left <opval> LOGICAL_OR
   %left <opval> LOGICAL_AND
@@ -57,6 +64,64 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
 
   grammar
     : opt_classes
+
+  field_name
+    : SYMBOL_NAME
+
+  method_name
+    : SYMBOL_NAME
+
+  class_name
+    : SYMBOL_NAME
+
+  qualified_type
+    : type
+    | MUTABLE type {
+
+  type
+    : basic_type
+    | array_type
+    | ref_type
+
+  class_type
+    : basic_type
+
+  basic_type
+    : SYMBOL_NAME
+    | BYTE
+    | SHORT
+    | INT
+    | LONG
+    | FLOAT
+    | DOUBLE
+    | OBJECT
+    | STRING
+
+  ref_type
+    : basic_type '*'
+
+  array_type
+    : basic_type '[' ']'
+    | array_type '[' ']'
+
+  array_type_with_length
+    : basic_type '[' operator ']'
+    | array_type '[' operator ']'
+
+  return_type
+    : qualified_type opt_type_comment
+    | VOID
+
+  opt_type_comment
+    : /* Empty */
+    | type_comment
+
+  type_comment
+    : OF union_type
+
+  union_type
+    : union_type BIT_OR type
+    | type
 
   opt_classes
     : /* Empty */
@@ -94,7 +159,7 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
   definition
     : version_decl
     | use
-    | alias
+    | class_alias
     | allow
     | interface
     | init_block
@@ -111,13 +176,13 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
 
   use
     : USE basic_type ';'
-    | USE basic_type AS alias_name ';'
+    | USE basic_type AS class_name ';'
 
   require
     : REQUIRE basic_type
 
-  alias
-    : ALIAS basic_type AS alias_name ';'
+  class_alias
+    : ALIAS basic_type AS class_name ';'
 
   allow
     : ALLOW basic_type ';'
@@ -291,6 +356,13 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
   eval_block
     : EVAL block
 
+  var_decl
+    : MY var ':' qualified_type opt_type_comment
+    | MY var
+
+  var
+    : VAR_NAME
+
   opt_operators
     : /* Empty */
     | operators
@@ -304,36 +376,31 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
     | EXCEPTION_VAR
     | CONSTANT
     | UNDEF
-    | call_method
-    | field_access
-    | array_access
-    | convert
+    | type_cast
     | new
-    | array_init
-    | array_length
     | var_decl
+    | EVAL_ERROR_ID
+    | ARGS_WIDTH
+    | TRUE
+    | FALSE
+    | CURRENT_CLASS_NAME
     | unary_operator
     | binary_operator
     | assign
     | inc
     | dec
-    | '(' operators ')'
-    | CURRENT_CLASS_NAME
-    | isweak_field
-    | comparison_operator
-    | isa
-    | isa_error
-    | is_type
-    | is_error
-    | is_compile_type
-    | TRUE
-    | FALSE
-    | is_read_only
-    | can
-    | logical_operator
+    | type_check
     | BASIC_TYPE_ID type
-    | EVAL_ERROR_ID
-    | ARGS_WIDTH
+    | can
+    | array_init
+    | array_access
+    | field_access
+    | isweak_field
+    | call_method
+    | sequential
+
+  sequential
+    : '(' operators ')'
 
   operators
     : operators ',' operator
@@ -353,9 +420,14 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
     | CREATE_REF operator
     | NEW_STRING_LEN operator
     | COPY operator
+    | IS_READ_ONLY operator
+    | array_length
 
-  is_read_only
-    : IS_READ_ONLY operator
+  array_length
+    : '@' operator
+    | '@' '{' operator '}'
+    | SCALAR '@' operator
+    | SCALAR '@' '{' operator '}'
 
   inc
     : INC operator
@@ -366,6 +438,13 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
     | operator DEC
 
   binary_operator
+    : arithmetic_operator
+    | bit_operator
+    | comparison_operator
+    | string_concatenation
+    | logical_operator
+
+  arithmetic_operator
     : operator '+' operator
     | operator '-' operator
     | operator '*' operator
@@ -375,11 +454,12 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
     | operator MODULO operator
     | operator MODULO_UNSIGNED_INT operator
     | operator MODULO_UNSIGNED_LONG operator
-    | operator BIT_XOR operator
+
+  bit_operator
+    : operator BIT_XOR operator
     | operator BIT_AND operator
     | operator BIT_OR operator
     | operator SHIFT operator
-    | operator '.' operator
 
   comparison_operator
     : operator NUMEQ operator
@@ -397,25 +477,28 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
     | operator STRLE operator
     | operator STRING_CMP operator
 
-  isa
-    : operator ISA type
-
-  isa_error
-    : operator ISA_ERROR type
-
-  is_type
-    : operator IS_TYPE type
-
-  is_error
-    : operator IS_ERROR type
-
-  is_compile_type
-    : operator IS_COMPILE_TYPE type
+  string_concatenation
+    : operator '.' operator
 
   logical_operator
     : operator LOGICAL_OR operator
     | operator LOGICAL_AND operator
     | LOGICAL_NOT operator
+
+  type_check
+    : operator ISA type
+    | operator ISA_ERROR type
+    | operator IS_TYPE type
+    | operator IS_ERROR type
+    | operator IS_COMPILE_TYPE type
+
+  type_cast
+    : '(' qualified_type ')' operator %prec CONVERT
+    | operator ARROW '(' qualified_type ')' %prec CONVERT
+
+  can
+    : operator CAN method_name
+    | operator CAN CONSTANT
 
   assign
     : operator ASSIGN operator
@@ -430,10 +513,6 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
     : '[' opt_operators ']'
     | '{' operators '}'
     | '{' '}'
-
-  convert
-    : '(' qualified_type ')' operator %prec CONVERT
-    | operator ARROW '(' qualified_type ')' %prec CONVERT
 
   call_method
     : CURRENT_CLASS SYMBOL_NAME '(' opt_operators  ')'
@@ -462,81 +541,6 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
 
   isweak_field
     : ISWEAK var ARROW '{' field_name '}'
-
-  can
-    : operator CAN method_name
-    | operator CAN CONSTANT
-
-  array_length
-    : '@' operator
-    | '@' '{' operator '}'
-    | SCALAR '@' operator
-    | SCALAR '@' '{' operator '}'
-
-  var_decl
-    : MY var ':' qualified_type opt_type_comment
-    | MY var
-
-  var
-    : VAR_NAME
-
-  qualified_type
-    : type
-    | MUTABLE type {
-
-  type
-    : basic_type
-    | array_type
-    | ref_type
-
-  class_type
-    : basic_type
-
-  basic_type
-    : SYMBOL_NAME
-    | BYTE
-    | SHORT
-    | INT
-    | LONG
-    | FLOAT
-    | DOUBLE
-    | OBJECT
-    | STRING
-
-  ref_type
-    : basic_type '*'
-
-  array_type
-    : basic_type '[' ']'
-    | array_type '[' ']'
-
-  array_type_with_length
-    : basic_type '[' operator ']'
-    | array_type '[' operator ']'
-
-  return_type
-    : qualified_type opt_type_comment
-    | VOID
-
-  opt_type_comment
-    : /* Empty */
-    | type_comment
-
-  type_comment
-    : OF union_type
-
-  union_type
-    : union_type BIT_OR type
-    | type
-
-  field_name
-    : SYMBOL_NAME
-
-  method_name
-    : SYMBOL_NAME
-
-  alias_name
-    : SYMBOL_NAME
 
 =head2 Syntax Parsing Token
 
