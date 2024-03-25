@@ -39,13 +39,14 @@
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
-%type <opval> unary_operator binary_operator isa isa_error is_type is_error is_compile_type
+%type <opval> unary_operator isa isa_error is_type is_error is_compile_type
+%type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation_operator logical_operator
 %type <opval> call_method
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow can
 %type <opval> new array_init die warn opt_extends
 %type <opval> var_decl var interface union_type
-%type <opval> operator opt_operators operators opt_operator logical_operator void_return_operator
+%type <opval> operator opt_operators operators opt_operator void_return_operator
 %type <opval> field_name method_name alias_name
 %type <opval> type qualified_type basic_type array_type class_type opt_class_type
 %type <opval> array_type_with_length ref_type  return_type type_comment opt_type_comment
@@ -783,7 +784,6 @@ operator
   | convert
   | new
   | array_init
-  | array_length
   | var_decl
   | unary_operator
   | binary_operator
@@ -822,7 +822,6 @@ operator
       $$ = SPVM_OP_new_op_false(compiler, $1);
     }
   | can
-  | logical_operator
   | BASIC_TYPE_ID type
     {
       $$ = SPVM_OP_build_basic_type_id(compiler, $1, $2);
@@ -909,6 +908,29 @@ unary_operator
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
+  | array_length
+
+array_length
+  : '@' operator
+    {
+      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $2);
+    }
+  | '@' '{' operator '}'
+    {
+      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $3);
+    }
+  | SCALAR '@' operator
+    {
+      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $3);
+    }
+  | SCALAR '@' '{' operator '}'
+    {
+      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $4);
+    }
 
 inc
   : INC operator
@@ -935,6 +957,13 @@ dec
     }
 
 binary_operator
+  : arithmetic_operator
+  | bit_operator
+  | comparison_operator
+  | string_concatenation_operator
+  | logical_operator
+
+arithmetic_operator
   : operator '+' operator
     {
       SPVM_OP* operator = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ADD, $2->file, $2->line);
@@ -974,7 +1003,9 @@ binary_operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | operator BIT_XOR operator
+
+bit_operator
+  : operator BIT_XOR operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
@@ -990,11 +1021,9 @@ binary_operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | operator '.' operator
-    {
-      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
-    }
-  | operator NUMEQ operator
+
+comparison_operator
+  : operator NUMEQ operator
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
@@ -1051,6 +1080,26 @@ binary_operator
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
 
+string_concatenation_operator
+  : operator '.' operator
+    {
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+    }
+
+logical_operator
+  : operator LOGICAL_OR operator
+    {
+      $$ = SPVM_OP_build_logical_or(compiler, $2, $1, $3);
+    }
+  | operator LOGICAL_AND operator
+    {
+      $$ = SPVM_OP_build_logical_and(compiler, $2, $1, $3);
+    }
+  | LOGICAL_NOT operator
+    {
+      $$ = SPVM_OP_build_logical_not(compiler, $1, $2);
+    }
+
 isa
   : operator ISA type
     {
@@ -1081,20 +1130,6 @@ is_compile_type
       $$ = SPVM_OP_build_is_compile_type(compiler, $2, $1, $3);
     }
     
-logical_operator
-  : operator LOGICAL_OR operator
-    {
-      $$ = SPVM_OP_build_logical_or(compiler, $2, $1, $3);
-    }
-  | operator LOGICAL_AND operator
-    {
-      $$ = SPVM_OP_build_logical_and(compiler, $2, $1, $3);
-    }
-  | LOGICAL_NOT operator
-    {
-      $$ = SPVM_OP_build_logical_not(compiler, $1, $2);
-    }
-
 assign
   : operator ASSIGN operator
     {
@@ -1262,28 +1297,6 @@ can
   | operator CAN CONSTANT
     {
       $$ = SPVM_OP_build_can(compiler, $2, $1, $3);
-    }
-
-array_length
-  : '@' operator
-    {
-      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $2);
-    }
-  | '@' '{' operator '}'
-    {
-      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $3);
-    }
-  | SCALAR '@' operator
-    {
-      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $3);
-    }
-  | SCALAR '@' '{' operator '}'
-    {
-      SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_array_length(compiler, op_array_length, $4);
     }
 
 var_decl
