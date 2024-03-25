@@ -93,6 +93,7 @@
 
 
 
+
 const char* const* SPVM_OP_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
@@ -107,6 +108,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "EXTENDS",
     "CLASS_BLOCK",
     "END_OF_FILE",
+    "VERSION_DECL",
     "IF",
     "UNLESS",
     "ELSIF",
@@ -124,7 +126,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "LOOP_INCREMENT",
     "LAST",
     "NEXT",
-    "MY",
+    "VAR_DECL",
     "FIELD",
     "METHOD",
     "ENUM",
@@ -152,25 +154,31 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "IF_REQUIRE",
     "INIT",
     "INTERFACE",
+    "ALLOW",
+    "DIE",
     "RETURN",
     "CONSTANT",
+    "MINUS",
+    "PLUS",
     "INC",
     "DEC",
     "PRE_INC",
     "POST_INC",
     "PRE_DEC",
     "POST_DEC",
-    "MINUS",
-    "PLUS",
     "ADD",
     "SUBTRACT",
     "MULTIPLY",
     "DIVIDE",
+    "DIVIDE_UNSIGNED_INT",
+    "DIVIDE_UNSIGNED_LONG",
     "BIT_AND",
     "BIT_OR",
     "BIT_XOR",
     "BIT_NOT",
     "MODULO",
+    "MODULO_UNSIGNED_INT",
+    "MODULO_UNSIGNED_LONG",
     "LEFT_SHIFT",
     "RIGHT_ARITHMETIC_SHIFT",
     "RIGHT_LOGICAL_SHIFT",
@@ -179,27 +187,17 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "LOGICAL_NOT",
     "ARRAY_ACCESS",
     "ASSIGN",
-    "CALL_METHOD",
     "FIELD_ACCESS",
     "VAR",
-    "TYPE_CAST",
     "UNDEF",
     "ARRAY_LENGTH",
-    "DIE",
+    "SCALAR",
     "EXCEPTION_VAR",
-    "NEW",
-    "WEAKEN",
-    "WEAKEN_FIELD",
-    "UNWEAKEN",
-    "UNWEAKEN_FIELD",
-    "ISWEAK",
-    "ISWEAK_FIELD",
     "SPECIAL_ASSIGN",
+    "STRING_LENGTH",
     "STRING_CONCAT",
     "CLASS_VAR",
     "CLASS_VAR_ACCESS",
-    "ARRAY_INIT",
-    "BOOL",
     "NUMERIC_COMPARISON_EQ",
     "NUMERIC_COMPARISON_NE",
     "NUMERIC_COMPARISON_LT",
@@ -214,42 +212,43 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "STRING_COMPARISON_LT",
     "STRING_COMPARISON_LE",
     "STRING_COMPARISON_CMP",
+    "ARRAY_FIELD_ACCESS",
+    "NEW",
+    "ARRAY_INIT",
+    "WARN",
+    "PRINT",
+    "SAY",
+    "DUMP",
+    "TRUE",
+    "FALSE",
+    "NEW_STRING_LEN",
+    "IS_READ_ONLY",
+    "MAKE_READ_ONLY",
+    "COPY",
+    "TYPE_CAST",
+    "BOOL",
     "ISA",
     "ISA_ERROR",
     "IS_TYPE",
     "IS_ERROR",
     "IS_COMPILE_TYPE",
-    "SEQUENCE",
-    "SCALAR",
-    "ARRAY_FIELD_ACCESS",
-    "REFERENCE",
-    "DEREF",
-    "STRING_LENGTH",
-    "CURRENT_CLASS_NAME",
-    "ALLOW",
-    "WARN",
-    "PRINT",
-    "SAY",
-    "TYPE_NAME",
-    "COMPILE_TYPE_NAME",
-    "DUMP",
-    "TRUE",
-    "FALSE",
-    "DIVIDE_UNSIGNED_INT",
-    "DIVIDE_UNSIGNED_LONG",
-    "MODULO_UNSIGNED_INT",
-    "MODULO_UNSIGNED_LONG",
-    "NEW_STRING_LEN",
-    "IS_READ_ONLY",
-    "MAKE_READ_ONLY",
-    "COPY",
     "CAN",
     "BASIC_TYPE_ID",
-    "DIE_ERROR_ID",
-    "SET_DIE_ERROR_ID",
-    "EVAL_ERROR_ID",
+    "TYPE_NAME",
+    "COMPILE_TYPE_NAME",
+    "CURRENT_CLASS_NAME",
     "ARGS_WIDTH",
-    "VERSION",
+    "CALL_METHOD",
+    "WEAKEN",
+    "WEAKEN_FIELD",
+    "UNWEAKEN",
+    "UNWEAKEN_FIELD",
+    "ISWEAK",
+    "ISWEAK_FIELD",
+    "REFERENCE",
+    "DEREFERENCE",
+    "EVAL_ERROR_ID",
+    "SEQUENCE",
   };
   
   return id_names;
@@ -2628,7 +2627,7 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
     SPVM_OP* op_dist_clone = op_var_clone;
     SPVM_OP_build_assign(compiler, op_assign_update, op_dist_clone, op_culc);
   }
-  else if (op_dist->id == SPVM_OP_C_ID_DEREF) {
+  else if (op_dist->id == SPVM_OP_C_ID_DEREFERENCE) {
     SPVM_OP_build_assign(compiler, op_assign_save_old, op_var_old, op_dist);
     SPVM_OP* op_deref = op_dist;
     SPVM_OP* op_var_deref = op_deref->first;
@@ -3322,7 +3321,7 @@ SPVM_OP* SPVM_OP_clone_op_array_field_access(SPVM_COMPILER* compiler, SPVM_OP* o
 
 SPVM_OP* SPVM_OP_clone_op_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_var) {
   
-  SPVM_OP* op_deref_clone = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEREF, op_deref->file, op_deref->line);
+  SPVM_OP* op_deref_clone = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_DEREFERENCE, op_deref->file, op_deref->line);
   
   SPVM_OP* op_var_clone = SPVM_OP_clone_op_var(compiler, op_var);
   
@@ -3671,7 +3670,7 @@ int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
     case SPVM_OP_C_ID_ARRAY_ACCESS:
     case SPVM_OP_C_ID_FIELD_ACCESS:
-    case SPVM_OP_C_ID_DEREF:
+    case SPVM_OP_C_ID_DEREFERENCE:
     case SPVM_OP_C_ID_EXCEPTION_VAR:
     case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
       return 1;

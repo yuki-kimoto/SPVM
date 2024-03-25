@@ -1987,7 +1987,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       break;
                     }
-                    case SPVM_OP_C_ID_DEREF : {
+                    case SPVM_OP_C_ID_DEREFERENCE : {
                       SPVM_TYPE* src_type = SPVM_CHECK_get_type(compiler, op_assign_src);
                       
                       if (SPVM_TYPE_is_mulnum_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -2093,7 +2093,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_ID_CREATE_REF : {
+                    case SPVM_OP_C_ID_REFERENCE : {
                       
                       SPVM_OPCODE opcode = {0};
                       
@@ -4646,7 +4646,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   }
                 }
                 // $$var_ref = $var
-                else if (op_assign_dist->id == SPVM_OP_C_ID_DEREF) {
+                else if (op_assign_dist->id == SPVM_OP_C_ID_DEREFERENCE) {
                   SPVM_OP* op_deref = op_assign_dist;
 
                   SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_deref->first);
@@ -5291,10 +5291,10 @@ int32_t SPVM_OPCODE_BUILDER_get_typed_var_index(SPVM_COMPILER* compiler, SPVM_OP
       else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
         op_var = SPVM_OPCODE_BUILDER_get_op_var(compiler, op->last);
       }
-      else if (op->id == SPVM_OP_C_ID_CREATE_REF) {
+      else if (op->id == SPVM_OP_C_ID_REFERENCE) {
         op_var = SPVM_OPCODE_BUILDER_get_op_var(compiler, op->first);
       }
-      else if (op->id == SPVM_OP_C_ID_DEREF) {
+      else if (op->id == SPVM_OP_C_ID_DEREFERENCE) {
         op_var = SPVM_OPCODE_BUILDER_get_op_var(compiler, op->first);
       }
       else {
@@ -5329,10 +5329,10 @@ SPVM_OP* SPVM_OPCODE_BUILDER_get_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
     op_var = SPVM_OPCODE_BUILDER_get_op_var(compiler, op->last);
   }
-  else if (op->id == SPVM_OP_C_ID_CREATE_REF) {
+  else if (op->id == SPVM_OP_C_ID_REFERENCE) {
     op_var = SPVM_OPCODE_BUILDER_get_op_var(compiler, op->first);
   }
-  else if (op->id == SPVM_OP_C_ID_DEREF) {
+  else if (op->id == SPVM_OP_C_ID_DEREFERENCE) {
     op_var = SPVM_OPCODE_BUILDER_get_op_var(compiler, op->first);
   }
   else {
