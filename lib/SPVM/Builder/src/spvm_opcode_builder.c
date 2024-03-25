@@ -4141,43 +4141,43 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       SPVM_OPCODE_LIST_push_opcode(compiler, opcode_list, &opcode);
                       break;
                     }
-                    case SPVM_OP_C_ID_STRING_EQ:
-                    case SPVM_OP_C_ID_STRING_NE:
-                    case SPVM_OP_C_ID_STRING_GT:
-                    case SPVM_OP_C_ID_STRING_GE:
-                    case SPVM_OP_C_ID_STRING_LT:
-                    case SPVM_OP_C_ID_STRING_LE:
-                    case SPVM_OP_C_ID_STRING_CMP:
+                    case SPVM_OP_C_ID_STRING_COMPARISON_EQ:
+                    case SPVM_OP_C_ID_STRING_COMPARISON_NE:
+                    case SPVM_OP_C_ID_STRING_COMPARISON_GT:
+                    case SPVM_OP_C_ID_STRING_COMPARISON_GE:
+                    case SPVM_OP_C_ID_STRING_COMPARISON_LT:
+                    case SPVM_OP_C_ID_STRING_COMPARISON_LE:
+                    case SPVM_OP_C_ID_STRING_COMPARISON_CMP:
                     {
                       SPVM_OPCODE opcode = {0};
                       
                       
                       switch (op_assign_src->id) {
-                        case SPVM_OP_C_ID_STRING_EQ: {
+                        case SPVM_OP_C_ID_STRING_COMPARISON_EQ: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_EQ);
                           break;
                         }
-                        case SPVM_OP_C_ID_STRING_NE: {
+                        case SPVM_OP_C_ID_STRING_COMPARISON_NE: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_NE);
                           break;
                         }
-                        case SPVM_OP_C_ID_STRING_GT: {
+                        case SPVM_OP_C_ID_STRING_COMPARISON_GT: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_GT);
                           break;
                         }
-                        case SPVM_OP_C_ID_STRING_GE: {
+                        case SPVM_OP_C_ID_STRING_COMPARISON_GE: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_GE);
                           break;
                         }
-                        case SPVM_OP_C_ID_STRING_LT: {
+                        case SPVM_OP_C_ID_STRING_COMPARISON_LT: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LT);
                           break;
                         }
-                        case SPVM_OP_C_ID_STRING_LE: {
+                        case SPVM_OP_C_ID_STRING_COMPARISON_LE: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LE);
                           break;
                         }
-                        case SPVM_OP_C_ID_STRING_CMP: {
+                        case SPVM_OP_C_ID_STRING_COMPARISON_CMP: {
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_CMP);
                           break;
                         }
