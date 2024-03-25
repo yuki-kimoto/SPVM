@@ -1570,10 +1570,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
 
     // Add condition_flag variable to first of block
     {
-      char* name = "$.condition_flag";
-      SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
-      op_name->uv.name = name;
-      SPVM_OP* op_var = SPVM_OP_build_var(compiler, op_name);
+      SPVM_OP* op_var = SPVM_OP_new_op_var_condition_flag(compiler, op_list_statement->file, op_list_statement->last->line + 1);
       SPVM_OP* op_var_decl = SPVM_OP_new_op_var_decl(compiler, op_list_statement->file, op_list_statement->last->line + 1);
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op_list_statement->file, op_list_statement->line);
       op_var = SPVM_OP_build_var_decl(compiler, op_var_decl, op_var, op_type, NULL);
