@@ -2789,22 +2789,22 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
   return op_sequence;
 }
 
-SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_left_operand) {
+SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op_operand) {
   
-  SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_left_operand);
+  SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_operand);
   
-  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_left_operand->file, op_left_operand->line);
-  op_inc = SPVM_OP_build_special_assign(compiler, op_inc, op_left_operand, op_constant);
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_operand->file, op_operand->line);
+  op_inc = SPVM_OP_build_special_assign(compiler, op_inc, op_operand, op_constant);
   
   return op_inc;
 }
 
-SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op_left_operand) {
+SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op_operand) {
   
-  SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_left_operand);
+  SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_operand);
   
-  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_left_operand->file, op_left_operand->line);
-  op_dec = SPVM_OP_build_special_assign(compiler, op_dec, op_left_operand, op_constant);
+  SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_operand->file, op_operand->line);
+  op_dec = SPVM_OP_build_special_assign(compiler, op_dec, op_operand, op_constant);
   
   return op_dec;
 }
@@ -2891,7 +2891,7 @@ SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_o
   return op_bool;
 }
 
-SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_logical_not, SPVM_OP* op_left_operand) {
+SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_logical_not, SPVM_OP* op_operand) {
   
   /*
     [Before]
@@ -2939,7 +2939,7 @@ SPVM_OP* SPVM_OP_build_logical_not(SPVM_COMPILER* compiler, SPVM_OP* op_logical_
   SPVM_OP_build_assign(compiler, op_assign_true, op_var_true, op_constant_true);
   
   int32_t no_scope = 1;
-  SPVM_OP_build_if_statement(compiler, op_if, op_left_operand, op_assign_false, op_assign_true, no_scope);
+  SPVM_OP_build_if_statement(compiler, op_if, op_operand, op_assign_false, op_assign_true, no_scope);
   
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_if);
   
