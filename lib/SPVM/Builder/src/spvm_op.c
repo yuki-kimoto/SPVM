@@ -2449,45 +2449,20 @@ SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, 
   return op_unary;
 }
 
-SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_operand, SPVM_OP* op_type) {
-  
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_operand);
-  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_type);
-  
-  return op_is;
-}
-
-SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_operand, SPVM_OP* op_type) {
-  
-  return SPVM_OP_build_type_check(compiler, op_isa, op_operand, op_type);
-}
-
-SPVM_OP* SPVM_OP_build_isa_error(SPVM_COMPILER* compiler, SPVM_OP* op_isa_error, SPVM_OP* op_operand, SPVM_OP* op_type) {
-  
-  return SPVM_OP_build_type_check(compiler, op_isa_error, op_operand, op_type);
-}
-
-SPVM_OP* SPVM_OP_build_is_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_type, SPVM_OP* op_operand, SPVM_OP* op_type) {
-  
-  return SPVM_OP_build_type_check(compiler, op_is_type, op_operand, op_type);
-}
-
-SPVM_OP* SPVM_OP_build_is_error(SPVM_COMPILER* compiler, SPVM_OP* op_is_error, SPVM_OP* op_operand, SPVM_OP* op_type) {
-  
-  return SPVM_OP_build_type_check(compiler, op_is_error, op_operand, op_type);
-}
-
-SPVM_OP* SPVM_OP_build_is_compile_type(SPVM_COMPILER* compiler, SPVM_OP* op_is_compile_type, SPVM_OP* op_operand, SPVM_OP* op_compile_type) {
-  
-  return SPVM_OP_build_type_check(compiler, op_is_compile_type, op_operand, op_compile_type);
-}
-
 SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand) {
   
   SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_left_operand);
   SPVM_OP_insert_child(compiler, op_bin, op_bin->last, op_right_operand);
   
   return op_bin;
+}
+
+SPVM_OP* SPVM_OP_build_type_check(SPVM_COMPILER* compiler, SPVM_OP* op_is, SPVM_OP* op_operand, SPVM_OP* op_type) {
+  
+  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_operand);
+  SPVM_OP_insert_child(compiler, op_is, op_is->last, op_type);
+  
+  return op_is;
 }
 
 SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_special_assign, SPVM_OP* op_dist, SPVM_OP* op_src) {

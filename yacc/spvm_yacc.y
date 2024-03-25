@@ -39,8 +39,9 @@
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
-%type <opval> unary_operator isa isa_error is_type is_error is_compile_type
+%type <opval> unary_operator
 %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation_operator logical_operator
+%type <opval> type_check
 %type <opval> call_method
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow can
@@ -790,6 +791,7 @@ operator
   | assign
   | inc
   | dec
+  | type_check
   | '(' operators ')'
     {
       if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -808,11 +810,6 @@ operator
     }
   | CURRENT_CLASS_NAME
   | isweak_field
-  | isa
-  | isa_error
-  | is_type
-  | is_error
-  | is_compile_type
   | TRUE
     {
       $$ = SPVM_OP_new_op_true(compiler, $1);
@@ -1100,36 +1097,28 @@ logical_operator
       $$ = SPVM_OP_build_logical_not(compiler, $1, $2);
     }
 
-isa
+type_check
   : operator ISA type
     {
-      $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
+    }
+  | operator ISA_ERROR type
+    {
+      $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
+    }
+  | operator IS_TYPE type
+    {
+      $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
+    }
+  | operator IS_ERROR type
+    {
+      $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
+    }
+  | operator IS_COMPILE_TYPE type
+    {
+      $$ = SPVM_OP_build_type_check(compiler, $2, $1, $3);
     }
 
-isa_error
-  : operator ISA_ERROR type
-    {
-      $$ = SPVM_OP_build_isa_error(compiler, $2, $1, $3);
-    }
-
-is_type
-  : operator IS_TYPE type
-    {
-      $$ = SPVM_OP_build_is_type(compiler, $2, $1, $3);
-    }
-    
-is_error
-  : operator IS_ERROR type
-    {
-      $$ = SPVM_OP_build_is_error(compiler, $2, $1, $3);
-    }
-    
-is_compile_type
-  : operator IS_COMPILE_TYPE type
-    {
-      $$ = SPVM_OP_build_is_compile_type(compiler, $2, $1, $3);
-    }
-    
 assign
   : operator ASSIGN operator
     {
