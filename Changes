@@ -2,6 +2,9 @@
   [Bug Fix]
     * Fix the bug that the logical OR operator set the internal condition flag where it should not be changed.
     * Fix the bug that the logical AND operator set the internal condition flag where it should not be changed.
+  [Internal Changes]
+    * Remove REFCNT operation in syntax parsing.
+    * Operations are reorder and renamed in syntax parsing.
 0.989092 2023-03-23
   [New Features]
     * Add the get_basic_types method to the Native::Runtime class.

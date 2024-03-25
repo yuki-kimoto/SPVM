@@ -156,16 +156,15 @@ extern int SPVM_yydebug;
     SCALAR = 366,
     STRING_LENGTH = 367,
     ISWEAK = 368,
-    REFCNT = 369,
-    TYPE_NAME = 370,
-    COMPILE_TYPE_NAME = 371,
-    DUMP = 372,
-    NEW_STRING_LEN = 373,
-    IS_READ_ONLY = 374,
-    COPY = 375,
-    INC = 376,
-    DEC = 377,
-    ARROW = 378
+    TYPE_NAME = 369,
+    COMPILE_TYPE_NAME = 370,
+    DUMP = 371,
+    NEW_STRING_LEN = 372,
+    IS_READ_ONLY = 373,
+    COPY = 374,
+    INC = 375,
+    DEC = 376,
+    ARROW = 377
   };
 #endif
 

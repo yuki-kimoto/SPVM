@@ -58,7 +58,7 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
+  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
@@ -411,7 +411,6 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
     : '+' operator %prec PLUS
     | '-' operator %prec MINUS
     | BIT_NOT operator
-    | REFCNT operator
     | TYPE_NAME operator
     | COMPILE_TYPE_NAME operator
     | STRING_LENGTH operator
@@ -917,7 +916,7 @@ The bottom is the highest precidence and the top is the lowest precidence.
   %left <opval> SHIFT
   %left <opval> '+' '-' '.'
   %left <opval> '*' DIVIDE DIVIDE_UNSIGNED_INT DIVIDE_UNSIGNED_LONG MODULO  MODULO_UNSIGNED_INT MODULO_UNSIGNED_LONG
-  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
+  %right <opval> LOGICAL_NOT BIT_NOT '@' REFERENCE DEREFERENCE PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK TYPE_NAME COMPILE_TYPE_NAME DUMP NEW_STRING_LEN IS_READ_ONLY COPY
   %nonassoc <opval> INC DEC
   %left <opval> ARROW
 
