@@ -39,11 +39,11 @@
 %type <opval> for_statement while_statement foreach_statement
 %type <opval> switch_statement case_statement case_statements opt_case_statements default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
-%type <opval> unary_operator
+%type <opval> unary_operator array_length
 %type <opval> binary_operator arithmetic_operator bit_operator comparison_operator string_concatenation_operator logical_operator
 %type <opval> type_check
-%type <opval> call_method
-%type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
+%type <opval> call_method sequential
+%type <opval> array_access field_access weaken_field unweaken_field isweak_field convert
 %type <opval> assign inc dec allow can
 %type <opval> new array_init die warn opt_extends
 %type <opval> var_decl var interface union_type
@@ -779,20 +779,40 @@ operator
   | EXCEPTION_VAR
   | CONSTANT
   | UNDEF
-  | call_method
-  | field_access
-  | array_access
   | convert
   | new
-  | array_init
   | var_decl
+  | EVAL_ERROR_ID
+  | ARGS_WIDTH
+  | TRUE
+    {
+      $$ = SPVM_OP_new_op_true(compiler, $1);
+    }
+  | FALSE
+    {
+      $$ = SPVM_OP_new_op_false(compiler, $1);
+    }
+  | CURRENT_CLASS_NAME
   | unary_operator
   | binary_operator
   | assign
   | inc
   | dec
   | type_check
-  | '(' operators ')'
+  | BASIC_TYPE_ID type
+    {
+      $$ = SPVM_OP_build_basic_type_id(compiler, $1, $2);
+    }
+  | can
+  | array_init
+  | array_access
+  | field_access
+  | isweak_field
+  | call_method
+  | sequential
+
+sequential
+  : '(' operators ')'
     {
       if ($2->id == SPVM_OP_C_ID_LIST) {
         SPVM_OP* op_operator = $2->first;
@@ -808,24 +828,6 @@ operator
         $$ = $2;
       }
     }
-  | CURRENT_CLASS_NAME
-  | isweak_field
-  | TRUE
-    {
-      $$ = SPVM_OP_new_op_true(compiler, $1);
-    }
-  | FALSE
-    {
-      $$ = SPVM_OP_new_op_false(compiler, $1);
-    }
-  | can
-  | BASIC_TYPE_ID type
-    {
-      $$ = SPVM_OP_build_basic_type_id(compiler, $1, $2);
-    }
-  | EVAL_ERROR_ID
-  | ARGS_WIDTH
-
 operators
   : operators ',' operator
     {
