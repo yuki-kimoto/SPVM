@@ -1,6 +1,4 @@
 0.989094 2023-03-26
-  [Internal Changes]
-    * Do not use condition flag for condition statements.
 0.989093 2023-03-25
   [Bug Fix]
     * Fix the bug that the logical OR operator set the internal condition flag where it should not be changed.
