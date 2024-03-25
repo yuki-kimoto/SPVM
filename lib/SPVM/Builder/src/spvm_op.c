@@ -2891,20 +2891,17 @@ SPVM_OP* SPVM_OP_build_logical_or(SPVM_COMPILER* compiler, SPVM_OP* op_logical_o
   SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var);
   
   SPVM_OP* op_var_true_left = SPVM_OP_clone_op_var(compiler, op_var);
-  SPVM_OP* op_name_var_condition_flag_true_left = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_var_condition_flag_true_left = SPVM_OP_new_op_var(compiler, op_name_var_condition_flag_true_left);
+  SPVM_OP* op_var_condition_flag_true_left = SPVM_OP_new_op_var_condition_flag(compiler, op_logical_or->file, op_logical_or->line);
   SPVM_OP* op_assign_true_left = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_or->file, op_logical_or->line);
   SPVM_OP_build_assign(compiler, op_assign_true_left, op_var_true_left, op_var_condition_flag_true_left);
   
   SPVM_OP* op_var_true_rigth = SPVM_OP_clone_op_var(compiler, op_var);
-  SPVM_OP* op_name_var_condition_flag_true_right = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_var_condition_flag_true_right = SPVM_OP_new_op_var(compiler, op_name_var_condition_flag_true_right);
+  SPVM_OP* op_var_condition_flag_true_right = SPVM_OP_new_op_var_condition_flag(compiler, op_logical_or->file, op_logical_or->line);
   SPVM_OP* op_assign_true_rigth = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_or->file, op_logical_or->line);
   SPVM_OP_build_assign(compiler, op_assign_true_rigth, op_var_true_rigth, op_var_condition_flag_true_right);
   
   SPVM_OP* op_var_false_right = SPVM_OP_clone_op_var(compiler, op_var);
-  SPVM_OP* op_name_var_condition_flag_false_right = SPVM_OP_new_op_name(compiler, "$.condition_flag", op_logical_or->file, op_logical_or->line);
-  SPVM_OP* op_var_condition_flag_false_right = SPVM_OP_new_op_var(compiler, op_name_var_condition_flag_false_right);
+  SPVM_OP* op_var_condition_flag_false_right = SPVM_OP_new_op_var_condition_flag(compiler, op_logical_or->file, op_logical_or->line);
   SPVM_OP* op_assign_false_right = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_logical_or->file, op_logical_or->line);
   SPVM_OP_build_assign(compiler, op_assign_false_right, op_var_false_right, op_var_condition_flag_false_right);
   
