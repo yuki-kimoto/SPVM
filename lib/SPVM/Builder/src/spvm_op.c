@@ -3238,6 +3238,15 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   return op_var;
 }
 
+SPVM_OP* SPVM_OP_new_op_var_condition_flag(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  
+  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "$.condition_flag", file, line);
+  
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+  
+  return op_var;
+}
+
 SPVM_OP* SPVM_OP_new_op_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_name) {
   
   const char* class_var_name = op_class_var_name->uv.name;
