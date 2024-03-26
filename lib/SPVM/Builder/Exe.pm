@@ -336,7 +336,7 @@ sub compile {
 sub compile_classes {
   my ($self) = @_;
   
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->get_user_defined_basic_type_names;
   
   my $object_files = [];
   for my $class_name (@$class_names) {
@@ -413,7 +413,7 @@ sub create_bootstrap_header_source {
 
   my $class_name = $self->class_name;
 
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->get_user_defined_basic_type_names;
   
   my $source = '';
   
@@ -489,7 +489,7 @@ sub create_bootstrap_main_func_source {
 
   my $class_name = $self->class_name;
 
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->get_user_defined_basic_type_names;
 
   my $source = '';
 
@@ -615,11 +615,12 @@ static void* SPVM_BOOTSTRAP_get_runtime(SPVM_ENV* env, void* compiler) {
   
 EOS
   
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->get_user_defined_basic_type_names;
   
   my $compiler = $self->compiler;
   
   for my $class_name (@$class_names) {
+    
     my $class = $self->runtime->get_basic_type_by_name($class_name);
     my $class_file = $compiler->get_class_file($class_name);
     my $class_file_rel_file = $class_file->get_rel_file;
@@ -688,7 +689,7 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->get_user_defined_basic_type_names;
 
   my $source = '';
 
@@ -720,7 +721,7 @@ sub create_bootstrap_set_native_method_addresses_func_source {
   # Builder
   my $builder = $self->builder;
 
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->get_user_defined_basic_type_names;
 
   my $source = '';
 
@@ -754,7 +755,7 @@ sub create_bootstrap_source {
   
   my $class_name = $self->class_name;
   
-  my $class_names = $self->runtime->get_class_names;
+  my $class_names = $self->get_user_defined_basic_type_names;
   
   my $class_files = [];
   for my $class_name (@$class_names) {
@@ -1002,6 +1003,24 @@ sub compile_native_class {
   }
   
   return $all_object_files;
+}
+
+sub get_user_defined_basic_type_names {
+  my ($self) = @_;
+  
+  my $runtime = $self->runtime;
+  
+  my $category = [
+    4, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM
+    6, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS,
+    7, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE,
+  ];
+  
+  my $basic_types = $runtime->get_basic_types({category => $category, is_anon => 0});
+  
+  my $class_names = [map { $_->get_name } @$basic_types];
+  
+  return $class_names;
 }
 
 1;
