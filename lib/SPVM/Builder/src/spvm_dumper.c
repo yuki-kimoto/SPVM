@@ -407,7 +407,7 @@ void SPVM_DUMPER_dump_var_decl(SPVM_COMPILER* compiler, SPVM_VAR_DECL* var_decl)
       SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->unmerged_fields, 0);
       assert(first_field);
       
-      SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
+      SPVM_TYPE* field_type = first_field->type;
       assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
       
       switch (field_type->basic_type->id) {

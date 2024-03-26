@@ -1,3 +1,9 @@
+0.989095 2023-03-26
+  [Bug Fix]
+    * Fix the bug that second compilation use freed op field information.
+    
+      https://github.com/yuki-kimoto/SPVM/issues/507
+    
 0.989094 2023-03-26
   [Internal Changes]
     * SPVM::Builder::Config::Info does not depend on the SPVM::Native::Compiler.

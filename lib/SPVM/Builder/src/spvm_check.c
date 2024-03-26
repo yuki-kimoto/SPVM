@@ -259,7 +259,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     if (basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
       SPVM_LIST* fields = basic_type->unmerged_fields;
       SPVM_FIELD* first_field = SPVM_LIST_get(fields, 0);
-      SPVM_TYPE* first_field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
+      SPVM_TYPE* first_field_type = first_field->type;
       if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
         SPVM_COMPILER_error(compiler, "The multi-numeric type must have the only fields of numeric types.\n  at %s line %d", first_field->op_field->file, first_field->op_field->line);
         return;
@@ -268,7 +268,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       int32_t field_index;
       for (field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
         SPVM_FIELD* field = SPVM_LIST_get(fields, field_index);
-        SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, field->op_field);
+        SPVM_TYPE* field_type = field->type;
         if (!(field_type->basic_type->id == first_field_type->basic_type->id && field_type->dimension == first_field_type->dimension)) {
           SPVM_COMPILER_error(compiler, "The fields of the multi-numeric type must be of the same type.\n  at %s line %d", field_type->basic_type->name, field->op_field->file, field->op_field->line);
           return;
@@ -312,7 +312,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     // Check fields
     for (int32_t field_index = 0; field_index < basic_type->unmerged_fields->length; field_index++) {
       SPVM_FIELD* field = SPVM_LIST_get(basic_type->unmerged_fields, field_index);
-      SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, field->op_field);
+      SPVM_TYPE* field_type = field->type;
 
       // valut_t cannnot become field
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
@@ -3536,7 +3536,7 @@ void SPVM_CHECK_check_ast_typed_var_indexs(SPVM_COMPILER* compiler, SPVM_BASIC_T
                 SPVM_FIELD* first_field = SPVM_LIST_get(type->basic_type->fields, 0);
                 assert(first_field);
                 
-                SPVM_TYPE* field_type = SPVM_CHECK_get_type(compiler, first_field->op_field);
+                SPVM_TYPE* field_type = first_field->type;
                 
                 switch (field_type->basic_type->id) {
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
