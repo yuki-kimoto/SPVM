@@ -290,7 +290,8 @@ sub compile_class {
   my $native_class_ext = $config->ext;
   
   if ($category eq 'precompile') {
-    my $precompile_method_names = &_runtime_get_method_names($runtime, $class_name, $category);
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    my $precompile_method_names = $basic_type->get_method_names_by_category($category);
     
     unless (@$precompile_method_names) {
       return [];
@@ -627,30 +628,6 @@ sub _runtime_get_class_file {
   return $class_file;
 }
 
-sub _runtime_get_method_names {
-  my ($runtime, $class_name, $category) = @_;
-  
-  my $method_names;
-  if ($runtime->isa('SPVM::Builder::Native::Runtime')) {
-    $method_names = $runtime->get_method_names($class_name, $category);
-  }
-  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
-    
-    if ($category eq 'native') {
-      $method_names = $basic_type->get_native_method_names;
-    }
-    elsif ($category eq 'precompile') {
-      $method_names = $basic_type->get_precompile_method_names;
-    }
-  }
-  else {
-    confess("[Unexpected Error]Invalid object type.");
-  }
-  
-  return $method_names;
-}
-
 sub link {
   my ($self, $class_name, $object_files, $options) = @_;
   
@@ -745,7 +722,8 @@ sub link {
     
     # Create a dynamic library
     if ($output_type eq 'dynamic_lib') {
-      my $method_names = &_runtime_get_method_names($runtime, $class_name, $category);
+      my $basic_type = $runtime->get_basic_type_by_name($class_name);
+      my $method_names = $basic_type->get_method_names_by_category($category);
       
       my $dl_func_list = SPVM::Builder::Util::create_dl_func_list($class_name, $method_names, {category => $category});
       

@@ -118,7 +118,9 @@ sub load_dynamic_lib {
   my ($runtime, $class_name) = @_;
   
   for my $category ('precompile', 'native') {
-    my $method_names = $runtime->get_method_names($class_name, $category);
+    my $basic_type = $runtime->get_basic_type_by_name($class_name);
+    
+    my $method_names = $basic_type->get_method_names_by_category($category);
     
     if (@$method_names) {
       # Build classes - Compile C source codes and link them generating a dynamic link library
