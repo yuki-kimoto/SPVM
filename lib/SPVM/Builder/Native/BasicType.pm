@@ -67,8 +67,13 @@ sub get_class_file {
   
   my $class_dir = $self->get_class_dir;
   
-  unless ($class_dir) {
-    die "The class_dir field must be defined.";
+  my $class_dir_sep;
+  if (defined $class_dir) {
+    $class_dir_sep = "/";
+  }
+  else {
+    $class_dir_sep = "";
+    $class_dir = "";
   }
   
   my $class_rel_file = $self->get_class_rel_file;
