@@ -56,7 +56,7 @@ The C<false> keyword is the same as C<Bool-E<gt>FALSE>.
 
 =head2 value
 
-C<has value : ro int;>
+C<has value : ro byte;>
 
 The value.
 

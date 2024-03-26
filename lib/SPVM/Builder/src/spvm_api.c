@@ -2815,7 +2815,7 @@ SPVM_OBJECT* SPVM_API_new_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, con
 
 int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* bool_object) {
   
-  int32_t value = *(int32_t*)((intptr_t)bool_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  int32_t value = *(int8_t*)((intptr_t)bool_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
   
   return value;
 }

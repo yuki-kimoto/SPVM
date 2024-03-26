@@ -1,3 +1,12 @@
+0.989096 2023-03-27
+  [Incompatible Changes]
+    * Change the definition of the value field in the Bool class.
+      [Before]
+        has value : ro int;
+      [After]
+        has value : ro byte;
+    
+
 0.989095 2023-03-26
   [Bug Fix]
     * Fix the bug that second compilation use freed op field information.

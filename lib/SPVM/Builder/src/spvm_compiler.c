@@ -503,7 +503,7 @@ void SPVM_COMPILER_set_default_loaded_class_files(SPVM_COMPILER* compiler) {
   {
     const char* class_name = "Bool";
     const char* rel_file = "Bool.spvm";
-    const char* content = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
+    const char* content = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro byte;\n}";
     SPVM_COMPILER_set_class_file_with_members(compiler, class_name, rel_file, content);
   }
   
