@@ -124,7 +124,7 @@ sub load_dynamic_lib {
     
     if (@$method_names) {
       # Build classes - Compile C source codes and link them generating a dynamic link library
-      my $class_file = $runtime->get_class_file($class_name);
+      my $class_file = $basic_type->get_class_file;
       my $dynamic_lib_file = SPVM::Builder::Util::get_dynamic_lib_file_dist($class_file, $category);
       
       # Try to build the shared library at runtime if shared library is not found
