@@ -3858,9 +3858,6 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           }
         }
         else if (method->is_precompile) {
-          // TODO: this is added temporary for bugs of SPVM::Builder::Exe.
-          method->is_precompile_fallback = 1;
-          
           void* method_precompile_address = method->precompile_address;
           if (method_precompile_address) {
             int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
