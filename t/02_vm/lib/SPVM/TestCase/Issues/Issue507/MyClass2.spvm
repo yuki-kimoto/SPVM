@@ -1,0 +1,8 @@
+class TestCase::Issues::Issue507::MyClass2 {
+  
+  static method main : void () {
+    
+    my $value : Complex_2d;
+  }
+  
+}
