@@ -4893,19 +4893,13 @@ get_anon_basic_type_names(...)
   
   void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
   
-  int32_t methods_length = boot_env->api->basic_type->get_methods_length(runtime, basic_type);
-  
-  for (int32_t method_index = 0; method_index < methods_length; method_index++) {
+  int32_t basic_type_anon_basic_types_length = boot_env->api->basic_type->get_anon_basic_types_length(runtime, basic_type);
+  for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type_anon_basic_types_length; anon_basic_type_index++) {
+    void* anon_basic_type = boot_env->api->basic_type->get_anon_basic_type_by_index(runtime, basic_type, anon_basic_type_index);
     
-    void* method = boot_env->api->basic_type->get_method_by_index(runtime, basic_type, method_index);
-    int32_t is_anon_method = boot_env->api->method->is_anon(runtime, method);
-    
-    if (is_anon_method) {
-      void* anon_basic_type = boot_env->api->method->get_current_basic_type(runtime, method);
-      const char* anon_basic_type_name = boot_env->api->basic_type->get_name(runtime, anon_basic_type);
-      SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
-      av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
-    }
+    const char* anon_basic_type_name = boot_env->api->basic_type->get_name(runtime, anon_basic_type);
+    SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
+    av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
   }
   
   XPUSHs(sv_anon_basic_type_names);
