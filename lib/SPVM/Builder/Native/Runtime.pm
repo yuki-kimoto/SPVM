@@ -72,7 +72,7 @@ sub get_basic_types {
       }
     }
     
-    if ($options->{is_anon}) {
+    if (exists $options->{is_anon}) {
       my $is_anon = $options->{is_anon};
       
       my $basic_type_name = $basic_type->get_name;

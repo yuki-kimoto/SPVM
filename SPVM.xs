@@ -5529,6 +5529,30 @@ get_category(...)
 }
 
 SV*
+is_anon(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  int32_t is_anon = boot_env->api->basic_type->is_anon(runtime, basic_type);
+  
+  SV* sv_is_anon = sv_2mortal(newSViv(is_anon));
+  
+  XPUSHs(sv_is_anon);
+  XSRETURN(1);
+}
+
+SV*
 get_methods_length(...)
   PPCODE:
 {

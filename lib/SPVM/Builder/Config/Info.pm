@@ -114,8 +114,6 @@ sub get_class_names {
   
   my $runtime = $self->runtime;
   
-  my $api = SPVM::api;
-  
   my $category = [
     6, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS,
     7, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE,
