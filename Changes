@@ -3,7 +3,8 @@
     * SPVM::Builder::Config::Info does not depend on the SPVM::Native::Compiler.
   [Bug Fix]
     * Fix the bug that the spvmcc command does not compile precompilation anon methods.
-    
+  [Incompatible Changes]
+    * Precompilation methods are no more fallback if is_precompile_fallback is set to a true value.
 0.989093 2023-03-25
   [Bug Fix]
     * Fix the bug that the logical OR operator set the internal condition flag where it should not be changed.
