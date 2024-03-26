@@ -4894,39 +4894,6 @@ get_class_file(...)
 }
 
 SV*
-build_precompile_class_source(...)
-  PPCODE:
-{
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  SV* sv_basic_type_name = ST(1);
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
-  
-  void* allocator = boot_env->api->allocator->new_instance();
-  
-  void* string_buffer = boot_env->api->string_buffer->new_instance(allocator, 0);
-  
-  void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  
-  boot_env->api->runtime->build_precompile_class_source(runtime, string_buffer, basic_type);
-  
-  const char* string_buffer_value = boot_env->api->string_buffer->get_string(string_buffer);
-  int32_t string_buffer_length = boot_env->api->string_buffer->get_length(string_buffer);
-  SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
-  
-  boot_env->api->string_buffer->free_instance(string_buffer);
-  
-  boot_env->api->allocator->free_instance(allocator);
-  
-  XPUSHs(sv_precompile_source);
-  XSRETURN(1);
-}
-
-SV*
 get_basic_type_by_id(...)
   PPCODE:
 {
@@ -5539,6 +5506,39 @@ get_method_names_by_category(...)
   }
   
   XPUSHs(sv_method_names);
+  XSRETURN(1);
+}
+
+SV*
+build_precompile_class_source(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* allocator = boot_env->api->allocator->new_instance();
+  
+  void* string_buffer = boot_env->api->string_buffer->new_instance(allocator, 0);
+  
+  boot_env->api->runtime->build_precompile_class_source(runtime, string_buffer, basic_type);
+  
+  const char* string_buffer_value = boot_env->api->string_buffer->get_string(string_buffer);
+  int32_t string_buffer_length = boot_env->api->string_buffer->get_length(string_buffer);
+  SV* sv_precompile_source = sv_2mortal(newSVpv(string_buffer_value, string_buffer_length));
+  
+  boot_env->api->string_buffer->free_instance(string_buffer);
+  
+  boot_env->api->allocator->free_instance(allocator);
+  
+  XPUSHs(sv_precompile_source);
   XSRETURN(1);
 }
 

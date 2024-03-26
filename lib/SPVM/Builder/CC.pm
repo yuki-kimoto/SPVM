@@ -138,7 +138,10 @@ sub build_precompile_class_source_file {
   my $runtime = $options->{runtime};
   
   my $class_file = &_runtime_get_class_file($runtime, $class_name);
-  my $precompile_source = &_runtime_build_precompile_class_source($runtime, $class_name);
+  
+  my $basic_type = $runtime->get_basic_type_by_name($class_name);
+  
+  my $precompile_source = $basic_type->build_precompile_class_source($basic_type);
   
   # Force
   my $force = $self->detect_force;
@@ -584,25 +587,6 @@ sub get_resource_object_dir_from_class_name {
   my $resource_object_dir = SPVM::Builder::Util::create_build_object_path($self->build_dir, "$module_rel_dir.resource");
   
   return $resource_object_dir;
-}
-
-sub _runtime_build_precompile_class_source {
-  my ($runtime, $class_name, $category) = @_;
-  
-  my $precompile_source;
-  if ($runtime->isa('SPVM::Builder::Native::Runtime')) {
-    $precompile_source = $runtime->build_precompile_class_source($class_name);
-  }
-  elsif ($runtime->isa('SPVM::BlessedObject::Class')) {
-    my $basic_type = $runtime->get_basic_type_by_name($class_name);
-    
-    $precompile_source = $runtime->build_precompile_class_source($basic_type)->to_string;
-  }
-  else {
-    confess("[Unexpected Error]Invalid object type.");
-  }
-  
-  return $precompile_source;
 }
 
 sub _runtime_get_class_file {
