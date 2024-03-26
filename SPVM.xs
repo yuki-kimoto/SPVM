@@ -4850,50 +4850,6 @@ get_basic_types_length(...)
 }
 
 SV*
-get_class_file(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  SV* sv_basic_type_name = ST(1);
-  
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
-  
-  void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  
-  const char* class_file;
-  SV* sv_class_file = &PL_sv_undef;
-  
-  if (basic_type) {
-    int32_t basic_type_category = boot_env->api->basic_type->get_category(runtime, basic_type);
-    if (basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE || basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-      const char* class_dir = boot_env->api->basic_type->get_class_dir(runtime, basic_type);
-      const char* class_dir_sep;
-      if (class_dir) {
-        class_dir_sep = "/";
-      }
-      else {
-        class_dir_sep = "";
-        class_dir = "";
-      }
-      const char* class_rel_file = boot_env->api->basic_type->get_class_rel_file(runtime, basic_type);
-      
-      sv_class_file = sv_2mortal(newSVpv(class_dir, 0));
-      sv_catpv(sv_class_file, class_dir_sep);
-      sv_catpv(sv_class_file, class_rel_file);
-    }
-  }
-  
-  XPUSHs(sv_class_file);
-  XSRETURN(1);
-}
-
-SV*
 get_basic_type_by_id(...)
   PPCODE:
 {
