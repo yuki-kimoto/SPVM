@@ -4,6 +4,8 @@
     
       https://github.com/yuki-kimoto/SPVM/issues/507
     
+    * Fix the bug that second compilation use freed op class variable information.
+    
 0.989094 2023-03-26
   [Internal Changes]
     * SPVM::Builder::Config::Info does not depend on the SPVM::Native::Compiler.

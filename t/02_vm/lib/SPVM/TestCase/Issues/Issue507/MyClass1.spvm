@@ -1,3 +1,5 @@
 class TestCase::Issues::Issue507::MyClass1 {
   use Complex_2d;
+  
+  our $VALUE : public int;
 }

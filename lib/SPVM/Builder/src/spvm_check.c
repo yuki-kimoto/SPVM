@@ -217,7 +217,7 @@ void SPVM_CHECK_check_class_vars(SPVM_COMPILER* compiler) {
     // Check class var
     for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
-      SPVM_TYPE* class_var_type = SPVM_CHECK_get_type(compiler, class_var->op_class_var);
+      SPVM_TYPE* class_var_type = class_var->type;
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
       
       // valut_t cannnot become class variable
@@ -238,7 +238,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
     // Check class var
     for (int32_t class_var_index = 0; class_var_index < basic_type->class_vars->length; class_var_index++) {
       SPVM_CLASS_VAR* class_var = SPVM_LIST_get(basic_type->class_vars, class_var_index);
-      SPVM_TYPE* class_var_type = SPVM_CHECK_get_type(compiler, class_var->op_class_var);
+      SPVM_TYPE* class_var_type = class_var->type;
       int32_t is_mulnum_t = SPVM_TYPE_is_mulnum_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, class_var_type->flag);
       
       // valut_t cannnot become class variable
