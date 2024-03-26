@@ -4842,38 +4842,6 @@ get_method_names(...)
 }
 
 SV*
-get_parent_basic_type_name(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  SV* sv_basic_type_name = ST(1);
-  
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
-  
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
-  
-  void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  
-  void* parent_basic_type = boot_env->api->basic_type->get_parent(runtime, basic_type);
-  
-  SV* sv_parent_basic_type_name = &PL_sv_undef;
-  if (parent_basic_type) {
-    const char* parent_basic_type_name = boot_env->api->basic_type->get_name(runtime, parent_basic_type);
-    sv_parent_basic_type_name = sv_2mortal(newSVpv(parent_basic_type_name, 0));
-  }
-  
-  XPUSHs(sv_parent_basic_type_name);
-  XSRETURN(1);
-}
-
-SV*
 get_anon_basic_type_names(...)
   PPCODE:
 {
