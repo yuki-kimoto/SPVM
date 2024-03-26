@@ -146,11 +146,12 @@ sub load_dynamic_lib {
         
         for my $method_name (sort keys %$method_addresses) {
           my $cfunc_address = $method_addresses->{$method_name};
+          my $method = $basic_type->get_method_by_name($method_name);
           if ($category eq 'precompile') {
-            $runtime->set_precompile_method_address($class_name, $method_name, $cfunc_address);
+            $method->set_precompile_address($cfunc_address);
           }
           elsif ($category eq 'native') {
-            $runtime->set_native_method_address($class_name, $method_name, $cfunc_address);
+            $method->set_native_address($cfunc_address);
           }
         }
       }

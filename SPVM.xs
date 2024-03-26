@@ -5704,6 +5704,60 @@ is_class_method(...)
   XSRETURN(1);
 }
 
+SV*
+set_native_address(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* method = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV* sv_native_address = ST(1);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+  
+  boot_env->api->method->set_native_address(runtime, method, native_address);
+  
+  assert(native_address == boot_env->api->method->get_native_address(runtime, method));
+  
+  XSRETURN(0);
+}
+
+SV*
+set_precompile_address(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* method = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV* sv_precompile_address = ST(1);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  void* precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
+  
+  boot_env->api->method->set_precompile_address(runtime, method, precompile_address);
+  
+  assert(precompile_address == boot_env->api->method->get_precompile_address(runtime, method));
+  
+  XSRETURN(0);
+}
+
 MODULE = SPVM::Builder::Native::ClassFile		PACKAGE = SPVM::Builder::Native::ClassFile
 
 SV*
