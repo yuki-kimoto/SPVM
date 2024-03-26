@@ -46,6 +46,9 @@ DEVELOPERS NOTE
 
     See batcktrace of core dump
       
+      # Compilation for debug
+      perl Makefile.PL --OPTIMIZE="-O0 -g" && make
+      
       # Compiliation time stack trace
       gdb perl core
       
