@@ -4798,39 +4798,6 @@ get_compiler(...)
 }
 
 SV*
-get_anon_basic_type_names(...)
-  PPCODE:
-{
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
-  
-  SV* sv_basic_type_name = ST(1);
-  
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
-  
-  AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
-  
-  void* basic_type = boot_env->api->runtime->get_basic_type_by_name(runtime, basic_type_name);
-  
-  int32_t basic_type_anon_basic_types_length = boot_env->api->basic_type->get_anon_basic_types_length(runtime, basic_type);
-  for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type_anon_basic_types_length; anon_basic_type_index++) {
-    void* anon_basic_type = boot_env->api->basic_type->get_anon_basic_type_by_index(runtime, basic_type, anon_basic_type_index);
-    
-    const char* anon_basic_type_name = boot_env->api->basic_type->get_name(runtime, anon_basic_type);
-    SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
-    av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
-  }
-  
-  XPUSHs(sv_anon_basic_type_names);
-  XSRETURN(1);
-}
-
-SV*
 get_basic_types_length(...)
   PPCODE:
 {
@@ -5495,6 +5462,38 @@ build_precompile_class_source(...)
   boot_env->api->allocator->free_instance(allocator);
   
   XPUSHs(sv_precompile_source);
+  XSRETURN(1);
+}
+
+SV*
+get_anon_basic_type_names(...)
+  PPCODE:
+{
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  void* basic_type = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  void* runtime = SPVM_XS_UTIL_get_pointer(aTHX_ sv_runtime);
+  
+  SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
+  
+  AV* av_anon_basic_type_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_anon_basic_type_names = sv_2mortal(newRV_inc((SV*)av_anon_basic_type_names));
+  
+  int32_t basic_type_anon_basic_types_length = boot_env->api->basic_type->get_anon_basic_types_length(runtime, basic_type);
+  for (int32_t anon_basic_type_index = 0; anon_basic_type_index < basic_type_anon_basic_types_length; anon_basic_type_index++) {
+    void* anon_basic_type = boot_env->api->basic_type->get_anon_basic_type_by_index(runtime, basic_type, anon_basic_type_index);
+    
+    const char* anon_basic_type_name = boot_env->api->basic_type->get_name(runtime, anon_basic_type);
+    SV* sv_anon_basic_type_name = sv_2mortal(newSVpv(anon_basic_type_name, 0));
+    av_push(av_anon_basic_type_names, SvREFCNT_inc(sv_anon_basic_type_name));
+  }
+  
+  XPUSHs(sv_anon_basic_type_names);
   XSRETURN(1);
 }
 

@@ -442,7 +442,8 @@ int32_t SPVMPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* 
 EOS
     }
     
-    my $anon_basic_type_names = $self->runtime->get_anon_basic_type_names($class_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($class_name);
+    my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
     for my $anon_basic_type_name (@$anon_basic_type_names) {
       my $anon_basic_type_cname = $anon_basic_type_name;
       $anon_basic_type_cname =~ s/::/__/g;
@@ -723,7 +724,8 @@ sub create_bootstrap_set_precompile_method_addresses_func_source {
 EOS
     }
     
-    my $anon_basic_type_names = $self->runtime->get_anon_basic_type_names($class_name);
+    my $basic_type = $self->runtime->get_basic_type_by_name($class_name);
+    my $anon_basic_type_names = $basic_type->get_anon_basic_type_names;
     for my $anon_basic_type_name (@$anon_basic_type_names) {
       my $anon_basic_type_cname = $anon_basic_type_name;
       $anon_basic_type_cname =~ s/::/__/g;
