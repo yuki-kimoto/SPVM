@@ -2527,13 +2527,13 @@ Native APIs have its IDs.
   192 strerror,
   193 strerror_nolen,
   194 is_binary_compatible_object,
-  195 reserved195,
+  195 is_binary_compatible_stack,
   196 new_stack,
   197 free_stack,
   198 get_field_object_defined_and_has_pointer_by_name,
   199 get_field_object_ref,
   200 get_field_object_ref_by_name,
-  201 is_binary_compatible_stack,
+  201 check_bootstrap_method
   202 assign_object,
   203 new_string_array_no_mortal,
   204 new_memory_block,
@@ -2544,9 +2544,14 @@ Native APIs have its IDs.
   209 spvm_stdin,
   210 spvm_stdout,
   211 spvm_stderr,
-  212 check_bootstrap_method
-  213 new_array_proto_element_no_mortal
-  214 new_array_proto_element
+  212 new_array_proto_element_no_mortal
+  213 new_array_proto_element
+  214 get_byte_object_value
+  215 get_short_object_value
+  216 get_int_object_value
+  217 get_long_object_value
+  218 get_float_object_value
+  219 get_double_object_value
 
 =head1 Constant Values
 

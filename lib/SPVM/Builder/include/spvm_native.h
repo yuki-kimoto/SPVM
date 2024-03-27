@@ -286,13 +286,13 @@ struct spvm_env {
   const char* (*strerror)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value, int32_t length);
   const char* (*strerror_nolen)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t errno_value);
   int32_t (*is_binary_compatible_object)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
-  void* reserved195;
+  int32_t (*is_binary_compatible_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   SPVM_VALUE* (*new_stack)(SPVM_ENV* env);
   void (*free_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
   void* (*get_field_object_defined_and_has_pointer_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file_name, int32_t line);
   void** (*get_field_object_ref)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, void* field);
   void** (*get_field_object_ref_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, void* object, const char* field_name, int32_t* error_id, const char* func_name, const char* file, int32_t line);
-  int32_t (*is_binary_compatible_stack)(SPVM_ENV* env, SPVM_VALUE* stack);
+  int32_t (*check_bootstrap_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   void (*assign_object)(SPVM_ENV* env, SPVM_VALUE* stack, void** dist_ref, void* object);
   void* (*new_string_array_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, int32_t length);
   void* (*new_memory_block)(SPVM_ENV* env, SPVM_VALUE* stack, size_t size);
@@ -303,7 +303,6 @@ struct spvm_env {
   FILE* (*spvm_stdin)(SPVM_ENV* env, SPVM_VALUE* stack);
   FILE* (*spvm_stdout)(SPVM_ENV* env, SPVM_VALUE* stack);
   FILE* (*spvm_stderr)(SPVM_ENV* env, SPVM_VALUE* stack);
-  int32_t (*check_bootstrap_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   void* (*new_array_proto_element_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);
   void* (*new_array_proto_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);
   int32_t (*get_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object);
