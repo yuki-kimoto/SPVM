@@ -16,6 +16,8 @@ class Native::Runtime : pointer {
   # Fields
   has compiler : Native::Compiler;
   
+  has env : Native::Env;
+  
   # Instance Methods
   native method get_basic_types_length : int ();
   
@@ -106,4 +108,7 @@ class Native::Runtime : pointer {
     return $basic_types;
   }
   
+  method get_env : Native::Env () {
+    return $self->{env};
+  }
 }

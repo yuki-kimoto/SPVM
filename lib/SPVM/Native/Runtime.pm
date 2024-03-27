@@ -32,6 +32,20 @@ The C<Native::Runtime> class is a L<pointer class|SPVM::Document::Language/"Poin
 
 Its insntace has a pointer to a L<runtime|SPVM::Document::NativeAPI::Native::Runtime> object.
 
+=head1 Fields
+
+=head2 compiler
+
+C<has compiler : L<Native::Compiler|SPVM::Native::Compiler>;>
+
+The compiler that build this runtime.
+
+=head2 env
+
+C<has env : L<Native::Env|SPVM::Native::Env>;>
+
+The runtime environment owned by this runtime.
+
 =head1 Instance Methods
 
 =head2 get_basic_types_length
@@ -122,11 +136,21 @@ If this option is a false value, only non-anon basic types are extracted.
 
 =back
 
+=head2 get_env
+
+C<method get_env : L<Native::Env|SPVM::Native::Env> ();>
+
+Returns the L<"env"> field.
+
 =head1 See Also
 
-=head2 Native::Compiler
+=over 2
 
-The L<get_runtime|SPVM::Native::Compiler/"get_runtime"> method in the L<Native::Compiler|SPVM::Native::Compiler> class builds a rutnime.
+=item * L<Native::Compiler|SPVM::Native::Compiler>
+
+=item * L<Native::Env|SPVM::Native::Env>
+
+=back
 
 =head1 Copyright & License
 
