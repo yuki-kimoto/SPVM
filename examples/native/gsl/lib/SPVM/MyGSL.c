@@ -11,11 +11,11 @@ int32_t SPVM__MyGSL__stat(SPVM_ENV* env, SPVM_VALUE* stack) {
   double min = gsl_stats_min( data, 1, LEN );
   double mean = gsl_stats_mean( data, 1, LEN );
   double sd = gsl_stats_sd( data, 1, LEN );
-
+  
   printf( "max: \t%f \n", max );
   printf( "min: \t%f \n", min );
   printf( "mean: \t%f \n", mean);
   printf( "sd: \t%f \n", sd );
-
+  
   return 0;
 }
