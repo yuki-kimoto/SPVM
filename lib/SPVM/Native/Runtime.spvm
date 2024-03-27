@@ -29,8 +29,6 @@ class Native::Runtime : pointer {
   
   native method get_compiler : Native::Compiler ();
   
-  native method new_env : Native::Env ();
-  
   method get_method_by_name : Native::Method ($class_name : string, $method_name : string) {
     
     my $basic_type = $self->get_basic_type_by_name($class_name);

@@ -5,7 +5,7 @@
         has value : ro int;
       [After]
         has value : ro byte;
-  
+    * Remove the new_env method from the Native::Runtime.
   [New Features]
     * Add the following native APIs.
     

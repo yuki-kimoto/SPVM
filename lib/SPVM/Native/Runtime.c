@@ -414,26 +414,3 @@ int32_t SPVM__Native__Runtime__get_compiler(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Runtime__new_env(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_id = 0;
-  
-  void* obj_self = stack[0].oval;
-  
-  SPVM_ENV* new_env = env->new_env();
-  
-  void* obj_env= env->new_pointer_object_by_name(env, stack, "Native::Env", new_env, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  void* runtime = env->get_pointer(env, stack, obj_self);
-  
-  env->set_field_object_by_name(env, stack, obj_env, "runtime", obj_self, &error_id, __func__, FILE_NAME, __LINE__);
-  if (error_id) { return error_id; }
-  
-  new_env->runtime = runtime;
-  
-  stack[0].oval = obj_env;
-  
-  return 0;
-}
-
