@@ -13,6 +13,8 @@
 struct spvm_runtime {
   SPVM_COMPILER* compiler;
   
+  SPVM_ENV* env;
+  
   SPVM_ALLOCATOR* allocator;
   
   SPVM_RUNTIME_BASIC_TYPE** basic_types;

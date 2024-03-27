@@ -43,6 +43,12 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   SPVM_RUNTIME_init_stdio(runtime);
   
+  SPVM_ENV* env = SPVM_NATIVE_new_env();
+  
+  runtime->env = env;
+  
+  env->runtime = runtime;
+  
   return runtime;
 }
 
@@ -123,6 +129,10 @@ void SPVM_RUNTIME_init_stdio(SPVM_RUNTIME* runtime) {
 }
 
 void SPVM_RUNTIME_free(SPVM_RUNTIME* runtime) {
+  
+  SPVM_ENV* env = runtime->env;
+  
+  env->free_env(env);
   
   if (runtime->basic_types) {
     SPVM_ALLOCATOR_free_memory_block_tmp(runtime->allocator, runtime->basic_types);
