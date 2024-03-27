@@ -97,7 +97,7 @@ sub init_api {
       &load_dynamic_lib($runtime, $class_name);
     }
     
-    my $env = $runtime->new_env;
+    my $env = $runtime->get_env;
     
     my $stack = $env->new_stack;
     
