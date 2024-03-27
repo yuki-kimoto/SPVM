@@ -4948,10 +4948,14 @@ DESTROY(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   
-  // Env
-  SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+  SV** sv_no_destroy_ptr = hv_fetch(hv_self, "no_destroy", strlen("no_destroy"), 0);
+  SV* sv_no_destroy = sv_no_destroy_ptr ? *sv_no_destroy_ptr : &PL_sv_undef;
   
-  env->free_env(env);
+  if (!(SvOK(sv_no_destroy) && SvIV(sv_no_destroy))) {
+    SPVM_ENV* env = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
+    
+    env->free_env(env);
+  }
   
   XSRETURN(0);
 }
