@@ -4592,6 +4592,16 @@ DESTROY(...)
   
   SPVM_ENV* boot_env = SPVM_XS_UTIL_get_boot_env(aTHX_ sv_self);
   
+  SV** sv_runtime_ptr = hv_fetch(hv_self, "runtime", strlen("runtime"), 0);
+  SV* sv_runtime = sv_runtime_ptr ? *sv_runtime_ptr : &PL_sv_undef;
+  HV* hv_runtime = (HV*)SvRV(sv_runtime);
+  
+  SV** sv_env_ptr = hv_fetch(hv_runtime, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  HV* hv_env = (HV*)SvRV(sv_env);
+  
+  (void)hv_store(hv_env, "runtime", strlen("runtime"), &PL_sv_undef, 0);
+  
   void* compiler = SPVM_XS_UTIL_get_pointer(aTHX_ sv_self);
   
   boot_env->api->compiler->free_instance(compiler);
@@ -4621,6 +4631,17 @@ create_native_compiler(...)
   SV* sv_runtime = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ runtime, "SPVM::Builder::Native::Runtime");
   HV* hv_runtime = (HV*)SvRV(sv_runtime);
   (void)hv_store(hv_self, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  
+  SPVM_ENV* env = boot_env->api->runtime->get_env(runtime);
+  
+  SV* sv_env = SPVM_XS_UTIL_new_sv_pointer_object(aTHX_ env, "SPVM::Builder::Native::Env");
+  HV* hv_env = (HV*)SvRV(sv_env);
+  (void)hv_store(hv_env, "runtime", strlen("runtime"), SvREFCNT_inc(sv_runtime), 0);
+  
+  SV* sv_no_destroy = sv_2mortal(newSViv(1));
+  (void)hv_store(hv_env, "no_destroy", strlen("no_destroy"), SvREFCNT_inc(sv_no_destroy), 0);
+  
+  (void)hv_store(hv_runtime, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   
   XSRETURN(0);
 }

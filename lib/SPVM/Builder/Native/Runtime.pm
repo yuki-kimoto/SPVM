@@ -26,6 +26,17 @@ sub compiler {
   }
 }
 
+sub env {
+  my $self = shift;
+  if (@_) {
+    $self->{env} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{env};
+  }
+}
+
 sub get_basic_types {
   my ($self, $options) = @_;
   
