@@ -475,6 +475,7 @@ struct spvm_api_runtime {
   FILE* (*get_spvm_stdin)(void* runtime);
   FILE* (*get_spvm_stdout)(void* runtime);
   FILE* (*get_spvm_stderr)(void* runtime);
+  SPVM_ENV* (*get_env)(void* runtime);
 };
 
 struct spvm_api_internal {

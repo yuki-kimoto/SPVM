@@ -110,6 +110,7 @@ SPVM_API_RUNTIME* SPVM_API_RUNTIME_new_api() {
     SPVM_API_RUNTIME_get_spvm_stdin,
     SPVM_API_RUNTIME_get_spvm_stdout,
     SPVM_API_RUNTIME_get_spvm_stderr,
+    SPVM_API_RUNTIME_get_env,
   };
   SPVM_API_RUNTIME* env_runtime = calloc(1, sizeof(env_runtime_init));
   memcpy(env_runtime, env_runtime_init, sizeof(env_runtime_init));
@@ -275,5 +276,10 @@ FILE* SPVM_API_RUNTIME_get_spvm_stdout(SPVM_RUNTIME* runtime) {
 FILE* SPVM_API_RUNTIME_get_spvm_stderr(SPVM_RUNTIME* runtime) {
   
   return runtime->spvm_stderr;
+}
+
+SPVM_ENV* SPVM_API_RUNTIME_get_env(SPVM_RUNTIME* runtime) {
+  
+  return runtime->env;
 }
 

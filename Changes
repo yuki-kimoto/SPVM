@@ -15,6 +15,9 @@
       int64_t (*get_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object);
       float (*get_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object);
       double (*get_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object);
+    * Add the following native runtime APIs.
+      SPVM_ENV* (*get_env)(void* runtime);
+      
   [Internal Changes]
     * A runtiem has its runtime environment.
 0.989095 2023-03-26
