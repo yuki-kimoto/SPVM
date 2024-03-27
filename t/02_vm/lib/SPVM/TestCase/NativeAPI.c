@@ -2355,7 +2355,145 @@ int32_t SPVM__TestCase__NativeAPI__get_bool_object_value_native(SPVM_ENV* env, S
   int32_t value = env->get_bool_object_value(env, stack, bool_object);
   
   stack[0].ival = value;
+  
+  return 0;
+}
 
+int32_t SPVM__TestCase__NativeAPI__get_byte_object_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  {
+    stack[0].ival = INT8_MIN;
+    env->call_class_method_by_name(env, stack, "Byte", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_num = stack[0].oval;
+    if (error_id) { return error_id; }
+    
+    int32_t ret = env->get_byte_object_value(env, stack, obj_num);
+    
+    if (!(ret == INT8_MIN)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_short_object_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  {
+    stack[0].ival = INT16_MIN;
+    env->call_class_method_by_name(env, stack, "Short", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_num = stack[0].oval;
+    if (error_id) { return error_id; }
+    
+    int32_t ret = env->get_short_object_value(env, stack, obj_num);
+    
+    if (!(ret == INT16_MIN)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_int_object_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  {
+    stack[0].ival = INT32_MIN;
+    env->call_class_method_by_name(env, stack, "Int", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_num = stack[0].oval;
+    if (error_id) { return error_id; }
+    
+    int32_t ret = env->get_int_object_value(env, stack, obj_num);
+    
+    if (!(ret == INT32_MIN)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_long_object_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  {
+    stack[0].lval = INT64_MIN;
+    env->call_class_method_by_name(env, stack, "Long", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_num = stack[0].oval;
+    if (error_id) { return error_id; }
+    
+    int64_t ret = env->get_long_object_value(env, stack, obj_num);
+    
+    if (!(ret == INT64_MIN)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_float_object_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  {
+    stack[0].fval = 1.5;
+    env->call_class_method_by_name(env, stack, "Float", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_num = stack[0].oval;
+    if (error_id) { return error_id; }
+    
+    float ret = env->get_float_object_value(env, stack, obj_num);
+    
+    if (!(ret == 1.5)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__get_double_object_value(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_id = 0;
+  
+  {
+    stack[0].dval = 2147483647.5;
+    env->call_class_method_by_name(env, stack, "Double", "new", 1, &error_id, __func__, FILE_NAME, __LINE__);
+    void* obj_num = stack[0].oval;
+    if (error_id) { return error_id; }
+    
+    double ret = env->get_double_object_value(env, stack, obj_num);
+    
+    if (!(ret == 2147483647.5)) {
+      stack[0].ival = 0;
+      return 0;
+    }
+  }
+  
+  stack[0].ival = 1;
+  
   return 0;
 }
 

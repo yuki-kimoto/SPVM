@@ -1359,6 +1359,18 @@ class TestCase::NativeAPI {
   }
   native static method get_bool_object_value_native : int ($bool_object : Bool);
   
+  native static method get_byte_object_value : int ();
+  
+  native static method get_short_object_value : int ();
+  
+  native static method get_int_object_value : int ();
+  
+  native static method get_long_object_value : int ();
+  
+  native static method get_float_object_value : int ();
+  
+  native static method get_double_object_value : int ();
+  
   native static method new_string_no_mortal : int ();
   
   native static method new_string : int ();

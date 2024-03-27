@@ -5,7 +5,16 @@
         has value : ro int;
       [After]
         has value : ro byte;
+  
+  [New Features]
+    * Add the following native APIs.
     
+      int32_t (*get_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object);
+      int32_t (*get_short_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* short_object);
+      int32_t (*get_int_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* int_object);
+      int64_t (*get_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object);
+      float (*get_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object);
+      double (*get_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object);
 
 0.989095 2023-03-26
   [Bug Fix]

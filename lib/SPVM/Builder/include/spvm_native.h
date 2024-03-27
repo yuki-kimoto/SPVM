@@ -306,6 +306,12 @@ struct spvm_env {
   int32_t (*check_bootstrap_method)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name);
   void* (*new_array_proto_element_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);
   void* (*new_array_proto_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* element, int32_t length);
+  int32_t (*get_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object);
+  int32_t (*get_short_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* short_object);
+  int32_t (*get_int_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* int_object);
+  int64_t (*get_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object);
+  float (*get_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object);
+  double (*get_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object);
 };
 
 struct spvm_env_api {

@@ -315,6 +315,12 @@ SPVM_ENV* SPVM_API_new_env(void) {
     SPVM_API_check_bootstrap_method,
     SPVM_API_new_array_proto_element_no_mortal,
     SPVM_API_new_array_proto_element,
+    SPVM_API_get_byte_object_value,
+    SPVM_API_get_short_object_value,
+    SPVM_API_get_int_object_value,
+    SPVM_API_get_long_object_value,
+    SPVM_API_get_float_object_value,
+    SPVM_API_get_double_object_value,
   };
   SPVM_ENV* env = calloc(1, sizeof(env_init));
   if (env == NULL) {
@@ -2813,13 +2819,6 @@ SPVM_OBJECT* SPVM_API_new_string_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, con
   return object;
 }
 
-int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* bool_object) {
-  
-  int32_t value = *(int8_t*)((intptr_t)bool_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
-  
-  return value;
-}
-
 SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, SPVM_VALUE* stack, const char* bytes, int32_t length) {
   
   
@@ -4418,3 +4417,53 @@ int32_t SPVM_API_is_binary_compatible_object(SPVM_ENV* env, SPVM_VALUE* stack, S
   
   return is_binary_compatible_object;
 }
+
+int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* bool_object) {
+  
+  int32_t value = *(int8_t*)((intptr_t)bool_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  
+  return value;
+}
+
+int32_t SPVM_API_get_byte_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* byte_object) {
+  
+  int32_t value = *(int8_t*)((intptr_t)byte_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  
+  return value;
+}
+
+int32_t SPVM_API_get_short_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* short_object) {
+  
+  int32_t value = *(int16_t*)((intptr_t)short_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  
+  return value;
+}
+
+int32_t SPVM_API_get_int_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* int_object) {
+  
+  int32_t value = *(int32_t*)((intptr_t)int_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  
+  return value;
+}
+
+int64_t SPVM_API_get_long_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* long_object) {
+  
+  int64_t value = *(int64_t*)((intptr_t)long_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  
+  return value;
+}
+
+float SPVM_API_get_float_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* float_object) {
+  
+  float value = *(float*)((intptr_t)float_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  
+  return value;
+}
+
+double SPVM_API_get_double_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* double_object) {
+  
+  double value = *(double*)((intptr_t)double_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime));
+  
+  return value;
+}
+

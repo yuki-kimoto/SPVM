@@ -2280,6 +2280,54 @@ C<void* (*new_array_proto_element)(SPVM_ENV* env, SPVM_VALUE* stack, void* eleme
 
 Calls the L</"new_array_proto_element_no_mortal"> native API and push its return value to the L<mortal stack|SPVM::Document::NativeClass/"Mortal Stack">, and returns it.
 
+=head2 get_byte_object_value
+
+C<int32_t (*get_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object);>
+
+Returns the value of the C<value> field of the L<Byte|SPVM::Byte> object I<byte_object>.
+
+I<byte_object> must be a L<Byte|SPVM::Byte> object.
+
+=head2 get_short_object_value
+
+C<int32_t (*get_short_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* short_object);>
+
+Returns the value of the C<value> field of the L<Short|SPVM::Short> object I<short_object>.
+
+I<short_object> must be a L<Short|SPVM::Short> object.
+
+=head2 get_int_object_value
+
+C<int32_t (*get_int_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* int_object);>
+
+Returns the value of the C<value> field of the L<Int|SPVM::Int> object I<int_object>.
+
+I<int_object> must be an L<Int|SPVM::Int> object.
+
+=head2 get_long_object_value
+
+C<int64_t (*get_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object);>
+
+Returns the value of the C<value> field of the L<Long|SPVM::Long> object I<long_object>.
+
+I<long_object> must be a L<Long|SPVM::Long> object.
+
+=head2 get_float_object_value
+
+C<float (*get_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object);>
+
+Returns the value of the C<value> field of the L<Float|SPVM::Float> object I<float_object>.
+
+I<float_object> must be a L<Float|SPVM::Float> object.
+
+=head2 get_double_object_value
+
+C<double (*get_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object);>
+
+Returns the value of the C<value> field of the L<Double|SPVM::Double> object I<double_object>.
+
+I<double_object> must be a L<Double|SPVM::Double> object.
+
 =head1 Native API IDs
 
 Native APIs have its IDs.

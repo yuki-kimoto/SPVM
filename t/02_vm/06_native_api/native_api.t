@@ -248,6 +248,36 @@ ok(!-f "$build_dir/work/object/SPVM/CORE.o");
   ok(SPVM::TestCase::NativeAPI->get_bool_object_value);
 }
 
+# get_byte_object_value
+{
+  ok(SPVM::TestCase::NativeAPI->get_byte_object_value);
+}
+
+# get_short_object_value
+{
+  ok(SPVM::TestCase::NativeAPI->get_short_object_value);
+}
+
+# get_int_object_value
+{
+  ok(SPVM::TestCase::NativeAPI->get_int_object_value);
+}
+
+# get_long_object_value
+{
+  ok(SPVM::TestCase::NativeAPI->get_long_object_value);
+}
+
+# get_float_object_value
+{
+  ok(SPVM::TestCase::NativeAPI->get_float_object_value);
+}
+
+# get_double_object_value
+{
+  ok(SPVM::TestCase::NativeAPI->get_double_object_value);
+}
+
 # new_string_no_mortal
 {
   ok(SPVM::TestCase::NativeAPI->new_string_no_mortal);
