@@ -145,15 +145,15 @@ And it performs the same operation as the following operation in the C language,
 
 The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
 
+Exceptions:
+
+If the type of the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
+
 Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
-
-Exceptions:
-
-If the type of the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> are an integer type and I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Examples:
 
@@ -173,15 +173,15 @@ This operator performs the same operation as the following operation in the C la
 
 The return type is the int type.
 
+Exceptions:
+
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
+
 Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be the int type, otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be the int type, otherwise a compilation error occurs.
-
-Exceptions:
-
-If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Examples:
 
@@ -201,15 +201,15 @@ This operator performs the same operation as the following operation in the C la
 
 The return type is the long type.
 
+Exceptions:
+
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
+
 Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be the long type, otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be the long type, otherwise a compilation error occurs.
-
-Exceptions:
-
-If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Examples:
 
@@ -232,15 +232,15 @@ And it performs the same operation as the following operation in the C language,
 
 The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
 
+Exceptions:
+
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
+
 Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
-
-Exceptions:
-
-If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Examples:
 
@@ -260,15 +260,15 @@ This operator performs the same operation as the following operation in the C la
 
 The return type is the int type.
 
+Exceptions:
+
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
+
 Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be the int type, otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be the int type, otherwise a compilation error occurs.
-
-Exceptions:
-
-If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Examples:
 
@@ -288,15 +288,15 @@ This operator performs the same operation as the following operation in the C la
 
 The return type is is the long type.
 
+Exceptions:
+
+If I<RIGHT_OPERAND> is 0, an exception is thrown.
+
 Compilation Errors:
 
 The type of I<LEFT_OPERAND> must be the long type, otherwise a compilation error occurs.
 
 The type of I<RIGHT_OPERAND> must be the long type, otherwise a compilation error occurs.
-
-Exceptions:
-
-If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Examples:
 
@@ -470,7 +470,9 @@ The return type is the type after the L<binary numeric widening conversion|/"Bin
 
 Compilation Errors:
 
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
 Examples:
   
@@ -496,7 +498,9 @@ The return type is the type after the L<binary numeric widening conversion|/"Bin
 
 Compilation Errors:
 
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
 Examples:
   
@@ -512,17 +516,17 @@ The bitwise NOT operator C<~> performs the L<bitwise NOT operation|https://en.wi
   # The bitwise NOT operator
   ~OPERAND
 
-This operator performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the operand I<OPERAND>.
+This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the operand I<OPERAND>.
 
 And it performs the same operation as the following operation in the C language, and returns its return value.
 
   ~OPERAND
 
-The return type is the type that the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
+The return type is the type that the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed.
 
 Compilation Errors:
 
-The type of I<OPERAND>must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
 
 Examples:
   
@@ -701,15 +705,17 @@ The type of L<LEFT_OPERAND> and L<RIGHT_OPERAND> are allowed to be the byte[] ty
 
 The return type is the string type.
 
-Compilation Errors:
-
-I<LEFT_OPERAND> and I<RIGHT_OPERAND> must be the string type, or the byte[] type, or a numeric type, otherwise a compilation error occurs.
-
 Exceptions:
 
 I<LEFT_OPERAND> must be defined, otherwise an exception is thrown.
 
 I<RIGHT_OPERAND> must be defined, otherwise an exception is thrown.
+
+Compilation Errors:
+
+The type of I<LEFT_OPERAND> must be the string type, the byte[] type, or a numeric type, otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be the string type, the byte[] type, or a numeric type, otherwise a compilation error occurs.
 
 Examples:
   
@@ -729,13 +735,13 @@ This operator returns the length the array I<OPERAND>.
 
 The return type is the int type.
 
-Compilation Errors:
-
-The type of I<OPERAND> must be an array type, otherwise a compilation error occurs.
-
 Exceptions:
 
 I<OPERAND> must be defined, otherwise an exception is thrown.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be an array type, otherwise a compilation error occurs.
 
 Examples:
   
