@@ -1035,23 +1035,23 @@ The type of I<RIGHT_OPERAND> must be the string type or the byte[] type, otherwi
 
 =head2 isa Operator
 
-The C<isa> operator checks whether I<LEFT_OPERAND> can be assigned to the right type.
+The C<isa> operator checks whether an operand can be assigned to a type.
 
-  LEFT_OPERAND isa RIGHT_TYPE
+  OPERAND isa TYPE
 
-If the right type is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite type convertion.
 
-If the assignment requirement without implicite convertion is true, it returns 1, otherwise returns 0.
+If the assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
 
-If the right type is another object type, this operator checks the L<runtime assignment requirement|/"Runtime Assignment Requirement">.
+If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the L<runtime assignment requirement|/"Runtime Assignment Requirement"> at runtime.
 
-If the runtime assignment requirement is true, it returns 1, otherwise returns 0.
+If the runtime assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
 
 The return type is the int type.
 
 Compilation Errors:
 
-If the runtime assignment requirement is checked, I<LEFT_OPERAND> of the isa operator must be an object type, otherwise a compilation error occurs.
+If the runtime assignment requirement is checked, I<OPERAND> must be an object type, otherwise a compilation error occurs.
 
 Examples:
   
@@ -1075,51 +1075,25 @@ Examples:
     
   }
 
-=head2 isa_error Operator
-
-The C<isa_error> operator checks whether the basic type ID given by I<LEFT_OPERAND> can be assigned to the right type.
-
-  LEFT_OPERAND isa RIGHT_TYPE
-
-The return type is int type.
-
-If the assignment requirement is true, returns 1, otherwise returns 0.
-
-Compilation Errors:
-
-I<LEFT_OPERAND> of the isa_error operator must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-I<RIGHT_OPERAND> of the isa_error operator must be a class type, otherwise a compilation error occurs.
-
-Examples:
-
-  if (eval_error_id isa_error Error) {
-    
-  }
-  
-  if (eval_error_id isa_error Error::System) {
-    
-  }
-  
 =head2 is_type Operator
 
-The C<is_type> operator checks whether the type of I<LEFT_OPERAND> is equal to the right type.
+The C<is_type> operator checks whether the type of an operand is equal to a type.
 
-  LEFT_OPERAND is_type RIGHT_TYPE
+  OPERAND is_type TYPE
 
-If the right type is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, the L<any object array type|/"Any Object Array Type">, this operator checks the compile type of I<LEFT_OPERAND> is equal to the right type.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
 
-If the check is true, it returns 1, otherwise returns 0.
+If it is true, this operator returns 1, otherwise returns 0.
 
-If the right type is another object type, this operator checks the runtime type of I<LEFT_OPERAND> is equal to the right type.
+If the type is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
 
-If the runtime check is true, it returns 1, otherwise returns 0.
+If it is true, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
 
 Compilation Errors:
 
-If the runtime check is performed, I<LEFT_OPERAND> of the is_type operator must be an object type, otherwise a compilation error occurs.
+If the runtime check is performed, I<OPERAND> must be an object type, otherwise a compilation error occurs.
 
 Examples:
 
@@ -1139,39 +1113,13 @@ Examples:
     
   }
 
-=head2 is_error Operator
-
-The C<is_error> operator checks whether the basic type ID given by I<LEFT_OPERAND> is the basic type of the right type.
-
-  LEFT_OPERAND isa RIGHT_TYPE
-
-The return type is int type.
-
-If it is ok, returns 1, otherwise returns 0.
-
-Compilation Errors:
-
-I<LEFT_OPERAND> of the is_error operator must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-I<RIGHT_OPERAND> of the is_error operator must be a class type, otherwise a compilation error occurs.
-
-Examples:
-
-  if (eval_error_id is_error Error) {
-    
-  }
-  
-  if (eval_error_id is_error Error::System) {
-    
-  }
-
 =head2 is_compile_type Operator
 
-The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operators"> to check whether the compilation-time type of I<LEFT_OPERAND> is the right type.
+The C<is_compile_type> operator checks whether the compilation type of an operand is equal to a type.
 
-  LEFT_OPERAND is_compile_type RIGHT_TYPE
+  OPERAND is_compile_type TYPE
 
-If the compilation-time type of I<LEFT_OPERAND> is the right type, returns 1, otherwise returns 0.
+If the compilation type of I<OPERAND> is equal to the type I<TYPE>, returns 1, otherwise returns 0.
 
 The return type is int type.
 
@@ -1190,12 +1138,66 @@ Examples:
       # Pass
     }
   }
-
+  
   {
     my $value : Stringer = method : string () { return "aaa"; };
     if ($value is_compile_type Stringer) {
       # Pass
     }
+  }
+
+=head2 isa_error Operator
+
+The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a type. This operator is normally used for error classes.
+
+  OPERAND isa_error TYPE
+
+If the type specified by the basic type ID I<OPERAND> satisfies 
+
+The return type is int type.
+
+If the assignment requirement is true, returns 1, otherwise returns 0.
+
+Compilation Errors:
+
+I<OPERAND> of the isa_error operator must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+I<RIGHT_OPERAND> of the isa_error operator must be a class type, otherwise a compilation error occurs.
+
+Examples:
+
+  if (eval_error_id isa_error Error) {
+    
+  }
+  
+  if (eval_error_id isa_error Error::System) {
+    
+  }
+  
+=head2 is_error Operator
+
+The C<is_error> operator checks whether the basic type ID given by I<OPERAND> is the basic type of the type.
+
+  OPERAND is_error TYPE
+
+The return type is int type.
+
+If it is ok, returns 1, otherwise returns 0.
+
+Compilation Errors:
+
+I<OPERAND> of the is_error operator must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+I<RIGHT_OPERAND> of the is_error operator must be a class type, otherwise a compilation error occurs.
+
+Examples:
+
+  if (eval_error_id is_error Error) {
+    
+  }
+  
+  if (eval_error_id is_error Error::System) {
+    
   }
 
 =head2 type_name Operator

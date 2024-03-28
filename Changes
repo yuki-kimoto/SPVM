@@ -1,3 +1,6 @@
+0.989097 2023-03-27
+  [Compilation Error Changes]
+    * Improve compilation error messages in the isa, is_type, isa_error, is_error operators.
 0.989096 2023-03-27
   [Incompatible Changes]
     * Change the definition of the value field in the Bool class.
