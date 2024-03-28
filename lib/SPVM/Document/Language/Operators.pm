@@ -61,7 +61,7 @@ The addition operator C<+> adds two operands.
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND + RIGHT_OPERAND
 
@@ -87,7 +87,7 @@ The subtraction operator C<-> subtracts its right operand from its left operand.
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND - RIGHT_OPERAND
 
@@ -113,7 +113,7 @@ The multiplication operator C<*> multiplies two operands.
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND * RIGHT_OPERAND;
 
@@ -139,7 +139,7 @@ The division operator C</> divides its left operand by its right operand.
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND / RIGHT_OPERAND;
 
@@ -167,7 +167,7 @@ The division unsigned int operator C<div_uint> interprets its two operands as un
   # The division unsigned int operator
   LEFT_OPERAND div_uint RIGHT_OPERAND
 
-This operator performs the same operation as the following operation in the C language, and returns its return value.
+This operator performs the same operation as the following C language operation, and returns its return value.
 
   (uint32_t)LEFT_OPERAND / (uint32_t)RIGHT_OPERAND;
 
@@ -195,7 +195,7 @@ The division unsigned long operator C<div_ulong> interprets its two operands as 
   # The division unsigned long operator
   LEFT_OPERAND div_ulong RIGHT_OPERAND
 
-This operator performs the same operation as the following operation in the C language, and returns its return value.
+This operator performs the same operation as the following C language operation, and returns its return value.
 
   (uint64_t)LEFT_OPERAND / (uint64_t)RIGHT_OPERAND;
 
@@ -225,7 +225,7 @@ The modulo operator C<%> calculates the modulo of the division of its two operan
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   RETURN_VALUE = LEFT_OPERAND % RIGHT_OPERAND;
   if ((LEFT_OPERAND < 0) != (RIGHT_OPERAND < 0) && RETURN_VALUE) { RETURN_VALUE += RIGHT_OPERAND; }
@@ -254,7 +254,7 @@ The modulo unsigned int operator C<mod_uint> interprets its two operands as unsi
   # The modulo unsigned int operator
   LEFT_OPERAND mod_uint RIGHT_OPERAND
 
-This operator performs the same operation as the following operation in the C language, and returns its return value.
+This operator performs the same operation as the following C language operation, and returns its return value.
 
   (uint32_t)LEFT_OPERAND % (uint32_t)RIGHT_OPERAND;
 
@@ -282,7 +282,7 @@ The modulo unsigned long operator C<mod_ulong> interprets its two operands as un
   # The modulo unsigned long operator
   LEFT_OPERAND mod_ulong RIGHT_OPERAND
 
-This operator performs the same operation as the following operation in the C language, and returns its return value.
+This operator performs the same operation as the following C language operation, and returns its return value.
 
   (uint64_t)LEFT_OPERAND % (uint64_t)RIGHT_OPERAND;
 
@@ -462,7 +462,7 @@ The bitwise AND operator C<&> performs the L<bitwise AND operation|https://en.wi
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND & RIGHT_OPERAND;
 
@@ -490,7 +490,7 @@ The bitwise OR operator C<|> performs the L<bitwise OR operation|https://en.wiki
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND | RIGHT_OPERAND;
 
@@ -518,7 +518,7 @@ The bitwise NOT operator C<~> performs the L<bitwise NOT operation|https://en.wi
 
 This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the operand I<OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   ~OPERAND
 
@@ -546,7 +546,7 @@ This operator performs the L<numeric widening conversion|SPVM::Document::Languag
 
 And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND << RIGHT_OPERAND;
 
@@ -573,7 +573,7 @@ This operator performs the L<numeric widening conversion|SPVM::Document::Languag
 
 And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND >> RIGHT_OPERNAD;
 
@@ -601,11 +601,11 @@ This operator performs the L<numeric widening conversion|SPVM::Document::Languag
 
 And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
-And if the type of I<LEFT_OPERAND> is the int type, it performs the same operation as the following operation in the C language
+And if the type of I<LEFT_OPERAND> is the int type, it performs the same operation as the following C language operation
 
   (uint32_t)LEFT_OPERAND >> RIGHT_OPERAND;
 
-If the type of I<LEFT_OPERAND> is the long type, it performs the same operation as the following operation in the C language.
+If the type of I<LEFT_OPERAND> is the long type, it performs the same operation as the following C language operation.
 
   (uint64_t)LEFT_OPERAND >> RIGHT_OPERAND;
 
@@ -902,13 +902,13 @@ Examples:
   $x >>>= 1;
   $x .= "abc";
 
-=head2 Comparison Operator
+=head2 Comparison Operators
 
-Comparison operators compare the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+Comparison operators compare two operands.
 
-=head3 Numeric Comparison Operator
+=head3 Numeric Comparison Operators
 
-Numeric comparison operators compare the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> in the numeric order.
+Numeric comparison operators compare two numbers or two addresses of objects.
 
   LEFT_OPERAND == RIGHT_OPERAND
   LEFT_OPERAND != RIGHT_OPERAND
@@ -918,76 +918,9 @@ Numeric comparison operators compare the left operand I<LEFT_OPERAND> and the ri
   LEFT_OPERAND <= RIGHT_OPERAND
   LEFT_OPERAND <=> RIGHT_OPERAND
 
-=begin html
-
-<table>
-  <tr>
-    <th>Operator</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>
-      <i>==</i>
-    </td>
-    <td>
-      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0. The comparation of operands of object types and reference types are also available.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <i>!=</i>
-    </td>
-    <td>
-      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0. The comparation of operands of object types and reference types are also available.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <i>></i>
-    </td>
-    <td>
-      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <i>>=</i>
-    </td>
-    <td>
-      If <i>LEFT_OPERAN</i> is greater than or equal to <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <i><</i>
-    </td>
-    <td>
-      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <i><=</i>
-    </td>
-    <td>
-      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERNAD</i> in the numeric order, returns 1, otherwise returns 0.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <i><=></i>
-    </td>
-    <td>
-      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERNAD</i> in the numeric order, returns 1. If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERNAD</i> in the numeric order, return -1. If <i>LEFT_OPERAND</i> is equals to <i>RIGHT_OPERNAD</i> in the numeric order, returns 0.
-    </td>
-  </tr>
-</table>
-
-=end html
-
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
-And it performs the same operation as the following operation in the C language, and returns its return value.
+And it performs the same operation as the following C language operation, and returns its return value.
 
   (int32_t)(LEFT_OPERAND == RIGHT_OPERAND);
   (int32_t)(LEFT_OPERAND != RIGHT_OPERAND);
@@ -1011,7 +944,7 @@ The type of I<LEFT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, th
 
 The type of I<RIGHT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
 
-=head3 String Comparison Operator
+=head3 String Comparison Operators
 
 String comparison operators compare the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> in the dictionary order.
 
@@ -1232,7 +1165,7 @@ Examples:
 
 =head2 is_compile_type Operator
 
-The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operator"> to check whether the compilation-time type of I<LEFT_OPERAND> is the right type.
+The C<is_compile_type> operator is a L<comparison operator|/"Comparison Operators"> to check whether the compilation-time type of I<LEFT_OPERAND> is the right type.
 
   LEFT_OPERAND is_compile_type RIGHT_TYPE
 
