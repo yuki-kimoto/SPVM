@@ -946,7 +946,7 @@ The type of I<RIGHT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, t
 
 =head3 String Comparison Operators
 
-String comparison operators compare the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND> in the dictionary order.
+String comparison operators compare tow strings in the dictionary order.
 
   LEFT_OPERAND eq RIGHT_OPERAND
   LEFT_OPERAND ne RIGHT_OPERAND
@@ -956,12 +956,14 @@ String comparison operators compare the left operand I<LEFT_OPERAND> and the rig
   LEFT_OPERAND le RIGHT_OPERAND
   LEFT_OPERAND cmp RIGHT_OPERAND
 
+These operators perform the following operations.
+
 =begin html
 
 <table>
   <tr>
     <th>Operators</th>
-    <th>Descriptions</th>
+    <th>Operations</th>
   </tr>
   <tr>
     <td>
