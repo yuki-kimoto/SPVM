@@ -1148,21 +1148,23 @@ Examples:
 
 =head2 isa_error Operator
 
-The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a class type. This operator is normally used for error classes.
+The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a class type. This operator is normally used for error classes to check L<eval_error_id/"eval_error_id Operator">>.
 
   OPERAND isa_error TYPE
 
-If the type specified by the basic type ID I<OPERAND>
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
+
+And this operator checks whether the type specified by the basic type ID I<OPERAND> satisfies the L<runtime assignment requirement|/"Runtime Assignment Requirement"> to the type I<TYPE>.
+
+If it is satisfied, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
 
-If the assignment requirement is true, returns 1, otherwise returns 0.
-
 Compilation Errors:
 
-I<OPERAND> of the isa_error operator must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
-I<RIGHT_OPERAND> of the isa_error operator must be a class type, otherwise a compilation error occurs.
+I<TYPE> must be a class type, otherwise a compilation error occurs.
 
 Examples:
 
@@ -1176,19 +1178,23 @@ Examples:
   
 =head2 is_error Operator
 
-The C<is_error> operator checks whether the basic type ID given by I<OPERAND> is the basic type of the type.
+The C<is_error> operator checks whether the type specified by a basic type ID is equal to a class type. This operator is normally used for error classes to check L<eval_error_id/"eval_error_id Operator">>.
 
   OPERAND is_error TYPE
 
-The return type is int type.
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
 
-If it is ok, returns 1, otherwise returns 0.
+And this operator checks whether the type specified by the basic type ID I<OPERAND> is equal to the type I<TYPE>.
+
+If it is, this operator returns 1, otherwise returns 0.
+
+The return type is int type.
 
 Compilation Errors:
 
-I<OPERAND> of the is_error operator must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
-I<RIGHT_OPERAND> of the is_error operator must be a class type, otherwise a compilation error occurs.
+I<TYPE> must be a class type, otherwise a compilation error occurs.
 
 Examples:
 

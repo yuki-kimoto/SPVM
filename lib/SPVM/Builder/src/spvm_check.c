@@ -2066,7 +2066,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
-            // Left operand must be a numeric type
             if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
               SPVM_COMPILER_error(compiler, "The type of the operand of the isa_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
