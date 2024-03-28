@@ -815,71 +815,71 @@ Examples:
   # The exception variable
   $@ = 2;
 
-=head2 Special Assignment Operator
+=head2 Special Assignment Operators
 
-A special assignment operator is the alias for the combination of an operator I<OPERATOR> and L</"Assignment Operator"> C<=>.
+A special assignment operator is the combination of an operator such as C<+>, C<-> and the L<assignment operator|/"Assignment Operator"> C<=>.
 
   LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
 
-Above is the alias for the following code.
+A special assignment operator is expanded to the following code.
 
   LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
 
-For example, See a C<byte> case.
-
-  # Addition assignment operator
-  $x += 1;
+See the following code using a special assignment operator C<+=>. C<$x> is the int type.
   
-  # Above is the same as the following code.
-  $x = (byte)($x + 1)
+  $x += 2;
 
-The following operators are used as the operators of the special assignment operators.
+This is expanded to the following code.
+
+  $x = (int)($x + 2)
+
+List of Special Assignment Operators:
 
 =begin html
 
 <table>
   <tr>
-    <td>Addition assignment operator</td>
+    <td>The addition assignment operator</td>
     <td>+=</td>
   </tr>
   <tr>
-    <td>Subtraction assignment operator</td>
+    <td>The subtraction assignment operator</td>
     <td>-=</td>
   </tr>
   <tr>
-    <td>Multiplication assignment operator</td>
+    <td>The multiplication assignment operator</td>
     <td>*=</td>
   </tr>
   <tr>
-    <td>Division assignment operator</td>
+    <td>The division assignment operator</td>
     <td>/=</td>
   </tr>
   <tr>
-    <td>Modulo assignment operator</td>
+    <td>The modulo assignment operator</td>
     <td>%=</td>
   </tr>
   <tr>
-    <td>Bitwise AND assignment operator</td>
+    <td>The bitwise AND assignment operator</td>
     <td>&=</td>
   </tr>
   <tr>
-    <td>Bitwise OR assignment operator</td>
+    <td>The bitwise OR assignment operator</td>
     <td>|=</td>
   </tr>
   <tr>
-    <td>Left shift assignment operator</td>
+    <td>The left shift assignment operator</td>
     <td><<=</td>
   </tr>
   <tr>
-    <td>Arithmetic right shift assignment operator</td>
+    <td>The arithmetic right shift assignment operator</td>
     <td>>>=</td>
   </tr>
   <tr>
-    <td>Logical right shift assignment operator</td>
+    <td>The logical right shift assignment operator</td>
     <td>>>>=</td>
   </tr>
   <tr>
-    <td>Concatenation assignment operator</td>
+    <td>The concatenation assignment operator</td>
     <td>.=</td>
   </tr>
 </table>
