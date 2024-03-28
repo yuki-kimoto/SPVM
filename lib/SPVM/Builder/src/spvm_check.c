@@ -2002,25 +2002,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_ISA_ERROR: {
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be a numeric type
-            if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The type of the operand of the isa_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The type given to the isa_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
           case SPVM_OP_C_ID_IS_TYPE: {
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_OP* op_type = op_cur->last;
@@ -2058,25 +2039,6 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_IS_ERROR: {
-            
-            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-            SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
-            
-            // Left operand must be a numeric type
-            if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The type of the operand of the is_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
-            
-            if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-              SPVM_COMPILER_error(compiler, "The type given to the is_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
-              return;
-            }
-            
-            break;
-          }
           case SPVM_OP_C_ID_IS_COMPILE_TYPE: {
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_OP* op_type = op_cur->last;
@@ -2095,6 +2057,43 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_OP* op_constant_false = SPVM_OP_new_op_constant_int(compiler, 0, op_cur->file, op_cur->line);
               SPVM_OP_replace_op(compiler, op_stab, op_constant_false);
               op_cur = op_constant_false;
+            }
+            
+            break;
+          }
+          case SPVM_OP_C_ID_ISA_ERROR: {
+            
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
+            
+            // Left operand must be a numeric type
+            if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The type of the operand of the isa_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
+            
+            if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+              SPVM_COMPILER_error(compiler, "The type given to the isa_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            break;
+          }
+          case SPVM_OP_C_ID_IS_ERROR: {
+            
+            SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
+            SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_cur->last);
+            
+            if (!SPVM_TYPE_is_integer_type_within_int(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+              SPVM_COMPILER_error(compiler, "The type of the operand of the is_error operator must be an integer type within int.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_cur->first);
+            
+            if (!SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+              SPVM_COMPILER_error(compiler, "The type given to the is_error operator must be a class type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
             }
             
             break;

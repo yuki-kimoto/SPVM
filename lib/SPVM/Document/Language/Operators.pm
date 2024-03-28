@@ -1148,11 +1148,11 @@ Examples:
 
 =head2 isa_error Operator
 
-The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a type. This operator is normally used for error classes.
+The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a class type. This operator is normally used for error classes.
 
   OPERAND isa_error TYPE
 
-If the type specified by the basic type ID I<OPERAND> satisfies 
+If the type specified by the basic type ID I<OPERAND>
 
 The return type is int type.
 
