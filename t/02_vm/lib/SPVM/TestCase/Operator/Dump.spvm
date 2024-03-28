@@ -206,6 +206,8 @@ class TestCase::Operator::Dump {
     
     my $dump = dump $object;
     
+    warn $dump;
+    
     return $dump;
   }
   

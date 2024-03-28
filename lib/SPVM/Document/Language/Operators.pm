@@ -16,7 +16,6 @@ An operator is a basic instruction that normally a return value.
 
 The unary plus operator C<+> is a unary operator that returns its operand.
 
-  # The unary plus operator
   +OPERAND
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, and returns it.
@@ -36,7 +35,6 @@ Examples:
 
 The unary minus operator C<-> is a unary operator that returns the negated value of its operand.
 
-  # The unary minus operator
   -OPERAND
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, negates it, and returns it.
@@ -56,7 +54,6 @@ Examples:
 
 The addition operator C<+> adds two operands.
   
-  # The addition operator
   LEFT_OPERAND + RIGHT_OPERAND
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
@@ -82,7 +79,6 @@ Examples:
 
 The subtraction operator C<-> subtracts its right operand from its left operand.
   
-  # The subtraction operator
   LEFT_OPERAND - RIGHT_OPERAND
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
@@ -108,7 +104,6 @@ Examples:
 
 The multiplication operator C<*> multiplies two operands.
   
-  # The multiplication operator
   LEFT_OPERAND * RIGHT_OPERAND
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
@@ -134,7 +129,6 @@ Examples:
 
 The division operator C</> divides its left operand by its right operand.
   
-  # The division operator
   LEFT_OPERAND / RIGHT_OPERAND
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
@@ -164,7 +158,6 @@ Examples:
 
 The division unsigned int operator C<div_uint> interprets its two operands as unsigned 32bit integers, and divides its left operand by its right operand.
   
-  # The division unsigned int operator
   LEFT_OPERAND div_uint RIGHT_OPERAND
 
 This operator performs the same operation as the following C language operation, and returns its return value.
@@ -192,7 +185,6 @@ Examples:
 
 The division unsigned long operator C<div_ulong> interprets its two operands as unsigned 64bit integers, and divides its left operand by its right operand.
 
-  # The division unsigned long operator
   LEFT_OPERAND div_ulong RIGHT_OPERAND
 
 This operator performs the same operation as the following C language operation, and returns its return value.
@@ -220,7 +212,6 @@ Examples:
 
 The modulo operator C<%> calculates the modulo of the division of its two operands.
   
-  # The modulo operator
   LEFT_OPERAND % RIGHT_OPERAND
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
@@ -251,7 +242,6 @@ Examples:
 
 The modulo unsigned int operator C<mod_uint> interprets its two operands as unsigned 32bit integers, and calculates the modulo of the division of its two operands.
   
-  # The modulo unsigned int operator
   LEFT_OPERAND mod_uint RIGHT_OPERAND
 
 This operator performs the same operation as the following C language operation, and returns its return value.
@@ -279,7 +269,6 @@ Examples:
 
 The modulo unsigned long operator C<mod_ulong> interprets its two operands as unsigned 64bit integers, and calculates the modulo of the division of its two operands.
   
-  # The modulo unsigned long operator
   LEFT_OPERAND mod_ulong RIGHT_OPERAND
 
 This operator performs the same operation as the following C language operation, and returns its return value.
@@ -309,7 +298,6 @@ Examples:
 
 The pre-increment operator C<++> increases the value of an operand by 1, and returns it.
 
-  # The pre-increment operator
   ++OPERAND
 
 This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, and returns it.
@@ -345,7 +333,6 @@ Examples:
 
 The post-increment operator C<++> increases the value of an operand by 1, and returns the value before performing the incrementation.
 
-  # The post-increment operator
   OPERAND++
 
 This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it on I<OPERAND>, and returns I<OPERAND> before performing the incrementation.
@@ -383,7 +370,6 @@ Examples:
 
 The pre-decrement operator C<--> decreases the value of an operand by 1, and returns it.
 
-  # The pre-decrement operator
   --OPERAND
 
 This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, and returns it.
@@ -419,7 +405,6 @@ Examples:
 
 The post-increment operator C<--> decreases the value of an operand by 1, and returns the value before performing the decrementation.
 
-  # The post-decrement operator
   OPERAND--
 
 This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it on I<OPERAND>, and returns I<OPERAND> before performing the decrementation.
@@ -457,7 +442,6 @@ Examples:
 
 The bitwise AND operator C<&> performs the L<bitwise AND operation|https://en.wikipedia.org/wiki/Bitwise_operation#AND>.
 
-  # The bitwise AND operator
   LEFT_OPERAND & RIGHT_OPERAND
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
@@ -485,7 +469,6 @@ Examples:
 
 The bitwise OR operator C<|> performs the L<bitwise OR operation|https://en.wikipedia.org/wiki/Bitwise_operation#OR>.
   
-  # The bitwise OR operator
   LEFT_OPERAND | RIGHT_OPERAND
 
 This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
@@ -513,7 +496,6 @@ Examples:
 
 The bitwise NOT operator C<~> performs the L<bitwise NOT operation|https://en.wikipedia.org/wiki/Bitwise_operation#NOT>.
   
-  # The bitwise NOT operator
   ~OPERAND
 
 This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the operand I<OPERAND>.
@@ -539,7 +521,6 @@ Examples:
 
 The left shift operator C<E<lt>E<lt>> performs the L<arithmetic left shift|https://en.wikipedia.org/wiki/Bitwise_operation#Arithmetic_shift>.
 
-  # The left shift operator
   LEFT_OPERAND << RIGHT_OPERAND
 
 This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
@@ -594,7 +575,6 @@ Examples:
 
 The logical right shift operator C<E<gt>E<gt>E<gt>> performs the L<logical right shift|https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shift>.
   
-  # The logical right shift operator
   LEFT_OPERAND >>> RIGHT_OPERAND
 
 This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
@@ -630,7 +610,6 @@ Examples:
 
 The logical AND operator C<&&> performs a logical AND operation.
   
-  # The logical AND operator
   LEFT_OPERAND && RIGHT_OPERAND
 
 This operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the left operand I<LEFT_OPERAND>.
@@ -674,7 +653,6 @@ Examples:
 
 The logical NOT operator C<!> performes a logical NOT operation.
 
-  # The logical NOT operator
   !OPERAND
 
 Thg logical NOT operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the operand I<OPERAND>.
@@ -692,7 +670,6 @@ The return type is the int type.
 
 The string concatenation operator C<.> concats two strings.
   
-  # The string concatenation operator
   LEFT_OPERAND . RIGHT_OPERAND
 
 This operator performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the left operand I<LEFT_OPERAND> if the type of I<LEFT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
@@ -727,7 +704,6 @@ Examples:
 
 The array length operator C<@> gets the length of an array.
   
-  # The array length operator
   @OPERAND
   @{OPERAND}
 
@@ -753,7 +729,6 @@ Examples:
 
 The sequential operator is an operator with the following syntax.
   
-  # The sequential operator
   (OPERAND1, OPERAND2, ..., OPERNADn)
 
 This operator evaluates operands C<OPERAND1>, C<OPERAND1> ... C<OPERNADn> from left to right, and returns the value of the rightmost operand C<OPERNADn>.
@@ -776,7 +751,6 @@ Examples:
 
 The assignment operator C<=> performs an assignment.
   
-  # The assignment operator
   LEFT_OPERAND = RIGHTH_OPERAND
 
 The assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
@@ -1208,49 +1182,88 @@ Examples:
 
 =head2 type_name Operator
 
-The C<type_name> operator returns the type name of the object.
+The C<type_name> operator gets the type name of the object.
 
   type_name OPERAND
 
-If I<OPERAND> is defined, returns the type name of the object, otherwise returns L<undef|/"Undefined Value">.
+If the object  I<OPERAND> is defined, creates a string with the type name of I<OPERAND> and returns it, otherwise returns C<undef>.
 
 The return type is the string type.
 
 Compilation Errors.
 
-If I<OPERAND> is not an object type, a compilation error occurs.
+I<OPERAND> must be an object type, a compilation error occurs.
 
 Examples:
   
   # "Point"
-  my $poitn = Point->new;
+  my $point = Point->new;
+  my $type_name = type_name $point;
+  
+  # "Point"
+  my $point = (object)Point->new;
   my $type_name = type_name $point;
 
 =head2 compile_type_name Operator
 
-The C<compile_type_name> operator returns the type name at compilation time.
+The C<compile_type_name> operator gets the compilation type of the operand I<OPERAND>.
 
-  type_name OPERAND
+  compile_type_name OPERAND
+
+This operator creates a new string with the compilation type name of I<OPERAND> and returns it.
 
 The return type is the string type.
 
 Examples:
   
-  # int
-  my $num = 1;
-  my $compile_type_name = compile_type_name $num;
+  # "Point"
+  my $point = Point->new;
+  my $type_name = type_name $point;
+  
+  # "object"
+  my $point = (object)Point->new;
+  my $type_name = type_name $point;
 
 =head2 dump Operator
 
-The C<dump> operator gets the string representation of the object.
+The C<dump> operator gets the string representation dumping the data contained in the object.
 
   dump OPERAND
 
-It returns the string representation of the object.
+This operator creates a new string with the string representation dumping the data contained in the object I<OPERAND> and returns it.
+
+The following is an example of the return value the C<dump> operator.
+  
+  # An return vlaue of the dump operator
+  TestCase::Operator::DumpTest1 (0x55f21f7e6050) {
+    byte_value => 1,
+    short_value => 2,
+    int_value => 3,
+    long_value => 4,
+    float_value => 1.1,
+    double_value => 1.2,
+    string_value => "a",
+    int_array => [
+      1,
+      2,
+      3
+    ] : int[](0x55f21fb9b8d0),
+    object_value => TestCase::Operator::DumpTest1 (0x55f21f764640) {
+      byte_value => 0,
+      short_value => 0,
+      int_value => 0,
+      long_value => 0,
+      float_value => 0,
+      double_value => 0,
+      string_value => undef,
+      int_array => undef,
+      object_value => undef
+    }
+  }
 
 The return type is the string type.
 
-The string representation may be changed. Please don't use the C<dump> operator for the purpose of the data serialization.
+The string representation might be changed to make it more readable. So don't use the C<dump> operator for the purpose of the data serialization.
 
 Compilation Errors:
 
@@ -1258,19 +1271,19 @@ If I<OPERAND> is not an object type or the undef type, a compilation error occur
 
 =head2 new_string_len Operator
 
-The C<new_string_len> operator creates a L<string|/"String"> with the length.
-
+The C<new_string_len> operator creates a new string with a length.
+  
   new_string_len OPERAND
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<OPERAND>.
 
-The C<new_string_len> operator returns a new string that length is the length specified by I<OPERAND> and all characters are C<\0>.
-
-The character just after the last character is C<\0>. The string created by the new_string_len operator can be used as the C language string ending with C<\0>.
+And creates a new string with the length, fills all characters in the string with C<\0>, and returns it.
 
 The return type is the string type.
 
-The length specified by I<OPERAND> must be greater than or equal to 0, otherwise an exception is thrown.
+Exceptions:
+
+I<OPERAND> must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
@@ -1278,14 +1291,13 @@ The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types
 
 Examples:
   
-  # New a string with the length
+  # Examples of the new_string_len operator
   my $message = new_string_len 5;
 
 =head2 copy Operator
 
 The C<copy> operator copies an object.
   
-  # The copy operator
   copy OPERAND
 
 If the type of operand is none of the string type, a numeric type, a multi-numeric type,
@@ -1308,7 +1320,7 @@ Examples:
 
 =head2 is_read_only Operator
 
-The C<is_read_only> operator checks if the L<string|/"String"> is read-only.
+The C<is_read_only> operator checks if the string is read-only.
 
   is_read_only OPERAND
 
@@ -1460,7 +1472,7 @@ The C<warn> operator prints a message to the standard error.
   warn OPERNAD;
   warn;
 
-If I<OPERAND> is omitted or I<OPERAND> is L<undef|SPVM::Document::Language::Types/"Undefined Value">, I<OPERAND> is set to the string C<"Warning">.
+If I<OPERAND> is omitted or I<OPERAND> is C<undef>, I<OPERAND> is set to the string C<"Warning">.
 
 This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
 
@@ -1493,7 +1505,7 @@ Examples:
 
 =head2 print Operator
 
-The C<print> operator prints a L<string|/"String"> to the standard output.
+The C<print> operator prints a string to the standard output.
 
   print OPERAND;
 
@@ -1501,11 +1513,11 @@ I<OPERAND> must be the string type.
 
 The return type is the void type.
 
-If I<OPERAND> is an L<undef|/"Undefined Value">, print nothing.
+If I<OPERAND> is an C<undef>, print nothing.
 
 =head2 say Operator
 
-The C<say> operator prints a L<string|/"String"> with a line break C<\n> to the standard output.
+The C<say> operator prints a string with a line break C<\n> to the standard output.
 
   say OPERAND;
 
@@ -1513,7 +1525,7 @@ I<OPERAND> must be the string type.
 
 The return type is the void type.
 
-If I<OPERAND> is an L<undef|/"Undefined Value">, print C<\n>.
+If I<OPERAND> is an C<undef>, print C<\n>.
 
 =head2 make_read_only Operator
 

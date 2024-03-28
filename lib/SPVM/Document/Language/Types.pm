@@ -52,6 +52,15 @@ The length of the string can be got using a L<string length operator|/"String Le
   my $message = "Hello"+
   my $length = length $message;
 
+At the L<native level|SPVM::Document::NativeClass>, the character just after the last character of the string is set to C<\0>, so the characters in the string can be used as a C language string.
+
+  # The characters in the string can be used as a C language string
+  void* obj_string = stack[0].oval;
+  const char* chars = env->get_chars(env, stack, obj_string);
+  if (strcmp(chars, "Hello") == 0) {
+    
+  }
+  
 =head2 Array
 
 The array is the data structure for multiple values.
