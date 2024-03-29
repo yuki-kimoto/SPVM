@@ -66,7 +66,7 @@ class TestCase::Operator::Copy {
           return 0;
         }
       }
- 
+      
       # double
       {
         my $nums = [(double)1.1, 2.2, 3.3];
@@ -84,8 +84,8 @@ class TestCase::Operator::Copy {
           return 0;
         }
       }
-   }
-
+    }
+    
     # Multi numeric  array
     {
       # Complex_2d;
@@ -94,7 +94,7 @@ class TestCase::Operator::Copy {
         
         $nums->[0]{re} = 1;
         $nums->[0]{im} = 2;
-
+        
         $nums->[2]{re} = 3;
         $nums->[2]{im} = 4;
         
@@ -126,23 +126,9 @@ class TestCase::Operator::Copy {
         }
       }
     }
-
-    
-    # Exception
-    {
-      eval { copy TestCase::Minimal->new; };
-      unless ($@) {
-        return 0;
-      }
-
-      eval { copy new TestCase::Minimal[3]; };
-      unless ($@) {
-        return 0;
-      }
-    }
     
     $@ = undef;
-
+    
     return 1;
   }
 }

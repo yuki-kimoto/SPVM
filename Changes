@@ -1,3 +1,7 @@
+0.989098 2023-03-29
+  [Imcompatible Changes]
+    * The copy operator does not thrown an exception, and causes an compilation error instead of an exception.
+  
 0.989097 2023-03-27
   [Compilation Error Changes]
     * Improve compilation error messages in the isa, is_type, isa_error, is_error operators.

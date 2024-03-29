@@ -521,8 +521,28 @@ use Test::More;
 # copy
 {
   {
+    my $source = 'class MyClass { static method main : void () { copy "abc"; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { copy new byte[3]; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { use Complex_2d; static method main : void () { copy new Complex_2d[3]; } }';
+    compile_ok($source);
+  }
+  
+  {
     my $source = 'class MyClass { static method main : void () { copy 1; } }';
-    compile_not_ok($source, q|The type of the operand of the copy operator must be an object type|);
+    compile_not_ok($source, q|The type of the operand of the copy operator must be the string type, a numeric type, or a multi-numeric type.|);
+  }
+  
+  {
+    my $source = 'class MyClass { use Point;static method main : void () { copy Point->new; } }';
+    compile_not_ok($source, q|The type of the operand of the copy operator must be the string type, a numeric type, or a multi-numeric type.|);
   }
 }
 

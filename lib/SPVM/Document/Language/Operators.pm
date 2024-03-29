@@ -1300,22 +1300,19 @@ The C<copy> operator copies an object.
   
   copy OPERAND
 
-If the type of operand is none of the string type, a numeric type, a multi-numeric type,
-An L<exception|/"Exception Handling"> is thorwn.
+This operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of array or the characters of the string into the new object, and returns it.
 
-The C<copy> operator returns the copied object.
+The read-only flag of the string is not copied.
 
 The return type is the type of I<OPERAND>.
 
-Read-only flag of the string is dropped.
-
 Compilation Errors:
 
-The type of the operand must be an object type, otherwise a compilation error occurs.
+The type of the operand must be the string type, a numeric array type, or a multi-numeric array type, otherwise a compilation error occurs.
 
 Examples:
   
-  # New a string with the length
+  # Exampels of the copy operator
   my $message = copy "abc";
 
 =head2 is_read_only Operator

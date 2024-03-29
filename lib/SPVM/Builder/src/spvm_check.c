@@ -2218,8 +2218,13 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           case SPVM_OP_C_ID_COPY: {
             SPVM_TYPE* operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             
-            if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-              SPVM_COMPILER_error(compiler, "The type of the operand of the copy operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+            int32_t is_copyable_type
+              =  SPVM_TYPE_is_string_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
+              || SPVM_TYPE_is_numeric_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
+              || SPVM_TYPE_is_mulnum_array_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag);
+            
+            if (!is_copyable_type) {
+              SPVM_COMPILER_error(compiler, "The type of the operand of the copy operator must be the string type, a numeric type, or a multi-numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             

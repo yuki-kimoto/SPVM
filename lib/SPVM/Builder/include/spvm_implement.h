@@ -1486,20 +1486,8 @@ static inline void SPVM_IMPLEMENT_DUMP(SPVM_ENV* env, SPVM_VALUE* stack, void** 
 }
 
 static inline void SPVM_IMPLEMENT_COPY(SPVM_ENV* env, SPVM_VALUE* stack, void** out, void* object, int32_t* error_id) {
-  if (object) {
-    if (!(env->is_string(env, stack, object) || env->is_numeric_array(env, stack, object) || env->is_mulnum_array(env, stack, object))) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_COPY_OPERAND_INVALID]);
-      env->set_exception(env, stack, exception);
-      *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
-    }
-    else {
-      void* new_object_no_mortal = env->copy_no_mortal(env, stack, object);
-      env->assign_object(env, stack, out, new_object_no_mortal);
-    }
-  }
-  else {
-    env->assign_object(env, stack, out, NULL);
-  }
+  void* object_copy = env->copy_no_mortal(env, stack, object);
+  env->assign_object(env, stack, out, object_copy);
 }
 
 #define SPVM_IMPLEMENT_REF_BYTE(out, in) (out = in)
