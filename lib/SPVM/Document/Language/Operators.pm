@@ -1296,11 +1296,13 @@ Examples:
 
 =head2 copy Operator
 
-The C<copy> operator copies an object.
+The C<copy> operator copies a numeric array, a multi-numeric array or a string.
   
   copy OPERAND
 
-This operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of array or the characters of the string into the new object, and returns it.
+If the operand I<OPERAND> is not C<undef>, this operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of the array or the characters of the string into the new object, and returns it.
+
+If I<OPERAND> is undef, this operator returns C<undef>.
 
 The read-only flag of the string is not copied.
 
