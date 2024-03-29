@@ -725,6 +725,28 @@ Examples:
   my $nums = new int[10];
   my $length = @$nums;
 
+=head2 scalar Operator
+
+The C<scalar> operator returns its operand.
+
+  scalar OPERAND
+
+This operator returns the operand I<OPERAND>. I<OPERAND> must be the L<array length operator/"Array Length Operator">.
+
+This operator exists only for readability.
+
+The return type is the int type.
+
+Compilation Errors:
+
+I<OPERAND> must be the L<array length operator|/"Array Length Operator">, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Examples of the scalar operator
+  my $nums = new int[3];
+  say scalar @$nums;
+
 =head2 Sequential Operator
 
 The sequential operator is an operator with the following syntax.
@@ -1007,50 +1029,13 @@ The type of I<LEFT_OPERAND> must be the string type or the byte[] type, otherwis
 
 The type of I<RIGHT_OPERAND> must be the string type or the byte[] type, otherwise a compilation error occurs.
 
-=head2 dump Operator
+=head2 Constant Operator
 
-The C<dump> operator gets the string representation dumping the data contained in the object.
+A constant operator return a constant value created by a L<literal|SPVM::Document::Language::Tokenization/"Literal"> syntax.
 
-  dump OPERAND
+  LITERAL
 
-This operator creates a new string with the string representation dumping the data contained in the object I<OPERAND> and returns it.
-
-The following is an example of the return value the C<dump> operator.
-  
-  # An return vlaue of the dump operator
-  TestCase::Operator::DumpTest1 (0x55f21f7e6050) {
-    byte_value => 1,
-    short_value => 2,
-    int_value => 3,
-    long_value => 4,
-    float_value => 1.1,
-    double_value => 1.2,
-    string_value => "a",
-    int_array => [
-      1,
-      2,
-      3
-    ] : int[](0x55f21fb9b8d0),
-    object_value => TestCase::Operator::DumpTest1 (0x55f21f764640) {
-      byte_value => 0,
-      short_value => 0,
-      int_value => 0,
-      long_value => 0,
-      float_value => 0,
-      double_value => 0,
-      string_value => undef,
-      int_array => undef,
-      object_value => undef
-    }
-  }
-
-The return type is the string type.
-
-The string representation might be changed to make it more readable. So don't use the C<dump> operator for the purpose of the data serialization.
-
-Compilation Errors:
-
-If I<OPERAND> is not an object type or the undef type, a compilation error occurs.
+The return type is the type returned by the literal I<LITERAL>.
 
 =head2 new_string_len Operator
 
@@ -1177,27 +1162,50 @@ Examples:
   my $message = "Hello";
   my $is_read_only = is_read_only $message;
 
-=head2 scalar Operator
+=head2 dump Operator
 
-The C<scalar> operator is an L<Operator|/"Operators"> that returns I<OPERAND>.
+The C<dump> operator gets the string representation dumping the data contained in the object.
 
-  scalar OPERAND
+  dump OPERAND
+
+This operator creates a new string with the string representation dumping the data contained in the object I<OPERAND> and returns it.
+
+The following is an example of the return value the C<dump> operator.
+  
+  # An return vlaue of the dump operator
+  TestCase::Operator::DumpTest1 (0x55f21f7e6050) {
+    byte_value => 1,
+    short_value => 2,
+    int_value => 3,
+    long_value => 4,
+    float_value => 1.1,
+    double_value => 1.2,
+    string_value => "a",
+    int_array => [
+      1,
+      2,
+      3
+    ] : int[](0x55f21fb9b8d0),
+    object_value => TestCase::Operator::DumpTest1 (0x55f21f764640) {
+      byte_value => 0,
+      short_value => 0,
+      int_value => 0,
+      long_value => 0,
+      float_value => 0,
+      double_value => 0,
+      string_value => undef,
+      int_array => undef,
+      object_value => undef
+    }
+  }
+
+The return type is the string type.
+
+The string representation might be changed to make it more readable. So don't use the C<dump> operator for the purpose of the data serialization.
 
 Compilation Errors:
 
-The operand must be an L</"The array Length Operator">, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Getting the array length 
-  my $nums = new int[3];
-  foo(scalar @$nums);
-
-  # This is exactlly same as the above.
-  my $nums = new int[3];
-  foo(@$nums);
-
-Note that the sclara operator exists only to reduce the confusion.
+If I<OPERAND> is not an object type or the undef type, a compilation error occurs.
 
 =head2 isweak Operator
 
@@ -1221,317 +1229,6 @@ Examples:
 
   # isweak
   my $isweak = isweak $object->{point};
-
-=head2 isa Operator
-
-The C<isa> operator checks whether an operand can be assigned to a type.
-
-  OPERAND isa TYPE
-
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite type convertion.
-
-If the assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
-
-If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the L<runtime assignment requirement|/"Runtime Assignment Requirement"> at runtime.
-
-If the runtime assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
-
-The return type is the int type.
-
-Compilation Errors:
-
-If the runtime assignment requirement is checked, I<OPERAND> must be an object type, otherwise a compilation error occurs.
-
-Examples:
-  
-  if ($value isa int) {
-    
-  }
-  
-  if ($value isa Point) {
-    
-  }
-  
-  if ($value isa Point3D) {
-    
-  }
-  
-  if ($value isa Stringable) {
-    
-  }
-  
-  if ($value isa int) {
-    
-  }
-
-=head2 is_type Operator
-
-The C<is_type> operator checks whether the type of an operand is equal to a type.
-
-  OPERAND is_type TYPE
-
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
-
-If it is true, this operator returns 1, otherwise returns 0.
-
-If the type is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
-
-If it is true, this operator returns 1, otherwise returns 0.
-
-The return type is int type.
-
-Compilation Errors:
-
-If the runtime check is performed, I<OPERAND> must be an object type, otherwise a compilation error occurs.
-
-Examples:
-
-  if ($object is_type int) {
-    
-  }
-  
-  if ($object is_type Point) {
-    
-  }
-  
-  if ($object is_type int[]) {
-    
-  }
-  
-  if ($object is_type Stringable[]) {
-    
-  }
-
-=head2 is_compile_type Operator
-
-The C<is_compile_type> operator checks whether the compilation type of an operand is equal to a type.
-
-  OPERAND is_compile_type TYPE
-
-If the compilation type of I<OPERAND> is equal to the type I<TYPE>, returns 1, otherwise returns 0.
-
-The return type is int type.
-
-Examples:
-  
-  {
-    my $value : int;
-    if ($value is_compile_type int) {
-      # Pass
-    }
-  }
-  
-  {
-    my $object : object = new TestCase::Minimal;
-    if ($object is_compile_type object) {
-      # Pass
-    }
-  }
-  
-  {
-    my $value : Stringer = method : string () { return "aaa"; };
-    if ($value is_compile_type Stringer) {
-      # Pass
-    }
-  }
-
-=head2 isa_error Operator
-
-The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a class type. This operator is normally used for error classes to check L<eval_error_id/"eval_error_id Operator">>.
-
-  OPERAND isa_error TYPE
-
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
-
-And this operator checks whether the type specified by the basic type ID I<OPERAND> satisfies the L<runtime assignment requirement|/"Runtime Assignment Requirement"> to the type I<TYPE>.
-
-If it is satisfied, this operator returns 1, otherwise returns 0.
-
-The return type is int type.
-
-Compilation Errors:
-
-I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-I<TYPE> must be a class type, otherwise a compilation error occurs.
-
-Examples:
-
-  if (eval_error_id isa_error Error) {
-    
-  }
-  
-  if (eval_error_id isa_error Error::System) {
-    
-  }
-  
-=head2 is_error Operator
-
-The C<is_error> operator checks whether the type specified by a basic type ID is equal to a class type. This operator is normally used for error classes to check L<eval_error_id/"eval_error_id Operator">>.
-
-  OPERAND is_error TYPE
-
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
-
-And this operator checks whether the type specified by the basic type ID I<OPERAND> is equal to the type I<TYPE>.
-
-If it is, this operator returns 1, otherwise returns 0.
-
-The return type is int type.
-
-Compilation Errors:
-
-I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-I<TYPE> must be a class type, otherwise a compilation error occurs.
-
-Examples:
-
-  if (eval_error_id is_error Error) {
-    
-  }
-  
-  if (eval_error_id is_error Error::System) {
-    
-  }
-
-=head2 type_name Operator
-
-The C<type_name> operator gets the type name of the object.
-
-  type_name OPERAND
-
-If the object  I<OPERAND> is defined, creates a string with the type name of I<OPERAND> and returns it, otherwise returns C<undef>.
-
-The return type is the string type.
-
-Compilation Errors.
-
-I<OPERAND> must be an object type, a compilation error occurs.
-
-Examples:
-  
-  # "Point"
-  my $point = Point->new;
-  my $type_name = type_name $point;
-  
-  # "Point"
-  my $point = (object)Point->new;
-  my $type_name = type_name $point;
-
-=head2 compile_type_name Operator
-
-The C<compile_type_name> operator gets the compilation type of the operand I<OPERAND>.
-
-  compile_type_name OPERAND
-
-This operator creates a new string with the compilation type name of I<OPERAND> and returns it.
-
-The return type is the string type.
-
-Examples:
-  
-  # "Point"
-  my $point = Point->new;
-  my $type_name = type_name $point;
-  
-  # "object"
-  my $point = (object)Point->new;
-  my $type_name = type_name $point;
-
-=head2 can Operator
-
-The C<can> operator checks if a method can be called. 
-
-  OPERAND can METHOD_NAME
-
-An empty string C<""> means an L<anon method|/"Anon Method">.
-
-If I<OPERAND> can call the method given by METHOD_NAME, returns 1, otherwise returns 0.
-
-The return type is int type.
-
-Compilation Errors:
-
-The type of I<OPERAND> must be the class type or the L<interface type|SPVM::Document::Language::Types/"Interface Type">, otherwise a compilation error occurs.
-
-The METHOD_NAME must be a method name or an empty string C<"">, otherwise a compilation error occurs.
-
-Examples:
-
-  my $stringable = (Stringable)Point->new(1, 2);
-  
-  if ($stringable can to_string) {
-    # ...
-  }
-  
-  if ($stringable can "") {
-    # ...
-  }
-
-=head2 basic_type_id Operator
-
-The C<basic_type_id> operator gets the basic type ID from a type.
-
-  basic_type_id TYPE
-
-The return value is the basic type ID.
-
-The return type is the int type.
-
-Examples:
-
-  my $basic_type_id = basic_type_id int;
-  
-  my $basic_type_id = basic_type_id int[];
-  
-  my $error_basic_type_id = basic_type_id Error;
-
-=head2 eval_error_id Operator
-
-The C<eval_error_id> operatoer gets the error ID of the exception caught by an eval block.
-
-  eval_error_id
-
-This value is set to 0 at the beginning of the L<eval block|eval Block>.
-
-=head2 warn Operator
-
-The C<warn> operator prints a message to the standard error.
-
-  warn OPERNAD;
-  warn;
-
-If I<OPERAND> is omitted or I<OPERAND> is C<undef>, I<OPERAND> is set to the string C<"Warning">.
-
-This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
-
-If I<OPERAND> is not defined at runtime, this operator prints C<"undef">.
-
-If I<OPERAND> is defined at runtime and the runtime type is the string type, this operator prints I<OPERAND>.
-
-If I<OPERAND> is defined at runtime and the runtime type is not the string type, this operator prints the type name and address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
-
-If the end character of the I<OPERNAD> is not C<\n>, this operator prints a new line, two tabs and the stack trace information following the output above.
-
-A stack trace information consists of the current method name, file name, and line number.
-
-  MyClass->test at path/MyClass.spvm line 33
-
-The return type is the void type.
-
-Compilation Errors:
-
-The type of I<OPERNAD> must be the object type or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
-
-Examples:
-  
-  warn;
-  warn "Something is wrong.";
-  
-  # Point(0x55d8a44ed090)
-  my $point = Point->new;
-  warn $point;
 
 =head2 print Operator
 
@@ -2489,13 +2186,316 @@ Examples:
     
   }
 
-=head2 Constant Operator
+=head2 isa Operator
 
-A constant operator return a constant value created by a L<literal|SPVM::Document::Language::Tokenization/"Literal"> syntax.
+The C<isa> operator checks whether an operand can be assigned to a type.
 
-  LITERAL
+  OPERAND isa TYPE
 
-The return type is the type returned by the literal I<LITERAL>.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite type convertion.
+
+If the assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
+
+If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the L<runtime assignment requirement|/"Runtime Assignment Requirement"> at runtime.
+
+If the runtime assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
+
+The return type is the int type.
+
+Compilation Errors:
+
+If the runtime assignment requirement is checked, I<OPERAND> must be an object type, otherwise a compilation error occurs.
+
+Examples:
+  
+  if ($value isa int) {
+    
+  }
+  
+  if ($value isa Point) {
+    
+  }
+  
+  if ($value isa Point3D) {
+    
+  }
+  
+  if ($value isa Stringable) {
+    
+  }
+  
+  if ($value isa int) {
+    
+  }
+
+=head2 is_type Operator
+
+The C<is_type> operator checks whether the type of an operand is equal to a type.
+
+  OPERAND is_type TYPE
+
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
+
+If it is true, this operator returns 1, otherwise returns 0.
+
+If the type is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
+
+If it is true, this operator returns 1, otherwise returns 0.
+
+The return type is int type.
+
+Compilation Errors:
+
+If the runtime check is performed, I<OPERAND> must be an object type, otherwise a compilation error occurs.
+
+Examples:
+
+  if ($object is_type int) {
+    
+  }
+  
+  if ($object is_type Point) {
+    
+  }
+  
+  if ($object is_type int[]) {
+    
+  }
+  
+  if ($object is_type Stringable[]) {
+    
+  }
+
+=head2 is_compile_type Operator
+
+The C<is_compile_type> operator checks whether the compilation type of an operand is equal to a type.
+
+  OPERAND is_compile_type TYPE
+
+If the compilation type of I<OPERAND> is equal to the type I<TYPE>, returns 1, otherwise returns 0.
+
+The return type is int type.
+
+Examples:
+  
+  {
+    my $value : int;
+    if ($value is_compile_type int) {
+      # Pass
+    }
+  }
+  
+  {
+    my $object : object = new TestCase::Minimal;
+    if ($object is_compile_type object) {
+      # Pass
+    }
+  }
+  
+  {
+    my $value : Stringer = method : string () { return "aaa"; };
+    if ($value is_compile_type Stringer) {
+      # Pass
+    }
+  }
+
+=head2 isa_error Operator
+
+The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a class type. This operator is normally used for error classes to check L<eval_error_id/"eval_error_id Operator">>.
+
+  OPERAND isa_error TYPE
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
+
+And this operator checks whether the type specified by the basic type ID I<OPERAND> satisfies the L<runtime assignment requirement|/"Runtime Assignment Requirement"> to the type I<TYPE>.
+
+If it is satisfied, this operator returns 1, otherwise returns 0.
+
+The return type is int type.
+
+Compilation Errors:
+
+I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+I<TYPE> must be a class type, otherwise a compilation error occurs.
+
+Examples:
+
+  if (eval_error_id isa_error Error) {
+    
+  }
+  
+  if (eval_error_id isa_error Error::System) {
+    
+  }
+  
+=head2 is_error Operator
+
+The C<is_error> operator checks whether the type specified by a basic type ID is equal to a class type. This operator is normally used for error classes to check L<eval_error_id/"eval_error_id Operator">>.
+
+  OPERAND is_error TYPE
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
+
+And this operator checks whether the type specified by the basic type ID I<OPERAND> is equal to the type I<TYPE>.
+
+If it is, this operator returns 1, otherwise returns 0.
+
+The return type is int type.
+
+Compilation Errors:
+
+I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+I<TYPE> must be a class type, otherwise a compilation error occurs.
+
+Examples:
+
+  if (eval_error_id is_error Error) {
+    
+  }
+  
+  if (eval_error_id is_error Error::System) {
+    
+  }
+
+=head2 type_name Operator
+
+The C<type_name> operator gets the type name of the object.
+
+  type_name OPERAND
+
+If the object  I<OPERAND> is defined, creates a string with the type name of I<OPERAND> and returns it, otherwise returns C<undef>.
+
+The return type is the string type.
+
+Compilation Errors.
+
+I<OPERAND> must be an object type, a compilation error occurs.
+
+Examples:
+  
+  # "Point"
+  my $point = Point->new;
+  my $type_name = type_name $point;
+  
+  # "Point"
+  my $point = (object)Point->new;
+  my $type_name = type_name $point;
+
+=head2 compile_type_name Operator
+
+The C<compile_type_name> operator gets the compilation type of the operand I<OPERAND>.
+
+  compile_type_name OPERAND
+
+This operator creates a new string with the compilation type name of I<OPERAND> and returns it.
+
+The return type is the string type.
+
+Examples:
+  
+  # "Point"
+  my $point = Point->new;
+  my $type_name = type_name $point;
+  
+  # "object"
+  my $point = (object)Point->new;
+  my $type_name = type_name $point;
+
+=head2 can Operator
+
+The C<can> operator checks if a method can be called. 
+
+  OPERAND can METHOD_NAME
+
+An empty string C<""> means an L<anon method|/"Anon Method">.
+
+If I<OPERAND> can call the method given by METHOD_NAME, returns 1, otherwise returns 0.
+
+The return type is int type.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be the class type or the L<interface type|SPVM::Document::Language::Types/"Interface Type">, otherwise a compilation error occurs.
+
+The METHOD_NAME must be a method name or an empty string C<"">, otherwise a compilation error occurs.
+
+Examples:
+
+  my $stringable = (Stringable)Point->new(1, 2);
+  
+  if ($stringable can to_string) {
+    # ...
+  }
+  
+  if ($stringable can "") {
+    # ...
+  }
+
+=head2 basic_type_id Operator
+
+The C<basic_type_id> operator gets the basic type ID from a type.
+
+  basic_type_id TYPE
+
+The return value is the basic type ID.
+
+The return type is the int type.
+
+Examples:
+
+  my $basic_type_id = basic_type_id int;
+  
+  my $basic_type_id = basic_type_id int[];
+  
+  my $error_basic_type_id = basic_type_id Error;
+
+=head2 eval_error_id Operator
+
+The C<eval_error_id> operatoer gets the error ID of the exception caught by an eval block.
+
+  eval_error_id
+
+This value is set to 0 at the beginning of the L<eval block|eval Block>.
+
+=head2 warn Operator
+
+The C<warn> operator prints a message to the standard error.
+
+  warn OPERNAD;
+  warn;
+
+If I<OPERAND> is omitted or I<OPERAND> is C<undef>, I<OPERAND> is set to the string C<"Warning">.
+
+This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
+
+If I<OPERAND> is not defined at runtime, this operator prints C<"undef">.
+
+If I<OPERAND> is defined at runtime and the runtime type is the string type, this operator prints I<OPERAND>.
+
+If I<OPERAND> is defined at runtime and the runtime type is not the string type, this operator prints the type name and address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
+
+If the end character of the I<OPERNAD> is not C<\n>, this operator prints a new line, two tabs and the stack trace information following the output above.
+
+A stack trace information consists of the current method name, file name, and line number.
+
+  MyClass->test at path/MyClass.spvm line 33
+
+The return type is the void type.
+
+Compilation Errors:
+
+The type of I<OPERNAD> must be the object type or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
+
+Examples:
+  
+  warn;
+  warn "Something is wrong.";
+  
+  # Point(0x55d8a44ed090)
+  my $point = Point->new;
+  warn $point;
 
 =head1 Internal Representation of Negative Integers
 
