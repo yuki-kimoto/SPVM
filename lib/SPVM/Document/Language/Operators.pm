@@ -1207,29 +1207,6 @@ Compilation Errors:
 
 If I<OPERAND> is not an object type or the undef type, a compilation error occurs.
 
-=head2 isweak Operator
-
-The C<isweak> operator checks whether a field is referenced by a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">
-
-  isweak OBJECT->{FIELD_NAME};
-
-If the field is weaken, the C<isweak> operator returns 1, otherwise returns 0.
-
-The return type of the C<isweak> operator is the int type.
-
-Compilation Errors:
-
-The type of the object must be the class type, otherwise a compilation error occurs.
-
-If the field name is not found, a compilation error occurs.
-
-The type of the field targetted by the C<isweak> operator is not an object type, a compilation error occurs.
-
-Examples:
-
-  # isweak
-  my $isweak = isweak $object->{point};
-
 =head2 print Operator
 
 The C<print> operator prints a string to the standard output.
@@ -1254,47 +1231,43 @@ The return type is the void type.
 
 If I<OPERAND> is an C<undef>, print C<\n>.
 
-=head2 weaken Operator
+=head2 warn Operator
 
-The C<weaken> operator creates a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
+The C<warn> operator prints a message to the standard error.
 
-  weaken OBJECT->{FIELD_NAME};
+  warn OPERNAD;
+  warn;
 
-The return type is the void type.
+If I<OPERAND> is omitted or I<OPERAND> is C<undef>, I<OPERAND> is set to the string C<"Warning">.
 
-Compilation Errors:
+This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
 
-The type of the object must be the class type, otherwise a compilation error occurs.
+If I<OPERAND> is not defined at runtime, this operator prints C<"undef">.
 
-If the field name is not found, a compilation error occurs.
+If I<OPERAND> is defined at runtime and the runtime type is the string type, this operator prints I<OPERAND>.
 
-The type of the field targetted by the C<weaken> statement is not an object type, a compilation error occurs.
+If I<OPERAND> is defined at runtime and the runtime type is not the string type, this operator prints the type name and address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
 
-Examples:
+If the end character of the I<OPERNAD> is not C<\n>, this operator prints a new line, two tabs and the stack trace information following the output above.
 
-  # weaken
-  weaken $object->{point};
+A stack trace information consists of the current method name, file name, and line number.
 
-=head2 unweaken Operator
-
-The C<unweaken> operator unweakens a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
-
-  unweaken OBJECT->{FIELD_NAME};
+  MyClass->test at path/MyClass.spvm line 33
 
 The return type is the void type.
 
 Compilation Errors:
 
-The type of the object must be the class type, otherwise a compilation error occurs.
-
-If the field name is not found, a compilation error occurs.
-
-The type of the field targetted by the C<unweaken> statement is not an object type, a compilation error occurs.
+The type of I<OPERNAD> must be the object type or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
 
 Examples:
-
-  # unweaken
-  unweaken $object->{point};
+  
+  warn;
+  warn "Something is wrong.";
+  
+  # Point(0x55d8a44ed090)
+  my $point = Point->new;
+  warn $point;
 
 =head3 args_width Operator
 
@@ -2459,43 +2432,70 @@ The C<eval_error_id> operatoer gets the error ID of the exception caught by an e
 
 This value is set to 0 at the beginning of the L<eval block|eval Block>.
 
-=head2 warn Operator
+=head2 weaken Operator
 
-The C<warn> operator prints a message to the standard error.
+The C<weaken> operator creates a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
 
-  warn OPERNAD;
-  warn;
-
-If I<OPERAND> is omitted or I<OPERAND> is C<undef>, I<OPERAND> is set to the string C<"Warning">.
-
-This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
-
-If I<OPERAND> is not defined at runtime, this operator prints C<"undef">.
-
-If I<OPERAND> is defined at runtime and the runtime type is the string type, this operator prints I<OPERAND>.
-
-If I<OPERAND> is defined at runtime and the runtime type is not the string type, this operator prints the type name and address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
-
-If the end character of the I<OPERNAD> is not C<\n>, this operator prints a new line, two tabs and the stack trace information following the output above.
-
-A stack trace information consists of the current method name, file name, and line number.
-
-  MyClass->test at path/MyClass.spvm line 33
+  weaken OBJECT->{FIELD_NAME};
 
 The return type is the void type.
 
 Compilation Errors:
 
-The type of I<OPERNAD> must be the object type or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
+The type of the object must be the class type, otherwise a compilation error occurs.
+
+If the field name is not found, a compilation error occurs.
+
+The type of the field targetted by the C<weaken> statement is not an object type, a compilation error occurs.
 
 Examples:
-  
-  warn;
-  warn "Something is wrong.";
-  
-  # Point(0x55d8a44ed090)
-  my $point = Point->new;
-  warn $point;
+
+  # weaken
+  weaken $object->{point};
+
+=head2 unweaken Operator
+
+The C<unweaken> operator unweakens a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
+
+  unweaken OBJECT->{FIELD_NAME};
+
+The return type is the void type.
+
+Compilation Errors:
+
+The type of the object must be the class type, otherwise a compilation error occurs.
+
+If the field name is not found, a compilation error occurs.
+
+The type of the field targetted by the C<unweaken> statement is not an object type, a compilation error occurs.
+
+Examples:
+
+  # unweaken
+  unweaken $object->{point};
+
+=head2 isweak Operator
+
+The C<isweak> operator checks whether a field is referenced by a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">
+
+  isweak OBJECT->{FIELD_NAME};
+
+If the field is weaken, the C<isweak> operator returns 1, otherwise returns 0.
+
+The return type of the C<isweak> operator is the int type.
+
+Compilation Errors:
+
+The type of the object must be the class type, otherwise a compilation error occurs.
+
+If the field name is not found, a compilation error occurs.
+
+The type of the field targetted by the C<isweak> operator is not an object type, a compilation error occurs.
+
+Examples:
+
+  # isweak
+  my $isweak = isweak $object->{point};
 
 =head1 Internal Representation of Negative Integers
 
