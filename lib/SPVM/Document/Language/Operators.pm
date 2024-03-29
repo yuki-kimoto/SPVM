@@ -1007,6 +1007,221 @@ The type of I<LEFT_OPERAND> must be the string type or the byte[] type, otherwis
 
 The type of I<RIGHT_OPERAND> must be the string type or the byte[] type, otherwise a compilation error occurs.
 
+=head2 dump Operator
+
+The C<dump> operator gets the string representation dumping the data contained in the object.
+
+  dump OPERAND
+
+This operator creates a new string with the string representation dumping the data contained in the object I<OPERAND> and returns it.
+
+The following is an example of the return value the C<dump> operator.
+  
+  # An return vlaue of the dump operator
+  TestCase::Operator::DumpTest1 (0x55f21f7e6050) {
+    byte_value => 1,
+    short_value => 2,
+    int_value => 3,
+    long_value => 4,
+    float_value => 1.1,
+    double_value => 1.2,
+    string_value => "a",
+    int_array => [
+      1,
+      2,
+      3
+    ] : int[](0x55f21fb9b8d0),
+    object_value => TestCase::Operator::DumpTest1 (0x55f21f764640) {
+      byte_value => 0,
+      short_value => 0,
+      int_value => 0,
+      long_value => 0,
+      float_value => 0,
+      double_value => 0,
+      string_value => undef,
+      int_array => undef,
+      object_value => undef
+    }
+  }
+
+The return type is the string type.
+
+The string representation might be changed to make it more readable. So don't use the C<dump> operator for the purpose of the data serialization.
+
+Compilation Errors:
+
+If I<OPERAND> is not an object type or the undef type, a compilation error occurs.
+
+=head2 new_string_len Operator
+
+The C<new_string_len> operator creates a new string with a length.
+  
+  new_string_len OPERAND
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<OPERAND>.
+
+And creates a new string with the length, fills all characters in the string with C<\0>, and returns it.
+
+The return type is the string type.
+
+Exceptions:
+
+I<OPERAND> must be greater than or equal to 0, otherwise an exception is thrown.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Examples of the new_string_len operator
+  my $message = new_string_len 5;
+
+=head2 length Operator
+
+The C<length> operator gets the length of a string.
+
+  length OPERAND
+
+If the string I<OPERAND> is defind, this operator returns the length of I<OPERAND>. Note that this length is in bytes, not the number of UTF-8 characters.
+
+If I<OPERAND> is not defined, returns 0.
+
+The return type is the int type.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be the string type, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Examples of The length operator
+  
+  # The length is 5
+  my $message = "Hello";
+  my $length = length $message;
+  
+  # The length is 9
+  my $message = "あいう";
+  my $length = length $message;
+
+=head2 copy Operator
+
+The C<copy> operator copies a numeric array, a multi-numeric array or a string.
+  
+  copy OPERAND
+
+If the operand I<OPERAND> is not C<undef>, this operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of the array or the characters of the string into the new object, and returns it.
+
+If I<OPERAND> is undef, this operator returns C<undef>.
+
+The read-only flag of the string is not copied.
+
+The return type is the type of I<OPERAND>.
+
+Compilation Errors:
+
+The type of the operand must be the string type, a numeric array type, or a multi-numeric array type, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Exampels of the copy operator
+  my $message = copy "abc";
+
+=head2 make_read_only Operator
+
+The C<make_read_only> operator makes a string read-only.
+
+  make_read_only OPERAND
+
+If the string I<OPERAND> is defined, this operator makes I<OPERAND> read-only.
+
+A read-only string cannnot be cast to the L<mutable|SPVM::Document::Language::Types/"mutable Type Qualifier"> string type. If so, an exception is thrown.
+
+The return type is the void type.
+
+Compilation Errors:
+
+I<OPERAND> must be the string type, otherwise a compilation error occurs.
+
+Examples:
+
+  # Examples of the make_read_only operator
+  
+  # A string
+  my $string = new_string_len 3;
+  
+  # Make the string read-only
+  make_read_only $string;
+  
+  # The conversion to the mutable string type throw an exception.
+  my $string_mutable = (mutable string)$string;
+
+=head2 is_read_only Operator
+
+The C<is_read_only> operator checks if a string is read-only.
+
+  is_read_only OPERAND
+
+If the string I<OPERAND> is defined and read-only, the C<is_read_only> operator returns 1, otherwise returns 0.
+
+The return type is the int type.
+
+Compilation Errors:
+
+I<OPERAND> must be the string type, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Examples of the is_read_only operator
+  my $message = "Hello";
+  my $is_read_only = is_read_only $message;
+
+=head2 scalar Operator
+
+The C<scalar> operator is an L<Operator|/"Operators"> that returns I<OPERAND>.
+
+  scalar OPERAND
+
+Compilation Errors:
+
+The operand must be an L</"The array Length Operator">, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Getting the array length 
+  my $nums = new int[3];
+  foo(scalar @$nums);
+
+  # This is exactlly same as the above.
+  my $nums = new int[3];
+  foo(@$nums);
+
+Note that the sclara operator exists only to reduce the confusion.
+
+=head2 isweak Operator
+
+The C<isweak> operator checks whether a field is referenced by a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">
+
+  isweak OBJECT->{FIELD_NAME};
+
+If the field is weaken, the C<isweak> operator returns 1, otherwise returns 0.
+
+The return type of the C<isweak> operator is the int type.
+
+Compilation Errors:
+
+The type of the object must be the class type, otherwise a compilation error occurs.
+
+If the field name is not found, a compilation error occurs.
+
+The type of the field targetted by the C<isweak> operator is not an object type, a compilation error occurs.
+
+Examples:
+
+  # isweak
+  my $isweak = isweak $object->{point};
+
 =head2 isa Operator
 
 The C<isa> operator checks whether an operand can be assigned to a type.
@@ -1223,221 +1438,6 @@ Examples:
   # "object"
   my $point = (object)Point->new;
   my $type_name = type_name $point;
-
-=head2 dump Operator
-
-The C<dump> operator gets the string representation dumping the data contained in the object.
-
-  dump OPERAND
-
-This operator creates a new string with the string representation dumping the data contained in the object I<OPERAND> and returns it.
-
-The following is an example of the return value the C<dump> operator.
-  
-  # An return vlaue of the dump operator
-  TestCase::Operator::DumpTest1 (0x55f21f7e6050) {
-    byte_value => 1,
-    short_value => 2,
-    int_value => 3,
-    long_value => 4,
-    float_value => 1.1,
-    double_value => 1.2,
-    string_value => "a",
-    int_array => [
-      1,
-      2,
-      3
-    ] : int[](0x55f21fb9b8d0),
-    object_value => TestCase::Operator::DumpTest1 (0x55f21f764640) {
-      byte_value => 0,
-      short_value => 0,
-      int_value => 0,
-      long_value => 0,
-      float_value => 0,
-      double_value => 0,
-      string_value => undef,
-      int_array => undef,
-      object_value => undef
-    }
-  }
-
-The return type is the string type.
-
-The string representation might be changed to make it more readable. So don't use the C<dump> operator for the purpose of the data serialization.
-
-Compilation Errors:
-
-If I<OPERAND> is not an object type or the undef type, a compilation error occurs.
-
-=head2 new_string_len Operator
-
-The C<new_string_len> operator creates a new string with a length.
-  
-  new_string_len OPERAND
-
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<OPERAND>.
-
-And creates a new string with the length, fills all characters in the string with C<\0>, and returns it.
-
-The return type is the string type.
-
-Exceptions:
-
-I<OPERAND> must be greater than or equal to 0, otherwise an exception is thrown.
-
-Compilation Errors:
-
-The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Examples of the new_string_len operator
-  my $message = new_string_len 5;
-
-=head2 length Operator
-
-The C<length> operator gets the length of a string.
-
-  length OPERAND
-
-If the string I<OPERAND> is defind, this operator returns the length of I<OPERAND>. Note that this length is in bytes, not the number of UTF-8 characters.
-
-If I<OPERAND> is not defined, returns 0.
-
-The return type is the int type.
-
-Compilation Errors:
-
-The type of I<OPERAND> must be the string type, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Examples of The length operator
-  
-  # The length is 5
-  my $message = "Hello";
-  my $length = length $message;
-  
-  # The length is 9
-  my $message = "あいう";
-  my $length = length $message;
-
-=head2 copy Operator
-
-The C<copy> operator copies a numeric array, a multi-numeric array or a string.
-  
-  copy OPERAND
-
-If the operand I<OPERAND> is not C<undef>, this operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of the array or the characters of the string into the new object, and returns it.
-
-If I<OPERAND> is undef, this operator returns C<undef>.
-
-The read-only flag of the string is not copied.
-
-The return type is the type of I<OPERAND>.
-
-Compilation Errors:
-
-The type of the operand must be the string type, a numeric array type, or a multi-numeric array type, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Exampels of the copy operator
-  my $message = copy "abc";
-
-=head2 make_read_only Operator
-
-The C<make_read_only> operator makes a string read-only.
-
-  make_read_only OPERAND
-
-If the string I<OPERAND> is defined, this operator makes I<OPERAND> read-only.
-
-A read-only string cannnot be cast to the L<mutable|SPVM::Document::Language::Types/"mutable Type Qualifier"> string type. If so, an exception is thrown.
-
-The return type is the void type.
-
-Compilation Errors:
-
-I<OPERAND> must be the string type, otherwise a compilation error occurs.
-
-Examples:
-
-  # Examples of the make_read_only operator
-  
-  # A string
-  my $string = new_string_len 3;
-  
-  # Make the string read-only
-  make_read_only $string;
-  
-  # The conversion to the mutable string type throw an exception.
-  my $string_mutable = (mutable string)$string;
-
-=head2 is_read_only Operator
-
-The C<is_read_only> operator checks if a string is read-only.
-
-  is_read_only OPERAND
-
-If the string I<OPERAND> is defined and read-only, the C<is_read_only> operator returns 1, otherwise returns 0.
-
-The return type is the int type.
-
-Compilation Errors:
-
-I<OPERAND> must be the string type, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Examples of the is_read_only operator
-  my $message = "Hello";
-  my $is_read_only = is_read_only $message;
-
-=head2 scalar Operator
-
-The C<scalar> operator is an L<Operator|/"Operators"> that returns I<OPERAND>.
-
-  scalar OPERAND
-
-Compilation Errors:
-
-The operand must be an L</"The array Length Operator">, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Getting the array length 
-  my $nums = new int[3];
-  foo(scalar @$nums);
-
-  # This is exactlly same as the above.
-  my $nums = new int[3];
-  foo(@$nums);
-
-Note that the sclara operator exists only to reduce the confusion.
-
-=head2 isweak Operator
-
-The C<isweak> operator checks whether a field is referenced by a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">
-
-  isweak OBJECT->{FIELD_NAME};
-
-If the field is weaken, the C<isweak> operator returns 1, otherwise returns 0.
-
-The return type of the C<isweak> operator is the int type.
-
-Compilation Errors:
-
-The type of the object must be the class type, otherwise a compilation error occurs.
-
-If the field name is not found, a compilation error occurs.
-
-The type of the field targetted by the C<isweak> operator is not an object type, a compilation error occurs.
-
-Examples:
-
-  # isweak
-  my $isweak = isweak $object->{point};
 
 =head2 can Operator
 
