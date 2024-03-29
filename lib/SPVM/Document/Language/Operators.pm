@@ -1319,21 +1319,21 @@ Examples:
 
 =head2 is_read_only Operator
 
-The C<is_read_only> operator checks if the string is read-only.
+The C<is_read_only> operator checks if a string is read-only.
 
   is_read_only OPERAND
 
-If the string is read-only, the C<is_read_only> operator returns 1, otherwise returns 0.
+If the string I<OPERAND> is defined and read-only, the C<is_read_only> operator returns 1, otherwise returns 0.
 
-The return type is an int type.
+The return type is the int type.
 
 Compilation Errors:
 
-The operand must be the string type, otherwise a compilation error occurs.
+I<OPERAND> must be the string type, otherwise a compilation error occurs.
 
 Examples:
   
-  # New a string with the length
+  # Examples of the is_read_only operator
   my $message = "Hello";
   my $is_read_only = is_read_only $message;
 
