@@ -666,40 +666,6 @@ The return type is the int type.
     
   }
 
-=head2 String Concatenation Operator
-
-The string concatenation operator C<.> concats two strings.
-  
-  LEFT_OPERAND . RIGHT_OPERAND
-
-This operator performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the left operand I<LEFT_OPERAND> if the type of I<LEFT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
-
-And it performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the right operand I<RIGHT_OPERAND> if the type of I<RIGHT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
-
-And it concats L<LEFT_OPERAND> and L<RIGHT_OPERAND>, and returns its return value.
-
-The type of L<LEFT_OPERAND> and L<RIGHT_OPERAND> are allowed to be the byte[] type.
-
-The return type is the string type.
-
-Exceptions:
-
-I<LEFT_OPERAND> must be defined, otherwise an exception is thrown.
-
-I<RIGHT_OPERAND> must be defined, otherwise an exception is thrown.
-
-Compilation Errors:
-
-The type of I<LEFT_OPERAND> must be the string type, the byte[] type, or a numeric type, otherwise a compilation error occurs.
-
-The type of I<RIGHT_OPERAND> must be the string type, the byte[] type, or a numeric type, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Examples of the string concatenation operator
-  my $result = "abc" . "def";
-  my $result = "def" . 34;
-
 =head2 Array Length Operator
 
 The array length operator C<@> gets the length of an array.
@@ -1037,31 +1003,6 @@ A constant operator return a constant value created by a L<literal|SPVM::Documen
 
 The return type is the type returned by the literal I<LITERAL>.
 
-=head2 new_string_len Operator
-
-The C<new_string_len> operator creates a new string with a length.
-  
-  new_string_len OPERAND
-
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<OPERAND>.
-
-And creates a new string with the length, fills all characters in the string with C<\0>, and returns it.
-
-The return type is the string type.
-
-Exceptions:
-
-I<OPERAND> must be greater than or equal to 0, otherwise an exception is thrown.
-
-Compilation Errors:
-
-The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Examples of the new_string_len operator
-  my $message = new_string_len 5;
-
 =head2 length Operator
 
 The C<length> operator gets the length of a string.
@@ -1089,6 +1030,65 @@ Examples:
   # The length is 9
   my $message = "あいう";
   my $length = length $message;
+
+=head2 String Concatenation Operator
+
+The string concatenation operator C<.> concats two strings.
+  
+  LEFT_OPERAND . RIGHT_OPERAND
+
+This operator performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the left operand I<LEFT_OPERAND> if the type of I<LEFT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
+
+And it performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the right operand I<RIGHT_OPERAND> if the type of I<RIGHT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
+
+And it concats L<LEFT_OPERAND> and L<RIGHT_OPERAND>, and returns its return value.
+
+The type of L<LEFT_OPERAND> and L<RIGHT_OPERAND> are allowed to be the byte[] type.
+
+The return type is the string type.
+
+Exceptions:
+
+I<LEFT_OPERAND> must be defined, otherwise an exception is thrown.
+
+I<RIGHT_OPERAND> must be defined, otherwise an exception is thrown.
+
+Compilation Errors:
+
+The type of I<LEFT_OPERAND> must be the string type, the byte[] type, or a numeric type, otherwise a compilation error occurs.
+
+The type of I<RIGHT_OPERAND> must be the string type, the byte[] type, or a numeric type, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Examples of the string concatenation operator
+  my $result = "abc" . "def";
+  my $result = "def" . 34;
+
+=head2 new_string_len Operator
+
+The C<new_string_len> operator creates a new string with a length.
+  
+  new_string_len OPERAND
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<OPERAND>.
+
+And creates a new string with the length, fills all characters in the string with C<\0>, and returns it.
+
+The return type is the string type.
+
+Exceptions:
+
+I<OPERAND> must be greater than or equal to 0, otherwise an exception is thrown.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Examples of the new_string_len operator
+  my $message = new_string_len 5;
 
 =head2 copy Operator
 
