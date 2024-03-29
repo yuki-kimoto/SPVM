@@ -110,7 +110,7 @@ This operator performs the L<binary numeric conversion|SPVM::Document::Language:
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
-  LEFT_OPERAND * RIGHT_OPERAND;
+  LEFT_OPERAND * RIGHT_OPERAND
 
 The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
 
@@ -135,7 +135,7 @@ This operator performs the L<binary numeric conversion|SPVM::Document::Language:
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
-  LEFT_OPERAND / RIGHT_OPERAND;
+  LEFT_OPERAND / RIGHT_OPERAND
 
 The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
 
@@ -162,7 +162,7 @@ The division unsigned int operator C<div_uint> interprets its two operands as un
 
 This operator performs the same operation as the following C language operation, and returns its return value.
 
-  (uint32_t)LEFT_OPERAND / (uint32_t)RIGHT_OPERAND;
+  (uint32_t)LEFT_OPERAND / (uint32_t)RIGHT_OPERAND
 
 The return type is the int type.
 
@@ -189,7 +189,7 @@ The division unsigned long operator C<div_ulong> interprets its two operands as 
 
 This operator performs the same operation as the following C language operation, and returns its return value.
 
-  (uint64_t)LEFT_OPERAND / (uint64_t)RIGHT_OPERAND;
+  (uint64_t)LEFT_OPERAND / (uint64_t)RIGHT_OPERAND
 
 The return type is the long type.
 
@@ -246,7 +246,7 @@ The modulo unsigned int operator C<mod_uint> interprets its two operands as unsi
 
 This operator performs the same operation as the following C language operation, and returns its return value.
 
-  (uint32_t)LEFT_OPERAND % (uint32_t)RIGHT_OPERAND;
+  (uint32_t)LEFT_OPERAND % (uint32_t)RIGHT_OPERAND
 
 The return type is the int type.
 
@@ -273,7 +273,7 @@ The modulo unsigned long operator C<mod_ulong> interprets its two operands as un
 
 This operator performs the same operation as the following C language operation, and returns its return value.
 
-  (uint64_t)LEFT_OPERAND % (uint64_t)RIGHT_OPERAND;
+  (uint64_t)LEFT_OPERAND % (uint64_t)RIGHT_OPERAND
 
 The return type is is the long type.
 
@@ -448,7 +448,7 @@ This operator performs the L<binary numeric conversion|SPVM::Document::Language:
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
-  LEFT_OPERAND & RIGHT_OPERAND;
+  LEFT_OPERAND & RIGHT_OPERAND
 
 The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
 
@@ -475,7 +475,7 @@ This operator performs the L<binary numeric conversion|SPVM::Document::Language:
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
-  LEFT_OPERAND | RIGHT_OPERAND;
+  LEFT_OPERAND | RIGHT_OPERAND
 
 The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
 
@@ -529,7 +529,7 @@ And it performs the L<numeric widening conversion|SPVM::Document::Language::Type
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
-  LEFT_OPERAND << RIGHT_OPERAND;
+  LEFT_OPERAND << RIGHT_OPERAND
 
 The return type is the type of I<LEFT_OPERAND>.
 
@@ -583,11 +583,11 @@ And it performs the L<numeric widening conversion|SPVM::Document::Language::Type
 
 And if the type of I<LEFT_OPERAND> is the int type, it performs the same operation as the following C language operation
 
-  (uint32_t)LEFT_OPERAND >> RIGHT_OPERAND;
+  (uint32_t)LEFT_OPERAND >> RIGHT_OPERAND
 
 If the type of I<LEFT_OPERAND> is the long type, it performs the same operation as the following C language operation.
 
-  (uint64_t)LEFT_OPERAND >> RIGHT_OPERAND;
+  (uint64_t)LEFT_OPERAND >> RIGHT_OPERAND
 
 And returns its return value.
 
@@ -1317,6 +1317,35 @@ Examples:
   # Exampels of the copy operator
   my $message = copy "abc";
 
+=head2 make_read_only Operator
+
+The C<make_read_only> operator makes a string read-only.
+
+  make_read_only OPERAND
+
+If the string I<OPERAND> is defined, this operator makes I<OPERAND> read-only.
+
+A read-only string cannnot be cast to the L<mutable|SPVM::Document::Language::Types/"mutable Type Qualifier"> string type. If so, an exception is thrown.
+
+The return type is the void type.
+
+Compilation Errors:
+
+I<OPERAND> must be the string type, otherwise a compilation error occurs.
+
+Examples:
+
+  # Examples of the make_read_only operator
+  
+  # A string
+  my $string = new_string_len 3;
+  
+  # Make the string read-only
+  make_read_only $string;
+  
+  # The conversion to the mutable string type throw an exception.
+  my $string_mutable = (mutable string)$string;
+
 =head2 is_read_only Operator
 
 The C<is_read_only> operator checks if a string is read-only.
@@ -1506,7 +1535,7 @@ Examples:
 
 The C<print> operator prints a string to the standard output.
 
-  print OPERAND;
+  print OPERAND
 
 I<OPERAND> must be the string type.
 
@@ -1518,34 +1547,13 @@ If I<OPERAND> is an C<undef>, print nothing.
 
 The C<say> operator prints a string with a line break C<\n> to the standard output.
 
-  say OPERAND;
+  say OPERAND
 
 I<OPERAND> must be the string type.
 
 The return type is the void type.
 
 If I<OPERAND> is an C<undef>, print C<\n>.
-
-=head2 make_read_only Operator
-
-The C<make_read_only> operator makes the L<string|/"Strings"> read-only.
-
-  make_read_only OPERAND;
-
-I<OPERAND> must be the string type.
-
-The return type is the void type.
-
-Read-only strings cannnot be cast to string type qualified by L<mutable|/"mutable Type Qualifier">.
-
-  # A string
-  my $string = new_string_len 3;
-  
-  # Make the string read-only
-  make_read_only $string;
-  
-  # The conversion to the string type qualified by mutable throw an exception.
-  my $string_mut = (mutable string)$string;
 
 =head2 weaken Operator
 
