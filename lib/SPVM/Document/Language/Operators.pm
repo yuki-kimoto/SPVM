@@ -1294,6 +1294,34 @@ Examples:
   # Examples of the new_string_len operator
   my $message = new_string_len 5;
 
+=head2 length Operator
+
+The C<length> operator gets the length of a string.
+
+  length OPERAND
+
+If the string I<OPERAND> is defind, this operator returns the length of I<OPERAND>. Note that this length is in bytes, not the number of UTF-8 characters.
+
+If I<OPERAND> is not defined, returns 0.
+
+The return type is the int type.
+
+Compilation Errors:
+
+The type of I<OPERAND> must be the string type, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Examples of The length operator
+  
+  # The length is 5
+  my $message = "Hello";
+  my $length = length $message;
+  
+  # The length is 9
+  my $message = "あいう";
+  my $length = length $message;
+
 =head2 copy Operator
 
 The C<copy> operator copies a numeric array, a multi-numeric array or a string.
@@ -1365,32 +1393,6 @@ Examples:
   # Examples of the is_read_only operator
   my $message = "Hello";
   my $is_read_only = is_read_only $message;
-
-=head2 length Operator
-
-The string length operator C<length> returns the length of I<OPERAND> of the string type.
-
-  length OPERAND
-
-The returned length is the byte size of I<OPERAND>. Note that this is not the length of characters of UTF-8.
-
-The return type is the int type.
-
-If I<OPERAND> is C<undef>, returns 0.
-
-Compilation Errors:
-
-The type of I<OPERAND> must be the string type, otherwise a compilation error occurs.
-
-Examples:
-  
-  # The length is 5
-  my $message = "Hello";
-  my $length = length $message;
-  
-  # The length is 9
-  my $message = "あいう";
-  my $length = length $message;
 
 =head2 scalar Operator
 
