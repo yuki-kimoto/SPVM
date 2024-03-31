@@ -1773,13 +1773,13 @@ If the string  I<string> is not C<NULL> and it is read-only, returns 1, otherwis
 
 C<void (*print)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
-Prints the string I<string> to SPVM's L<stdout|SPVM::Document::Language::System/"Standard IO">.
+Prints the string I<string> to L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO">.
 
 =head2 print_stderr
 
 C<void (*print_stderr)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
-Prints the string I<string> to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
+Prints the string I<string> to SPVM's L<SPVM's standard error|SPVM::Document::Language::System/"Standard IO">.
 
 =head2 dump_no_mortal
 

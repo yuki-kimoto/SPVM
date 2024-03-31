@@ -1209,7 +1209,7 @@ If I<OPERAND> is not an object type or the undef type, a compilation error occur
 
 =head2 print Operator
 
-The C<print> operator prints a string to the standard output.
+The C<print> operator prints a string to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO">.
 
   print OPERAND
 

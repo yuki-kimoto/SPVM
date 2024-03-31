@@ -489,7 +489,7 @@ The C<die> statement throws an L<exception|SPVM::Document::Language::ExceptionHa
 
 I<OPERAND_MESSAGE> is a string of the string type for an error message. If the exception thrown by the C<die> statement is catched, the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@> is set to I<OPERAND_MESSAGE> with stack traces added.
 
-If the exception is not catched, the program prints it to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">, and finishes the program with an error ID.
+If the exception is not catched, the program prints it to L<SPVM's standard error|SPVM::Document::Language::System/"Standard IO">, and finishes the program with an error ID.
 
 The following is an example of stack traces of an exception message.
 
