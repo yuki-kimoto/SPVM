@@ -1096,9 +1096,9 @@ The C<copy> operator copies a numeric array, a multi-numeric array or a string.
   
   copy OPERAND
 
-If the operand I<OPERAND> is not C<undef>, this operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of the array or the characters of the string into the new object, and returns it.
+If the operand I<OPERAND> is not an undefined value, this operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of the array or the characters of the string into the new object, and returns it.
 
-If I<OPERAND> is undef, this operator returns C<undef>.
+If I<OPERAND> is an undefined value, this operator returns an undefined value.
 
 The read-only flag of the string is not copied.
 
@@ -1205,19 +1205,23 @@ The string representation might be changed to make it more readable. So don't us
 
 Compilation Errors:
 
-If I<OPERAND> is not an object type or the undef type, a compilation error occurs.
+If I<OPERAND> is not an object type or the C<undef> type, a compilation error occurs.
 
 =head2 print Operator
 
-The C<print> operator prints a string to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO">.
+The C<print> operator prints a string to standard output.
 
   print OPERAND
 
-I<OPERAND> must be the string type.
+This operator outputs the string OPERAND to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO">.
+
+If I<OPERAND> is an undefined value, this operator outputs nothing.
 
 The return type is the void type.
 
-If I<OPERAND> is an C<undef>, print nothing.
+Compilation Errors:
+
+I<OPERAND> must be the string type, otherwise a compilation error occurs.
 
 =head2 say Operator
 
@@ -1229,7 +1233,7 @@ I<OPERAND> must be the string type.
 
 The return type is the void type.
 
-If I<OPERAND> is an C<undef>, print C<\n>.
+If I<OPERAND> is an undefined value, print C<\n>.
 
 =head2 warn Operator
 
@@ -1238,7 +1242,7 @@ The C<warn> operator prints a message to the standard error.
   warn OPERNAD;
   warn;
 
-If I<OPERAND> is omitted or I<OPERAND> is C<undef>, I<OPERAND> is set to the string C<"Warning">.
+If I<OPERAND> is omitted or I<OPERAND> is an undefined value, I<OPERAND> is set to the string C<"Warning">.
 
 This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
 
@@ -2138,12 +2142,11 @@ Examples:
 
 =head2 undef Operator
 
-The C<undef> operator returns the undefined value.
+The C<undef> operator returns an undefined value.
   
-  # The undef operator
   undef
 
-The return type is L<undef Type|SPVM::Document::Language::Types/"undef Type">.
+The return type is the L<undef Type|SPVM::Document::Language::Types/"undef Type">.
 
 Examples:
   
@@ -2338,7 +2341,7 @@ The C<type_name> operator gets the type name of the object.
 
   type_name OPERAND
 
-If the object  I<OPERAND> is defined, creates a string with the type name of I<OPERAND> and returns it, otherwise returns C<undef>.
+If the object I<OPERAND> is defined, creates a string with the type name of I<OPERAND> and returns it, otherwise returns an undefined value.
 
 The return type is the string type.
 
