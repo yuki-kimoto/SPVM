@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Document::Language::System - System Setting in The SPVM Language
+SPVM::Document::Language::System - System Setting in the SPVM Language
 
 =head1 Description
 

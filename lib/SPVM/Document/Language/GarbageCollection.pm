@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Document::Language::GarbageCollection - Garbage Collection in The SPVM Language
+SPVM::Document::Language::GarbageCollection - Garbage Collection in the SPVM Language
 
 =head1 Description
 

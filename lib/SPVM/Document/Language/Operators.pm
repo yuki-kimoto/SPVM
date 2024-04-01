@@ -2,7 +2,7 @@
 
 =head1 Name
 
-SPVM::Document::Language::Operators - Operators in The SPVM Language
+SPVM::Document::Language::Operators - Operators in the SPVM Language
 
 =head1 Description
 

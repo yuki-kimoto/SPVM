@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Document::Language::Statements - Statements in The SPVM Language
+SPVM::Document::Language::Statements - Statements in the SPVM Language
 
 =head1 Description
 

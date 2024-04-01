@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Document::Language::Types - Types in The SPVM Language
+SPVM::Document::Language::Types - Types in the SPVM Language
 
 =head1 Description
 

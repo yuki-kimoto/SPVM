@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Document::Language::ExceptionHandling - Exception Handling in The SPVM Language
+SPVM::Document::Language::ExceptionHandling - Exception Handling in the SPVM Language
 
 =head1 Description
 

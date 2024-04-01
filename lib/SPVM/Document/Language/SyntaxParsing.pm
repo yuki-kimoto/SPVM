@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Document::Language::SyntaxParsing - Syntax Parsing in The SPVM Language
+SPVM::Document::Language::SyntaxParsing - Syntax Parsing in the SPVM Language
 
 =head1 Description
 

@@ -1,6 +1,6 @@
 =head1 Name
 
-SPVM::Document::Language::Class - Class Definition in The SPVM Language
+SPVM::Document::Language::Class - Class Definition in the SPVM Language
 
 =head1 Description
 
