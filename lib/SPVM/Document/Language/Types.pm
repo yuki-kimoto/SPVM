@@ -927,7 +927,7 @@ If the type is a multi-numeric type, it is the length of the fields, owhterwise 
 
 =head1 Type Inference
 
-Omitting the L<type|/"Types"> when the L<local variable declaration|/"Local Variable Declaration"> by Type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
+Omitting the L<type|/"Types"> when the L<local variable declaration|/"Local Variable Declaration"> by type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
 
   # int
   my $num = 1;
