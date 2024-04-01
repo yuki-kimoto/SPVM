@@ -1211,6 +1211,28 @@ Examples:
     }
   }
 
+=head2 undef Operator
+
+The C<undef> operator returns an L<undefined value|SPVM::Document::Language::Types/"Undefined Value">.
+  
+  undef
+
+The return type is the L<undef type|SPVM::Document::Language::Types/"undef Type">.
+
+Examples:
+  
+  # Examples of the undef operator
+  my $string = (string)undef;
+  
+  if (undef) {
+    
+  }
+  
+  my $message = "Hello";
+  if ($message == undef) {
+    
+  }
+
 =head2 new Operator
 
 The C<new> operator creates an object or an array.
@@ -2145,28 +2167,6 @@ Examples:
   my $z : Complex_2d;
   my $z_ref : Complex_2d* = \$z;
   my $z_deref : Complex_2d = $$z_ref;
-
-=head2 undef Operator
-
-The C<undef> operator returns an undefined value.
-  
-  undef
-
-The return type is the L<undef Type|SPVM::Document::Language::Types/"undef Type">.
-
-Examples:
-  
-  # The undef operator
-  my $string = (string)undef;
-  
-  if (undef) {
-    
-  }
-  
-  my $message = "Hello";
-  if ($message == undef) {
-    
-  }
 
 =head2 isa Operator
 
