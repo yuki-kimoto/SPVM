@@ -13,7 +13,7 @@ use SPVM 'TestCase::Operator::FILE';
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
-ok(SPVM::TestCase::Operator::FILE->file_name);
+ok(SPVM::TestCase::Operator::FILE->file_operator);
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();

@@ -961,29 +961,6 @@ Examples:
   # Examples of the new_string_len operator
   my $message = new_string_len 5;
 
-=head2 copy Operator
-
-The C<copy> operator copies a numeric array, a multi-numeric array or a string.
-  
-  copy OPERAND
-
-If the operand I<OPERAND> is not an undefined value, this operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of the array or the characters of the string into the new object, and returns it.
-
-If I<OPERAND> is an undefined value, this operator returns an undefined value.
-
-The read-only flag of the string is not copied.
-
-The return type is the type of I<OPERAND>.
-
-Compilation Errors:
-
-The type of the operand must be the string type, a numeric array type, or a multi-numeric array type, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Exampels of the copy operator
-  my $message = copy "abc";
-
 =head2 make_read_only Operator
 
 The C<make_read_only> operator makes a string read-only.
@@ -1032,51 +1009,6 @@ Examples:
   # Examples of the is_read_only operator
   my $message = "Hello";
   my $is_read_only = is_read_only $message;
-
-=head2 dump Operator
-
-The C<dump> operator gets the string representation dumping the data contained in the object.
-
-  dump OPERAND
-
-This operator creates a new string with the string representation dumping the data contained in the object I<OPERAND> and returns it.
-
-The following is an example of the return value the C<dump> operator.
-  
-  # An return vlaue of the dump operator
-  TestCase::Operator::DumpTest1 (0x55f21f7e6050) {
-    byte_value => 1,
-    short_value => 2,
-    int_value => 3,
-    long_value => 4,
-    float_value => 1.1,
-    double_value => 1.2,
-    string_value => "a",
-    int_array => [
-      1,
-      2,
-      3
-    ] : int[](0x55f21fb9b8d0),
-    object_value => TestCase::Operator::DumpTest1 (0x55f21f764640) {
-      byte_value => 0,
-      short_value => 0,
-      int_value => 0,
-      long_value => 0,
-      float_value => 0,
-      double_value => 0,
-      string_value => undef,
-      int_array => undef,
-      object_value => undef
-    }
-  }
-
-The return type is the string type.
-
-The string representation might be changed to make it more readable. So don't use the C<dump> operator for the purpose of the data serialization.
-
-Compilation Errors:
-
-If I<OPERAND> is not an object type or the C<undef> type, a compilation error occurs.
 
 =head2 print Operator
 
@@ -1148,6 +1080,41 @@ Examples:
   my $point = Point->new;
   warn $point;
 
+=head2 __FILE__ Operator
+
+The C<__FILE__> operator gets the path of the file where the current class is defined.
+
+  __FILE__
+
+This operator creates a string with the path of the file where the current class is defined.
+
+The return value can be changed by the L<file directive|SPVM::Document::Language::Tokenization/"File Directive">.
+
+Examples:
+  
+  # Examples of the __FILE__ operator
+  class Foo::Bar {
+    static method baz : void () {
+      # path/SPVM/Foo/Bar.spvm
+      my $file_name = __FILE__;
+    }
+  }
+  
+=head2 __LINE__ Operator
+
+The C<__LINE__> operator gets the current line number.
+
+  __LINE__
+
+Examples:
+
+  class Foo::Bar {
+    static method baz : void () {
+      # Get the current line number - 4
+      my $line = __LINE__;
+    }
+  }
+
 =head2 __PACKAGE__ Operator
 
 The C<__PACKAGE__> operator gets the current class name.
@@ -1172,72 +1139,11 @@ Examples:
     }
   }
 
-=head2 __FILE__ Operator
-
-The C<__FILE__> operator gets the current file name.
-
-  __FILE__
-
-The current file name means the relative path from the base path of the class file. For example, if the class loaded path is C</mypath> and the class name is C<Foo::Bar>, the absolute path is C</mypath/SPVM/Foo/Bar.spvm> and the relative path is C<SPVM/Foo/Bar.spvm>. C<SPVM/Foo/Bar.spvm> is the current file name.
-
-Examples:
-
-  # SPVM/Foo/Bar.spvm
-  class Foo::Bar {
-    static method baz : void () {
-      # Get the current file name - SPVM/Foo/Bar.spvm
-      my $file_name == __FILE__;
-    }
-  }
-  class Foo::Bar2 {
-    static method baz : void () {
-      # Get the current file name - SPVM/Foo/Bar.spvm
-      my $file_name == __FILE__;
-    }
-  }
-
-=head2 __LINE__ Operator
-
-The C<__LINE__> operator gets the current line number of the current file.
-
-  __LINE__
-
-Examples:
-
-  class Foo::Bar {
-    static method baz : void () {
-      # Get the current line number - 4
-      my $line = __LINE__;
-    }
-  }
-
-=head2 undef Operator
-
-The C<undef> operator returns an L<undefined value|SPVM::Document::Language::Types/"Undefined Value">.
-  
-  undef
-
-The return type is the L<undef type|SPVM::Document::Language::Types/"undef Type">.
-
-Examples:
-  
-  # Examples of the undef operator
-  my $string = (string)undef;
-  
-  if (undef) {
-    
-  }
-  
-  my $message = "Hello";
-  if ($message == undef) {
-    
-  }
-
 =head2 new Operator
 
 The C<new> operator creates an object or an array.
 
-=head3 Creating Object
+=head3 Creating an Object
 
 The syntax of creating object creates an object using the L<new operator|/"new Operator">.
 
@@ -1253,7 +1159,7 @@ Examples:
 
   my $object = new Foo;
 
-=head3 Creating Array
+=head3 Creating an Array
 
 The syntax of creating array creates an array using the L<new operator|/"new Operator">.
 
@@ -1280,7 +1186,7 @@ Examples:
   my $objects = new object[3];
   my $values = new Complex_2d[3]
 
-=head3 Creating Multi-Dimensional Array
+=head3 Creating a Multi-Dimensional Array
 
 Multi dimensional arrays can be created using the L<new operator|/"new Operator">.
 
@@ -1353,6 +1259,96 @@ Examples:
   
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
+
+=head2 undef Operator
+
+The C<undef> operator returns an L<undefined value|SPVM::Document::Language::Types/"Undefined Value">.
+  
+  undef
+
+The return type is the L<undef type|SPVM::Document::Language::Types/"undef Type">.
+
+Examples:
+  
+  # Examples of the undef operator
+  my $string = (string)undef;
+  
+  if (undef) {
+    
+  }
+  
+  my $message = "Hello";
+  if ($message == undef) {
+    
+  }
+
+=head2 copy Operator
+
+The C<copy> operator copies a numeric array, a multi-numeric array or a string.
+  
+  copy OPERAND
+
+If the operand I<OPERAND> is not an undefined value, this operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of the array or the characters of the string into the new object, and returns it.
+
+If I<OPERAND> is an undefined value, this operator returns an undefined value.
+
+The read-only flag of the string is not copied.
+
+The return type is the type of I<OPERAND>.
+
+Compilation Errors:
+
+The type of the operand must be the string type, a numeric array type, or a multi-numeric array type, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Exampels of the copy operator
+  my $message = copy "abc";
+
+=head2 dump Operator
+
+The C<dump> operator gets the string representation dumping the data contained in the object.
+
+  dump OPERAND
+
+This operator creates a new string with the string representation dumping the data contained in the object I<OPERAND> and returns it.
+
+The following is an example of the return value the C<dump> operator.
+  
+  # An return vlaue of the dump operator
+  TestCase::Operator::DumpTest1 (0x55f21f7e6050) {
+    byte_value => 1,
+    short_value => 2,
+    int_value => 3,
+    long_value => 4,
+    float_value => 1.1,
+    double_value => 1.2,
+    string_value => "a",
+    int_array => [
+      1,
+      2,
+      3
+    ] : int[](0x55f21fb9b8d0),
+    object_value => TestCase::Operator::DumpTest1 (0x55f21f764640) {
+      byte_value => 0,
+      short_value => 0,
+      int_value => 0,
+      long_value => 0,
+      float_value => 0,
+      double_value => 0,
+      string_value => undef,
+      int_array => undef,
+      object_value => undef
+    }
+  }
+
+The return type is the string type.
+
+The string representation might be changed to make it more readable. So don't use the C<dump> operator for the purpose of the data serialization.
+
+Compilation Errors:
+
+If I<OPERAND> is not an object type or the C<undef> type, a compilation error occurs.
 
 =head2 Assignment Operator
 
@@ -1852,34 +1848,6 @@ Examples:
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
 
-=head2 Type Cast Operator
-
-The type cast operator performs an L<explicite type conversion|SPVM::Document::Language::Types/"Explicite Type Conversion">.
-
-  # Type Cast
-  (TYPE)OPERAND
-  
-  # Postfix Type Cast
-  OPERAND->(TYPE)
-
-Compilation Errors:
-
-If the operand of the type cast operator dose not satisfy L<cast requirement|"Cast Requirement">, a compilation error occurs.
-
-Examples:
-  
-  # long to int 
-  my $num = (int)123L;
-  
-  # byte[] to string
-  my $num = (string)new byte[3];
-  
-  # string to byte[]
-  my $num = (byte[])"Hello";
-  
-  # Postfix type cast
-  my $stringable = Point->new->(Stringable);
-
 =head2 Method Call
 
 The method call syntax calls a L<method|SPVM::Document::Language::Class/"Method">.
@@ -2167,6 +2135,34 @@ Examples:
   my $z : Complex_2d;
   my $z_ref : Complex_2d* = \$z;
   my $z_deref : Complex_2d = $$z_ref;
+
+=head2 Type Cast Operator
+
+The type cast operator performs an L<explicite type conversion|SPVM::Document::Language::Types/"Explicite Type Conversion">.
+
+  # Type Cast
+  (TYPE)OPERAND
+  
+  # Postfix Type Cast
+  OPERAND->(TYPE)
+
+Compilation Errors:
+
+If the operand of the type cast operator dose not satisfy L<cast requirement|"Cast Requirement">, a compilation error occurs.
+
+Examples:
+  
+  # long to int 
+  my $num = (int)123L;
+  
+  # byte[] to string
+  my $num = (string)new byte[3];
+  
+  # string to byte[]
+  my $num = (byte[])"Hello";
+  
+  # Postfix type cast
+  my $stringable = Point->new->(Stringable);
 
 =head2 isa Operator
 

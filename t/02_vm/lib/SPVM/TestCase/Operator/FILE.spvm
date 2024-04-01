@@ -2,12 +2,29 @@ class TestCase::Operator::FILE {
   
   use Fn;
   
-  static method file_name : int () {
-    my $file_name = __FILE__;
+  static method file_operator : int () {
     
-    unless (Fn->contains($file_name, "TestCase/Operator/FILE.spvm")) {
-      return 0;
+    {
+      my $file_path = __FILE__;
+      
+      warn "[Test Output]$file_path";
+      
+      unless (Fn->contains($file_path, "TestCase/Operator/FILE.spvm")) {
+        return 0;
+      }
+      
+      {
+        my $file_path_from_anon = (method : string () {
+          return __FILE__;
+        })->();
+        
+        unless ($file_path_from_anon eq $file_path) {
+          return 0;
+        }
+      }
+    
     }
+    
     return 1;
   }
 }
