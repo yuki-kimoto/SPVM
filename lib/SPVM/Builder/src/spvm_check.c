@@ -1454,64 +1454,79 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
           }
           case SPVM_OP_C_ID_NUMERIC_COMPARISON_EQ: {
             SPVM_OP* op_left_operand = op_cur->first;
-
+            
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
-            // undef == undef
-            if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+            int32_t left_operand_type_is_valid
+              = SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+              || SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+              || SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+              || SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag);
+            
+            if (!left_operand_type_is_valid) {
+              SPVM_COMPILER_error(compiler, "The type of the left operand of the == operator must be a numeric type, an object type, a reference type, or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            int32_t right_operand_type_is_valid
+              = SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+              || SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+              || SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+              || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag);
+            
+            if (!right_operand_type_is_valid) {
+              SPVM_COMPILER_error(compiler, "The type of the right operand of the == operator must be a numeric type, an object type, a reference type, or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
+            
+            if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              if (!SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "If the type of the left operand of the == operator is a numeric type, the type of the right operand must be a numeric type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+            }
+            
+            if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
+              {
+                SPVM_COMPILER_error(compiler, "If the type of the left operand of the == operator is an object type, the type of the right operand must be an object type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+            }
+            
+            if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              if (!(SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)
+                || SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)))
+              {
+                SPVM_COMPILER_error(compiler, "If the type of the left operand of the == operator is the undef type, the type of the right operand must be an object type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+            }
+            
+            if (SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              if (!SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "If the type of the left operand of the == operator is a reference type, the type of the right operand must be a reference type.\n  at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+            }
+            
+            if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+              && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag))
+            {
               // Constant 1
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant_one = SPVM_OP_new_op_constant_int(compiler, 1, op_left_operand->file, op_left_operand->line);
               SPVM_OP_replace_op(compiler, op_stab, op_constant_one);
               op_cur = op_constant_one;
             }
-            // value_op == undef
-            else if (!SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
-              if (!SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of the left operand of the == operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            // undef == value_op
-            else if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) && !SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-              SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
-              if (!SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The right operand of the == operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-            }
-            // value_op == value_op
-            else {
-              int32_t is_valid_type;
+            else if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+              assert(SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag));
+               
+              SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
               
-              // Numeric type
-              if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) && SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                
-                is_valid_type = 1;
-                
-                SPVM_CHECK_perform_binary_numeric_conversion(compiler, op_cur->first, op_cur->last);
-                if (SPVM_COMPILER_get_error_messages_length(compiler) > 0) {
-                  return;
-                }
-              }
-              // Object type
-              else if (SPVM_TYPE_is_object_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) && SPVM_TYPE_is_object_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                is_valid_type = 1;
-              }
-              // Reference type
-              else if (SPVM_TYPE_is_ref_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag) && SPVM_TYPE_is_ref_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag)) {
-                is_valid_type = 1;
-              }
-              else {
-                is_valid_type = 0;
-              }
-              
-              if (!is_valid_type) {
-                SPVM_COMPILER_error(compiler, "The left and right operands of the == operator must be numeric types or object types or reference types.\n  at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
+              assert(SPVM_COMPILER_get_error_messages_length(compiler) == 0);
             }
             
             break;
@@ -1576,7 +1591,16 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               }
             }
             
-            if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
+            if (SPVM_TYPE_is_undef_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
+              && SPVM_TYPE_is_undef_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag))
+            {
+              // Constant 0
+              SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+              SPVM_OP* op_constant_zero = SPVM_OP_new_op_constant_int(compiler, 0, op_left_operand->file, op_left_operand->line);
+              SPVM_OP_replace_op(compiler, op_stab, op_constant_zero);
+              op_cur = op_constant_zero;
+            }
+            else if (SPVM_TYPE_is_numeric_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
               
               assert(SPVM_TYPE_is_numeric_type(compiler, right_operand_type->basic_type->id, right_operand_type->dimension, right_operand_type->flag));
                

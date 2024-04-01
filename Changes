@@ -4,6 +4,7 @@
     * The warn operator causes an compilation error if the type of the operand is the undef type.
   [Compilation Error Messsage Improvement]
     * The compilation error messages in the != operator are improved.
+    * The compilation error messages in the == operator are improved.
 0.989097 2023-03-27
   [Compilation Error Changes]
     * Improve compilation error messages in the isa, is_type, isa_error, is_error operators.
