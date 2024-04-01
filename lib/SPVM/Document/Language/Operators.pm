@@ -735,135 +735,6 @@ Examples:
   my $y = 2;
   my $result = ($x += 2, $x + $y);
 
-=head2 Assignment Operator
-
-The assignment operator C<=> performs an assignment.
-  
-  LEFT_OPERAND = RIGHTH_OPERAND
-
-The assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
-
-If I<LEFT_OPERAND> is a local variable, this operator performs the operation that L<sets a local variable|/"Setting A Local Variable">.
-
-If I<LEFT_OPERAND> is a class variable, this operator performs the operation that L<sets a class variable|/"Setting A Class Variable">.
-
-If I<LEFT_OPERAND> is an array access, this operator performs the operation that L<sets an array element|/"Setting An Array Element">.
-
-If I<LEFT_OPERAND> is a field access, this operator performs the operation that L<sets a field|/"Setting A Field">.
-
-If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L<sets a referenced value|/"Setting A Referenced Value">.
-
-If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Setting the Exception Variable">.
-
-Examples:
-  
-  # Examples of the assignment operator
-  
-  # A local variable
-  $num = 1;
-  
-  # A class variable
-  $NUM = 1;
-  
-  # A field access
-  $point->{x} = 1;
-  
-  # An array access
-  $nums->[0] = 1;
-  
-  # A dereference
-  $$num_ref = 1;
-  
-  # The exception variable
-  $@ = 2;
-
-=head2 Special Assignment Operators
-
-A special assignment operator is the combination of an operator such as C<+>, C<-> and the L<assignment operator|/"Assignment Operator"> C<=>.
-
-  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
-
-A special assignment operator is expanded to the following code.
-
-  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
-
-See the following code using a special assignment operator C<+=>. C<$x> is the int type.
-  
-  $x += 2;
-
-This is expanded to the following code.
-
-  $x = (int)($x + 2)
-
-List of Special Assignment Operators:
-
-=begin html
-
-<table>
-  <tr>
-    <td>The addition assignment operator</td>
-    <td>+=</td>
-  </tr>
-  <tr>
-    <td>The subtraction assignment operator</td>
-    <td>-=</td>
-  </tr>
-  <tr>
-    <td>The multiplication assignment operator</td>
-    <td>*=</td>
-  </tr>
-  <tr>
-    <td>The division assignment operator</td>
-    <td>/=</td>
-  </tr>
-  <tr>
-    <td>The modulo assignment operator</td>
-    <td>%=</td>
-  </tr>
-  <tr>
-    <td>The bitwise AND assignment operator</td>
-    <td>&=</td>
-  </tr>
-  <tr>
-    <td>The bitwise OR assignment operator</td>
-    <td>|=</td>
-  </tr>
-  <tr>
-    <td>The left shift assignment operator</td>
-    <td><<=</td>
-  </tr>
-  <tr>
-    <td>The arithmetic right shift assignment operator</td>
-    <td>>>=</td>
-  </tr>
-  <tr>
-    <td>The logical right shift assignment operator</td>
-    <td>>>>=</td>
-  </tr>
-  <tr>
-    <td>The concatenation assignment operator</td>
-    <td>.=</td>
-  </tr>
-</table>
-
-=end html
-
-Examples:
-
-  # Special assignment operators
-  $x += 1;
-  $x -= 1;
-  $x *= 1;
-  $x /= 1;
-  $x &= 1;
-  $x |= 1;
-  $x ^= 1;
-  $x %= 1;
-  $x <<= 1;
-  $x >>= 1;
-  $x >>>= 1;
-  $x .= "abc";
-
 =head2 Comparison Operators
 
 Comparison operators compare two operands.
@@ -1460,6 +1331,135 @@ Examples:
   
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
+
+=head2 Assignment Operator
+
+The assignment operator C<=> performs an assignment.
+  
+  LEFT_OPERAND = RIGHTH_OPERAND
+
+The assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
+
+If I<LEFT_OPERAND> is a local variable, this operator performs the operation that L<sets a local variable|/"Setting A Local Variable">.
+
+If I<LEFT_OPERAND> is a class variable, this operator performs the operation that L<sets a class variable|/"Setting A Class Variable">.
+
+If I<LEFT_OPERAND> is an array access, this operator performs the operation that L<sets an array element|/"Setting An Array Element">.
+
+If I<LEFT_OPERAND> is a field access, this operator performs the operation that L<sets a field|/"Setting A Field">.
+
+If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L<sets a referenced value|/"Setting A Referenced Value">.
+
+If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Setting the Exception Variable">.
+
+Examples:
+  
+  # Examples of the assignment operator
+  
+  # A local variable
+  $num = 1;
+  
+  # A class variable
+  $NUM = 1;
+  
+  # A field access
+  $point->{x} = 1;
+  
+  # An array access
+  $nums->[0] = 1;
+  
+  # A dereference
+  $$num_ref = 1;
+  
+  # The exception variable
+  $@ = 2;
+
+=head2 Special Assignment Operators
+
+A special assignment operator is the combination of an operator such as C<+>, C<-> and the L<assignment operator|/"Assignment Operator"> C<=>.
+
+  LEFT_OPERAND OPERATOR= RIGHTH_OPERAND
+
+A special assignment operator is expanded to the following code.
+
+  LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
+
+See the following code using a special assignment operator C<+=>. C<$x> is the int type.
+  
+  $x += 2;
+
+This is expanded to the following code.
+
+  $x = (int)($x + 2)
+
+List of Special Assignment Operators:
+
+=begin html
+
+<table>
+  <tr>
+    <td>The addition assignment operator</td>
+    <td>+=</td>
+  </tr>
+  <tr>
+    <td>The subtraction assignment operator</td>
+    <td>-=</td>
+  </tr>
+  <tr>
+    <td>The multiplication assignment operator</td>
+    <td>*=</td>
+  </tr>
+  <tr>
+    <td>The division assignment operator</td>
+    <td>/=</td>
+  </tr>
+  <tr>
+    <td>The modulo assignment operator</td>
+    <td>%=</td>
+  </tr>
+  <tr>
+    <td>The bitwise AND assignment operator</td>
+    <td>&=</td>
+  </tr>
+  <tr>
+    <td>The bitwise OR assignment operator</td>
+    <td>|=</td>
+  </tr>
+  <tr>
+    <td>The left shift assignment operator</td>
+    <td><<=</td>
+  </tr>
+  <tr>
+    <td>The arithmetic right shift assignment operator</td>
+    <td>>>=</td>
+  </tr>
+  <tr>
+    <td>The logical right shift assignment operator</td>
+    <td>>>>=</td>
+  </tr>
+  <tr>
+    <td>The concatenation assignment operator</td>
+    <td>.=</td>
+  </tr>
+</table>
+
+=end html
+
+Examples:
+
+  # Special assignment operators
+  $x += 1;
+  $x -= 1;
+  $x *= 1;
+  $x /= 1;
+  $x &= 1;
+  $x |= 1;
+  $x ^= 1;
+  $x %= 1;
+  $x <<= 1;
+  $x >>= 1;
+  $x >>>= 1;
+  $x .= "abc";
 
 =head2 Getting and Setting Operators
 
