@@ -1213,7 +1213,7 @@ The C<print> operator prints a string to standard output.
 
   print OPERAND
 
-This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO">.
+This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
 
 If I<OPERAND> is an undefined value, this operator outputs nothing.
 
@@ -1229,7 +1229,7 @@ The C<say> operator prints a string to standard output with a newline.
 
   say OPERAND
 
-This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO"> with a newline C<\n>.
+This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams"> with a newline C<\n>.
 
 If I<OPERAND> is an undefined value, this operator outputs a newline C<\n>.
 
@@ -1248,7 +1248,7 @@ The C<warn> operator prints a string to standard error with a stack trace.
 
 If I<OPERAND> is omitted, I<OPERAND> is set to the string C<"Warning">.
 
-This operator outputs I<OPERAND> to the L<SPVM's standard error|SPVM::Document::Language::System/"Standard IO">.
+This operator outputs I<OPERAND> to the L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
 If I<OPERAND> is an undefined value, this operator outputs the string C<"undef">.
 

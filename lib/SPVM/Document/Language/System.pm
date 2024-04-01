@@ -8,7 +8,7 @@ This document describes system setting in the SPVM language.
 
 =head1 System Setting
 
-=head2 Standard IO
+=head2 Standard Streams
 
 SPVM opens own standard input, standard output, and standard error for a runtime just after a runtime is build.
 

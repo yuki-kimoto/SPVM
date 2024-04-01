@@ -84,19 +84,19 @@ Sets I<compiler> to the C<compiler> field.
 
 C<FILE* (*get_spvm_stdin)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns L<SPVM's standard input|SPVM::Document::Language::System/"Standard IO">.
+Returns L<SPVM's standard input|SPVM::Document::Language::System/"Standard Streams">.
 
 =head2 get_spvm_stdout
 
 C<FILE* (*get_spvm_stdout)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO">.
+Returns L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
 
 =head2 get_spvm_stderr
 
 C<FILE* (*get_spvm_stderr)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns L<SPVM's standard error|SPVM::Document::Language::System/"Standard IO">.
+Returns L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
 =head1 Native API IDs
 
