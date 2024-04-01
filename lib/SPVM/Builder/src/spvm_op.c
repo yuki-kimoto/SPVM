@@ -259,13 +259,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   const char* basic_type_name;
   
   // Anon class
-  if (strstr(compiler->current_outer_class_name, "eval::anon::")) {
+  if (strstr(compiler->current_outmost_class_name, "eval::anon::")) {
     if (op_type) {
       SPVM_COMPILER_error(compiler, "An anon class cannot have its class name.\n  at %s line %d", op_class->file, op_class->line);
       return op_class;
     }
     
-    basic_type_name = compiler->current_outer_class_name;
+    basic_type_name = compiler->current_outmost_class_name;
     
     SPVM_OP* op_name_basic_type = SPVM_OP_new_op_name(compiler, basic_type_name, op_class->file, op_class->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_basic_type);
@@ -281,9 +281,9 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   if (!basic_type) {
     basic_type = SPVM_COMPILER_add_basic_type(compiler, basic_type_name);
     
-    SPVM_BASIC_TYPE* outer_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
+    SPVM_BASIC_TYPE* outmost_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
     
-    assert(outer_basic_type);
+    assert(outmost_basic_type);
   }
   
   type->basic_type = basic_type;
@@ -327,8 +327,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     assert(!islower(basic_type_name[0]));
     
     // If class name is different from the class name corresponding to the class file, compile error occur.
-    if (strcmp(basic_type_name, compiler->current_outer_class_name) != 0) {
-      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_outer_class_name, op_class->file, op_class->line);
+    if (strcmp(basic_type_name, compiler->current_outmost_class_name) != 0) {
+      SPVM_COMPILER_error(compiler, "The class name \"%s\" must be \"%s\".\n  at %s line %d", basic_type_name, compiler->current_outmost_class_name, op_class->file, op_class->line);
       return op_class;
     }
     
@@ -1638,14 +1638,14 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   // Create anon method class name
   // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
-  const char* outer_basic_type_name = compiler->current_outer_class_name;
+  const char* outmost_basic_type_name = compiler->current_outmost_class_name;
   int32_t anon_method_defined_line = op_method->line;
   int32_t anon_method_defined_column = op_method->column;
-  int32_t anon_method_basic_type_name_length = 6 + strlen(outer_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
+  int32_t anon_method_basic_type_name_length = 6 + strlen(outmost_basic_type_name) + 2 + int32_max_length + 2 + int32_max_length;
   
   // Anon class name
   char* name_basic_type_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, anon_method_basic_type_name_length + 1);
-  sprintf(name_basic_type_tmp, "%s::anon::%d::%d", outer_basic_type_name, anon_method_defined_line, anon_method_defined_column);
+  sprintf(name_basic_type_tmp, "%s::anon::%d::%d", outmost_basic_type_name, anon_method_defined_line, anon_method_defined_column);
   
   SPVM_STRING* name_basic_type_string = SPVM_STRING_new(compiler, name_basic_type_tmp, strlen(name_basic_type_tmp));
   const char* name_basic_type = name_basic_type_string->value;
@@ -1653,7 +1653,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   SPVM_OP* op_name_basic_type = SPVM_OP_new_op_name(compiler, name_basic_type, op_method->file, op_method->line);
   SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name_basic_type);
   
-  op_method->uv.method->outer_basic_type_name = outer_basic_type_name;
+  op_method->uv.method->outmost_basic_type_name = outmost_basic_type_name;
   
   SPVM_OP_build_class(compiler, op_class, op_type, op_class_block, NULL, NULL);
   

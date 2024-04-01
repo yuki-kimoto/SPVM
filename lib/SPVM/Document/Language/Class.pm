@@ -302,9 +302,9 @@ An anon class is also defined by the anon method.
 
 A anon class for an anon method has its unique L<class name|/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
 
-A anon class for an anon method has the same access control as its outer class.
+A anon class for an anon method has the same access control as its outmost class.
 
-A anon class for an anon method has the same alias names as its outer class.
+A anon class for an anon method has the same alias names as its outmost class.
 
 L<Examples:>
   
@@ -1693,6 +1693,22 @@ The length of the fields in the suffix must be the same as the length of the fie
 The type suffix in the suffix must correspond to the L<numeric type|/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
 
 See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> to get and set the field of the multi-numeric type.
+
+=head2 Outmost Class
+
+An outmost class is the outmost defined class.
+
+The outmost class is C<Foo::Bar> in the following example.
+
+  class Foo::Bar {
+    static method baz : void () {
+      my $outmost_class_name = __PACKAGE__;
+      
+      my $cb = method : void () {
+        my $outmost_class_name = __PACKAGE__;
+      };
+    }
+  }
 
 =head1 Copyright & License
 

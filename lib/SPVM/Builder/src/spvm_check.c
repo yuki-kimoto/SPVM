@@ -197,12 +197,12 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
       
       char* found_ptr = strstr(basic_type->name, "::anon::");
       assert(found_ptr);
-      int32_t outer_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
+      int32_t outmost_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
       
-      SPVM_BASIC_TYPE* outer_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->name, outer_basic_type_name_length);
-      assert(outer_basic_type);
+      SPVM_BASIC_TYPE* outmost_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->name, outmost_basic_type_name_length);
+      assert(outmost_basic_type);
       
-      basic_type->outer = outer_basic_type;
+      basic_type->outmost = outmost_basic_type;
     }
   }
 }
@@ -535,8 +535,8 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
       }
       
       // Copy has_precomile_attribute from anon method defined basic type
-      if (method->outer_basic_type_name) {
-        SPVM_BASIC_TYPE* anon_method_defined_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->outer_basic_type_name, strlen(method->outer_basic_type_name));
+      if (method->outmost_basic_type_name) {
+        SPVM_BASIC_TYPE* anon_method_defined_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, method->outmost_basic_type_name, strlen(method->outmost_basic_type_name));
         basic_type->is_precompile = anon_method_defined_basic_type->is_precompile;
       }
       
@@ -788,7 +788,7 @@ void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_clas
   }
   else {
     if (current_method->is_anon) {
-      basic_type_name = (char*)current_method->outer_basic_type_name;
+      basic_type_name = (char*)current_method->outmost_basic_type_name;
     }
     else {
       basic_type_name = (char*)current_method->current_basic_type->name;
@@ -935,7 +935,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
     const char* basic_type_name;
     if (call_method->is_current) {
       if (current_method->is_anon) {
-        basic_type_name = current_method->outer_basic_type_name;
+        basic_type_name = current_method->outmost_basic_type_name;
       }
       else {
         basic_type_name = current_method->current_basic_type->name;
@@ -1093,8 +1093,8 @@ void SPVM_CHECK_check_ast_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
               const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
               
               SPVM_HASH* alias_symtable = NULL;
-              if (basic_type->is_anon && basic_type->outer) {
-                alias_symtable = basic_type->outer->alias_symtable;
+              if (basic_type->is_anon && basic_type->outmost) {
+                alias_symtable = basic_type->outmost->alias_symtable;
               }
               else {
                 alias_symtable = basic_type->alias_symtable;
@@ -1223,8 +1223,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             const char* current_class_name = NULL;
             if (method->is_anon) {
-              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->outer_basic_type_name, strlen(method->outer_basic_type_name));
-              current_class_name = method->outer_basic_type_name;
+              SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->outmost_basic_type_name, strlen(method->outmost_basic_type_name));
+              current_class_name = method->outmost_basic_type_name;
             }
             else {
               current_class_name = basic_type->name;
@@ -3713,7 +3713,7 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_ty
   int32_t can_access = 0;
   
   if (basic_type_from->is_anon) {
-    basic_type_from = basic_type_from->outer;
+    basic_type_from = basic_type_from->outmost;
   }
   
   if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {

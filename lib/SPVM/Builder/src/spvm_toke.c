@@ -2766,7 +2766,7 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
           
           compiler->current_class_rel_file = class_file->rel_file;
           
-          compiler->current_outer_class_name = class_file->class_name;
+          compiler->current_outmost_class_name = class_file->class_name;
           
           // If we get current class file path, set it, otherwise set module relative file path
           if (class_file->file) {

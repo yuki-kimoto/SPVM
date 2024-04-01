@@ -1086,7 +1086,9 @@ The C<__FILE__> operator gets the path of the file where the current class is de
 
   __FILE__
 
-This operator creates a string with the path of the file where the current class is defined.
+This operator creates a string with the path of the file where the current class is defined, and returns it.
+
+The return type is the string type.
 
 The return value can be changed by the L<file directive|SPVM::Document::Language::Tokenization/"File Directive">.
 
@@ -1099,42 +1101,46 @@ Examples:
       my $file_name = __FILE__;
     }
   }
-  
+
 =head2 __LINE__ Operator
 
 The C<__LINE__> operator gets the current line number.
 
   __LINE__
 
+This operator returns the current line number.
+
+The return type is the int type.
+
 Examples:
 
+  # Examples of the __LINE__ operator
   class Foo::Bar {
     static method baz : void () {
-      # Get the current line number - 4
       my $line = __LINE__;
     }
   }
 
 =head2 __PACKAGE__ Operator
 
-The C<__PACKAGE__> operator gets the current class name.
+The C<__PACKAGE__> operator gets the name of the L<outmost class|SPVM::Document::Language::Class/"Outmost Class">.
 
   __PACKAGE__
 
-The return type is the string type.
+This operator creates a string with the name of the L<outmost class|SPVM::Document::Language::Class/"Outmost Class">, and returns it.
 
-If the __PACKAGE__ operator is used in anon method, it returns its outer class.
+The return type is the string type.
 
 Examples:
 
   class Foo::Bar {
     static method baz : void () {
       # Foo::Bar
-      my $current_class_name = __PACKAGE__;
+      my $outmost_class_name = __PACKAGE__;
       
       my $cb = method : void () {
         # Foo::Bar
-        my $current_class_name = __PACKAGE__;
+        my $outmost_class_name = __PACKAGE__;
       };
     }
   }
@@ -1519,7 +1525,7 @@ C<CLASS_NAME::> can be omitted if the class variable belongs to the current L<cl
 
   $CLASS_VARIABLE_NAME
 
-If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outer class.
+If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outmost class.
 
 Compilation Errors:
 
@@ -1561,7 +1567,7 @@ If the type of the assigned value is an object type, the reference count of the 
 
 If an object has already been assigned to $CLASS_VARIABLE_NAME before the assignment, the reference count of the object is decremented by 1.
 
-If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outer class.
+If the class variable is used in an anon method and C<CLASS_NAME::> can be omitted, its current class means its outmost class.
 
 Compilation Errors:
 
@@ -1862,7 +1868,7 @@ A method defined as the L<class method|/"Class Method"> can be called using the 
 
 C<&> means the current class.
 
-If C<&> is used in anon method, it means its outer class.
+If C<&> is used in anon method, it means its outmost class.
 
 Compilation Errors:
 
