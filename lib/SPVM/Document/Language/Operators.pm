@@ -1461,9 +1461,9 @@ Examples:
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
 
-=head2 Getting And Setting Operators
+=head2 Getting and Setting Operators
 
-=head2 Getting A Local Variable
+=head3 Getting A Local Variable
 
 The getting local variable gets the value of the local variable.
 
@@ -1473,7 +1473,7 @@ The return value is the value of the local variable.
 
 The return type is the type of the local variable.
 
-=head2 Setting A Local Variable
+=head3 Setting A Local Variable
 
 The setting local variable sets the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
 
@@ -1491,7 +1491,7 @@ Compilation Errors:
 
 The assignment of the value must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
-=head2 Getting A Class Variable
+=head3 Getting A Class Variable
 
 The getting class variable gets the value of the L<class variable|/"Class Variable">.
 
@@ -1525,7 +1525,7 @@ Examples:
     }
   }
 
-=head2 Setting A Class Variable
+=head3 Setting A Class Variable
 
 B<Setting A Class Variable operator> sets L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
 
@@ -1568,7 +1568,7 @@ Examples:
     }
   }
 
-=head2 Getting the Exception Variable
+=head3 Getting the Exception Variable
 
 The setting exception variable gets the value of the L<exception variable|/"Exception Variable">.
 
@@ -1583,7 +1583,7 @@ Examples:
   # Getting the exception variable
   my $message = $@;
 
-=head2 Setting the Exception Variable
+=head3 Setting the Exception Variable
 
 The operation that sets the exception variable sets the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
 
@@ -1603,7 +1603,7 @@ Examples:
 
   $@ = "Error";
 
-=head2 Getting A Field
+=head3 Getting A Field
 
 The getting field gets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1618,7 +1618,7 @@ Examples:
   my $point = Point->new;
   my $x = $point->{x};
 
-=head2 Setting A Field
+=head3 Setting A Field
 
 The setting field sets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1643,7 +1643,7 @@ Examples:
   my $point = Point->new;
   $point->{x} = 1;
 
-=head2 Getting A Multi-Numeric Field
+=head3 Getting A Multi-Numeric Field
 
 B<Getting Multi-Numeric Field operator> gets the field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1664,7 +1664,7 @@ Examples:
   my $z : Complex_2d;
   my $re = $z->{re};
 
-=head2 Setting A Multi-Numeric Field
+=head3 Setting A Multi-Numeric Field
 
 Setting Multi-Numeric Field operator sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1687,7 +1687,7 @@ Examples:
   my $z : Complex_2d;
   $z->{re} = 2.5;
 
-=head2 Getting An Array Element
+=head3 Getting An Array Element
 
 The getting array element gets the element of the L<array|SPVM::Document::Language::Types/"Array">.
 
@@ -1720,7 +1720,7 @@ Examples:
   my $objects : object[] = $points;
   my $object = (Point)$objects->[1];
 
-=head2 Setting An Array Element
+=head3 Setting An Array Element
 
 The setting array element sets the element of the array using the L<assignment operator|/"Assignment Operator">.
 
@@ -1757,7 +1757,7 @@ Examples:
   my $objects : object[] = $points;
   $objects->[2] = Point->new(3, 5);
 
-=head2 Setting A Referenced Value
+=head3 Setting A Referenced Value
 
 The operation for setting the referenced value sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
 
@@ -1784,7 +1784,7 @@ Examples:
   
   $$z_ref = $z2;
 
-=head2 Getting A Multi-Numeric Field via Dereference
+=head3 Getting A Multi-Numeric Field via Dereference
 
 The syntax of getting multi-numeric field via dereference gets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
@@ -1806,7 +1806,7 @@ Examples:
   my $z_ref = \$z;
   my $re = $z_ref->{re};
 
-=head2 Setting A Multi-Numeric Field via Dereference
+=head3 Setting A Multi-Numeric Field via Dereference
 
 The setting multi-numeric field via dereference operator sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
