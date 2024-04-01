@@ -482,7 +482,7 @@ Note that interface types are not L<class types|/"Class Type"> although they are
 
 =head3 Any Object Type
 
-Any Object Type is represented by "object". Designed to represent the "void *" Type in C.
+Any object type is represented by "object". Designed to represent the "void *" type in C.
 
   my $object: object;
 
@@ -504,7 +504,7 @@ The undef type is the type of an L<undefined value|/"Undefined Value">.
 
 =head2 void Type
 
-B<void Type> is a special Type that can only be used in the return type of the L<method definition|/"Method Definition"> and indicates the method has no return value.
+B<void Type> is a special type that can only be used in the return type of the L<method definition|/"Method Definition"> and indicates the method has no return value.
 
   void
 
@@ -650,7 +650,7 @@ The any object array type C<object[]> is the type that any L<object array type|/
   my $array : object[] = new object[3];
   my $array : object[] = new Point[][3];
 
-Any Object Array Type is an L<array type|/"Array Types">.
+Any object array type is an L<array type|/"Array Types">.
 
 You can get the array length using the L<array length operator|/"The array Length Operator">.
 
@@ -779,7 +779,7 @@ See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric valu
 
 =head2 Reference Type
 
-Reference Type is a Type that can store the address of a variable. Add C<*> after a L<numeric type|/"Numeric Types"> or the L<multi-numeric type|/"Multi-Numeric Types"> You can define it.
+Reference type is a type that can store the address of a variable. Add C<*> after a L<numeric type|/"Numeric Types"> or the L<multi-numeric type|/"Multi-Numeric Types"> You can define it.
 
   my $num : int;
   my $num_ref : int* = \$num;
@@ -789,31 +789,31 @@ Reference Type is a Type that can store the address of a variable. Add C<*> afte
 
 Only the address of the Local Variable acquired by L</"Reference Operator"> can be assigned to the value of Reference Type.
 
-Reference Type can be used as Type of argument in the L<method definition|/"Method Definition">.
+Reference type can be used as type of argument in the L<method definition|/"Method Definition">.
 
-Reference Type cannot be used as return value Type in the L<method definition|/"Method Definition">.
+Reference type cannot be used as return value type in the L<method definition|/"Method Definition">.
 
-Reference Type cannot be used as the field type in the L<class definition|/"Class Definition">.
+Reference type cannot be used as the field type in the L<class definition|/"Class Definition">.
 
-Reference Type cannot be used as the type of Class Variable in the L<class definition|/"Class Definition">.
+Reference type cannot be used as the type of Class Variable in the L<class definition|/"Class Definition">.
 
 See L</"Reference"> for a detailed explanation of Reference.
 
 Compilation Errors:
 
-If only Local Variable Declaration of Reference Type is performed, a compilation error occurs
+If only Local Variable Declaration of Reference type is performed, a compilation error occurs
 
-Reference Type can be used as Type of the L<local variable declaration|/"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
+Reference type can be used as type of the L<local variable declaration|/"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
 
-If the Reference Type is used at an Invalid location, a compilation error occurs
+If the Reference type is used at an Invalid location, a compilation error occurs
 
 =head3 Numeric Reference Type
 
-Numeric Reference Type means a L<numeric type|/"Numeric Types"> for a L<reference type|/"Reference Type">. Says.
+Numeric Reference type means a L<numeric type|/"Numeric Types"> for a L<reference type|/"Reference Type">. Says.
 
 =head3 Multi-Numeric Reference Type
 
-Multi-Numeric Reference Type means a L<reference type|/"Reference Type"> for the L<multi-numeric type|/"Multi-Numeric Types"> variables. > Means.
+Multi-Numeric Reference type means a L<reference type|/"Reference Type"> for the L<multi-numeric type|/"Multi-Numeric Types"> variables. > Means.
 
 =head2 Type Qualifiers
 
