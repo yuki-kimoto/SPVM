@@ -1340,15 +1340,15 @@ The assignment operator C<=> performs an assignment.
 
 The assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
 
-If I<LEFT_OPERAND> is a local variable, this operator performs the operation that L<sets a local variable|/"Setting A Local Variable">.
+If I<LEFT_OPERAND> is a local variable, this operator performs the operation that L<sets a local variable|/"Setting a Local Variable">.
 
-If I<LEFT_OPERAND> is a class variable, this operator performs the operation that L<sets a class variable|/"Setting A Class Variable">.
+If I<LEFT_OPERAND> is a class variable, this operator performs the operation that L<sets a class variable|/"Setting a Class Variable">.
 
 If I<LEFT_OPERAND> is an array access, this operator performs the operation that L<sets an array element|/"Setting An Array Element">.
 
-If I<LEFT_OPERAND> is a field access, this operator performs the operation that L<sets a field|/"Setting A Field">.
+If I<LEFT_OPERAND> is a field access, this operator performs the operation that L<sets a field|/"Setting a Field">.
 
-If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L<sets a referenced value|/"Setting A Referenced Value">.
+If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L<sets a referenced value|/"Setting a Referenced Value">.
 
 If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Setting the Exception Variable">.
 
@@ -1463,7 +1463,7 @@ Examples:
 
 =head2 Getting and Setting Operators
 
-=head3 Getting A Local Variable
+=head3 Getting a Local Variable
 
 The getting local variable gets the value of the local variable.
 
@@ -1473,7 +1473,7 @@ The return value is the value of the local variable.
 
 The return type is the type of the local variable.
 
-=head3 Setting A Local Variable
+=head3 Setting a Local Variable
 
 The setting local variable sets the value of L</"Local Variable"> using the L<assignment operator|/"Assignment Operator">.
 
@@ -1491,7 +1491,7 @@ Compilation Errors:
 
 The assignment of the value must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
-=head3 Getting A Class Variable
+=head3 Getting a Class Variable
 
 The getting class variable gets the value of the L<class variable|/"Class Variable">.
 
@@ -1525,9 +1525,9 @@ Examples:
     }
   }
 
-=head3 Setting A Class Variable
+=head3 Setting a Class Variable
 
-B<Setting A Class Variable operator> sets L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
+B<Setting a Class Variable operator> sets L</"Class Variable"> Value using the L<assignment operator|/"Assignment Operator">.
 
   $CLASS_NAME::CLASS_VARIABLE_NAME = VALUE
 
@@ -1603,7 +1603,7 @@ Examples:
 
   $@ = "Error";
 
-=head3 Getting A Field
+=head3 Getting a Field
 
 The getting field gets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1618,7 +1618,7 @@ Examples:
   my $point = Point->new;
   my $x = $point->{x};
 
-=head3 Setting A Field
+=head3 Setting a Field
 
 The setting field sets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1643,7 +1643,7 @@ Examples:
   my $point = Point->new;
   $point->{x} = 1;
 
-=head3 Getting A Multi-Numeric Field
+=head3 Getting a Multi-Numeric Field
 
 B<Getting Multi-Numeric Field operator> gets the field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1664,7 +1664,7 @@ Examples:
   my $z : Complex_2d;
   my $re = $z->{re};
 
-=head3 Setting A Multi-Numeric Field
+=head3 Setting a Multi-Numeric Field
 
 Setting Multi-Numeric Field operator sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1757,7 +1757,7 @@ Examples:
   my $objects : object[] = $points;
   $objects->[2] = Point->new(3, 5);
 
-=head3 Setting A Referenced Value
+=head3 Setting a Referenced Value
 
 The operation for setting the referenced value sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
 
@@ -1784,7 +1784,7 @@ Examples:
   
   $$z_ref = $z2;
 
-=head3 Getting A Multi-Numeric Field via Dereference
+=head3 Getting a Multi-Numeric Field via Dereference
 
 The syntax of getting multi-numeric field via dereference gets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
 
@@ -1806,7 +1806,7 @@ Examples:
   my $z_ref = \$z;
   my $re = $z_ref->{re};
 
-=head3 Setting A Multi-Numeric Field via Dereference
+=head3 Setting a Multi-Numeric Field via Dereference
 
 The setting multi-numeric field via dereference operator sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
