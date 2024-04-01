@@ -2391,7 +2391,7 @@ The String-to-byte conversion is a L<type conversion|/"Type Conversion"> from th
   my $string : string = "Hello";
   my $num : byte = (byte)$string;
 
-If the string is C<undef>, returns 0.
+If the string is not defined, returns 0.
 
 If not, the string is coverted to a number by the C<strtoll> function in the C language.
 
@@ -2409,7 +2409,7 @@ The String-to-short conversion is a L<type conversion|/"Type Conversion"> from t
   my $string : string = "Hello";
   my $num : short = (short)$string;
 
-If the string is C<undef>, returns 0.
+If the string is not defined, returns 0.
 
 If not, the string is coverted to a number by the C<strtoll> function in the C language.
 
@@ -2427,7 +2427,7 @@ The String-to-int conversion is a L<type conversion|/"Type Conversion"> from the
   my $string : string = "Hello";
   my $num : int = (int)$string;
 
-If the string is C<undef>, returns 0.
+If the string is not defined, returns 0.
 
 If not, the string is coverted to a number by the C<strtoll> function in the C language.
 
@@ -2445,7 +2445,7 @@ The String-to-long conversion is a L<type conversion|/"Type Conversion"> from th
   my $string : string = "Hello";
   my $num : long = (long)$string;
 
-If the string is C<undef>, returns 0.
+If the string is not defined, returns 0.
 
 If not, the string is coverted to a number by the C<strtoll> function in the C language.
 
@@ -2459,7 +2459,7 @@ The String-to-float conversion is a L<type conversion|/"Type Conversion"> from t
   my $string : string = "Hello";
   my $float : float = (float)$string;
 
-If the string is C<undef>, returns 0.
+If the string is not defined, returns 0.
 
 If not, the string is coverted to a number by the C<strtof> function in the C language.
 
@@ -2473,7 +2473,7 @@ The String-to-double conversion is a L<type conversion|/"Type Conversion"> from 
   my $string : string = "Hello";
   my $num : double = (double)$string;
 
-If the string is C<undef>, returns 0.
+If the string is not defined, returns 0.
 
 If not, the string is coverted to a number by the C<strtod> function in the C language.
 

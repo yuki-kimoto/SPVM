@@ -1028,7 +1028,7 @@ The C<print> operator prints a string to standard output.
 
 This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
 
-If I<OPERAND> is an undefined value, this operator outputs nothing.
+If I<OPERAND> is not defined, this operator outputs nothing.
 
 The return type is the void type.
 
@@ -1044,7 +1044,7 @@ The C<say> operator prints a string to standard output with a newline.
 
 This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams"> with a newline C<\n>.
 
-If I<OPERAND> is an undefined value, this operator outputs a newline C<\n>.
+If I<OPERAND> is not defined, this operator outputs a newline C<\n>.
 
 The return type is the void type.
 
@@ -1063,7 +1063,7 @@ If I<OPERAND> is omitted, I<OPERAND> is set to the string C<"Warning">.
 
 This operator outputs I<OPERAND> to the L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
-If I<OPERAND> is an undefined value, this operator outputs the string C<"undef">.
+If I<OPERAND> is not defined, this operator outputs the string C<"undef">.
 
 If the type of I<OPERAND> is the string type and I<OPERAND> is defined, this operator outputs I<OPERAND>.
 
@@ -1306,7 +1306,7 @@ The C<copy> operator copies a numeric array, a multi-numeric array or a string.
 
 If the operand I<OPERAND> is not an undefined value, this operator creates a new object of the same type as the operand I<OPERAND>, and copies the elements of the array or the characters of the string into the new object, and returns it.
 
-If I<OPERAND> is an undefined value, this operator returns an undefined value.
+If I<OPERAND> is not defined, this operator returns an undefined value.
 
 The read-only flag of the string is not copied.
 
@@ -1364,7 +1364,7 @@ The string representation might be changed to make it more readable. So don't us
 
 Compilation Errors:
 
-If I<OPERAND> is not an object type or the C<undef> type, a compilation error occurs.
+I<OPERAND> must be an object type, ohterwise a compilation error occurs.
 
 =head2 Assignment Operator
 
