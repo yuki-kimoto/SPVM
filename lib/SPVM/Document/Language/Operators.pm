@@ -753,7 +753,7 @@ If I<LEFT_OPERAND> is a field access, this operator performs the operation that 
 
 If I<LEFT_OPERAND> is a dereference, this operator performs the operation that L<sets a referenced value|/"Setting A Referenced Value">.
 
-If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Setting The Exception Variable">.
+If I<LEFT_OPERAND> is the exception variable, this operator performs the operation that L<sets the exception variable|/"Setting the Exception Variable">.
 
 Examples:
   
@@ -1461,6 +1461,8 @@ Examples:
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
 
+=head2 Getting And Setting Operators
+
 =head2 Getting A Local Variable
 
 The getting local variable gets the value of the local variable.
@@ -1566,7 +1568,7 @@ Examples:
     }
   }
 
-=head2 Getting The Exception Variable
+=head2 Getting the Exception Variable
 
 The setting exception variable gets the value of the L<exception variable|/"Exception Variable">.
 
@@ -1581,7 +1583,7 @@ Examples:
   # Getting the exception variable
   my $message = $@;
 
-=head2 Setting The Exception Variable
+=head2 Setting the Exception Variable
 
 The operation that sets the exception variable sets the value of L</"Exception Variable"> using the L<assignment operator|/"Assignment Operator">.
 
