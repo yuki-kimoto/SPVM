@@ -765,11 +765,11 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { my $num = 1; my $num_ref = \$num; warn $num_ref; } }';
-    compile_not_ok($source, q|The type of the operand of the warn operator must be an object type or the undef type.|);
+    compile_not_ok($source, q|The type of the operand of the warn operator must be an object type.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { warn undef; } }';
-    compile_ok($source);
+    compile_not_ok($source, q|The type of the operand of the warn operator must be an object type.|);
   }
 }
 

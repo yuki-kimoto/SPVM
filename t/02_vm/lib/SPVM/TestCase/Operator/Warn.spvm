@@ -35,12 +35,6 @@ class TestCase::Operator::Warn {
     return 1;
   }
   
-  static method test_warn_undef_type : int () {
-    warn undef;
-    
-    return 1;
-  }
-  
   static method test_warn_object_type : int () {
     warn Int->new(1);
     

@@ -1213,7 +1213,7 @@ The C<print> operator prints a string to standard output.
 
   print OPERAND
 
-This operator outputs the string OPERAND to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO">.
+This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO">.
 
 If I<OPERAND> is an undefined value, this operator outputs nothing.
 
@@ -1225,24 +1225,28 @@ I<OPERAND> must be the string type, otherwise a compilation error occurs.
 
 =head2 say Operator
 
-The C<say> operator prints a string with a line break C<\n> to the standard output.
+The C<say> operator prints a string to standard output with a newline.
 
   say OPERAND
 
-I<OPERAND> must be the string type.
+This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard IO"> with a newline C<\n>.
+
+If I<OPERAND> is an undefined value, this operator outputs a newline C<\n>.
 
 The return type is the void type.
 
-If I<OPERAND> is an undefined value, print C<\n>.
+Compilation Errors:
+
+I<OPERAND> must be the string type, otherwise a compilation error occurs.
 
 =head2 warn Operator
 
-The C<warn> operator prints a message to the standard error.
+The C<warn> operator prints a string to standard error with a stack trace.
 
-  warn OPERNAD;
   warn;
+  warn OPERNAD;
 
-If I<OPERAND> is omitted or I<OPERAND> is an undefined value, I<OPERAND> is set to the string C<"Warning">.
+If I<OPERAND> is omitted, I<OPERAND> is set to the string C<"Warning">.
 
 This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
 

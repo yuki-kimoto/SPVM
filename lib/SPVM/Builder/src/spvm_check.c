@@ -2613,9 +2613,8 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
               
-              if (!(SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)
-                || SPVM_TYPE_is_undef_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag))) {
-                SPVM_COMPILER_error(compiler, "The type of the operand of the warn operator must be an object type or the undef type.\n  at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The type of the operand of the warn operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }
