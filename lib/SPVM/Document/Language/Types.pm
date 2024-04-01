@@ -500,7 +500,9 @@ Basic types are L<numeric types|/"Numeric Types">, L<multi-numeric types|/"Multi
 
 =head2 undef Type
 
-The undef type is the type of L<undef|/"Undefined Value"> value.
+The undef type is the type for the return type of the L<undef|SPVM::Document::Language::Operators/"undef Operator"> operator.
+
+A value of the undef type can be assigned to an L<object type|/"Object Types">.
 
 =head2 void Type
 
