@@ -132,23 +132,21 @@ A object is created by the L<new|SPVM::Document::Language::Operators/"new"> oper
 
 =head2 Undefined Value
 
-An undefined value is represented by C<undef>.
+An undefined value is created by the L<undef|SPVM::Document::Language::Operators/"undef Operator"> operator.
 
   undef
 
+The return type of the L<undef|SPVM::Document::Language::Operators/"undef Operator"> operator is the L<undef type|/"undef Type">.
+
 An undefined value can be assigned to an L<object type|/"Object Types">.
 
-In the level of L<native APIs|SPVM:Document::NativeAPI>, undef is defined as C<(void*)NULL>.
-
-  (void*)NULL
-
-An undefined value can be compared by the C<==> operator and the C<!=> operator. An undefined value is guaranteed not to be equal to the any created object.
-
-The type of undef is L<undef type|/"undef Type">
+In L<native classes|SPVM::Document::NativeClass>, an undefined value is a null pointer C<NULL> defined in C<stddef.h>.
+  
+  NULL
 
 Examples:
   
-  # Undefine values
+  # Examples of undefine values
   my $string : string = undef;
   
   if (undef) {
@@ -160,11 +158,11 @@ Examples:
     
   }
 
-=head3 Reference
+=head2 Reference
 
 The reference is the address of a L<local variable|/"Local Variable"> on the memory.
 
-=head4 Creating Reference
+=head3 Creating Reference
 
 The L<reference operator|/"Reference Operator"> creates the reference of a L<local variable|/"Local Variable">.
 
