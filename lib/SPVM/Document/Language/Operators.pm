@@ -767,15 +767,17 @@ The return type is the int type.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> of the C<==> operator and the C<!=> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an object type, or an reference type, otherwise a compilation error occurs.
+The type of the I<LEFT_OPERAND> of the != operator must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> of the C<==> operator and the C<!=> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an object type, or an reference type, otherwise a compilation error occurs.
+The type of the I<RIGHT_OPERAND> of the != operator must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
 
-If the type of I<RIGHT_OPERAND> of the C<==> operator and the C<!=> operator is an object type or an reference type, and the type of I<LEFT_OPERAND> is different from the type of I<RIGHT_OPERAND>, a compilation error occurs.
+If the type of the I<LEFT_OPERAND> of the != operator is a numeric type, the type of the I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
-The type of I<LEFT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> of the != operator is an object type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> of the C<E<gt>> operator, the C<E<gt>=> operator, the C<E<lt>> operator, the C<E<lt>=> operator, and the C<E<lt>=E<gt>> operator must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> of the != operator is the undef type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
+
+If the type of the I<LEFT_OPERAND> of the != operator is a reference type, the type of the I<RIGHT_OPERAND> must be a reference type, otherwise a compilation error occurs.
 
 =head3 String Comparison Operators
 

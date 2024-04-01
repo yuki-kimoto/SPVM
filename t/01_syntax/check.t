@@ -164,15 +164,27 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { undef != 1; } }';
-    compile_not_ok($source, qr'The right operand of the != operator must be an object type');
+    compile_not_ok($source, q|If the type of the left operand of the != operator is the undef type, the type of the right operand must be an object type or the undef type.|);
   }
+  
   {
     my $source = 'class MyClass { static method main : void () { 1 != undef; } }';
-    compile_not_ok($source, qr'The type of the left operand of the != operator must be an object type');
+    compile_not_ok($source, q|If the type of the left operand of the != operator is a numeric type, the type of the right operand must be a numeric type.|);
   }
+  
   {
     my $source = 'class MyClass { static method main : void () { 1 != Int->new(1); } }';
-    compile_not_ok($source, qr'The left and right operands of the != operator must be numeric types or object types or reference types');
+    compile_not_ok($source, q|If the type of the left operand of the != operator is a numeric type, the type of the right operand must be a numeric type.|);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $left = 1; my $right = 2; \$left != \$right; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $left = 1; my $right = 2; \$left != $right; } }';
+    compile_not_ok($source, q|If the type of the left operand of the != operator is a reference type, the type of the right operand must be a reference type.|);
   }
 }
 
