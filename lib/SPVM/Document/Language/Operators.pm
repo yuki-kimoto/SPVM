@@ -767,63 +767,25 @@ The return type is the int type.
 
 Compilation Errors:
 
-C<==>
+C<==>, C<!=>
 
-The type of the I<LEFT_OPERAND> of the == operator must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
+The type of the I<LEFT_OPERAND> must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
 
-The type of the I<RIGHT_OPERAND> of the == operator must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
+The type of the I<RIGHT_OPERAND> must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> of the == operator is a numeric type, the type of the I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is a numeric type, the type of the I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> of the == operator is an object type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is an object type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> of the == operator is the undef type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is the undef type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> of the == operator is a reference type, the type of the I<RIGHT_OPERAND> must be a reference type, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is a reference type, the type of the I<RIGHT_OPERAND> must be a reference type, otherwise a compilation error occurs.
 
-C<!=>
+C<E<lt>>, C<E<lt>=>, C<E<gt>>, C<E<gt>=>, C<E<lt>=E<gt>>
 
-The type of the I<LEFT_OPERAND> of the != operator must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
+The type of the I<LEFT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
-The type of the I<RIGHT_OPERAND> of the != operator must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
-
-If the type of the I<LEFT_OPERAND> of the != operator is a numeric type, the type of the I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
-
-If the type of the I<LEFT_OPERAND> of the != operator is an object type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
-
-If the type of the I<LEFT_OPERAND> of the != operator is the undef type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
-
-If the type of the I<LEFT_OPERAND> of the != operator is a reference type, the type of the I<RIGHT_OPERAND> must be a reference type, otherwise a compilation error occurs.
-
-C<E<lt>>
-
-The type of the I<LEFT_OPERAND> of the C<E<lt>> operator must be a numeric type, otherwise a compilation error occurs.
-
-The type of the I<RIGHT_OPERAND> of the C<E<lt>> operator must be a numeric type, otherwise a compilation error occurs.
-
-C<E<lt>=>
-
-The type of the I<LEFT_OPERAND> of the C<E<lt>=> operator must be a numeric type, otherwise a compilation error occurs.
-
-The type of the I<RIGHT_OPERAND> of the C<E<lt>=> operator must be a numeric type, otherwise a compilation error occurs.
-
-C<E<gt>>
-
-The type of the I<LEFT_OPERAND> of the C<E<gt>> operator must be a numeric type, otherwise a compilation error occurs.
-
-The type of the I<RIGHT_OPERAND> of the C<E<gt>> operator must be a numeric type, otherwise a compilation error occurs.
-
-C<E<gt>=>
-
-The type of the I<LEFT_OPERAND> of the C<E<gt>=> operator must be a numeric type, otherwise a compilation error occurs.
-
-The type of the I<RIGHT_OPERAND> of the C<E<gt>=> operator must be a numeric type, otherwise a compilation error occurs.
-
-C<E<lt>=E<gt>>
-
-The type of the I<LEFT_OPERAND> of the C<E<lt>=E<gt>> operator must be a numeric type, otherwise a compilation error occurs.
-
-The type of the I<RIGHT_OPERAND> of the C<E<lt>=E<gt>> operator must be a numeric type, otherwise a compilation error occurs.
+The type of the I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
 =head3 String Comparison Operators
 
