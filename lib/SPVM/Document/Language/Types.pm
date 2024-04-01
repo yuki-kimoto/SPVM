@@ -136,17 +136,17 @@ An undefined value is created by the L<undef|SPVM::Document::Language::Operators
 
   undef
 
-The return type of the L<undef|SPVM::Document::Language::Operators/"undef Operator"> operator is the L<undef type|/"undef Type">.
+The type of an undefined value is the L<undef type|/"undef Type">.
 
-An undefined value can be assigned to an L<object type|/"Object Types">.
+An undefined value is able to be assigned to an L<object type|/"Object Types">.
 
-In L<native classes|SPVM::Document::NativeClass>, an undefined value is a null pointer C<NULL> defined in C<stddef.h>.
+In L<native classes|SPVM::Document::NativeClass>, an undefined value is equal to 0, normally a null pointer C<NULL> defined in C<stddef.h>.
   
   NULL
 
 Examples:
   
-  # Examples of undefine values
+  # Examples of undefined values
   my $string : string = undef;
   
   if (undef) {
@@ -500,9 +500,7 @@ Basic types are L<numeric types|/"Numeric Types">, L<multi-numeric types|/"Multi
 
 =head2 undef Type
 
-The undef type is the type for the return type of the L<undef|SPVM::Document::Language::Operators/"undef Operator"> operator.
-
-A value of the undef type can be assigned to an L<object type|/"Object Types">.
+The undef type is the type of an L<undefined value|/"Undefined Value">.
 
 =head2 void Type
 
