@@ -1277,58 +1277,6 @@ Examples:
   my $point = Point->new;
   warn $point;
 
-=head3 args_width Operator
-
-The C<args_width> operator gets the stack length of the arguments passed to the method.
-
-  args_width
-
-Note that the stack length of the arguments is different from the length of the arguments.
-
-If the method call is the instance method call, the stack length of the arguments is the length of the arguments + 1 for the invocant.
-
-If an argument is a multi-numeric type, the stack length of the argument becomes the length of the fields.
-
-Examples:
-  
-  static method my_static_method : int ($args : int, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-  
-  # 1
-  &my_static_method(1);
-  
-  # 2
-  &my_static_method(1, 2);
-  
-  static method my_instance_method : int ($args : int, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-  
-  # 2 (1 + the invocant)
-  &my_instance_method(1);
-  
-  # 3 (2 + the invocant)
-  &my_instance_method(1, 2);
-
-  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-
-  # 2 (The length of the fields of Complex_2d)
-  my $z : Complex_2d;
-  &my_mulnum_method($z);
-  
-  # 3 (The length of the fields of Complex_2d + 1)
-  my $z : Complex_2d;
-  &my_mulnum_method($z, 2);
-
 =head2 __PACKAGE__ Operator
 
 The C<__PACKAGE__> operator gets the current class name.
@@ -1513,7 +1461,7 @@ Examples:
   # Key values
   my $key_values = {foo => 1, bar => "Hello"};
 
-=head2 Getting Local Variable
+=head2 Getting A Local Variable
 
 The getting local variable gets the value of the local variable.
 
@@ -1541,7 +1489,7 @@ Compilation Errors:
 
 The assignment of the value must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
-=head2 Getting Class Variable
+=head2 Getting A Class Variable
 
 The getting class variable gets the value of the L<class variable|/"Class Variable">.
 
@@ -1618,7 +1566,7 @@ Examples:
     }
   }
 
-=head2 Getting Exception Variable
+=head2 Getting The Exception Variable
 
 The setting exception variable gets the value of the L<exception variable|/"Exception Variable">.
 
@@ -1653,7 +1601,7 @@ Examples:
 
   $@ = "Error";
 
-=head2 Getting Field
+=head2 Getting A Field
 
 The getting field gets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1693,7 +1641,7 @@ Examples:
   my $point = Point->new;
   $point->{x} = 1;
 
-=head2 Getting Multi-Numeric Field
+=head2 Getting A Multi-Numeric Field
 
 B<Getting Multi-Numeric Field operator> gets the field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1714,7 +1662,7 @@ Examples:
   my $z : Complex_2d;
   my $re = $z->{re};
 
-=head2 Setting Multi-Numeric Field
+=head2 Setting A Multi-Numeric Field
 
 Setting Multi-Numeric Field operator sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1737,7 +1685,7 @@ Examples:
   my $z : Complex_2d;
   $z->{re} = 2.5;
 
-=head2 Getting Array Element
+=head2 Getting An Array Element
 
 The getting array element gets the element of the L<array|SPVM::Document::Language::Types/"Array">.
 
@@ -1806,6 +1754,79 @@ Examples:
   
   my $objects : object[] = $points;
   $objects->[2] = Point->new(3, 5);
+
+=head2 Setting A Referenced Value
+
+The operation for setting the referenced value sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
+
+  $VARIABLE = OPERAND
+
+Setting a value with Dereference returns the set value.
+
+Compilation Errors:
+
+The variable type must be a reference type, otherwise a compilation error occurs.
+
+The type of operator must match the type of the variable when dereferenced, otherwise a compilation error occurs.
+
+Examples:
+
+  my $num : int;
+  my $num_ref : int* = \$num;
+  $$num_ref = 1;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+  
+  my $z2 : Complex_2d;
+  
+  $$z_ref = $z2;
+
+=head2 Getting A Multi-Numeric Field via Dereference
+
+The syntax of getting multi-numeric field via dereference gets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+
+  INVOCANT->{FIELD_NAME}
+
+The invocant is L</"Multi-Numeric Reference Type">.
+
+The getting multi-numeric field via dereference operator returns the field value in the multi-numeric value.
+
+The retrun type is the type of the field.
+
+Compilation Errors:
+
+If the field names does not found in the class, a compilation error occurs
+
+Examples:
+
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  my $re = $z_ref->{re};
+
+=head2 Setting A Multi-Numeric Field via Dereference
+
+The setting multi-numeric field via dereference operator sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+
+  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
+
+The invocant is L</"Multi-Numeric Reference Type">.
+
+The setting multi-numeric field via dereference operator returns the value of the field after setting.
+
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
+
+The return type is the field type.
+
+Compilation Errors:
+
+If the field names does not found in the class, a compilation error occurs
+
+Examples:
+
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  $z_ref->{re} = 2.5;
 
 =head2 Type Cast Operator
 
@@ -1905,78 +1926,57 @@ A instance method can be called statically by specifing the calss name.
 
   $point3d->Point::clear;
 
-=head3 Setting A Referenced Value
+=head2 args_width Operator
 
-The operation for setting the referenced value sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
+The C<args_width> operator gets the stack length of the arguments passed to the method.
 
-  $VARIABLE = OPERAND
+  args_width
 
-Setting a value with Dereference returns the set value.
+Note that the stack length of the arguments is different from the length of the arguments.
 
-Compilation Errors:
+If the method call is the instance method call, the stack length of the arguments is the length of the arguments + 1 for the invocant.
 
-The variable type must be a reference type, otherwise a compilation error occurs.
-
-The type of operator must match the type of the variable when dereferenced, otherwise a compilation error occurs.
+If an argument is a multi-numeric type, the stack length of the argument becomes the length of the fields.
 
 Examples:
-
-  my $num : int;
-  my $num_ref : int* = \$num;
-  $$num_ref = 1;
   
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
+  static method my_static_method : int ($args : int, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
   
-  my $z2 : Complex_2d;
+  # 1
+  &my_static_method(1);
   
-  $$z_ref = $z2;
+  # 2
+  &my_static_method(1, 2);
+  
+  static method my_instance_method : int ($args : int, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+  
+  # 2 (1 + the invocant)
+  &my_instance_method(1);
+  
+  # 3 (2 + the invocant)
+  &my_instance_method(1, 2);
 
-=head3 Getting Multi-Numeric Field via Dereference
+  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
 
-The syntax of getting multi-numeric field via dereference gets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
-
-  INVOCANT->{FIELD_NAME}
-
-The invocant is L</"Multi-Numeric Reference Type">.
-
-The getting multi-numeric field via dereference operator returns the field value in the multi-numeric value.
-
-The retrun type is the type of the field.
-
-Compilation Errors:
-
-If the field names does not found in the class, a compilation error occurs
-
-Examples:
-
+  # 2 (The length of the fields of Complex_2d)
   my $z : Complex_2d;
-  my $z_ref = \$z;
-  my $re = $z_ref->{re};
-
-=head3 Setting Multi-Numeric Field via Dereference
-
-The setting multi-numeric field via dereference operator sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
-
-  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
-
-The invocant is L</"Multi-Numeric Reference Type">.
-
-The setting multi-numeric field via dereference operator returns the value of the field after setting.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
-
-The return type is the field type.
-
-Compilation Errors:
-
-If the field names does not found in the class, a compilation error occurs
-
-Examples:
-
+  &my_mulnum_method($z);
+  
+  # 3 (The length of the fields of Complex_2d + 1)
   my $z : Complex_2d;
-  my $z_ref = \$z;
-  $z_ref->{re} = 2.5;
+  &my_mulnum_method($z, 2);
 
 =head2 Anon Method Operator
 
