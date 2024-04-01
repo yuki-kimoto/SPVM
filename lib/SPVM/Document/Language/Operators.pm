@@ -556,7 +556,7 @@ And it performs the L<numeric widening conversion|SPVM::Document::Language::Type
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
-  LEFT_OPERAND >> RIGHT_OPERNAD;
+  LEFT_OPERAND >> RIGHT_OPERAND;
 
 The return type is the type of I<LEFT_OPERAND>.
 
@@ -717,11 +717,11 @@ Examples:
 
 The sequential operator is an operator with the following syntax.
   
-  (OPERAND1, OPERAND2, ..., OPERNADn)
+  (OPERAND1, OPERAND2, ..., OPERANDn)
 
-This operator evaluates operands C<OPERAND1>, C<OPERAND1> ... C<OPERNADn> from left to right, and returns the value of the rightmost operand C<OPERNADn>.
+This operator evaluates operands C<OPERAND1>, C<OPERAND1> ... C<OPERANDn> from left to right, and returns the value of the rightmost operand C<OPERANDn>.
 
-The return type is the type of C<OPERNADn>.
+The return type is the type of C<OPERANDn>.
 
 Examples:
 
@@ -932,7 +932,7 @@ These operators perform the following operations.
       <i>eq</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -940,7 +940,7 @@ These operators perform the following operations.
       <i>ne</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -948,7 +948,7 @@ These operators perform the following operations.
       <i>gt</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -956,7 +956,7 @@ These operators perform the following operations.
       <i>ge</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is greater than or equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is greater than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -964,7 +964,7 @@ These operators perform the following operations.
       <i>lt</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -972,7 +972,7 @@ These operators perform the following operations.
       <i>le</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -980,7 +980,7 @@ These operators perform the following operations.
       <i>cmp</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERNAD</i> in the dictionary order, returns 1. If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERNAD</i> in the dictionary order, return -1. If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERNAD</i> in the dictionary order, returns 0.
+      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERAND</i> in the dictionary order, return -1. If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 0.
     </td>
   </tr>
 </table>
@@ -1243,20 +1243,20 @@ I<OPERAND> must be the string type, otherwise a compilation error occurs.
 
 The C<warn> operator prints a string to standard error with a stack trace.
 
-  warn;
-  warn OPERNAD;
+  warn
+  warn OPERAND
 
 If I<OPERAND> is omitted, I<OPERAND> is set to the string C<"Warning">.
 
-This operator prints its output to SPVM's L<stderr|SPVM::Document::Language::System/"Standard IO">.
+This operator outputs I<OPERAND> to the L<SPVM's standard error|SPVM::Document::Language::System/"Standard IO">.
 
-If I<OPERAND> is not defined at runtime, this operator prints C<"undef">.
+If I<OPERAND> is an undefined value, this operator outputs the string C<"undef">.
 
-If I<OPERAND> is defined at runtime and the runtime type is the string type, this operator prints I<OPERAND>.
+If the type of I<OPERAND> is the string type and I<OPERAND> is defined, this operator outputs I<OPERAND>.
 
-If I<OPERAND> is defined at runtime and the runtime type is not the string type, this operator prints the type name and address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
+If the type of I<OPERAND> is an object type except for the string type and I<OPERAND> is defined, this operator outputs the type name and the address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
 
-If the end character of the I<OPERNAD> is not C<\n>, this operator prints a new line, two tabs and the stack trace information following the output above.
+If the end character of the I<OPERAND> is not C<\n>, this operator outputs a newline, two tabs and a stack trace information following the output above.
 
 A stack trace information consists of the current method name, file name, and line number.
 
@@ -1266,7 +1266,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-The type of I<OPERNAD> must be the object type or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
+The type of I<OPERAND> must be an object type, otherwise a compilation error occurs.
 
 Examples:
   
