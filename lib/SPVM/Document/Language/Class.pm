@@ -784,6 +784,26 @@ This initial value can be changed by using the L<INIT block|/"INIT Block">.
     }
   }
 
+=head3 Local Variable Access
+
+The local variable Access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to access Local Variable to get or set the value.
+
+  $VARIABLE_NAME
+
+I<VARIABLE_NAME> is a local variable name.
+
+See L</"Getting a Local Variable"> to get Local Variable value.
+
+L</"Setting a Local Variable"> to get Local Variable value.
+
+If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
+
+Compilation Errors:
+
+I<$VARIABLE_NAME> must be a valid local variable name, otherwise a compilation error occurs.
+
+The declaration of I<$VARIABLE_NAME> must exists before I<$var>, otherwise a compilation error occurs.
+
 =head3 Class Variable Access
 
 The class variable access has the following syntax.
@@ -810,6 +830,24 @@ Compilation Errors:
 The class specified by the C<CLASS_NAME> must be loaded, otherwise a compilation error occurs.
 
 The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>, otherwise a compilation error occurs.
+
+=head3 Array Access
+
+The array access has the following syntax.
+
+  ARRAY->[INDEX]
+
+The syntax of the array access is able to be used in method blocks.
+
+The array I<ARRAY> must be an array type.
+
+The index I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
+
+Compilation Errors:
+
+I<ARRAY> must be an array type, otherwise a compilation error occurs.
+
+I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 =head2 Field
 
@@ -1455,16 +1493,6 @@ See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the s
 =head2 Local Variable Initial Value
 
 The local variable is initialized by the L<initial value|SPVM::Document::Language::Types/"Type Initial Value">.
-
-=head3 Local Variable Access
-
-The local variable Access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to access Local Variable to get or set the value.
-
-See L</"Getting a Local Variable"> to get Local Variable value.
-
-L</"Setting a Local Variable"> to get Local Variable value.
-
-If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
 
 =head2 Block
 

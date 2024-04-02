@@ -1632,29 +1632,51 @@ Examples:
 
 The operation of getting local variable gets the value of a L<local variable|SPVM::Document::Language::Class/"Local Variable">.
 
-  $var
+  LOCAL_VARIABLE_ACCESS
 
-This operation returns the value of the local variable I<$var>.
+I<LOCAL_VARIABLE_ACCESS> is a L<local variable access|SPVM::Document::Language::Class/"Local Variable Access">.
 
-The return type is the type of I<$var>
+The local variable specified by I<LOCAL_VARIABLE_ACCESS> is named I<$var>.
+
+This operation returns the value of I<$var>.
+
+The return type is the type of I<$var>.
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of the L<local variable access|SPVM::Document::Language::Class/"Local Variable Access"> could occur.
+
+Examples:
+
+  $var;
 
 =head3 Setting a Local Variable
 
 The operation of setting a local variable sets a L<local variable|SPVM::Document::Language::Class/"Local Variable">.
 
-  $var = OPERAND
+  LOCAL_VARIABLE_ACCESS = OPERAND
 
-This operation sets the variable C<$var> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">.
+I<LOCAL_VARIABLE_ACCESS> is a L<local variable access|SPVM::Document::Language::Class/"Local Variable Access">.
+
+The local variable specified by I<LOCAL_VARIABLE_ACCESS> is named I<$var>.
+
+This operation sets I<$var> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value after setting.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
-The return value is the type of C<$var>.
+The return value is the type of I<$var>.
 
 Compilation Errors:
 
+Compiliation errors caused by the syntax of the L<local variable access|SPVM::Document::Language::Class/"Local Variable Access"> could occur.
+
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
-=head3 Getting a Class Variable
+Examples:
+
+  $var = 3;
+
+head3 Getting a Class Variable
 
 The operation of getting a class variable gets the value of a L<class variable|SPVM::Document::Language::Class/"Class Variable">.
 
@@ -1662,9 +1684,11 @@ The operation of getting a class variable gets the value of a L<class variable|S
 
 I<CLASS_VARIABLE_ACCESS> is a L<class variable access|SPVM::Document::Language::Class/"Class Variable Access">.
 
-This operation returns the value of a class variable.
+The class variable specified by I<CLASS_VARIABLE_ACCESS> is named I<$VAR>.
 
-The return type is the type of I<$CLASS_NAME::CLASS_VARIABLE_NAME_WITHOUT_SIGIL>.
+This operation returns the value of I<$VAR>.
+
+The return type is the type of I<$VAR>.
 
 Compilation Errors:
 
@@ -1698,11 +1722,13 @@ The operation of setting a class variable operator sets a L<class variable|SPVM:
 
 I<CLASS_VARIABLE_ACCESS> is a L<class variable access|SPVM::Document::Language::Class/"Class Variable Access">.
 
-This operation sets the class variable I<$CLASS_NAME::CLASS_VARIABLE_NAME_WITHOUT_SIGIL> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">.
+The class variable specified by I<CLASS_VARIABLE_ACCESS> is named I<$VAR>.
+
+This operation sets I<$VAR> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value after setting.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
-The return type is the type of I<$CLASS_NAME::CLASS_VARIABLE_NAME_WITHOUT_SIGIL>.
+The return type is the type of I<$VAR>.
 
 Compilation Errors:
 
@@ -1728,13 +1754,87 @@ Examples:
     }
   }
 
+=head3 Getting an Array Element
+
+The operation of getting an array element gets the element of an L<array|SPVM::Document::Language::Types/"Array">.
+
+  ARRAY_ACCESS
+
+I<ARRAY_ACCESS> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+
+The array specified by I<CLASS_VARIABLE_ACCESS> is named I<ARRAY>.
+
+The index specified by I<CLASS_VARIABLE_ACCESS> is named I<INDEX>.
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
+
+And returns the element of I<ARRAY> at I<INDEX>.
+
+The return type is the element type of I<ARRAY>.
+
+Exceptions:
+
+I<ARRAY> must be defined, otherwise an exception is thrown.
+
+I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of the L<array access|SPVM::Document::Language::Class/"Array Access"> could occur.
+
+Examples:
+
+  my $nums = new int[3];
+  my $num = $nums->[1];
+  
+  my $points = new Point[3];
+  my $point = $points->[1];
+
+=head3 Setting an Array Element
+
+The operation of setting array element sets the element of the array.
+
+  ARRAY_ACCESS = OPERAND
+
+I<ARRAY_ACCESS> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+
+The array specified by I<CLASS_VARIABLE_ACCESS> is named I<ARRAY>.
+
+The index specified by I<CLASS_VARIABLE_ACCESS> is named I<INDEX>.
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
+
+And sets the element of I<ARRAY> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the element after setting.
+
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
+
+Exceptions:
+
+I<ARRAY> must be defined, otherwise an exception is thrown.
+
+I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of the L<array access|SPVM::Document::Language::Class/"Array Access"> could occur.
+
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+
+Examples:
+
+  my $nums = new int[3];
+  $nums->[1] = 3;
+  
+  my $points = new Point[3];
+  $points->[1] = Point->new(1, 2);
+  
 =head3 Getting a Field
 
-The operation of getting field gets the value of the field.
+The operation of getting field gets the value of a field.
 
-  INVOCANT->{FIELD_NAME}
+  FIELD_ACCESS
 
-The type of the invocant I<INVOCANT> must be a L<class type|SPVM::Document::Language::Types/"Class Type"> or an L<interface type|SPVM::Document::Language::Types/"Interface Type">.
+I<FIELD_ACCESS_ACCESS> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
 
 The operation of getting field gets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1744,6 +1844,7 @@ The retrun type is the type of the field.
 
 Compilation Errors:
 
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
 Examples:
 
@@ -1755,7 +1856,6 @@ Examples:
 The operation of setting field sets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = OPERAND
-
 
  using the L<assignment operator|/"Assignment Operator">.
 
@@ -1827,113 +1927,6 @@ Examples:
   my $z : Complex_2d;
   $z->{re} = 2.5;
 
-=head3 Getting An Array Element
-
-The operation of getting array element gets the element of the L<array|SPVM::Document::Language::Types/"Array">.
-
-  ARRAY->[INDEX]
-
-The array must be an array type.
-
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the index I<INDEX>.
-
-The getting array element returns the element that is specifed by the index.
-
-The return type is the type of the element.
-
-The array must be defined, otherwise an exception is thrown.
-
-The index must be greater than or equal to 0, otherwise an exception is thrown.
-
-Compilation Errors:
-
-The index must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-Examples:
-
-  my $nums = new int[3];
-  my $num = $nums->[1];
-  
-  my $points = new Point[3];
-  my $point = $points->[1];
-  
-  my $objects : object[] = $points;
-  my $object = (Point)$objects->[1];
-
-=head3 Setting an Array Element
-
-The operation of setting array element sets the element of the array.
-
-  ARRAY->[INDEX] = RIGHT_OPERAND
-
-
- using the L<assignment operator|/"Assignment Operator">.
-
-The array must be an array type.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
-
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the index I<INDEX>.
-
-I<RIGHT_OPERAND> must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
-
-The setting array element returns the value of the element that is set.
-
-The array must be defined, otherwise an exception is thrown.
-
-The index must be greater than or equal to 0, otherwise an exception is thrown.
-
-Compilation Errors:
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
-
-The index must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-Examples:
-
-  my $nums = new int[3];
-  $nums->[1] = 3;
-  
-  my $points = new Point[3];
-  $points->[1] = Point->new(1, 2);
-  
-  my $objects : object[] = $points;
-  $objects->[2] = Point->new(3, 5);
-
-=head3 Setting a Referenced Value
-
-The operation of setting the referenced value sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
-
-  $VARIABLE = OPERAND
-
-
- using the L<assignment operator|/"Assignment Operator">.
-
-Setting a value with Dereference returns the set value.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
-
-Compilation Errors:
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
-
-The variable type must be a reference type, otherwise a compilation error occurs.
-
-The type of operator must match the type of the variable when dereferenced, otherwise a compilation error occurs.
-
-Examples:
-
-  my $num : int;
-  my $num_ref : int* = \$num;
-  $$num_ref = 1;
-  
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-  
-  my $z2 : Complex_2d;
-  
-  $$z_ref = $z2;
-
 =head3 Getting a Multi-Numeric Field via Dereference
 
 The operation of getting a multi-numeric field via dereference gets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
@@ -1986,6 +1979,40 @@ Examples:
   my $z : Complex_2d;
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
+
+=head3 Setting a Referenced Value
+
+The operation of setting the referenced value sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
+
+  $VARIABLE = OPERAND
+
+
+ using the L<assignment operator|/"Assignment Operator">.
+
+Setting a value with Dereference returns the set value.
+
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
+
+Compilation Errors:
+
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+
+The variable type must be a reference type, otherwise a compilation error occurs.
+
+The type of operator must match the type of the variable when dereferenced, otherwise a compilation error occurs.
+
+Examples:
+
+  my $num : int;
+  my $num_ref : int* = \$num;
+  $$num_ref = 1;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+  
+  my $z2 : Complex_2d;
+  
+  $$z_ref = $z2;
 
 =head3 Getting the Exception Variable
 
