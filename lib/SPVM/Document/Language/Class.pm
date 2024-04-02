@@ -208,7 +208,7 @@ A L<class|/"Class"> can have a destructor.
   
   }
 
-The destructor is the L<method|/"Method"> that is called when the object is destroyed by the L<garbage collection|/"Garbage Collection">.
+The destructor is the L<method|/"Method"> that is called when the object is destroyed by the L<garbage collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection">.
 
 The name of the destructor must be C<DESTROY>.
 
@@ -218,7 +218,7 @@ The retrun type must be L<void type|SPVM::Document::Language::Types/"void Type">
 
 A destructor must be an L<instance method|/"Instance Method">.
 
-If an L<exception|/"Exception Handling"> occurs in the destructor, the exception is not thrown. Instead, a warnings message is printed to C<STDERR>.
+If an L<exception|SPVM::Document::Language::ExceptionHandling/"Exception Handling"> occurs in the destructor, the exception is not thrown. Instead, a warnings message is printed to C<STDERR>.
 
 Compilation Errors:
 
@@ -247,7 +247,7 @@ The C<allow> statemenet allows the private access from the other classes.
 
 The C<allow> statemenet must be defined directory under the L<class definition|/"Class Definition">.
   
-The class that is I<OPERAND> of the C<allow> statemenet is loaded by the same way as the L<use statement|/"use Statement">.
+The class that is I<OPERAND> of the C<allow> statemenet is loaded by the same way as the L<use statement|SPVM::Document::Language::Statements/"use Statement">.
 
 Examples:
 
@@ -1491,7 +1491,7 @@ An enumeration block is a block used in a enumeration definition.
 
 =head3 Scope Block
 
-The scope block has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. Zero or more L<statements|/"Statements"> are written in a scope block.
+The scope block has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> are written in a scope block.
 
 =head4 Simple Block
 
@@ -1614,14 +1614,14 @@ The C<INIT> block must be defined directly under the L<class definition|/"Class 
     }
   }
 
-Zero or more L<statements|/"Statements"> can be written in a C<INIT> block.
+Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> can be written in a C<INIT> block.
 
   INIT {
     my $foo = 1 + 1;
     my $bar;
   }
 
-The L<return statement|/"return Statement"> cannot be written in C<INIT> block.
+The L<return statement|SPVM::Document::Language::Statements/"return Statement"> cannot be written in C<INIT> block.
 
 If a C<INIT> block is not defined in a class, a default empty C<INIT> block is defined.
 
@@ -1629,7 +1629,7 @@ An C<INIT> block is editted.
 
 If a parent class exists, the INIT block of the parent class is called at the beginning of the INIT block.
 
-If classes are used by the L<use statement|/"use Statement">, the L<interface statement|/"interface Statement">, and the L<allow statement|/"allow Statement">, The INIT blocks in the classes are called in order after the above calling.
+If classes are used by the L<use statement|SPVM::Document::Language::Statements/"use Statement">, the L<interface statement|SPVM::Document::Language::Statements/"interface Statement">, and the L<allow statement|SPVM::Document::Language::Statements/"allow Statement">, The INIT blocks in the classes are called in order after the above calling.
   
   # Before Editting
   class MyClass extends ParentClass {
