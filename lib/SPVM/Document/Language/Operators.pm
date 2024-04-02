@@ -1444,47 +1444,56 @@ I<OPERAND> must be an object type, ohterwise a compilation error occurs.
 
 =head2 Reference Operator
 
-The reference operator C<\> creates a reference, and returns it.
+The reference operator C<\> creates the reference to the value owned by a variable.
 
-  \OPERAND
+  \VARIALBE
 
-The return type is the reference type of I<OPERAND>.
+This operator creates the reference to the value owned by the variable I<VARIALBE>, and returns it.
+
+I<VARIALBE> is must be a local variable of a numeric type or a multi-numeric type.
+
+The return type is the L<reference type|SPVM::Document::Language::Types/"Reference Type"> of I<VARIALBE>.
 
 Compilation Errors:
 
-The operand must be a local variable that type is a numeric type or a multi-numeric type, otherwise a compilation error occurs.
+I<VARIALBE> must be a local variable of a numeric type or a multi-numeric type, otherwise a compilation error occurs.
 
 Examples:
   
-  # Create the reference of a numeric type
-  my $num : int;
-  my $num_ref : int* = \$num;
+  # Examples of the reference operator
   
-  # Create the reference of a multi-numeric type
+  # Create a reference of a numeric type
+  my $num : int;
+  my $num_ref = \$num;
+  
+  # Create a reference of a multi-numeric type
   my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
+  my $z_ref = \$z;
 
 =head2 Dereference Operator
 
-The dereference operator C<$> returns the value referenced by the variable I<VARIABLE>.
+The dereference operator C<$> gets a referenced value.
 
   $VARIABLE
+
+This operator returns the value referenced by the variable I<VARIABLE> of a reference type.
 
 The return type is the type of the value referenced by I<VARIABLE>.
 
 Compilation Errors:
 
-The type of the variable must be a reference type, otherwise a compilation error occurs.
+The type of I<VARIABLE> must be a reference type, otherwise a compilation error occurs.
 
 Examples:
-
+  
+  # Examples of the dereference operator
   my $num : int;
-  my $num_ref : int* = \$num;
-  my $num_deref : int = $$num_ref;
+  my $num_ref = \$num;
+  my $num_deref = $$num_ref;
   
   my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-  my $z_deref : Complex_2d = $$z_ref;
+  my $z_ref = \$z;
+  my $z_deref = $$z_ref;
 
 =head2 Assignment Operator
 
