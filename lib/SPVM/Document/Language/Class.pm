@@ -571,7 +571,7 @@ In the other hand, the else block exists, so a warning is issued.
 
 =head2 Default Loaded Classes
 
-The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|/"Type Conversion">.
+The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|SPVM::Document::Language::Types/"Type Conversion">.
 
 =over 2
 
@@ -615,7 +615,7 @@ C<our> keyword defines a class variable.
 
 A Class variable must be defined directly under the L<class definition|/"Class Definition">.
 
-The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|/"Object Types">.
+The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|SPVM::Document::Language::Types/"Object Types">.
 
 L<Class variable attributes|/"Class Variable Attributes"> can be specified.
 
@@ -723,7 +723,7 @@ A class variable method is a L<method|/"Method"> that gets and sets a class vari
 
 =head4 Class Variable Getter Method
 
-A class variable getter method is a L<method|/"Method"> to perform the L<getting class variable|/"Getting Class Variable">.
+A class variable getter method is a L<method|/"Method"> to perform the operation of the L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
 
 It has no arguments. The return type is the same as the type of the class variable except that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
 
@@ -746,7 +746,7 @@ Examples:
 
 =head4 Class Variable Setter Method
 
-A class variable setter method is a L<method|/"Method"> to perform the L<setting class variable|/"Setting Class Variable">.
+A class variable setter method is a L<method|/"Method"> to perform the operation of the L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
 
 The return type is the L<void type|SPVM::Document::Language::Types/"void Type">.
 
@@ -803,7 +803,7 @@ The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the 
 
 The class variable access is an L<operator|/"Operators"> to set or get a class variable.
 
-See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
+See the operation of the L<getting a class varialbe|SPVM::Document::Language::Operators/"Getting a Class Variable"> and the operation of the L<setting a class varialbe|SPVM::Document::Language::Operators/"Setting a Class Variable">.
 
 Compilation Errors:
 
@@ -837,7 +837,7 @@ L<Field attributes|/"Field Attributes"> can be specified.
 
 Compilation Errors:
 
-The field definition needs the L<type|/"Types">. The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|/"Object Types">. Otherwise a compilation error occurs.
+The field definition needs the L<type|SPVM::Document::Language::Types/"Types">. The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|SPVM::Document::Language::Types/"Object Types">. Otherwise a compilation error occurs.
 
 The field names must follows the rule of the L<field name|/"Field Name">. Otherwise a compilation error occurs.
 
@@ -962,34 +962,34 @@ The field access of the L<class|/"Class">.
   $point->{x} = 1;
   my $x = $point->{x};
 
-See L</"Getting Field"> to get the field of the L<class|/"Class">.
+See L</"Getting a Field"> to get the field of the L<class|/"Class">.
 
-See L</"Setting Field"> to set the field of the L<class|/"Class">.
+See L</"Setting a Field"> to set the field of the L<class|/"Class">.
 
 =head4 Field Access of thethe multi-numeric type
 
-The field access of the L<multi-numeric type|/"Multi-Numeric Type">.
+The field access of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
 
   my $z : Complex_2d;
   $z->{re} = 1;
   my $re = $z->{re};
 
-See L</"Getting Multi-Numeric Field"> to get the field of the L<multi-numeric type|/"Multi-Numeric Type">.
+See L</"Getting a Multi-Numeric Field"> to get the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
 
-See L</"Setting Multi-Numeric Field"> to set the field of L<multi-numeric type|/"Multi-Numeric Type">.
+See L</"Setting a Multi-Numeric Field"> to set the field of L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
 
 =head4 Field Access of the Multi-Numeric Reference via Derefernce
 
-The field access of the L<multi-numeric reference|/"Multi-Numeric Reference Type"> via derefernce.
+The field access of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via derefernce.
 
   my $z : Complex_2d;
   my $z_ref = \$z;
   $z_ref->{re} = 1;
   my $re = $z_ref->{re};
 
-See L</"Getting Multi-Numeric Field via Dereference"> to get the field of the L<multi-numeric reference|/"Multi-Numeric Reference Type"> via dereference.
+See L</"Getting a Multi-Numeric Field via Dereference"> to get the field of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via dereference.
 
-See L</"Setting Multi-Numeric Field via Dereference"> to set the field of the L<multi-numeric reference|/"Multi-Numeric Reference Type"> via dereference.
+See L</"Setting a Multi-Numeric Field via Dereference"> to set the field of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via dereference.
 
 =head2 Method
 
@@ -1027,9 +1027,9 @@ A method has L</"Method Block"> except for the case that the method has the C<na
 
 Compilation Errors:
 
-The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type">, an L<object type|/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">. Otherwise a compilation error occurs.
+The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">. Otherwise a compilation error occurs.
 
-The type of the return value must be the L<void type|SPVM::Document::Language::Types/"void Type">, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|/"Multi-Numeric Type"> or an L<object type|/"Object Types">. Otherwise a compilation error occurs.
+The type of the return value must be the L<void type|SPVM::Document::Language::Types/"void Type">, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> or an L<object type|SPVM::Document::Language::Types/"Object Types">. Otherwise a compilation error occurs.
 
 =head4 Optional Argument
 
@@ -1283,7 +1283,9 @@ An enumeration value can be set by C<=> explicitly.
 
 In the above example, C<FLAG1> is 0, C<FALG2> is 4, and C<FLAG3> is 5.
 
-An enumeration value is got by the L<getting enumeration value|/"Getting Enumeration Value">.
+An enumeration value is got by the L<class method call|SPVM::Document::Language::Operators/"Class Method Call">.
+
+  Foo->FLAG1
 
 Compilation Errors:
 
@@ -1362,11 +1364,11 @@ A value of the enumeration can be got using the L<class method call|/"Class Meth
   my $flag2 = Foo->FLAG2;
   my $flag3 = Foo->FLAG3;
 
-A getting enumeration value is replaced to an L<interger literal|/"Integer Literal"> at compilation time.
+A getting enumeration value is replaced to an L<interger literal|SPVM::Document::Language::Tokenization/"Integer Literal"> at compilation time.
 
 For this, if an enumeration value is changed after first publication to users, the binary compatibility is not kept.
 
-An enumeration value can be used as an operand of the L<case statement|/"case Statement">.
+An enumeration value can be used as an operand of the L<case statement|SPVM::Document::Language::Statements/"case Statement">.
 
   switch ($num) {
     case Foo->FLAG1: {
@@ -1395,7 +1397,7 @@ The local variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L</"Local Variable Name">.
 
-the L<type|/"Types"> must be specified. Type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, an L<object type|/"Object Types">, the L<multi-numeric type|/"Multi-Numeric Type">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">.
+the L<type|SPVM::Document::Language::Types/"Types"> must be specified. Type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
@@ -1428,7 +1430,7 @@ The initialization of the local variable can be written at the same time as the 
   # Initialized by Point object
   my $point : Point = new Point;
 
-The L<type|/"Types"> can be omitted using the L<type inference|/"Type Inference">, 
+The L<type|SPVM::Document::Language::Types/"Types"> can be omitted using the L<type inference|SPVM::Document::Language::Types/"Type Inference">, 
 
   # Type inference - int
   my $num = 1;
@@ -1458,9 +1460,9 @@ The local variable is initialized by the L<initial value|SPVM::Document::Languag
 
 The local variable Access is an L<operator|/"Operators"> to access Local Variable to get or set the value.
 
-See L</"Getting Local Variable"> to get Local Variable value.
+See L</"Getting a Local Variable"> to get Local Variable value.
 
-L</"Setting Local Variable"> to get Local Variable value.
+L</"Setting a Local Variable"> to get Local Variable value.
 
 If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
 
@@ -1691,7 +1693,7 @@ It has no arguments.
 
 =head2 Multi-Numeric Types Definition
 
-A L<multi-numeric type|/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
+A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
 
   # Continuous two 64bit floating point
   class Complex_2d : mulnum_t {
@@ -1699,7 +1701,7 @@ A L<multi-numeric type|/"Multi-Numeric Types"> is defined by the L<class definit
     im : double;
   }
 
-The type of a field must be a L<numeric type|/"Numeric Types">.
+The type of a field must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
 The types of all fields must be the same types.
 
@@ -1711,7 +1713,7 @@ The multi-numeric type must end with the following suffix.
 
 The length of the fields in the suffix must be the same as the length of the fields.
 
-The type suffix in the suffix must correspond to the L<numeric type|/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
+The type suffix in the suffix must correspond to the L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
 
 See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> to get and set the field of the multi-numeric type.
 
