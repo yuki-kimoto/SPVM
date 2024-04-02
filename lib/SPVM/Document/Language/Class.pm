@@ -113,7 +113,7 @@ The version string is the string represented version of a module.
 
 It is declared by the L<version declaration|/"Version Declaration">.
 
-=head2 Version Number
+=head3 Version Number
 
 The version number is a floating point number created by the following way.
 
@@ -200,7 +200,7 @@ Only one of class attributes C<private>, C<protected> or C<public> can be specif
 
 If more than one of C<interface_t>, C<mulnum_t>, and C<pointer> are specified, a compilation error occurs.
 
-=head2 Pointer Class
+=head3 Pointer Class
 
 The pointer class is the L<class|/"Class"> that has the L<class attribute|/"Class Attributes"> C<pointer>.
 
@@ -213,7 +213,149 @@ The type of a pointer class is the L<class type|SPVM::Document::Language::Types/
 
 An object of a pointer class has the pointer to a native address.
 
-=head2 allow Statement
+=head2 Anon Class
+
+The anon class is the class that do not has its class name.
+
+  class {
+  
+  }
+
+But internally an anon class has its name, such as C<eval::anon::0>.
+
+An anon class is also defined by the anon method.
+
+A anon class for an anon method has its unique L<class name|/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
+
+A anon class for an anon method has the same access control as its outmost class.
+
+A anon class for an anon method has the same alias names as its outmost class.
+
+L<Examples:>
+  
+  # Anon class
+  class {
+    static method sum : int ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
+  }
+  
+  # Anon method
+  class Foo::Bar {
+    method sum : void () {
+      my $anon_method = method : string () {
+        
+      }
+   }
+  }
+  
+  # The name of the anon class
+  Foo::Bar::anon::3::23;
+
+=head2 Outmost Class
+
+An outmost class is the outmost defined class.
+
+The outmost class is C<Foo::Bar> in the following example.
+
+  class Foo::Bar {
+    static method baz : void () {
+      my $outmost_class_name = __PACKAGE__;
+      
+      my $cb = method : void () {
+        my $outmost_class_name = __PACKAGE__;
+      };
+    }
+  }
+
+=head2 Class File Name
+
+A class must be written in the following class file.
+
+Change C<::> to C</>. Add ".spvm" at the end.
+
+  SPVM/Foo.spvm
+  SPVM/Foo/Bar.spvm
+  SPVM/Foo/Bar/Baz.spvm
+
+=head2 Statements
+
+=head3 use Statement
+
+The C<use> statemenet loads a class.
+
+  use Foo;
+
+Classes are loaded at compile-time.
+
+The C<use> statemenet must be defined directly under the L<class definition|/"Class Definition">.
+
+  class Foo {
+    use Foo;
+  }
+
+Compilation Errors:
+
+If the class does not exist, a compilation error occurs.
+
+=head3 alias Statement
+
+The C<alias> statemenet creates an alias name for a class name.
+  
+  # Create alias
+  alias Foo::Bar as FB;
+
+FB is used as Foo::Bar alias in L<class method calls|Class Method Call>.
+
+  # This means Foo::Bar->sum(1, 2);
+  FB->sum(1, 2);
+
+C<alias> syntax must be defined directly under the L<class definition|/"Class Definition">.
+
+  class Foo {
+    alias Foo::Bar as FB;
+  }
+
+You can create an alias at the same time as loading a class by the C<use> statement.
+  
+  use Foo::Bar as FB;
+
+=head3 require Statement
+
+If the C<require> statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
+
+It was designed to implement a part of features of "#ifdef" in the C language.
+
+  if (require Foo) {
+  
+  }
+
+if C<require> Statement can be followed by else Statement. 
+
+  if (require Foo) {
+  
+  }
+  else {
+  
+  }
+
+Note that elsif Statement cannot be followed.
+
+Let's look at an example. if Foo does not exist, no a compilation error occurs and it is assumed that there is no if block
+
+Therefore, "$foo = new Foo;" does not result in a compilation error because it is assumed that there is no if block.
+
+In the other hand, the else block exists, so a warning is issued.
+
+  my $foo : object;
+  if (require Foo) {
+    $foo = new Foo;
+  }
+  else {
+    warn "Warning: Can't load Foo";
+  }
+
+=head3 allow Statement
 
 Private methods, private fields, and private class variables cannot be accessed except from the current class.
 
@@ -234,7 +376,7 @@ Examples:
     allow Bar;
   }
 
-=head2 interface Statement
+=head3 interface Statement
 
 The C<interface> statement guarantees the following things.
 
@@ -384,32 +526,6 @@ An interface cannnot have L<class variable definitions|/"Class Variable Definiti
 
 (TODO)
 
-=head3 Multi-Numeric Types Definition
-
-A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
-
-  # Continuous two 64bit floating point
-  class Complex_2d : mulnum_t {
-    re : double;
-    im : double;
-  }
-
-The type of a field must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
-
-The types of all fields must be the same types.
-
-The length of the fields must be less than or equal to 255.
-
-The multi-numeric type must end with the following suffix.
-
-  _[FieldsLength][TypeSuffix]
-
-The length of the fields in the suffix must be the same as the length of the fields.
-
-The type suffix in the suffix must correspond to the L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
-
-See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> to get and set the field of the multi-numeric type.
-
 =head2 Duck Typing
 
 The duck typing is supported.
@@ -436,145 +552,31 @@ The duck typing is supported.
 The Point class have no interfaces, but An object of the Point class can be assigned to a Stringable interface
 because the to_string method in the Point class has the method compatibility of the to_string method in the Strigable interface.
 
-=head2 Class File Name
+=head2 Multi-Numeric Types Definition
 
-A class must be written in the following class file.
+A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
 
-Change C<::> to C</>. Add ".spvm" at the end.
-
-  SPVM/Foo.spvm
-  SPVM/Foo/Bar.spvm
-  SPVM/Foo/Bar/Baz.spvm
-
-=head2 use Statement
-
-The C<use> statemenet loads a class.
-
-  use Foo;
-
-Classes are loaded at compile-time.
-
-The C<use> statemenet must be defined directly under the L<class definition|/"Class Definition">.
-
-  class Foo {
-    use Foo;
+  # Continuous two 64bit floating point
+  class Complex_2d : mulnum_t {
+    re : double;
+    im : double;
   }
 
-Compilation Errors:
+The type of a field must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
-If the class does not exist, a compilation error occurs.
+The types of all fields must be the same types.
 
-=head2 alias Statement
+The length of the fields must be less than or equal to 255.
 
-The C<alias> statemenet creates an alias name for a class name.
-  
-  # Create alias
-  alias Foo::Bar as FB;
+The multi-numeric type must end with the following suffix.
 
-FB is used as Foo::Bar alias in L<class method calls|Class Method Call>.
+  _[FieldsLength][TypeSuffix]
 
-  # This means Foo::Bar->sum(1, 2);
-  FB->sum(1, 2);
+The length of the fields in the suffix must be the same as the length of the fields.
 
-C<alias> syntax must be defined directly under the L<class definition|/"Class Definition">.
+The type suffix in the suffix must correspond to the L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
 
-  class Foo {
-    alias Foo::Bar as FB;
-  }
-
-You can create an alias at the same time as loading a class by the C<use> statement.
-  
-  use Foo::Bar as FB;
-
-=head2 require Statement
-
-If the C<require> statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
-
-It was designed to implement a part of features of "#ifdef" in the C language.
-
-  if (require Foo) {
-  
-  }
-
-if C<require> Statement can be followed by else Statement. 
-
-  if (require Foo) {
-  
-  }
-  else {
-  
-  }
-
-Note that elsif Statement cannot be followed.
-
-Let's look at an example. if Foo does not exist, no a compilation error occurs and it is assumed that there is no if block
-
-Therefore, "$foo = new Foo;" does not result in a compilation error because it is assumed that there is no if block.
-
-In the other hand, the else block exists, so a warning is issued.
-
-  my $foo : object;
-  if (require Foo) {
-    $foo = new Foo;
-  }
-  else {
-    warn "Warning: Can't load Foo";
-  }
-
-=head2 Anon Class
-
-The anon class is the class that do not has its class name.
-
-  class {
-  
-  }
-
-But internally an anon class has its name, such as C<eval::anon::0>.
-
-An anon class is also defined by the anon method.
-
-A anon class for an anon method has its unique L<class name|/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
-
-A anon class for an anon method has the same access control as its outmost class.
-
-A anon class for an anon method has the same alias names as its outmost class.
-
-L<Examples:>
-  
-  # Anon class
-  class {
-    static method sum : int ($num1 : int, $num2 : int) {
-      return $num1 + $num2;
-    }
-  }
-  
-  # Anon method
-  class Foo::Bar {
-    method sum : void () {
-      my $anon_method = method : string () {
-        
-      }
-   }
-  }
-  
-  # The name of the anon class
-  Foo::Bar::anon::3::23;
-
-=head2 Outmost Class
-
-An outmost class is the outmost defined class.
-
-The outmost class is C<Foo::Bar> in the following example.
-
-  class Foo::Bar {
-    static method baz : void () {
-      my $outmost_class_name = __PACKAGE__;
-      
-      my $cb = method : void () {
-        my $outmost_class_name = __PACKAGE__;
-      };
-    }
-  }
+See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> to get and set the field of the multi-numeric type.
 
 =head2 Default Loaded Classes
 
@@ -848,13 +850,9 @@ Only one of class variable attributes C<private>, C<protected> or C<public> can 
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error occurs
 
-=head2 Class Variable Accessor
-
-A class variable method is a L<method|/"Method"> that gets and sets a class variable.
-
 =head4 Class Variable Getter Method
 
-A class variable getter method is a L<method|/"Method"> to perform the operation of the L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
+A class variable getter method is a method to perform the operation of the L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
 
 It has no arguments. The return type is the same as the type of the class variable except that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
 
@@ -862,7 +860,7 @@ If the type of the class variable is the L<byte type|SPVM::Document::Language::T
 
 It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
-It is a L<method|/"Method"> that name is the same as the class variable name removing C<$>. For example, if the class variable name is $FOO, its getter method name is C<FOO>.
+It is a method that name is the same as the class variable name removing C<$>. For example, if the class variable name is $FOO, its getter method name is C<FOO>.
 
 Examples:
 
@@ -877,7 +875,7 @@ Examples:
 
 =head4 Class Variable Setter Method
 
-A class variable setter method is a L<method|/"Method"> to perform the operation of the L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
+A class variable setter method is a method to perform the operation of the L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
 
 The return type is the L<void type|SPVM::Document::Language::Types/"void Type">.
 
@@ -887,7 +885,7 @@ If the type of the class variable is the L<byte type|SPVM::Document::Language::T
 
 It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
 
-It is a L<method|/"Method"> that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is $FOO, its setter method name is C<SET_FOO>.
+It is a method that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is $FOO, its setter method name is C<SET_FOO>.
 
 Examples:
 
@@ -897,21 +895,6 @@ Examples:
     
     static method main : void {
       Foo->SET_NUM(3);
-    }
-  }
-
-=head3 Class Variable Initial Value
-
-Each class variable is initialized with the L<initial value|SPVM::Document::Language::Types"Type Initial Value"> just after the program starts.
-
-This initial value can be changed by using the L<INIT block|/"INIT Block">.
-
-  # Change the initial value of the class variable using INIT block.
-  class Foo {
-    our $VAR : int;
-  
-    INIT {
-      $VAR = 3;
     }
   }
 
@@ -1042,6 +1025,66 @@ Examples:
     has num_ro : ro int;
     has num_wo : wo int;
     has num_rw : rw int;
+  }
+
+=head4 Field Getter Method
+
+A field getter method is a method to perform the operation of the L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
+
+It has no arguments. The return type is the same as the type of the field except that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
+
+If the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>, the return type is the int type.
+
+It is defined by the C<ro> or C<rw> L<field attributes|/"Field Attributes">.
+
+It is a method that name is the same as the field name.
+
+Examples:
+
+  # Field getter method
+  class Foo {
+    has num : ro int;
+    
+    static method new {
+      return new Foo;
+    }
+    
+    static method main : void {
+      my $foo = Foo->new;
+      
+      my $num = $foo->num;
+    }
+  }
+
+=head4 Field Setter Method
+
+A field setter method is a method to perform the operation of the L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
+
+The return type is the L<void type|SPVM::Document::Language::Types/"void Type">.
+
+It has an argument that type is the same as the type of the fieldexcept that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
+
+If the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>, the argument type is the int type.
+
+It is defined by the C<wo>  or C<rw> L<field attributes|/"Field Attributes">.
+
+It is a method that name is the same as the field name, but prepend C<set_> to it. For example, if the field name is C<foo>, its setter method name is C<set_foo>.
+
+Examples:
+
+  # Field setter method
+  class Foo {
+    has num : wo int;
+    
+    static method new {
+      return new Foo;
+    }
+    
+    static method main : void {
+      my $foo = Foo->new;
+      
+      $foo->set_num(3);
+    }
   }
 
 =head2 Block
@@ -1448,7 +1491,7 @@ Examples:
 
 =end html
 
-=head2 Destructor
+=head3 Destructor
 
 A L<class|/"Class"> can have a destructor.
 
@@ -1456,7 +1499,7 @@ A L<class|/"Class"> can have a destructor.
   
   }
 
-The destructor is the L<method|/"Method"> that is called when the object is destroyed by the L<garbage collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection">.
+The destructor is the method that is called when the object is destroyed by the L<garbage collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection">.
 
 The name of the destructor must be C<DESTROY>.
 
@@ -1631,7 +1674,7 @@ The above example is the same as the following codes.
 
 =head3 Native Method
 
-A native method is the L<method|/"Method"> that is written by native languages such as the C language, C<C++>.
+A native method is the method that is written by native languages such as the C language, C<C++>.
 
 A native method is defined by the C<native> L<method attribute|/"Method Attributes">.
 
