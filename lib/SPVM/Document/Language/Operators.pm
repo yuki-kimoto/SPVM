@@ -1157,69 +1157,108 @@ Examples:
 
 =head2 new Operator
 
-The C<new> operator creates an object or an array.
+The C<new> operator creates a new object, a new array, and a new multi-dimensional array.
+
+See also the L<use statement|SPVM::Document::Language::Class/"use Statement"> about the way to load classes.
+
+See also L<SPVM::Document::Language::GarbageCollection> about garbage collection of objects.
 
 =head3 Creating an Object
 
-The syntax of creating object creates an object using the L<new operator|/"new Operator">.
+The following syntax of the new operator creates a new object.
 
-  new CLASS_NAME;
+  new CLASS_TYPE;
 
-The class name must be the name of the L<class|/"Class"> defined by the L<class definition|/"Class Definition">.
+The class type I<CLASS_TYPE> must be a loaded L<class type|SPVM::Document::Language::Types/"Class Type">.
 
-The fields of the created object are initialized by the L<initial value|/"Initial Value">.
+This operator creates a new object of I<CLASS_TYPE>, and returns it.
 
-The reference count of the created object is 0. If the object is assigned to a local variable, a class variable, or a field by L</"Assignment Operator">, the reference count is incremented by 1.
+The fields of the new object are initialized by its L<type initial value|SPVM::Document::Language::Types/"Type Initial Value">.
+
+The return type is I<CLASS_TYPE>.
+
+Compilation Errors:
+
+I<CLASS_TYPE> must be a loaded class type, otherwise a compilation error occurs.
 
 Examples:
 
+  # Examples of the new operator - Creating a new object
   my $object = new Foo;
 
 =head3 Creating an Array
 
-The syntax of creating array creates an array using the L<new operator|/"new Operator">.
+The following syntax of the new operator creates a new array.
 
-  new BasicType[LENGTH]
+  new BASIC_TYPE[LENGTH]
 
-The type must be a L<basic type|SPVM::Document::Language::Types/"Basic Types">.
+The basic type I<BASIC_TYPE> must be a loaded L<basic type|SPVM::Document::Language::Types/"Basic Type">.
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length.
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<LENGTH>.
 
-The length must be greater than or equal to 0, otherwise an exception is thrown.
+And creates a new array of the length I<LENGTH> which element type is I<BASIC_TYPE>.
 
-All elements of the array are initialized by the L<initial value|/"Initial Value">.
+And all elements of the new array are initialized by its L<type initial value|SPVM::Document::Language::Types/"Type Initial Value">.
 
-The type of the created array is an array type.
+And returns the new array.
+
+The return type is C<I<BASIC_TYPE>[]>.
+
+Exceptions:
+
+I<LENGTH> must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
-The length must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<LENGTH> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
 Examples:
 
-  my $nums = new int[3];
+  # Examples of the new operator - Creating a new array
+  my $values = new int[3];
   my $objects = new Foo[3];
   my $objects = new object[3];
-  my $values = new Complex_2d[3]
+  my $mulnum_values = new Complex_2d[3]
 
 =head3 Creating a Multi-Dimensional Array
 
-Multi dimensional arrays can be created using the L<new operator|/"new Operator">.
+The following syntax of the new operator creates a new multi-dimensional array.
 
-  new BasicType[][LENGTH]
-  new BasicType[]..[][LENGTH]
+  new BASIC_TYPE[]..[LENGTH]
 
-(C<[]..[]> means two or more C<[]>)
+(C<[]..> means one or more C<[]>.)
+
+The basic type I<BASIC_TYPE> must be a loaded L<basic type|SPVM::Document::Language::Types/"Basic Type">.
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<LENGTH>.
+
+And creates a new multi-dimensional array of the length I<LENGTH> which element type is C<I<BASIC_TYPE>[]..>.
+
+And all elements of the new multi-dimensional array are initialized by its L<type initial value|SPVM::Document::Language::Types/"Type Initial Value">.
+
+And returns the new multi-dimensional array.
+
+The return type is C<I<BASIC_TYPE>[]..[]>.
+
+Exceptions:
+
+I<LENGTH> must be greater than or equal to 0, otherwise an exception is thrown.
+
+Compilation Errors:
+
+I<LENGTH> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+The type dimension must be less than or equal to 255, otherwise a compilation error occurs.
 
 Examples:
 
+  # Examples of the new operator - Creating a new multi-dimensional array
+  
   # 2 dimentional int array
-  my $nums = new int[][3];
+  my $muldim_values = new int[][3];
   
   # 3 dimentional int array
-  my $nums = new int[][][3];
-
-The max dimention is 255.
+  my $muldim_values = new int[][][3];
 
 =head2 Array Initialization
 
