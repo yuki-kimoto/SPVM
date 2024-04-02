@@ -2093,6 +2093,35 @@ Examples:
     }
   }
 
+=head2 Getting Enumeration Value
+
+A value of the enumeration can be got using the L<class method call|/"Class Method Call">.
+
+  my $flag1 = Foo->FLAG1;
+  my $flag2 = Foo->FLAG2;
+  my $flag3 = Foo->FLAG3;
+
+A getting enumeration value is replaced to an L<interger literal|SPVM::Document::Language::Tokenization/"Integer Literal"> at compilation time.
+
+For this, if an enumeration value is changed after first publication to users, the binary compatibility is not kept.
+
+An enumeration value can be used as an operand of the L<case statement|SPVM::Document::Language::Statements/"case Statement">.
+
+  switch ($num) {
+    case Foo->FLAG1: {
+      # ...
+    }
+    case Foo->FLAG2: {
+      # ...
+    }
+    case Foo->FLAG3: {
+      # ...
+    }
+    default: {
+      # ...
+    }
+  }
+
 =head3 Instance Method Call
 
 A method defined as the instance method can be called using the instance method call.
