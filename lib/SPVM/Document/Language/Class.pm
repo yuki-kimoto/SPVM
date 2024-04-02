@@ -1710,6 +1710,128 @@ The outmost class is C<Foo::Bar> in the following example.
     }
   }
 
+=head2 Anon Method
+
+The anon method operator defines an L<anon calss|SPVM::Document::Language::Class/"Anon Class"> that has an anon instance method.
+
+And this operator creates an object which type is the anon class by the L<new/"new Operator"> operator, and returns it.
+  
+  # Anon method
+  method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
+  
+  }
+
+The way to define the method is the same as the L<method definition|SPVM::Document::Language::Class/"Method Definition">.
+
+Examples:
+  
+  # Anon method
+  class Foo::Bar {
+    method some_method : void () {
+      my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
+        my $point1 = (Point)$x1;
+        my $point2 = (Point)$x2;
+        
+        return $point1->x <=> $point2->x;
+      };
+    }
+  }
+
+See also L<Comparator|SPVM::Comparator>.
+
+The above example is the same as the following codes.
+  
+  # Foo/Bar.spvm
+  class Foo::Bar {
+    method some_method : void () {
+      my $comparator = (Comparator)new Foo::Bar::anon::3::31;
+    }
+  }
+  
+  # Foo/Bar/anon/3/31.spvm
+  class Foo::Bar::anon::3::31 : public {
+    method : int ($x1 : object, $x2 : object) {
+      my $point1 = (Point)$x1;
+      my $point2 = (Point)$x2;
+      
+      return $point1->x <=> $point2->x;
+    }
+  }
+
+=head3 Anon Method Field Definition
+
+The anon method field definition is the syntax to define the field of the anon class of the anon method.
+
+  # Anon method field definitions
+  [has FIELD_NAME : TYPE1, has FIELD_NAME : TYPE2, ...] ANON_METHOD_DEFINITION
+  
+  # Anon method field definitions with field default values
+  [has FIELD_NAME : TYPE1 = OPERAND1, has FIELD_NAME : TYPE2 = OPERAND2, ...] ANON_METHOD_DEFINITION
+  
+  [VAR1 : TYPE1, VAR2 : TYPE2, ...] ANON_METHOD_DEFINITION
+  
+Examples:
+
+  class Foo::Bar {
+    method some_method : void () {
+      my $foo = 1;
+      my $bar = 5L;
+      
+      my $comparator = (Comparator)[has foo : int = $foo, has bar : long = $bar] method : int ($x1 : object, $x2 : object) {
+        my $foo = $self->{foo};
+        my $bar = $self->{bar};
+        
+        print "$foo\n";
+        print "$bar\n";
+      };
+    }
+  }
+
+Same as avobe but more simple:
+
+  class Foo::Bar {
+    method some_method : void () {
+      my $foo = 1;
+      my $bar = 5L;
+      
+      my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
+        print "$foo\n";
+        print "$bar\n";
+      };
+    }
+  }
+
+The above example is the same as the following codes.
+
+  # Foo/Bar.spvm
+  class Foo::Bar {
+    method some_method : void () {
+      # Externally defined local variables
+      my $foo = 1;
+      my $bar = 5L;
+      
+      my $anon = new Foo::Bar::anon::5::61;
+      $anon->{foo} = $foo;
+      $anon->{bar} = $bar;
+      
+      my $comparator = (Comparator)$anon;
+    }
+  }
+  
+  # Foo/Bar/anon/5/61.spvm
+  class Foo::Bar::anon::5::61 : public {
+    has foo : public int;
+    has bar : public long;
+    
+    method : int ($x1 : object, $x2 : object) {
+      my $foo = $self->{foo};
+      my $bar = $self->{bar};
+      
+      print "$foo\n";
+      print "$bar\n";
+    }
+  }
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
