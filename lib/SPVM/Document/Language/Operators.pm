@@ -1262,23 +1262,38 @@ Examples:
 
 =head2 Array Initialization
 
-The array initialization creates an array and initialize the array easily.
+The syntax of the array initialization creates a new array and sets the elements, and returns the new array.
 
-  []
-  [ELEMENT1, ELEMENT2, ELEMENT3]
+  [ELEMENT1, ELEMENT2, .., ELEMENTn]
 
-The array initialization create an L<array|SPVM::Document::Language::Types/"Array"> that has the length of the elements.
+This is expanded to the following code.
+  
+  (
+    # Create a new array
+    my $array = new ELEMENT1_TYPE[n],
+    
+    # Set elements
+    $array->[0] = ELEMENT1,
+    $array->[1] = ELEMENT2,
+    ...,
+    $array->[n - 1] = ELEMENTn,
+    $array,
+  )
 
-And the array is initialized by the elements.
+I<ELEMENT1_TYPE> is the type of I<ELEMENT1>. 
 
-And the created array is returned.
+If elements does not exist, I<ELEMENT1_TYPE> is the any object type C<object>, I<n> is 0, and setting elements is not performed.
 
-The type of the created array is the type that 1 dimension is added to the type of the first element.
+The return type is C<I<ELEMENT1_TYPE>[]>.
 
-If no element is specified, the type of the create array becomes L<any object type|/"Any Object Type">.
+Compilation Errors:
+
+If the type of I<ELEMENT1> is the undef type, a compilation error occurs.
 
 Examples:
-
+  
+  # Examples of the array initialization
+  
   # int array
   my $nums = [1, 2, 3];
   
@@ -1288,7 +1303,7 @@ Examples:
   # string array
   my $strings = ["foo", "bar", "baz"];
 
-The first example is the same as the following codes.
+The int array example is expanded to the following code.
 
   # int array
   my $nums = new int[3];
@@ -1296,20 +1311,25 @@ The first example is the same as the following codes.
   $nums->[1] = 2;
   $nums->[2] = 3;
 
-The array initialization has another syntax using C<{}>. 
+=head3 Key-Value Array Initialization
 
-  {}
+The syntax of the key-value array initialization creates a new array and sets the elements with key-value pairs, and returns the new array.
+
   {ELEMENT1, ELEMENT2, ELEMENT3, ELEMENT4}
 
-This is the same as above array init syntax, but the type of the created array is always L</"Any Object Array Type"> C<object[]>.
+This syntax is the same as L</"Array Initialization">, but the return type is always the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type"> C<object[]>.
+
+And the length of the elements must be an even number.
 
 Compilation Errors:
 
-If the length of the elements is odd number, a compilation error occurs.
+The length of the elements must be an even number, a compilation error occurs.
 
 Examples:
 
-  # Key values empty
+  # Examples of the key-value array initialization
+  
+  # Empty
   my $key_values = {};
   
   # Key values
@@ -2225,11 +2245,11 @@ The C<isa> operator checks whether an operand can be assigned to a type.
 
   OPERAND isa TYPE
 
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite type convertion.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite type convertion.
 
 If the assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
 
-If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the L<runtime assignment requirement|/"Runtime Assignment Requirement"> at runtime.
+If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<runtime assignment requirement|/"Runtime Assignment Requirement"> at runtime.
 
 If the runtime assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
 
@@ -2267,11 +2287,11 @@ The C<is_type> operator checks whether the type of an operand is equal to a type
 
   OPERAND is_type TYPE
 
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
 
 If it is true, this operator returns 1, otherwise returns 0.
 
-If the type is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
+If the type is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
 
 If it is true, this operator returns 1, otherwise returns 0.
 
