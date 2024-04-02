@@ -10,7 +10,7 @@ This document describes class definition in the SPVM language.
 
 A class defines its L<class type|SPVM::Document::Language::Types/"Class Type">, its L<class variables|/"Class Variable">, its L<fields|/"Field"> and its L<methods|/"Method">.
 
-The object can be created from a class using L<new operator|/"Creating Object">.
+The object can be created from a class using L<new operator|/"Creating a Object">.
 
 =head2 Class Definition
 
@@ -239,7 +239,7 @@ The child class inherits the destructor of the parent class if the destructor of
 
 Private methods, private fields, and private class variables cannot be accessed except from the current class.
 
-A private class cannot be I<OPERAND> of the L<new operator|/"Creating Object"> except from the current class.
+A private class cannot be I<OPERAND> of the L<new operator|SPVM::Document::Language::Operators/"Creating a Object"> except from the current class.
 
 The C<allow> statemenet allows the private access from the other classes.
 
@@ -801,7 +801,7 @@ The class specified by the C<CLASS_NAME> must be loaded.
 
 The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>.
 
-The class variable access is an L<operator|/"Operators"> to set or get a class variable.
+The class variable access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to set or get a class variable.
 
 See the operation of the L<getting a class varialbe|SPVM::Document::Language::Operators/"Getting a Class Variable"> and the operation of the L<setting a class varialbe|SPVM::Document::Language::Operators/"Setting a Class Variable">.
 
@@ -942,7 +942,7 @@ Examples:
 
 =head3 Field Access
 
-The field access is an L<operator|/"Operators"> to get or set the field.
+The field access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to get or set the field.
 
   INVOCANT->{FIELD_NAME}
 
@@ -1458,7 +1458,7 @@ The local variable is initialized by the L<initial value|SPVM::Document::Languag
 
 =head3 Local Variable Access
 
-The local variable Access is an L<operator|/"Operators"> to access Local Variable to get or set the value.
+The local variable Access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to access Local Variable to get or set the value.
 
 See L</"Getting a Local Variable"> to get Local Variable value.
 
@@ -1502,7 +1502,7 @@ The simple block is a L<scope block|/"Scope Block">.
     1;
   }
 
-The simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|/"The array Initialization">.
+The simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|SPVM::Document::Language::Operators/"The array Initialization">.
 
 =head4 Method Block
 
