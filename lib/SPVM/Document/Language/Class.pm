@@ -784,71 +784,6 @@ This initial value can be changed by using the L<INIT block|/"INIT Block">.
     }
   }
 
-=head3 Local Variable Access
-
-The local variable Access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to access Local Variable to get or set the value.
-
-  $VARIABLE_NAME
-
-I<VARIABLE_NAME> is a local variable name.
-
-See L</"Getting a Local Variable"> to get Local Variable value.
-
-L</"Setting a Local Variable"> to get Local Variable value.
-
-If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
-
-Compilation Errors:
-
-I<$VARIABLE_NAME> must be a valid local variable name, otherwise a compilation error occurs.
-
-The declaration of I<$VARIABLE_NAME> must exists before I<$var>, otherwise a compilation error occurs.
-
-=head3 Class Variable Access
-
-The class variable access has the following syntax.
-
-  $CLASS_VARIABLE_NAME_WITHOUT_SIGIL
-  $CLASS_NAME::CLASS_VARIABLE_NAME_WITHOUT_SIGIL
-
-The syntax of the class variable access is able to be used in method blocks.
-
-I<CLASS_VARIABLE_NAME_WITHOUT_SIGIL> is the class variable name without the sigil C<$>, such as C<VAR> in the case of C<$VAR>.
-
-If C<CLASS_NAME::> is ommited, C<CLASS_NAME::> is set to the name of the L<outmost class|/"Outmost Class">.
-
-The class specified by the C<CLASS_NAME> must be loaded.
-
-The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>.
-
-The class variable access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to set or get a class variable.
-
-See the operation of the L<getting a class varialbe|SPVM::Document::Language::Operators/"Getting a Class Variable"> and the operation of the L<setting a class varialbe|SPVM::Document::Language::Operators/"Setting a Class Variable">.
-
-Compilation Errors:
-
-The class specified by the C<CLASS_NAME> must be loaded, otherwise a compilation error occurs.
-
-The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>, otherwise a compilation error occurs.
-
-=head3 Array Access
-
-The array access has the following syntax.
-
-  ARRAY->[INDEX]
-
-The syntax of the array access is able to be used in method blocks.
-
-The array I<ARRAY> must be an array type.
-
-The index I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
-
-Compilation Errors:
-
-I<ARRAY> must be an array type, otherwise a compilation error occurs.
-
-I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
 =head2 Field
 
 Fields are the data that an object has.
@@ -977,57 +912,6 @@ Examples:
     has num_wo : wo int;
     has num_rw : rw int;
   }
-
-=head3 Field Access
-
-The field access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to get or set the field.
-
-  INVOCANT->{FIELD_NAME}
-
-The field access has three different syntax.
-
-Compilation Errors:
-
-If the invocant is different from the following three field access, a compilation error occurs.
-
-If the field name does not found, a compilation error occurs
-
-=head4 Field Access of the class
-
-The field access of the L<class|/"Class">.
-
-  my $point = new Point;
-  $point->{x} = 1;
-  my $x = $point->{x};
-
-See L</"Getting a Field"> to get the field of the L<class|/"Class">.
-
-See L</"Setting a Field"> to set the field of the L<class|/"Class">.
-
-=head4 Field Access of thethe multi-numeric type
-
-The field access of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
-
-  my $z : Complex_2d;
-  $z->{re} = 1;
-  my $re = $z->{re};
-
-See L</"Getting a Multi-Numeric Field"> to get the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
-
-See L</"Setting a Multi-Numeric Field"> to set the field of L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
-
-=head4 Field Access of the Multi-Numeric Reference via Derefernce
-
-The field access of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via derefernce.
-
-  my $z : Complex_2d;
-  my $z_ref = \$z;
-  $z_ref->{re} = 1;
-  my $re = $z_ref->{re};
-
-See L</"Getting a Multi-Numeric Field via Dereference"> to get the field of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via dereference.
-
-See L</"Setting a Multi-Numeric Field via Dereference"> to set the field of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via dereference.
 
 =head2 Method
 
@@ -1882,6 +1766,124 @@ The above example is the same as the following codes.
       print "$bar\n";
     }
   }
+
+=head2 Data Access
+
+=head3 Local Variable Access
+
+The local variable Access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to access Local Variable to get or set the value.
+
+  $VARIABLE_NAME
+
+I<VARIABLE_NAME> is a local variable name.
+
+See L</"Getting a Local Variable"> to get Local Variable value.
+
+L</"Setting a Local Variable"> to get Local Variable value.
+
+If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
+
+Compilation Errors:
+
+I<$VARIABLE_NAME> must be a valid local variable name, otherwise a compilation error occurs.
+
+The declaration of I<$VARIABLE_NAME> must exists before I<$var>, otherwise a compilation error occurs.
+
+=head3 Class Variable Access
+
+The class variable access has the following syntax.
+
+  $CLASS_VARIABLE_NAME_WITHOUT_SIGIL
+  $CLASS_NAME::CLASS_VARIABLE_NAME_WITHOUT_SIGIL
+
+The syntax of the class variable access is able to be used in method blocks.
+
+I<CLASS_VARIABLE_NAME_WITHOUT_SIGIL> is the class variable name without the sigil C<$>, such as C<VAR> in the case of C<$VAR>.
+
+If C<CLASS_NAME::> is ommited, C<CLASS_NAME::> is set to the name of the L<outmost class|/"Outmost Class">.
+
+The class specified by the C<CLASS_NAME> must be loaded.
+
+The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>.
+
+The class variable access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to set or get a class variable.
+
+See the operation of the L<getting a class varialbe|SPVM::Document::Language::Operators/"Getting a Class Variable"> and the operation of the L<setting a class varialbe|SPVM::Document::Language::Operators/"Setting a Class Variable">.
+
+Compilation Errors:
+
+The class specified by the C<CLASS_NAME> must be loaded, otherwise a compilation error occurs.
+
+The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>, otherwise a compilation error occurs.
+
+=head3 Array Access
+
+The array access has the following syntax.
+
+  ARRAY->[INDEX]
+
+The syntax of the array access is able to be used in method blocks.
+
+The array I<ARRAY> must be an array type.
+
+The index I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
+
+Compilation Errors:
+
+I<ARRAY> must be an array type, otherwise a compilation error occurs.
+
+I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+=head3 Field Access
+
+The field access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to get or set the field.
+
+  INVOCANT->{FIELD_NAME}
+
+The field access has three different syntax.
+
+Compilation Errors:
+
+If the invocant is different from the following three field access, a compilation error occurs.
+
+If the field name does not found, a compilation error occurs
+
+=head4 Field Access of the class
+
+The field access of the L<class|/"Class">.
+
+  my $point = new Point;
+  $point->{x} = 1;
+  my $x = $point->{x};
+
+See L</"Getting a Field"> to get the field of the L<class|/"Class">.
+
+See L</"Setting a Field"> to set the field of the L<class|/"Class">.
+
+=head4 Field Access of thethe multi-numeric type
+
+The field access of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
+
+  my $z : Complex_2d;
+  $z->{re} = 1;
+  my $re = $z->{re};
+
+See L</"Getting a Multi-Numeric Field"> to get the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
+
+See L</"Setting a Multi-Numeric Field"> to set the field of L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
+
+=head4 Field Access of the Multi-Numeric Reference via Derefernce
+
+The field access of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via derefernce.
+
+  my $z : Complex_2d;
+  my $z_ref = \$z;
+  $z_ref->{re} = 1;
+  my $re = $z_ref->{re};
+
+See L</"Getting a Multi-Numeric Field via Dereference"> to get the field of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via dereference.
+
+See L</"Setting a Multi-Numeric Field via Dereference"> to set the field of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via dereference.
 
 =head1 Copyright & License
 
