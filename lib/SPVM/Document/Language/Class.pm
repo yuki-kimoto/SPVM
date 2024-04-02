@@ -786,9 +786,30 @@ This initial value can be changed by using the L<INIT block|/"INIT Block">.
 
 =head3 Class Variable Access
 
+The class variable access has the following syntax.
+
+  $CLASS_VARIABLE_NAME_WITHOUT_SIGIL
+  $CLASS_NAME::CLASS_VARIABLE_NAME_WITHOUT_SIGIL
+
+The syntax of the class variable access is able to be used in method blocks.
+
+I<CLASS_VARIABLE_NAME_WITHOUT_SIGIL> is the class variable name without the sigil C<$>, such as C<VAR> in the case of C<$VAR>.
+
+If C<CLASS_NAME::> is ommited, C<CLASS_NAME::> is set to the name of the L<outmost class|/"Outmost Class">.
+
+The class specified by the C<CLASS_NAME> must be loaded.
+
+The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>.
+
 The class variable access is an L<operator|/"Operators"> to set or get a class variable.
 
 See the L<getting class varialbe|/"Getting Class Variable"> and the L<setting class varialbe|/"Setting Class Variable">.
+
+Compilation Errors:
+
+The class specified by the C<CLASS_NAME> must be loaded, otherwise a compilation error occurs.
+
+The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>, otherwise a compilation error occurs.
 
 =head2 Field
 
