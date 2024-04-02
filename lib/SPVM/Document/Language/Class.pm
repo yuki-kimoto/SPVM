@@ -1781,17 +1781,17 @@ See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the s
 
 =head3 Local Variable Access
 
-The local variable Access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to access Local Variable to get or set the value.
+The local variable access has the following syntax.
 
   $VARIABLE_NAME
 
-I<VARIABLE_NAME> is a local variable name.
+I<VARIABLE_NAME> must be a L<local variable name|"Local Variable Name">.
 
-See L</"Getting a Local Variable"> to get Local Variable value.
+If local variables with the same name are declared in different scopes, the local variable declared in the inner scope takes precedence.
 
-L</"Setting a Local Variable"> to get Local Variable value.
+If a class variable with the same name as a local variable is defined, the local variable takes precedence.
 
-If L</"Class Variable"> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not L</"Class Variable">.
+See also L</"Getting a Local Variable"> and L</"Setting a Local Variable"> about the way to set and set a local variable.
 
 Compilation Errors:
 
@@ -1820,6 +1820,8 @@ The class variable access is an L<operator|SPVM::Document::Language::Operators/"
 
 See the operation of the L<getting a class varialbe|SPVM::Document::Language::Operators/"Getting a Class Variable"> and the operation of the L<setting a class varialbe|SPVM::Document::Language::Operators/"Setting a Class Variable">.
 
+See also L</"Getting a Class Variable"> and L</"Setting a Class Variable"> about the way to set and set a class variable.
+
 Compilation Errors:
 
 The class specified by the C<CLASS_NAME> must be loaded, otherwise a compilation error occurs.
@@ -1838,6 +1840,8 @@ The array I<ARRAY> must be an array type.
 
 The index I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
 
+See also L</"Getting an Array Element"> and L</"Setting an Array Element"> about the way to set and set an array element.
+
 Compilation Errors:
 
 I<ARRAY> must be an array type, otherwise a compilation error occurs.
@@ -1846,7 +1850,7 @@ I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Type
 
 =head3 Field Access
 
-The field access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to get or set the field.
+The field access has the following syntax.
 
   INVOCANT->{FIELD_NAME}
 
