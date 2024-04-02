@@ -1442,6 +1442,50 @@ Compilation Errors:
 
 I<OPERAND> must be an object type, ohterwise a compilation error occurs.
 
+=head2 Reference Operator
+
+The reference operator C<\> creates a reference, and returns it.
+
+  \OPERAND
+
+The return type is the reference type of I<OPERAND>.
+
+Compilation Errors:
+
+The operand must be a local variable that type is a numeric type or a multi-numeric type, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Create the reference of a numeric type
+  my $num : int;
+  my $num_ref : int* = \$num;
+  
+  # Create the reference of a multi-numeric type
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+
+=head2 Dereference Operator
+
+The dereference operator C<$> returns the value referenced by the variable I<VARIABLE>.
+
+  $VARIABLE
+
+The return type is the type of the value referenced by I<VARIABLE>.
+
+Compilation Errors:
+
+The type of the variable must be a reference type, otherwise a compilation error occurs.
+
+Examples:
+
+  my $num : int;
+  my $num_ref : int* = \$num;
+  my $num_deref : int = $$num_ref;
+  
+  my $z : Complex_2d;
+  my $z_ref : Complex_2d* = \$z;
+  my $z_deref : Complex_2d = $$z_ref;
+
 =head2 Assignment Operator
 
 The assignment operator C<=> performs an assignment.
@@ -1570,50 +1614,6 @@ Examples:
   $x >>= 1;
   $x >>>= 1;
   $x .= "abc";
-
-=head2 Reference Operator
-
-The reference operator C<\> creates a reference, and returns it.
-
-  \OPERAND
-
-The return type is the reference type of I<OPERAND>.
-
-Compilation Errors:
-
-The operand must be a local variable that type is a numeric type or a multi-numeric type, otherwise a compilation error occurs.
-
-Examples:
-  
-  # Create the reference of a numeric type
-  my $num : int;
-  my $num_ref : int* = \$num;
-  
-  # Create the reference of a multi-numeric type
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-
-=head2 Dereference Operator
-
-The dereference operator C<$> returns the value referenced by the variable I<VARIABLE>.
-
-  $VARIABLE
-
-The return type is the type of the value referenced by I<VARIABLE>.
-
-Compilation Errors:
-
-The type of the variable must be a reference type, otherwise a compilation error occurs.
-
-Examples:
-
-  my $num : int;
-  my $num_ref : int* = \$num;
-  my $num_deref : int = $$num_ref;
-  
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-  my $z_deref : Complex_2d = $$z_ref;
 
 =head2 Getting and Setting Operators
 
