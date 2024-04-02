@@ -1,10 +1,14 @@
-0.989098 2023-03-29
+0.989098 2023-04-02
   [Imcompatible Changes]
     * The copy operator does not thrown an exception, and causes an compilation error instead of an exception.
     * The warn operator causes an compilation error if the type of the operand is the undef type.
   [Compilation Error Messsage Improvement]
     * The compilation error messages in the != operator are improved.
     * The compilation error messages in the == operator are improved.
+  [Document Fix and Improvement]
+    * Fix and improve the document of operators.
+    * Fix and improve the document of class definition.
+    
 0.989097 2023-03-27
   [Compilation Error Changes]
     * Improve compilation error messages in the isa, is_type, isa_error, is_error operators.
