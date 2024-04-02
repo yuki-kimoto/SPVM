@@ -278,9 +278,7 @@ Change C<::> to C</>. Add ".spvm" at the end.
   SPVM/Foo/Bar.spvm
   SPVM/Foo/Bar/Baz.spvm
 
-=head2 Statements
-
-=head3 use Statement
+=head2 use Statement
 
 The C<use> statemenet loads a class.
 
@@ -298,7 +296,7 @@ Compilation Errors:
 
 If the class does not exist, a compilation error occurs.
 
-=head3 alias Statement
+=head2 alias Statement
 
 The C<alias> statemenet creates an alias name for a class name.
   
@@ -320,7 +318,7 @@ You can create an alias at the same time as loading a class by the C<use> statem
   
   use Foo::Bar as FB;
 
-=head3 require Statement
+=head2 require Statement
 
 If the C<require> statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
 
@@ -355,7 +353,7 @@ In the other hand, the else block exists, so a warning is issued.
     warn "Warning: Can't load Foo";
   }
 
-=head3 allow Statement
+=head2 allow Statement
 
 Private methods, private fields, and private class variables cannot be accessed except from the current class.
 
@@ -376,7 +374,7 @@ Examples:
     allow Bar;
   }
 
-=head3 interface Statement
+=head2 interface Statement
 
 The C<interface> statement guarantees the following things.
 
@@ -1087,217 +1085,6 @@ Examples:
     }
   }
 
-=head2 Block
-
-A block is the part enclosed by C<{> and C<}>.
-
-=head3 Class Block
-
-A class block is a block used in a class definition.
-  
-  # Class block
-  class Point {
-  
-  }
-
-=head3 Enumeration Block
-
-An enumeration block is a block used in a enumeration definition.
-
-  # Enumeration block
-  enum {
-    ONE,
-    TWO,
-  }
-
-=head3 Scope Block
-
-The scope block has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> are written in a scope block.
-
-=head4 Simple Block
-
-The simple block is a L<scope block|/"Scope Block">.
-
-  # Simple block
-  {
-    1;
-  }
-
-The simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|SPVM::Document::Language::Operators/"The array Initialization">.
-
-=head4 Method Block
-
-The method block is a L<scope block|/"Scope Block">.
-
-  # Method block
-  static method foo : int () {
-  
-  }
-
-=head4 eval Block
-
-The C<eval> block is a L<scope block|/"Scope Block">.
-
-  # eval block
-  eval {
-  
-  }
-
-=head4 if Block
-
-The C<if> block is a L<scope block|/"Scope Block">.
-
-  # if block
-  if (CONDITION) {
-  
-  }
-
-=head4 elsif Block
-
-The C<elsif> block is a L<scope block|/"Scope Block">.
-
-  # elsif block
-  elsif (CONDITION) {
-  
-  }
-
-=head4 else Block
-
-The C<else> block is a L<scope block|/"Scope Block">.
-
-  # else block
-  else {
-  
-  }
-
-=head4 for Block
-
-The C<for> block is a L<scope block|/"Scope Block">.
-
-  # for Block 
-  for (my $i = 0; $i < 3; $i++) {
-  
-  }
-
-=head4 while Block
-
-The C<while> block is a L<scope block|/"Scope Block">.
-
-  # while block
-  while (CONDITION) {
-  
-  }
-
-=head4 switch Block
-
-The C<switch> block is a L<scope block|/"Scope Block">.
-  
-  # switch block
-  switch (CONDITION) {
-  
-  }
-
-=head4 case Block
-
-The C<case> block is a L<scope block|/"Scope Block">.
-  
-  # case block
-  switch (CONDITION) {
-    case CASE_VALUE1: {
-      # ...
-    }
-  }
-
-=head4 default Block
-
-The C<default> block is a L<scope block|/"Scope Block">.
-  
-  # default block
-  switch (CONDITION) {
-    default: {
-      # ...
-    }
-  }
-
-=head4 INIT Block
-
-The C<INIT> block is a L<block|/"Block"> to be executed just after the program starts.
-
-  INIT {
-    
-  }
-
-The C<INIT> block must be defined directly under the L<class definition|/"Class Definition">.
-
-  class Foo {
-    INIT {
-      
-    }
-  }
-
-Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> can be written in a C<INIT> block.
-
-  INIT {
-    my $foo = 1 + 1;
-    my $bar;
-  }
-
-The L<return statement|SPVM::Document::Language::Statements/"return Statement"> cannot be written in C<INIT> block.
-
-If a C<INIT> block is not defined in a class, a default empty C<INIT> block is defined.
-
-An C<INIT> block is editted.
-
-If a parent class exists, the INIT block of the parent class is called at the beginning of the INIT block.
-
-If classes are used by the L<use statement|/"use Statement">, the L<interface statement|/"interface Statement">, and the L<allow statement|/"allow Statement">, The INIT blocks in the classes are called in order after the above calling.
-  
-  # Before Editting
-  class MyClass extends ParentClass {
-    use Foo;
-    use Bar;
-    
-    INIT {
-      $POINT = Point->new(1, 2);
-    }
-  }
-
-  # After Editting
-  class MyClass extends ParentClass {
-    use Point;
-    use Fn;
-    
-    INIT {
-      ParentClass->INIT;
-      Point->INIT;
-      Fn->INIT;
-      
-      $POINT = Point->new(1, 2);
-    }
-  }
-
-An C<INIT> block is automatically called only once.
-
-The execution order of C<INIT> blocks is not guaranteed. The INIT blocks in the L<default loaded class/"Default Loaded Classes"> are called before INIT blocks of user defined classes.
-
-Examples:
-
-  class Foo {
-    use Point;
-    
-    our $NUM : int;
-    our $STRING : string;
-    our $POINT : Point;
-    
-    # INIT block
-    INIT {
-      $NUM = 3;
-      $STRING = "abc";
-      
-      $POINT = Point->new(1, 2);
-    }
-  }
-
 =head2 Method
 
 =head3 Method Definition
@@ -1490,6 +1277,85 @@ Examples:
   native method : int sum ($num1 : int, $num2 : int);
 
 =end html
+
+=head3 INIT Block
+
+The C<INIT> block defines a C<INIT> method to be executed just after the program starts.
+
+  INIT {
+    
+  }
+
+The C<INIT> block must be defined directly under the L<class definition|/"Class Definition">.
+
+  class Foo {
+    INIT {
+      
+    }
+  }
+
+Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> can be written in a C<INIT> block.
+
+  INIT {
+    my $foo = 1 + 1;
+    my $bar;
+  }
+
+The L<return statement|SPVM::Document::Language::Statements/"return Statement"> cannot be written in C<INIT> block.
+
+If a C<INIT> block is not defined in a class, a default empty C<INIT> block is defined.
+
+An C<INIT> block is editted.
+
+If a parent class exists, the INIT block of the parent class is called at the beginning of the INIT block.
+
+If classes are used by the L<use statement|/"use Statement">, the L<interface statement|/"interface Statement">, and the L<allow statement|/"allow Statement">, The INIT blocks in the classes are called in order after the above calling.
+  
+  # Before Editting
+  class MyClass extends ParentClass {
+    use Foo;
+    use Bar;
+    
+    INIT {
+      $POINT = Point->new(1, 2);
+    }
+  }
+
+  # After Editting
+  class MyClass extends ParentClass {
+    use Point;
+    use Fn;
+    
+    INIT {
+      ParentClass->INIT;
+      Point->INIT;
+      Fn->INIT;
+      
+      $POINT = Point->new(1, 2);
+    }
+  }
+
+An C<INIT> block is automatically called only once.
+
+The execution order of C<INIT> blocks is not guaranteed. The INIT blocks in the L<default loaded class/"Default Loaded Classes"> are called before INIT blocks of user defined classes.
+
+Examples:
+
+  class Foo {
+    use Point;
+    
+    our $NUM : int;
+    our $STRING : string;
+    our $POINT : Point;
+    
+    # INIT block
+    INIT {
+      $NUM = 3;
+      $STRING = "abc";
+      
+      $POINT = Point->new(1, 2);
+    }
+  }
 
 =head3 Destructor
 
@@ -1710,9 +1576,23 @@ The return type is the void type.
 
 It has no arguments.
 
-=head2 Local Variable
+=head2 Method Implementation
 
-=head3 Local Variable Declaration
+Normally a method has a method block. L<Statements|SPVM::Document::Language::Statements/"Statements"> can be written in a method block.
+  
+  # Method implementation
+  static method foo : int ($num1 : int, $num2 : int) {
+    
+    my $total = $num1 + $num2;
+    
+    return $total;
+  }
+
+=head3 Local Variable
+
+A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
+
+=head4 Local Variable Declaration
 
 B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. This is the same as Local Variable in C Language.
 
@@ -1777,8 +1657,6 @@ The local variable declaration returns the value of the local variable. The retu
 
 See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
 
-=head2 Data Access
-
 =head3 Local Variable Access
 
 The local variable access has the following syntax.
@@ -1799,7 +1677,7 @@ I<$VARIABLE_NAME> must be a valid local variable name, otherwise a compilation e
 
 The declaration of I<$VARIABLE_NAME> must exists before I<$var>, otherwise a compilation error occurs.
 
-=head3 Class Variable Access
+=head4 Class Variable Access
 
 The class variable access has the following syntax.
 
@@ -1860,7 +1738,7 @@ The type of I<INVOCANT> must be a L<class type|SPVM::Document::Language::Types/"
 
 Depending on the type of I<INVOCANT>, there are the following field access.
 
-=head4 Field Access of Class Type
+=head4 Field Access for Class Types
 
 See L</"Getting a Field"> and L</"Setting a Field"> to get and set the value of the field of the class type.
 
@@ -1868,7 +1746,7 @@ Compilation Errors:
 
 If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, its super classes, otherwise a compilation error occurs.
 
-=head4 Field Access of Multi-Numeric Type
+=head4 Field Access for Multi-Numeric Types
 
 See L</"Getting a Multi-Numeric Field"> and L</"Setting a Multi-Numeric Field"> to get and set the value of the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
 
@@ -1876,13 +1754,151 @@ Compilation Errors:
 
 If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type, otherwise a compilation error occurs.
 
-=head4 Field Access of Multi-Numeric Reference Type
+=head4 Field Access for Multi-Numeric Reference Types
 
 See L</"Getting a Referenced Multi-Numeric Field"> and L</"Setting a Referenced Multi-Numeric Field"> to get and set the value of the field referenced by the L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
 
 Compilation Errors:
 
 If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type refered by the multi-numeric reference type, otherwise a compilation error occurs.
+
+=head2 Block
+
+A block is the part enclosed by C<{> and C<}>.
+
+=head3 Class Block
+
+A class block is a block used in a class definition.
+  
+  # Class block
+  class Point {
+  
+  }
+
+=head3 Enumeration Block
+
+An enumeration block is a block used in a enumeration definition.
+
+  # Enumeration block
+  enum {
+    ONE,
+    TWO,
+  }
+
+=head3 Scope Block
+
+The scope block has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> are written in a scope block.
+
+=head4 Simple Block
+
+The simple block is a L<scope block|/"Scope Block">.
+
+  # Simple block
+  {
+    1;
+  }
+
+The simple block must have at least one statements. Otherwise it is intepreted as the L<array initialization|SPVM::Document::Language::Operators/"The array Initialization">.
+
+=head4 Method Block
+
+The method block is a L<scope block|/"Scope Block">.
+
+  # Method block
+  static method foo : int () {
+  
+  }
+
+The block of C<INIT> method is a method block.
+
+  INIT {
+    
+  }
+
+=head4 eval Block
+
+The C<eval> block is a L<scope block|/"Scope Block">.
+
+  # eval block
+  eval {
+  
+  }
+
+=head4 if Block
+
+The C<if> block is a L<scope block|/"Scope Block">.
+
+  # if block
+  if (CONDITION) {
+  
+  }
+
+=head4 elsif Block
+
+The C<elsif> block is a L<scope block|/"Scope Block">.
+
+  # elsif block
+  elsif (CONDITION) {
+  
+  }
+
+=head4 else Block
+
+The C<else> block is a L<scope block|/"Scope Block">.
+
+  # else block
+  else {
+  
+  }
+
+=head4 for Block
+
+The C<for> block is a L<scope block|/"Scope Block">.
+
+  # for Block 
+  for (my $i = 0; $i < 3; $i++) {
+  
+  }
+
+=head4 while Block
+
+The C<while> block is a L<scope block|/"Scope Block">.
+
+  # while block
+  while (CONDITION) {
+  
+  }
+
+=head4 switch Block
+
+The C<switch> block is a L<scope block|/"Scope Block">.
+  
+  # switch block
+  switch (CONDITION) {
+  
+  }
+
+=head4 case Block
+
+The C<case> block is a L<scope block|/"Scope Block">.
+  
+  # case block
+  switch (CONDITION) {
+    case CASE_VALUE1: {
+      # ...
+    }
+  }
+
+=head4 default Block
+
+The C<default> block is a L<scope block|/"Scope Block">.
+  
+  # default block
+  switch (CONDITION) {
+    default: {
+      # ...
+    }
+  }
 
 =head1 Copyright & License
 
