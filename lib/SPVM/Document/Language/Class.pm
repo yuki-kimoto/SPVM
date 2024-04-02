@@ -1854,50 +1854,35 @@ The field access has the following syntax.
 
   INVOCANT->{FIELD_NAME}
 
-The field access has three different syntax.
+Compilation Errors:
+
+The type of I<INVOCANT> must be a L<class type|SPVM::Document::Language::Types/"Class Type">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, otherwise a compilation error occurs.
+
+Depending on the type of I<INVOCANT>, there are the following field access.
+
+=head4 Field Access of Class Type
+
+See L</"Getting a Field"> and L</"Setting a Field"> to get and set the value of the field of the class type.
 
 Compilation Errors:
 
-If the invocant is different from the following three field access, a compilation error occurs.
+If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, its super classes, otherwise a compilation error occurs.
 
-If the field name does not found, a compilation error occurs
+=head4 Field Access of Multi-Numeric Type
 
-=head4 Field Access of the class
+See L</"Getting a Multi-Numeric Field"> and L</"Setting a Multi-Numeric Field"> to get and set the value of the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
 
-The field access of the L<class|/"Class">.
+Compilation Errors:
 
-  my $point = new Point;
-  $point->{x} = 1;
-  my $x = $point->{x};
+If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type, otherwise a compilation error occurs.
 
-See L</"Getting a Field"> to get the field of the L<class|/"Class">.
+=head4 Field Access of Multi-Numeric Reference Type
 
-See L</"Setting a Field"> to set the field of the L<class|/"Class">.
+See L</"Getting a Referenced Multi-Numeric Field"> and L</"Setting a Referenced Multi-Numeric Field"> to get and set the value of the field referenced by the L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
 
-=head4 Field Access of thethe multi-numeric type
+Compilation Errors:
 
-The field access of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
-
-  my $z : Complex_2d;
-  $z->{re} = 1;
-  my $re = $z->{re};
-
-See L</"Getting a Multi-Numeric Field"> to get the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
-
-See L</"Setting a Multi-Numeric Field"> to set the field of L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
-
-=head4 Field Access of the Multi-Numeric Reference via Derefernce
-
-The field access of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via derefernce.
-
-  my $z : Complex_2d;
-  my $z_ref = \$z;
-  $z_ref->{re} = 1;
-  my $re = $z_ref->{re};
-
-See L</"Getting a Multi-Numeric Field via Dereference"> to get the field of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via dereference.
-
-See L</"Setting a Multi-Numeric Field via Dereference"> to set the field of the L<multi-numeric reference|SPVM::Document::Language::Types/"Multi-Numeric Reference Type"> via dereference.
+If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type refered by the multi-numeric reference type, otherwise a compilation error occurs.
 
 =head1 Copyright & License
 

@@ -1927,15 +1927,15 @@ Examples:
   my $z : Complex_2d;
   $z->{re} = 2.5;
 
-=head3 Getting a Multi-Numeric Field via Dereference
+=head3 Getting a Referenced Multi-Numeric Field
 
-The operation of getting a multi-numeric field via dereference gets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference">. This is one syntax of the L<field access|/"Field Access">
+The operation of getting a referenced multi-numeric field gets the field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">
 
   INVOCANT->{FIELD_NAME}
 
 The invocant is L</"Multi-Numeric Reference Type">.
 
-The getting multi-numeric field via dereference operator returns the field value in the multi-numeric value.
+The operation of getting a referenced multi-numeric field returns the field value in the multi-numeric value.
 
 The retrun type is the type of the field.
 
@@ -1949,12 +1949,11 @@ Examples:
   my $z_ref = \$z;
   my $re = $z_ref->{re};
 
-=head3 Setting a Multi-Numeric Field via Dereference
+=head3 Setting a Referenced Multi-Numeric Field
 
-The operation of setting a multi-numeric field via dereference sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+The operation of setting a referenced multi-numeric field sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
-
 
  using the L<assignment operator|/"Assignment Operator">.
 
@@ -1962,7 +1961,7 @@ The invocant is L</"Multi-Numeric Reference Type">.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
-The setting multi-numeric field via dereference operator returns the value of the field after setting.
+The operation of setting a referenced multi-numeric field returns the value of the field after setting.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
