@@ -1592,7 +1592,7 @@ Normally a method has a method block. L<Statements|SPVM::Document::Language::Sta
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
 
-=head4 Local Variable Declaration
+=head3 Local Variable Declaration
 
 B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. This is the same as Local Variable in C Language.
 
@@ -1690,7 +1690,7 @@ I<$var> must be a valid local variable name, otherwise a compilation error occur
 
 The declaration of I<$var> must exists before I<$var>, otherwise a compilation error occurs.
 
-=head4 Class Variable Access
+=head3 Class Variable Access
 
 The class variable access has the following syntax.
 
