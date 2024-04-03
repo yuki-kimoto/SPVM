@@ -2063,34 +2063,50 @@ Examples:
     }
   }
 
-=head2 Getting Enumeration Value
+=head4 Getting an Enumeration Value
 
-A value of the enumeration can be got using the L<class method call|/"Class Method Call">.
+The operation of getting an enumeration value gets a value of an L<enumeration|SPVM::Document::Language::Class/"Enumeration">.
 
-  my $flag1 = Foo->FLAG1;
-  my $flag2 = Foo->FLAG2;
-  my $flag3 = Foo->FLAG3;
+The definition of an enumeration value is replaced to a class method, so this operation is the same as a L<class method call|/"Class Method Call">.
+  
+  # Definition of an enumeration
+  class MyClass {
+    enum {
+      VALUE1,
+      VALUE2,
+      VALUE3,
+    }
+  }
+  
+  # These are replaced to definitions of class methods
+  class MyClass {
+    static method VALUE1 : int () { return 0; }
+    static method VALUE2 : int () { return 1; }
+    static method VALUE3 : int () { return 2; }
+  }
 
-A getting enumeration value is replaced to an L<interger literal|SPVM::Document::Language::Tokenization/"Integer Literal"> at compilation time.
+However, there is one important difference.
 
-For this, if an enumeration value is changed after first publication to users, the binary compatibility is not kept.
+The class method calls are replaced to L<interger literals|SPVM::Document::Language::Tokenization/"Integer Literal"> at compilation time.
 
-An enumeration value can be used as an operand of the L<case statement|SPVM::Document::Language::Statements/"case Statement">.
+For this replacement, this operation is used as an operand of the L<case statement|SPVM::Document::Language::Statements/"case Statement">.
 
   switch ($num) {
-    case Foo->FLAG1: {
+    case MyClass->VALUE1: {
       # ...
     }
-    case Foo->FLAG2: {
+    case MyClass->VALUE2: {
       # ...
     }
-    case Foo->FLAG3: {
+    case MyClass->VALUE3: {
       # ...
     }
     default: {
       # ...
     }
   }
+
+Note that if an enumeration value is changed, the binary compatibility is broken.
 
 =head3 Instance Method Call
 
