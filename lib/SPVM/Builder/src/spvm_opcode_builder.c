@@ -3321,10 +3321,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t src_type_basic_type_id = src_type->basic_type->id;
                             int32_t src_type_dimension = src_type->dimension;
                             int32_t src_type_flag = src_type->flag;
-
+                            
                             int32_t need_implicite_conversion = 0;
                             int32_t allow_narrowing_conversion = 0;
-                            
                             int32_t runtime_assignability = SPVM_TYPE_satisfy_assignment_requirement(
                               compiler,
                               cast_type_basic_type_id, cast_type_dimension, cast_type_flag,
@@ -3339,9 +3338,9 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             else {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT_WITH_TYPE_CHECK);
                               opcode.operand2 = op_cast_type->uv.type->basic_type->id;
-                            int32_t operand3 = op_cast_type->uv.type->dimension;
-                            assert(operand3 < 0xFFFF);
-                            opcode.operand3 = operand3;
+                              int32_t operand3 = op_cast_type->uv.type->dimension;
+                              assert(operand3 < 0xFFFF);
+                              opcode.operand3 = operand3;
                               throw_exception = 1;
                             }
                           }
@@ -3349,7 +3348,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                         }
-
+                        
                         opcode.operand0 = typed_var_index_out;
                         opcode.operand1 = typed_var_index_in;
                         
@@ -3359,7 +3358,6 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
                         }
                       }
-                      
                       
                       break;
                     }
