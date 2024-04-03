@@ -1720,17 +1720,17 @@ The array access has the following syntax.
 
   ARRAY->[INDEX]
 
-The syntax of the array access is able to be used in method blocks.
-
-The array I<ARRAY> must be an array type.
+The array I<ARRAY> must be an array type or the string type.
 
 The index I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
 
 See also L</"Getting an Array Element"> and L</"Setting an Array Element"> about the way to set and set an array element.
 
+See also L</"Getting a Character"> and L</"Setting a Character"> about the way to set and set a character of a string.
+
 Compilation Errors:
 
-I<ARRAY> must be an array type, otherwise a compilation error occurs.
+I<ARRAY> must be an array type or the string type, otherwise a compilation error occurs.
 
 I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
