@@ -660,7 +660,7 @@ ef"
       }
     }
 
-    # Multiple field and array access
+    # Multiple field and element access
     {
       my $minimals = new TestCase::Minimal[11];
       $minimals->[1] = new TestCase::Minimal;

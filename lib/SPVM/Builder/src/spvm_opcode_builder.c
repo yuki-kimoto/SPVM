@@ -1803,12 +1803,12 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                       }
                       break;
                     }
-                    case SPVM_OP_C_ID_ARRAY_ACCESS : {
+                    case SPVM_OP_C_ID_ELEMENT_ACCESS : {
                       
                       // $VAR = $VAR_ARRAY->[$VAR_INDEX]
-                      SPVM_OP* op_array_access = op_assign_src;
-                      SPVM_OP* op_term_array = op_array_access->first;
-                      SPVM_OP* op_term_index = op_array_access->last;
+                      SPVM_OP* op_element_access = op_assign_src;
+                      SPVM_OP* op_term_array = op_element_access->first;
+                      SPVM_OP* op_term_index = op_element_access->last;
                       
                       SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op_term_array);
 
@@ -1872,7 +1872,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                         SPVM_OPCODE_BUILDER_push_goto_end_of_eval_or_method_on_exception(compiler, opcode_list, eval_block_stack_goto_opcode_index->length, goto_end_of_eval_on_exception_opcode_index_stack, goto_end_of_method_on_exception_opcode_index_stack, method->op_method, op_assign->line);
                       }
                       else {
-                        SPVM_TYPE* element_type = SPVM_CHECK_get_type(compiler, op_array_access);
+                        SPVM_TYPE* element_type = SPVM_CHECK_get_type(compiler, op_element_access);
                       
                         SPVM_OPCODE opcode = {0};
                         
@@ -4713,13 +4713,13 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                   }
                 }
                 // $array->[$index] = $var
-                else if (op_assign_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
+                else if (op_assign_dist->id == SPVM_OP_C_ID_ELEMENT_ACCESS) {
                   
                   // $VAR_ARRAY->[$VAR_INDEX] = $VAR_TERM
                   
-                  SPVM_OP* op_array_access = op_assign_dist;
-                  SPVM_OP* op_term_array = op_array_access->first;
-                  SPVM_OP* op_term_index = op_array_access->last;
+                  SPVM_OP* op_element_access = op_assign_dist;
+                  SPVM_OP* op_term_array = op_element_access->first;
+                  SPVM_OP* op_term_index = op_element_access->last;
 
                   SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op_term_array);
                   int32_t array_type_dimension = array_type->dimension;

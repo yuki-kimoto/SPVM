@@ -1714,9 +1714,9 @@ The class variable relative name specified by I<$VAR> must be defined in the cla
 
 The L<outmost class|/"Outmost Class"> must be allowed access to I<$VAR>, otherwise a compilation error occurs.
 
-=head3 Array Access
+=head3 Element Access
 
-The array access has the following syntax.
+The element access has the following syntax.
 
   ARRAY->[INDEX]
 

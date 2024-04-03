@@ -314,7 +314,7 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-I<OPERAND> must be a local variable, a class variable, a field access, an array access, a dereference, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference, otherwise a compilation error occurs.
 
 The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
@@ -331,7 +331,7 @@ Examples:
   # A field access
   ++$point->{x};
   
-  # An array access
+  # An element access
   ++$nums->[0];
   
   # A dereference
@@ -349,7 +349,7 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-I<OPERAND> must be a local variable, a class variable, a field access, an array access, a dereference, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference, otherwise a compilation error occurs.
 
 The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
@@ -366,7 +366,7 @@ Examples:
   # A field access
   $point->{x}++;
   
-  # An array access
+  # An element access
   $nums->[0]++;
   
   # A dereference
@@ -386,7 +386,7 @@ The return type is the type of I<OPERAND>.
 
 Complation Errors:
 
-I<OPERAND> must be a local variable, a class variable, a field access, an array access, a dereference, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference, otherwise a compilation error occurs.
 
 The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
@@ -403,7 +403,7 @@ Examples:
   # A field access
   --$point->{x};
   
-  # An array access
+  # An element access
   --$nums->[0];
   
   # A dereferenced value
@@ -421,7 +421,7 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-I<OPERAND> must be a local variable, a class variable, a field access, an array access, a dereference, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference, otherwise a compilation error occurs.
 
 The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
 
@@ -438,7 +438,7 @@ Examples:
   # A field access
   $point->{x}--;
   
-  # An array access
+  # An element access
   $nums->[0]--;
   
   # A dereference
@@ -1515,7 +1515,7 @@ If I<LEFT_OPERAND> is a local variable, this operator performs the operation tha
 
 If I<LEFT_OPERAND> is a class variable, this operator performs the operation that L<sets a class variable|/"Setting a Class Variable">.
 
-If I<LEFT_OPERAND> is an array access, this operator performs the operation that L<sets an array element|/"Setting an Array Element">.
+If I<LEFT_OPERAND> is an element access, this operator performs the operation that L<sets an array element|/"Setting an Array Element">.
 
 If I<LEFT_OPERAND> is a field access, this operator performs the operation that L<sets a field|/"Setting a Field">.
 
@@ -1538,7 +1538,7 @@ Examples:
   # A field access
   $point->{x} = 1;
   
-  # An array access
+  # An element access
   $nums->[0] = 1;
   
   # A dereference
@@ -1756,7 +1756,7 @@ The operation of getting an array element gets an element of an L<array|SPVM::Do
 
   ARRAY->[INDEX]
 
-I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+I<ARRAY-E<gt>[INDEX]> is an L<element access|SPVM::Document::Language::Class/"Element Access">.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -1772,7 +1772,7 @@ I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<array access|SPVM::Document::Language::Class/"Array Access"> could occur.
+Compiliation errors caused by the syntax of the L<element access|SPVM::Document::Language::Class/"Element Access"> could occur.
 
 Examples:
 
@@ -1788,7 +1788,7 @@ The operation of setting array element sets an element of an array.
 
   ARRAY->[INDEX] = OPERAND
 
-I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+I<ARRAY-E<gt>[INDEX]> is an L<element access|SPVM::Document::Language::Class/"Element Access">.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -1804,7 +1804,7 @@ I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<array access|SPVM::Document::Language::Class/"Array Access"> could occur.
+Compiliation errors caused by the syntax of the L<element access|SPVM::Document::Language::Class/"Element Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 

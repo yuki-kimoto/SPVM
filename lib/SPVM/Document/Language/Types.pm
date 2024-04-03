@@ -91,9 +91,9 @@ The multi-numeric array is the array that the type of the element is the L<multi
 
 See L</"Creating Array"> to create Array.
 
-=head3 Array Access
+=head3 Element Access
 
-Array Access is an L<operator|/"Operators"> to access the element of Array to get or set the value.
+Element Access is an L<operator|/"Operators"> to access the element of Array to get or set the value.
 
   ARRAY->[INDEX]
 
@@ -116,9 +116,9 @@ The elements of the multi-numeric array is continuous multi-numeric values.
   | Complex_2d  | Complex_2d  | Complex_2d  |
   |  re  |  im  |  re  |  im  |  re  |  im  |
 
-=head3 Multi-Numeric Array Access
+=head3 Multi-Numeric Element Access
 
-The multi-numeric array access is a syntax to access the element of the multi-numeric array.
+The multi-numeric element access is a syntax to access the element of the multi-numeric array.
 
   ARRAY->[INDEX]
 
@@ -1013,7 +1013,7 @@ B<long to double:>
   int64_t from = VALUE;
   double to = (double)from;
 
-The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
+The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<element access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
 
 =head2 Numeric Narrowing Conversion
 

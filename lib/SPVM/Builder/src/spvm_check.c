@@ -2178,7 +2178,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               return;
             }
             
-            if (op_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING) {
+            if (op_dist->id == SPVM_OP_C_ID_ELEMENT_ACCESS && op_dist->flag & SPVM_OP_C_FLAG_ELEMENT_ACCESS_STRING) {
               SPVM_OP* op_array = op_dist->first;
               SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op_array);
               int32_t is_mutable = array_type->flag & SPVM_NATIVE_C_TYPE_FLAG_MUTABLE;
@@ -2955,7 +2955,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             break;
           }
-          case SPVM_OP_C_ID_ARRAY_ACCESS: {
+          case SPVM_OP_C_ID_ELEMENT_ACCESS: {
             SPVM_TYPE* left_operand_type = SPVM_CHECK_get_type(compiler, op_cur->first);
             SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
             
@@ -2964,13 +2964,13 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               !SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)
             )
             {
-              SPVM_COMPILER_error(compiler, "The invocant of the array access must be an array type or the string type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The invocant of the element access must be an array type or the string type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
             // String access
             if (SPVM_TYPE_is_string_type(compiler, left_operand_type->basic_type->id, left_operand_type->dimension, left_operand_type->flag)) {
-              op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING;
+              op_cur->flag |= SPVM_OP_C_FLAG_ELEMENT_ACCESS_STRING;
             }
             
             // Right operand must be integer
@@ -2983,12 +2983,12 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_TYPE* right_operand_type = SPVM_CHECK_get_type(compiler, op_cur->last);
               
               if (right_operand_type->dimension == 0 && right_operand_type->basic_type->id != SPVM_NATIVE_C_BASIC_TYPE_ID_INT) {
-                SPVM_COMPILER_error(compiler, "The index of the array access must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The index of the element access must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }
             else {
-              SPVM_COMPILER_error(compiler, "The index of the array access must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "The index of the element access must be the int type.\n  at %s line %d", op_cur->file, op_cur->line);
               return;
             }
             
@@ -3079,11 +3079,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               }
             }
             
-            // If invocant is array access and array access object is mulnum_t, this op is multi-numeric array field access
-            if (op_invocant->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
-              SPVM_OP* op_array_access = op_invocant;
+            // If invocant is element access and element access object is mulnum_t, this op is multi-numeric array field access
+            if (op_invocant->id == SPVM_OP_C_ID_ELEMENT_ACCESS) {
+              SPVM_OP* op_element_access = op_invocant;
               
-              SPVM_TYPE* array_element_type = SPVM_CHECK_get_type(compiler, op_array_access);
+              SPVM_TYPE* array_element_type = SPVM_CHECK_get_type(compiler, op_element_access);
               
               int32_t is_basic_type_mulnum_t = SPVM_BASIC_TYPE_is_mulnum_type(compiler, array_element_type->basic_type->id);
               if (is_basic_type_mulnum_t && array_element_type->dimension == 0) {
@@ -3095,10 +3095,10 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_ARRAY_FIELD_ACCESS* array_field_access = op_array_field_access->uv.array_field_access;
                 array_field_access->field = field;
                 
-                SPVM_OP* op_array = op_array_access->first;
-                SPVM_OP* op_index = op_array_access->last;
-                SPVM_OP_cut_op(compiler, op_array_access->first);
-                SPVM_OP_cut_op(compiler, op_array_access->last);
+                SPVM_OP* op_array = op_element_access->first;
+                SPVM_OP* op_index = op_element_access->last;
+                SPVM_OP_cut_op(compiler, op_element_access->first);
+                SPVM_OP_cut_op(compiler, op_element_access->last);
                 
                 SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_array);
                 SPVM_OP_insert_child(compiler, op_array_field_access, op_array_field_access->last, op_index);
@@ -3286,7 +3286,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
               case SPVM_OP_C_ID_REFERENCE:
               case SPVM_OP_C_ID_DEREFERENCE:
               case SPVM_OP_C_ID_FIELD_ACCESS:
-              case SPVM_OP_C_ID_ARRAY_ACCESS:
+              case SPVM_OP_C_ID_ELEMENT_ACCESS:
               case SPVM_OP_C_ID_CALL_METHOD:
               case SPVM_OP_C_ID_TRUE:
               case SPVM_OP_C_ID_FALSE:
@@ -4170,7 +4170,7 @@ SPVM_TYPE* SPVM_CHECK_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = SPVM_TYPE_new_int_type(compiler);
       break;
     }
-    case SPVM_OP_C_ID_ARRAY_ACCESS: {
+    case SPVM_OP_C_ID_ELEMENT_ACCESS: {
       SPVM_TYPE* array_type = SPVM_CHECK_get_type(compiler, op->first);
       SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, array_type->basic_type->name, strlen(array_type->basic_type->name));
       if (SPVM_TYPE_is_string_type(compiler, basic_type->id, array_type->dimension, 0)) {

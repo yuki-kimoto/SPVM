@@ -923,19 +923,19 @@ use Test::More;
   }
 }
 
-# Array Access
+# Element Access
 {
   {
     my $source = 'class MyClass { static method main : void () { my $var = 1; $var->[0]; } }';
-    compile_not_ok($source, q|The invocant of the array access must be an array type or the string type|);
+    compile_not_ok($source, q|The invocant of the element access must be an array type or the string type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = new int[1]; $var->[1L]; } }';
-    compile_not_ok($source, q|The index of the array access must be the int type|);
+    compile_not_ok($source, q|The index of the element access must be the int type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = new int[1]; $var->["foo"]; } }';
-    compile_not_ok($source, q|The index of the array access must be the int type|);
+    compile_not_ok($source, q|The index of the element access must be the int type|);
   }
 }
 

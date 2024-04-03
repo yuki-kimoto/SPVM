@@ -54,10 +54,10 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Operator::Assign->assign_return_value_var);
   ok(SPVM::TestCase::Operator::Assign->assign_return_value_constant);
 
-  ok(SPVM::TestCase::Operator::Assign->assign_return_value_array_access_right_var);
-  ok(SPVM::TestCase::Operator::Assign->assign_return_value_array_access_right_not_var);
-  ok(SPVM::TestCase::Operator::Assign->assign_return_value_array_access_left_var);
-  ok(SPVM::TestCase::Operator::Assign->assign_return_value_array_access_chain);
+  ok(SPVM::TestCase::Operator::Assign->assign_return_value_element_access_right_var);
+  ok(SPVM::TestCase::Operator::Assign->assign_return_value_element_access_right_not_var);
+  ok(SPVM::TestCase::Operator::Assign->assign_return_value_element_access_left_var);
+  ok(SPVM::TestCase::Operator::Assign->assign_return_value_element_access_chain);
   
   ok(SPVM::TestCase::Operator::Assign->assign_return_value_field_access);
 

@@ -184,7 +184,7 @@ class TestCase::Operator::Assign {
     return 0;
   }
 
-  static method assign_return_value_array_access_right_var : int () {
+  static method assign_return_value_element_access_right_var : int () {
     my $nums = new int[1];
     
     my $var1 = 1;
@@ -196,7 +196,7 @@ class TestCase::Operator::Assign {
     return 0;
   }
 
-  static method assign_return_value_array_access_right_not_var : int () {
+  static method assign_return_value_element_access_right_not_var : int () {
     my $nums = new int[1];
     
     my $var2 = $nums->[0] = 1;
@@ -207,7 +207,7 @@ class TestCase::Operator::Assign {
     return 0;
   }
 
-  static method assign_return_value_array_access_left_var : int () {
+  static method assign_return_value_element_access_left_var : int () {
     my $nums = new int[1];
     
     my $var1 : int;
@@ -220,7 +220,7 @@ class TestCase::Operator::Assign {
     return 0;
   }
 
-  static method assign_return_value_array_access_chain : int () {
+  static method assign_return_value_element_access_chain : int () {
     my $nums = new int[2];
     
     my $var2 = $nums->[0] = $nums->[1] = 1;

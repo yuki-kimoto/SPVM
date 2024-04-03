@@ -185,7 +185,7 @@ enum {
   SPVM_OP_C_ID_LOGICAL_AND,
   SPVM_OP_C_ID_LOGICAL_OR,
   SPVM_OP_C_ID_LOGICAL_NOT,
-  SPVM_OP_C_ID_ARRAY_ACCESS,
+  SPVM_OP_C_ID_ELEMENT_ACCESS,
   SPVM_OP_C_ID_ASSIGN,
   SPVM_OP_C_ID_FIELD_ACCESS,
   SPVM_OP_C_ID_VAR,
@@ -282,11 +282,11 @@ enum {
   SPVM_OP_C_FLAG_FIELD_ACCESS_ISWEAK = 4,
 };
 enum {
-  // ARRAY_ACCESS flag
-  SPVM_OP_C_FLAG_ARRAY_ACCESS_WEAKEN = 1,
-  SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING = 2,
-  SPVM_OP_C_FLAG_ARRAY_ACCESS_UNWEAKEN = 4,
-  SPVM_OP_C_FLAG_ARRAY_ACCESS_ISWEAK = 8,
+  // ELEMENT_ACCESS flag
+  SPVM_OP_C_FLAG_ELEMENT_ACCESS_WEAKEN = 1,
+  SPVM_OP_C_FLAG_ELEMENT_ACCESS_STRING = 2,
+  SPVM_OP_C_FLAG_ELEMENT_ACCESS_UNWEAKEN = 4,
+  SPVM_OP_C_FLAG_ELEMENT_ACCESS_ISWEAK = 8,
 };
 
 struct spvm_op {
@@ -424,7 +424,7 @@ SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM
 
 SPVM_OP* SPVM_OP_build_unary_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_operand);
 
-SPVM_OP* SPVM_OP_build_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_array_access, SPVM_OP* op_var, SPVM_OP* op_operand);
+SPVM_OP* SPVM_OP_build_element_access(SPVM_COMPILER* compiler, SPVM_OP* op_element_access, SPVM_OP* op_var, SPVM_OP* op_operand);
 
 SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_OP* op_left_operand, SPVM_OP* op_right_operand);
 
@@ -542,9 +542,9 @@ SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, const char* unresolved_bas
 
 SPVM_OP* SPVM_OP_clone_op_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_var_invocant, SPVM_OP* op_name_field);
 
-SPVM_OP* SPVM_OP_clone_op_array_access(SPVM_COMPILER* compiler, SPVM_OP* op_array_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index);
+SPVM_OP* SPVM_OP_clone_op_element_access(SPVM_COMPILER* compiler, SPVM_OP* op_element_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index);
 
-SPVM_OP* SPVM_OP_clone_op_array_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_name_field, SPVM_OP* op_array_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index);
+SPVM_OP* SPVM_OP_clone_op_array_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access, SPVM_OP* op_name_field, SPVM_OP* op_element_access, SPVM_OP* op_var_array, SPVM_OP* op_var_index);
 
 SPVM_OP* SPVM_OP_clone_op_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_var);
 

@@ -31,7 +31,7 @@ class TestCase::Operator::Increment {
     return 0;
   }
   
-  static method post_dec_array_access_invocant_not_var : int () {
+  static method post_dec_element_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[1] = new int[1];
     
@@ -245,7 +245,7 @@ class TestCase::Operator::Increment {
     }
   }
 
-  static method post_dec_array_access_var_index : int () {
+  static method post_dec_element_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -295,7 +295,7 @@ class TestCase::Operator::Increment {
     }
   }
 
-  static method post_dec_array_access_constant_index : int () {
+  static method post_dec_element_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -401,7 +401,7 @@ class TestCase::Operator::Increment {
     return 0;
   }
   
-  static method post_inc_array_access_invocant_not_var : int () {
+  static method post_inc_element_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[1] = new int[1];
     
@@ -615,7 +615,7 @@ class TestCase::Operator::Increment {
     }
   }
 
-  static method post_inc_array_access_var_index : int () {
+  static method post_inc_element_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -665,7 +665,7 @@ class TestCase::Operator::Increment {
     }
   }
 
-  static method post_inc_array_access_constant_index : int () {
+  static method post_inc_element_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -771,7 +771,7 @@ class TestCase::Operator::Increment {
     return 0;
   }
   
-  static method pre_dec_array_access_invocant_not_var : int () {
+  static method pre_dec_element_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[0] = new int[1];
     
@@ -985,7 +985,7 @@ class TestCase::Operator::Increment {
     }
   }
 
-  static method pre_dec_array_access_var_index : int () {
+  static method pre_dec_element_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -1035,7 +1035,7 @@ class TestCase::Operator::Increment {
     }
   }
 
-  static method pre_dec_array_access_constant_index : int () {
+  static method pre_dec_element_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -1142,7 +1142,7 @@ class TestCase::Operator::Increment {
     return 0;
   }
   
-  static method pre_inc_array_access_invocant_not_var : int () {
+  static method pre_inc_element_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[0] = new int[1];
     
@@ -1356,7 +1356,7 @@ class TestCase::Operator::Increment {
     }
   }
 
-  static method pre_inc_array_access_var_index : int () {
+  static method pre_inc_element_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -1406,7 +1406,7 @@ class TestCase::Operator::Increment {
     }
   }
 
-  static method pre_inc_array_access_constant_index : int () {
+  static method pre_inc_element_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];

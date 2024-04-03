@@ -368,7 +368,7 @@ class TestCase::Operator::SpecialAssign {
     return 0;
   }
   
-  static method special_assign_add_array_access_invocant_not_var : int () {
+  static method special_assign_add_element_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[0] = new int[1];
     
@@ -582,7 +582,7 @@ class TestCase::Operator::SpecialAssign {
     }
   }
 
-  static method special_assign_add_array_access_var_index : int () {
+  static method special_assign_add_element_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -632,7 +632,7 @@ class TestCase::Operator::SpecialAssign {
     }
   }
 
-  static method special_assign_add_array_access_constant_index : int () {
+  static method special_assign_add_element_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];

@@ -21,14 +21,14 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 # Special assign add
 {
   ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_var);
-  ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_array_access_constant_index);
-  ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_array_access_var_index);
+  ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_element_access_constant_index);
+  ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_element_access_var_index);
   ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_field_access);
   ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_deref);
   ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_class_var_access);
   ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_array_field_access_constant_index);
   
-  ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_array_access_invocant_not_var);
+  ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_element_access_invocant_not_var);
   ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_array_field_access_invocant_not_var);
   ok(SPVM::TestCase::Operator::SpecialAssign->special_assign_add_field_access_invocant_not_var);
 }
