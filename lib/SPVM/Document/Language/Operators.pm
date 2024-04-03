@@ -1752,11 +1752,13 @@ Examples:
 
 =head3 Getting an Array Element
 
-The operation of getting an array element gets the element of an L<array|SPVM::Document::Language::Types/"Array">.
+The operation of getting an array element gets an element of an L<array|SPVM::Document::Language::Types/"Array">.
 
   ARRAY->[INDEX]
 
-I<ARRAY->[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+
+The type of I<ARRAY> is an array type.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -1784,11 +1786,13 @@ Examples:
 
 =head3 Setting an Array Element
 
-The operation of setting array element sets the element of the array.
+The operation of setting array element sets an element of an array.
 
   ARRAY->[INDEX] = OPERAND
 
-I<ARRAY->[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+
+The type of I<ARRAY> is an array type.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -1816,6 +1820,72 @@ Examples:
   my $points = new Point[3];
   $points->[1] = Point->new(1, 2);
   
+=head3 Getting a Character
+
+The operation of getting a character gets a character of a string.
+
+  ARRAY->[INDEX]
+
+I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+
+The type of I<ARRAY> is the string type.
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
+
+And returns the character of the string I<ARRAY> at I<INDEX>.
+
+The return type is the byte type.
+
+Exceptions:
+
+I<ARRAY> must be defined, otherwise an exception is thrown.
+
+I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of the L<array access|SPVM::Document::Language::Class/"Array Access"> could occur.
+
+Examples:
+
+  my $string = "abc";
+  my $char = $string->[0];
+
+=head3 Setting a Character
+
+The operation of setting a character sets the character of a string.
+
+  ARRAY->[INDEX] = OPERAND
+
+I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+
+The type of I<ARRAY> is the string type.
+
+This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
+
+And sets the character of the string I<ARRAY> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the character after setting.
+
+The return type is the byte type.
+
+Exceptions:
+
+I<ARRAY> must be defined, otherwise an exception is thrown.
+
+I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
+
+If I<ARRAY> is not a mutable string, an exception is thrown.
+
+Compilation Errors:
+
+Compiliation errors caused by the syntax of the L<array access|SPVM::Document::Language::Class/"Array Access"> could occur.
+
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+
+Examples:
+
+  my $string = new_string_len 3;
+  $string->[0] = 'a';
+
 =head3 Getting a Field
 
 The operation of getting field gets the value of a field of a class type.
