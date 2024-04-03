@@ -1786,6 +1786,8 @@ This operator performs the L<integer promotional conversion|SPVM::Document::Lang
 
 And sets the element of I<ARRAY> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the element after setting.
 
+The return type is the element type.
+
 Exceptions:
 
 I<ARRAY> must be defined, otherwise an exception is thrown.
@@ -1808,15 +1810,15 @@ Examples:
   
 =head3 Getting a Field
 
-The operation of getting field gets the value of a field.
+The operation of getting field gets the value of a field of a class type.
 
   INVOCANT->{FIELD_NAME}
 
-I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
 
-The operation of getting field gets the field of the object. This is one syntax of the L<field access|/"Field Access">.
+The type of I<INVOCANT> is a class type.
 
-The type of invocant is a class type.
+This operation gets the value of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
 
 The retrun type is the type of the field.
 
@@ -1831,17 +1833,15 @@ Examples:
 
 =head3 Setting a Field
 
-The operation of setting field sets the field of the object. This is one syntax of the L<field access|/"Field Access">.
+The operation of setting field sets the field of a class type.
 
   INVOCANT->{FIELD_NAME} = OPERAND
 
-I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
 
- using the L<assignment operator|/"Assignment Operator">.
+The type of I<INVOCANT> is a class type.
 
-The type of invocant is a class type.
-
-The return value is the value after the setting. 
+This operation sets the field specified by I<FIELD_NAME> of the type of I<INVOCANT> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value of the field after setting.
 
 The return type is the field type.
 
@@ -1858,15 +1858,15 @@ Examples:
 
 =head3 Getting a Multi-Numeric Field
 
-The operation of getting multi-numeric field gets the field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">.
+The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
 
   INVOCANT->{FIELD_NAME}
 
-I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
 
-The invocant is the multi-numeric type.
-  
-Getting Multi-Numeric Field operator returns the field value in the multi-numeric value.
+The type of I<INVOCANT> is a multi-numeric type.
+
+This operation gets the value of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
 
 The retrun type is the type of the field.
 
@@ -1881,18 +1881,15 @@ Examples:
 
 =head3 Setting a Multi-Numeric Field
 
-The operation of setting multi-numeric field sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+The operation of setting multi-numeric field sets the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
 
-  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
+  INVOCANT->{FIELD_NAME} = OPERAND
 
-I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
 
+The type of I<INVOCANT> is a multi-numeric type.
 
- using the L<assignment operator|/"Assignment Operator">.
-
-The invocant is the multi-numeric type.
-
-Setting Multi-Numeric Field operator returns the value of the field after setting. 
+This operation sets the field specified by I<FIELD_NAME> of the type of I<INVOCANT> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value of the field after setting.
 
 The return type is the field type.
 
@@ -1906,24 +1903,22 @@ Examples:
 
   my $z : Complex_2d;
   $z->{re} = 2.5;
-
+  
 =head3 Getting a Referenced Multi-Numeric Field
 
-The operation of getting a referenced multi-numeric field gets the field of the L<multi-numeric value|/"Multi-Numeric Value">. This is one syntax of the L<field access|/"Field Access">
+The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> referenced by a multi-numeric reference type.
 
-  INVOCANT->{FIELD_NAME}
+This operation is expaned to the following code.
 
-I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+  ($INVOCANT)->{FIELD_NAME}
 
-The invocant is L</"Multi-Numeric Reference Type">.
-
-The operation of getting a referenced multi-numeric field returns the field value in the multi-numeric value.
-
-The retrun type is the type of the field.
+The type of I<INVOCANT> is a multi-numeric refenrece type.
 
 Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+
+Compiliation errors caused by the L<dereference operator|/"Dereference Operator"> could occur.
 
 Examples:
 
@@ -1933,21 +1928,19 @@ Examples:
 
 =head3 Setting a Referenced Multi-Numeric Field
 
-The operation of setting a referenced multi-numeric field sets the field of the L<multi-numeric value|/"Multi-Numeric Value"> via L</"Dereference"> using L</"Assignment Operator">. This is one syntax of the L<field access|/"Field Access">.
+The operation of setting a multi-numeric field sets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> referenced by a multi-numeric reference type.
 
-  INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
+This operation is expaned to the following code.
 
- using the L<assignment operator|/"Assignment Operator">.
+  ($INVOCANT)->{FIELD_NAME} = OPERAND
 
-The invocant is L</"Multi-Numeric Reference Type">.
-
-The operation of setting a referenced multi-numeric field returns the value of the field after setting.
-
-The return type is the field type.
+The type of I<INVOCANT> is a multi-numeric refenrece type.
 
 Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+
+Compiliation errors caused by the L<dereference operator|/"Dereference Operator"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -1957,23 +1950,27 @@ Examples:
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
 
+=head3 Getting a Referenced Value
+
+The operation of getting the referenced value gets a referenced value.
+
+See the L<dereference operator|/"Dereference Operator">.
+
 =head3 Setting a Referenced Value
 
-The operation of setting the referenced value sets the actual value from Reference. It was designed to realize the C joint operator C<*>.
+The operation of setting the referenced value sets a referenced value.
 
   $VARIABLE = OPERAND
 
- using the L<assignment operator|/"Assignment Operator">.
+Thie operation sets the value referenced by the reference I<VARIABLE> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value after setting.
 
-Setting a value with Dereference returns the set value.
+The return type is the type of the referenced value.
 
 Compilation Errors:
 
+The type of I<VARIABLE> must be a reference type, otherwise a compilation error occurs.
+
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
-
-The variable type must be a reference type, otherwise a compilation error occurs.
-
-The type of operator must match the type of the variable when dereferenced, otherwise a compilation error occurs.
 
 Examples:
 

@@ -1663,7 +1663,7 @@ The local variable access has the following syntax.
 
   $var
 
-I<$var> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
+I<$var> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
 If local variables with the same name are declared in different scopes, the local variable declared in the inner scope is accessed.
 
@@ -1683,7 +1683,7 @@ The class variable access has the following syntax.
 
   $VAR
 
-I<$VAR> must be a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name">.
+I<$VAR> is a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name">.
 
 If the class name is ommited, the class is set to the L<outmost class|/"Outmost Class">.
 
@@ -1725,9 +1725,13 @@ The field access has the following syntax.
 
   INVOCANT->{FIELD_NAME}
 
+I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
+
+I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
+
 Compilation Errors:
 
-The type of I<INVOCANT> must be a L<class type|SPVM::Document::Language::Types/"Class Type">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, otherwise a compilation error occurs.
+I<INVOCANT> must be an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, otherwise a compilation error occurs.
 
 Depending on the type of I<INVOCANT>, there are the following field access.
 
@@ -1737,7 +1741,7 @@ See L</"Getting a Field"> and L</"Setting a Field"> to get and set the value of 
 
 Compilation Errors:
 
-If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, its super classes, otherwise a compilation error occurs.
+If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, or its super classes, otherwise a compilation error occurs.
 
 =head4 Field Access for Multi-Numeric Types
 
@@ -1753,7 +1757,7 @@ See L</"Getting a Referenced Multi-Numeric Field"> and L</"Setting a Referenced 
 
 Compilation Errors:
 
-If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type refered by the multi-numeric reference type, otherwise a compilation error occurs.
+If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type, otherwise a compilation error occurs.
 
 =head2 Block
 
