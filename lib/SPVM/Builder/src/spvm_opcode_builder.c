@@ -3322,17 +3322,13 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
                             int32_t src_type_dimension = src_type->dimension;
                             int32_t src_type_flag = src_type->flag;
                             
-                            int32_t need_implicite_conversion = 0;
-                            int32_t allow_narrowing_conversion = 0;
-                            int32_t runtime_assignability = SPVM_TYPE_satisfy_assignment_requirement(
+                            int32_t satisfy_assignment_requirement_without_implicite_conversion = SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion(
                               compiler,
                               cast_type_basic_type_id, cast_type_dimension, cast_type_flag,
-                              src_type_basic_type_id, src_type_dimension, src_type_flag,
-                              &need_implicite_conversion, allow_narrowing_conversion
+                              src_type_basic_type_id, src_type_dimension, src_type_flag
                             );
-                            assert(need_implicite_conversion == 0);
                             
-                            if (runtime_assignability) {
+                            if (satisfy_assignment_requirement_without_implicite_conversion) {
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_OBJECT);
                             }
                             else {
