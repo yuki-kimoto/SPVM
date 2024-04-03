@@ -1999,14 +1999,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               int32_t need_implicite_conversion = 0;
               int32_t allow_narrowing_conversion = 0;
               
-              int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
+              int32_t satisfy_assignment_requirement_without_implicite_conversion = SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion(
                 compiler,
                 type->basic_type->id, type->dimension, type->flag,
-                operand_type->basic_type->id, operand_type->dimension, operand_type->flag,
-                &need_implicite_conversion, allow_narrowing_conversion
+                operand_type->basic_type->id, operand_type->dimension, operand_type->flag
               );
-              
-              int32_t satisfy_assignment_requirement_without_implicite_conversion = satisfy_assignment_requirement && !need_implicite_conversion;
               
               if (satisfy_assignment_requirement_without_implicite_conversion) {
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
