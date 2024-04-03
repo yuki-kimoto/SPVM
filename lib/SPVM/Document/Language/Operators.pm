@@ -12,6 +12,14 @@ This document describes operators in the SPVM language.
 
 An operator is a basic instruction that normally a return value.
 
+=head2 Data
+
+=head3 Internal Representation of Negative Integers
+
+Negative integers are represented using L<two's complement|https://en.wikipedia.org/wiki/Two%27s_complement>.
+
+Negative values returned by integer operations are also represented using it.
+
 =head2 Unary Plus Operator
 
 The unary plus operator C<+> is a unary operator that returns its operand.
@@ -2019,173 +2027,6 @@ Examples:
   # Examples of setting the exception variable
   $@ = "Error";
 
-=head2 Method Call
-
-The method call syntax calls a L<method|SPVM::Document::Language::Class/"Method">.
-
-=head3 Class Method Call
-
-A method defined as the L<class method|/"Class Method"> can be called using the class method call.
-
-  ClassName->MethodName(ARGS1, ARGS2, ...);
-  
-  &MethodName(ARGS1, ARGS2, ...);
-
-C<&> means the current class.
-
-If C<&> is used in anon method, it means its outmost class.
-
-Compilation Errors:
-
-If the number of arguments does not correct, a compilation error occurs.
-
-If the types of arguments have no type compatible, a compilation error occurs.
-
-Examples:
-  
-  class Foo {
-    
-    static method main : void () {
-      
-      my $result = Foo->bar(1, 2, 3);
-      
-      # Same as Foo->bar
-      my $result = &bar(1, 2, 3);
-      
-      my $anon_method = method : void () {
-        # Same as Foo->bar;
-        my $result = &foo;
-      };
-    }
-    
-    static method foo : int () {
-      return 5;
-    }
-  }
-
-=head4 Getting an Enumeration Value
-
-The operation of getting an enumeration value gets a value of an L<enumeration|SPVM::Document::Language::Class/"Enumeration">.
-
-The definition of an enumeration value is replaced to a class method, so this operation is the same as a L<class method call|/"Class Method Call">.
-  
-  # Definition of an enumeration
-  class MyClass {
-    enum {
-      VALUE1,
-      VALUE2,
-      VALUE3,
-    }
-  }
-  
-  # These are replaced to definitions of class methods
-  class MyClass {
-    static method VALUE1 : int () { return 0; }
-    static method VALUE2 : int () { return 1; }
-    static method VALUE3 : int () { return 2; }
-  }
-
-However, there is one important difference.
-
-The class method calls are replaced to L<interger literals|SPVM::Document::Language::Tokenization/"Integer Literal"> at compilation time.
-
-For this replacement, this operation is used as an operand of the L<case statement|SPVM::Document::Language::Statements/"case Statement">.
-
-  switch ($num) {
-    case MyClass->VALUE1: {
-      # ...
-    }
-    case MyClass->VALUE2: {
-      # ...
-    }
-    case MyClass->VALUE3: {
-      # ...
-    }
-    default: {
-      # ...
-    }
-  }
-
-Note that if an enumeration value is changed, the binary compatibility is broken.
-
-=head3 Instance Method Call
-
-A method defined as the instance method can be called using the instance method call.
-
-  Instance->MethodName(ARGS1, ARGS2, ...);
-
-The called method is resolved from the type of the instance.
-
-Compilation Errors:
-
-If the number of arguments does not correct, a compilation error occurs.
-
-If the types of arguments have no type compatible, a compilation error occurs.
-
-Examples:
-
-  $object->bar(5, 3. 6);
-
-The C<SUPER::> qualifier calls the method of the super class of the current class.
-
-  $object->SUPER::bar(5, 3. 6);
-
-A instance method can be called statically by specifing the calss name.
-
-  $point3d->Point::clear;
-
-=head2 args_width Operator
-
-The C<args_width> operator gets the stack length of the arguments passed to the method.
-
-  args_width
-
-Note that the stack length of the arguments is different from the length of the arguments.
-
-If the method call is the instance method call, the stack length of the arguments is the length of the arguments + 1 for the invocant.
-
-If an argument is a multi-numeric type, the stack length of the argument becomes the length of the fields.
-
-Examples:
-  
-  static method my_static_method : int ($args : int, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-  
-  # 1
-  &my_static_method(1);
-  
-  # 2
-  &my_static_method(1, 2);
-  
-  static method my_instance_method : int ($args : int, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-  
-  # 2 (1 + the invocant)
-  &my_instance_method(1);
-  
-  # 3 (2 + the invocant)
-  &my_instance_method(1, 2);
-
-  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
-    my $args_width = args_width;
-    
-    return $args_width;
-  };
-
-  # 2 (The length of the fields of Complex_2d)
-  my $z : Complex_2d;
-  &my_mulnum_method($z);
-  
-  # 3 (The length of the fields of Complex_2d + 1)
-  my $z : Complex_2d;
-  &my_mulnum_method($z, 2);
-
 =head2 Type Cast Operator
 
 The type cast operator performs an L<explicite type conversion|SPVM::Document::Language::Types/"Explicite Type Conversion">.
@@ -2399,7 +2240,7 @@ The return type is the string type.
 
 Compilation Errors.
 
-I<OPERAND> must be an object type, a compilation error occurs.
+I<OPERAND> must be an object type, otherwise a compilation error occurs.
 
 Examples:
   
@@ -2431,6 +2272,139 @@ Examples:
   my $point = (object)Point->new;
   my $type_name = type_name $point;
 
+=head2 basic_type_id Operator
+
+The C<basic_type_id> operator gets the basic type ID from a type.
+
+  basic_type_id TYPE
+
+The return value is the basic type ID.
+
+The return type is the int type.
+
+Examples:
+
+  my $basic_type_id = basic_type_id int;
+  
+  my $basic_type_id = basic_type_id int[];
+  
+  my $error_basic_type_id = basic_type_id Error;
+
+=head2 Method Call
+
+The method call syntax calls a L<method|SPVM::Document::Language::Class/"Method">.
+
+=head3 Class Method Call
+
+A method defined as the L<class method|/"Class Method"> can be called using the class method call.
+
+  ClassName->MethodName(ARGS1, ARGS2, ...);
+  
+  &MethodName(ARGS1, ARGS2, ...);
+
+C<&> means the current class.
+
+If C<&> is used in anon method, it means its outmost class.
+
+Compilation Errors:
+
+If the number of arguments does not correct, a compilation error occurs.
+
+If the types of arguments have no type compatible, a compilation error occurs.
+
+Examples:
+  
+  class Foo {
+    
+    static method main : void () {
+      
+      my $result = Foo->bar(1, 2, 3);
+      
+      # Same as Foo->bar
+      my $result = &bar(1, 2, 3);
+      
+      my $anon_method = method : void () {
+        # Same as Foo->bar;
+        my $result = &foo;
+      };
+    }
+    
+    static method foo : int () {
+      return 5;
+    }
+  }
+
+=head4 Getting an Enumeration Value
+
+The operation of getting an enumeration value gets a value of an L<enumeration|SPVM::Document::Language::Class/"Enumeration">.
+
+The definition of an enumeration value is replaced to a class method, so this operation is the same as a L<class method call|/"Class Method Call">.
+  
+  # Definition of an enumeration
+  class MyClass {
+    enum {
+      VALUE1,
+      VALUE2,
+      VALUE3,
+    }
+  }
+  
+  # These are replaced to definitions of class methods
+  class MyClass {
+    static method VALUE1 : int () { return 0; }
+    static method VALUE2 : int () { return 1; }
+    static method VALUE3 : int () { return 2; }
+  }
+
+However, there is one important difference.
+
+The class method calls are replaced to L<interger literals|SPVM::Document::Language::Tokenization/"Integer Literal"> at compilation time.
+
+For this replacement, this operation is used as an operand of the L<case statement|SPVM::Document::Language::Statements/"case Statement">.
+
+  switch ($num) {
+    case MyClass->VALUE1: {
+      # ...
+    }
+    case MyClass->VALUE2: {
+      # ...
+    }
+    case MyClass->VALUE3: {
+      # ...
+    }
+    default: {
+      # ...
+    }
+  }
+
+Note that if an enumeration value is changed, the binary compatibility is broken.
+
+=head3 Instance Method Call
+
+A method defined as the instance method can be called using the instance method call.
+
+  Instance->MethodName(ARGS1, ARGS2, ...);
+
+The called method is resolved from the type of the instance.
+
+Compilation Errors:
+
+If the number of arguments does not correct, a compilation error occurs.
+
+If the types of arguments have no type compatible, a compilation error occurs.
+
+Examples:
+
+  $object->bar(5, 3. 6);
+
+The C<SUPER::> qualifier calls the method of the super class of the current class.
+
+  $object->SUPER::bar(5, 3. 6);
+
+A instance method can be called statically by specifing the calss name.
+
+  $point3d->Point::clear;
+
 =head2 can Operator
 
 The C<can> operator checks if a method can be called. 
@@ -2461,102 +2435,134 @@ Examples:
     # ...
   }
 
-=head2 basic_type_id Operator
+=head2 args_width Operator
 
-The C<basic_type_id> operator gets the basic type ID from a type.
+The C<args_width> operator gets the stack length of the arguments passed to the method.
 
-  basic_type_id TYPE
+  args_width
 
-The return value is the basic type ID.
+Note that the stack length of the arguments is different from the length of the arguments.
 
-The return type is the int type.
+If the method call is the instance method call, the stack length of the arguments is the length of the arguments + 1 for the invocant.
+
+If an argument is a multi-numeric type, the stack length of the argument becomes the length of the fields.
 
 Examples:
+  
+  static method my_static_method : int ($args : int, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+  
+  # 1
+  &my_static_method(1);
+  
+  # 2
+  &my_static_method(1, 2);
+  
+  static method my_instance_method : int ($args : int, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+  
+  # 2 (1 + the invocant)
+  &my_instance_method(1);
+  
+  # 3 (2 + the invocant)
+  &my_instance_method(1, 2);
 
-  my $basic_type_id = basic_type_id int;
+  static method my_mulnum_method : int ($z : Complex_2d, $bar : int = 0) {
+    my $args_width = args_width;
+    
+    return $args_width;
+  };
+
+  # 2 (The length of the fields of Complex_2d)
+  my $z : Complex_2d;
+  &my_mulnum_method($z);
   
-  my $basic_type_id = basic_type_id int[];
-  
-  my $error_basic_type_id = basic_type_id Error;
+  # 3 (The length of the fields of Complex_2d + 1)
+  my $z : Complex_2d;
+  &my_mulnum_method($z, 2);
 
 =head2 eval_error_id Operator
 
-The C<eval_error_id> operatoer gets the error ID of the exception caught by an eval block.
+The C<eval_error_id> operatoer gets the value of C<eval_error_id>.
 
   eval_error_id
 
-This value is set to 0 at the beginning of the L<eval block|eval Block>.
+See L<SPVM::Document::Language::ExceptionHandling> about the way to use the C<eval_error_id> operator.
 
 =head2 weaken Operator
 
-The C<weaken> operator creates a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
+The C<weaken> operator enables a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
 
-  weaken OBJECT->{FIELD_NAME};
+  weaken INVOCANT->{FIELD_NAME};
+
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+
+This operator enable a weak reference of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
 
 The return type is the void type.
 
 Compilation Errors:
 
-The type of the object must be the class type, otherwise a compilation error occurs.
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
-If the field name is not found, a compilation error occurs.
-
-The type of the field targetted by the C<weaken> statement is not an object type, a compilation error occurs.
+The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
 
 Examples:
 
-  # weaken
+  # Exmaples of the weaken operator
   weaken $object->{point};
 
 =head2 unweaken Operator
 
-The C<unweaken> operator unweakens a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
+The C<unweaken> operator disables a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">.
 
-  unweaken OBJECT->{FIELD_NAME};
+  unweaken INVOCANT->{FIELD_NAME};
+
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+
+This operator enable a weak reference of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
 
 The return type is the void type.
 
 Compilation Errors:
 
-The type of the object must be the class type, otherwise a compilation error occurs.
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
-If the field name is not found, a compilation error occurs.
-
-The type of the field targetted by the C<unweaken> statement is not an object type, a compilation error occurs.
+The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
 
 Examples:
 
-  # unweaken
+  # Exmaples of the unweaken operator
   unweaken $object->{point};
 
 =head2 isweak Operator
 
-The C<isweak> operator checks whether a field is referenced by a L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference">
+The C<isweak> operator checks if the L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference"> of a field is enabled.
 
-  isweak OBJECT->{FIELD_NAME};
+  isweak INVOCANT->{FIELD_NAME};
 
-If the field is weaken, the C<isweak> operator returns 1, otherwise returns 0.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
 
-The return type of the C<isweak> operator is the int type.
+If the field specified by I<FIELD_NAME> of the object I<INVOCANT> is weaken, this operator returns 1, otherwise returns 0.
+
+The return type is the int type.
 
 Compilation Errors:
 
-The type of the object must be the class type, otherwise a compilation error occurs.
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
-If the field name is not found, a compilation error occurs.
-
-The type of the field targetted by the C<isweak> operator is not an object type, a compilation error occurs.
+The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
 
 Examples:
 
-  # isweak
+  # Exmaples of the isweak operator
   my $isweak = isweak $object->{point};
-
-=head1 Internal Representation of Negative Integers
-
-Negative integers are represented using L<two's complement|https://en.wikipedia.org/wiki/Two%27s_complement>.
-
-Negative values returned by integer operations are also represented using it.
 
 =head1 See Also
 
