@@ -308,7 +308,7 @@ The pre-increment operator C<++> increases the value of an operand by 1, and ret
 
   ++OPERAND
 
-This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, and returns it.
+This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast"> to the type of I<OPERAND> on it, and returns it.
 
 The return type is the type of I<OPERAND>.
 
@@ -343,7 +343,7 @@ The post-increment operator C<++> increases the value of an operand by 1, and re
 
   OPERAND++
 
-This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it on I<OPERAND>, and returns I<OPERAND> before performing the incrementation.
+This operator increases the value of the operand I<OPERAND> by 1 using the L<additonal operator|/"Addition Operator">, performs a L<type cast|/"Type Cast"> to the type of I<OPERAND> on it, assigns it on I<OPERAND>, and returns I<OPERAND> before performing the incrementation.
 
 The return type is the type of I<OPERAND>.
 
@@ -380,7 +380,7 @@ The pre-decrement operator C<--> decreases the value of an operand by 1, and ret
 
   --OPERAND
 
-This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, and returns it.
+This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast"> to the type of I<OPERAND> on it, and returns it.
 
 The return type is the type of I<OPERAND>.
 
@@ -415,7 +415,7 @@ The post-increment operator C<--> decreases the value of an operand by 1, and re
 
   OPERAND--
 
-This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast Operator"> to the type of I<OPERAND> on it, assigns it on I<OPERAND>, and returns I<OPERAND> before performing the decrementation.
+This operator decreases the value of the operand I<OPERAND> by 1 using the L<subtraction operator|/"Subtraction Operator">, performs a L<type cast|/"Type Cast"> to the type of I<OPERAND> on it, assigns it on I<OPERAND>, and returns I<OPERAND> before performing the decrementation.
 
 The return type is the type of I<OPERAND>.
 
@@ -2027,21 +2027,27 @@ Examples:
   # Examples of setting the exception variable
   $@ = "Error";
 
-=head2 Type Cast Operator
+=head2 Type Cast
 
-The type cast operator performs an L<explicite type conversion|SPVM::Document::Language::Types/"Explicite Type Conversion">.
+A type cast performs a L<type conversion|SPVM::Document::Language::Types/"Type Conversion">.
 
-  # Type Cast
+  # A type cast
   (TYPE)OPERAND
   
-  # Postfix Type Cast
+  # A postfix type cast
   OPERAND->(TYPE)
+
+A type cast performs the type conversion on I<OPERAND> from the type of the operand I<OPERAND> to the type I<TYPE>, and returns the value after the type conversion.
+
+The return type is I<TYPE>.
 
 Compilation Errors:
 
-If the operand of the type cast operator dose not satisfy L<cast requirement|"Cast Requirement">, a compilation error occurs.
+I<OPERAND> must satisfy the L<cast requirement|SPVM::Document::Language::Types/"Cast Requirement">, otherwise a compilation error occurs.
 
 Examples:
+  
+  # Examples of the type cast
   
   # long to int 
   my $num = (int)123L;
