@@ -1792,7 +1792,7 @@ I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Arra
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
-And sets the element of I<ARRAY> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the element after setting.
+And sets the element of I<ARRAY> at I<INDEX> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the element after setting.
 
 The return type is the element type.
 
@@ -1857,7 +1857,7 @@ I<STRING-E<gt>[INDEX]> is an L<character access|SPVM::Document::Language::Class/
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
-And sets the character of I<STRING> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the character after setting.
+And sets the character of I<STRING> at I<INDEX> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the character after setting.
 
 The return type is the byte type.
 
