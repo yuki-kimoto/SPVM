@@ -1720,17 +1720,33 @@ The array access has the following syntax.
 
   ARRAY->[INDEX]
 
-The array I<ARRAY> must be an array type or the string type.
+The type of the array I<ARRAY> is an array type.
 
-The index I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
+The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
 
 See also L</"Getting an Array Element"> and L</"Setting an Array Element"> about the way to set and set an array element.
+
+Compilation Errors:
+
+I<ARRAY> must be an array type, otherwise a compilation error occurs.
+
+I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
+=head3 Character Access
+
+The character access has the following syntax.
+
+  STRING->[INDEX]
+
+The type of the string I<STRING> is the string type.
+
+The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
 
 See also L</"Getting a Character"> and L</"Setting a Character"> about the way to set and set a character of a string.
 
 Compilation Errors:
 
-I<ARRAY> must be an array type or the string type, otherwise a compilation error occurs.
+I<STRING> must be the string type, otherwise a compilation error occurs.
 
 I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 

@@ -1758,8 +1758,6 @@ The operation of getting an array element gets an element of an L<array|SPVM::Do
 
 I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
 
-The type of I<ARRAY> is an array type.
-
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
 And returns the element of I<ARRAY> at I<INDEX>.
@@ -1792,8 +1790,6 @@ The operation of setting array element sets an element of an array.
 
 I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
 
-The type of I<ARRAY> is an array type.
-
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
 And sets the element of I<ARRAY> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the element after setting.
@@ -1824,27 +1820,27 @@ Examples:
 
 The operation of getting a character gets a character of a string.
 
-  ARRAY->[INDEX]
+  STRING->[INDEX]
 
-I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
+I<STRING-E<gt>[INDEX]> is an L<character access|SPVM::Document::Language::Class/"Character Access">.
 
-The type of I<ARRAY> is the string type.
+The type of I<STRING> is the string type.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
-And returns the character of the string I<ARRAY> at I<INDEX>.
+And returns the character of I<STRING> at I<INDEX>.
 
 The return type is the byte type.
 
 Exceptions:
 
-I<ARRAY> must be defined, otherwise an exception is thrown.
+I<STRING> must be defined, otherwise an exception is thrown.
 
 I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<array access|SPVM::Document::Language::Class/"Array Access"> could occur.
+Compiliation errors caused by the syntax of the L<character access|SPVM::Document::Language::Class/"Character Access"> could occur.
 
 Examples:
 
@@ -1855,29 +1851,27 @@ Examples:
 
 The operation of setting a character sets the character of a string.
 
-  ARRAY->[INDEX] = OPERAND
+  STRING->[INDEX] = OPERAND
 
-I<ARRAY-E<gt>[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
-
-The type of I<ARRAY> is the string type.
+I<STRING-E<gt>[INDEX]> is an L<character access|SPVM::Document::Language::Class/"Character Access">.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
-And sets the character of the string I<ARRAY> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the character after setting.
+And sets the character of I<STRING> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the character after setting.
 
 The return type is the byte type.
 
 Exceptions:
 
-I<ARRAY> must be defined, otherwise an exception is thrown.
+I<STRING> must be defined, otherwise an exception is thrown.
 
 I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
 
-If I<ARRAY> is not a mutable string, an exception is thrown.
+If I<STRING> is not a mutable string, an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<array access|SPVM::Document::Language::Class/"Array Access"> could occur.
+Compiliation errors caused by the syntax of the L<character access|SPVM::Document::Language::Class/"Character Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -1893,8 +1887,6 @@ The operation of getting field gets the value of a field of a class type.
   INVOCANT->{FIELD_NAME}
 
 I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
-
-The type of I<INVOCANT> is a class type.
 
 This operation gets the value of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
 
