@@ -2029,7 +2029,7 @@ Examples:
 
 =head2 Type Cast
 
-A type cast performs a L<type conversion|SPVM::Document::Language::Types/"Type Conversion">.
+A type cast performs a L<type conversion|SPVM::Document::Language::Types/"Type Conversions">.
 
   # A type cast
   (TYPE)OPERAND

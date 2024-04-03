@@ -925,6 +925,492 @@ The type width is the required length of the L<runtime stack|SPVM::Document::Nat
 
 If the type is a multi-numeric type, it is the length of the fields, owhterwise it is 1.
 
+=head1 Type Conversions
+
+Type conversion is explained.
+
+=head2 Integer Promotional Conversion
+
+The integer promotional conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Types within int"> to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+
+=head2 Numeric Widening Conversion
+
+The numeric widening conversion is a L<type conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Types"> to a large-order L<numeric type|/"Numeric Types">.
+
+See also L<numeric types order|/"Numeric Types Order"> abount the order of numeric type.
+
+The return value of a converion are same as the return value of the type cast of the C language.
+  
+  (TYPE)OPERAND
+
+B<byte to short:>
+
+  int8_t from = VALUE;
+  int16_t to = (int16_t)from;
+
+B<byte to int:>
+
+  int8_t from = VALUE;
+  int32_t to = (int32_t)from;
+
+B<byte to long:>
+
+  int8_t from = VALUE;
+  int64_t to = (int64_t)from;
+
+B<byte to float:>
+
+  int8_t from = VALUE;
+  float to = (float)from;
+
+B<byte to double:>
+
+  int8_t from = VALUE;
+  double to = (double)from;
+
+B<short to int:>
+
+  int16_t from = VALUE;
+  int32_t to = (int32_t)from;
+
+B<short to long:>
+
+  int16_t from = VALUE;
+  int64_t to = (int64_t)from;
+
+B<short to float:>
+
+  int16_t from = VALUE;
+  float to = (float)from;
+
+B<short to double:>
+
+  int16_t from = VALUE;
+  double to = (double)from;
+
+B<int to long:>
+
+  int32_t from = VALUE;
+  int64_t to = (int64_t)from;
+
+B<int to float:>
+
+  int32_t from = VALUE;
+  float to = (float)from;
+
+B<int to double:>
+
+  int32_t from = VALUE;
+  double to = (double)from;
+
+B<long to float:>
+
+  int64_t from = VALUE;
+  float to = (float)from;
+
+B<long to double:>
+
+  int64_t from = VALUE;
+  double to = (double)from;
+
+The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
+
+=head2 Numeric Narrowing Conversion
+
+The numeric narrowing conversion is a L<conversion|"Type Conversion"> from a wide L<numeric type|/"Numeric Types"> to a narrow L<numeric type|/"Numeric Types">.
+
+See also L<numeric types order|/"Numeric Types Order"> abount the order of numeric type.
+
+The return value of a converion are same as the return value of the type cast of the C language.
+  
+  (TYPE)OPERAND
+
+B<double to float:>
+
+  double from = value;
+  float to = (float)from;
+
+B<double to long:>
+
+  double from = value;
+  int64_t to = (int64_t)from;
+
+B<double to int:>
+
+  double from = value;
+  int32_t to = (int32_t)from;
+
+B<double to short:>
+
+  double from = value;
+  int16_t to = (int16_t)from;
+
+B<double to byte:>
+
+  double from = value;
+  int8_t to = (int8_t)from;
+
+B<float to long:>
+
+  float from = value;
+  int64_t to = (int64_t)from;
+
+B<float to int:>
+
+  float from = value;
+  int32_t to = (int32_t)from;
+
+B<float to short:>
+
+  float from = value;
+  int16_t to = (int16_t)from;
+
+B<float to byte:>
+
+  float from = value;
+  int8_t to = (int8_t)from;
+
+B<long to int:>
+
+  int64_t from = value;
+  int32_t to = (int32_)from;
+
+B<long to short:>
+
+  int64_t from = value;
+  int16_t to = (int16_t)from;
+
+B<long to byte:>
+
+  int64_t from = value;
+  int8_t to = (int8_t)from;
+
+B<int to short:>
+
+  int32_t from = value;
+  int16_t to = (int16_t)from;
+
+B<int to byte:>
+
+  int32_t from = value;
+  int16_t to = (int16_t)from;
+
+B<short to byte:>
+
+  int16_t from = value;
+  int8_t to = (int8_t)from;
+
+The numeric narrowing conversion is performed in some of the L<type casts|/"Type Cast">.
+
+=head2 Binary Numeric Conversion
+
+The binary numeric conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of I<LEFT_OPERAND> or I<RIGHT_OPERAND> of the binary operator that operands are L<numeric types|/"Numeric Types">.
+
+The following rules apply in order.
+
+1. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the L<double type|/"double Type">, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+
+2. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the L<float type|/"float Type">, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+
+3. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the long type, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+
+4, Otherwise, both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are converted to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+
+=head2 Numeric-to-String Conversion
+
+The numeric-to-string conversion is a L<type conversion|/"Type Conversion"> from a L<numeric type|/"Numeric Types"> to the L<string type|/"string Type">.
+
+  # The numeric-to-string conversion
+  my $byte = (byte)1;
+  my $short = (short)2;
+  my $int = 3;
+  my $long = 4L;
+  my $float = 2.5f;
+  my $double = 3.3;
+  
+  # The string is 1.
+  my $string_byte = (string)$byte;
+  
+  # The string is 2.
+  my $string_short = (string)$short;
+
+  # The string is 3.
+  my $string_int = (string)$int;
+
+  # The string is 4.
+  my $string_long = (string)$long;
+  
+  # The string is "2.5"
+  my $string_float = (string)$float;
+  
+  # The string is "3.3"
+  my $string_double = (string)$double;
+
+=head2 String-to-byte Conversion
+
+The String-to-byte conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte Type">.
+
+  # The String-to-byte conversion
+  my $string : string = "Hello";
+  my $num : byte = (byte)$string;
+
+If the string is not defined, returns 0.
+
+If not, the string is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT8_MAX>, the number is set to C<INT8_MAX>.
+
+The number is less than C<INT8_MIN>, the number is set to C<INT8_MIN>.
+
+And returns the number.
+
+=head2 String-to-short Conversion
+
+The String-to-short conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"short Type">.
+
+  # The String-to-short conversion
+  my $string : string = "Hello";
+  my $num : short = (short)$string;
+
+If the string is not defined, returns 0.
+
+If not, the string is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT16_MAX>, the number is set to C<INT16_MAX>.
+
+The number is less than C<INT16_MIN>, the number is set to C<INT16_MIN>.
+
+And returns the number.
+
+=head2 String-to-int Conversion
+
+The String-to-int conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"int Type">.
+
+  # The String-to-int conversion
+  my $string : string = "Hello";
+  my $num : int = (int)$string;
+
+If the string is not defined, returns 0.
+
+If not, the string is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT32_MAX>, the number is set to C<INT32_MAX>.
+
+The number is less than C<INT32_MIN>, the number is set to C<INT32_MIN>.
+
+And returns the number.
+
+=head2 String-to-long Conversion
+
+The String-to-long conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"long Type">.
+
+  # The String-to-long conversion
+  my $string : string = "Hello";
+  my $num : long = (long)$string;
+
+If the string is not defined, returns 0.
+
+If not, the string is coverted to a number by the C<strtoll> function in the C language.
+
+And returns the number.
+
+=head2 String-to-float Conversion
+
+The String-to-float conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"float Type">.
+
+  # The String-to-float conversion
+  my $string : string = "Hello";
+  my $float : float = (float)$string;
+
+If the string is not defined, returns 0.
+
+If not, the string is coverted to a number by the C<strtof> function in the C language.
+
+And returns the number.
+
+=head2 String-to-double Conversion
+
+The String-to-double conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"double Type">.
+
+  # The String-to-double conversion
+  my $string : string = "Hello";
+  my $num : double = (double)$string;
+
+If the string is not defined, returns 0.
+
+If not, the string is coverted to a number by the C<strtod> function in the C language.
+
+And returns the number.
+
+=head2 String-to-byte[] Conversion
+
+The String-to-byte[] conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte[] Type">.
+
+  # The String-to-byte[] conversion
+  my $string : string = "Hello";
+  my $bytes : byte[] = (byte[])$string;
+
+A new byte[] object is created and all characters in the string are copied to the elements of byte[] object.
+
+=head2 byte[]-to-string Conversion
+
+The byte[]-to-string conversion is a L<type conversion|/"Type Conversion"> from the L<byte[] type|/"byte[] type"> to the L<string Type|/"string Type">.
+
+  # byte[]-to-string conversion
+  my $bytes : byte[] = new byte[3];
+  $bytes->[0] = 'a';
+  $bytes->[1] = 'b';
+  $bytes->[2] = 'c';
+  my $string : string = (string)$bytes;
+
+A new string is created and all elements in the C<byte[]> object are copied to the characters of the string.
+
+=head2 Boxing Conversion
+
+The boxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of L<numeric type|/"Numeric Types"> to the corresponding L<numeric object type|/"Numeric Object Types">.
+
+=head2 Unboxing Conversion
+
+The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of the L<numeric object type|/"Numeric Object Types"> to the value of the corresponding L<numeric type|/"Numeric Types">.
+
+=head2 Boolean Conversion
+
+The boolean conversion converts an operand to an int value that indicates a boolean value.
+
+This conversion is performed on the follwoing operands.
+
+The operand of the L<if statement|/"if Statement">:
+
+  if (CONDITION) {
+  
+  }
+
+The operand of the L<unless statement|/"unless Statement">:
+
+  unless (CONDITION) {
+  
+  }
+
+The second operand of the L<for statement|/"for Statement">:
+
+  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
+  
+  }
+
+The operand of the L<while statement|/"while Statement">:
+
+  while (CONDITION) {
+  
+  }
+
+The left and right operand of the L<logical AND operator|/"Logical AND Operator">:
+
+  CONDITION && CONDITION
+
+The left and right operand of the L<logical OR operator|/"Logical OR Operator">:
+
+  CONDITION || CONDITION
+
+The operand of the L<logical NOT operator|/"Logical NOT Operator">:
+
+  !CONDITION
+
+The boolean conversion returns the following value corresponding to the type of the condional operand.
+
+If the type is the int type, return the value.
+
+If the type is the L<undef|/"undef Type">, returns 0.
+
+If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE">, returns 1.
+
+If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, returns 0.
+
+If the type is an L<integer type within int|/"Integer Types within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
+
+And the following operation in the C language is performed on I<OPERAND> .
+
+  !!OPERAND
+
+Compilation Errors:
+
+The type of I<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types"> or an L<reference type|/"Reference Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+
+Examples:
+
+  if (1) {
+    # ok
+  }
+  
+  if (0) {
+    # not ok
+  }
+  
+  if (1.5) {
+    # ok
+  }
+  
+  if (0.0) {
+    # not ok
+  }
+  
+  if (true) {
+    # ok
+  }
+  
+  if (Bool->TRUE) {
+    # ok
+  }
+  
+  if (false) {
+    # not ok
+  }
+  
+  if (Bool->FALSE) {
+    # not ok
+  }
+  
+  my $object = SPVM::Int->new(1);
+  
+  if ($object) {
+    # ok
+  }
+  
+  $object = undef;
+  if ($object) {
+    # not ok
+  }
+  
+  my $value = 1;
+  my $ref = \$value;
+  
+  if ($ref) {
+    # ok
+  }
+  
+  if (undef) {
+    # not ok
+  }
+
+=head1 Implicite Type Conversion
+
+The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
+
+See L<"Assignment Requirement"> if you know when implicite type conversion is performed.
+
+Examples:
+  
+  # The implicite type conversion from int to double 
+  my $num : double = 5;
+  
+  # The implicite type conversion from double to Double
+  my $num_object : Double = 5.1;
+  
+  # The implicite type conversion from Double to double
+  my $num : double = Double->new(5.1);
+  
+  # The implicite type conversion from int to string
+  my $string : string = 4;
+
 =head1 Assignment Requirement
 
 The assignment requirement at compile-time is explained.
@@ -1468,6 +1954,47 @@ Examples:
     };
     my $muldim_array : Stringer[][] = [[$cb]];
   }
+
+=head1 Runtime Assignment Requirement
+
+The runtime type cheking is the type cheking that is performed at runtime.
+
+The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the runtime assignment requirement.
+
+The runtime assignment requirement is the assignment requirement at runtime.
+
+The L<isa operator|/"isa Operator"> checks the L<runtime assignment requirement/"Runtime Assignment Requirement">
+
+The runtime assignment requirement is false, an exception is thrown.
+
+If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|/"undef Type">, the runtime assignment requirement is true.
+
+If the type of the distribution is the same as the type of the source, the runtime assignment requirement is true.
+
+If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime assignment requirement is true.
+
+If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime assignment requirement is true.
+
+If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime assignment requirement is true.
+
+If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime assignment requirement is true.
+
+=begin html
+
+<table>
+  <tr><th>Runtime Assignment Requirement</th><th>To</th><th>From</th></tr>
+  <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
+  <tr><td>True</td><td>OBJECT_X</td><td>OBJECT_X</td></tr>
+  <tr><td>True</td><td>object</td><td>OBJECT_Y</td></tr>
+  <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td></tr>
+  <tr><td>True</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td></tr>
+  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td></tr>
+  <tr><td>True</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td></tr>
+  <tr><td>False</td><td>OBJECT_X</td><td>OTHER</td></tr>
+</table>
 
 =head1 Cast Requirement
 
@@ -2113,554 +2640,6 @@ Examples:
     };
     my $muldim_array : Stringer[][] = [[$cb]];
   }
-
-=head2 Type Conversion
-
-Type conversion is explained.
-
-=head2 Explicite Type Conversion
-
-The explicite type conversion is the L<type conversion|/"Type Conversion"> performed by a L<type cast|/"Type Cast"> expicitely.
-
-Examples:
-  
-  # The explicte type conversion from long to int 
-  my $num = (int)123L;
-  
-  # The explicte type conversion from byte[] to string
-  my $num = (string)new byte[3];
-  
-  # The explicte type conversion from string to byte[]
-  my $num = (byte[])"Hello";
-
-=head2 Implicite Type Conversion
-
-The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
-
-See L<"Assignment Requirement"> if you know when implicite type conversion is performed.
-
-Examples:
-  
-  # The implicite type conversion from int to double 
-  my $num : double = 5;
-  
-  # The implicite type conversion from double to Double
-  my $num_object : Double = 5.1;
-  
-  # The implicite type conversion from Double to double
-  my $num : double = Double->new(5.1);
-  
-  # The implicite type conversion from int to string
-  my $string : string = 4;
-
-=head2 Integer Promotional Conversion
-
-The integer promotional conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Types within int"> to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
-
-=head2 Numeric Widening Conversion
-
-The numeric widening conversion is a L<type conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Types"> to a large-order L<numeric type|/"Numeric Types">.
-
-See also L<numeric types order|/"Numeric Types Order"> abount the order of numeric type.
-
-The return value of a converion are same as the return value of the type cast of the C language.
-  
-  (TYPE)OPERAND
-
-B<byte to short:>
-
-  int8_t from = VALUE;
-  int16_t to = (int16_t)from;
-
-B<byte to int:>
-
-  int8_t from = VALUE;
-  int32_t to = (int32_t)from;
-
-B<byte to long:>
-
-  int8_t from = VALUE;
-  int64_t to = (int64_t)from;
-
-B<byte to float:>
-
-  int8_t from = VALUE;
-  float to = (float)from;
-
-B<byte to double:>
-
-  int8_t from = VALUE;
-  double to = (double)from;
-
-B<short to int:>
-
-  int16_t from = VALUE;
-  int32_t to = (int32_t)from;
-
-B<short to long:>
-
-  int16_t from = VALUE;
-  int64_t to = (int64_t)from;
-
-B<short to float:>
-
-  int16_t from = VALUE;
-  float to = (float)from;
-
-B<short to double:>
-
-  int16_t from = VALUE;
-  double to = (double)from;
-
-B<int to long:>
-
-  int32_t from = VALUE;
-  int64_t to = (int64_t)from;
-
-B<int to float:>
-
-  int32_t from = VALUE;
-  float to = (float)from;
-
-B<int to double:>
-
-  int32_t from = VALUE;
-  double to = (double)from;
-
-B<long to float:>
-
-  int64_t from = VALUE;
-  float to = (float)from;
-
-B<long to double:>
-
-  int64_t from = VALUE;
-  double to = (double)from;
-
-The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<array access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
-
-=head2 Numeric Narrowing Conversion
-
-The numeric narrowing conversion is a L<conversion|"Type Conversion"> from a wide L<numeric type|/"Numeric Types"> to a narrow L<numeric type|/"Numeric Types">.
-
-See also L<numeric types order|/"Numeric Types Order"> abount the order of numeric type.
-
-The return value of a converion are same as the return value of the type cast of the C language.
-  
-  (TYPE)OPERAND
-
-B<double to float:>
-
-  double from = value;
-  float to = (float)from;
-
-B<double to long:>
-
-  double from = value;
-  int64_t to = (int64_t)from;
-
-B<double to int:>
-
-  double from = value;
-  int32_t to = (int32_t)from;
-
-B<double to short:>
-
-  double from = value;
-  int16_t to = (int16_t)from;
-
-B<double to byte:>
-
-  double from = value;
-  int8_t to = (int8_t)from;
-
-B<float to long:>
-
-  float from = value;
-  int64_t to = (int64_t)from;
-
-B<float to int:>
-
-  float from = value;
-  int32_t to = (int32_t)from;
-
-B<float to short:>
-
-  float from = value;
-  int16_t to = (int16_t)from;
-
-B<float to byte:>
-
-  float from = value;
-  int8_t to = (int8_t)from;
-
-B<long to int:>
-
-  int64_t from = value;
-  int32_t to = (int32_)from;
-
-B<long to short:>
-
-  int64_t from = value;
-  int16_t to = (int16_t)from;
-
-B<long to byte:>
-
-  int64_t from = value;
-  int8_t to = (int8_t)from;
-
-B<int to short:>
-
-  int32_t from = value;
-  int16_t to = (int16_t)from;
-
-B<int to byte:>
-
-  int32_t from = value;
-  int16_t to = (int16_t)from;
-
-B<short to byte:>
-
-  int16_t from = value;
-  int8_t to = (int8_t)from;
-
-The numeric narrowing conversion is performed in some of the L<type casts|/"Type Cast">.
-
-=head2 Binary Numeric Conversion
-
-The binary numeric conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of I<LEFT_OPERAND> or I<RIGHT_OPERAND> of the binary operator that operands are L<numeric types|/"Numeric Types">.
-
-The following rules apply in order.
-
-1. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the L<double type|/"double Type">, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
-
-2. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the L<float type|/"float Type">, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
-
-3. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the long type, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
-
-4, Otherwise, both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are converted to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
-
-=head2 Numeric-to-String Conversion
-
-The numeric-to-string conversion is a L<type conversion|/"Type Conversion"> from a L<numeric type|/"Numeric Types"> to the L<string type|/"string Type">.
-
-  # The numeric-to-string conversion
-  my $byte = (byte)1;
-  my $short = (short)2;
-  my $int = 3;
-  my $long = 4L;
-  my $float = 2.5f;
-  my $double = 3.3;
-  
-  # The string is 1.
-  my $string_byte = (string)$byte;
-  
-  # The string is 2.
-  my $string_short = (string)$short;
-
-  # The string is 3.
-  my $string_int = (string)$int;
-
-  # The string is 4.
-  my $string_long = (string)$long;
-  
-  # The string is "2.5"
-  my $string_float = (string)$float;
-  
-  # The string is "3.3"
-  my $string_double = (string)$double;
-
-=head2 String-to-byte Conversion
-
-The String-to-byte conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte Type">.
-
-  # The String-to-byte conversion
-  my $string : string = "Hello";
-  my $num : byte = (byte)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtoll> function in the C language.
-
-The number is greater than C<INT8_MAX>, the number is set to C<INT8_MAX>.
-
-The number is less than C<INT8_MIN>, the number is set to C<INT8_MIN>.
-
-And returns the number.
-
-=head2 String-to-short Conversion
-
-The String-to-short conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"short Type">.
-
-  # The String-to-short conversion
-  my $string : string = "Hello";
-  my $num : short = (short)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtoll> function in the C language.
-
-The number is greater than C<INT16_MAX>, the number is set to C<INT16_MAX>.
-
-The number is less than C<INT16_MIN>, the number is set to C<INT16_MIN>.
-
-And returns the number.
-
-=head2 String-to-int Conversion
-
-The String-to-int conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"int Type">.
-
-  # The String-to-int conversion
-  my $string : string = "Hello";
-  my $num : int = (int)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtoll> function in the C language.
-
-The number is greater than C<INT32_MAX>, the number is set to C<INT32_MAX>.
-
-The number is less than C<INT32_MIN>, the number is set to C<INT32_MIN>.
-
-And returns the number.
-
-=head2 String-to-long Conversion
-
-The String-to-long conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"long Type">.
-
-  # The String-to-long conversion
-  my $string : string = "Hello";
-  my $num : long = (long)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtoll> function in the C language.
-
-And returns the number.
-
-=head2 String-to-float Conversion
-
-The String-to-float conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"float Type">.
-
-  # The String-to-float conversion
-  my $string : string = "Hello";
-  my $float : float = (float)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtof> function in the C language.
-
-And returns the number.
-
-=head2 String-to-double Conversion
-
-The String-to-double conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"double Type">.
-
-  # The String-to-double conversion
-  my $string : string = "Hello";
-  my $num : double = (double)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtod> function in the C language.
-
-And returns the number.
-
-=head2 String-to-byte[] Conversion
-
-The String-to-byte[] conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte[] Type">.
-
-  # The String-to-byte[] conversion
-  my $string : string = "Hello";
-  my $bytes : byte[] = (byte[])$string;
-
-A new byte[] object is created and all characters in the string are copied to the elements of byte[] object.
-
-=head2 byte[]-to-string Conversion
-
-The byte[]-to-string conversion is a L<type conversion|/"Type Conversion"> from the L<byte[] type|/"byte[] type"> to the L<string Type|/"string Type">.
-
-  # byte[]-to-string conversion
-  my $bytes : byte[] = new byte[3];
-  $bytes->[0] = 'a';
-  $bytes->[1] = 'b';
-  $bytes->[2] = 'c';
-  my $string : string = (string)$bytes;
-
-A new string is created and all elements in the C<byte[]> object are copied to the characters of the string.
-
-=head2 Boxing Conversion
-
-The boxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of L<numeric type|/"Numeric Types"> to the corresponding L<numeric object type|/"Numeric Object Types">.
-
-=head2 Unboxing Conversion
-
-The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of the L<numeric object type|/"Numeric Object Types"> to the value of the corresponding L<numeric type|/"Numeric Types">.
-
-=head2 Boolean Conversion
-
-The boolean conversion converts an operand to an int value that indicates a boolean value.
-
-This conversion is performed on the follwoing operands.
-
-The operand of the L<if statement|/"if Statement">:
-
-  if (CONDITION) {
-  
-  }
-
-The operand of the L<unless statement|/"unless Statement">:
-
-  unless (CONDITION) {
-  
-  }
-
-The second operand of the L<for statement|/"for Statement">:
-
-  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
-  
-  }
-
-The operand of the L<while statement|/"while Statement">:
-
-  while (CONDITION) {
-  
-  }
-
-The left and right operand of the L<logical AND operator|/"Logical AND Operator">:
-
-  CONDITION && CONDITION
-
-The left and right operand of the L<logical OR operator|/"Logical OR Operator">:
-
-  CONDITION || CONDITION
-
-The operand of the L<logical NOT operator|/"Logical NOT Operator">:
-
-  !CONDITION
-
-The boolean conversion returns the following value corresponding to the type of the condional operand.
-
-If the type is the int type, return the value.
-
-If the type is the L<undef|/"undef Type">, returns 0.
-
-If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE">, returns 1.
-
-If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, returns 0.
-
-If the type is an L<integer type within int|/"Integer Types within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
-
-And the following operation in the C language is performed on I<OPERAND> .
-
-  !!OPERAND
-
-Compilation Errors:
-
-The type of I<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types"> or an L<reference type|/"Reference Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
-
-Examples:
-
-  if (1) {
-    # ok
-  }
-  
-  if (0) {
-    # not ok
-  }
-  
-  if (1.5) {
-    # ok
-  }
-  
-  if (0.0) {
-    # not ok
-  }
-  
-  if (true) {
-    # ok
-  }
-  
-  if (Bool->TRUE) {
-    # ok
-  }
-  
-  if (false) {
-    # not ok
-  }
-  
-  if (Bool->FALSE) {
-    # not ok
-  }
-  
-  my $object = SPVM::Int->new(1);
-  
-  if ($object) {
-    # ok
-  }
-  
-  $object = undef;
-  if ($object) {
-    # not ok
-  }
-  
-  my $value = 1;
-  my $ref = \$value;
-  
-  if ($ref) {
-    # ok
-  }
-  
-  if (undef) {
-    # not ok
-  }
-
-=head1 Assignment Requirement for Interface Method Requirement
-
-This section describes assignment requirements used to check a return type and argument types for L<interface method requirement|SPVM::Document::Language::Class/"Interface Method Requirement">.
-
-(TODO)
-
-=head1 Runtime Assignment Requirement
-
-The runtime type cheking is the type cheking that is performed at runtime.
-
-The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the runtime assignment requirement.
-
-The runtime assignment requirement is the assignment requirement at runtime.
-
-The L<isa operator|/"isa Operator"> checks the L<runtime assignment requirement/"Runtime Assignment Requirement">
-
-The runtime assignment requirement is false, an exception is thrown.
-
-If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|/"undef Type">, the runtime assignment requirement is true.
-
-If the type of the distribution is the same as the type of the source, the runtime assignment requirement is true.
-
-If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime assignment requirement is true.
-
-If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime assignment requirement is true.
-
-If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime assignment requirement is true.
-
-If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime assignment requirement is true.
-
-=begin html
-
-<table>
-  <tr><th>Runtime Assignment Requirement</th><th>To</th><th>From</th></tr>
-  <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
-  <tr><td>True</td><td>OBJECT_X</td><td>OBJECT_X</td></tr>
-  <tr><td>True</td><td>object</td><td>OBJECT_Y</td></tr>
-  <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td></tr>
-  <tr><td>False</td><td>OBJECT_X</td><td>OTHER</td></tr>
-</table>
 
 =end html
 

@@ -520,10 +520,6 @@ An interface cannnot have L<field definitions|/"Field Definition">. If so, an co
 
 An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, an compilation error occurs.
 
-=head3 Interface Method Requirement
-
-(TODO)
-
 =head2 Duck Typing
 
 The duck typing is supported.
@@ -549,6 +545,12 @@ The duck typing is supported.
 
 The Point class have no interfaces, but An object of the Point class can be assigned to a Stringable interface
 because the to_string method in the Point class has the method compatibility of the to_string method in the Strigable interface.
+
+=head3 Interface Requirement
+
+(TODO)
+
+This section describes assignment requirements used to check a return type and argument types for L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement">.
 
 =head2 Multi-Numeric Types Definition
 
@@ -578,7 +580,7 @@ See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> t
 
 =head2 Default Loaded Classes
 
-The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|SPVM::Document::Language::Types/"Type Conversion">.
+The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|SPVM::Document::Language::Types/"Type Conversions">.
 
 =over 2
 
@@ -1410,11 +1412,11 @@ An instance method in a parent class can be overridden by an instance method wit
     }
   }
 
-The overridding method in the child class must satisfy the L<interface method requirement|/"Interface Method Requirement"> to the parent method.
+The overridding method in the child class must satisfy the L<interface requirement|/"Interface Requirement"> to the parent method.
 
 Compilation Errors:
 
-The overridding method in the child class must satisfy the L<interface method requirement|/"Interface Method Requirement"> to the parent method, otherwise a compilation error occurs.
+The overridding method in the child class must satisfy the L<interface requirement|/"Interface Requirement"> to the parent method, otherwise a compilation error occurs.
 
 =head3 Anon Method
 
