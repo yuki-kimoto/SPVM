@@ -1632,11 +1632,9 @@ Examples:
 
 The operation of getting local variable gets the value of a L<local variable|SPVM::Document::Language::Class/"Local Variable">.
 
-  LOCAL_VARIABLE_ACCESS
+  $var
 
-I<LOCAL_VARIABLE_ACCESS> is a L<local variable access|SPVM::Document::Language::Class/"Local Variable Access">.
-
-The local variable specified by I<LOCAL_VARIABLE_ACCESS> is named I<$var>.
+I<$var> is a L<local variable access|SPVM::Document::Language::Class/"Local Variable Access">.
 
 This operation returns the value of I<$var>.
 
@@ -1654,15 +1652,11 @@ Examples:
 
 The operation of setting a local variable sets a L<local variable|SPVM::Document::Language::Class/"Local Variable">.
 
-  LOCAL_VARIABLE_ACCESS = OPERAND
+  $var = OPERAND
 
-I<LOCAL_VARIABLE_ACCESS> is a L<local variable access|SPVM::Document::Language::Class/"Local Variable Access">.
-
-The local variable specified by I<LOCAL_VARIABLE_ACCESS> is named I<$var>.
+I<$var> is a L<local variable access|SPVM::Document::Language::Class/"Local Variable Access">.
 
 This operation sets I<$var> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value after setting.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 The return value is the type of I<$var>.
 
@@ -1680,11 +1674,9 @@ head3 Getting a Class Variable
 
 The operation of getting a class variable gets the value of a L<class variable|SPVM::Document::Language::Class/"Class Variable">.
 
-  CLASS_VARIABLE_ACCESS
+  $VAR
 
-I<CLASS_VARIABLE_ACCESS> is a L<class variable access|SPVM::Document::Language::Class/"Class Variable Access">.
-
-The class variable specified by I<CLASS_VARIABLE_ACCESS> is named I<$VAR>.
+I<$VAR> is a L<class variable access|SPVM::Document::Language::Class/"Class Variable Access">.
 
 This operation returns the value of I<$VAR>.
 
@@ -1718,15 +1710,11 @@ Examples:
 
 The operation of setting a class variable operator sets a L<class variable|SPVM::Document::Language::Class/"Class Variable">.
 
-  CLASS_VARIABLE_ACCESS = OPERAND
+  $VAR = OPERAND
 
-I<CLASS_VARIABLE_ACCESS> is a L<class variable access|SPVM::Document::Language::Class/"Class Variable Access">.
-
-The class variable specified by I<CLASS_VARIABLE_ACCESS> is named I<$VAR>.
+I<$VAR> is a L<class variable access|SPVM::Document::Language::Class/"Class Variable Access">.
 
 This operation sets I<$VAR> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value after setting.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 The return type is the type of I<$VAR>.
 
@@ -1758,13 +1746,9 @@ Examples:
 
 The operation of getting an array element gets the element of an L<array|SPVM::Document::Language::Types/"Array">.
 
-  ARRAY_ACCESS
+  ARRAY->[INDEX]
 
-I<ARRAY_ACCESS> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
-
-The array specified by I<CLASS_VARIABLE_ACCESS> is named I<ARRAY>.
-
-The index specified by I<CLASS_VARIABLE_ACCESS> is named I<INDEX>.
+I<ARRAY->[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -1794,19 +1778,13 @@ Examples:
 
 The operation of setting array element sets the element of the array.
 
-  ARRAY_ACCESS = OPERAND
+  ARRAY->[INDEX] = OPERAND
 
-I<ARRAY_ACCESS> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
-
-The array specified by I<CLASS_VARIABLE_ACCESS> is named I<ARRAY>.
-
-The index specified by I<CLASS_VARIABLE_ACCESS> is named I<INDEX>.
+I<ARRAY->[INDEX]> is an L<array access|SPVM::Document::Language::Class/"Array Access">.
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
 
 And sets the element of I<ARRAY> at I<INDEX> using the L<assignment operator|/"Assignment Operator">, and returns the element after setting.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 Exceptions:
 
@@ -1832,9 +1810,9 @@ Examples:
 
 The operation of getting field gets the value of a field.
 
-  FIELD_ACCESS
+  INVOCANT->{FIELD_NAME}
 
-I<FIELD_ACCESS_ACCESS> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
 
 The operation of getting field gets the field of the object. This is one syntax of the L<field access|/"Field Access">.
 
@@ -1857,9 +1835,9 @@ The operation of setting field sets the field of the object. This is one syntax 
 
   INVOCANT->{FIELD_NAME} = OPERAND
 
- using the L<assignment operator|/"Assignment Operator">.
+I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
+ using the L<assignment operator|/"Assignment Operator">.
 
 The type of invocant is a class type.
 
@@ -1868,6 +1846,8 @@ The return value is the value after the setting.
 The return type is the field type.
 
 Compilation Errors:
+
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -1882,6 +1862,8 @@ The operation of getting multi-numeric field gets the field of the L<multi-numer
 
   INVOCANT->{FIELD_NAME}
 
+I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+
 The invocant is the multi-numeric type.
   
 Getting Multi-Numeric Field operator returns the field value in the multi-numeric value.
@@ -1890,7 +1872,7 @@ The retrun type is the type of the field.
 
 Compilation Errors:
 
-If the field names does not found in the class, a compilation error occurs
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
 Examples:
 
@@ -1903,24 +1885,22 @@ The operation of setting multi-numeric field sets the field of the L<multi-numer
 
   INVOCANT->{FIELD_NAME} = RIGHT_OPERAND
 
+I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+
 
  using the L<assignment operator|/"Assignment Operator">.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 The invocant is the multi-numeric type.
 
 Setting Multi-Numeric Field operator returns the value of the field after setting. 
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
-
 The return type is the field type.
 
 Compilation Errors:
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
-If the field names does not found in the class, a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
 Examples:
 
@@ -1933,6 +1913,8 @@ The operation of getting a referenced multi-numeric field gets the field of the 
 
   INVOCANT->{FIELD_NAME}
 
+I<INVOCANT->{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+
 The invocant is L</"Multi-Numeric Reference Type">.
 
 The operation of getting a referenced multi-numeric field returns the field value in the multi-numeric value.
@@ -1941,7 +1923,7 @@ The retrun type is the type of the field.
 
 Compilation Errors:
 
-If the field names does not found in the class, a compilation error occurs
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
 Examples:
 
@@ -1959,19 +1941,15 @@ The operation of setting a referenced multi-numeric field sets the field of the 
 
 The invocant is L</"Multi-Numeric Reference Type">.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
-
 The operation of setting a referenced multi-numeric field returns the value of the field after setting.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 The return type is the field type.
 
 Compilation Errors:
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
 
-If the field names does not found in the class, a compilation error occurs
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
 Examples:
 
@@ -1985,12 +1963,9 @@ The operation of setting the referenced value sets the actual value from Referen
 
   $VARIABLE = OPERAND
 
-
  using the L<assignment operator|/"Assignment Operator">.
 
 Setting a value with Dereference returns the set value.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 Compilation Errors:
 
@@ -2015,37 +1990,36 @@ Examples:
 
 =head3 Getting the Exception Variable
 
-The operation of setting exception variable gets the value of the L<exception variable|/"Exception Variable">.
+The operation of getting the exception variable gets the string stored in the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 
   $@
 
-The return value is the value of L<exception variable|/"Exception Variable">.
+This operator returns the string stored in the exception variable.
 
 The return type is the string type.
 
 Examples:
   
-  # Getting the exception variable
+  # Examples of getting the exception variable
   my $message = $@;
 
 =head3 Setting the Exception Variable
 
-The operation of setting the exception variable sets the value of L</"Exception Variable">.
+The operation of setting the exception variable sets the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">.
 
   $@ = OPERAND
 
- using the L<assignment operator|/"Assignment Operator">.
-
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
-
-The type of the assigned value must be the string type.
-
-The return value is the value after the setting.
+This operator sets the exception variable to I<OPERAND> using the L<assignment operator|/"Assignment Operator">.
 
 The return type is the string type.
 
+Compilation Errors:
+
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+
 Examples:
 
+  # Examples of setting the exception variable
   $@ = "Error";
 
 =head2 Method Call

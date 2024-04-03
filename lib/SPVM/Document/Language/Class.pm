@@ -1661,50 +1661,43 @@ See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the s
 
 The local variable access has the following syntax.
 
-  $VARIABLE_NAME
+  $var
 
-I<VARIABLE_NAME> must be a L<local variable name|"Local Variable Name">.
+I<$var> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
-If local variables with the same name are declared in different scopes, the local variable declared in the inner scope takes precedence.
+If local variables with the same name are declared in different scopes, the local variable declared in the inner scope is accessed.
 
-If a class variable with the same name as a local variable is defined, the local variable takes precedence.
+If a class variable with the same name as a local variable is defined, the local variable is accessed.
 
 See also L</"Getting a Local Variable"> and L</"Setting a Local Variable"> about the way to set and set a local variable.
 
 Compilation Errors:
 
-I<$VARIABLE_NAME> must be a valid local variable name, otherwise a compilation error occurs.
+I<$var> must be a valid local variable name, otherwise a compilation error occurs.
 
-The declaration of I<$VARIABLE_NAME> must exists before I<$var>, otherwise a compilation error occurs.
+The declaration of I<$var> must exists before I<$var>, otherwise a compilation error occurs.
 
 =head4 Class Variable Access
 
 The class variable access has the following syntax.
 
-  $CLASS_VARIABLE_NAME_WITHOUT_SIGIL
-  $CLASS_NAME::CLASS_VARIABLE_NAME_WITHOUT_SIGIL
+  $VAR
 
-The syntax of the class variable access is able to be used in method blocks.
+I<$VAR> must be a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name">.
 
-I<CLASS_VARIABLE_NAME_WITHOUT_SIGIL> is the class variable name without the sigil C<$>, such as C<VAR> in the case of C<$VAR>.
-
-If C<CLASS_NAME::> is ommited, C<CLASS_NAME::> is set to the name of the L<outmost class|/"Outmost Class">.
-
-The class specified by the C<CLASS_NAME> must be loaded.
-
-The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>.
-
-The class variable access is an L<operator|SPVM::Document::Language::Operators/"Operators"> to set or get a class variable.
-
-See the operation of the L<getting a class varialbe|SPVM::Document::Language::Operators/"Getting a Class Variable"> and the operation of the L<setting a class varialbe|SPVM::Document::Language::Operators/"Setting a Class Variable">.
+If the class name is ommited, the class is set to the L<outmost class|/"Outmost Class">.
 
 See also L</"Getting a Class Variable"> and L</"Setting a Class Variable"> about the way to set and set a class variable.
 
 Compilation Errors:
 
-The class specified by the C<CLASS_NAME> must be loaded, otherwise a compilation error occurs.
+I<$VAR> must be a valid class variable name, otherwise a compilation error occurs.
 
-The class variable I<$CLASS_VARIABLE_NAME_WITHOUT_SIGIL> must be defined in the class specified by the C<CLASS_NAME>, otherwise a compilation error occurs.
+The class specified by I<$VAR> must be loaded, otherwise a compilation error occurs.
+
+The class variable relative name specified by I<$VAR> must be defined in the class specified by I<$VAR>, otherwise a compilation error occurs.
+
+The L<outmost class|/"Outmost Class"> must be allowed access to I<$VAR>, otherwise a compilation error occurs.
 
 =head3 Array Access
 
