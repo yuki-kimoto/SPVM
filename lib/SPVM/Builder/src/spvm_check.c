@@ -478,14 +478,14 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
               SPVM_TYPE* constant_type = SPVM_CHECK_get_type(compiler, op_arg_default);
               int32_t need_implicite_conversion = 0;
               int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, arg_type, op_arg_default);
-              int32_t assignability = SPVM_TYPE_satisfy_assignment_requirement(
+              int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
                 &need_implicite_conversion, allow_narrowing_conversion
               );
               
-              if (!assignability) {
+              if (!satisfy_assignment_requirement) {
                 SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be able to be assigned to the argument.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
                 return;
               }
@@ -1999,16 +1999,16 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               int32_t need_implicite_conversion = 0;
               int32_t allow_narrowing_conversion = 0;
               
-              int32_t assignability = SPVM_TYPE_satisfy_assignment_requirement(
+              int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
                 compiler,
                 type->basic_type->id, type->dimension, type->flag,
                 operand_type->basic_type->id, operand_type->dimension, operand_type->flag,
                 &need_implicite_conversion, allow_narrowing_conversion
               );
               
-              int32_t assignability_without_implicite_conversion = assignability && !need_implicite_conversion;
+              int32_t satisfy_assignment_requirement_without_implicite_conversion = satisfy_assignment_requirement && !need_implicite_conversion;
               
-              if (assignability_without_implicite_conversion) {
+              if (satisfy_assignment_requirement_without_implicite_conversion) {
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                 SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
                 SPVM_OP_replace_op(compiler, op_stab, op_constant_true);
@@ -3997,14 +3997,14 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
   int32_t need_implicite_conversion = 0;
   int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, dist_type, op_src);
   
-  int32_t assignability = SPVM_TYPE_satisfy_assignment_requirement(
+  int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
     &need_implicite_conversion, allow_narrowing_conversion
   );
     
-  if (!assignability) {
+  if (!satisfy_assignment_requirement) {
     SPVM_COMPILER_error(compiler, "The implicite type conversion from \"%s\" to \"%s\" in %s is not allowed.\n  at %s line %d", src_type_name, dist_type_name, place, file, line);
     return NULL;
   }
