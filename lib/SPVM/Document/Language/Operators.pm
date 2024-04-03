@@ -2280,11 +2280,11 @@ Examples:
 
 =head2 basic_type_id Operator
 
-The C<basic_type_id> operator gets the basic type ID from a type.
+The C<basic_type_id> operator gets the basic type ID of a type.
 
   basic_type_id TYPE
 
-The return value is the basic type ID.
+This operator returns the basic type ID of the type I<TYPE>.
 
 The return type is the int type.
 

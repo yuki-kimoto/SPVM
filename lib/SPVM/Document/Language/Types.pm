@@ -925,19 +925,6 @@ The type width is the required length of the L<runtime stack|SPVM::Document::Nat
 
 If the type is a multi-numeric type, it is the length of the fields, owhterwise it is 1.
 
-=head1 Type Inference
-
-Omitting the L<type|/"Types"> when the L<local variable declaration|/"Local Variable Declaration"> by type Inference can. Type Inference is always performed by the type on the Right side of Assignment Operator.
-
-  # int
-  my $num = 1;
-  
-  # double
-  my $num = 1.0;
-  
-  # Foo
-  my $foo = new Foo;
-
 =head1 Assignment Requirement
 
 The assignment requirement at compile-time is explained.

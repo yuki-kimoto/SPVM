@@ -1657,6 +1657,19 @@ The local variable declaration returns the value of the local variable. The retu
 
 See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
 
+=head3 Type Inference
+
+If the type of the local variable declaration is ommited, the type of the right operand of the assignment operator is set to it. This is called type inference.
+
+  # int
+  my $num = 1;
+  
+  # double
+  my $num = 1.0;
+  
+  # Foo
+  my $foo = new Foo;
+
 =head3 Local Variable Access
 
 The local variable access has the following syntax.
