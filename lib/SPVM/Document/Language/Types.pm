@@ -1955,47 +1955,6 @@ Examples:
     my $muldim_array : Stringer[][] = [[$cb]];
   }
 
-=head1 Runtime Assignment Requirement
-
-The runtime type cheking is the type cheking that is performed at runtime.
-
-The L<type cast|/"Type Cast"> operators that operand is an L<object type|/"object Type"> performe the runtime type checking by the rule of the runtime assignment requirement.
-
-The runtime assignment requirement is the assignment requirement at runtime.
-
-The L<isa operator|/"isa Operator"> checks the L<runtime assignment requirement/"Runtime Assignment Requirement">
-
-The runtime assignment requirement is false, an exception is thrown.
-
-If the type of the distribution is an L<object type|/"Object Types"> and the type of the source is L<undef|/"undef Type">, the runtime assignment requirement is true.
-
-If the type of the distribution is the same as the type of the source, the runtime assignment requirement is true.
-
-If the type of the distribution is the L<any object type|/"Any Object Type"> C<object> and the type of the source is an L<object type|/"Object Types">, the runtime assignment requirement is true.
-
-If the type of the distribution is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of the source is an L<object array type|/"Object Array Type">, the runtime assignment requirement is true.
-
-If the type of distribution is an L<class type|/"Class Type">, an L<class array type|/"Class Array Type">, an L<class multi-dimensional array type|/"Class Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution is a super class of the basic type of the source, the runtime assignment requirement is true.
-
-If the type of distribution is an L<interface type|/"Interface Type">, an L<interface array type|/"Interface Array Type">, an L<interface multi-dimensional array type|/"Interface Multi-Dumensional Array Type"> and the dimention of the type of the distribution is the same as the dimention of the type of the source and the basic type of distribution has the interface of the basic type of the source, the runtime assignment requirement is true.
-
-=begin html
-
-<table>
-  <tr><th>Runtime Assignment Requirement</th><th>To</th><th>From</th></tr>
-  <tr><td>True</td><td>OBJECT_X</td><td>undef</td></tr>
-  <tr><td>True</td><td>OBJECT_X</td><td>OBJECT_X</td></tr>
-  <tr><td>True</td><td>object</td><td>OBJECT_Y</td></tr>
-  <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td></tr>
-  <tr><td>False</td><td>OBJECT_X</td><td>OTHER</td></tr>
-</table>
-
 =head1 Cast Requirement
 
 The cast requirement at compile-time is explained.
@@ -2180,7 +2139,7 @@ Examples:
 
 If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the cast requirement is true.
 
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
@@ -2223,7 +2182,7 @@ The type of I<RIGHT_OPERAND> is other than above, the cast requirement is false.
 
 If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
-If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2259,7 +2218,7 @@ If the type of I<RIGHT_OPERAND> is a super class of the type of left operand, th
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2298,7 +2257,7 @@ If the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class h
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2369,7 +2328,7 @@ Otherwise, the cast requirement is false.
 
 If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2403,7 +2362,7 @@ If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any o
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2434,7 +2393,7 @@ If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any o
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2473,7 +2432,7 @@ If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any o
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2516,9 +2475,9 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Type">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2553,7 +2512,7 @@ If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the L<runtime type checking|/"Runtime Assignment Requirement"> is performed.
+If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
