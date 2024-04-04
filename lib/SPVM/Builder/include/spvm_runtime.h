@@ -23,7 +23,7 @@ struct spvm_runtime {
   
   int32_t basic_types_length;
   
-  SPVM_HASH* assignability_symtable; 
+  SPVM_HASH* assignment_requirement_symtable; 
   
   SPVM_MUTEX* mutex;
   

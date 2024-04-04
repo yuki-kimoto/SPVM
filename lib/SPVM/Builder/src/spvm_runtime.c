@@ -29,7 +29,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_new() {
   
   runtime->basic_type_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
   
-  runtime->assignability_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
+  runtime->assignment_requirement_symtable = SPVM_HASH_new_hash_permanent(runtime->allocator, 0);
   
   int32_t mutex_size = SPVM_MUTEX_size();
   void* mutex = SPVM_ALLOCATOR_alloc_memory_block_permanent(runtime->allocator, mutex_size);
