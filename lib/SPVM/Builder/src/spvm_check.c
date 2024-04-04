@@ -478,11 +478,12 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
               SPVM_TYPE* constant_type = SPVM_CHECK_get_type(compiler, op_arg_default);
               int32_t need_implicite_conversion = 0;
               int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, arg_type, op_arg_default);
+              int32_t interface_match = 0;
               int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
                 constant_type->basic_type->id, constant_type->dimension, constant_type->flag,
-                &need_implicite_conversion, allow_narrowing_conversion
+                &need_implicite_conversion, allow_narrowing_conversion, interface_match
               );
               
               if (!satisfy_assignment_requirement) {
@@ -3982,23 +3983,23 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
   int32_t src_type_basic_type_id = src_type->basic_type->id;
   int32_t src_type_dimension = src_type->dimension;
   int32_t src_type_flag = src_type->flag;
-
+  
   const char* src_type_name = SPVM_TYPE_new_type_name(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag);
   const char* dist_type_name = SPVM_TYPE_new_type_name(compiler, dist_type_basic_type_id, dist_type_dimension, dist_type_flag);
-
+  
   if (SPVM_TYPE_is_void_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
     SPVM_COMPILER_error(compiler, "The void type cannnot be assigned in %s.\n  at %s line %d", place, file, line);
     return NULL;
   }
-
+  
   int32_t need_implicite_conversion = 0;
   int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, dist_type, op_src);
-  
+  int32_t interface_match = 0;
   int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
-    &need_implicite_conversion, allow_narrowing_conversion
+    &need_implicite_conversion, allow_narrowing_conversion, interface_match
   );
     
   if (!satisfy_assignment_requirement) {
