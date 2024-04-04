@@ -93,6 +93,8 @@ class TestCase::Operator::String {
       }
     }
     
+    $@ = undef;
+    
     return 1;
   }
   

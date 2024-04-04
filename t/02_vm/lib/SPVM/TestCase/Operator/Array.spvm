@@ -202,17 +202,19 @@ class TestCase::Operator::Array {
   static method array_length_undef : int () {
     
     my $nums : int[] = undef;
-
+    
     eval {
       @$nums;
     };
     
     
-    if ($@) {
-      return 1;
+    unless ($@) {
+      return 0;
     }
     
-    return 0;
+    $@ = undef;
+    
+    return 1;
   }
 
   static method array : int () {
@@ -230,18 +232,18 @@ class TestCase::Operator::Array {
     
     my $nums = new int[3];
     $nums->[0] = 345;
-
+    
     return $nums->[0];
   }
-
+  
   static method array_set_and_get_array_element_last : int () {
     
     my $nums = new int[3];
     $nums->[2] = 298;
-
+    
     return $nums->[2];
   }
-
+  
   static method array_culcurate_sum_by_for : int () {
     
     my $nums = new int[3];
@@ -253,10 +255,10 @@ class TestCase::Operator::Array {
     for (my $i = 0; $i < @$nums; $i++) {
       $total = $total + $nums->[$i];
     }
-
+    
     return $total;
   }
-
+  
   static method array_init_byte : int () {
     my $nums = [(byte)1, (byte)2, (byte)Fn->INT8_MAX()];
     
@@ -285,7 +287,7 @@ class TestCase::Operator::Array {
     my $nums = [1, 2, 3];
     my $nums2 : int[];
     $nums2 = [4, 5, 6];
-
+    
     my $num3 = [
       [1, 2, 3],
       [4, 5, 6]

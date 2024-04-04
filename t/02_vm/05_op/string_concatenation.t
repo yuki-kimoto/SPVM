@@ -7,23 +7,12 @@ use utf8;
 
 use Test::More;
 
-use SPVM 'TestCase::Operator::String';
-
 use SPVM 'TestCase::Operator::Concat';
 
+my $api = SPVM::api;
+
 # Start objects count
-my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
-
-# String access, make_read_only, is_read_only
-{
-  ok(SPVM::TestCase::Operator::String->string_access);
-}
-
-{
-  ok(SPVM::TestCase::Operator::String->string_length);
-  ok(SPVM::TestCase::Operator::String->basic);
-  ok(SPVM::TestCase::Operator::String->new_string_len);
-}
+my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # Concat
 {
@@ -40,7 +29,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 }
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;
