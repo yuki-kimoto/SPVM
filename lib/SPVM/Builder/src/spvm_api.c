@@ -3459,9 +3459,9 @@ int32_t SPVM_API_elem_isa(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, 
   int32_t array_type_dimension = array->type_dimension;
   
   assert(array_type_dimension > 0);
-  int32_t runtime_assignability = SPVM_API_isa(env, stack, element, array_basic_type, array_type_dimension - 1);
-
-  return runtime_assignability;
+  int32_t elem_isa = SPVM_API_isa(env, stack, element, array_basic_type, array_type_dimension - 1);
+  
+  return elem_isa;
 }
 
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_BASIC_TYPE* basic_type, int32_t type_dimension) {
