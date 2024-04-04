@@ -9,6 +9,8 @@
 #include "spvm_api_type.h"
 #include "spvm_api_basic_type.h"
 
+#include "spvm_compiler.h"
+#include "spvm_type.h"
 #include "spvm_allocator.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_basic_type.h"
@@ -161,50 +163,25 @@ int32_t SPVM_API_TYPE_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE*
   
   SPVM_MUTEX_reader_lock(runtime_mutex);
   
-  int32_t assignability = (intptr_t)SPVM_HASH_get(runtime->assignment_requirement_symtable, assinability_key, strlen(assinability_key));
+  int32_t can_assign = (intptr_t)SPVM_HASH_get(runtime->assignment_requirement_symtable, assinability_key, strlen(assinability_key));
   
   SPVM_MUTEX_reader_unlock(runtime_mutex);
   
-  if (assignability > 0) {
+  if (can_assign > 0) {
     isa = 1;
   }
-  else if (assignability < 0) {
+  else if (can_assign < 0) {
     isa = 0;
   }
   else {
     
-    int32_t dist_basic_type_category = dist_basic_type->category;
-    int32_t src_basic_type_category = src_basic_type->category;
+    SPVM_COMPILER* compiler = runtime->compiler;
     
-    if (dist_basic_type->id == src_basic_type->id && dist_type_dimension == src_type_dimension) {
-      isa = 1;
-    }
-    else if (dist_type_dimension == 0 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
-      assert(src_type_dimension >= 0);
-      isa = 1;
-    }
-    else if (dist_type_dimension == 1 && dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT) {
-      if (src_type_dimension >= 1) {
-        isa = 1;
-      }
-      else {
-        isa = 0;
-      }
-    }
-    else if (dist_type_dimension == src_type_dimension) {
-      if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-        isa = SPVM_API_BASIC_TYPE_has_interface(runtime, src_basic_type, dist_basic_type);
-      }
-      else if (dist_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
-        isa = SPVM_API_BASIC_TYPE_is_super_class(runtime, dist_basic_type, src_basic_type);
-      }
-      else {
-        isa = 0;
-      }
-    }
-    else {
-      isa = 0;
-    }
+    isa = SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion(
+      compiler,
+      dist_basic_type->id, dist_type_dimension, 0,
+      src_basic_type->id, src_type_dimension, 0
+    );
     
     SPVM_MUTEX_lock(runtime_mutex);
     

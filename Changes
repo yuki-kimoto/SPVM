@@ -3,6 +3,8 @@
     * Fix and improve the document of Operators.
     * Fix and improve the document of Class.
     * The heading "Array Access" is changed to "Element Access".
+  [Internal Changes]
+    * The type check logic is simplified and it is shared with the compilation time and runtime.
 0.989097 2023-04-02
   [Imcompatible Changes]
     * The copy operator does not thrown an exception, and causes an compilation error instead of an exception.
