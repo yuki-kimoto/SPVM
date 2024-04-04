@@ -185,6 +185,12 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion(
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag
 );
 
+int32_t SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion_with_interface_match (
+  SPVM_COMPILER* compiler,
+  int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
+  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag
+);
+
 int32_t SPVM_TYPE_satisfy_assignment_requirement_for_interface_method (
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
