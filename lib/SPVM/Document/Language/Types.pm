@@ -170,22 +170,22 @@ Examples:
     
   }
 
-=head2 Multi-Number
+=head2 Multi-Numeric Number
 
-A multi-number is a value that represents continuous multiple numbers in memory.
+A multi-numeric number is a value that represents continuous multiple numbers in memory.
 
 =head2 Multi-Numeric Array
 
-The L<multi-numbers|/"Multi-Number"> can be the elements of the L<array|/"Array">.
+The L<multi-numeric numbers|/"Multi-Numeric Number"> can be the elements of the L<array|/"Array">.
 
   my $zs = new Complex_2d[3];
 
-The elements of the multi-numeric array is continuous multi-numbers.
+The elements of the multi-numeric array is continuous multi-numeric numbers.
   
   | Complex_2d  | Complex_2d  | Complex_2d  |
   |  re  |  im  |  re  |  im  |  re  |  im  |
 
-See the following sections about operations for multi-numbers.
+See the following sections about operations for multi-numeric numbers.
 
 See L</"Getting Array Element"> to get the element of the array.
 
@@ -566,7 +566,7 @@ If a invalid type is assigned, a compilation error occurs.
 
 =head2 Multi-Numeric Types
 
-The multi-numeric type is the type to represent a L<multi-number|/"Multi-Number">.
+The multi-numeric type is the type to represent a L<multi-numeric number|/"Multi-Numeric Number">.
 
 The multi-numeric type can be used as the L<type|/"Types"> of the L<local variable declaration|/"Local Variable Declaration">.
 
@@ -660,13 +660,13 @@ The list of the multi-numeric type suffix.
 
 =head3 Multi-Numeric Types Field Access
 
-The multi-numeric type field access is an syntax to access the field of the multi-number.
+The multi-numeric type field access is an syntax to access the field of the multi-numeric number.
 
   MULTI_NUMERIC_VALUE->{FIELD_NAME}
 
-See L</"Getting Multi-Numeric Field"> to get the field of the multi-number.
+See L</"Getting Multi-Numeric Field"> to get the field of the multi-numeric number.
 
-See L</"Setting Multi-Numeric Field"> to set the field of the multi-number.
+See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric number.
 
 =head2 Reference Type
 
