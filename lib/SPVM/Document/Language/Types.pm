@@ -10,47 +10,88 @@ This document describes types in the SPVM language.
 
 This section describes some typical data.
 
-=head2 Numeric Value
+=head2 Number
+
+The data of L<numeric types|/"Numeric Types"> is called number.
+
+Normally, numbers are created by L<numeric literals|SPVM::Document::Language::Tokenization/"Numeric Literal">.
+
+  # byte - 8bit signed integer
+  my $number = (byte)1;
+  
+  # short - 16bit signed integer
+  my $number = (short)1;
+  
+  # int - 32bit signed integer
+  my $number = 1;
+  
+  # long - 64bit signed integer
+  my $number = 1L;
+  
+  # float - 32bit floating point
+  my $number = 1.5f;
+  
+  # double - 64bit floating point
+  my $number = 1.0;
+
+A character created by the L<character literal|SPVM::Document::Language::Tokenization/"Character Literal"> is a number of the byte type.
+  
+  # A number of the byte type created by a character literal
+  my $char = 'a';
+
+See the following section operations for numbers.
+
+=over
+
+=item * L<Numeric Operators|SPVM::Document::Language::Operators/"Numeric Operators">
+
+=item * L<Numeric Comparison Operators|SPVM::Document::Language::Operators/"Numeric Comparison Operators">
+
+=back
+
+=head3 Internal Representation of Negative Integers
+
+Negative integers are represented by L<two's complement|https://en.wikipedia.org/wiki/Two%27s_complement>.
 
 =head2 String
 
-SPVM has the L<string type|/"string Type">. A string is created by L</"String Literal"> L</"String Creating Operator"> or L</"Type Convertion"> to the string type.
+The data of the L<string type|/"string Type"> is called string.
+
+Normally, a string is created by a L<string literal|SPVM::Document::Language::Tokenization/"String Literal"> or the L<new_string_len operator|SPVM::Document::Language::Operators/"new_string_len Operator">.
   
-  # Create a string using a string literal
+  # A string created by a string literal
   my $string = "Hello";
+  my $char = $string->[0];
   
-  # Create a string using a string creation operator
+  # A mutable string created by the new_string_len operator
   my $string = new_string_len 3;
-  
-  # Create a string using the type cast to the string type
-  my $bytes = [(byte)93, 94, 95];
-  my $string = (string)$bytes;
+  $string->[0] = 'a';
 
-The each charcter can be get using C<-E<gt>[]>.
+See the following sections about operations for strings.
 
-  # String
-  my $string = "Hello";
-  my $char0 = $string->[0];
-  my $char1 = $string->[1];
-  my $char2 = $string->[2];
+=over 2
 
-By default, each character cannnot be set.
-  
-  # a compilation error.
-  $string_const->[0] = 'd';
+=item * L<length Operator|SPVM::Document::Language::Operators/"length Operator">
 
-If you use C<mutable type qualifier|/"mutable Type Qualifier">, each character can be set.
+=item * L<String Concatenation Operator|SPVM::Document::Language::Operators/"String Concatenation Operator">
 
-  my $string_mut = (mutable string)$string;
-  $string_mut->[0] = 'd';
+=item * L<Getting a Character|SPVM::Document::Language::Operators/"Getting a Character">
 
-The created string is one more last byte that value is C<\0> on the internal memory. Although this has no meaning from SPVM language, this has meaning from L<Native APIs|SPVM:Document::NativeAPI>.
+=item * L<Setting a Character|SPVM::Document::Language::Operators/"Setting a Character">
 
-The length of the string can be got using a L<string length operator|/"String Length Operator">
-  
-  # Getting the length of the string
-  my $message = "Hello"+
-  my $length = length $message;
+=item * L<new_string_len Operator|SPVM::Document::Language::Operators/"new_string_len Operator">
+
+=item * L<make_read_only Operator|SPVM::Document::Language::Operators/"make_read_only Operator">
+
+=item * L<is_read_only Operator|SPVM::Document::Language::Operators/"is_read_only Operator">
+
+=item * L<String Comparison Operators|SPVM::Document::Language::Operators/"String Comparison Operators">
+
+=item * L<copy Operator|SPVM::Document::Language::Operators/"copy Operator">
+
+=back
+
+=head3 Sting Native Level Representation
 
 At the L<native level|SPVM::Document::NativeClass>, the character just after the last character of the string is set to C<\0>, so the characters in the string can be used as a C language string.
 
@@ -60,7 +101,7 @@ At the L<native level|SPVM::Document::NativeClass>, the character just after the
   if (strcmp(chars, "Hello") == 0) {
     
   }
-  
+
 =head2 Array
 
 The array is the data structure for multiple values.
@@ -89,42 +130,13 @@ The object array is the array that the type of the element is the L<object type|
 
 The multi-numeric array is the array that the type of the element is the L<multi-numeric type|/"Multi-Numeric Types">.
 
+See the following sections about operations for arrays.
+
 See L</"Creating Array"> to create Array.
-
-=head3 Element Access
-
-Element Access is an L<operator|/"Operators"> to access the element of Array to get or set the value.
-
-  ARRAY->[INDEX]
 
 See L</"Getting Array Element"> to get the element value of Array.
 
 See L</"Setting Array Element"> to set the element value of Array.
-
-=head3 Multi-Numeric Value
-
-A multi-numeric value is a value that represents continuous multiple numeric values in memory.
-
-=head2 Multi-Numeric Array
-
-The L<multi-numeric values|/"Multi-Numeric Value"> can be the elements of the L<array|/"Array">.
-
-  my $zs = new Complex_2d[3];
-
-The elements of the multi-numeric array is continuous multi-numeric values.
-  
-  | Complex_2d  | Complex_2d  | Complex_2d  |
-  |  re  |  im  |  re  |  im  |  re  |  im  |
-
-=head3 Multi-Numeric Element Access
-
-The multi-numeric element access is a syntax to access the element of the multi-numeric array.
-
-  ARRAY->[INDEX]
-
-See L</"Getting Array Element"> to get the element of the array.
-
-See L</"Setting Array Element"> to set the element of the array.
 
 =head2 Object
 
@@ -158,11 +170,30 @@ Examples:
     
   }
 
+=head2 Multi-Number
+
+A multi-number is a value that represents continuous multiple numbers in memory.
+
+=head2 Multi-Numeric Array
+
+The L<multi-numbers|/"Multi-Number"> can be the elements of the L<array|/"Array">.
+
+  my $zs = new Complex_2d[3];
+
+The elements of the multi-numeric array is continuous multi-numbers.
+  
+  | Complex_2d  | Complex_2d  | Complex_2d  |
+  |  re  |  im  |  re  |  im  |  re  |  im  |
+
+See the following sections about operations for multi-numbers.
+
+See L</"Getting Array Element"> to get the element of the array.
+
+See L</"Setting Array Element"> to set the element of the array.
+
 =head2 Reference
 
 The reference is the address of a L<local variable|/"Local Variable"> on the memory.
-
-=head3 Creating Reference
 
 The L<reference operator|/"Reference Operator"> creates the reference of a L<local variable|/"Local Variable">.
 
@@ -191,185 +222,45 @@ The L<reference type|/"Reference Type"> can be used as the types of the argument
   my $result_ref = \$result;
   sum($result_ref, $num1, $num2);
 
-=head3 Dereference
-
-The dereference is the operation to get the value from a reference.
-
-A L<dereference operator|/"Dereference Operator"> perform a dereference.
-
-  # Get the value using a dereference
-  my $num2 = $$num_ref;
-  
-  # Set the value using a dereference
-  $$num_ref = 3;
-  
-  # Get the value of a multi-numeric type using a dereference
-  my $z2 = $$z_ref;
-  
-  # Set the value of a multi-numeric type using a dereference
-  $$z_ref = $z2;
-
-In the referencec of L<multi-numeric types|/"Multi-Numeric Types">, the deference can be performed using the arrow operator C<-E<gt>>.
-
-  # Get a field of a multi-numeric type using a dereference
-  my $x = $z_ref->{re};
-  
-  # Set a field of a multi-numeric type using a dereference
-  $z_ref->{re} = 1;
-
 =head1 Types
 
-The SPVM language is a programming language with static types.
+This section describes types.
 
 =head2 Numeric Types
 
-The numeric type are an L<integer type|/"Integer Types"> and L</"Floating Point Types">.
+=head3 Integer Types
+
+=head4 byte Type
+
+The C<byte> type is the type for a signed 8-bit integer.
+
+=head4 short Type
+
+The C<short> type is the type for a signed 16-bit integer.
+
+=head4 int Type
+
+The C<int> type is the type for a signed 32-bit integer.
+
+=head4 long Type
+
+The C<long> type is the type for a signed 64-bit integer.
+
+=head3 Floating Point Types
+
+=head4 float Type
+
+The C<float> type is the type for 32bit floating point.
+
+=head4 double Type
+
+The C<double> type is the type for 64bit floating point.
 
 =head3 Numeric Types Order
 
-a L<numeric type|/"Numeric Types"> has the type order. The order is "byte", "short", "int", "long", "float", "double" from the smallest.
+L<Numeric types|/"Numeric Types"> has its order.
 
-=head2 Integer Types
-
-Integral types are the following four types.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      <b>Type</b>
-   </th>
-    <th>
-      Description
-   </th>
-    <th>
-      Size
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>byte</b>
-    </td>
-    <td>
-      signed 8-bit integer type
-    </td>
-    <td>
-      1 byte
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>short</b>
-    </td>
-    <td>
-      signed 16-bit integer type
-    </td>
-    <td>
-      2 bytes
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>int</b>
-    </td>
-    <td>
-      signed 32-bit integer type
-    </td>
-    <td>
-      4 bytes
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>long</b>
-    </td>
-    <td>
-      signed 64-bit integer type
-    </td>
-    <td>
-      8 bytes
-    </td>
-  </tr>
-</table>
-
-=end html
-
-Note that SPVM has only B<singed> integer types, and doesn't have B<unsigned> integer types.
-
-=head3 byte Type
-
-C<byte> type is an L<integer type|/"Integer Types"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of the C language.
-
-=head3 short Type
-
-C<short> type  is an L<integer type|/"Integer Types"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of the C language.
-
-=head3 int Type
-
-C<int> type is  is an L<integer type|/"Integer Types"> that represents signed 32-bit integer. This is the same as C<int32_t> type of the C language.
-
-=head3 long Type
-
-C<long> type is an L<integer type|/"Integer Types"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of the C language.
-
-=head3 Integer Types within int
-
-The integer type within C<int> is an L<integer type|/"Integer Types"> within the int type.
-
-In other words, the integer types within C<int> are the L<byte type|/"byte Type">, the L<short type|/"short Type">, and the int type.
-
-=head2 Floating Point Types
-
-B<Floating Point Types> are the following two.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      <b>Type</b>
-    </ th>
-    <th>
-      Description
-    </ th>
-    <th>
-      Size
-    </ th>
-  </tr>
-  <tr>
-    <td>
-      <b>float</b>
-    </td>
-    <td>
-      Single precision (32bit) floating point type
-    </td>
-    <td>
-      4 bytes
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>double</b>
-    </td>
-    <td>
-      Double precision (64bit) floating point type
-    </td>
-    <td>
-      8 bytes
-    </td>
-  </tr>
-</table>
-
-=end html
-
-=head3 float Type
-
-The C<float> type is a L<floating point type|/"Floating Point Types"> that represents a single precision(32bit) floating point. This is the same type as C<float> type of the C language.
-
-=head3 double Type
-
-The C<double> type is a L<floating point type|/"Floating Point Types"> that represents a double precision(64bit) floating point. This is the same type as C<double> type of the C language.
+The order is C<byte>, C<short>, C<int>, C<long>, C<float>, C<double> from smallest to largest.
 
 =head2 Object Types
 
@@ -675,7 +566,7 @@ If a invalid type is assigned, a compilation error occurs.
 
 =head2 Multi-Numeric Types
 
-The multi-numeric type is the type to represent a L<multi-numeric value|/"Multi-Numeric Value">.
+The multi-numeric type is the type to represent a L<multi-number|/"Multi-Number">.
 
 The multi-numeric type can be used as the L<type|/"Types"> of the L<local variable declaration|/"Local Variable Declaration">.
 
@@ -769,13 +660,13 @@ The list of the multi-numeric type suffix.
 
 =head3 Multi-Numeric Types Field Access
 
-The multi-numeric type field access is an syntax to access the field of the multi-numeric value.
+The multi-numeric type field access is an syntax to access the field of the multi-number.
 
   MULTI_NUMERIC_VALUE->{FIELD_NAME}
 
-See L</"Getting Multi-Numeric Field"> to get the field of the multi-numeric value.
+See L</"Getting Multi-Numeric Field"> to get the field of the multi-number.
 
-See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric value.
+See L</"Setting Multi-Numeric Field"> to set the field of the multi-number.
 
 =head2 Reference Type
 

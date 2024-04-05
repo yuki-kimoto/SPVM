@@ -12,15 +12,9 @@ This document describes operators in the SPVM language.
 
 An operator is a basic instruction that normally a return value.
 
-=head2 Data
+=head2 Numeric Operators
 
-=head3 Internal Representation of Negative Integers
-
-Negative integers are represented using L<two's complement|https://en.wikipedia.org/wiki/Two%27s_complement>.
-
-Negative values returned by integer operations are also represented using it.
-
-=head2 Unary Plus Operator
+=head3 Unary Plus Operator
 
 The unary plus operator C<+> is a unary operator that returns its operand.
 
@@ -39,7 +33,7 @@ Examples:
   # Examples of the unary plus operator
   my $num = +10;
 
-=head2 Unary Minus Operator
+=head3 Unary Minus Operator
 
 The unary minus operator C<-> is a unary operator that returns the negated value of its operand.
 
@@ -58,7 +52,7 @@ Examples:
   # Examples of the unary minus operator
   my $num = -10;
 
-=head2 Addition Operator
+=head3 Addition Operator
 
 The addition operator C<+> adds two operands.
   
@@ -83,7 +77,7 @@ Examples:
   # Examples of the addition operator
   my $result = 1 + 2;
 
-=head2 Subtraction Operator
+=head3 Subtraction Operator
 
 The subtraction operator C<-> subtracts its right operand from its left operand.
   
@@ -108,7 +102,7 @@ Examples:
   # Examples of the subtraction operator
   my $result = 1 - 2;
 
-=head2 Multiplication Operator
+=head3 Multiplication Operator
 
 The multiplication operator C<*> multiplies two operands.
   
@@ -133,7 +127,7 @@ Examples:
   # Examples of the multiplication operator
   my $result = 1 * 2;
 
-=head2 Division Operator
+=head3 Division Operator
 
 The division operator C</> divides its left operand by its right operand.
   
@@ -162,7 +156,7 @@ Examples:
   # Examples of the division operator
   my $result = 1 / 2;
 
-=head2 Division Unsigned Int Operator
+=head3 Division Unsigned Int Operator
 
 The division unsigned int operator C<div_uint> interprets its two operands as unsigned 32bit integers, and divides its left operand by its right operand.
   
@@ -189,7 +183,7 @@ Examples:
   # Examples of the division unsigned int operator
   my $result = 1 div_uint 2;
 
-=head2 Division Unsigned Long Operator
+=head3 Division Unsigned Long Operator
 
 The division unsigned long operator C<div_ulong> interprets its two operands as unsigned 64bit integers, and divides its left operand by its right operand.
 
@@ -216,7 +210,7 @@ Examples:
   # Examples of the division unsigned long operator
   my $result = 1L div_ulong 2L;
 
-=head2 Modulo Operator
+=head3 Modulo Operator
 
 The modulo operator C<%> calculates the modulo of the division of its two operands.
   
@@ -246,7 +240,7 @@ Examples:
   # Examples of the modulo operator
   my $result = 1 % 2;
 
-=head2 Modulo Unsigned Int Operator
+=head3 Modulo Unsigned Int Operator
 
 The modulo unsigned int operator C<mod_uint> interprets its two operands as unsigned 32bit integers, and calculates the modulo of the division of its two operands.
   
@@ -273,7 +267,7 @@ Examples:
   # Examples of the modulo unsigned int operator
   my $result = 1 mod_uint 2;
 
-=head2 Modulo Unsigned Long Operator
+=head3 Modulo Unsigned Long Operator
 
 The modulo unsigned long operator C<mod_ulong> interprets its two operands as unsigned 64bit integers, and calculates the modulo of the division of its two operands.
   
@@ -300,9 +294,9 @@ Examples:
   # Examples of the modulo unsigned long operator
   my $result = 1L mod_ulong 2L;
 
-=head2 Increment Operators
+=head3 Increment Operators
 
-=head3 Pre-Increment Operator
+=head4 Pre-Increment Operator
 
 The pre-increment operator C<++> increases the value of an operand by 1, and returns it.
 
@@ -337,7 +331,7 @@ Examples:
   # A dereference
   ++$$num_ref;
 
-=head3 Post-Increment Operator
+=head4 Post-Increment Operator
 
 The post-increment operator C<++> increases the value of an operand by 1, and returns the value before performing the incrementation.
 
@@ -372,9 +366,9 @@ Examples:
   # A dereference
   $$num_ref++;
 
-=head2 Decrement Operators
+=head3 Decrement Operators
 
-=head3 Pre-Decrement Operator
+=head4 Pre-Decrement Operator
 
 The pre-decrement operator C<--> decreases the value of an operand by 1, and returns it.
 
@@ -409,7 +403,7 @@ Examples:
   # A dereferenced value
   --$$num_ref;
 
-=head3 Post-Decrement Operator
+=head4 Post-Decrement Operator
 
 The post-increment operator C<--> decreases the value of an operand by 1, and returns the value before performing the decrementation.
 
@@ -444,9 +438,9 @@ Examples:
   # A dereference
   $$num_ref--;
 
-=head2 Bitwise Operators
+=head3 Bitwise Operators
 
-=head3 Bitwise AND Operator
+=head4 Bitwise AND Operator
 
 The bitwise AND operator C<&> performs the L<bitwise AND operation|https://en.wikipedia.org/wiki/Bitwise_operation#AND>.
 
@@ -473,7 +467,7 @@ Examples:
   my $num2 = 0x12;
   my $result = $num1 & $num2;
 
-=head3 Bitwise OR Operator
+=head4 Bitwise OR Operator
 
 The bitwise OR operator C<|> performs the L<bitwise OR operation|https://en.wikipedia.org/wiki/Bitwise_operation#OR>.
   
@@ -500,7 +494,7 @@ Examples:
   my $num2 = 0x12;
   my $result = $num1 | $num2;
 
-=head3 Bitwise NOT Operator
+=head4 Bitwise NOT Operator
 
 The bitwise NOT operator C<~> performs the L<bitwise NOT operation|https://en.wikipedia.org/wiki/Bitwise_operation#NOT>.
   
@@ -523,9 +517,9 @@ Examples:
   # Examples of the bitwise NOT operator
   my $result = ~0xFF0A;
 
-=head2 Shift Operators
+=head3 Shift Operators
 
-=head3 Left Shift Operator
+=head4 Left Shift Operator
 
 The left shift operator C<E<lt>E<lt>> performs the L<arithmetic left shift|https://en.wikipedia.org/wiki/Bitwise_operation#Arithmetic_shift>.
 
@@ -552,7 +546,7 @@ Examples:
   # Examples of the left shift operator
   my $result = 0xFF0A << 3;
 
-=head3 Arithmetic Right Shift Operator
+=head4 Arithmetic Right Shift Operator
 
 The arithmetic right shift operator C<E<gt>E<gt>> performs the L<arithmetic right shift|https://en.wikipedia.org/wiki/Bitwise_operation#Arithmetic_shift>.
 
@@ -579,7 +573,7 @@ Examples:
   # Examples of the arithmetic right shift operator
   my $result = 0xFF0A >> 3;
 
-=head3 Logical Right Shift Operator
+=head4 Logical Right Shift Operator
 
 The logical right shift operator C<E<gt>E<gt>E<gt>> performs the L<logical right shift|https://en.wikipedia.org/wiki/Bitwise_operation#Logical_shift>.
   
@@ -886,11 +880,17 @@ The type of I<RIGHT_OPERAND> must be the string type or the byte[] type, otherwi
 
 =head2 Constant Operator
 
-A constant operator return a constant value created by a L<literal|SPVM::Document::Language::Tokenization/"Literal"> syntax.
+The constant operator gets a constant value represented by a literal.
 
   LITERAL
 
-The return type is the type returned by the literal I<LITERAL>.
+I<LITERAL> is a L<literal|SPVM::Document::Language::Tokenization/"Literal">.
+
+The return type is the type of I<LITERAL>.
+
+Compilation Errors:
+
+Compilation errors casued by L<literal|SPVM::Document::Language::Tokenization/"Literal"> syntax could occur.
 
 =head2 length Operator
 
