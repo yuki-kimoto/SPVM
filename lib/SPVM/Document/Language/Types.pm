@@ -6,13 +6,13 @@ SPVM::Document::Language::Types - Types in the SPVM Language
 
 This document describes types in the SPVM language.
 
-=head1 Data
+=head1 Value
 
-This section describes some typical data.
+This section describes values.
 
 =head2 Number
 
-The data of L<numeric types|/"Numeric Types"> is called number.
+The value of L<numeric types|/"Numeric Types"> is called number.
 
 Normally, numbers are created by L<numeric literals|SPVM::Document::Language::Tokenization/"Numeric Literal">.
 
@@ -55,9 +55,13 @@ Negative integers are represented by L<two's complement|https://en.wikipedia.org
 
 =head2 String
 
-The data of the L<string type|/"string Type"> is called string.
+The value of the L<string type|/"string Type"> is called string.
 
-A string consists of characters of the C<byte> type and its length.
+A string consists of characters of the C<byte> type.
+
+A string has its length.
+
+A string is an L<object|/"Object">.
 
 Normally, a string is created by a L<string literal|SPVM::Document::Language::Tokenization/"String Literal"> or the L<new_string_len operator|SPVM::Document::Language::Operators/"new_string_len Operator">.
   
@@ -106,60 +110,94 @@ At the L<native level|SPVM::Document::NativeClass>, the character just after the
 
 =head2 Array
 
-The array is the data structure for multiple values.
+The value of an L<array type|/"Array Types"> is called array.
 
-There are the following types of array.
+An array consists of a set of L<numbers|/"Number">, a set of L<objects|/"Object">, or a set of L<multi-numeric numbers|/"Multi-Numeric Number">.
 
-=begin html
+An array has its length.
 
-<ul>
-  <li>
-    Numeric Array
- </li>
-  <li>
-    Object Array
- </li>
-  <li>
-    Multi-Numeric Array
- </li>
-</ul>
+The elements of an array are arranged by index and the index starts from 0.
 
-=end html
+An array is an L<object|/"Object">.
 
-The numeric array is the array that the type of the element is the L<numeric type|/"Numeric Types">.
+Normally, an array is created by the L<new Operator|SPVM::Document::Language::Operators/"Creating an Array"> and an L<array initialization|SPVM::Document::Language::Operators/"Array Initialization">.
+  
+  # An array created by the new operator
+  my $numbers = new int[3];
+  $numgers->[0] = 1;
+  
+  my $strings = new string[3];
+  
+  my $objects = new Point[3];
+  
+  my $mulnum_numbers = new Complex_2d[3];
+  
+  # An array created by an array initialization
+  my $numbers = [1, 2, 3];
 
-The object array is the array that the type of the element is the L<object type|/"Object Types">.
+All elements of an array can be got by the L<for statement|SPVM::Document::Language::Statements/"for Statement">.
 
-The multi-numeric array is the array that the type of the element is the L<multi-numeric type|/"Multi-Numeric Types">.
+  # for statement
+  for (my $i = 0; $i < @$numbers; $i++) {
+    my $number = $numbers->[$i];
+  }
+  
+  # for-each statement
+  for my $number (@$numbers) {
+    
+  }
 
 See the following sections about operations for arrays.
 
-See L</"Creating Array"> to create Array.
+=over 2
 
-See L</"Getting Array Element"> to get the element value of Array.
+=item * L<Creating Array in new Operator|SPVM::Document::Language::Operators/"Creating an Array">
 
-See L</"Setting Array Element"> to set the element value of Array.
+=item * L<Array Initialization|SPVM::Document::Language::Operators/"Array Initialization">
+
+=item * L<Array Length Operator|SPVM::Document::Language::Operators/"Array Length Operator">
+
+=item * L<Getting an Array Element|SPVM::Document::Language::Operators/"Getting an Array Element">
+
+=item * L<Setting an Array Element|SPVM::Document::Language::Operators/"Setting an Array Element">
+
+=back
 
 =head2 Object
 
-A object is created by the L<new|SPVM::Document::Language::Operators/"new"> operator.
+The value of an L<object type|/"Object Types"> is called object.
+
+A L<string|/"String"> is an object.
+
+An L<array|/"Array"> is an object.
+
+An objcet of the L<class type|/"class Type"> has its fields. A field is a L<number|/"Number"> or an L<object|/"Object">.
+
+Normally, an object is created by the L<new|SPVM::Document::Language::Operators/"new"> operator.
+
+  # An object created by the new operator
+  my $point = new Point;
+
+When an object is created, memory for the object is allocated in heap memory.
+
+Created objects are destroyed by L<garbage collection|SPVM::Document::Language::GarbageCollection>.
 
 =head2 Undefined Value
+
+The value of the L<undef type|/"undef Type"> is called undefined value.
+
+An undefined value means the value is undefined.
 
 An undefined value is created by the L<undef|SPVM::Document::Language::Operators/"undef Operator"> operator.
 
   undef
 
-The type of an undefined value is the L<undef type|/"undef Type">.
-
 An undefined value is able to be assigned to an L<object type|/"Object Types">.
 
-In L<native classes|SPVM::Document::NativeClass>, an undefined value is equal to 0, normally a null pointer C<NULL> defined in C<stddef.h>.
-  
-  NULL
+  my $point : Point = undef;
 
 Examples:
-  
+
   # Examples of undefined values
   my $string : string = undef;
   
@@ -171,6 +209,12 @@ Examples:
   if ($message == undef) {
     
   }
+
+=head3 Undefined Value Native Level Representation
+
+At L<native level|SPVM::Document::NativeClass>, an undefined value is equal to 0, normally a null pointer C<NULL> defined in C<stddef.h>.
+  
+  NULL
 
 =head2 Multi-Numeric Number
 
