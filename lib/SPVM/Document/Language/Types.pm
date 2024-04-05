@@ -57,6 +57,8 @@ Negative integers are represented by L<two's complement|https://en.wikipedia.org
 
 The data of the L<string type|/"string Type"> is called string.
 
+A string consists of characters of the C<byte> type and its length.
+
 Normally, a string is created by a L<string literal|SPVM::Document::Language::Tokenization/"String Literal"> or the L<new_string_len operator|SPVM::Document::Language::Operators/"new_string_len Operator">.
   
   # A string created by a string literal
@@ -264,23 +266,19 @@ The order is C<byte>, C<short>, C<int>, C<long>, C<float>, C<double> from smalle
 
 =head2 Object Types
 
-Object types are L<class types|/"Class Type">, L<interface types|/"Interface Type">, the L<string type|/"string Type">, the L<any object type|/"Any Object Type"> and L<array types|/"Array Types">.
+This section lists object types.
 
 =head3 string Type
 
-The C<string> type is a L<type|/"Types"> for the L</"String">.
+The C<string> type is the type for L<strings/"String">.
 
   string
 
-C<string> type can be qualified by L</"mutable Type Qualifier">.
+The C<string> type is an object type.
+
+C<string> type can be qualified by the L<mutable type qualifier/"mutable Type Qualifier">.
 
   mutable string
-
-Examples:
-  
-  # string type
-  my $message : string = "Hello";
-  my $message : mutable string = new_string_len 256;
 
 =head3 Class Type
 
