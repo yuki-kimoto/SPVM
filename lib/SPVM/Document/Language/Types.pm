@@ -218,24 +218,13 @@ At L<native level|SPVM::Document::NativeClass>, an undefined value is equal to 0
 
 =head2 Multi-Numeric Number
 
-A multi-numeric number is a value that represents continuous multiple numbers in memory.
+The value of an L<multi-numeric type|/"Multi-Numeric Types"> is called multi-numeric number.
 
-=head2 Multi-Numeric Array
+A multi-numeric number is a set of L<numbers|/"Number"> of the same type.
 
-The L<multi-numeric numbers|/"Multi-Numeric Number"> can be the elements of the L<array|/"Array">.
-
-  my $zs = new Complex_2d[3];
-
-The elements of the multi-numeric array is continuous multi-numeric numbers.
-  
-  | Complex_2d  | Complex_2d  | Complex_2d  |
-  |  re  |  im  |  re  |  im  |  re  |  im  |
-
-See the following sections about operations for multi-numeric numbers.
-
-See L</"Getting Array Element"> to get the element of the array.
-
-See L</"Setting Array Element"> to set the element of the array.
+  my $z : Complex_2d;
+  $z->{re} = 1;
+  $z->{im} = 2;
 
 =head2 Reference
 
