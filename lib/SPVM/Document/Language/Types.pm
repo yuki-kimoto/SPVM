@@ -124,7 +124,7 @@ Normally, an array is created by the L<new Operator|SPVM::Document::Language::Op
   
   # An array created by the new operator
   my $numbers = new int[3];
-  $numgers->[0] = 1;
+  $numbergers->[0] = 1;
   
   my $strings = new string[3];
   
@@ -182,6 +182,32 @@ When an object is created, memory for the object is allocated in heap memory.
 
 Created objects are destroyed by L<garbage collection|SPVM::Document::Language::GarbageCollection>.
 
+See the following sections about operations for objects.
+
+=over 2
+
+=item * L<new Operator|SPVM::Document::Language::Operators/"new Operator">
+
+=item * L<dump Operator|SPVM::Document::Language::Operators/"dump Operator">
+
+=item * L<Getting a Field|SPVM::Document::Language::Operators/"Getting a Field">
+
+=item * L<Setting a Field|SPVM::Document::Language::Operators/"Setting a Field">
+
+=item * L<isa Operator|SPVM::Document::Language::Operators/"isa Operator">
+
+=item * L<is_type Operator|SPVM::Document::Language::Operators/"is_type Operator">
+
+=item * L<type_name Operator|SPVM::Document::Language::Operators/"type_name Operator">
+
+=back
+
+=head3 Object Native Level Representation
+
+At L<native level|SPVM::Document::NativeClass>, an object is a memory address.
+
+  void* obj_point = stack[0].oval;
+
 =head2 Undefined Value
 
 The value of the L<undef type|/"undef Type"> is called undefined value.
@@ -218,7 +244,7 @@ At L<native level|SPVM::Document::NativeClass>, an undefined value is equal to 0
 
 =head2 Multi-Numeric Number
 
-The value of an L<multi-numeric type|/"Multi-Numeric Types"> is called multi-numeric number.
+The value of a L<multi-numeric type|/"Multi-Numeric Types"> is called multi-numeric number.
 
 A multi-numeric number is a set of L<numbers|/"Number"> of the same type.
 
@@ -226,36 +252,52 @@ A multi-numeric number is a set of L<numbers|/"Number"> of the same type.
   $z->{re} = 1;
   $z->{im} = 2;
 
+See the following sections about operations for multi-numeric numbers.
+
+=over 2
+
+=item * L<Getting a Multi-Numeric Field|SPVM::Document::Language::Operators/"Getting a Multi-Numeric Field">
+
+=item * L<Setting a Multi-Numeric Field|SPVM::Document::Language::Operators/"Setting a Multi-Numeric Field">
+
+=back
+
 =head2 Reference
 
-The reference is the address of a L<local variable|/"Local Variable"> on the memory.
+The value of a L<reference type|/"Reference Types"> is called reference.
 
-The L<reference operator|/"Reference Operator"> creates the reference of a L<local variable|/"Local Variable">.
+A reference has a referencing value.
 
-A reference is assigned to the L<reference type/"Reference Type">.
+A referencing value must be a L<number|/"Number"> or a L<multi-numeric number|/"Multi-Numeric Number">
 
-The operand of a reference operator must be the variable of a L<numeric type|/"Numeric Types"> or a L<multi-numeric type|/"Multi-Numeric Types">.
+The L<reference operator|SPVM::Document::Language::Operators/"Reference Operator"> C<\> creates a reference.
 
-  # The reference of numeric type
-  my $num : int;
-  my $num_ref : int* = \$num;
-  
-  # The reference of multi-numeric type
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
+  my $number : int;
+  my $number_ref = \$number;
 
-The L<reference type|/"Reference Type"> can be used as the types of the arguments of a method.
+See the following sections about operations for multi-numeric numbers.
 
-  # Method Definition
-  static method sum : void ($result_ref : int*, $num1 : int, $num2 : int) {
-    $$result_ref = $num1 + $num2;
-  }
-  
-  # Method Call
-  my $num1 = 1;
-  my $num2 = 2;
-  my $result_ref = \$result;
-  sum($result_ref, $num1, $num2);
+=over 2
+
+=item * L<Getting a Referenced Value|SPVM::Document::Language::Operators/"Getting a Referenced Value">
+
+=item * L<Setting a Referenced Value|SPVM::Document::Language::Operators/"Setting a Referenced Value">
+
+=item * L<Reference Operator|SPVM::Document::Language::Operators/"Reference Operator">
+
+=item * L<Dereference Operator|SPVM::Document::Language::Operators/"Dereference Operator">
+
+=item * L<Getting a Referenced Multi-Numeric Field|SPVM::Document::Language::Operators/"Getting a Referenced Multi-Numeric Field">
+
+=item * L<Setting a Referenced Multi-Numeric Field|SPVM::Document::Language::Operators/"Setting a Referenced Multi-Numeric Field">
+
+=back
+
+=head3 Reference Native Level Representation
+
+At L<native level|SPVM::Document::NativeClass>, a reference is a memory address.
+
+  int32_t* num_ref = stack[0].iref;
 
 =head1 Types
 
@@ -536,7 +578,7 @@ The multi-dimensional array type is the L<array type|/"Array Types"> that the ty
 Examples:
 
   # Multi-dimensional array types
-  my $nums_2dim : Int[][];
+  my $numbers_2dim : Int[][];
 
 =head3 Multi-Numeric Array Type
 
@@ -584,7 +626,7 @@ You can get the array length using the L<array length operator|/"The array Lengt
 You can get and set the element using the L<get array element|/"Getting Array Element"> syntax and the L<set array element|/"Setting Array Element">.
  
   # Getting the element of any object array
-  my $num = (Int)$array->[0];
+  my $number = (Int)$array->[0];
   
   # Setting the element of any object array
   $array->[0] = Int->new(5);
@@ -699,43 +741,43 @@ See L</"Getting Multi-Numeric Field"> to get the field of the multi-numeric numb
 
 See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric number.
 
-=head2 Reference Type
+=head2 Reference Types
 
-Reference type is a type that can store the address of a variable. Add C<*> after a L<numeric type|/"Numeric Types"> or the L<multi-numeric type|/"Multi-Numeric Types"> You can define it.
+Reference Types is a type that can store the address of a variable. Add C<*> after a L<numeric type|/"Numeric Types"> or the L<multi-numeric type|/"Multi-Numeric Types"> You can define it.
 
-  my $num : int;
-  my $num_ref : int* = \$num;
+  my $number : int;
+  my $number_ref : int* = \$number;
   
   my $z : Complex_2d;
   my $z_ref : Complex_2d* = \$z;
 
-Only the address of the Local Variable acquired by L</"Reference Operator"> can be assigned to the value of Reference Type.
+Only the address of the Local Variable acquired by L</"Reference Operator"> can be assigned to the value of Reference Types.
 
-Reference type can be used as type of argument in the L<method definition|/"Method Definition">.
+Reference Types can be used as type of argument in the L<method definition|/"Method Definition">.
 
-Reference type cannot be used as return value type in the L<method definition|/"Method Definition">.
+Reference Types cannot be used as return value type in the L<method definition|/"Method Definition">.
 
-Reference type cannot be used as the field type in the L<class definition|/"Class Definition">.
+Reference Types cannot be used as the field type in the L<class definition|/"Class Definition">.
 
-Reference type cannot be used as the type of Class Variable in the L<class definition|/"Class Definition">.
+Reference Types cannot be used as the type of Class Variable in the L<class definition|/"Class Definition">.
 
 See L</"Reference"> for a detailed explanation of Reference.
 
 Compilation Errors:
 
-If only Local Variable Declaration of Reference type is performed, a compilation error occurs
+If only Local Variable Declaration of Reference Types is performed, a compilation error occurs
 
-Reference type can be used as type of the L<local variable declaration|/"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
+Reference Types can be used as type of the L<local variable declaration|/"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
 
-If the Reference type is used at an Invalid location, a compilation error occurs
+If the Reference Types is used at an Invalid location, a compilation error occurs
 
-=head3 Numeric Reference Type
+=head3 Numeric Reference Types
 
-Numeric Reference type means a L<numeric type|/"Numeric Types"> for a L<reference type|/"Reference Type">. Says.
+Numeric Reference Types means a L<numeric type|/"Numeric Types"> for a L<Reference Types|/"Reference Types">. Says.
 
-=head3 Multi-Numeric Reference Type
+=head3 Multi-Numeric Reference Types
 
-Multi-Numeric Reference type means a L<reference type|/"Reference Type"> for the L<multi-numeric type|/"Multi-Numeric Types"> variables. > Means.
+Multi-Numeric Reference Types means a L<Reference Types|/"Reference Types"> for the L<multi-numeric type|/"Multi-Numeric Types"> variables. > Means.
 
 =head2 Type Qualifiers
 
@@ -1074,7 +1116,7 @@ The String-to-byte conversion is a L<type conversion|/"Type Conversion"> from th
 
   # The String-to-byte conversion
   my $string : string = "Hello";
-  my $num : byte = (byte)$string;
+  my $number : byte = (byte)$string;
 
 If the string is not defined, returns 0.
 
@@ -1092,7 +1134,7 @@ The String-to-short conversion is a L<type conversion|/"Type Conversion"> from t
 
   # The String-to-short conversion
   my $string : string = "Hello";
-  my $num : short = (short)$string;
+  my $number : short = (short)$string;
 
 If the string is not defined, returns 0.
 
@@ -1110,7 +1152,7 @@ The String-to-int conversion is a L<type conversion|/"Type Conversion"> from the
 
   # The String-to-int conversion
   my $string : string = "Hello";
-  my $num : int = (int)$string;
+  my $number : int = (int)$string;
 
 If the string is not defined, returns 0.
 
@@ -1128,7 +1170,7 @@ The String-to-long conversion is a L<type conversion|/"Type Conversion"> from th
 
   # The String-to-long conversion
   my $string : string = "Hello";
-  my $num : long = (long)$string;
+  my $number : long = (long)$string;
 
 If the string is not defined, returns 0.
 
@@ -1156,7 +1198,7 @@ The String-to-double conversion is a L<type conversion|/"Type Conversion"> from 
 
   # The String-to-double conversion
   my $string : string = "Hello";
-  my $num : double = (double)$string;
+  my $number : double = (double)$string;
 
 If the string is not defined, returns 0.
 
@@ -1255,7 +1297,7 @@ And the following operation in the C language is performed on I<OPERAND> .
 
 Compilation Errors:
 
-The type of I<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types"> or an L<reference type|/"Reference Type"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+The type of I<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types"> or an L<Reference Types|/"Reference Types"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
 
 Examples:
 
@@ -1322,13 +1364,13 @@ See L<"Assignment Requirement"> if you know when implicite type conversion is pe
 Examples:
   
   # The implicite type conversion from int to double 
-  my $num : double = 5;
+  my $number : double = 5;
   
   # The implicite type conversion from double to Double
-  my $num_object : Double = 5.1;
+  my $number_object : Double = 5.1;
   
   # The implicite type conversion from Double to double
-  my $num : double = Double->new(5.1);
+  my $number : double = Double->new(5.1);
   
   # The implicite type conversion from int to string
   my $string : string = 4;
@@ -1383,16 +1425,16 @@ If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater
 Examples:
   
   # int to int
-  my $num : int = 3;
+  my $number : int = 3;
   
   # byte to int
-  my $num : int = (byte)5;
+  my $number : int = (byte)5;
   
   # double to double
-  my $num : double = 4.5;
+  my $number : double = 4.5;
   
   # float to double
-  my $num : double = 4.5f;
+  my $number : double = 4.5f;
 
 If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is conditional true.
 
@@ -1426,7 +1468,7 @@ If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing
 Examples:
   
   # int to byte
-  my $num : byte = 127;
+  my $number : byte = 127;
 
 =head3 Assignment Requirement from NumericObject to Numeric
 
@@ -1500,7 +1542,7 @@ Examples:
 
 =head2 Assignment Requirement to Referenece
 
-If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is a L<Reference Types|/"Reference Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignment requirement is true.
 
 Otherwise, the assignment requirement is false.
 
@@ -1516,8 +1558,8 @@ Otherwise, the assignment requirement is false.
 
 Examples:
 
-  my $num : int = 5;
-  my $num_ref : int* = \num;
+  my $number : int = 5;
+  my $number_ref : int* = \num;
 
 =head2 Assignment Requirement to String
 
@@ -1550,7 +1592,7 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<num
 Examples:
 
   my $string : string = "abc";
-  my $num_string : string = 3;
+  my $number_string : string = 3;
   my $string : string = undef;
 
 =head2 Assignment Requirement to NumericObject
@@ -1575,9 +1617,9 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 Examples:
 
-  my $num_object : Int = Int->new(3);
-  my $num_object : Int = 3;
-  my $num_object : Int = undef;
+  my $number_object : Int = Int->new(3);
+  my $number_object : Int = 3;
+  my $number_object : Int = undef;
 
 =head2 Assignment Requirement to Class
 
@@ -1653,7 +1695,7 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 Examples:
 
   my $object : object = Point->new;
-  my $num_object : object = 3;
+  my $number_object : object = 3;
   my $object : object = undef;
 
 =head2 Assignment Requirement to Undefined
@@ -1698,8 +1740,8 @@ Otherwise, the assignment requirement is false.
 
 Examples:
 
-  my $nums : int[] = new int[3];
-  my $nums : int[] = undef;
+  my $numbers : int[] = new int[3];
+  my $numbers : int[] = undef;
 
 =head2 Assignment Requirement to Multi-Numeric Array
 
@@ -1720,8 +1762,8 @@ Otherwise, the assignment requirement is false.
 
 Examples:
 
-  my $nums : Complex_2d[] = new Complex_2d[3];
-  my $nums : Complex_2d[] = undef;
+  my $numbers : Complex_2d[] = new Complex_2d[3];
+  my $numbers : Complex_2d[] = undef;
 
 =head2 Assignment Requirement to String Array
 
@@ -1946,23 +1988,23 @@ If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is equal t
 Examples:
   
   # int to int
-  my $num = (int)3;
+  my $number = (int)3;
   
   # byte to int
-  my $num_byte : byte = 5;
-  my $num = (int)5;
+  my $number_byte : byte = 5;
+  my $number = (int)5;
   
   # double to double
-  my $num = (double)4.5;
+  my $number = (double)4.5;
   
   # float to double
-  my $num = (double)4.5f;
+  my $number = (double)4.5f;
   
   # int to byte
-  my $num = (byte)127;
+  my $number = (byte)127;
 
   # double to int
-  my $num = (int)2.5;
+  my $number = (int)2.5;
 
 =head3 Cast Requirement from NumericObject to Numeric
 
@@ -2038,7 +2080,7 @@ Examples:
 
 =head2 Cast Requirement to Referenece
 
-If the type of I<LEFT_OPERAND> is a L<reference type|/"Reference Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
+If the type of I<LEFT_OPERAND> is a L<Reference Types|/"Reference Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
 
 Otherwise, the cast requirement is false.
 
@@ -2054,8 +2096,8 @@ Otherwise, the cast requirement is false.
 
 Examples:
 
-  my $num : int = 5;
-  my $num_ref = (int*)\num;
+  my $number : int = 5;
+  my $number_ref = (int*)\num;
 
 =head2 Cast Requirement to String
 
@@ -2091,7 +2133,7 @@ If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type
 Examples:
 
   my $string = (string)"abc";
-  my $num_string = (string)3;
+  my $number_string = (string)3;
   my $string : string = undef;
 
 =head2 Cast Requirement to NumericObject
@@ -2121,12 +2163,12 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
 
 Examples:
 
-  my $num_object = (Int)Int->new(3);
-  my $num_object = (Int)3;
-  my $num_object = (Int)undef;
+  my $number_object = (Int)Int->new(3);
+  my $number_object = (Int)3;
+  my $number_object = (Int)undef;
   
   my $object : object = Int->new(3);
-  my $num_object = (Int)$object;
+  my $number_object = (Int)$object;
 
 =head2 Cast Requirement to Class
 
@@ -2235,7 +2277,7 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 Examples:
 
   my $object : object = Point->new;
-  my $num_object : object = 3;
+  my $number_object : object = 3;
   my $object : object = undef;
 
 =head2 Cast Requirement to Numeric Array
@@ -2269,12 +2311,12 @@ Examples:
   
   my $bytes = (byte[])"abc";
   
-  my $nums = (int[])new int[3];
+  my $numbers = (int[])new int[3];
   
   my $object : object = new int[3];
-  my $nums = (int[])$object;
+  my $numbers = (int[])$object;
   
-  my $nums = (int[])undef;
+  my $numbers = (int[])undef;
 
 =head2 Cast Requirement to Multi-Numeric Array
 
@@ -2300,12 +2342,12 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 Examples:
 
-  my $nums = (Complex_2d[])new Complex_2d[3];
+  my $numbers = (Complex_2d[])new Complex_2d[3];
 
   my $object : object = new Complex_2d[3];
-  my $nums = (Complex_2d[])$object;
+  my $numbers = (Complex_2d[])$object;
 
-  my $nums = (Complex_2d[])undef;
+  my $numbers = (Complex_2d[])undef;
 
 =head2 Cast Requirement to String Array
 

@@ -1460,7 +1460,7 @@ This operator creates the reference to the value owned by the variable I<VARIALB
 
 I<VARIALBE> is must be a local variable of a numeric type or a multi-numeric type.
 
-The return type is the L<reference type|SPVM::Document::Language::Types/"Reference Type"> of I<VARIALBE>.
+The return type is the L<Reference Types|SPVM::Document::Language::Types/"Reference Types"> of I<VARIALBE>.
 
 Compilation Errors:
 
@@ -1976,7 +1976,7 @@ Examples:
   
 =head3 Getting a Referenced Multi-Numeric Field
 
-The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> referenced by a multi-numeric reference type.
+The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> referenced by a multi-numeric Reference Types.
 
 This operation is expaned to the following code.
 
@@ -1998,7 +1998,7 @@ Examples:
 
 =head3 Setting a Referenced Multi-Numeric Field
 
-The operation of setting a multi-numeric field sets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> referenced by a multi-numeric reference type.
+The operation of setting a multi-numeric field sets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> referenced by a multi-numeric Reference Types.
 
 This operation is expaned to the following code.
 
