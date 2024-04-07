@@ -2,6 +2,8 @@
   [Document Fix and Improvement]
     * Fix and improve the document of Operators.
     * Fix and improve the document of Types.
+  [Support Changes]
+    * SPVM doesn't support C++ compilers that does not support -std=c++11 option.
 0.989098 2023-04-04
   [Document Fix and Improvement]
     * Fix and improve the document of Operators.

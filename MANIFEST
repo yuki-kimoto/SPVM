@@ -995,6 +995,7 @@ t/test_files/file_eof.txt
 t/test_files/fread.txt
 t/test_files/fread_eof.txt
 t/test_files/long_line.txt
+t/test_files/os_support/cpp11.cpp
 t/test_files/SPVM/Foo.config
 t/testlib/TestAuto.pm
 t/testlib/TestFile.pm
