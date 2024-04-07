@@ -305,37 +305,55 @@ This section describes types.
 
 =head2 Numeric Types
 
+This section lists numeric types.
+
 =head3 Integer Types
+
+This section lists integer types.
 
 =head4 byte Type
 
 The C<byte> type is the type for a signed 8-bit integer.
 
+  byte
+
 =head4 short Type
 
 The C<short> type is the type for a signed 16-bit integer.
+
+  short
 
 =head4 int Type
 
 The C<int> type is the type for a signed 32-bit integer.
 
+  int
+
 =head4 long Type
 
 The C<long> type is the type for a signed 64-bit integer.
 
+  long
+
 =head3 Floating Point Types
+
+This section lists floating point types.
 
 =head4 float Type
 
 The C<float> type is the type for 32bit floating point.
 
+  float
+
 =head4 double Type
 
 The C<double> type is the type for 64bit floating point.
 
+  double
+
 =head3 Numeric Types Order
 
-L<Numeric types|/"Numeric Types"> has its order.
+L<numeric types|/"Numeric Types"> have its order.
 
 The order is C<byte>, C<short>, C<int>, C<long>, C<float>, C<double> from smallest to largest.
 
