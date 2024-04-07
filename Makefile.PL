@@ -9,6 +9,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 use Getopt::Long 'GetOptions';
 use File::Find 'find';
+use File::Temp;
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Util::API;
@@ -39,7 +40,9 @@ use SPVM::Builder::Config;
     
     my $cc = $config->cc;
     
-    my $cmd = "$cc -o tmp/cpp11.o -std=c++11 t/test_files/os_support/cpp11.cpp";
+    my $tmp_dir = File::Temp->newdir;
+    
+    my $cmd = "$cc -o $tmp_dir/cpp11.o -std=c++11 t/test_files/os_support/cpp11.cpp";
     
     unless (system($cmd) == 0) {
       warn "SPVM doesn't support C++ compilers that does not support -std=c++11 option.\n";
