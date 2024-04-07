@@ -1,6 +1,4 @@
-0.989099 2023-04-06
-  [Fix Testing Bug in FreeBSD]
-    * Fix a testing bug that -std=c++11 does not work.
+0.989099 2023-04-08
   [Document Fix and Improvement]
     * Fix and improve the document of Operators.
     * Fix and improve the document of Types.
