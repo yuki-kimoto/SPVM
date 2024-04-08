@@ -552,7 +552,7 @@ because the to_string method in the Point class has the method compatibility of 
 
 This section describes assignment requirements used to check a return type and argument types for L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement">.
 
-=head2 Multi-Numeric Types Definition
+=head2 Multi-Numeric Type Definition
 
 A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
 
@@ -568,9 +568,76 @@ The types of all fields must be the same types.
 
 The length of the fields must be less than or equal to 255.
 
+=head3 Multi-Numeric Type Suffix
+
 The multi-numeric type must end with the following suffix.
 
   _[FieldsLength][TypeSuffix]
+
+The List of the Multi-Numeric Type Suffix:
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Numeric Types
+   </th>
+    <th>
+     Type Suffix
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>byte</b>
+    </td>
+    <td>
+      b
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>short</b>
+    </td>
+    <td>
+      s
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>int</b>
+    </td>
+    <td>
+      i
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>long</b>
+    </td>
+    <td>
+      l
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>float</b>
+    </td>
+    <td>
+      f
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>double</b>
+    </td>
+    <td>
+      d
+    </td>
+  </tr>
+</table>
+
+=end html
 
 The length of the fields in the suffix must be the same as the length of the fields.
 

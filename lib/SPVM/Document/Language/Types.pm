@@ -393,6 +393,12 @@ The C<string> type can be qualified with the L<mutable type qualifier/"mutable T
 
 A class type is the type for a L<class|SPVM::Document::Language::Class/"Class">.
 
+A class type is defined by L<class definition|SPVM::Document::Language::Class/"Class Definition">.
+
+  class CLASS_TYPE {
+  
+  }
+
 An object can be created from a class by a L<new operator|SPVM::Document::Language::Operators/"new Operator">.
 
   new ClassType;
@@ -472,19 +478,18 @@ See also the L</"Boxing Conversion"> and L</"Unboxing Conversion"> about the typ
 
 =head3 Interface Types
 
-The interface type is a type that is defined using a C<class> keyword and a L<class attribute|/"Class Attribute"> C<interface_t>.
+An interface type is a type for an L<interface|SPVM::Document::Language::Class/"Interface">.
 
-  class Stringable : interface_t {
-    method to_string : string ();
+An interface type is defined by L<interface definition|SPVM::Document::Language::Class/"Interface Definition">.
+
+  class INTERFACE_TYPE : interface_t {
+    
   }
-
-See also L</"Interface">.
-
-Note that interface types are not L<class types|/"Class Types"> although they are defined by C<class> keyword.
 
 =head3 Any Object Type
 
-Any object type is represented by "object". Designed to represent the "void *" type in C.
+
+Any object type is represented by "object".
 
   my $object: object;
 
@@ -677,145 +682,43 @@ If a invalid type is assigned, a compilation error occurs.
 
 =head2 Multi-Numeric Types
 
-The multi-numeric type is the type to represent a L<multi-numeric number|/"Multi-Numeric Number">.
+A multi-numeric type is a type for a L<multi-numeric number|/"Multi-Numeric Number">.
 
-The multi-numeric type can be used as the L<type|/"Types"> of the L<local variable declaration|/"Local Variable Declaration">.
+A multi-numeric type is defined by a L<multi-numeric type definition|SPVM::Document::Language::Class/"Multi-Numeric Type Definition">.
 
-  my $z : Complex_2d;
-
-The value is initialized by the L<initial value/"Type Initial Value">.
-
-The multi-numeric type can be used as an argument the L<type|/"Types"> in the L<method definition|/"Method Definition">.
-
-The multi-numeric type can be used as the return L<type|/"Types"> of the L<method definition|/"Method Definition">.
-
-  static method add_double_complex : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) { ... }
-
-The multi-numeric type can be used as a L<basic type|/"Basic Types"> of the L<array type|/"Array Types"> .
-
-  my $points = new Complex_2d[5];
-
-The reference can be created for the value of the multi-numeric type.
-
-  my $z : Complex_2d;
-  my $z_ref = \$z;
-
-L<undef|/"Undefined Value"> cannot be assigned to the multi-numeric type.
-
-=head3 Multi-Numeric Types Suffix
-
-The list of the multi-numeric type suffix.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      Numeric Types
-   </th>
-    <th>
-     Type Suffix
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>byte</b>
-    </td>
-    <td>
-      b
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>short</b>
-    </td>
-    <td>
-      s
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>int</b>
-    </td>
-    <td>
-      i
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>long</b>
-    </td>
-    <td>
-      l
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>float</b>
-    </td>
-    <td>
-      f
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>double</b>
-    </td>
-    <td>
-      d
-    </td>
-  </tr>
-</table>
-
-=end html
-
-=head3 Multi-Numeric Types Field Access
-
-The multi-numeric type field access is an syntax to access the field of the multi-numeric number.
-
-  MULTI_NUMERIC_VALUE->{FIELD_NAME}
-
-See L</"Getting Multi-Numeric Field"> to get the field of the multi-numeric number.
-
-See L</"Setting Multi-Numeric Field"> to set the field of the multi-numeric number.
+  class MULNUM_TYPE : mulnum_t {
+    
+  }
 
 =head2 Reference Types
 
-Reference Types is a type that can store the address of a variable. Add C<*> after a L<numeric type|/"Numeric Types"> or the L<multi-numeric type|/"Multi-Numeric Types"> You can define it.
+A reference type is a type for a L<reference|/"Reference"> represented by C<*>.
 
-  my $number : int;
-  my $number_ref : int* = \$number;
-  
-  my $z : Complex_2d;
-  my $z_ref : Complex_2d* = \$z;
-
-Only the address of the Local Variable acquired by L</"Reference Operator"> can be assigned to the value of Reference Types.
-
-Reference Types can be used as type of argument in the L<method definition|/"Method Definition">.
-
-Reference Types cannot be used as return value type in the L<method definition|/"Method Definition">.
-
-Reference Types cannot be used as the field type in the L<class definition|/"Class Definition">.
-
-Reference Types cannot be used as the type of Class Variable in the L<class definition|/"Class Definition">.
-
-See L</"Reference"> for a detailed explanation of Reference.
-
-Compilation Errors:
-
-If only Local Variable Declaration of Reference Types is performed, a compilation error occurs
-
-Reference Types can be used as type of the L<local variable declaration|/"Local Variable Declaration">. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, a compilation error occurs
-
-If the Reference Types is used at an Invalid location, a compilation error occurs
+  TYPE*
 
 =head3 Numeric Reference Types
 
-Numeric Reference Types means a L<numeric type|/"Numeric Types"> for a L<Reference Types|/"Reference Types">. Says.
+A numeric reference type is a reference type of a L<numeric type|/"Numeric Types">.
+
+The List of Numeric Reference Types:
+
+  byte*
+  short*
+  int*
+  long*
+  float*
+  double*
 
 =head3 Multi-Numeric Reference Types
 
-Multi-Numeric Reference Types means a L<Reference Types|/"Reference Types"> for the L<multi-numeric type|/"Multi-Numeric Types"> variables. > Means.
+A multi-numeric reference types is a reference type of a L<multi-numeric type|/"Multi-Numeric Types">.
+
+  MULNUM_TYPE*
+
+Examples:
+
+  Complex_2d*
+  Complex_2f*
 
 =head2 Type Qualifiers
 
@@ -827,30 +730,30 @@ The I<QUALIFIER> qualified the type I<TYPE>.
 
 =head3 mutable Type Qualifier
 
-The C<mutable> type qualifier allows characters of a string to be changed.
-  
-  # The mutable type qualifier
-  my $string : mutable string;
+The C<mutable> type qualifier qualifies the string type.
 
-Examples:
-  
-  # The mutable type qualifier
-  my $message = (mutable string)copy "abc";
-  $message->[0] = 'd';
+  mutable string;
+
+The string of the string type with the C<mutable> type qualifier is able to be L<set a character|SPVM::Document::Language::Operators/"Setting a Character">.
+
+  my $string = (mutable string)copy "abc";
+  $string->[0] = 'd';
 
 =head2 Type Initial Value
 
-The list of initial values.
+The value of a type is initialized by its type initial value.
+
+The List of Type Initial Values:
 
 =begin html
 
 <table>
   <tr>
     <th>
-      <b>Type Name</b>
+      <b>Types</b>
    </th>
     <th>
-      Initial Value
+      Type Initial Values
    </th>
   </tr>
   <tr>
@@ -890,7 +793,7 @@ The list of initial values.
       <b>float</b>
     </td>
     <td>
-      0 (All bits are <code>0</code>)
+      0 (All bits are 0)
     </td>
   </tr>
   <tr>
@@ -898,12 +801,12 @@ The list of initial values.
       <b>double</b>
     </td>
     <td>
-      0 (All bits are <code>0</code>)
+      0 (All bits are 0)
     </td>
   </tr>
   <tr>
     <td>
-      <b>Object Type</b>
+      <b><a href="#Object-Types">Object Types</a></b>
     </td>
     <td>
       undef
@@ -911,10 +814,10 @@ The list of initial values.
   </tr>
   <tr>
     <td>
-      <b>Multi-Numeric Types</b>
+      <b><a href="#Multi-Numeric-Types">Multi-Numeric Types</a></b>
     </td>
     <td>
-      All fields are set to <code>0</code> (All bits are <code>0</code>)
+      All fields are set to 0 (All bits are 0)
     </td>
   </tr>
 </table>
