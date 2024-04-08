@@ -171,7 +171,7 @@ A L<string|/"String"> is an object.
 
 An L<array|/"Array"> is an object.
 
-An objcet of the L<class type|/"class Type"> has its fields. A field is a L<number|/"Number"> or an L<object|/"Object">.
+An objcet of the L<class type|/"Class Types"> has its fields. A field is a L<number|/"Number"> or an L<object|/"Object">.
 
 Normally, an object is created by the L<new|SPVM::Document::Language::Operators/"new"> operator.
 
@@ -305,11 +305,13 @@ This section describes types.
 
 =head2 Numeric Types
 
-This section lists numeric types.
+This section describes numeric types.
 
 =head3 Integer Types
 
-This section lists integer types.
+This section describes integer types.
+
+An interger type is a L<numeric type|/"Numeric Types">.
 
 =head4 byte Type
 
@@ -317,11 +319,15 @@ The C<byte> type is the type for a signed 8-bit integer.
 
   byte
 
+The C<byte> type is an L<integer type|/"Integer Types">.
+
 =head4 short Type
 
 The C<short> type is the type for a signed 16-bit integer.
 
   short
+
+The C<short> type is an L<integer type|/"Integer Types">.
 
 =head4 int Type
 
@@ -329,15 +335,21 @@ The C<int> type is the type for a signed 32-bit integer.
 
   int
 
+The C<int> type is an L<integer type|/"Integer Types">.
+
 =head4 long Type
 
 The C<long> type is the type for a signed 64-bit integer.
 
   long
 
+The C<long> type is an L<integer type|/"Integer Types">.
+
 =head3 Floating Point Types
 
-This section lists floating point types.
+This section describes floating point types.
+
+A floating point type is a L<numeric type|/"Numeric Types">.
 
 =head4 float Type
 
@@ -345,11 +357,15 @@ The C<float> type is the type for 32bit floating point.
 
   float
 
+The C<float> type is a L<floating point type|/"Floating Point Types">.
+
 =head4 double Type
 
 The C<double> type is the type for 64bit floating point.
 
   double
+
+The C<double> type is a L<floating point type|/"Floating Point Types">.
 
 =head3 Numeric Types Order
 
@@ -363,27 +379,31 @@ This section lists object types.
 
 =head3 string Type
 
-The C<string> type is the type for L<strings/"String">.
+The C<string> type is the type for L<strings|/"String">.
 
   string
 
-The C<string> type is an object type.
+The C<string> type is an L<object type|/"Object Types">.
 
-C<string> type can be qualified by the L<mutable type qualifier/"mutable Type Qualifier">.
+The C<string> type can be qualified with the L<mutable type qualifier/"mutable Type Qualifier">.
 
   mutable string
 
-=head3 Class Type
+=head3 Class Types
 
-The class type is the type that can create the object using a L<new operator|/"new Operator">.
+A class type is the type for a L<class|SPVM::Document::Language::Class/"Class">.
+
+An object can be created from a class by a L<new operator|SPVM::Document::Language::Operators/"new Operator">.
 
   new ClassType;
 
+Note that an L<interface type|/"Interface Types"> and a L<multi-numeric type|/"Multi-Numeric Types"> is not a class type although these types are defined by L<class definition|SPVM::Document::Language::Class/"Class Definition">.
+
 =head4 Numeric Object Types
 
-A numeric object type is the L<object type|/"Object Types"> that is corresponding to the L<numeric type|/"Numeric Types">.
+A numeric object type is a L<class type|/"Class Types"> that owns the corresponding field of a L<numeric type|/"Numeric Types">.
 
-The list of numeric object types:
+The List of Numeric Object Types:
 
 =begin html
 
@@ -448,9 +468,9 @@ The list of numeric object types:
 
 =end html
 
-See also the L<boxing conversion|/"Boxing Conversion"> and L</"Unboxing Conversion">.
+See also the L</"Boxing Conversion"> and L</"Unboxing Conversion"> about the type conversion between a numeric object type and its corresponding numeric type.
 
-=head3 Interface Type
+=head3 Interface Types
 
 The interface type is a type that is defined using a C<class> keyword and a L<class attribute|/"Class Attribute"> C<interface_t>.
 
@@ -460,7 +480,7 @@ The interface type is a type that is defined using a C<class> keyword and a L<cl
 
 See also L</"Interface">.
 
-Note that interface types are not L<class types|/"Class Type"> although they are defined by C<class> keyword.
+Note that interface types are not L<class types|/"Class Types"> although they are defined by C<class> keyword.
 
 =head3 Any Object Type
 
@@ -478,7 +498,7 @@ You can methodstitute the value of "Object Types" for Any Object Type.
 
 A basic type is a type whose type dimension is 0 and which can be an element of an array.
 
-Basic types are L<numeric types|/"Numeric Types">, L<multi-numeric types|/"Multi-Numeric Types">, L<class types|/"Class Type">, the L<any object type|/"Any Object Type">, and the L<string type|/"string Type">.
+Basic types are L<numeric types|/"Numeric Types">, L<multi-numeric types|/"Multi-Numeric Types">, L<class types|/"Class Types">, the L<any object type|/"Any Object Type">, and the L<string type|/"string Type">.
 
 =head2 undef Type
 
@@ -573,7 +593,7 @@ Examples:
 
 =head3 Class Array Type
 
-Class array types are the L<array type|/"Array Types"> that the type of the element is the L<class type|/"Class Type">.
+Class array types are the L<array type|/"Array Types"> that the type of the element is the L<class type|/"Class Types">.
 
 Examples:
 
@@ -582,7 +602,7 @@ Examples:
 
 =head3 Interface Array Type
 
-Interface array types are the L<array type|/"Array Types"> that the type of the element is the L<interface type|/"Interface Type">.
+Interface array types are the L<array type|/"Array Types"> that the type of the element is the L<interface type|/"Interface Types">.
 
 Examples:
 
@@ -634,7 +654,7 @@ The any object array type C<object[]> is the type that any L<object array type|/
 
 Any object array type is an L<array type|/"Array Types">.
 
-You can get the array length using the L<array length operator|/"The array Length Operator">.
+You can get the array length using the L<array length operator|SPVM::Document::Language::Operators/"The array Length Operator">.
 
   my $array : object[] = new Int[3];
   
@@ -995,7 +1015,7 @@ B<long to double:>
   int64_t from = VALUE;
   double to = (double)from;
 
-The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<element access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
+The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<element access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|SPVM::Document::Language::Operators/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|SPVM::Document::Language::Operators/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
 
 =head2 Numeric Narrowing Conversion
 
@@ -1249,11 +1269,141 @@ A new string is created and all elements in the C<byte[]> object are copied to t
 
 =head2 Boxing Conversion
 
-The boxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of L<numeric type|/"Numeric Types"> to the corresponding L<numeric object type|/"Numeric Object Types">.
+A boxing conversion is the type coversion from a L<numeric type|/"Numeric Types"> to its corresponding L<numeric object type|/"Numeric Object Types">.
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      To
+    </th>
+    <th>
+      From
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>
+    </td>
+    <td>
+      byte
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Short">Short</a>
+    </td>
+    <td>
+      short
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Int">Int</a>
+    </td>
+    <td>
+      int
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Long">Long</a>
+    </td>
+    <td>
+      long
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Float">Float</a>
+    </td>
+    <td>
+      float
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Double">Double</a>
+    </td>
+    <td>
+      double
+    </td>
+  </tr>
+</table>
+
+=end html
+
+A boxing conversion creates a new numeric object corresponding to its numeric type, and copyes the value of the numeric type to the C<value> field of the new numeric object, and return the new numeric object.
 
 =head2 Unboxing Conversion
 
-The unboxing conversion is a L<type coversion|/"Type Conversion"> to convert the value of the L<numeric object type|/"Numeric Object Types"> to the value of the corresponding L<numeric type|/"Numeric Types">.
+An unboxing conversion is the type coversion from an object of a L<numeric object type|/"Numeric Object Types"> to the value of its corresponding L<numeric type|/"Numeric Types">.
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      To
+    </th>
+    <th>
+      From
+    </th>
+  </tr>
+  <tr>
+    <td>
+      byte
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      short
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Short">Short</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      int
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Int">Int</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      long
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Long">Long</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      float
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Float">Float</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      double
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Double">Double</a>
+    </td>
+  </tr>
+</table>
+
+=end html
+
+An unboxing conversion returns the value of the C<value> field of the numeric object.
 
 =head2 Boolean Conversion
 
@@ -1285,15 +1435,15 @@ The operand of the L<while statement|/"while Statement">:
   
   }
 
-The left and right operand of the L<logical AND operator|/"Logical AND Operator">:
+The left and right operand of the L<logical AND operator|SPVM::Document::Language::Operators/"Logical AND Operator">:
 
   CONDITION && CONDITION
 
-The left and right operand of the L<logical OR operator|/"Logical OR Operator">:
+The left and right operand of the L<logical OR operator|SPVM::Document::Language::Operators/"Logical OR Operator">:
 
   CONDITION || CONDITION
 
-The operand of the L<logical NOT operator|/"Logical NOT Operator">:
+The operand of the L<logical NOT operator|SPVM::Document::Language::Operators/"Logical NOT Operator">:
 
   !CONDITION
 
@@ -1375,7 +1525,7 @@ Examples:
 
 =head1 Implicite Type Conversion
 
-The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
+The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|SPVM::Document::Language::Operators/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
 
 See L<"Assignment Requirement"> if you know when implicite type conversion is performed.
 
@@ -1641,7 +1791,7 @@ Examples:
 
 =head2 Assignment Requirement to Class
 
-If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is a L<class type|/"Class Types"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
 
 If the type of I<LEFT_OPERAND> is a super class of the type of I<RIGHT_OPERAND>, the assignment requirement is true.
 
@@ -1666,9 +1816,9 @@ Examples:
 
 =head2 Assignment Requirement to Interface
 
-If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class has the same interface of I<LEFT_OPERAND>, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types"> and the type of I<RIGHT_OPERAND> is a L<class type|/"Class Types"> and the class has the same interface of I<LEFT_OPERAND>, the assignment requirement is true.
 
 Otherwise, the assignment requirement is false.
 
@@ -2190,9 +2340,9 @@ Examples:
 
 =head2 Cast Requirement to Class
 
-If the type of I<LEFT_OPERAND> is a L<class type|/"Class Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
+If the type of I<LEFT_OPERAND> is a L<class type|/"Class Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the cast requirement is true.
+If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Types"> or the L<undef type|/"undef Type">, the cast requirement is true.
 
 If the type of I<LEFT_OPERAND> is a super class of the type of right operand, the cast requirement is true.
 
@@ -2200,7 +2350,7 @@ If the type of I<RIGHT_OPERAND> is a super class of the type of left operand, th
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Type">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Types">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2231,15 +2381,15 @@ Examples:
 
 =head2 Cast Requirement to Interface
 
-If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type">, and the types of I<RIGHT_OPERAND>s are the following cases:
+If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types">, and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Type"> or the L<undef type|/"undef Type">, the cast requirement is true.
+If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Types"> or the L<undef type|/"undef Type">, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the class has the interface of I<LEFT_OPERAND>, the cast requirement is true.
+If the type of I<RIGHT_OPERAND> is a L<class type|/"Class Types"> and the class has the interface of I<LEFT_OPERAND>, the cast requirement is true.
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Type">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
+If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Types">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2542,7 +2692,7 @@ If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGH
 
 If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the cast requirement is true.
 
-If the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Type"> and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> is a L<class type|/"Class Type"> and the dimension of the type of I<RIGHT_OPERAND> is the same as the dimension of the type left oerand and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> has the interface of the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> , the cast requirement is true.
+If the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types"> and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> is a L<class type|/"Class Types"> and the dimension of the type of I<RIGHT_OPERAND> is the same as the dimension of the type left oerand and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> has the interface of the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> , the cast requirement is true.
 
 Otherwise, the cast requirement is false.
 
