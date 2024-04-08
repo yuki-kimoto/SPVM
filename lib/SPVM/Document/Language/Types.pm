@@ -401,8 +401,6 @@ A class type is defined by L<class definition|SPVM::Document::Language::Class/"C
 
 An object can be created from a class by a L<new operator|SPVM::Document::Language::Operators/"new Operator">.
 
-  new ClassType;
-
 Note that an L<interface type|/"Interface Types"> and a L<multi-numeric type|/"Multi-Numeric Types"> is not a class type although these types are defined by L<class definition|SPVM::Document::Language::Class/"Class Definition">.
 
 =head4 Numeric Object Types
@@ -480,7 +478,7 @@ See also the L</"Boxing Conversion"> and L</"Unboxing Conversion"> about the typ
 
 An interface type is a type for an L<interface|SPVM::Document::Language::Class/"Interface">.
 
-An interface type is defined by L<interface definition|SPVM::Document::Language::Class/"Interface Definition">.
+An interface type is defined by an L<interface definition|SPVM::Document::Language::Class/"Interface Definition">.
 
   class INTERFACE_TYPE : interface_t {
     
@@ -488,22 +486,36 @@ An interface type is defined by L<interface definition|SPVM::Document::Language:
 
 =head3 Any Object Type
 
+Any object type C<object> is the type to which any L<object type|/"Object Types"> can be assigned.
 
-Any object type is represented by "object".
+  object
 
-  my $object: object;
+Examples:
 
-You can methodstitute the value of "Object Types" for Any Object Type.
-
+  # Examples of any object type
   my $object: object = new Foo;
-  my $object: object = "abc";
-  my $object: object = new Foo [3];
 
 =head2 Basic Types
 
-A basic type is a type whose type dimension is 0 and which can be an element of an array.
+A basic type is a type whose type dimension is 0 and that can be an element of an array.
 
-Basic types are L<numeric types|/"Numeric Types">, L<multi-numeric types|/"Multi-Numeric Types">, L<class types|/"Class Types">, the L<any object type|/"Any Object Type">, and the L<string type|/"string Type">.
+The List of Basic Types:
+
+=over 2
+
+=item * L<Numeric types|/"Numeric Types">
+
+=item * L<Multi-numeric types|/"Multi-Numeric Types">
+
+=item * L<Class types|/"Class Types">
+
+=item * L<Interface types|/"Interface Types">
+
+=item * The L<any object type|/"Any Object Type">
+
+=item * The L<string type|/"string Type">
+
+=back
 
 =head2 undef Type
 
@@ -511,13 +523,19 @@ The undef type is the type of an L<undefined value|/"Undefined Value">.
 
 =head2 void Type
 
-B<void Type> is a special type that can only be used in the return type of the L<method definition|/"Method Definition"> and indicates the method has no return value.
+The C<void> type is the type that represents a method defined by a L<method definition|SPVM::Document::Language::Class/"Method Definition"> does not return a return value.
 
   void
 
 =head2 Array Types
 
-The array type is the L<type|Type> for the L<array|/"Array">. The array type is composed of the L<basic type|/"Basic Types"> and the dimension such as C<[]>, C<[][]>.
+An array type is a type for an L<array|/"Array">. An array type consists of a L<basic type|/"Basic Types"> and a type dimension such as C<[]>, C<[][]>.
+
+  BASIC_TYPE[]..
+
+(C<[]..> means one more C<[]>)
+
+Examples:
 
   # Numeric array
   int[]
@@ -538,147 +556,90 @@ The array type is the L<type|Type> for the L<array|/"Array">. The array type is 
   # 3 dimensional array
   int[][][]
 
-The array type is an L<object type|/"Object Types">.
+An array type is an L<object type|/"Object Types">.
 
 Compilation Errors:
 
-The maximam value of dimesions is 255. Otherwise a compilation error occurs.
+The dimesion is less than or equal to 255, otherwise a compilation error occurs.
 
-=head3 Numeric Array Type
+=head3 Numeric Array Types
 
-The numeric array type is an L<array type|Array Type> for the array of the L<numeric type|/"Numeric Types">.
+A numeric array type is an L<array type|/"Array Types"> of a L<numeric type|/"Numeric Types">.
 
-The list of the numeric array.
+The List of Numeric Array Types:
 
-=over 2
-
-=item * byte[]
-
-=item * short[]
-
-=item * int[]
-
-=item * long[]
-
-=item * float[]
-
-=item * double[]
+  byte[]
+  short[]
+  int[]
+  long[]
+  float[]
+  double[]
 
 =back
 
-Each element are initialized by the L<initial value/"Type Initial Value"> when the L<creating array|/"Creating Array"> is performed.
+=head3 Object Array Types
 
-=head3 byte[] Type
-
-The C<byte[]> type is an L<array type|/"Array Types"> that the element type is C<byte>.
-
-  byte[]
-
-=head3 Object Array Type
-
-Object array types are the L<array type|/"Array Types"> that the type of the element is an L<object type|/"Object Types">.
+An object array type is an L<array type|/"Array Types"> of an L<object type|/"Object Types">.
 
 Examples:
 
-  # Object array types
-  my $points : Point[];
-  my $points_2dim : Point[][];
-  my $stringables : Stringable[];
-  my $strings : string[];
-  my $objects : object[];
+  Point[]
+  Point[][]
+  Stringable[]
+  string[]
+  object[]
 
 =head3 String Array Type
 
-String array types are the L<array type|/"Array Types"> that the type of the element is the L<string type|/"string Type">.
+The string array type is the L<array type|/"Array Types"> the L<string type|/"string Type">.
+
+  string[]
+
+=head3 Class Array Types
+
+A class array type is an L<array type|/"Array Types"> of a L<class type|/"Class Types">.
+
+Examples:
+  
+  Int[]
+  Point[]
+
+=head3 Interface Array Types
+
+An interface array type is an L<array type|/"Array Types"> of an L<interface type|/"Interface Types">.
 
 Examples:
 
-  # String array types
-  my $strings : string[];
+  Stringable[]
+  Cloneable[]
 
-=head3 Class Array Type
+=head3 Multi-Dimensional Array Types
 
-Class array types are the L<array type|/"Array Types"> that the type of the element is the L<class type|/"Class Types">.
-
-Examples:
-
-  # Class array types
-  my $points : Point[];
-
-=head3 Interface Array Type
-
-Interface array types are the L<array type|/"Array Types"> that the type of the element is the L<interface type|/"Interface Types">.
+A multi-dimensional array type is an L<array type|/"Array Types"> of an L<array type|/"Array Types">.
 
 Examples:
 
-  # Interface array types
-  my $stringables : Stringable[];
+  int[][]
+  Int[][]
+  string[][][]
+  object[][]
 
-=head3 Multi-Dimensional Array Type
+A multi-dimensional array is created by the syntax of L<creating a multi-dimensional array|SPVM::Document::Language::Operators/"Creating a Multi-Dimensional Array"> of the C<new> operator.
 
-The multi-dimensional array type is the L<array type|/"Array Types"> that the type of the element is an L<array type|/"Array Types">.
+=head3 Multi-Numeric Array Types
+
+A multi-numeric array type is an L<array type|/"Array Types"> of a L<multi-numeric type|"Multi-Numeric Types">.
 
 Examples:
 
-  # Multi-dimensional array types
-  my $numbers_2dim : Int[][];
-
-=head3 Multi-Numeric Array Type
-
-A multi-numeric array type is an L<array type|/"Array Types"> that the basic type is a L<multi-numeric type|"Multi-Numeric Types">.
-
-=begin html
-
-<ul>
-  <li>
-    Complex_2d[]
- </li>
-  <li>
-    Complex_2f[]
- </li>
-</ul>
-
-=end html
-
-The byte size of the element is the total byte size of the fields of the L<multi-numeric type|"Multi-Numeric Types">.
-
-For example, The byte size of the element of L<Complex_2d|SPVM::Complex_2d> is 16 bytes (2 * 8 bytes).
-
-The object of the multi-numeric array type can be created by the L<new|/"Creating Array"> operator.
-
-  my $complex_nums = new Complex_2d[10];
+  Complex_2d[]
+  Complex_2f[]
 
 =head3 Any Object Array Type
 
-The any object array type C<object[]> is the type that any L<object array type|/"Object Array Type"> can be assigned.
+The any object array type C<object[]> is the L<array type|/"Array Types"> to which any L<object array type|/"Object Array Types"> can be assigned.
 
-  # Any object array Type
-  my $array : object[] = new Point[3];
-  my $array : object[] = new object[3];
-  my $array : object[] = new Point[][3];
-
-Any object array type is an L<array type|/"Array Types">.
-
-You can get the array length using the L<array length operator|SPVM::Document::Language::Operators/"The array Length Operator">.
-
-  my $array : object[] = new Int[3];
-  
-  # Getting the length of the element of Any Object Array Type
-  my $length = @$array;
-
-You can get and set the element using the L<get array element|/"Getting Array Element"> syntax and the L<set array element|/"Setting Array Element">.
- 
-  # Getting the element of any object array
-  my $number = (Int)$array->[0];
-  
-  # Setting the element of any object array
-  $array->[0] = Int->new(5);
-
-When setting the element of any object array, the element type is checked. If the dimension of the element is not the dimension of the array - 1, an exception is thrown.
-
-Compilation Errors:
-
-If a invalid type is assigned, a compilation error occurs.
+  object[]
 
 =head2 Multi-Numeric Types
 
@@ -692,9 +653,13 @@ A multi-numeric type is defined by a L<multi-numeric type definition|SPVM::Docum
 
 =head2 Reference Types
 
-A reference type is a type for a L<reference|/"Reference"> represented by C<*>.
+A reference type is a type for a L<reference|/"Reference">.
 
   TYPE*
+
+A reference type consists of a type followed by C<*>.
+
+I<TYPE> must be a L<numeric type|/"Numeric Types"> or a L<multi-numeric type|/"Multi-Numeric Types">.
 
 =head3 Numeric Reference Types
 
@@ -826,9 +791,9 @@ The List of Type Initial Values:
 
 =head2 Type Width
 
-The type width is the required length of the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> for the type.
+The type width is the length of the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> of the type.
 
-If the type is a multi-numeric type, it is the length of the fields, owhterwise it is 1.
+If the type is a L<multi-numeric type|/"Multi-Numeric Types">, the type width is the length of the fields, owhterwise it is 1.
 
 =head1 Type Conversions
 
@@ -1159,7 +1124,7 @@ A new byte[] object is created and all characters in the string are copied to th
 
 =head2 byte[]-to-string Conversion
 
-The byte[]-to-string conversion is a L<type conversion|/"Type Conversion"> from the L<byte[] type|/"byte[] type"> to the L<string Type|/"string Type">.
+The byte[]-to-string conversion is a L<type conversion|/"Type Conversion"> from the byte[] type to the L<string Type|/"string Type">.
 
   # byte[]-to-string conversion
   my $bytes : byte[] = new byte[3];
@@ -1368,7 +1333,7 @@ And the following operation in the C language is performed on I<OPERAND> .
 
 Compilation Errors:
 
-The type of I<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types"> or an L<Reference Types|/"Reference Types"> or the L<undef type|/"undef Type">. Otherwise a compilation error occurs.
+The type of I<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types"> or an L<Reference Types|/"Reference Types"> or the L<undef type|/"undef Type">, otherwise a compilation error occurs.
 
 Examples:
 
@@ -1789,7 +1754,7 @@ Examples:
 
 =head2 Assignment Requirement to Numeric Array
 
-If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
 Otherwise, the assignment requirement is false.
 
@@ -1816,7 +1781,7 @@ Examples:
 
 =head2 Assignment Requirement to Multi-Numeric Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
 Otherwise, the assignment requirement is false.
 
@@ -1860,7 +1825,7 @@ Examples:
 
 =head2 Assignment Requirement to Class Array
 
-If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
 If the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is an super class of the type of I<RIGHT_OPERAND>, the assignment requirement is true.
 
@@ -1885,9 +1850,9 @@ Examples:
 
 =head2 Assignment Requirement to Interface Array
 
-If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
-If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Types"> can assign to the basic type of I<LEFT_OPERAND>, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Types"> and the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Types"> can assign to the basic type of I<LEFT_OPERAND>, the assignment requirement is true.
 
 Otherwise, the assignment requirement is false.
 
@@ -1913,7 +1878,7 @@ Examples:
 
 =head2 Assignment Requirement to Any Object Array
 
-If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Types"> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
 Otherwise, the assignment requirement is false.
 
@@ -1949,7 +1914,7 @@ Examples:
 
 =head2 Assignment Requirement to Multi-Dimensional Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
+If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
 
 If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the assignment requirement is true.
 
@@ -2353,15 +2318,15 @@ Examples:
 
 =head2 Cast Requirement to Numeric Array
 
-If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the cast requirement is true.
+If the type of I<LEFT_OPERAND> is the byte[] type and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the cast requirement is true.
 
-If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
+If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
 If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the cast requirement is true.
 
 Otherwise, the cast requirement is false.
 
-If the type of I<LEFT_OPERAND> is the L<byte[] type|/"byte[] Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
+If the type of I<LEFT_OPERAND> is the byte[] type and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
 
 If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
@@ -2391,7 +2356,7 @@ Examples:
 
 =head2 Cast Requirement to Multi-Numeric Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
+If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
  
 If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the cast requirement is true.
 
@@ -2457,7 +2422,7 @@ Examples:
 
 =head2 Cast Requirement to Class Array
 
-If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
+If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
 If the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the cast requirement is true.
 
@@ -2498,19 +2463,19 @@ Examples:
 
 =head2 Cast Requirement to Interface Array
 
-If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
+If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Type"> and its L<basic type|/"Basic Types"> has the interface of the basic type of I<LEFT_OPERAND>, the cast requirement is true.
+If the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Types"> has the interface of the basic type of I<LEFT_OPERAND>, the cast requirement is true.
 
 If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
 
-If the type of I<RIGHT_OPERAND> is an differnt type of L<interface array type|/"Interface Array Type">, the cast requirement is also true.
+If the type of I<RIGHT_OPERAND> is an differnt type of L<interface array type|/"Interface Array Types">, the cast requirement is also true.
 
 If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"undef Type">, the cast requirement is true.
 
 Otherwise, the cast requirement is false.
 
-If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Type">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
+If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Types">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
@@ -2541,7 +2506,7 @@ Examples:
 
 If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of I<RIGHT_OPERAND>s are the following cases:
 
-If the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Type"> or the L<undef type|/"undef Type">, the cast requirement is true.
+If the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Types"> or the L<undef type|/"undef Type">, the cast requirement is true.
 
 If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the cast requirement is true.
 
@@ -2585,7 +2550,7 @@ Examples:
   
 =head2 Cast Requirement to Multi-Dimensional Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Type"> and  and the types of I<RIGHT_OPERAND>s are the following cases:
+If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Types"> and  and the types of I<RIGHT_OPERAND>s are the following cases:
 
 If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the cast requirement is true.
 
@@ -2634,10 +2599,6 @@ Examples:
     };
     my $muldim_array : Stringer[][] = [[$cb]];
   }
-
-=end html
-
-(C<[]..> means one or more C<[]>)
 
 =head1 Copyright & License
 
