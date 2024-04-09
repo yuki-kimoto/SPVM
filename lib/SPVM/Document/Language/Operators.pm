@@ -606,7 +606,7 @@ Examples:
   # Examples of the logical right shift operator
   my $result = 0xFF0A >>> 3;
 
-=head2 Logical Operator
+=head2 Logical Operators
 
 =head3 Logical AND Operator
 
@@ -614,9 +614,9 @@ The logical AND operator C<&&> performs a logical AND operation.
   
   LEFT_OPERAND && RIGHT_OPERAND
 
-This operator performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
+This operator performs the L<condition evaluation|/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
 
-If the evaluated value is 0, it returns 0, otherwise performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
+If the evaluated value is 0, it returns 0, otherwise performs the L<condition evaluation|/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
@@ -636,9 +636,9 @@ The logical OR operator C<||> performes a logical OR operation.
   # The logical OR operator
   LEFT_OPERAND || RIGHT_OPERAND
 
-Thg logical OR operator performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
+Thg logical OR operator performs the L<condition evaluation|/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
 
-If the evaluated value is not 0, it returns the evaluated value, otherwise performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
+If the evaluated value is not 0, it returns the evaluated value, otherwise performs the L<condition evaluation|/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
@@ -657,7 +657,7 @@ The logical NOT operator C<!> performes a logical NOT operation.
 
   !OPERAND
 
-Thg logical NOT operator performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the operand I<OPERAND>.
+Thg logical NOT operator performs the L<condition evaluation|/"Condition Evaluation"> on the operand I<OPERAND>.
 
 If the evaluated value is 0, returns 1, otherwise returns 0.
 
@@ -670,43 +670,43 @@ The return type is the int type.
 
 =head2 Condition Evaluation
 
-The condition evaluation is the type coversion from a type to the bool type.
+The condition evaluation is the operation performed on the operand at a conditional part of the L<if statement|SPVM::Document::Language::Statements/"if Statement">, the L<while statement|SPVM::Document::Language::Statements/"while Statement">, and L<logical operators|/"Logical Operators">.
 
-The bool type is not a real type, it means the int type which is intended to have a bool value.
+The condition evaluation performs the following operations corresponding to the type of the operand.
 
-This conversion is performed on an operand placed in a L<condition|SPVM::Document::Language::Class/"Condition">.
+The return type is the int type.
 
-B<byte to bool:>
+B<byte:>
 
-B<short to bool:>
+B<short:>
 
-B<int to bool:>
+B<int:>
 
-The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
+The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the operand.
 
 And return the value after conversion.
 
-B<undef to bool:>
+B<undef:>
 
 Returns 0.
 
-B<BOOL to bool:>
+B<BOOL:>
 
 Return the C<value> field in the L<Bool|SPVM::Bool> object.
 
-B<long to bool:>
+B<long:>
 
-B<float to bool:>
+B<float:>
 
-B<double to bool:>
+B<double:>
 
-B<a reference type to bool:> 
+B<a reference type:> 
 
 Performs the following C language operation, and returns it.
 
   !!OPERAND
 
-B<an object type to bool:>
+B<an object type:>
 
 If the compile type of the operand is not the L<Bool|SPVM::Bool> class, performs the following C language operation, and returns it.
 
@@ -714,7 +714,7 @@ If the compile type of the operand is not the L<Bool|SPVM::Bool> class, performs
 
 Compilation Errors:
 
-The type of the operand of the condition evaluation must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types">, a L<reference type|/"Reference Types">, or the L<undef type|/"undef Type">, otherwise a compilation error occurs.
+The type of the operand of the condition evaluation must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, a L<reference type|SPVM::Document::Language::Types/"Reference Types">, or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
 
 Examples:
   
