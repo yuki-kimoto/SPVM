@@ -1330,8 +1330,6 @@ Note that this is a concept, not an actual syntax.
 
 =head2 Assignment Requirement to Numeric
 
-Explains the assignment requirement to the L<numeric types|"Numeric Types">.
-
 =head3 Assignment Requirement from Numeric to Numeric
 
 If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than or equal to the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is true.
@@ -1367,20 +1365,6 @@ If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater
 
 =end html
 
-Examples:
-  
-  # int to int
-  my $number : int = 3;
-  
-  # byte to int
-  my $number : int = (byte)5;
-  
-  # double to double
-  my $number : double = 4.5;
-  
-  # float to double
-  my $number : double = 4.5f;
-
 If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is conditional true.
 
 The condition is that I<RIGHT_OPERAND> is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of I<LEFT_OPERAND>.
@@ -1410,11 +1394,6 @@ If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing
 
 =end html
 
-Examples:
-  
-  # int to byte
-  my $number : byte = 127;
-
 =head3 Assignment Requirement from NumericObject to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Types">, the assignment requirement is true.
@@ -1433,12 +1412,6 @@ If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> correspondi
 
 =end html
 
-Examples:
-
-  my $int : int = Int->new(3);
-
-  my $double : double = Double->new(3.5);
-
 =head3 Assignment Requirement from Any Object to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the assignment requirement is true.
@@ -1453,12 +1426,6 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 </table>
 
 =end html
-
-Examples:
-
-  my $int : int = (object)Int->new(3);
-
-  my $double : double = (object)Double->new(3.5);
 
 =head3 Assignment Requirement from Others to Numeric
 
@@ -1480,11 +1447,6 @@ Otherwise, the assignment requirement is false.
 
 =end html
 
-Examples:
-
-  my $z1 : Complex_2d;
-  my $z2 : Complex_2d = $z1;
-
 =head2 Assignment Requirement to Referenece
 
 If the type of I<LEFT_OPERAND> is a L<Reference Types|/"Reference Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignment requirement is true.
@@ -1500,11 +1462,6 @@ Otherwise, the assignment requirement is false.
 </table>
 
 =end html
-
-Examples:
-
-  my $number : int = 5;
-  my $number_ref : int* = \num;
 
 =head2 Assignment Requirement to String
 
@@ -1534,12 +1491,6 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<num
 
 =end html
 
-Examples:
-
-  my $string : string = "abc";
-  my $number_string : string = 3;
-  my $string : string = undef;
-
 =head2 Assignment Requirement to NumericObject
 
 If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|/"undef Type">, the assignment requirement is true.
@@ -1559,12 +1510,6 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 </table>
 
 =end html
-
-Examples:
-
-  my $number_object : Int = Int->new(3);
-  my $number_object : Int = 3;
-  my $number_object : Int = undef;
 
 =head2 Assignment Requirement to Class
 
@@ -1586,11 +1531,6 @@ Otherwise, the assignment requirement is false.
 
 =end html
 
-Examples:
-
-  my $point : Point = Point->new;
-  my $point : Point = undef;
-
 =head2 Assignment Requirement to Interface
 
 If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
@@ -1610,12 +1550,6 @@ Otherwise, the assignment requirement is false.
 </table>
 
 =end html
-
-Examples:
-  
-  # Point has Stringable interface
-  my $stringable : Stringable = Point->new(1, 2);
-  my $stringable : Stringable = undef;
 
 =head2 Assignment Requirement to Any Object
 
@@ -1637,12 +1571,6 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 =end html
 
-Examples:
-
-  my $object : object = Point->new;
-  my $number_object : object = 3;
-  my $object : object = undef;
-
 =head2 Assignment Requirement to Undefined
 
 If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignment requirement is false.
@@ -1655,11 +1583,6 @@ If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignmen
 </table>
 
 =end html
-
-Examples:
-
-  # The assignment requirement is false
-  undef = Point->new;
 
 =head2 Assignment Requirement to Numeric Array
 
@@ -1683,11 +1606,6 @@ Otherwise, the assignment requirement is false.
 
 =end html
 
-Examples:
-
-  my $numbers : int[] = new int[3];
-  my $numbers : int[] = undef;
-
 =head2 Assignment Requirement to Multi-Numeric Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
@@ -1705,11 +1623,6 @@ Otherwise, the assignment requirement is false.
 
 =end html
 
-Examples:
-
-  my $numbers : Complex_2d[] = new Complex_2d[3];
-  my $numbers : Complex_2d[] = undef;
-
 =head2 Assignment Requirement to String Array
 
 If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
@@ -1726,11 +1639,6 @@ Otherwise, the assignment requirement is false.
 </table>
 
 =end html
-
-Examples:
-
-  my $strings : string[] = ["abc", "def"];
-  my $strings : string[] = undef;
 
 =head2 Assignment Requirement to Class Array
 
@@ -1752,11 +1660,6 @@ Otherwise, the assignment requirement is false.
 
 =end html
 
-Examples:
-
-  my $points : Point[] = new Point[3];
-  my $points : Point[] = undef;
-
 =head2 Assignment Requirement to Interface Array
 
 If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
@@ -1777,14 +1680,6 @@ Otherwise, the assignment requirement is false.
 
 =end html
 
-Examples:
-
-  my $stringables : Stringable[] = new Stringable[3];
-
-  my $stringables : Stringable[] = new Point[3];
-  
-  my $stringables : Stringable[] = undef;
-
 =head2 Assignment Requirement to Any Object Array
 
 If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Types"> or the L<undef type|/"undef Type">, the assignment requirement is true.
@@ -1801,25 +1696,6 @@ Otherwise, the assignment requirement is false.
 </table>
 
 =end html
-
-Examples:
-
-  my $any_objects0 : object[];
-  my $any_objects : object[] = $any_objects0;
-  
-  my $points : Point[];
-  my $any_object : object[] = $points;
-  
-  my $any_object : object[] = undef;
-  
-  my $points_2dim : Point[][];
-  my $any_object : object[] = $points_2dim;
-  
-  my $stringables : Stringable[];
-  my $any_object : object[] = $stringables;
-  
-  my $strings : string[];
-  my $any_object : object[] = $strings;
 
 =head2 Assignment Requirement to Multi-Dimensional Array
 
@@ -1845,24 +1721,6 @@ Otherwise, the assignment requirement is false.
 =end html
 
 (C<[]..> means one or more C<[]>)
-
-Examples:
-
-  my $points_2dim : Point[][];
-  my $muldim_array : Point[][] = $points_2dim;
-
-  my $muldim_array : Point[][] = undef;
-
-  my $strings_2dim : String[][];
-  my $muldim_array : Stringable[][] = $strings_2dim;
-
-  {
-    my $cb = method : string ($object : object) {
-      my $point = (Point)$object;
-      return $point->to_string;
-    };
-    my $muldim_array : Stringer[][] = [[$cb]];
-  }
 
 =head1 Cast Requirement
 
@@ -1939,27 +1797,6 @@ If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is equal t
 
 =end html
 
-Examples:
-  
-  # int to int
-  my $number = (int)3;
-  
-  # byte to int
-  my $number_byte : byte = 5;
-  my $number = (int)5;
-  
-  # double to double
-  my $number = (double)4.5;
-  
-  # float to double
-  my $number = (double)4.5f;
-  
-  # int to byte
-  my $number = (byte)127;
-
-  # double to int
-  my $number = (int)2.5;
-
 =head3 Cast Requirement from NumericObject to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Types">, the cast requirement is true.
@@ -1978,12 +1815,6 @@ If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> correspondi
 
 =end html
 
-Examples:
-
-  my $int = (int)Int->new(3);
-
-  my $double = (double)Double->new(3.5);
-
 =head3 Cast Requirement from Any Object to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the cast requirement is true.
@@ -1998,14 +1829,6 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 </table>
 
 =end html
-
-Examples:
-  
-  my $object : object = Int->new(3);
-  my $int = (int)$object;
-  
-  my $object : object = Double->new(3.5);
-  my $double = (double)$object;
 
 =head3 Cast Requirement from Others to Numeric
 
@@ -2027,11 +1850,6 @@ Otherwise, the cast requirement is false.
 
 =end html
 
-Examples:
-
-  my $z1 : Complex_2d;
-  my $z2 = (Complex_2d)$z1;
-
 =head2 Cast Requirement to Referenece
 
 If the type of I<LEFT_OPERAND> is a L<Reference Types|/"Reference Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
@@ -2047,11 +1865,6 @@ Otherwise, the cast requirement is false.
 </table>
 
 =end html
-
-Examples:
-
-  my $number : int = 5;
-  my $number_ref = (int*)\num;
 
 =head2 Cast Requirement to String
 
@@ -2084,12 +1897,6 @@ If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type
 
 =end html
 
-Examples:
-
-  my $string = (string)"abc";
-  my $number_string = (string)3;
-  my $string : string = undef;
-
 =head2 Cast Requirement to NumericObject
 
 If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
@@ -2114,15 +1921,6 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
 </table>
 
 =end html
-
-Examples:
-
-  my $number_object = (Int)Int->new(3);
-  my $number_object = (Int)3;
-  my $number_object = (Int)undef;
-  
-  my $object : object = Int->new(3);
-  my $number_object = (Int)$object;
 
 =head2 Cast Requirement to Class
 
@@ -2153,18 +1951,6 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 =end html
 
-Examples:
-
-  my $point : Point = Point->new;
-  
-  my $stringable : Stringable;
-  my $point = (Point)$stringable;
-
-  my $stringer : Stringer;
-  my $point = (Point)$stringer
-
-  my $point = (Point)undef;
-
 =head2 Cast Requirement to Interface
 
 If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types">, and the types of I<RIGHT_OPERAND>s are the following cases:
@@ -2191,21 +1977,6 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 =end html
 
-Examples:
-  
-  my $stringable1 : Stringable;
-  my $stringable2 = (Stringable)$stringable1;
-  
-  my $cloneable : Cloneable;
-  my $stringable = (Stringable)$cloneable;
-  
-  my $stringable  = (Stringable)Point->new(1, 2);
-
-  my $object : object  = Point->new(1, 2);
-  my $stringable  = (Stringable)Point->new(1, 2);
-  
-  my $stringable : Stringable = undef;
-
 =head2 Cast Requirement to Any Object
 
 If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
@@ -2227,12 +1998,6 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 </table>
 
 =end html
-
-Examples:
-
-  my $object : object = Point->new;
-  my $number_object : object = 3;
-  my $object : object = undef;
 
 =head2 Cast Requirement to Numeric Array
 
@@ -2261,17 +2026,6 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 =end html
 
-Examples:
-  
-  my $bytes = (byte[])"abc";
-  
-  my $numbers = (int[])new int[3];
-  
-  my $object : object = new int[3];
-  my $numbers = (int[])$object;
-  
-  my $numbers = (int[])undef;
-
 =head2 Cast Requirement to Multi-Numeric Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
@@ -2293,15 +2047,6 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 </table>
 
 =end html
-
-Examples:
-
-  my $numbers = (Complex_2d[])new Complex_2d[3];
-
-  my $object : object = new Complex_2d[3];
-  my $numbers = (Complex_2d[])$object;
-
-  my $numbers = (Complex_2d[])undef;
 
 =head2 Cast Requirement to String Array
 
@@ -2325,18 +2070,6 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 </table>
 
 =end html
-
-Examples:
-
-  my $strings = (string[])["abc", "def"];
-
-  my $object : object = ["abc", "def"];
-  my $strings = (string[])$object;
-
-  my $objects : object[] = ["abc", "def"];
-  my $strings = (string[])$object;
-
-  my $strings  = (string[])undef;
 
 =head2 Cast Requirement to Class Array
 
@@ -2366,18 +2099,6 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 </table>
 
 =end html
-
-Examples:
-
-  my $points = (Point[])new Point[3];
-
-  my $object : object = new Point[3];
-  my $points = (Point[])$object;
-
-  my $objects : object[] = new Point[3];
-  my $points = (Point[])$object;
-
-  my $points = (Point[])undef;
 
 =head2 Cast Requirement to Interface Array
 
@@ -2412,14 +2133,6 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 =end html
 
-Examples:
-
-  my $stringables = (Stringable[])new Stringable[3];
-
-  my $stringables = (Stringable[])new Point[3];
-  
-  my $stringables = (Stringable[])undef;
-
 =head2 Cast Requirement to Any Object Array
 
 If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of I<RIGHT_OPERAND>s are the following cases:
@@ -2444,28 +2157,6 @@ If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the
 
 =end html
 
-Examples:
-
-  my $any_object : object;
-  my $any_objects = (object[])$any_object;
-
-  my $any_objects0 : object[];
-  my $any_objects = (object[])$any_objects0;
-
-  my $points : Point[];
-  my $any_object = (object[])$points;
-
-  my $any_object = (object[])undef;
-
-  my $points_2dim : Point[][];
-  my $any_object = (object[])$points_2dim;
-
-  my $stringables : Stringable[];
-  my $any_object = (object[])$stringables;
-  
-  my $strings : string[];
-  my $any_object = (object[])$strings;
-  
 =head2 Cast Requirement to Multi-Dimensional Array
 
 If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Types"> and  and the types of I<RIGHT_OPERAND>s are the following cases:
@@ -2500,8 +2191,261 @@ Otherwise, the cast requirement is false.
 
 (C<[]..> means one or more C<[]>)
 
-Examples:
+=head2 Examples of Assignment
 
+  # int to int
+  my $number : int = 3;
+  
+  # byte to int
+  my $number : int = (byte)5;
+  
+  # double to double
+  my $number : double = 4.5;
+  
+  # float to double
+  my $number : double = 4.5f;
+
+  # int to byte
+  my $number : byte = 127;
+
+  my $int : int = Int->new(3);
+
+  my $double : double = Double->new(3.5);
+
+  my $int : int = (object)Int->new(3);
+
+  my $double : double = (object)Double->new(3.5);
+
+  my $z1 : Complex_2d;
+  my $z2 : Complex_2d = $z1;
+
+  my $number : int = 5;
+  my $number_ref : int* = \num;
+
+  my $string : string = "abc";
+  my $number_string : string = 3;
+  my $string : string = undef;
+
+  my $number_object : Int = Int->new(3);
+  my $number_object : Int = 3;
+  my $number_object : Int = undef;
+
+  my $point : Point = Point->new;
+  my $point : Point = undef;
+
+  # Point has Stringable interface
+  my $stringable : Stringable = Point->new(1, 2);
+  my $stringable : Stringable = undef;
+
+  my $object : object = Point->new;
+  my $number_object : object = 3;
+  my $object : object = undef;
+
+  # The assignment requirement is false
+  undef = Point->new;
+
+  my $numbers : int[] = new int[3];
+  my $numbers : int[] = undef;
+
+  my $numbers : Complex_2d[] = new Complex_2d[3];
+  my $numbers : Complex_2d[] = undef;
+
+  my $strings : string[] = ["abc", "def"];
+  my $strings : string[] = undef;
+
+  my $points : Point[] = new Point[3];
+  my $points : Point[] = undef;
+
+  my $stringables : Stringable[] = new Stringable[3];
+
+  my $stringables : Stringable[] = new Point[3];
+  
+  my $stringables : Stringable[] = undef;
+
+  my $any_objects0 : object[];
+  my $any_objects : object[] = $any_objects0;
+  
+  my $points : Point[];
+  my $any_object : object[] = $points;
+  
+  my $any_object : object[] = undef;
+  
+  my $points_2dim : Point[][];
+  my $any_object : object[] = $points_2dim;
+  
+  my $stringables : Stringable[];
+  my $any_object : object[] = $stringables;
+  
+  my $strings : string[];
+  my $any_object : object[] = $strings;
+
+=head2 Examples of Type Cast
+
+  my $number : int = 5;
+  my $number_ref = (int*)\num;
+
+  my $numbers = (Complex_2d[])new Complex_2d[3];
+
+  my $object : object = new Complex_2d[3];
+  my $numbers = (Complex_2d[])$object;
+
+  my $numbers = (Complex_2d[])undef;
+
+  my $strings = (string[])["abc", "def"];
+
+  my $object : object = ["abc", "def"];
+  my $strings = (string[])$object;
+
+  my $objects : object[] = ["abc", "def"];
+  my $strings = (string[])$object;
+
+  my $strings  = (string[])undef;
+
+  my $points = (Point[])new Point[3];
+
+  my $object : object = new Point[3];
+  my $points = (Point[])$object;
+
+  my $objects : object[] = new Point[3];
+  my $points = (Point[])$object;
+
+  my $points = (Point[])undef;
+
+  # int to int
+  my $number = (int)3;
+  
+  # byte to int
+  my $number_byte : byte = 5;
+  my $number = (int)5;
+  
+  # double to double
+  my $number = (double)4.5;
+  
+  # float to double
+  my $number = (double)4.5f;
+  
+  # int to byte
+  my $number = (byte)127;
+
+  # double to int
+  my $number = (int)2.5;
+
+  my $int = (int)Int->new(3);
+
+  my $double = (double)Double->new(3.5);
+
+  my $object : object = Int->new(3);
+  my $int = (int)$object;
+  
+  my $object : object = Double->new(3.5);
+  my $double = (double)$object;
+
+  my $z1 : Complex_2d;
+  my $z2 = (Complex_2d)$z1;
+
+  my $number : int = 5;
+  my $number_ref = (int*)\num;
+
+  my $string = (string)"abc";
+  my $number_string = (string)3;
+  my $string : string = undef;
+
+  my $number_object = (Int)Int->new(3);
+  my $number_object = (Int)3;
+  my $number_object = (Int)undef;
+  
+  my $object : object = Int->new(3);
+  my $number_object = (Int)$object;
+
+  my $point : Point = Point->new;
+  
+  my $stringable : Stringable;
+  my $point = (Point)$stringable;
+
+  my $stringer : Stringer;
+  my $point = (Point)$stringer
+
+  my $point = (Point)undef;
+
+  my $stringable1 : Stringable;
+  my $stringable2 = (Stringable)$stringable1;
+  
+  my $cloneable : Cloneable;
+  my $stringable = (Stringable)$cloneable;
+  
+  my $stringable  = (Stringable)Point->new(1, 2);
+
+  my $object : object  = Point->new(1, 2);
+  my $stringable  = (Stringable)Point->new(1, 2);
+  
+  my $stringable : Stringable = undef;
+
+  my $object : object = Point->new;
+  my $number_object : object = 3;
+  my $object : object = undef;
+
+  my $bytes = (byte[])"abc";
+  
+  my $numbers = (int[])new int[3];
+  
+  my $object : object = new int[3];
+  my $numbers = (int[])$object;
+  
+  my $numbers = (int[])undef;
+
+  my $numbers = (Complex_2d[])new Complex_2d[3];
+
+  my $object : object = new Complex_2d[3];
+  my $numbers = (Complex_2d[])$object;
+
+  my $numbers = (Complex_2d[])undef;
+
+  my $strings = (string[])["abc", "def"];
+
+  my $object : object = ["abc", "def"];
+  my $strings = (string[])$object;
+
+  my $objects : object[] = ["abc", "def"];
+  my $strings = (string[])$object;
+
+  my $strings  = (string[])undef;
+
+  my $points = (Point[])new Point[3];
+
+  my $object : object = new Point[3];
+  my $points = (Point[])$object;
+
+  my $objects : object[] = new Point[3];
+  my $points = (Point[])$object;
+
+  my $points = (Point[])undef;
+
+  my $stringables = (Stringable[])new Stringable[3];
+
+  my $stringables = (Stringable[])new Point[3];
+  
+  my $stringables = (Stringable[])undef;
+
+  my $any_object : object;
+  my $any_objects = (object[])$any_object;
+
+  my $any_objects0 : object[];
+  my $any_objects = (object[])$any_objects0;
+
+  my $points : Point[];
+  my $any_object = (object[])$points;
+
+  my $any_object = (object[])undef;
+
+  my $points_2dim : Point[][];
+  my $any_object = (object[])$points_2dim;
+
+  my $stringables : Stringable[];
+  my $any_object = (object[])$stringables;
+  
+  my $strings : string[];
+  my $any_object = (object[])$strings;
+  
   my $points_2dim : Point[][];
   my $muldim_array : Point[][] = $points_2dim;
   
