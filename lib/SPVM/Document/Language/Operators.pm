@@ -614,9 +614,9 @@ The logical AND operator C<&&> performs a logical AND operation.
   
   LEFT_OPERAND && RIGHT_OPERAND
 
-This operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the left operand I<LEFT_OPERAND>.
+This operator performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the left operand I<LEFT_OPERAND>.
 
-If the evaluated value is 0, it returns 0, otherwise performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the right operand I<RIGHT_OPERAND>.
+If the evaluated value is 0, it returns 0, otherwise performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the right operand I<RIGHT_OPERAND>.
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
@@ -636,9 +636,9 @@ The logical OR operator C<||> performes a logical OR operation.
   # The logical OR operator
   LEFT_OPERAND || RIGHT_OPERAND
 
-Thg logical OR operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the left operand I<LEFT_OPERAND>.
+Thg logical OR operator performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the left operand I<LEFT_OPERAND>.
 
-If the evaluated value is not 0, it returns the evaluated value, otherwise performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the right operand I<RIGHT_OPERAND>.
+If the evaluated value is not 0, it returns the evaluated value, otherwise performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the right operand I<RIGHT_OPERAND>.
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
@@ -657,7 +657,7 @@ The logical NOT operator C<!> performes a logical NOT operation.
 
   !OPERAND
 
-Thg logical NOT operator performs the L<boolean conversion|SPVM::Document::Language::Types/"Boolean Conversion"> on the operand I<OPERAND>.
+Thg logical NOT operator performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the operand I<OPERAND>.
 
 If the evaluated value is 0, returns 1, otherwise returns 0.
 

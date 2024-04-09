@@ -1739,6 +1739,46 @@ If the type of the local variable declaration is ommited, the type of the right 
   # Foo
   my $foo = new Foo;
 
+=head3 Condition
+
+A condition means a conditional part I<CONDITION>.
+
+The operand of the L<if statement|SPVM::Document::Language::Statements/"if Statement">:
+
+  if (CONDITION) {
+  
+  }
+
+The operand of the L<unless statement|SPVM::Document::Language::Statements/"unless Statement">:
+
+  unless (CONDITION) {
+  
+  }
+
+The second operand of the L<for statement|SPVM::Document::Language::Statements/"for Statement">:
+
+  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
+  
+  }
+
+The operand of the L<while statement|SPVM::Document::Language::Statements/"while Statement">:
+
+  while (CONDITION) {
+  
+  }
+
+The left and right operand of the L<logical AND operator|SPVM::Document::Language::Operators/"Logical AND Operator">:
+
+  CONDITION && CONDITION
+
+The left and right operand of the L<logical OR operator|SPVM::Document::Language::Operators/"Logical OR Operator">:
+
+  CONDITION || CONDITION
+
+The operand of the L<logical NOT operator|SPVM::Document::Language::Operators/"Logical NOT Operator">:
+
+  !CONDITION
+
 =head3 Local Variable Access
 
 The local variable access has the following syntax.

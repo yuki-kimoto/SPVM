@@ -1131,7 +1131,7 @@ If the array is not defined, returns C<undef>.
 
 =head2 Boxing Conversion
 
-A boxing conversion is the type coversion from a L<numeric type|/"Numeric Types"> to its corresponding L<numeric object type|/"Numeric Object Types">.
+The boxing conversion is the type coversion from a L<numeric type|/"Numeric Types"> to its corresponding L<numeric object type|/"Numeric Object Types">.
 
 =begin html
 
@@ -1200,7 +1200,7 @@ A boxing conversion creates a new numeric object corresponding to its numeric ty
 
 =head2 Unboxing Conversion
 
-An unboxing conversion is the type coversion from an object of a L<numeric object type|/"Numeric Object Types"> to the value of its corresponding L<numeric type|/"Numeric Types">.
+The unboxing conversion is the type coversion from an object of a L<numeric object type|/"Numeric Object Types"> to the value of its corresponding L<numeric type|/"Numeric Types">.
 
 =begin html
 
@@ -1267,70 +1267,57 @@ An unboxing conversion is the type coversion from an object of a L<numeric objec
 
 An unboxing conversion returns the value of the C<value> field of the numeric object.
 
-=head2 Boolean Conversion
+=head2 Bool Conversion
 
-The boolean conversion converts an operand to an int value that indicates a boolean value.
+The bool conversion is the type coversion from a type to the bool type.
 
-This conversion is performed on the follwoing operands.
+The bool type is not a real type, it means the int type which is intended to have a bool value.
 
-The operand of the L<if statement|SPVM::Document::Language::Statements/"if Statement">:
+This conversion is performed on an operand placed in a L<condition|SPVM::Document::Language::Class/"Condition">.
 
-  if (CONDITION) {
-  
-  }
+B<byte to bool:>
 
-The operand of the L<unless statement|SPVM::Document::Language::Statements/"unless Statement">:
+B<short to bool:>
 
-  unless (CONDITION) {
-  
-  }
+B<int to bool:>
 
-The second operand of the L<for statement|SPVM::Document::Language::Statements/"for Statement">:
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
 
-  for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
-  
-  }
+And return the value after conversion.
 
-The operand of the L<while statement|SPVM::Document::Language::Statements/"while Statement">:
+B<undef to bool:>
 
-  while (CONDITION) {
-  
-  }
+Returns 0.
 
-The left and right operand of the L<logical AND operator|SPVM::Document::Language::Operators/"Logical AND Operator">:
+B<BOOL to bool:>
 
-  CONDITION && CONDITION
+Return the C<value> field in the L<Bool|SPVM::Bool> object.
 
-The left and right operand of the L<logical OR operator|SPVM::Document::Language::Operators/"Logical OR Operator">:
+B<long to bool:>
 
-  CONDITION || CONDITION
+B<float to bool:>
 
-The operand of the L<logical NOT operator|SPVM::Document::Language::Operators/"Logical NOT Operator">:
+B<double to bool:>
 
-  !CONDITION
+B<a reference type to bool:> 
 
-The boolean conversion returns the following value corresponding to the type of the condional operand.
+Performs the following C language operation, and returns it.
 
-If the type is the int type, return the value.
+  !!OPERAND
 
-If the type is the L<undef|/"undef Type">, returns 0.
+B<an object type to bool:>
 
-If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE">, returns 1.
-
-If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, returns 0.
-
-If the type is an L<integer type|/"Integer Types"> within int, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
-
-And the following operation in the C language is performed on I<OPERAND> .
+If the compile type of the operand is not the L<Bool|SPVM::Bool> class, performs the following C language operation, and returns it.
 
   !!OPERAND
 
 Compilation Errors:
 
-The type of I<OPERAND> of the boolean conversion must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types"> or an L<Reference Types|/"Reference Types"> or the L<undef type|/"undef Type">, otherwise a compilation error occurs.
+The type of the operand of the bool conversion must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types">, a L<reference type|/"Reference Types">, or the L<undef type|/"undef Type">, otherwise a compilation error occurs.
 
 Examples:
-
+  
+  # Examples of the bool conversion
   if (1) {
     # ok
   }
