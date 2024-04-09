@@ -879,7 +879,7 @@ The numeric narrowing conversion is the type conversion from a L<numeric type|/"
 
 See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
 
-This conversion operates the same operation as the C language type cast.
+This conversion performs the same operation as the C language type cast.
 
   (TYPE)OPERAND
 
@@ -947,7 +947,7 @@ B<short to byte:>
 
 The binary numeric conversion is the type conversion to upgrade the L<numeric type|/"Numeric Types"> of the left operand and the right operand of a binary operator.
 
-This conversion operates the following operations.
+This conversion performs the following operations.
 
 If the type of the left operand is smaller than the right operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the type of the right operand is performed on the left operand.
 
@@ -961,43 +961,62 @@ If the converted type of the right operand is the smaller than the int type, the
 
 The numeric-to-string conversion is the type conversion from a L<numeric type|/"Numeric Types"> to the L<string type|/"string Type">.
 
-  # The numeric-to-string conversion
+This conversion performs the same operation as the C language C<sprintf>.
+
+B<byte to string:>
+
+  sprintf(RETURN_VALUE, "%" PRId8, OPERAND_byte);
+
+B<short to string:>
+
+  sprintf(RETURN_VALUE, "%" PRId16, OPERAND_short);
+
+B<int to string:>
+
+  sprintf(RETURN_VALUE, "%" PRId32, OPERAND_int);
+
+B<long to string:>
+
+  sprintf(RETURN_VALUE, "%" PRId64, OPERAND_long);
+
+B<float to string:>
+
+  sprintf(RETURN_VALUE, "%g", OPERAND_float);
+
+B<double to string:>
+
+  sprintf(RETURN_VALUE, "%g", OPERAND_double);
+
+Examples:
+
+  # Examples of the numeric-to-string conversion
   my $byte = (byte)1;
-  my $short = (short)2;
-  my $int = 3;
-  my $long = 4L;
-  my $float = 2.5f;
-  my $double = 3.3;
-  
-  # The string is 1.
   my $string_byte = (string)$byte;
   
-  # The string is 2.
+  my $short = (short)2;
   my $string_short = (string)$short;
-
-  # The string is 3.
+  
+  my $int = 3;
   my $string_int = (string)$int;
-
-  # The string is 4.
+  
+  my $long = 4L;
   my $string_long = (string)$long;
   
-  # The string is "2.5"
+  my $float = 2.5f;
   my $string_float = (string)$float;
   
-  # The string is "3.3"
+  my $double = 3.3;
   my $string_double = (string)$double;
 
-=head2 String-to-byte Conversion
+=head2 String-to-Numeric Conversion
 
-The String-to-byte conversion is the type conversion from the L<string Type|/"string Type"> to L</"byte Type">.
+The string-to-numeric conversion is the type conversion from the L<string type|/"string Type"> to a L<numeric type|/"Numeric Types">.
 
-  # The String-to-byte conversion
-  my $string : string = "Hello";
-  my $number : byte = (byte)$string;
+B<string to byte:>
 
-If the string is not defined, returns 0.
+If the string is not defined, it returns 0.
 
-If not, the string is coverted to a number by the C<strtoll> function in the C language.
+If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
 
 The number is greater than C<INT8_MAX>, the number is set to C<INT8_MAX>.
 
@@ -1005,17 +1024,11 @@ The number is less than C<INT8_MIN>, the number is set to C<INT8_MIN>.
 
 And returns the number.
 
-=head2 String-to-short Conversion
+B<string to short:>
 
-The String-to-short conversion is the type conversion from the L<string Type|/"string Type"> to L</"short Type">.
+If the string is not defined, it returns 0.
 
-  # The String-to-short conversion
-  my $string : string = "Hello";
-  my $number : short = (short)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtoll> function in the C language.
+If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
 
 The number is greater than C<INT16_MAX>, the number is set to C<INT16_MAX>.
 
@@ -1023,17 +1036,11 @@ The number is less than C<INT16_MIN>, the number is set to C<INT16_MIN>.
 
 And returns the number.
 
-=head2 String-to-int Conversion
+B<string to int:>
 
-The String-to-int conversion is the type conversion from the L<string Type|/"string Type"> to L</"int Type">.
+If the string is not defined, it returns 0.
 
-  # The String-to-int conversion
-  my $string : string = "Hello";
-  my $number : int = (int)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtoll> function in the C language.
+If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
 
 The number is greater than C<INT32_MAX>, the number is set to C<INT32_MAX>.
 
@@ -1041,70 +1048,86 @@ The number is less than C<INT32_MIN>, the number is set to C<INT32_MIN>.
 
 And returns the number.
 
-=head2 String-to-long Conversion
+B<string to long:>
 
-The String-to-long conversion is the type conversion from the L<string Type|/"string Type"> to L</"long Type">.
+If the string is not defined, it returns 0.
 
-  # The String-to-long conversion
+If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
+
+And returns the number.
+
+B<string to float:>
+
+If the string is not defined, it returns 0.
+
+If it is defined, it is coverted to a number by the C<strtof> function in the C language.
+
+And returns the number.
+
+B<string to double:>
+
+If the string is not defined, it returns 0.
+
+If it is defined, it is coverted to a number by the C<strtod> function in the C language.
+
+And returns the number.
+
+Exampels:
+  
+  # Examples of string to numeric conversions
+  
+  # string to byte
+  my $string : string = "Hello";
+  my $number : byte = (byte)$string;
+  
+  # string to short
+  my $string : string = "Hello";
+  my $number : short = (short)$string;
+  
+  # string to int
+  my $string : string = "Hello";
+  my $number : int = (int)$string;
+  
+  # string to long
   my $string : string = "Hello";
   my $number : long = (long)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtoll> function in the C language.
-
-And returns the number.
-
-=head2 String-to-float Conversion
-
-The String-to-float conversion is the type conversion from the L<string Type|/"string Type"> to L</"float Type">.
-
-  # The String-to-float conversion
+  
+  # string to float
   my $string : string = "Hello";
   my $float : float = (float)$string;
-
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtof> function in the C language.
-
-And returns the number.
-
-=head2 String-to-double Conversion
-
-The String-to-double conversion is the type conversion from the L<string Type|/"string Type"> to L</"double Type">.
-
-  # The String-to-double conversion
+  
+  # string to double
   my $string : string = "Hello";
   my $number : double = (double)$string;
 
-If the string is not defined, returns 0.
-
-If not, the string is coverted to a number by the C<strtod> function in the C language.
-
-And returns the number.
-
 =head2 String-to-byte[] Conversion
 
-The String-to-byte[] conversion is the type conversion from the L<string Type|/"string Type"> to L</"byte[] Type">.
+The string-to-byte[] conversion is the type conversion from the string type to the byte[] type.
 
-  # The String-to-byte[] conversion
+This conversion creates a new array which type is the C<byte[]> type, copies all characters in the string to the elements of the new array, and returns the new array.
+
+If the string is not defined, it returns C<undef>.
+
+Examples:
+
+  # Examples of the string-to-byte[] conversion
   my $string : string = "Hello";
   my $bytes : byte[] = (byte[])$string;
 
-A new byte[] object is created and all characters in the string are copied to the elements of byte[] object.
-
 =head2 byte[]-to-string Conversion
 
-The byte[]-to-string conversion is the type conversion from the byte[] type to the L<string Type|/"string Type">.
+The byte[]-to-string conversion is the type conversion from the byte[] type to the string type.
 
-  # byte[]-to-string conversion
+This conversion creates a new string, copies all elements in the array which type is the byte[] type to the characters of the new string, and returns the new string.
+
+If the array is not defined, returns C<undef>.
+
+  # Examples of the byte[]-to-string conversion
   my $bytes : byte[] = new byte[3];
   $bytes->[0] = 'a';
   $bytes->[1] = 'b';
   $bytes->[2] = 'c';
   my $string : string = (string)$bytes;
-
-A new string is created and all elements in the C<byte[]> object are copied to the characters of the string.
 
 =head2 Boxing Conversion
 
