@@ -1313,11 +1313,20 @@ Examples:
 
 =head1 Assignment Requirement
 
-The assignment requirement at compile-time is explained.
+The assignment requirement is the requirement if one type is able to be assigned to another type.
 
-Compilation Errors:
+What does it mean to assign one type to another type?
 
-The assignment requirement is false, a compilation error occurs.
+Typically, it is sufficient to consider a case where a value of a type I<TYPE_FROM> is assigned to a variable of a type I<TYPE_TO>.
+
+  my $value : TYPE_FROM;
+  my $var : TYPE_TO = $value;
+
+Abstracting this, type-to-type assignment is defined.
+
+  TYPE_TO = TYPE_FROM
+
+Note that this is a concept, not an actual syntax.
 
 =head2 Assignment Requirement to Numeric
 
@@ -1857,11 +1866,20 @@ Examples:
 
 =head1 Cast Requirement
 
-The cast requirement at compile-time is explained.
+The cast requirement is the requirement if one type is able to be cast to another type.
 
-Compilation Errors:
+What does it mean to cast one type to another type?
 
-The cast requirement is false, a compilation error occurs.
+Typically, it is sufficient to consider a case where a value of a type I<TYPE_FROM> is casted to I<TYPE_TO>.
+
+  my $value : TYPE_FROM;
+  (TYPE_TO)$value;
+
+Abstracting this, type-to-type cast is defined.
+
+  (TYPE_TO)TYPE_FROM
+
+Note that this is a concept, not an actual syntax.
 
 =head2 Cast Requirement to Numeric
 
