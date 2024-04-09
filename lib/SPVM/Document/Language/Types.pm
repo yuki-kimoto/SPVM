@@ -945,21 +945,21 @@ B<short to byte:>
 
 =head2 Binary Numeric Conversion
 
-The binary numeric conversion is a L<type conversion|/"Type Conversion"> to upgrade the type of I<LEFT_OPERAND> or I<RIGHT_OPERAND> of the binary operator that operands are L<numeric types|/"Numeric Types">.
+The binary numeric conversion is the type conversion to upgrade the L<numeric type|/"Numeric Types"> of the left operand and the right operand of a binary operator.
 
-The following rules apply in order.
+This conversion operates the following operations.
 
-1. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the L<double type|/"double Type">, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+If the type of the left operand is smaller than the right operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the type of the right operand is performed on the left operand.
 
-2. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the L<float type|/"float Type">, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+If the type of the right operand is smaller than the left operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the type of the left operand is performed on the right operand.
 
-3. If I<LEFT_OPERAND> or I<RIGHT_OPERAND> is the long type, I<OPERAND> of the small type is converted to the big type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+If the converted type of the left operand is the smaller than the int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the int type is performed on the left operand.
 
-4, Otherwise, both I<LEFT_OPERAND> and I<RIGHT_OPERAND> are converted to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+If the converted type of the right operand is the smaller than the int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the int type is performed on the right operand.
 
 =head2 Numeric-to-String Conversion
 
-The numeric-to-string conversion is a L<type conversion|/"Type Conversion"> from a L<numeric type|/"Numeric Types"> to the L<string type|/"string Type">.
+The numeric-to-string conversion is the type conversion from a L<numeric type|/"Numeric Types"> to the L<string type|/"string Type">.
 
   # The numeric-to-string conversion
   my $byte = (byte)1;
@@ -989,7 +989,7 @@ The numeric-to-string conversion is a L<type conversion|/"Type Conversion"> from
 
 =head2 String-to-byte Conversion
 
-The String-to-byte conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte Type">.
+The String-to-byte conversion is the type conversion from the L<string Type|/"string Type"> to L</"byte Type">.
 
   # The String-to-byte conversion
   my $string : string = "Hello";
@@ -1007,7 +1007,7 @@ And returns the number.
 
 =head2 String-to-short Conversion
 
-The String-to-short conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"short Type">.
+The String-to-short conversion is the type conversion from the L<string Type|/"string Type"> to L</"short Type">.
 
   # The String-to-short conversion
   my $string : string = "Hello";
@@ -1025,7 +1025,7 @@ And returns the number.
 
 =head2 String-to-int Conversion
 
-The String-to-int conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"int Type">.
+The String-to-int conversion is the type conversion from the L<string Type|/"string Type"> to L</"int Type">.
 
   # The String-to-int conversion
   my $string : string = "Hello";
@@ -1043,7 +1043,7 @@ And returns the number.
 
 =head2 String-to-long Conversion
 
-The String-to-long conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"long Type">.
+The String-to-long conversion is the type conversion from the L<string Type|/"string Type"> to L</"long Type">.
 
   # The String-to-long conversion
   my $string : string = "Hello";
@@ -1057,7 +1057,7 @@ And returns the number.
 
 =head2 String-to-float Conversion
 
-The String-to-float conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"float Type">.
+The String-to-float conversion is the type conversion from the L<string Type|/"string Type"> to L</"float Type">.
 
   # The String-to-float conversion
   my $string : string = "Hello";
@@ -1071,7 +1071,7 @@ And returns the number.
 
 =head2 String-to-double Conversion
 
-The String-to-double conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"double Type">.
+The String-to-double conversion is the type conversion from the L<string Type|/"string Type"> to L</"double Type">.
 
   # The String-to-double conversion
   my $string : string = "Hello";
@@ -1085,7 +1085,7 @@ And returns the number.
 
 =head2 String-to-byte[] Conversion
 
-The String-to-byte[] conversion is a L<type conversion|/"Type Conversion"> from the L<string Type|/"string Type"> to L</"byte[] Type">.
+The String-to-byte[] conversion is the type conversion from the L<string Type|/"string Type"> to L</"byte[] Type">.
 
   # The String-to-byte[] conversion
   my $string : string = "Hello";
@@ -1095,7 +1095,7 @@ A new byte[] object is created and all characters in the string are copied to th
 
 =head2 byte[]-to-string Conversion
 
-The byte[]-to-string conversion is a L<type conversion|/"Type Conversion"> from the byte[] type to the L<string Type|/"string Type">.
+The byte[]-to-string conversion is the type conversion from the byte[] type to the L<string Type|/"string Type">.
 
   # byte[]-to-string conversion
   my $bytes : byte[] = new byte[3];
