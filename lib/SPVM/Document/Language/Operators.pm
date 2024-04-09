@@ -614,9 +614,9 @@ The logical AND operator C<&&> performs a logical AND operation.
   
   LEFT_OPERAND && RIGHT_OPERAND
 
-This operator performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the left operand I<LEFT_OPERAND>.
+This operator performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
 
-If the evaluated value is 0, it returns 0, otherwise performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the right operand I<RIGHT_OPERAND>.
+If the evaluated value is 0, it returns 0, otherwise performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
@@ -636,9 +636,9 @@ The logical OR operator C<||> performes a logical OR operation.
   # The logical OR operator
   LEFT_OPERAND || RIGHT_OPERAND
 
-Thg logical OR operator performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the left operand I<LEFT_OPERAND>.
+Thg logical OR operator performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
 
-If the evaluated value is not 0, it returns the evaluated value, otherwise performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the right operand I<RIGHT_OPERAND>.
+If the evaluated value is not 0, it returns the evaluated value, otherwise performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
@@ -657,7 +657,7 @@ The logical NOT operator C<!> performes a logical NOT operation.
 
   !OPERAND
 
-Thg logical NOT operator performs the L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> on the operand I<OPERAND>.
+Thg logical NOT operator performs the L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> on the operand I<OPERAND>.
 
 If the evaluated value is 0, returns 1, otherwise returns 0.
 
@@ -666,6 +666,111 @@ The return type is the int type.
   # Examples of the logical NOT operator
   if (!1) {
     
+  }
+
+=head2 Condition Evaluation
+
+The condition evaluation is the type coversion from a type to the bool type.
+
+The bool type is not a real type, it means the int type which is intended to have a bool value.
+
+This conversion is performed on an operand placed in a L<condition|SPVM::Document::Language::Class/"Condition">.
+
+B<byte to bool:>
+
+B<short to bool:>
+
+B<int to bool:>
+
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
+
+And return the value after conversion.
+
+B<undef to bool:>
+
+Returns 0.
+
+B<BOOL to bool:>
+
+Return the C<value> field in the L<Bool|SPVM::Bool> object.
+
+B<long to bool:>
+
+B<float to bool:>
+
+B<double to bool:>
+
+B<a reference type to bool:> 
+
+Performs the following C language operation, and returns it.
+
+  !!OPERAND
+
+B<an object type to bool:>
+
+If the compile type of the operand is not the L<Bool|SPVM::Bool> class, performs the following C language operation, and returns it.
+
+  !!OPERAND
+
+Compilation Errors:
+
+The type of the operand of the condition evaluation must be a L<numeric type|/"Numeric Types">, an L<object type|/"Object Types">, a L<reference type|/"Reference Types">, or the L<undef type|/"undef Type">, otherwise a compilation error occurs.
+
+Examples:
+  
+  # Examples of the condition evaluation
+  if (1) {
+    # ok
+  }
+  
+  if (0) {
+    # not ok
+  }
+  
+  if (1.5) {
+    # ok
+  }
+  
+  if (0.0) {
+    # not ok
+  }
+  
+  if (true) {
+    # ok
+  }
+  
+  if (Bool->TRUE) {
+    # ok
+  }
+  
+  if (false) {
+    # not ok
+  }
+  
+  if (Bool->FALSE) {
+    # not ok
+  }
+  
+  my $object = SPVM::Int->new(1);
+  
+  if ($object) {
+    # ok
+  }
+  
+  $object = undef;
+  if ($object) {
+    # not ok
+  }
+  
+  my $value = 1;
+  my $ref = \$value;
+  
+  if ($ref) {
+    # ok
+  }
+  
+  if (undef) {
+    # not ok
   }
 
 =head2 Array Length Operator

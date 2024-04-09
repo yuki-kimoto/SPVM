@@ -16,7 +16,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
 # Spec tests
 {
-  # Bool conversion
+  # Condition evaluation
   {
     ok(SPVM::TestCase::Operator::ComparisonOperator->bool_true_byte);
     ok(SPVM::TestCase::Operator::ComparisonOperator->bool_true_short);

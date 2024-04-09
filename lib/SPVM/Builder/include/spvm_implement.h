@@ -410,13 +410,13 @@ static inline void SPVM_IMPLEMENT_STRING_CONCAT(SPVM_ENV* env, SPVM_VALUE* stack
   }
 }
 
-#define SPVM_IMPLEMENT_BOOL_CONVERSION_INT(out, in) (out = in)
-#define SPVM_IMPLEMENT_BOOL_CONVERSION_LONG(out, in) (out = !!in)
-#define SPVM_IMPLEMENT_BOOL_CONVERSION_FLOAT(out, in) (out = !!in)
-#define SPVM_IMPLEMENT_BOOL_CONVERSION_DOUBLE(out, in) (out = !!in)
-#define SPVM_IMPLEMENT_BOOL_CONVERSION_OBJECT(out, in) (out = !!in)
-#define SPVM_IMPLEMENT_BOOL_CONVERSION_REF(out, in) (out = !!in)
-#define SPVM_IMPLEMENT_BOOL_CONVERSION_BOOL_OBJECT(env, stack, out, in) (out = !!env->get_bool_object_value(env, stack, in))
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_INT(out, in) (out = in)
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_LONG(out, in) (out = !!in)
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_FLOAT(out, in) (out = !!in)
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_DOUBLE(out, in) (out = !!in)
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_OBJECT(out, in) (out = !!in)
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_REF(out, in) (out = !!in)
+#define SPVM_IMPLEMENT_CONDITION_EVALUATION_BOOL_OBJECT(env, stack, out, in) (out = !!env->get_bool_object_value(env, stack, in))
 
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_INT(out, in1, in2) (out = (in1 == in2))
 #define SPVM_IMPLEMENT_NUMERIC_COMPARISON_EQ_LONG(out, in1, in2) (out = (in1 == in2))

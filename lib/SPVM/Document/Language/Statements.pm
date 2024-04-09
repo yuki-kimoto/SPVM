@@ -69,7 +69,7 @@ The C<if> statement is converted to simple C<if> - C<else> statements, so see a 
     
   }
 
-The L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> is performed on the condition I<CONDITION>.
+The L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> is performed on the condition I<CONDITION>.
 
 If the evaluated value is not 0, the program jumps to the beginning of the C<if> block.
 
@@ -333,7 +333,7 @@ The C<while> statement is a loop statement with the following syntax.
   
   }
 
-The L<bool conversion|SPVM::Document::Language::Types/"Bool Conversion"> is performed on the condition I<CONDITION>.
+The L<condition evaluation|SPVM::Document::Language::Types/"Condition Evaluation"> is performed on the condition I<CONDITION>.
 
 If the evaluated value is 0, the program jumps to the end of the C<while> block, otherwise the program jumps to the beginning of the C<while> block.
 

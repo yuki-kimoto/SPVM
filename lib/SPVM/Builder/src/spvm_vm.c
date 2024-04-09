@@ -576,32 +576,32 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_STRING_CONCAT(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], object_vars[opcode->operand2], &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_INT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_INT(int_vars[opcode->operand0], int_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_CONDITION_EVALUATION_INT: {
+        SPVM_IMPLEMENT_CONDITION_EVALUATION_INT(int_vars[opcode->operand0], int_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_LONG: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_CONDITION_EVALUATION_LONG: {
+        SPVM_IMPLEMENT_CONDITION_EVALUATION_LONG(int_vars[opcode->operand0], long_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_FLOAT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_CONDITION_EVALUATION_FLOAT: {
+        SPVM_IMPLEMENT_CONDITION_EVALUATION_FLOAT(int_vars[opcode->operand0], float_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_DOUBLE: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_CONDITION_EVALUATION_DOUBLE: {
+        SPVM_IMPLEMENT_CONDITION_EVALUATION_DOUBLE(int_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_OBJECT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_OBJECT(int_vars[opcode->operand0], object_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_CONDITION_EVALUATION_OBJECT: {
+        SPVM_IMPLEMENT_CONDITION_EVALUATION_OBJECT(int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_REF: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_REF(int_vars[opcode->operand0], ref_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_CONDITION_EVALUATION_REF: {
+        SPVM_IMPLEMENT_CONDITION_EVALUATION_REF(int_vars[opcode->operand0], ref_vars[opcode->operand1]);
         break;
       }
-      case SPVM_OPCODE_C_ID_BOOL_CONVERSION_BOOL_OBJECT: {
-        SPVM_IMPLEMENT_BOOL_CONVERSION_BOOL_OBJECT(env, stack, int_vars[opcode->operand0], object_vars[opcode->operand1]);
+      case SPVM_OPCODE_C_ID_CONDITION_EVALUATION_BOOL_OBJECT: {
+        SPVM_IMPLEMENT_CONDITION_EVALUATION_BOOL_OBJECT(env, stack, int_vars[opcode->operand0], object_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_NUMERIC_COMPARISON_EQ_INT: {
