@@ -1,3 +1,6 @@
+0.989100 2023-04-10
+  [Document Fix and Improvement]
+    * The heading "Boolean Conversion is changed to "Condition Evaluation", and it is moved from the doc of Types to the doc of Operators.
 0.989099 2023-04-08
   [Document Fix and Improvement]
     * Fix and improve the document of Operators.
