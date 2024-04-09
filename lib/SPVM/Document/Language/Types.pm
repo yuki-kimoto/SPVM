@@ -1279,25 +1279,25 @@ The boolean conversion converts an operand to an int value that indicates a bool
 
 This conversion is performed on the follwoing operands.
 
-The operand of the L<if statement|/"if Statement">:
+The operand of the L<if statement|SPVM::Document::Language::Statements/"if Statement">:
 
   if (CONDITION) {
   
   }
 
-The operand of the L<unless statement|/"unless Statement">:
+The operand of the L<unless statement|SPVM::Document::Language::Statements/"unless Statement">:
 
   unless (CONDITION) {
   
   }
 
-The second operand of the L<for statement|/"for Statement">:
+The second operand of the L<for statement|SPVM::Document::Language::Statements/"for Statement">:
 
   for (INITIALIZEATION;CONDITION;NEXT_VALUE;) {
   
   }
 
-The operand of the L<while statement|/"while Statement">:
+The operand of the L<while statement|SPVM::Document::Language::Statements/"while Statement">:
 
   while (CONDITION) {
   
@@ -1393,23 +1393,47 @@ Examples:
 
 =head1 Implicite Type Conversion
 
-The implicite type conversion is the L<type conversion|/"Type Conversion"> performed implicitly when a value is assigned using L<assignment operator|SPVM::Document::Language::Operators/"Assignment Operator">, pass an argument to a method using a L<method call|/"Method Call">, or set a return value using the L<return statement|/"return Statement">.
+Implicite type conversions are L<type conversions|/"Type Conversions"> performed without L<type casts|SPVM::Document::Language::Operators/"Type Cast">.
 
-See L<"Assignment Requirement"> if you know when implicite type conversion is performed.
+Implicite type conversions are performed on the following operands.
+
+=over 2
+
+=item * The right operand of the L<assignment operator|SPVM::Document::Language::Operators/"Assignment Operator">.
+
+=item * Arguments given to a L<method call|SPVM::Document::Language::Operators/"Method Call">
+
+=item * A return value given to the L<return statement|SPVM::Document::Language::Statements/"return Statement">
+
+=back
+
+What type combinations cause implicit type conversions is explained in L</"Assignment Requirement">.
 
 Examples:
   
-  # The implicite type conversion from int to double 
+  # Assignment operators
+  # int to double 
   my $number : double = 5;
   
-  # The implicite type conversion from double to Double
+  # double to Double
   my $number_object : Double = 5.1;
   
-  # The implicite type conversion from Double to double
+  # Double to double
   my $number : double = Double->new(5.1);
   
-  # The implicite type conversion from int to string
+  # int to string
   my $string : string = 4;
+  
+  # Method call
+  # int to double
+  my $double_object = Double->new(3);
+  
+  # Return value
+  method my_method : double () {
+    
+    # int to double
+    return 3;
+  }
 
 =head1 Assignment Requirement
 
@@ -1432,7 +1456,7 @@ If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
   <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
   <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
@@ -1481,7 +1505,7 @@ If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>Conditional True</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
@@ -1513,7 +1537,7 @@ If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> correspondi
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
   <tr><td>True</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
   <tr><td>True</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
@@ -1539,7 +1563,7 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
@@ -1564,7 +1588,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -1585,7 +1609,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
   <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
 </table>
@@ -1612,7 +1636,7 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<num
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
   <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
   <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
@@ -1642,7 +1666,7 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
@@ -1668,7 +1692,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS</td><td>undef</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>None</td></tr>
@@ -1693,7 +1717,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
@@ -1719,7 +1743,7 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
@@ -1741,7 +1765,7 @@ If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignmen
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>False</td><td>undef Type</td><td>OTHER</td><td>None</td></tr>
 </table>
 
@@ -1761,7 +1785,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>byte[]</td><td>byte[]</td><td>None</td></tr>
   <tr><td>True</td><td>short[]</td><td>short[]</td><td>None</td></tr>
   <tr><td>True</td><td>int[]</td><td>int[]</td><td>None</td></tr>
@@ -1788,7 +1812,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
@@ -1810,7 +1834,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
   <tr><td>True</td><td>string[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
@@ -1834,7 +1858,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
   <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td></tr>
@@ -1859,7 +1883,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
   <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td><td>None</td></tr>
@@ -1885,7 +1909,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
@@ -1925,7 +1949,7 @@ Otherwise, the assignment requirement is false.
 =begin html
 
 <table>
-  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th><a href="#Implicite-Type-Conversion">Implicite Type Conversion</a></th></tr>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>True</td><td>X[]..</td><td>X[]..</td><td>None</td></tr>
   <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
   <tr><td>True</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td><td>None</td></tr>
