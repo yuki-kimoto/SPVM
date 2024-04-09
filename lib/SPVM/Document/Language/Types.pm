@@ -797,180 +797,151 @@ If the type is a L<multi-numeric type|/"Multi-Numeric Types">, the type width is
 
 =head1 Type Conversions
 
-Type conversion is explained.
-
-=head2 Integer Promotional Conversion
-
-The integer promotional conversion is a L<type conversion|"Type Conversion"> to convert an L<integer type within int|/"Integer Types within int"> to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+This section describes type conversions.
 
 =head2 Numeric Widening Conversion
 
-The numeric widening conversion is a L<type conversion|"Type Conversion"> from a small-order L<numeric type|/"Numeric Types"> to a large-order L<numeric type|/"Numeric Types">.
+The numeric widening conversion is the type conversion from a L<numeric type|/"Numeric Types"> to a larger L<numeric type|/"Numeric Types">.
 
-See also L<numeric types order|/"Numeric Types Order"> abount the order of numeric type.
+See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
 
-The return value of a converion are same as the return value of the type cast of the C language.
+This conversion performs the same operation as the C language type cast.
   
   (TYPE)OPERAND
 
 B<byte to short:>
 
-  int8_t from = VALUE;
-  int16_t to = (int16_t)from;
+  (int16_t)OPERAND_int8_t;
 
 B<byte to int:>
 
-  int8_t from = VALUE;
-  int32_t to = (int32_t)from;
+  (int32_t)OPERAND_int8_t;
 
 B<byte to long:>
 
-  int8_t from = VALUE;
-  int64_t to = (int64_t)from;
+  (int64_t)OPERAND_int8_t;
 
 B<byte to float:>
 
-  int8_t from = VALUE;
-  float to = (float)from;
+  (float)OPERAND_int8_t;
 
 B<byte to double:>
 
-  int8_t from = VALUE;
-  double to = (double)from;
+  (double)OPERAND_int8_t;
 
 B<short to int:>
 
-  int16_t from = VALUE;
-  int32_t to = (int32_t)from;
+  (int32_t)OPERAND_int16_t;
 
 B<short to long:>
 
-  int16_t from = VALUE;
-  int64_t to = (int64_t)from;
+  (int64_t)OPERAND_int16_t;
 
 B<short to float:>
 
-  int16_t from = VALUE;
-  float to = (float)from;
+  (float)OPERAND_int16_t;
 
 B<short to double:>
 
-  int16_t from = VALUE;
-  double to = (double)from;
+  (double)OPERAND_int16_t;
 
 B<int to long:>
 
-  int32_t from = VALUE;
-  int64_t to = (int64_t)from;
+  (int64_t)OPERAND_int32_t;
 
 B<int to float:>
 
-  int32_t from = VALUE;
-  float to = (float)from;
+  (float)OPERAND_int32_t;
 
 B<int to double:>
 
-  int32_t from = VALUE;
-  double to = (double)from;
+  (double)OPERAND_int32_t;
 
 B<long to float:>
 
-  int64_t from = VALUE;
-  float to = (float)from;
+  (float)OPERAND_int64_t;
 
 B<long to double:>
 
-  int64_t from = VALUE;
-  double to = (double)from;
+  (double)OPERAND_int64_t;
 
-The numeric widening conversion is performed in some of the L<type casts|/"Type Cast">, the index of the L<element access|/"The array Access">, the length of the L<creating array|/"Creating Array">, I<OPERAND> of the L<unary plus operator|SPVM::Document::Language::Operators/"Unary Plus Operator">, I<OPERAND> of the L<unary minus operator|SPVM::Document::Language::Operators/"Unary Minus Operator">, and the left and right operands of the L<shift operators|"Shift Operator">.
+B<float to double:>
+
+  (double)OPERAND_float;
+
+=head2 Integer Promotional Conversion
+
+The integer promotional conversion is the type conversion from an L<integer type|/"Integer Types"> within int to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
 =head2 Numeric Narrowing Conversion
 
-The numeric narrowing conversion is a L<conversion|"Type Conversion"> from a wide L<numeric type|/"Numeric Types"> to a narrow L<numeric type|/"Numeric Types">.
+The numeric narrowing conversion is the type conversion from a L<numeric type|/"Numeric Types"> to a smaller L<numeric type|/"Numeric Types">.
 
-See also L<numeric types order|/"Numeric Types Order"> abount the order of numeric type.
+See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
 
-The return value of a converion are same as the return value of the type cast of the C language.
-  
+This conversion operates the same operation as the C language type cast.
+
   (TYPE)OPERAND
 
 B<double to float:>
 
-  double from = value;
-  float to = (float)from;
+  (float)OPERAND_double;
 
 B<double to long:>
 
-  double from = value;
-  int64_t to = (int64_t)from;
+  (int64_t)OPERAND_double;
 
 B<double to int:>
 
-  double from = value;
-  int32_t to = (int32_t)from;
+  (int32_t)OPERAND_double;
 
 B<double to short:>
 
-  double from = value;
-  int16_t to = (int16_t)from;
+  (int16_t)OPERAND_double;
 
 B<double to byte:>
 
-  double from = value;
-  int8_t to = (int8_t)from;
+  (int8_t)OPERAND_double;
 
 B<float to long:>
 
-  float from = value;
-  int64_t to = (int64_t)from;
+  (int64_t)OPERAND_float;
 
 B<float to int:>
 
-  float from = value;
-  int32_t to = (int32_t)from;
+  (int32_t)OPERAND_float;
 
 B<float to short:>
 
-  float from = value;
-  int16_t to = (int16_t)from;
+  (int16_t)OPERAND_float;
 
 B<float to byte:>
 
-  float from = value;
-  int8_t to = (int8_t)from;
+  (int8_t)OPERAND_float;
 
 B<long to int:>
 
-  int64_t from = value;
-  int32_t to = (int32_)from;
+  (int32_)OPERAND_int64_t;
 
 B<long to short:>
 
-  int64_t from = value;
-  int16_t to = (int16_t)from;
+  (int16_t)OPERAND_int64_t;
 
 B<long to byte:>
 
-  int64_t from = value;
-  int8_t to = (int8_t)from;
+  (int8_t)OPERAND_int64_t;
 
 B<int to short:>
 
-  int32_t from = value;
-  int16_t to = (int16_t)from;
+  (int16_t)OPERAND_int32_t;
 
 B<int to byte:>
 
-  int32_t from = value;
-  int16_t to = (int16_t)from;
+  (int16_t)OPERAND_int32_t;
 
 B<short to byte:>
 
-  int16_t from = value;
-  int8_t to = (int8_t)from;
-
-The numeric narrowing conversion is performed in some of the L<type casts|/"Type Cast">.
+  (int8_t)OPERAND_int16_t;
 
 =head2 Binary Numeric Conversion
 
@@ -1325,7 +1296,7 @@ If the type is the value returned by the L<TRUE method of Bool|SPVM::Bool|/"TRUE
 
 If the type is the value returned by the L<FALSE method of Bool|SPVM::Bool|/"FALSE">, returns 0.
 
-If the type is an L<integer type within int|/"Integer Types within int">, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
+If the type is an L<integer type|/"Integer Types"> within int, the L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on I<OPERAND>.
 
 And the following operation in the C language is performed on I<OPERAND> .
 
