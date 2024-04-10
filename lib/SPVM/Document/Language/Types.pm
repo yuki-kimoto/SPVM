@@ -1507,6 +1507,8 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 
 I<NumericObjectX> is a L<numeric object type|"Numeric Object Types">.
 
+I<NumericX> is a L<numeric type|"Numeric Types">.
+
 =head2 Assignment Requirement to Class
 
 =begin html
@@ -1673,9 +1675,9 @@ I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"
 
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>ObjectX[]..</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>Any object array <code>object[]</code></td><td>Other</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object Array <code>object[]</code></td><td>ObjectX[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object Array <code>object[]</code></td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>Any Object Array <code>object[]</code></td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1707,9 +1709,9 @@ C<D> means its type dimension that is greater than or eausl to 2.
 
 C<X[]..D> is a multi-dimensional array.
 
-I<SuperClassX> is a super class of I<ClassX>.
-
 I<ClassX> is a L<class type|"Class Types">.
+
+I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
@@ -1827,10 +1829,14 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 
 =head3 Cast Requirement from Other to Numeric
 
+=begin html
+
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>No</td><td>NumericX</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
+
+=end html
 
 I<NumericX> is a L<numeric type|"Numeric Types">.
 
@@ -1881,17 +1887,9 @@ I<ReferenceX> is a L<reference type|/"Reference Types">.
 
 =end html
 
+I<NumericX> is a L<numeric type|"Numeric Types">.
+
 =head2 Cast Requirement to NumericObject
-
-If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
-
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, the L<any object type|/"Any Object Type"> C<object>, or the L<undef type|/"undef Type">, the cast requirement is true.
-
-The type of I<RIGHT_OPERAND> is other than above, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
-
-If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -1906,19 +1904,11 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
 
 =end html
 
+I<NumericObjectX> is a L<numeric object type|"Numeric Object Types">.
+
+I<NumericX> is a L<numeric type|"Numeric Types">.
+
 =head2 Cast Requirement to Class
-
-If the type of I<LEFT_OPERAND> is a L<class type|/"Class Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
-
-If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Types"> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-If the type of I<LEFT_OPERAND> is a super class of the type of right operand, the cast requirement is true.
-
-If the type of I<RIGHT_OPERAND> is a super class of the type of left operand, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object> or an L<interface type|/"Interface Types">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -1927,7 +1917,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><td>Yes</td><td>ClassX</td><td>ClassX</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>SuperClassX</td><td>ClassX</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>ClassX</td><td>SuperClassX</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
-  <tr><td>Yes</td><td>ClassX</td><td>InterfaceY</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>InterfaceX</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>ClassX</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>ClassX</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>ClassX</td><td>Other</td><td>No</td><td>No</td></tr>
@@ -1935,17 +1925,13 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 =end html
 
+I<ClassX> is a L<class type|"Class Types">.
+
+I<SuperClassX> is a super class of I<ClassX>.
+
+I<InterfaceX> is a an L<interface type|"Interface Types">.
+
 =head2 Cast Requirement to Interface
-
-If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types">, and the types of I<RIGHT_OPERAND>s are the following cases:
-
-If the type of I<RIGHT_OPERAND> is the same type, the L<any object type|/"Any Object Type"> C<object> , an L<interface type|/"Interface Types"> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-If the type of I<RIGHT_OPERAND> is a L<class type|/"Class Types"> and the class has the interface of I<LEFT_OPERAND>, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, an L<interface type|/"Interface Types">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -1959,17 +1945,19 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><td>No</td><td>InterfaceX</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
+I<ClassX> is a L<class type|"Class Types">.
+
+I<SuperClassX> is a super class of I<ClassX>.
+
+I<InterfaceX> is a an L<interface type|"Interface Types">.
+
+I<InterfaceY> is a an L<interface type|"Interface Types">.
+
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
+
 =end html
 
 =head2 Cast Requirement to Any Object
-
-If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
- 
-If the type of I<RIGHT_OPERAND> is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
 
 =begin html
 
@@ -1983,19 +1971,11 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 =end html
 
+I<ObjectX> is an L<object type|"Object Types">.
+
+I<NumericX> is a L<numeric type|"Numeric Types">.
+
 =head2 Cast Requirement to Numeric Array
-
-If the type of I<LEFT_OPERAND> is the byte[] type and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the cast requirement is true.
-
-If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
-
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<LEFT_OPERAND> is the byte[] type and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, L<String-to-byte[] Conversion> is performed.
-
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2010,15 +1990,9 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 =end html
 
+I<NumericX> is a L<numeric type|"Numeric Types">.
+
 =head2 Cast Requirement to Multi-Numeric Array
-
-If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
- 
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2032,15 +2006,9 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 =end html
 
+I<Multi-NumericX> is a L<multi-numeric type|/"Multi-Numeric Types">.
+
 =head2 Cast Requirement to String Array
-
-If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the types of I<RIGHT_OPERAND>s are the following cases:
- 
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2048,7 +2016,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>string[]</td><td>string[]</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>string[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
-  <tr><td>Yes</td><td>string[]</td><td>Any object array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>Any Object Array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>string[]</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>string[]</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -2056,18 +2024,6 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =end html
 
 =head2 Cast Requirement to Class Array
-
-If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
-
-If the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the cast requirement is true.
-
-If the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the cast requirement is true.
-
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
@@ -2077,105 +2033,95 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><td>Yes</td><td>SuperClassX[]</td><td>ClassX[]</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>ClassX[]</td><td>SuperClassX[]</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>ClassX[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
-  <tr><td>Yes</td><td>ClassX[]</td><td>Any object array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>Any Object Array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>ClassX[]</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>ClassX[]</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
 =end html
 
+I<ClassX> is a L<class type|"Class Types">.
+
+I<SuperClassX> is a super class of I<ClassX>.
+
 =head2 Cast Requirement to Interface Array
-
-If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Types"> and the types of I<RIGHT_OPERAND>s are the following cases:
-
-If the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Types"> has the interface of the basic type of I<LEFT_OPERAND>, the cast requirement is true.
-
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
-
-If the type of I<RIGHT_OPERAND> is an differnt type of L<interface array type|/"Interface Array Types">, the cast requirement is also true.
-
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, the L<any object array type|/"Any Object Array Type"> C<obejct[]>  or the L<undef type|/"undef Type">, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is an differnt type of  L<interface array type|/"Interface Array Types">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
-
-If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<obejct>, or the L<any object array type|/"Any Object Array Type"> C<obejct[]>, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
-  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceSatisfiedX[]</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceX[]</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceSatisfiedX[]</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceY[]</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
-  <tr><td>Yes</td><td>InterfaceX[]</td><td>Any object array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>Any Object Array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>InterfaceX[]</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
 =end html
 
+I<ClassX> is a L<class type|"Class Types">.
+
+I<SuperClassX> is a super class of I<ClassX>.
+
+I<InterfaceX> is a an L<interface type|"Interface Types">.
+
+I<InterfaceY> is a an L<interface type|"Interface Types">.
+
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
+
 =head2 Cast Requirement to Any Object Array
-
-If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the types of I<RIGHT_OPERAND>s are the following cases:
-
-If the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Types"> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
-If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
 
 =begin html
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
-  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>ObjectX[]..</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>undef</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
-  <tr><td>No</td><td>Any object array <code>object[]</code></td><td>Other</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object Array <code>object[]</code></td><td>ObjectX[]..</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object Array <code>object[]</code></td><td>undef</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object Array <code>object[]</code></td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>No</td><td>Any Object Array <code>object[]</code></td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<ObjectX> is an L<object type|"Object Types">.
 
 C<[]..> is one or more C<[]>.
 
 =head2 Cast Requirement to Multi-Dimensional Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Types"> and  and the types of I<RIGHT_OPERAND>s are the following cases:
-
-If the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the cast requirement is true.
-
-If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the cast requirement is true.
-
-If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the cast requirement is true.
-
-If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the cast requirement is true.
-
-If the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types"> and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> is a L<class type|/"Class Types"> and the dimension of the type of I<RIGHT_OPERAND> is the same as the dimension of the type left oerand and the L<basic type|/"Basic Types"> of the type of I<RIGHT_OPERAND> has the interface of the L<basic type|/"Basic Types"> of the type of I<LEFT_OPERAND> , the cast requirement is true.
-
-Otherwise, the cast requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
-  <tr><td>Yes</td><td>X[]..</td><td>X[]..</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>X[]..</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
-  <tr><td>Yes</td><td>X[]..</td><td>Any object array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
-  <tr><td>Yes</td><td>X[]..</td><td>undef</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>SuperClassX[]..</td><td>ClassX[]..</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>ClassX[]..</td><td>SuperClassX[]..</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
-  <tr><td>Yes</td><td>InterfaceX[]..</td><td>InterfaceSatisfiedX[]..</td><td>No</td><td>No</td></tr>
-  <tr><td>No</td><td>Any object array <code>object[]</code></td><td>Other</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>X[]..D</td><td>X[]..D</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>X[]..D</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>X[]..D</td><td>Any Object Array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>X[]..D</td><td>undef</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SuperClassX[]..</td><td>ClassX[]..D</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX[]..</td><td>SuperClassX[]..D</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]..D</td><td>InterfaceSatisfiedX[]..D</td><td>No</td><td>No</td></tr>
+  <tr><td>No</td><td>Any Object Array <code>object[]</code></td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
 =end html
 
+I<X> is a type.
+
 C<[]..> is one or more C<[]>.
+
+C<D> means its type dimension that is greater than or eausl to 2.
+
+C<X[]..D> is a multi-dimensional array.
+
+I<ClassX> is a L<class type|"Class Types">.
+
+I<SuperClassX> is a super class of I<ClassX>.
+
+I<InterfaceX> is a an L<interface type|"Interface Types">.
+
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
 
 =head1 Copyright & License
 
