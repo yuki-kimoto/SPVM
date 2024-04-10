@@ -302,7 +302,7 @@ use Test::More;
       }
       {
         my $source = q|class Tmp { static method main : void () { "\N{U+FFFFFFFFA}" }|;
-        compile_not_ok($source, qr/Too big Unicode escape character/);
+        compile_not_ok($source, qr/Too large Unicode escape character/);
       }
       {
         my $source = q|class Tmp { static method main : void () { "\N{U+DFFF}" }|;

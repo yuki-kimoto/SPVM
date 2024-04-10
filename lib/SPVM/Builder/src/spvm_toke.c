@@ -1176,7 +1176,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         SPVM_COMPILER_error(compiler, "One or more than one hexadecimal numbers must be followed by \"\\N{U+\" of the Unicode escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
                       }
                       else if (unicode_chars_length > 8) {
-                        SPVM_COMPILER_error(compiler, "Too big Unicode escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
+                        SPVM_COMPILER_error(compiler, "Too large Unicode escape character.\n  at %s line %d", compiler->current_file, compiler->current_line);
                       }
                       else {
                         int32_t memory_blocks_count_tmp = compiler->current_each_compile_allocator->memory_blocks_count_tmp;

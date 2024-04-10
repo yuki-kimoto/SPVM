@@ -18,7 +18,7 @@ else {
 # Start objects count
 my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 
-# big size array
+# large size array
 my $array_big_index_long_cant_alloc_memory;
 
 ok(SPVM::TestCase::Operator::Array->array_big_index_byte);
