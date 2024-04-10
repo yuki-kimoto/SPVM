@@ -893,7 +893,7 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
-  int32_t* need_implicite_conversion, int32_t allow_narrowing_conversion, int32_t interface_match)
+  int32_t* need_data_conversion, int32_t allow_narrowing_conversion, int32_t interface_match)
 {
   // Dist type is numeric type
   int32_t can_assign = 0;
@@ -907,13 +907,13 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
       // Dist type is more wide than source type
       else if (dist_type_basic_type_id > src_type_basic_type_id) {
         can_assign = 1;
-        *need_implicite_conversion = 1;
+        *need_data_conversion = 1;
       }
       // Dist type is narrow than source type
       else if (dist_type_basic_type_id < src_type_basic_type_id) {
         if (allow_narrowing_conversion) {
           can_assign = 1;
-          *need_implicite_conversion = 1;
+          *need_data_conversion = 1;
         }
         else {
           can_assign = 0;
@@ -926,7 +926,7 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
       if (SPVM_TYPE_is_numeric_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         if (src_type_basic_type_id == dist_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
           can_assign = 1;
-          *need_implicite_conversion = 1;
+          *need_data_conversion = 1;
         }
         else {
           can_assign = 0;
@@ -935,7 +935,7 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
       // Source type is any object type
       else if (SPVM_TYPE_is_any_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
         can_assign = 1;
-        *need_implicite_conversion = 1;
+        *need_data_conversion = 1;
       }
       else {
         can_assign = 0;
@@ -993,7 +993,7 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
     // Source type is numeric type
     else if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = 1;
-      *need_implicite_conversion = 1;
+      *need_data_conversion = 1;
     }
     // Source type is undef type
     else if (SPVM_TYPE_is_undef_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -1010,7 +1010,7 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       if (dist_type_basic_type_id == src_type_basic_type_id + SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT) {
         can_assign = 1;
-        *need_implicite_conversion = 1;
+        *need_data_conversion = 1;
       }
       else {
         can_assign = 0;
@@ -1107,7 +1107,7 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
     // Source type is numeric type
     if (SPVM_TYPE_is_numeric_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
       can_assign = 1;
-      *need_implicite_conversion = 1;
+      *need_data_conversion = 1;
     }
     // Source type is object type
     else if (SPVM_TYPE_is_object_type(compiler, src_type_basic_type_id, src_type_dimension, src_type_flag)) {
@@ -1310,12 +1310,12 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
   return can_assign;
 }
 
-int32_t SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion(
+int32_t SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag)
 {
-  int32_t need_implicite_conversion = 0;
+  int32_t need_data_conversion = 0;
   int32_t allow_narrowing_conversion = 0;
   int32_t interface_match = 0;
   
@@ -1323,23 +1323,23 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
-    &need_implicite_conversion, allow_narrowing_conversion, interface_match
+    &need_data_conversion, allow_narrowing_conversion, interface_match
   );
   
-  int32_t satisfy_assignment_requirement_without_implicite_conversion = 0;
-  if (satisfy_assignment_requirement && !need_implicite_conversion) {
-    satisfy_assignment_requirement_without_implicite_conversion = 1;
+  int32_t satisfy_assignment_requirement_without_data_conversion = 0;
+  if (satisfy_assignment_requirement && !need_data_conversion) {
+    satisfy_assignment_requirement_without_data_conversion = 1;
   }
   
-  return satisfy_assignment_requirement_without_implicite_conversion;
+  return satisfy_assignment_requirement_without_data_conversion;
 }
 
-int32_t SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion_with_interface_match(
+int32_t SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion_with_interface_match(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag)
 {
-  int32_t need_implicite_conversion = 0;
+  int32_t need_data_conversion = 0;
   int32_t allow_narrowing_conversion = 0;
   int32_t interface_match = 1;
   
@@ -1347,15 +1347,15 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement_without_implicite_conversion_wi
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
     src_type_basic_type_id, src_type_dimension, src_type_flag,
-    &need_implicite_conversion, allow_narrowing_conversion, interface_match
+    &need_data_conversion, allow_narrowing_conversion, interface_match
   );
   
-  int32_t satisfy_assignment_requirement_without_implicite_conversion_with_interface_match = 0;
-  if (satisfy_assignment_requirement && !need_implicite_conversion) {
-    satisfy_assignment_requirement_without_implicite_conversion_with_interface_match = 1;
+  int32_t satisfy_assignment_requirement_without_data_conversion_with_interface_match = 0;
+  if (satisfy_assignment_requirement && !need_data_conversion) {
+    satisfy_assignment_requirement_without_data_conversion_with_interface_match = 1;
   }
   
-  return satisfy_assignment_requirement_without_implicite_conversion_with_interface_match;
+  return satisfy_assignment_requirement_without_data_conversion_with_interface_match;
 }
 
 int32_t SPVM_TYPE_satisfy_cast_requirement(
