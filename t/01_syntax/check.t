@@ -506,7 +506,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : byte = "string"; } }';
-    compile_not_ok($source, q|The implicite type conversion from "string" to "byte" in the assignment operator is not allowed|);
+    compile_not_ok($source, q|The "string" type cannot be assigned to the "byte" type in the assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = "string"; $var->[0] = \'a\'; } }';
@@ -772,7 +772,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { die Int->new(1); } }';
-    compile_not_ok($source, q|The implicite type conversion from "Int" to "string" in the assignment operator is not allowed|);
+    compile_not_ok($source, q|The "Int" type cannot be assigned to the "string" type in the assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { die byte; } }';
@@ -1063,23 +1063,23 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $string : mutable string = "abc"; } }';
-    compile_not_ok($source, q|The implicite type conversion from "string" to "mutable string" in the assignment operator is not allowed|);
+    compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : mutable string () { return "abc"; } }';
-    compile_not_ok($source, q|The implicite type conversion from "string" to "mutable string" in the return statement is not allowed|);
+    compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the return statement.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The implicite type conversion from "string" to "mutable string" in the 1th argument of the "foo" method in the "MyClass" class is not allowed|);
+    compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the 1th argument of the "foo" method in the "MyClass" class.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The implicite type conversion from "string" to "mutable string" in the 1th argument of the "foo" method in the "MyClass" class is not allowed|);
+    compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the 1th argument of the "foo" method in the "MyClass" class.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
-    compile_not_ok($source, q|The implicite type conversion from "string" to "int" in the assignment operator is not allowed|);
+    compile_not_ok($source, q|The "string" type cannot be assigned to the "int" type in the assignment operator.|);
   }
 }
 

@@ -4003,7 +4003,7 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
   );
     
   if (!satisfy_assignment_requirement) {
-    SPVM_COMPILER_error(compiler, "The implicite type conversion from \"%s\" to \"%s\" in %s is not allowed.\n  at %s line %d", src_type_name, dist_type_name, place, file, line);
+    SPVM_COMPILER_error(compiler, "The \"%s\" type cannot be assigned to the \"%s\" type in %s.\n  at %s line %d", src_type_name, dist_type_name, place, file, line);
     return NULL;
   }
   

@@ -2,6 +2,15 @@
   [Document Fix and Improvement]
     * The heading "Boolean Conversion is changed to "Condition Evaluation", and it is moved from the doc of Types to the doc of Operators.
     * The concept "Implicite Type Conversion" is changed to "Data Conversion".
+  [Compilation Error Message Improvement]
+    * Improve a compilation error message.
+    
+    [Before]
+    The implicite type conversion from \"%s\" to \"%s\" in %s is not allowed.
+    
+    [After]
+    The \"%s\" type cannot be assigned to the \"%s\" type in %s.
+    
 0.989099 2023-04-08
   [Document Fix and Improvement]
     * Fix and improve the document of Operators.
