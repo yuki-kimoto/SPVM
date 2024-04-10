@@ -1336,8 +1336,6 @@ An L<implicit type conversion|/"Implicit Type Conversion"> could be performed on
 
 In the following description, the word "Type" is omitted when it is obvious.
 
-If a assignment requirement is satisfied, "Yes" is written, otherwise "No" is written.
-
 =head2 Assignment Requirement to Numeric
 
 =head3 Assignment Requirement from Numeric to Numeric
@@ -1734,6 +1732,8 @@ Abstracting this, type-to-type cast is defined.
 
 Note that this is a concept, not an actual syntax.
 
+In the following description, the word "Type" is omitted when it is obvious.
+
 =head2 Cast Requirement to Numeric
 
 The cast requirement to the L<numeric types|/"Numeric Types"> is explained.
@@ -1748,10 +1748,12 @@ If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less t
 
 If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is equal to the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, copying is performed.
 
+To Larger:
+
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>byte</td><td>byte</td><td>No</td></tr>
   <tr><td>Yes</td><td>short</td><td>short</td><td>No</td></tr>
   <tr><td>Yes</td><td>int</td><td>int</td><td>No</td></tr>
@@ -1773,6 +1775,16 @@ If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is equal 
   <tr><td>Yes</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
   <tr><td>Yes</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
   <tr><td>Yes</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+</table>
+
+=end html
+
+To Smaller:
+
+=begin html
+
+<table>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Yes</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Yes</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
@@ -1799,7 +1811,7 @@ If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> correspondi
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
   <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
   <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
@@ -1819,7 +1831,7 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>NumericX</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
@@ -1838,7 +1850,7 @@ Otherwise, the cast requirement is false.
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>Multi-NumericX</td><td>Multi-NumericX</td><td>No</td></tr>
   <tr><td>No</td><td>Multi-NumericX</td><td>Other</td><td>No</td></tr>
 </table>
@@ -1854,7 +1866,7 @@ Otherwise, the cast requirement is false.
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>ReferenceX</td><td>ReferenceX</td><td>No</td></tr>
   <tr><td>No</td><td>ReferenceX</td><td>Other</td><td>No</td></tr>
 </table>
@@ -1878,7 +1890,7 @@ If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
   <tr><td>Yes</td><td>string</td><td>mutable string</td><td>No</td></tr>
   <tr><td>Yes</td><td>mutable string</td><td>mutable string</td><td>No</td></tr>
@@ -1907,7 +1919,7 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>NumericObjectX</td><td>No</td></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1934,7 +1946,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>ClassX</td><td>ClassX</td><td>No</td></tr>
   <tr><td>Yes</td><td>SuperClassX</td><td>ClassX</td><td>No</td></tr>
   <tr><td>Yes</td><td>ClassX</td><td>SuperClassX</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1961,7 +1973,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceX</td><td>No</td></tr>
   <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceSatisfiedX</td><td>No</td></tr>
   <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceY</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -1985,7 +1997,7 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>ObjectX</td><td>No</td></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td></tr>
@@ -2011,7 +2023,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Conversion</a></td></tr>
   <tr><td>Yes</td><td>NumericX[]</td><td>NumericX[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>NumericX[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -2034,7 +2046,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>Multi-NumericX[]</td><td>Multi-NumericX[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>Multi-NumericX[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>Multi-NumericX[]</td><td>undef</td><td>No</td></tr>
@@ -2056,7 +2068,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>string[]</td><td>string[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>string[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>string[]</td><td>Any object array <code>object[]</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -2083,7 +2095,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>ClassX[]</td><td>ClassX[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>SuperClassX[]</td><td>ClassX[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>ClassX[]</td><td>SuperClassX[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -2116,7 +2128,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceSatisfiedX[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceX[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceY[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -2143,7 +2155,7 @@ If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>ObjectX[]..</td><td>No</td></tr>
   <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>undef</td><td>No</td></tr>
   <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
@@ -2173,7 +2185,7 @@ Otherwise, the cast requirement is false.
 =begin html
 
 <table>
-  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
+  <tr><th>Cast Requirement</th><th>To</th><th>From</th><th>Cast Operation</th></tr>
   <tr><td>Yes</td><td>AnyX[]..</td><td>AnyX[]..</td><td>No</td></tr>
   <tr><td>Yes</td><td>AnyX[]..</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>AnyX[]..</td><td>Any object array <code>object[]</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
