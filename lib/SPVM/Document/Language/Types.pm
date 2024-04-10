@@ -6,9 +6,11 @@ SPVM::Document::Language::Types - Types in the SPVM Language
 
 This document describes types in the SPVM language.
 
-=head1 Value
+=head1 Data
 
-This section describes values.
+This section describes data.
+
+A data is called value.
 
 =head2 Number
 
@@ -1181,9 +1183,9 @@ I<X> is a type.
 
 C<[]..> is one or more C<[]>.
 
-C<D> means its type dimension that is greater than or eausl to 2.
+I<D> means its type dimension that is greater than or eausl to 2.
 
-C<X[]..D> is a multi-dimensional array.
+I<X[]..D> is a multi-dimensional array.
 
 I<ClassX> is a L<class type|"Class Types">.
 
@@ -1210,11 +1212,11 @@ Abstracting this, type-to-type cast is defined.
 
 Note that this is a concept, not an actual syntax.
 
+Some type casts perform a data conversion.
+
+Some type casts perform a runtime type check.
+
 In the following description, the word "Type" is omitted when it is obvious.
-
-Many type casts perform a data conversion.
-
-Some type casts perform a runtime type check using the L<isa|SPVM::Document::Language::Operators/"isa Operator"> operator or the L<is_read_only|SPVM::Document::Language::Operators/"is_read_only Operator">.
 
 =head2 Cast Requirement to Numeric
 
@@ -1423,6 +1425,8 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
   <tr><td>No</td><td>InterfaceX</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
+=end html
+
 I<ClassX> is a L<class type|"Class Types">.
 
 I<SuperClassX> is a super class of I<ClassX>.
@@ -1432,8 +1436,6 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
 I<InterfaceY> is a an L<interface type|"Interface Types">.
 
 I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
-
-=end html
 
 =head2 Cast Requirement to Any Object
 
@@ -1589,9 +1591,9 @@ I<X> is a type.
 
 C<[]..> is one or more C<[]>.
 
-C<D> means its type dimension that is greater than or eausl to 2.
+I<D> means its type dimension that is greater than or eausl to 2.
 
-C<X[]..D> is a multi-dimensional array.
+I<X[]..D> is a multi-dimensional array.
 
 I<ClassX> is a L<class type|"Class Types">.
 
