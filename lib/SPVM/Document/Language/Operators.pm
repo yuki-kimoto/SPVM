@@ -2533,7 +2533,7 @@ The definition of an enumeration value is replaced to a class method, so this op
 
 However, there is one important difference.
 
-The class method calls are replaced to L<interger literals|SPVM::Document::Language::Tokenization/"Integer Literal"> at compilation time.
+The class method calls are replaced to L<interger literals|SPVM::Document::Language::Tokenization/"Integer Literals"> at compilation time.
 
 For this replacement, this operation is used as an operand of the L<case statement|SPVM::Document::Language::Statements/"case Statement">.
 

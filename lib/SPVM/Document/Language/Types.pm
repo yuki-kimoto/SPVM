@@ -14,7 +14,7 @@ This section describes values.
 
 The value of L<numeric types|/"Numeric Types"> is called number.
 
-Normally, numbers are created by L<numeric literals|SPVM::Document::Language::Tokenization/"Numeric Literal">.
+Normally, numbers are created by L<numeric literals|SPVM::Document::Language::Tokenization/"Numeric Literals">.
 
   # byte - 8bit signed integer
   my $number = (byte)1;

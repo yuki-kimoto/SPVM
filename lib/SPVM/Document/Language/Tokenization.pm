@@ -523,21 +523,21 @@ POD has no meaning in source codes.
 
 A literal is the way to write a constant value in source codes.
 
-Literals are L<numeric literals|/"Numeric Literal">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
+Literals are L<numeric literals|/"Numeric Literals">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
 
 =head2 Numeric Literal
 
 A numeric literal is the way to write a constant value that type is a L<numeric type|/"Numeric Type"> in source codes.
 
-Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floating point literal|/"Floating Point Literal">.
+Numeric literals are the L<integer literal|/"Integer Literals"> and the L<floating point literal|/"Floating Point Literal">.
 
 =head2 Integer Literals
 
-A interger literal is a L<numeric literal/"Numeric Literal"> to write a constant value that type is an L<integer type|/"Integer Type"> in source codes.
+A interger literal is a L<numeric literal/"Numeric Literals"> to write a constant value that type is an L<integer type|/"Integer Type"> in source codes.
 
 =head3 Integer Literal Decimal Notation
 
-The interger literal decimal notation is the way to write an L<integer literal|/"Integer Literal"> using decimal numbers 0-9.
+The interger literal decimal notation is the way to write an L<integer literal|/"Integer Literals"> using decimal numbers 0-9.
 
 A minus - can be at the beginning, and is followed by one or more of 0-9.
 
@@ -564,7 +564,7 @@ Examples:
 
 =head3 Integer Literal Hexadecimal Notation
 
-The interger literal hexadecimal notation is the way to write an L<integer literal|/"Integer Literal"> using hexadecimal numbers C<0-9a-zA-Z>.
+The interger literal hexadecimal notation is the way to write an L<integer literal|/"Integer Literals"> using hexadecimal numbers C<0-9a-zA-Z>.
 
 A minus - can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more C<0-9a-zA-Z>.
 
@@ -614,7 +614,7 @@ Examples:
 
 =head3 Integer Literal Octal Notation
 
-The interger literal octal notation is the way to write an L<integer literal|/"Integer Literal"> using octal numbers 0-7.
+The interger literal octal notation is the way to write an L<integer literal|/"Integer Literals"> using octal numbers 0-7.
 
 A minus - can be at the beginning, and is followed by 0, and is followed by one or more 0-7.
 
@@ -661,7 +661,7 @@ Examples:
 
 =head3 Integer Literal Binary Notation
 
-The interger literal binary notation is the way to write an L<integer literal|/"Integer Literal"> using binary numbers 0 and 1.
+The interger literal binary notation is the way to write an L<integer literal|/"Integer Literals"> using binary numbers 0 and 1.
 
 A minus - can be at the beginning, and is followed by C<0b> or C<0B>, and is followed by one or more 0 and 1.
 
@@ -708,7 +708,7 @@ Examples:
 
 =head2 Floating Point Literal
 
-The floating point litral is a L<numeric literal/"Numeric Literal"> to write a constant value that type is a L<floating point type|/"Floating Point Type"> in source codes.
+The floating point litral is a L<numeric literal/"Numeric Literals"> to write a constant value that type is a L<floating point type|/"Floating Point Type"> in source codes.
 
 =head3 Floating Point Literal Decimal Notation
 
