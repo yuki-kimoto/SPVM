@@ -1455,7 +1455,7 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 
 =end html
 
-I<Multi-NumericX> is a L<multi-numeric|/"Multi-Numeric Types"> type.
+I<Multi-NumericX> is a L<multi-numeric type|/"Multi-Numeric Types">.
 
 =head2 Assignment Requirement to Referenece
 
@@ -1469,7 +1469,7 @@ I<Multi-NumericX> is a L<multi-numeric|/"Multi-Numeric Types"> type.
 
 =end html
 
-I<ReferenceX> is a L<reference|/"Reference Types"> type.
+I<ReferenceX> is a L<reference type|/"Reference Types">.
 
 =head2 Assignment Requirement to String
 
@@ -1616,7 +1616,7 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 
 =end html
 
-I<Multi-NumericX> is a L<multi-numeric|/"Multi-Numeric Types"> type.
+I<Multi-NumericX> is a L<multi-numeric type|/"Multi-Numeric Types">.
 
 =head2 Assignment Requirement to String Array
 
@@ -1734,7 +1734,7 @@ Note that this is a concept, not an actual syntax.
 
 In the following description, the word "Type" is omitted when it is obvious.
 
-Some type casts perform a runtime type check using the L<isa|SPVM::Document::Language::Operators/"isa Operator"> operator.
+Some type casts perform a runtime type check using the L<isa|SPVM::Document::Language::Operators/"isa Operator"> operator or the L<is_read_only|SPVM::Document::Language::Operators/"is_read_only Operator">.
 
 =head2 Cast Requirement to Numeric
 
@@ -1823,15 +1823,18 @@ To Smaller:
 
 =end html
 
+I<NumericX> is a L<numeric type|"Numeric Types">.
+
 =head3 Cast Requirement from Other to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is other than the types described above, the cast requirement is false.
+<table>
+  <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
+  <tr><td>No</td><td>NumericX</td><td>Other</td><td>No</td><td>No</td></tr>
+</table>
+
+I<NumericX> is a L<numeric type|"Numeric Types">.
 
 =head2 Cast Requirement to Multi-Numeric
-
-If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
 
 =begin html
 
@@ -1843,11 +1846,9 @@ Otherwise, the cast requirement is false.
 
 =end html
 
+I<Multi-NumericX> is a L<multi-numeric type|/"Multi-Numeric Types">.
+
 =head2 Cast Requirement to Referenece
-
-If the type of I<LEFT_OPERAND> is a L<Reference Types|/"Reference Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the cast requirement is true.
-
-Otherwise, the cast requirement is false.
 
 =begin html
 
@@ -1859,19 +1860,9 @@ Otherwise, the cast requirement is false.
 
 =end html
 
+I<ReferenceX> is a L<reference type|/"Reference Types">.
+
 =head2 Cast Requirement to String
-
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the cast requirement is true.
-
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the L<assignment requirement|/"Assignment Requirement"> without implicite type conversion is performed.
-
-If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
-
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<undef type|/"undef Type">, or the L<any object type|/"Any Object Type"> C<object>, the cast requirement is true.
-
-If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
-
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<object>, the cast requirement is true and the runtime type checking is performed.
 
 =begin html
 
@@ -1880,10 +1871,10 @@ If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>string</td><td>mutable string</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>mutable string</td><td>mutable string</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>mutable string</td><td>string</td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>mutable string</td><td>string</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#is_read_only-Operator">is_read_only Operator</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>string</td><td>NumericX</td><td>the L<Numeric-to-String Conversion|/"Numeric-to-String Conversion"></td><td>No</td></tr>
-  <tr><td>Yes</td><td>string</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>string</td><td>NumericX</td><td><a href="#Numeric-to-String-Conversion">Numeric-to-String Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>string</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>string</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -1908,7 +1899,7 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>NumericObjectX</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>NumericObjectX</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>NumericObjectX</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -1935,9 +1926,9 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>ClassX</td><td>ClassX</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>SuperClassX</td><td>ClassX</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>ClassX</td><td>SuperClassX</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>ClassX</td><td>InterfaceY</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>ClassX</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>SuperClassX</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>InterfaceY</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>ClassX</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>ClassX</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -1962,8 +1953,8 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceX</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceSatisfiedX</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceY</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>InterfaceX</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceY</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>InterfaceX</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>InterfaceX</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -2012,7 +2003,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Conversion</a></td><td>No</td></tr>
   <tr><td>Yes</td><td>NumericX[]</td><td>NumericX[]</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NumericX[]</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>NumericX[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>NumericX[]</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>NumericX[]</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -2034,7 +2025,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>Multi-NumericX[]</td><td>Multi-NumericX[]</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Multi-NumericX[]</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>Multi-NumericX[]</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>Multi-NumericX[]</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -2056,8 +2047,8 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>string[]</td><td>string[]</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>string[]</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>string[]</td><td>Any object array <code>object[]</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>Any object array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>string[]</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>string[]</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -2084,9 +2075,9 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>ClassX[]</td><td>ClassX[]</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>SuperClassX[]</td><td>ClassX[]</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>ClassX[]</td><td>SuperClassX[]</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>ClassX[]</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>ClassX[]</td><td>Any object array <code>object[]</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>SuperClassX[]</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>Any object array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>ClassX[]</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>ClassX[]</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -2117,9 +2108,9 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceSatisfiedX[]</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceX[]</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceY[]</td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>InterfaceX[]</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>InterfaceX[]</td><td>Any object array <code>object[]</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceY[]</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>Any object array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>InterfaceX[]</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>InterfaceX[]</td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -2144,7 +2135,7 @@ If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>ObjectX[]..</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>undef</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>No</td><td>Any object array <code>object[]</code></td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
 
@@ -2172,12 +2163,12 @@ Otherwise, the cast requirement is false.
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Type Conversion</th><th>Runtime Type Check</th></tr>
-  <tr><td>Yes</td><td>AnyX[]..</td><td>AnyX[]..</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>AnyX[]..</td><td>Any Object <code>object</code></td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>AnyX[]..</td><td>Any object array <code>object[]</code></td><td>No</td><td>Yes</td></tr>
-  <tr><td>Yes</td><td>AnyX[]..</td><td>undef</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>X[]..</td><td>X[]..</td><td>No</td><td>No</td></tr>
+  <tr><td>Yes</td><td>X[]..</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>X[]..</td><td>Any object array <code>object[]</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
+  <tr><td>Yes</td><td>X[]..</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>SuperClassX[]..</td><td>ClassX[]..</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>ClassX[]..</td><td>SuperClassX[]..</td><td>No</td><td>Yes</td></tr>
+  <tr><td>Yes</td><td>ClassX[]..</td><td>SuperClassX[]..</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>InterfaceX[]..</td><td>InterfaceSatisfiedX[]..</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>Any object array <code>object[]</code></td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
