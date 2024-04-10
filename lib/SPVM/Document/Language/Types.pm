@@ -882,12 +882,12 @@ To Smaller:
 
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
-  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
 </table>
 
 =end html
@@ -898,12 +898,12 @@ To Smaller:
 
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
-  <tr><td>Yes</td><td>byte</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>short</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td></tr>
 </table>
 
 =end html
@@ -976,7 +976,7 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>NumericObjectX</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>NumericObjectX</td><td>Other</td><td>No</td></tr>
 </table>
@@ -1030,7 +1030,7 @@ I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>ObjectX</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>Any Object <code>object</code></td><td>Other</td><td>No</td></tr>
 </table>
