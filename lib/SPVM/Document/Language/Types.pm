@@ -1705,9 +1705,9 @@ I<X> is a type.
 
 C<[]..> is one or more C<[]>.
 
-C<D> means its type dimension.
+C<D> means its type dimension that is greater than or eausl to 2.
 
-So C<X[]..D> is a multi-dimensional array.
+C<X[]..D> is a multi-dimensional array.
 
 I<SuperClassX> is a super class of I<ClassX>.
 
