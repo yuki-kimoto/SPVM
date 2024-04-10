@@ -472,8 +472,6 @@ The List of Numeric Object Types:
 
 =end html
 
-See also the L</"Boxing Conversion"> and L</"Unboxing Conversion"> about the type conversion between a numeric object type and its corresponding numeric type.
-
 =head3 Interface Types
 
 An interface type is a type for an L<interface|SPVM::Document::Language::Class/"Interface">.
@@ -793,522 +791,6 @@ The type width is the length of the L<runtime stack|SPVM::Document::NativeClass/
 
 If the type is a L<multi-numeric type|/"Multi-Numeric Types">, the type width is the length of the fields, owhterwise it is 1.
 
-=head1 Type Conversions
-
-This section describes type conversions.
-
-=head2 Numeric Widening Conversion
-
-The numeric widening conversion is the type conversion from a L<numeric type|/"Numeric Types"> to a larger L<numeric type|/"Numeric Types">.
-
-See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
-
-This conversion performs the same operation as the C language type cast.
-  
-  (TYPE)OPERAND
-
-B<byte to short:>
-
-  (int16_t)OPERAND_int8_t;
-
-B<byte to int:>
-
-  (int32_t)OPERAND_int8_t;
-
-B<byte to long:>
-
-  (int64_t)OPERAND_int8_t;
-
-B<byte to float:>
-
-  (float)OPERAND_int8_t;
-
-B<byte to double:>
-
-  (double)OPERAND_int8_t;
-
-B<short to int:>
-
-  (int32_t)OPERAND_int16_t;
-
-B<short to long:>
-
-  (int64_t)OPERAND_int16_t;
-
-B<short to float:>
-
-  (float)OPERAND_int16_t;
-
-B<short to double:>
-
-  (double)OPERAND_int16_t;
-
-B<int to long:>
-
-  (int64_t)OPERAND_int32_t;
-
-B<int to float:>
-
-  (float)OPERAND_int32_t;
-
-B<int to double:>
-
-  (double)OPERAND_int32_t;
-
-B<long to float:>
-
-  (float)OPERAND_int64_t;
-
-B<long to double:>
-
-  (double)OPERAND_int64_t;
-
-B<float to double:>
-
-  (double)OPERAND_float;
-
-=head2 Integer Promotional Conversion
-
-The integer promotional conversion is the type conversion from an L<integer type|/"Integer Types"> within int to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
-
-=head2 Numeric Narrowing Conversion
-
-The numeric narrowing conversion is the type conversion from a L<numeric type|/"Numeric Types"> to a smaller L<numeric type|/"Numeric Types">.
-
-See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
-
-This conversion performs the same operation as the C language type cast.
-
-  (TYPE)OPERAND
-
-B<double to float:>
-
-  (float)OPERAND_double;
-
-B<double to long:>
-
-  (int64_t)OPERAND_double;
-
-B<double to int:>
-
-  (int32_t)OPERAND_double;
-
-B<double to short:>
-
-  (int16_t)OPERAND_double;
-
-B<double to byte:>
-
-  (int8_t)OPERAND_double;
-
-B<float to long:>
-
-  (int64_t)OPERAND_float;
-
-B<float to int:>
-
-  (int32_t)OPERAND_float;
-
-B<float to short:>
-
-  (int16_t)OPERAND_float;
-
-B<float to byte:>
-
-  (int8_t)OPERAND_float;
-
-B<long to int:>
-
-  (int32_)OPERAND_int64_t;
-
-B<long to short:>
-
-  (int16_t)OPERAND_int64_t;
-
-B<long to byte:>
-
-  (int8_t)OPERAND_int64_t;
-
-B<int to short:>
-
-  (int16_t)OPERAND_int32_t;
-
-B<int to byte:>
-
-  (int16_t)OPERAND_int32_t;
-
-B<short to byte:>
-
-  (int8_t)OPERAND_int16_t;
-
-=head2 Binary Numeric Conversion
-
-The binary numeric conversion is the type conversion to upgrade the L<numeric type|/"Numeric Types"> of the left operand and the right operand of a binary operator.
-
-This conversion performs the following operations.
-
-If the type of the left operand is smaller than the right operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the type of the right operand is performed on the left operand.
-
-If the type of the right operand is smaller than the left operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the type of the left operand is performed on the right operand.
-
-If the converted type of the left operand is the smaller than the int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the int type is performed on the left operand.
-
-If the converted type of the right operand is the smaller than the int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the int type is performed on the right operand.
-
-=head2 Numeric-to-String Conversion
-
-The numeric-to-string conversion is the type conversion from a L<numeric type|/"Numeric Types"> to the L<string type|/"string Type">.
-
-This conversion performs the same operation as the C language C<sprintf>.
-
-B<byte to string:>
-
-  sprintf(RETURN_VALUE, "%" PRId8, OPERAND_byte);
-
-B<short to string:>
-
-  sprintf(RETURN_VALUE, "%" PRId16, OPERAND_short);
-
-B<int to string:>
-
-  sprintf(RETURN_VALUE, "%" PRId32, OPERAND_int);
-
-B<long to string:>
-
-  sprintf(RETURN_VALUE, "%" PRId64, OPERAND_long);
-
-B<float to string:>
-
-  sprintf(RETURN_VALUE, "%g", OPERAND_float);
-
-B<double to string:>
-
-  sprintf(RETURN_VALUE, "%g", OPERAND_double);
-
-Examples:
-
-  # Examples of the numeric-to-string conversion
-  my $byte = (byte)1;
-  my $string_byte = (string)$byte;
-  
-  my $short = (short)2;
-  my $string_short = (string)$short;
-  
-  my $int = 3;
-  my $string_int = (string)$int;
-  
-  my $long = 4L;
-  my $string_long = (string)$long;
-  
-  my $float = 2.5f;
-  my $string_float = (string)$float;
-  
-  my $double = 3.3;
-  my $string_double = (string)$double;
-
-=head2 String-to-Numeric Conversion
-
-The string-to-numeric conversion is the type conversion from the L<string type|/"string Type"> to a L<numeric type|/"Numeric Types">.
-
-B<string to byte:>
-
-If the string is not defined, it returns 0.
-
-If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
-
-The number is greater than C<INT8_MAX>, the number is set to C<INT8_MAX>.
-
-The number is less than C<INT8_MIN>, the number is set to C<INT8_MIN>.
-
-And returns the number.
-
-B<string to short:>
-
-If the string is not defined, it returns 0.
-
-If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
-
-The number is greater than C<INT16_MAX>, the number is set to C<INT16_MAX>.
-
-The number is less than C<INT16_MIN>, the number is set to C<INT16_MIN>.
-
-And returns the number.
-
-B<string to int:>
-
-If the string is not defined, it returns 0.
-
-If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
-
-The number is greater than C<INT32_MAX>, the number is set to C<INT32_MAX>.
-
-The number is less than C<INT32_MIN>, the number is set to C<INT32_MIN>.
-
-And returns the number.
-
-B<string to long:>
-
-If the string is not defined, it returns 0.
-
-If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
-
-And returns the number.
-
-B<string to float:>
-
-If the string is not defined, it returns 0.
-
-If it is defined, it is coverted to a number by the C<strtof> function in the C language.
-
-And returns the number.
-
-B<string to double:>
-
-If the string is not defined, it returns 0.
-
-If it is defined, it is coverted to a number by the C<strtod> function in the C language.
-
-And returns the number.
-
-Exampels:
-  
-  # Examples of string to numeric conversions
-  
-  # string to byte
-  my $string : string = "Hello";
-  my $number : byte = (byte)$string;
-  
-  # string to short
-  my $string : string = "Hello";
-  my $number : short = (short)$string;
-  
-  # string to int
-  my $string : string = "Hello";
-  my $number : int = (int)$string;
-  
-  # string to long
-  my $string : string = "Hello";
-  my $number : long = (long)$string;
-  
-  # string to float
-  my $string : string = "Hello";
-  my $float : float = (float)$string;
-  
-  # string to double
-  my $string : string = "Hello";
-  my $number : double = (double)$string;
-
-=head2 String-to-byte[] Conversion
-
-The string-to-byte[] conversion is the type conversion from the string type to the byte[] type.
-
-This conversion creates a new array which type is the C<byte[]> type, copies all characters in the string to the elements of the new array, and returns the new array.
-
-If the string is not defined, it returns C<undef>.
-
-Examples:
-
-  # Examples of the string-to-byte[] conversion
-  my $string : string = "Hello";
-  my $bytes : byte[] = (byte[])$string;
-
-=head2 byte[]-to-string Conversion
-
-The byte[]-to-string conversion is the type conversion from the byte[] type to the string type.
-
-This conversion creates a new string, copies all elements in the array which type is the byte[] type to the characters of the new string, and returns the new string.
-
-If the array is not defined, returns C<undef>.
-
-  # Examples of the byte[]-to-string conversion
-  my $bytes : byte[] = new byte[3];
-  $bytes->[0] = 'a';
-  $bytes->[1] = 'b';
-  $bytes->[2] = 'c';
-  my $string : string = (string)$bytes;
-
-=head2 Boxing Conversion
-
-The boxing conversion is the type coversion from a L<numeric type|/"Numeric Types"> to its corresponding L<numeric object type|/"Numeric Object Types">.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      To
-    </th>
-    <th>
-      From
-    </th>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>
-    </td>
-    <td>
-      byte
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Short">Short</a>
-    </td>
-    <td>
-      short
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Int">Int</a>
-    </td>
-    <td>
-      int
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Long">Long</a>
-    </td>
-    <td>
-      long
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Float">Float</a>
-    </td>
-    <td>
-      float
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Double">Double</a>
-    </td>
-    <td>
-      double
-    </td>
-  </tr>
-</table>
-
-=end html
-
-A boxing conversion creates a new numeric object corresponding to its numeric type, and copyes the value of the numeric type to the C<value> field of the new numeric object, and return the new numeric object.
-
-=head2 Unboxing Conversion
-
-The unboxing conversion is the type coversion from an object of a L<numeric object type|/"Numeric Object Types"> to the value of its corresponding L<numeric type|/"Numeric Types">.
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      To
-    </th>
-    <th>
-      From
-    </th>
-  </tr>
-  <tr>
-    <td>
-      byte
-    </td>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      short
-    </td>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Short">Short</a>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      int
-    </td>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Int">Int</a>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      long
-    </td>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Long">Long</a>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      float
-    </td>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Float">Float</a>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      double
-    </td>
-    <td>
-      <a href="https://metacpan.org/pod/SPVM::Double">Double</a>
-    </td>
-  </tr>
-</table>
-
-=end html
-
-An unboxing conversion returns the value of the C<value> field of the numeric object.
-
-An unboxing conversion could be performed on the object of any object type C<object>.
-
-Exceptions:
-
-If the type of the object is not its corresponding numeric type, an exception is thrown.
-
-=over 2
-
-=item * The right operand of the L<assignment operator|SPVM::Document::Language::Operators/"Assignment Operator">.
-
-=item * Arguments given to a L<method call|SPVM::Document::Language::Operators/"Method Call">
-
-=item * A return value given to the L<return statement|SPVM::Document::Language::Statements/"return Statement">
-
-=back
-
-What type combinations cause implicit type conversions is explained in L</"Assignment Requirement">.
-
-Examples:
-  
-  # Assignment operators
-  # int to double 
-  my $number : double = 5;
-  
-  # double to Double
-  my $number_object : Double = 5.1;
-  
-  # Double to double
-  my $number : double = Double->new(5.1);
-  
-  # int to string
-  my $string : string = 4;
-  
-  # Method call
-  # int to double
-  my $double_object = Double->new(3);
-  
-  # Return value
-  method my_method : double () {
-    
-    # int to double
-    return 3;
-  }
-
 =head1 Assignment Requirement
 
 The assignment requirement is the requirement if one type is able to be assigned to another type.
@@ -1346,21 +828,21 @@ To Larger:
   <tr><td>Yes</td><td>long</td><td>long</td><td>No</td></tr>
   <tr><td>Yes</td><td>float</td><td>float</td><td>No</td></tr>
   <tr><td>Yes</td><td>double</td><td>double</td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>Yes</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>short</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
 </table>
 
 =end html
@@ -1371,16 +853,16 @@ To Smaller:
 
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
-  <tr><td>Conditional Yes</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>Conditional Yes</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>Conditional Yes</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional Yes</td><td>byte</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional Yes</td><td>byte</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional Yes</td><td>byte</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>No</td><td>byte</td><td>float</td><td>No</td></tr>
   <tr><td>No</td><td>byte</td><td>double</td><td>No</td></tr>
-  <tr><td>Conditional Yes</td><td>short</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>Conditional Yes</td><td>short</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional Yes</td><td>short</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional Yes</td><td>short</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>No</td><td>short</td><td>float</td><td>No</td></tr>
   <tr><td>No</td><td>short</td><td>double</td><td>No</td></tr>
-  <tr><td>Conditional Yes</td><td>int</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Conditional Yes</td><td>int</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>No</td><td>int</td><td>float</td><td>No</td></tr>
   <tr><td>No</td><td>int</td><td>double</td><td>No</td></tr>
   <tr><td>No</td><td>long</td><td>float</td><td>No</td></tr>
@@ -1398,12 +880,12 @@ To Smaller:
 
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
-  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
 </table>
 
 =end html
@@ -1414,12 +896,12 @@ To Smaller:
 
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
-  <tr><td>Yes</td><td>byte</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
 </table>
 
 =end html
@@ -1476,7 +958,7 @@ I<ReferenceX> is a L<reference type|/"Reference Types">.
   <tr><td>Yes</td><td>mutable string</td><td>mutable string</td><td>No</td></tr>
   <tr><td>No</td><td>mutable string</td><td>string</td><td>No</td></tr>
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
-  <tr><td>Yes</td><td>string</td><td>NumericX</td><td><a href="#Numeric-to-String-Conversion">Numeric-to-String Conversion</a></td></tr>
+  <tr><td>Yes</td><td>string</td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-to-String-Conversion">Numeric-to-String Conversion</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>string</td><td>Other</td><td>No</td></tr>
 </table>
@@ -1492,7 +974,7 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>NumericObjectX</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>NumericObjectX</td><td>Other</td><td>No</td></tr>
 </table>
@@ -1546,7 +1028,7 @@ I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"
 <table>
   <tr><th>Assignment Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>ObjectX</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>Any Object <code>object</code></td><td>Other</td><td>No</td></tr>
 </table>
@@ -1750,21 +1232,21 @@ To Larger:
   <tr><td>Yes</td><td>long</td><td>long</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>float</td><td>float</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>double</td><td>double</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td><td>No</td></tr>
 </table>
 
 =end html
@@ -1775,21 +1257,21 @@ To Smaller:
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Runtime Type Check</th></tr>
-  <tr><td>Yes</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>byte</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>byte</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td><td>No</td></tr>
 </table>
 
 =end html
@@ -1800,12 +1282,12 @@ To Smaller:
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Runtime Type Check</th></tr>
-  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
-  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
 </table>
 
 =end html
@@ -1816,7 +1298,7 @@ To Smaller:
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Runtime Type Check</th></tr>
-  <tr><td>Yes</td><td>NumericX</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericX</td><td>Any Object <code>object</code></td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Unboxing-Conversion">Unboxing Conversion</a></td><td>No</td></tr>
 </table>
 
 =end html
@@ -1875,7 +1357,7 @@ I<ReferenceX> is a L<reference type|/"Reference Types">.
   <tr><td>Yes</td><td>mutable string</td><td>mutable string</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>mutable string</td><td>string</td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#is_read_only-Operator">is_read_only Operator</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>string</td><td>NumericX</td><td><a href="#Numeric-to-String-Conversion">Numeric-to-String Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>string</td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-to-String-Conversion">Numeric-to-String Conversion</a></td><td>No</td></tr>
   <tr><td>Yes</td><td>string</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>string</td><td>Other</td><td>No</td><td>No</td></tr>
@@ -1892,7 +1374,7 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>NumericObjectX</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>NumericObjectX</td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>NumericObjectX</td><td>Other</td><td>No</td><td>No</td></tr>
@@ -1960,7 +1442,7 @@ I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Runtime Type Check</th></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>ObjectX</td><td>No</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Boxing-Conversion">Boxing Conversion</a></td><td>No</td></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td><td>No</td></tr>
   <tr><td>No</td><td>Any Object <code>object</code></td><td>Other</td><td>No</td><td>No</td></tr>
 </table>
@@ -1977,7 +1459,7 @@ I<NumericX> is a L<numeric type|"Numeric Types">.
 
 <table>
   <tr><th>Cast Requirement<br>Satisfaction</th><th>To</th><th>From</th><th>Data Conversion</th><th>Runtime Type Check</th></tr>
-  <tr><td>Yes</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Conversion">String-to-byte[] Conversion</a></td><td>No</td></tr>
+  <tr><td>Yes</td><td>byte[]</td><td>string</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#String-to-byte[]-Conversion">String-to-byte[] Conversion</a></td><td>No</td></tr>
   <tr><td>Yes</td><td>NumericX[]</td><td>NumericX[]</td><td>No</td><td>No</td></tr>
   <tr><td>Yes</td><td>NumericX[]</td><td>Any Object <code>object</code></td><td>No</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#isa-Operator">isa Operator</a></td></tr>
   <tr><td>Yes</td><td>NumericX[]</td><td>undef</td><td>No</td><td>No</td></tr>

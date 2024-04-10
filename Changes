@@ -2,6 +2,7 @@
   [Document Fix and Improvement]
     * The heading "Boolean Conversion is changed to "Condition Evaluation", and it is moved from the doc of Types to the doc of Operators.
     * The concept "Implicite Type Conversion" is changed to "Data Conversion".
+    * The hedding "Type Conversion" is renamed to "Data Conversion", and moved from Types to Operators.
   [Compilation Error Message Improvement]
     * Improve a compilation error message.
     

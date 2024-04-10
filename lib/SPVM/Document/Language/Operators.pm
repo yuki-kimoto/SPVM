@@ -20,7 +20,7 @@ The unary plus operator C<+> is a unary operator that returns its operand.
 
   +OPERAND
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, and returns it.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the operand I<OPERAND>, and returns it.
 
 The return type is the type after the conversion is performed.
 
@@ -39,7 +39,7 @@ The unary minus operator C<-> is a unary operator that returns the negated value
 
   -OPERAND
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>, negates it, and returns it.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the operand I<OPERAND>, negates it, and returns it.
 
 The return type is the type after the conversion is performed.
 
@@ -58,13 +58,13 @@ The addition operator C<+> adds two operands.
   
   LEFT_OPERAND + RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND + RIGHT_OPERAND
 
-The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 Compilation Errors:
 
@@ -83,13 +83,13 @@ The subtraction operator C<-> subtracts its right operand from its left operand.
   
   LEFT_OPERAND - RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND - RIGHT_OPERAND
 
-The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 Compilation Errors:
 
@@ -108,13 +108,13 @@ The multiplication operator C<*> multiplies two operands.
   
   LEFT_OPERAND * RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND * RIGHT_OPERAND
 
-The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 Compilation Errors:
 
@@ -133,13 +133,13 @@ The division operator C</> divides its left operand by its right operand.
   
   LEFT_OPERAND / RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
   LEFT_OPERAND / RIGHT_OPERAND
 
-The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 Exceptions:
 
@@ -216,14 +216,14 @@ The modulo operator C<%> calculates the modulo of the division of its two operan
   
   LEFT_OPERAND % RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
   RETURN_VALUE = LEFT_OPERAND % RIGHT_OPERAND;
   if ((LEFT_OPERAND < 0) != (RIGHT_OPERAND < 0) && RETURN_VALUE) { RETURN_VALUE += RIGHT_OPERAND; }
 
-The return type is the type after the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> is performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 Exceptions:
 
@@ -446,7 +446,7 @@ The bitwise AND operator C<&> performs the L<bitwise AND operation|https://en.wi
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
@@ -473,7 +473,7 @@ The bitwise OR operator C<|> performs the L<bitwise OR operation|https://en.wiki
   
   LEFT_OPERAND | RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
@@ -500,13 +500,13 @@ The bitwise NOT operator C<~> performs the L<bitwise NOT operation|https://en.wi
   
   ~OPERAND
 
-This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the operand I<OPERAND>.
+This operator performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the operand I<OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
   ~OPERAND
 
-The return type is the type that the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> is performed.
+The return type is the type that the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
 Compilation Errors:
 
@@ -525,9 +525,9 @@ The left shift operator C<E<lt>E<lt>> performs the L<arithmetic left shift|https
 
   LEFT_OPERAND << RIGHT_OPERAND
 
-This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
+This operator performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
 
-And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
+And it performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
@@ -552,9 +552,9 @@ The arithmetic right shift operator C<E<gt>E<gt>> performs the L<arithmetic righ
 
   LEFT_OPERAND >> RIGHT_OPERAND
 
-This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
+This operator performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
 
-And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
+And it performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
@@ -579,9 +579,9 @@ The logical right shift operator C<E<gt>E<gt>E<gt>> performs the L<logical right
   
   LEFT_OPERAND >>> RIGHT_OPERAND
 
-This operator performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
+This operator performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the left operand I<LEFT_OPERAND>.
 
-And it performs the L<numeric widening conversion|SPVM::Document::Language::Types/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
+And it performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
 And if the type of I<LEFT_OPERAND> is the int type, it performs the same operation as the following C language operation
 
@@ -682,7 +682,7 @@ B<short:>
 
 B<int:>
 
-The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the operand.
+The L<integer promotional conversion|/"Integer Promotional Conversion"> is performed on the operand.
 
 And return the value after conversion.
 
@@ -858,7 +858,7 @@ Numeric comparison operators compare two numbers or two addresses of objects.
   LEFT_OPERAND <= RIGHT_OPERAND
   LEFT_OPERAND <=> RIGHT_OPERAND
 
-This operator performs the L<binary numeric conversion|SPVM::Document::Language::Types/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
+This operator performs the L<binary numeric conversion|/"Binary Numeric Conversion"> on the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OPERAND>.
 
 And it performs the same operation as the following C language operation, and returns its return value.
 
@@ -1031,9 +1031,9 @@ The string concatenation operator C<.> concats two strings.
   
   LEFT_OPERAND . RIGHT_OPERAND
 
-This operator performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the left operand I<LEFT_OPERAND> if the type of I<LEFT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
+This operator performs the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> on the left operand I<LEFT_OPERAND> if the type of I<LEFT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
-And it performs the L<numeric-to-string conversion|SPVM::Document::Language::Types/"Numeric-to-String Conversion"> on the right operand I<RIGHT_OPERAND> if the type of I<RIGHT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
+And it performs the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> on the right operand I<RIGHT_OPERAND> if the type of I<RIGHT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
 And it concats L<LEFT_OPERAND> and L<RIGHT_OPERAND>, and returns its return value.
 
@@ -1065,7 +1065,7 @@ The C<new_string_len> operator creates a new string with a length.
   
   new_string_len OPERAND
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<OPERAND>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the length I<OPERAND>.
 
 And creates a new string with the length, fills all characters in the string with C<\0>, and returns it.
 
@@ -1307,7 +1307,7 @@ The following syntax of the new operator creates a new array.
 
 The basic type I<BASIC_TYPE> must be a loaded L<basic type|SPVM::Document::Language::Types/"Basic Type">.
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<LENGTH>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the length I<LENGTH>.
 
 And creates a new array of the length I<LENGTH> which element type is I<BASIC_TYPE>.
 
@@ -1343,7 +1343,7 @@ The following syntax of the new operator creates a new multi-dimensional array.
 
 The basic type I<BASIC_TYPE> must be a loaded L<basic type|SPVM::Document::Language::Types/"Basic Type">.
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the length I<LENGTH>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the length I<LENGTH>.
 
 And creates a new multi-dimensional array of the length I<LENGTH> which element type is C<I<BASIC_TYPE>[]..>.
 
@@ -1865,7 +1865,7 @@ The operation of getting an array element gets an element of an L<array|SPVM::Do
 
 I<ARRAY-E<gt>[INDEX]> is an L<element access|SPVM::Document::Language::Class/"Element Access">.
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
 And returns the element of I<ARRAY> at I<INDEX>.
 
@@ -1897,7 +1897,7 @@ The operation of setting array element sets an element of an array.
 
 I<ARRAY-E<gt>[INDEX]> is an L<element access|SPVM::Document::Language::Class/"Element Access">.
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
 And sets the element of I<ARRAY> at I<INDEX> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the element after setting.
 
@@ -1933,7 +1933,7 @@ I<STRING-E<gt>[INDEX]> is an L<character access|SPVM::Document::Language::Class/
 
 The type of I<STRING> is the string type.
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
 And returns the character of I<STRING> at I<INDEX>.
 
@@ -1962,7 +1962,7 @@ The operation of setting a character sets the character of a string.
 
 I<STRING-E<gt>[INDEX]> is an L<character access|SPVM::Document::Language::Class/"Character Access">.
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on I<INDEX>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
 And sets the character of I<STRING> at I<INDEX> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the character after setting.
 
@@ -2196,9 +2196,525 @@ Examples:
   # Examples of setting the exception variable
   $@ = "Error";
 
+=head2 Data Conversions
+
+This section describes data conversions.
+
+=head3 Numeric Widening Conversion
+
+The numeric widening conversion is the data conversion from a L<numeric type|/"Numeric Types"> to a larger L<numeric type|/"Numeric Types">.
+
+See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
+
+This conversion performs the same operation as the C language type cast.
+  
+  (TYPE)OPERAND
+
+B<byte to short:>
+
+  (int16_t)OPERAND_int8_t;
+
+B<byte to int:>
+
+  (int32_t)OPERAND_int8_t;
+
+B<byte to long:>
+
+  (int64_t)OPERAND_int8_t;
+
+B<byte to float:>
+
+  (float)OPERAND_int8_t;
+
+B<byte to double:>
+
+  (double)OPERAND_int8_t;
+
+B<short to int:>
+
+  (int32_t)OPERAND_int16_t;
+
+B<short to long:>
+
+  (int64_t)OPERAND_int16_t;
+
+B<short to float:>
+
+  (float)OPERAND_int16_t;
+
+B<short to double:>
+
+  (double)OPERAND_int16_t;
+
+B<int to long:>
+
+  (int64_t)OPERAND_int32_t;
+
+B<int to float:>
+
+  (float)OPERAND_int32_t;
+
+B<int to double:>
+
+  (double)OPERAND_int32_t;
+
+B<long to float:>
+
+  (float)OPERAND_int64_t;
+
+B<long to double:>
+
+  (double)OPERAND_int64_t;
+
+B<float to double:>
+
+  (double)OPERAND_float;
+
+=head3 Integer Promotional Conversion
+
+The integer promotional conversion is the data conversion from an L<integer type|/"Integer Types"> within int to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+
+=head3 Numeric Narrowing Conversion
+
+The numeric narrowing conversion is the data conversion from a L<numeric type|/"Numeric Types"> to a smaller L<numeric type|/"Numeric Types">.
+
+See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
+
+This conversion performs the same operation as the C language type cast.
+
+  (TYPE)OPERAND
+
+B<double to float:>
+
+  (float)OPERAND_double;
+
+B<double to long:>
+
+  (int64_t)OPERAND_double;
+
+B<double to int:>
+
+  (int32_t)OPERAND_double;
+
+B<double to short:>
+
+  (int16_t)OPERAND_double;
+
+B<double to byte:>
+
+  (int8_t)OPERAND_double;
+
+B<float to long:>
+
+  (int64_t)OPERAND_float;
+
+B<float to int:>
+
+  (int32_t)OPERAND_float;
+
+B<float to short:>
+
+  (int16_t)OPERAND_float;
+
+B<float to byte:>
+
+  (int8_t)OPERAND_float;
+
+B<long to int:>
+
+  (int32_)OPERAND_int64_t;
+
+B<long to short:>
+
+  (int16_t)OPERAND_int64_t;
+
+B<long to byte:>
+
+  (int8_t)OPERAND_int64_t;
+
+B<int to short:>
+
+  (int16_t)OPERAND_int32_t;
+
+B<int to byte:>
+
+  (int16_t)OPERAND_int32_t;
+
+B<short to byte:>
+
+  (int8_t)OPERAND_int16_t;
+
+=head3 Binary Numeric Conversion
+
+The binary numeric conversion is the data conversion to upgrade the L<numeric type|/"Numeric Types"> of the left operand and the right operand of a binary operator.
+
+This conversion performs the following operations.
+
+If the type of the left operand is smaller than the right operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the type of the right operand is performed on the left operand.
+
+If the type of the right operand is smaller than the left operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the type of the left operand is performed on the right operand.
+
+If the converted type of the left operand is the smaller than the int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the int type is performed on the left operand.
+
+If the converted type of the right operand is the smaller than the int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the int type is performed on the right operand.
+
+=head3 Numeric-to-String Conversion
+
+The numeric-to-string conversion is the data conversion from a L<numeric type|/"Numeric Types"> to the L<string type|/"string Type">.
+
+This conversion performs the same operation as the C language C<sprintf>.
+
+B<byte to string:>
+
+  sprintf(RETURN_VALUE, "%" PRId8, OPERAND_byte);
+
+B<short to string:>
+
+  sprintf(RETURN_VALUE, "%" PRId16, OPERAND_short);
+
+B<int to string:>
+
+  sprintf(RETURN_VALUE, "%" PRId32, OPERAND_int);
+
+B<long to string:>
+
+  sprintf(RETURN_VALUE, "%" PRId64, OPERAND_long);
+
+B<float to string:>
+
+  sprintf(RETURN_VALUE, "%g", OPERAND_float);
+
+B<double to string:>
+
+  sprintf(RETURN_VALUE, "%g", OPERAND_double);
+
+Examples:
+
+  # Examples of the numeric-to-string conversion
+  my $byte = (byte)1;
+  my $string_byte = (string)$byte;
+  
+  my $short = (short)2;
+  my $string_short = (string)$short;
+  
+  my $int = 3;
+  my $string_int = (string)$int;
+  
+  my $long = 4L;
+  my $string_long = (string)$long;
+  
+  my $float = 2.5f;
+  my $string_float = (string)$float;
+  
+  my $double = 3.3;
+  my $string_double = (string)$double;
+
+=head3 String-to-Numeric Conversion
+
+The string-to-numeric conversion is the data conversion from the L<string type|/"string Type"> to a L<numeric type|/"Numeric Types">.
+
+B<string to byte:>
+
+If the string is not defined, it returns 0.
+
+If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT8_MAX>, the number is set to C<INT8_MAX>.
+
+The number is less than C<INT8_MIN>, the number is set to C<INT8_MIN>.
+
+And returns the number.
+
+B<string to short:>
+
+If the string is not defined, it returns 0.
+
+If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT16_MAX>, the number is set to C<INT16_MAX>.
+
+The number is less than C<INT16_MIN>, the number is set to C<INT16_MIN>.
+
+And returns the number.
+
+B<string to int:>
+
+If the string is not defined, it returns 0.
+
+If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
+
+The number is greater than C<INT32_MAX>, the number is set to C<INT32_MAX>.
+
+The number is less than C<INT32_MIN>, the number is set to C<INT32_MIN>.
+
+And returns the number.
+
+B<string to long:>
+
+If the string is not defined, it returns 0.
+
+If it is defined, it is coverted to a number by the C<strtoll> function in the C language.
+
+And returns the number.
+
+B<string to float:>
+
+If the string is not defined, it returns 0.
+
+If it is defined, it is coverted to a number by the C<strtof> function in the C language.
+
+And returns the number.
+
+B<string to double:>
+
+If the string is not defined, it returns 0.
+
+If it is defined, it is coverted to a number by the C<strtod> function in the C language.
+
+And returns the number.
+
+Exampels:
+  
+  # Examples of string to numeric conversions
+  
+  # string to byte
+  my $string : string = "Hello";
+  my $number : byte = (byte)$string;
+  
+  # string to short
+  my $string : string = "Hello";
+  my $number : short = (short)$string;
+  
+  # string to int
+  my $string : string = "Hello";
+  my $number : int = (int)$string;
+  
+  # string to long
+  my $string : string = "Hello";
+  my $number : long = (long)$string;
+  
+  # string to float
+  my $string : string = "Hello";
+  my $float : float = (float)$string;
+  
+  # string to double
+  my $string : string = "Hello";
+  my $number : double = (double)$string;
+
+=head3 String-to-byte[] Conversion
+
+The string-to-byte[] conversion is the data conversion from the string type to the byte[] type.
+
+This conversion creates a new array which type is the C<byte[]> type, copies all characters in the string to the elements of the new array, and returns the new array.
+
+If the string is not defined, it returns C<undef>.
+
+Examples:
+
+  # Examples of the string-to-byte[] conversion
+  my $string : string = "Hello";
+  my $bytes : byte[] = (byte[])$string;
+
+=head3 byte[]-to-string Conversion
+
+The byte[]-to-string conversion is the data conversion from the byte[] type to the string type.
+
+This conversion creates a new string, copies all elements in the array which type is the byte[] type to the characters of the new string, and returns the new string.
+
+If the array is not defined, returns C<undef>.
+
+  # Examples of the byte[]-to-string conversion
+  my $bytes : byte[] = new byte[3];
+  $bytes->[0] = 'a';
+  $bytes->[1] = 'b';
+  $bytes->[2] = 'c';
+  my $string : string = (string)$bytes;
+
+=head3 Boxing Conversion
+
+The boxing conversion is the type coversion from a L<numeric type|/"Numeric Types"> to its corresponding L<numeric object type|/"Numeric Object Types">.
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      To
+    </th>
+    <th>
+      From
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>
+    </td>
+    <td>
+      byte
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Short">Short</a>
+    </td>
+    <td>
+      short
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Int">Int</a>
+    </td>
+    <td>
+      int
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Long">Long</a>
+    </td>
+    <td>
+      long
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Float">Float</a>
+    </td>
+    <td>
+      float
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Double">Double</a>
+    </td>
+    <td>
+      double
+    </td>
+  </tr>
+</table>
+
+=end html
+
+A boxing conversion creates a new numeric object corresponding to its numeric type, and copyes the value of the numeric type to the C<value> field of the new numeric object, and return the new numeric object.
+
+=head3 Unboxing Conversion
+
+The unboxing conversion is the type coversion from an object of a L<numeric object type|/"Numeric Object Types"> to the value of its corresponding L<numeric type|/"Numeric Types">.
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      To
+    </th>
+    <th>
+      From
+    </th>
+  </tr>
+  <tr>
+    <td>
+      byte
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Byte">Byte</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      short
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Short">Short</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      int
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Int">Int</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      long
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Long">Long</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      float
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Float">Float</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      double
+    </td>
+    <td>
+      <a href="https://metacpan.org/pod/SPVM::Double">Double</a>
+    </td>
+  </tr>
+</table>
+
+=end html
+
+An unboxing conversion returns the value of the C<value> field of the numeric object.
+
+An unboxing conversion could be performed on the object of any object type C<object>.
+
+Exceptions:
+
+If the type of the object is not its corresponding numeric type, an exception is thrown.
+
+=over 2
+
+=item * The right operand of the L<assignment operator|SPVM::Document::Language::Operators/"Assignment Operator">.
+
+=item * Arguments given to a L<method call|SPVM::Document::Language::Operators/"Method Call">
+
+=item * A return value given to the L<return statement|SPVM::Document::Language::Statements/"return Statement">
+
+=back
+
+What type combinations cause implicit data conversions is explained in L</"Assignment Requirement">.
+
+Examples:
+  
+  # Assignment operators
+  # int to double 
+  my $number : double = 5;
+  
+  # double to Double
+  my $number_object : Double = 5.1;
+  
+  # Double to double
+  my $number : double = Double->new(5.1);
+  
+  # int to string
+  my $string : string = 4;
+  
+  # Method call
+  # int to double
+  my $double_object = Double->new(3);
+  
+  # Return value
+  method my_method : double () {
+    
+    # int to double
+    return 3;
+  }
+
 =head2 Type Cast
 
-A type cast performs a L<type conversion|SPVM::Document::Language::Types/"Type Conversions">.
+A type cast converts a value from its type to another type.
 
   # A type cast
   (TYPE)OPERAND
@@ -2206,9 +2722,13 @@ A type cast performs a L<type conversion|SPVM::Document::Language::Types/"Type C
   # A postfix type cast
   OPERAND->(TYPE)
 
-A type cast performs the type conversion on I<OPERAND> from the type of the operand I<OPERAND> to the type I<TYPE>, and returns the value after the type conversion.
-
 The return type is I<TYPE>.
+
+If a data conversion is needed in the type cast, a type cast performs a data conversion on I<OPERAND>, and returns the value after the data conversion.
+
+Otherwise it returns I<OPERAND>.
+
+Data conversions in type casts are defined in L<Cast Requirement|SPVM::Document::Language::Types/"Cast Requirement">.
 
 Compilation Errors:
 
@@ -2236,7 +2756,7 @@ The C<isa> operator checks whether an operand can be assigned to a type.
 
   OPERAND isa TYPE
 
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite type convertion.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data convertion.
 
 If the assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
 
@@ -2349,7 +2869,7 @@ The C<isa_error> operator checks whether the type specified by a basic type ID c
 
   OPERAND isa_error TYPE
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the operand I<OPERAND>.
 
 And this operator checks whether the type specified by the basic type ID I<OPERAND> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type I<TYPE>.
 
@@ -2379,7 +2899,7 @@ The C<is_error> operator checks whether the type specified by a basic type ID is
 
   OPERAND is_error TYPE
 
-This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
+This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the operand I<OPERAND>.
 
 And this operator checks whether the type specified by the basic type ID I<OPERAND> is equal to the type I<TYPE>.
 
