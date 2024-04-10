@@ -2730,6 +2730,12 @@ Otherwise it returns I<OPERAND>.
 
 Data conversions in type casts are defined in L<Cast Requirement|SPVM::Document::Language::Types/"Cast Requirement">.
 
+If a data check is needed in the type cast, a type cast performs a data check on I<OPERAND>.
+
+Exceptions:
+
+If a data check returns 0, an exception is thrown.
+
 Compilation Errors:
 
 I<OPERAND> must satisfy the L<cast requirement|SPVM::Document::Language::Types/"Cast Requirement">, otherwise a compilation error occurs.
