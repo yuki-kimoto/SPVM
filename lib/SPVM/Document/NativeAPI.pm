@@ -1941,7 +1941,7 @@ If the object I<object> is not C<NULL> and its type is a multi-numeric array typ
 
 C<int32_t (*isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, void* basic_type, int32_t type_dimension);>
 
-If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite conversion to the type given by the basic type C<basic_type> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
+If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type C<basic_type> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 isa_by_name
 
@@ -1949,7 +1949,7 @@ C<int32_t (*isa_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime En
 
 If the basic type given by the basic type name I<basic_type_name> is not found, returns 0.
 
-If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite conversion to the type given by the basic type name C<basic_type_name> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
+If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type name C<basic_type_name> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 is_type
 
@@ -1971,7 +1971,7 @@ If the object I<object> is not C<NULL> and its type of the object I<object> is e
 
 C<int32_t (*elem_isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, void* element);>
 
-If the element I<element> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite conversion to the element type of the array I<array>, returns 1, otherwise returns 0.
+If the element I<element> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the element type of the array I<array>, returns 1, otherwise returns 0.
 
 =head2 get_elem_size
 

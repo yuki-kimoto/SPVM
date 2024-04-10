@@ -2240,7 +2240,7 @@ If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, t
 
 If the assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
 
-If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite conversion at runtime.
+If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion.
 
 If the runtime assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
 
@@ -2351,7 +2351,7 @@ The C<isa_error> operator checks whether the type specified by a basic type ID c
 
 This operator performs the L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> on the operand I<OPERAND>.
 
-And this operator checks whether the type specified by the basic type ID I<OPERAND> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without implicite conversion to the type I<TYPE>.
+And this operator checks whether the type specified by the basic type ID I<OPERAND> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type I<TYPE>.
 
 If it is satisfied, this operator returns 1, otherwise returns 0.
 
