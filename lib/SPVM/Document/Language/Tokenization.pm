@@ -531,7 +531,7 @@ A numeric literal is the way to write a constant value that type is a L<numeric 
 
 Numeric literals are the L<integer literal|/"Integer Literal"> and the L<floating point literal|/"Floating Point Literal">.
 
-=head2 Integer Literal
+=head2 Integer Literals
 
 A interger literal is a L<numeric literal/"Numeric Literal"> to write a constant value that type is an L<integer type|/"Integer Type"> in source codes.
 
