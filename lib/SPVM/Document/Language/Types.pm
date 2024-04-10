@@ -1414,15 +1414,11 @@ To Smaller:
 
 =head3 Assignment Requirement from Any Object to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<any object type|/"Any Object Type"> C<object>, the assignment requirement is true.
-
-The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric type is performed.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NUMERIC_X</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -1563,10 +1559,10 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>object</td><td>OBJECT_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>Yes</td><td>object</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>object</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>OBJECT_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>Any Object <code>object</code></td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1825,7 +1821,7 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NUMERIC_X</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -1890,7 +1886,7 @@ If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type
   <tr><td>Yes</td><td>mutable string</td><td>string</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
   <tr><td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String Conversion</td></tr>
-  <tr><td>Yes</td><td>string</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>string</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>string</td><td>OTHER</td><td>No</td></tr>
 </table>
@@ -1915,7 +1911,7 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>No</td></tr>
   <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>No</td></tr>
 </table>
@@ -1944,7 +1940,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><td>Yes</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>No</td></tr>
   <tr><td>Yes</td><td>CLASS_X</td><td>SUPER_CLASS_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>CLASS_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>CLASS_X</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>CLASS_X</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>CLASS</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>CLASS</td><td>OTHER</td><td>No</td></tr>
 </table>
@@ -1970,7 +1966,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>No</td></tr>
   <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>No</td></tr>
   <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>INTERFACE</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>INTERFACE</td><td>OTHER</td><td>No</td></tr>
 </table>
@@ -1991,10 +1987,10 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>object</td><td>OBJECT_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>Yes</td><td>object</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>object</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>OBJECT_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>Any Object <code>object</code></td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2019,7 +2015,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>Yes</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Conversion</a></td></tr>
   <tr><td>Yes</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NUMERIC[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>NUMERIC[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>No</td></tr>
 </table>
@@ -2041,7 +2037,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>MULNUM_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>MULNUM_X[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>No</td></tr>
 </table>
@@ -2063,7 +2059,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>Yes</td><td>string[]</td><td>string[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>string[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>string[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>string[]</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>string[]</td><td>OTHER</td><td>No</td></tr>
@@ -2092,7 +2088,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><td>Yes</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>CLASS_X[]</td><td>SUPER_CLASS_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>CLASS_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>CLASS_X[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>CLASS_X[]</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>CLASS_X[]</td><td>OTHER</td><td>No</td></tr>
@@ -2125,7 +2121,7 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFAECE_HAVING_Y[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>INTERFACE_X[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>INTERFACE_X[]</td><td>undef</td><td>No</td></tr>
   <tr><td>No</td><td>INTERFACE_X[]</td><td>OTHER</td><td>No</td></tr>
@@ -2151,7 +2147,7 @@ If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>Yes</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>No</td></tr>
   <tr><td>Yes</td><td>object[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>Yes</td><td>object[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>object[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
@@ -2178,7 +2174,7 @@ Otherwise, the cast requirement is false.
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>Yes</td><td>ANY_X[]..</td><td>ANY_X[]..</td><td>No</td></tr>
-  <tr><td>Yes</td><td>ANY_X[]..</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ANY_X[]..</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>ANY_X[]..</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>ANY_X[]..</td><td>undef</td><td>No</td></tr>
   <tr><td>Yes</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td><td>No</td></tr>
