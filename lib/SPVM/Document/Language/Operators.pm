@@ -1614,7 +1614,7 @@ The assignment operator C<=> performs an assignment.
   
   LEFT_OPERAND = RIGHTH_OPERAND
 
-An L<implicite type conversion|SPVM::Document::Language::Types/"Implicite Type Conversion"> described in L<Assignment Requirement|SPVM::Document::Language::Types/"Assignment Requirement"> is performed on I<RIGHTH_OPERAND> if necessary.
+A data conversion described in L<Assignment Requirement|SPVM::Document::Language::Types/"Assignment Requirement"> is performed on I<RIGHTH_OPERAND> if necessary.
 
 And the assignment operator performs different operations depending on the left operand I<LEFT_OPERAND>.
 
