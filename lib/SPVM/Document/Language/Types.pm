@@ -575,8 +575,6 @@ The List of Numeric Array Types:
   float[]
   double[]
 
-=back
-
 =head3 Object Array Types
 
 An object array type is an L<array type|/"Array Types"> of an L<object type|/"Object Types">.
@@ -1267,6 +1265,12 @@ The unboxing conversion is the type coversion from an object of a L<numeric obje
 
 An unboxing conversion returns the value of the C<value> field of the numeric object.
 
+An unboxing conversion could be performed on the object of any object type C<object>.
+
+Exceptions:
+
+If the type of the object is not its corresponding numeric type, an exception is thrown.
+
 =head1 Implicite Type Conversion
 
 Implicite type conversions are L<type conversions|/"Type Conversions"> performed without L<type casts|SPVM::Document::Language::Operators/"Type Cast">.
@@ -1418,58 +1422,58 @@ To Smaller:
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>NUMERIC_X</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>byte</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>short</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>int</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>long</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>float</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>double</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
 
-=head3 Assignment Requirement from Others to Numeric
+=head3 Assignment Requirement from Other to Numeric
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is other than the types described above, the assignment requirement is false.
+=begin html
+
+<table>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>No</td><td>NumericX</td><td>Other</td><td>No</a></tr>
+</table>
+
+=end html
+
+I<NumericX> is a L<numeric type|"Numeric Types">.
 
 =head2 Assignment Requirement to Multi-Numeric
 
-If the type of I<LEFT_OPERAND> is a L<multi-numeric type|/"Multi-Numeric Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>MULNUM_X</td><td>MULNUM_X</td><td>No</td></tr>
-  <tr><td>No</td><td>MULNUM_X</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX</td><td>Multi-NumericX</td><td>No</td></tr>
+  <tr><td>No</td><td>Multi-NumericX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<Multi-NumericX> is a L<multi-numeric|/"Multi-Numeric Types"> type.
 
 =head2 Assignment Requirement to Referenece
 
-If the type of I<LEFT_OPERAND> is a L<Reference Types|/"Reference Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>REF_X</td><td>REF_X</td><td>No</td></tr>
-  <tr><td>No</td><td>REF_X</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ReferenceX</td><td>ReferenceX</td><td>No</td></tr>
+  <tr><td>No</td><td>ReferenceX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
 
+I<ReferenceX> is a L<reference|/"Reference Types"> type.
+
 =head2 Assignment Requirement to String
-
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type">, the assignment requirement is true.
-
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier">, the assignment requirement is true.
-
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> with the L<mutable type qualifier|/"mutable Type Qualifier"> and the type of I<RIGHT_OPERAND> is the L<string type|/"string Type"> without the L<mutable type qualifier|/"mutable Type Qualifier">, the assignment requirement is false.
-
-If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> is performed.
 
 =begin html
 
@@ -1480,150 +1484,143 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<num
   <tr><td>Yes</td><td>mutable string</td><td>mutable string</td><td>No</td></tr>
   <tr><td>No</td><td>mutable string</td><td>string</td><td>No</td></tr>
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
-  <tr><td>Yes</td><td>string</td><td>NUMERIC_X</td><td>numeric-to-string conversion</td></tr>
+  <tr><td>Yes</td><td>string</td><td>NumericX</td><td><a href="#Numeric-to-String-Conversion">Numeric-to-String Conversion</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>string</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>No</td><td>string</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<NumericX> is a L<numeric type|"Numeric Types">.
 
 =head2 Assignment Requirement to NumericObject
 
-If the type of I<LEFT_OPERAND> is a L<numeric object type|/"Numeric Object Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND>, a L<numeric type|/"Numeric Types"> that is corresponding to the numeric object type, or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
-If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericObjectX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>NumericObjectX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<NumericObjectX> is a L<numeric object type|"Numeric Object Types">.
 
 =head2 Assignment Requirement to Class
 
-If the type of I<LEFT_OPERAND> is a L<class type|/"Class Types"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-If the type of I<LEFT_OPERAND> is a super class of the type of I<RIGHT_OPERAND>, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>CLASS_X</td><td>CLASS_X</td><td>No</td></tr>
-  <tr><td>Yes</td><td>CLASS</td><td>undef</td><td>No</td></tr>
-  <tr><td>Yes</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>No</td></tr>
-  <tr><td>No</td><td>CLASS</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>ClassX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SuperClassX</td><td>ClassX</td><td>No</td></tr>
+  <tr><td>No</td><td>ClassX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<ClassX> is a L<class type|"Class Types">.
+
+I<SuperClassX> is a super class of I<ClassX>.
 
 =head2 Assignment Requirement to Interface
 
-If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types"> and the type of I<RIGHT_OPERAND> is the same type, or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-If the type of I<LEFT_OPERAND> is an L<interface type|/"Interface Types"> and the type of I<RIGHT_OPERAND> is a L<class type|/"Class Types"> and the class has the same interface of I<LEFT_OPERAND>, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>INTERFACE</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceSatisfiedX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>InterfaceX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<InterfaceX> is a an L<interface type|"Interface Types">.
+
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Assignment Requirement to Any Object
 
-If the type of I<LEFT_OPERAND> is the L<any object type|/"Any Object Type"> and the type of I<RIGHT_OPERAND> is an L<object type|/"Object Types">, a L<numeric type|/"Numeric Types"> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
-If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<boxing conversion|/"Boxing Conversion"> is performed.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>OBJECT_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>ObjectX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>Any Object <code>object</code></td><td>OTHER</td><td>No</td></tr>
+  <tr><td>No</td><td>Any Object <code>object</code></td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
 
-=head2 Assignment Requirement to Undefined
+I<ObjectX> is an L<object type|"Object Types">.
 
-If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignment requirement is false.
+I<NumericX> is a L<numeric type|"Numeric Types">.
+
+=head2 Assignment Requirement to undef
 
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>No</td><td>undef Type</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>No</td><td>undef</td><td>X</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<X> is a type.
+
+=head2 Assignment Requirement to void
+
+=begin html
+
+<table>
+  <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
+  <tr><td>Yes</td><td>void</td><td>void</td><td>No</td></tr>
+  <tr><td>No</td><td>void</td><td>X</td><td>No</td></tr>
+</table>
+
+=end html
+
+I<X> is a type.
 
 =head2 Assignment Requirement to Numeric Array
 
-If the type of I<LEFT_OPERAND> is a L<numeric array type|/"Numeric Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>byte[]</td><td>byte[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>short[]</td><td>short[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>int[]</td><td>int[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>long[]</td><td>long[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>float[]</td><td>float[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>double[]</td><td>double[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericX[]</td><td>NumericX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericX[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>NumericX[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<NumericX> is a L<numeric type|"Numeric Types">.
 
 =head2 Assignment Requirement to Multi-Numeric Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-numeric array type|/"Multi-Numeric Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX[]</td><td>Multi-NumericX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>Multi-NumericX[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
 
+I<Multi-NumericX> is a L<multi-numeric|/"Multi-Numeric Types"> type.
+
 =head2 Assignment Requirement to String Array
-
-If the type of I<LEFT_OPERAND> is a L<string array type|/"String Array Type"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
 
 =begin html
 
@@ -1631,92 +1628,94 @@ Otherwise, the assignment requirement is false.
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
   <tr><td>Yes</td><td>string[]</td><td>string[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>string[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>string[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>No</td><td>string[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
 
 =head2 Assignment Requirement to Class Array
 
-If the type of I<LEFT_OPERAND> is a L<class array type|/"Class Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-If the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is an super class of the type of I<RIGHT_OPERAND>, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>CLASS_X[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>CLASS_X[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>ClassX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SuperClassX[]</td><td>ClassX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>ClassX[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<ClassX> is a L<class type|"Class Types">.
+
+I<SuperClassX> is a super class of I<ClassX>.
 
 =head2 Assignment Requirement to Interface Array
 
-If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-If the type of I<LEFT_OPERAND> is an L<interface array type|/"Interface Array Types"> and the type of I<RIGHT_OPERAND> is a L<class array type|/"Class Array Types"> and its L<basic type|/"Basic Types"> can assign to the basic type of I<LEFT_OPERAND>, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td><td>No</td></tr>
-  <tr><td>No</td><td>INTERFACE_X[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceSatisfiedX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>InterfaceX[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<InterfaceX> is a an L<interface type|"Interface Types">.
+
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Assignment Requirement to Any Object Array
 
-If the type of I<LEFT_OPERAND> is the L<any object array type|/"Any Object Array Type"> C<object[]> and the type of I<RIGHT_OPERAND> is an L<object array type|/"Object Array Types"> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>object[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>ObjectX[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>Any object array <code>object[]</code></td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+I<ObjectX> is an L<object type|"Object Types">.
+
+C<[]..> is one or more C<[]>.
 
 =head2 Assignment Requirement to Multi-Dimensional Array
 
-If the type of I<LEFT_OPERAND> is a L<multi-dimensional array type|/"Multi-Dimensional Array Types"> and the type of I<RIGHT_OPERAND> is the same type of I<LEFT_OPERAND> or the L<undef type|/"undef Type">, the assignment requirement is true.
-
-If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<LEFT_OPERAND> is a super class of the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND>, the assignment requirement is true.
-
-If the type dimesion of I<LEFT_OPERAND> is equal to the type dimension of I<RIGHT_OPERAND>, and the L<basic type|/"Basic Types"> of I<RIGHT_OPERAND> has the L<basic type|/"Basic Types"> of I<LEFT_OPERAND>, the assignment requirement is true.
-
-Otherwise, the assignment requirement is false.
-
 =begin html
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>Yes</td><td>X[]..</td><td>X[]..</td><td>No</td></tr>
-  <tr><td>Yes</td><td>object[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>Yes</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td><td>No</td></tr>
-  <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>X[]..D</td><td>X[]..D</td><td>No</td></tr>
+  <tr><td>Yes</td><td>X[]..D</td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SuperClassX[]..D</td><td>ClassX[]..D</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]..D</td><td>InterfaceSatisfiedX[]..D</td><td>No</td></tr>
+  <tr><td>No</td><td>X[]..D</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
 
-(C<[]..> means one or more C<[]>)
+I<X> is a type.
+
+C<[]..> is one or more C<[]>.
+
+C<D> means its type dimension.
+
+So C<X[]..D> is a multi-dimensional array.
+
+I<SuperClassX> is a super class of I<ClassX>.
+
+I<ClassX> is a L<class type|"Class Types">.
+
+I<InterfaceX> is a an L<interface type|"Interface Types">.
+
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
 
 =head1 Cast Requirement
 
@@ -1821,12 +1820,12 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>NUMERIC_X</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NumericX</td><td>Any Object <code>object</code></td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
 
-=head3 Cast Requirement from Others to Numeric
+=head3 Cast Requirement from Other to Numeric
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is other than the types described above, the cast requirement is false.
 
@@ -1840,8 +1839,8 @@ Otherwise, the cast requirement is false.
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>MULNUM_X</td><td>MULNUM_X</td><td>No</td></tr>
-  <tr><td>No</td><td>MULNUM_X</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX</td><td>Multi-NumericX</td><td>No</td></tr>
+  <tr><td>No</td><td>Multi-NumericX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1856,8 +1855,8 @@ Otherwise, the cast requirement is false.
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>REF_X</td><td>REF_X</td><td>No</td></tr>
-  <tr><td>No</td><td>REF_X</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ReferenceX</td><td>ReferenceX</td><td>No</td></tr>
+  <tr><td>No</td><td>ReferenceX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1885,10 +1884,10 @@ If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type
   <tr><td>Yes</td><td>mutable string</td><td>mutable string</td><td>No</td></tr>
   <tr><td>Yes</td><td>mutable string</td><td>string</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
-  <tr><td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String Conversion</td></tr>
+  <tr><td>Yes</td><td>string</td><td>NumericX</td><td>Numeric-to-String Conversion</td></tr>
   <tr><td>Yes</td><td>string</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>string</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>No</td><td>string</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1909,11 +1908,11 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericObjectX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>NumericObjectX</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>NumericObjectX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1936,13 +1935,13 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>CLASS_X</td><td>CLASS_X</td><td>No</td></tr>
-  <tr><td>Yes</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>CLASS_X</td><td>SUPER_CLASS_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>CLASS_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>CLASS_X</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>CLASS</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>CLASS</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>ClassX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SuperClassX</td><td>ClassX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>SuperClassX</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>InterfaceY</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ClassX</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>ClassX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1963,12 +1962,12 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>INTERFACE</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>INTERFACE</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceSatisfiedX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>InterfaceY</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>InterfaceX</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1987,10 +1986,10 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>OBJECT_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>ObjectX</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any Object <code>object</code></td><td>NumericX</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
   <tr><td>Yes</td><td>Any Object <code>object</code></td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>Any Object <code>object</code></td><td>OTHER</td><td>No</td></tr>
+  <tr><td>No</td><td>Any Object <code>object</code></td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2014,10 +2013,10 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>Yes</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Conversion</a></td></tr>
-  <tr><td>Yes</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>NUMERIC[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericX[]</td><td>NumericX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NumericX[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>NumericX[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>NumericX[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2036,10 +2035,10 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>MULNUM_X[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX[]</td><td>Multi-NumericX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>Multi-NumericX[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>Multi-NumericX[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2060,9 +2059,9 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
   <tr><td>Yes</td><td>string[]</td><td>string[]</td><td>No</td></tr>
   <tr><td>Yes</td><td>string[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>string[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>Any object array <code>object[]</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
   <tr><td>Yes</td><td>string[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>string[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>No</td><td>string[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2085,13 +2084,13 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>CLASS_X[]</td><td>SUPER_CLASS_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>CLASS_X[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>CLASS_X[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>CLASS_X[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>CLASS_X[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>ClassX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SuperClassX[]</td><td>ClassX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>SuperClassX[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>Any object array <code>object[]</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ClassX[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>ClassX[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2118,13 +2117,13 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFAECE_HAVING_Y[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>No</td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>No</td><td>INTERFACE_X[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceSatisfiedX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceX[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>InterfaceY[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>Any object array <code>object[]</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>InterfaceX[]</td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2145,13 +2144,15 @@ If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>No</td></tr>
-  <tr><td>Yes</td><td>object[]</td><td>undef</td><td>No</td></tr>
-  <tr><td>Yes</td><td>object[]</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>ObjectX[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>Any object array <code>object[]</code></td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>No</td><td>Any object array <code>object[]</code></td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
+
+C<[]..> is one or more C<[]>.
 
 =head2 Cast Requirement to Multi-Dimensional Array
 
@@ -2173,19 +2174,19 @@ Otherwise, the cast requirement is false.
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>Yes</td><td>ANY_X[]..</td><td>ANY_X[]..</td><td>No</td></tr>
-  <tr><td>Yes</td><td>ANY_X[]..</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>ANY_X[]..</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>ANY_X[]..</td><td>undef</td><td>No</td></tr>
-  <tr><td>Yes</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td><td>No</td></tr>
-  <tr><td>Yes</td><td>CLASS_X[]..</td><td>SUPER_CLASS_Y[]..</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>Yes</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td><td>No</td></tr>
-  <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
+  <tr><td>Yes</td><td>AnyX[]..</td><td>AnyX[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>AnyX[]..</td><td>Any Object <code>object</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>AnyX[]..</td><td>Any object array <code>object[]</code></td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>AnyX[]..</td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SuperClassX[]..</td><td>ClassX[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ClassX[]..</td><td>SuperClassX[]..</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>InterfaceX[]..</td><td>InterfaceSatisfiedX[]..</td><td>No</td></tr>
+  <tr><td>No</td><td>Any object array <code>object[]</code></td><td>Other</td><td>No</td></tr>
 </table>
 
 =end html
 
-(C<[]..> means one or more C<[]>)
+C<[]..> is one or more C<[]>.
 
 =head1 Copyright & License
 
