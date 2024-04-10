@@ -1338,9 +1338,7 @@ If a assignment requirement is satisfied, "Yes" is written, otherwise "No" is wr
 
 =head3 Assignment Requirement from Numeric to Numeric
 
-If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than or equal to the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is true.
-
-If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
+To Larger:
 
 =begin html
 
@@ -1371,11 +1369,7 @@ If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greate
 
 =end html
 
-If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is conditional true.
-
-The condition is that I<RIGHT_OPERAND> is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of I<LEFT_OPERAND>.
-
-If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing Conversion"> is performed.
+To Smaller:
 
 =begin html
 
@@ -1400,9 +1394,9 @@ If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing
 
 =end html
 
-=head3 Assignment Requirement from NumericObject to Numeric
+"Conditional Yes" means if the value of L<TYPE_FROM> is represented by an L<interger literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and between the max and minimal value of the type of I<TYPE_TO>.
 
-If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> corresponding to the numeric object type of I<RIGHT_OPERAND> and the type of I<RIGHT_OPERAND> is a L<numeric object type|/"Numeric Object Types">, the assignment requirement is true.
+=head3 Assignment Requirement from NumericObject to Numeric
 
 =begin html
 
