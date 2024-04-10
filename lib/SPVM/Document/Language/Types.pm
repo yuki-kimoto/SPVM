@@ -1332,6 +1332,8 @@ An L<implicit type conversion|/"Implicit Type Conversion"> could be performed on
 
 In the following description, the word "Type" is omitted when it is obvious.
 
+If a assignment requirement is satisfied, "Yes" is written, otherwise "No" is written.
+
 =head2 Assignment Requirement to Numeric
 
 =head3 Assignment Requirement from Numeric to Numeric
@@ -1344,27 +1346,27 @@ If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greate
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
-  <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
-  <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
-  <tr><td>True</td><td>long</td><td>long</td><td>None</td></tr>
-  <tr><td>True</td><td>float</td><td>float</td><td>None</td></tr>
-  <tr><td>True</td><td>double</td><td>double</td><td>None</td></tr>
-  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>byte</td><td>byte</td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>short</td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>int</td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>long</td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>float</td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>double</td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
 </table>
 
 =end html
@@ -1382,18 +1384,18 @@ If the condition is ture, the L<numeric narrowing conversion|/"Numeric Narrowing
   <tr><td>Conditional True</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>False</td><td>byte</td><td>float</td><td>None</td></tr>
-  <tr><td>False</td><td>byte</td><td>double</td><td>None</td></tr>
+  <tr><td>No</td><td>byte</td><td>float</td><td>No</td></tr>
+  <tr><td>No</td><td>byte</td><td>double</td><td>No</td></tr>
   <tr><td>Conditional True</td><td>short</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
   <tr><td>Conditional True</td><td>short</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>False</td><td>short</td><td>float</td><td>None</td></tr>
-  <tr><td>False</td><td>short</td><td>double</td><td>None</td></tr>
+  <tr><td>No</td><td>short</td><td>float</td><td>No</td></tr>
+  <tr><td>No</td><td>short</td><td>double</td><td>No</td></tr>
   <tr><td>Conditional True</td><td>int</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>False</td><td>int</td><td>float</td><td>None</td></tr>
-  <tr><td>False</td><td>int</td><td>double</td><td>None</td></tr>
-  <tr><td>False</td><td>long</td><td>float</td><td>None</td></tr>
-  <tr><td>False</td><td>long</td><td>double</td><td>None</td></tr>
-  <tr><td>False</td><td>float</td><td>double</td><td>None</td></tr>
+  <tr><td>No</td><td>int</td><td>float</td><td>No</td></tr>
+  <tr><td>No</td><td>int</td><td>double</td><td>No</td></tr>
+  <tr><td>No</td><td>long</td><td>float</td><td>No</td></tr>
+  <tr><td>No</td><td>long</td><td>double</td><td>No</td></tr>
+  <tr><td>No</td><td>float</td><td>double</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1406,12 +1408,12 @@ If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> correspondi
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>long</td><td>Long</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>float</td><td>Float</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>double</td><td>Double</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -1426,7 +1428,7 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -1445,8 +1447,8 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
-  <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>MULNUM_X</td><td>MULNUM_X</td><td>No</td></tr>
+  <tr><td>No</td><td>MULNUM_X</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1461,8 +1463,8 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
-  <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>REF_X</td><td>REF_X</td><td>No</td></tr>
+  <tr><td>No</td><td>REF_X</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1483,14 +1485,14 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<num
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
-  <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
-  <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
-  <tr><td>False</td><td>mutable string</td><td>string</td><td>None</td></tr>
-  <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
-  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>numeric-to-string conversion</td></tr>
-  <tr><td>True</td><td>string</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>string</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
+  <tr><td>Yes</td><td>string</td><td>mutable string</td><td>No</td></tr>
+  <tr><td>Yes</td><td>mutable string</td><td>mutable string</td><td>No</td></tr>
+  <tr><td>No</td><td>mutable string</td><td>string</td><td>No</td></tr>
+  <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
+  <tr><td>Yes</td><td>string</td><td>NUMERIC_X</td><td>numeric-to-string conversion</td></tr>
+  <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>string</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1507,10 +1509,10 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1527,10 +1529,10 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
-  <tr><td>True</td><td>CLASS</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>None</td></tr>
-  <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>CLASS_X</td><td>CLASS_X</td><td>No</td></tr>
+  <tr><td>Yes</td><td>CLASS</td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>No</td></tr>
+  <tr><td>No</td><td>CLASS</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1547,10 +1549,10 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>INTERFACE</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1567,10 +1569,10 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>object</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>object</td><td>OBJECT_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>object</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>object</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1583,7 +1585,7 @@ If the type of I<LEFT_OPERAND> is the L<undef type|/"undef Type">, the assignmen
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>False</td><td>undef Type</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>No</td><td>undef Type</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1598,14 +1600,14 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>byte[]</td><td>byte[]</td><td>None</td></tr>
-  <tr><td>True</td><td>short[]</td><td>short[]</td><td>None</td></tr>
-  <tr><td>True</td><td>int[]</td><td>int[]</td><td>None</td></tr>
-  <tr><td>True</td><td>long[]</td><td>long[]</td><td>None</td></tr>
-  <tr><td>True</td><td>float[]</td><td>float[]</td><td>None</td></tr>
-  <tr><td>True</td><td>double[]</td><td>double[]</td><td>None</td></tr>
-  <tr><td>True</td><td>NUMERIC[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>byte[]</td><td>byte[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>short[]</td><td>short[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>int[]</td><td>int[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>long[]</td><td>long[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>float[]</td><td>float[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>double[]</td><td>double[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1620,9 +1622,9 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1637,9 +1639,9 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
-  <tr><td>True</td><td>string[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>string[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>string[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1656,10 +1658,10 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
-  <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>CLASS_X[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1676,10 +1678,10 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td><td>None</td></tr>
-  <tr><td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_HAVING_Y[]</td><td>No</td></tr>
+  <tr><td>No</td><td>INTERFACE_X[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1694,9 +1696,9 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>object[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1715,11 +1717,11 @@ Otherwise, the assignment requirement is false.
 
 <table>
   <tr><th>Assignment Requirement</th><th>To</th><th>From</th><th>Implicite Type Conversion</th></tr>
-  <tr><td>True</td><td>X[]..</td><td>X[]..</td><td>None</td></tr>
-  <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td><td>None</td></tr>
-  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>X[]..</td><td>X[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>object[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td><td>No</td></tr>
+  <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1761,42 +1763,42 @@ If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is equal 
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>byte</td><td>byte</td><td>None</td></tr>
-  <tr><td>True</td><td>short</td><td>short</td><td>None</td></tr>
-  <tr><td>True</td><td>int</td><td>int</td><td>None</td></tr>
-  <tr><td>True</td><td>long</td><td>long</td><td>None</td></tr>
-  <tr><td>True</td><td>float</td><td>float</td><td>None</td></tr>
-  <tr><td>True</td><td>double</td><td>double</td><td>None</td></tr>
-  <tr><td>True</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>byte</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>short</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>short</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>short</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>short</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>int</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>long</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
-  <tr><td>True</td><td>float</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>byte</td><td>byte</td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>short</td><td>No</td></tr>
+  <tr><td>Yes</td><td>int</td><td>int</td><td>No</td></tr>
+  <tr><td>Yes</td><td>long</td><td>long</td><td>No</td></tr>
+  <tr><td>Yes</td><td>float</td><td>float</td><td>No</td></tr>
+  <tr><td>Yes</td><td>double</td><td>double</td><td>No</td></tr>
+  <tr><td>Yes</td><td>short</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>byte</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>short</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>int</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>long</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>double</td><td>float</td><td><a href="#Numeric-Widening-Conversion">Numeric Widening Conversion</a></td></tr>
+  <tr><td>Yes</td><td>byte</td><td>short</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>byte</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>byte</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>byte</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>byte</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>short</td><td>int</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>short</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>short</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>short</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>long</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>int</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>float</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>long</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
+  <tr><td>Yes</td><td>float</td><td>double</td><td><a href="#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></tr>
 </table>
 
 =end html
@@ -1809,12 +1811,12 @@ If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> correspondi
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>long</td><td>Long</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>float</td><td>Float</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
-  <tr><td>True</td><td>double</td><td>Double</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>byte</td><td>Byte</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>short</td><td>Short</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>int</td><td>Int</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>long</td><td>Long</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>float</td><td>Float</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>double</td><td>Double</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -1829,7 +1831,7 @@ The L<unboxing conversion|/"Unboxing Conversion"> corresponding to the numeric t
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NUMERIC_X</td><td>object</td><td><a href="#Unboxing-Conversion">Unboxing Conversion</td></a></tr>
 </table>
 
 =end html
@@ -1848,8 +1850,8 @@ Otherwise, the cast requirement is false.
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>MULNUM_X</td><td>MULNUM_X</td><td>None</td></tr>
-  <tr><td>False</td><td>MULNUM_X</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>MULNUM_X</td><td>MULNUM_X</td><td>No</td></tr>
+  <tr><td>No</td><td>MULNUM_X</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1864,8 +1866,8 @@ Otherwise, the cast requirement is false.
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>REF_X</td><td>REF_X</td><td>None</td></tr>
-  <tr><td>False</td><td>REF_X</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>REF_X</td><td>REF_X</td><td>No</td></tr>
+  <tr><td>No</td><td>REF_X</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1888,15 +1890,15 @@ If the type of I<LEFT_OPERAND> is the L<string type|/"string Type"> and the type
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
-  <tr><td>True</td><td>string</td><td>mutable string</td><td>None</td></tr>
-  <tr><td>True</td><td>mutable string</td><td>mutable string</td><td>None</td></tr>
-  <tr><td>True</td><td>mutable string</td><td>string</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>string</td><td>string</td><td>None</td></tr>
-  <tr><td>True</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String Conversion</td></tr>
-  <tr><td>True</td><td>string</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>string</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>string</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
+  <tr><td>Yes</td><td>string</td><td>mutable string</td><td>No</td></tr>
+  <tr><td>Yes</td><td>mutable string</td><td>mutable string</td><td>No</td></tr>
+  <tr><td>Yes</td><td>mutable string</td><td>string</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>string</td><td>string</td><td>No</td></tr>
+  <tr><td>Yes</td><td>string</td><td>NUMERIC_X</td><td>Numeric-to-String Conversion</td></tr>
+  <tr><td>Yes</td><td>string</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>string</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>string</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1917,11 +1919,11 @@ If the type of I<LEFT_OPERAND> is the type of I<RIGHT_OPERAND> is the L<any obje
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>None</td></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>NUMERIC_OBJECT</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_OBJECT_X</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NUMERIC_OBJECT_X</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>NUMERIC_OBJECT</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>NUMERIC_OBJECT</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1944,13 +1946,13 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>CLASS_X</td><td>CLASS_X</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>CLASS_X</td><td>SUPER_CLASS_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>CLASS_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>CLASS_X</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>CLASS</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>CLASS</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>CLASS_X</td><td>CLASS_X</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SUPER_CLASS_X</td><td>CLASS_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>CLASS_X</td><td>SUPER_CLASS_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>CLASS_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>CLASS_X</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>CLASS</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>CLASS</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1971,12 +1973,12 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>INTERFACE_X</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>INTERFACE</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>INTERFACE</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_X</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_HAVING_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X</td><td>INTERFACE_Y</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>INTERFACE</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>INTERFACE</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -1995,10 +1997,10 @@ If the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the L<box
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>object</td><td>OBJECT_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
-  <tr><td>True</td><td>object</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>object</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>object</td><td>OBJECT_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>object</td><td>NUMERIC_X</td><td><a href="#Boxing-Conversion">Boxing Conversion</td></a></tr>
+  <tr><td>Yes</td><td>object</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>object</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2021,11 +2023,11 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Conversion</a></td></tr>
-  <tr><td>True</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>NUMERIC[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>NUMERIC[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>NUMERIC[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>byte[]</td><td>string</td><td><a href="#String-to-byte[]-Type-Conversion">String-to-byte[] Conversion</a></td></tr>
+  <tr><td>Yes</td><td>NUMERIC_X[]</td><td>NUMERIC_X[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>NUMERIC[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>NUMERIC[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>NUMERIC[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2044,10 +2046,10 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>MULNUM_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>MULNUM_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>MULNUM_X[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>MULNUM_X[]</td><td>MULNUM_X[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>MULNUM_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>MULNUM_X[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>MULNUM_X[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2066,11 +2068,11 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>string[]</td><td>string[]</td><td>None</td></tr>
-  <tr><td>True</td><td>string[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>string[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>string[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>string[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>string[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>string[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>string[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2093,13 +2095,13 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>None</td></tr>
-  <tr><td>True</td><td>CLASS_X[]</td><td>SUPER_CLASS_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>CLASS_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>CLASS_X[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>CLASS_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>CLASS_X[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]</td><td>CLASS_X[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SUPER_CLASS_X[]</td><td>CLASS_Y[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]</td><td>SUPER_CLASS_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>CLASS_X[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2126,13 +2128,13 @@ If the type of I<RIGHT_OPERAND> is the L<any object type|/"Any Object Type"> C<o
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFAECE_HAVING_Y[]</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>None</td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>False</td><td>INTERFACE_X[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFAECE_HAVING_Y[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_X[]</td><td>No</td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>INTERFACE_Y[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>No</td><td>INTERFACE_X[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2153,10 +2155,10 @@ If the type of I<RIGHT_OPERAND> is an L<any object type|/"Any Object Type">, the
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>None</td></tr>
-  <tr><td>True</td><td>object[]</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>object[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>object[]</td><td>OBJECT_ARRAY_Y</td><td>No</td></tr>
+  <tr><td>Yes</td><td>object[]</td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>object[]</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
@@ -2181,14 +2183,14 @@ Otherwise, the cast requirement is false.
 
 <table>
   <tr><th>Cast Requirement</th><th>To</th><th>From</th><th><a href="#Type-Conversion">Conversion or Type Checking</a></th></tr>
-  <tr><td>True</td><td>ANY_X[]..</td><td>ANY_X[]..</td><td>None</td></tr>
-  <tr><td>True</td><td>ANY_X[]..</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>ANY_X[]..</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>ANY_X[]..</td><td>undef</td><td>None</td></tr>
-  <tr><td>True</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td><td>None</td></tr>
-  <tr><td>True</td><td>CLASS_X[]..</td><td>SUPER_CLASS_Y[]..</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
-  <tr><td>True</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td><td>None</td></tr>
-  <tr><td>False</td><td>object[]</td><td>OTHER</td><td>None</td></tr>
+  <tr><td>Yes</td><td>ANY_X[]..</td><td>ANY_X[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>ANY_X[]..</td><td>object</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ANY_X[]..</td><td>object[]</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>ANY_X[]..</td><td>undef</td><td>No</td></tr>
+  <tr><td>Yes</td><td>SUPER_CLASS_X[]..</td><td>CLASS_Y[]..</td><td>No</td></tr>
+  <tr><td>Yes</td><td>CLASS_X[]..</td><td>SUPER_CLASS_Y[]..</td><td><a href="#Runtime-Type-Checking">Runtime type checking</a></td></tr>
+  <tr><td>Yes</td><td>INTERFACE_X[]..</td><td>INTERFACE_HAVING_Y[]..</td><td>No</td></tr>
+  <tr><td>No</td><td>object[]</td><td>OTHER</td><td>No</td></tr>
 </table>
 
 =end html
