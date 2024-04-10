@@ -2728,9 +2728,9 @@ If a data conversion is needed in the type cast, a type cast performs a data con
 
 Otherwise it returns I<OPERAND>.
 
-Data conversions in type casts are defined in L<Cast Requirement|SPVM::Document::Language::Types/"Cast Requirement">.
-
 If a data check is needed in the type cast, a type cast performs a data check on I<OPERAND>.
+
+Data conversions and data checks in type casts are explained in L<Cast Requirement|SPVM::Document::Language::Types/"Cast Requirement">.
 
 Exceptions:
 
