@@ -1328,13 +1328,17 @@ Abstracting this, type-to-type assignment is defined.
 
 Note that this is a concept, not an actual syntax.
 
+An L<implicit type conversion|/"Implicit Type Conversion"> could be performed on I<TYPE_FROM>.
+
+In the following description, the word "Type" is omitted when it is obvious.
+
 =head2 Assignment Requirement to Numeric
 
 =head3 Assignment Requirement from Numeric to Numeric
 
-If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than or equal to the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is true.
+If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than or equal to the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is true.
 
-If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
+If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
 =begin html
 
@@ -1365,7 +1369,7 @@ If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater
 
 =end html
 
-If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is conditional true.
+If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the assignment requirement is conditional true.
 
 The condition is that I<RIGHT_OPERAND> is a L<interger literal|Integer Literal> and the value is between the max and minimal value of the type of I<LEFT_OPERAND>.
 
@@ -1747,11 +1751,11 @@ The cast requirement to the L<numeric types|/"Numeric Types"> is explained.
 
 If the type of I<LEFT_OPERAND> is a L<numeric type|/"Numeric Types"> and the type of I<RIGHT_OPERAND> is a L<numeric type|/"Numeric Types">, the cast requirement is true.
 
-If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
+If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is greater than the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric widening conversion|/"Numeric Widening Conversion"> is performed.
 
-If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric narrowing conversion|/"Numeric Narrowing Conversion"> is performed.
+If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is less than the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, the L<numeric narrowing conversion|/"Numeric Narrowing Conversion"> is performed.
 
-If the L<nemric type order|/"Numeric Types Order"> of I<LEFT_OPERAND> is equal to the L<nemric type order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, copying is performed.
+If the L<nemric types order|/"Numeric Types Order"> of I<LEFT_OPERAND> is equal to the L<nemric types order|/"Numeric Types Order"> of I<RIGHT_OPERAND>, copying is performed.
 
 =begin html
 
