@@ -688,11 +688,11 @@ The type suffix in the suffix must correspond to the L<numeric type|SPVM::Docume
 
 See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> to get and set the field of the multi-numeric type.
 
-=head2 Enumeration
+=head1 Enumeration
 
 The enumeration is the syntx to defines constant values of the int type.
 
-=head3 Enumeration Definition
+=head2  Enumeration Definition
 
 The C<enum> keyword defines an enumeration. An enumeration has definitions of constant values.
 
@@ -747,7 +747,7 @@ Examples:
     }
   }
 
-=head3 Enumeration Attributes
+=head2  Enumeration Attributes
 
 Attributes can be specified to an enumeration definition.
 
@@ -802,11 +802,11 @@ Compilation Errors:
 
 Only one of enumeration attributes C<private>, C<protected> or C<public> can be specified, otherwise a compilation error occurs.
 
-=head2 Class Variable
+=head1 Class Variable
 
 A class variable is a global variable that has the name space.
 
-=head3 Class Variable Definition
+=head2  Class Variable Definition
 
 C<our> keyword defines a class variable.
 
@@ -841,7 +841,7 @@ Examples:
     our $NUM_RW : rw int;
   }
 
-=head3 Class Variable Attributes
+=head2  Class Variable Attributes
 
 The List of Class Variable Attributes:
 
@@ -914,7 +914,7 @@ Only one of class variable attributes C<private>, C<protected> or C<public> can 
 
 If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error occurs
 
-=head4 Class Variable Getter Method
+=head3 Class Variable Getter Method
 
 A class variable getter method is a method to perform the operation of the L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
 
@@ -937,7 +937,7 @@ Examples:
     }
   }
 
-=head4 Class Variable Setter Method
+=head3 Class Variable Setter Method
 
 A class variable setter method is a method to perform the operation of the L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
 
@@ -962,11 +962,11 @@ Examples:
     }
   }
 
-=head2 Field
+=head1 Field
 
 Fields are the data that an object has.
 
-=head3 Field Definition
+=head2  Field Definition
 
 The C<has> keyword defines a field.
   
@@ -994,7 +994,7 @@ Examples:
     has name : string;
   }
 
-=head3 Field Attributes
+=head2  Field Attributes
 
 The List of Field Attributes:
 
@@ -1091,7 +1091,7 @@ Examples:
     has num_rw : rw int;
   }
 
-=head4 Field Getter Method
+=head3 Field Getter Method
 
 A field getter method is a method to perform the operation of the L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
 
@@ -1120,7 +1120,7 @@ Examples:
     }
   }
 
-=head4 Field Setter Method
+=head3 Field Setter Method
 
 A field setter method is a method to perform the operation of the L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
 
@@ -1151,9 +1151,9 @@ Examples:
     }
   }
 
-=head2 Method
+=head1 Method
 
-=head3 Method Definition
+=head2  Method Definition
 
 The C<method> keyword defines a class method or an instance method.
   
@@ -1189,7 +1189,7 @@ The types of the arguments must be a L<numeric type|SPVM::Document::Language::Ty
 
 The type of the return value must be the L<void type|SPVM::Document::Language::Types/"void Type">, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> or an L<object type|SPVM::Document::Language::Types/"Object Types">, otherwise a compilation error occurs.
 
-=head4 Optional Arguments
+=head3 Optional Arguments
 
 The optional argument is the syntax to specify optional arguments.
 
@@ -1218,7 +1218,7 @@ Examples:
   my $length = -1;
   my $substr = &substr($string, $offset, $length);
   
-=head3 Class Method
+=head2  Class Method
 
 A class method is defined with the C<static> keyword.
 
@@ -1236,7 +1236,7 @@ If the class method is belong to the current class, a class method can be called
   # Call a class method using C<&>
   my $total = &sum(1, 2);
 
-=head3 Instance Method
+=head2  Instance Method
 
 An instance method is defined without the C<static> keyword.
 
@@ -1250,7 +1250,7 @@ An instance method can be called from the object.
   my $point = Point->new;
   $point->set_x(3);
 
-=head3 Method Attributes
+=head2  Method Attributes
 
 Method attributes are attributes used in a L<method definition|/"Method Definition">.
 
@@ -1342,7 +1342,7 @@ Examples:
 
 =end html
 
-=head3 INIT Block
+=head2  INIT Block
 
 The C<INIT> block defines a C<INIT> method to be executed just after the program starts.
 
@@ -1413,7 +1413,7 @@ Examples:
     }
   }
 
-=head3 Destructor
+=head2  Destructor
 
 A class can have a destructor.
 
@@ -1448,7 +1448,7 @@ Examples:
 
 The child class inherits the destructor of the parent class if the destructor of the current class doesn't eixst.
 
-=head3 Method Override
+=head2  Method Override
 
 An instance method in a parent class can be overridden by an instance method with the same name in a child class.
 
@@ -1472,7 +1472,7 @@ Compilation Errors:
 
 The overridding method in the child class must satisfy the L<interface requirement|/"Interface Requirement"> to the parent method, otherwise a compilation error occurs.
 
-=head3 Anon Method
+=head2  Anon Method
 
 The anon method operator defines an L<anon calss|SPVM::Document::Language::Class/"Anon Class"> that has an anon instance method.
 
@@ -1520,7 +1520,7 @@ The above example is the same as the following codes.
     }
   }
 
-=head4 Anon Method Field Definition
+=head3 Anon Method Field Definition
 
 The anon method field definition is the syntax to define the field of the anon class of the anon method.
 
@@ -1594,7 +1594,7 @@ The above example is the same as the following codes.
     }
   }
 
-=head3 Native Method
+=head2  Native Method
 
 A native method is the method that is written by native languages such as the C language, C<C++>.
 
@@ -1606,7 +1606,7 @@ A native method doesn't have its L<method block|/"Method Block">.
 
 About the way to write native methods, please see L<SPVM Native Class|SPVM::Document::NativeClass> and L<SPVM Native API|SPVM::Document::NativeAPI>.
 
-=head3 Precompilation Method
+=head2  Precompilation Method
 
 If the class has the C<precompile> L<class attribute|/"Class Attributes">, the methods of the class are precompiled.
 
@@ -1618,7 +1618,7 @@ And each function in the shared library is bind to the SPVM method.
 
 Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
 
-=head3 Bootstrap Method
+=head2  Bootstrap Method
 
 A bootstrap method is the methods where the program start.
 
@@ -1632,7 +1632,7 @@ The return type is the void type.
 
 It has no arguments.
 
-=head2 Method Implementation
+=head1 Method Implementation
 
 Normally a method has a method block. L<Statements|SPVM::Document::Language::Statements/"Statements"> can be written in a method block.
   
@@ -1644,11 +1644,11 @@ Normally a method has a method block. L<Statements|SPVM::Document::Language::Sta
     return $total;
   }
 
-=head3 Local Variable
+=head2  Local Variable
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
 
-=head3 Local Variable Declaration
+=head2  Local Variable Declaration
 
 B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. This is the same as Local Variable in C Language.
 
@@ -1713,7 +1713,7 @@ The local variable declaration returns the value of the local variable. The retu
 
 See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
 
-=head3 Type Inference
+=head2  Type Inference
 
 If the type of the local variable declaration is ommited, the type of the right operand of the assignment operator is set to it. This is called type inference.
 
@@ -1726,7 +1726,7 @@ If the type of the local variable declaration is ommited, the type of the right 
   # Foo
   my $foo = new Foo;
 
-=head3 Local Variable Access
+=head2  Local Variable Access
 
 The local variable access has the following syntax.
 
@@ -1746,7 +1746,7 @@ I<$var> must be a valid local variable name, otherwise a compilation error occur
 
 The declaration of I<$var> must exists before I<$var>, otherwise a compilation error occurs.
 
-=head3 Class Variable Access
+=head2  Class Variable Access
 
 The class variable access has the following syntax.
 
@@ -1768,7 +1768,7 @@ The class variable relative name specified by I<$VAR> must be defined in the cla
 
 The L<outmost class|/"Outmost Class"> must be allowed access to I<$VAR>, otherwise a compilation error occurs.
 
-=head3 Element Access
+=head2  Element Access
 
 The element access has the following syntax.
 
@@ -1786,7 +1786,7 @@ I<ARRAY> must be an array type, otherwise a compilation error occurs.
 
 I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
-=head3 Character Access
+=head2  Character Access
 
 The character access has the following syntax.
 
@@ -1804,7 +1804,7 @@ I<STRING> must be the string type, otherwise a compilation error occurs.
 
 I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
 
-=head3 Field Access
+=head2  Field Access
 
 The field access has the following syntax.
 
@@ -1820,7 +1820,7 @@ I<INVOCANT> must be an object of a L<class type|SPVM::Document::Language::Types/
 
 Depending on the type of I<INVOCANT>, there are the following field access.
 
-=head4 Field Access for Class Types
+=head3 Field Access for Class Types
 
 See L</"Getting a Field"> and L</"Setting a Field"> to get and set the value of the field of the class type.
 
@@ -1828,7 +1828,7 @@ Compilation Errors:
 
 If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, or its super classes, otherwise a compilation error occurs.
 
-=head4 Field Access for Multi-Numeric Types
+=head3 Field Access for Multi-Numeric Types
 
 See L</"Getting a Multi-Numeric Field"> and L</"Setting a Multi-Numeric Field"> to get and set the value of the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
 
@@ -1836,7 +1836,7 @@ Compilation Errors:
 
 If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type, otherwise a compilation error occurs.
 
-=head4 Field Access for Multi-Numeric Reference Types
+=head3 Field Access for Multi-Numeric Reference Types
 
 See L</"Getting a Referenced Multi-Numeric Field"> and L</"Setting a Referenced Multi-Numeric Field"> to get and set the value of the field referenced by the L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
 
@@ -1844,11 +1844,11 @@ Compilation Errors:
 
 If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type, otherwise a compilation error occurs.
 
-=head2 Block
+=head1 Block
 
 A block is the part enclosed by C<{> and C<}>.
 
-=head3 Class Block
+=head2  Class Block
 
 A class block is a block used in a class definition.
   
@@ -1857,7 +1857,7 @@ A class block is a block used in a class definition.
   
   }
 
-=head3 Enumeration Block
+=head2  Enumeration Block
 
 An enumeration block is a block used in a enumeration definition.
 
@@ -1867,11 +1867,11 @@ An enumeration block is a block used in a enumeration definition.
     TWO,
   }
 
-=head3 Scope Block
+=head2  Scope Block
 
 The scope block has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> are written in a scope block.
 
-=head4 Simple Block
+=head3 Simple Block
 
 The simple block is a L<scope block|/"Scope Block">.
 
@@ -1882,7 +1882,7 @@ The simple block is a L<scope block|/"Scope Block">.
 
 The simple block must have at least one statements, otherwise it is intepreted as the L<array initialization|SPVM::Document::Language::Operators/"The array Initialization">.
 
-=head4 Method Block
+=head3 Method Block
 
 The method block is a L<scope block|/"Scope Block">.
 
@@ -1897,7 +1897,7 @@ The block of C<INIT> method is a method block.
     
   }
 
-=head4 eval Block
+=head3 eval Block
 
 The C<eval> block is a L<scope block|/"Scope Block">.
 
@@ -1906,7 +1906,7 @@ The C<eval> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head4 if Block
+=head3 if Block
 
 The C<if> block is a L<scope block|/"Scope Block">.
 
@@ -1915,7 +1915,7 @@ The C<if> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head4 elsif Block
+=head3 elsif Block
 
 The C<elsif> block is a L<scope block|/"Scope Block">.
 
@@ -1924,7 +1924,7 @@ The C<elsif> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head4 else Block
+=head3 else Block
 
 The C<else> block is a L<scope block|/"Scope Block">.
 
@@ -1933,7 +1933,7 @@ The C<else> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head4 for Block
+=head3 for Block
 
 The C<for> block is a L<scope block|/"Scope Block">.
 
@@ -1942,7 +1942,7 @@ The C<for> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head4 while Block
+=head3 while Block
 
 The C<while> block is a L<scope block|/"Scope Block">.
 
@@ -1951,7 +1951,7 @@ The C<while> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head4 switch Block
+=head3 switch Block
 
 The C<switch> block is a L<scope block|/"Scope Block">.
   
@@ -1960,7 +1960,7 @@ The C<switch> block is a L<scope block|/"Scope Block">.
   
   }
 
-=head4 case Block
+=head3 case Block
 
 The C<case> block is a L<scope block|/"Scope Block">.
   
@@ -1971,7 +1971,7 @@ The C<case> block is a L<scope block|/"Scope Block">.
     }
   }
 
-=head4 default Block
+=head3 default Block
 
 The C<default> block is a L<scope block|/"Scope Block">.
   
@@ -1982,7 +1982,7 @@ The C<default> block is a L<scope block|/"Scope Block">.
     }
   }
 
-=head2 Type Comment
+=head1 Type Comment
 
 The type comment syntax is supported. The type comment can be written after C<of> keyword.
 
