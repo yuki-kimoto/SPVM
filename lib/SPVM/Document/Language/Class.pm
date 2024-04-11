@@ -24,7 +24,7 @@ The C<class> keyword defines a class given the class name I<CLASS_NAME>.
 
 I<CLASS_NAME> is a L<class name|SPVM::Document::Language::Tokenization/"Class Name">.
 
-An object can be created from a class using the L<new operator|/"Creating an Object">.
+An object can be created from a class using the L<new operator|/"new Operator">.
 
 Compilation Errors:
 
@@ -345,7 +345,7 @@ In the other hand, the else block exists, so a warning is issued.
 
 Private methods, private fields, and private class variables cannot be accessed except from the current class.
 
-A private class cannot be I<OPERAND> of the L<new operator|SPVM::Document::Language::Operators/"Creating an Object"> except from the current class.
+A private class cannot be I<OPERAND> of the L<new operator|SPVM::Document::Language::Operators/"new Operator"> except from the current class.
 
 The C<allow> statemenet allows the private access from the other classes.
 
