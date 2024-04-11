@@ -10,6 +10,10 @@ This document describes classes.
 
 The SPVM language is an object-oriented programing language and has class syntax.
 
+This section describes class syntax.
+
+See L<SPVM::Document::Language::SyntaxParsing> about the grammer of the SPVM language.
+
 =head2 Class Definition
 
 The C<class> keyword defines a class with class name I<CLASS_NAME>.
@@ -162,7 +166,7 @@ A class definition must be written in its corresponding class file, otherwise an
 
 =head2 Version Declaration
 
-The C<version> keyword declares the version string of a module.
+The C<version> keyword declares the version of a class given its version string I<VERSION_STRING>.
 
   version VERSION_STRING;
 
@@ -287,15 +291,15 @@ The C<use> statemenet loads a class.
 
 Classes are loaded at compile-time.
 
-The C<use> statemenet must be defined directly under the L<class definition|/"Class Definition">.
+Compilation Errors:
+
+If the class does not exist, a compilation error occurs.
+
+Examples:
 
   class Foo {
     use Foo;
   }
-
-Compilation Errors:
-
-If the class does not exist, a compilation error occurs.
 
 =head2 alias Statement
 
@@ -309,15 +313,15 @@ FB is used as Foo::Bar alias in L<class method calls|Class Method Call>.
   # This means Foo::Bar->sum(1, 2);
   FB->sum(1, 2);
 
-C<alias> syntax must be defined directly under the L<class definition|/"Class Definition">.
+You can create an alias at the same time as loading a class by the C<use> statement.
+  
+  use Foo::Bar as FB;
+
+Examples:
 
   class Foo {
     alias Foo::Bar as FB;
   }
-
-You can create an alias at the same time as loading a class by the C<use> statement.
-  
-  use Foo::Bar as FB;
 
 =head2 require Statement
 
@@ -695,16 +699,6 @@ The C<enum> keyword defines an enumeration. An enumeration has definitions of co
     FLAG3
   }
 
-An enumeration must be defined directly under the L<class definition|/"Class Definition">.
-
-  class Foo {
-    enum {
-      FLAG1,
-      FLAG2,
-      FLAG3
-    }
-  }
-
 The name given to an enumeration value must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
 
 The first enumeration value is 0. The next enumeration value is incremented by 1, and this is continued in the same way.
@@ -813,8 +807,6 @@ A class variable is a global variable that has the name space.
 C<our> keyword defines a class variable.
 
   our CLASS_VARIABLE_NAME : TYPE;
-
-A Class variable must be defined directly under the L<class definition|/"Class Definition">.
 
 The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|SPVM::Document::Language::Types/"Object Types">.
 
@@ -982,12 +974,6 @@ The C<has> keyword defines a field.
   has age : protected int;
   has max : protected rw int
 
-The field is defined directly under the L<class block|/"Class Block">.
-
-  class MyClass {
-    has name : string;
-  }
-
 L<Field attributes|/"Field Attributes"> can be specified.
 
 Compilation Errors:
@@ -997,6 +983,12 @@ The field definition needs the L<type|SPVM::Document::Language::Types/"Types">. 
 The field names must follows the rule of the L<field name|SPVM::Document::Language::Tokenization/"Field Name">, otherwise a compilation error occurs.
 
 Field names cannot be duplicated. If so, a compilation error occurs.
+
+Examples:
+
+  class MyClass {
+    has name : string;
+  }
 
 =head3 Field Attributes
 
@@ -1170,8 +1162,6 @@ The C<method> keyword defines a class method or an instance method.
   method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
     
   }
-
-Methods must be defined directly under the L<class definition|/"Class Definition">.
 
 Method names must be follow the rule of L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
 
@@ -1354,14 +1344,6 @@ The C<INIT> block defines a C<INIT> method to be executed just after the program
 
   INIT {
     
-  }
-
-The C<INIT> block must be defined directly under the L<class definition|/"Class Definition">.
-
-  class Foo {
-    INIT {
-      
-    }
   }
 
 Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> can be written in a C<INIT> block.
@@ -2021,6 +2003,22 @@ Type comments have no meanings at runtime.
 Compilation Errors:
 
 If the type specified as the type comment is not found, a compilation error occurs.
+
+=head1 See Also
+
+=over 2
+
+=item * L<SPVM::Document::Language::SyntaxParsing>
+
+=item * L<SPVM::Document::Language::Operators>
+
+=item * L<SPVM::Document::Language::Statements>
+
+=item * L<SPVM::Document::Language>
+
+=item * L<SPVM::Document>
+
+=back
 
 =head1 Copyright & License
 
