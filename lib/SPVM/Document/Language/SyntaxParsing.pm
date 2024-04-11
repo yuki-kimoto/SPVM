@@ -4,15 +4,19 @@ SPVM::Document::Language::SyntaxParsing - Syntax Parsing in the SPVM Language
 
 =head1 Description
 
-This document describes syntax parsing in the SPVM language.
+This document describes the grammer of the SPVM language and syntax parsing.
 
 =head1 Syntax Parsing
 
-Syntax parsing is the next step to build an AST after L<tokenization|SPVM::Document::Language::Tokenization>.
+Syntax parsing is the step to build an AST.
 
-=head2 Syntax Parsing Rule
+Thie step is just after L<tokenization|SPVM::Document::Language::Tokenization>.
 
-The rule of the syntax parsing of the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
+Syntax parsing is performed according to the grammer of the SPVM language.
+
+=head2 Grammer
+
+The grammer of the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
 
   %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
   %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL
@@ -541,9 +545,9 @@ The rule of the syntax parsing of the SPVM language is described using L<GNU Bis
   isweak_field
     : ISWEAK var ARROW '{' field_name '}'
 
-=head2 Syntax Parsing Token
+=head2 Grammer Token
 
-These are the values of the tokens used in L</"Syntax Parsing Rule">.
+These are tokens for L<grammer/"Grammer">.
 
 =begin html
 
