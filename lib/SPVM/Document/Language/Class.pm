@@ -16,7 +16,7 @@ See L<SPVM::Document::Language::SyntaxParsing> about the grammer of the SPVM lan
 
 =head2 Class Definition
 
-The C<class> keyword defines a class with class name I<CLASS_NAME>.
+The C<class> keyword defines a class given the class name I<CLASS_NAME>.
   
   class CLASS_NAME {
   
@@ -162,51 +162,21 @@ A class file name is the same as a class name, but all C<::> are replaced to C</
 
 Compilation Errors:
 
-A class definition must be written in its corresponding class file, otherwise an compilation error occures.
+A class definition must be written in its corresponding class file, otherwise a compilation error occurs.
 
 =head2 Version Declaration
 
-The C<version> keyword declares the version of a class given its version string I<VERSION_STRING>.
+The C<version> keyword declares the version of a class given the L<version string|/"Version String"> I<VERSION_STRING>.
 
   version VERSION_STRING;
 
-The operand VERSION_STRING is a version string.
-
-A version string is the string type.
-
-It is composed of numbers C<0-9>, C<.>. 
-
-The following checks are performed.
-
-The version string is saved to the version information of the module.
-
 Compilation Errors:
 
-If the version string has already been declared, a compilation error occurs.
+If the version has already been declared, a compilation error occurs.
 
-A character in a version string must be a number or C<.>, otherwise a compilation error occurs.
-
-The number of C<.> in a version string must be less than or equal to 1, otherwise a compilation error occurs.
-
-A version string must begin with a number, otherwise a compilation error occurs.
-
-A version string must end with a number, otherwise a compilation error occurs.
-
-The number of C<.> in a version string must be less than or equal to 1, otherwise a compilation error occurs.
-
-The length of characters after C<.> in a version string must be divisible by 3, otherwise a compilation error occurs.
-
-A version number must be able to be parsed by the C<strtod> C function, otherwise a compilation error occurs.
+I<VERSION_STRING> must be a valid version string, otherwise a compilation error occurs.
 
 Examples:
-  
-  class Foo {
-    version "1";
-  }
-  
-  class Foo {
-    version "20080903";
-  }
   
   class Foo {
     version "1.001";
@@ -215,18 +185,52 @@ Examples:
   class Foo {
     version "10.001003";
   }
-  
+
 =head3 Version String
 
-The version string is the string represented version of a module.
+The version string is the string that represents the L<version|/"Version Declaration"> of a class.
 
-It is declared by the L<version declaration|/"Version Declaration">.
+A version string must be written by the following rules.
+
+The type of a version string is the string type.
+
+It consists of C<0-9>, C<.>. 
+
+The count of C<.> is less than or equal to 1.
+
+It begins with C<0-9>.
+
+It ends with C<0-9>.
+
+The count of C<0-9> after C<.> is divisible by 3.
+
+It is able to be parsed by the C<strtod> function in the C language.
+
+Complication Errors:
+
+If a version string is not valid, a compilation error occurs.
+
+Examples:
+  
+  # Examples of version strings
+  "1.001"
+  "10.001003"
+  "1"
+  "10000"
 
 =head3 Version Number
 
-The version number is a floating point number created by the following way.
+A version number is a floating point number created from a L<version string|/"Version String"> using the C<strtod> function in the C language.
 
-A L<version string/"Version Declaration"> is converted to a floating point number by the C<strtod> C function.
+Examples:
+
+  # Examples of version numbers
+  
+  # "1.001"
+  1.001
+  
+  # "10.001003"
+  10.001003
 
 =head2 Anon Class
 
@@ -521,9 +525,9 @@ This method is only called by the static instance method call.
 
 Compilation Errors:
 
-An interface cannnot have L<field definitions|/"Field Definition">. If so, an compilation error occurs.
+An interface cannnot have L<field definitions|/"Field Definition">. If so, a compilation error occurs.
 
-An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, an compilation error occurs.
+An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, a compilation error occurs.
 
 =head2 Duck Typing
 
