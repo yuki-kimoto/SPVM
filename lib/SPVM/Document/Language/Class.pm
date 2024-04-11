@@ -653,8 +653,6 @@ The length of the fields in the suffix must be the same as the length of the fie
 
 The type suffix in the suffix must correspond to the L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
 
-See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> to get and set the field of the multi-numeric type.
-
 =head1 Enumeration
 
 The enumeration is the syntx to defines constant values of the int type.
@@ -1615,7 +1613,7 @@ Normally a method has a method block. L<Statements|SPVM::Document::Language::Sta
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
 
-=head2  Local Variable Declaration
+=head3  Local Variable Declaration
 
 B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. This is the same as Local Variable in C Language.
 
@@ -1680,7 +1678,7 @@ The local variable declaration returns the value of the local variable. The retu
 
 See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
 
-=head2  Type Inference
+=head3  Type Inference
 
 If the type of the local variable declaration is ommited, the type of the right operand of the assignment operator is set to it. This is called type inference.
 
@@ -1692,124 +1690,6 @@ If the type of the local variable declaration is ommited, the type of the right 
   
   # Foo
   my $foo = new Foo;
-
-=head2  Local Variable Access
-
-The local variable access has the following syntax.
-
-  $var
-
-I<$var> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
-
-If local variables with the same name are declared in different scopes, the local variable declared in the inner scope is accessed.
-
-If a class variable with the same name as a local variable is defined, the local variable is accessed.
-
-See also L</"Getting a Local Variable"> and L</"Setting a Local Variable"> about the way to set and set a local variable.
-
-Compilation Errors:
-
-I<$var> must be a valid local variable name, otherwise a compilation error occurs.
-
-The declaration of I<$var> must exists before I<$var>, otherwise a compilation error occurs.
-
-=head2  Class Variable Access
-
-The class variable access has the following syntax.
-
-  $VAR
-
-I<$VAR> is a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name">.
-
-If the class name is ommited, the class is set to the L<outmost class|/"Outmost Class">.
-
-See also L</"Getting a Class Variable"> and L</"Setting a Class Variable"> about the way to set and set a class variable.
-
-Compilation Errors:
-
-I<$VAR> must be a valid class variable name, otherwise a compilation error occurs.
-
-The class specified by I<$VAR> must be loaded, otherwise a compilation error occurs.
-
-The class variable relative name specified by I<$VAR> must be defined in the class specified by I<$VAR>, otherwise a compilation error occurs.
-
-The L<outmost class|/"Outmost Class"> must be allowed access to I<$VAR>, otherwise a compilation error occurs.
-
-=head2  Element Access
-
-The element access has the following syntax.
-
-  ARRAY->[INDEX]
-
-The type of the array I<ARRAY> is an array type.
-
-The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
-
-See also L</"Getting an Array Element"> and L</"Setting an Array Element"> about the way to set and set an array element.
-
-Compilation Errors:
-
-I<ARRAY> must be an array type, otherwise a compilation error occurs.
-
-I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-=head2  Character Access
-
-The character access has the following syntax.
-
-  STRING->[INDEX]
-
-The type of the string I<STRING> is the string type.
-
-The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
-
-See also L</"Getting a Character"> and L</"Setting a Character"> about the way to set and set a character of a string.
-
-Compilation Errors:
-
-I<STRING> must be the string type, otherwise a compilation error occurs.
-
-I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
-
-=head2  Field Access
-
-The field access has the following syntax.
-
-  INVOCANT->{FIELD_NAME}
-
-I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
-
-I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
-
-Compilation Errors:
-
-I<INVOCANT> must be an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, otherwise a compilation error occurs.
-
-Depending on the type of I<INVOCANT>, there are the following field access.
-
-=head3 Field Access for Class Types
-
-See L</"Getting a Field"> and L</"Setting a Field"> to get and set the value of the field of the class type.
-
-Compilation Errors:
-
-If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, or its super classes, otherwise a compilation error occurs.
-
-=head3 Field Access for Multi-Numeric Types
-
-See L</"Getting a Multi-Numeric Field"> and L</"Setting a Multi-Numeric Field"> to get and set the value of the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
-
-Compilation Errors:
-
-If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type, otherwise a compilation error occurs.
-
-=head3 Field Access for Multi-Numeric Reference Types
-
-See L</"Getting a Referenced Multi-Numeric Field"> and L</"Setting a Referenced Multi-Numeric Field"> to get and set the value of the field referenced by the L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
-
-Compilation Errors:
-
-If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type, otherwise a compilation error occurs.
 
 =head1 Block
 

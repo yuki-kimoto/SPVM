@@ -1749,7 +1749,7 @@ The operation of getting local variable gets the value of a L<local variable|SPV
 
   $var
 
-I<$var> is a L<local variable access|SPVM::Document::Language::Class/"Local Variable Access">.
+I<$var> is a L<local variable access|/"Local Variable Access">.
 
 This operation returns the value of I<$var>.
 
@@ -1757,7 +1757,7 @@ The return type is the type of I<$var>.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<local variable access|SPVM::Document::Language::Class/"Local Variable Access"> could occur.
+Compiliation errors caused by the syntax of the L<local variable access|/"Local Variable Access"> could occur.
 
 Examples:
 
@@ -1769,7 +1769,7 @@ The operation of setting a local variable sets a L<local variable|SPVM::Document
 
   $var = OPERAND
 
-I<$var> is a L<local variable access|SPVM::Document::Language::Class/"Local Variable Access">.
+I<$var> is a L<local variable access|/"Local Variable Access">.
 
 This operation sets I<$var> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value after setting.
 
@@ -1777,7 +1777,7 @@ The return value is the type of I<$var>.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<local variable access|SPVM::Document::Language::Class/"Local Variable Access"> could occur.
+Compiliation errors caused by the syntax of the L<local variable access|/"Local Variable Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -1785,13 +1785,31 @@ Examples:
 
   $var = 3;
 
-head3 Getting a Class Variable
+=head3 Local Variable Access
+
+The local variable access has the following syntax.
+
+  $var
+
+I<$var> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
+
+If local variables with the same name are declared in different scopes, the local variable declared in the inner scope is accessed.
+
+If a class variable with the same name as a local variable is defined, the local variable is accessed.
+
+Compilation Errors:
+
+I<$var> must be a valid local variable name, otherwise a compilation error occurs.
+
+The declaration of I<$var> must exists before I<$var>, otherwise a compilation error occurs.
+
+=head3 Getting a Class Variable
 
 The operation of getting a class variable gets the value of a L<class variable|SPVM::Document::Language::Class/"Class Variable">.
 
   $VAR
 
-I<$VAR> is a L<class variable access|SPVM::Document::Language::Class/"Class Variable Access">.
+I<$VAR> is a L<class variable access|/"Class Variable Access">.
 
 This operation returns the value of I<$VAR>.
 
@@ -1799,7 +1817,7 @@ The return type is the type of I<$VAR>.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<class variable access|SPVM::Document::Language::Class/"Class Variable Access"> could occur.
+Compiliation errors caused by the syntax of the L<class variable access|/"Class Variable Access"> could occur.
 
 Examples:
   
@@ -1827,7 +1845,7 @@ The operation of setting a class variable operator sets a L<class variable|SPVM:
 
   $VAR = OPERAND
 
-I<$VAR> is a L<class variable access|SPVM::Document::Language::Class/"Class Variable Access">.
+I<$VAR> is a L<class variable access|/"Class Variable Access">.
 
 This operation sets I<$VAR> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the value after setting.
 
@@ -1835,7 +1853,7 @@ The return type is the type of I<$VAR>.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<class variable access|SPVM::Document::Language::Class/"Class Variable Access"> could occur.
+Compiliation errors caused by the syntax of the L<class variable access|/"Class Variable Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -1857,13 +1875,33 @@ Examples:
     }
   }
 
+=head3 Class Variable Access
+
+The class variable access has the following syntax.
+
+  $VAR
+
+I<$VAR> is a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name">.
+
+If the class name is ommited, the class is set to the L<outmost class|/"Outmost Class">.
+
+Compilation Errors:
+
+I<$VAR> must be a valid class variable name, otherwise a compilation error occurs.
+
+The class specified by I<$VAR> must be loaded, otherwise a compilation error occurs.
+
+The class variable relative name specified by I<$VAR> must be defined in the class specified by I<$VAR>, otherwise a compilation error occurs.
+
+The L<outmost class|/"Outmost Class"> must be allowed access to I<$VAR>, otherwise a compilation error occurs.
+
 =head3 Getting an Array Element
 
 The operation of getting an array element gets an element of an L<array|SPVM::Document::Language::Types/"Array">.
 
   ARRAY->[INDEX]
 
-I<ARRAY-E<gt>[INDEX]> is an L<element access|SPVM::Document::Language::Class/"Element Access">.
+I<ARRAY-E<gt>[INDEX]> is an L<element access|/"Element Access">.
 
 This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -1879,7 +1917,7 @@ I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<element access|SPVM::Document::Language::Class/"Element Access"> could occur.
+Compiliation errors caused by the syntax of the L<element access|/"Element Access"> could occur.
 
 Examples:
 
@@ -1895,7 +1933,7 @@ The operation of setting array element sets an element of an array.
 
   ARRAY->[INDEX] = OPERAND
 
-I<ARRAY-E<gt>[INDEX]> is an L<element access|SPVM::Document::Language::Class/"Element Access">.
+I<ARRAY-E<gt>[INDEX]> is an L<element access|/"Element Access">.
 
 This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -1911,7 +1949,7 @@ I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<element access|SPVM::Document::Language::Class/"Element Access"> could occur.
+Compiliation errors caused by the syntax of the L<element access|/"Element Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -1923,13 +1961,29 @@ Examples:
   my $points = new Point[3];
   $points->[1] = Point->new(1, 2);
   
+=head3 Element Access
+
+The element access has the following syntax.
+
+  ARRAY->[INDEX]
+
+The type of the array I<ARRAY> is an array type.
+
+The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
+
+Compilation Errors:
+
+I<ARRAY> must be an array type, otherwise a compilation error occurs.
+
+I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
 =head3 Getting a Character
 
 The operation of getting a character gets a character of a string.
 
   STRING->[INDEX]
 
-I<STRING-E<gt>[INDEX]> is an L<character access|SPVM::Document::Language::Class/"Character Access">.
+I<STRING-E<gt>[INDEX]> is an L<character access|/"Character Access">.
 
 The type of I<STRING> is the string type.
 
@@ -1947,7 +2001,7 @@ I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<character access|SPVM::Document::Language::Class/"Character Access"> could occur.
+Compiliation errors caused by the syntax of the L<character access|/"Character Access"> could occur.
 
 Examples:
 
@@ -1960,7 +2014,7 @@ The operation of setting a character sets the character of a string.
 
   STRING->[INDEX] = OPERAND
 
-I<STRING-E<gt>[INDEX]> is an L<character access|SPVM::Document::Language::Class/"Character Access">.
+I<STRING-E<gt>[INDEX]> is an L<character access|/"Character Access">.
 
 This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
@@ -1978,7 +2032,7 @@ If I<STRING> is not a mutable string, an exception is thrown.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<character access|SPVM::Document::Language::Class/"Character Access"> could occur.
+Compiliation errors caused by the syntax of the L<character access|/"Character Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -1987,13 +2041,29 @@ Examples:
   my $string = new_string_len 3;
   $string->[0] = 'a';
 
+=head3 Character Access
+
+The character access has the following syntax.
+
+  STRING->[INDEX]
+
+The type of the string I<STRING> is the string type.
+
+The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
+
+Compilation Errors:
+
+I<STRING> must be the string type, otherwise a compilation error occurs.
+
+I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+
 =head3 Getting a Field
 
 The operation of getting field gets the value of a field of a class type.
 
   INVOCANT->{FIELD_NAME}
 
-I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
 This operation gets the value of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
 
@@ -2001,7 +2071,7 @@ The retrun type is the type of the field.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 Examples:
 
@@ -2014,7 +2084,7 @@ The operation of setting field sets the field of a class type.
 
   INVOCANT->{FIELD_NAME} = OPERAND
 
-I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
 The type of I<INVOCANT> is a class type.
 
@@ -2024,7 +2094,7 @@ The return type is the field type.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -2039,7 +2109,7 @@ The operation of getting a multi-numeric field gets the value of a field of a L<
 
   INVOCANT->{FIELD_NAME}
 
-I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
 The type of I<INVOCANT> is a multi-numeric type.
 
@@ -2049,7 +2119,7 @@ The retrun type is the type of the field.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 Examples:
 
@@ -2062,7 +2132,7 @@ The operation of setting multi-numeric field sets the field of the L<multi-numer
 
   INVOCANT->{FIELD_NAME} = OPERAND
 
-I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
 The type of I<INVOCANT> is a multi-numeric type.
 
@@ -2072,7 +2142,7 @@ The return type is the field type.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
 
@@ -2093,7 +2163,7 @@ The type of I<INVOCANT> is a multi-numeric refenrece type.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 Compiliation errors caused by the L<dereference operator|/"Dereference Operator"> could occur.
 
@@ -2115,7 +2185,7 @@ The type of I<INVOCANT> is a multi-numeric refenrece type.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 Compiliation errors caused by the L<dereference operator|/"Dereference Operator"> could occur.
 
@@ -2126,6 +2196,40 @@ Examples:
   my $z : Complex_2d;
   my $z_ref = \$z;
   $z_ref->{re} = 2.5;
+
+=head3 Field Access
+
+The field access has the following syntax.
+
+  INVOCANT->{FIELD_NAME}
+
+I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
+
+I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
+
+Compilation Errors:
+
+I<INVOCANT> must be an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, otherwise a compilation error occurs.
+
+Depending on the type of I<INVOCANT>, there are the following field access.
+
+=head4 Field Access for Class Types
+
+Compilation Errors:
+
+If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, or its super classes, otherwise a compilation error occurs.
+
+=head4 Field Access for Multi-Numeric Types
+
+Compilation Errors:
+
+If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type, otherwise a compilation error occurs.
+
+=head4 Field Access for Multi-Numeric Reference Types
+
+Compilation Errors:
+
+If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type, otherwise a compilation error occurs.
 
 =head3 Getting a Referenced Value
 
@@ -3202,7 +3306,7 @@ The C<weaken> operator enables a L<weak reference|SPVM::Document::Language::Garb
 
   weaken INVOCANT->{FIELD_NAME};
 
-I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
 This operator enable a weak reference of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
 
@@ -3210,7 +3314,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
 
@@ -3225,7 +3329,7 @@ The C<unweaken> operator disables a L<weak reference|SPVM::Document::Language::G
 
   unweaken INVOCANT->{FIELD_NAME};
 
-I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
 This operator enable a weak reference of the field specified by I<FIELD_NAME> of the type of I<INVOCANT>.
 
@@ -3233,7 +3337,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
 
@@ -3248,7 +3352,7 @@ The C<isweak> operator checks if the L<weak reference|SPVM::Document::Language::
 
   isweak INVOCANT->{FIELD_NAME};
 
-I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|SPVM::Document::Language::Class/"Field Access">.
+I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
 If the field specified by I<FIELD_NAME> of the object I<INVOCANT> is weaken, this operator returns 1, otherwise returns 0.
 
@@ -3256,7 +3360,7 @@ The return type is the int type.
 
 Compilation Errors:
 
-Compiliation errors caused by the syntax of the L<field access|SPVM::Document::Language::Class/"Field Access"> could occur.
+Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
 The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
 
