@@ -232,61 +232,6 @@ Examples:
   # "10.001003"
   10.001003
 
-=head2 Anon Class
-
-The anon class is the class that do not has its class name.
-
-  class {
-  
-  }
-
-But internally an anon class has its name, such as C<eval::anon::0>.
-
-An anon class is also defined by the anon method.
-
-A anon class for an anon method has its unique L<class name|SPVM::Document::Language::Tokenization/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
-
-A anon class for an anon method has the same access control as its outmost class.
-
-A anon class for an anon method has the same alias names as its outmost class.
-
-L<Examples:>
-  
-  # Anon class
-  class {
-    static method sum : int ($num1 : int, $num2 : int) {
-      return $num1 + $num2;
-    }
-  }
-  
-  # Anon method
-  class Foo::Bar {
-    method sum : void () {
-      my $anon_method = method : string () {
-        
-      }
-   }
-  }
-  
-  # The name of the anon class
-  Foo::Bar::anon::3::23;
-
-=head2 Outmost Class
-
-An outmost class is the outmost defined class.
-
-The outmost class is C<Foo::Bar> in the following example.
-
-  class Foo::Bar {
-    static method baz : void () {
-      my $outmost_class_name = __PACKAGE__;
-      
-      my $cb = method : void () {
-        my $outmost_class_name = __PACKAGE__;
-      };
-    }
-  }
-
 =head2 use Statement
 
 The C<use> statemenet loads a class.
@@ -304,6 +249,40 @@ Examples:
   class Foo {
     use Foo;
   }
+
+=head3 Default Loaded Classes
+
+The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|SPVM::Document::Language::Types/"Type Conversions">.
+
+=over 2
+
+=item * L<Byte|SPVM::Byte>
+
+=item * L<Short|SPVM::Short>
+
+=item * L<Int|SPVM::Int>
+
+=item * L<Long|SPVM::Long>
+
+=item * L<Float|SPVM::Float>
+
+=item * L<Double|SPVM::Double>
+
+=item * L<Bool|SPVM::Bool>
+
+=item * L<Error|SPVM::Error>
+
+=item * L<Error::System|SPVM::Error::System>
+
+=item * L<Error::NotSupported|SPVM::Error::NotSupported>
+
+=item * L<Error::Compile|SPVM::Error::Compile>
+
+=item * L<CommandInfo|SPVM::CommandInfo>
+
+=item * L<Address|SPVM::Address>
+
+=back
 
 =head2 alias Statement
 
@@ -382,38 +361,6 @@ Examples:
   class Foo {
     allow Bar;
   }
-
-=head2 interface Statement
-
-The C<interface> statement guarantees the following things.
-
-  interface INTERFACE_NAME;
-
-1. If the class has methods that are definied the the L<interface|/"Interface Definition">, each method must have the L<Method Compatibility|method compatibility> of each interface method in the L<interface definition|/"Interface Definition">.
-
-2. The class must have methods that defined as required interface methods in the the L<interface|/"Interface Definition">.
-
-Compilation Errors:
-
-If not, a compilation error occurs.
-
-Examples:
-
-  class Point {
-    interface Stringable;
-    
-    method to_string : string () {
-      my $x = $self->x;
-      my $y = $self->y;
-      
-      my $string = "($x,$y)";
-      
-      return $string;
-    }
-  }
-  
-  my $stringable = (Stringable)Point->new(1, 2);
-  my $string = $stringable->to_string;
 
 =head2 Inheritance
 
@@ -529,7 +476,45 @@ An interface cannnot have L<field definitions|/"Field Definition">. If so, a com
 
 An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, a compilation error occurs.
 
-=head2 Duck Typing
+=head3 interface Statement
+
+The C<interface> statement guarantees the following things.
+
+  interface INTERFACE_NAME;
+
+1. If the class has methods that are definied the the L<interface|/"Interface Definition">, each method must have the L<Method Compatibility|method compatibility> of each interface method in the L<interface definition|/"Interface Definition">.
+
+2. The class must have methods that defined as required interface methods in the the L<interface|/"Interface Definition">.
+
+Compilation Errors:
+
+If not, a compilation error occurs.
+
+Examples:
+
+  class Point {
+    interface Stringable;
+    
+    method to_string : string () {
+      my $x = $self->x;
+      my $y = $self->y;
+      
+      my $string = "($x,$y)";
+      
+      return $string;
+    }
+  }
+  
+  my $stringable = (Stringable)Point->new(1, 2);
+  my $string = $stringable->to_string;
+
+=head3 Interface Requirement
+
+(TODO)
+
+This section describes assignment requirements used to check a return type and argument types for L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement">.
+
+=head3 Duck Typing
 
 The duck typing is supported.
 
@@ -555,11 +540,60 @@ The duck typing is supported.
 The Point class have no interfaces, but An object of the Point class can be assigned to a Stringable interface
 because the to_string method in the Point class has the method compatibility of the to_string method in the Strigable interface.
 
-=head3 Interface Requirement
+=head2 Anon Class
 
-(TODO)
+The anon class is the class that do not has its class name.
 
-This section describes assignment requirements used to check a return type and argument types for L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement">.
+  class {
+  
+  }
+
+But internally an anon class has its name, such as C<eval::anon::0>.
+
+An anon class is also defined by the anon method.
+
+A anon class for an anon method has its unique L<class name|SPVM::Document::Language::Tokenization/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
+
+A anon class for an anon method has the same access control as its outmost class.
+
+A anon class for an anon method has the same alias names as its outmost class.
+
+L<Examples:>
+  
+  # Anon class
+  class {
+    static method sum : int ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
+  }
+  
+  # Anon method
+  class Foo::Bar {
+    method sum : void () {
+      my $anon_method = method : string () {
+        
+      }
+   }
+  }
+  
+  # The name of the anon class
+  Foo::Bar::anon::3::23;
+
+=head2 Outmost Class
+
+An outmost class is the outmost defined class.
+
+The outmost class is C<Foo::Bar> in the following example.
+
+  class Foo::Bar {
+    static method baz : void () {
+      my $outmost_class_name = __PACKAGE__;
+      
+      my $cb = method : void () {
+        my $outmost_class_name = __PACKAGE__;
+      };
+    }
+  }
 
 =head2 Multi-Numeric Type Definition
 
@@ -653,40 +687,6 @@ The length of the fields in the suffix must be the same as the length of the fie
 The type suffix in the suffix must correspond to the L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
 
 See the L<multi-numeric type field access|/"Multi-Numeric Types Field Access"> to get and set the field of the multi-numeric type.
-
-=head2 Default Loaded Classes
-
-The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|SPVM::Document::Language::Types/"Type Conversions">.
-
-=over 2
-
-=item * L<Byte|SPVM::Byte>
-
-=item * L<Short|SPVM::Short>
-
-=item * L<Int|SPVM::Int>
-
-=item * L<Long|SPVM::Long>
-
-=item * L<Float|SPVM::Float>
-
-=item * L<Double|SPVM::Double>
-
-=item * L<Bool|SPVM::Bool>
-
-=item * L<Error|SPVM::Error>
-
-=item * L<Error::System|SPVM::Error::System>
-
-=item * L<Error::NotSupported|SPVM::Error::NotSupported>
-
-=item * L<Error::Compile|SPVM::Error::Compile>
-
-=item * L<CommandInfo|SPVM::CommandInfo>
-
-=item * L<Address|SPVM::Address>
-
-=back
 
 =head2 Enumeration
 
