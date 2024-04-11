@@ -145,7 +145,7 @@ An object of a pointer class has the pointer to a native address that is normall
 
 =head2 Class File Name
 
-A class file name is the same as a class name, but all C<::> are replaced to C</> and C<.spvm"> is added at the end.
+A class file name is the same as a class name, but all C<::> are replaced to C</> and C<.spvm> is added at the end of it.
   
   # Foo
   Foo.spvm
