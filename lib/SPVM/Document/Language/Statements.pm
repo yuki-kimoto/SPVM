@@ -555,6 +555,41 @@ The empty statement operates nothing.
   # The empty statemenet
   ;
 
+=head2 require Statement
+
+If the C<require> statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
+
+It was designed to implement a part of features of "#ifdef" in the C language.
+
+  if (require Foo) {
+  
+  }
+
+if C<require> Statement can be followed by else Statement. 
+
+  if (require Foo) {
+  
+  }
+  else {
+  
+  }
+
+Note that elsif Statement cannot be followed.
+
+Let's look at an example. if Foo does not exist, no a compilation error occurs and it is assumed that there is no if block
+
+Therefore, "$foo = new Foo;" does not result in a compilation error because it is assumed that there is no if block.
+
+In the other hand, the else block exists, so a warning is issued.
+
+  my $foo : object;
+  if (require Foo) {
+    $foo = new Foo;
+  }
+  else {
+    warn "Warning: Can't load Foo";
+  }
+
 =head1 See Also
 
 =over 2
