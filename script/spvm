@@ -18,9 +18,7 @@ SPVM::Builder::Util::getopt
   '-M=s' => \my @use_class_names,
 ;
 
-my @original_include_dirs = @include_dirs;
-push @include_dirs, map { "$_/SPVM" } @INC;
-unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
+unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs;
 
 if ($help) {
   print SPVM::Builder::Util::extract_usage;
