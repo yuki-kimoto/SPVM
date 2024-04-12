@@ -30,6 +30,12 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
   
   assert(src_method);
   
+  assert(dist_method);
+  
+  assert(!src_method->is_class_method);
+  
+  assert(!dist_method->is_class_method);
+  
   SPVM_BASIC_TYPE* dist_basic_type = dist_method->current_basic_type;
   
   SPVM_BASIC_TYPE* src_basic_type = src_method->current_basic_type;
@@ -48,13 +54,6 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
   }
   else if (src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
     src_basic_type_category_name = "interface";
-  }
-  
-  if (src_method->is_class_method) {
-    if (!dist_method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" %s must be an instance method, which is defined as an interface method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
-      return 0;
-    }
   }
   
   SPVM_LIST* src_method_var_decls = src_method->var_decls;

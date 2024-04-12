@@ -277,6 +277,11 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
       
       if (found_method) {
         
+        if (found_method->is_class_method) {
+          SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" %s must be an instance method, which is defined as an interface method in the \"%s\" %s.\n  at %s line %d", found_method->name, basic_type->name, basic_type_category_name, interface_basic_type->name, interface_basic_type_category_name, basic_type->op_class->file, basic_type->op_class->line);
+          return 0;
+        }
+        
         int32_t satisfy_interface_method_requirement = SPVM_METHOD_satisfy_interface_method_requirement(compiler, interface_method, found_method);
         
         if (!satisfy_interface_method_requirement) {
