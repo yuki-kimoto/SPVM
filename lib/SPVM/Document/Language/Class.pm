@@ -400,7 +400,7 @@ The all super classes must be different from its own class, otherwise a compilat
 
 The field that name is the same as the field of the super class cannnot be defined, otherwise a compilation error occurs.
 
-The parent class I<PARENT_CLASS_NAME> must satisfy the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the class I<CLASS_NAME>, otherwise a compilation error occurs.
+The class I<CLASS_NAME> must satisfy the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>, otherwise a compilation error occurs.
 
 Examples:
 
@@ -495,20 +495,19 @@ Examples:
 
 =head3 interface Statement
 
-The C<interface> statement guarantees the following things.
+The C<interface> statement checks if the current class satisfies the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the interface I<BASIC_TYPE>.
 
-  interface INTERFACE_NAME;
-
-1. If the class has methods that are definied the the L<interface|/"Interface Definition">, each method must have the L<Method Compatibility|method compatibility> of each interface method in the L<interface definition|/"Interface Definition">.
-
-2. The class must have methods that defined as required interface methods in the the L<interface|/"Interface Definition">.
+  interface BASIC_TYPE;
 
 Compilation Errors:
 
-If not, a compilation error occurs.
+I<BASIC_TYPE> must be an L<interface type|SPVM::Document::Language::Types/"Interface Types">, ohterwise a compilation error occurs.
+
+The current class must satisfy the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the interface I<BASIC_TYPE>, ohterwise a compilation error occurs.
 
 Examples:
-
+  
+  # Examples of the interface statement
   class Point {
     interface Stringable;
     
@@ -521,41 +520,12 @@ Examples:
       return $string;
     }
   }
-  
-  my $stringable = (Stringable)Point->new(1, 2);
-  my $string = $stringable->to_string;
 
 =head3 Interface Requirement
 
 (TODO)
 
 This section describes assignment requirements used to check a return type and argument types for L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement">.
-
-=head3 Duck Typing
-
-The duck typing is supported.
-
-  class Stringable: interface_t {
-    method to_string : string ();
-  }
-
-  class Point {
-    
-    method to_string : string () {
-      my $x = $self->x;
-      my $y = $self->y;
-      
-      my $string = "($x,$y)";
-      
-      return $string;
-    }
-  }
-  
-  my $stringable = (Stringable)Point->new(1, 2);
-  my $string = $stringable->to_string;
-
-The Point class have no interfaces, but An object of the Point class can be assigned to a Stringable interface
-because the to_string method in the Point class has the method compatibility of the to_string method in the Strigable interface.
 
 =head2 Anon Class
 
