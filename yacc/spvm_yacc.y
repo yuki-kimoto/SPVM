@@ -31,7 +31,7 @@
 
 %type <opval> grammar
 %type <opval> field_name method_name class_name
-%type <opval> type qualified_type basic_type array_type class_type opt_class_type
+%type <opval> type qualified_type basic_type array_type opt_basic_type
 %type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
 %type <opval> opt_classes classes class class_block opt_extends version_decl
 %type <opval> opt_definitions definitions definition
@@ -95,9 +95,6 @@ type
   : basic_type
   | array_type
   | ref_type
-
-class_type
-  : basic_type
 
 basic_type
   : SYMBOL_NAME
@@ -253,29 +250,29 @@ classes
   | class
 
 class
-  : CLASS opt_class_type opt_extends class_block END_OF_FILE
+  : CLASS opt_basic_type opt_extends class_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $4, NULL, $3);
     }
-  | CLASS opt_class_type opt_extends ':' opt_attributes class_block END_OF_FILE
+  | CLASS opt_basic_type opt_extends ':' opt_attributes class_block END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, $6, $5, $3);
     }
-  | CLASS opt_class_type opt_extends ';' END_OF_FILE
+  | CLASS opt_basic_type opt_extends ';' END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, NULL, $3);
     }
-  | CLASS opt_class_type opt_extends ':' opt_attributes ';' END_OF_FILE
+  | CLASS opt_basic_type opt_extends ':' opt_attributes ';' END_OF_FILE
     {
       $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $5, $3);
     }
 
-opt_class_type
+opt_basic_type
   : /* Empty */
     {
       $$ = NULL;
     }
-  | class_type
+  | basic_type
 
 opt_extends
   : /* Empty */
@@ -1393,18 +1390,18 @@ call_method
 array_access
   : operator ARROW '[' operator ']'
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_array_access(compiler, op_array_access, $1, $4);
+      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_element_access(compiler, op_array_access, $1, $4);
     }
   | array_access '[' operator ']'
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_array_access(compiler, op_array_access, $1, $3);
+      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_element_access(compiler, op_array_access, $1, $3);
     }
   | field_access '[' operator ']'
     {
-      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_ACCESS, compiler->current_file, compiler->current_line);
-      $$ = SPVM_OP_build_array_access(compiler, op_array_access, $1, $3);
+      SPVM_OP* op_array_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ELEMENT_ACCESS, compiler->current_file, compiler->current_line);
+      $$ = SPVM_OP_build_element_access(compiler, op_array_access, $1, $3);
     }
 
 field_access
