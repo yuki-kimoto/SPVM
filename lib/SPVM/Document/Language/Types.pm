@@ -1603,6 +1603,18 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
 
 I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
 
+=head3 Interface Requirement
+
+The interface requirement is the requirement if a type is able to be assigned to an interface type.
+
+  TYPE_TO = TYPE_FROM
+
+I<TYPE_TO> must be an L<interface type|"Interface Types">.
+
+I<TYPE_FROM> must be a L<class type|"Class Types"> or an L<interface type|"Interface Types">.
+
+Every ethod defined in I<TYPE_FROM> must satisfy the interface method requirement to the method of the same name in class I<TYPE_TO>.
+
 =head1 See Also
 
 =over 2
