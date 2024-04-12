@@ -180,11 +180,11 @@ I<VERSION_STRING> must be a valid version string, otherwise a compilation error 
 
 Examples:
   
-  class Foo {
+  class MyClass {
     version "1.001";
   }
   
-  class Foo {
+  class MyClass {
     version "10.001003";
   }
 
@@ -239,6 +239,7 @@ Examples:
 The C<use> statemenet loads a class.
 
   use TYPE;
+  use TYPE as CLASS_NAME;
 
 This statement searches for the type I<TYPE> in L<class search directories|/"Class Search Directories"> from the beginning, and if found, loads the type.
 
@@ -246,17 +247,32 @@ I<TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class 
 
 See the L<require statement|SPVM::Document::Language::Statements/"require Statement"> about how to load a type without causing a compile error when loading fails,
 
+The follwoing C<use> statement with C<as>
+
+  use TYPE as CLASS_NAME;
+
+is expaned to the following code using the L<alias|/"alias Statement"> statement.
+
+  use TYPE;
+  alias TYPE as CLASS_NAME
+
 Compilation Errors:
 
-I<TYPE> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<TYPE> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+
+I<CLASS_NAME> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
 If I<TYPE> does not found, a compilation error occurs.
 
 Examples:
-  
+
   # Examples of the use statement
-  class Foo {
+  class MyClass {
     use Foo;
+  }
+  
+  class MyClass {
+    use Sys::Socket::Constant as SOCKET;
   }
 
 =head2 Class Search Directories
@@ -305,24 +321,27 @@ The following classes are loaded by default.
 
 =head2 alias Statement
 
-The C<alias> statemenet creates an alias name for a class name.
+The C<alias> statemenet creates an alias name for a type.
   
-  # Create alias
-  alias Foo::Bar as FB;
+  alias TYPE as CLASS_NAME;
 
-FB is used as Foo::Bar alias in L<class method calls|Class Method Call>.
+This statemenet creates an alias name I<CLASS_NAME> for a type I<TYPE>.
 
-  # This means Foo::Bar->sum(1, 2);
-  FB->sum(1, 2);
+I<TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
-You can create an alias at the same time as loading a class by the C<use> statement.
-  
-  use Foo::Bar as FB;
+Compilation Errors:
+
+I<TYPE> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+
+I<CLASS_NAME> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
 Examples:
 
-  class Foo {
-    alias Foo::Bar as FB;
+  class MyClass {
+    use Sys::Socket::Constant;
+    alias Sys::Socket::Constant as SOCKET;
+    
+    SOCKET->AF_INET;
   }
 
 =head2 allow Statement
@@ -342,7 +361,7 @@ The class that is I<OPERAND> of the C<allow> statemenet is loaded by the same wa
 Examples:
 
   # Allowing private access
-  class Foo {
+  class MyClass {
     allow Bar;
   }
 
@@ -721,7 +740,7 @@ If an enumeration definition is invalid, a compilation error occurs.
 
 Examples:
 
-  class Foo {
+  class MyClass {
     enum {
       FLAG1,
       FLAG2,
@@ -809,7 +828,7 @@ If a class name with the same name is defined, a compilation error occurs.
 
 Examples:
 
-  class Foo {
+  class MyClass {
     our $NUM1 : byte;
     our $NUM2 : short;
     our $NUM3 : int;
@@ -911,7 +930,7 @@ It is a method that name is the same as the class variable name removing C<$>. F
 Examples:
 
   # Class variable getter method
-  class Foo {
+  class MyClass {
     our $NUM : ro int;
     
     static method main : void {
@@ -936,7 +955,7 @@ It is a method that name is the same as the class variable name removing C<$> an
 Examples:
 
   # Class variable setter method
-  class Foo {
+  class MyClass {
     our $NUM : wo int;
     
     static method main : void {
@@ -1059,7 +1078,7 @@ If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a co
 
 Examples:
 
-  class Foo {
+  class MyClass {
     has num1 : byte;
     has num2 : short;
     has num3 : int;
@@ -1088,7 +1107,7 @@ It is a method that name is the same as the field name.
 Examples:
 
   # Field getter method
-  class Foo {
+  class MyClass {
     has num : ro int;
     
     static method new {
@@ -1119,7 +1138,7 @@ It is a method that name is the same as the field name, but prepend C<set_> to i
 Examples:
 
   # Field setter method
-  class Foo {
+  class MyClass {
     has num : wo int;
     
     static method new {
@@ -1379,7 +1398,7 @@ The execution order of C<INIT> blocks is not guaranteed. The INIT blocks in the 
 
 Examples:
 
-  class Foo {
+  class MyClass {
     use Point;
     
     our $NUM : int;
@@ -1422,7 +1441,7 @@ If the definition of the destructor is invalid, a compilation error occurs.
 Examples:
   
   # Destructor
-  class Foo {
+  class MyClass {
     method DESTROY : void () {
       print "DESTROY";
     }
