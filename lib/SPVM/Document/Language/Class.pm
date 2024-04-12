@@ -22,15 +22,13 @@ The C<class> keyword defines a class given the class name I<CLASS_NAME>.
   
   }
 
-I<CLASS_NAME> is a L<class name|SPVM::Document::Language::Tokenization/"Class Name">.
-
 An object can be created from a class using the L<new operator|/"new Operator">.
 
 Compilation Errors:
 
-If I<CLASS_NAME> is not a valid class name, a compilation error occurs.
+I<CLASS_NAME> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, a compilation error occurs.
 
-If more than one class is defined in a class file, a compilation error occurs.
+If more than one class is defined in a L<class file|/"Class File">, a compilation error occurs.
 
 Examples:
 
@@ -141,15 +139,24 @@ Examples:
 
 The pointer class is a class with the C<pointer> L<class attribute|/"Class Attributes"> .
 
-  class Foo : pointer {
+  class CLASS_NAME : pointer {
   
   }
 
 An object of a pointer class has the pointer to a native address that is normally a pointer to a C language struct, or a C++ language struct or class.
 
-=head2 Class File Name
+Examples:
 
-A class file name is the same as a class name, but all C<::> are replaced to C</> and C<.spvm> is added at the end of it.
+  # Examples of the pointer attribute
+  class Foo : pointer {
+  
+  }
+
+=head2 Class File
+
+A class file is a file where a class is defined.
+
+The name of a class file is the same as a class name, but all C<::> are replaced to C</> and C<.spvm> is added at the end of it.
   
   # Foo
   Foo.spvm
@@ -325,7 +332,7 @@ The C<alias> statemenet creates an alias name for a type.
   
   alias BASIC_TYPE as CLASS_NAME;
 
-This statemenet creates an alias name I<CLASS_NAME> for a type I<BASIC_TYPE>.
+This statemenet creates an alias name I<BASIC_TYPE> for a type I<BASIC_TYPE>.
 
 I<BASIC_TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
