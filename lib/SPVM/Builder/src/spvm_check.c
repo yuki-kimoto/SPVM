@@ -571,31 +571,23 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
       }
     }
     
-    // Check interface method requirement to the super classes
+    // Check interface requirement to the super classes
     SPVM_BASIC_TYPE* parent_basic_type = basic_type->parent;
     while (1) {
       if (!parent_basic_type) {
         break;
       }
       
-      for (int32_t parent_method_index = 0; parent_method_index < parent_basic_type->methods->length; parent_method_index++) {
-        SPVM_METHOD* parent_method = SPVM_LIST_get(parent_basic_type->methods, parent_method_index);
-        
-        SPVM_METHOD* method = SPVM_HASH_get(basic_type->method_symtable, parent_method->name, strlen(parent_method->name));
-        
-        if (!parent_method->is_class_method) {
-          if (method) {
-            int32_t satisfy_parent_method_requirement = SPVM_METHOD_satisfy_interface_method_requirement(compiler, parent_basic_type, parent_method, basic_type, method, "class");
-            
-            if (!satisfy_parent_method_requirement) {
-              return;
-            }
-          }
-        }
+      int32_t has_interface = SPVM_BASIC_TYPE_has_interface(compiler, basic_type->id, parent_basic_type->id);
+      
+      if (!has_interface) {
+        return;
       }
+      
       parent_basic_type = parent_basic_type->parent;
     }
     
+    // Check interface requirement to interfaces
     for (int32_t interface_basic_type_index = 0; interface_basic_type_index < basic_type->interface_basic_types->length; interface_basic_type_index++) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_basic_type_index);
       

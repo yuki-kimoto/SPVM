@@ -549,7 +549,7 @@ use Test::More;
         'class MyClass { use Stringable; use MyInterface; static method main : void () { my $source : MyInterface; my $dist : Stringable = $source; } }',
         'class MyInterface : interface_t { required method foo : string (); }',
       ];
-      compile_not_ok($source, q|The "MyInterface" class must define the "to_string" method defined as a required method in the "Stringable" interface.|);
+      compile_not_ok($source, q|The "MyInterface" interface must define the "to_string" method defined as a required method in the "Stringable" interface.|);
     }
   }
 }
@@ -733,7 +733,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Stringable; use Cloneable; static method main : void () { my $source : Stringable[]; my $dist : Cloneable[] = $source; } }';
-      compile_not_ok($source, , q|The "Stringable" class must define the "clone" method defined as a required method in the "Cloneable" interface.|);
+      compile_not_ok($source, , q|The "Stringable" interface must define the "clone" method defined as a required method in the "Cloneable" interface.|);
     }
     {
       my $source = [

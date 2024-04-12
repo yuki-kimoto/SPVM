@@ -30,9 +30,25 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
   
   assert(src_method);
   
+  const char* dist_basic_type_category_name = NULL;
+  if (dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+    dist_basic_type_category_name = "class";
+  }
+  else if (dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+    dist_basic_type_category_name = "interface";
+  }
+  
+  const char* src_basic_type_category_name = NULL;
+  if (src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+    src_basic_type_category_name = "class";
+  }
+  else if (src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
+    src_basic_type_category_name = "interface";
+  }
+  
   if (src_method->is_class_method) {
     if (!dist_method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class must be an instance method, which is defined as an interface method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, dist_basic_type->name, type_desc, src_basic_type->op_class->file, src_basic_type->op_class->line);
+      SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" %s must be an instance method, which is defined as an interface method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
       return 0;
     }
   }
@@ -43,12 +59,12 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
   
   if (!(src_method->required_args_length == dist_method->required_args_length)) {
     
-    SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" class must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, dist_method->name, dist_basic_type->name, type_desc, src_basic_type->op_class->file, src_basic_type->op_class->line);
+    SPVM_COMPILER_error(compiler, "The length of the required arguments of the \"%s\" method in the \"%s\" %s must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     return 0;
   }
 
   if (!(src_method->args_length >= dist_method->args_length)) {
-    SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" class must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, dist_method->name, dist_basic_type->name, type_desc, src_basic_type->op_class->file, src_basic_type->op_class->line);
+    SPVM_COMPILER_error(compiler, "The length of the arguments of the \"%s\" method in the \"%s\" %s must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     return 0;
   }
   
@@ -69,7 +85,7 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
       const char* src_method_var_decl_type_name = SPVM_TYPE_new_type_name(compiler, src_method_var_decl_type->basic_type->id, src_method_var_decl_type->dimension, src_method_var_decl_type->flag);
       const char* dist_method_var_decl_type_name = SPVM_TYPE_new_type_name(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag);
       
-      SPVM_COMPILER_error(compiler, "The %dth argument of the \"%s\" method in the \"%s\" class which argument type is \"%s\" must be able to be assigned to the %dth argument of the \"%s\" method in the \"%s\" %s which argument type is \"%s\".\n  at %s line %d", arg_index, src_method->name, src_basic_type->name, src_method_var_decl_type_name, arg_index, dist_method->name, dist_basic_type->name, type_desc, dist_method_var_decl_type_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+      SPVM_COMPILER_error(compiler, "The %dth argument of the \"%s\" method in the \"%s\" %s which argument type is \"%s\" must be able to be assigned to the %dth argument of the \"%s\" method in the \"%s\" %s which argument type is \"%s\".\n  at %s line %d", arg_index, src_method->name, src_basic_type->name, src_basic_type_category_name, src_method_var_decl_type_name, arg_index, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_method_var_decl_type_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
       return 0;
     }
   }
@@ -87,7 +103,7 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
     const char* src_method_return_type_name = SPVM_TYPE_new_type_name(compiler, src_method_return_type->basic_type->id, src_method_return_type->dimension, src_method_return_type->flag);
     const char* dist_method_return_type_name = SPVM_TYPE_new_type_name(compiler, dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag);
     
-    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" class which return type is \"%s\" must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s which return type is \"%s\".\n  at %s line %d", src_method->name, src_basic_type->name, src_method_return_type_name, dist_method->name, dist_basic_type->name, type_desc, dist_method_return_type_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+    SPVM_COMPILER_error(compiler, "The return type of the \"%s\" method in the \"%s\" %s which return type is \"%s\" must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s which return type is \"%s\".\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, src_method_return_type_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_method_return_type_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     return 0;
   }
   
