@@ -16,11 +16,13 @@ See L<SPVM::Document::Language::SyntaxParsing> about the grammer of the SPVM lan
 
 =head2 Class Definition
 
-The C<class> keyword defines a class given the class name I<CLASS_NAME>.
+The C<class> keyword defines a L<class type|SPVM::Document::Language::Types/"Class Types"> given the class name I<CLASS_NAME>.
   
   class CLASS_NAME {
   
   }
+
+A class type is also simply called a class.
 
 An object can be created from a class using the L<new operator|/"new Operator">.
 
@@ -380,15 +382,13 @@ A class inherits a class using the C<extends> keyword.
     
   }
 
-The parts of the definitions of the fields of the all super classes are copied to the class.
+The class I<CLASS_NAME> that inherits the parent class I<PARENT_CLASS_NAME> is defined.
 
-The copied parts of the definitions are the field name, the type, the access controll.
+The field definitions of the parent class I<PARENT_CLASS_NAME> are added to the end of the field definitions of the class I<CLASS_NAME> to the end of its fields.
 
-The the definitions of the interfaces of the all super classes are copied to the class.
+The L<interface statements|/"interface Statement"> of the parent class I<PARENT_CLASS_NAME> are added to the end of the L<interface statements|/"interface Statement"> of the class I<CLASS_NAME>.
 
-The copied order is from the beginning of the super class at the top level to the current class.
-
-The class can call instance methods of the super classes. The searching order is from the current class to the super class at the top level.
+The instance of the class I<CLASS_NAME> can calls instance methods of the parent class I<PARENT_CLASS_NAME> and its super classes.
 
 Compilation Errors:
 
@@ -440,25 +440,29 @@ Examples:
 
 =head2 Interface
 
-The interface syntax is described.
+This section describes interfaces.
 
 =head3 Interface Definition
 
-An interface is defined using a L<class definition|/"Class Definition"> with a L<class attribute/"Class Attributes"> C<interface_t>.
+A L<class definition|/"Class Definition"> with the C<interface_t> L<class attribute|/"Class Attributes"> defines an L<interface type|SPVM::Document::Language::Types/"Interface Types">.
 
-  class Stringable: interface_t {
-    required method to_string : string ();
-    method foo : int ($num : long);
+  class CLASS_NAME : interface_t {
+    
   }
 
-An interface can have interface methods. An interface method does not need its method block.
+An interface type is also simply called an interface.
 
-An interface can have required interface methods by using the L<method attribute|/"Method Attributes"> C<required>.
+Objects cannot be created from interface types.
 
-The type of the interface is the L<interface type|SPVM::Document::Language::Types/"Interface Types">.
+An interface cannnot have L<class variable definitions|/"Class Variable Definition">.
 
-An interface can have L<interface statements|/"interface Statement">.
+An interface cannnot have L<field definitions|/"Field Definition">.
 
+Normally, an interface has L<interface methods|/"Interface Method">.
+
+Examples:
+
+  # Examples of interface definitions
   class TestCase::Pointable : interface_t {
     interface Stringable;
     
@@ -466,9 +470,7 @@ An interface can have L<interface statements|/"interface Statement">.
     method y : int();
     method to_string : string ();
   }
-
-An interface method can have its method block.
-
+  
   class Stringable: interface_t {
     method to_string : string ();
     method call_to_string : string () {
@@ -476,15 +478,18 @@ An interface method can have its method block.
     }
   }
 
-This method is only called by the static instance method call.
-
-  $self->Stringable::call_to_string;
-
 Compilation Errors:
 
 An interface cannnot have L<field definitions|/"Field Definition">. If so, a compilation error occurs.
 
 An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, a compilation error occurs.
+
+Examples:
+
+  class Stringable: interface_t {
+    required method to_string : string ();
+    method foo : int ($num : long);
+  }
 
 =head3 interface Statement
 
@@ -700,7 +705,7 @@ The type suffix in the suffix must correspond to the L<numeric type|SPVM::Docume
 
 The enumeration is the syntx to defines constant values of the int type.
 
-=head2  Enumeration Definition
+=head2 Enumeration Definition
 
 The C<enum> keyword defines an enumeration. An enumeration has definitions of constant values.
 
@@ -755,7 +760,7 @@ Examples:
     }
   }
 
-=head2  Enumeration Attributes
+=head2 Enumeration Attributes
 
 Attributes can be specified to an enumeration definition.
 
@@ -814,7 +819,7 @@ Only one of enumeration attributes C<private>, C<protected> or C<public> can be 
 
 A class variable is a global variable that has the name space.
 
-=head2  Class Variable Definition
+=head2 Class Variable Definition
 
 C<our> keyword defines a class variable.
 
@@ -849,7 +854,7 @@ Examples:
     our $NUM_RW : rw int;
   }
 
-=head2  Class Variable Attributes
+=head2 Class Variable Attributes
 
 The List of Class Variable Attributes:
 
@@ -974,7 +979,7 @@ Examples:
 
 Fields are the data that an object has.
 
-=head2  Field Definition
+=head2 Field Definition
 
 The C<has> keyword defines a field.
   
@@ -1002,7 +1007,7 @@ Examples:
     has name : string;
   }
 
-=head2  Field Attributes
+=head2 Field Attributes
 
 The List of Field Attributes:
 
@@ -1161,7 +1166,7 @@ Examples:
 
 =head1 Method
 
-=head2  Method Definition
+=head2 Method Definition
 
 The C<method> keyword defines a class method or an instance method.
   
@@ -1226,7 +1231,7 @@ Examples:
   my $length = -1;
   my $substr = &substr($string, $offset, $length);
   
-=head2  Class Method
+=head2 Class Method
 
 A class method is defined with the C<static> keyword.
 
@@ -1244,7 +1249,7 @@ If the class method is belong to the current class, a class method can be called
   # Call a class method using C<&>
   my $total = &sum(1, 2);
 
-=head2  Instance Method
+=head2 Instance Method
 
 An instance method is defined without the C<static> keyword.
 
@@ -1258,7 +1263,25 @@ An instance method can be called from the object.
   my $point = Point->new;
   $point->set_x(3);
 
-=head2  Method Attributes
+=head2 Interface Method
+
+Instance methods defined in L<interface types|SPVM::Document::Language::Types/"Interface Types"> are called interface methods.
+
+Normally, an instance method does not have its method block.
+
+  method my_method : int ();
+
+But, an interface method can have its method block.
+
+  method my_method : int () {
+    
+  }
+
+An interface method can have the C<required> L<method attribute|/"Method Attributes"> that indicates classes that implement this interface must implement this method.
+
+  required method my_method : int ();
+
+=head2 Method Attributes
 
 Method attributes are attributes used in a L<method definition|/"Method Definition">.
 
@@ -1350,7 +1373,7 @@ Examples:
 
 =end html
 
-=head2  INIT Block
+=head2 INIT Block
 
 The C<INIT> block defines a C<INIT> method to be executed just after the program starts.
 
@@ -1421,7 +1444,7 @@ Examples:
     }
   }
 
-=head2  Destructor
+=head2 Destructor
 
 A class can have a destructor.
 
@@ -1456,7 +1479,7 @@ Examples:
 
 The child class inherits the destructor of the parent class if the destructor of the current class doesn't eixst.
 
-=head2  Method Override
+=head2 Method Override
 
 An instance method in a parent class can be overridden by an instance method with the same name in a child class.
 
@@ -1480,7 +1503,7 @@ Compilation Errors:
 
 The overridding method in the child class must satisfy the L<interface requirement|/"Interface Requirement"> to the parent method, otherwise a compilation error occurs.
 
-=head2  Anon Method
+=head2 Anon Method
 
 The anon method operator defines an L<anon calss|SPVM::Document::Language::Class/"Anon Class"> that has an anon instance method.
 
@@ -1602,7 +1625,7 @@ The above example is the same as the following codes.
     }
   }
 
-=head2  Native Method
+=head2 Native Method
 
 A native method is the method that is written by native languages such as the C language, C<C++>.
 
@@ -1614,7 +1637,7 @@ A native method doesn't have its L<method block|/"Method Block">.
 
 About the way to write native methods, please see L<SPVM Native Class|SPVM::Document::NativeClass> and L<SPVM Native API|SPVM::Document::NativeAPI>.
 
-=head2  Precompilation Method
+=head2 Precompilation Method
 
 If the class has the C<precompile> L<class attribute|/"Class Attributes">, the methods of the class are precompiled.
 
@@ -1626,7 +1649,7 @@ And each function in the shared library is bind to the SPVM method.
 
 Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
 
-=head2  Bootstrap Method
+=head2 Bootstrap Method
 
 A bootstrap method is the methods where the program start.
 
@@ -1652,7 +1675,7 @@ Normally a method has a method block. L<Statements|SPVM::Document::Language::Sta
     return $total;
   }
 
-=head2  Local Variable
+=head2 Local Variable
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
 
@@ -1738,7 +1761,7 @@ If the type of the local variable declaration is ommited, the type of the right 
 
 A block is the part enclosed by C<{> and C<}>.
 
-=head2  Class Block
+=head2 Class Block
 
 A class block is a block used in a class definition.
   
@@ -1747,7 +1770,7 @@ A class block is a block used in a class definition.
   
   }
 
-=head2  Enumeration Block
+=head2 Enumeration Block
 
 An enumeration block is a block used in a enumeration definition.
 
@@ -1757,7 +1780,7 @@ An enumeration block is a block used in a enumeration definition.
     TWO,
   }
 
-=head2  Scope Block
+=head2 Scope Block
 
 The scope block has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> are written in a scope block.
 
