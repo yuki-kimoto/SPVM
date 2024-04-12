@@ -392,13 +392,15 @@ The instance of the class I<CLASS_NAME> can calls instance methods of the parent
 
 Compilation Errors:
 
-The parant class must be a L<class type|SPVM::Document::Language::Types/"Class Types">, otherwise a compilation error occurs.
+The parent class I<PARENT_CLASS_NAME> must be a L<class type|SPVM::Document::Language::Types/"Class Types">, otherwise a compilation error occurs.
 
 The name of the parant class must be different from the name of the class, otherwise a compilation error occurs.
 
 The all super classes must be different from its own class, otherwise a compilation error occurs.
 
 The field that name is the same as the field of the super class cannnot be defined, otherwise a compilation error occurs.
+
+The parent class I<PARENT_CLASS_NAME> must satisfy the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the class I<CLASS_NAME>, otherwise a compilation error occurs.
 
 Examples:
 
