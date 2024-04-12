@@ -238,31 +238,31 @@ Examples:
 
 The C<use> statemenet loads a class.
 
-  use TYPE;
-  use TYPE as CLASS_NAME;
+  use BASIC_TYPE;
+  use BASIC_TYPE as CLASS_NAME;
 
-This statement searches for the type I<TYPE> in L<class search directories|/"Class Search Directories"> from the beginning, and if found, loads the type.
+This statement searches for the type I<BASIC_TYPE> in L<class search directories|/"Class Search Directories"> from the beginning, and if found, loads the type.
 
-I<TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
+I<BASIC_TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
 See the L<require statement|SPVM::Document::Language::Statements/"require Statement"> about how to load a type without causing a compile error when loading fails,
 
 The follwoing C<use> statement with C<as>
 
-  use TYPE as CLASS_NAME;
+  use BASIC_TYPE as CLASS_NAME;
 
 is expaned to the following code using the L<alias|/"alias Statement"> statement.
 
-  use TYPE;
-  alias TYPE as CLASS_NAME
+  use BASIC_TYPE;
+  alias BASIC_TYPE as CLASS_NAME
 
 Compilation Errors:
 
-I<TYPE> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<BASIC_TYPE> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
 I<CLASS_NAME> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
-If I<TYPE> does not found, a compilation error occurs.
+If I<BASIC_TYPE> does not found, a compilation error occurs.
 
 Examples:
 
@@ -323,15 +323,15 @@ The following classes are loaded by default.
 
 The C<alias> statemenet creates an alias name for a type.
   
-  alias TYPE as CLASS_NAME;
+  alias BASIC_TYPE as CLASS_NAME;
 
-This statemenet creates an alias name I<CLASS_NAME> for a type I<TYPE>.
+This statemenet creates an alias name I<CLASS_NAME> for a type I<BASIC_TYPE>.
 
-I<TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
+I<BASIC_TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
 Compilation Errors:
 
-I<TYPE> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<BASIC_TYPE> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
 I<CLASS_NAME> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
@@ -346,23 +346,23 @@ Examples:
 
 =head2 allow Statement
 
-Private methods, private fields, and private class variables cannot be accessed except from the current class.
+The C<allow> statemenet allows a type private accesses to the current class.
 
-A private class cannot be I<OPERAND> of the L<new operator|SPVM::Document::Language::Operators/"new Operator"> except from the current class.
+  allow BASIC_TYPE;
 
-The C<allow> statemenet allows the private access from the other classes.
+By default, objects of private classes cannot be created by the the L<new operator|/"new Operator"> from other classes.
 
-  allow CLASS_NAME;
+And private methods, private fields, and private class variables cannot be accessed from other classes.
 
-The C<allow> statemenet must be defined directory under the L<class definition|/"Class Definition">.
-  
-The class that is I<OPERAND> of the C<allow> statemenet is loaded by the same way as the L<use statement|/"use Statement">.
+This statement allows the type I<BASIC_TYPE> private accesses to the current class.
+
+I<BASIC_TYPE> is loaded by the L<use statement|/"use Statement">.
 
 Examples:
 
   # Allowing private access
   class MyClass {
-    allow Bar;
+    allow SomeClass;
   }
 
 =head2 Inheritance
