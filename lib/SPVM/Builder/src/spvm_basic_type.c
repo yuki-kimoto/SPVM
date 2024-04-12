@@ -236,12 +236,33 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
   for (int32_t interface_method_index = 0; interface_method_index < interface_basic_type->methods->length; interface_method_index++) {
     SPVM_METHOD* interface_method = SPVM_LIST_get(interface_basic_type->methods, interface_method_index);
     
-    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
-      SPVM_METHOD* method = SPVM_HASH_get(basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
+    SPVM_BASIC_TYPE* found_basic_type = NULL;
+    SPVM_METHOD* found_method = NULL;
+    SPVM_BASIC_TYPE* parent_basic_type = basic_type;
+    while (1) {
+      if (!parent_basic_type) {
+        break;
+      }
       
-      int32_t can_override = SPVM_METHOD_satisfy_interface_method_requirement(compiler, interface_basic_type, interface_method, basic_type, method, "interface");
+      found_method = SPVM_HASH_get(parent_basic_type->method_symtable, interface_method->name, strlen(interface_method->name));
       
-      if (can_override == 0) {
+      if (found_method) {
+        found_basic_type = parent_basic_type;
+        break;
+      }
+      
+      parent_basic_type = parent_basic_type->parent;
+    }
+    
+    if (interface_method->is_required && !found_method) {
+      SPVM_COMPILER_error(compiler, "The \"%s\" class must define the \"%s\" method defined as a required method in the \"%s\" interface.\n  at %s line %d", basic_type->name, interface_method->name, interface_basic_type->name, interface_basic_type->op_class->file, interface_basic_type->op_class->line);
+      return 0;
+    }
+    
+    if (found_method) {
+      int32_t satisfy_interface_method_requirement = SPVM_METHOD_satisfy_interface_method_requirement(compiler, interface_basic_type, interface_method, found_basic_type, found_method, "interface");
+      
+      if (!satisfy_interface_method_requirement) {
         return 0;
       }
     }
