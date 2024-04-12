@@ -16,7 +16,7 @@ See L<SPVM::Document::Language::SyntaxParsing> about the grammer of the SPVM lan
 
 =head2 Class Definition
 
-The C<class> keyword defines a L<class type|SPVM::Document::Language::Types/"Class Types"> given the class name I<CLASS_NAME>.
+The C<class> keyword defines a L<class type|SPVM::Document::Language::Types/"Class Types">.
   
   class CLASS_NAME {
   
@@ -28,7 +28,7 @@ An object can be created from a class using the L<new operator|/"new Operator">.
 
 Compilation Errors:
 
-I<CLASS_NAME> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, a compilation error occurs.
+The class name I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
 If more than one class is defined in a L<class file|/"Class File">, a compilation error occurs.
 
@@ -185,7 +185,7 @@ Compilation Errors:
 
 If the version has already been declared, a compilation error occurs.
 
-I<VERSION_STRING> must be a valid version string, otherwise a compilation error occurs.
+I<VERSION_STRING> must be a L<version string|/"Version String">, otherwise a compilation error occurs.
 
 Examples:
   
@@ -252,7 +252,7 @@ The C<use> statemenet loads a class.
 
 This statement searches for the type I<BASIC_TYPE> in L<class search directories|/"Class Search Directories"> from the beginning, and if found, loads the type.
 
-I<BASIC_TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
+I<BASIC_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
 See the L<require statement|SPVM::Document::Language::Statements/"require Statement"> about how to load a type without causing a compile error when loading fails,
 
@@ -260,16 +260,16 @@ The follwoing C<use> statement with C<as>
 
   use BASIC_TYPE as CLASS_NAME;
 
-is expaned to the following code using the L<alias|/"alias Statement"> statement.
+is expanded to the following code using the L<alias|/"alias Statement"> statement.
 
   use BASIC_TYPE;
   alias BASIC_TYPE as CLASS_NAME
 
 Compilation Errors:
 
-I<BASIC_TYPE> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<BASIC_TYPE> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
-I<CLASS_NAME> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
 If I<BASIC_TYPE> does not found, a compilation error occurs.
 
@@ -334,15 +334,15 @@ The C<alias> statemenet creates an alias name for a type.
   
   alias BASIC_TYPE as CLASS_NAME;
 
-This statemenet creates an alias name I<BASIC_TYPE> for a type I<BASIC_TYPE>.
+This statemenet creates an alias name I<CLASS_NAME> for a type I<BASIC_TYPE>.
 
-I<BASIC_TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
+I<BASIC_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
 Compilation Errors:
 
-I<BASIC_TYPE> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<BASIC_TYPE> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
-I<CLASS_NAME> must be a valid L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
 Examples:
 
@@ -456,11 +456,13 @@ An interface type is also simply called an interface.
 
 Objects cannot be created from interface types.
 
-An interface cannnot have L<class variable definitions|/"Class Variable Definition">.
-
-An interface cannnot have L<field definitions|/"Field Definition">.
-
 Normally, an interface has L<interface methods|/"Interface Method">.
+
+Compilation Errors:
+
+An interface cannnot have L<field definitions|/"Field Definition">. If so, a compilation error occurs.
+
+An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, a compilation error occurs.
 
 Examples:
 
@@ -480,14 +482,6 @@ Examples:
     }
   }
 
-Compilation Errors:
-
-An interface cannnot have L<field definitions|/"Field Definition">. If so, a compilation error occurs.
-
-An interface cannnot have L<class variable definitions|/"Class Variable Definition">. If so, a compilation error occurs.
-
-Examples:
-
   class Stringable: interface_t {
     required method to_string : string ();
     method foo : int ($num : long);
@@ -495,15 +489,15 @@ Examples:
 
 =head3 interface Statement
 
-The C<interface> statement checks if the current class satisfies the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the interface I<BASIC_TYPE>.
+The C<interface> statement checks if the current class satisfies the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to an interface.
 
   interface BASIC_TYPE;
 
 Compilation Errors:
 
-I<BASIC_TYPE> must be an L<interface type|SPVM::Document::Language::Types/"Interface Types">, ohterwise a compilation error occurs.
+The interface type I<BASIC_TYPE> must be an L<interface type|SPVM::Document::Language::Types/"Interface Types">, ohterwise a compilation error occurs.
 
-The current class must satisfy the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the interface I<BASIC_TYPE>, ohterwise a compilation error occurs.
+The current class must satisfy the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the interface type I<BASIC_TYPE>, ohterwise a compilation error occurs.
 
 Examples:
   
