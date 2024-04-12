@@ -26,7 +26,7 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   return method;
 }
 
-int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_METHOD* dist_method, SPVM_METHOD* src_method) {
+int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_METHOD* dist_method, SPVM_METHOD* src_method, char* error_reason) {
   
   assert(src_method);
   
