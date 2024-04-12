@@ -288,6 +288,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
         int32_t satisfy_interface_method_requirement = SPVM_METHOD_satisfy_interface_method_requirement(compiler, interface_method, found_method, error_reason);
         
         if (!satisfy_interface_method_requirement) {
+          SPVM_COMPILER_error(compiler, error_reason);
           return 0;
         }
       }
