@@ -240,7 +240,7 @@ The C<use> statemenet loads a class.
 
   use TYPE;
 
-This statement searches for the type I<TYPE> in L<class search directories|/"Class Search Directories/"> from the beginning, and if found, loads the type.
+This statement searches for the type I<TYPE> in L<class search directories|/"Class Search Directories"> from the beginning, and if found, loads the type.
 
 I<TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
@@ -267,7 +267,7 @@ These are set outside the program.
 
 Directories set by the C<-I> option of the L<spvm> command and the L<spvmcc> command are added to class search directories.
 
-And directories with C</SPVM> added to the end of each value of Perl's L<@INC|https://perldoc.perl.org/perlvar#@INC> are added to class search directories.
+And directories with C</SPVM> added to the end of each value of Perl's L<@INC|https://perldoc.perl.org/perlvar#@INC> are added to the end of the class search directories.
 
 =head3 Default Loaded Classes
 
