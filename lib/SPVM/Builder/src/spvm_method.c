@@ -26,9 +26,13 @@ SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   return method;
 }
 
-int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* dist_basic_type, SPVM_METHOD* dist_method, SPVM_BASIC_TYPE* src_basic_type, SPVM_METHOD* src_method) {
+int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* dist_basic_type_tmp, SPVM_METHOD* dist_method, SPVM_BASIC_TYPE* src_basic_type_tmp, SPVM_METHOD* src_method) {
   
   assert(src_method);
+  
+  SPVM_BASIC_TYPE* dist_basic_type = dist_method->current_basic_type;
+  
+  SPVM_BASIC_TYPE* src_basic_type = src_method->current_basic_type;
   
   const char* dist_basic_type_category_name = NULL;
   if (dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
