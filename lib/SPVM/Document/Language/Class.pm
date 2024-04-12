@@ -164,11 +164,13 @@ Compilation Errors:
 
 A class definition must be written in its corresponding class file, otherwise a compilation error occurs.
 
-=head2 Version Declaration
+=head2 Version Statement
 
-The C<version> keyword declares the version of a class given the L<version string|/"Version String"> I<VERSION_STRING>.
+The C<version> statement declares the version of a class.
 
   version VERSION_STRING;
+
+This statement declares the version of a class given the L<version string|/"Version String"> I<VERSION_STRING>.
 
 Compilation Errors:
 
@@ -188,7 +190,7 @@ Examples:
 
 =head3 Version String
 
-The version string is the string that represents the L<version|/"Version Declaration"> of a class.
+The version string is the string that represents the L<version|/"Version Statement"> of a class.
 
 A version string must be written by the following rules.
 
@@ -236,25 +238,40 @@ Examples:
 
 The C<use> statemenet loads a class.
 
-  use Foo;
+  use TYPE;
 
-Classes are loaded at compile-time.
+This statement searches for the type I<TYPE> in L<class search directories|/"Class Search Directories/"> from the beginning, and if found, loads the type.
 
-See the L<require statement|SPVM::Document::Language::Statements/"require Statement"> about how to load a class without causing a compile error when loading fails,
+I<TYPE> is expected to be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
+
+See the L<require statement|SPVM::Document::Language::Statements/"require Statement"> about how to load a type without causing a compile error when loading fails,
 
 Compilation Errors:
 
-If the class does not exist, a compilation error occurs.
+I<TYPE> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+
+If I<TYPE> does not found, a compilation error occurs.
 
 Examples:
-
+  
+  # Examples of the use statement
   class Foo {
     use Foo;
   }
 
+=head2 Class Search Directories
+
+Class search directories are directories in which classes are searched for.
+
+These are set outside the program.
+
+Directories set by the C<-I> option of the L<spvm> command and the L<spvmcc> command are added to class search directories.
+
+And directories with C</SPVM> added to the end of each value of Perl's L<@INC|https://perldoc.perl.org/perlvar#@INC> are added to class search directories.
+
 =head3 Default Loaded Classes
 
-The following classes are loaded by default. These classes are deeply related to the features of SPVM language itself, such as L<type conversion|SPVM::Document::Language::Types/"Type Conversions">.
+The following classes are loaded by default. 
 
 =over 2
 
@@ -349,7 +366,7 @@ The class can call instance methods of the super classes. The searching order is
 
 Compilation Errors:
 
-The parant class must be a L<class type|SPVM::Document::Language::Types/"Class Type">, otherwise a compilation error occurs.
+The parant class must be a L<class type|SPVM::Document::Language::Types/"Class Types">, otherwise a compilation error occurs.
 
 The name of the parant class must be different from the name of the class, otherwise a compilation error occurs.
 
@@ -412,7 +429,7 @@ An interface can have interface methods. An interface method does not need its m
 
 An interface can have required interface methods by using the L<method attribute|/"Method Attributes"> C<required>.
 
-The type of the interface is the L<interface type|SPVM::Document::Language::Types/"Interface Type">.
+The type of the interface is the L<interface type|SPVM::Document::Language::Types/"Interface Types">.
 
 An interface can have L<interface statements|/"interface Statement">.
 
@@ -1150,9 +1167,9 @@ A method has L</"Method Block"> except for the case that the method has the C<na
 
 Compilation Errors:
 
-The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">, otherwise a compilation error occurs.
+The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">, otherwise a compilation error occurs.
 
-The type of the return value must be the L<void type|SPVM::Document::Language::Types/"void Type">, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> or an L<object type|SPVM::Document::Language::Types/"Object Types">, otherwise a compilation error occurs.
+The type of the return value must be the L<void type|SPVM::Document::Language::Types/"void Type">, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">, otherwise a compilation error occurs.
 
 =head3 Optional Arguments
 
@@ -1623,7 +1640,7 @@ The local variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
-the L<type|SPVM::Document::Language::Types/"Types"> must be specified. Type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">.
+the L<type|SPVM::Document::Language::Types/"Types"> must be specified. Type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">.
 
   # Local Variable Declaration Examples
   my $var : int;
