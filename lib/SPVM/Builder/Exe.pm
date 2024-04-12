@@ -28,17 +28,6 @@ sub builder {
   }
 }
 
-sub include_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->builder->include_dirs($_[0]);
-    return $self;
-  }
-  else {
-    return $self->builder->include_dirs;
-  }
-}
-
 sub class_name {
   my $self = shift;
   if (@_) {
@@ -166,12 +155,9 @@ sub new {
   
   my %options = @_;
   
-  my $include_dirs = delete $options{include_dirs};
-  
   my $build_dir = delete $options{build_dir};
   
   my $self = bless {
-    include_dirs => [],
     argv => [],
     %options
   }, $class;
@@ -195,7 +181,6 @@ sub new {
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(
     build_dir => $build_dir,
-    include_dirs => $include_dirs
   );
   
   # Config file

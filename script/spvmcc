@@ -54,14 +54,11 @@ unless (defined $output_file) {
   exit 255;
 }
 
-my @original_include_dirs = @include_dirs;
-push @include_dirs, map { "$_/SPVM" } @INC;
-unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @original_include_dirs;
+unshift @INC, map { $_ =~ s/[\\\/]SPVM$//; $_; } @include_dirs;
 
 my $build_exe = SPVM::Builder::Exe->new(
   class_name => $class_name,
   build_dir => $build_dir,
-  include_dirs => \@include_dirs,
   output_file => $output_file,
   quiet => $quiet,
   force => $force,
