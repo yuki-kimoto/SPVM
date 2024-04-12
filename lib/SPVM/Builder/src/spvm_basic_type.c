@@ -277,7 +277,7 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
       
       if (found_method) {
         
-        int32_t satisfy_interface_method_requirement = SPVM_METHOD_satisfy_interface_method_requirement(compiler, interface_basic_type, interface_method, found_method->current_basic_type, found_method);
+        int32_t satisfy_interface_method_requirement = SPVM_METHOD_satisfy_interface_method_requirement(compiler, interface_method, found_method);
         
         if (!satisfy_interface_method_requirement) {
           return 0;
