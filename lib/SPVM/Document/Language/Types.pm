@@ -1603,23 +1603,24 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
 
 I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
 
-=head2 Interface Requirement
+=head1 Interface Requirement
 
-The interface requirement is the requirement if an object type that is normally a class type is able to be assigned to an object type that is normally an interface type.
+The interface requirement is the requirement if an L<object type|"Object Types"> is able to be assigned to an L<interface type|"Interface Types">.
 
-  OBJECT_TYPE_TO = OBJECT_TYPE_FROM
+  INTERFACE_TYPE_TO = OBJECT_TYPE_FROM
 
-I<OBJECT_TYPE_TO> must be a L<class type|"Class Types"> or an L<interface type|"Interface Types">.
+I<INTERFACE_TYPE_TO> must be an L<interface type|"Interface Types">.
 
 I<OBJECT_TYPE_FROM> must be a L<class type|"Class Types"> or an L<interface type|"Interface Types">.
 
 The following check is performed on every instance method of I<OBJECT_TYPE_FROM>.
 
-An instance method of I<OBJECT_TYPE_FROM> 
+If an instance method of I<INTERFACE_TYPE_TO> has the C<required> method attribute, I<OBJECT_TYPE_FROM> or one of its super classes must have a method with the same name.
 
-Every instance method defined in I<OBJECT_TYPE_FROM> must satisfy the L<interface method requirement|/"Interface Method Requirement"> to the method of the same name in class I<TYPE_TO>.
+If I<OBJECT_TYPE_FROM> or one of its super classes has an instance method(this is named I<METHOD_FROM>) with the same name as an instance method of I<INTERFACE_TYPE_TO>,
+I<METHOD_FROM> must be an instance method and satisfy the L<interface method requirement|/"Interface Method Requirement">.
 
-=head3 Interface Method Requirement
+=head2 Interface Method Requirement
 
 The interface method requirement is the requirement if one instance method is able to be assigned to another instance method.
 

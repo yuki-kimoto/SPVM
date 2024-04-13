@@ -400,7 +400,7 @@ The all super classes must be different from its own class, otherwise a compilat
 
 The field that name is the same as the field of the super class cannnot be defined, otherwise a compilation error occurs.
 
-The class I<CLASS_NAME> must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>, otherwise a compilation error occurs.
+The class I<CLASS_NAME> interpreted by an interface must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>, otherwise a compilation error occurs.
 
 Examples:
 
