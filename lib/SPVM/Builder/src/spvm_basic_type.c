@@ -221,6 +221,20 @@ int32_t SPVM_BASIC_TYPE_is_integer_type_within_int(SPVM_COMPILER* compiler, int3
 
 int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id, char* error_reason) {
   
+  SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
+  
+  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+    if (error_reason) {
+      snprintf(error_reason, 255, "The \"%s\" type must a class type or an interface type.\n  at %s line %d", interface_basic_type->name, interface_basic_type->op_class->file, interface_basic_type->op_class->line);
+    }
+    return 0;
+  }
+  
+  return SPVM_BASIC_TYPE_has_interface_common(compiler, basic_type_id, interface_basic_type_id, error_reason);
+}
+
+int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t interface_basic_type_id, char* error_reason) {
+  
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
   
   SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
@@ -228,13 +242,6 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
   if (!(basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     if (error_reason) {
       snprintf(error_reason, 255, "The \"%s\" type of the operand must a class type or an interface type.\n  at %s line %d", basic_type->name, basic_type->op_class->file, basic_type->op_class->line);
-    }
-    return 0;
-  }
-  
-  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
-    if (error_reason) {
-      snprintf(error_reason, 255, "The \"%s\" type must a class type or an interface type.\n  at %s line %d", interface_basic_type->name, interface_basic_type->op_class->file, interface_basic_type->op_class->line);
     }
     return 0;
   }
