@@ -223,9 +223,9 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t basic_typ
   
   SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
   
-  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     if (error_reason) {
-      snprintf(error_reason, 255, "The \"%s\" type must a class type or an interface type.\n  at %s line %d", interface_basic_type->name, interface_basic_type->op_class->file, interface_basic_type->op_class->line);
+      snprintf(error_reason, 255, "The \"%s\" type must an interface type.\n  at %s line %d", interface_basic_type->name, interface_basic_type->op_class->file, interface_basic_type->op_class->line);
     }
     return 0;
   }
