@@ -1278,7 +1278,7 @@ use Test::More;
       'class MyClass extends MyClass2 { static method new : void ($arg1 : int) {} }',
       'class MyClass2 { method new : void () {} }'
     ];
-    compile_not_ok($source, q|The "new" method in the "MyClass" class must be an instance method, which is defined as an interface method in the "MyClass2" class.|);
+    compile_not_ok($source, q|The "new" method in the "MyClass" class must be an instance method because its interface method is defined in the "MyClass2" class.|);
   }
   {
     my $source = [
@@ -1340,7 +1340,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
-    compile_not_ok($source, q|The "to_string" method in the "MyClass" class must be an instance method, which is defined as an interface method in the "Stringable" interface.|);
+    compile_not_ok($source, q|The "to_string" method in the "MyClass" class must be an instance method because its interface method is defined in the "Stringable" interface.|);
   }
   {
     my $source = [
