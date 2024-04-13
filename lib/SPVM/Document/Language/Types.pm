@@ -1605,15 +1605,19 @@ I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"
 
 =head2 Interface Requirement
 
-The interface requirement is the requirement if a type is able to be assigned to an interface type.
+The interface requirement is the requirement if an object type that is normally a class type is able to be assigned to an object type that is normally an interface type.
 
-  TYPE_TO = TYPE_FROM
+  OBJECT_TYPE_TO = OBJECT_TYPE_FROM
 
-I<TYPE_TO> must be an L<interface type|"Interface Types">.
+I<OBJECT_TYPE_TO> must be a L<class type|"Class Types"> or an L<interface type|"Interface Types">.
 
-I<TYPE_FROM> must be a L<class type|"Class Types"> or an L<interface type|"Interface Types">.
+I<OBJECT_TYPE_FROM> must be a L<class type|"Class Types"> or an L<interface type|"Interface Types">.
 
-Every ethod defined in I<TYPE_FROM> must satisfy the interface method requirement to the method of the same name in class I<TYPE_TO>.
+The following check is performed on every instance method of I<OBJECT_TYPE_FROM>.
+
+An instance method of I<OBJECT_TYPE_FROM> 
+
+Every instance method defined in I<OBJECT_TYPE_FROM> must satisfy the L<interface method requirement|/"Interface Method Requirement"> to the method of the same name in class I<TYPE_TO>.
 
 =head3 Interface Method Requirement
 
