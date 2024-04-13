@@ -1603,7 +1603,7 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
 
 I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
 
-=head3 Interface Requirement
+=head2 Interface Requirement
 
 The interface requirement is the requirement if a type is able to be assigned to an interface type.
 
@@ -1614,6 +1614,27 @@ I<TYPE_TO> must be an L<interface type|"Interface Types">.
 I<TYPE_FROM> must be a L<class type|"Class Types"> or an L<interface type|"Interface Types">.
 
 Every ethod defined in I<TYPE_FROM> must satisfy the interface method requirement to the method of the same name in class I<TYPE_TO>.
+
+=head3 Interface Method Requirement
+
+The interface method requirement is the requirement if one method is able to be assigned to another method.
+
+What does it mean to assign one method to another method?
+
+Typically, it is sufficient to consider a case where a value of a method type I<METHOD_TYPE_FROM> is assigned to a variable of a method type I<METHOD_TYPE_TO>.
+
+  my $value : METHOD_TYPE_FROM;
+  my $var : METHOD_TYPE_TO = $value;
+
+Note that a method type is a concept, not an actual one.
+
+Abstracting this, type-to-type assignment is defined.
+
+  METHOD_TYPE_TO = METHOD_TYPE_FROM
+
+Note that this is also a concept, not an actual syntax.
+
+And the interface method requirement is explained below.
 
 =head1 See Also
 

@@ -400,7 +400,7 @@ The all super classes must be different from its own class, otherwise a compilat
 
 The field that name is the same as the field of the super class cannnot be defined, otherwise a compilation error occurs.
 
-The class I<CLASS_NAME> must satisfy the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>, otherwise a compilation error occurs.
+The class I<CLASS_NAME> must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>, otherwise a compilation error occurs.
 
 Examples:
 
@@ -489,7 +489,7 @@ Examples:
 
 =head3 interface Statement
 
-The C<interface> statement checks if the current class satisfies the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to an interface.
+The C<interface> statement checks if the current class satisfies the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to an interface.
 
   interface BASIC_TYPE;
 
@@ -497,7 +497,7 @@ Compilation Errors:
 
 The interface type I<BASIC_TYPE> must be an L<interface type|SPVM::Document::Language::Types/"Interface Types">, ohterwise a compilation error occurs.
 
-The current class must satisfy the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> to the interface type I<BASIC_TYPE>, ohterwise a compilation error occurs.
+The current class must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the interface type I<BASIC_TYPE>, ohterwise a compilation error occurs.
 
 Examples:
   
@@ -1241,31 +1241,6 @@ An interface method can have the C<required> L<method attribute|/"Method Attribu
 
   required method my_method : int ();
 
-=head3 Interface Method Requirement
-
-The interface method requirement is the requirement if one method is able to be assigned to another method.
-
-What does it mean to assign one method to another method?
-
-Typically, it is sufficient to consider a case where a value of a method type I<METHOD_TYPE_FROM> is assigned to a variable of a method type I<METHOD_TYPE_TO>.
-
-  my $value : METHOD_TYPE_FROM;
-  my $var : METHOD_TYPE_TO = $value;
-
-Note that a method type is a concept, not an actual one.
-
-Abstracting this, type-to-type assignment is defined.
-
-  METHOD_TYPE_TO = METHOD_TYPE_FROM
-
-Note that this is also a concept, not an actual syntax.
-
-And the interface method requirement is explained below.
-
-
-
-
-
 =head2 Method Attributes
 
 Method attributes are attributes used in a L<method definition|/"Method Definition">.
@@ -1482,11 +1457,11 @@ An instance method in a parent class can be overridden by an instance method wit
     }
   }
 
-The overridding method in the child class must satisfy the L<interface requirement|/"Interface Requirement"> to the parent method.
+The overridding method in the child class must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent method.
 
 Compilation Errors:
 
-The overridding method in the child class must satisfy the L<interface requirement|/"Interface Requirement"> to the parent method, otherwise a compilation error occurs.
+The overridding method in the child class must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent method, otherwise a compilation error occurs.
 
 =head2 Anon Method
 
