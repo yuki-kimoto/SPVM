@@ -1,10 +1,12 @@
-0.989101 2023-04-12
+0.989101 2023-04-14
   [Imcompatible Changes]
     * An instance method cannot be assigned to a statice method of its super classes in the interface method requirement.
   [Internal Changes]
     Internal assignment requirement and cast requirement method does not set compiler error messages directly.
   [Compilation Error Message Improvement]
-    * Improve a compilation error message related to the assignment requirement, cast requirement, the interface method requirement, the interface requirement.
+    * Improve a compilation error message related to the assignment requirement, cast requirement, the interface method requirement, the interface requirement.  [Document Fix and Improvement]
+    * Improve the doc of Class.
+    * Improve the doc of Types.
 0.989100 2023-04-10
   [Document Fix and Improvement]
     * The heading "Boolean Conversion is changed to "Condition Evaluation", and it is moved from the doc of Types to the doc of Operators.
