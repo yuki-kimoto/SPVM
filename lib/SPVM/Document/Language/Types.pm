@@ -1617,24 +1617,32 @@ Every ethod defined in I<TYPE_FROM> must satisfy the interface method requiremen
 
 =head3 Interface Method Requirement
 
-The interface method requirement is the requirement if one method is able to be assigned to another method.
+The interface method requirement is the requirement if one instance method is able to be assigned to another instance method.
 
-What does it mean to assign one method to another method?
+What does it mean to assign one instance method to another instance method?
 
-Typically, it is sufficient to consider a case where a value of a method type I<METHOD_TYPE_FROM> is assigned to a variable of a method type I<METHOD_TYPE_TO>.
+Typically, it is sufficient to consider a case where a value of an instance method type I<INSTANT_METHOD_TYPE_FROM> is assigned to a variable of an instance method type I<INSTANCE_METHOD_TYPE_TO>.
 
-  my $value : METHOD_TYPE_FROM;
-  my $var : METHOD_TYPE_TO = $value;
+  my $value : INSTANCE_METHOD_TYPE_FROM;
+  my $var : INSTANCE_METHOD_TYPE_TO = $value;
 
-Note that a method type is a concept, not an actual one.
+Note that the instance method type is a concept, not an actual one.
 
 Abstracting this, type-to-type assignment is defined.
 
-  METHOD_TYPE_TO = METHOD_TYPE_FROM
+  INSTANCE_METHOD_TYPE_TO = INSTANCE_METHOD_TYPE_FROM
 
 Note that this is also a concept, not an actual syntax.
 
 And the interface method requirement is explained below.
+
+The length of the required arguments of the method of the I<INSTANT_METHOD_TYPE_FROM> type must be equal to the length of the required arguments the method of the I<INSTANT_METHOD_TYPE_TO> type.
+
+The length of the arguments of the method of the I<INSTANT_METHOD_TYPE_FROM> must be greather than or equal to the length of the arguments of the method of the I<INSTANT_METHOD_TYPE_TO> type.
+
+The every argument other than at 0 index of the method of the I<INSTANT_METHOD_TYPE_FROM> must satisfy the L<assignment requirement|/"Assignment Requirement"> to the argument as the same index of the method of the I<INSTANT_METHOD_TYPE_TO> without a data conversion and with interface exactly matched.
+
+The return type of the method of the I<INSTANT_METHOD_TYPE_FROM> must must satisfy the L<assignment requirement|/"Assignment Requirement"> to the return type of the method of the I<INSTANT_METHOD_TYPE_TO> without a data conversion and with interface exactly matched.
 
 =head1 See Also
 
