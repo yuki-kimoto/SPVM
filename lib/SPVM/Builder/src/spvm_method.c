@@ -85,7 +85,8 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
     int32_t can_assign = SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion_with_interface_match(
       compiler,
       dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag,
-      src_method_var_decl_type->basic_type->id, src_method_var_decl_type->dimension, src_method_var_decl_type->flag
+      src_method_var_decl_type->basic_type->id, src_method_var_decl_type->dimension, src_method_var_decl_type->flag,
+      NULL
     );
     
     if (!can_assign) {
@@ -106,7 +107,8 @@ int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler
   int32_t can_assign = SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion_with_interface_match(
     compiler,
     dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag,
-    src_method_return_type->basic_type->id, src_method_return_type->dimension, src_method_return_type->flag
+    src_method_return_type->basic_type->id, src_method_return_type->dimension, src_method_return_type->flag,
+    NULL
   );
   
   if (!can_assign) {

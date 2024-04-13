@@ -176,25 +176,29 @@ int32_t SPVM_TYPE_satisfy_assignment_requirement(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
   int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
-  int32_t* need_data_conversion, int32_t allow_narrowing_conversion, int32_t interface_match
+  int32_t* need_data_conversion, int32_t allow_narrowing_conversion, int32_t interface_match,
+  char* error_reason
 );
 
 int32_t SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
-  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag
+  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
+  char* error_reason
 );
 
 int32_t SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion_with_interface_match(
   SPVM_COMPILER* compiler,
   int32_t dist_type_basic_type_id, int32_t dist_type_dimension, int32_t dist_type_flag,
-  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag
+  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
+  char* error_reason
 );
 
 int32_t SPVM_TYPE_satisfy_cast_requirement(
   SPVM_COMPILER* compiler,
   int32_t cast_type_basic_type_id, int32_t cast_type_dimension, int32_t cast_type_flag,
-  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag
+  int32_t src_type_basic_type_id, int32_t src_type_dimension, int32_t src_type_flag,
+  char* error_reason
 );
 
 int32_t SPVM_TYPE_is_super_class(SPVM_COMPILER* compiler,

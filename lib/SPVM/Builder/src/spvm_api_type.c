@@ -180,7 +180,8 @@ int32_t SPVM_API_TYPE_can_assign(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE*
     isa = SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
       compiler,
       dist_basic_type->id, dist_type_dimension, 0,
-      src_basic_type->id, src_type_dimension, 0
+      src_basic_type->id, src_type_dimension, 0,
+      NULL
     );
     
     SPVM_MUTEX_lock(runtime_mutex);
