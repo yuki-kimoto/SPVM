@@ -585,7 +585,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
       }
       
       char error_reason[256] = {0};
-      int32_t has_interface = SPVM_BASIC_TYPE_has_interface(compiler, basic_type->id, parent_basic_type->id, error_reason);
+      int32_t has_interface = SPVM_BASIC_TYPE_has_interface_common(compiler, basic_type->id, parent_basic_type->id, error_reason);
       
       if (!has_interface) {
         SPVM_COMPILER_error(compiler, error_reason);
