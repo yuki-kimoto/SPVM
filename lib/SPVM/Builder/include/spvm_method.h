@@ -46,6 +46,4 @@ struct spvm_method {
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
 
-int32_t SPVM_METHOD_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, SPVM_METHOD* dist_method, SPVM_METHOD* src_method, char* error_reason);
-
 #endif
