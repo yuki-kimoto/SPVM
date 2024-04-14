@@ -311,21 +311,21 @@ int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t sr
   return 1;
 }
 
-int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t super_basic_type_id, int32_t child_basic_type_id) {
+int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t dist_basic_type_id, int32_t src_basic_type_id) {
   
-  SPVM_BASIC_TYPE* super_basic_type = SPVM_LIST_get(compiler->basic_types, super_basic_type_id);
-  SPVM_BASIC_TYPE* child_basic_type = SPVM_LIST_get(compiler->basic_types, child_basic_type_id);
+  SPVM_BASIC_TYPE* dist_basic_type = SPVM_LIST_get(compiler->basic_types, dist_basic_type_id);
+  SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_get(compiler->basic_types, src_basic_type_id);
   
-  const char* current_parent_basic_type_name = child_basic_type->parent_name;
+  const char* parent_src_basic_type_name = src_basic_type->parent_name;
   while (1) {
-    if (current_parent_basic_type_name) {
-      if (strcmp(super_basic_type->name, current_parent_basic_type_name) == 0) {
+    if (parent_src_basic_type_name) {
+      if (strcmp(dist_basic_type->name, parent_src_basic_type_name) == 0) {
         return 1;
       }
       else {
-        SPVM_BASIC_TYPE* current_parent_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, current_parent_basic_type_name, strlen(current_parent_basic_type_name));
-        assert(current_parent_basic_type);
-        current_parent_basic_type_name = current_parent_basic_type->parent_name;
+        SPVM_BASIC_TYPE* parent_src_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, parent_src_basic_type_name, strlen(parent_src_basic_type_name));
+        assert(parent_src_basic_type);
+        parent_src_basic_type_name = parent_src_basic_type->parent_name;
       }
     }
     else {
