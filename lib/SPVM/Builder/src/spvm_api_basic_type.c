@@ -254,23 +254,23 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_API_BASIC_TYPE_get_anon_basic_type_by_index(SPVM_R
   return anon_basic_type;
 }
 
-int32_t SPVM_API_BASIC_TYPE_isa_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type, SPVM_RUNTIME_BASIC_TYPE* interface_basic_type) {
+int32_t SPVM_API_BASIC_TYPE_isa_interface(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* src_basic_type, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type) {
   
-  if (!(interface_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+  if (!(dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     return 0;
   }
   
-  if (!(basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+  if (!(src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
     return 0;
   }
   
-  for (int32_t interface_method_index = 0; interface_method_index < interface_basic_type->methods_length; interface_method_index++) {
-    SPVM_RUNTIME_METHOD* interface_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, interface_basic_type, interface_method_index);
+  for (int32_t interface_method_index = 0; interface_method_index < dist_basic_type->methods_length; interface_method_index++) {
+    SPVM_RUNTIME_METHOD* interface_method = SPVM_API_BASIC_TYPE_get_method_by_index(runtime, dist_basic_type, interface_method_index);
     
-    for (int32_t method_index = 0; method_index < basic_type->methods_length; method_index++) {
-      SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(runtime, interface_basic_type, interface_method->name);
+    for (int32_t method_index = 0; method_index < src_basic_type->methods_length; method_index++) {
+      SPVM_RUNTIME_METHOD* method = SPVM_API_BASIC_TYPE_get_method_by_name(runtime, dist_basic_type, interface_method->name);
       
-      int32_t method_compatibility = SPVM_API_BASIC_TYPE_check_method_compatibility(runtime, basic_type, method, interface_basic_type, interface_method);
+      int32_t method_compatibility = SPVM_API_BASIC_TYPE_check_method_compatibility(runtime, src_basic_type, method, dist_basic_type, interface_method);
       
       if (method_compatibility == 0) {
         return 0;

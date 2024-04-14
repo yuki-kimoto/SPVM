@@ -154,9 +154,9 @@ Returns the length of the anon basic types owned by the basic type I<basic_type>
 
 =head2 isa_interface
 
-C<int32_t (*isa_interface)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* interface_basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<int32_t (*isa_interface)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* src_basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* dist_basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If the basic type I<basic_type> has an interface I<interface_basic_type>, returns 1, otherwise returns 0.
+If the basic type I<src_basic_type> is able to be assinged to the interface basic type I<dist_basic_type>, returns 1, otherwise returns 0.
 
 =head2 is_super_class
 
