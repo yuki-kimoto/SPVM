@@ -1,3 +1,7 @@
+0.989102 2023-04-15
+  [Imcompatible Changes]
+    The has_interface basic type Native API is renamed to isa_interface.
+    
 0.989101 2023-04-14
   [Imcompatible Changes]
     * An instance method cannot be assigned to a statice method of its super classes in the interface method requirement.

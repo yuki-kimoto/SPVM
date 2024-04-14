@@ -152,9 +152,9 @@ C<int32_t (*get_anon_basic_types_length)(L<void* runtime|SPVM::Document::NativeA
 
 Returns the length of the anon basic types owned by the basic type I<basic_type>.
 
-=head2 has_interface
+=head2 isa_interface
 
-C<int32_t (*has_interface)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* interface_basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<int32_t (*isa_interface)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* interface_basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
 If the basic type I<basic_type> has an interface I<interface_basic_type>, returns 1, otherwise returns 0.
 
@@ -205,7 +205,7 @@ Returns the runtime that owns the basic type I<basic_type>.
   17 get_methods_length
   18 get_anon_basic_type_by_index
   19 get_anon_basic_types_length
-  20 has_interface
+  20 isa_interface
   21 is_super_class
   22 get_file
   23 get_current_runtime

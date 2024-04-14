@@ -199,8 +199,8 @@ use Test::More;
       {
         my $source = [
           'class MyClass extends MyClass::Parent {}',
-          'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-          'class MyClass::Interface : interface_t { required method has_interfaces : int (); }',
+          'class MyClass::Parent { interface MyClass::Interface; method isa_interfaces : int () { return 1; } }',
+          'class MyClass::Interface : interface_t { required method isa_interfaces : int (); }',
         ];
         compile_ok($source);
       }

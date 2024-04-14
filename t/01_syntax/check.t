@@ -1389,8 +1389,8 @@ use Test::More;
     {
       my $source = [
         'class MyClass extends MyClass::Parent { method foo : long ($num : int) { return 0; } }',
-        'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-        'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
+        'class MyClass::Parent { interface MyClass::Interface; method isa_interfaces : int () { return 1; } }',
+        'class MyClass::Interface : interface_t { required method isa_interfaces : int (); method foo : long ($num : int); }',
       ];
       compile_ok($source);
     }
@@ -1399,8 +1399,8 @@ use Test::More;
     {
       my $source = [
         'class MyClass extends MyClass::Parent { method foo : long ($num : int, $num2 : int) { return 0; } }',
-        'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-        'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
+        'class MyClass::Parent { interface MyClass::Interface; method isa_interfaces : int () { return 1; } }',
+        'class MyClass::Interface : interface_t { required method isa_interfaces : int (); method foo : long ($num : int); }',
       ];
       compile_not_ok($source, qr|The length of the required arguments of the "foo" method in the "MyClass" class must be equal to the length of the required arguments of the "foo" method in the "MyClass::Interface" interface|);
     }
@@ -1409,8 +1409,8 @@ use Test::More;
     {
       my $source = [
         'class MyClass extends MyClass::Parent { method foo : long ($num : int, $num2 : int = 0) { return 0; } }',
-        'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-        'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
+        'class MyClass::Parent { interface MyClass::Interface; method isa_interfaces : int () { return 1; } }',
+        'class MyClass::Interface : interface_t { required method isa_interfaces : int (); method foo : long ($num : int); }',
       ];
       compile_ok($source);
     }
@@ -1419,8 +1419,8 @@ use Test::More;
     {
       my $source = [
         'class MyClass extends MyClass::Parent { method foo : long ($num : int) { return 0; } }',
-        'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
-        'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int, $num2 : int = 0); }',
+        'class MyClass::Parent { interface MyClass::Interface; method isa_interfaces : int () { return 1; } }',
+        'class MyClass::Interface : interface_t { required method isa_interfaces : int (); method foo : long ($num : int, $num2 : int = 0); }',
       ];
       compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass" class must be greather than or equal to the length of the arguments of the "foo" method in the "MyClass::Interface|);
     }

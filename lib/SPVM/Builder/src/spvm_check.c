@@ -585,9 +585,9 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
       }
       
       char error_reason[256] = {0};
-      int32_t has_interface = SPVM_BASIC_TYPE_has_interface_common(compiler, basic_type->id, parent_basic_type->id, error_reason);
+      int32_t isa_interface = SPVM_BASIC_TYPE_isa_interface_common(compiler, basic_type->id, parent_basic_type->id, error_reason);
       
-      if (!has_interface) {
+      if (!isa_interface) {
         SPVM_COMPILER_error(compiler, error_reason);
         return;
       }
@@ -600,9 +600,9 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_basic_type_index);
       
       char error_reason[256] = {0};
-      int32_t has_interface = SPVM_BASIC_TYPE_has_interface(compiler, basic_type->id, interface_basic_type->id, error_reason);
+      int32_t isa_interface = SPVM_BASIC_TYPE_isa_interface(compiler, basic_type->id, interface_basic_type->id, error_reason);
       
-      if (!has_interface) {
+      if (!isa_interface) {
         SPVM_COMPILER_error(compiler, error_reason);
         return;
       }

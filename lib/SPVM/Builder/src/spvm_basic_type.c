@@ -219,7 +219,7 @@ int32_t SPVM_BASIC_TYPE_is_integer_type_within_int(SPVM_COMPILER* compiler, int3
   }
 }
 
-int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t src_basic_type_id, int32_t interface_basic_type_id, char* error_reason) {
+int32_t SPVM_BASIC_TYPE_isa_interface(SPVM_COMPILER* compiler, int32_t src_basic_type_id, int32_t interface_basic_type_id, char* error_reason) {
   
   SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(compiler->basic_types, interface_basic_type_id);
   
@@ -230,10 +230,10 @@ int32_t SPVM_BASIC_TYPE_has_interface(SPVM_COMPILER* compiler, int32_t src_basic
     return 0;
   }
   
-  return SPVM_BASIC_TYPE_has_interface_common(compiler, src_basic_type_id, interface_basic_type_id, error_reason);
+  return SPVM_BASIC_TYPE_isa_interface_common(compiler, src_basic_type_id, interface_basic_type_id, error_reason);
 }
 
-int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t src_basic_type_id, int32_t dist_basic_type_id, char* error_reason) {
+int32_t SPVM_BASIC_TYPE_isa_interface_common(SPVM_COMPILER* compiler, int32_t src_basic_type_id, int32_t dist_basic_type_id, char* error_reason) {
   
   SPVM_BASIC_TYPE* src_basic_type = SPVM_LIST_get(compiler->basic_types, src_basic_type_id);
   
