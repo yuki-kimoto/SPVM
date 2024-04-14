@@ -3745,20 +3745,20 @@ SPVM_FIELD* SPVM_CHECK_search_unmerged_field(SPVM_COMPILER* compiler, SPVM_BASIC
   return found_field;
 }
 
-int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_type_from, SPVM_BASIC_TYPE* basic_type_to, int32_t access_controll_flag_to, int32_t is_parent_field) {
+int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* src_basic_type, SPVM_BASIC_TYPE* dist_basic_type, int32_t dist_access_controll_flag, int32_t is_parent_field) {
   
   int32_t can_access = 0;
   
-  if (basic_type_from->is_anon) {
-    basic_type_from = basic_type_from->outmost;
+  if (src_basic_type->is_anon) {
+    src_basic_type = src_basic_type->outmost;
   }
   
-  if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
+  if (dist_access_controll_flag == SPVM_ATTRIBUTE_C_ID_PRIVATE) {
     if (is_parent_field) {
       can_access = 0;
     }
     else {
-      if (strcmp(basic_type_from->name, basic_type_to->name) == 0) {
+      if (strcmp(src_basic_type->name, dist_basic_type->name) == 0) {
         can_access = 1;
       }
       else {
@@ -3766,12 +3766,12 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_ty
       }
     }
   }
-  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
-    if (strcmp(basic_type_from->name, basic_type_to->name) == 0) {
+  else if (dist_access_controll_flag == SPVM_ATTRIBUTE_C_ID_PROTECTED) {
+    if (strcmp(src_basic_type->name, dist_basic_type->name) == 0) {
       can_access = 1;
     }
     else {
-      if (SPVM_BASIC_TYPE_is_super_class(compiler, basic_type_to->id, basic_type_from->id)) {
+      if (SPVM_BASIC_TYPE_is_super_class(compiler, dist_basic_type->id, src_basic_type->id)) {
         can_access = 1;
       }
       else {
@@ -3779,7 +3779,7 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic_ty
       }
     }
   }
-  else if (access_controll_flag_to == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
+  else if (dist_access_controll_flag == SPVM_ATTRIBUTE_C_ID_PUBLIC) {
     can_access = 1;
   }
   else {
