@@ -1624,11 +1624,15 @@ I<METHOD_FROM> must be an instance method and satisfy the L<interface method req
 
 =head2 Interface Method Requirement
 
-The interface method requirement is the requirement whether one instance method is able to be assigned to another instance method.
+The interface method requirement is the requirement whether a method is able to be assigned to an interface method.
 
-  INSTANCE_METHOD_TO = INSTANCE_METHOD_FROM
+  INTERFACE_METHOD_TO = METHOD_FROM
 
 This is a concept that converts the type-to-type assignment explained in L<Assignment Requirement|/"Assignment Requirement"> to method-to-method assignment.
+
+I<INTERFACE_METHOD_TO> must be an instance method.
+
+I<METHOD_FROM> must be an instance method.
 
 The length of the required arguments of the method of the I<INSTANT_METHOD_TYPE_FROM> type must be equal to the length of the required arguments the method of the I<INSTANT_METHOD_TYPE_TO> type.
 

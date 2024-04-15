@@ -1846,6 +1846,20 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
   
   SPVM_LIST* dist_method_var_decls = dist_method->var_decls;
   
+  if (src_method->is_class_method) {
+    if (error_reason) {
+      snprintf(error_reason, 255, "The \"%s\" method in the \"%s\" %s must be an instance method because its interface method is defined in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+    }
+    return 0;
+  }
+  
+  if (dist_method->is_class_method) {
+    if (error_reason) {
+      snprintf(error_reason, 255, "The \"%s\" method in the \"%s\" %s must be an instance method in the \"%s\" %s.\n  at %s line %d", dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_basic_type->name, dist_basic_type_category_name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
+    }
+    return 0;
+  }
+  
   if (!(src_method->required_args_length == dist_method->required_args_length)) {
     
     if (error_reason) {

@@ -298,14 +298,6 @@ int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t sr
       }
       
       if (src_method) {
-        
-        if (src_method->is_class_method) {
-          if (error_reason) {
-            snprintf(error_reason, 255, "The \"%s\" method in the \"%s\" %s must be an instance method because its interface method is defined in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
-          }
-          return 0;
-        }
-        
         int32_t satisfy_interface_method_requirement = SPVM_TYPE_satisfy_interface_method_requirement(compiler, dist_method, src_method, error_reason);
         
         if (!satisfy_interface_method_requirement) {
