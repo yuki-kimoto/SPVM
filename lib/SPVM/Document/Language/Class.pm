@@ -517,54 +517,52 @@ Examples:
 
 =head2 Anon Class
 
-The anon class is the class that do not has its class name.
+An anon class is a class without specifying its class name.
+
+=head3 Anon Class Definition
+
+An anon class is defined by the following syntax.
 
   class {
   
   }
 
-But internally an anon class has its name, such as C<eval::anon::0>.
+An anon class cannot be defined in a L<class file|Class File>. It is able to be defined in a source code compiled by the L<compile_anon_class|SPVM::Document::NativeAPI::Compiler/"compile_anon_class"> compiler native API.
 
-An anon class is also defined by the anon method.
+An anon class has its L<class name|SPVM::Document::Language::Tokenization/"Class Name">, such as C<eval::anon::0>, C<eval::anon::1>, C<eval::anon::2>.
 
-A anon class for an anon method has its unique L<class name|SPVM::Document::Language::Tokenization/"Class Name"> corresponding to the class name, the line number and the position of columns the anon class is defined.
-
-A anon class for an anon method has the same access control as its outmost class.
-
-A anon class for an anon method has the same alias names as its outmost class.
+  eval::anon::123
 
 L<Examples:>
   
-  # Anon class
+  # Examples of the anon class definition
   class {
     static method sum : int ($num1 : int, $num2 : int) {
       return $num1 + $num2;
     }
   }
-  
-  # Anon method
-  class Foo::Bar {
-    method sum : void () {
-      my $anon_method = method : string () {
-        
-      }
-   }
-  }
-  
-  # The name of the anon class
-  Foo::Bar::anon::3::23;
 
 =head2 Outmost Class
 
-An outmost class is the outmost defined class.
+An outmost class is the outmost defined class. This is the same as the class defined by the L<class definition|/"Class Definition">.
 
-The outmost class is C<Foo::Bar> in the following example.
+  class OutmostClass {
+    
+  }
 
-  class Foo::Bar {
-    static method baz : void () {
+Examples:
+  
+  # Examples of the outmost class
+  class MyClass {
+    static method my_method : void () {
+      
+      # The __PACKAGE__ operator returns the outmost class "MyClass".
       my $outmost_class_name = __PACKAGE__;
       
+      # Anon method
       my $cb = method : void () {
+        
+        # The __PACKAGE__ operator returns the outmost class "MyClass".
         my $outmost_class_name = __PACKAGE__;
       };
     }
@@ -1465,6 +1463,8 @@ The overridding method in the child class must satisfy the L<interface requireme
 
 =head2 Anon Method
 
+=head3 Anon Method Definition
+
 The anon method operator defines an L<anon calss|SPVM::Document::Language::Class/"Anon Class"> that has an anon instance method.
 
 And this operator creates an object which type is the anon class by the L<new/"new Operator"> operator, and returns it.
@@ -1475,6 +1475,14 @@ And this operator creates an object which type is the anon class by the L<new/"n
   }
 
 The way to define the method is the same as the L<method definition|SPVM::Document::Language::Class/"Method Definition">.
+
+If an anon method is defined, the name of the class that owns the anon method consist of the L<outmost class>, the line number and the position of columns the anon class is defined conncted with C<::>.
+
+  MyClass::anon::3::23
+
+The class that onws an anon method has the same access control as its outmost class.
+
+The class that onws an anon method has the same alias names as its outmost class.
 
 Examples:
   
