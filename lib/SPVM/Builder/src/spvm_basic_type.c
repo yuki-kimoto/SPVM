@@ -320,6 +320,10 @@ int32_t SPVM_BASIC_TYPE_is_super_class(SPVM_COMPILER* compiler, int32_t dist_bas
     return 0;
   }
   
+  if (!(src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
+    return 0;
+  }
+  
   const char* parent_src_basic_type_name = src_basic_type->parent_name;
   while (1) {
     if (parent_src_basic_type_name) {
