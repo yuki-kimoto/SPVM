@@ -1818,10 +1818,6 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
   
   assert(dist_method);
   
-  assert(!src_method->is_class_method);
-  
-  assert(!dist_method->is_class_method);
-  
   SPVM_BASIC_TYPE* dist_basic_type = dist_method->current_basic_type;
   
   SPVM_BASIC_TYPE* src_basic_type = src_method->current_basic_type;
