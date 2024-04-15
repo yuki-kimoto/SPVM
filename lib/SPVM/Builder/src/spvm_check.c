@@ -197,7 +197,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
     for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
-      if (method->is_anon) {
+      if (method->current_basic_type->is_generated_by_anon_method) {
         char* found_ptr = strstr(basic_type->name, "::anon_method::");
         assert(found_ptr);
         int32_t outmost_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
@@ -789,7 +789,7 @@ void SPVM_CHECK_check_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_clas
     memcpy(base_name + 1, colon_ptr + 1, base_name_length);
   }
   else {
-    if (current_method->is_anon) {
+    if (current_method->current_basic_type->is_generated_by_anon_method) {
       basic_type_name = (char*)current_method->outmost_basic_type_name;
     }
     else {
@@ -936,7 +936,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
     // Basic type name + method name
     const char* basic_type_name;
     if (call_method->is_current) {
-      if (current_method->is_anon) {
+      if (current_method->current_basic_type->is_generated_by_anon_method) {
         basic_type_name = current_method->outmost_basic_type_name;
       }
       else {
@@ -1224,7 +1224,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
             
             const char* current_class_name = NULL;
-            if (method->is_anon) {
+            if (method->current_basic_type->is_generated_by_anon_method) {
               SPVM_BASIC_TYPE_add_constant_string(compiler, basic_type, method->outmost_basic_type_name, strlen(method->outmost_basic_type_name));
               current_class_name = method->outmost_basic_type_name;
             }

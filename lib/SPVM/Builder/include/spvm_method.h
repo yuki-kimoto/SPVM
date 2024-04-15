@@ -39,7 +39,6 @@ struct spvm_method {
   int8_t is_enum;
   int8_t is_precompile;
   int8_t is_native;
-  int8_t is_anon;
   int8_t is_required;
   int8_t access_control_type;
 };

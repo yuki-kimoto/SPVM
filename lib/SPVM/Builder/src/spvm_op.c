@@ -1358,11 +1358,6 @@ SPVM_OP* SPVM_OP_build_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_fie
 SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block, SPVM_OP* op_anon_method_fields, int32_t is_init, int32_t is_anon) {
   SPVM_METHOD* method = SPVM_METHOD_new(compiler);
   
-  // Is anon method
-  if (is_anon) {
-    method->is_anon = 1;
-  }
-  
   if (op_name_method == NULL) {
     SPVM_STRING* anon_method_name_string = SPVM_STRING_new(compiler, "", strlen(""));
     const char* anon_method_name = anon_method_name_string->value;
