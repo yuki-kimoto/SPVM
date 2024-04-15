@@ -529,9 +529,9 @@ An anon class is defined by the following syntax.
 
 An anon class cannot be defined in a L<class file|Class File>. It is able to be defined in a source code compiled by the L<compile_anon_class|SPVM::Document::NativeAPI::Compiler/"compile_anon_class"> compiler native API.
 
-An anon class has its L<class name|SPVM::Document::Language::Tokenization/"Class Name">, such as C<eval::anon::0>, C<eval::anon::1>, C<eval::anon::2>.
+An anon class has its L<class name|SPVM::Document::Language::Tokenization/"Class Name">, such as C<eval::anon_method::0>, C<eval::anon_method::1>, C<eval::anon_method::2>.
 
-  eval::anon::123
+  eval::anon_method::123
 
 L<Examples:>
   
@@ -1364,7 +1364,7 @@ The way to define the method is the same as the L<method definition|SPVM::Docume
 
 If an anon method is defined, the name of the class that owns the anon method consist of the L<outmost class>, the line number and the position of columns the anon class is defined conncted with C<::>.
 
-  MyClass::anon::3::23
+  MyClass::anon_method::3::23
 
 The class that onws an anon method has the same access control as its outmost class.
 
@@ -1391,12 +1391,12 @@ The above example is the same as the following codes.
   # Foo/Bar.spvm
   class Foo::Bar {
     method some_method : void () {
-      my $comparator = (Comparator)new Foo::Bar::anon::3::31;
+      my $comparator = (Comparator)new Foo::Bar::anon_method::3::31;
     }
   }
   
-  # Foo/Bar/anon/3/31.spvm
-  class Foo::Bar::anon::3::31 : public {
+  # Foo/Bar/anon_method/3/31.spvm
+  class Foo::Bar::anon_method::3::31 : public {
     method : int ($x1 : object, $x2 : object) {
       my $point1 = (Point)$x1;
       my $point2 = (Point)$x2;
@@ -1457,7 +1457,7 @@ The above example is the same as the following codes.
       my $foo = 1;
       my $bar = 5L;
       
-      my $anon = new Foo::Bar::anon::5::61;
+      my $anon = new Foo::Bar::anon_method::5::61;
       $anon->{foo} = $foo;
       $anon->{bar} = $bar;
       
@@ -1465,8 +1465,8 @@ The above example is the same as the following codes.
     }
   }
   
-  # Foo/Bar/anon/5/61.spvm
-  class Foo::Bar::anon::5::61 : public {
+  # Foo/Bar/anon_method/5/61.spvm
+  class Foo::Bar::anon_method::5::61 : public {
     has foo : public int;
     has bar : public long;
     

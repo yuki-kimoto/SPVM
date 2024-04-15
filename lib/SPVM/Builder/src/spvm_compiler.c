@@ -189,11 +189,11 @@ int32_t SPVM_COMPILER_compile_common(SPVM_COMPILER* compiler, const char* basic_
     int32_t anon_method_basic_type_name_length = 4 + 2 + 4 + 2 + int32_max_length;
     
     char* anon_basic_type_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, anon_method_basic_type_name_length + 1);
-    sprintf(anon_basic_type_name, "eval::anon::%d", compiler->eval_anon_classes_length);
+    sprintf(anon_basic_type_name, "eval::anon_method::%d", compiler->eval_anon_classes_length);
     compiler->eval_anon_classes_length++;
     
     char* rel_file = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, anon_method_basic_type_name_length + 1);
-    sprintf(rel_file, "eval/anon/%d.spvm", compiler->eval_anon_classes_length);
+    sprintf(rel_file, "eval/anon_method/%d.spvm", compiler->eval_anon_classes_length);
     
     SPVM_COMPILER_set_class_file_with_members(compiler, anon_basic_type_name, rel_file, source);
     

@@ -198,7 +198,7 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
       SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
       if (method->is_anon) {
-        char* found_ptr = strstr(basic_type->name, "::anon::");
+        char* found_ptr = strstr(basic_type->name, "::anon_method::");
         assert(found_ptr);
         int32_t outmost_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
         

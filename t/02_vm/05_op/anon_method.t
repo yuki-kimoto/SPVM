@@ -25,7 +25,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   if ($ENV{SPVM_TEST_PRECOMPILE}) {
     my $callback_precompile_source_file = "$ENV{SPVM_BUILD_DIR}/work/src/SPVM/TestCase/Operator/AnonMethod.precompile.c";
     my $content = do { open my $fh, '<', $callback_precompile_source_file; local $/; <$fh>; };
-    like($content, qr/TestCase__Operator__AnonMethod__anon__\d+__\d+/);
+    like($content, qr/TestCase__Operator__AnonMethod__anon_method__\d+__\d+/);
   }
 }
 

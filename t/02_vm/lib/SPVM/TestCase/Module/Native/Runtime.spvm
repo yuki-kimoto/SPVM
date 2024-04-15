@@ -167,7 +167,7 @@ class TestCase::Module::Native::Runtime {
         
         {
           my $callback = method : int ($element : object) {
-            if ($element->(Native::BasicType)->get_name eq "::anon::") { return 1; }
+            if ($element->(Native::BasicType)->get_name eq "::anon_method::") { return 1; }
           };
           
           unless (@{Fn->grep($basic_types, $callback)}) {
@@ -194,7 +194,7 @@ class TestCase::Module::Native::Runtime {
         
         {
           my $callback = method : int ($element : object) {
-            if ($element->(Native::BasicType)->get_name eq "::anon::") { return 1; }
+            if ($element->(Native::BasicType)->get_name eq "::anon_method::") { return 1; }
           };
           
           if (@{Fn->grep($basic_types, $callback)}) {
