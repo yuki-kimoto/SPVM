@@ -321,6 +321,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   if (strstr(basic_type_name, "::anon::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     basic_type->is_anon = 1;
+    
+    if (!strstr(basic_type_name, "eval::anon::")) {
+      type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
+      basic_type->is_generated_by_anon_method = 1;
+    }
   }
   
   if (!basic_type->is_anon) {
