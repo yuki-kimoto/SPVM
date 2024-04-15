@@ -5,6 +5,10 @@
 
 #include "spvm_native.h"
 
+#include "spvm_basic_type.h"
+#include "spvm_compiler.h"
+#include "spvm_runtime.h"
+
 #include "spvm_api_runtime.h"
 #include "spvm_api_basic_type.h"
 #include "spvm_api_method.h"
@@ -416,34 +420,10 @@ int32_t SPVM_API_BASIC_TYPE_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BA
 }
 
 int32_t SPVM_API_BASIC_TYPE_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, SPVM_RUNTIME_BASIC_TYPE* src_basic_type) {
-
-  int32_t is_super_class_basic_type = 0;
   
-  if (!(dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
-    return 0;
-  }
+  SPVM_COMPILER* compiler = runtime->compiler;
   
-  if (!(src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
-    return 0;
-  }
-  
-  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = src_basic_type->parent;
-  
-  while (1) {
-    if (parent_basic_type) {
-      if (parent_basic_type->id == dist_basic_type->id) {
-        is_super_class_basic_type = 1;
-        break;
-      }
-      else {
-        parent_basic_type = parent_basic_type->parent;
-      }
-    }
-    else {
-      is_super_class_basic_type = 0;
-      break;
-    }
-  }
+  int32_t is_super_class_basic_type = SPVM_BASIC_TYPE_is_super_class(compiler, dist_basic_type->id, src_basic_type->id);
   
   return is_super_class_basic_type;
 }
