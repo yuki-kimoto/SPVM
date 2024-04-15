@@ -49,6 +49,7 @@ struct spvm_basic_type {
   int32_t fields_size;
   int8_t has_init_block;
   int8_t is_anon;
+  int8_t is_generated_by_anon_method;
   int8_t is_precompile;
   int8_t is_pointer;
   int8_t access_control_type;
