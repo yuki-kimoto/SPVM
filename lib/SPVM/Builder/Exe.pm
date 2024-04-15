@@ -1031,7 +1031,7 @@ sub get_user_defined_basic_type_names {
     7, # SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE,
   ];
   
-  my $basic_types = $runtime->get_basic_types({category => $category, is_anon => 0});
+  my $basic_types = [grep { $_->get_name !~ /::anon_class::/ && $_->get_name !~ /::anon_method::/ } @{$runtime->get_basic_types({category => $category})}];
   
   my $class_names = [map { $_->get_name } @$basic_types];
   
