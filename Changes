@@ -1,3 +1,7 @@
+0.989103 2023-04-16
+  [Internal Changes]
+    * Remove the is_anon field from spvm_runtime_method.h
+    
 0.989102 2023-04-15
   [Internal Changes]
     * The is_super_class basic type native API shares the logic of its compiler.

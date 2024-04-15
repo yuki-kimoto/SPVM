@@ -140,7 +140,9 @@ int32_t SPVM_API_METHOD_is_class_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METH
 
 int32_t SPVM_API_METHOD_is_anon(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
   
-  return method->is_anon;
+  int32_t is_anon = strcmp(method->name, "") == 0;
+  
+  return is_anon;
 }
 
 int32_t SPVM_API_METHOD_is_native(SPVM_RUNTIME* runtime, SPVM_RUNTIME_METHOD* method) {
