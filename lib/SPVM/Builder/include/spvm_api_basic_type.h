@@ -57,7 +57,7 @@ int32_t SPVM_API_BASIC_TYPE_check_method_compatibility(SPVM_RUNTIME* runtime, SP
 
 int32_t SPVM_API_BASIC_TYPE_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* basic_type);
 
-int32_t SPVM_API_BASIC_TYPE_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* super_basic_type, SPVM_RUNTIME_BASIC_TYPE* child_basic_type);
+int32_t SPVM_API_BASIC_TYPE_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, SPVM_RUNTIME_BASIC_TYPE* src_basic_type);
 
 int32_t SPVM_API_BASIC_TYPE_can_assign_for_method_definition (
   SPVM_RUNTIME* runtime,

@@ -160,9 +160,9 @@ If the basic type I<basic_type> has an interface I<interface_basic_type>, return
 
 =head2 is_super_class
 
-C<int32_t (*is_super_class)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* super_basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* child_basic_type|SPVM::Document::NativeAPI::BasicType>);>
+C<int32_t (*is_super_class)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* dist_basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* src_basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If I<super_basic_type> is a super class of I<child_basic_type>, returns 1, otherwise returns 0.
+If I<dist_basic_type> is a super class of I<src_basic_type>, returns 1, otherwise returns 0.
 
 =head2 get_file
 

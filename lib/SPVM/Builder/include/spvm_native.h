@@ -366,7 +366,7 @@ struct spvm_api_basic_type {
   void* (*get_anon_basic_type_by_index)(void* runtime, void* basic_type, int32_t anon_basic_type_index);
   int32_t (*get_anon_basic_types_length)(void* runtime, void* basic_type);
   int32_t (*has_interface)(void* runtime, void* basic_type, void* interface_basic_type);
-  int32_t (*is_super_class)(void* runtime, void* super_basic_type, void* child_basic_type);
+  int32_t (*is_super_class)(void* runtime, void* dist_basic_type, void* src_basic_type);
   const char* (*get_file)(void* runtime, void* basic_type);
   void* (*get_current_runtime)(void* runtime, void* basic_type);
 };

@@ -415,23 +415,23 @@ int32_t SPVM_API_BASIC_TYPE_is_class_type(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BA
   return is_class_type;
 }
 
-int32_t SPVM_API_BASIC_TYPE_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* super_basic_type, SPVM_RUNTIME_BASIC_TYPE* child_basic_type) {
+int32_t SPVM_API_BASIC_TYPE_is_super_class(SPVM_RUNTIME* runtime, SPVM_RUNTIME_BASIC_TYPE* dist_basic_type, SPVM_RUNTIME_BASIC_TYPE* src_basic_type) {
 
   int32_t is_super_class_basic_type = 0;
   
-  if (!(super_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
+  if (!(dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
     return 0;
   }
   
-  if (!(child_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
+  if (!(src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS)) {
     return 0;
   }
   
-  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = child_basic_type->parent;
+  SPVM_RUNTIME_BASIC_TYPE* parent_basic_type = src_basic_type->parent;
   
   while (1) {
     if (parent_basic_type) {
-      if (parent_basic_type->id == super_basic_type->id) {
+      if (parent_basic_type->id == dist_basic_type->id) {
         is_super_class_basic_type = 1;
         break;
       }
