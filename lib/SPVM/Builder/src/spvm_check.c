@@ -193,16 +193,20 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
   // Outer class
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    if (basic_type->is_anon && !strstr(basic_type->name, "eval::anon::")) {
+    
+    for (int32_t method_index = 0; method_index < basic_type->methods->length; method_index++) {
+      SPVM_METHOD* method = SPVM_LIST_get(basic_type->methods, method_index);
       
-      char* found_ptr = strstr(basic_type->name, "::anon::");
-      assert(found_ptr);
-      int32_t outmost_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
-      
-      SPVM_BASIC_TYPE* outmost_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->name, outmost_basic_type_name_length);
-      assert(outmost_basic_type);
-      
-      basic_type->outmost = outmost_basic_type;
+      if (method->is_anon) {
+        char* found_ptr = strstr(basic_type->name, "::anon::");
+        assert(found_ptr);
+        int32_t outmost_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
+        
+        SPVM_BASIC_TYPE* outmost_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type->name, outmost_basic_type_name_length);
+        assert(outmost_basic_type);
+        
+        basic_type->outmost = outmost_basic_type;
+      }
     }
   }
 }
