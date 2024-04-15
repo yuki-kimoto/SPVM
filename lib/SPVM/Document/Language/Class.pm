@@ -659,120 +659,6 @@ The length of the fields in the suffix must be the same as the length of the fie
 
 The type suffix in the suffix must correspond to the L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
 
-=head1 Enumeration
-
-The enumeration is the syntx to defines constant values of the int type.
-
-=head2 Enumeration Definition
-
-The C<enum> keyword defines an enumeration. An enumeration has definitions of constant values.
-
-  # Enumeration Definition
-  enum {
-    FLAG1,
-    FLAG2,
-    FLAG3
-  }
-
-The name given to an enumeration value must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
-
-The first enumeration value is 0. The next enumeration value is incremented by 1, and this is continued in the same way.
-
-In the above example, C<FLAG1> is 0, C<FALG2> is 1, and C<FLAG3> is 2.
-
-The type of an enumeration value is the int type.
-
-C<,> after the last enumeration value can be allowed.
-
-  enum {
-    FLAG1,
-    FLAG2,
-    FLAG3,
-  }
-
-An enumeration value can be set by C<=> explicitly.
-
-  enum {
-    FLAG1,
-    FLAG2 = 4,
-    FLAG3,
-  }
-
-In the above example, C<FLAG1> is 0, C<FALG2> is 4, and C<FLAG3> is 5.
-
-An enumeration value is got by the L<class method call|SPVM::Document::Language::Operators/"Class Method Call">.
-
-  Foo->FLAG1
-
-Compilation Errors:
-
-If an enumeration definition is invalid, a compilation error occurs.
-
-Examples:
-
-  class MyClass {
-    enum {
-      FLAG1,
-      FLAG2,
-      FLAG3,
-    }
-  }
-
-=head2 Enumeration Attributes
-
-Attributes can be specified to an enumeration definition.
-
-  private enum {
-    FLAG1,
-    FLAG2 = 4,
-    FLAG3,
-  }
-
-The List of Enumeration Attributes:
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      Attributes
-   </th>
-    <th>
-      Descriptions
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>private</b>
-    </td>
-    <td>
-      This enumeration is private. Each value of this enumeration can not be accessed from other classes.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>protected</b>
-    </td>
-    <td>
-      This enumeration is protected. Each value of this enumeration can not be accessed from other classes except for the child classes.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>public</b>
-    </td>
-    <td>
-      This enumeration is public. Each value of this enumeration can be accessed from other classes. This is default setting.
-    </td>
-  </tr>
-</table>
-
-=end html
-
-Compilation Errors:
-
-Only one of enumeration attributes C<private>, C<protected> or C<public> can be specified, otherwise a compilation error occurs.
-
 =head1 Class Variable
 
 A class variable is a global variable that has the name space.
@@ -1631,7 +1517,7 @@ The return type is the void type.
 
 It has no arguments.
 
-=head1 Method Implementation
+=head2 Method Implementation
 
 Normally a method has a method block. L<Statements|SPVM::Document::Language::Statements/"Statements"> can be written in a method block.
   
@@ -1643,11 +1529,11 @@ Normally a method has a method block. L<Statements|SPVM::Document::Language::Sta
     return $total;
   }
 
-=head2 Local Variable
+=head3 Local Variable
 
 A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
 
-=head3  Local Variable Declaration
+=head4  Local Variable Declaration
 
 B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. This is the same as Local Variable in C Language.
 
@@ -1712,7 +1598,7 @@ The local variable declaration returns the value of the local variable. The retu
 
 See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
 
-=head3  Type Inference
+=head4 Type Inference
 
 If the type of the local variable declaration is ommited, the type of the right operand of the assignment operator is set to it. This is called type inference.
 
@@ -1724,6 +1610,120 @@ If the type of the local variable declaration is ommited, the type of the right 
   
   # Foo
   my $foo = new Foo;
+
+=head1 Enumeration
+
+The enumeration is the syntx to defines constant values of the int type.
+
+=head2 Enumeration Definition
+
+The C<enum> keyword defines an enumeration. An enumeration has definitions of constant values.
+
+  # Enumeration Definition
+  enum {
+    FLAG1,
+    FLAG2,
+    FLAG3
+  }
+
+The name given to an enumeration value must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
+
+The first enumeration value is 0. The next enumeration value is incremented by 1, and this is continued in the same way.
+
+In the above example, C<FLAG1> is 0, C<FALG2> is 1, and C<FLAG3> is 2.
+
+The type of an enumeration value is the int type.
+
+C<,> after the last enumeration value can be allowed.
+
+  enum {
+    FLAG1,
+    FLAG2,
+    FLAG3,
+  }
+
+An enumeration value can be set by C<=> explicitly.
+
+  enum {
+    FLAG1,
+    FLAG2 = 4,
+    FLAG3,
+  }
+
+In the above example, C<FLAG1> is 0, C<FALG2> is 4, and C<FLAG3> is 5.
+
+An enumeration value is got by the L<class method call|SPVM::Document::Language::Operators/"Class Method Call">.
+
+  Foo->FLAG1
+
+Compilation Errors:
+
+If an enumeration definition is invalid, a compilation error occurs.
+
+Examples:
+
+  class MyClass {
+    enum {
+      FLAG1,
+      FLAG2,
+      FLAG3,
+    }
+  }
+
+=head2 Enumeration Attributes
+
+Attributes can be specified to an enumeration definition.
+
+  private enum {
+    FLAG1,
+    FLAG2 = 4,
+    FLAG3,
+  }
+
+The List of Enumeration Attributes:
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Attributes
+   </th>
+    <th>
+      Descriptions
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>private</b>
+    </td>
+    <td>
+      This enumeration is private. Each value of this enumeration can not be accessed from other classes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>protected</b>
+    </td>
+    <td>
+      This enumeration is protected. Each value of this enumeration can not be accessed from other classes except for the child classes.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>public</b>
+    </td>
+    <td>
+      This enumeration is public. Each value of this enumeration can be accessed from other classes. This is default setting.
+    </td>
+  </tr>
+</table>
+
+=end html
+
+Compilation Errors:
+
+Only one of enumeration attributes C<private>, C<protected> or C<public> can be specified, otherwise a compilation error occurs.
 
 =head1 Block
 
