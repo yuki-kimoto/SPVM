@@ -193,9 +193,9 @@ void SPVM_CHECK_check_basic_types_relation(SPVM_COMPILER* compiler) {
   // Outer class
   for (int32_t basic_type_id = compiler->basic_types_base_id; basic_type_id < compiler->basic_types->length; basic_type_id++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_get(compiler->basic_types, basic_type_id);
-    if (basic_type->is_anon && !strstr(basic_type->name, "eval::anon::")) {
+    if (basic_type->is_anon && !strstr(basic_type->name, "eval::anon_method::")) {
       
-      char* found_ptr = strstr(basic_type->name, "::anon::");
+      char* found_ptr = strstr(basic_type->name, "::anon_method::");
       assert(found_ptr);
       int32_t outmost_basic_type_name_length = (int32_t)(found_ptr - basic_type->name);
       

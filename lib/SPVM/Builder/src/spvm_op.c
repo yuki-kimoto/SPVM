@@ -259,7 +259,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   const char* basic_type_name;
   
   // Anon class
-  if (strstr(compiler->current_outmost_class_name, "eval::anon::")) {
+  if (strstr(compiler->current_outmost_class_name, "eval::anon_method::")) {
     if (op_type) {
       SPVM_COMPILER_error(compiler, "An anon class cannot have its class name.\n  at %s line %d", op_class->file, op_class->line);
       return op_class;
@@ -318,7 +318,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   // Assert
   SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   
-  if (strstr(basic_type_name, "::anon::")) {
+  if (strstr(basic_type_name, "::anon_method::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     basic_type->is_anon = 1;
   }
@@ -1637,7 +1637,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   int32_t int32_max_length = 10;
   
   // Create anon method class name
-  // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
+  // If Foo::Bar anon method is defined line 123, method keyword start pos 32, the anon method class name become Foo::Bar::anon_method::123::32. This is uniqe in whole program.
   const char* outmost_basic_type_name = compiler->current_outmost_class_name;
   int32_t anon_method_defined_line = op_method->line;
   int32_t anon_method_defined_column = op_method->column;
@@ -1645,7 +1645,7 @@ SPVM_OP* SPVM_OP_build_anon_method(SPVM_COMPILER* compiler, SPVM_OP* op_method) 
   
   // Anon class name
   char* name_basic_type_tmp = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, anon_method_basic_type_name_length + 1);
-  sprintf(name_basic_type_tmp, "%s::anon::%d::%d", outmost_basic_type_name, anon_method_defined_line, anon_method_defined_column);
+  sprintf(name_basic_type_tmp, "%s::anon_method::%d::%d", outmost_basic_type_name, anon_method_defined_line, anon_method_defined_column);
   
   SPVM_STRING* name_basic_type_string = SPVM_STRING_new(compiler, name_basic_type_tmp, strlen(name_basic_type_tmp));
   const char* name_basic_type = name_basic_type_string->value;
@@ -2075,7 +2075,7 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     op_type->uv.type->resolved_in_ast = 1;
   }
   
-  if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->unresolved_basic_type_name, "::anon::")) {
+  if (op_type->id == SPVM_OP_C_ID_TYPE && strstr(op_type->uv.type->unresolved_basic_type_name, "::anon_method::")) {
     
     const char* anon_basic_type_name = op_type->uv.type->unresolved_basic_type_name;
     SPVM_BASIC_TYPE* anon_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, anon_basic_type_name, strlen(anon_basic_type_name));
@@ -2084,11 +2084,11 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
     SPVM_METHOD* anon_method = SPVM_LIST_get(anon_basic_type->methods, 0);
     if (anon_method->anon_method_fields->length) {
       // [Before]
-      // new Foo::anon::Line::Column
+      // new Foo::anon_method::Line::Column
       
       // [After]
       //(
-      //  my $invocant = new Foo::anon::Line::Column,
+      //  my $invocant = new Foo::anon_method::Line::Column,
       //  $invocant->{FIELD_NAME0} = DEFAULT0,
       //  $invocant->{FIELD_NAME1} = DEFAULT1,
       //  $invocant,
