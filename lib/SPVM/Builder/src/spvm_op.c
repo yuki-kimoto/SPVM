@@ -579,7 +579,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_decl->file, op_decl->line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
-          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
+          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0);
           
           SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
@@ -646,7 +646,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP* op_attribute_static = SPVM_OP_new_op_attribute(compiler, SPVM_ATTRIBUTE_C_ID_STATIC, op_decl->file, op_decl->line);
           SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
           
-          op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0, 0);
+          op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, op_list_attributes, op_block, NULL, 0);
           
           SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
@@ -701,7 +701,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
+          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0);
           
           SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
@@ -771,7 +771,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0, 0);
+          SPVM_OP_build_method_definition(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, 0);
           
           SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
@@ -1188,7 +1188,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
   
   // Build method
-  op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name, op_return_type, NULL, op_list_attributes, op_block, NULL, 0, 0);
+  op_method = SPVM_OP_build_method_definition(compiler, op_method, op_name, op_return_type, NULL, op_list_attributes, op_block, NULL, 0);
   
   // Set constant
   op_method->uv.method->enum_value = op_constant->uv.constant->value.ival;
@@ -1355,7 +1355,7 @@ SPVM_OP* SPVM_OP_build_field_definition(SPVM_COMPILER* compiler, SPVM_OP* op_fie
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block, SPVM_OP* op_anon_method_fields, int32_t is_init, int32_t is_anon) {
+SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_attributes, SPVM_OP* op_block, SPVM_OP* op_anon_method_fields, int32_t is_init) {
   SPVM_METHOD* method = SPVM_METHOD_new(compiler);
   
   if (op_name_method == NULL) {
@@ -1703,7 +1703,7 @@ SPVM_OP* SPVM_OP_build_init_block(SPVM_COMPILER* compiler, SPVM_OP* op_init, SPV
   SPVM_OP_insert_child(compiler, op_list_attributes, op_list_attributes->first, op_attribute_static);
   
   int32_t is_init = 1;
-  SPVM_OP_build_method_definition(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block, NULL, is_init, 0);
+  SPVM_OP_build_method_definition(compiler, op_method, op_method_name, op_void_type, NULL, op_list_attributes, op_block, NULL, is_init);
   
   return op_method;
 }

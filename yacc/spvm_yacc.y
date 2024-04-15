@@ -463,27 +463,26 @@ has
 method
   : opt_attributes METHOD method_name ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, $9, NULL, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, $9, NULL, 0);
      }
   | opt_attributes METHOD method_name ':' return_type '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, NULL, NULL, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, $3, $5, $7, $1, NULL, NULL, 0);
      }
   | opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, 0);
      }
   | opt_attributes METHOD ':' return_type '(' opt_args ')' ';'
      {
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, NULL, NULL, 0, 0);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, NULL, NULL, 0);
      }
 
 anon_method
   : opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
        int32_t is_init = 0;
-       int32_t is_anon = 1;
-       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, is_init, is_anon);
+       $$ = SPVM_OP_build_method_definition(compiler, $2, NULL, $4, $6, $1, $8, NULL, is_init);
      }
   | '[' has_for_anon_list ']' opt_attributes METHOD ':' return_type '(' opt_args ')' block
      {
@@ -498,7 +497,7 @@ anon_method
        
        int32_t is_init = 0;
        int32_t is_anon = 1;
-       $$ = SPVM_OP_build_method_definition(compiler, $5, NULL, $7, $9, $4, $11, op_list_args, is_init, is_anon);
+       $$ = SPVM_OP_build_method_definition(compiler, $5, NULL, $7, $9, $4, $11, op_list_args, is_init);
      }
 
 opt_args
