@@ -246,6 +246,13 @@ int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t sr
     return 0;
   }
   
+  if (!(dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS || dist_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE)) {
+    if (error_reason) {
+      snprintf(error_reason, 255, "The \"%s\" type must an interface type.\n  at %s line %d", dist_basic_type->name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
+    }
+    return 0;
+  }
+  
   const char* src_basic_type_category_name = NULL;
   if (src_basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
     src_basic_type_category_name = "class";
