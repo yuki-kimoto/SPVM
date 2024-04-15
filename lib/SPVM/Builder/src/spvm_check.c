@@ -1095,7 +1095,7 @@ void SPVM_CHECK_check_ast_op_types(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* bas
               const char* unresolved_basic_type_name_maybe_alias = op_type->uv.type->unresolved_basic_type_name;
               
               SPVM_HASH* alias_symtable = NULL;
-              if (basic_type->is_anon && basic_type->outmost) {
+              if (basic_type->is_generated_by_anon_method && basic_type->outmost) {
                 alias_symtable = basic_type->outmost->alias_symtable;
               }
               else {
@@ -3071,7 +3071,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             SPVM_FIELD* found_field_in_current_basic_type = SPVM_HASH_get(method->current_basic_type->unmerged_field_symtable, field_access->field->name, strlen(field_access->field->name));
             
-            int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_anon;
+            int32_t is_parent_field = !found_field_in_current_basic_type && !method->current_basic_type->is_generated_by_anon_method;
             
             if (!SPVM_CHECK_can_access(compiler, method->current_basic_type,  field_access->field->current_basic_type, field_access->field->access_control_type, is_parent_field)) {
               if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, field->current_basic_type, is_parent_field)) {
@@ -3753,7 +3753,7 @@ int32_t SPVM_CHECK_can_access(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* src_basi
   
   int32_t can_access = 0;
   
-  if (src_basic_type->is_anon) {
+  if (src_basic_type->is_generated_by_anon_method) {
     src_basic_type = src_basic_type->outmost;
   }
   
