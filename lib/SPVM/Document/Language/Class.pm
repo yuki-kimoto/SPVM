@@ -570,27 +570,64 @@ Examples:
 
 =head2 Multi-Numeric Type Definition
 
-A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> that has the C<mulnum_t> L<class attribute|/"Class Attribute">.
+A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> with the C<mulnum_t> L<class attribute|/"Class Attributes">.
 
-  # Continuous two 64bit floating point
+  class CLASS_NAME : mulnum_t {
+    
+  }
+
+Compilation Errors:
+
+The type of all fields must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+
+The types of all fields must be a same type, otherwise a compilation error occurs.
+
+The length of fields must be less than or equal to 255, otherwise a compilation error occurs.
+
+I<CLASS_NAME> must ends with a L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> corresponding to the type of fields, otherwise a compilation error occurs.
+
+I<FIELD_LENGTH> of the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must be the same as the length of fields, otherwise a compilation error occurs.
+
+I<TYPE_SUFFIX> of the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must correspond to the type of fields.
+
+Examples:
+  
+  # Examples of the multi-numeric type definition
+  class Complex_2f : mulnum_t {
+    re : float;
+    im : float;
+  }
+  
   class Complex_2d : mulnum_t {
     re : double;
     im : double;
   }
-
-The type of a field must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
-
-The types of all fields must be the same types.
-
-The length of the fields must be less than or equal to 255.
+  
+  class Quaternion_4f : mulnum_t {
+    re : float;
+    i : float;
+    j : float;
+    k : float;
+  }
+  
+  class Quaternion_4d : mulnum_t {
+    re : double;
+    i : double;
+    j : double;
+    k : double;
+  }
 
 =head3 Multi-Numeric Type Suffix
 
 The multi-numeric type must end with the following suffix.
 
-  _[FieldsLength][TypeSuffix]
+  _(non-spaces)FIELD_LENGTH(non-spaces)TYPE_SUFFIX
 
-The List of the Multi-Numeric Type Suffix:
+I<FIELD_LENGTH> is the length of fields.
+
+I<TYPE_SUFFIX> is a type suffix.
+
+The List of Type Suffixes:
 
 =begin html
 
@@ -600,7 +637,7 @@ The List of the Multi-Numeric Type Suffix:
       Numeric Types
    </th>
     <th>
-     Type Suffix
+     Type Suffixes
    </th>
   </tr>
   <tr>
@@ -655,9 +692,13 @@ The List of the Multi-Numeric Type Suffix:
 
 =end html
 
-The length of the fields in the suffix must be the same as the length of the fields.
-
-The type suffix in the suffix must correspond to the L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> that is explained in the L<multi-numeric type suffix|/"Multi-Numeric Types Suffix">.
+Examples:
+  
+  # Examples of the multi-numeric type suffix
+  _2f;
+  _2d;
+  _4f;
+  _4d;
 
 =head1 Class Variable
 
@@ -1362,7 +1403,7 @@ And this operator creates an object which type is the anon class by the L<new/"n
 
 The way to define the method is the same as the L<method definition|SPVM::Document::Language::Class/"Method Definition">.
 
-If an anon method is defined, the name of the class that owns the anon method consist of the L<outmost class>, the line number and the position of columns the anon class is defined conncted with C<::>.
+If an anon method is defined, the name of the class that owns the anon method consist of the L<outmost class|/"Outmost Class">, the line number and the position of columns the anon class is defined conncted with C<::>.
 
   MyClass::anon_method::3::23
 
