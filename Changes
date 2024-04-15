@@ -9,6 +9,12 @@
       [After]
       MyClass::anon_method::3::23
 
+    * The anon class name is changed.
+      [Before]
+      eval::anon::3
+      [After]
+      eval::anon_class::3
+
 .989101 2023-04-14
   [Imcompatible Changes]
     * An instance method cannot be assigned to a statice method of its super classes in the interface method requirement.

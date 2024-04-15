@@ -529,9 +529,9 @@ An anon class is defined by the following syntax.
 
 An anon class cannot be defined in a L<class file|Class File>. It is able to be defined in a source code compiled by the L<compile_anon_class|SPVM::Document::NativeAPI::Compiler/"compile_anon_class"> compiler native API.
 
-An anon class has its L<class name|SPVM::Document::Language::Tokenization/"Class Name">, such as C<eval::anon_method::0>, C<eval::anon_method::1>, C<eval::anon_method::2>.
+An anon class has its L<class name|SPVM::Document::Language::Tokenization/"Class Name">, such as C<eval::anon_class::0>, C<eval::anon_class::1>, C<eval::anon_class::2>.
 
-  eval::anon_method::123
+  eval::anon_class::123
 
 L<Examples:>
   

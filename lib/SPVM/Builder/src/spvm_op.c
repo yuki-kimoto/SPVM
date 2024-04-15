@@ -259,7 +259,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   const char* basic_type_name;
   
   // Anon class
-  if (strstr(compiler->current_outmost_class_name, "eval::anon_method::")) {
+  if (strstr(compiler->current_outmost_class_name, "::anon_class::")) {
     if (op_type) {
       SPVM_COMPILER_error(compiler, "An anon class cannot have its class name.\n  at %s line %d", op_class->file, op_class->line);
       return op_class;
@@ -321,14 +321,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   if (strstr(basic_type_name, "::anon_method::")) {
     type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
     basic_type->is_anon = 1;
-    
-    if (!strstr(basic_type_name, "eval::anon_method::")) {
-      type->basic_type->access_control_type = SPVM_ATTRIBUTE_C_ID_PUBLIC;
-      basic_type->is_generated_by_anon_method = 1;
-    }
+    basic_type->is_generated_by_anon_method = 1;
+  }
+  else if (strstr(basic_type_name, "::anon_class::")) {
+    basic_type->is_anon = 1;
   }
   
-  if (!basic_type->is_anon) {
+  if (!(basic_type->is_anon || basic_type->is_generated_by_anon_method)) {
     assert(!islower(basic_type_name[0]));
     
     // If class name is different from the class name corresponding to the class file, compile error occur.
