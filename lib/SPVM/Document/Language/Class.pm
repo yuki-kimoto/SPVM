@@ -597,6 +597,10 @@ I<ANON_METHOD_CLASS_FIELD_DEFINITION_ITEM> are one of
   has FIELD_NAME : TYPE
   has FIELD_NAME : TYPE = OPERAND
   VAR : TYPE
+  
+  has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE
+  has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE = OPERAND
+  VAR : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE
 
 I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
 
@@ -605,6 +609,12 @@ I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 I<OPERAND> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
 C<VAR : TYPE> is expaneded to C<has FIELD_NAME : TYPE = OPERAND>. I<FIELD_NAME> is the same as the name of I<VAR>, but C<$> is removed. I<OPERAND> is I<VAR>.
+
+I<ATTRIBUTE> is a L<field attribute|/"Field Attributes">.
+
+Compilation Errors:
+
+Compilation errors caused by L<Field Definition|/"Field Definition"> could occur.
 
 Examples:
   
@@ -797,7 +807,7 @@ Examples:
 
 =head1 Class Variable
 
-A class variable is a global variable with a name space.
+A class variable is a global variable that belongs to a L<class|/"Class">.
 
 =head2 Class Variable Definition
 
@@ -818,7 +828,7 @@ I<CLASS_VARIABLE_NAME> must a L<class variable name|SPVM::Document::Language::To
 
 I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">.
 
-I<ATTRIBUTE TYPE> must be a L<class variable attribute|/"Class Variable Attributes">, otherwise a compilation error occurs.
+I<ATTRIBUTE> must be a L<class variable attribute|/"Class Variable Attributes">, otherwise a compilation error occurs.
 
 If two or more class variables that has a same name are defined, a compilation error occurs.
 
@@ -866,7 +876,7 @@ The List of Class Variable Attributes:
       <b>private</b>
     </td>
     <td>
-      This class variable is private. All classes ohter than this class cannnot access this class. This is default.
+      This class variable is private. All classes ohter than this class cannnot access this class variable. This is default.
     </td>
   </tr>
   <tr>
@@ -874,7 +884,7 @@ The List of Class Variable Attributes:
       <b>protected</b>
     </td>
     <td>
-      This class variable is protected. All classes ohter than this class and its child classes cannot access this class.
+      This class variable is protected. All classes ohter than this class and its child classes cannot access this class variable.
     </td>
   </tr>
   <tr>
@@ -917,7 +927,7 @@ A class variable getter method is a method to perform the operation of the L<get
 
 This method is a class method that has no arguments.
 
-If the type of the class variable is the byte type or the short type, the return type is the int type, otherwise it is the same type of the class variable.
+If the type of the class variable is the byte type or the short type, the return type is the int type, otherwise it is the same type as the class variable.
 
 The method name is the same as the class variable name, but C<$> is removed. For example, if the class variable name is C<$FOO>, the method name is C<FOO>.
 
@@ -938,7 +948,7 @@ A class variable setter method is a method to perform the operation of the L<set
 
 This method is a class method that has an argument.
 
-If the type of the class variable is the byte type or the short type, the argument type is the int type, otherwise it is the same type of the class variable.
+If the type of the class variable is the byte type or the short type, the argument type is the int type, otherwise it is the same type as the class variable.
 
 The return type is the void type.
 
@@ -957,34 +967,44 @@ Examples:
 
 =head1 Field
 
-Fields are the data that an object has.
+A field is a data member of a L<class|/"Class">.
 
 =head2 Field Definition
 
 The C<has> keyword defines a field.
   
-  # The field definition
-  has FIELD_NAME : OPT_ATTRIBUTES TYPE;
-  
-  # An examples
-  has name : string;
-  has age : protected int;
-  has max : protected rw int
+  has FIELD_NAME : TYPE;
+  has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE;
 
-L<Field attributes|/"Field Attributes"> can be specified.
+I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
+
+I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+I<ATTRIBUTE> is a L<field attribute|/"Field Attributes">.
 
 Compilation Errors:
 
-The field definition needs the L<type|SPVM::Document::Language::Types/"Types">. The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|SPVM::Document::Language::Types/"Object Types">, otherwise a compilation error occurs.
+I<FIELD_NAME> must a L<field name|SPVM::Document::Language::Tokenization/"Field Name">, otherwise a compilation error occurs.
 
-The field names must follows the rule of the L<field name|SPVM::Document::Language::Tokenization/"Field Name">, otherwise a compilation error occurs.
+I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">.
 
-Field names cannot be duplicated. If so, a compilation error occurs.
+I<ATTRIBUTE > must be a L<field attribute|/"Field Attributes">, otherwise a compilation error occurs.
+
+If two or more fields that has a same name are defined, a compilation error occurs.
 
 Examples:
 
   class MyClass {
-    has name : string;
+    has num_byte : byte;
+    has num_short : short;
+    has num_int : int;
+    has num_long : long;
+    has num_float : float;
+    has num_double : double;
+    
+    has num_public : public int;
+    has num_ro : ro int;
+    has num_rw : rw int;
   }
 
 =head2 Field Attributes
@@ -1004,10 +1024,18 @@ The List of Field Attributes:
   </tr>
   <tr>
     <td>
+      <b>public</b>
+    </td>
+    <td>
+      This field is public. All classes can access this field.
+    </td>
+  </tr>
+  <tr>
+    <td>
       <b>private</b>
     </td>
     <td>
-      This field is private. This field cannnot be accessed from other class. This is default setting.
+      This field is private. All classes ohter than this class cannnot access this field. This is default.
     </td>
   </tr>
   <tr>
@@ -1015,15 +1043,7 @@ The List of Field Attributes:
       <b>protected</b>
     </td>
     <td>
-      This field is protected. This field cannnot be accessed from other class except for the child classes.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>public</b>
-    </td>
-    <td>
-      This field is public. This field can be accessed from other class.
+      This field is protected. All classes ohter than this class and its child classes cannot access this field.
     </td>
   </tr>
   <tr>
@@ -1031,7 +1051,7 @@ The List of Field Attributes:
       <b>ro</b>
     </td>
     <td>
-      This field has its getter method. The getter method name is the same as the field name. For example, If the field names is <code>foo</code>, The getter method name is C<foo>.
+      This field defines a <a href="#Field-Getter-Method">getter method</a>.
     </td>
   </tr>
   <tr>
@@ -1039,7 +1059,7 @@ The List of Field Attributes:
       <b>wo</b>
     </td>
     <td>
-      This field has its setter method. The setter method name is the same as field names adding <code>set_</code> to top. For example, If the field names is <code>foo</code>, The setter method name is <code>set_foo</code>.
+      This field defineds a <a href="#Field-Setter-Method">setter method</a>.
     </td>
   </tr>
   <tr>
@@ -1047,58 +1067,32 @@ The List of Field Attributes:
       <b>rw</b>
     </td>
     <td>
-      This field has its getter method and its setter method.
+      This field defines a <a href="#Field-Getter-Method">getter method</a> and a <a href="#Field-Setter-Method">setter method</a>.
     </td>
   </tr>
 </table>
 
 =end html
 
-A field getter method is an L<instance method|/"Instance Method">. It has no arguments. The return type of a field getter method is the same as its field type, except for the C<byte> and C<short> type.
-
-If the type of the field is the C<byte> or C<short> type, The return type of a field getter method is the C<int> type.
-
-A field setter method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the void type.
-
-If the type of the field is the C<byte> or C<short> type, The argument type of a field setter method is the C<int> type.
-
 Compilation Errors:
 
-Only one of field attributes C<private>, C<protected> or C<public> can be specified, otherwise a compilation error occurs.
+If specified, one of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
 
-If more than one of C<ro>, C<wo>, and C<rw> are specified at the same time, a compilation error occurs
-
-Examples:
-
-  class MyClass {
-    has num1 : byte;
-    has num2 : short;
-    has num3 : int;
-    has num4 : long;
-    has num5 : float;
-    has num6 : double;
-  
-    has num_public : public int;
-    has num_ro : ro int;
-    has num_wo : wo int;
-    has num_rw : rw int;
-  }
+If specified, one of C<ro>, C<wo>, and C<rw> must be specified, otherwise a compilation error occurs.
 
 =head3 Field Getter Method
 
 A field getter method is a method to perform the operation of the L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
 
-It has no arguments. The return type is the same as the type of the field except that the type of the field is the byte type or the short type.
+This method is an instance method that has no arguments.
 
-If the type of the field is the byte type or the short type, the return type is the int type.
+If the type of the field is the byte type or the short type, the return type is the int type, otherwise it is the same type as the field.
 
-It is defined by the C<ro> or C<rw> L<field attributes|/"Field Attributes">.
-
-It is a method that name is the same as the field name.
+The method name is the same as the field name. For example, if the field name is C<foo>, the method name is C<foo>.
 
 Examples:
 
-  # Field getter method
+  # Examples of field getter methods
   class MyClass {
     has num : ro int;
     
@@ -1117,19 +1111,17 @@ Examples:
 
 A field setter method is a method to perform the operation of the L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
 
+This method is an instance method that has an argument.
+
+If the type of the field is the byte type or the short type, the argument type is the int type, otherwise it is the same type as the field.
+
 The return type is the void type.
 
-It has an argument that type is the same as the type of the fieldexcept that the type of the field is the byte type or the short type.
-
-If the type of the field is the byte type or the short type, the argument type is the int type.
-
-It is defined by the C<wo>  or C<rw> L<field attributes|/"Field Attributes">.
-
-It is a method that name is the same as the field name, but prepend C<set_> to it. For example, if the field name is C<foo>, its setter method name is C<set_foo>.
+The method name is the same as the field name, but C<set_> is added to the beginning of it. For example, if the field name is C<foo>, the method name is C<set_foo>.
 
 Examples:
 
-  # Field setter method
+  # Examples of field setter methods
   class MyClass {
     has num : wo int;
     
