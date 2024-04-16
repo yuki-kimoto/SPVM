@@ -544,32 +544,35 @@ L<Examples:>
 
 =head2 Anon Method Class
 
+An anon method class is a class defined by an L<anon method operator|Anon Method Operator/"Anon Method Operator">.
+
 =head3 Anon Method Class Definition
 
-The anon method operator defines an L<anon calss|SPVM::Document::Language::Class/"Anon Class"> that has an anon instance method.
+The anon method class definition has the following syntax.
 
-And this operator creates an object which type is the anon class by the L<new/"new Operator"> operator, and returns it.
-  
-  # Anon method
-  method : TYPE  (VAR1 : TYPE1, VAR2 : TYPE2, ...) {
-  
-  }
+  ANON_METHOD_CLASS_FIELD_DEFINITION METHOD_DEFINITION
 
-The way to define the method is the same as the L<method definition|SPVM::Document::Language::Class/"Method Definition">.
+I<ANON_METHOD_CLASS_FIELD_DEFINITION> is an L<anon method class field definition|/"Anon Method Class Field Definition">.
 
-If an anon method is defined, the name of the class that owns the anon method consist of the L<outmost class|/"Outmost Class">, the line number and the position of columns the anon class is defined conncted with C<::>.
+I<METHOD_DEFINITION> is a L<method definition|/"Method Definition">.
+
+The method name of I<METHOD_DEFINITION> is an empty string C<"">.
+
+The anon method class definition defines a class to which this method belongs.
+
+The name of this class is a string that joins the L<outmost class|/"Outmost Class">, a string C<"anon_method">, the line number and the position of columns where an anon method class definition is written with C<::>.
 
   MyClass::anon_method::3::23
 
-The class that onws an anon method has the same access control as its outmost class.
+An anon method class has the same access control as its outmost class.
 
-The class that onws an anon method has the same alias names as its outmost class.
+An anon method class has the same alias names as its outmost class.
 
 Examples:
   
-  # Anon method
+  # Examples of the anon method definition
   class Foo::Bar {
-    method some_method : void () {
+    method my_method : void () {
       my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
         my $point1 = (Point)$x1;
         my $point2 = (Point)$x2;
@@ -579,43 +582,22 @@ Examples:
     }
   }
 
-See also L<Comparator|SPVM::Comparator>.
-
-The above example is the same as the following codes.
-  
-  # Foo/Bar.spvm
-  class Foo::Bar {
-    method some_method : void () {
-      my $comparator = (Comparator)new Foo::Bar::anon_method::3::31;
-    }
-  }
-  
-  # Foo/Bar/anon_method/3/31.spvm
-  class Foo::Bar::anon_method::3::31 : public {
-    method : int ($x1 : object, $x2 : object) {
-      my $point1 = (Point)$x1;
-      my $point2 = (Point)$x2;
-      
-      return $point1->x <=> $point2->x;
-    }
-  }
-
 =head4 Anon Method Class Field Definition
 
 The anon method field definition is the syntax to define the field of the anon class of the anon method.
 
   # Anon method field definitions
-  [has FIELD_NAME : TYPE1, has FIELD_NAME : TYPE2, ...] ANON_METHOD_DEFINITION
+  [has FIELD_NAME : TYPE1, has FIELD_NAME : TYPE2, ...] ANON_METHOD_CLASS_DEFINITION
   
   # Anon method field definitions with field default values
-  [has FIELD_NAME : TYPE1 = OPERAND1, has FIELD_NAME : TYPE2 = OPERAND2, ...] ANON_METHOD_DEFINITION
+  [has FIELD_NAME : TYPE1 = OPERAND1, has FIELD_NAME : TYPE2 = OPERAND2, ...] ANON_METHOD_CLASS_DEFINITION
   
-  [VAR1 : TYPE1, VAR2 : TYPE2, ...] ANON_METHOD_DEFINITION
+  [VAR1 : TYPE1, VAR2 : TYPE2, ...] ANON_METHOD_CLASS_DEFINITION
   
 Examples:
 
   class Foo::Bar {
-    method some_method : void () {
+    method my_method : void () {
       my $foo = 1;
       my $bar = 5L;
       
@@ -632,7 +614,7 @@ Examples:
 Same as avobe but more simple:
 
   class Foo::Bar {
-    method some_method : void () {
+    method my_method : void () {
       my $foo = 1;
       my $bar = 5L;
       
@@ -647,7 +629,7 @@ The above example is the same as the following codes.
 
   # Foo/Bar.spvm
   class Foo::Bar {
-    method some_method : void () {
+    method my_method : void () {
       # Externally defined local variables
       my $foo = 1;
       my $bar = 5L;

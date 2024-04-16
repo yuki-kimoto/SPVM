@@ -1456,15 +1456,29 @@ An anon method operator creates an object of an L<anon method class|SPVM::Docume
 
 This operator defines an anon method class using L<anon method class definition|SPVM::Document::Language::Class/"Anon Method Class Definition"> I<ANON_METHOD_CLASS_DEFINTION>, creates a new object from the class, and retunrs it.
 
+If the anon method class field definition in I<ANON_METHOD_CLASS_DEFINTION> has field default values, the fields of the anon method object are set to these values.
+
 Examples:
   
+  # Examples of the anon method operator
   my $comparator = (Comparator)method : int ($x1 : object, $x2 : object) {
     my $point1 = (Point)$x1;
     my $point2 = (Point)$x2;
     
     return $point1->x <=> $point2->x;
   };
-
+  
+  # With an anon method class field definition
+  my $num = 1;
+  my $comparator = [$num : int] (Comparator)method : int ($x1 : object, $x2 : object) {
+    my $point1 = (Point)$x1;
+    my $point2 = (Point)$x2;
+    
+    say $num;
+    
+    return $point1->x <=> $point2->x;
+  };
+  
 =head2 undef Operator
 
 The C<undef> operator returns an L<undefined value|SPVM::Document::Language::Types/"Undefined Value">.
