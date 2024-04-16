@@ -1853,14 +1853,20 @@ A C<default> block is a scope block.
 
 =head1 Type Comment
 
-The type comment syntax is supported. The type comment can be written after C<of> keyword.
+The type comment is a syntax to write a comment for a type.
 
-  TYPE of TYPE
-  TYPE of TYPE1|TYPE2
-  TYPE of TYPE1|TYPE2|TYPE3
+  TYPE of TYPE_COMMENT
+  TYPE of TYPE_COMMENT1|TYPE_COMMENT2|TYPE_COMMENTn
 
-The type comment can be used the type of the L<field definition|/"Field Definition">, the L<class variable definition|/"Class Variable Definition">, the L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of the L<method definition|/"Method Definition">.
+I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
+I<TYPE> is a type used in the L<field definition|/"Field Definition">, the L<class variable definition|/"Class Variable Definition">, the L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of the L<method definition|/"Method Definition">.
+
+I<TYPE_COMMENT> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+Examples:
+
+  # Examples of type comments
   has points : List of Point;
   
   our $POINTS : List of Point;
@@ -1870,8 +1876,6 @@ The type comment can be used the type of the L<field definition|/"Field Definiti
   static method foo : List of Point ($arg : List of Point) { ... }
   
   my $replace : object of string|Regex::Replacer;
-
-Type comments have no meanings at runtime.
 
 Compilation Errors:
 
