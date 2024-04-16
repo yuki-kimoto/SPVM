@@ -1450,11 +1450,11 @@ Examples:
 
 =head2 Anon Method Operator
 
-The anon method operator creates an anon method.
+An anon method operator creates an object of an L<anon method class|SPVM::Document::Language::Class/"Anon Method Class">.
 
-  ANON_METHOD
+  ANON_METHOD_CLASS_DEFINTION
 
-This operator defines an L<anon method|SPVM::Document::Language::Class/"Anon Method"> I<ANON_METHOD>, creates a new object of the anon class that owns the anon method, and retunrs it.
+This operator defines an anon method class using L<anon method class definition|SPVM::Document::Language::Class/"Anon Method Class Definition"> I<ANON_METHOD_CLASS_DEFINTION>, creates a new object from the class, and retunrs it.
 
 Examples:
   
