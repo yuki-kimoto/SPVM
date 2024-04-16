@@ -130,7 +130,7 @@ enum {
   SPVM_OP_C_ID_FIELD,
   SPVM_OP_C_ID_METHOD,
   SPVM_OP_C_ID_ENUM,
-  SPVM_OP_C_ID_ENUMERATION_VALUE,
+  SPVM_OP_C_ID_ENUMERATION_ITEM,
   SPVM_OP_C_ID_ENUM_BLOCK,
   SPVM_OP_C_ID_BLOCK,
   SPVM_OP_C_ID_EVAL,
@@ -332,7 +332,7 @@ SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name);
 
-SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_operand);
+SPVM_OP* SPVM_OP_build_enumeration_item(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_operand);
 
 SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op_type, SPVM_OP* op_length);
 

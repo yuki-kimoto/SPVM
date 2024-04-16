@@ -35,7 +35,7 @@
 %type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
 %type <opval> opt_classes classes class class_block opt_extends version_decl
 %type <opval> opt_definitions definitions definition
-%type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
+%type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
 %type <opval> method anon_method opt_args args arg use require class_alias our has has_for_anon_list has_for_anon interface allow
 %type <opval> opt_attributes attributes
 %type <opval> opt_statements statements statement if_statement else_statement 
@@ -396,19 +396,19 @@ enumeration
     }
 
 enumeration_block 
-  : '{' opt_enumeration_values '}'
+  : '{' opt_enumeration_items '}'
     {
       SPVM_OP* op_enum_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ENUM_BLOCK, $1->file, $1->line);
       SPVM_OP_insert_child(compiler, op_enum_block, op_enum_block->last, $2);
       $$ = op_enum_block;
     }
 
-opt_enumeration_values
+opt_enumeration_items
   : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->current_file, compiler->current_line);
     }
-  | enumeration_values
+  | enumeration_items
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -420,8 +420,8 @@ opt_enumeration_values
       }
     }
     
-enumeration_values
-  : enumeration_values ',' enumeration_value 
+enumeration_items
+  : enumeration_items ',' enumeration_item 
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -435,17 +435,17 @@ enumeration_values
       
       $$ = op_list;
     }
-  | enumeration_values ','
-  | enumeration_value
+  | enumeration_items ','
+  | enumeration_item
   
-enumeration_value
+enumeration_item
   : method_name
     {
-      $$ = SPVM_OP_build_enumeration_value(compiler, $1, NULL);
+      $$ = SPVM_OP_build_enumeration_item(compiler, $1, NULL);
     }
   | method_name ASSIGN CONSTANT
     {
-      $$ = SPVM_OP_build_enumeration_value(compiler, $1, $3);
+      $$ = SPVM_OP_build_enumeration_item(compiler, $1, $3);
     }
 
 our

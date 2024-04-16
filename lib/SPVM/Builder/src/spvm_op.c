@@ -130,7 +130,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "FIELD",
     "METHOD",
     "ENUM",
-    "ENUMERATION_VALUE",
+    "ENUMERATION_ITEM",
     "ENUM_BLOCK",
     "BLOCK",
     "EVAL",
@@ -779,8 +779,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       // Enumeration definition
       else if (op_decl->id == SPVM_OP_C_ID_ENUM) {
         SPVM_OP* op_enum_block = op_decl->first;
-        SPVM_OP* op_enumeration_values = op_enum_block->first;
-        SPVM_OP* op_method = op_enumeration_values->first;
+        SPVM_OP* op_enumeration_items = op_enum_block->first;
+        SPVM_OP* op_method = op_enumeration_items->first;
         while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
           SPVM_LIST_push(type->basic_type->methods, op_method->uv.method);
         }
@@ -1091,8 +1091,8 @@ SPVM_OP* SPVM_OP_build_enumeration_definition(SPVM_COMPILER* compiler, SPVM_OP* 
   
   SPVM_OP_insert_child(compiler, op_enumeration, op_enumeration->last, op_enumeration_block);
   
-  SPVM_OP* op_enumeration_values = op_enumeration_block->first;
-  SPVM_OP* op_method = op_enumeration_values->first;
+  SPVM_OP* op_enumeration_items = op_enumeration_block->first;
+  SPVM_OP* op_method = op_enumeration_items->first;
   while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
     SPVM_METHOD* method = op_method->uv.method;
 
@@ -1141,7 +1141,7 @@ SPVM_OP* SPVM_OP_build_enumeration_definition(SPVM_COMPILER* compiler, SPVM_OP* 
   return op_enumeration;
 }
 
-SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_constant) {
+SPVM_OP* SPVM_OP_build_enumeration_item(SPVM_COMPILER* compiler, SPVM_OP* op_name, SPVM_OP* op_constant) {
   
   if (op_constant) {
     

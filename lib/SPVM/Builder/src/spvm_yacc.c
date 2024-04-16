@@ -625,8 +625,8 @@ static const char *const yytname[] =
   "classes", "class", "opt_basic_type", "opt_extends", "class_block",
   "opt_definitions", "definitions", "definition", "init_block",
   "version_decl", "use", "require", "class_alias", "allow", "interface",
-  "enumeration", "enumeration_block", "opt_enumeration_values",
-  "enumeration_values", "enumeration_value", "our", "has", "method",
+  "enumeration", "enumeration_block", "opt_enumeration_items",
+  "enumeration_items", "enumeration_item", "our", "has", "method",
   "anon_method", "opt_args", "args", "arg", "has_for_anon_list",
   "has_for_anon", "opt_attributes", "attributes", "opt_statements",
   "statements", "statement", "die", "void_return_operator", "warn",
@@ -3095,7 +3095,7 @@ yyreduce:
   case 74:
 #line 443 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_enumeration_value(compiler, (yyvsp[0].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_enumeration_item(compiler, (yyvsp[0].opval), NULL);
     }
 #line 3101 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;
@@ -3103,7 +3103,7 @@ yyreduce:
   case 75:
 #line 447 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_enumeration_value(compiler, (yyvsp[-2].opval), (yyvsp[0].opval));
+      (yyval.opval) = SPVM_OP_build_enumeration_item(compiler, (yyvsp[-2].opval), (yyvsp[0].opval));
     }
 #line 3109 "lib/SPVM/Builder/src/spvm_yacc.c" /* yacc.c:1646  */
     break;

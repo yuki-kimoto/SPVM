@@ -917,9 +917,9 @@ The List of Class Variable Attributes:
 
 Compilation Errors:
 
-If specified, one of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
+One of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
 
-If specified, one of C<ro>, C<wo>, and C<rw> must be specified, otherwise a compilation error occurs.
+One of C<ro>, C<wo>, and C<rw> must be specified, otherwise a compilation error occurs.
 
 =head3 Class Variable Getter Method
 
@@ -1076,9 +1076,9 @@ The List of Field Attributes:
 
 Compilation Errors:
 
-If specified, one of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
+One of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
 
-If specified, one of C<ro>, C<wo>, and C<rw> must be specified, otherwise a compilation error occurs.
+One of C<ro>, C<wo>, and C<rw> must be specified, otherwise a compilation error occurs.
 
 =head3 Field Getter Method
 
@@ -1609,72 +1609,73 @@ If the type of the local variable declaration is ommited, the type of the right 
 
 =head1 Enumeration
 
-The enumeration is the syntx to defines constant values of the int type.
+Enumeration is a syntax that defines 32-bit integers that belongs to a L<class|/"Class">.
 
 =head2 Enumeration Definition
 
-The C<enum> keyword defines an enumeration. An enumeration has definitions of constant values.
-
-  # Enumeration Definition
-  enum {
-    FLAG1,
-    FLAG2,
-    FLAG3
-  }
-
-The name given to an enumeration value must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
-
-The first enumeration value is 0. The next enumeration value is incremented by 1, and this is continued in the same way.
-
-In the above example, C<FLAG1> is 0, C<FALG2> is 1, and C<FLAG3> is 2.
-
-The type of an enumeration value is the int type.
-
-C<,> after the last enumeration value can be allowed.
+The C<enum> keyword defines an enumeration.
 
   enum {
-    FLAG1,
-    FLAG2,
-    FLAG3,
+    ITEM1,
+    ITEM2,
+    ITEMn
   }
 
-An enumeration value can be set by C<=> explicitly.
+C<,> after the last enumeration item is allowed.
 
   enum {
-    FLAG1,
-    FLAG2 = 4,
-    FLAG3,
+    ITEM1,
+    ITEM2,
+    ITEM3,
   }
 
-In the above example, C<FLAG1> is 0, C<FALG2> is 4, and C<FLAG3> is 5.
+I<ITEM> is one of
 
-An enumeration value is got by the L<class method call|SPVM::Document::Language::Operators/"Class Method Call">.
+  NAME
+  NAME = VALUE
 
-  Foo->FLAG1
+I<NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
+
+I<VALUE> is an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> within the int type. I<VALUE> is converted the value of the int type.
+
+If I<VALUE> of I<ITEM1> is omitted, it is set to 0.
+
+If I<VALUE> of I<ITEMn> is ommited, it is set to the value of the previous item plus 1.
+
+Each enumeration item is converted to a L<method definition|Method Definition> that defines a class method that returns the value of the enumeration item.
+
+The return type of the method is the int type.
 
 Compilation Errors:
 
-If an enumeration definition is invalid, a compilation error occurs.
+I<NAME> must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">, otherwise a compilation error occurs.
+
+I<VALUE> must be an L<integer literal|/"Integer Literal"> within the int type, otherwise a compilation error occurs.
 
 Examples:
-
+  
+  # Examples of enumerations
   class MyClass {
     enum {
       FLAG1,
       FLAG2,
       FLAG3,
     }
+    
+    static method main : void () {
+      my $flag1 = MyClass->FLAG1;
+    }
+  }
+  
+  class MyClass {
+    enum {
+      FLAG1,
+      FLAG2 = 2,
+      FLAG3,
+    }
   }
 
 =head2 Enumeration Attributes
-
-Attributes can be specified to an enumeration definition.
-
-  private enum {
-    FLAG1,
-    FLAG2 = 4,
-    FLAG3,
-  }
 
 The List of Enumeration Attributes:
 
@@ -1691,10 +1692,18 @@ The List of Enumeration Attributes:
   </tr>
   <tr>
     <td>
+      <b>public</b>
+    </td>
+    <td>
+      This enumeration is public. All classes can access all items of this enumeration. This is default.
+    </td>
+  </tr>
+  <tr>
+    <td>
       <b>private</b>
     </td>
     <td>
-      This enumeration is private. Each value of this enumeration can not be accessed from other classes.
+      This enumeration is private. All classes ohter than this class cannnot access all items of this enumeration.
     </td>
   </tr>
   <tr>
@@ -1702,15 +1711,7 @@ The List of Enumeration Attributes:
       <b>protected</b>
     </td>
     <td>
-      This enumeration is protected. Each value of this enumeration can not be accessed from other classes except for the child classes.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>public</b>
-    </td>
-    <td>
-      This enumeration is public. Each value of this enumeration can be accessed from other classes. This is default setting.
+      This enumeration is protected. All classes ohter than this class and its child classes cannot access all items of this enumeration.
     </td>
   </tr>
 </table>
@@ -1719,7 +1720,7 @@ The List of Enumeration Attributes:
 
 Compilation Errors:
 
-Only one of enumeration attributes C<private>, C<protected> or C<public> can be specified, otherwise a compilation error occurs.
+One of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
 
 =head1 Block
 

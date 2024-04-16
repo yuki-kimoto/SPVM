@@ -31,7 +31,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
   %type <opval> array_type_with_length ref_type return_type type_comment opt_type_comment union_type
   %type <opval> opt_classes classes class class_block opt_extends version_decl
   %type <opval> opt_definitions definitions definition
-  %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
+  %type <opval> enumeration enumeration_block opt_enumeration_items enumeration_items enumeration_item
   %type <opval> method anon_method opt_args args arg use require class_alias our has has_for_anon_list has_for_anon interface allow
   %type <opval> opt_attributes attributes
   %type <opval> opt_statements statements statement if_statement else_statement
@@ -195,18 +195,18 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     : opt_attributes ENUM enumeration_block
 
   enumeration_block
-    : '{' opt_enumeration_values '}'
+    : '{' opt_enumeration_items '}'
 
-  opt_enumeration_values
+  opt_enumeration_items
     : /* Empty */
-    | enumeration_values
+    | enumeration_items
 
-  enumeration_values
-    : enumeration_values ',' enumeration_value
-    | enumeration_values ','
-    | enumeration_value
+  enumeration_items
+    : enumeration_items ',' enumeration_item
+    | enumeration_items ','
+    | enumeration_item
 
-  enumeration_value
+  enumeration_item
     : method_name
     | method_name ASSIGN CONSTANT
 
