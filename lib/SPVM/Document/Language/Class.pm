@@ -797,40 +797,44 @@ Examples:
 
 =head1 Class Variable
 
-A class variable is a global variable that has the name space.
+A class variable is a global variable with a name space.
 
 =head2 Class Variable Definition
 
 C<our> keyword defines a class variable.
 
   our CLASS_VARIABLE_NAME : TYPE;
+  our CLASS_VARIABLE_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE;
 
-The type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type"> or an L<object type|SPVM::Document::Language::Types/"Object Types">.
+I<CLASS_VARIABLE_NAME> is a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name"> that does not contains C<::>.
 
-L<Class variable attributes|/"Class Variable Attributes"> can be specified.
+I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
-  our CLASS_VARIABLE_NAME : ATTRIBUTE TYPE;
-  our CLASS_VARIABLE_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTE3 TYPE;
+I<ATTRIBUTE> is a L<class variable attribute|/"Class Variable Attributes">.
 
 Compilation Errors:
 
-The class variable mame must follow the rule defined in the L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name">, and must not contain C<::>, otherwise a compilation error occurs.
+I<CLASS_VARIABLE_NAME> must a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name"> that does not contains C<::>, otherwise a compilation error occurs.
 
-If a class name with the same name is defined, a compilation error occurs.
+I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">.
+
+I<ATTRIBUTE TYPE> must be a L<class variable attribute|/"Class Variable Attributes">, otherwise a compilation error occurs.
+
+If two or more class variables that has a same name are defined, a compilation error occurs.
 
 Examples:
 
   class MyClass {
-    our $NUM1 : byte;
-    our $NUM2 : short;
-    our $NUM3 : int;
-    our $NUM4 : long;
-    our $NUM5 : float;
-    our $NUM6 : double;
-  
+    our $NUM_BYTE : byte;
+    our $NUM_SHORT : short;
+    our $NUM_INT : int;
+    our $NUM_LONG : long;
+    our $NUM_FLOAT : float;
+    our $NUM_DOUBLE : double;
+    our $POINT : Point;
+    
     our $NUM_PUBLIC : public int;
     our $NUM_RO : ro int;
-    our $NUM_WO : wo int;
     our $NUM_RW : rw int;
   }
 
@@ -854,7 +858,7 @@ The List of Class Variable Attributes:
       <b>public</b>
     </td>
     <td>
-      The class variable is public. The class variable can be accessed from other classes.
+      This class variable is public. All classes can access this class variable.
     </td>
   </tr>
   <tr>
@@ -862,7 +866,7 @@ The List of Class Variable Attributes:
       <b>private</b>
     </td>
     <td>
-      The class variable is private. The class variable cannnot be accessed from other classes. This is default setting.
+      This class variable is private. All classes ohter than this class cannnot access this class. This is default.
     </td>
   </tr>
   <tr>
@@ -870,7 +874,7 @@ The List of Class Variable Attributes:
       <b>protected</b>
     </td>
     <td>
-      The class variable is protected. The class variable cannnot be accessed from other classes except for the child classes.
+      This class variable is protected. All classes ohter than this class and its child classes cannot access this class.
     </td>
   </tr>
   <tr>
@@ -878,7 +882,7 @@ The List of Class Variable Attributes:
       <b>ro</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Getter-Method">getter method</a>.
+      This class variable defines a <a href="#Class-Variable-Getter-Method">getter method</a>.
     </td>
   </tr>
   <tr>
@@ -886,7 +890,7 @@ The List of Class Variable Attributes:
       <b>wo</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Setter-Method">setter method</a>.
+      This class variable defineds a <a href="#Class-Variable-Setter-Method">setter method</a>.
     </td>
   </tr>
   <tr>
@@ -894,7 +898,7 @@ The List of Class Variable Attributes:
       <b>rw</b>
     </td>
     <td>
-      The class variable has its <a href="#Class-Variable-Getter-Method">getter method</a> and <a href="#Class-Variable-Setter-Method">setter method</a>.
+      This class variable defines a <a href="#Class-Variable-Getter-Method">getter method</a> and a <a href="#Class-Variable-Setter-Method">setter method</a>.
     </td>
   </tr>
 </table>
@@ -903,25 +907,23 @@ The List of Class Variable Attributes:
 
 Compilation Errors:
 
-Only one of class variable attributes C<private>, C<protected> or C<public> can be specified, otherwise a compilation error occurs.
+If specified, one of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
 
-If more than one of C<ro>, C<wo>, and C<rw> are specified, a compilation error occurs
+If specified, one of C<ro>, C<wo>, and C<rw> must be specified, otherwise a compilation error occurs.
 
 =head3 Class Variable Getter Method
 
 A class variable getter method is a method to perform the operation of the L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
 
-It has no arguments. The return type is the same as the type of the class variable except that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
+This method is a class method that has no arguments.
 
-If the type of the class variable is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>, the return type is the int type.
+If the type of the class variable is the byte type or the short type, the return type is the int type, otherwise it is the same type of the class variable.
 
-It is defined by the C<ro> or C<rw> L<class variable attributes|/"Class Variable Attributes">.
-
-It is a method that name is the same as the class variable name removing C<$>. For example, if the class variable name is $FOO, its getter method name is C<FOO>.
+The method name is the same as the class variable name, but C<$> is removed. For example, if the class variable name is C<$FOO>, the method name is C<FOO>.
 
 Examples:
 
-  # Class variable getter method
+  # Examples of class variable getter methods
   class MyClass {
     our $NUM : ro int;
     
@@ -934,19 +936,17 @@ Examples:
 
 A class variable setter method is a method to perform the operation of the L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
 
-The return type is the L<void type|SPVM::Document::Language::Types/"void Type">.
+This method is a class method that has an argument.
 
-It has an argument that type is the same as the type of the class variableexcept that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
+If the type of the class variable is the byte type or the short type, the argument type is the int type, otherwise it is the same type of the class variable.
 
-If the type of the class variable is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>, the argument type is the int type.
+The return type is the void type.
 
-It is defined by the C<wo>  or C<rw> L<class variable attributes|/"Class Variable Attributes">.
-
-It is a method that name is the same as the class variable name removing C<$> and adding C<SET_> to the beginning. For example, if the class variable name is $FOO, its setter method name is C<SET_FOO>.
+The method name is the same as the class variable name, but C<$> is removed and C<SET_> is added to the beginning of it. For example, if the class variable name is C<$FOO>, the method name is C<SET_FOO>.
 
 Examples:
 
-  # Class variable setter method
+  # Examples of class variable setter methods
   class MyClass {
     our $NUM : wo int;
     
@@ -1058,7 +1058,7 @@ A field getter method is an L<instance method|/"Instance Method">. It has no arg
 
 If the type of the field is the C<byte> or C<short> type, The return type of a field getter method is the C<int> type.
 
-A field setter method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the L<void type|SPVM::Document::Language::Types/"void Type">.
+A field setter method is an L<instance method|/"Instance Method">. It has an argument. The type of the argument is the same as the field type. The return type is the void type.
 
 If the type of the field is the C<byte> or C<short> type, The argument type of a field setter method is the C<int> type.
 
@@ -1088,9 +1088,9 @@ Examples:
 
 A field getter method is a method to perform the operation of the L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
 
-It has no arguments. The return type is the same as the type of the field except that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
+It has no arguments. The return type is the same as the type of the field except that the type of the field is the byte type or the short type.
 
-If the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>, the return type is the int type.
+If the type of the field is the byte type or the short type, the return type is the int type.
 
 It is defined by the C<ro> or C<rw> L<field attributes|/"Field Attributes">.
 
@@ -1117,11 +1117,11 @@ Examples:
 
 A field setter method is a method to perform the operation of the L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
 
-The return type is the L<void type|SPVM::Document::Language::Types/"void Type">.
+The return type is the void type.
 
-It has an argument that type is the same as the type of the fieldexcept that the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>.
+It has an argument that type is the same as the type of the fieldexcept that the type of the field is the byte type or the short type.
 
-If the type of the field is the L<byte type|SPVM::Document::Language::Types/"byte Type"> or the L<short type|short Type>, the argument type is the int type.
+If the type of the field is the byte type or the short type, the argument type is the int type.
 
 It is defined by the C<wo>  or C<rw> L<field attributes|/"Field Attributes">.
 
@@ -1180,7 +1180,7 @@ Compilation Errors:
 
 The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">, otherwise a compilation error occurs.
 
-The type of the return value must be the L<void type|SPVM::Document::Language::Types/"void Type">, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">, otherwise a compilation error occurs.
+The type of the return value must be the void type, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">, otherwise a compilation error occurs.
 
 =head3 Optional Arguments
 
@@ -1326,6 +1326,8 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
   </tr>
 </table>
 
+=end html
+
 If C<native> and C<precompile> attributes cannnot used together.
 
 C<required> can be only used in a method of a L<interface|/"Interface">.
@@ -1350,8 +1352,6 @@ Examples:
   
   # native method
   native method : int sum ($num1 : int, $num2 : int);
-
-=end html
 
 =head2 INIT Block
 
@@ -1438,7 +1438,7 @@ The name of the destructor must be C<DESTROY>.
 
 A destructor cannnot have its arguments.
 
-The retrun type must be L<void type|SPVM::Document::Language::Types/"void Type">.
+The retrun type must be the void type.
 
 A destructor must be an L<instance method|/"Instance Method">.
 
