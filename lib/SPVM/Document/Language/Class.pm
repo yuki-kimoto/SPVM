@@ -604,6 +604,8 @@ I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
 I<OPERAND> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
+C<VAR : TYPE> is expaneded to C<has FIELD_NAME : TYPE = OPERAND>. I<FIELD_NAME> is the same as the name of I<VAR>, but C<$> is removed. I<OPERAND> is I<VAR>.
+
 Examples:
   
   # Examples of the anon method class field definition
