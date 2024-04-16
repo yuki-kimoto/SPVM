@@ -544,7 +544,7 @@ L<Examples:>
 
 =head2 Anon Method Class
 
-An anon method class is a class defined by an L<anon method operator|Anon Method Operator/"Anon Method Operator">.
+An anon method class is a class defined by an L<anon method operator|SPVM::Document::Language::Operators/"Anon Method Operator">.
 
 =head3 Anon Method Class Definition
 
@@ -556,8 +556,6 @@ I<ANON_METHOD_CLASS_FIELD_DEFINITION> is an L<anon method class field definition
 
 I<METHOD_DEFINITION> is a L<method definition|/"Method Definition">.
 
-The method name of I<METHOD_DEFINITION> is an empty string C<"">.
-
 The anon method class definition defines a class to which this method belongs.
 
 The name of this class is a string that joins the L<outmost class|/"Outmost Class">, a string C<"anon_method">, the line number and the position of columns where an anon method class definition is written with C<::>.
@@ -567,6 +565,12 @@ The name of this class is a string that joins the L<outmost class|/"Outmost Clas
 An anon method class has the same access control as its outmost class.
 
 An anon method class has the same alias names as its outmost class.
+
+Compilation Errors:
+
+The method name of I<METHOD_DEFINITION> must be an empty string, otherwise a compilation error occurs.
+
+The method must be an instance method, otherwise a compilation error occurs.
 
 Examples:
   
@@ -584,18 +588,25 @@ Examples:
 
 =head4 Anon Method Class Field Definition
 
-The anon method field definition is the syntax to define the field of the anon class of the anon method.
+An anon method class field definition defines fields of an L<anon class|/"Anon Class">, which is a part of the L<anon method class definition|Anon Method Class Definition>.
+  
+  [ANON_METHOD_CLASS_FIELD_DEFINITION_ITEM1, ANON_METHOD_CLASS_FIELD_DEFINITION_ITEM, ANON_METHOD_CLASS_FIELD_DEFINITION_ITEMn]
 
-  # Anon method field definitions
-  [has FIELD_NAME : TYPE1, has FIELD_NAME : TYPE2, ...] ANON_METHOD_CLASS_DEFINITION
+I<ANON_METHOD_CLASS_FIELD_DEFINITION_ITEM> are one of
   
-  # Anon method field definitions with field default values
-  [has FIELD_NAME : TYPE1 = OPERAND1, has FIELD_NAME : TYPE2 = OPERAND2, ...] ANON_METHOD_CLASS_DEFINITION
-  
-  [VAR1 : TYPE1, VAR2 : TYPE2, ...] ANON_METHOD_CLASS_DEFINITION
-  
+  has FIELD_NAME : TYPE
+  has FIELD_NAME : TYPE = OPERAND
+  VAR : TYPE
+
+I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
+
+I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+I<OPERAND> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
+
 Examples:
-
+  
+  # Examples of the anon method class field definition
   class Foo::Bar {
     method my_method : void () {
       my $foo = 1;
@@ -605,54 +616,22 @@ Examples:
         my $foo = $self->{foo};
         my $bar = $self->{bar};
         
-        print "$foo\n";
-        print "$bar\n";
+        say "$foo";
+        say "$bar";
       };
     }
   }
-
-Same as avobe but more simple:
-
+  
+  # More simple
   class Foo::Bar {
     method my_method : void () {
       my $foo = 1;
       my $bar = 5L;
       
       my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
-        print "$foo\n";
-        print "$bar\n";
+        say "$foo";
+        say "$bar";
       };
-    }
-  }
-
-The above example is the same as the following codes.
-
-  # Foo/Bar.spvm
-  class Foo::Bar {
-    method my_method : void () {
-      # Externally defined local variables
-      my $foo = 1;
-      my $bar = 5L;
-      
-      my $anon = new Foo::Bar::anon_method::5::61;
-      $anon->{foo} = $foo;
-      $anon->{bar} = $bar;
-      
-      my $comparator = (Comparator)$anon;
-    }
-  }
-  
-  # Foo/Bar/anon_method/5/61.spvm
-  class Foo::Bar::anon_method::5::61 : public {
-    has foo : public int;
-    has bar : public long;
-    
-    method : int ($x1 : object, $x2 : object) {
-      my $foo = $self->{foo};
-      my $bar = $self->{bar};
-      
-      print "$foo\n";
-      print "$bar\n";
     }
   }
 
@@ -1472,7 +1451,7 @@ Examples:
   # Destructor
   class MyClass {
     method DESTROY : void () {
-      print "DESTROY";
+      say "DESTROY";
     }
   }
 
