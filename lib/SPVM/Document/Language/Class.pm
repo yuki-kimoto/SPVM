@@ -22,13 +22,26 @@ The C<class> keyword defines a L<class type|SPVM::Document::Language::Types/"Cla
   
   }
 
+  class CLASS_NAME : ATTRIBUTES {
+  
+  }
+
+I<CLASS_NAME> is a L<class name|SPVM::Document::Language::Tokenization/"Class Name">.
+
+I<ATTRIBUTES> is one of
+  
+  ATTRIBUTES ATTRIBUTE
+  ATTRIBUTE
+
+I<ATTRIBUTE> is a L<class attributre|"Class Attributes">.
+
 A class type is also simply called a class.
 
-An object can be created from a class using the L<new operator|/"new Operator">.
+The L<new operator|/"new Operator"> creates an object from a class.
 
 Compilation Errors:
 
-The class name I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
 
 If more than one class is defined in a L<class file|/"Class File">, a compilation error occurs.
 
@@ -40,12 +53,6 @@ Examples:
   }
 
 =head2 Class Attributes
-
-One or more class attributes can be written after C<:>.
-
-  class CLASS_NAME : CLASS_ATTRIBUTE1 CLASS_ATTRIBUTE2 CLASS_ATTRIBUTEn {
-  
-  }
 
 The List of Class Attributes:
 
@@ -813,12 +820,23 @@ A class variable is a global variable that belongs to a L<class|/"Class">.
 
 C<our> keyword defines a class variable.
 
-  our CLASS_VARIABLE_NAME : TYPE;
-  our CLASS_VARIABLE_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE;
+  our CLASS_VARIABLE_NAME : OPT_ATTRIBUTES TYPE;
 
 I<CLASS_VARIABLE_NAME> is a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name"> that does not contains C<::>.
 
 I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+I<OPT_ATTRIBUTES> is one of
+
+  EMPTY
+  ATTRIBUTES
+
+I<EMPTY> means nothing exists.
+
+I<ATTRIBUTES> is one of
+  
+  ATTRIBUTES ATTRIBUTE
+  ATTRIBUTE
 
 I<ATTRIBUTE> is a L<class variable attribute|/"Class Variable Attributes">.
 
@@ -973,12 +991,23 @@ A field is a data member of a L<class|/"Class">.
 
 The C<has> keyword defines a field.
   
-  has FIELD_NAME : TYPE;
-  has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE;
+  has FIELD_NAME : OPT_ATTRIBUTES TYPE;
 
 I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
 
 I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+I<OPT_ATTRIBUTES> is one of
+
+  EMPTY
+  ATTRIBUTES
+
+I<EMPTY> means nothing exists.
+
+I<ATTRIBUTES> is one of
+  
+  ATTRIBUTES ATTRIBUTE
+  ATTRIBUTE
 
 I<ATTRIBUTE> is a L<field attribute|/"Field Attributes">.
 
