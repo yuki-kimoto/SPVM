@@ -1345,31 +1345,35 @@ Examples:
   # native method
   native method : int sum ($num1 : int, $num2 : int);
 
-=head2 INIT Block
+=head2 INIT Method
 
-The C<INIT> block defines a C<INIT> method to be executed just after the program starts.
+The C<INIT> method is the method that is executed just after the program starts.
+
+=head3 INIT Method Definition
+
+The C<INIT> method defines a C<INIT> method to be executed just after the program starts.
 
   INIT {
     
   }
 
-Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> can be written in a C<INIT> block.
+Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> can be written in a C<INIT> method.
 
   INIT {
     my $foo = 1 + 1;
     my $bar;
   }
 
-The L<return statement|SPVM::Document::Language::Statements/"return Statement"> cannot be written in C<INIT> block.
+The L<return statement|SPVM::Document::Language::Statements/"return Statement"> cannot be written in C<INIT> method.
 
-If a C<INIT> block is not defined in a class, a default empty C<INIT> block is defined.
+If a C<INIT> method is not defined in a class, a default empty C<INIT> method is defined.
 
-An C<INIT> block is editted.
+An C<INIT> method is editted.
 
-If a parent class exists, the INIT block of the parent class is called at the beginning of the INIT block.
+If a parent class exists, the INIT method of the parent class is called at the beginning of the INIT method.
 
-If classes are used by the L<use statement|/"use Statement">, the L<interface statement|/"interface Statement">, and the L<allow statement|/"allow Statement">, The INIT blocks in the classes are called in order after the above calling.
-  
+If classes are used by the L<use statement|/"use Statement">, the L<interface statement|/"interface Statement">, and the L<allow statement|/"allow Statement">, The INIT methods in the classes are called in order after the above calling.
+
   # Before Editting
   class MyClass extends ParentClass {
     use Foo;
@@ -1379,7 +1383,7 @@ If classes are used by the L<use statement|/"use Statement">, the L<interface st
       $POINT = Point->new(1, 2);
     }
   }
-
+  
   # After Editting
   class MyClass extends ParentClass {
     use Point;
@@ -1394,9 +1398,9 @@ If classes are used by the L<use statement|/"use Statement">, the L<interface st
     }
   }
 
-An C<INIT> block is automatically called only once.
+An C<INIT> method is automatically called only once.
 
-The execution order of C<INIT> blocks is not guaranteed. The INIT blocks in the L<default loaded class/"Default Loaded Classes"> are called before INIT blocks of user defined classes.
+The execution order of C<INIT> methods is not guaranteed. The INIT methods in the L<default loaded class/"Default Loaded Classes"> are called before INIT methods of user defined classes.
 
 Examples:
 
@@ -1407,7 +1411,7 @@ Examples:
     our $STRING : string;
     our $POINT : Point;
     
-    # INIT block
+    # INIT method
     INIT {
       $NUM = 3;
       $STRING = "abc";
@@ -1730,16 +1734,14 @@ A block is the part enclosed by C<{> and C<}>.
 
 A class block is a block used in a class definition.
   
-  # Class block
-  class Point {
+  class MyClass {
   
   }
 
 =head2 Enumeration Block
 
-An enumeration block is a block used in a enumeration definition.
+An enumeration block is a block used in an enumeration definition.
 
-  # Enumeration block
   enum {
     ONE,
     TWO,
@@ -1747,29 +1749,31 @@ An enumeration block is a block used in a enumeration definition.
 
 =head2 Scope Block
 
-The scope block has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> are written in a scope block.
+A scope block is a block that has its L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
+
+Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> are written in a scope block.
 
 =head3 Simple Block
 
-The simple block is a L<scope block|/"Scope Block">.
+A simple block is a scope block.
 
-  # Simple block
   {
     1;
   }
 
-The simple block must have at least one statements, otherwise it is intepreted as the L<array initialization|SPVM::Document::Language::Operators/"The array Initialization">.
+A simple block must have at least one statements, otherwise it is intepreted as a L<key-value array initialization|SPVM::Document::Language::Operators/"Key-Value Array Initialization">.
 
 =head3 Method Block
 
-The method block is a L<scope block|/"Scope Block">.
+A method block is a scope block.
 
-  # Method block
   static method foo : int () {
   
   }
 
-The block of C<INIT> method is a method block.
+=head3 INIT block
+
+An C<INIT> block is a scope block.
 
   INIT {
     
@@ -1777,87 +1781,74 @@ The block of C<INIT> method is a method block.
 
 =head3 eval Block
 
-The C<eval> block is a L<scope block|/"Scope Block">.
+An C<eval> block is a scope block.
 
-  # eval block
   eval {
   
   }
 
 =head3 if Block
 
-The C<if> block is a L<scope block|/"Scope Block">.
+An C<if> block is a scope block.
 
-  # if block
   if (CONDITION) {
   
   }
 
 =head3 elsif Block
 
-The C<elsif> block is a L<scope block|/"Scope Block">.
+An C<elsif> block is a scope block.
 
-  # elsif block
   elsif (CONDITION) {
   
   }
 
 =head3 else Block
 
-The C<else> block is a L<scope block|/"Scope Block">.
+An C<else> block is a scope block.
 
-  # else block
   else {
   
   }
 
 =head3 for Block
 
-The C<for> block is a L<scope block|/"Scope Block">.
+A C<for> block is a scope block.
 
-  # for Block 
   for (my $i = 0; $i < 3; $i++) {
   
   }
 
 =head3 while Block
 
-The C<while> block is a L<scope block|/"Scope Block">.
+A C<while> block is a scope block.
 
-  # while block
   while (CONDITION) {
   
   }
 
 =head3 switch Block
 
-The C<switch> block is a L<scope block|/"Scope Block">.
+A C<switch> block is a scope block.
   
-  # switch block
   switch (CONDITION) {
   
   }
 
 =head3 case Block
 
-The C<case> block is a L<scope block|/"Scope Block">.
+A C<case> block is a scope block.
   
-  # case block
-  switch (CONDITION) {
-    case CASE_VALUE1: {
-      # ...
-    }
+  case CASE_VALUE1: {
+    # ...
   }
 
 =head3 default Block
 
-The C<default> block is a L<scope block|/"Scope Block">.
+A C<default> block is a scope block.
   
-  # default block
-  switch (CONDITION) {
-    default: {
-      # ...
-    }
+  default: {
+    # ...
   }
 
 =head1 Type Comment
@@ -1868,7 +1859,7 @@ The type comment syntax is supported. The type comment can be written after C<of
   TYPE of TYPE1|TYPE2
   TYPE of TYPE1|TYPE2|TYPE3
 
-The type comment can be used the type of the L<field decralation|/"Field Definition">, the L<class variable definition|/"Class Variable Definition">, the L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of the L<method definition|/"Method Definition">.
+The type comment can be used the type of the L<field definition|/"Field Definition">, the L<class variable definition|/"Class Variable Definition">, the L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of the L<method definition|/"Method Definition">.
 
   has points : List of Point;
   
