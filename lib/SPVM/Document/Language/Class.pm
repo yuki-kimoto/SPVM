@@ -846,6 +846,12 @@ I<ATTRIBUTES> is one of
 
 I<ATTRIBUTE> is a L<class variable attribute|/"Class Variable Attributes">.
 
+Each class variable is initialized by its L<type initial value|SPVM::Document::Language::Types/"Type Initial Value">.
+
+The value of a class variable is got by the operation of L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
+
+The value of a class variable is set by the operation of L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
+
 Compilation Errors:
 
 I<CLASS_VARIABLE_NAME> must a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name"> that does not contains C<::>. Otherwise, a compilation error occurs.
@@ -947,7 +953,7 @@ One of C<ro>, C<wo>, and C<rw> must be specified. Otherwise, a compilation error
 
 =head3 Class Variable Getter Method
 
-A class variable getter method is a method to perform the operation of the L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
+A class variable getter method is a method to perform the operation of L<getting a class variable|SPVM::Document::Language::Operators/"Getting a Class Variable">.
 
 This method is a class method that has no arguments.
 
@@ -968,7 +974,7 @@ Examples:
 
 =head3 Class Variable Setter Method
 
-A class variable setter method is a method to perform the operation of the L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
+A class variable setter method is a method to perform the operation of L<setting a class variable|SPVM::Document::Language::Operators/"Setting a Class Variable">.
 
 This method is a class method that has an argument.
 
@@ -1016,6 +1022,12 @@ I<ATTRIBUTES> is one of
   ATTRIBUTE
 
 I<ATTRIBUTE> is a L<field attribute|/"Field Attributes">.
+
+Each field of an object is initialized by its L<type initial value|SPVM::Document::Language::Types/"Type Initial Value"> when the object is created.
+
+The value of a field is got by the operation of L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
+
+The value of a field is set by the operation of L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
 
 Compilation Errors:
 
@@ -1117,7 +1129,7 @@ One of C<ro>, C<wo>, and C<rw> must be specified. Otherwise, a compilation error
 
 =head3 Field Getter Method
 
-A field getter method is a method to perform the operation of the L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
+A field getter method is a method to perform the operation of L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">.
 
 This method is an instance method that has no arguments.
 
@@ -1144,7 +1156,7 @@ Examples:
 
 =head3 Field Setter Method
 
-A field setter method is a method to perform the operation of the L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
+A field setter method is a method to perform the operation of L<setting a field|SPVM::Document::Language::Operators/"Setting a Field">.
 
 This method is an instance method that has an argument.
 
@@ -1567,49 +1579,34 @@ A local variable is a variable that has a L<scope|SPVM::Document::Language::Garb
 
 =head2  Local Variable Declaration
 
-B<Local Variable> is a variable that is declared in L</"Scope Block">.  Local Variable has the L<scope|SPVM::Document::Language::GarbageCollection/"Scope">. This is the same as Local Variable in C Language.
+A C<my> keyword declare a local variable.
 
-The local variable is declared using B<my> L</"Keyword">.
+  my LOCAL_VARIABLE_NAME
+  my LOCAL_VARIABLE_NAME : TYPE
+  
+  my LOCAL_VARIABLE_NAME = VALUE
+  my LOCAL_VARIABLE_NAME : TYPE = VALUE
 
-  my LOCAL_VARIABLE_NAME : TYPE;
+A local variable can be declared in a L<scope block|/"Scope Block">.
 
-The local variable name must be follow the rule of L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
+I<LOCAL_VARIABLE_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
-the L<type|SPVM::Document::Language::Types/"Types"> must be specified. Type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">.
+See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
+
+Compilation Errors:
+
+I<LOCAL_VARIABLE_NAME> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">. Otherwise a compilation error occurs.
+
+I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">.
+
+Examples:
 
   # Local Variable Declaration Examples
   my $var : int;
   my $var : Point;
   my $var : Complex_2d;
   my $var : int*;
-
-The local variable is initialized by L<type initial value|SPVM::Document::Language::Types/"Type Initial Value">.
-
-  # Initialized by 0
-  my $num : int;
   
-  # Initialized by 0
-  my $num : double;
-  
-  # Initialized by undef
-  my $point : Point;
-  
-  # x is initialized by 0. y is initialized by 0.
-  my $z : Complex_2d;
-
-The initialization of the local variable can be written at the same time as the local variable declaration.
-
-  # Initialized by 1
-  my $num : int = 1;
-  
-  # Initialized by 2.5
-  my $num : double = 2.5;
-  
-  # Initialized by Point object
-  my $point : Point = new Point;
-
-The L<type|SPVM::Document::Language::Types/"Types"> can be omitted using the L<type inference|SPVM::Document::Language::Types/"Type Inference">, 
-
   # Type inference - int
   my $num = 1;
   
@@ -1627,8 +1624,6 @@ The local variable declaration returns the value of the local variable. The retu
   while (my $bar = 1) {
   
   }
-
-See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
 
 =head3 Type Inference
 
