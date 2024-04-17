@@ -3383,6 +3383,10 @@ Examples:
   # Exmaples of the isweak operator
   my $isweak = isweak $object->{point};
 
+=head2 Scope Operations
+
+See the doc of L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about scope operations.
+
 =head1 See Also
 
 =over 2
