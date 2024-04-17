@@ -580,6 +580,12 @@ The argument width of the multi-numeric type L<Complex_2d|SPVM::Complex_2d> is t
 
 So the width of the arguments is totally 4. 
 
+=head2 Native Motal Stack
+
+A native mortal stack is a stack that is used by the L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API and the L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API.
+
+A L<runtime stack|/"Runtime Stack"> has one native mortal stack.
+
 =head2 Compilation and Link
 
 A native class and native source files are compiled to object files and are linked and a shared library is generated.
