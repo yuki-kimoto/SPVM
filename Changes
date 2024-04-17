@@ -2,6 +2,11 @@
   [Internal Changes]
     * Remove the is_anon field from spvm_runtime_method.h
     * Remove the is_anon field from spvm_method.h
+  [Document Improvement]
+    * Improve the doc of Types
+    * Improve the doc of Class
+    * Improve the doc of Operators
+    * Improve the doc of GarbageCollection
     
 0.989102 2023-04-15
   [Internal Changes]
