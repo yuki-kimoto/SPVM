@@ -21,10 +21,14 @@ The C<class> keyword defines a L<class type|SPVM::Document::Language::Types/"Cla
   class CLASS_NAME {
   
   }
-
+  
+  class CLASS_NAME;
+  
   class CLASS_NAME : ATTRIBUTES {
   
   }
+  
+  class CLASS_NAME : ATTRIBUTES;
 
 I<CLASS_NAME> is a L<class name|SPVM::Document::Language::Tokenization/"Class Name">.
 
@@ -499,6 +503,8 @@ Examples:
 The C<interface> statement checks if the current class satisfies the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to an interface.
 
   interface BASIC_TYPE;
+
+I<BASIC_TYPE> is loaded by the L<use statement|/"use Statement">.
 
 Compilation Errors:
 
@@ -1171,9 +1177,8 @@ Examples:
 
 The C<method> keyword defines a method.
 
-  OPT_ATTRIBUTES METHOD_NAME : RETURN_TYPE (OPT_ARGS); {
-    
-  }
+  OPT_ATTRIBUTES method METHOD_NAME : RETURN_TYPE (OPT_ARGS) { }
+  OPT_ATTRIBUTES method METHOD_NAME : RETURN_TYPE (OPT_ARGS);
 
 I<OPT_ATTRIBUTES> is one of
 
@@ -1193,7 +1198,7 @@ I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method
 
 I<RETURN_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
-I<ARG_ITEM> are
+I<ARG_ITEM> is one of
   
   ARG_NAME : TYPE
   ARG_NAME : TYPE = VALUE
@@ -1221,25 +1226,31 @@ I<ARG_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
 I<VALUE> is a L<literal|SPVM::Document::Language::Tokenization/"Literals"> or C<undef>. 
 
-A method with the L<static> L<method attribute|/"Method Attributes"> is a L<class method|/"Class Method">.
+A method with the C<static> L<method attribute|/"Method Attributes"> is a L<class method|/"Class Method">.
 
-A method without the L<static> L<method attribute|/"Method Attributes"> is an L<instance method|/"Instance Method">.
+A method without the C<static> L<method attribute|/"Method Attributes"> is an L<instance method|/"Instance Method">.
 
-An argument with I<VALUE> is an L<optional arguments|/"Optional Arguments">.
+An argument with I<VALUE> is an optional arguments. If a method call dose not give a value to an optional argument, I<VALUE> is given to the argument.
 
-A method with the L<native> L<method attribute|/"Method Attributes"> is a L<native method|/"Native Method">.
+A interface method defined in an L<interface|/"Interface"> is an L<interface method|/"Interface Method">.
+
+A method with the C<native> L<method attribute|/"Method Attributes"> is a L<native method|/"Native Method">.
 
 Compilation Errors:
 
-The count of I<ARGS> must be less than or equal to 255.
+The count of I<ARGS> must be less than or equal to 255. Otherwise, a compilation error occurs.
 
-The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">. Otherwise, a compilation error occurs.
+I<ARG_TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">. Otherwise, a compilation error occurs.
 
-The type of the return value must be the void type, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">. Otherwise, a compilation error occurs.
+I<RETURN_TYPE> must be the void type, a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">. Otherwise, a compilation error occurs.
 
-A method has L</"Method Block"> except for the case that the method has the C<native> L<method attributes|/"Method Attributes">. 
+Methods other than interface methods and native methods must have a method block. Otherwise, a compilation error occurs.
 
 I<VALUE> must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to I<ARG_TYPE>. Otherwise, a compilation error occurs.
+
+I<METHOD_NAME> must not be C<INIT>. Otherwise, a compilation error occurs.
+
+A non-optional argument must not be placed after an optional argument. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1257,7 +1268,7 @@ Examples:
 
 =head2 Method Attributes
 
-Method attributes are attributes used in a L<method definition|/"Method Definition">.
+The List of Method Attributes:
 
 =begin html
 
@@ -1272,10 +1283,18 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
   </tr>
   <tr>
     <td>
+      <b>public</b>
+    </td>
+    <td>
+      This method is public. All classes can call this method. This is default.
+    </td>
+  </tr>
+  <tr>
+    <td>
       <b>private</b>
     </td>
     <td>
-      This method is private. This method can not be accessed from other classes.
+      This method is private. All classes ohter than this class cannnot call this method.
     </td>
   </tr>
   <tr>
@@ -1283,15 +1302,7 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
       <b>protected</b>
     </td>
     <td>
-      This method is protected. This method can not be accessed from other classes except for the child classes.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>public</b>
-    </td>
-    <td>
-      This method is public. This method can be accessed from other classes. This is default setting.
+      This method is protected. All classes ohter than this class and its child classes cannot call this method.
     </td>
   </tr>
   <tr>
@@ -1299,7 +1310,7 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
       <b>precompile</b>
     </td>
     <td>
-      This method is a <a href="#Precompile-Method">precompile method</a>.
+      This method is a <a href="#Precompilation-Method">precompilation method</a>.
     </td>
   </tr>
   <tr>
@@ -1315,22 +1326,18 @@ Method attributes are attributes used in a L<method definition|/"Method Definiti
       <b>required</b>
     </td>
     <td>
-      This method is required.
+      A method that implements this interface method must be defined.
     </td>
   </tr>
 </table>
 
 =end html
 
-If C<native> and C<precompile> attributes cannnot used together.
-
-C<required> can be only used in a method of a L<interface|/"Interface">.
-
 Compilation Errors:
 
-Only one of method attributes C<private>, C<protected> or C<public> can be specified. Otherwise, a compilation error occurs.
+One of C<private>, C<protected> and C<public> must be specified. Otherwise, a compilation error occurs.
 
-If the specifed attribute is not found or the way to specify is invalid, a compilation error occurs.
+C<required> must be specified to an interface method. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1349,113 +1356,77 @@ Examples:
 
 =head2 Class Method
 
-A class method is defined with the C<static> keyword.
+A method defined with the C<static> L<method attribute|/"Method Attributes"> is a class method.
 
-  static method sum : int ($num1 : int, $num2 : int) {
-    # ...
-  }
-
-A class method can be called from the L<class name|SPVM::Document::Language::Tokenization/"Class Name">.
-  
-  # Call a class method
-  my $total = Foo->sum(1, 2);
-
-If the class method is belong to the current class, a class method can be called using L<&|/"Current Class"> syntax.
-  
-  # Call a class method using C<&>
-  my $total = &sum(1, 2);
+A class method can be called by a L<class method call|SPVM::Document::Language::Operators/"Class Method Call">.
 
 =head2 Instance Method
 
-An instance method is defined without the C<static> keyword.
+A method defined without the C<static> L<method attribute|/"Method Attributes"> is an instance method.
 
-  method add_chunk : void ($chunk : string) {
-    # ...
-  }
-
-An instance method can be called from the object.
-  
-  # Call an instance method
-  my $point = Point->new;
-  $point->set_x(3);
+An instance method can be called by an L<instance method call|SPVM::Document::Language::Operators/"Instance Method Call">.
 
 =head2 Interface Method
 
-Instance methods defined in L<interface types|SPVM::Document::Language::Types/"Interface Types"> are called interface methods.
+An instance method defined in an L<interface|/"Interface"> is an interface method.
 
-Normally, an instance method does not have its method block.
+Normally, an interface method does not have a method block.
 
   method my_method : int ();
 
-But, an interface method can have its method block.
+But, an interface method can have a method block.
 
   method my_method : int () {
     
   }
 
-An interface method can have the C<required> L<method attribute|/"Method Attributes"> that indicates classes that implement this interface must implement this method.
+An interface method can have the C<required> L<method attribute|/"Method Attributes"> that indicates classes must define a method with the same name that implements this interface method.
 
   required method my_method : int ();
 
 =head2 INIT Method
 
-The C<INIT> method is the method that is executed just after the program starts.
+A C<INIT> method is a method that is executed just after a program starts.
 
 =head3 INIT Method Definition
 
-The C<INIT> method defines a C<INIT> method to be executed just after the program starts.
+A C<INIT> block defines a C<INIT> method to be executed just after the program starts. A C<INIT> method is called only once.
 
   INIT {
     
   }
 
-Zero or more L<statements|SPVM::Document::Language::Statements/"Statements"> can be written in a C<INIT> method.
+A C<INIT> method has no arguments.
 
-  INIT {
-    my $foo = 1 + 1;
-    my $bar;
-  }
+The return type of a C<INIT> method is the void type.
 
-The L<return statement|SPVM::Document::Language::Statements/"return Statement"> cannot be written in C<INIT> method.
+If a C<INIT> method is not defined in a class, a C<INIT> method without statements is defined.
 
-If a C<INIT> method is not defined in a class, a default empty C<INIT> method is defined.
+If the current class has a parent class, the C<INIT> method of the parent class is called at the beginning of the INIT method of the current class.
 
-An C<INIT> method is editted.
+And C<INIT> methods of classes loaded by L<use statements|/"use Statement"> are called in loaded order.
 
-If a parent class exists, the INIT method of the parent class is called at the beginning of the INIT method.
-
-If classes are used by the L<use statement|/"use Statement">, the L<interface statement|/"interface Statement">, and the L<allow statement|/"allow Statement">, The INIT methods in the classes are called in order after the above calling.
-
-  # Before Editting
   class MyClass extends ParentClass {
     use Foo;
     use Bar;
     
     INIT {
-      $POINT = Point->new(1, 2);
-    }
-  }
-  
-  # After Editting
-  class MyClass extends ParentClass {
-    use Point;
-    use Fn;
-    
-    INIT {
+      # INIT methods of the parent class and classes loaded by use statements are called automatically 
       ParentClass->INIT;
-      Point->INIT;
-      Fn->INIT;
+      Foo->INIT;
+      Bar->INIT;
       
-      $POINT = Point->new(1, 2);
+      # Do something
     }
   }
 
-An C<INIT> method is automatically called only once.
+The execution order of C<INIT> methods is not guaranteed except that C<INIT> methods are called explictly and except for the above explanation.
 
-The execution order of C<INIT> methods is not guaranteed. The INIT methods in the L<default loaded class/"Default Loaded Classes"> are called before INIT methods of user defined classes.
+The C<INIT> methods in the L<default loaded class|/"Default Loaded Classes"> are called before C<INIT> methods of other classes, 
 
 Examples:
-
+  
+  # Examples of INIT methods
   class MyClass {
     use Point;
     
@@ -1595,7 +1566,7 @@ The local variable is declared using B<my> L</"Keyword">.
 
 The local variable name must be follow the rule of L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
-the L<type|SPVM::Document::Language::Types/"Types"> must be specified. Type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">.
+the L<type|SPVM::Document::Language::Types/"Types"> must be specified. Type must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">.
 
   # Local Variable Declaration Examples
   my $var : int;
