@@ -1579,42 +1579,47 @@ A local variable is a variable that has a L<scope|SPVM::Document::Language::Garb
 
 =head2  Local Variable Declaration
 
-A C<my> keyword declare a local variable.
+A C<my> keyword declares a local variable.
 
   my LOCAL_VARIABLE_NAME
   my LOCAL_VARIABLE_NAME : TYPE
-  
   my LOCAL_VARIABLE_NAME = VALUE
   my LOCAL_VARIABLE_NAME : TYPE = VALUE
 
-A local variable can be declared in a L<scope block|/"Scope Block">.
-
 I<LOCAL_VARIABLE_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
-See the L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about the scope of the local variable.
+I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+If I<TYPE> is ommited, I<TYPE> is set to the type of I<VALUE>. This is called L<type inference|/"Type Inference">.
+
+I<VALUE> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
+
+A local variable is declared in a L<scope block|/"Scope Block">.
+
+A local variable declaration performs the operation of L<pushing a local variable on the mortal stack|SPVM::Document::Language::GarbageCollection/"Pushing a Local Variable on the Mortal Stack">.
+
+A local variable declaration is a L<local variable access|SPVM::Document::Language::Operators/"Local Variable Access">.
 
 Compilation Errors:
 
 I<LOCAL_VARIABLE_NAME> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">. Otherwise a compilation error occurs.
 
-I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">.
+I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">. Otherwise a compilation error occurs.
+
+If I<TYPE> is not resolved, a compilation error occurs.
 
 Examples:
 
-  # Local Variable Declaration Examples
+  # Examples of local variable declarations
   my $var : int;
   my $var : Point;
   my $var : Complex_2d;
   my $var : int*;
   
-  # Type inference - int
   my $num = 1;
   
-  # Type inference - double
   my $num = 1.0;
-
-The local variable declaration returns the value of the local variable. The return type is the type of the local variable.
-
+  
   my $ppp = my $bar = 4;
   
   if (my $bar = 1) {
@@ -1627,7 +1632,7 @@ The local variable declaration returns the value of the local variable. The retu
 
 =head3 Type Inference
 
-If the type of the local variable declaration is ommited, the type of the right operand of the assignment operator is set to it. This is called type inference.
+If the type of the local variable declaration is ommited, the type of the local variable is set to the type of the right operand of the assignment operator. This is called type inference.
 
   # int
   my $num = 1;

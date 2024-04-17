@@ -70,7 +70,7 @@ The operation of a local variable on the mortal stack pushes a local variable on
 
 The operation of leaving scope is executed at the end of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
 
-This operation decrements the reference count of the objects from the top position memorized by L<entering scope|/"Entering Scope"> to the current top position of the L<mortal stack|/"Mortal Stack"> by 1.
+This operation assigns objects from the top position memorized by L<entering scope|/"Entering Scope"> to the current top position of the L<mortal stack|/"Mortal Stack"> to C<undef>.
 
 =head3 Mortal Stack
 
