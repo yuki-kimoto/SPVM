@@ -1445,27 +1445,35 @@ Examples:
 
 =head2 Destructor
 
-A class can have a destructor.
+A destructor is a method called just before an object is destroyed.
 
   method DESTROY : void () {
   
   }
 
-The destructor is the method that is called when the object is destroyed by the L<garbage collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection">.
+A destructor is an L<instance method|/"Instance Method">.
 
-The name of the destructor must be C<DESTROY>.
+The name of a destructor is C<DESTROY>.
 
-A destructor cannnot have its arguments.
+A destructor has no arguments.
 
-The retrun type must be the void type.
+The retrun type is the void type.
 
-A destructor must be an L<instance method|/"Instance Method">.
+If an L<exception|SPVM::Document::Language::ExceptionHandling/"Exception Handling"> is thrown in a destructor, the exception is not thrown. Instead, a warning message is output to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
-If an L<exception|SPVM::Document::Language::ExceptionHandling/"Exception Handling"> occurs in the destructor, the exception is not thrown. Instead, a warnings message is printed to C<STDERR>.
+See also L<Garbage Collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection">.
 
 Compilation Errors:
 
-If the definition of the destructor is invalid, a compilation error occurs.
+A destructor must be an L<instance method|/"Instance Method">. Otherwise, a compilation error occurs.
+
+The name of a destructor must be C<DESTROY>. Otherwise, a compilation error occurs.
+
+If a destructor has arguments, a compilation error occurs.
+
+The retrun type must be the void type. Otherwise, a compilation error occurs.
+
+If two or more destructor are defined, a compilation error occurs.
 
 Examples:
   
@@ -1475,8 +1483,6 @@ Examples:
       say "DESTROY";
     }
   }
-
-The child class inherits the destructor of the parent class if the destructor of the current class doesn't eixst.
 
 =head2 Method Override
 
