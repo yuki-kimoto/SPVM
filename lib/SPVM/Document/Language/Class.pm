@@ -1502,7 +1502,7 @@ An instance method in a parent class can be overridden by an instance method wit
     }
   }
 
-The overridding method in the child class must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent method.
+The overridding method in the child class must satisfy the L<interface method requirement|SPVM::Document::Language::Types/"Interface Method Requirement"> to the parent method interpretted as an interface method.
 
 Compilation Errors:
 
@@ -1510,31 +1510,35 @@ The overridding method in the child class must satisfy the L<interface requireme
 
 =head2 Native Method
 
-A native method is the method that is written by native languages such as the C language, C<C++>.
-
-A native method is defined by the C<native> L<method attribute|/"Method Attributes">.
+A method with the C<native> L<method attribute|/"Method Attributes"> is a native method.
 
   native sum : int ($num1 : int, $num2 : int);
 
-A native method doesn't have its L<method block|/"Method Block">.
+A native method has no L<method block|/"Method Block">.
 
-About the way to write native methods, please see L<SPVM Native Class|SPVM::Document::NativeClass> and L<SPVM Native API|SPVM::Document::NativeAPI>.
+The implementation of a native method is written by native languages such as the C language, C<C++>.
+
+See L<SPVM::Document::NativeClass> about the way to write the implementation of a native method.
 
 =head2 Precompilation Method
 
-If the class has the C<precompile> L<class attribute|/"Class Attributes">, the methods of the class are precompiled.
+A method with the C<precompile> L<method attribute|/"Method Attributes"> is a precompilation method.
 
-The source code of each precompiled method is translated to C source code and is compiled to the machine code such as C<MyMath.o>.
+  precompile sum : int ($num1 : int, $num2 : int) {
+  
+  }
 
-And it is linked to a shared library such as C<MyMath.so> on Linux/Unix, C<MyMath.dll> on Windows, or C<MyMath.dylib> on Mac.
+The source code of each precompilation method is converted to a C source code and it is compiled to the machine code.
 
-And each function in the shared library is bind to the SPVM method.
+And the machine codes of all precompilation methods in a class is linked to a dynamic link library such as C<MyClass.so> on Linux/Unix, C<MyClass.dll> on Windows, C<MyClass.dylib> on Mac.
 
-Precompiled methods need the L<build directory|SPVM/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
+The address of machine code of each precompilation method in the dynamic link library is bind to a precompilation method.
+
+Precompilation methods need a L<build directory|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> such as C<~/.spvm_build> to compile and link them.
 
 =head2 Bootstrap Method
 
-A bootstrap method is the methods where the program start.
+A bootstrap method is a method where a program start.
 
   void main : void () {
     
@@ -1550,7 +1554,6 @@ It has no arguments.
 
 Normally a method has a method block. L<Statements|SPVM::Document::Language::Statements/"Statements"> can be written in a method block.
   
-  # Method implementation
   static method foo : int ($num1 : int, $num2 : int) {
     
     my $total = $num1 + $num2;
