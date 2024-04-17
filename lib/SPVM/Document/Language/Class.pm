@@ -1169,118 +1169,91 @@ Examples:
 
 =head2 Method Definition
 
-The C<method> keyword defines a class method or an instance method.
-  
-  # Static method
-  static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
+The C<method> keyword defines a method.
+
+  OPT_ATTRIBUTES METHOD_NAME : RETURN_TYPE (OPT_ARGS); {
     
   }
 
-  # Instance method
-  method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
-    
-  }
+I<OPT_ATTRIBUTES> is one of
 
-Method names must be follow the rule of L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
+  EMPTY
+  ATTRIBUTES
 
-The argument names must be follow the rule of L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
+I<EMPTY> means nothing exists.
 
-The minimal length of arguments is 0. The max length of arguments is 255.
-
-Defined methods can be called using L</"Method Call"> syntax.
-
-A method can have L<method attributes|/"Method Attributes">.
-
-  ATTRIBUTES static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2, ...) {
+I<ATTRIBUTES> is one of
   
-  }
+  ATTRIBUTES ATTRIBUTE
+  ATTRIBUTE
 
-A method has L</"Method Block"> except for the case that the method has the C<native> L<method attributes|/"Method Attributes">. 
+I<ATTRIBUTE> is a L<method attribute|/"Method Attributes">.
+
+I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
+
+I<RETURN_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+I<ARG_ITEM> are
+  
+  ARG_NAME : TYPE
+  ARG_NAME : TYPE = VALUE
+
+I<OPT_ATTRIBUTES> is one of
+
+  EMPTY
+  ARGS
+
+I<EMPTY> means nothing exists.
+
+I<ARGS> is one of
+  
+  ARGS , ARG
+  ARG
+
+I<ARG> is one of
+
+  ARG_NAME : ARG_TYPE
+  ARG_NAME : ARG_TYPE = VALUE
+
+I<ARG_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
+
+I<ARG_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+I<VALUE> is a L<literal|SPVM::Document::Language::Tokenization/"Literals"> or C<undef>. 
+
+A method with the L<static> L<method attribute|/"Method Attributes"> is a L<class method|/"Class Method">.
+
+A method without the L<static> L<method attribute|/"Method Attributes"> is an L<instance method|/"Instance Method">.
+
+An argument with I<VALUE> is an L<optional arguments|/"Optional Arguments">.
+
+A method with the L<native> L<method attribute|/"Method Attributes"> is a L<native method|/"Native Method">.
 
 Compilation Errors:
+
+The count of I<ARGS> must be less than or equal to 255.
 
 The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">, otherwise a compilation error occurs.
 
 The type of the return value must be the void type, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">, otherwise a compilation error occurs.
 
-=head3 Optional Arguments
+A method has L</"Method Block"> except for the case that the method has the C<native> L<method attributes|/"Method Attributes">. 
 
-The optional argument is the syntax to specify optional arguments.
-
-  static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 : ARG_TYPE2 = DEFAULT_VALUE) {
-  
-  }
-  
-  # Deprecated
-  static method METHOD_NAME : RETURN_TYPE (ARG_NAME1 : ARG_TYPE1, ARG_NAME2 = DEFAULT_VALUE : ARG_TYPE2) {
-  
-  }
+I<VALUE> must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to I<ARG_TYPE>, otherwise a compilation error occurs.
 
 Examples:
-
-  static method substr ($string : string, $offset : int, $length : int = -1) {
-    # ...
-  }
   
-  my $string = "abc";
-  my $offset = 1;
-  my $substr = &substr($string, $offset);
-  
-  # This is the same as the following code
-  my $string = "abc";
-  my $offset = 1;
-  my $length = -1;
-  my $substr = &substr($string, $offset, $length);
-  
-=head2 Class Method
-
-A class method is defined with the C<static> keyword.
-
-  static method sum : int ($num1 : int, $num2 : int) {
-    # ...
-  }
-
-A class method can be called from the L<class name|SPVM::Document::Language::Tokenization/"Class Name">.
-  
-  # Call a class method
-  my $total = Foo->sum(1, 2);
-
-If the class method is belong to the current class, a class method can be called using L<&|/"Current Class"> syntax.
-  
-  # Call a class method using C<&>
-  my $total = &sum(1, 2);
-
-=head2 Instance Method
-
-An instance method is defined without the C<static> keyword.
-
-  method add_chunk : void ($chunk : string) {
-    # ...
-  }
-
-An instance method can be called from the object.
-  
-  # Call an instance method
-  my $point = Point->new;
-  $point->set_x(3);
-
-=head2 Interface Method
-
-Instance methods defined in L<interface types|SPVM::Document::Language::Types/"Interface Types"> are called interface methods.
-
-Normally, an instance method does not have its method block.
-
-  method my_method : int ();
-
-But, an interface method can have its method block.
-
-  method my_method : int () {
+  class MyClass {
+    # Class method
+    static method substr : string ($string : string, $offset : int, $length : int = -1) {
+      # ...
+    }
     
+    # Instance method
+    method clear : void () {
+      
+    }
   }
-
-An interface method can have the C<required> L<method attribute|/"Method Attributes"> that indicates classes that implement this interface must implement this method.
-
-  required method my_method : int ();
 
 =head2 Method Attributes
 
@@ -1373,6 +1346,56 @@ Examples:
   
   # native method
   native method : int sum ($num1 : int, $num2 : int);
+
+=head2 Class Method
+
+A class method is defined with the C<static> keyword.
+
+  static method sum : int ($num1 : int, $num2 : int) {
+    # ...
+  }
+
+A class method can be called from the L<class name|SPVM::Document::Language::Tokenization/"Class Name">.
+  
+  # Call a class method
+  my $total = Foo->sum(1, 2);
+
+If the class method is belong to the current class, a class method can be called using L<&|/"Current Class"> syntax.
+  
+  # Call a class method using C<&>
+  my $total = &sum(1, 2);
+
+=head2 Instance Method
+
+An instance method is defined without the C<static> keyword.
+
+  method add_chunk : void ($chunk : string) {
+    # ...
+  }
+
+An instance method can be called from the object.
+  
+  # Call an instance method
+  my $point = Point->new;
+  $point->set_x(3);
+
+=head2 Interface Method
+
+Instance methods defined in L<interface types|SPVM::Document::Language::Types/"Interface Types"> are called interface methods.
+
+Normally, an instance method does not have its method block.
+
+  method my_method : int ();
+
+But, an interface method can have its method block.
+
+  method my_method : int () {
+    
+  }
+
+An interface method can have the C<required> L<method attribute|/"Method Attributes"> that indicates classes that implement this interface must implement this method.
+
+  required method my_method : int ();
 
 =head2 INIT Method
 
