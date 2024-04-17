@@ -58,21 +58,25 @@ A scope is the part surrounded by a L<scope block|SPVM::Document::Language::Clas
 
 =head3 Entering Scope
 
-The entering scope operation is the operation at the start of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
+The operation of entering scope is executed at the start of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
 
-Memorizes the current top position of the L<mortal stack|/"Mortal Stack">.
+This operation memorizes the top position of the L<mortal stack|/"Mortal Stack"> of a method.
 
-=head3 Mortal Stack
+=head3 Pushing a Local Variable on the Mortal Stack
 
-The mortal stack is the stack that stores objects that are decremented by 1 at the end of the scope.
-
-Local variables of the object type are pushed to the mortal stack at the same time as its declaration.
+The operation of a local variable on the mortal stack pushes a local variable on the mortal stack of a method.
 
 =head3 Leaving Scope
 
-The leaving scope operation is the operation at the end of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
+The operation of leaving scope is executed at the end of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
 
-Reference count of the objects from the top position memorized by the L<entering scope|/"Entering Scope"> operation to the current top position of the L<mortal stack|/"Mortal Stack"> are decremented by 1.
+This operation decrements the reference count of the objects from the top position memorized by L<entering scope|/"Entering Scope"> to the current top position of the L<mortal stack|/"Mortal Stack"> by 1.
+
+=head3 Mortal Stack
+
+A mortal stack is a stack that is used by L<entering scope|/"Entering Scope">, L<pushing a local variable on the mortal stack|/"Pushing a Local Variable on the Mortal Stack"> and L<leaving scope|/"Leaving Scope">.
+
+A method has one mortal stack.
 
 =head2 Weak Reference
 
