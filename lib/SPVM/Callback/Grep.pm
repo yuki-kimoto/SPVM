@@ -20,7 +20,7 @@ The Callback::Grep interface in L<SPVM> has interface methods for the L<grep|Fn/
 
 C<required method : int ($element : object);>
 
-Returns a true value if the condition corresponding to the element $element is satisfied, otherwise returns 0.
+Returns a true value if the condition corresponding to the element $element is satisfied. Otherwise, returns 0.
 
 =head1 Copyright & License
 

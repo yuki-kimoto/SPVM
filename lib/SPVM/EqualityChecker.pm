@@ -36,7 +36,7 @@ L<EqualityChecker|SPVM::EqualityChecker> is the interface type for the object eq
 
 C<required method : int ($object1 : object, $object2 : object)>
 
-The implementation must receive two objects and if they are equal, return 1, otherwise return 0.
+The implementation must receive two objects and if they are equal, return 1. Otherwise, return 0.
 
 =head1 Copyright & License
 

@@ -170,14 +170,14 @@ Gets and sets the C<file> field, the absolute path of the library file such as C
   my $is_static = $lib_info->is_static;
   $lib_info->is_static($is_static);
 
-Gets and sets the C<is_static> field. If this field is a true value, this library is linked statically, otherwise is linked dynamically.
+Gets and sets the C<is_static> field. If this field is a true value, this library is linked statically. Otherwise, is linked dynamically.
 
 =head2 is_abs
 
   my $is_abs = $lib_info->is_abs;
   $lib_info->is_abs($is_abs);
 
-Gets and sets the C<is_abs> field. If this field is a true value, the library is linked by the absolute path L</"file">, otherwise is linked by the relative path from library search path.
+Gets and sets the C<is_abs> field. If this field is a true value, the library is linked by the absolute path L</"file">. Otherwise, is linked by the relative path from library search path.
 
 =head1 Class Methods
 

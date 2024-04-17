@@ -30,7 +30,7 @@ Exceptions:
 
 If the native config file does not exist, an exception is thrown.
 
-A config file must end with a L<Builder::Config|SPVM::Builder::Config> object, otherwise an exception is thrown.
+A config file must end with a L<Builder::Config|SPVM::Builder::Config> object. Otherwise, an exception is thrown.
 
 Examples:
 
@@ -161,7 +161,7 @@ A native function must return a value of the C<int32_t> type.
     return 0;
   }
   
-If an exception is thrown in this native method, the native function must return a non-zero value, otherwise must return 0.
+If an exception is thrown in this native method, the native function must return a non-zero value. Otherwise, must return 0.
 
 See L</"Exception"> for exception handling in native classes.
 
@@ -566,7 +566,7 @@ A runtime stack can be created and freed using the L<new_stack|SPVM::Document::N
 
 The width of the arguments is the length in units of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type.
 
-If the type is a multi-numeric type, the width of the arguments is the length of the fields of the multi-numeric type, otherwise it is 1.
+If the type is a multi-numeric type, the width of the arguments is the length of the fields of the multi-numeric type. Otherwise, it is 1.
 
 Consider the following method definition.
 
@@ -598,7 +598,7 @@ If the build directory does not exist, it is created.
 
 Exceptions:
 
-A string of non-zero length must be set to the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable, otherwise an exception is thrown.
+A string of non-zero length must be set to the L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable. Otherwise, an exception is thrown.
 
 =head2 Dependency Resolution
 

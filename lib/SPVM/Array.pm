@@ -975,7 +975,7 @@ Creates a new L<Byte|SPVM::Byte> array with the same length as the byte array $a
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_object_array_short
 
@@ -985,7 +985,7 @@ Creates a new L<Short|SPVM::Short> array with the same length as the short array
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_object_array_int
 
@@ -995,7 +995,7 @@ Creates a new L<Int|SPVM::Int> array with the same length as the int array $arra
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_object_array_long
 
@@ -1005,7 +1005,7 @@ Creates a new L<Long|SPVM::Long> array with the same length as the long array $a
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_object_array_float
 
@@ -1021,7 +1021,7 @@ Creates a new L<Double|SPVM::Double> array with the same length as the double ar
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_array_byte
 
@@ -1031,7 +1031,7 @@ Creates a new byte array with the same length as the L<Byte|SPVM::Byte> array $o
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_array_short
 
@@ -1041,7 +1041,7 @@ Creates a new short array with the same length as the L<Short|SPVM::Short>> arra
 
 Exceptions:
 
-The array $object_array must be defined, otherwise an exception is thrown.
+The array $object_array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_array_int
 
@@ -1051,7 +1051,7 @@ Creates a new int array with the same length as the L<Int|SPVM::Int> array $obje
 
 Exceptions:
 
-The array $object_array must be defined, otherwise an exception is thrown.
+The array $object_array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_array_long
 
@@ -1061,7 +1061,7 @@ Creates a new long array with the same length as the L<Long|SPVM::Long> array $o
 
 Exceptions:
 
-The array $object_array must be defined, otherwise an exception is thrown.
+The array $object_array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_array_float
 
@@ -1071,7 +1071,7 @@ Creates a new float array with the same length as the L<Float|SPVM::Float> array
 
 Exceptions:
 
-The array $object_array must be defined, otherwise an exception is thrown.
+The array $object_array must be defined. Otherwise, an exception is thrown.
 
 =head2 to_array_double
 
@@ -1081,7 +1081,7 @@ Creates a new double[ array with the same length as the L<Double|SPVM::Double> a
 
 Exceptions:
 
-The array $object_array must be defined, otherwise an exception is thrown.
+The array $object_array must be defined. Otherwise, an exception is thrown.
 
 =head2 new_array_proto_element
 

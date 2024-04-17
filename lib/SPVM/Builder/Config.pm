@@ -1689,7 +1689,7 @@ Other OSs:
 
 Exceptions:
 
-The "file" field must be defined, otherwise an exception is thrown.
+The "file" field must be defined. Otherwise, an exception is thrown.
 
 Exampels:
 
@@ -1731,7 +1731,7 @@ Calls the L</"new_c"> method and sets the L</"std"> field to C<c11>, and returns
 
 Calls the L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to a C<C++> compiler and sets the L</"ld"> field to a C<C++> linker, and returns the return value of the L</"new"> method.
 
-If C<$Config{gccversion}> contains C<clang>, the L</"cc"> field and the L</"ld"> field are set to C<clang++>, otherwise the L</"cc"> field and the L</"ld"> field are set to C<g++>.
+If C<$Config{gccversion}> contains C<clang>, the L</"cc"> field and the L</"ld"> field are set to C<clang++>. Otherwise, the L</"cc"> field and the L</"ld"> field are set to C<g++>.
 
 =head2 new_cpp11
   

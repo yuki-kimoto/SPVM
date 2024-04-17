@@ -308,7 +308,7 @@ Examples:
 
 C<static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int);>
 
-Compares $string1 + $string1_offset with $string2 + $string2_offset by $length. If they are euqal, returns 1, otherwise returns 0.
+Compares $string1 + $string1_offset with $string2 + $string2_offset by $length. If they are euqal, returns 1. Otherwise, returns 0.
 
 If $length is 0, returns 1.
 
@@ -362,7 +362,7 @@ Searches for $substring in the range of $string from $begin to $end.
 
 The search is performed from the beginning of the range of $string.
 
-If $substring is found, returns the found offset, otherwise returns -1.
+If $substring is found, returns the found offset. Otherwise, returns -1.
 
 If $end is less than 0, $end is set to the length of $string minus 1.
 
@@ -701,7 +701,7 @@ Searches for $substring in the range of $string from $begin to $end.
 
 The search is performed from the end of the range of $string.
 
-If $substring is found, returns the found offset, otherwise returns -1.
+If $substring is found, returns the found offset. Otherwise, returns -1.
 
 If $end is less than 0, $end is set to the length of $string minus 1.
 
@@ -1196,13 +1196,13 @@ $offset + $length must be less than or equal to the length of $string. Otherwise
 
 C<static method or : object ($left : object, $right : object);>
 
-If $left is a true value, returns $left, otherwise returns $right;
+If $left is a true value, returns $left. Otherwise, returns $right;
 
 =head2 if
 
 C<static method if : object ($condition : int, $left : object, $right : object);>
 
-If $condition is a true value, returns $left, otherwise returns $right;
+If $condition is a true value, returns $left. Otherwise, returns $right;
 
 =head2 grep
 
@@ -1212,9 +1212,9 @@ Returns a new array containing only the elements of the array $array for which t
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
-The callback $callback must be defined, otherwise an exception is thrown.
+The callback $callback must be defined. Otherwise, an exception is thrown.
 
 =head2 map
 
@@ -1224,9 +1224,9 @@ Returns a new array with each element of the array $array processed in the callb
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
-The callback $callback must be defined, otherwise an exception is thrown.
+The callback $callback must be defined. Otherwise, an exception is thrown.
 
 =head2 map_expand
 
@@ -1236,9 +1236,9 @@ Returns a new array with each element of the array $array processed in the callb
 
 Exceptions:
 
-The array $array must be defined, otherwise an exception is thrown.
+The array $array must be defined. Otherwise, an exception is thrown.
 
-The callback $callback must be defined, otherwise an exception is thrown.
+The callback $callback must be defined. Otherwise, an exception is thrown.
 
 =head2 get_compile_type_name
 

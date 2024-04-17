@@ -40,7 +40,7 @@ C<void* (*get_basic_type_by_id)(L<void* runtime|SPVM::Document::NativeAPI::Runti
 
 Searches a L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type ID I<basic_type_id>.
 
-If it is found, returns it, otherwise returns C<NULL>.
+If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 get_basic_type_by_name
 
@@ -48,7 +48,7 @@ C<void* (*get_basic_type_by_name)(L<void* runtime|SPVM::Document::NativeAPI::Run
 
 Searches a L<basic type|SPVM::Document::NativeAPI::BasicType> given the basic type name I<basic_type_name>.
 
-If it is found, returns it, otherwise returns C<NULL>.
+If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 get_basic_types_length
 

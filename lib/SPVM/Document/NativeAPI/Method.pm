@@ -54,7 +54,7 @@ C<void* (*get_arg_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>,
 
 Searches a L<argument|SPVM::Document::NativeAPI::Argument> at the index I<arg_index>.
 
-If it is found, returns it, otherwise returns C<NULL>.
+If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 get_args_length
 
@@ -80,7 +80,7 @@ C<void* (*get_opcode_by_index)(L<void* runtime|SPVM::Document::NativeAPI::Runtim
 
 Searches an operation code at the index I<opcode_index>.
 
-If it is found, returns it, otherwise returns C<NULL>.
+If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 get_opcodes_length
 
@@ -92,31 +92,31 @@ Returns the length of operation codes.
 
 C<int32_t (*is_class_method)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method I<method> is a class method, returns 1, otherwise returns 0.
+If the method I<method> is a class method, returns 1. Otherwise, returns 0.
 
 =head2 is_anon
 
 C<int32_t (*is_anon)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method I<method> is an anon method, returns 1, otherwise returns 0.
+If the method I<method> is an anon method, returns 1. Otherwise, returns 0.
 
 =head2 is_native
 
 C<int32_t (*is_native)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method I<method> is a native method, returns 1, otherwise returns 0.
+If the method I<method> is a native method, returns 1. Otherwise, returns 0.
 
 =head2 is_precompile
 
 C<int32_t (*is_precompile)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method I<method> is a method with the C<precompile> attribute, returns 1, otherwise returns 0.
+If the method I<method> is a method with the C<precompile> attribute, returns 1. Otherwise, returns 0.
 
 =head2 is_enum
 
 C<int32_t (*is_enum)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* method|SPVM::Document::NativeAPI::Method>);>
 
-If the method I<method> is an enumeration, returns 1, otherwise returns 0.
+If the method I<method> is an enumeration, returns 1. Otherwise, returns 0.
 
 =head2 get_byte_vars_width
 

@@ -41,7 +41,7 @@ The L<new operator|/"new Operator"> creates an object from a class.
 
 Compilation Errors:
 
-I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">. Otherwise, a compilation error occurs.
 
 If more than one class is defined in a L<class file|/"Class File">, a compilation error occurs.
 
@@ -129,7 +129,7 @@ The List of Class Attributes:
 
 Compilation Errors:
 
-Only one of C<private>, C<protected> or C<public> must be specified, otherwise a compilation error occurs.
+Only one of C<private>, C<protected> or C<public> must be specified. Otherwise, a compilation error occurs.
 
 If more than one of C<interface_t>, C<mulnum_t>, and C<pointer> are specified, a compilation error occurs.
 
@@ -178,7 +178,7 @@ The name of a class file is the same as a class name, but all C<::> are replaced
 
 Compilation Errors:
 
-A class definition must be written in its corresponding class file, otherwise a compilation error occurs.
+A class definition must be written in its corresponding class file. Otherwise, a compilation error occurs.
 
 =head2 Version Statement
 
@@ -192,7 +192,7 @@ Compilation Errors:
 
 If the version has already been declared, a compilation error occurs.
 
-I<VERSION_STRING> must be a L<version string|/"Version String">, otherwise a compilation error occurs.
+I<VERSION_STRING> must be a L<version string|/"Version String">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -274,9 +274,9 @@ is expanded to the following code using the L<alias|/"alias Statement"> statemen
 
 Compilation Errors:
 
-I<BASIC_TYPE> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<BASIC_TYPE> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">. Otherwise, a compilation error occurs.
 
-I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">. Otherwise, a compilation error occurs.
 
 If I<BASIC_TYPE> does not found, a compilation error occurs.
 
@@ -347,9 +347,9 @@ I<BASIC_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types">, 
 
 Compilation Errors:
 
-I<BASIC_TYPE> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<BASIC_TYPE> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">. Otherwise, a compilation error occurs.
 
-I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">, otherwise a compilation error occurs.
+I<CLASS_NAME> must be a L<class name|SPVM::Document::Language::Tokenization/"Class Name">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -399,15 +399,15 @@ The instance of the class I<CLASS_NAME> can calls instance methods of the parent
 
 Compilation Errors:
 
-The parent class I<PARENT_CLASS_NAME> must be a L<class type|SPVM::Document::Language::Types/"Class Types">, otherwise a compilation error occurs.
+The parent class I<PARENT_CLASS_NAME> must be a L<class type|SPVM::Document::Language::Types/"Class Types">. Otherwise, a compilation error occurs.
 
-The name of the parant class must be different from the name of the class, otherwise a compilation error occurs.
+The name of the parant class must be different from the name of the class. Otherwise, a compilation error occurs.
 
-The all super classes must be different from its own class, otherwise a compilation error occurs.
+The all super classes must be different from its own class. Otherwise, a compilation error occurs.
 
-The field that name is the same as the field of the super class cannnot be defined, otherwise a compilation error occurs.
+The field that name is the same as the field of the super class cannnot be defined. Otherwise, a compilation error occurs.
 
-The class I<CLASS_NAME> interpreted by an interface must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>, otherwise a compilation error occurs.
+The class I<CLASS_NAME> interpreted by an interface must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -575,9 +575,9 @@ An anon method class has the same alias names as its outmost class.
 
 Compilation Errors:
 
-The method name of I<METHOD_DEFINITION> must be an empty string, otherwise a compilation error occurs.
+The method name of I<METHOD_DEFINITION> must be an empty string. Otherwise, a compilation error occurs.
 
-The method must be an instance method, otherwise a compilation error occurs.
+The method must be an instance method. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -690,15 +690,15 @@ A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is
 
 Compilation Errors:
 
-The type of all fields must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of all fields must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
-The types of all fields must be a same type, otherwise a compilation error occurs.
+The types of all fields must be a same type. Otherwise, a compilation error occurs.
 
-The length of fields must be less than or equal to 255, otherwise a compilation error occurs.
+The length of fields must be less than or equal to 255. Otherwise, a compilation error occurs.
 
-I<CLASS_NAME> must ends with a L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> corresponding to the type of fields, otherwise a compilation error occurs.
+I<CLASS_NAME> must ends with a L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> corresponding to the type of fields. Otherwise, a compilation error occurs.
 
-I<FIELD_LENGTH> of the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must be the same as the length of fields, otherwise a compilation error occurs.
+I<FIELD_LENGTH> of the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must be the same as the length of fields. Otherwise, a compilation error occurs.
 
 I<TYPE_SUFFIX> of the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must correspond to the type of fields.
 
@@ -842,11 +842,11 @@ I<ATTRIBUTE> is a L<class variable attribute|/"Class Variable Attributes">.
 
 Compilation Errors:
 
-I<CLASS_VARIABLE_NAME> must a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name"> that does not contains C<::>, otherwise a compilation error occurs.
+I<CLASS_VARIABLE_NAME> must a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name"> that does not contains C<::>. Otherwise, a compilation error occurs.
 
 I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">.
 
-I<ATTRIBUTE> must be a L<class variable attribute|/"Class Variable Attributes">, otherwise a compilation error occurs.
+I<ATTRIBUTE> must be a L<class variable attribute|/"Class Variable Attributes">. Otherwise, a compilation error occurs.
 
 If two or more class variables that has a same name are defined, a compilation error occurs.
 
@@ -935,9 +935,9 @@ The List of Class Variable Attributes:
 
 Compilation Errors:
 
-One of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
+One of C<private>, C<protected> and C<public> must be specified. Otherwise, a compilation error occurs.
 
-One of C<ro>, C<wo>, and C<rw> must be specified, otherwise a compilation error occurs.
+One of C<ro>, C<wo>, and C<rw> must be specified. Otherwise, a compilation error occurs.
 
 =head3 Class Variable Getter Method
 
@@ -945,7 +945,7 @@ A class variable getter method is a method to perform the operation of the L<get
 
 This method is a class method that has no arguments.
 
-If the type of the class variable is the byte type or the short type, the return type is the int type, otherwise it is the same type as the class variable.
+If the type of the class variable is the byte type or the short type, the return type is the int type. Otherwise, it is the same type as the class variable.
 
 The method name is the same as the class variable name, but C<$> is removed. For example, if the class variable name is C<$FOO>, the method name is C<FOO>.
 
@@ -966,7 +966,7 @@ A class variable setter method is a method to perform the operation of the L<set
 
 This method is a class method that has an argument.
 
-If the type of the class variable is the byte type or the short type, the argument type is the int type, otherwise it is the same type as the class variable.
+If the type of the class variable is the byte type or the short type, the argument type is the int type. Otherwise, it is the same type as the class variable.
 
 The return type is the void type.
 
@@ -1013,11 +1013,11 @@ I<ATTRIBUTE> is a L<field attribute|/"Field Attributes">.
 
 Compilation Errors:
 
-I<FIELD_NAME> must a L<field name|SPVM::Document::Language::Tokenization/"Field Name">, otherwise a compilation error occurs.
+I<FIELD_NAME> must a L<field name|SPVM::Document::Language::Tokenization/"Field Name">. Otherwise, a compilation error occurs.
 
 I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">.
 
-I<ATTRIBUTE > must be a L<field attribute|/"Field Attributes">, otherwise a compilation error occurs.
+I<ATTRIBUTE > must be a L<field attribute|/"Field Attributes">. Otherwise, a compilation error occurs.
 
 If two or more fields that has a same name are defined, a compilation error occurs.
 
@@ -1105,9 +1105,9 @@ The List of Field Attributes:
 
 Compilation Errors:
 
-One of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
+One of C<private>, C<protected> and C<public> must be specified. Otherwise, a compilation error occurs.
 
-One of C<ro>, C<wo>, and C<rw> must be specified, otherwise a compilation error occurs.
+One of C<ro>, C<wo>, and C<rw> must be specified. Otherwise, a compilation error occurs.
 
 =head3 Field Getter Method
 
@@ -1115,7 +1115,7 @@ A field getter method is a method to perform the operation of the L<getting a fi
 
 This method is an instance method that has no arguments.
 
-If the type of the field is the byte type or the short type, the return type is the int type, otherwise it is the same type as the field.
+If the type of the field is the byte type or the short type, the return type is the int type. Otherwise, it is the same type as the field.
 
 The method name is the same as the field name. For example, if the field name is C<foo>, the method name is C<foo>.
 
@@ -1142,7 +1142,7 @@ A field setter method is a method to perform the operation of the L<setting a fi
 
 This method is an instance method that has an argument.
 
-If the type of the field is the byte type or the short type, the argument type is the int type, otherwise it is the same type as the field.
+If the type of the field is the byte type or the short type, the argument type is the int type. Otherwise, it is the same type as the field.
 
 The return type is the void type.
 
@@ -1233,13 +1233,13 @@ Compilation Errors:
 
 The count of I<ARGS> must be less than or equal to 255.
 
-The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">, otherwise a compilation error occurs.
+The types of the arguments must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Type">. Otherwise, a compilation error occurs.
 
-The type of the return value must be the void type, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">, otherwise a compilation error occurs.
+The type of the return value must be the void type, a L<numeric type|SPVM::Document::Language::Types/"Numeric Type">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">. Otherwise, a compilation error occurs.
 
 A method has L</"Method Block"> except for the case that the method has the C<native> L<method attributes|/"Method Attributes">. 
 
-I<VALUE> must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to I<ARG_TYPE>, otherwise a compilation error occurs.
+I<VALUE> must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to I<ARG_TYPE>. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1328,7 +1328,7 @@ C<required> can be only used in a method of a L<interface|/"Interface">.
 
 Compilation Errors:
 
-Only one of method attributes C<private>, C<protected> or C<public> can be specified, otherwise a compilation error occurs.
+Only one of method attributes C<private>, C<protected> or C<public> can be specified. Otherwise, a compilation error occurs.
 
 If the specifed attribute is not found or the way to specify is invalid, a compilation error occurs.
 
@@ -1529,7 +1529,7 @@ The overridding method in the child class must satisfy the L<interface requireme
 
 Compilation Errors:
 
-The overridding method in the child class must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent method, otherwise a compilation error occurs.
+The overridding method in the child class must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent method. Otherwise, a compilation error occurs.
 
 =head2 Native Method
 
@@ -1704,9 +1704,9 @@ The return type of the method is the int type.
 
 Compilation Errors:
 
-I<NAME> must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">, otherwise a compilation error occurs.
+I<NAME> must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">. Otherwise, a compilation error occurs.
 
-I<VALUE> must be an L<integer literal|/"Integer Literal"> within the int type, otherwise a compilation error occurs.
+I<VALUE> must be an L<integer literal|/"Integer Literal"> within the int type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1776,7 +1776,7 @@ The List of Enumeration Attributes:
 
 Compilation Errors:
 
-One of C<private>, C<protected> and C<public> must be specified, otherwise a compilation error occurs.
+One of C<private>, C<protected> and C<public> must be specified. Otherwise, a compilation error occurs.
 
 =head1 Block
 
@@ -1813,7 +1813,7 @@ A simple block is a scope block.
     1;
   }
 
-A simple block must have at least one statements, otherwise it is intepreted as a L<key-value array initialization|SPVM::Document::Language::Operators/"Key-Value Array Initialization">.
+A simple block must have at least one statements. Otherwise, it is intepreted as a L<key-value array initialization|SPVM::Document::Language::Operators/"Key-Value Array Initialization">.
 
 =head3 Method Block
 

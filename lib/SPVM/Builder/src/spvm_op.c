@@ -499,7 +499,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         const char* alias_name = op_use->uv.use->alias_name;
         if (alias_name) {
     
-          // Basic type name must begin with upper case, otherwise compiler error occur.
+          // Basic type name must begin with upper case. Otherwise, compiler error occur.
           // (Invalid example) Foo::bar
           if (islower(alias_name[0])) {
             SPVM_COMPILER_error(compiler, "The alias name \"%s\" must begin with an upper case character.\n  at %s line %d", alias_name, op_decl->file, op_decl->line);

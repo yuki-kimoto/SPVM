@@ -2080,7 +2080,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             SPVM_TYPE* type = op_type->uv.type;
             
-            // If left type is same as right type, this return true, otherwise return false
+            // If left type is same as right type, this return true. Otherwise, return false
             if (operand_type->basic_type->id == type->basic_type->id && operand_type->dimension == type->dimension) {
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant_true = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);

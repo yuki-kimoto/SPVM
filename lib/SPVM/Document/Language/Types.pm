@@ -560,7 +560,7 @@ An array type is an L<object type|/"Object Types">.
 
 Compilation Errors:
 
-The dimesion is less than or equal to 255, otherwise a compilation error occurs.
+The dimesion is less than or equal to 255. Otherwise, a compilation error occurs.
 
 =head3 Numeric Array Types
 

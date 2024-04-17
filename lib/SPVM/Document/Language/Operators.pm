@@ -26,7 +26,7 @@ The return type is the type after the conversion is performed.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -45,7 +45,7 @@ The return type is the type after the conversion is performed.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -68,9 +68,9 @@ The return type is the type after the L<binary numeric conversion|/"Binary Numer
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -93,9 +93,9 @@ The return type is the type after the L<binary numeric conversion|/"Binary Numer
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -118,9 +118,9 @@ The return type is the type after the L<binary numeric conversion|/"Binary Numer
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -147,9 +147,9 @@ If the type of the left operand I<LEFT_OPERAND> and the right operand I<RIGHT_OP
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -174,9 +174,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the int type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the int type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the int type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be the int type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -201,9 +201,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the long type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the long type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the long type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be the long type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -231,9 +231,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -258,9 +258,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the int type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the int type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the int type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be the int type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -285,9 +285,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the long type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the long type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the long type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be the long type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -308,9 +308,9 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference. Otherwise, a compilation error occurs.
 
-The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<OPERAND> must be a numeric type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -343,9 +343,9 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference. Otherwise, a compilation error occurs.
 
-The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<OPERAND> must be a numeric type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -380,9 +380,9 @@ The return type is the type of I<OPERAND>.
 
 Complation Errors:
 
-I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference. Otherwise, a compilation error occurs.
 
-The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<OPERAND> must be a numeric type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -415,9 +415,9 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference, otherwise a compilation error occurs.
+I<OPERAND> must be a local variable, a class variable, a field access, an element access, a dereference. Otherwise, a compilation error occurs.
 
-The type of I<OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of I<OPERAND> must be a numeric type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -456,9 +456,9 @@ The return type is the type after the L<binary numeric widening conversion|/"Bin
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -483,9 +483,9 @@ The return type is the type after the L<binary numeric widening conversion|/"Bin
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -510,7 +510,7 @@ The return type is the type that the L<numeric widening conversion|/"Numeric Wid
 
 Compilation Errors:
 
-The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -537,9 +537,9 @@ The return type is the type of I<LEFT_OPERAND>.
 
 Compilation Erorrs:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -564,9 +564,9 @@ The return type is the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -597,9 +597,9 @@ The return type is the type of I<LEFT_OPERAND>.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types">. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be an L<integer types within int|SPVM::Document::Language::Types/"Integer Types within int">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -616,7 +616,7 @@ The logical AND operator C<&&> performs a logical AND operation.
 
 This operator performs the L<condition evaluation|/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
 
-If the evaluated value is 0, it returns 0, otherwise performs the L<condition evaluation|/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
+If the evaluated value is 0, it returns 0. Otherwise, performs the L<condition evaluation|/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
@@ -638,7 +638,7 @@ The logical OR operator C<||> performes a logical OR operation.
 
 Thg logical OR operator performs the L<condition evaluation|/"Condition Evaluation"> on the left operand I<LEFT_OPERAND>.
 
-If the evaluated value is not 0, it returns the evaluated value, otherwise performs the L<condition evaluation|/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
+If the evaluated value is not 0, it returns the evaluated value. Otherwise, performs the L<condition evaluation|/"Condition Evaluation"> on the right operand I<RIGHT_OPERAND>.
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
@@ -659,7 +659,7 @@ The logical NOT operator C<!> performes a logical NOT operation.
 
 Thg logical NOT operator performs the L<condition evaluation|/"Condition Evaluation"> on the operand I<OPERAND>.
 
-If the evaluated value is 0, returns 1, otherwise returns 0.
+If the evaluated value is 0, returns 1. Otherwise, returns 0.
 
 The return type is the int type.
 
@@ -714,7 +714,7 @@ If the compile type of the operand is not the L<Bool|SPVM::Bool> class, performs
 
 Compilation Errors:
 
-The type of the operand of the condition evaluation must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, a L<reference type|SPVM::Document::Language::Types/"Reference Types">, or the L<undef type|SPVM::Document::Language::Types/"undef Type">, otherwise a compilation error occurs.
+The type of the operand of the condition evaluation must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, a L<reference type|SPVM::Document::Language::Types/"Reference Types">, or the L<undef type|SPVM::Document::Language::Types/"undef Type">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -786,11 +786,11 @@ The return type is the int type.
 
 Exceptions:
 
-I<OPERAND> must be defined, otherwise an exception is thrown.
+I<OPERAND> must be defined. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be an array type, otherwise a compilation error occurs.
+The type of I<OPERAND> must be an array type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -812,7 +812,7 @@ The return type is the int type.
 
 Compilation Errors:
 
-I<OPERAND> must be the L<array length operator|/"Array Length Operator">, otherwise a compilation error occurs.
+I<OPERAND> must be the L<array length operator|/"Array Length Operator">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -876,23 +876,23 @@ Compilation Errors:
 
 C<==>, C<!=>
 
-The type of the I<LEFT_OPERAND> must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
+The type of the I<LEFT_OPERAND> must be a numeric type, an object type, a reference type, or the undef type. Otherwise, a compilation error occurs.
 
-The type of the I<RIGHT_OPERAND> must be a numeric type, an object type, a reference type, or the undef type, otherwise a compilation error occurs.
+The type of the I<RIGHT_OPERAND> must be a numeric type, an object type, a reference type, or the undef type. Otherwise, a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> is a numeric type, the type of the I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is a numeric type, the type of the I<RIGHT_OPERAND> must be a numeric type. Otherwise, a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> is an object type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is an object type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type. Otherwise, a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> is the undef type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is the undef type, the type of the I<RIGHT_OPERAND> must be an object type or the undef type. Otherwise, a compilation error occurs.
 
-If the type of the I<LEFT_OPERAND> is a reference type, the type of the I<RIGHT_OPERAND> must be a reference type, otherwise a compilation error occurs.
+If the type of the I<LEFT_OPERAND> is a reference type, the type of the I<RIGHT_OPERAND> must be a reference type. Otherwise, a compilation error occurs.
 
 C<E<lt>>, C<E<lt>=>, C<E<gt>>, C<E<gt>=>, C<E<lt>=E<gt>>
 
-The type of the I<LEFT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of the I<LEFT_OPERAND> must be a numeric type. Otherwise, a compilation error occurs.
 
-The type of the I<RIGHT_OPERAND> must be a numeric type, otherwise a compilation error occurs.
+The type of the I<RIGHT_OPERAND> must be a numeric type. Otherwise, a compilation error occurs.
 
 =head3 String Comparison Operators
 
@@ -920,7 +920,7 @@ These operators perform the following operations.
       <i>eq</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
     </td>
   </tr>
   <tr>
@@ -928,7 +928,7 @@ These operators perform the following operations.
       <i>ne</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
     </td>
   </tr>
   <tr>
@@ -936,7 +936,7 @@ These operators perform the following operations.
       <i>gt</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
     </td>
   </tr>
   <tr>
@@ -944,7 +944,7 @@ These operators perform the following operations.
       <i>ge</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is greater than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is greater than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
     </td>
   </tr>
   <tr>
@@ -952,7 +952,7 @@ These operators perform the following operations.
       <i>lt</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
     </td>
   </tr>
   <tr>
@@ -960,7 +960,7 @@ These operators perform the following operations.
       <i>le</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
+      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
     </td>
   </tr>
   <tr>
@@ -979,9 +979,9 @@ The return type is the int type.
 
 Compilation Errors.
 
-The type of I<LEFT_OPERAND> must be the string type or the byte[] type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the string type or the byte[] type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the string type or the byte[] type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be the string type or the byte[] type. Otherwise, a compilation error occurs.
 
 =head2 Constant Operator
 
@@ -1011,7 +1011,7 @@ The return type is the int type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be the string type, otherwise a compilation error occurs.
+The type of I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1043,15 +1043,15 @@ The return type is the string type.
 
 Exceptions:
 
-I<LEFT_OPERAND> must be defined, otherwise an exception is thrown.
+I<LEFT_OPERAND> must be defined. Otherwise, an exception is thrown.
 
-I<RIGHT_OPERAND> must be defined, otherwise an exception is thrown.
+I<RIGHT_OPERAND> must be defined. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the string type, the byte[] type, or a numeric type, otherwise a compilation error occurs.
+The type of I<LEFT_OPERAND> must be the string type, the byte[] type, or a numeric type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the string type, the byte[] type, or a numeric type, otherwise a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be the string type, the byte[] type, or a numeric type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1073,11 +1073,11 @@ The return type is the string type.
 
 Exceptions:
 
-I<OPERAND> must be greater than or equal to 0, otherwise an exception is thrown.
+I<OPERAND> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+The type of I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1098,7 +1098,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-I<OPERAND> must be the string type, otherwise a compilation error occurs.
+I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1119,13 +1119,13 @@ The C<is_read_only> operator checks if a string is read-only.
 
   is_read_only OPERAND
 
-If the string I<OPERAND> is defined and read-only, the C<is_read_only> operator returns 1, otherwise returns 0.
+If the string I<OPERAND> is defined and read-only, the C<is_read_only> operator returns 1. Otherwise, returns 0.
 
 The return type is the int type.
 
 Compilation Errors:
 
-I<OPERAND> must be the string type, otherwise a compilation error occurs.
+I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1147,7 +1147,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-I<OPERAND> must be the string type, otherwise a compilation error occurs.
+I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
 
 =head2 say Operator
 
@@ -1163,7 +1163,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-I<OPERAND> must be the string type, otherwise a compilation error occurs.
+I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
 
 =head2 warn Operator
 
@@ -1192,7 +1192,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be an object type, otherwise a compilation error occurs.
+The type of I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1292,7 +1292,7 @@ The return type is I<CLASS_TYPE>.
 
 Compilation Errors:
 
-I<CLASS_TYPE> must be a loaded class type, otherwise a compilation error occurs.
+I<CLASS_TYPE> must be a loaded class type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1319,11 +1319,11 @@ The return type is C<I<BASIC_TYPE>[]>.
 
 Exceptions:
 
-I<LENGTH> must be greater than or equal to 0, otherwise an exception is thrown.
+I<LENGTH> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-I<LENGTH> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<LENGTH> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1355,13 +1355,13 @@ The return type is C<I<BASIC_TYPE>[]..[]>.
 
 Exceptions:
 
-I<LENGTH> must be greater than or equal to 0, otherwise an exception is thrown.
+I<LENGTH> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-I<LENGTH> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<LENGTH> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
-The type dimension must be less than or equal to 255, otherwise a compilation error occurs.
+The type dimension must be less than or equal to 255. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1517,7 +1517,7 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-The type of the operand must be the string type, a numeric array type, or a multi-numeric array type, otherwise a compilation error occurs.
+The type of the operand must be the string type, a numeric array type, or a multi-numeric array type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1583,7 +1583,7 @@ The return type is the L<Reference Types|SPVM::Document::Language::Types/"Refere
 
 Compilation Errors:
 
-I<VARIALBE> must be a local variable of a numeric type or a multi-numeric type, otherwise a compilation error occurs.
+I<VARIALBE> must be a local variable of a numeric type or a multi-numeric type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1609,7 +1609,7 @@ The return type is the type of the value referenced by I<VARIABLE>.
 
 Compilation Errors:
 
-The type of I<VARIABLE> must be a reference type, otherwise a compilation error occurs.
+The type of I<VARIABLE> must be a reference type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1793,7 +1793,7 @@ Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<local variable access|/"Local Variable Access"> could occur.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1813,9 +1813,9 @@ If a class variable with the same name as a local variable is defined, the local
 
 Compilation Errors:
 
-I<$var> must be a valid local variable name, otherwise a compilation error occurs.
+I<$var> must be a valid local variable name. Otherwise, a compilation error occurs.
 
-The declaration of I<$var> must exists before I<$var>, otherwise a compilation error occurs.
+The declaration of I<$var> must exists before I<$var>. Otherwise, a compilation error occurs.
 
 =head3 Getting a Class Variable
 
@@ -1869,7 +1869,7 @@ Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<class variable access|/"Class Variable Access"> could occur.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1901,13 +1901,13 @@ If the class name is ommited, the class is set to the L<outmost class|/"Outmost 
 
 Compilation Errors:
 
-I<$VAR> must be a valid class variable name, otherwise a compilation error occurs.
+I<$VAR> must be a valid class variable name. Otherwise, a compilation error occurs.
 
-The class specified by I<$VAR> must be loaded, otherwise a compilation error occurs.
+The class specified by I<$VAR> must be loaded. Otherwise, a compilation error occurs.
 
-The class variable relative name specified by I<$VAR> must be defined in the class specified by I<$VAR>, otherwise a compilation error occurs.
+The class variable relative name specified by I<$VAR> must be defined in the class specified by I<$VAR>. Otherwise, a compilation error occurs.
 
-The L<outmost class|/"Outmost Class"> must be allowed access to I<$VAR>, otherwise a compilation error occurs.
+The L<outmost class|/"Outmost Class"> must be allowed access to I<$VAR>. Otherwise, a compilation error occurs.
 
 =head3 Getting an Array Element
 
@@ -1925,9 +1925,9 @@ The return type is the element type of I<ARRAY>.
 
 Exceptions:
 
-I<ARRAY> must be defined, otherwise an exception is thrown.
+I<ARRAY> must be defined. Otherwise, an exception is thrown.
 
-I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
+I<INDEX> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
@@ -1957,15 +1957,15 @@ The return type is the element type.
 
 Exceptions:
 
-I<ARRAY> must be defined, otherwise an exception is thrown.
+I<ARRAY> must be defined. Otherwise, an exception is thrown.
 
-I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
+I<INDEX> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<element access|/"Element Access"> could occur.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1987,9 +1987,9 @@ The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Ty
 
 Compilation Errors:
 
-I<ARRAY> must be an array type, otherwise a compilation error occurs.
+I<ARRAY> must be an array type. Otherwise, a compilation error occurs.
 
-I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
 =head3 Getting a Character
 
@@ -2009,9 +2009,9 @@ The return type is the byte type.
 
 Exceptions:
 
-I<STRING> must be defined, otherwise an exception is thrown.
+I<STRING> must be defined. Otherwise, an exception is thrown.
 
-I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
+I<INDEX> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
@@ -2038,9 +2038,9 @@ The return type is the byte type.
 
 Exceptions:
 
-I<STRING> must be defined, otherwise an exception is thrown.
+I<STRING> must be defined. Otherwise, an exception is thrown.
 
-I<INDEX> must be greater than or equal to 0, otherwise an exception is thrown.
+I<INDEX> must be greater than or equal to 0. Otherwise, an exception is thrown.
 
 If I<STRING> is not a mutable string, an exception is thrown.
 
@@ -2048,7 +2048,7 @@ Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<character access|/"Character Access"> could occur.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -2067,9 +2067,9 @@ The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Ty
 
 Compilation Errors:
 
-I<STRING> must be the string type, otherwise a compilation error occurs.
+I<STRING> must be the string type. Otherwise, a compilation error occurs.
 
-I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
 =head3 Getting a Field
 
@@ -2110,7 +2110,7 @@ Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -2158,7 +2158,7 @@ Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -2203,7 +2203,7 @@ Compiliation errors caused by the syntax of the L<field access|/"Field Access"> 
 
 Compiliation errors caused by the L<dereference operator|/"Dereference Operator"> could occur.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -2223,7 +2223,7 @@ I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Na
 
 Compilation Errors:
 
-I<INVOCANT> must be an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, otherwise a compilation error occurs.
+I<INVOCANT> must be an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">. Otherwise, a compilation error occurs.
 
 Depending on the type of I<INVOCANT>, there are the following field access.
 
@@ -2231,19 +2231,19 @@ Depending on the type of I<INVOCANT>, there are the following field access.
 
 Compilation Errors:
 
-If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, or its super classes, otherwise a compilation error occurs.
+If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, or its super classes. Otherwise, a compilation error occurs.
 
 =head4 Field Access for Multi-Numeric Types
 
 Compilation Errors:
 
-If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type, otherwise a compilation error occurs.
+If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type. Otherwise, a compilation error occurs.
 
 =head4 Field Access for Multi-Numeric Reference Types
 
 Compilation Errors:
 
-If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type, otherwise a compilation error occurs.
+If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type. Otherwise, a compilation error occurs.
 
 =head3 Getting a Referenced Value
 
@@ -2263,9 +2263,9 @@ The return type is the type of the referenced value.
 
 Compilation Errors:
 
-The type of I<VARIABLE> must be a reference type, otherwise a compilation error occurs.
+The type of I<VARIABLE> must be a reference type. Otherwise, a compilation error occurs.
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -2307,7 +2307,7 @@ The return type is the string type.
 
 Compilation Errors:
 
-The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, otherwise a compilation error occurs.
+The assignment must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -2856,7 +2856,7 @@ If a data check returns 0, an exception is thrown.
 
 Compilation Errors:
 
-I<OPERAND> must satisfy the L<cast requirement|SPVM::Document::Language::Types/"Cast Requirement">, otherwise a compilation error occurs.
+I<OPERAND> must satisfy the L<cast requirement|SPVM::Document::Language::Types/"Cast Requirement">. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -2882,17 +2882,17 @@ The C<isa> operator checks whether an operand can be assigned to a type.
 
 If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data convertion.
 
-If the assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
+If the assignment requirement is satisfied, this operator returns 1. Otherwise, returns 0.
 
 If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion.
 
-If the runtime assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
+If the runtime assignment requirement is satisfied, this operator returns 1. Otherwise, returns 0.
 
 The return type is the int type.
 
 Compilation Errors:
 
-If the runtime assignment requirement is checked, I<OPERAND> must be an object type, otherwise a compilation error occurs.
+If the runtime assignment requirement is checked, I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -2924,17 +2924,17 @@ The C<is_type> operator checks whether the type of an operand is equal to a type
 
 If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
 
-If it is true, this operator returns 1, otherwise returns 0.
+If it is true, this operator returns 1. Otherwise, returns 0.
 
 If the type is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
 
-If it is true, this operator returns 1, otherwise returns 0.
+If it is true, this operator returns 1. Otherwise, returns 0.
 
 The return type is int type.
 
 Compilation Errors:
 
-If the runtime check is performed, I<OPERAND> must be an object type, otherwise a compilation error occurs.
+If the runtime check is performed, I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -2960,7 +2960,7 @@ The C<is_compile_type> operator checks whether the compilation type of an operan
 
   OPERAND is_compile_type TYPE
 
-If the compilation type of I<OPERAND> is equal to the type I<TYPE>, returns 1, otherwise returns 0.
+If the compilation type of I<OPERAND> is equal to the type I<TYPE>, returns 1. Otherwise, returns 0.
 
 The return type is int type.
 
@@ -2997,15 +2997,15 @@ This operator performs the L<integer promotional conversion|/"Integer Promotiona
 
 And this operator checks whether the type specified by the basic type ID I<OPERAND> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type I<TYPE>.
 
-If it is satisfied, this operator returns 1, otherwise returns 0.
+If it is satisfied, this operator returns 1. Otherwise, returns 0.
 
 The return type is int type.
 
 Compilation Errors:
 
-I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
-I<TYPE> must be a class type, otherwise a compilation error occurs.
+I<TYPE> must be a class type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -3027,15 +3027,15 @@ This operator performs the L<integer promotional conversion|/"Integer Promotiona
 
 And this operator checks whether the type specified by the basic type ID I<OPERAND> is equal to the type I<TYPE>.
 
-If it is, this operator returns 1, otherwise returns 0.
+If it is, this operator returns 1. Otherwise, returns 0.
 
 The return type is int type.
 
 Compilation Errors:
 
-I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int, otherwise a compilation error occurs.
+I<OPERAND> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
-I<TYPE> must be a class type, otherwise a compilation error occurs.
+I<TYPE> must be a class type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -3053,13 +3053,13 @@ The C<type_name> operator gets the type name of the object.
 
   type_name OPERAND
 
-If the object I<OPERAND> is defined, creates a string with the type name of I<OPERAND> and returns it, otherwise returns an undefined value.
+If the object I<OPERAND> is defined, creates a string with the type name of I<OPERAND> and returns it. Otherwise, returns an undefined value.
 
 The return type is the string type.
 
 Compilation Errors.
 
-I<OPERAND> must be an object type, otherwise a compilation error occurs.
+I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -3232,15 +3232,15 @@ The C<can> operator checks if a method can be called.
 
 An empty string C<""> means an L<anon method|/"Anon Method">.
 
-If I<OPERAND> can call the method given by METHOD_NAME, returns 1, otherwise returns 0.
+If I<OPERAND> can call the method given by METHOD_NAME, returns 1. Otherwise, returns 0.
 
 The return type is int type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be the class type or the L<interface type|SPVM::Document::Language::Types/"Interface Type">, otherwise a compilation error occurs.
+The type of I<OPERAND> must be the class type or the L<interface type|SPVM::Document::Language::Types/"Interface Type">. Otherwise, a compilation error occurs.
 
-The METHOD_NAME must be a method name or an empty string C<"">, otherwise a compilation error occurs.
+The METHOD_NAME must be a method name or an empty string C<"">. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -3330,7 +3330,7 @@ Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
-The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
+The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -3353,7 +3353,7 @@ Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
-The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
+The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -3368,7 +3368,7 @@ The C<isweak> operator checks if the L<weak reference|SPVM::Document::Language::
 
 I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
-If the field specified by I<FIELD_NAME> of the object I<INVOCANT> is weaken, this operator returns 1, otherwise returns 0.
+If the field specified by I<FIELD_NAME> of the object I<INVOCANT> is weaken, this operator returns 1. Otherwise, returns 0.
 
 The return type is the int type.
 
@@ -3376,7 +3376,7 @@ Compilation Errors:
 
 Compiliation errors caused by the syntax of the L<field access|/"Field Access"> could occur.
 
-The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type, otherwise a compilation error occurs.
+The type of I<INVOCANT-E<gt>{FIELD_NAME}> must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
 

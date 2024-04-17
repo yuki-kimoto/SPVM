@@ -237,7 +237,7 @@ A class name.
 
 Exceptions:
 
-The "class_name" option must be defined, otherwise an exception is thrown.
+The "class_name" option must be defined. Otherwise, an exception is thrown.
 
 =head1 Instance Methods
 
@@ -251,21 +251,21 @@ Returns the all class and interface names except for anon classes and classes ge
 
   my $has_config_file = $config_info->has_config_file($class_name);
   
-If the class given by the class name has a config file, returns 1, otherwise returns 0.
+If the class given by the class name has a config file, returns 1. Otherwise, returns 0.
 
 Exceptions:
 
-The class name $class_name must be defined, otherwise an exception is thrown.
+The class name $class_name must be defined. Otherwise, an exception is thrown.
 
 =head2 is_resource_loader
 
   my $is_resource_loader = $config_info->is_resource_loader($class_name);
   
-If the class given by the class name $class_name is a class that load resources, returns 1, otherwise returns 0.
+If the class given by the class name $class_name is a class that load resources, returns 1. Otherwise, returns 0.
 
 Exceptions:
 
-The class name $class_name must be defined, otherwise an exception is thrown.
+The class name $class_name must be defined. Otherwise, an exception is thrown.
 
 =head2 get_config_file
 
@@ -275,9 +275,9 @@ Returns the file path of the config for the class given by the class name $class
 
 Exceptions:
 
-The class name $class_name must be defined, otherwise an exception is thrown.
+The class name $class_name must be defined. Otherwise, an exception is thrown.
 
-The config file for the class "%s" is not found, otherwise an exception is thrown.
+The config file for the class "%s" is not found. Otherwise, an exception is thrown.
 
 =head2 get_config_content
 

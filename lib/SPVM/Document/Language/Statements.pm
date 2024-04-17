@@ -213,7 +213,7 @@ It is allowed to jump multiple case statements into a single block.
 
 Compilation Errors:
 
-I<CONDITION> must be an integer type within int, otherwise a compilation error occurs.
+I<CONDITION> must be an integer type within int. Otherwise, a compilation error occurs.
 
 The values of the case statements cannnot be duplicated. If so, a compilation error occurs.
 
@@ -335,7 +335,7 @@ The C<while> statement is a loop statement with the following syntax.
 
 The L<condition evaluation|SPVM::Document::Language::Operators/"Condition Evaluation"> is performed on the condition I<CONDITION>.
 
-If the evaluated value is 0, the program jumps to the end of the C<while> block, otherwise the program jumps to the beginning of the C<while> block.
+If the evaluated value is 0, the program jumps to the end of the C<while> block. Otherwise, the program jumps to the beginning of the C<while> block.
 
 When the program reaches the end of the C<while> block, it jumps to the beginning of the C<while> statement.
 
@@ -468,9 +468,9 @@ Compilation Errors:
 
 If the return type of the current method is the void typ, I<OPERAND> cannnot exist. If so, a compilation error occurs.
 
-If the return type of the current method is the non-void type, I<OPERAND> must exist, otherwise a compilation error occurs.
+If the return type of the current method is the non-void type, I<OPERAND> must exist. Otherwise, a compilation error occurs.
 
-The type of I<OPERAND> must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to the return type of the current method, otherwise a compilation error occurs.
+The type of I<OPERAND> must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to the return type of the current method. Otherwise, a compilation error occurs.
 
 =head2 die Statement
 
@@ -509,11 +509,11 @@ See also L<Exception Handling|SPVM::Document::Language::ExceptionHandling> for e
 
 Comlication Errors:
 
-I<OPERAND_MESSAGE> must be the string type or the undef type, otherwise a compilation error occurs.
+I<OPERAND_MESSAGE> must be the string type or the undef type. Otherwise, a compilation error occurs.
 
-I<ERROR_CLASS> must be a class type, otherwise a compilation error occurs.
+I<ERROR_CLASS> must be a class type. Otherwise, a compilation error occurs.
 
-I<OPERAND_ERROR_ID> must be an integer type within int, otherwise a compilation error occurs.
+I<OPERAND_ERROR_ID> must be an integer type within int. Otherwise, a compilation error occurs.
 
 Examples:
   

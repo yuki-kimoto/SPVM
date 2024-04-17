@@ -70,7 +70,7 @@ C<const char* (*get_include_dir)(L<void* compiler|SPVM::Document::NativeAPI::Com
 
 Searches a class search directory given the index I<index>.
 
-If it is found, returns it, otherwise returns C<NULL>.
+If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 add_include_dir
   
@@ -112,7 +112,7 @@ Compiles the SPVM class given by the class name I<class_name>. Classes loaded by
 
 The L<runtime|/"get_runtime"> is build.
 
-If the compilation is successful, returns 0, otherwise returns a non-zero value.
+If the compilation is successful, returns 0. Otherwise, returns a non-zero value.
 
 This native API can be called repeatedly to compile other classes.
 
@@ -128,7 +128,7 @@ C<const char* (*get_error_message)(L<void* compiler|SPVM::Document::NativeAPI::C
 
 Searches the compiler error message given the index I<index>.
 
-If it is found, returns it, otherwise returns C<NULL>.
+If it is found, returns it. Otherwise, returns C<NULL>.
 
 =head2 get_runtime
 
@@ -150,7 +150,7 @@ Compiles an SPVM anon class given the source code I<source>. Classes loaded by t
 
 The L<runtime|/"get_runtime"> is build.
 
-If the compilation is successful, returns 0, otherwise returns a non-zero value.
+If the compilation is successful, returns 0. Otherwise, returns a non-zero value.
 
 The generated anon class name is set to the value referenced by I<anon_basic_type_name_ptr>.
 
