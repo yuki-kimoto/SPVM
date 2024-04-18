@@ -555,21 +555,23 @@ A interger literal represents a constant number of an L<integer type|SPVM::Docum
 
 =head3 Integer Literal Decimal Notation
 
-The interger literal decimal notation is the way to write an L<integer literal|/"Integer Literals"> using decimal numbers C<0-9>.
+The interger literal decimal notation represents a number of the int type or the long type using decimal numbers C<0-9>.
+  
+It can begin with a minus C<->.
 
-A minus - can be at the beginning, and is followed by one or more of C<0-9>.
+It is followed by one or more of C<0-9>.
 
-C<_> can be used as a separator at the any positions after the first C<0-9>. C<_> has no meaning.
+C<_> can be placed at the any positions after the first C<0-9>. C<_> has no meaning.
 
-The suffix C<L> or C<l> can be at the end.
+It can end with the suffix C<L> or C<l>.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
 Compilation Errors:
 
-If the return type is the int type and the value is greater than the max value of L<int type|SPVM::Document::Language::Types/"int Type"> or less than the minimal value of L<int type|SPVM::Document::Language::Types/"int Type">, a compilation error occurs.
+If the return type is the int type and the value is greater than the max value of the int type or less than the minimal value of the int type, a compilation error occurs.
 
-If the return type is the long type and the value is greater than the max value of L<long type|SPVM::Document::Language::Types/"long Type"> or less than the minimal value of L<long type|SPVM::Document::Language::Types/"long Type">, a compilation error occurs.
+If the return type is the long type and the value is greater than the max value of the long type or less than the minimal value of the long type, a compilation error occurs.
 
 Examples:
 
@@ -582,43 +584,33 @@ Examples:
 
 =head3 Integer Literal Hexadecimal Notation
 
-The interger literal hexadecimal notation is the way to write an L<integer literal|/"Integer Literals"> using hexadecimal numbers C<0-9a-zA-Z>.
+The interger literal hexadecimal notation represents an L<integer literal|/"Integer Literals"> using hexadecimal numbers C<0-9a-zA-Z>.
 
-A minus - can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more C<0-9a-zA-Z>.
+It can begin with a minus C<->.
 
-C<_> can be used as a separator at the any positions after C<0x> or C<0X>. C<_> has no meaning.
+It is followed by C<0x> or C<0X>.
 
-The suffix C<L> or C<l> can be at the end.
+It is followed by one or more C<0-9a-zA-Z>. This is called hexadecimal numbers part.
+
+C<_> can be placed at the any positions after C<0x> or C<0X>. C<_> has no meaning.
+
+It can end with the suffix C<L> or C<l>.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
+If the return type is the int type, the hexadecimal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer value that does not change the bits.
 
-  uint32_t value_uint32_t;
-  int32_t value_int32_t = (int32_t)value_uint32_t;
+For example, C<0xFFFFFFFF> is  -1.
 
-And if - exists, the following conversion is performed.
+If the return type is the long type, the hexadecimal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer value that does not change the bits.
 
-  value_int32_t = -value_int32_t;
-
-For example, C<0xFFFFFFFF> is the same as -1, C<-0xFFFFFFFF> is the same as 1.
-
-If the return type is the long type, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
-
-  uint64_t value_uint64_t;
-  value_int64_t = (int64_t)value_uint64_t;
-
-And if - exists, the following conversion is performed.
-
-  value_int64_t = -value_int64_t;
-
-For example, C<0xFFFFFFFFFFFFFFFFL> is the same as C<-1L>, C<-0xFFFFFFFFFFFFFFFFL> is the same as C<1L>.
+For example, C<0xFFFFFFFFFFFFFFFFL> is C<-1L>.
 
 Compilation Errors:
 
-If the return type is the int type and the value that is except for - is greater than hexadecimal C<FFFFFFFF>, a compilation error occurs.
+If the return type is the int type and the hexadecimal numbers part is greater than hexadecimal C<FFFFFFFF>, a compilation error occurs.
 
-If the return type is the long type and the value that is except for - is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error occurs.
+If the return type is the long type and the hexadecimal numbers part is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error occurs.
 
 Examples:
 
@@ -632,9 +624,9 @@ Examples:
 
 =head3 Integer Literal Octal Notation
 
-The interger literal octal notation is the way to write an L<integer literal|/"Integer Literals"> using octal numbers 0-7.
+The interger literal octal notation represents an L<integer literal|/"Integer Literals"> using octal numbers 0-7.
 
-A minus - can be at the beginning, and is followed by 0, and is followed by one or more 0-7.
+It can begin with a minus C<->., and is followed by 0, and is followed by one or more 0-7.
 
 C<_> can be used as a separator at the any positions after 0. C<_> has no meaning.
 
@@ -642,23 +634,23 @@ The suffix C<L> or C<l> can be at the end.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
+If the return type is the int type, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
 
   uint32_t value_uint32_t;
   int32_t value_int32_t = (int32_t)value_uint32_t;
 
-And if - exists, the following conversion is performed.
+And if C<-> exists, the following conversion is performed.
 
   value_int32_t = -value_int32_t;
 
 For example, 037777777777 is the same as -1, -037777777777 is the same as 1.
 
-If the return type is the long type, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
+If the return type is the long type, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
 
   uint64_t value_uint64_t;
   value_int64_t = (int64_t)value_uint64_t;
 
-And if - exists, the following conversion is performed.
+And if C<-> exists, the following conversion is performed.
 
   value_int64_t = -value_int64_t;
 
@@ -666,9 +658,9 @@ For example, C<01777777777777777777777L> is the same as C<-1L>, C<-0177777777777
 
 Compilation Errors:
 
-If the return type is the int type and the value that is except for - is greater than octal 37777777777, a compilation error occurs.
+If the return type is the int type and the value that is except for C<-> is greater than octal 37777777777, a compilation error occurs.
 
-If the return type is the long type and the value that is except for - is greater than octal 1777777777777777777777, a compilation error occurs.
+If the return type is the long type and the value that is except for C<-> is greater than octal 1777777777777777777777, a compilation error occurs.
 
 Examples:
 
@@ -679,9 +671,9 @@ Examples:
 
 =head3 Integer Literal Binary Notation
 
-The interger literal binary notation is the way to write an L<integer literal|/"Integer Literals"> using binary numbers 0 and 1.
+The interger literal binary notation represents an L<integer literal|/"Integer Literals"> using binary numbers 0 and 1.
 
-A minus - can be at the beginning, and is followed by C<0b> or C<0B>, and is followed by one or more 0 and 1.
+It can begin with a minus C<->., and is followed by C<0b> or C<0B>, and is followed by one or more 0 and 1.
 
 C<_> can be used as a separator at the any positions after C<0b> or C<0B>. C<_> has no meaning.
 
@@ -689,23 +681,23 @@ The suffix C<L> or C<l> can be at the end.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the value that is except for - is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
+If the return type is the int type, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
 
   uint32_t value_uint32_t;
   int32_t value_int32_t = (int32_t)value_uint32_t;
 
-And if - exists, the following conversion is performed.
+And if C<-> exists, the following conversion is performed.
 
   value_int32_t = -value_int32_t;
 
 For example, C<0b11111111111111111111111111111111> is the same as -1, C<-0b11111111111111111111111111111111> is the same as 1.
 
-If the return type is the long type, the value that is except for - is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
+If the return type is the long type, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
 
   uint64_t value_uint64_t;
   value_int64_t = (int64_t)value_uint64_t;
 
-And if - exists, the following conversion is performed.
+And if C<-> exists, the following conversion is performed.
 
   value_int64_t = -value_int64_t;
 
@@ -713,9 +705,9 @@ For example, C<0b111111111111111111111111111111111111111111111111111111111111111
 
 Compilation Errors:
 
-If the return type is the int type and the value that is except for - is greater than binary 11111111111111111111111111111111, a compilation error occurs.
+If the return type is the int type and the value that is except for C<-> is greater than binary 11111111111111111111111111111111, a compilation error occurs.
 
-If the return type is the long type and the value that is except for - is greater than binary 1111111111111111111111111111111111111111111111111111111111111111, a compilation error occurs.
+If the return type is the long type and the value that is except for C<-> is greater than binary 1111111111111111111111111111111111111111111111111111111111111111, a compilation error occurs.
 
 Examples:
 
@@ -730,9 +722,9 @@ The floating point litral is a L<numeric literal/"Numeric Literals"> to write a 
 
 =head3 Floating Point Literal Decimal Notation
 
-The floating point litral decimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using decimal numbers C<0-9>.
+The floating point litral decimal notation represents a L<floating point literal|/"Floating Point Literal"> using decimal numbers C<0-9>.
 
-A minus - can be at the beginning, and is followed by one or more C<0-9>
+It can begin with a minus C<->., and is followed by one or more C<0-9>
 
 C<_> can be used as a separator at the any positions after the first C<0-9>.
 
@@ -772,9 +764,9 @@ Examples:
 
 =head3 Floating Point Literal Hexadecimal Notation
 
-The floating point litral hexadecimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using hexadecimal numbers C<0-9a-zA-Z>.
+The floating point litral hexadecimal notation represents a L<floating point literal|/"Floating Point Literal"> using hexadecimal numbers C<0-9a-zA-Z>.
 
-A minus - can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more C<0-9a-zA-Z>.
+It can begin with a minus C<->., and is followed by C<0x> or C<0X>, and is followed by one or more C<0-9a-zA-Z>.
 
 C<_> can be used as a separator at the any positions after C<0x> or C<0X>.
 
@@ -1124,7 +1116,7 @@ Examples:
 
 =head3 Unicode Escape Character
 
-The Unicode escape character is the way to write an UTF-8 character using an Unicode code point that is written by hexadecimal numbers C<0-9a-fA-F>.
+The Unicode escape character represents an UTF-8 character using an Unicode code point that is written by hexadecimal numbers C<0-9a-fA-F>.
 
 The Unicode escape character can be used as an escape character of the L<string literal|/"String Literal">.
 
@@ -1168,7 +1160,7 @@ The list of raw escape characters.
 
 =head2 Octal Escape Character
 
-The octal escape character is the way to write an ASCII code using octal numbers 0-7.
+The octal escape character represents an ASCII code using octal numbers 0-7.
 
 The octal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
 
@@ -1218,7 +1210,7 @@ Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\
 
 =head2 Hexadecimal Escape Character
 
-The hexadecimal escape character is the way to write an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
+The hexadecimal escape character represents an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
 
 The hexadecimal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
 
