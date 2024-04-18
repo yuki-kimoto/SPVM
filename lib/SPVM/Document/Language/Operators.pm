@@ -989,13 +989,13 @@ The constant operator gets a constant value represented by a literal.
 
   LITERAL
 
-I<LITERAL> is a L<literal|SPVM::Document::Language::Tokenization/"Literal">.
+I<LITERAL> is a L<literal|SPVM::Document::Language::Tokenization/"Literals">.
 
 The return type is the type of I<LITERAL>.
 
 Compilation Errors:
 
-Compilation errors casued by L<literal|SPVM::Document::Language::Tokenization/"Literal"> syntax could occur.
+Compilation errors casued by L<literal|SPVM::Document::Language::Tokenization/"Literals"> syntax could occur.
 
 =head2 length Operator
 

@@ -541,7 +541,7 @@ Examples:
   
   =cut
 
-=head2 Literal
+=head2 Literals
 
 A literal is the way to write a constant value in source codes.
 
@@ -816,7 +816,7 @@ Examples:
 
 =head2 Character Literal
 
-A character literal is a L<literal|/"Literal"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
+A character literal is a L<literal|/"Literals"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
 
 A character literal represents an ASCII character.
 
@@ -965,7 +965,7 @@ Examples:
 
 =head2 String Literal
 
-A string literal is a L<literal|/"Literal"> to write a constant value that type is the L<string type|/"string Type"> in source codes.
+A string literal is a L<literal|/"Literals"> to write a constant value that type is the L<string type|/"string Type"> in source codes.
 
 The return type is the L<string type|/"string Type">.
 
@@ -1311,7 +1311,7 @@ Examples:
 
 =head2 Bool Literal
 
-The bool literal is a L<literal|/"Literal"> to represent a bool value in source codes.
+The bool literal is a L<literal|/"Literals"> to represent a bool value in source codes.
 
 =head3 true
 
