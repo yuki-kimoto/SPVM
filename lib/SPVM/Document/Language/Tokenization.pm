@@ -12,6 +12,8 @@ This section describes the L<lexical analysis|https://en.wikipedia.org/wiki/Lexi
 
 This is called tokenization.
 
+See L<SPVM::Document::Language::SyntaxParsing> about syntax parsing.
+
 =head2 Character Encoding of Source Code
 
 The character encoding of SPVM source codes is UTF-8.
@@ -325,9 +327,9 @@ The List of Keywords:
   __FILE__
   __LINE__
 
-=head2 Operator for Tokenization
+=head2 Operator Tokens
 
-The list of the operators for tokenization:
+The List of Operator Tokens:
 
   !
   !=
@@ -382,8 +384,6 @@ The list of the operators for tokenization:
   ,
   ->
   =>
-
-Note that the operators for tokenization are different from the operators that are explained in L<operators|/"Operators">. The operators for tokenization are only for tokenization.
 
 =head2 Comment
 
