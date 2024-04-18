@@ -389,7 +389,7 @@ The List of Operator Tokens:
 
 =head2 Comment
 
-Comments have no meaning in source codes.
+Comments have no meaning.
 
   #COMMENT
 
@@ -502,7 +502,7 @@ Examples:
 
 =head2 POD
 
-POD is a syntax to write multiline comment. POD has no meaning in source codes.
+POD is a syntax to write multiline comment. POD has no meaning.
 
 The Beginning of a POD:
 
@@ -543,19 +543,15 @@ Examples:
 
 =head2 Literals
 
-A literal is the way to write a constant value in source codes.
-
-Literals are L<numeric literals|/"Numeric Literals">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
+A literal represents a constant value.
 
 =head2 Numeric Literals
 
-A numeric literal is the way to write a constant value that type is a L<numeric type|/"Numeric Type"> in source codes.
-
-Numeric literals are the L<integer literal|/"Integer Literals"> and the L<floating point literal|/"Floating Point Literal">.
+A numeric literal represents a constant L<number|SPVM::Document::Language::Types/"Number">.
 
 =head2 Integer Literals
 
-A interger literal is a L<numeric literal/"Numeric Literals"> to write a constant value that type is an L<integer type|/"Integer Type"> in source codes.
+A interger literal represents a constant number of an L<integer type|SPVM::Document::Language::Types/"Integer Types">.
 
 =head3 Integer Literal Decimal Notation
 
@@ -571,9 +567,9 @@ If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise t
 
 Compilation Errors:
 
-If the return type is the int type and the value is greater than the max value of L<int type|/"int Type"> or less than the minimal value of L<int type|/"int Type">, a compilation error occurs.
+If the return type is the int type and the value is greater than the max value of L<int type|SPVM::Document::Language::Types/"int Type"> or less than the minimal value of L<int type|SPVM::Document::Language::Types/"int Type">, a compilation error occurs.
 
-If the return type is the long type and the value is greater than the max value of L<long type|/"long Type"> or less than the minimal value of L<long type|/"long Type">, a compilation error occurs.
+If the return type is the long type and the value is greater than the max value of L<long type|SPVM::Document::Language::Types/"long Type"> or less than the minimal value of L<long type|SPVM::Document::Language::Types/"long Type">, a compilation error occurs.
 
 Examples:
 
@@ -730,11 +726,11 @@ Examples:
 
 =head2 Floating Point Literal
 
-The floating point litral is a L<numeric literal/"Numeric Literals"> to write a constant value that type is a L<floating point type|/"Floating Point Type"> in source codes.
+The floating point litral is a L<numeric literal/"Numeric Literals"> to write a constant value that type is a L<floating point type|SPVM::Document::Language::Types/"Floating Point Types">.
 
 =head3 Floating Point Literal Decimal Notation
 
-The floating point litral decimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using decimal numbers C<0-9> in source codes.
+The floating point litral decimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using decimal numbers C<0-9>.
 
 A minus - can be at the beginning, and is followed by one or more C<0-9>
 
@@ -752,13 +748,13 @@ And can be followed by a suffix is C<f>, C<F>, C<d>, or C<D>.
 
 one of a floating point part, an exponent part, or a suffix must exist.
 
-If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
+If the suffix C<f> or C<F> exists, the return type is the L<float type|SPVM::Document::Language::Types/"float Type">. Otherwise the return type is the L<double type|SPVM::Document::Language::Types/"double Type">.
 
 Compilation Errors:
 
-If the return type is the L<float type|/"float Type">, the floating point literal is parsed by the C<strtof> function of the C language. If the parsing fails, a compilation error occurs.
+If the return type is the L<float type|SPVM::Document::Language::Types/"float Type">, the floating point literal is parsed by the C<strtof> function of the C language. If the parsing fails, a compilation error occurs.
 
-If the return type is the L<double type|/"double Type">, the floating point literal is parsed by the C<strtod> function of the C language. If the parsing fails, a compilation error occurs.
+If the return type is the L<double type|SPVM::Document::Language::Types/"double Type">, the floating point literal is parsed by the C<strtod> function of the C language. If the parsing fails, a compilation error occurs.
 
 Examples:
 
@@ -776,7 +772,7 @@ Examples:
 
 =head3 Floating Point Literal Hexadecimal Notation
 
-The floating point litral hexadecimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using hexadecimal numbers C<0-9a-zA-Z> in source codes.
+The floating point litral hexadecimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using hexadecimal numbers C<0-9a-zA-Z>.
 
 A minus - can be at the beginning, and is followed by C<0x> or C<0X>, and is followed by one or more C<0-9a-zA-Z>.
 
@@ -794,13 +790,13 @@ And can be followed by a suffix C<f>, C<F>, C<d>, or C<D> if an exponent part ex
 
 one of a floating point part or an exponent part must exist.
 
-If the suffix C<f> or C<F> exists, the return type is the L<float type|/"float Type">. Otherwise the return type is the L<double type|/"double Type">.
+If the suffix C<f> or C<F> exists, the return type is the L<float type|SPVM::Document::Language::Types/"float Type">. Otherwise the return type is the L<double type|SPVM::Document::Language::Types/"double Type">.
 
 Compilation Errors:
 
-If the return type is the L<float type|/"float Type">, the floating point literal is parsed by the C<strtof> function of the C language. If the parsing fails, a compilation error occurs.
+If the return type is the L<float type|SPVM::Document::Language::Types/"float Type">, the floating point literal is parsed by the C<strtof> function of the C language. If the parsing fails, a compilation error occurs.
 
-If the return type is the L<double type|/"double Type">, the floating point literal is parsed by the C<strtod> function of the C language. If the parsing fails, a compilation error occurs.
+If the return type is the L<double type|SPVM::Document::Language::Types/"double Type">, the floating point literal is parsed by the C<strtod> function of the C language. If the parsing fails, a compilation error occurs.
 
 Examples:
   
@@ -816,7 +812,7 @@ Examples:
 
 =head2 Character Literal
 
-A character literal is a L<literal|/"Literals"> to write a constant value that type is the L<byte type|/"byte Type"> in source codes.
+A character literal is a L<literal|/"Literals"> to write a constant value that type is the L<byte type|SPVM::Document::Language::Types/"byte Type">.
 
 A character literal represents an ASCII character.
 
@@ -826,7 +822,7 @@ And is followed by a printable ASCII character C<0x20-0x7e> or an L<character li
 
 And ends with C<'>.
 
-The return type is the L<byte type|/"byte Type">.
+The return type is the L<byte type|SPVM::Document::Language::Types/"byte Type">.
 
 Compilation Errors:
 
@@ -965,9 +961,9 @@ Examples:
 
 =head2 String Literal
 
-A string literal is a L<literal|/"Literals"> to write a constant value that type is the L<string type|/"string Type"> in source codes.
+A string literal is a L<literal|/"Literals"> to write a constant value that type is the L<string type|SPVM::Document::Language::Types/"string Type">.
 
-The return type is the L<string type|/"string Type">.
+The return type is the L<string type|SPVM::Document::Language::Types/"string Type">.
 
 A character literal begins with C<">.
 
@@ -1254,9 +1250,9 @@ The hexadecimal numbers can be sorrounded by C<{> and C<}>.
 
 =head2 Single-Quoted String Literal
 
-A single-quoted string literal represents a constant string value in source codes.
+A single-quoted string literal represents a constant string value.
 
-The return type is the L<string type|/"string Type">.
+The return type is the L<string type|SPVM::Document::Language::Types/"string Type">.
 
 A character literal begins with C<q'>.
 
@@ -1311,7 +1307,7 @@ Examples:
 
 =head2 Bool Literal
 
-The bool literal is a L<literal|/"Literals"> to represent a bool value in source codes.
+The bool literal is a L<literal|/"Literals"> to represent a bool value.
 
 =head3 true
 
