@@ -103,7 +103,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DO_NOTHING",
     "NAME",
     "ATTRIBUTE",
-    "CURRENT_CLASS",
+    "OUTMOST_CLASS",
     "CLASS",
     "EXTENDS",
     "CLASS_BLOCK",
@@ -236,7 +236,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "BASIC_TYPE_ID",
     "TYPE_NAME",
     "COMPILE_TYPE_NAME",
-    "CURRENT_CLASS_NAME",
+    "OUTMOST_CLASS_NAME",
     "ARGS_WIDTH",
     "CALL_METHOD",
     "WEAKEN",
@@ -2387,7 +2387,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
   
   // Class method call
   assert(op_invocant->id != SPVM_OP_C_ID_NAME);
-  if (op_invocant->id == SPVM_OP_C_ID_TYPE || op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+  if (op_invocant->id == SPVM_OP_C_ID_TYPE || op_invocant->id == SPVM_OP_C_ID_OUTMOST_CLASS) {
     call_method->is_class_method = 1;
     call_method->op_name = op_name_method;
     if (op_invocant->id == SPVM_OP_C_ID_TYPE) {
@@ -2396,7 +2396,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_met
       
       op_invocant->uv.type->resolved_in_ast = 1;
     }
-    else if (op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+    else if (op_invocant->id == SPVM_OP_C_ID_OUTMOST_CLASS) {
       call_method->is_current = 1;
     }
   }

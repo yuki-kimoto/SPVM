@@ -1220,7 +1220,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             }
             break;
           }
-          case SPVM_OP_C_ID_CURRENT_CLASS_NAME: {
+          case SPVM_OP_C_ID_OUTMOST_CLASS_NAME: {
             SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
             
             const char* current_class_name = NULL;

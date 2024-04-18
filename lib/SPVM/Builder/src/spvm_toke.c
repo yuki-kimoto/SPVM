@@ -376,9 +376,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         // &foo - Current module
         else if (SPVM_TOKE_isalpha_ascii(compiler, *compiler->ch_ptr) || *compiler->ch_ptr == '_') {
-          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS);
+          yylvalp->opval = SPVM_TOKE_new_op(compiler, SPVM_OP_C_ID_OUTMOST_CLASS);
           compiler->expect_method_name = 1;
-          return CURRENT_CLASS;
+          return OUTMOST_CLASS;
         }
         // &
         else {
@@ -2454,8 +2454,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   keyword_token = END_OF_FILE;
                 }
                 else if (strcmp(symbol_name, "__PACKAGE__") == 0) {
-                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS_NAME, compiler->current_file, compiler->current_line);
-                  keyword_token = CURRENT_CLASS_NAME;
+                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_OUTMOST_CLASS_NAME, compiler->current_file, compiler->current_line);
+                  keyword_token = OUTMOST_CLASS_NAME;
                 }
                 else if (strcmp(symbol_name, "__FILE__") == 0) {
                   SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->current_file, strlen(compiler->current_file), compiler->current_file, compiler->current_line);

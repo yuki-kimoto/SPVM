@@ -1,12 +1,17 @@
+0.989104 2023-04-18
+  [Document Imperovement]
+    * Improve the doc of Tokanization.
+  [Internal Changes]
+    * SPVM_OP_C_ID_CURRENT_CLASS to SPVM_OP_C_ID_OUTMOST_CLASS.
 0.989103 2023-04-16
   [Internal Changes]
-    * Remove the is_anon field from spvm_runtime_method.h
-    * Remove the is_anon field from spvm_method.h
+    * Remove the is_anon field from spvm_runtime_method.h.
+    * Remove the is_anon field from spvm_method.h.
   [Document Improvement]
-    * Improve the doc of Types
-    * Improve the doc of Class
-    * Improve the doc of Operators
-    * Improve the doc of GarbageCollection
+    * Improve the doc of Types.
+    * Improve the doc of Class.
+    * Improve the doc of Operators.
+    * Improve the doc of GarbageCollection.
     
 0.989102 2023-04-15
   [Internal Changes]

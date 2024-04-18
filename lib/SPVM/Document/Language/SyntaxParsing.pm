@@ -18,13 +18,13 @@ Syntax parsing is performed according to the grammer of the SPVM language.
 
 The grammer of the SPVM language is described using L<GNU Bison|https://en.wikipedia.org/wiki/GNU_Bison> syntax.
 
-  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW CURRENT_CLASS MUTABLE
+  %token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALIAS ALLOW OUTMOST_CLASS MUTABLE
   %token <opval> ATTRIBUTE MAKE_READ_ONLY INTERFACE EVAL_ERROR_ID ARGS_WIDTH VERSION_DECL
   %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
   %token <opval> SYMBOL_NAME VAR_NAME CONSTANT EXCEPTION_VAR
   %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE END_OF_FILE
   %token <opval> FATCAMMA RW RO WO INIT NEW OF BASIC_TYPE_ID EXTENDS SUPER
-  %token <opval> RETURN WEAKEN DIE WARN PRINT SAY CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
+  %token <opval> RETURN WEAKEN DIE WARN PRINT SAY OUTMOST_CLASS_NAME UNWEAKEN '[' '{' '('
   %type <opval> grammar
   %type <opval> field_name method_name class_name
   %type <opval> type qualified_type basic_type array_type opt_basic_type
@@ -384,7 +384,7 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | ARGS_WIDTH
     | TRUE
     | FALSE
-    | CURRENT_CLASS_NAME
+    | OUTMOST_CLASS_NAME
     | unary_operator
     | binary_operator
     | assign
@@ -515,8 +515,8 @@ The grammer of the SPVM language is described using L<GNU Bison|https://en.wikip
     | '{' '}'
 
   call_method
-    : CURRENT_CLASS SYMBOL_NAME '(' opt_operators  ')'
-    | CURRENT_CLASS SYMBOL_NAME
+    : OUTMOST_CLASS SYMBOL_NAME '(' opt_operators  ')'
+    | OUTMOST_CLASS SYMBOL_NAME
     | basic_type ARROW method_name '(' opt_operators  ')'
     | basic_type ARROW method_name
     | operator ARROW method_name '(' opt_operators ')'
@@ -610,10 +610,10 @@ These are tokens for L<grammer/"Grammer">.
     <td>COPY</td><td>copy</td>
   </tr>
   <tr>
-    <td>CURRENT_CLASS</td><td>&</td>
+    <td>OUTMOST_CLASS</td><td>&</td>
   </tr>
   <tr>
-    <td>CURRENT_CLASS_NAME</td><td>__PACKAGE__</td>
+    <td>OUTMOST_CLASS_NAME</td><td>__PACKAGE__</td>
   </tr>
   <tr>
     <td>DEC</td><td>--</td>

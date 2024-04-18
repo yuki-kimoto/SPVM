@@ -868,7 +868,6 @@ t/02_vm/lib/SPVM/TestCase/Operator/CompileTypeName.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Concat.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Constant.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Copy.spvm
-t/02_vm/lib/SPVM/TestCase/Operator/CURRENT_CLASS_NAME.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Data/Weaken.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Divide.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Dump.spvm
@@ -887,6 +886,7 @@ t/02_vm/lib/SPVM/TestCase/Operator/Move.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Multiply.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/NumericOperator.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Object.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/PACKAGE.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Print.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Ref.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Say.spvm
