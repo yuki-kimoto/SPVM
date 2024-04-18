@@ -547,7 +547,7 @@ A literal is the way to write a constant value in source codes.
 
 Literals are L<numeric literals|/"Numeric Literals">, the L<floating point literal|/"Floating Point Literal">, the L<character literal|/"Character Literal">, the L<string literal|/"String Literal"> and the L<bool literal|/"Bool Literal">.
 
-=head2 Numeric Literal
+=head2 Numeric Literals
 
 A numeric literal is the way to write a constant value that type is a L<numeric type|/"Numeric Type"> in source codes.
 
