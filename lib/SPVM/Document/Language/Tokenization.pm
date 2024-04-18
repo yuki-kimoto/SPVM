@@ -76,23 +76,13 @@ Examples:
 
 A class name is a L<symbol name|/"Symbol Name">.
 
-The part names of a class name must begin uppercase letter. If the class name is C<Foo:Bar::Baz>, part names are C<Foo>, C<Bar>, and C<Baz>.
+Each partial name of a class name must begin with an uppercase letter.
 
-A class name must be the name that the relative class file path's all C</> are replaced with C<::> and the trailing C<.spvm> is removed. For example, If the relative class file path is C<Foo/Bar/Baz.spvm>, the class name must be C<Foo::Bar::Baz>.
-
-  # Valid class name in the class file "Foo/Bar/Baz.spvm"
-  class Foo::Bar::Baz {
-    
-  }
-
-  # Invalid class name in the class file "Foo/Bar/Baz.spvm"
-  class Foo::Bar::Hello {
-    
-  }
+Partial names are individual names separated by C<::>. For example, the partial names of C<Foo::Bar::Baz> are C<Foo>, C<Bar>, and C<Baz>.
 
 Compilation Errors:
 
-If class names are invalid, a compilation error occurs.
+If a class name is invalid, a compilation error occurs.
 
 Examples:
   
@@ -102,7 +92,7 @@ Examples:
   Foo::Bar::Baz3
   Foo::bar
   Foo_Bar::Baz_Baz
-
+  
   # Invalid class names
   Foo
   Foo::::Bar
@@ -112,42 +102,37 @@ Examples:
 
 =head2 Method Name
 
-A method name is a L<symbol name|/"Symbol Name"> that doesn't contains C<::>.
+A method name is a L<symbol name|/"Symbol Name"> without C<::> or an empty string C<"">.
 
-0-length method name is valid. This is used in the L<anon method|/"Anon Method">.
+Method names with the same name as L<keywords|/"Keywords"> are allowed.
 
 Compilation Errors:
 
-If method names are invalid, a compilation error occurs.
+If a method name is invalid, a compilation error occurs.
 
 Examples:
 
-  # Valid method names
+  # Method names
   FOO
   FOO_BAR3
   foo
   foo_bar
   _foo
   _foo_bar_
-
+  
   # Invalid method names
   foo__bar
   3foo
 
-A method name that is the same as a L<keyword/"Keyword"> is allowed.
-  
-  # "if" is a valid method name
-  static method if : void () {
-    
-  }
-
 =head2 Field Name
 
-A field name is a L<symbol name|/"Symbol Name"> that doesn't contains C<::>.
+A field name is a L<symbol name|/"Symbol Name"> without C<::>.
+
+Field names with the same name as L<keywords|/"Keywords"> are allowed.
 
 Compilation Errors:
 
-If field names are invalid, a compilation error occurs.
+If a field names is invalid, a compilation error occurs.
 
 Examples:
 
@@ -158,16 +143,11 @@ Examples:
   foo_bar
   _foo
   _foo_bar_
-
+  
   # Invalid field names
   foo__bar
   3foo
   Foo::Bar
-
-The field name that is the same as a L<keyword/"Keyword"> is allowed.
-  
-  # "if" is a valid field name
-  has if : int;
 
 =head2 Variable Name
 
@@ -262,7 +242,7 @@ Examples:
     
   }
 
-=head2 Keyword
+=head2 Keywords
 
 The list of keywords:
 
