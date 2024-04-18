@@ -54,6 +54,12 @@ It dose not contains C<::::>.
 
 It dose not begin with C<0-9>.
 
+Compliation Errors:
+
+If a symbol name is invald, a compilation error occurs.
+
+Examples:
+
   # Symbol names
   foo
   foo_bar2
@@ -65,10 +71,6 @@ It dose not begin with C<0-9>.
   ::Foo
   Foo::
   Foo::::Bar
-
-Compliation Errors:
-
-If a symbol name is invald, a compilation error occurs.
 
 =head2 Class Name
 
