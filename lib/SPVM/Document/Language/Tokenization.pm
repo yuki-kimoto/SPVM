@@ -1,3 +1,5 @@
+=encoding utf8
+
 =head1 Name
 
 SPVM::Document::Language::Tokenization - Tokenization in the SPVM Language
@@ -393,7 +395,7 @@ Comments have no meaning in source codes.
 
 A comment begins with C<#>.
 
-It is followed by any string I<COMMENT> except for ASCII C<LF>.
+It is followed by any string I<COMMENT>.
 
 It ends with ASCII C<LF>.
 
@@ -421,7 +423,7 @@ It ends with ASCII C<LF>.
 
 The current line number of the source code is set to I<NUMBER>.
 
-L<Line directives|/"Line Directive"> take precedence over L<comments|/"Comment">.
+Line directives take precedence over L<comments|/"Comment">.
 
 Compilation Errors:
 
@@ -435,7 +437,14 @@ The line number given to a line directive must be a positive 32bit integer. Othe
 
 Examples:
 
+  class MyClass {
+    
+    static method main : void () {
+      
   #line 39
+      
+    }
+  }
 
 =head2 File Directive
 
@@ -457,7 +466,7 @@ It ends with ASCII C<LF>.
 
 The current file path is set to I<FILE_PATH>.
 
-L<file directives|/"File Directive"> take precedence over L<comments|/"Comment">.
+File directives take precedence over L<comments|/"Comment">.
 
 Compilation Errors:
 
@@ -471,7 +480,10 @@ A file directive must end with ". Otherwise an compilation error occurs.
 
 Examples:
 
-  #file "/Foo/Bar.spvm"
+  #file "/path/MyClass.spvm"
+  class MyClass {
+  
+  }
 
 =head2 __END__
 
@@ -505,7 +517,7 @@ It ends with ASCII C<LF>.
 The End of a POD:
 
   =cut
-  
+
 The end of a POD begins with C<=> from the beggining of the line.
 
 It is followed by C<cut>.
