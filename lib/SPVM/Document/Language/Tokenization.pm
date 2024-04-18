@@ -1,52 +1,58 @@
 =head1 Name
 
-SPVM::Document::Language::Tokenization - Lexical Tokenization in the SPVM Language
+SPVM::Document::Language::Tokenization - Tokenization in the SPVM Language
 
 =head1 Description
 
-This document describes lexical tokenization in the SPVM language.
+This document describes the tokenization in the SPVM language.
 
 =head1 Tokenization
 
-The tokenizing the source codes of SPVM language is explained.
+This section describes the L<lexical analysis|https://en.wikipedia.org/wiki/Lexical_analysis> in the SPVM Language.
+
+This is called tokenization.
 
 =head2 Character Encoding of Source Code
 
 The character encoding of SPVM source codes is UTF-8.
 
-If a character is ASCII, it must be ASCII printable characters or ASCII space characters except for ASCII C<CR>.
+If a character is an ASCII character, it must be an ASCII printable character or a L<space character|/"Space Characters">.
 
 Compilation Errors:
 
 The charactor encoding of SPVM source codes must be UTF-8. Otherwise a compilation error occurs.
 
-If a character in an SPVM source code is ASCII, it must be ASCII printable or space.
-
-The new line of SPVM source codes must be LF. The source code cannot contains CR and CRLF.
+If a character is an ASCII character, it must be an L<ASCII printable character|https://en.wikipedia.org/wiki/ASCII#Printable_characters> or a L<space character|/"Space Characters">. Otherwise a compilation error occurs.
 
 =head2 Line Terminators
 
-The line terminators are 0x2A C<LF> of ASCII.
+The line terminator is ASCII C<LF>.
 
 When a line terminator appears, the current line number is incremented by 1.
 
-=head2 Space Character
+=head2 Space Characters
 
-Space characters are C<SP>, C<HT>, C<FF> of ASCII and the L<line terminators|/"Line Terminators">.
+The space characters are ASCII C<SP>, C<HT>, C<FF>, C<LF>.
 
-=head2 Word Character
+=head2 Word Characters
 
-The word characters are alphabet(C<a-zA-Z>), number(0-9), and underscore(C<_>) of ASCII.
+The word characters are ASCII C<a-zA-Z>, C<0-9>, C<_>.
 
 =head2 Symbol Name
 
-A symbol name is the characters that are composed of L<word characters|/"Word Character"> and C<::>.
+A symbol name consists of L<word characters|/"Word Characters"> and C<::>.
 
-A symbol name cannnot contains C<__>, and cannnot begin with a number 0-9.
+It dose not contains C<__>.
 
-A symbol name cannnot begin with C<::>, and cannnot end with C<::>.
+It dose not begin with C<0-9>.
 
-A symbol name cannnot contains C<::::>, and cannnot begin with a number 0-9.
+It dose not begin with C<::>.
+
+It dose not end with C<::>.
+
+It dose not contains C<::::>.
+
+It dose not begin with C<0-9>.
 
   # Symbol names
   foo
@@ -59,6 +65,10 @@ A symbol name cannnot contains C<::::>, and cannnot begin with a number 0-9.
   ::Foo
   Foo::
   Foo::::Bar
+
+Compliation Errors:
+
+If a symbol name is invald, a compilation error occurs.
 
 =head2 Class Name
 
@@ -537,11 +547,11 @@ A interger literal is a L<numeric literal/"Numeric Literals"> to write a constan
 
 =head3 Integer Literal Decimal Notation
 
-The interger literal decimal notation is the way to write an L<integer literal|/"Integer Literals"> using decimal numbers 0-9.
+The interger literal decimal notation is the way to write an L<integer literal|/"Integer Literals"> using decimal numbers C<0-9>.
 
-A minus - can be at the beginning, and is followed by one or more of 0-9.
+A minus - can be at the beginning, and is followed by one or more of C<0-9>.
 
-C<_> can be used as a separator at the any positions after the first 0-9. C<_> has no meaning.
+C<_> can be used as a separator at the any positions after the first C<0-9>. C<_> has no meaning.
 
 The suffix C<L> or C<l> can be at the end.
 
@@ -712,19 +722,19 @@ The floating point litral is a L<numeric literal/"Numeric Literals"> to write a 
 
 =head3 Floating Point Literal Decimal Notation
 
-The floating point litral decimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using decimal numbers 0-9 in source codes.
+The floating point litral decimal notation is the way to write a L<floating point literal|/"Floating Point Literal"> using decimal numbers C<0-9> in source codes.
 
-A minus - can be at the beginning, and is followed by one or more 0-9
+A minus - can be at the beginning, and is followed by one or more C<0-9>
 
-C<_> can be used as a separator at the any positions after the first 0-9.
+C<_> can be used as a separator at the any positions after the first C<0-9>.
 
 And can be followed by a floating point part.
 
-A floating point part is . and is followed by one or more 0-9.
+A floating point part is . and is followed by one or more C<0-9>.
 
 And can be followed by an exponent part.
 
-An exponent part is C<e> or C<E> and is followed by C<+>, -, or C<"">, and followed by one or more 0-9.
+An exponent part is C<e> or C<E> and is followed by C<+>, -, or C<"">, and followed by one or more C<0-9>.
 
 And can be followed by a suffix is C<f>, C<F>, C<d>, or C<D>.
 
@@ -766,7 +776,7 @@ A floating point part is . and is followed by one or more C<0-9a-zA-Z>.
 
 And can be followed by an exponent part.
 
-An exponent part is C<p> or C<P> and is followed by C<+>, -, or C<"">, and followed by one or more decimal numbers 0-9.
+An exponent part is C<p> or C<P> and is followed by C<+>, -, or C<"">, and followed by one or more decimal numbers C<0-9>.
 
 And can be followed by a suffix C<f>, C<F>, C<d>, or C<D> if an exponent part exist.
 
