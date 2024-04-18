@@ -153,9 +153,13 @@ Examples:
 
 A variable name begins with C<$> and is followed by a L<symbol name|/"Symbol Name">.
 
+The symbol name in a variable name can be wrapped by C<{> and C<}>.
+
 Compilation Errors:
 
-The L<symbol name|/"Symbol Name"> can be wrapped by C<{> and C<}>. If a opening C<{> exists and the closing C<}> doesn't exists, a compilation error occurs.
+If a field names is invalid, a compilation error occurs.
+
+If an opening C<{> exists and the closing C<}> dose not exist, a compilation error occurs.
 
 Examples:
 
@@ -166,7 +170,7 @@ Examples:
   $Foo::name
   $Foo::Bar::name
   ${Foo::name}
-
+  
   # Invalid variable names
   $::name
   $name::
@@ -177,10 +181,6 @@ Examples:
 =head2 Class Variable Name
 
 A class variable name is a L<variable name|/"Variable Name">.
-
-Compilation Errors:
-
-If class variable names are invalid, a compilation error occurs.
 
 Examples:
 
@@ -203,7 +203,7 @@ Examples:
 
 =head2 Local Variable Name
 
-A local variable name is a L<variable name|/"Variable Name"> that doesn't contain C<::>.
+A local variable name is a L<variable name|/"Variable Name"> without C<::>.
 
 Examples:
 
@@ -225,17 +225,19 @@ Examples:
 
 =head2 Current Class
 
-C<&> before method name means the current class. C<&> is replaced with C<CURRENT_CLASS_NAME-E<gt>>.
+C<&> just before a method name is replaced with the current class name and C<E<gt>>.
+
+This is called current class.
 
 Examples:
 
   class Foo {
     
     static method test : void () {
-      # This means Foo->sum(1, 2)
+      # Foo->sum(1, 2)
       my $ret = &sum(1, 2);
     }
-  
+    
     static method sum : int ($num1 : int, $num2 : int) {
       return $num1 + $num2;
     }
