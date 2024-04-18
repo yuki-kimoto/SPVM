@@ -525,7 +525,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       case '=': {
         // POD
-        if (compiler->ch_ptr == compiler->current_class_content || *(compiler->ch_ptr - 1) == '\n') {
+        if ((compiler->ch_ptr == compiler->current_class_content || *(compiler->ch_ptr - 1) == '\n') && SPVM_TOKE_isalpha_ascii(compiler, *(compiler->ch_ptr + 1))) {
+          
+          compiler->ch_ptr++;
+          
           while (1) {
             compiler->ch_ptr++;
             if (*compiler->ch_ptr == '\n') {

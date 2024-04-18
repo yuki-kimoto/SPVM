@@ -387,27 +387,39 @@ The List of Operator Tokens:
 
 =head2 Comment
 
-A comment begins with C<#> and ends with L<LF>.
-
-  # Comment
-
 Comments have no meaning in source codes.
+
+  #COMMENT
+
+A comment begins with C<#>.
+
+It is followed by any string I<COMMENT> except for ASCII C<LF>.
+
+It ends with ASCII C<LF>.
 
 L<Line directives|/"Line Directive"> take precedence over comments.
 
 L<File directives|/"File Directive"> take precedence over comments.
 
+Examples:
+
+  # This is a comment line
+
 =head2 Line Directive
 
-A line directive begins from the beggining of the line.
+A line directive set the current line number.
 
-A line directive begins with C<#line > and positive 32bit integer
+  #line NUMBER
 
-  #line 39
+A line directive begins with C<#line> from the beggining of the line.
 
-And ends with L<LF>.
- 
-The line number in a line directive is set to the current line of the source code.
+It is followed by one or more ASCII C<SP>.
+
+It is followed by I<NUMBER>. I<NUMBER> is a positive 32bit integer.
+
+It ends with ASCII C<LF>.
+
+The current line number of the source code is set to I<NUMBER>.
 
 L<Line directives|/"Line Directive"> take precedence over L<comments|/"Comment">.
 
@@ -421,17 +433,29 @@ A line directive must have a line number. Otherwise an compilation error occurs.
 
 The line number given to a line directive must be a positive 32bit integer. Otherwise an compilation error occurs.
 
+Examples:
+
+  #line 39
+
 =head2 File Directive
+
+A file directive set the current file path.
+
+  #file "FILE_PATH"
 
 A file directive begins from the beggining of the source code.
 
-A file directive begins with C<#file "> and is followed by a file path, and is closed with C<">
+It is followed by one or more ASCII C<SP>.
 
-  #file "/Foo/Bar.spvm"
+It is followed by C<">.
 
-And ends with L<LF>.
+It is followed by I<FILE_PATH>. I<FILE_PATH> is a string that represetns a file path.
 
-The file path is set to the current file path of the source code.
+It is closed with C<">.
+
+It ends with ASCII C<LF>.
+
+The current file path is set to I<FILE_PATH>.
 
 L<file directives|/"File Directive"> take precedence over L<comments|/"Comment">.
 
@@ -445,9 +469,13 @@ A file directive must have a file path. Otherwise an compilation error occurs.
 
 A file directive must end with ". Otherwise an compilation error occurs.
 
+Examples:
+
+  #file "/Foo/Bar.spvm"
+
 =head2 __END__
 
-If a line begins with C<__END__> and ends with L<LF>, the line with C<__END__> and the below lines are interpreted as L<comments|/"Comment">.
+If a line begins with C<__END__> and ends with ASCII C<LF>, the line with C<__END__> and the below lines are interpreted as L<comments|/"Comment">.
 
 Examples:
   
@@ -462,50 +490,44 @@ Examples:
 
 =head2 POD
 
-POD(Plain Old Document) is a syntax to write documents in source codes.
+POD is a syntax to write multiline comment. POD has no meaning in source codes.
 
-The biginning of POD begins with C<=>, and is followed by any string that is composed of ASCII printable characters, and end with L<LF>.
+The Beginning of a POD:
 
-The previous line of the biginning of POD must need L<LF>
+  =NAME
 
-The lator line of the biginning of POD must need L<LF>
-  
-  =pod
-  
-  =head1
-  
-  =item * foo
-  
+The beginning of a POD begins with C<=> from the beggining of the line.
 
-The end of POD begins with C<=>, and is followed by C<cut>, and ends with L<LF>.
+It is followed by I<NAME>. I<NAME> is any string that begins with ASCII C<a-zA-Z>.
 
-The previous line of the end of POD must need L<LF>
+It ends with ASCII C<LF>.
 
-The lator line of the end of POD must need L<LF>
+The End of a POD:
 
-  
   =cut
   
+The end of a POD begins with C<=> from the beggining of the line.
+
+It is followed by C<cut>.
+
+It ends with ASCII C<LF>.
 
 Examples:
 
   
   =pod
   
-  Multi-Line
-  Comment
+  Comment1
+  Comment2
   
   =cut
   
   =head1
   
-  Multi-Line
-  Comment
+  Comment1
+  Comment2
   
   =cut
-  
-
-POD has no meaning in source codes.
 
 =head2 Literal
 

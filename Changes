@@ -3,6 +3,9 @@
     * Improve the doc of Tokanization.
   [Internal Changes]
     * SPVM_OP_C_ID_CURRENT_CLASS to SPVM_OP_C_ID_OUTMOST_CLASS.
+  [Fix Bug with Incompatible Changes]
+    * An ASCII a-zA-Z must follow "=" in POD start.
+    
 0.989103 2023-04-16
   [Internal Changes]
     * Remove the is_anon field from spvm_runtime_method.h.
