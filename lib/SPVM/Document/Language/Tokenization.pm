@@ -387,15 +387,15 @@ The List of Operator Tokens:
 
 =head2 Comment
 
-A comment begins with C<#> and ends with a L<line terminator|/"Line Terminators">.
+A comment begins with C<#> and ends with L<LF>.
 
   # Comment
 
 Comments have no meaning in source codes.
 
-L<Line directives|/"Line Directive"> take precedence over L<comments|/"Comment">.
+L<Line directives|/"Line Directive"> take precedence over comments.
 
-A L<File directive|/"File Directive"> take precedence over L<comments|/"Comment">.
+L<File directives|/"File Directive"> take precedence over comments.
 
 =head2 Line Directive
 
@@ -405,7 +405,7 @@ A line directive begins with C<#line > and positive 32bit integer
 
   #line 39
 
-And ends with a L<line terminator|/"Line Terminators">.
+And ends with L<LF>.
  
 The line number in a line directive is set to the current line of the source code.
 
@@ -429,11 +429,11 @@ A file directive begins with C<#file "> and is followed by a file path, and is c
 
   #file "/Foo/Bar.spvm"
 
-And ends with a L<line terminator|/"Line Terminators">.
+And ends with L<LF>.
 
 The file path is set to the current file path of the source code.
 
-A L<file directive|/"File Directive"> take precedence over L<comments|/"Comment">.
+L<file directives|/"File Directive"> take precedence over L<comments|/"Comment">.
 
 Compilation Errors:
 
@@ -464,11 +464,11 @@ Examples:
 
 POD(Plain Old Document) is a syntax to write documents in source codes.
 
-The biginning of POD begins with C<=>, and is followed by any string that is composed of ASCII printable characters, and end with a L<line terminator|/"Line Terminators">.
+The biginning of POD begins with C<=>, and is followed by any string that is composed of ASCII printable characters, and end with L<LF>.
 
-The previous line of the biginning of POD must need a L<line terminator|/"Line Terminators">
+The previous line of the biginning of POD must need L<LF>
 
-The lator line of the biginning of POD must need a L<line terminator|/"Line Terminators">
+The lator line of the biginning of POD must need L<LF>
   
   =pod
   
@@ -477,11 +477,11 @@ The lator line of the biginning of POD must need a L<line terminator|/"Line Term
   =item * foo
   
 
-The end of POD begins with C<=>, and is followed by C<cut>, and ends with a L<line terminator|/"Line Terminators">.
+The end of POD begins with C<=>, and is followed by C<cut>, and ends with L<LF>.
 
-The previous line of the end of POD must need a L<line terminator|/"Line Terminators">
+The previous line of the end of POD must need L<LF>
 
-The lator line of the end of POD must need a L<line terminator|/"Line Terminators">
+The lator line of the end of POD must need L<LF>
 
   
   =cut
