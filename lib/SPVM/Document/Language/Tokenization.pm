@@ -223,30 +223,9 @@ Examples:
   ${name
   $3foo
 
-=head2 Current Class
-
-C<&> just before a method name is replaced with the current class name and C<E<gt>>.
-
-This is called current class.
-
-Examples:
-
-  class Foo {
-    
-    static method test : void () {
-      # Foo->sum(1, 2)
-      my $ret = &sum(1, 2);
-    }
-    
-    static method sum : int ($num1 : int, $num2 : int) {
-      return $num1 + $num2;
-    }
-    
-  }
-
 =head2 Keywords
 
-The list of keywords:
+The List of Keywords:
 
   alias
   allow
@@ -465,6 +444,21 @@ A file directive must end with "\n". Otherwise an compilation error occurs.
 A file directive must have a file path. Otherwise an compilation error occurs.
 
 A file directive must end with ". Otherwise an compilation error occurs.
+
+=head2 __END__
+
+If a line begins with C<__END__> and ends with L<LF>, the line with C<__END__> and the below lines are interpreted as L<comments|/"Comment">.
+
+Examples:
+  
+  class MyClass {
+    
+  }
+  
+  __END__
+  
+  foo
+  bar
 
 =head2 POD
 
