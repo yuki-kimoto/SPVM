@@ -186,7 +186,7 @@ Examples:
   $my__name
   ${name
 
-=head3 Class Variable Name
+=head4 Class Variable Name
 
 A class variable name is a L<variable name|/"Variable Name">.
 
@@ -209,7 +209,7 @@ Examples:
   $3FOO
   ${NAME
 
-=head3 Local Variable Name
+=head4 Local Variable Name
 
 A local variable name is a L<variable name|/"Variable Name"> without C<::>.
 
@@ -887,14 +887,6 @@ The List of Character Literal Escape Characters:
   </tr>
   <tr>
     <td>
-      \0
-    </td>
-    <td>
-      <code>0x00</code> NUL
-    </td>
-  </tr>
-  <tr>
-    <td>
       \a
     </td>
     <td>
@@ -990,8 +982,11 @@ Examples:
   '\"'
   '\''
   '\\'
-  '\0'
   ' '
+  '\0'
+  '\012'
+  '\377'
+  '\o{1}'
   '\xab'
   '\xAB'
   '\x0D'
@@ -1003,53 +998,35 @@ Examples:
 
 =head2 Octal Escape Character
 
-The octal escape character represents an ASCII code using octal numbers C<0-7>.
+The octal escape character represents an ASCII character using octal numbers C<0-7>.
 
-The octal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
+The octal escape character is a part of a L<string literal|/"String Literal"> and a L<character literal|/"Character Literal">.
 
-The octal escape character begins with C<\o{>, and it must be followed by one to three C<0-7>, and ends with C<}>.
+It begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, C<\7>, or C<\o{>.
 
-Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, C<\7>, and it must be followed by one or two C<0-7>.
+If it begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, or C<\7>, it is followed by one to two C<0-7>.
 
-  # Octal escape ch1racters in ch1racter literals
-  '\0'
-  '\012'
-  '\003'
-  '\001'
-  '\03'
-  '\01'
-  '\077'
-  '\377'
+If it begins with C<\o{>, it is followed by one to three C<0-7>, and ends with C<}>.
 
-  # Octal escape ch1racters in ch1racter literals
-  '\o{0}'
-  '\o{12}'
-  '\o{03}'
-  '\o{01}'
-  '\o{3}'
-  '\o{1}'
-  '\o{77}'
-  '\o{377}'
+The octal numbers after C<\> or C<\o{> is called octal numbers part.
 
-  # Octal escape ch1racters in string literals
-  "Foo \0 Bar"
-  "Foo \012 Bar"
-  "Foo \003 Bar"
-  "Foo \001 Bar"
-  "Foo \03  Bar"
-  "Foo \01  Bar"
-  "Foo \077 Bar"
-  "Foo \377 Bar"
+Compilation Errors:
 
-  # Octal escape ch1racters in string literals
-  "Foo \o{12} Bar"
-  "Foo \o{12} Bar"
-  "Foo \o{03} Bar"
-  "Foo \o{01} Bar"
-  "Foo \o{3}  Bar"
-  "Foo \o{1}  Bar"
-  "Foo \o{77} Bar"
-  "Foo \o{377} Bar"
+The octal numbers part must be less than or equal to C<377>. Otherwise a compilation error occurs.
+
+If an octal escape character begins with C<\o{>, the close C<}> must exist. Otherwise a compilation error occurs.
+
+Examples:
+
+  \0
+  \01
+  \03
+  \012
+  \001
+  \077
+  \377
+  \o{1}
+  \o{12}
 
 =head2 Hexadecimal Escape Character
 
@@ -1108,6 +1085,9 @@ Examples:
   "hello\x0D\x0A"
   "hello\xA"
   "hello\x{0A}"
+  "hello\0"
+  "hello\012"
+  "hello\377"
   "AAA $foo BBB"
   "AAA $FOO BBB"
   "AAA $$foo BBB"
@@ -1163,14 +1143,6 @@ The end C<$> is not interpreted as a variable expansion.
     <th>
       Descriptions
    </th>
-  </tr>
-  <tr>
-    <td>
-      <b>\0</b>
-    </td>
-    <td>
-      ASCII <code>0x00</code> NUL
-    </td>
   </tr>
   <tr>
     <td>

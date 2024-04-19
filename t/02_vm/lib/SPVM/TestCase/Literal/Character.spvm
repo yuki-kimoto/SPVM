@@ -12,7 +12,6 @@ class TestCase::Literal::Character {
     
     # Escape characters
     {
-      my $ch_0 = '\0';
       my $ch_a = '\a';
       my $ch_t = '\t';
       my $ch_n = '\n';
@@ -21,10 +20,6 @@ class TestCase::Literal::Character {
       my $ch_dq = '\"';
       my $ch_q = '\'';
       my $ch_bsh = '\\';
-
-      unless ($ch_0 == 0) {
-        return 0;
-      }
 
       unless ($ch_a == 7) {
         return 0;
@@ -284,7 +279,7 @@ class TestCase::Literal::Character {
       }
     }
 
-    # Octal escape character \000
+    # Octal escape character \o{0}
     {
       unless ('\o{0}' == 0) {
         return 0;

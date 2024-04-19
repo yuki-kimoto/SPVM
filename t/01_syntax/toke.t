@@ -294,8 +294,18 @@ use Test::More;
     }
   }
   
-  # Octal Caharater literal
+  # Octal Escape Character
   {
+    {
+      my $source = q|class MyClass { static method main : void () { '\377'; } }|;
+      compile_ok($source);
+    }
+    
+    {
+      my $source = q|class MyClass { static method main : void () { '\477'; } }|;
+      compile_not_ok($source, q|The maxmum number of the octal escape charcater is 377.|);
+    }
+    
     {
       my $source = q|class MyClass { static method main : void () { '\o{}'; } }|;
       compile_not_ok($source, qr|At least one octal number must be followed by "\\o\{" of the octal escape character|);
