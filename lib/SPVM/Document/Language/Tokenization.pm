@@ -16,7 +16,7 @@ This is called tokenization.
 
 See L<SPVM::Document::Language::SyntaxParsing> about syntax parsing.
 
-=head2 Character Encoding of Source Code
+=head2 Character Encoding
 
 The character encoding of SPVM source codes is UTF-8.
 
@@ -42,7 +42,11 @@ The space characters are ASCII C<SP>, C<HT>, C<FF>, C<LF>.
 
 The word characters are ASCII C<a-zA-Z>, C<0-9>, C<_>.
 
-=head2 Symbol Name
+=head2 Names
+
+This section describes names.
+
+=head3 Symbol Name
 
 A symbol name consists of L<word characters|/"Word Characters"> and C<::>.
 
@@ -76,7 +80,7 @@ Examples:
   Foo::
   Foo::::Bar
 
-=head2 Class Name
+=head3 Class Name
 
 A class name is a L<symbol name|/"Symbol Name">.
 
@@ -104,7 +108,7 @@ Examples:
   Foo__Bar
   Foo::bar
 
-=head2 Method Name
+=head3 Method Name
 
 A method name is a L<symbol name|/"Symbol Name"> without C<::> or an empty string C<"">.
 
@@ -128,7 +132,7 @@ Examples:
   foo__bar
   3foo
 
-=head2 Field Name
+=head3 Field Name
 
 A field name is a L<symbol name|/"Symbol Name"> without C<::>.
 
@@ -153,7 +157,7 @@ Examples:
   3foo
   Foo::Bar
 
-=head2 Variable Name
+=head3 Variable Name
 
 A variable name begins with C<$> and is followed by a L<symbol name|/"Symbol Name">.
 
@@ -182,7 +186,7 @@ Examples:
   $my__name
   ${name
 
-=head2 Class Variable Name
+=head3 Class Variable Name
 
 A class variable name is a L<variable name|/"Variable Name">.
 
@@ -205,7 +209,7 @@ Examples:
   $3FOO
   ${NAME
 
-=head2 Local Variable Name
+=head3 Local Variable Name
 
 A local variable name is a L<variable name|/"Variable Name"> without C<::>.
 
@@ -541,7 +545,28 @@ Examples:
   
   =cut
 
-=head2 Literals
+=head2 Fat Comma
+
+The fat comma C<=>> is a L<separator|/"Separators">.
+
+  =>
+
+The fat comma is an alias for Comma C<,>.
+
+  # Comma
+  ["a", "b", "c", "d"]
+  
+  # Fat Comma
+  ["a" => "b", "c" => "d"]
+
+If the characters of I<LEFT_OPERAND> of the fat camma is not wrapped by C<"> and the characters are a L<symbol name|/"Symbol Name"> that does'nt contain C<::>, the characters are treated as a L<string literal|/"String Literal">.
+
+  # foo_bar2 is treated as "foo_bar2"
+  [foo_bar2 => "Mark"]
+
+  ["foo_bar2" => "Mark"]
+
+=head1 Literals
 
 A literal represents a constant value.
 
@@ -1369,27 +1394,6 @@ The length of a here document name must be greater than or equal to 0. Otherwise
 A here document name cannot start with a number. If so, a compilation error occurs.
 
 A here document name cannot contain C<__>. If so, a compilation error occurs.
-
-=head2 Fat Comma
-
-The fat comma C<=>> is a L<separator|/"Separators">.
-
-  =>
-
-The fat comma is an alias for Comma C<,>.
-
-  # Comma
-  ["a", "b", "c", "d"]
-  
-  # Fat Comma
-  ["a" => "b", "c" => "d"]
-
-If the characters of I<LEFT_OPERAND> of the fat camma is not wrapped by C<"> and the characters are a L<symbol name|/"Symbol Name"> that does'nt contain C<::>, the characters are treated as a L<string literal|/"String Literal">.
-
-  # foo_bar2 is treated as "foo_bar2"
-  [foo_bar2 => "Mark"]
-
-  ["foo_bar2" => "Mark"]
 
 =head1 See Also
 
