@@ -686,7 +686,7 @@ Examples:
   0b110000L
   0b10101010_10101010
 
-=head2 Floating Point Literal
+=head2 Floating Point Literals
 
 The floating point litral represetns a floating point number.
 
@@ -801,19 +801,45 @@ Examples:
   0x3d3d.edP-3D
   0x3d3dP+3
 
+=head2 Bool Literal
+
+The bool literal is a L<literal|/"Literals"> to represent a bool value.
+
+=head3 true
+
+C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method of L<Bool|SPVM::Bool>.
+
+  true
+
+Examples:
+
+  # true
+  my $is_valid = true;
+
+=head3 false
+
+C<false> is the alias for L<FALSE|SPVM::Bool/"FALSE"> method of L<Bool|SPVM::Bool>.
+
+  false
+
+Examples:
+
+  # false
+  my $is_valid = false;
+
 =head2 Character Literal
 
-A character literal is a L<literal|/"Literals"> to write a constant value that type is the L<byte type|SPVM::Document::Language::Types/"byte Type">.
+A character literal represents a ASCII character.
 
-A character literal represents an ASCII character.
+It begins with C<'>.
 
-A character literal begins with C<'>.
+It is followed by a printable ASCII character C<0x20-0x7e> or an L<character literal escape character|/"Character Literal Escape Characters">.
 
-And is followed by a printable ASCII character C<0x20-0x7e> or an L<character literal escape character|/"Character Literal Escape Characters">.
+It ends with C<'>.
 
-And ends with C<'>.
+The return value is an ASCII code.
 
-The return type is the L<byte type|SPVM::Document::Language::Types/"byte Type">.
+The return type is the byte type.
 
 Compilation Errors:
 
@@ -821,7 +847,7 @@ If the format of the character literal is invalid, a compilation error occurs.
 
 =head3 Character Literal Escape Characters
 
-The list of character literal escape characters.
+The List of Character Literal Escape Characters:
 
 =begin html
 
@@ -950,9 +976,91 @@ Examples:
   '\xFF'
   '\x{A}'
 
+=head2 Octal Escape Character
+
+The octal escape character represents an ASCII code using octal numbers C<0-7>.
+
+The octal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
+
+The octal escape character begins with C<\o{>, and it must be followed by one to three C<0-7>, and ends with C<}>.
+
+Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, C<\7>, and it must be followed by one or two C<0-7>.
+
+  # Octal escape ch1racters in ch1racter literals
+  '\0'
+  '\012'
+  '\003'
+  '\001'
+  '\03'
+  '\01'
+  '\077'
+  '\377'
+
+  # Octal escape ch1racters in ch1racter literals
+  '\o{0}'
+  '\o{12}'
+  '\o{03}'
+  '\o{01}'
+  '\o{3}'
+  '\o{1}'
+  '\o{77}'
+  '\o{377}'
+
+  # Octal escape ch1racters in string literals
+  "Foo \0 Bar"
+  "Foo \012 Bar"
+  "Foo \003 Bar"
+  "Foo \001 Bar"
+  "Foo \03  Bar"
+  "Foo \01  Bar"
+  "Foo \077 Bar"
+  "Foo \377 Bar"
+
+  # Octal escape ch1racters in string literals
+  "Foo \o{12} Bar"
+  "Foo \o{12} Bar"
+  "Foo \o{03} Bar"
+  "Foo \o{01} Bar"
+  "Foo \o{3}  Bar"
+  "Foo \o{1}  Bar"
+  "Foo \o{77} Bar"
+  "Foo \o{377} Bar"
+
+=head2 Hexadecimal Escape Character
+
+The hexadecimal escape character represents an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
+
+The hexadecimal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
+
+The hexadecimal escape character begins with C<\x>.
+
+And is followed by one or two C<0-9a-fA-F>.
+
+The hexadecimal numbers can be sorrounded by C<{> and C<}>.
+
+  # Hexadecimal escape characters in character literals
+  '\xab'
+  '\xAB'
+  '\x0D'
+  '\x0A'
+  '\xD'
+  '\xA'
+  '\xFF'
+  '\x{A}'
+
+  # Hexadecimal escape characters in string literals
+  "Foo \xab  Bar"
+  "Foo \xAB  Bar"
+  "Foo \x0D  Bar"
+  "Foo \x0A  Bar"
+  "Foo \xD   Bar"
+  "Foo \xA   Bar"
+  "Foo \xFF  Bar"
+  "Foo \x{A} Bar"
+
 =head2 String Literal
 
-A string literal is a L<literal|/"Literals"> to write a constant value that type is the L<string type|SPVM::Document::Language::Types/"string Type">.
+A string literal represents a constant value that type is the L<string type|SPVM::Document::Language::Types/"string Type">.
 
 The return type is the L<string type|SPVM::Document::Language::Types/"string Type">.
 
@@ -983,6 +1091,40 @@ Examples:
   "AAA $foo->{x}[3] BBB"
   "AAA $@ BBB"
   "\N{U+3042}\N{U+3044}\N{U+3046}"
+
+=head3 Variable Expansion
+
+The variable expasion is the feature to embed L<getting local variable|/"Getting Local Variable">, L<getting class variables|/"Getting Class Variable">, L<dereference|/"Dereference">, L<getting field/"Getting Field">, L<getting array element|/"Getting Array Element">, L<getting exception variable/"Getting Exception Variable"> into the L<string literal|"String Literal">.
+
+  "AAA $foo BBB"
+  "AAA $FOO BBB"
+  "AAA $$foo BBB"
+  "AAA $foo->{x} BBB"
+  "AAA $foo->[3] BBB"
+  "AAA $foo->{x}[3] BBB"
+  "AAA $foo->{x}->[3] BBB"
+  "AAA $@ BBB"
+  "AAA ${foo}BBB"
+
+The above codes are convarted to the following codes.
+
+  "AAA " . $foo . " BBB"
+  "AAA " . $FOO . " BBB"
+  "AAA " . $$foo . " BBB"
+  "AAA " . $foo->{x} . " BBB"
+  "AAA " . $foo->[3] . " BBB"
+  "AAA " . $foo->{x}[3] . " BBB"
+  "AAA " . $foo->{x}->[3] . " BBB"
+  "AAA " . $@ . "BBB"
+  "AAA " . ${foo} . "BBB"
+
+The getting field doesn't contain space characters between C<{> and C<}>.
+
+The index of getting array element must be a constant value. The getting array doesn't contain space characters between C<[> and C<]>.
+
+The end C<$> is not interpreted as a variable expansion.
+
+  "AAA$"
 
 =head3 String Literal Escape Characters
 
@@ -1095,7 +1237,7 @@ Examples:
   </tr>
   <tr>
     <td>
-      <a href="#Unicode-Escape-Character">Unicode escape character</a>
+      <a href="#Unicode-Escape-Characters">A Unicode escape character</a>
     </td>
     <td>
       An UTF-8 character
@@ -1103,7 +1245,7 @@ Examples:
   </tr>
   <tr>
     <td>
-      <a href="#Raw-Escape-Character">Raw escape character</a>
+      <a href="#Raw-Escape-Characters">A raw escape character</a>
     </td>
     <td>
       The value of raw escape character
@@ -1113,7 +1255,7 @@ Examples:
 
 =end html
 
-=head3 Unicode Escape Character
+=head3 Unicode Escape Characters
 
 The Unicode escape character represents an UTF-8 character using an Unicode code point that is written by hexadecimal numbers C<0-9a-fA-F>.
 
@@ -1137,7 +1279,7 @@ Examples:
   # くぎが
   "\N{U+304F}\N{U+304E}\N{U+304c}"
 
-=head3 Raw Escape Character
+=head3 Raw Escape Characters
 
 The raw escape character is the escapa character that <\> has no effect and C<\> is interpreted as ASCII C<\>.
 
@@ -1156,88 +1298,6 @@ The list of raw escape characters.
   \[ \] \^ \_ \`
   \b \d \g \h \k \p \s \v \w \z
   \{ \| \} \~
-
-=head2 Octal Escape Character
-
-The octal escape character represents an ASCII code using octal numbers C<0-7>.
-
-The octal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
-
-The octal escape character begins with C<\o{>, and it must be followed by one to three C<0-7>, and ends with C<}>.
-
-Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, C<\7>, and it must be followed by one or two C<0-7>.
-
-  # Octal escape ch1racters in ch1racter literals
-  '\0'
-  '\012'
-  '\003'
-  '\001'
-  '\03'
-  '\01'
-  '\077'
-  '\377'
-
-  # Octal escape ch1racters in ch1racter literals
-  '\o{0}'
-  '\o{12}'
-  '\o{03}'
-  '\o{01}'
-  '\o{3}'
-  '\o{1}'
-  '\o{77}'
-  '\o{377}'
-
-  # Octal escape ch1racters in string literals
-  "Foo \0 Bar"
-  "Foo \012 Bar"
-  "Foo \003 Bar"
-  "Foo \001 Bar"
-  "Foo \03  Bar"
-  "Foo \01  Bar"
-  "Foo \077 Bar"
-  "Foo \377 Bar"
-
-  # Octal escape ch1racters in string literals
-  "Foo \o{12} Bar"
-  "Foo \o{12} Bar"
-  "Foo \o{03} Bar"
-  "Foo \o{01} Bar"
-  "Foo \o{3}  Bar"
-  "Foo \o{1}  Bar"
-  "Foo \o{77} Bar"
-  "Foo \o{377} Bar"
-
-=head2 Hexadecimal Escape Character
-
-The hexadecimal escape character represents an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
-
-The hexadecimal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
-
-The hexadecimal escape character begins with C<\x>.
-
-And is followed by one or two C<0-9a-fA-F>.
-
-The hexadecimal numbers can be sorrounded by C<{> and C<}>.
-
-  # Hexadecimal escape characters in character literals
-  '\xab'
-  '\xAB'
-  '\x0D'
-  '\x0A'
-  '\xD'
-  '\xA'
-  '\xFF'
-  '\x{A}'
-
-  # Hexadecimal escape characters in string literals
-  "Foo \xab  Bar"
-  "Foo \xAB  Bar"
-  "Foo \x0D  Bar"
-  "Foo \x0A  Bar"
-  "Foo \xD   Bar"
-  "Foo \xA   Bar"
-  "Foo \xFF  Bar"
-  "Foo \x{A} Bar"
 
 =head2 Single-Quoted String Literal
 
@@ -1262,120 +1322,6 @@ Examples:
   # Single-quoted string literals
   q'abc';
   q'abc\'\\';
-
-=head3 Single-Quoted String Literal Escape Characters
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      Single-quoted string literal escape characters
-   </th>
-    <th>
-      Descriptions
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>\\</b>
-    </td>
-    <td>
-      ASCII <code>0x5C</code> \
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\'</b>
-    </td>
-    <td>
-      ASCII <code>0x27</code> '
-    </td>
-  </tr>
-</table>
-
-=end html
-
-=head2 Bool Literal
-
-The bool literal is a L<literal|/"Literals"> to represent a bool value.
-
-=head3 true
-
-C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method of L<Bool|SPVM::Bool>.
-
-  true
-
-Examples:
-
-  # true
-  my $is_valid = true;
-
-=head3 false
-
-C<false> is the alias for L<FALSE|SPVM::Bool/"FALSE"> method of L<Bool|SPVM::Bool>.
-
-  false
-
-Examples:
-
-  # false
-  my $is_valid = false;
-
-=head2 Variable Expansion
-
-The variable expasion is the feature to embed L<getting local variable|/"Getting Local Variable">, L<getting class variables|/"Getting Class Variable">, L<dereference|/"Dereference">, L<getting field/"Getting Field">, L<getting array element|/"Getting Array Element">, L<getting exception variable/"Getting Exception Variable"> into the L<string literal|"String Literal">.
-
-  "AAA $foo BBB"
-  "AAA $FOO BBB"
-  "AAA $$foo BBB"
-  "AAA $foo->{x} BBB"
-  "AAA $foo->[3] BBB"
-  "AAA $foo->{x}[3] BBB"
-  "AAA $foo->{x}->[3] BBB"
-  "AAA $@ BBB"
-  "AAA ${foo}BBB"
-
-The above codes are convarted to the following codes.
-
-  "AAA " . $foo . " BBB"
-  "AAA " . $FOO . " BBB"
-  "AAA " . $$foo . " BBB"
-  "AAA " . $foo->{x} . " BBB"
-  "AAA " . $foo->[3] . " BBB"
-  "AAA " . $foo->{x}[3] . " BBB"
-  "AAA " . $foo->{x}->[3] . " BBB"
-  "AAA " . $@ . "BBB"
-  "AAA " . ${foo} . "BBB"
-
-The getting field doesn't contain space characters between C<{> and C<}>.
-
-The index of getting array element must be a constant value. The getting array doesn't contain space characters between C<[> and C<]>.
-
-The end C<$> is not interpreted as a variable expansion.
-
-  "AAA$"
-
-=head2 Fat Comma
-
-The fat comma C<=>> is a L<separator|/"Separators">.
-
-  =>
-
-The fat comma is an alias for Comma C<,>.
-
-  # Comma
-  ["a", "b", "c", "d"]
-  
-  # Fat Comma
-  ["a" => "b", "c" => "d"]
-
-If the characters of I<LEFT_OPERAND> of the fat camma is not wrapped by C<"> and the characters are a L<symbol name|/"Symbol Name"> that does'nt contain C<::>, the characters are treated as a L<string literal|/"String Literal">.
-
-  # foo_bar2 is treated as "foo_bar2"
-  [foo_bar2 => "Mark"]
-
-  ["foo_bar2" => "Mark"]
 
 =head2 Here Document
 
@@ -1423,6 +1369,27 @@ The length of a here document name must be greater than or equal to 0. Otherwise
 A here document name cannot start with a number. If so, a compilation error occurs.
 
 A here document name cannot contain C<__>. If so, a compilation error occurs.
+
+=head2 Fat Comma
+
+The fat comma C<=>> is a L<separator|/"Separators">.
+
+  =>
+
+The fat comma is an alias for Comma C<,>.
+
+  # Comma
+  ["a", "b", "c", "d"]
+  
+  # Fat Comma
+  ["a" => "b", "c" => "d"]
+
+If the characters of I<LEFT_OPERAND> of the fat camma is not wrapped by C<"> and the characters are a L<symbol name|/"Symbol Name"> that does'nt contain C<::>, the characters are treated as a L<string literal|/"String Literal">.
+
+  # foo_bar2 is treated as "foo_bar2"
+  [foo_bar2 => "Mark"]
+
+  ["foo_bar2" => "Mark"]
 
 =head1 See Also
 
