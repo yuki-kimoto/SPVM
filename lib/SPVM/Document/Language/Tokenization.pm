@@ -547,11 +547,11 @@ Examples:
 
 =head2 Fat Comma
 
-The fat comma C<=>> is a L<separator|/"Separators">.
+A fat comma is
 
   =>
 
-The fat comma is an alias for Comma C<,>.
+The fat comma is an alias for a comma C<,>.
 
   # Comma
   ["a", "b", "c", "d"]
@@ -559,11 +559,11 @@ The fat comma is an alias for Comma C<,>.
   # Fat Comma
   ["a" => "b", "c" => "d"]
 
-If the characters of I<LEFT_OPERAND> of the fat camma is not wrapped by C<"> and the characters are a L<symbol name|/"Symbol Name"> that does'nt contain C<::>, the characters are treated as a L<string literal|/"String Literal">.
+If the left operand of a fat comma is a L<symbol name|/"Symbol Name"> without C<::>, it is wrraped by C<"> and is treated as a L<string literal|/"String Literal">.
 
   # foo_bar2 is treated as "foo_bar2"
   [foo_bar2 => "Mark"]
-
+  
   ["foo_bar2" => "Mark"]
 
 =head1 Literals
