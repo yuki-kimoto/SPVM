@@ -161,7 +161,7 @@ Examples:
 
 A variable name begins with C<$> and is followed by a L<symbol name|/"Symbol Name">.
 
-The symbol name in a variable name can be wrapped by C<{> and C<}>.
+The symbol name in a variable name can be surrounded by C<{> and C<}>.
 
 Compilation Errors:
 
@@ -623,9 +623,9 @@ It can end with the suffix C<L> or C<l>.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the hexadecimal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer value that does not change the bits. For example, C<0xFFFFFFFF> is  -1.
+If the return type is the int type, the hexadecimal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<0xFFFFFFFF> is  -1.
 
-If the return type is the long type, the hexadecimal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer value that does not change the bits. For example, C<0xFFFFFFFFFFFFFFFFL> is C<-1L>.
+If the return type is the long type, the hexadecimal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<0xFFFFFFFFFFFFFFFFL> is C<-1L>.
 
 Compilation Errors:
 
@@ -659,9 +659,9 @@ It can end with the suffix C<L> or C<l>.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the octal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer value that does not change the bits. For example, C<037777777777> is  -1.
+If the return type is the int type, the octal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<037777777777> is  -1.
 
-If the return type is the long type, the octal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer value that does not change the bits. For example, C<01777777777777777777777L> is C<-1L>.
+If the return type is the long type, the octal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<01777777777777777777777L> is C<-1L>.
 
 If the return type is the long type, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
 
@@ -694,9 +694,9 @@ It can end with the suffix C<L> or C<l>.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the binary numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer value that does not change the bits. For example, C<0b11111111111111111111111111111111> is  -1.
+If the return type is the int type, the binary numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<0b11111111111111111111111111111111> is  -1.
 
-If the return type is the long type, the binary numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer value that does not change the bits. For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is C<-1L>.
+If the return type is the long type, the binary numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is C<-1L>.
 
 Compilation Errors:
 
@@ -854,15 +854,13 @@ Examples:
 
 =head2 Character Literal
 
-A character literal represents a ASCII character.
+A character literal represents a number of the L<byte type|SPVM::Document::Language::Types/"byte Type"> that normally represents an ASCII character.
 
 It begins with C<'>.
 
 It is followed by a printable ASCII character C<0x20-0x7e> or an L<character literal escape character|/"Character Literal Escape Characters">.
 
 It ends with C<'>.
-
-The return value is an ASCII code.
 
 The return type is the byte type.
 
@@ -879,10 +877,10 @@ The List of Character Literal Escape Characters:
 <table>
   <tr>
     <th>
-      Character literal escape characters
+      Character Literal Escape Characters
     </th>
     <th>
-      ASCII characters
+      Numbers
     </th>
   </tr>
   <tr>
@@ -954,7 +952,7 @@ The List of Character Literal Escape Characters:
       <a href="#Octal-Escape-Character">Octal Escape Character</a>
     </td>
     <td>
-      An ASCII character
+      A number represented by an octal escape character
     </td>
   </tr>
   <tr>
@@ -962,7 +960,7 @@ The List of Character Literal Escape Characters:
       <a href="#Hexadecimal-Escape-Character">Hexadecimal Escape Character</a>
     </td>
     <td>
-      An ASCII character
+      A number represented by a hexadecimal escape character
     </td>
   </tr>
 </table>
@@ -998,7 +996,7 @@ Examples:
 
 =head2 Octal Escape Character
 
-The octal escape character represents an ASCII character using octal numbers C<0-7>.
+The octal escape character represents an unsined 8-bit integer using octal numbers C<0-7>.
 
 The octal escape character is a part of a L<string literal|/"String Literal"> and a L<character literal|/"Character Literal">.
 
@@ -1009,6 +1007,8 @@ If it begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, or C<\7>, it 
 If it begins with C<\o{>, it is followed by one to three C<0-7>, and ends with C<}>.
 
 The octal numbers after C<\> or C<\o{> is called octal numbers part.
+
+Octal numbers part is interpreted as an unsined 8-bit integer, and is converted to a number of the byte type without changing the bits.
 
 Compilation Errors:
 
@@ -1030,35 +1030,28 @@ Examples:
 
 =head2 Hexadecimal Escape Character
 
-The hexadecimal escape character represents an ASCII code using hexadecimal numbers C<0-9a-fA-F>.
+The hexadecimal escape character represents an unsined 8-bit integer using hexadecimal numbers C<0-9a-fA-F>.
 
-The hexadecimal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
+The hexadecimal escape character is a part of a L<string literal|/"String Literal"> and a L<character literal|/"Character Literal">.
 
 The hexadecimal escape character begins with C<\x>.
 
-And is followed by one or two C<0-9a-fA-F>.
+It can be followed by C<{>.
 
-The hexadecimal numbers can be sorrounded by C<{> and C<}>.
+It is followed by one or two C<0-9a-fA-F>. This is called hexadecimal numbers part.
 
-  # Hexadecimal escape characters in character literals
-  '\xab'
-  '\xAB'
-  '\x0D'
-  '\x0A'
-  '\xD'
-  '\xA'
-  '\xFF'
-  '\x{A}'
+If it contains C<{>, it must be followed by C<}>.
 
-  # Hexadecimal escape characters in string literals
-  "Foo \xab  Bar"
-  "Foo \xAB  Bar"
-  "Foo \x0D  Bar"
-  "Foo \x0A  Bar"
-  "Foo \xD   Bar"
-  "Foo \xA   Bar"
-  "Foo \xFF  Bar"
-  "Foo \x{A} Bar"
+Hexadecimal numbers part is interpreted as an unsined 8-bit integer, and is converted to a number of the byte type without changing the bits.
+
+  \xab
+  \xAB
+  \x0D
+  \x0A
+  \xD
+  \xA
+  \xFF
+  \x{A}
 
 =head2 String Literal
 
@@ -1221,7 +1214,7 @@ The end C<$> is not interpreted as a variable expansion.
       <a href="#Octal-Escape-Character">Octal Escape Character</a>
     </td>
     <td>
-      An ASCII character
+      A number of the byte type
     </td>
   </tr>
   <tr>
@@ -1229,7 +1222,7 @@ The end C<$> is not interpreted as a variable expansion.
       <a href="#Hexadecimal-Escape-Character">Hexadecimal Escape Character</a>
     </td>
     <td>
-      An ASCII character
+      A number of the byte type
     </td>
   </tr>
   <tr>
