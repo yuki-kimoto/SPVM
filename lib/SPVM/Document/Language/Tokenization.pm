@@ -561,7 +561,7 @@ It can begin with a minus C<->.
 
 It is followed by one or more of C<0-9>.
 
-C<_> can be placed at the any positions after the first C<0-9>. C<_> has no meaning.
+C<_> can be placed at the any positions after the first C<0-9> as a separator. C<_> has no meaning.
 
 It can end with the suffix C<L> or C<l>.
 
@@ -584,7 +584,7 @@ Examples:
 
 =head3 Integer Literal Hexadecimal Notation
 
-The interger literal hexadecimal notation represents an L<integer literal|/"Integer Literals"> using hexadecimal numbers C<0-9a-zA-Z>.
+The interger literal hexadecimal notation represents a number of the int type or the long type using hexadecimal numbers C<0-9a-zA-Z>.
 
 It can begin with a minus C<->.
 
@@ -592,19 +592,15 @@ It is followed by C<0x> or C<0X>.
 
 It is followed by one or more C<0-9a-zA-Z>. This is called hexadecimal numbers part.
 
-C<_> can be placed at the any positions after C<0x> or C<0X>. C<_> has no meaning.
+C<_> can be placed at the any positions after C<0x> or C<0X> as a separator. C<_> has no meaning.
 
 It can end with the suffix C<L> or C<l>.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the hexadecimal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer value that does not change the bits.
+If the return type is the int type, the hexadecimal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer value that does not change the bits. For example, C<0xFFFFFFFF> is  -1.
 
-For example, C<0xFFFFFFFF> is  -1.
-
-If the return type is the long type, the hexadecimal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer value that does not change the bits.
-
-For example, C<0xFFFFFFFFFFFFFFFFL> is C<-1L>.
+If the return type is the long type, the hexadecimal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer value that does not change the bits. For example, C<0xFFFFFFFFFFFFFFFFL> is C<-1L>.
 
 Compilation Errors:
 
@@ -624,43 +620,31 @@ Examples:
 
 =head3 Integer Literal Octal Notation
 
-The interger literal octal notation represents an L<integer literal|/"Integer Literals"> using octal numbers 0-7.
+The interger literal octal notation represents a number of the int type or the long type using octal numbers C<0-7>.
 
-It can begin with a minus C<->., and is followed by 0, and is followed by one or more 0-7.
+It can begin with a minus C<->.
 
-C<_> can be used as a separator at the any positions after 0. C<_> has no meaning.
+It is followed by C<0>.
 
-The suffix C<L> or C<l> can be at the end.
+It is followed by one or more C<0-7>. This is called octal numbers part.
+
+C<_> can be placed at the any positions after C<0> as a separator. C<_> has no meaning.
+
+It can end with the suffix C<L> or C<l>.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
+If the return type is the int type, the octal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer value that does not change the bits. For example, C<037777777777> is  -1.
 
-  uint32_t value_uint32_t;
-  int32_t value_int32_t = (int32_t)value_uint32_t;
-
-And if C<-> exists, the following conversion is performed.
-
-  value_int32_t = -value_int32_t;
-
-For example, 037777777777 is the same as -1, -037777777777 is the same as 1.
+If the return type is the long type, the octal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer value that does not change the bits. For example, C<01777777777777777777777L> is C<-1L>.
 
 If the return type is the long type, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
 
-  uint64_t value_uint64_t;
-  value_int64_t = (int64_t)value_uint64_t;
-
-And if C<-> exists, the following conversion is performed.
-
-  value_int64_t = -value_int64_t;
-
-For example, C<01777777777777777777777L> is the same as C<-1L>, C<-01777777777777777777777L> is the same as C<1L>.
-
 Compilation Errors:
 
-If the return type is the int type and the value that is except for C<-> is greater than octal 37777777777, a compilation error occurs.
+If the return type is the int type and the octal numbers part is greater than octal 37777777777, a compilation error occurs.
 
-If the return type is the long type and the value that is except for C<-> is greater than octal 1777777777777777777777, a compilation error occurs.
+If the return type is the long type and the octal numbers part is greater than octal 1777777777777777777777, a compilation error occurs.
 
 Examples:
 
@@ -671,43 +655,29 @@ Examples:
 
 =head3 Integer Literal Binary Notation
 
-The interger literal binary notation represents an L<integer literal|/"Integer Literals"> using binary numbers 0 and 1.
+The interger literal binary notation represents a number of the int type or the long type using binary numbers C<0> and C<1>.
 
-It can begin with a minus C<->., and is followed by C<0b> or C<0B>, and is followed by one or more 0 and 1.
+It can begin with a minus C<->.
 
-C<_> can be used as a separator at the any positions after C<0b> or C<0B>. C<_> has no meaning.
+It is followed by C<0b> or C<0B>.
 
-The suffix C<L> or C<l> can be at the end.
+It is followed by one or more C<0> and C<1>. This is called binary numbers part.
+
+C<_> can be placed at the any positions after C<0b> or C<0B> as a separator. C<_> has no meaning.
+
+It can end with the suffix C<L> or C<l>.
 
 If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
 
-If the return type is the int type, the value that is except for C<-> is interpreted as unsigned 32 bit integer C<uint32_t> type in the C language, and the following conversion is performed.
+If the return type is the int type, the binary numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer value that does not change the bits. For example, C<0b11111111111111111111111111111111> is  -1.
 
-  uint32_t value_uint32_t;
-  int32_t value_int32_t = (int32_t)value_uint32_t;
-
-And if C<-> exists, the following conversion is performed.
-
-  value_int32_t = -value_int32_t;
-
-For example, C<0b11111111111111111111111111111111> is the same as -1, C<-0b11111111111111111111111111111111> is the same as 1.
-
-If the return type is the long type, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
-
-  uint64_t value_uint64_t;
-  value_int64_t = (int64_t)value_uint64_t;
-
-And if C<-> exists, the following conversion is performed.
-
-  value_int64_t = -value_int64_t;
-
-For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is the same as C<-1L>, C<-0b1111111111111111111111111111111111111111111111111111111111111111L> is the same as C<1L>.
+If the return type is the long type, the binary numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer value that does not change the bits. For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is C<-1L>.
 
 Compilation Errors:
 
-If the return type is the int type and the value that is except for C<-> is greater than binary 11111111111111111111111111111111, a compilation error occurs.
+If the return type is the int type and the value that is except for C<-> is greater than binary C<11111111111111111111111111111111>, a compilation error occurs.
 
-If the return type is the long type and the value that is except for C<-> is greater than binary 1111111111111111111111111111111111111111111111111111111111111111, a compilation error occurs.
+If the return type is the long type and the value that is except for C<-> is greater than binary C<1111111111111111111111111111111111111111111111111111111111111111>, a compilation error occurs.
 
 Examples:
 
@@ -718,35 +688,49 @@ Examples:
 
 =head2 Floating Point Literal
 
-The floating point litral is a L<numeric literal/"Numeric Literals"> to write a constant value that type is a L<floating point type|SPVM::Document::Language::Types/"Floating Point Types">.
+The floating point litral represetns a floating point number.
 
 =head3 Floating Point Literal Decimal Notation
 
-The floating point litral decimal notation represents a L<floating point literal|/"Floating Point Literal"> using decimal numbers C<0-9>.
+The floating point litral decimal notation represents a number of the float type and the double type using decimal numbers C<0-9>.
 
-It can begin with a minus C<->., and is followed by one or more C<0-9>
+It can begin with a minus C<->.
 
-C<_> can be used as a separator at the any positions after the first C<0-9>.
+It is followed by one or more C<0-9>.
 
-And can be followed by a floating point part.
+C<_> can be placed at the any positions after the first C<0-9>.
 
-A floating point part is . and is followed by one or more C<0-9>.
+It can be followed by a floating point part, an exponent part, or a combination of a floating point part and an exponent part.
 
-And can be followed by an exponent part.
+[Floating Point Part Begin]
 
-An exponent part is C<e> or C<E> and is followed by C<+>, -, or C<"">, and followed by one or more C<0-9>.
+A floating point part begins with C<.>.
 
-And can be followed by a suffix is C<f>, C<F>, C<d>, or C<D>.
+It is followed by one or more C<0-9>.
 
-one of a floating point part, an exponent part, or a suffix must exist.
+[Floating Point Part End]
 
-If the suffix C<f> or C<F> exists, the return type is the L<float type|SPVM::Document::Language::Types/"float Type">. Otherwise the return type is the L<double type|SPVM::Document::Language::Types/"double Type">.
+[Exponent Part Begin]
+
+An exponent part begins with C<e> or C<E>.
+
+It can be followed by C<+> or C<->
+
+If is followed by one or more C<0-9>.
+
+[Exponent Part End]
+
+A floating point litral decimal notation can end with a suffix C<f>, C<F>, C<d>, or C<D>.
+
+If a suffix does not exists, a floating point litral decimal notation must have a floating point part or an exponent part.
+
+If the suffix C<f> or C<F> exists, the return type is the float type. Otherwise the return type is the double type.
 
 Compilation Errors:
 
-If the return type is the L<float type|SPVM::Document::Language::Types/"float Type">, the floating point literal is parsed by the C<strtof> function of the C language. If the parsing fails, a compilation error occurs.
+If the return type is the float type, the floating point litral decimal notation without the suffix must be able to be parsed by the C<strtof> function in the C language. Otherwise, a compilation error occurs.
 
-If the return type is the L<double type|SPVM::Document::Language::Types/"double Type">, the floating point literal is parsed by the C<strtod> function of the C language. If the parsing fails, a compilation error occurs.
+If the return type is the double type, the floating point litral decimal notation without the suffix must be able to be parsed by the C<strtod> function in the C language. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -760,38 +744,53 @@ Examples:
   1.32e-3
   1.32E+3
   1.32E-3
+  1.32e3f
   12e7
 
 =head3 Floating Point Literal Hexadecimal Notation
 
-The floating point litral hexadecimal notation represents a L<floating point literal|/"Floating Point Literal"> using hexadecimal numbers C<0-9a-zA-Z>.
+The floating point litral hexadecimal notation represents a number of the float type and the double type using hexadecimal numbers C<0-9a-zA-Z>.
 
-It can begin with a minus C<->., and is followed by C<0x> or C<0X>, and is followed by one or more C<0-9a-zA-Z>.
+It can begin with a minus C<->.
 
-C<_> can be used as a separator at the any positions after C<0x> or C<0X>.
+It is followed by C<0x> or C<0X>.
 
-And can be followed by a floating point part.
+It is followed by one or more C<0-9a-zA-Z>.
 
-A floating point part is . and is followed by one or more C<0-9a-zA-Z>.
+C<_> can be placed at the any positions after C<0x> or C<0X>.
 
-And can be followed by an exponent part.
+It can be followed by a floating point part, an exponent part, or a combination of a floating point part and an exponent part.
 
-An exponent part is C<p> or C<P> and is followed by C<+>, -, or C<"">, and followed by one or more decimal numbers C<0-9>.
+[Floating Point Part Begin]
 
-And can be followed by a suffix C<f>, C<F>, C<d>, or C<D> if an exponent part exist.
+A floating point part begins with C<.>
 
-one of a floating point part or an exponent part must exist.
+It is followed by one or more C<0-9a-zA-Z>.
 
-If the suffix C<f> or C<F> exists, the return type is the L<float type|SPVM::Document::Language::Types/"float Type">. Otherwise the return type is the L<double type|SPVM::Document::Language::Types/"double Type">.
+[Floating Point Part End]
+
+[Exponent Part Begin]
+
+An exponent part begins with C<p> or C<P>.
+
+It can be followed by C<+> or C<->.
+
+It is followed by one or more C<0-9>.
+
+[Exponent Part End]
+
+A floating point litral hexadecimal notation can end with a suffix C<f>, C<F>, C<d>, or C<D>.
+
+If a suffix does not exists, a floating point litral hexadecimal notation must have a floating point part or an exponent part.
 
 Compilation Errors:
 
-If the return type is the L<float type|SPVM::Document::Language::Types/"float Type">, the floating point literal is parsed by the C<strtof> function of the C language. If the parsing fails, a compilation error occurs.
+If the return type is the float type, the floating point litral hexadecimal notation without the suffix must be able to be parsed by the C<strtof> function in the C language. Otherwise, a compilation error occurs.
 
-If the return type is the L<double type|SPVM::Document::Language::Types/"double Type">, the floating point literal is parsed by the C<strtod> function of the C language. If the parsing fails, a compilation error occurs.
+If the return type is the double type, thefloating point litral hexadecimal notation without the suffix must be able to be parsed by the C<strtod> function in the C language. Otherwise, a compilation error occurs.
 
 Examples:
-  
+
   0x3d3d.edp0
   0x3d3d.edp3
   0x3d3d.edP3
@@ -1160,13 +1159,13 @@ The list of raw escape characters.
 
 =head2 Octal Escape Character
 
-The octal escape character represents an ASCII code using octal numbers 0-7.
+The octal escape character represents an ASCII code using octal numbers C<0-7>.
 
 The octal escape character can be used as an escape character of the L<string literal|/"String Literal"> and the L<character literal|/"Character Literal">.
 
-The octal escape character begins with C<\o{>, and it must be followed by one to three 0-7, and ends with C<}>.
+The octal escape character begins with C<\o{>, and it must be followed by one to three C<0-7>, and ends with C<}>.
 
-Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, C<\7>, and it must be followed by one or two 0-7.
+Or the octal escape character begins with C<\0>, C<\1>, C<\2>, C<\3>, C<\4>, C<\5>, C<\6>, C<\7>, and it must be followed by one or two C<0-7>.
 
   # Octal escape ch1racters in ch1racter literals
   '\0'

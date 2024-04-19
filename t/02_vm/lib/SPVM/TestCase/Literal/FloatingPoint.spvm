@@ -151,6 +151,17 @@ class TestCase::Literal::FloatingPoint {
       }
     }
     
+    # A floating point part, an exponent part and a suffix "f"
+    {
+      my $suffix_f : float = 0.25e0f;
+      unless ($suffix_f isa float) {
+        return 0;
+      }
+      unless ($suffix_f == 0.25f) {
+        return 0;
+      }
+    }
+
     return 1;
   }
   
