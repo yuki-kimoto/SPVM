@@ -1206,7 +1206,7 @@ The List of String Literal Escape Characters:
   </tr>
   <tr>
     <td>
-      <a href="#Unicode-Escape-Characters">A Unicode escape character</a>
+      <a href="#Unicode-Escape-Character">A Unicode escape character</a>
     </td>
     <td>
       Numbers represented by an Unicode escape character
@@ -1228,29 +1228,38 @@ The type of every character literal escape character ohter than the Unicode esca
 
 The type of each number contained in the Unicode escape character and the raw escape character is the byte type.
 
-=head3 Unicode Escape Characters
+=head3 Unicode Escape Character
 
-The Unicode escape character represents an UTF-8 character using an Unicode code point that is written by hexadecimal numbers C<0-9a-fA-F>.
+The Unicode escape character represents an UTF-8 character.
 
-The Unicode escape character can be used as an escape character of the L<string literal|/"String Literal">.
+An UTF-8 character is represented by an Unicode code point with hexadecimal numbers C<0-9a-fA-F>.
 
-The Unicode escape character begins with C<N{U+>.
+This is one to four numbers of the byte type.
 
-And is followed by one or more C<0-9a-fA-F>.
+The Unicode escape character is a part of a L<string literal|/"String Literal">.
 
-And ends with C<}>.
+It begins with C<\N{U+>.
+
+It is followed by one or more C<0-9a-fA-F>. This is called code point part.
+
+It ends with C<}>.
 
 Compilation Errors:
 
-If the Unicode code point is not a Unicode scalar value, a compilation error occurs.
+If a code point part is not a Unicode scalar value, a compilation error occurs.
 
 Examples:
   
-  # あいう
-  "\N{U+3042}\N{U+3044}\N{U+3046}"
+  # Unicode escape characters
   
-  # くぎが
-  "\N{U+304F}\N{U+304E}\N{U+304c}"
+  # あ
+  \N{U+3042}
+  
+  # い
+  \N{U+3044}
+  
+  # う
+  \N{U+3046}"
 
 =head3 Raw Escape Characters
 
