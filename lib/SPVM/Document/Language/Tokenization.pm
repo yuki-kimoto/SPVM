@@ -880,7 +880,7 @@ The List of Character Literal Escape Characters:
       Character Literal Escape Characters
     </th>
     <th>
-      Numbers
+      Values
     </th>
   </tr>
   <tr>
@@ -967,6 +967,8 @@ The List of Character Literal Escape Characters:
 
 =end html
 
+The type of every character literal escape character is the byte type.
+
 Examples:
 
   # Charater literals
@@ -1017,7 +1019,8 @@ The octal numbers part must be less than or equal to C<377>. Otherwise a compila
 If an octal escape character begins with C<\o{>, the close C<}> must exist. Otherwise a compilation error occurs.
 
 Examples:
-
+  
+  # Octal escape characters
   \0
   \01
   \03
@@ -1044,6 +1047,13 @@ If it contains C<{>, it must be followed by C<}>.
 
 Hexadecimal numbers part is interpreted as an unsined 8-bit integer, and is converted to a number of the byte type without changing the bits.
 
+Compilation Errors:
+
+If the format of the hexadecimal escape character is invalid, a compilation error occurs.
+
+Examples:
+  
+  # Hexadecimal escape characters
   \xab
   \xAB
   \x0D
@@ -1055,15 +1065,15 @@ Hexadecimal numbers part is interpreted as an unsined 8-bit integer, and is conv
 
 =head2 String Literal
 
-A string literal represents a constant value that type is the L<string type|SPVM::Document::Language::Types/"string Type">.
+A string literal represents a constant L<string|SPVM::Document::Language::Types/"String">.
+
+A string literal begins with C<">.
+
+It is followed by zero or more UTF-8 characters, L<string literal escape characters|/"String Literal Escape Characters">, or L<variable expansions|/"Variable Expansion">.
+
+It ends with C<">.
 
 The return type is the L<string type|SPVM::Document::Language::Types/"string Type">.
-
-A character literal begins with C<">.
-
-And is followed by zero or more than zero UTF-8 character, or L<string literal escape characters|/"String Literal Escape Characters">, or L<variable expansions|/"Variable Expansion">.
-
-And ends with C<">.
 
 Compilation Errors:
 
@@ -1072,6 +1082,7 @@ If the format of the string literal is invalid, a compilation error occurs.
 Examples:
 
   # String literals
+  ""
   "abc";
   "あいう"
   "hello\tworld\n"
@@ -1090,41 +1101,9 @@ Examples:
   "AAA $@ BBB"
   "\N{U+3042}\N{U+3044}\N{U+3046}"
 
-=head3 Variable Expansion
-
-The variable expasion is the feature to embed L<getting local variable|/"Getting Local Variable">, L<getting class variables|/"Getting Class Variable">, L<dereference|/"Dereference">, L<getting field/"Getting Field">, L<getting array element|/"Getting Array Element">, L<getting exception variable/"Getting Exception Variable"> into the L<string literal|"String Literal">.
-
-  "AAA $foo BBB"
-  "AAA $FOO BBB"
-  "AAA $$foo BBB"
-  "AAA $foo->{x} BBB"
-  "AAA $foo->[3] BBB"
-  "AAA $foo->{x}[3] BBB"
-  "AAA $foo->{x}->[3] BBB"
-  "AAA $@ BBB"
-  "AAA ${foo}BBB"
-
-The above codes are convarted to the following codes.
-
-  "AAA " . $foo . " BBB"
-  "AAA " . $FOO . " BBB"
-  "AAA " . $$foo . " BBB"
-  "AAA " . $foo->{x} . " BBB"
-  "AAA " . $foo->[3] . " BBB"
-  "AAA " . $foo->{x}[3] . " BBB"
-  "AAA " . $foo->{x}->[3] . " BBB"
-  "AAA " . $@ . "BBB"
-  "AAA " . ${foo} . "BBB"
-
-The getting field doesn't contain space characters between C<{> and C<}>.
-
-The index of getting array element must be a constant value. The getting array doesn't contain space characters between C<[> and C<]>.
-
-The end C<$> is not interpreted as a variable expansion.
-
-  "AAA$"
-
 =head3 String Literal Escape Characters
+
+The List of String Literal Escape Characters:
 
 =begin html
 
@@ -1134,79 +1113,79 @@ The end C<$> is not interpreted as a variable expansion.
       String literal escape characters
    </th>
     <th>
-      Descriptions
+      Values
    </th>
   </tr>
   <tr>
     <td>
-      <b>\a</b>
+      \a
     </td>
     <td>
-      ASCII <code>0x07</code> BEL
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\t</b>
-    </td>
-    <td>
-      ASCII <code>0x09</code> HT
+      <code>0x07</code> BEL
     </td>
   </tr>
   <tr>
     <td>
-      <b>\n</b>
+      \t
     </td>
     <td>
-      ASCII <code>0x0A</code> LF
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\f</b>
-    </td>
-    <td>
-      ASCII <code>0x0C</code> FF
+      <code>0x09</code> HT
     </td>
   </tr>
   <tr>
     <td>
-      <b>\r</b>
+      \n
     </td>
     <td>
-      ASCII <code>0x0D</code> CR
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\"</b>
-    </td>
-    <td>
-      ASCII <code>0x22</code> "
+      <code>0x0A</code> LF
     </td>
   </tr>
   <tr>
     <td>
-      <b>\$</b>
+      \f
     </td>
     <td>
-      ASCII <code>0x24</code> $
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\'</b>
-    </td>
-    <td>
-      ASCII <code>0x27</code> '
+      <code>0x0C</code> FF
     </td>
   </tr>
   <tr>
     <td>
-      <b>\\</b>
+      \r
     </td>
     <td>
-      ASCII <code>0x5C</code> \
+      <code>0x0D</code> CR
+    </td>
+  </tr>
+  <tr>
+    <td>
+      \"
+    </td>
+    <td>
+      <code>0x22</code> "
+    </td>
+  </tr>
+  <tr>
+    <td>
+      \$
+    </td>
+    <td>
+      <code>0x24</code> $
+    </td>
+  </tr>
+  <tr>
+    <td>
+      \'
+    </td>
+    <td>
+      <code>0x27</code> '
+    </td>
+  </tr>
+  <tr>
+    <td>
+      \\
+    </td>
+    <td>
+      <code>0x5C</code> \
     </td>
   </tr>
   <tr>
@@ -1214,7 +1193,7 @@ The end C<$> is not interpreted as a variable expansion.
       <a href="#Octal-Escape-Character">Octal Escape Character</a>
     </td>
     <td>
-      A number of the byte type
+      A number represented by an octal escape character
     </td>
   </tr>
   <tr>
@@ -1222,7 +1201,7 @@ The end C<$> is not interpreted as a variable expansion.
       <a href="#Hexadecimal-Escape-Character">Hexadecimal Escape Character</a>
     </td>
     <td>
-      A number of the byte type
+      A number represented by a hexadecimal escape character
     </td>
   </tr>
   <tr>
@@ -1230,7 +1209,7 @@ The end C<$> is not interpreted as a variable expansion.
       <a href="#Unicode-Escape-Characters">A Unicode escape character</a>
     </td>
     <td>
-      An UTF-8 character
+      Numbers represented by an Unicode escape character
     </td>
   </tr>
   <tr>
@@ -1238,12 +1217,16 @@ The end C<$> is not interpreted as a variable expansion.
       <a href="#Raw-Escape-Characters">A raw escape character</a>
     </td>
     <td>
-      The value of raw escape character
+      Numbers represented by a hexadecimal escape character
     </td>
   </tr>
 </table>
 
 =end html
+
+The type of every character literal escape character ohter than the Unicode escape character and the raw escape character is the byte type.
+
+The type of each number contained in the Unicode escape character and the raw escape character is the byte type.
 
 =head3 Unicode Escape Characters
 
@@ -1288,6 +1271,40 @@ The list of raw escape characters.
   \[ \] \^ \_ \`
   \b \d \g \h \k \p \s \v \w \z
   \{ \| \} \~
+
+=head3 Variable Expansion
+
+The variable expasion is the feature to embed L<getting local variable|/"Getting Local Variable">, L<getting class variables|/"Getting Class Variable">, L<dereference|/"Dereference">, L<getting field/"Getting Field">, L<getting array element|/"Getting Array Element">, L<getting exception variable/"Getting Exception Variable"> into the L<string literal|"String Literal">.
+
+  "AAA $foo BBB"
+  "AAA $FOO BBB"
+  "AAA $$foo BBB"
+  "AAA $foo->{x} BBB"
+  "AAA $foo->[3] BBB"
+  "AAA $foo->{x}[3] BBB"
+  "AAA $foo->{x}->[3] BBB"
+  "AAA $@ BBB"
+  "AAA ${foo}BBB"
+
+The above codes are convarted to the following codes.
+
+  "AAA " . $foo . " BBB"
+  "AAA " . $FOO . " BBB"
+  "AAA " . $$foo . " BBB"
+  "AAA " . $foo->{x} . " BBB"
+  "AAA " . $foo->[3] . " BBB"
+  "AAA " . $foo->{x}[3] . " BBB"
+  "AAA " . $foo->{x}->[3] . " BBB"
+  "AAA " . $@ . "BBB"
+  "AAA " . ${foo} . "BBB"
+
+The getting field doesn't contain space characters between C<{> and C<}>.
+
+The index of getting array element must be a constant value. The getting array doesn't contain space characters between C<[> and C<]>.
+
+The end C<$> is not interpreted as a variable expansion.
+
+  "AAA$"
 
 =head2 Single-Quoted String Literal
 
