@@ -741,7 +741,7 @@ An exponent part begins with C<e> or C<E>.
 
 It can be followed by C<+> or C<->
 
-If is followed by one or more C<0-9>.
+It is followed by one or more C<0-9>.
 
 [Exponent Part End]
 
@@ -1431,23 +1431,25 @@ The type of every single-quoted string literal escape character is the byte type
 
 =head2 Here Document
 
-Here document is syntax to write a string literal in multiple lines without escapes and variable expansions.
+A here document represents a constant string in multiple lines without escape characters and L<variable expansions|/"Variable Expansion">.
 
   <<'HERE_DOCUMENT_NAME';
-  line1
-  line2
-  line...
+  LINE1
+  LINE2
+  LINEn
   HERE_DOCUMENT_NAME
 
-Here document syntax begins with C<<<'HERE_DOCUMENT_NAME';> + a line terminator. C<HERE_DOCUMENT_NAME> is a L<here document name|/"Here Document Name">.
+A here document begins with C<<<'HERE_DOCUMENT_NAME';> and ASCII C<LF>.
 
-A string begins from the next line.
+I<HERE_DOCUMENT_NAME> is a L<here document name|/"Here Document Name">.
 
-Here document syntax ends with the line that begins C<HERE_DOCUMENT_NAME> + a line terminator.
+It is followed by a string in multiple lines.
+
+It ends with I<HERE_DOCUMENT_NAME> from the beginning of a line and ASCII C<LF>.
 
 Compilation Errors:
 
-C<<<'HERE_DOCUMENT_NAME'> cannot contains spaces. If so, a compilation error occurs.
+C<<<'HERE_DOCUMENT_NAME';> must not contain L<space characters|/"Space Characters">. Otherwise a compilation error occurs.
 
 Examples:
   
@@ -1456,25 +1458,20 @@ Examples:
   Hello
   World
   EOS
-  
-  # No escapes and variable expaneions are performed.
-  my $string = <<'EOS';
-  $foo
-  \t
-  \
-  EOS
 
 =head3 Here Document Name
 
-Here document name is composed of C<a-z>, C<A-Z>, C<_>, C<0-9>.
+A here document name consist of C<a-z>, C<A-Z>, C<_>, C<0-9>.
+
+The length of a here document name is greater than or equal to 0.
+
+A here document name cannot begin with C<0-9>.
+
+A here document name cannot contain C<__>.
 
 Compilaition Errors:
 
-The length of a here document name must be greater than or equal to 0. Otherwise a compilation error occurs.
-
-A here document name cannot start with a number. If so, a compilation error occurs.
-
-A here document name cannot contain C<__>. If so, a compilation error occurs.
+If the format of a here document name is invalid, a compilatio error occurs.
 
 =head1 See Also
 
