@@ -826,31 +826,31 @@ Examples:
   0x3d3d.edP-3D
   0x3d3dP+3
 
-=head2 Bool Literal
+=head2 Bool Literals
 
-The bool literal is a L<literal|/"Literals"> to represent a bool value.
+The bool literal represents a bool object.
 
 =head3 true
 
-C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method of L<Bool|SPVM::Bool>.
+C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method in the L<Bool|SPVM::Bool> class.
 
   true
 
 Examples:
 
   # true
-  my $is_valid = true;
+  my $bool_object_true = true;
 
 =head3 false
 
-C<false> is the alias for L<FALSE|SPVM::Bool/"FALSE"> method of L<Bool|SPVM::Bool>.
+C<false> is the alias for the L<FALSE|SPVM::Bool/"FALSE"> method in the L<Bool|SPVM::Bool> class.
 
   false
 
 Examples:
 
   # false
-  my $is_valid = false;
+  my $bool_object_false = false;
 
 =head2 Character Literal
 
