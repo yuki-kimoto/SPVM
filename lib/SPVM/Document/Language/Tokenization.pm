@@ -1110,7 +1110,7 @@ The List of String Literal Escape Characters:
 <table>
   <tr>
     <th>
-      String literal escape characters
+      String Literal Escape Characters
    </th>
     <th>
       Values
@@ -1263,23 +1263,73 @@ Examples:
 
 =head3 Raw Escape Characters
 
-The raw escape character is the escapa character that <\> has no effect and C<\> is interpreted as ASCII C<\>.
+A raw escape character is an escapa character that <\> is interpreted as ASCII C<\> and the following character is interpreted as itself.
 
-For example, C<\s> is ASCII chracters C<\s>, C<\d> is ASCII chracters <\d>.
+For example, a raw escape character C<\s> is ASCII chracters C<\s>.
 
-The raw escape character can be used as an escape character of the L<string literal|/"String Literal">.
+A raw escape character is a part of a L<string literal|/"String Literal">.
 
-The raw escape character is designed to be used by regular expression classes such as L<Regex|SPVM::Regex>.
+The List of Raw Escape Characters:
 
-The list of raw escape characters.
-  
-  # Raw excape literals
-  \! \# \% \& \( \) \* \+ \, \- \. \/
-  \: \; \< \= \> \? \@
-  \A \B \D \G \H \K \N \P \R \S \V \W \X \Z
-  \[ \] \^ \_ \`
-  \b \d \g \h \k \p \s \v \w \z
-  \{ \| \} \~
+=begin html
+
+<table>
+  <tr><th>Raw Escape Characters</th></tr>
+  <tr><td>\!</td></tr>
+  <tr><td>\#</td></tr>
+  <tr><td>\%</td></tr>
+  <tr><td>\&</td></tr>
+  <tr><td>\(</td></tr>
+  <tr><td>\)</td></tr>
+  <tr><td>\*</td></tr>
+  <tr><td>\+</td></tr>
+  <tr><td>\,</td></tr>
+  <tr><td>\-</td></tr>
+  <tr><td>\.</td></tr>
+  <tr><td>\/</td></tr>
+  <tr><td>\:</td></tr>
+  <tr><td>\;</td></tr>
+  <tr><td>\<</td></tr>
+  <tr><td>\=</td></tr>
+  <tr><td>\></td></tr>
+  <tr><td>\?</td></tr>
+  <tr><td>\@</td></tr>
+  <tr><td>\A</td></tr>
+  <tr><td>\B</td></tr>
+  <tr><td>\D</td></tr>
+  <tr><td>\G</td></tr>
+  <tr><td>\H</td></tr>
+  <tr><td>\K</td></tr>
+  <tr><td>\N</td></tr>
+  <tr><td>\P</td></tr>
+  <tr><td>\R</td></tr>
+  <tr><td>\S</td></tr>
+  <tr><td>\V</td></tr>
+  <tr><td>\W</td></tr>
+  <tr><td>\X</td></tr>
+  <tr><td>\Z</td></tr>
+  <tr><td>\[</td></tr>
+  <tr><td>\]</td></tr>
+  <tr><td>\^</td></tr>
+  <tr><td>\_</td></tr>
+  <tr><td>\`</td></tr>
+  <tr><td>\b</td></tr>
+  <tr><td>\d</td></tr>
+  <tr><td>\g</td></tr>
+  <tr><td>\h</td></tr>
+  <tr><td>\k</td></tr>
+  <tr><td>\p</td></tr>
+  <tr><td>\s</td></tr>
+  <tr><td>\v</td></tr>
+  <tr><td>\w</td></tr>
+  <tr><td>\z</td></tr>
+  <tr><td>\{</td></tr>
+  <tr><td>\|</td></tr>
+  <tr><td>\}</td></tr>
+  <tr><td>\~</td></tr>
+</table>
+
+=end html
 
 =head3 Variable Expansion
 
