@@ -1224,7 +1224,7 @@ The List of String Literal Escape Characters:
 
 =end html
 
-The type of every character literal escape character ohter than the Unicode escape character and the raw escape character is the byte type.
+The type of every string literal escape character ohter than the Unicode escape character and the raw escape character is the byte type.
 
 The type of each number contained in the Unicode escape character and the raw escape character is the byte type.
 
@@ -1370,15 +1370,15 @@ The end C<$> is interpreted by C<$>, not interpreted as a variable expansion.
 
 =head2 Single-Quoted String Literal
 
-A single-quoted string literal represents a constant string value.
+A single-quoted string literal represents a constant string without variable expansions with a few escape characters.
+
+It begins with C<q'>.
+
+It is followed by zero or more UTF-8 characters, or L<single-quoted string literal escape characters|/"Single-Quoted String Literal Escape Characters">.
+
+It ends with C<'>.
 
 The return type is the L<string type|SPVM::Document::Language::Types/"string Type">.
-
-A character literal begins with C<q'>.
-
-And is followed by zero or more than zero UTF-8 character, or L<escape characters|/"Single-Quoted String Literal Escape Characters">.
-
-And ends with C<'>.
 
 Compilation Errors:
 
@@ -1391,6 +1391,43 @@ Examples:
   # Single-quoted string literals
   q'abc';
   q'abc\'\\';
+
+=head3 Single-Quoted String Literal Escape Characters
+
+The List of Single-Quoted String Literal Escape Characters:
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Single-Quoted String Literal Escape Characters
+   </th>
+    <th>
+      Values
+   </th>
+  </tr>
+  <tr>
+    <td>
+      \'
+    </td>
+    <td>
+      <code>0x27</code> '
+    </td>
+  </tr>
+  <tr>
+    <td>
+      \\
+    </td>
+    <td>
+      <code>0x5C</code> \
+    </td>
+  </tr>
+</table>
+
+=end html
+
+The type of every single-quoted string literal escape character is the byte type.
 
 =head2 Here Document
 
