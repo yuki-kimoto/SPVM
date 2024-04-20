@@ -1333,7 +1333,7 @@ The List of Raw Escape Characters:
 
 =head3 Variable Expansion
 
-The variable expasion is the feature to embed L<getting local variable|/"Getting Local Variable">, L<getting class variables|/"Getting Class Variable">, L<dereference|/"Dereference">, L<getting field/"Getting Field">, L<getting array element|/"Getting Array Element">, L<getting exception variable/"Getting Exception Variable"> into the L<string literal|"String Literal">.
+The variable expasion is a syntax to embed L<getting a local variable|SPVM::Document::Language::Operators/"Getting a Local Variable">, L<getting a class variables|SPVM::Document::Language::Operators/"Getting a Class Variable">, a L<dereference|SPVM::Document::Language::Operators/"Dereference Operator">, L<getting a field|SPVM::Document::Language::Operators/"Getting a Field">, L<getting an array element|SPVM::Document::Language::Operators/"Getting an Array Element">, L<getting the exception variable|SPVM::Document::Language::Operators/"Getting the Exception Variable"> into a L<string literal|"String Literal">.
 
   "AAA $foo BBB"
   "AAA $FOO BBB"
@@ -1345,7 +1345,7 @@ The variable expasion is the feature to embed L<getting local variable|/"Getting
   "AAA $@ BBB"
   "AAA ${foo}BBB"
 
-The above codes are convarted to the following codes.
+The above codes are expanded to the following codes.
 
   "AAA " . $foo . " BBB"
   "AAA " . $FOO . " BBB"
@@ -1357,12 +1357,15 @@ The above codes are convarted to the following codes.
   "AAA " . $@ . "BBB"
   "AAA " . ${foo} . "BBB"
 
-The getting field doesn't contain space characters between C<{> and C<}>.
+The operation of getting field does not contain L<space characters|/"Space Characters"> between C<{> and C<}>.
 
-The index of getting array element must be a constant value. The getting array doesn't contain space characters between C<[> and C<]>.
+The index of getting array element must be a constant interger.
 
-The end C<$> is not interpreted as a variable expansion.
+The getting array dose not contain L<space characters|/"Space Characters"> between C<[> and C<]>.
 
+The end C<$> is interpreted by C<$>, not interpreted as a variable expansion.
+  
+  # AAA$
   "AAA$"
 
 =head2 Single-Quoted String Literal
