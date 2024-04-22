@@ -1902,7 +1902,7 @@ Examples:
 
 =head4 Inline Expansion of Method Call to Get an Enuemration Value
 
-An inline expansion is performed on a class method call to get an enumeration value, and it is replaced with the return value.
+An inline expansion is performed on every class method call to get an enumeration value, and it is replaced with the return value.
 
 Examples:
 
