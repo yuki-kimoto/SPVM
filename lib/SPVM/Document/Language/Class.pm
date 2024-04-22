@@ -1837,7 +1837,7 @@ A method call resolves to one of the three types of method calls, a class method
 
 =head3 Class Method Call Resolution
 
-A class method call is a method call to call a class method.
+A class method call calls a class method.
 
   CLASS_TYPE->METHOD_NAME
   CLASS_TYPE->METHOD_NAME(OPT_ARGS)
@@ -1846,7 +1846,7 @@ A class method call is a method call to call a class method.
 
 I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> or a class alias name created by an L<alias statement|/"alias Statement">.
 
-C<&> is converted to the L<outmost class|/"Outmost Class">.
+C<&> is converted to the L<outmost class|/"Outmost Class">. This becomes C<I<CLASS_TYPE-E<gt>>>.
 
 I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
 
@@ -1872,7 +1872,7 @@ The return type is the type of the found method.
 
 Compilation Errors:
 
-If the method specified by I<METHOD_NAME> is not found in the class specified by I<CLASS_TYPE>, a compilation error occurs.
+If the method is not found, a compilation error occurs.
 
 If the found method is an instance method, a compilation error occurs.
 
