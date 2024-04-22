@@ -1141,6 +1141,10 @@ use Test::More;
     compile_not_ok($source, q|The "foo" method in the "MyClass2" class is found, but this is not an instance method|);
   }
   {
+    my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $point3d = Point3D->new; $point3d->Stringable::to_string; } }';
+    compile_ok($source);
+  }
+  {
     my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $stringable = (Stringable)Point3D->new; $stringable->SUPER::clear; } }';
     compile_not_ok($source, q|The "SUPER::clear" method is not found|);
   }

@@ -1866,7 +1866,7 @@ I<ARG> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
 If a method specified I<METHOD_NAME> is searched in I<CLASS_TYPE>.
 
-If found, it resolves to an L<class method call|SPVM::Document::Language::Operators/"Class Method Call">.
+If found, it resolves to a L<class method call|SPVM::Document::Language::Operators/"Class Method Call">.
 
 The return type is the type of the found method.
 
@@ -1920,16 +1920,16 @@ Examples:
 
 =head3 Static Instance Method Call Resolution
 
-A static instance method call is a method call to call an instance method specifying a class.
+A static instance method call calls an instance method specifying a class.
 
   INVOCANT->CLASS_TYPE::METHOD_NAME
   INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
 
-I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Types">.
+I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Types"> or an L<interface type|SPVM::Document::Language::Types/"Interface Types">.
 
-I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> of the type of I<INVOCANT> or its super classes, or C<SUPER>.
+I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or C<SUPER>.
 
-If C<SUPER> is specified, an instance method is searched for in the super classes of the current class, and I<CLASS_TYPE> is replaced to the found super class.
+If C<SUPER> is specified, a method specified by I<METHOD_NAME> is searched in the super classes of the current class. If it is found and it is an instance method, C<SUPER> is replaced to the class of the found method. This becomes I<CLASS_TYPE>.
 
 I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
 
@@ -1947,19 +1947,21 @@ I<ARGS> is one of
 
 I<ARG> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
-If a method specified I<METHOD_NAME> is searched in I<CLASS_TYPE>.
+A method specified I<METHOD_NAME> is searched in I<CLASS_TYPE>.
 
-If found, it resolves to an L<static instance method call|SPVM::Document::Language::Operators/"Static Instance Method Call">.
+If found, it resolves to a L<static instance method call|SPVM::Document::Language::Operators/"Static Instance Method Call">.
 
 The return type is the type of the found method.
 
 Compilation Errors:
 
-I<CLASS_TYPE> must be a L<class type|SPVM::Document::Language::Types/"Class Types"> of the type of I<INVOCANT> or its super classes.
+I<CLASS_TYPE> must be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or C<SUPER>. Ohterwise a compilation error occurs.
 
-If C<SUPER> is not resolved, a compilation error occurs.
+The type of I<INVOCANT> must satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to I<CLASS_TYPE>. Ohterwise a compilation error occurs.
 
-If the method specified by I<METHOD_NAME> is not found in the class specified by I<CLASS_TYPE> or its super classes, a compilation error occurs.
+If C<SUPER> is specified and the found method is a class method, a compilation error occurs.
+
+If the method is not found, a compilation error occurs.
 
 If the found method is a class method, a compilation error occurs.
 
@@ -1972,11 +1974,12 @@ If the length of I<ARGS> is too few, a compilation error occurs.
 Examples:
   
   # Examples of static instance method calls
-  
-  $object->SUPER::bar(5, 3. 6);
+  my $point3d = Point3D->new;
   
   $point3d->Point::clear;
-
+  
+  $point3d->SUPER::clear;
+  
 =head3 Instance Method Call Resolution
 
 An instance method call calls an instance method.
