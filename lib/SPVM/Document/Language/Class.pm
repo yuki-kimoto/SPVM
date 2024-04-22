@@ -1864,7 +1864,11 @@ I<ARGS> is one of
 
 I<ARG> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
-The return type is the type of the method specified by I<METHOD_NAME>.
+If a method specified I<METHOD_NAME> is searched in I<CLASS_TYPE>.
+
+If found, it resolves to an L<class method call|SPVM::Document::Language::Operators/"Class Method Call">.
+
+The return type is the type of the found method.
 
 Compilation Errors:
 
@@ -1925,7 +1929,7 @@ I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Clas
 
 I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> of the type of I<INVOCANT> or its super classes, or C<SUPER>.
 
-If C<SUPER> is specified, an instance method is searched for in the super classes of the current class, and it is replaced to the found super class.
+If C<SUPER> is specified, an instance method is searched for in the super classes of the current class, and I<CLASS_TYPE> is replaced to the found super class.
 
 I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
 
@@ -1943,7 +1947,11 @@ I<ARGS> is one of
 
 I<ARG> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
-The return type is the type of the method specified by I<METHOD_NAME>.
+If a method specified I<METHOD_NAME> is searched in I<CLASS_TYPE>.
+
+If found, it resolves to an L<static instance method call|SPVM::Document::Language::Operators/"Static Instance Method Call">.
+
+The return type is the type of the found method.
 
 Compilation Errors:
 
@@ -1971,8 +1979,64 @@ Examples:
 
 =head3 Instance Method Call Resolution
 
+An instance method call calls an instance method.
 
+  INVOCANT->METHOD_NAME
+  INVOCANT->METHOD_NAME(OPT_ARGS)
 
+I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Types"> or an L<interface type|SPVM::Document::Language::Types/"Interface Types">.
+
+I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
+
+I<OPT_ARGS> is one of
+
+  EMPTY
+  ARGS
+
+I<EMPTY> means nothing exists.
+
+I<ARGS> is one of
+  
+  ARGS , ARG
+  ARG
+
+I<ARG> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
+
+If the type of I<INVOCANT> is a L<class type|SPVM::Document::Language::Types/"Class Types">, a method specified I<METHOD_NAME> is searched in the class and its super classes.
+
+If found, it resolves to an L<instance method call|SPVM::Document::Language::Operators/"Instance Method Call">.
+
+If the type of I<INVOCANT> is an L<interface type|SPVM::Document::Language::Types/"Interface Types">, a method specified I<METHOD_NAME> is searched in the interface.
+
+If found, it resolves to an L<instance method call|SPVM::Document::Language::Operators/"Instance Method Call">.
+
+The return type is the type of the found method.
+
+Compilation Errors:
+
+The type of I<INVOCANT> must be a L<class type|SPVM::Document::Language::Types/"Class Types"> or an L<interface type|SPVM::Document::Language::Types/"Interface Types">.
+
+If the method specified by I<METHOD_NAME> is not found, a compilation error occurs.
+
+If the found method is a class method, a compilation error occurs.
+
+If the type of I<ARG> does not satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, a compilation error occurs.
+
+If the length of I<ARGS> is too many, a compilation error occurs.
+
+If the length of I<ARGS> is too few, a compilation error occurs.
+
+Examples:
+  
+  # Examples of instance method calls
+  
+  my $point = Point->new;
+  
+  $point->clear;
+  
+  my $stringable = (Stringable)$point;
+  
+  my $string = $strinble->to_string;
 
 =head1 Block
 
