@@ -341,11 +341,11 @@ The following classes are loaded by default.
 
 =head2 alias Statement
 
-The C<alias> statemenet creates an alias name for a type.
+The C<alias> statemenet creates an class alias name for a type.
   
   alias BASIC_TYPE as CLASS_NAME;
 
-This statemenet creates an alias name I<CLASS_NAME> for a type I<BASIC_TYPE>.
+This statemenet creates an class alias name I<CLASS_NAME> for a type I<BASIC_TYPE>.
 
 I<BASIC_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
@@ -1189,8 +1189,8 @@ Examples:
 
 The C<method> keyword defines a method.
 
-  OPT_ATTRIBUTES method METHOD_NAME : RETURN_TYPE (OPT_ARGS) { }
-  OPT_ATTRIBUTES method METHOD_NAME : RETURN_TYPE (OPT_ARGS);
+  OPT_ATTRIBUTES method METHOD_NAME : RETURN_TYPE (OPT_ARG_ITEMS) { }
+  OPT_ATTRIBUTES method METHOD_NAME : RETURN_TYPE (OPT_ARG_ITEMS);
 
 I<OPT_ATTRIBUTES> is one of
 
@@ -1210,24 +1210,19 @@ I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method
 
 I<RETURN_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
-I<ARG_ITEM> is one of
-  
-  ARG_NAME : TYPE
-  ARG_NAME : TYPE = VALUE
-
-I<OPT_ATTRIBUTES> is one of
+I<OPT_ARG_ITEMS> is one of
 
   EMPTY
-  ARGS
+  ARG_ITEMS
 
 I<EMPTY> means nothing exists.
 
-I<ARGS> is one of
+I<ARG_ITEMS> is one of
   
-  ARGS , ARG
-  ARG
+  ARG_ITEMS , ARG_ITEM
+  ARG_ITEM
 
-I<ARG> is one of
+I<ARG_ITEM> is one of
 
   ARG_NAME : ARG_TYPE
   ARG_NAME : ARG_TYPE = VALUE
@@ -1572,6 +1567,65 @@ Normally a method has a method block. L<Statements|SPVM::Document::Language::Sta
     
     return $total;
   }
+
+=head2 Method Call Resolution
+
+A L<method call|SPVM::Document::Language::Operators/"Method Call"> is an operation to call a method.
+
+A method call resolves to one of the three types of method calls, a class method call, a static instance method call, and an instance method call.
+
+=head3 Class Method Call
+
+A class method call is a method call to call a class method.
+
+  CLASS_TYPE->METHOD_NAME
+  CLASS_TYPE->METHOD_NAME(OPT_ARGS)
+
+I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> or a class alias name created by an L<alias statement|/"alias Statement">.
+
+I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
+
+I<OPT_ARGS> is one of
+
+  EMPTY
+  ARGS
+
+I<EMPTY> means nothing exists.
+
+I<ARGS> is one of
+  
+  ARGS , ARG
+  ARG
+
+I<ARG> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
+
+The return type is the type of the method specified by I<METHOD_NAME>.
+
+Compilation Errors:
+
+If the method specified by I<METHOD_NAME> is not found in the class specified by I<CLASS_TYPE>, a compilation error occurs.
+
+If the found method is an instance method, a compilation error occurs.
+
+If the type of I<ARG> does not satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, a compilation error occurs.
+
+If the length of I<ARGS> is too many, a compilation error occurs.
+
+If the length of I<ARGS> is too few, a compilation error occurs.
+
+Examples:
+  
+  # Examples of class method calls
+  my $ret = Fn->INT_MAX;
+  
+  my $ret = Fn->abs(-5);
+
+=head3 Static Instance Method Call
+
+=head3 Instance Method Call
+
+
+
 
 =head1 Local Variable
 
