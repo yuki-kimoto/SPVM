@@ -1801,7 +1801,7 @@ The class specified by I<CLASS_TYPE> must be loaded. Otherwise, a compilation er
 
 The class variable relative name specified by I<VAR_NAME> must be defined in the class specified by I<VAR_NAME>. Otherwise, a compilation error occurs.
 
-If it resolves to a class variable, the L<outmost class|/"Outmost Class"> must be allowed access to I<VAR_NAME>. Otherwise, a compilation error occurs.
+If it resolves to a class variable, the L<outmost class|/"Outmost Class"> must has the access control to I<VAR_NAME> in the I<CLASS_TYPE>. Otherwise, a compilation error occurs.
 
 =head2 Field Access Resolution
 
@@ -1811,13 +1811,15 @@ The following syntax resolves to a L<field access|SPVM::Document::Language::Oper
 
 The type of I<INVOCANT> is a L<class type|SPVM::Document::Language::Types/"Class Type">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, or a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
 
-If the type of I<INVOCANT> is a L<class type|SPVM::Document::Language::Types/"Class Type">, it resolves to a field access for class types.
-
-If the type of I<INVOCANT> is a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, it resolves to a field access for multi-numeric types.
-
-If the type of I<INVOCANT> is a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, it resolves to a field access for multi-numeric reference types.
-
 I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
+
+A field specified by I<FIELD_NAME> is searched in the type of I<INVOCANT>.
+
+If it is found and the type of I<INVOCANT> is a L<class type|SPVM::Document::Language::Types/"Class Type">, it resolves to a field access for class types.
+
+If it is found and the type of I<INVOCANT> is a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, it resolves to a field access for multi-numeric types.
+
+If it is found and the type of I<INVOCANT> is a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, it resolves to a field access for multi-numeric reference types.
 
 Compilation Errors:
 
@@ -1828,6 +1830,8 @@ If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME>
 If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type. Otherwise, a compilation error occurs.
 
 If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type. Otherwise, a compilation error occurs.
+
+The L<outmost class|/"Outmost Class"> must has the access control to I<FIELD_NAME> in the type of I<INVOCANT>. Otherwise, a compilation error occurs.
 
 =head2 Method Call Resolution
 
@@ -1881,6 +1885,8 @@ If the type of I<ARG> does not satisfy L<assignment requirement|SPVM::Document::
 If the length of I<ARGS> is too many, a compilation error occurs.
 
 If the length of I<ARGS> is too few, a compilation error occurs.
+
+The L<outmost class|/"Outmost Class"> must has the access control to the found method. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1971,6 +1977,8 @@ If the length of I<ARGS> is too many, a compilation error occurs.
 
 If the length of I<ARGS> is too few, a compilation error occurs.
 
+The L<outmost class|/"Outmost Class"> must has the access control to the found method. Otherwise, a compilation error occurs.
+
 Examples:
   
   # Examples of static instance method calls
@@ -2028,6 +2036,8 @@ If the type of I<ARG> does not satisfy L<assignment requirement|SPVM::Document::
 If the length of I<ARGS> is too many, a compilation error occurs.
 
 If the length of I<ARGS> is too few, a compilation error occurs.
+
+The L<outmost class|/"Outmost Class"> must has the access control to the found method. Otherwise, a compilation error occurs.
 
 Examples:
   
