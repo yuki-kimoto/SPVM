@@ -818,6 +818,135 @@ Examples:
   _4f;
   _4d;
 
+=head1 Enumeration
+
+Enumeration is a syntax that defines 32-bit integers that belongs to a L<class|/"Class">.
+
+=head2 Enumeration Definition
+
+The C<enum> keyword defines an enumeration.
+
+  enum {
+    ITEM1,
+    ITEM2,
+    ITEMn
+  }
+
+C<,> after the last enumeration item is allowed.
+
+  enum {
+    ITEM1,
+    ITEM2,
+    ITEM3,
+  }
+
+I<ITEM> is one of
+
+  NAME
+  NAME = VALUE
+
+I<NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
+
+I<VALUE> is an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> within the int type. I<VALUE> is converted the value of the int type.
+
+If I<VALUE> of I<ITEM1> is omitted, it is set to 0.
+
+If I<VALUE> of I<ITEMn> is ommited, it is set to the value of the previous item plus 1.
+
+The return type of the method is the int type.
+
+Every enumeration item is converted to a L<method definition|/"Method Definition"> that defines a class method that returns the value of the enumeration item.
+
+  # Definition of an enumeration
+  class MyClass {
+    enum {
+      NAME = 5,
+    }
+  }
+  
+  # This are replaced with a definition of a class method
+  class MyClass {
+    static method NAME : int () { return 5; }
+  }
+
+See also L</"Inline Expansion of Method Call to Get an Enuemration Value">.
+
+Compilation Errors:
+
+I<NAME> must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">. Otherwise, a compilation error occurs.
+
+I<VALUE> must be an L<integer literal|/"Integer Literal"> within the int type. Otherwise, a compilation error occurs.
+
+Examples:
+  
+  # Examples of enumerations
+  class MyClass {
+    enum {
+      FLAG1,
+      FLAG2,
+      FLAG3,
+    }
+    
+    static method main : void () {
+      my $flag1 = MyClass->FLAG1;
+    }
+  }
+  
+  class MyClass {
+    enum {
+      FLAG1,
+      FLAG2 = 2,
+      FLAG3,
+    }
+  }
+
+=head2 Enumeration Attributes
+
+The List of Enumeration Attributes:
+
+=begin html
+
+<table>
+  <tr>
+    <th>
+      Attributes
+   </th>
+    <th>
+      Descriptions
+   </th>
+  </tr>
+  <tr>
+    <td>
+      <b>public</b>
+    </td>
+    <td>
+      This enumeration is public. All classes can access all items of this enumeration. This is default.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>private</b>
+    </td>
+    <td>
+      This enumeration is private. All classes ohter than this class cannnot access all items of this enumeration.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <b>protected</b>
+    </td>
+    <td>
+      This enumeration is protected. All classes ohter than this class and its child classes cannot access all items of this enumeration.
+    </td>
+  </tr>
+</table>
+
+=end html
+
+Compilation Errors:
+
+One of C<private>, C<protected> and C<public> must be specified. Otherwise, a compilation error occurs.
+
 =head1 Class Variable
 
 A class variable is a global variable that belongs to a L<class|/"Class">.
@@ -1229,6 +1358,8 @@ I<ARG_ITEM> is one of
 
 I<ARG_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
+The local variable specified I<ARG_NAME> is declared at the beginning of the L<method implementation|/"Method Implementation">.
+
 I<ARG_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
 I<VALUE> is a L<literal|SPVM::Document::Language::Tokenization/"Literals"> or C<undef>. 
@@ -1568,6 +1699,112 @@ Normally a method has a method block. L<Statements|SPVM::Document::Language::Sta
     return $total;
   }
 
+=head1 Local Variable
+
+A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
+
+=head2  Local Variable Declaration
+
+A C<my> keyword declares a local variable.
+
+  my LOCAL_VARIABLE_NAME
+  my LOCAL_VARIABLE_NAME : TYPE
+  my LOCAL_VARIABLE_NAME = VALUE
+  my LOCAL_VARIABLE_NAME : TYPE = VALUE
+
+I<LOCAL_VARIABLE_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
+
+I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
+
+If I<TYPE> is ommited, I<TYPE> is set to the type of I<VALUE>. This is called L<type inference|/"Type Inference">.
+
+I<VALUE> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
+
+A local variable is declared in a L<scope block|/"Scope Block">.
+
+A local variable declaration performs the operation of L<pushing a local variable on the mortal stack|SPVM::Document::Language::GarbageCollection/"Pushing a Local Variable on the Mortal Stack">.
+
+A local variable declaration is a L<local variable access|SPVM::Document::Language::Operators/"Local Variable Access">.
+
+Compilation Errors:
+
+I<LOCAL_VARIABLE_NAME> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">. Otherwise a compilation error occurs.
+
+I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">. Otherwise a compilation error occurs.
+
+If I<TYPE> is not resolved, a compilation error occurs.
+
+Examples:
+
+  # Examples of local variable declarations
+  my $var : int;
+  my $var : Point;
+  my $var : Complex_2d;
+  my $var : int*;
+  
+  my $num = 1;
+  
+  my $num = 1.0;
+  
+  my $ppp = my $bar = 4;
+  
+  if (my $bar = 1) {
+  
+  }
+  
+  while (my $bar = 1) {
+  
+  }
+
+=head3 Type Inference
+
+If the type of the local variable declaration is ommited, the type of the local variable is set to the type of the right operand of the assignment operator. This is called type inference.
+
+  # int
+  my $num = 1;
+  
+  # double
+  my $num = 1.0;
+  
+  # Foo
+  my $foo = new Foo;
+
+=head1 Symbol Name Resolution
+
+This section describes resolutions of symbol names, such as variable names, class names, field names, method names in the current L<method implementation|/"Method Implementation">.
+
+=head2 Variable Name Resolution
+
+A variable name resolves to a L<class variable access|SPVM::Document::Language::Operators/"Class Variable Access"> or a L<local variable access|SPVM::Document::Language::Operators/"Local Variable Access">.
+
+If C<::> is contained in the variable name, a class variable definition as the same name as I<VAR_NAME> in I<CLASS_TYPE> is searched.
+
+  CLASS_TYPE::VAR_NAME
+
+If found, a variable name resloves to a L<class variable access|SPVM::Document::Language::Operators/"Class Variable Access">.
+
+If C<::> is not contained in the variable name, a local variable declaration as the same name as I<VAR_NAME> is searched upwards from the posotion of I<VAR_NAME>.
+
+  VAR_NAME
+
+If found, a variable name resloves to a L<local variable access|SPVM::Document::Language::Operators/"Local Variable Access">.
+
+If not found, a class variable definition as the same name as I<VAR_NAME> in the L<outmost class|/"Outmost Class"> is searched.
+
+If found, a variable name resloves to a L<class variable access|SPVM::Document::Language::Operators/"Class Variable Access">.
+
+Compilation Errors:
+
+I<VAR_NAME> must be a valid variable name. Otherwise, a compilation error occurs.
+
+The class specified by I<CLASS_TYPE> must be loaded. Otherwise, a compilation error occurs.
+
+The class variable relative name specified by I<VAR_NAME> must be defined in the class specified by I<VAR_NAME>. Otherwise, a compilation error occurs.
+
+If it resolves to a class variable, the L<outmost class|/"Outmost Class"> must be allowed access to I<VAR_NAME>. Otherwise, a compilation error occurs.
+
+=head2 Field Access Resolution
+
 =head2 Method Call Resolution
 
 A L<method call|SPVM::Document::Language::Operators/"Method Call"> is an operation to call a method.
@@ -1712,205 +1949,6 @@ Examples:
 
 
 
-
-=head1 Local Variable
-
-A local variable is a variable that has a L<scope|SPVM::Document::Language::GarbageCollection/"Scope">.
-
-=head2  Local Variable Declaration
-
-A C<my> keyword declares a local variable.
-
-  my LOCAL_VARIABLE_NAME
-  my LOCAL_VARIABLE_NAME : TYPE
-  my LOCAL_VARIABLE_NAME = VALUE
-  my LOCAL_VARIABLE_NAME : TYPE = VALUE
-
-I<LOCAL_VARIABLE_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
-
-I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
-
-If I<TYPE> is ommited, I<TYPE> is set to the type of I<VALUE>. This is called L<type inference|/"Type Inference">.
-
-I<VALUE> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
-
-A local variable is declared in a L<scope block|/"Scope Block">.
-
-A local variable declaration performs the operation of L<pushing a local variable on the mortal stack|SPVM::Document::Language::GarbageCollection/"Pushing a Local Variable on the Mortal Stack">.
-
-A local variable declaration is a L<local variable access|SPVM::Document::Language::Operators/"Local Variable Access">.
-
-Compilation Errors:
-
-I<LOCAL_VARIABLE_NAME> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">. Otherwise a compilation error occurs.
-
-I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">. Otherwise a compilation error occurs.
-
-If I<TYPE> is not resolved, a compilation error occurs.
-
-Examples:
-
-  # Examples of local variable declarations
-  my $var : int;
-  my $var : Point;
-  my $var : Complex_2d;
-  my $var : int*;
-  
-  my $num = 1;
-  
-  my $num = 1.0;
-  
-  my $ppp = my $bar = 4;
-  
-  if (my $bar = 1) {
-  
-  }
-  
-  while (my $bar = 1) {
-  
-  }
-
-=head3 Type Inference
-
-If the type of the local variable declaration is ommited, the type of the local variable is set to the type of the right operand of the assignment operator. This is called type inference.
-
-  # int
-  my $num = 1;
-  
-  # double
-  my $num = 1.0;
-  
-  # Foo
-  my $foo = new Foo;
-
-=head1 Enumeration
-
-Enumeration is a syntax that defines 32-bit integers that belongs to a L<class|/"Class">.
-
-=head2 Enumeration Definition
-
-The C<enum> keyword defines an enumeration.
-
-  enum {
-    ITEM1,
-    ITEM2,
-    ITEMn
-  }
-
-C<,> after the last enumeration item is allowed.
-
-  enum {
-    ITEM1,
-    ITEM2,
-    ITEM3,
-  }
-
-I<ITEM> is one of
-
-  NAME
-  NAME = VALUE
-
-I<NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
-
-I<VALUE> is an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> within the int type. I<VALUE> is converted the value of the int type.
-
-If I<VALUE> of I<ITEM1> is omitted, it is set to 0.
-
-If I<VALUE> of I<ITEMn> is ommited, it is set to the value of the previous item plus 1.
-
-The return type of the method is the int type.
-
-Every enumeration item is converted to a L<method definition|Method Definition> that defines a class method that returns the value of the enumeration item.
-
-  # Definition of an enumeration
-  class MyClass {
-    enum {
-      NAME = 5,
-    }
-  }
-  
-  # This are replaced with a definition of a class method
-  class MyClass {
-    static method NAME : int () { return 5; }
-  }
-
-See also L</"Inline Expansion of Method Call to Get an Enuemration Value">.
-
-Compilation Errors:
-
-I<NAME> must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">. Otherwise, a compilation error occurs.
-
-I<VALUE> must be an L<integer literal|/"Integer Literal"> within the int type. Otherwise, a compilation error occurs.
-
-Examples:
-  
-  # Examples of enumerations
-  class MyClass {
-    enum {
-      FLAG1,
-      FLAG2,
-      FLAG3,
-    }
-    
-    static method main : void () {
-      my $flag1 = MyClass->FLAG1;
-    }
-  }
-  
-  class MyClass {
-    enum {
-      FLAG1,
-      FLAG2 = 2,
-      FLAG3,
-    }
-  }
-
-=head2 Enumeration Attributes
-
-The List of Enumeration Attributes:
-
-=begin html
-
-<table>
-  <tr>
-    <th>
-      Attributes
-   </th>
-    <th>
-      Descriptions
-   </th>
-  </tr>
-  <tr>
-    <td>
-      <b>public</b>
-    </td>
-    <td>
-      This enumeration is public. All classes can access all items of this enumeration. This is default.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>private</b>
-    </td>
-    <td>
-      This enumeration is private. All classes ohter than this class cannnot access all items of this enumeration.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>protected</b>
-    </td>
-    <td>
-      This enumeration is protected. All classes ohter than this class and its child classes cannot access all items of this enumeration.
-    </td>
-  </tr>
-</table>
-
-=end html
-
-Compilation Errors:
-
-One of C<private>, C<protected> and C<public> must be specified. Otherwise, a compilation error occurs.
 
 =head1 Block
 

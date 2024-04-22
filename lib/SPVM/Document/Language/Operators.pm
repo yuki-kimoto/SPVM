@@ -1803,19 +1803,13 @@ Examples:
 
 The local variable access has the following syntax.
 
+  VAR_NAME
+
+See L<Variable Name Resolution|SPVM::Document::Language::Class/"Variable Name Resolution"> about I<VAR_NAME> and the resolution of a local variable name.
+
+Examples:
+
   $var
-
-I<$var> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
-
-If local variables with the same name are declared in different scopes, the local variable declared in the inner scope is accessed.
-
-If a class variable with the same name as a local variable is defined, the local variable is accessed.
-
-Compilation Errors:
-
-I<$var> must be a valid local variable name. Otherwise, a compilation error occurs.
-
-The declaration of I<$var> must exists before I<$var>. Otherwise, a compilation error occurs.
 
 =head3 Getting a Class Variable
 
@@ -1893,22 +1887,16 @@ Examples:
 
 The class variable access has the following syntax.
 
+  VAR_NAME
+  CLASS_TYPE::VAR_NAME
+
+See L<Variable Name Resolution|SPVM::Document::Language::Class/"Variable Name Resolution"> about I<VAR_NAME>, I<CLASS_TYPE>, and the resolution of a class variable name.
+
+Examples:
+
   $VAR
-
-I<$VAR> is a L<class variable name|SPVM::Document::Language::Tokenization/"Class Variable Name">.
-
-If the class name is ommited, the class is set to the L<outmost class|/"Outmost Class">.
-
-Compilation Errors:
-
-I<$VAR> must be a valid class variable name. Otherwise, a compilation error occurs.
-
-The class specified by I<$VAR> must be loaded. Otherwise, a compilation error occurs.
-
-The class variable relative name specified by I<$VAR> must be defined in the class specified by I<$VAR>. Otherwise, a compilation error occurs.
-
-The L<outmost class|/"Outmost Class"> must be allowed access to I<$VAR>. Otherwise, a compilation error occurs.
-
+  $MyClass::VAR
+  
 =head3 Getting an Array Element
 
 The operation of getting an array element gets an element of an L<array|SPVM::Document::Language::Types/"Array">.
