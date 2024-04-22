@@ -1662,7 +1662,7 @@ A static instance method call is a method call to call an instance method specif
 
 I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Types">.
 
-I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> or C<SUPER>.
+I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> of the type of I<INVOCANT> or its super classes, or C<SUPER>.
 
 If C<SUPER> is specified, an instance method is searched for in the super classes of the current class, and it is replaced to the found super class.
 
@@ -1686,9 +1686,13 @@ The return type is the type of the method specified by I<METHOD_NAME>.
 
 Compilation Errors:
 
-If the method specified by I<METHOD_NAME> is not found in the class specified by I<CLASS_TYPE>, a compilation error occurs.
+I<CLASS_TYPE> must be a L<class type|SPVM::Document::Language::Types/"Class Types"> of the type of I<INVOCANT> or its super classes.
 
-If the found method is an instance method, a compilation error occurs.
+If C<SUPER> is not resolved, a compilation error occurs.
+
+If the method specified by I<METHOD_NAME> is not found in the class specified by I<CLASS_TYPE> or its super classes, a compilation error occurs.
+
+If the found method is a class method, a compilation error occurs.
 
 If the type of I<ARG> does not satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, a compilation error occurs.
 
@@ -1698,10 +1702,11 @@ If the length of I<ARGS> is too few, a compilation error occurs.
 
 Examples:
   
-  # Examples of class method calls
-  my $ret = Fn->INT_MAX;
+  # Examples of static instance method calls
   
-  my $ret = Fn->abs(-5);
+  $object->SUPER::bar(5, 3. 6);
+  
+  $point3d->Point::clear;
 
 =head3 Instance Method Call Resolution
 
