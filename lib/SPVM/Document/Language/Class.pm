@@ -1574,14 +1574,97 @@ A L<method call|SPVM::Document::Language::Operators/"Method Call"> is an operati
 
 A method call resolves to one of the three types of method calls, a class method call, a static instance method call, and an instance method call.
 
-=head3 Class Method Call
+=head3 Class Method Call Resolution
 
 A class method call is a method call to call a class method.
 
   CLASS_TYPE->METHOD_NAME
   CLASS_TYPE->METHOD_NAME(OPT_ARGS)
+  &METHOD_NAME
+  &METHOD_NAME(OPT_ARGS)
 
 I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> or a class alias name created by an L<alias statement|/"alias Statement">.
+
+C<&> is converted to the L<outmost class|/"Outmost Class">.
+
+I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
+
+I<OPT_ARGS> is one of
+
+  EMPTY
+  ARGS
+
+I<EMPTY> means nothing exists.
+
+I<ARGS> is one of
+  
+  ARGS , ARG
+  ARG
+
+I<ARG> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
+
+The return type is the type of the method specified by I<METHOD_NAME>.
+
+Compilation Errors:
+
+If the method specified by I<METHOD_NAME> is not found in the class specified by I<CLASS_TYPE>, a compilation error occurs.
+
+If the found method is an instance method, a compilation error occurs.
+
+If the type of I<ARG> does not satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">, a compilation error occurs.
+
+If the length of I<ARGS> is too many, a compilation error occurs.
+
+If the length of I<ARGS> is too few, a compilation error occurs.
+
+Examples:
+
+  # Examples of class method calls
+  class MyClass {
+    
+    static method main : void () {
+      my $ret = Fn->INT_MAX;
+      
+      my $ret = Fn->abs(-5);
+      
+      my $ret = &sum(1, 2);
+    }
+    
+    static method sum : int ($num1 : int, $num2 : int) {
+      return $num1 + $num2;
+    }
+  }
+
+=head4 Inline Expansion of Method Call to Get an Enuemration Value
+
+An inline expansion is performed on a class method call to get an enumeration value, and it is replaced with the return value.
+
+Examples:
+
+  class MyClass {
+    enum {
+      FLAG1 = 5;
+    }
+    
+    method main : void () {
+      
+      # This is replaced with 5.
+      MyClass->FLAG1;
+    }
+  }
+
+=head3 Static Instance Method Call Resolution
+
+A static instance method call is a method call to call an instance method specifying a class.
+
+  INVOCANT->CLASS_TYPE::METHOD_NAME
+  INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
+
+I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Types">.
+
+I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> or C<SUPER>.
+
+If C<SUPER> is specified, an instance method is searched for in the super classes of the current class, and it is replaced to the found super class.
 
 I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
 
@@ -1620,9 +1703,7 @@ Examples:
   
   my $ret = Fn->abs(-5);
 
-=head3 Static Instance Method Call
-
-=head3 Instance Method Call
+=head3 Instance Method Call Resolution
 
 
 
@@ -1732,9 +1813,23 @@ If I<VALUE> of I<ITEM1> is omitted, it is set to 0.
 
 If I<VALUE> of I<ITEMn> is ommited, it is set to the value of the previous item plus 1.
 
-Each enumeration item is converted to a L<method definition|Method Definition> that defines a class method that returns the value of the enumeration item.
-
 The return type of the method is the int type.
+
+Every enumeration item is converted to a L<method definition|Method Definition> that defines a class method that returns the value of the enumeration item.
+
+  # Definition of an enumeration
+  class MyClass {
+    enum {
+      NAME = 5,
+    }
+  }
+  
+  # This are replaced with a definition of a class method
+  class MyClass {
+    static method NAME : int () { return 5; }
+  }
+
+See also L</"Inline Expansion of Method Call to Get an Enuemration Value">.
 
 Compilation Errors:
 

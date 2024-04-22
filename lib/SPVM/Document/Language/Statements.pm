@@ -180,7 +180,7 @@ The C<switch> statement is a conditional statement with the following syntax.
 
 The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the condition I<CONDITION>.
 
-The operand of the case statement I<CASEn> must be a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and an L<enumeration value|SPVM::Document::Language::Class/"Getting Enumeration Value">.
+The operand of the case statement I<CASEn> must be a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and an L<inline-expaned class method call to get an enumeration value|SPVM::Document::Language::Class/"Inline Expansion of Method Call to Get an Enuemration Value">.
 
 If I<CASEn> is a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the value is converted to the int type at compile-time.
 
@@ -245,7 +245,7 @@ Examples:
     }
   }
   
-  # switch statement using enumeration
+  # switch statement with enumeration
   class Foo {
     enum {
       ID1,
