@@ -2205,33 +2205,11 @@ The field access has the following syntax.
 
   INVOCANT->{FIELD_NAME}
 
-I<INVOCANT> is an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
+See L<Field Access Resolution|SPVM::Document::Language::Class/"Field Access Resolution"> about I<INVOCANT>, I<FIELD_NAME>, and the resolution of a field access.
 
-I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
+Examples:
 
-Compilation Errors:
-
-I<INVOCANT> must be an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a value of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a value of a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">. Otherwise, a compilation error occurs.
-
-Depending on the type of I<INVOCANT>, there are the following field access.
-
-=head4 Field Access for Class Types
-
-Compilation Errors:
-
-If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, or its super classes. Otherwise, a compilation error occurs.
-
-=head4 Field Access for Multi-Numeric Types
-
-Compilation Errors:
-
-If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type. Otherwise, a compilation error occurs.
-
-=head4 Field Access for Multi-Numeric Reference Types
-
-Compilation Errors:
-
-If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type. Otherwise, a compilation error occurs.
+  $point->{x}
 
 =head3 Getting a Referenced Value
 

@@ -1707,12 +1707,12 @@ A local variable is a variable that has a L<scope|SPVM::Document::Language::Garb
 
 A C<my> keyword declares a local variable.
 
-  my LOCAL_VARIABLE_NAME
-  my LOCAL_VARIABLE_NAME : TYPE
-  my LOCAL_VARIABLE_NAME = VALUE
-  my LOCAL_VARIABLE_NAME : TYPE = VALUE
+  my LOCAL_VAR_NAME
+  my LOCAL_VAR_NAME : TYPE
+  my LOCAL_VAR_NAME = VALUE
+  my LOCAL_VAR_NAME : TYPE = VALUE
 
-I<LOCAL_VARIABLE_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
+I<LOCAL_VAR_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
 I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
@@ -1728,7 +1728,7 @@ A local variable declaration is a L<local variable access|SPVM::Document::Langua
 
 Compilation Errors:
 
-I<LOCAL_VARIABLE_NAME> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">. Otherwise a compilation error occurs.
+I<LOCAL_VAR_NAME> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">. Otherwise a compilation error occurs.
 
 I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">. Otherwise a compilation error occurs.
 
@@ -1777,13 +1777,13 @@ This section describes resolutions of symbol names, such as variable names, clas
 
 A variable name resolves to a L<class variable access|SPVM::Document::Language::Operators/"Class Variable Access"> or a L<local variable access|SPVM::Document::Language::Operators/"Local Variable Access">.
 
-If C<::> is contained in the variable name, a class variable definition as the same name as I<VAR_NAME> in I<CLASS_TYPE> is searched.
+If C<::> is contained in a variable name, a class variable definition as the same name as I<VAR_NAME> in I<CLASS_TYPE> is searched.
 
   CLASS_TYPE::VAR_NAME
 
 If found, a variable name resloves to a L<class variable access|SPVM::Document::Language::Operators/"Class Variable Access">.
 
-If C<::> is not contained in the variable name, a local variable declaration as the same name as I<VAR_NAME> is searched upwards from the posotion of I<VAR_NAME>.
+If C<::> is not contained in a variable name, a local variable declaration as the same name as I<VAR_NAME> is searched upwards from the posotion of I<VAR_NAME>.
 
   VAR_NAME
 
@@ -1804,6 +1804,30 @@ The class variable relative name specified by I<VAR_NAME> must be defined in the
 If it resolves to a class variable, the L<outmost class|/"Outmost Class"> must be allowed access to I<VAR_NAME>. Otherwise, a compilation error occurs.
 
 =head2 Field Access Resolution
+
+The following syntax resolves to a L<field access|SPVM::Document::Language::Operators/"Field Access">.
+
+  INVOCANT->{FIELD_NAME}
+
+The type of I<INVOCANT> is a L<class type|SPVM::Document::Language::Types/"Class Type">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, or a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">.
+
+If the type of I<INVOCANT> is a L<class type|SPVM::Document::Language::Types/"Class Type">, it resolves to a field access for class types.
+
+If the type of I<INVOCANT> is a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, it resolves to a field access for multi-numeric types.
+
+If the type of I<INVOCANT> is a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">, it resolves to a field access for multi-numeric reference types.
+
+I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
+
+Compilation Errors:
+
+I<INVOCANT> must be an object of a L<class type|SPVM::Document::Language::Types/"Class Type">, a multi-numeric number of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">, a multi-numeric number referenced by a L<multi-numeric reference type|SPVM::Document::Language::Types/"Multi-Numeric Reference Type">. Otherwise, a compilation error occurs.
+
+If the type of I<INVOCANT> is a class type, the field specified by I<FIELD_NAME> must be defined in the class, or its super classes. Otherwise, a compilation error occurs.
+
+If the type of I<INVOCANT> is a multi-numeric type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type. Otherwise, a compilation error occurs.
+
+If the type of I<INVOCANT> is a multi-numeric reference type, the field specified by I<FIELD_NAME> must be defined in the multi-numeric type referenced by the multi-numeric reference type. Otherwise, a compilation error occurs.
 
 =head2 Method Call Resolution
 
