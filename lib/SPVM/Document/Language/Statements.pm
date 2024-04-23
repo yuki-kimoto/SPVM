@@ -470,8 +470,6 @@ If I<OPERAND> is specified, the return vlaue is set to I<OPERAND>.
 
 I<OPERAND> is an an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
-If the type of I<OPERAND> is an L<object type|SPVM::Document::Language::Types/"Object Types">, The L<inc_ref_count|SPVM::Document::NativeAPI::Internal/"inc_ref_count"> internal native API is called given I<OPERAND>.
-
 This is because leave scope operations must not destroy I<OPERAND>.
 
 Compilation Errors:
