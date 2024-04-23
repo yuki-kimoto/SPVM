@@ -3091,9 +3091,9 @@ If the method call is a static instance method call or an instance method call, 
   INVOCANT->METHOD_NAME
   INVOCANT->METHOD_NAME(OPT_ARGS)
 
-The method found by a method call resolution is called with the arguments and the L<argument width|SPVM::Document::NativeClass/"Arguments Width">.
+The method found by a method call resolution is executed by a L<method call execution/"Method Call Execution"> with the arguments and the L<argument width|SPVM::Document::NativeClass/"Arguments Width">.
 
-Method Call Operation:
+=head3 Method Call Execution
 
 [Common Operation Start]
 
@@ -3150,6 +3150,12 @@ If the return type of the found method is an object type, the object is pushed t
 The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremented by 1.
 
 [End Operation1 End]
+
+=head4 VM Method Call Execution
+
+=head4 Precompilation Method Call Execution
+
+=head4 Native Method Call Execution
 
 =head3 Class Method Call
 
