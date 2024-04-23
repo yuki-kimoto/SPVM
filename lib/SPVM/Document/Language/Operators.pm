@@ -3143,13 +3143,6 @@ If an exception is thrown by the found method, the exception is thrown.
 
 If the return type of the found method is an object type, the object is pushed to the native mortal stack.
 
-        if (!error_id && mortal && method_return_type_is_object) {
-          SPVM_API_push_mortal(env, stack, stack[0].oval);
-        }
-
-
-The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremented by 1.
-
 [End Operation2 End]
 
 [End Operation1 Start]
