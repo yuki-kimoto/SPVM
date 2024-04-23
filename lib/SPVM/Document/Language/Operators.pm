@@ -3333,7 +3333,7 @@ If an exception is thrown by the method call execution, the exception is thrown.
 
 If the return type of the method is an object type, the object is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
-The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremented by 1. This resotre is always performed even if an excetpion is thrown.
+The call stack depth stored in the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> is decremented by 1. This resotre is always performed even if an excetpion is thrown.
 
 =head3 VM Method Call Execution
 
@@ -3360,6 +3360,8 @@ Otherwise an exception is thrown.
 The L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API is called.
 
 If a set of the machine codes of the L<native function|SPVM::Document::NativeClass/"Native Function"> of the native method is loaded, the program executes it.
+
+Otherwise an exception is thrown after executing the following code.
 
 The L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API is called.
 
