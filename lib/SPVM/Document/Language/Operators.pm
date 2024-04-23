@@ -3075,145 +3075,6 @@ Examples:
   
   my $error_basic_type_id = basic_type_id Error;
 
-=head2 Method Call
-
-A method call calls a L<method|SPVM::Document::Language::Class/"Method">.
-
-A method call resolves to one of the three types of method calls, a L<class method call|/"Class Method Call">, a L<static instance method call|/"Static Instance Method Call">, and an L<instance method call|/"Instance Method Call"> by L<method call resolution|SPVM::Document::Language::Class/"Method Call Resolution">.
-
-If the method call is a static instance method call or an instance method call, the invocant I<INVOCANT> is prepened to the argument I<OPT_ARGS>.
-  
-  # The static instance method call
-  INVOCANT->CLASS_TYPE::METHOD_NAME
-  INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
-  
-  # The instance method call
-  INVOCANT->METHOD_NAME
-  INVOCANT->METHOD_NAME(OPT_ARGS)
-
-The method found by a method call resolution is executed by a L<method call execution/"Method Call Execution"> with the arguments and the L<argument width|SPVM::Document::NativeClass/"Arguments Width">.
-
-=head3 Method Call Execution
-
-[Common Operation Start]
-
-The L<argument width|SPVM::Document::NativeClass/"Arguments Width"> is stored to the L<runtime stack|/"Runtime Stack">.
-
-The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is incremented by 1. If the call stack depth is greater than 1000, I<End Operation1> is executed and an exception is thrown.
-
-If the method call is not a class method call, the arugments of the object type are checked whether the result of C<L<isa|/"isa Operator">(I<ARG>, I<TYPE_OF_ARG>)> is a true value.
-
-I<ARG> is one argument in I<OPT_ARGS>. I<TYPE_OF_ARG> is the type of the corresponding arugment of the found method.
-
-If the result is not a true value, I<End Operation1> is executed and an exception is thrown.
-
-If the found method is a L<INIT method|SPVM::Document::Language::Class/"INIT Method"> and it is already called, nothing is performed.
-
-[Common Operation End]
-
-[Native Method Call Operation Start]
-
-If the found method is a L<native method|SPVM::Document::Language::Class/"Native Method">, a L<native method call|SPVM::Document::NativeClass/"Native Method Call"> is performed.
-
-[Native Method Call Operation End]
-
-[Precompilation Method Call Operation Start]
-
-If the found method is a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.
-
-If the native address of the precompilation method is found, the program executes it.
-
-Otherwise if L<is_precompile_fallback|SPVM::Document::NativeAPI::Method/"is_precompile_fallback"> is a true value, the program executes the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> of the found method.
-
-Otherwise an exception is thrown.
-
-[Precompilation Method Call Operation End]
-
-[Normal Method Call Operation Start]
-
-If the found method is not a L<native method|SPVM::Document::Language::Class/"Native Method"> and a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.
-
-The program executes the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> of the found method.
-
-[Normal Method Call Operation End]
-
-If an exception is thrown by the found method, the exception is thrown.
-
-[End Operation2 Start]
-
-If the return type of the found method is an object type, the object is pushed to the native mortal stack.
-
-[End Operation2 End]
-
-[End Operation1 Start]
-
-The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremented by 1.
-
-[End Operation1 End]
-
-=head4 VM Method Call Execution
-
-=head4 Precompilation Method Call Execution
-
-=head4 Native Method Call Execution
-
-=head3 Class Method Call
-
-A class method call calls a class method.
-
-  CLASS_TYPE->METHOD_NAME
-  CLASS_TYPE->METHOD_NAME(OPT_ARGS)
-  &METHOD_NAME
-  &METHOD_NAME(OPT_ARGS)
-
-See L<Class Method Call Resolution|SPVM::Document::Language::Class/"Class Method Call Resolution"> about I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, C<&>, and the resolution of a class method call.
-
-Examples:
-
-  # Examples of static instance method calls
-  my $point3d = Point3D->new;
-  
-  $point3d->Point::clear;
-  
-  $point3d->SUPER::clear;
-
-=head3 Static Instance Method Call
-
-A static instance method call calls an instance method specifying a class.
-
-  INVOCANT->CLASS_TYPE::METHOD_NAME
-  INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
-
-See L<Static Instance Method Call Resolution|SPVM::Document::Language::Class/"Static Instance Method Call Resolution"> about I<INVOCANT>, I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, and the resolution of a static instance method call.
-
-Examples:
-
-  # Examples of static instance method calls
-  $object->SUPER::bar(5, 3. 6);
-  
-  $point3d->Point::clear;
-
-=head3 Instance Method Call
-
-An instance method call calls an instance method.
-
-  INVOCANT->METHOD_NAME
-  INVOCANT->METHOD_NAME(OPT_ARGS)
-
-See L<Instance Method Call Resolution|SPVM::Document::Language::Class/"Instance Method Call Resolution"> about I<INVOCANT>, I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, and the resolution of an instance method call.
-
-Examples:
-
-  # Examples of instance method calls
-  
-  my $point = Point->new;
-  
-  $point->clear;
-  
-  my $stringable = (Stringable)$point;
-  
-  my $string = $strinble->to_string;
-
 =head2 can Operator
 
 The C<can> operator checks if a method can be called. 
@@ -3376,6 +3237,127 @@ Examples:
 =head2 Scope Operations
 
 See the doc of L<scope|SPVM::Document::Language::GarbageCollection/"Scope"> about scope operations.
+
+=head1 Method Call
+
+A method call is an L<operator|/"Operators"> to call a L<method|SPVM::Document::Language::Class/"Method">.
+
+A method call resolves to one of the three types of method calls, a L<class method call|/"Class Method Call">, a L<static instance method call|/"Static Instance Method Call">, and an L<instance method call|/"Instance Method Call"> by L<method call resolution|SPVM::Document::Language::Class/"Method Call Resolution">.
+
+If the method call is a static instance method call or an instance method call, the invocant I<INVOCANT> is prepened to the argument I<OPT_ARGS>.
+  
+  # The static instance method call
+  INVOCANT->CLASS_TYPE::METHOD_NAME
+  INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
+  
+  # The instance method call
+  INVOCANT->METHOD_NAME
+  INVOCANT->METHOD_NAME(OPT_ARGS)
+
+The method found by a method call resolution perform a L<method call execution|/"Method Call Execution"> with the arguments and the L<argument width|SPVM::Document::NativeClass/"Arguments Width">.
+
+=head2 Class Method Call
+
+A class method call calls a class method.
+
+  CLASS_TYPE->METHOD_NAME
+  CLASS_TYPE->METHOD_NAME(OPT_ARGS)
+  &METHOD_NAME
+  &METHOD_NAME(OPT_ARGS)
+
+See L<Class Method Call Resolution|SPVM::Document::Language::Class/"Class Method Call Resolution"> about I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, C<&>, and the resolution of a class method call.
+
+Examples:
+
+  # Examples of static instance method calls
+  my $point3d = Point3D->new;
+  
+  $point3d->Point::clear;
+  
+  $point3d->SUPER::clear;
+
+=head2 Static Instance Method Call
+
+A static instance method call calls an instance method specifying a class.
+
+  INVOCANT->CLASS_TYPE::METHOD_NAME
+  INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
+
+See L<Static Instance Method Call Resolution|SPVM::Document::Language::Class/"Static Instance Method Call Resolution"> about I<INVOCANT>, I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, and the resolution of a static instance method call.
+
+Examples:
+
+  # Examples of static instance method calls
+  $object->SUPER::bar(5, 3. 6);
+  
+  $point3d->Point::clear;
+
+=head2 Instance Method Call
+
+An instance method call calls an instance method.
+
+  INVOCANT->METHOD_NAME
+  INVOCANT->METHOD_NAME(OPT_ARGS)
+
+See L<Instance Method Call Resolution|SPVM::Document::Language::Class/"Instance Method Call Resolution"> about I<INVOCANT>, I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, and the resolution of an instance method call.
+
+Examples:
+
+  # Examples of instance method calls
+  
+  my $point = Point->new;
+  
+  $point->clear;
+  
+  my $stringable = (Stringable)$point;
+  
+  my $string = $strinble->to_string;
+
+=head2 Method Call Execution
+
+The L<argument width|SPVM::Document::NativeClass/"Arguments Width"> is stored to the L<runtime stack|/"Runtime Stack">.
+
+The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is incremented by 1.
+
+If the call stack depth is greater than 1000, an exception is thrown.
+
+If the method call is not a class method call, the arugments of the object type are checked whether the result of C<L<isa|/"isa Operator">(I<ARG>, I<TYPE_OF_ARG>)> is a true value.
+
+I<ARG> is one argument in I<OPT_ARGS>. I<TYPE_OF_ARG> is the type of the corresponding arugment of the found method.
+
+If the result is not a true value, an exception is thrown.
+
+If the found method is a L<INIT method|SPVM::Document::Language::Class/"INIT Method"> and it is already called, nothing is performed.
+
+If the found method is a L<native method|SPVM::Document::Language::Class/"Native Method">, a L<native method call execution|SPVM::Document::NativeClass/"Native Method Call Execution"> is performed.
+
+Otherwise if the found method is a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, a L<precompilation method call execution|SPVM::Document::NativeClass/"Native Method Call Execution"> is performed.
+
+Otherwise a L<VM method call execution|SPVM::Document::NativeClass/"VM Method Call Execution"> is performed.
+
+If an exception is thrown by the method call execution, the exception is thrown.
+
+If the return type of the found method is an object type, the object is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
+
+The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremented by 1. This resotre is always performed even if an excetpion is thrown.
+
+=head3 VM Method Call Execution
+
+=head3 Precompilation Method Call Execution
+
+If the found method is a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.
+
+If the native address of the precompilation method is found, the program executes it.
+
+Otherwise if L<is_precompile_fallback|SPVM::Document::NativeAPI::Method/"is_precompile_fallback"> is a true value, the program executes the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> of the found method.
+
+Otherwise an exception is thrown.
+
+=head3 Native Method Call Execution
+
+If the found method is not a L<native method|SPVM::Document::Language::Class/"Native Method"> and a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.
+
+The program executes the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> of the found method.
 
 =head1 See Also
 
