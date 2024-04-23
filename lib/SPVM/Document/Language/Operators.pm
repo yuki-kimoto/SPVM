@@ -3345,21 +3345,19 @@ The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremen
 
 Heap memories for local variables are allocated.
 
-The L<enter_scope|SPVM::Document::NativeAPI/"enter_scop"> native API is called.
+The L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API is called.
 
 SPVM operation codes generated from the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> are executed.
 
-The L<leave_scope|SPVM::Document::NativeAPI/"enter_scop"> native API is called.
+The L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API is called.
 
 Heap memories for local variables are released.
 
 =head3 Precompilation Method Call Execution
 
-If the found method is a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.
+If the machine codes of the precompilation method is loaded, the program executes it.
 
-If the native address of the precompilation method is found, the program executes it.
-
-Otherwise if L<is_precompile_fallback|SPVM::Document::NativeAPI::Method/"is_precompile_fallback"> is a true value, the program executes the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> of the found method.
+Otherwise if the L<is_precompile_fallback|SPVM::Document::NativeAPI::Method/"is_precompile_fallback"> method native API returns a true value, the program executes L</"VM Method Call Execution">.
 
 Otherwise an exception is thrown.
 
