@@ -3678,7 +3678,6 @@ int32_t SPVM_API_is_binary_compatible_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width, int32_t mortal) {
   
-  // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   int32_t error_id = 0;
@@ -3872,6 +3871,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
         }
         
+        // End Operation2
         if (!error_id && mortal && method_return_type_is_object) {
           SPVM_API_push_mortal(env, stack, stack[0].oval);
         }
@@ -3879,6 +3879,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
     }
   }
   
+  // End operation1
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
   
   return error_id;

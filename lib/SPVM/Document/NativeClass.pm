@@ -562,6 +562,10 @@ A runtime stack is given to the second argument of a native function.
 
 A runtime stack can be created and freed using the L<new_stack|SPVM::Document::NativeAPI/"new_stack"> native API and the L<free_stack|SPVM::Document::NativeAPI/"free_stack"> native API.
 
+=head2 Native Method Call
+
+
+
 =head2 Arguments Width
 
 The width of the arguments is the length in units of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type.

@@ -3077,49 +3077,115 @@ Examples:
 
 =head2 Method Call
 
-The method call syntax calls a L<method|SPVM::Document::Language::Class/"Method">.
+A method call calls a L<method|SPVM::Document::Language::Class/"Method">.
+
+A method call resolves to one of the three types of method calls, a L<class method call|/"Class Method Call">, a L<static instance method call|/"Static Instance Method Call">, and an L<instance method call|/"Instance Method Call"> by L<method call resolution|SPVM::Document::Language::Class/"Method Call Resolution">.
+
+If the method call is a static instance method call or an instance method call, the invocant I<INVOCANT> is prepened to the argument I<OPT_ARGS>.
+  
+  # The static instance method call
+  INVOCANT->CLASS_TYPE::METHOD_NAME
+  INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
+  
+  # The instance method call
+  INVOCANT->METHOD_NAME
+  INVOCANT->METHOD_NAME(OPT_ARGS)
+
+The method found by a method call resolution is called with the arguments and the L<argument width|SPVM::Document::NativeClass/"Arguments Width">.
+
+Method Call Operation:
+
+[Common Operation Start]
+
+The L<argument width|SPVM::Document::NativeClass/"Arguments Width"> is stored to the L<runtime stack|/"Runtime Stack">.
+
+The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is incremented by 1. If the call stack depth is greater than 1000, I<End Operation1> is executed and an exception is thrown.
+
+If the method call is not a class method call, the arugments of the object type are checked whether the result of C<L<isa|/"isa Operator">(I<ARG>, I<TYPE_OF_ARG>)> is a true value.
+
+I<ARG> is one argument in I<OPT_ARGS>. I<TYPE_OF_ARG> is the type of the corresponding arugment of the found method.
+
+If the result is not a true value, I<End Operation1> is executed and an exception is thrown.
+
+If the found method is a L<INIT method|SPVM::Document::Language::Class/"INIT Method"> and it is already called, nothing is performed.
+
+[Common Operation End]
+
+[Native Method Call Operation Start]
+
+If the found method is a L<native method|SPVM::Document::Language::Class/"Native Method">, a L<native method call|SPVM::Document::NativeClass/"Native Method Call"> is performed.
+
+[Native Method Call Operation End]
+
+[Precompilation Method Call Operation Start]
+
+If the found method is a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.
+
+If the native address of the precompilation method is found, the program executes it.
+
+Otherwise if L<is_precompile_fallback|SPVM::Document::NativeAPI::Method/"is_precompile_fallback"> is a true value, the program executes the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> of the found method.
+
+Otherwise an exception is thrown.
+
+[Precompilation Method Call Operation End]
+
+[Normal Method Call Operation Start]
+
+If the found method is not a L<native method|SPVM::Document::Language::Class/"Native Method"> and a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.
+
+The program executes the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> of the found method.
+
+[Normal Method Call Operation End]
+
+If an exception is thrown by the found method, the exception is thrown.
+
+[End Operation2 Start]
+
+If the return type of the found method is an object type, the object is pushed to the native mortal stack.
+
+        if (!error_id && mortal && method_return_type_is_object) {
+          SPVM_API_push_mortal(env, stack, stack[0].oval);
+        }
+
+
+The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremented by 1.
+
+[End Operation2 End]
+
+[End Operation1 Start]
+
+The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremented by 1.
+
+[End Operation1 End]
 
 =head3 Class Method Call
 
-A method defined as the L<class method|/"Class Method"> can be called using the class method call.
+A class method call calls a class method.
 
-  ClassName->MethodName(ARGS1, ARGS2, ...);
-  
-  &MethodName(ARGS1, ARGS2, ...);
+  CLASS_TYPE->METHOD_NAME
+  CLASS_TYPE->METHOD_NAME(OPT_ARGS)
+  &METHOD_NAME
+  &METHOD_NAME(OPT_ARGS)
 
-C<&> means the current class.
-
-If C<&> is used in anon method, it means its outmost class.
-
-Compilation Errors:
-
-If the number of arguments does not correct, a compilation error occurs.
-
-If the types of arguments have no type compatible, a compilation error occurs.
+See L<Class Method Call Resolution|SPVM::Document::Language::Class/"Class Method Call Resolution"> about I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, C<&>, and the resolution of a class method call.
 
 Examples:
+
+  # Examples of static instance method calls
+  my $point3d = Point3D->new;
   
-  class Foo {
-    
-    static method main : void () {
-      
-      my $result = Foo->bar(1, 2, 3);
-      
-      # Same as Foo->bar
-      my $result = &bar(1, 2, 3);
-      
-      my $anon_method = method : void () {
-        # Same as Foo->bar;
-        my $result = &foo;
-      };
-    }
-    
-    static method foo : int () {
-      return 5;
-    }
-  }
+  $point3d->Point::clear;
+  
+  $point3d->SUPER::clear;
 
 =head3 Static Instance Method Call
+
+A static instance method call calls an instance method specifying a class.
+
+  INVOCANT->CLASS_TYPE::METHOD_NAME
+  INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
+
+See L<Static Instance Method Call Resolution|SPVM::Document::Language::Class/"Static Instance Method Call Resolution"> about I<INVOCANT>, I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, and the resolution of a static instance method call.
 
 Examples:
 
@@ -3130,22 +3196,24 @@ Examples:
 
 =head3 Instance Method Call
 
-A method defined as the instance method can be called using the instance method call.
+An instance method call calls an instance method.
 
-  Instance->MethodName(ARGS1, ARGS2, ...);
+  INVOCANT->METHOD_NAME
+  INVOCANT->METHOD_NAME(OPT_ARGS)
 
-The called method is resolved from the type of the instance.
-
-Compilation Errors:
-
-If the number of arguments does not correct, a compilation error occurs.
-
-If the types of arguments have no type compatible, a compilation error occurs.
+See L<Instance Method Call Resolution|SPVM::Document::Language::Class/"Instance Method Call Resolution"> about I<INVOCANT>, I<CLASS_TYPE>, I<METHOD_NAME>, I<OPT_ARGS>, and the resolution of an instance method call.
 
 Examples:
 
   # Examples of instance method calls
-  $object->bar(5, 3. 6);
+  
+  my $point = Point->new;
+  
+  $point->clear;
+  
+  my $stringable = (Stringable)$point;
+  
+  my $string = $strinble->to_string;
 
 =head2 can Operator
 

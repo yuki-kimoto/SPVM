@@ -1,3 +1,8 @@
+0.989105 2023-04-23
+  [Fix Bug]
+    * Fix the bug that native mortal stack is not released properly in a normal method and a precompilation method implementation.
+      env->enter_scope and env->leave_scope are added to the start and end of a normal method and a precompilation method implementation.
+    
 0.989104 2023-04-20
   [Document Imperovement]
     * Improve the doc of Tokanization.
