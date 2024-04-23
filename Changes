@@ -2,9 +2,13 @@
   [Fix Bug]
     * Fix the bug that native mortal stack is not released properly in a normal method and a precompilation method implementation.
       env->enter_scope and env->leave_scope are added to the start and end of a normal method and a precompilation method implementation.
-    
+  [Document Improvement]
+    * Improve the doc of Operators.
+    * The heading "Mortal Stack" in SPVM::Document::NativeClass is changed to "Native Mortal Stack".
+  [Internal Changes]
+    * Cleanup method calls.
 0.989104 2023-04-20
-  [Document Imperovement]
+  [Document Improvement]
     * Improve the doc of Tokanization.
   [Internal Changes]
     * SPVM_OP_C_ID_CURRENT_CLASS to SPVM_OP_C_ID_OUTMOST_CLASS.
