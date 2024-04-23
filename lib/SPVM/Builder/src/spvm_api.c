@@ -3880,20 +3880,20 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
         }
         
-        void* method_return_basic_type = method->return_basic_type;
-        int32_t method_return_type_dimension = method->return_type_dimension;
-        int32_t method_return_type_flag = method->return_type_flag;
-        int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
-        
-        // End Operation2
-        if (!error_id && mortal && method_return_type_is_object) {
-          SPVM_API_push_mortal(env, stack, stack[0].oval);
+        if (!error_id) {
+          void* method_return_basic_type = method->return_basic_type;
+          int32_t method_return_type_dimension = method->return_type_dimension;
+          int32_t method_return_type_flag = method->return_type_flag;
+          int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
+          
+          if (mortal && method_return_type_is_object) {
+            SPVM_API_push_mortal(env, stack, stack[0].oval);
+          }
         }
       }
     }
   }
   
-  // End operation1
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
   
   return error_id;
