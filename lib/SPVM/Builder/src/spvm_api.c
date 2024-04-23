@@ -3738,7 +3738,6 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         // Call native method
         if (method->is_native) {
           // Enter scope
-          int32_t original_mortal_stack_top = SPVM_API_enter_scope(env, stack);
           
           // Set argument default values
           int32_t optional_args_length = method->args_length - method->required_args_length;
@@ -3822,6 +3821,8 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           }
           
           if (!error_id) {
+            int32_t native_mortal_stack_top = SPVM_API_enter_scope(env, stack);
+            
             error_id = (*native_address)(env, stack);
             
             // Increment ref count of return value
@@ -3834,8 +3835,7 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
               }
             }
             
-            // Leave scope
-            SPVM_API_leave_scope(env, stack, original_mortal_stack_top);
+            SPVM_API_leave_scope(env, stack, native_mortal_stack_top);
             
             // Decrement ref count of return value
             if (!error_id) {
