@@ -516,7 +516,7 @@ The L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API is called 
 
 The L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API is called after the call of the native function.
 
-You can create a scope and push objects to the the L<mortal stack|/"Mortal Stack">.
+You can create a scope and push objects to the the L<native mortal stack|/"Native Mortal Stack">.
 
   int32_t mortal_stack_top = env->enter_scope(env, stack);
   
@@ -524,7 +524,7 @@ You can create a scope and push objects to the the L<mortal stack|/"Mortal Stack
   
   env->leave_scope(env, stack, mortal_stack_top);
 
-=head3 Mortal Stack
+=head3 Native Mortal Stack
 
 A mortal stack is created for a L<runtime stack|/"Runtime Stack">.
 

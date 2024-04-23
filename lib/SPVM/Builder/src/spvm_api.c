@@ -3682,13 +3682,12 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   int32_t error_id = 0;
   
+  // Set default values of optional arguments
   int32_t optional_args_length = method->args_length - method->required_args_length;
   if (optional_args_length > 0) {
     
-    // Operation codes
     SPVM_OPCODE* opcodes = method->opcodes;
     
-    // Execute operation codes
     int32_t opcode_rel_index = 0;
     while (1) {
       

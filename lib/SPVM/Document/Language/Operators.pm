@@ -3244,17 +3244,9 @@ A method call is an L<operator|/"Operators"> to call a L<method|SPVM::Document::
 
 A method call resolves to one of the three types of method calls, a L<class method call|/"Class Method Call">, a L<static instance method call|/"Static Instance Method Call">, and an L<instance method call|/"Instance Method Call"> by L<method call resolution|SPVM::Document::Language::Class/"Method Call Resolution">.
 
-If the method call is a static instance method call or an instance method call, the invocant I<INVOCANT> is prepened to the argument I<OPT_ARGS>.
-  
-  # The static instance method call
-  INVOCANT->CLASS_TYPE::METHOD_NAME
-  INVOCANT->CLASS_TYPE::METHOD_NAME(OPT_ARGS)
-  
-  # The instance method call
-  INVOCANT->METHOD_NAME
-  INVOCANT->METHOD_NAME(OPT_ARGS)
+If the method call is a static instance method call or an instance method call, the invocant is prepended to the given arguments.
 
-The method found by a method call resolution perform a L<method call execution|/"Method Call Execution"> with the arguments and the L<argument width|SPVM::Document::NativeClass/"Arguments Width">.
+The method call performs the L<method call execution|/"Method Call Execution"> given the arguments.
 
 =head2 Class Method Call
 
@@ -3317,27 +3309,29 @@ Examples:
 
 The L<argument width|SPVM::Document::NativeClass/"Arguments Width"> is stored to the L<runtime stack|/"Runtime Stack">.
 
-The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is incremented by 1.
+The call stack depth stored in the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> is incremented by 1.
 
 If the call stack depth is greater than 1000, an exception is thrown.
 
-If the method call is not a class method call, the arugments of the object type are checked whether the result of C<L<isa|/"isa Operator">(I<ARG>, I<TYPE_OF_ARG>)> is a true value.
+If the method call is not a class method call, the arugments of the object type are checked whether the following L<isa|/"isa Operator"> operator returns a true value.
 
-I<ARG> is one argument in I<OPT_ARGS>. I<TYPE_OF_ARG> is the type of the corresponding arugment of the found method.
+  ARG isa TYPE_OF_ARG
 
-If the result is not a true value, an exception is thrown.
+I<ARG> is an argument. I<TYPE_OF_ARG> is the type of the corresponding arugment of the method.
 
-If the found method is a L<INIT method|SPVM::Document::Language::Class/"INIT Method"> and it is already called, nothing is performed.
+If the return vlaue is not a true value, an exception is thrown.
 
-If the found method is a L<native method|SPVM::Document::Language::Class/"Native Method">, a L<native method call execution|SPVM::Document::NativeClass/"Native Method Call Execution"> is performed.
+If the method is a L<INIT method|SPVM::Document::Language::Class/"INIT Method"> and it is already called, nothing is performed.
 
-Otherwise if the found method is a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, a L<precompilation method call execution|SPVM::Document::NativeClass/"Native Method Call Execution"> is performed.
+If the method is a L<native method|SPVM::Document::Language::Class/"Native Method">, a L<native method call execution|/"Native Method Call Execution"> is performed.
 
-Otherwise a L<VM method call execution|SPVM::Document::NativeClass/"VM Method Call Execution"> is performed.
+Otherwise if the method is a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, a L<precompilation method call execution|/"Precompilation Method Call Execution"> is performed.
+
+Otherwise a L<VM method call execution|/"VM Method Call Execution"> is performed.
 
 If an exception is thrown by the method call execution, the exception is thrown.
 
-If the return type of the found method is an object type, the object is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
+If the return type of the method is an object type, the object is pushed to the L<native mortal stack|SPVM::Document::NativeClass/"Native Mortal Stack">.
 
 The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremented by 1. This resotre is always performed even if an excetpion is thrown.
 
@@ -3355,7 +3349,7 @@ Heap memories for local variables are released.
 
 =head3 Precompilation Method Call Execution
 
-If the machine codes of the precompilation method is loaded, the program executes it.
+If a set of the machine codes of the precompilation method is loaded, the program executes it.
 
 Otherwise if the L<is_precompile_fallback|SPVM::Document::NativeAPI::Method/"is_precompile_fallback"> method native API returns a true value, the program executes L</"VM Method Call Execution">.
 
@@ -3363,9 +3357,11 @@ Otherwise an exception is thrown.
 
 =head3 Native Method Call Execution
 
-If the found method is not a L<native method|SPVM::Document::Language::Class/"Native Method"> and a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.
+The L<enter_scope|SPVM::Document::NativeAPI/"enter_scope"> native API is called.
 
-The program executes the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> of the found method.
+If a set of the machine codes of the L<native function|SPVM::Document::NativeClass/"Native Function"> of the native method is loaded, the program executes it.
+
+The L<leave_scope|SPVM::Document::NativeAPI/"leave_scope"> native API is called.
 
 =head1 See Also
 
