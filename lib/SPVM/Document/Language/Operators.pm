@@ -3343,6 +3343,16 @@ The call stack depth stored in the L<runtime stack|/"Runtime Stack"> is decremen
 
 =head3 VM Method Call Execution
 
+Heap memories for local variables are allocated.
+
+The L<enter_scope|SPVM::Document::NativeAPI/"enter_scop"> native API is called.
+
+SPVM operation codes generated from the L<method implementation|SPVM::Document::Language::Class/"Method Implementation"> are executed.
+
+The L<leave_scope|SPVM::Document::NativeAPI/"enter_scop"> native API is called.
+
+Heap memories for local variables are released.
+
 =head3 Precompilation Method Call Execution
 
 If the found method is a L<precompilation method|SPVM::Document::Language::Class/"Precompilation Method">, the following operations are performed.

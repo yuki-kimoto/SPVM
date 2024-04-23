@@ -215,7 +215,7 @@ Compilation Errors:
 
 I<CONDITION> must be an integer type within int. Otherwise, a compilation error occurs.
 
-The values of the case statements cannnot be duplicated. If so, a compilation error occurs.
+The values of the case statements must not be duplicated. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -456,17 +456,27 @@ Example:
 
 =head2 return Statement
 
-The C<return> statement returns a value for a L<method|SPVM::Document::Language::Class/"Method">.
-  
+The return statement causes the program to return to its caller. And it set the return value.
+
   // void
   return;
   
   // non-void
   return OPERAND;
 
+This statement causes the program to return to its caller.
+
+If I<OPERAND> is specified, the return vlaue is set to I<OPERAND>.
+
+I<OPERAND> is an an L<operator|SPVM::Document::Language::Operators/"Operators">.
+
+If the type of I<OPERAND> is an L<object type|SPVM::Document::Language::Types/"Object Types">, The L<inc_ref_count|SPVM::Document::NativeAPI::Internal/"inc_ref_count"> internal native API is called given I<OPERAND>.
+
+This is because leave scope operations must not destroy I<OPERAND>.
+
 Compilation Errors:
 
-If the return type of the current method is the void typ, I<OPERAND> cannnot exist. If so, a compilation error occurs.
+If the return type of the current method is the void type, I<OPERAND> must not exist. Otherwise, a compilation error occurs.
 
 If the return type of the current method is the non-void type, I<OPERAND> must exist. Otherwise, a compilation error occurs.
 
