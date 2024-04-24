@@ -50,13 +50,13 @@ The return type is the L<Native::Stack|SPVM::Native::Stack> class.
 
 =head1 See Also
 
-=head2 Native::Runtime
+=over 2
 
-The L<get_runtime|SPVM::Native::Runtime/"get_runtime"> method in the L<Native::Runtime|SPVM::Native::Runtime> class builds an executable environement.
+=item * L<Native::Runtime|SPVM::Native::Runtime>
 
-=head2 Native::Stack
+=item * L<Native::Stack|SPVM::Native::Stack>
 
-The instance of the L<Native::Stack|SPVM::Native::Stack> class is build by the L</"new_stack"> method in this class.
+=back
 
 =head1 Copyright & License
 

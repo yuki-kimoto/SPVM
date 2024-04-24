@@ -46,9 +46,11 @@ The destructor.
 
 =head1 See Also
 
-=head2 Native::Env
+=over 2
 
-The L<new_stack|SPVM::Native::Env/"new_stack"> method in the L<Native::Env|SPVM::Native::Env> class builds a call stack.
+=item * L<Native::Env|SPVM::Native::Env>
+
+=back
 
 =head1 Copyright & License
 
