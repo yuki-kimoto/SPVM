@@ -20,6 +20,30 @@ The L<say operator|SPVM::Document::Language::Operators/"say Operator"> outputs t
 
 The L<warn operator|SPVM::Document::Language::Operators/"warn Operator"> outputs to this SPVM's standard error.
 
+=head2 Thread Safety
+
+The SPVM language has some thread-safe features.
+
+=head3 Runtime Stack
+
+When a new thread, such as an OS native thread, a coroutine is created, a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> should be created for the new thread.
+
+  SPVM_VALUE* new_stack = env->new_stack(env);
+
+This runtime stack has thread-specific data, such as the value of the exception variable, as well as method-specific data, such as arguments and a return value.
+
+When the new thread finished, the new runtime stack must be released.
+
+  env->free_stack(env, new_stack);
+
+Currently, user data cannot be got and set in a runtime stack.
+
+If thread-specific user data is needed, the thread ID is got by the L<Thread#get_id|SPVM::Thread#get_id> method and this thread ID can be a key of a L<hash|SPVM::Hash> for thread-specific user data. In this case, the L<Hash|SPVM::Hash> class is not thread safe, a lock using a L<mutex|SPVM::Sync::Mutex> is needed.
+
+=head3 Runtime Global Data Thread Safety
+
+
+
 =head1 See Also
 
 =over 2
