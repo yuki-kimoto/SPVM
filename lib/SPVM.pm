@@ -28,7 +28,13 @@ sub api { SPVM::Global::api() }
 
 =head1 Name
 
-SPVM - SPVM Language
+SPVM - The SPVM Language
+
+=begin html
+
+<img src="https://github.com/yuki-kimoto/SPVM/raw/master/logo/spvm_logo.jpg" width="80px" alt="SPVM cat">
+
+=end html
 
 =head1 Description
 
