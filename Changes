@@ -1,4 +1,6 @@
-0.989106 2023-04-23
+0.990
+  [Major Version Up]
+    * SPVM 0.990 is a major version up. The document is finished.
   [Document Improvement]
     * Add the doc of the Sync::Mutex class.
     * Add the doc of Thread Safe to SPVM::Document::Language::System.
