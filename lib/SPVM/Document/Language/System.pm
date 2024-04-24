@@ -26,7 +26,7 @@ The SPVM language has some thread-safe features.
 
 =head3 Runtime Stack
 
-When a new thread, such as an OS native thread, a coroutine is created, a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> should be created for the new thread.
+When a new thread, such as an L<OS native thread|SPVM::Thread>, a coroutine such as a L<goroutine|SPVM::Go> is created, a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> should be created for the new thread.
 
   SPVM_VALUE* new_stack = env->new_stack(env);
 
@@ -42,6 +42,14 @@ If thread-specific user data is needed, the thread ID is got by the L<Thread#get
 
 =head2 Atomic Operations
 
+This section describe atomic operations.
+
+Generally speaking, when using L<OS native threads|SPVM::Thread> with SPVM, the following atomic operations can result in severe performance degradation.
+
+Therefore, the advice is to minimize object creations and object assignments in newly created L<OS native threads|SPVM::Thread>.
+
+Coroutine threads such as L<goroutines|SPVM::Go> don't have to worry about things like this because these are synchronized.
+
 =head3 Updating Memory Blocks Count
 
 Updating the count of allocated memory blocks is an atomic operation and thread safe. It is protected by a mutex. 
@@ -55,6 +63,10 @@ Updating a runtime cache data is an atomic operation and thread safe. It is prot
 =head3 Compilation
 
 A compilation is an atomic operation and thread safe. It is protected by a mutex.
+
+=head3 Updating Reference Count
+
+Updating the reference count of an object an atomic operation and thread safe. It is protected by a mutex. 
 
 =head1 See Also
 
