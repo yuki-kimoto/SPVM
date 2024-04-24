@@ -10,7 +10,7 @@ SPVM::Callback::Map - A Callback for The map Method
 
 =head1 Description
 
-The Callback::Map interface in L<SPVM> has interface methods for the L<map|Fn/"map"> method in the Fn class.
+The Callback::Map interface in L<SPVM> has interface methods for L<Fn#map|SPVM::Fn/"map">.
 
 =head1 Usage
 

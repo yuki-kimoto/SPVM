@@ -10,7 +10,7 @@ SPVM::Callback::Grep - A Callback for The grep Method
 
 =head1 Description
 
-The Callback::Grep interface in L<SPVM> has interface methods for the L<grep|Fn/"grep"> method in the Fn class.
+The Callback::Grep interface in L<SPVM> has interface methods for L<Fn#grep|SPVM::Fn/"grep">.
 
 =head1 Usage
 

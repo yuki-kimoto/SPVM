@@ -7,9 +7,10 @@ package SPVM::Callback::MapExpand;
 =head1 Name
 
 SPVM::Callback::MapExpand - A Callback for The map_expand Method
+
 =head1 Description
 
-The Callback::MapExpand interface in L<SPVM> has interface methods for the L<map_expand|Fn/"map_expand"> method in the Fn class.
+The Callback::MapExpand interface in L<SPVM> has interface methods for L<Fn#map_expand|SPVM::Fn/"map_expand">.
 
 =head1 Usage
 
