@@ -40,9 +40,21 @@ Currently, user data cannot be got and set in a runtime stack.
 
 If thread-specific user data is needed, the thread ID is got by the L<Thread#get_id|SPVM::Thread#get_id> method and this thread ID can be a key of a L<hash|SPVM::Hash> for thread-specific user data. In this case, the L<Hash|SPVM::Hash> class is not thread safe, a lock using a L<mutex|SPVM::Sync::Mutex> is needed.
 
-=head3 Runtime Global Data Thread Safety
+=head2 Atomic Operations
 
+=head3 Updating Memory Blocks Count
 
+Updating the count of allocated memory blocks is an atomic operation and thread safe. It is protected by a mutex. 
+
+The count of all allocated memory blocks in a runtime is managed and is got by the L<get_memory_blocks_count|SPVM::Document::NativeAPI/"get_memory_blocks_count"> native API.
+
+=head3 Updating Runtime Cache
+
+Updating a runtime cache data is an atomic operation and thread safe. It is protected by a mutex.
+
+=head3 Compilation
+
+A compilation is an atomic operation and thread safe. It is protected by a mutex.
 
 =head1 See Also
 
