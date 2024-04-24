@@ -1,3 +1,7 @@
+0.989106 2023-04-23
+  [Document Improvement]
+    * Add the doc of the Sync::Mutex class.
+    
 0.989105 2023-04-23
   [Fix Bug]
     * Fix the bug that native mortal stack is not released properly in a normal method and a precompilation method implementation.

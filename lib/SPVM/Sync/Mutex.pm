@@ -10,7 +10,7 @@ SPVM::Sync::Mutex - Mutex
 
 =head1 Description
 
-Sync::Mutex class of L<SPVM> has methods to manipulate mutex.
+The Sync::Mutex class in L<SPVM> has methods to manipulate mutex.
 
 =head1 Usage
 
@@ -24,29 +24,41 @@ Sync::Mutex class of L<SPVM> has methods to manipulate mutex.
 
 =head1 Class Methods
 
-  static method new : Sync::Mutex ();
+C<static method new : L<Sync::Mutex|SPVM::Sync::Mutex> ();>
+
+Creates a new L<Sync::Mutex|SPVM::Sync::Mutex> object, initializes it by calling the L<new_instance|SPVM::Document::NativeAPI::Mutex/"new_instance"> mutex native API, and returns it.
 
 =head1 Instance Methods
 
 =head2 DESTROY
 
-  method DESTROY : void ();
+C<method DESTROY : void ();>
+
+Destroys this instance by calling the L<free_instance|SPVM::Document::NativeAPI::Mutex/"free_instance"> mutex native API
 
 =head2 lock
 
-  method lock : void ();
+C<method lock : void ();>
+
+Locks this mutex by calling the L<lock|SPVM::Document::NativeAPI::Mutex/"lock"> mutex native API.
 
 =head2 unlock
 
-  method unlock : void ();
+C<method unlock : void ();>
+
+UnLocks this mutex by calling the L<unlock|SPVM::Document::NativeAPI::Mutex/"unlock"> mutex native API.
 
 =head2 reader_lock
 
-  method reader_lock : void ();
+C<method reader_lock : void ();>
+
+Locks this mutex for reading by calling the L<reader_lock|SPVM::Document::NativeAPI::Mutex/"reader_lock"> mutex native API.
 
 =head2 reader_unlock
 
-  method reader_unlock : void ();
+C<method reader_unlock : void ();>
+
+UnLocks this mutex locked by the L</"reader_lock"> method by calling the L<reader_unlock|SPVM::Document::NativeAPI::Mutex/"reader_unlock"> mutex native API.
 
 =head1 Copyright & License
 
