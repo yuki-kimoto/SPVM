@@ -1994,7 +1994,7 @@ Use the L</"mode"> field to get the config mode.
 
   my $modle = $config->mode;
 
-The L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Builder::Config class has the C<mode> option for giving a config mode.
+L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> has the C<mode> option for giving a config mode.
 
   $config->use_resource('Resource::MyResource', mode => 'production');
 
@@ -2012,7 +2012,7 @@ Key-value pairs are recommended as the values of C<@ARGV> because they are norma
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-The L<use_resource|SPVM::Builder::Config/"use_resource"> method in the SPVM::Builder::Config class has the C<argv> option for giving config arguments.
+L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> has the C<argv> option for giving config arguments.
 
   $config->use_resource('Resource::MyResource', argv => [option_name => "option_value"]);
 
