@@ -1169,7 +1169,7 @@ If too few arguments are passed to the M method in the C class, an exception is 
 
 If too many arguments are passed to the M method in the C class, an exception is thrown.
 
-If the L<argument conversion/"Argument Conversion"> fails, an exception is thrown.
+If the L<argument conversion|/"Argument Conversion"> fails, an exception is thrown.
 
 If the calling method throws an exception, the exception is thrown.
 
