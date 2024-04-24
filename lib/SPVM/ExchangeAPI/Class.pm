@@ -68,7 +68,7 @@ C<SPVM::BlessedObject::Class> is a class object to call class methods.
   my $class = SPVM::ExchangeAPI::Class->__new(__name => 'Int', __api => $api);
   my $value = $class->new(1);
 
-Create a class object using the L<SPVM::ExchangeAPI|SPVM::ExchangeAPI/"class"> method in the L<SPVM::ExchangeAPI> class:
+It is easy to use L<SPVM::ExchangeAPI#class|SPVM::ExchangeAPI/"class">.
 
   my $class = $api->class('Int');
   $class->new(1);

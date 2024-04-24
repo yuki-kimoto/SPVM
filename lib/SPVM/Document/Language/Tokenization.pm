@@ -832,7 +832,7 @@ The bool literal represents a bool object.
 
 =head3 true
 
-C<true> is the alias for the L<TRUE|SPVM::Bool/"TRUE"> method in the L<Bool|SPVM::Bool> class.
+C<true> is the alias for L<Bool#TRUE|SPVM::Bool/"TRUE">.
 
   true
 
@@ -843,7 +843,7 @@ Examples:
 
 =head3 false
 
-C<false> is the alias for the L<FALSE|SPVM::Bool/"FALSE"> method in the L<Bool|SPVM::Bool> class.
+C<false> is the alias for L<Bool#FALSE|SPVM::Bool/"FALSE">.
 
   false
 

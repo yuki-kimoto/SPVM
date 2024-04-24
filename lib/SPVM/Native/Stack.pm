@@ -14,7 +14,7 @@ C<SPVM::Native::Stack> is the C<Native::Stack> class in the L<SPVM> language.
 
 The instance is a call stack. It has information of the call stack.
 
-An instance of the C<Native::Stack> class is build by the L<new_stack|SPVM::Native::Env/"new_stack"> method in the L<Native::Env|SPVM::Native::Env> class.
+An instance of the C<Native::Stack> class is build by L<Native::Env#new_stack|SPVM::Native::Env/"new_stack">.
 
 =head1 Usage
 

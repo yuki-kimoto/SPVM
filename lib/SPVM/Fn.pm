@@ -1124,7 +1124,7 @@ The class specified by $basic_type_name must be loaded. Otherwise an exception i
 
 C<static method defer : L<Scope::Guard|SPVM::Scope::Guard> ($callback : L<Callback|SPVM::Callback>);>
 
-Calls the L<new|Scope::Guard/"new"> method in the L<Scope::Guard|SPVM::Scope::Guard> class and return its return value.
+Calls L<Scope::Guard#new|Scope::Guard/"new"> and return its return value.
 
 =head2 get_memory_blocks_count
 

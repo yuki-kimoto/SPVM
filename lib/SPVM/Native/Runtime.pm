@@ -16,7 +16,7 @@ The instance has the runtime information such as operation codes, classes, metho
 
 This class provides only the minimal methods to get the information of classes and methods.
 
-An instance of the C<Native::Runtime> class is build by the L<get_runtime|SPVM::Native::Compiler/"get_runtime"> method in the L<Native::Compiler|SPVM::Native::Compiler> class.
+An instance of the C<Native::Runtime> class is build by L<Native::Compiler#get_runtime|SPVM::Native::Compiler/"get_runtime">.
 
 =head1 Usage
 
