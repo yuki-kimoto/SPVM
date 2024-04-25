@@ -82,14 +82,14 @@ spvmdist - Generating SPVM Distribution
     -v, --version                  Show the version
     -q, --quiet                    Quiet output
     -f, --force                    Force to generate files
-    --native=<language>            Output a distributioon for a native class
+    --native <language>            Output a distributioon for a native class
     --precompile                   Add precompilattion setting
     --only-lib-files               Output only the files in "lib" directory
     --no-pm-file                   Don't output Perl module(.pm) file
     --resource                     Output a distributioon for for a resource
     --genlib                       Shortcut for --only-lib-files --no-pm-file
-    --user-name=<name>             User name
-    --user-email=<email>           User email
+    --user-name <name>             User name
+    --user-email <email>           User email
 
 =head1 Description
 
@@ -130,23 +130,57 @@ If a file is already exists, the file is not overwritten.
 
 =head1 Options
 
-=head2 -h, --help
+=head2 --help
+
+  --help
 
 Outputs how to use the C<spvmdist> command to standard output.
 
-=head2 -v, --version
+=head2 -h
+
+  -h
+
+Same as L</"--help">.
+
+=head2 --version
+
+  --version
 
 Outputs the version of the C<spvmdist> command to standard output. This version is the same as the version of L<SPVM>.
 
-=head2 -q, --quiet
+=head2 -v
+
+  -v
+
+Same as L</"--version">.
+
+=head2 --quiet
+
+  --quiet
 
 Suppresses messages from the C<spvmdist> command.
 
-=head2 -f, --force
+=head2 -q
+
+  -q
+
+Same as L</"--quiet">.
+
+=head2 --force
+
+  --force
 
 If this option is specified and files as the same name as the files output by the C<spvmdist> command are exists, the files are overwritten.
 
-=head2 --native=E<lt>languageE<gt>
+=head2 -f
+
+  -f
+
+Same as L</"--force">.
+
+=head2 --native
+
+  --native <language>
 
 Outputs a distribution for a L<native class|SPVM::Document::NativeClass> specified in C<E<lt>languageE<gt>>.
 
@@ -168,29 +202,43 @@ C++
 
 =head2 --precompile
 
+  --precompile
+
 Adds precompilation setting. If the class has precompilation methods, it is good to specify this option.
 
 =head2 --only-lib-files
+
+  --only-lib-files
 
 Output only files output to the C<lib> directory. These files are a SPVM class file (.spvm) and a Perl module file (.pm).
 
 =head2 --no-pm-file
 
+  --no-pm-file
+
 Dose not output a Perl module file (.pm).
 
 =head2 --resource
+
+  --resource
 
 Output a distribution for a L<resource|SPVM::Document::Resource>.
 
 =head2 --genlib
 
+  --genlib
+
 Specifies both L</"--only-lib-files"> and L<"--no-pm-file">.
 
-=head2 --user-name=<name>
+=head2 --user-name
+
+  --user-name <name>
 
 Specifies the user name C<E<lt>nameE<gt>>.
 
-=head2 --user-email=<email>
+=head2 --user-email
+
+  --user-email <email>
 
 Specifies the user email C<E<lt>emailE<gt>>.
 
