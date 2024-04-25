@@ -178,7 +178,7 @@ The C<switch> statement is a conditional statement with the following syntax.
     }
   }
 
-The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on the condition I<CONDITION>.
+The L<integer promotional conversion|SPVM::Document::Language::Operators/"Integer Promotional Conversion"> is performed on the condition I<CONDITION>.
 
 The operand of the case statement I<CASEn> must be a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and an L<inline-expaned class method call to get an enumeration value|SPVM::Document::Language::Class/"Inline Expansion of Method Call to Get an Enuemration Value">.
 
@@ -299,7 +299,7 @@ The C<default> statement specifies a default case in the L<switch statement|/"sw
 
 =head4 break Statement
 
-The C<break> statement makes the program jump to the end of the L<switch||/"switch Statement"> block.
+The C<break> statement makes the program jump to the end of the L<switch|/"switch Statement"> block.
 
   # The break statement
   break;
@@ -509,7 +509,7 @@ If I<OPERAND_MESSAGE> is not given or C<undef>, I<OPERAND_MESSAGE> is set to C<"
 
 I<ERROR_CLASS> is a class name, normally of the L<Error|SPVM::Error> class, or its child class. If the exception thrown by the C<die> statement is catched, the L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to the basic type ID of I<ERROR_CLASS>.
 
-The L<integer promotional conversion|SPVM::Document::Language::Types/"Integer Promotional Conversion"> is performed on I<OPERAND_ERROR_ID>.
+The L<integer promotional conversion|SPVM::Document::Language::Operators/"Integer Promotional Conversion"> is performed on I<OPERAND_ERROR_ID>.
 
 I<OPERAND_ERROR_ID> is an integer value within int type. If it is given and the exception thrown by the C<die> statement is catched, the L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to I<OPERAND_ERROR_ID>.
 
