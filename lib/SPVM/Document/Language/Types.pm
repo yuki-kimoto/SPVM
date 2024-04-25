@@ -387,7 +387,7 @@ The C<string> type is the type for L<strings|/"String">.
 
 The C<string> type is an L<object type|/"Object Types">.
 
-The C<string> type can be qualified with the L<mutable type qualifier/"mutable Type Qualifier">.
+The C<string> type can be qualified with the L<mutable type qualifier|/"mutable Type Qualifier">.
 
   mutable string
 
@@ -874,7 +874,7 @@ To Smaller:
 
 =end html
 
-"Conditional Yes" means if the value of L<TYPE_FROM> is represented by an L<interger literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and between the max and minimal value of the type of I<TYPE_TO>.
+"Conditional Yes" means if the value of I<TYPE_FROM> is represented by an L<interger literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and between the max and minimal value of the type of I<TYPE_TO>.
 
 =head3 Assignment Requirement from NumericObject to Numeric
 
@@ -1021,7 +1021,7 @@ I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Assignment Requirement to Any Object
 
@@ -1145,7 +1145,7 @@ I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Assignment Requirement to Any Object Array
 
@@ -1193,7 +1193,7 @@ I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head1 Cast Requirement
 
@@ -1435,7 +1435,7 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
 
 I<InterfaceY> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Cast Requirement to Any Object
 
@@ -1549,7 +1549,7 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
 
 I<InterfaceY> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Cast Requirement to Any Object Array
 
@@ -1601,7 +1601,7 @@ I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|SPVM::Document::Language::Class/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head1 Interface Requirement
 
