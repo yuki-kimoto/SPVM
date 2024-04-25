@@ -73,7 +73,7 @@ spvm - Executing SPVM programs
 
 =head1 Description
 
-The spvm command is a SPVM compiler and linker to generate an executable file.
+The spvm command executes SPVM programs.
 
 =head1 Usage
 
@@ -86,8 +86,87 @@ The spvm command is a SPVM compiler and linker to generate an executable file.
     -v, --version                  Shows the version
     -I, --include-dir <directory>  Adds a include directory
     -B, --build-dir <directory>    Build diretory
-    -e <source>                    Executes a program source code using
-                                   the eval_string method in the Compiler class
+    -e <source>                    Executes a program source code
+
+=head1 Details
+
+  spvm [<options>] <class name>
+
+The C<spvm> command executes a SPVM program.
+
+C<E<lt>optionsE<gt>> are L<options|/"Options">.
+
+C<E<lt>class nameE<gt>> is a class name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">.
+
+See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
+
+See L<SPVM::Document::EnvironmentVariables> about available environment variables.
+
+=head1 Options
+
+=head2 --help
+
+Outputs how to use the C<spvm> command to standard output.
+
+=head2 -h
+
+  -h
+
+Same as L</"--help">.
+
+=head2 --version
+
+Outputs the version of the C<spvm> command to standard output. This version is the same as the version of L<SPVM>.
+
+=head2 -v
+
+  -v
+
+Same as L</"--version">.
+
+=head2 --include-dir
+
+  --include-dir <directory>
+
+Prepends C<E<lt>directoryE<gt>> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
+
+This option can be specified multiple times.
+
+  --include-dir dir1 --include-dir dir2
+
+In this case, class search directories becomes the following.
+
+  [dir1, dir2, default_dirs]
+
+=head2 -I
+
+  -I <directory>
+
+Same as L</"--include-dir">.
+
+=head2 --build-dir
+
+  --build-dir <directory>
+
+Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to C<E<lt>directoryE<gt>>.
+
+=head2 -B
+
+  -B <directory>
+
+Same as L</"--build-dir">.
+
+=head2 -e
+
+  -e <source>
+
+Executes a program from the source string E<lt>sourceE<gt>.
+
+C<E<lt>sourceE<gt>> is exceuted by L<Native::Compiler#eval_string|SPVM::Native::Compiler/"eval_string">.
+
+Examples:
+
+  spvm -e 'say "Hello World!";';
 
 =head1 Copyright & License
 

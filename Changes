@@ -1,6 +1,7 @@
 0.990001
   [Document Improvement]
     * Add the doc of the spvmdist command.
+    * Add the doc of the spvm command.
     * Improve the doc of the Error class.
     * Fix links in docs.
   [Remove Files]
