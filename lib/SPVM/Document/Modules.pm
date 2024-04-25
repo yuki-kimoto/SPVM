@@ -54,8 +54,6 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<DoubleList|SPVM::DoubleList>
 
-=item * L<Env|SPVM::Env>
-
 =item * L<EqualityChecker|SPVM::EqualityChecker>
 
 =item * L<EqualityChecker::Address|SPVM::EqualityChecker::Address>
@@ -136,8 +134,6 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<Point3D|SPVM::Point3D>
 
-=item * L<Runtime|SPVM::Runtime>
-
 =item * L<Scope::Guard|SPVM::Scope::Guard>
 
 =item * L<Short|SPVM::Short>
@@ -145,8 +141,6 @@ This document lists standard modules in the SPVM language. Standard modules are 
 =item * L<ShortList|SPVM::ShortList>
 
 =item * L<Sort|SPVM::Sort>
-
-=item * L<Stack|SPVM::Stack>
 
 =item * L<Stringable|SPVM::Stringable>
 

@@ -267,7 +267,6 @@ lib/SPVM/Document/Resource.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
-lib/SPVM/Env.pm
 lib/SPVM/EqualityChecker.pm
 lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/Address.pm
@@ -391,7 +390,6 @@ lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
 lib/SPVM/Point3D.pm
 lib/SPVM/Point3D.spvm
-lib/SPVM/Runtime.pm
 lib/SPVM/Scope/Guard.pm
 lib/SPVM/Scope/Guard.spvm
 lib/SPVM/Short.pm
@@ -399,7 +397,6 @@ lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
 lib/SPVM/Sort.pm
 lib/SPVM/Sort.spvm
-lib/SPVM/Stack.pm
 lib/SPVM/Stringable.pm
 lib/SPVM/Stringable.spvm
 lib/SPVM/StringBuffer.pm
