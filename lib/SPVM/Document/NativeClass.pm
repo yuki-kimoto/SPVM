@@ -626,7 +626,7 @@ The dependencies of compilation and link of a L<native class|/"Native Class">, L
 
 =back
 
-If the L<force|SPVM::Builder::Config/"force"> in the C<SPVM::Builder::Config> class field is set to 1, the compilation and the link are forced.
+If L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field is set to 1, the compilation and the link are forced.
 
   $config->force(1);
 
