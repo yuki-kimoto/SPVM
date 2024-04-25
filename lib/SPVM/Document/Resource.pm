@@ -4,7 +4,7 @@ SPVM::Document::Resource - Resource
 
 =head1 Resource
 
-A resource in L<SPVM> is a L<native class|SPVM::Document::NativeClass> that contains L<header files|SPVM::Document::NativeClass/"Native Header Files"> and L<source files|SPVM::Document::NativeClass/"Native Source Files"> writen by native languages such as the C language or C++. A resource must have its L<config file|SPVM::Document::NativeClass/"Native Config File">. A resource does not need to have a L<native class file||SPVM::Document::NativeClass/"Native Class">.
+A resource in L<SPVM> is a L<native class|SPVM::Document::NativeClass> that contains L<header files|SPVM::Document::NativeClass/"Native Header Files"> and L<source files|SPVM::Document::NativeClass/"Native Source Files"> writen by native languages such as the C language or C++. A resource must have its L<config file|SPVM::Document::NativeClass/"Native Config File">. A resource does not need to have a L<native class file|SPVM::Document::NativeClass/"Native Class">.
 
 =head2 Resource Class
 
