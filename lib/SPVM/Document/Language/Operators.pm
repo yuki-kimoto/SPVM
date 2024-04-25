@@ -452,7 +452,7 @@ And it performs the same operation as the following C language operation, and re
 
   LEFT_OPERAND & RIGHT_OPERAND
 
-The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 Compilation Errors:
 
@@ -479,7 +479,7 @@ And it performs the same operation as the following C language operation, and re
 
   LEFT_OPERAND | RIGHT_OPERAND
 
-The return type is the type after the L<binary numeric widening conversion|/"Binary Numeric Widening Type"> is performed.
+The return type is the type after the L<binary numeric conversion|/"Binary Numeric Conversion"> is performed.
 
 Compilation Errors:
 
@@ -804,7 +804,7 @@ The C<scalar> operator returns its operand.
 
   scalar OPERAND
 
-This operator returns the operand I<OPERAND>. I<OPERAND> must be the L<array length operator/"Array Length Operator">.
+This operator returns the operand I<OPERAND>. I<OPERAND> must be the L<array length operator|/"Array Length Operator">.
 
 This operator exists only for readability.
 
@@ -1035,9 +1035,9 @@ This operator performs the L<numeric-to-string conversion|/"Numeric-to-String Co
 
 And it performs the L<numeric-to-string conversion|/"Numeric-to-String Conversion"> on the right operand I<RIGHT_OPERAND> if the type of I<RIGHT_OPERAND> is a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
-And it concats L<LEFT_OPERAND> and L<RIGHT_OPERAND>, and returns its return value.
+And it concats I<LEFT_OPERAND> and I<RIGHT_OPERAND>, and returns its return value.
 
-The type of L<LEFT_OPERAND> and L<RIGHT_OPERAND> are allowed to be the byte[] type.
+The type of I<LEFT_OPERAND> and I<RIGHT_OPERAND> are allowed to be the byte[] type.
 
 The return type is the string type.
 
@@ -1282,7 +1282,7 @@ The following syntax of the new operator creates a new object.
 
   new CLASS_TYPE;
 
-The class type I<CLASS_TYPE> must be a loaded L<class type|SPVM::Document::Language::Types/"Class Type">.
+The class type I<CLASS_TYPE> must be a loaded L<class type|SPVM::Document::Language::Types/"Class Types">.
 
 This operator creates a new object of I<CLASS_TYPE>, and returns it.
 
@@ -1305,7 +1305,7 @@ The following syntax of the new operator creates a new array.
 
   new BASIC_TYPE[LENGTH]
 
-The basic type I<BASIC_TYPE> must be a loaded L<basic type|SPVM::Document::Language::Types/"Basic Type">.
+The basic type I<BASIC_TYPE> must be a loaded L<basic type|SPVM::Document::Language::Types/"Basic Types">.
 
 This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the length I<LENGTH>.
 
@@ -1341,7 +1341,7 @@ The following syntax of the new operator creates a new multi-dimensional array.
 
 (C<[]..> means one or more C<[]>.)
 
-The basic type I<BASIC_TYPE> must be a loaded L<basic type|SPVM::Document::Language::Types/"Basic Type">.
+The basic type I<BASIC_TYPE> must be a loaded L<basic type|SPVM::Document::Language::Types/"Basic Types">.
 
 This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on the length I<LENGTH>.
 
@@ -2107,7 +2107,7 @@ Examples:
 
 =head3 Getting a Multi-Numeric Field
 
-The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
+The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
   INVOCANT->{FIELD_NAME}
 
@@ -2130,7 +2130,7 @@ Examples:
 
 =head3 Setting a Multi-Numeric Field
 
-The operation of setting multi-numeric field sets the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type">.
+The operation of setting multi-numeric field sets the field of the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
   INVOCANT->{FIELD_NAME} = OPERAND
 
@@ -2155,7 +2155,7 @@ Examples:
   
 =head3 Getting a Referenced Multi-Numeric Field
 
-The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> referenced by a multi-numeric Reference Types.
+The operation of getting a multi-numeric field gets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> referenced by a multi-numeric Reference Types.
 
 This operation is expaned to the following code.
 
@@ -2177,7 +2177,7 @@ Examples:
 
 =head3 Setting a Referenced Multi-Numeric Field
 
-The operation of setting a multi-numeric field sets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Type"> referenced by a multi-numeric Reference Types.
+The operation of setting a multi-numeric field sets the value of a field of a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> referenced by a multi-numeric Reference Types.
 
 This operation is expaned to the following code.
 
@@ -2286,9 +2286,9 @@ This section describes data conversions.
 
 =head3 Numeric Widening Conversion
 
-The numeric widening conversion is the data conversion from a L<numeric type|/"Numeric Types"> to a larger L<numeric type|/"Numeric Types">.
+The numeric widening conversion is the data conversion from a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> to a larger L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
-See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
+See L<numeric types order|SPVM::Document::Language::Types/"Numeric Types Order"> about the order of numeric types.
 
 This conversion performs the same operation as the C language type cast.
   
@@ -2356,13 +2356,13 @@ B<float to double:>
 
 =head3 Integer Promotional Conversion
 
-The integer promotional conversion is the data conversion from an L<integer type|/"Integer Types"> within int to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+The integer promotional conversion is the data conversion from an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
 =head3 Numeric Narrowing Conversion
 
-The numeric narrowing conversion is the data conversion from a L<numeric type|/"Numeric Types"> to a smaller L<numeric type|/"Numeric Types">.
+The numeric narrowing conversion is the data conversion from a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> to a smaller L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
-See L<numeric types order|/"Numeric Types Order"> about the order of numeric types.
+See L<numeric types order|SPVM::Document::Language::Types/"Numeric Types Order"> about the order of numeric types.
 
 This conversion performs the same operation as the C language type cast.
 
@@ -2430,7 +2430,7 @@ B<short to byte:>
 
 =head3 Binary Numeric Conversion
 
-The binary numeric conversion is the data conversion to upgrade the L<numeric type|/"Numeric Types"> of the left operand and the right operand of a binary operator.
+The binary numeric conversion is the data conversion to upgrade the L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> of the left operand and the right operand of a binary operator.
 
 This conversion performs the following operations.
 
@@ -2444,7 +2444,7 @@ If the converted type of the right operand is the smaller than the int type, the
 
 =head3 Numeric-to-String Conversion
 
-The numeric-to-string conversion is the data conversion from a L<numeric type|/"Numeric Types"> to the L<string type|/"string Type">.
+The numeric-to-string conversion is the data conversion from a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> to the L<string type|SPVM::Document::Language::Types/"string Type">.
 
 This conversion performs the same operation as the C language C<sprintf>.
 
@@ -2495,7 +2495,7 @@ Examples:
 
 =head3 String-to-Numeric Conversion
 
-The string-to-numeric conversion is the data conversion from the L<string type|/"string Type"> to a L<numeric type|/"Numeric Types">.
+The string-to-numeric conversion is the data conversion from the L<string type|SPVM::Document::Language::Types/"string Type"> to a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
 B<string to byte:>
 
@@ -2616,7 +2616,7 @@ If the array is not defined, returns C<undef>.
 
 =head3 Boxing Conversion
 
-The boxing conversion is the type coversion from a L<numeric type|/"Numeric Types"> to its corresponding L<numeric object type|/"Numeric Object Types">.
+The boxing conversion is the type coversion from a L<numeric type|SPVM::Document::Language::Types/"Numeric Types"> to its corresponding L<numeric object type|SPVM::Document::Language::Types/"Numeric Object Types">.
 
 =begin html
 
@@ -2685,7 +2685,7 @@ A boxing conversion creates a new numeric object corresponding to its numeric ty
 
 =head3 Unboxing Conversion
 
-The unboxing conversion is the type coversion from an object of a L<numeric object type|/"Numeric Object Types"> to the value of its corresponding L<numeric type|/"Numeric Types">.
+The unboxing conversion is the type coversion from an object of a L<numeric object type|SPVM::Document::Language::Types/"Numeric Object Types"> to the value of its corresponding L<numeric type|SPVM::Document::Language::Types/"Numeric Types">.
 
 =begin html
 
@@ -2768,7 +2768,7 @@ If the type of the object is not its corresponding numeric type, an exception is
 
 =back
 
-What type combinations cause implicit data conversions is explained in L</"Assignment Requirement">.
+What type combinations cause implicit data conversions is explained in L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement">.
 
 Examples:
   
@@ -2846,11 +2846,11 @@ The C<isa> operator checks whether an operand can be assigned to a type.
 
   OPERAND isa TYPE
 
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data convertion.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|SPVM::Document::Language::Types/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data convertion.
 
 If the assignment requirement is satisfied, this operator returns 1. Otherwise, returns 0.
 
-If I<TYPE> is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion.
+If I<TYPE> is an object type except for the L<any object type|SPVM::Document::Language::Types/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion.
 
 If the runtime assignment requirement is satisfied, this operator returns 1. Otherwise, returns 0.
 
@@ -2888,11 +2888,11 @@ The C<is_type> operator checks whether the type of an operand is equal to a type
 
   OPERAND is_type TYPE
 
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, the L<any object type|SPVM::Document::Language::Types/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
 
 If it is true, this operator returns 1. Otherwise, returns 0.
 
-If the type is an object type except for the L<any object type|/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
+If the type is an object type except for the L<any object type|SPVM::Document::Language::Types/"Any Object Type">, or the L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
 
 If it is true, this operator returns 1. Otherwise, returns 0.
 
@@ -2955,7 +2955,7 @@ Examples:
 
 =head2 isa_error Operator
 
-The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a class type. This operator is normally used for error classes to check L<eval_error_id/"eval_error_id Operator">>.
+The C<isa_error> operator checks whether the type specified by a basic type ID can be assigned to a class type. This operator is normally used for error classes to check L</"eval_error_id Operator">.
 
   OPERAND isa_error TYPE
 
@@ -2985,7 +2985,7 @@ Examples:
   
 =head2 is_error Operator
 
-The C<is_error> operator checks whether the type specified by a basic type ID is equal to a class type. This operator is normally used for error classes to check L<eval_error_id/"eval_error_id Operator">>.
+The C<is_error> operator checks whether the type specified by a basic type ID is equal to a class type. This operator is normally used for error classes to check L</"eval_error_id Operator">.
 
   OPERAND is_error TYPE
 
@@ -3081,15 +3081,15 @@ The C<can> operator checks if a method can be called.
 
   OPERAND can METHOD_NAME
 
-An empty string C<""> means an L<anon method|/"Anon Method">.
+If I<OPERAND> is able to call the method given by I<METHOD_NAME>, returns 1. Otherwise, returns 0.
 
-If I<OPERAND> can call the method given by METHOD_NAME, returns 1. Otherwise, returns 0.
+I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name"> or an empty string C<"">.
 
 The return type is int type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be the class type or the L<interface type|SPVM::Document::Language::Types/"Interface Type">. Otherwise, a compilation error occurs.
+The type of I<OPERAND> must be the class type or the L<interface type|SPVM::Document::Language::Types/"Interface Types">. Otherwise, a compilation error occurs.
 
 The METHOD_NAME must be a method name or an empty string C<"">. Otherwise, a compilation error occurs.
 
@@ -3307,7 +3307,7 @@ Examples:
 
 =head2 Method Call Execution
 
-The L<argument width|SPVM::Document::NativeClass/"Arguments Width"> is stored to the L<runtime stack|/"Runtime Stack">.
+The L<argument width|SPVM::Document::NativeClass/"Arguments Width"> is stored to the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack">.
 
 The call stack depth stored in the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> is incremented by 1.
 
