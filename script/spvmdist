@@ -82,11 +82,11 @@ spvmdist - Generating SPVM Distribution
     -v, --version                  Show the version
     -q, --quiet                    Quiet output
     -f, --force                    Force to generate files
-    --native=<language>            Add native files and setting
-    --precompile                   Add precompile setting
+    --native=<language>            Output a distributioon for a native class
+    --precompile                   Add precompilattion setting
     --only-lib-files               Output only the files in "lib" directory
     --no-pm-file                   Don't output Perl module(.pm) file
-    --resource                     Output files for a resource distribution
+    --resource                     Output a distributioon for for a resource
     --genlib                       Shortcut for --only-lib-files --no-pm-file
     --user-name=<name>             User name
     --user-email=<email>           User email
@@ -94,6 +94,105 @@ spvmdist - Generating SPVM Distribution
 =head1 Description
 
 C<spvmdist> is the command to generate a SPVM distribution.
+
+=head1 Details
+
+  spvmdist [<options>] <class name> [<dir>]
+
+C<E<lt>optionsE<gt>> are L<options|/"Options">. These are optional.
+
+C<E<lt>class nameE<gt>> is the name of the class contained in the distribution.
+
+C<E<lt>dirE<gt>> is the output directory. This is optional. The default is the current directory.
+
+These are the output files when C<E<lt>class nameE<gt>> is C<MyClass>.
+
+  SPVM-MyClass
+  SPVM-MyClass/.gitattributes
+  SPVM-MyClass/MANIFEST.SKIP
+  SPVM-MyClass/.gitignore
+  SPVM-MyClass/LICENSE
+  SPVM-MyClass/Makefile.PL
+  SPVM-MyClass/t
+  SPVM-MyClass/t/basic.t
+  SPVM-MyClass/t/lib
+  SPVM-MyClass/t/lib/SPVM
+  SPVM-MyClass/t/lib/SPVM/TestCase
+  SPVM-MyClass/t/lib/SPVM/TestCase/MyClass.spvm
+  SPVM-MyClass/README.md
+  SPVM-MyClass/Changes
+  SPVM-MyClass/lib
+  SPVM-MyClass/lib/SPVM
+  SPVM-MyClass/lib/SPVM/MyClass.spvm
+  SPVM-MyClass/lib/SPVM/MyClass.pm
+
+If a file is already exists, the file is not overwritten.
+
+=head1 Options
+
+=head2 -h, --help
+
+Outputs how to use the C<spvmdist> command to standard output.
+
+=head2 -v, --version
+
+Outputs the version of the C<spvmdist> command to standard output. This version is the same as the version of L<SPVM>.
+
+=head2 -q, --quiet
+
+Suppresses messages from the C<spvmdist> command.
+
+=head2 -f, --force
+
+If this option is specified and files as the same name as the files output by the C<spvmdist> command are exists, the files are overwritten.
+
+=head2 --native=E<lt>languageE<gt>
+
+Outputs a distribution for a L<native class|SPVM::Document::NativeClass> specified in C<E<lt>languageE<gt>>.
+
+The default is C<c>.
+
+The List of Option Values:
+
+=over 2
+
+=item * C<c>
+
+The C language.
+
+=item * C<c++>
+
+C++
+
+=back
+
+=head2 --precompile
+
+Adds precompilation setting. If the class has precompilation methods, it is good to specify this option.
+
+=head2 --only-lib-files
+
+Output only files output to the C<lib> directory. These files are a SPVM class file (.spvm) and a Perl module file (.pm).
+
+=head2 --no-pm-file
+
+Dose not output a Perl module file (.pm).
+
+=head2 --resource
+
+Output a distribution for a L<resource|SPVM::Document::Resource>.
+
+=head2 --genlib
+
+Specifies both L</"--only-lib-files"> and L<"--no-pm-file">.
+
+=head2 --user-name=<name>
+
+Specifies the user name C<E<lt>nameE<gt>>.
+
+=head2 --user-email=<email>
+
+Specifies the user email C<E<lt>emailE<gt>>.
 
 =head1 Copyright & License
 
