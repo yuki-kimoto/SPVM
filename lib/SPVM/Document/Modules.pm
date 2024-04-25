@@ -76,8 +76,6 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<Format|SPVM::Format>
 
-=item * L<Global|SPVM::Global>
-
 =item * L<Hash|SPVM::Hash>
 
 =item * L<Hash::Entry|SPVM::Hash::Entry>
