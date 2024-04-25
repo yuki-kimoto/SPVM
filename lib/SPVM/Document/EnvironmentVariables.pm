@@ -37,11 +37,11 @@ If the C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages 
 
 If it is defined and a false value of Perl, the messages are printed.
 
-This setting has a higher priority than the L<SPVM::Builder::Config#quiet|SPVM::Builder::Config/"quiet"> field.
+This setting has a higher priority than L<SPVM::Builder::Config#quiet|SPVM::Builder::Config/"quiet"> field.
 
 =head2 SPVM_CC_FORCE
 
 If the C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilation and link by the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are forced.
 
-This setting has a higher priority than the L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field.
+This setting has a higher priority than L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field.
 
