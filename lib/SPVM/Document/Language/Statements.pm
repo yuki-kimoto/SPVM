@@ -565,37 +565,35 @@ The empty statement operates nothing.
 
 =head2 require Statement
 
-If the C<require> statement that loads a class only if it exists in the class path, and if it does not exist, the block does not exist.
+The C<require> statement loads a class only if it is found.
 
-It was designed to implement a part of features of "#ifdef" in the C language.
-
-  if (require Foo) {
-  
+  if (require BASIC_TYPE) {
+    
   }
-
-if C<require> Statement can be followed by else Statement. 
-
-  if (require Foo) {
   
+  if (require BASIC_TYPE) {
+    
   }
   else {
-  
+    
   }
 
-Note that elsif Statement cannot be followed.
+This statement searches for the type I<BASIC_TYPE> in L<class search directories|SPVM::Document::Language::Class/"Class Search Directories"> from the beginning, and if found, it loads I<BASIC_TYPE> at compilation time.
 
-Let's look at an example. if Foo does not exist, no a compilation error occurs and it is assumed that there is no if block
+If I<BASIC_TYPE> is found, the C<if> block is converted to a L<simple block|SPVM::Document::Language::Class/"Simple Block"> and the C<else> block(if it eixsts) is removed at compilation time.
 
-Therefore, "$foo = new Foo;" does not result in a compilation error because it is assumed that there is no if block.
+If I<BASIC_TYPE> is not found, a compilation error does not occur.
 
-In the other hand, the else block exists, so a warning is issued.
+If I<BASIC_TYPE> is not found, the C<else> block (if it eixstgs) is converted to a L<simple block|SPVM::Document::Language::Class/"Simple Block"> and the C<if> block is removed at compilation time.
+
+Examples:
 
   my $foo : object;
-  if (require Foo) {
-    $foo = new Foo;
+  if (require MyClass) {
+    $foo = new MyClass;
   }
   else {
-    warn "Warning: Can't load Foo";
+    warn "Warning: Can't load MyClass";
   }
 
 =head1 See Also
