@@ -14,7 +14,7 @@ Garbage collection in SPVM is a reference counted GC.
 
 The object is destroyed when its reference count reaches 0.
 
-The reference count of an object assigned by the L<assignment operator|SPVM::Document::Language::Operators/"assignment Operator"> is incremented by 1.
+The reference count of an object assigned by the L<assignment operator|SPVM::Document::Language::Operators/"Assignment Operator"> is incremented by 1.
   
   # The reference count is incremented by 1
   my $object = Point->new;
