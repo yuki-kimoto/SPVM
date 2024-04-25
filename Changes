@@ -1,6 +1,8 @@
 0.990001
   [Document Improvement]
     * Add the doc of the spvmdist command.
+    * Improve the doc of the Error class.
+    * Fix links in docs.
   [Remove Files]
     * Remove unneeded SPVM/Env.pm file.
     * Remove unneeded SPVM/Stack.pm file.

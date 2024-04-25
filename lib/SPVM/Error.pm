@@ -12,7 +12,21 @@ SPVM::Error - Error
 
 =head1 Description
 
-The Error class represents errors.
+The Error class in L<SPVM> represents errors.
+
+=head1 Well Known Child Classes
+
+=over 2
+
+=item * L<Error::System|SPVM::Error::System>
+
+=item * L<Error::Compile|SPVM::Error::Compile>
+
+=item * L<Error::NotSupported|SPVM::Error::NotSupported>
+
+=item * L<Error::Unicode::InvalidUTF8|SPVM::Error::Unicode::InvalidUTF8>
+
+=back
 
 =head1 Copyright & License
 
