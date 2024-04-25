@@ -90,7 +90,7 @@ This native API should not be used unless special purposes are intended.
 
 C<int32_t (*set_command_info_program_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* obj_program_name);>
 
-Sets the program name I<obj_program_name> to the L<PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable in the CommandInfo class.
+Sets the program name I<obj_program_name> to L<CommandInfo#PROGRAM_NAME|SPVM::CommandInfo/"PROGRAM_NAME"> class variable.
 
 If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
@@ -100,7 +100,7 @@ This native API should not be used unless special purposes are intended.
 
 C<int32_t (*set_command_info_argv)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* obj_argv);>
 
-Sets the command line arguments I<obj_argv> to the L<ARGV|SPVM::CommandInfo/"ARGV"> class variable.
+Sets the command line arguments I<obj_argv> to the L<CommandInfo#ARGV|SPVM::CommandInfo/"ARGV"> class variable.
 
 If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
@@ -110,7 +110,7 @@ This native API should not be used unless special purposes are intended.
 
 C<int32_t (*set_command_info_base_time)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int64_t base_time);>
 
-Sets the base time I<base_time> to the L<BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable.
+Sets the base time I<base_time> to the L<CommandInfo#BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable.
 
 If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
@@ -2047,7 +2047,7 @@ If the object referenced by I<ref> is C<NULL>, no operation is performed.
 
 If I<ref> is already weakened, no operation is performed.
 
-See L<SPVM::Document::Language::GarbageCollection|/"Weak Reference"> about weak references.
+See the doc of L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference"> about weak references.
 
 =head2 isweak 
 
@@ -2059,7 +2059,7 @@ I<ref> must not be C<NULL>.
 
 If the object referenced by I<ref> is C<NULL>, returns 0.
 
-See L<SPVM::Document::Language::GarbageCollection|/"Weak Reference"> about weak references.
+See the doc of L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference"> about weak references.
 
 =head2 unweaken
 
@@ -2073,7 +2073,7 @@ If the object referenced by I<ref> is C<NULL>, no operation is performed.
 
 If I<ref> is not weakened, no operation is performed.
 
-See L<SPVM::Document::Language::GarbageCollection|/"Weak Reference"> about weak references.
+See the doc of L<weak reference|SPVM::Document::Language::GarbageCollection/"Weak Reference"> about weak references.
 
 =head2 strerror_string
 
