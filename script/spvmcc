@@ -78,7 +78,7 @@ spvmcc - Generating Excutable File
 
 =head1 Description
 
-The spvmcc command is a SPVM compiler and linker to generate an executable file.
+The spvmcc command generates an executable file from SPVM classes.
 
 =head1 Usage
 
@@ -87,21 +87,222 @@ The spvmcc command is a SPVM compiler and linker to generate an executable file.
     spvmcc -I lib/SPVM -o myapp Myapp
   
   options:
-    -h, --help                     Shows this message
-    -v, --version                  Shows the version
-    -o, --output                   The output file name
-    -I, --include-dir <directory>  Adds a include directory
-    -B, --build-dir <directory>    Build diretory
-    -q, --quiet                    Stops the output of messages
-    -f, --force                    Forces the compile and link
-    --no-config                    No configration file is ok
-    -m, --mode                     Config mode
-    --config-argv                  Config arguments
-    --config-argv-option           Key-value config arguments such as NAME=VALUE
+    -h, --help                      Shows this message
+    -v, --version                   Shows the version
+    -o, --output <file>             The output file name
+    -I, --include-dir <directory>   Adds a include directory
+    -B, --build-dir <directory>     Build diretory
+    -q, --quiet                     Stops the output of messages
+    -f, --force                     Forces the compile and link
+    --no-config                     No configration file is ok
+    -m, --mode <mode>               Config mode
+    --config-argv <arg>             A config argument
+    --config-argv-option <arg pair> Key-value config arguments such as KEY=VALUE
+    --optimize <level>              Optimization level such as O3, "-O0 -g"
 
 =head1 Details
 
-See L<SPVM::Builder::Config::Exe> about configurations to generate an executable file.
+  spvmcc [<options>] <class name>
+
+The C<spvmcc> command generates an executable file from SPVM classes.
+
+C<E<lt>optionsE<gt>> are L<options|/"Options">.
+
+C<E<lt>class nameE<gt>> is a class name that contains a L<bootstrap method|SPVM::Document::Language::Class/"Bootstrap Method">.
+
+See L<Class Search Directories|SPVM::Document::Language::Class/"Class Search Directories"> about default class search directories.
+
+See L<SPVM::Document::EnvironmentVariables> about available environment variables.
+
+=head2 Config File for Executable File
+
+A class specified by C<E<lt>class nameE<gt>> must have a config file for an executable file except for the case that L<"--no-config"> is specified.
+
+The config for an executable file is a L<SPVM::Builder::Config::Exe> object.
+
+C<MyExe.config>:
+
+  use SPVM::Builder::Config::Exe;
+  
+  my $exe_config = SPVM::Builder::Config::Exe->new_gnu99(file => __FILE__);
+  
+  $exe_config
+
+=head2 Caching System
+
+Compiled object files and an executable file are not rebuilt unless they need to be rebuilt.
+
+L</"--force"> option forces the rebuild.
+
+=head2 Resources
+
+There are important points to be aware of when generating executable files. That is, L<resources|SPVM::Document::Resource> are not automatically compiled.
+
+When you run an SPVM program with the L<spvm> command, the resources are contained within the shared library of each class. Therefore, there are no conflicts between resources.
+
+However, in the case of executable files, there are resource conflicts. For this, the resources must be resolved manually in the configuration file.
+
+  $config->use_resource('Resource::Zlib');
+
+This is hard work, but given that the executable file must be compiled from source files and run on a variety of platforms, I think that solving it manually is a better way.
+
+I have published a command that allows you to view the list of classes using resources and the resource settings.
+
+L<How to dump resource information|https://github.com/yuki-kimoto/SPVM/wiki/Config#how-to-dump-resource-information>
+
+=head1 Options
+
+=head2 --help
+
+Outputs how to use the C<spvmcc> command to standard output.
+
+=head2 -h
+
+  -h
+
+Same as L</"--help">.
+
+=head2 --version
+
+Outputs the version of the C<spvmcc> command to standard output. This version is the same as the version of L<SPVM>.
+
+=head2 -v
+
+  -v
+
+Same as L</"--version">.
+
+=head2 --include-dir
+
+  --include-dir <directory>
+
+Prepends C<E<lt>directoryE<gt>> to L<class search directories|SPVM::Document::Language::Class/"Class Search Directories">
+
+This option can be specified multiple times.
+
+  --include-dir dir1 --include-dir dir2
+
+In this case, class search directories becomes the following.
+
+  [dir1, dir2, default_dirs]
+
+=head2 -I
+
+  -I <directory>
+
+Same as L</"--include-dir">.
+
+=head2 --build-dir
+
+  --build-dir <directory>
+
+Sets L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable to C<E<lt>directoryE<gt>>.
+
+=head2 -B
+
+  -B <directory>
+
+Same as L</"--build-dir">.
+
+=head2 --output
+
+  --output <file>
+
+Specifies the output file path C<E<lt>fileE<gt>>. This output file is an executable file.
+
+=head2 -o
+
+  -o <file>
+
+Same as L</"--output">.
+
+=head2 --quiet
+
+  --quiet
+
+Suppresses messages from the C<spvmcc> command.
+
+=head2 -q
+
+  -q
+
+Same as L</"--quiet">.
+
+=head2 --force
+
+  --force
+
+Forces the rebuild of object files and an executable file.
+
+=head2 -f
+
+  -f
+
+Same as L</"--force">.
+
+=head2 --no-config
+
+If this option is specified and a config file does not exist, the C<spvmcc> command runs without finising the program.
+
+=head2 --mode
+
+  --mode <mode>
+
+Specifies the config mode C<E<lt>modeE<gt>>.
+
+See L<Config Mode|SPVM::Builder::Config/"Config Mode"> about config modes.
+
+=head2 -m
+
+  -m <mode>
+
+Same as L</"--mode">.
+
+=head2 --config-argv
+
+  --config-argv <arg>
+
+Specifies a config argument C<E<lt>argE<gt>>.
+
+This option can be specified multiple times.
+
+See L<Config Arguments|SPVM::Builder::Config/"Config Arguments"> about config arguments.
+
+Examples:
+
+  --config-argv FOO
+
+=head2 --config-argv-option
+
+  --config-argv-option <arg pair>
+
+Specifies two config arguments C<E<lt>arg pairE<gt>> as the format C<KEY=VALUE>.
+
+This is expaned to the following options.
+
+  --config-argv KEY --config-argv VALUE
+
+If only I<KEY> exists or I<VALUE> dose not exist, I<VALUE> is set to an empty string C<"">.
+
+This option can be specified multiple times.
+
+See L<Config Arguments|SPVM::Builder::Config/"Config Arguments"> about config arguments.
+
+Examples:
+
+  --config-argv-option FOO=1
+
+=head2 --optimize
+
+  --optimize <level>
+
+Sepcifies optimization level C<E<lt>levelE<gt>>.
+
+This affects all source files that are compiled.
+
+Examples:
+
+  --optimize "-O0 -g"
 
 =head1 Copyright & License
 

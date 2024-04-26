@@ -2,6 +2,7 @@
   [Document Improvement]
     * Add the doc of the spvmdist command.
     * Add the doc of the spvm command.
+    * Add the doc of the spvmcc command.
     * Improve the doc of the Error class.
     * Fix links in docs.
   [Remove Files]
