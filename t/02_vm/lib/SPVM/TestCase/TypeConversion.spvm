@@ -641,7 +641,7 @@ class TestCase::TypeConversion {
       
       warn "[Test Output]$output";
       
-      unless ($output eq "inf") {
+      unless ($output eq "inf" ||$output eq "1.#INF") {
         return 0;
       }
     }
@@ -661,7 +661,7 @@ class TestCase::TypeConversion {
       
       warn "[Test Output]$output";
       
-      unless ($output eq "-inf") {
+      unless ($output eq "-inf" ||$output eq "-1.#INF") {
         return 0;
       }
     }
