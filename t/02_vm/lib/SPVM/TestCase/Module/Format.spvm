@@ -237,13 +237,29 @@ class TestCase::Module::Format {
     unless (Format->sprintf("%.300f", [(object)1.0]) eq ("1." . Fn->repeat("0", 300))) { return 0; }
     unless (Format->sprintf("%10.300f", [(object)1.0]) eq ("1." . Fn->repeat("0", 300))) { return 0; }
     
-    unless (Format->sprintf("%f", [(object)9.9e+300f]) eq "inf") { return 0; }
+    {
+      my $output = Format->sprintf("%f", [(object)9.9e+300f]);
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "inf") { return 0; }
+    }
     
-    unless (Format->sprintf("%f", [(object)-9.9e+300f]) eq "-inf") { return 0; }
+    {
+      my $output = Format->sprintf("%f", [(object)-9.9e+300f]);
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "-inf") { return 0; }
+    }
     
-    my $nan_result = Format->sprintf("%f", [(object)(0.0f / 0.0f)]);
-    
-    unless ($nan_result eq "nan" || $nan_result eq "-nan") { return 0; }
+    {
+      my $output = Format->sprintf("%f", [(object)(0.0f / 0.0f)]);
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "nan" || $output eq "-nan") { return 0; }
+    }
     
     # Float
     {
@@ -269,13 +285,29 @@ class TestCase::Module::Format {
     
     unless (Format->sprintf("%g", [(object)3.14f]) eq "3.14") { return 0; }
     
-    unless (Format->sprintf("%g", [(object)9.9e+300f]) eq "inf") { return 0; }
+    {
+      my $output = Format->sprintf("%g", [(object)9.9e+300f]);
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "inf") { return 0; }
+    }
     
-    unless (Format->sprintf("%g", [(object)-9.9e+300f]) eq "-inf") { return 0; }
+    {
+      my $output = Format->sprintf("%g", [(object)-9.9e+300f]);
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "-inf") { return 0; }
+    }
     
-    my $nan_result = Format->sprintf("%g", [(object)(0.0f / 0.0f)]);
-    
-    unless ($nan_result eq "nan" || $nan_result eq "-nan") { return 0; }
+    {
+      my $output = Format->sprintf("%g", [(object)(0.0f / 0.0f)]);
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "nan" || $output eq "-nan") { return 0; }
+    }
     
     {
       eval {
