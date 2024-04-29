@@ -39,6 +39,14 @@ int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
     snprintf(specifier, 14, "%%f");
   }
   
+#ifdef _WIN32
+  char* found_ptr = strstr(buffer, "1.#INF");
+  
+  if (found_ptr) {
+    memcpy(found_ptr, "inf", 4);
+  }
+#endif
+
   // "-9223372036854775808" + "." + width + precision
   int32_t max_length = 20 + 1 + precision;
   void* obj_formatted_string = env->new_string(env, stack, NULL, max_length);

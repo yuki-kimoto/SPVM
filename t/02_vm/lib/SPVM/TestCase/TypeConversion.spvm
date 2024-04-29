@@ -648,6 +648,14 @@ class TestCase::TypeConversion {
       return 0;
     }
     
+    {
+      my $nan = (string)(0.0f / 0.0f);
+      
+      unless ($nan eq "nan" || $nan eq "-nan") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 

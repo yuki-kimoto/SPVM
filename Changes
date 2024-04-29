@@ -3,6 +3,9 @@
     * Fix sprintf %g format in old Windows. 1.0e008(3 digit) is changed to 1.0e08(2 digit). This is C11 compliant.
   [Imcompatible Changes]
     * If Numeric-To-String convertion output contains "1.#INF" in Windows, it is converted to "inf".
+    * If Numeric-To-String convertion output contains "1.#QNAN" in Windows, it is converted to "nan".
+    * If Numeric-To-String convertion output contains "1.#SNAN" in Windows, it is converted to "nan(snan)".
+    * If Numeric-To-String convertion output contains "1.#INDN" in Windows, it is converted to "nan(ind)".
     
 0.990001
   [Document Improvement]

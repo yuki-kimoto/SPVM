@@ -2149,18 +2149,36 @@ static inline int snprintf_fix_g(char* buffer, size_t length, const char* format
   snprintf(buffer, length, format, value);
   
 #ifdef _WIN32
-  #include <stdio.h>
   #ifdef _TWO_DIGIT_EXPONENT
     _set_output_format(oldexpform);
   #endif
 #endif
 
 #ifdef _WIN32
-  char* found_ptr = strstr(buffer, "1.#INF");
+  char* found_inf_ptr = strstr(buffer, "1.#INF");
   
-  if (found_ptr) {
-    memcpy(found_ptr, "inf", 4);
+  if (found_inf_ptr) {
+    memcpy(found_inf_ptr, "inf", 4);
   }
+  else {
+    char* found_nan_ptr = strstr(buffer, "1.#QNAN");
+    if (found_nan_ptr) {
+      memcpy(found_nan_ptr, "nan", 4);
+    }
+    else {
+      char* found_snan_ptr = strstr(buffer, "1.#SNAN");
+      if (found_snan_ptr) {
+        memcpy(found_snan_ptr, "nan(snan)", 10);
+      }
+      else {
+        char* found_ind_ptr = strstr(buffer, "1.#INDN");
+        if (found_ind_ptr) {
+          memcpy(found_ind_ptr, "nan(ind)", 9);
+        }
+      }
+    }
+  }
+  
 #endif
 }
 
