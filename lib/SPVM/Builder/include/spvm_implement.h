@@ -2156,7 +2156,7 @@ static inline int snprintf_fix_g(char* buffer, size_t length, const char* format
 #endif
 
 #ifdef _WIN32
-  const char* found_ptr = strstr(buffer, "1.#INF");
+  char* found_ptr = strstr(buffer, "1.#INF");
   
   if (found_ptr) {
     memcpy(found_ptr, "inf", 4);
