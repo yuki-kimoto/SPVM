@@ -41,27 +41,56 @@ static inline int SPVM_IMPLEMENT_snprintf_fp(char* buffer, size_t length, const 
 #endif
 
 #ifdef _WIN32
-  char* found_inf_ptr = strstr(buffer, "1.#INF");
   
-  if (found_inf_ptr) {
-    memcpy(found_inf_ptr, "inf", 4);
+  const char* inf_nan_strings[4] = {
+    "1.#INF",
+    "1.#QNAN",
+    "1.#SNAN",
+    "1.#IND",
+  };
+  
+  char* found_ptr = buffer;
+  
+  int32_t minus = 0;
+  if (buffer[0] == '-') {
+    minus = 1;
+    found_ptr++;
   }
-  else {
-    char* found_nan_ptr = strstr(buffer, "1.#QNAN");
-    if (found_nan_ptr) {
-      memcpy(found_nan_ptr, "nan", 4);
-    }
-    else {
-      char* found_snan_ptr = strstr(buffer, "1.#SNAN");
-      if (found_snan_ptr) {
-        memcpy(found_snan_ptr, "nan(snan)", 10);
+  
+  int32_t minus = buffer[0] == '-';
+  
+  for (int32_t inf_nan_string_index = 0; inf_nan_string_index < 4; inf_nan_string_index++) {
+    const char* inf_nan_string = inf_nan_strings[i];
+    
+    int32_t inf_nan_string_length = strlen(inf_nan_string);
+    
+    int32_t match = memcmp(found_ptr, inf_nan_string, inf_nan_string + 1);
+    
+    if (match) {
+      ret_length = 0;
+      
+      if (munus) {
+        ret_length++;
       }
-      else {
-        char* found_ind_ptr = strstr(buffer, "1.#IND");
-        if (found_ind_ptr) {
-          memcpy(found_ind_ptr, "nan(ind)", 9);
+      
+      const char* inf_nan_string_replace = NULL;
+      switch (inf_nan_string_index) {
+        case 0: {
+          inf_nan_string_replace = "inf";
+        }
+        case 1: {
+          inf_nan_string_replace = "nan";
+        }
+        case 2: {
+          inf_nan_string_replace = "nan(snan)";
+        }
+        case 3: {
+          inf_nan_string_replace = "nan(ind)";
         }
       }
+      
+      ret_length += strlen(inf_nan_string_replace);
+      memcpy(found_inf_ptr, inf_nan_string_replace, strlen(inf_nan_string_replace) + 1);
     }
   }
   
