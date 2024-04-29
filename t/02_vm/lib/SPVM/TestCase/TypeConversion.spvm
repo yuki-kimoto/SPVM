@@ -671,7 +671,7 @@ class TestCase::TypeConversion {
       
       warn "[Test Output]$output";
       
-      unless ($output eq "nan" || $output eq "-nan") {
+      unless ($output eq "nan" || $output eq "-nan" || $output eq "-1.#IND") {
         return 0;
       }
     }
