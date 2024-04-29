@@ -24,7 +24,7 @@ int32_t SPVM__Format___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 // Copy this from spvm_implemenet.h
-static inline int SPVM_IMPLEMENT_snprintf(char* buffer, size_t length, const char* format, double value) {
+static inline int SPVM_IMPLEMENT_snprintf_fp(char* buffer, size_t length, const char* format, double value) {
   
 #ifdef _WIN32
   #ifdef _TWO_DIGIT_EXPONENT
@@ -90,7 +90,7 @@ int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
   
-  int32_t length = SPVM_IMPLEMENT_snprintf(formatted_string, max_length + 1, specifier, value);
+  int32_t length = SPVM_IMPLEMENT_snprintf_fp(formatted_string, max_length + 1, specifier, value);
   
   stack[0].oval = env->new_string(env, stack, formatted_string, length);
   
@@ -117,7 +117,7 @@ int32_t SPVM__Format___native_snprintf_g(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
   
-  int32_t length = SPVM_IMPLEMENT_snprintf(formatted_string, max_length + 1, specifier, value);
+  int32_t length = SPVM_IMPLEMENT_snprintf_fp(formatted_string, max_length + 1, specifier, value);
   
   stack[0].oval = env->new_string(env, stack, formatted_string, length);
   
