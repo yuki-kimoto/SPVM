@@ -636,7 +636,7 @@ class TestCase::TypeConversion {
       return 0;
     }
     
-    unless ((string)9.9e+300f eq "inf") {
+    unless ((string)9.9e+300f eq "inf" || (string)9.9e+300f eq "1.#INF") {
       return 0;
     }
     
@@ -644,7 +644,7 @@ class TestCase::TypeConversion {
       return 0;
     }
     
-    unless ((string)-1.23e+123f eq "-inf") {
+    unless ((string)-1.23e+123f eq "-inf" || (string)-1.23e+123f eq "-1.#INF") {
       return 0;
     }
     
