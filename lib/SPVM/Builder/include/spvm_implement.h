@@ -2159,7 +2159,7 @@ static inline int snprintf_fix_g(char* buffer, size_t length, const char* format
   const char* found_ptr = strstr(buffer, "1.#INF");
   
   if (found_ptr) {
-    memcpy(buffer[found_ptr], "inf", 4);
+    memcpy(found_ptr, "inf", 4);
   }
 #endif
 }
