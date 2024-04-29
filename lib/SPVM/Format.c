@@ -40,61 +40,6 @@ static inline int SPVM_IMPLEMENT_snprintf_fp(char* buffer, size_t length, const 
   #endif
 #endif
 
-#ifdef _WIN32
-  
-  const char* inf_nan_strings[4] = {
-    "1.#INF",
-    "1.#QNAN",
-    "1.#SNAN",
-    "1.#IND",
-  };
-  
-  char* found_ptr = buffer;
-  
-  int32_t minus = 0;
-  if (buffer[0] == '-') {
-    minus = 1;
-    found_ptr++;
-  }
-  
-  for (int32_t inf_nan_string_index = 0; inf_nan_string_index < 4; inf_nan_string_index++) {
-    const char* inf_nan_string = inf_nan_strings[inf_nan_string_index];
-    
-    int32_t inf_nan_string_length = strlen(inf_nan_string);
-    
-    int32_t match = memcmp(found_ptr, inf_nan_string, strlen(inf_nan_string) + 1) == 0;
-    
-    if (match) {
-      ret_length = 0;
-      
-      if (minus) {
-        ret_length++;
-      }
-      
-      const char* inf_nan_string_replace = NULL;
-      switch (inf_nan_string_index) {
-        case 0: {
-          inf_nan_string_replace = "inf";
-        }
-        case 1: {
-          inf_nan_string_replace = "nan";
-        }
-        case 2: {
-          inf_nan_string_replace = "nan(snan)";
-        }
-        case 3: {
-          inf_nan_string_replace = "nan(ind)";
-        }
-      }
-      
-      ret_length += strlen(inf_nan_string_replace);
-      memcpy(found_ptr, inf_nan_string_replace, strlen(inf_nan_string_replace) + 1);
-      break;
-    }
-  }
-  
-#endif
-  
   return ret_length;
 }
 
