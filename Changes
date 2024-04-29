@@ -1,6 +1,9 @@
 0.990002
   [Bug Fix]
     * Fix sprintf %g format in old Windows
+  [Test Imcompability]
+    * sprintf output 1.#INF is invalid value.
+    
 0.990001
   [Document Improvement]
     * Add the doc of the spvmdist command.
