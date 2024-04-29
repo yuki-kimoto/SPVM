@@ -612,53 +612,32 @@ class TestCase::TypeConversion {
       return 0;
     }
     
-    unless ((string)1.23456e+08f eq "1.23456e+08" || (string)1.23456e+08f eq "1.23456e+008") {
+    unless ((string)1.23456e+08f eq "1.23456e+08") {
       return 0;
-    }
-    if ((string)1.23456e+08f eq "1.23456e+008") {
-      warn "[Warning]1.23456e+008 is not C11 compliant. 1.23456e+08 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e-08f eq "1.23456e-08" || (string)1.23456e-08f eq "1.23456e-008") {
+    unless ((string)1.23456e-08f eq "1.23456e-08") {
       return 0;
-    }
-    if ((string)1.23456e-08f eq "1.23456e-008") {
-      warn "[Warning]1.23456e-008 is not C11 compliant. 1.23456e-08 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e+008f eq "1.23456e+08" || (string)1.23456e+008f eq "1.23456e+008") {
+    unless ((string)1.23456e+008f eq "1.23456e+08") {
       return 0;
-    }
-    if ((string)1.23456e+008f eq "1.23456e+008") {
-      warn "[Warning]1.23456e+008 is not C11 compliant. 1.23456e+08 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e-008f eq "1.23456e-08" || (string)1.23456e-008f eq "1.23456e-008") {
+    unless ((string)1.23456e-008f eq "1.23456e-08") {
       return 0;
-    }
-    if ((string)1.23456e-08f eq "1.23456e-008") {
-      warn "[Warning]1.23456e-008 is not C11 compliant. 1.23456e-08 is correct MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e+018f eq "1.23456e+18" || (string)1.23456e+018f eq "1.23456e+018") {
+    unless ((string)1.23456e+018f eq "1.23456e+18") {
       return 0;
-    }
-    if ((string)1.23456e-08f eq "1.23456e-008") {
-      warn "[Warning]1.23456e+018 is not C11 compliant. 1.23456e+18 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e-018f eq "1.23456e-18" || (string)1.23456e-018f eq "1.23456e-018") {
+    unless ((string)1.23456e-018f eq "1.23456e-18") {
       return 0;
-    }
-    if ((string)1.23456e-018f eq "1.23456e-018") {
-      warn "[Warning]1.23456e-018 is not C11 compliant. 1.23456e-18 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
     unless ((string)9.9e+300f eq "inf" || (string)9.9e+300f eq "1.#INF") {
       return 0;
-    }
-    if ((string)9.9e+300f eq "1.#INF") {
-      warn "[Warning]1.#INF is not C11 compliant. inf is correct. MinGW version is maybe lower than v8.1.0";
     }
     
     unless ((string)9.9e-300f eq "0") {
@@ -667,9 +646,6 @@ class TestCase::TypeConversion {
     
     unless ((string)-1.23e+123f eq "-inf" || (string)-1.23e+123f eq "-1.#INF") {
       return 0;
-    }
-    if ((string)-1.23e+123f eq "-1.#INF") {
-      warn "[Warning]-1.#INF is not C11 compliant. -inf is correct. MinGW version is maybe lower than v8.1.0";
     }
     
     return 1;
@@ -713,46 +689,28 @@ class TestCase::TypeConversion {
       return 0;
     }
     
-    unless ((string)1.23456e+08 eq "1.23456e+08" || (string)1.23456e+08 eq "1.23456e+008") {
+    unless ((string)1.23456e+08 eq "1.23456e+08") {
       return 0;
-    }
-    if ((string)1.23456e+08 eq "1.23456e+008") {
-      warn "[Warning]1.23456e+008 is not C11 compliant. 1.23456e+08 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e-08 eq "1.23456e-08" || (string)1.23456e-08 eq "1.23456e-008") {
+    unless ((string)1.23456e-08 eq "1.23456e-08") {
       return 0;
-    }
-    if ((string)1.23456e-08 eq "1.23456e-008") {
-      warn "[Warning]1.23456e-008 is not C11 compliant. 1.23456e-08 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e+008 eq "1.23456e+08" || (string)1.23456e+008 eq "1.23456e+008") {
+    unless ((string)1.23456e+008 eq "1.23456e+08") {
       return 0;
-    }
-    if ((string)1.23456e+008 eq "1.23456e+008") {
-      warn "[Warning]1.23456e+008 is not C11 compliant. 1.23456e+08 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e-008 eq "1.23456e-08" || (string)1.23456e-008 eq "1.23456e-008") {
+    unless ((string)1.23456e-008 eq "1.23456e-08") {
       return 0;
-    }
-    if ((string)1.23456e-08 eq "1.23456e-008") {
-      warn "[Warning]1.23456e-008 is not C11 compliant. 1.23456e-08 is correct MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e+018 eq "1.23456e+18" || (string)1.23456e+018 eq "1.23456e+018") {
+    unless ((string)1.23456e+018 eq "1.23456e+18") {
       return 0;
-    }
-    if ((string)1.23456e-08 eq "1.23456e-008") {
-      warn "[Warning]1.23456e+018 is not C11 compliant. 1.23456e+18 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
-    unless ((string)1.23456e-018 eq "1.23456e-18" || (string)1.23456e-018 eq "1.23456e-018") {
+    unless ((string)1.23456e-018 eq "1.23456e-18") {
       return 0;
-    }
-    if ((string)1.23456e-018 eq "1.23456e-018") {
-      warn "[Warning]1.23456e-018 is not C11 compliant. 1.23456e-18 is correct. MinGW version is maybe lower than v8.1.0";
     }
     
     unless ((string)9.9e+300 eq "9.9e+300") {
