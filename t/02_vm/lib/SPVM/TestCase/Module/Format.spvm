@@ -258,7 +258,7 @@ class TestCase::Module::Format {
       
       warn "[Test Output]$output";
       
-      unless ($output eq "nan" || $output eq "-nan") { return 0; }
+      unless ($output eq "nan" || $output eq "-nan" || $output eq "-1.#IND00") { return 0; }
     }
     
     # Float
@@ -306,7 +306,7 @@ class TestCase::Module::Format {
       
       warn "[Test Output]$output";
       
-      unless ($output eq "nan" || $output eq "-nan") { return 0; }
+      unless ($output eq "nan" || $output eq "-nan" || $output eq "-1.#IND") { return 0; }
     }
     
     {
