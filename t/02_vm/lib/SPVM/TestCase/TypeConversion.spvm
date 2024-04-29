@@ -636,22 +636,42 @@ class TestCase::TypeConversion {
       return 0;
     }
     
-    unless ((string)9.9e+300f eq "inf") {
-      return 0;
-    }
-    
-    unless ((string)9.9e-300f eq "0") {
-      return 0;
-    }
-    
-    unless ((string)-1.23e+123f eq "-inf") {
-      return 0;
+    {
+      my $output = (string)9.9e+300f;
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "inf") {
+        return 0;
+      }
     }
     
     {
-      my $nan = (string)(0.0f / 0.0f);
+      my $output = (string)9.9e-300f;
       
-      unless ($nan eq "nan" || $nan eq "-nan") {
+      warn "[Test Output]$output";
+      
+      unless ($output eq "0") {
+        return 0;
+      }
+    }
+    
+    {
+      my $output = (string)-1.23e+123f;
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "-inf") {
+        return 0;
+      }
+    }
+    
+    {
+      my $output = (string)(0.0f / 0.0f);
+      
+      warn "[Test Output]$output";
+      
+      unless ($output eq "nan" || $output eq "-nan") {
         return 0;
       }
     }
