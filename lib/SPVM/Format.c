@@ -23,6 +23,53 @@ int32_t SPVM__Format___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
+// Copy this from spvm_implemenet.h
+static inline int snprintf_fix_g(char* buffer, size_t length, const char* format, double value) {
+  
+#ifdef _WIN32
+  #ifdef _TWO_DIGIT_EXPONENT
+    unsigned int oldexpform = _set_output_format(_TWO_DIGIT_EXPONENT);
+  #endif
+#endif
+  
+  int32_t ret_length = snprintf(buffer, length, format, value);
+  
+#ifdef _WIN32
+  #ifdef _TWO_DIGIT_EXPONENT
+    _set_output_format(oldexpform);
+  #endif
+#endif
+
+#ifdef _WIN32
+  char* found_inf_ptr = strstr(buffer, "1.#INF");
+  
+  if (found_inf_ptr) {
+    memcpy(found_inf_ptr, "inf", 4);
+  }
+  else {
+    char* found_nan_ptr = strstr(buffer, "1.#QNAN");
+    if (found_nan_ptr) {
+      memcpy(found_nan_ptr, "nan", 4);
+    }
+    else {
+      char* found_snan_ptr = strstr(buffer, "1.#SNAN");
+      if (found_snan_ptr) {
+        memcpy(found_snan_ptr, "nan(snan)", 10);
+      }
+      else {
+        char* found_ind_ptr = strstr(buffer, "1.#IND");
+        if (found_ind_ptr) {
+          memcpy(found_ind_ptr, "nan(ind)", 9);
+        }
+      }
+    }
+  }
+  
+#endif
+  
+  return ret_length;
+}
+
 int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   double value = stack[0].dval;
@@ -43,7 +90,7 @@ int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
   
-  int32_t length = snprintf(formatted_string, max_length + 1, specifier, value);
+  int32_t length = snprintf_fix_g(formatted_string, max_length + 1, specifier, value);
   
   stack[0].oval = env->new_string(env, stack, formatted_string, length);
   
@@ -70,7 +117,7 @@ int32_t SPVM__Format___native_snprintf_g(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char* formatted_string = (char*)env->get_chars(env, stack, obj_formatted_string);
   
-  int32_t length = snprintf(formatted_string, max_length + 1, specifier, value);
+  int32_t length = snprintf_fix_g(formatted_string, max_length + 1, specifier, value);
   
   stack[0].oval = env->new_string(env, stack, formatted_string, length);
   

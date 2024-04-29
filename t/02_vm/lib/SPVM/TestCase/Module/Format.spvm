@@ -237,6 +237,14 @@ class TestCase::Module::Format {
     unless (Format->sprintf("%.300f", [(object)1.0]) eq ("1." . Fn->repeat("0", 300))) { return 0; }
     unless (Format->sprintf("%10.300f", [(object)1.0]) eq ("1." . Fn->repeat("0", 300))) { return 0; }
     
+    unless (Format->sprintf("%f", [(object)9.9e+300f]) eq "inf") { return 0; }
+    
+    unless (Format->sprintf("%f", [(object)-9.9e+300f]) eq "-inf") { return 0; }
+    
+    my $nan_result = Format->sprintf("%f", [(object)(0.0f / 0.0f)]);
+    
+    unless ($nan_result eq "nan" || $nan_result eq "-nan") { return 0; }
+    
     # Float
     {
       unless (Format->sprintf("%.2f", [(object)3.1415f]) eq "3.14") { return 0; }
@@ -260,6 +268,14 @@ class TestCase::Module::Format {
     unless (Format->sprintf("%-+10.2g", [(object)3.14]) eq "+3.1      ") { return 0; }
     
     unless (Format->sprintf("%g", [(object)3.14f]) eq "3.14") { return 0; }
+    
+    unless (Format->sprintf("%g", [(object)9.9e+300f]) eq "inf") { return 0; }
+    
+    unless (Format->sprintf("%g", [(object)-9.9e+300f]) eq "-inf") { return 0; }
+    
+    my $nan_result = Format->sprintf("%g", [(object)(0.0f / 0.0f)]);
+    
+    unless ($nan_result eq "nan" || $nan_result eq "-nan") { return 0; }
     
     {
       eval {
