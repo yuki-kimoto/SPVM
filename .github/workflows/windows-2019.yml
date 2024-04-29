@@ -37,3 +37,5 @@ jobs:
         run: cat MYMETA.json
       - run: perl Makefile.PL
       - run: gmake disttest
+      - name: cpanm SPVM::JSON
+        run: perl cpanm -v -n -L ~/mylib SPVM::JSON
