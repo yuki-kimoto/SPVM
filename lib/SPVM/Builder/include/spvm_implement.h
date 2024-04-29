@@ -2154,6 +2154,14 @@ static inline int snprintf_fix_g(char* buffer, size_t length, const char* format
     _set_output_format(oldexpform);
   #endif
 #endif
+
+#ifdef _WIN32
+  const char* found_ptr = strstr(buffer, "1.#INF");
+  
+  if (found_ptr) {
+    memcpy(buffer[found_ptr], "inf", 4);
+  }
+#endif
 }
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value, char* tmp_buffer, int32_t tmp_buffer_length) {

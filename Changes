@@ -1,8 +1,8 @@
 0.990002
   [Bug Fix]
     * Fix sprintf %g format in old Windows
-  [Test Imcompability]
-    * sprintf output 1.#INF is invalid value.
+  [Imcompatible Changes]
+    * If Numeric-To-String convertion output contains "1.#INF" in Windows, it is converted to "inf".
     
 0.990001
   [Document Improvement]

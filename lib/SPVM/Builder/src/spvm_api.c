@@ -2304,6 +2304,15 @@ static inline int sprintf_fix_g(char* buffer, const char* format, double value) 
     _set_output_format(oldexpform);
   #endif
 #endif
+
+#ifdef _WIN32
+  const char* found_ptr = strstr(buffer, "1.#INF");
+  
+  if (found_ptr) {
+    memcpy(buffer[found_ptr], "inf", 4);
+  }
+#endif
+
 }
 
 void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable) {
