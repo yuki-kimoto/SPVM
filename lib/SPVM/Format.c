@@ -10,7 +10,6 @@
 static const char* FILE_NAME = "Format.c";
 
 int32_t SPVM__Format___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   int32_t value = stack[0].ival;
   
@@ -25,7 +24,6 @@ int32_t SPVM__Format___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   double value = stack[0].dval;
   int32_t precision = stack[1].ival;
@@ -53,7 +51,6 @@ int32_t SPVM__Format___native_snprintf_f(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Format___native_snprintf_g(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   double value = stack[0].dval;
   int32_t precision = stack[1].ival;
@@ -81,7 +78,6 @@ int32_t SPVM__Format___native_snprintf_g(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Format___native_snprintf_ld(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   int64_t value = stack[0].lval;
   
@@ -96,7 +92,6 @@ int32_t SPVM__Format___native_snprintf_ld(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Format___native_snprintf_lu(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   uint64_t value = (uint64_t)stack[0].lval;
   
@@ -111,7 +106,6 @@ int32_t SPVM__Format___native_snprintf_lu(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Format___native_snprintf_lx(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   uint64_t value = (uint64_t)stack[0].lval;
   
@@ -125,7 +119,6 @@ int32_t SPVM__Format___native_snprintf_lx(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 int32_t SPVM__Format___native_snprintf_p(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   void* value = stack[0].oval;
   
@@ -143,7 +136,6 @@ int32_t SPVM__Format___native_snprintf_p(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Format___native_snprintf_u(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   uint32_t value = (uint32_t)stack[0].ival;
   
@@ -158,7 +150,6 @@ int32_t SPVM__Format___native_snprintf_u(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPVM__Format___native_snprintf_x(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
   
   uint32_t value = (uint32_t)stack[0].ival;
   
