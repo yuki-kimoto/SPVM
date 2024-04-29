@@ -2138,7 +2138,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, 
   env->assign_object(env, stack, out, string);
 }
 
-static inline int snprintf_fix_g(char* buffer, size_t length, const char* format, double value) {
+static inline int SPVM_IMPLEMENT_snprintf(char* buffer, size_t length, const char* format, double value) {
   
 #ifdef _WIN32
   #ifdef _TWO_DIGIT_EXPONENT
@@ -2184,7 +2184,7 @@ static inline int snprintf_fix_g(char* buffer, size_t length, const char* format
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, float value, char* tmp_buffer, int32_t tmp_buffer_length) {
   
-  snprintf_fix_g(tmp_buffer, tmp_buffer_length, "%g", value);
+  SPVM_IMPLEMENT_snprintf(tmp_buffer, tmp_buffer_length, "%g", value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);
@@ -2192,7 +2192,7 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(SPVM_ENV* env,
 
 static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(SPVM_ENV* env, SPVM_VALUE* stack, void** out, double value, char* tmp_buffer, int32_t tmp_buffer_length) {
   
-  snprintf_fix_g(tmp_buffer, tmp_buffer_length, "%g", value);
+  SPVM_IMPLEMENT_snprintf(tmp_buffer, tmp_buffer_length, "%g", value);
   int32_t string_length = strlen(tmp_buffer);
   void* string = env->new_string_no_mortal(env, stack, tmp_buffer, string_length);
   env->assign_object(env, stack, out, string);

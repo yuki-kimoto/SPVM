@@ -6,8 +6,6 @@
     * If Numeric-To-String convertion output contains "1.#QNAN" in Windows, it is converted to "nan".
     * If Numeric-To-String convertion output contains "1.#SNAN" in Windows, it is converted to "nan(snan)".
     * If Numeric-To-String convertion output contains "1.#INDN" in Windows, it is converted to "nan(ind)".
-    
-  [Imcompatible Changes]
     * If Format#sprintf %f output contains "1.#INF" in Windows, it is converted to "inf".
     * If Format#sprintf %f output contains "1.#QNAN" in Windows, it is converted to "nan".
     * If Format#sprintf %f output contains "1.#SNAN" in Windows, it is converted to "nan(snan)".
@@ -16,6 +14,10 @@
     * If Format#sprintf %g output contains "1.#QNAN" in Windows, it is converted to "nan".
     * If Format#sprintf %g output contains "1.#SNAN" in Windows, it is converted to "nan(snan)".
     * If Format#sprintf %g output contains "1.#INDN" in Windows, it is converted to "nan(ind)".
+    * If the dump operator output contains "1.#INF" in Windows, it is converted to "inf".
+    * If the dump operator output output contains "1.#QNAN" in Windows, it is converted to "nan".
+    * If the dump operator output output contains "1.#SNAN" in Windows, it is converted to "nan(snan)".
+    * If the dump operator output output contains "1.#INDN" in Windows, it is converted to "nan(ind)".
 0.990001
   [Document Improvement]
     * Add the doc of the spvmdist command.
