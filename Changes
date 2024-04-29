@@ -1,6 +1,6 @@
 0.990002
   [Bug Fix]
-    * Fix sprintf %g format in old Windows
+    * Fix sprintf %g format in old Windows. 1.0e008(3 digit) is changed to 1.0e08(2 digit). This is C11 compliant.
   [Imcompatible Changes]
     * If Numeric-To-String convertion output contains "1.#INF" in Windows, it is converted to "inf".
     
