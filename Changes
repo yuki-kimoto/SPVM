@@ -1,3 +1,6 @@
+0.990002
+  [Bug Fix]
+    * Fix sprintf %g format in old Windows
 0.990001
   [Document Improvement]
     * Add the doc of the spvmdist command.
