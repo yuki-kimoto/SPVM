@@ -4,6 +4,13 @@
 #ifndef SPVM_IMPLEMENT_H
 #define SPVM_IMPLEMENT_H
 
+// Fix sprintf %g in old Windows
+#ifdef _WIN32
+  #ifdef _TWO_DIGIT_EXPONENT
+    _set_output_format(_TWO_DIGIT_EXPONENT);
+  #endif
+#endif
+
 #include <inttypes.h>
 #include <stdlib.h>
 
