@@ -477,7 +477,7 @@ sub new {
   # thread_ccflags
   unless (defined $self->{thread_ccflags}) {
     if ($^O eq 'MSWin32') {
-      $self->thread_ccflags([]);
+      $self->thread_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
     }
     else {
       $self->thread_ccflags(['-pthread']);
