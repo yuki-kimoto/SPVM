@@ -119,6 +119,8 @@ sub create_ccflags {
   
   push @compile_command_args, @{$config->thread_ccflags};
   
+  push @compile_command_args, @{$config->mingw_ccflags};
+  
   my $output_type = $config->output_type;
   
   if ($output_type eq 'dynamic_lib') {

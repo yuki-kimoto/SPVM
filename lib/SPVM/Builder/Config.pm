@@ -120,6 +120,17 @@ sub thread_ccflags {
   }
 }
 
+sub mingw_ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{mingw_ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{mingw_ccflags};
+  }
+}
+
 sub std {
   my $self = shift;
   if (@_) {
@@ -477,10 +488,20 @@ sub new {
   # thread_ccflags
   unless (defined $self->{thread_ccflags}) {
     if ($^O eq 'MSWin32') {
-      $self->thread_ccflags([]);
+      $self->thread_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
     }
     else {
-      $self->thread_ccflags(['-pthread']);
+      $self->thread_ccflags([]);
+    }
+  }
+  
+  # mingw_ccflags
+  unless (defined $self->{mingw_ccflags}) {
+    if ($^O eq 'MSWin32') {
+      $self->mingw_ccflags([]);
+    }
+    else {
+      $self->mingw_ccflags(['-pmingw']);
     }
   }
   
@@ -1181,6 +1202,15 @@ Gets and sets the C<thread_ccflags> field, an array reference containing arugmen
 
 This field is automatically set and users nomally do not change it.
 
+=head2 mingw_ccflags
+
+  my $mingw_ccflags = $config->mingw_ccflags;
+  $config->mingw_ccflags($mingw_ccflags);
+
+Gets and sets the C<mingw_ccflags> field, an array reference containing arugments of the compiler L</"cc"> for MinGW.
+
+This field is automatically set and users nomally do not change it.
+
 =head2 std
 
   my $std = $config->std;
@@ -1580,6 +1610,16 @@ Windows:
 Other OSs:
 
   ["-pthread"]
+
+=item * L</"mingw_ccflags">
+
+Windows:
+
+  ['-D__USE_MINGW_ANSI_STDIO']
+
+Other OSs:
+
+  []
 
 =item * L</"optimize">
 
