@@ -1,4 +1,4 @@
-name: windows-latest
+name: windows-latest-gcc
 
 on:
   push:
