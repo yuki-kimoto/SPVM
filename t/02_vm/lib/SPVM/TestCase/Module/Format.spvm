@@ -242,7 +242,10 @@ class TestCase::Module::Format {
       
       warn "[Test Output]$output";
       
-      unless ($output eq "inf" ||$output eq "1.#INF00") { return 0; }
+      unless ($output eq "inf") {
+        warn $output;
+        return 0;
+      }
     }
     
     {
@@ -250,15 +253,19 @@ class TestCase::Module::Format {
       
       warn "[Test Output]$output";
       
-      unless ($output eq "-inf" || $output eq "-1.#INF00") { return 0; }
+      unless ($output eq "-inf") {
+        warn $output;
+        return 0;
+      }
     }
     
     {
       my $output = Format->sprintf("%f", [(object)(0.0f / 0.0f)]);
       
-      warn "[Test Output]$output";
-      
-      unless ($output eq "nan" || $output eq "-nan" || $output eq "-1.#IND00") { return 0; }
+      unless ($output eq "nan" || $output eq "-nan") {
+        warn $output;
+        return 0;
+      }
     }
     
     # Float
@@ -288,9 +295,10 @@ class TestCase::Module::Format {
     {
       my $output = Format->sprintf("%g", [(object)9.9e+300f]);
       
-      warn "[Test Output]$output";
-      
-      unless ($output eq "inf" || $output eq "1.#INF" ) { return 0; }
+      unless ($output eq "inf") {
+        warn $output;
+        return 0;
+      }
     }
     
     {
@@ -298,15 +306,19 @@ class TestCase::Module::Format {
       
       warn "[Test Output]$output";
       
-      unless ($output eq "-inf" || $output eq "-1.#INF") { return 0; }
+      unless ($output eq "-inf") {
+        warn $output;
+        return 0;
+      }
     }
     
     {
       my $output = Format->sprintf("%g", [(object)(0.0f / 0.0f)]);
       
-      warn "[Test Output]$output";
-      
-      unless ($output eq "nan" || $output eq "-nan" || $output eq "-1.#IND") { return 0; }
+      unless ($output eq "nan" || $output eq "-nan") {
+        warn $output;
+        return 0;
+      }
     }
     
     {
