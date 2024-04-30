@@ -26,20 +26,8 @@ int32_t SPVM__Format___native_snprintf_d(SPVM_ENV* env, SPVM_VALUE* stack) {
 // Copy this from spvm_implemenet.h
 static inline int SPVM_IMPLEMENT_snprintf_fp(char* buffer, size_t length, const char* format, double value) {
   
-#ifdef _WIN32
-  #ifdef _TWO_DIGIT_EXPONENT
-    unsigned int oldexpform = _set_output_format(_TWO_DIGIT_EXPONENT);
-  #endif
-#endif
-  
   int32_t ret_length = snprintf(buffer, length, format, value);
   
-#ifdef _WIN32
-  #ifdef _TWO_DIGIT_EXPONENT
-    _set_output_format(oldexpform);
-  #endif
-#endif
-
   return ret_length;
 }
 

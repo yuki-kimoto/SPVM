@@ -2140,20 +2140,8 @@ static inline void SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(SPVM_ENV* env, 
 
 static inline int SPVM_IMPLEMENT_snprintf_fp(char* buffer, size_t length, const char* format, double value) {
   
-#ifdef _WIN32
-  #ifdef _TWO_DIGIT_EXPONENT
-    unsigned int oldexpform = _set_output_format(_TWO_DIGIT_EXPONENT);
-  #endif
-#endif
-  
   int32_t ret_length = snprintf(buffer, length, format, value);
   
-#ifdef _WIN32
-  #ifdef _TWO_DIGIT_EXPONENT
-    _set_output_format(oldexpform);
-  #endif
-#endif
-
   return ret_length;
 }
 
