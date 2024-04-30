@@ -639,9 +639,8 @@ class TestCase::TypeConversion {
     {
       my $output = (string)9.9e+300f;
       
-      warn "[Test Output]$output";
-      
-      unless ($output eq "inf" ||$output eq "1.#INF") {
+      unless ($output eq "inf") {
+        warn "$output";
         return 0;
       }
     }
@@ -649,9 +648,8 @@ class TestCase::TypeConversion {
     {
       my $output = (string)9.9e-300f;
       
-      warn "[Test Output]$output";
-      
       unless ($output eq "0") {
+        warn "$output";
         return 0;
       }
     }
@@ -659,9 +657,8 @@ class TestCase::TypeConversion {
     {
       my $output = (string)-1.23e+123f;
       
-      warn "[Test Output]$output";
-      
-      unless ($output eq "-inf" ||$output eq "-1.#INF") {
+      unless ($output eq "-inf") {
+        warn "$output";
         return 0;
       }
     }
@@ -669,9 +666,8 @@ class TestCase::TypeConversion {
     {
       my $output = (string)(0.0f / 0.0f);
       
-      warn "[Test Output]$output";
-      
-      unless ($output eq "nan" || $output eq "-nan" || $output eq "-1.#IND") {
+      unless ($output eq "nan" || $output eq "-nan") {
+        warn "$output";
         return 0;
       }
     }
