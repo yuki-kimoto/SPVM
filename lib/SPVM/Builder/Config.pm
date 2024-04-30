@@ -488,20 +488,20 @@ sub new {
   # thread_ccflags
   unless (defined $self->{thread_ccflags}) {
     if ($^O eq 'MSWin32') {
-      $self->thread_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
+      $self->thread_ccflags([]);
     }
     else {
-      $self->thread_ccflags([]);
+      $self->thread_ccflags(['-pthread']);
     }
   }
   
   # mingw_ccflags
   unless (defined $self->{mingw_ccflags}) {
     if ($^O eq 'MSWin32') {
-      $self->mingw_ccflags([]);
+      $self->mingw_ccflags(['-D__USE_MINGW_ANSI_STDIO']);
     }
     else {
-      $self->mingw_ccflags(['-pmingw']);
+      $self->mingw_ccflags([]);
     }
   }
   
