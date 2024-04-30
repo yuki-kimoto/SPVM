@@ -2,7 +2,8 @@
   [Incompatible Changes and New Features]
     * Add the mingw_ccflags field to the SPVM::Builder::Config class.
       This value is set to ['-D__USE_MINGW_ANSI_STDIO'] in Windows.
-      
+  [Internal Changes]
+    * Do not use _set_output_format in Windows. -D__USE_MINGW_ANSI_STDIO contains _set_output_format effect.
 0.990002
   [Bug Fix]
     * Fix sprintf %g format in old Windows. 1.0e008(3 digit) is changed to 1.0e08(2 digit). This is C11 compliant.
