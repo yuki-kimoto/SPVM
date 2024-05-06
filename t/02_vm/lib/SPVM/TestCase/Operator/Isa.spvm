@@ -6,6 +6,7 @@ class TestCase::Operator::Isa {
   use Complex_2f;
   use Point;
   use Stringable;
+  use Stringer;
   
   static method isa : int () {
     
@@ -162,6 +163,29 @@ class TestCase::Operator::Isa {
         my $value : Point;
         
         if ($value isa Point) {
+          return 0;
+        }
+      }
+    }
+    
+    # Interface
+    {
+      {
+        my $point = Point->new;
+        
+        unless ($point isa Stringable) {
+          warn dump $point;
+          return 0;
+        }
+      }
+      
+      {
+        my $anon = method : string ($object : object) {
+          
+        };
+        
+        unless ($anon isa Stringer) {
+          warn dump $anon;
           return 0;
         }
       }
