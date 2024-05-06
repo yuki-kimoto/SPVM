@@ -1,6 +1,6 @@
 0.990004
-  [Incompatible Changes]
-    * Change arguments requirement in Interface Method Requirement.
+  [Bug Fix with Incompatible Changes]
+    * Change arguments requirement in Interface Method Requirement. This fix deglation of the SPVM::Regex module.
     [Before]
     The length of the required arguments of the method of the I<INSTANT_METHOD_TYPE_FROM> type must be equal to the length of the required arguments the method of the I<INTERFACE_METHOD_TYPE_TO> type.
     The length of the arguments of the method of the I<INSTANT_METHOD_TYPE_FROM> must be greather than or equal to the length of the arguments of the method of the I<INTERFACE_METHOD_TYPE_TO> type.
