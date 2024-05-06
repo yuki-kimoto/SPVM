@@ -1634,13 +1634,11 @@ I<INTERFACE_METHOD_TO> must be an instance method.
 
 I<METHOD_FROM> must be an instance method.
 
-The length of the required arguments of the method of the I<INSTANT_METHOD_TYPE_FROM> type must be equal to the length of the required arguments the method of the I<INSTANT_METHOD_TYPE_TO> type.
+The length of the arguments of the method of the I<INTERFACE_METHOD_TO> type must be greater than or equal to the length of the required arguments the method of the I<INSTANT_METHOD_TYPE_FROM> type.
 
-The length of the arguments of the method of the I<INSTANT_METHOD_TYPE_FROM> must be greather than or equal to the length of the arguments of the method of the I<INSTANT_METHOD_TYPE_TO> type.
+The every argument other than at 0 index of the method of the I<INSTANT_METHOD_TYPE_FROM> must satisfy the L<assignment requirement|/"Assignment Requirement"> to the argument as the same index of the method of the I<INTERFACE_METHOD_TO> without a data conversion and with interface exactly matched.
 
-The every argument other than at 0 index of the method of the I<INSTANT_METHOD_TYPE_FROM> must satisfy the L<assignment requirement|/"Assignment Requirement"> to the argument as the same index of the method of the I<INSTANT_METHOD_TYPE_TO> without a data conversion and with interface exactly matched.
-
-The return type of the method of the I<INSTANT_METHOD_TYPE_FROM> must must satisfy the L<assignment requirement|/"Assignment Requirement"> to the return type of the method of the I<INSTANT_METHOD_TYPE_TO> without a data conversion and with interface exactly matched.
+The return type of the method of the I<INSTANT_METHOD_TYPE_FROM> must must satisfy the L<assignment requirement|/"Assignment Requirement"> to the return type of the method of the I<INTERFACE_METHOD_TO> without a data conversion and with interface exactly matched.
 
 =head1 See Also
 

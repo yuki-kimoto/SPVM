@@ -1,0 +1,7 @@
+class TestCase::Issues::Issue515::Regex::Match {
+  
+  static method new : TestCase::Issues::Issue515::Regex::Match () {
+    return new TestCase::Issues::Issue515::Regex::Match;
+  }
+  
+}

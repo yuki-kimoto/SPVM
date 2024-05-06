@@ -1,0 +1,23 @@
+class TestCase::Issues::Issue515 {
+  use TestCase::Issues::Issue515::Regex;
+  use TestCase::Issues::Issue515::Regex::Match;
+  use TestCase::Issues::Issue515::Regex::Replacer;
+  
+  static method test : int () {
+    
+    my $object = (object)method : string ($re : TestCase::Issues::Issue515::Regex, $match : TestCase::Issues::Issue515::Regex::Match) {
+      
+      return undef;
+    };
+    
+    unless ($object isa TestCase::Issues::Issue515::Regex::Replacer) {
+      warn dump $object;
+      return 0;
+    }
+    
+    my $replcaer = (TestCase::Issues::Issue515::Regex::Replacer)$object;
+    
+    return 1;
+  }
+  
+}

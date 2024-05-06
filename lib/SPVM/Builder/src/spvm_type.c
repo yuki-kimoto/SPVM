@@ -1856,22 +1856,19 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
     return 0;
   }
   
-  if (!(src_method->required_args_length == dist_method->required_args_length)) {
+  if (!(dist_method->args_length >= src_method->required_args_length)) {
     
     if (error_reason) {
-      snprintf(error_reason, 255, "The length of the required arguments of the \"%s\" method in the \"%s\" %s must be equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+      snprintf(error_reason, 255, "The length of the arguments of the \"%s\" method in the \"%s\" %s must be greater than or equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", dist_method->name, dist_basic_type->name, dist_basic_type_category_name, src_method->name, src_basic_type->name, src_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     }
     return 0;
   }
 
-  if (!(src_method->args_length >= dist_method->args_length)) {
-    if (error_reason) {
-      snprintf(error_reason, 255, "The length of the arguments of the \"%s\" method in the \"%s\" %s must be greather than or equal to the length of the arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
-    }
-    return 0;
-  }
-  
   for (int32_t arg_index = 1; arg_index < dist_method->args_length; arg_index++) {
+    if (arg_index > src_method->args_length - 1) {
+      break;
+    }
+    
     SPVM_VAR_DECL* src_method_var_decl = SPVM_LIST_get(src_method_var_decls, arg_index);
     SPVM_VAR_DECL* dist_method_var_decl = SPVM_LIST_get(dist_method_var_decls, arg_index);
     

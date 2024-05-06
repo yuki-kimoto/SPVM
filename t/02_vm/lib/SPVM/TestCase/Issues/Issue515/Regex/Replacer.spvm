@@ -1,0 +1,6 @@
+class TestCase::Issues::Issue515::Regex::Replacer : interface_t {
+  use TestCase::Issues::Issue515::Regex;
+  use TestCase::Issues::Issue515::Regex::Match;
+  
+  required method : string ($re : TestCase::Issues::Issue515::Regex, $match : TestCase::Issues::Issue515::Regex::Match = undef);
+}

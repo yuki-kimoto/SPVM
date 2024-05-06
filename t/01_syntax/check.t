@@ -1340,7 +1340,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';
-    compile_not_ok($source, q|The length of the required arguments of the "to_string" method in the "MyClass" class must be equal to the length of the required arguments of the "to_string" method in the "Stringable" interface|);
+    compile_not_ok($source, q|The length of the arguments of the "to_string" method in the "Stringable" interface must be greater than or equal to the length of the required arguments of the "to_string" method in the "MyClass" class.|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
@@ -1406,7 +1406,7 @@ use Test::More;
         'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
         'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
       ];
-      compile_not_ok($source, qr|The length of the required arguments of the "foo" method in the "MyClass" class must be equal to the length of the required arguments of the "foo" method in the "MyClass::Interface" interface|);
+      compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass::Interface" interface must be greater than or equal to the length of the required arguments of the "foo" method in the "MyClass" class.|);
     }
   }
   {
@@ -1426,7 +1426,7 @@ use Test::More;
         'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
         'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int, $num2 : int = 0); }',
       ];
-      compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass" class must be greather than or equal to the length of the arguments of the "foo" method in the "MyClass::Interface|);
+      compile_ok($source);
     }
   }
   
@@ -1476,7 +1476,7 @@ use Test::More;
       'class MyClass extends MyClass2 { method x : int ($args : int) {} }',
       'class MyClass2 { method x : int () {} }',
     ];
-    compile_not_ok($source, qr|The length of the required arguments of the "x" method in the "MyClass" class must be equal to the length of the required arguments of the "x" method in the "MyClass2" class|);
+    compile_not_ok($source, qr|The length of the arguments of the "x" method in the "MyClass2" class must be greater than or equal to the length of the required arguments of the "x" method in the "MyClass" class.|);
   }
   {
     my $source = [
@@ -1484,7 +1484,7 @@ use Test::More;
       'class MyClass2 extends MyClass3 { }',
       'class MyClass3 { method x : int () {} }',
     ];
-    compile_not_ok($source, qr|The length of the required arguments of the "x" method in the "MyClass" class must be equal to the length of the required arguments of the "x" method in the "MyClass3" class|);
+    compile_not_ok($source, qr|The length of the arguments of the "x" method in the "MyClass3" class must be greater than or equal to the length of the required arguments of the "x" method in the "MyClass" class.|);
   }
   {
     my $source = [
