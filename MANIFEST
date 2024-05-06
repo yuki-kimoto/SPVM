@@ -756,9 +756,10 @@ t/02_vm/lib/SPVM/TestCase/Inheritance.spvm
 t/02_vm/lib/SPVM/TestCase/InitStatement.spvm
 t/02_vm/lib/SPVM/TestCase/InlineExpansion.spvm
 t/02_vm/lib/SPVM/TestCase/Interface.spvm
-t/02_vm/lib/SPVM/TestCase/InterfaceNoRequiredMethod.spvm
+t/02_vm/lib/SPVM/TestCase/Interface/NoRequiredMethod.spvm
+t/02_vm/lib/SPVM/TestCase/Interface/Point.spvm
+t/02_vm/lib/SPVM/TestCase/Interface/Type.spvm
 t/02_vm/lib/SPVM/TestCase/InterfaceNoRequiredMethodTest.spvm
-t/02_vm/lib/SPVM/TestCase/InterfaceType.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue507/MyClass1.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue507/MyClass2.spvm
 t/02_vm/lib/SPVM/TestCase/Issues/Issue515.spvm
@@ -916,7 +917,6 @@ t/02_vm/lib/SPVM/TestCase/Pointer.spvm
 t/02_vm/lib/SPVM/TestCase/PointerChild.spvm
 t/02_vm/lib/SPVM/TestCase/PointerEmpty.spvm
 t/02_vm/lib/SPVM/TestCase/PointForTest.spvm
-t/02_vm/lib/SPVM/TestCase/PointInterface.spvm
 t/02_vm/lib/SPVM/TestCase/Precedence.spvm
 t/02_vm/lib/SPVM/TestCase/PrecompileClassAttribute.spvm
 t/02_vm/lib/SPVM/TestCase/Private.spvm

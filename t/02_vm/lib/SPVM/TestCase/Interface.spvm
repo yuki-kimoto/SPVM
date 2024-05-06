@@ -5,10 +5,10 @@ class TestCase::Interface {
   use Cloneable;
   use List;
   use Point;
-  use TestCase::PointInterface;
+  use TestCase::Interface::Point;
   use TestCase::PointForTest;
   
-  interface TestCase::InterfaceType;
+  interface TestCase::Interface::Type;
   
   static method new : TestCase::Interface () {
     return new TestCase::Interface;
@@ -109,22 +109,22 @@ class TestCase::Interface {
       }
     }
 
-    # TestCase::InterfaceType
+    # TestCase::Interface::Type
     {
       my $testcase_interface = TestCase::Interface->new;
 
-      my $interface = (TestCase::InterfaceType)$testcase_interface;
+      my $interface = (TestCase::Interface::Type)$testcase_interface;
       
       unless ($interface->interface_shared1(3) eq "shared1 3") {
         return 0;
       }
     }
 
-    # TestCase::InterfaceType method not found
+    # TestCase::Interface::Type method not found
     {
       my $testcase_interface = TestCase::Interface->new;
       
-      my $interface = (TestCase::InterfaceType)$testcase_interface;
+      my $interface = (TestCase::Interface::Type)$testcase_interface;
       
       eval { $interface->interface_shared2(3); };
       unless ($@) {
@@ -147,7 +147,7 @@ class TestCase::Interface {
     }
     
     {
-      my $pointable : TestCase::PointInterface = Point->new(1, 2);
+      my $pointable : TestCase::Interface::Point = Point->new(1, 2);
       unless ($pointable->x == 1) {
         return 0;
       }
@@ -328,7 +328,7 @@ class TestCase::Interface {
   static method can : int () {
     # can
     {
-      my $pointable : TestCase::PointInterface = TestCase::PointForTest->new_xy(1, 2);
+      my $pointable : TestCase::Interface::Point = TestCase::PointForTest->new_xy(1, 2);
       
       unless ($pointable can x) {
         return 0;
@@ -357,10 +357,10 @@ class TestCase::Interface {
   }
   
   method call_to_string : string () {
-    return $self->TestCase::InterfaceType::call_to_string;
+    return $self->TestCase::Interface::Type::call_to_string;
   }
 
   method call_to_string_precompile : string () {
-    return $self->TestCase::InterfaceType::call_to_string_precompile;
+    return $self->TestCase::Interface::Type::call_to_string_precompile;
   }
 }

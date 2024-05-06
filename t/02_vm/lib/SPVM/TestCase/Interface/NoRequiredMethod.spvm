@@ -1,4 +1,4 @@
-class TestCase::InterfaceNoRequiredMethod : interface_t {
+class TestCase::Interface::NoRequiredMethod : interface_t {
   
   method interface_shared1 : string ($num : int);
   

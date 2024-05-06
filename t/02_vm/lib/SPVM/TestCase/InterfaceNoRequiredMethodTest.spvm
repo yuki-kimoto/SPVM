@@ -1,6 +1,6 @@
 class TestCase::InterfaceNoRequiredMethodTest {
   
-  interface TestCase::InterfaceNoRequiredMethod;
+  interface TestCase::Interface::NoRequiredMethod;
   
   static method new : TestCase::InterfaceNoRequiredMethodTest () {
     return new TestCase::InterfaceNoRequiredMethodTest;
@@ -17,7 +17,7 @@ class TestCase::InterfaceNoRequiredMethodTest {
   static method basic : int () {
     
     {
-      my $test_interface = (TestCase::InterfaceNoRequiredMethod)TestCase::InterfaceNoRequiredMethodTest->new;
+      my $test_interface = (TestCase::Interface::NoRequiredMethod)TestCase::InterfaceNoRequiredMethodTest->new;
       
       {
         my $value1 = $test_interface->interface_shared1(3);

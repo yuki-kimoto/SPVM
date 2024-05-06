@@ -6,7 +6,7 @@ class TestCase::Simple : public {
   
   interface Stringable;
   interface Cloneable;
-  interface TestCase::InterfaceType;
+  interface TestCase::Interface::Type;
   
   has x : rw public int;
   has y : rw public int;
