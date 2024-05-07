@@ -92,144 +92,42 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_NUMERIC: {
                 switch (arg_basic_type->id) {
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
-                    if (arg->op_arg_default) {
-                      SPVM_CONSTANT* constant = arg->op_arg_default->uv.constant;
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE);
-                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        opcode.operand1 = (int8_t)constant->value.ival;
-                      }
-                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        opcode.operand1 = (int8_t)constant->value.lval;
-                      }
-                      else {
-                        assert(0);
-                      }
-                    }
-                    else {
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_BYTE);
-                    }
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_BYTE);
                     opcode.operand0 = arg->typed_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
-                    if (arg->op_arg_default) {
-                      SPVM_CONSTANT* constant = arg->op_arg_default->uv.constant;
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_SHORT);
-                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        opcode.operand1 = (int16_t)constant->value.ival;
-                      }
-                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        opcode.operand1 = (int16_t)constant->value.lval;
-                      }
-                      else {
-                        assert(0);
-                      }
-                    }
-                    else {
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_SHORT);
-                    }
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_SHORT);
                     opcode.operand0 = arg->typed_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
-                    if (arg->op_arg_default) {
-                      SPVM_CONSTANT* constant = arg->op_arg_default->uv.constant;
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_INT);
-                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        opcode.operand1 = (int32_t)constant->value.ival;
-                      }
-                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        opcode.operand1 = (int32_t)constant->value.lval;
-                      }
-                      else {
-                        assert(0);
-                      }
-                    }
-                    else {
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_INT);
-                    }
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_INT);
                     opcode.operand0 = arg->typed_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
-                    if (arg->op_arg_default) {
-                      SPVM_CONSTANT* constant = arg->op_arg_default->uv.constant;
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_LONG);
-                      
-                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        *(int64_t*)&opcode.operand1 = (int64_t)constant->value.ival;
-                      }
-                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        *(int64_t*)&opcode.operand1 = constant->value.lval;
-                      }
-                      else {
-                        assert(0);
-                      }
-                    }
-                    else {
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_LONG);
-                    }
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_LONG);
                     opcode.operand0 = arg->typed_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
-                    if (arg->op_arg_default) {
-                      SPVM_CONSTANT* constant = arg->op_arg_default->uv.constant;
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_FLOAT);
-                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        float tmp = (float)constant->value.ival;
-                        opcode.operand1 = (uint32_t)*(int32_t*)&tmp;
-                      }
-                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        float tmp = (float)constant->value.lval;
-                        opcode.operand1 = (uint32_t)*(int32_t*)&tmp;
-                      }
-                      else if (SPVM_TYPE_is_float_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        opcode.operand1 = (uint32_t)constant->value.ival;
-                      }
-                      else {
-                        assert(0);
-                      }
-                    }
-                    else {
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_FLOAT);
-                    }
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_FLOAT);
                     opcode.operand0 = arg->typed_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
                     break;
                   }
                   case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
-                    if (arg->op_arg_default) {
-                      SPVM_CONSTANT* constant = arg->op_arg_default->uv.constant;
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE);
-                      if (SPVM_TYPE_is_int_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        *(double*)&opcode.operand1 = (double)constant->value.ival;
-                      }
-                      else if (SPVM_TYPE_is_long_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        *(double*)&opcode.operand1 = (double)constant->value.lval;
-                      }
-                      else if (SPVM_TYPE_is_float_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        *(double*)&opcode.operand1 = (double)constant->value.fval;
-                      }
-                      else if (SPVM_TYPE_is_double_type(compiler, constant->type->basic_type->id, constant->type->dimension, constant->type->flag)) {
-                        *(double*)&opcode.operand1 = constant->value.dval;
-                      }
-                      else {
-                        assert(0);
-                      }
-                    }
-                    else {
-                      SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_DOUBLE);
-                    }
+                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_DOUBLE);
                     opcode.operand0 = arg->typed_var_index;
                     opcode.operand3 = stack_index & 0xFF;
                     stack_index++;
@@ -284,12 +182,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
               case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
               {
-                if (arg->op_arg_default) {
-                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT);
-                }
-                else {
-                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
-                }
+                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
                 opcode.operand0 = arg->typed_var_index;
                 opcode.operand3 = stack_index & 0xFF;
                 stack_index++;
@@ -310,12 +203,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
             case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE:
             case SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_ANY_OBJECT:
             {
-              if (arg->op_arg_default) {
-                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT);
-              }
-              else {
-                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
-              }
+              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
               opcode.operand0 = arg->typed_var_index;
               opcode.operand3 = stack_index & 0xFF;
               stack_index++;
@@ -327,12 +215,7 @@ void SPVM_OPCODE_BUILDER_build_opcodes(SPVM_COMPILER* compiler) {
           }
         }
         else if (arg_type_dimension == 2) {
-          if (arg->op_arg_default) {
-            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT);
-          }
-          else {
-            SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
-          }
+          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GET_STACK_OBJECT);
           opcode.operand0 = arg->typed_var_index;
           opcode.operand3 = stack_index & 0xFF;
           stack_index++;
