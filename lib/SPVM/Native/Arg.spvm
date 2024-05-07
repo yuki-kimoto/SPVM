@@ -13,4 +13,20 @@ class Native::Arg {
   native method get_type_dimension : int ();
   
   native method get_type_flag : int ();
+  
+  native method is_optional : int ();
+  
+  native method get_default_value_byte : byte ();
+  
+  native method get_default_value_short : short ();
+  
+  native method get_default_value_int : int ();
+  
+  native method get_default_value_long : long ();
+  
+  native method get_default_value_float : float ();
+  
+  native method get_default_value_double : double ();
+  
+  native method get_default_value_object : object ();
 }

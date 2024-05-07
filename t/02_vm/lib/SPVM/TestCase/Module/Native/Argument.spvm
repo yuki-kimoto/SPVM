@@ -1,0 +1,67 @@
+class TestCase::Module::Native::Argument {
+  use Native;
+  use Fn;
+  use Array;
+  use Point;
+  use Native::Constant;
+  
+  static method get_index : int () {
+    
+    return 1;
+  }
+  
+  static method get_basic_type : int () {
+    
+    return 1;
+  }
+  
+  static method get_type_dimension : int () {
+    
+    return 1;
+  }
+  
+  static method get_type_flag : int () {
+    
+    return 1;
+  }
+  
+  static method is_optional : int () {
+    
+    return 1;
+  }
+  
+  static method get_default_value_byte : int () {
+    
+    return 1;
+  }
+  
+  static method get_default_value_short : int () {
+    
+    return 1;
+  }
+  
+  static method get_default_value_int : int () {
+    
+    return 1;
+  }
+  
+  static method get_default_value_long : int () {
+    
+    return 1;
+  }
+  
+  static method get_default_value_float : int () {
+    
+    return 1;
+  }
+  
+  static method get_default_value_double : int () {
+    
+    return 1;
+  }
+  
+  static method get_default_value_object : int () {
+    
+    return 1;
+  }
+}
