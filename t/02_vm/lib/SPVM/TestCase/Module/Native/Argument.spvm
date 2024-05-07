@@ -4,28 +4,101 @@ class TestCase::Module::Native::Argument {
   use Array;
   use Point;
   use Native::Constant;
+  use TestCase::Operator::MethodCall;
+  use Native;
+  use Stringable;
   
   static method get_index : int () {
+    
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("Point");
+    
+    my $method = $basic_type->get_method_by_name("new");
+    
+    my $arg = $method->get_arg_by_index(0);
+    
+    my $arg_index = $arg->get_index;
+    
+    unless ($arg_index == 0) {
+      return 0;
+    }
     
     return 1;
   }
   
   static method get_basic_type : int () {
     
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("Point");
+    
+    my $method = $basic_type->get_method_by_name("new");
+    
+    my $arg = $method->get_arg_by_index(0);
+    
+    my $arg_basic_type = $arg->get_basic_type;
+    
+    unless ($arg_basic_type->get_name eq "int") {
+      return 0;
+    }
+    
     return 1;
   }
   
   static method get_type_dimension : int () {
+    
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("Point");
+    
+    my $method = $basic_type->get_method_by_name("new");
+    
+    my $arg = $method->get_arg_by_index(0);
+    
+    my $arg_type_dimension = $arg->get_type_dimension;
+    
+    unless ($arg_type_dimension == 0) {
+      return 0;
+    }
     
     return 1;
   }
   
   static method get_type_flag : int () {
     
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("Point");
+    
+    my $method = $basic_type->get_method_by_name("new");
+    
+    my $arg = $method->get_arg_by_index(0);
+    
+    my $arg_type_flag = $arg->get_type_flag;
+    
+    unless ($arg_type_flag == 0) {
+      return 0;
+    }
+    
     return 1;
   }
   
   static method is_optional : int () {
+    
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("Point");
+    
+    my $method = $basic_type->get_method_by_name("new");
+    
+    my $arg = $method->get_arg_by_index(0);
+    
+    my $arg_is_optional = $arg->is_optional;
+    
+    unless ($arg_is_optional == 1) {
+      return 0;
+    }
     
     return 1;
   }
@@ -41,6 +114,21 @@ class TestCase::Module::Native::Argument {
   }
   
   static method get_default_value_int : int () {
+    
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("Point");
+    
+    my $method = $basic_type->get_method_by_name("new");
+    
+    my $arg = $method->get_arg_by_index(0);
+    
+    my $arg_default_value_int = $arg->get_default_value_int;
+    
+    unless ($arg_default_value_int == 0) {
+      warn $arg_default_value_int;
+      return 0;
+    }
     
     return 1;
   }
