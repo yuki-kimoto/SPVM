@@ -1,4 +1,7 @@
-0.990004
+0.990005 2023-05-07
+  [Internal Changes]
+    * Use information of SPVM_RUNTIME_ARG to set default values of optional argument in native method calls.
+0.990004 2023-05-07
   [Bug Fix with Incompatible Changes]
     * Change arguments requirement in Interface Method Requirement. This fix deglation of the SPVM::Regex module.
     [Before]
@@ -8,16 +11,16 @@
     [After]
     The length of the arguments of the method of the I<INTERFACE_METHOD_TO> type must be greater than or equal to the length of the required arguments the method of the I<INSTANT_METHOD_TYPE_FROM> type.
   
-0.990003
+0.990003 2023-05-01
   [Incompatible Changes and New Features]
     * Add the mingw_ccflags field to the SPVM::Builder::Config class.
       This value is set to ['-D__USE_MINGW_ANSI_STDIO'] in Windows. This changes printf format in Windows becuase the output is compliant to C99.
   [Internal Changes]
     * Do not use _set_output_format in Windows. -D__USE_MINGW_ANSI_STDIO contains _set_output_format effect.
-0.990002
+0.990002 2023-04-29
   [Bug Fix]
     * Fix sprintf %g format in old Windows. 1.0e008(3 digit) is changed to 1.0e08(2 digit). This is C11 compliant.
-0.990001
+0.990001 2023-04-23
   [Document Improvement]
     * Add the doc of the spvmdist command.
     * Add the doc of the spvm command.
@@ -29,7 +32,7 @@
     * Remove unneeded SPVM/Stack.pm file.
     * Remove unneeded SPVM/Runtime.pm file.
     
-0.990
+0.990 2023-04-23
   [Major Version Up]
     * SPVM 0.990 is a major version up. The document is finished.
   [Document Improvement]

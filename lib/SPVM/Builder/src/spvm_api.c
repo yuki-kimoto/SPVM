@@ -3683,75 +3683,13 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   int32_t error_id = 0;
   
   // Set default values of optional arguments
-  int32_t optional_args_length = method->args_length - method->required_args_length;
-  if (optional_args_length > 0) {
-    
-    SPVM_OPCODE* opcodes = method->opcodes;
-    
-    int32_t opcode_rel_index = 0;
-    while (1) {
+  for (int32_t arg_index = method->required_args_length; arg_index < method->args_length; arg_index++) {
+    SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
+    if (arg->stack_index >= args_width) {
       
-      SPVM_OPCODE* opcode = &(opcodes[opcode_rel_index]);
+      assert(arg->is_optional);
       
-      if (opcode->id == SPVM_OPCODE_C_ID_END_ARGS) {
-        break;
-      }
-      
-      switch (opcode->id) {
-        case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE: {
-          int32_t stack_index = opcode->operand3 & 0xFF;
-          if (stack_index >= args_width) {
-            stack[stack_index].bval = (int8_t)(uint8_t)opcode->operand1;
-          }
-          break;
-        }
-        case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_SHORT: {
-          int32_t stack_index = opcode->operand3 & 0xFF;
-          if (stack_index >= args_width) {
-            stack[stack_index].sval = (int16_t)(uint16_t)opcode->operand1;
-          }
-          break;
-        }
-        case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_INT: {
-          int32_t stack_index = opcode->operand3 & 0xFF;
-          if (stack_index >= args_width) {
-            stack[stack_index].ival = (int32_t)opcode->operand1;
-          }
-          break;
-        }
-        case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_LONG: {
-          int32_t stack_index = opcode->operand3 & 0xFF;
-          if (stack_index >= args_width) {
-            stack[stack_index].lval = *(int64_t*)&opcode->operand1;
-          }
-          break;
-        }
-        case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_FLOAT: {
-          int32_t stack_index = opcode->operand3 & 0xFF;
-          if (stack_index >= args_width) {
-            SPVM_VALUE default_value;
-            default_value.ival = (int32_t)opcode->operand1;
-            stack[stack_index].fval = default_value.fval;
-          }
-          break;
-        }
-        case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE: {
-          int32_t stack_index = opcode->operand3 & 0xFF;
-          if (stack_index >= args_width) {
-            stack[stack_index].dval = *(double*)&opcode->operand1;
-          }
-          break;
-        }
-        case SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT: {
-          int32_t stack_index = opcode->operand3 & 0xFF;
-          if (stack_index >= args_width) {
-            stack[stack_index].oval = NULL;
-          }
-          break;
-        }
-      }
-      
-      opcode_rel_index++;
+      stack[arg->stack_index] = arg->default_value;
     }
   }
   
