@@ -3682,17 +3682,6 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
   
   int32_t error_id = 0;
   
-  // Set default values of optional arguments
-  for (int32_t arg_index = method->required_args_length; arg_index < method->args_length; arg_index++) {
-    SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
-    if (arg->stack_index >= args_width) {
-      
-      assert(arg->is_optional);
-      
-      stack[arg->stack_index] = arg->default_value;
-    }
-  }
-  
   // Call native method
   int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = method->native_address;
   if (!native_address) {
@@ -3796,6 +3785,18 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
       }
       
       if (!no_need_call) {
+        
+        // Set default values of optional arguments
+        for (int32_t arg_index = method->required_args_length; arg_index < method->args_length; arg_index++) {
+          SPVM_RUNTIME_ARG* arg = &method->args[arg_index];
+          if (arg->stack_index >= args_width) {
+            
+            assert(arg->is_optional);
+            
+            stack[arg->stack_index] = arg->default_value;
+          }
+        }
+        
         // Call native method
         if (method->is_native) {
           error_id = SPVM_API_call_method_native(env, stack, method, args_width);
