@@ -1,4 +1,9 @@
 0.990005 2023-05-07
+  [New Features]
+    * Add the following argument native APIs.
+      int32_t (*is_optional)(void* runtime, void* arg);
+      SPVM_VALUE (*get_default_value)(void* runtime, void* arg);
+    
   [Internal Changes]
     * Use information of SPVM_RUNTIME_ARG to set default values of optional argument in native method calls.
     * Remove the following operation codes.

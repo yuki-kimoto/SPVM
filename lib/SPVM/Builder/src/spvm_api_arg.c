@@ -20,6 +20,8 @@ SPVM_API_ARG* SPVM_API_ARG_new_api() {
     SPVM_API_ARG_get_type_flag,
     SPVM_API_ARG_get_stack_index,
     SPVM_API_ARG_get_current_method,
+    SPVM_API_ARG_is_optional,
+    SPVM_API_ARG_get_current_method,
   };
   
   SPVM_API_ARG* native_apis = calloc(1, sizeof(native_apis_init));
@@ -69,3 +71,12 @@ SPVM_RUNTIME_METHOD* SPVM_API_ARG_get_current_method(SPVM_RUNTIME* runtime, SPVM
   return arg->current_method;
 }
 
+int32_t SPVM_API_ARG_is_optional(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+  
+  return arg->is_optional;
+}
+
+SPVM_VALUE SPVM_API_ARG_get_default_value(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg) {
+  
+  return arg->default_value;
+}

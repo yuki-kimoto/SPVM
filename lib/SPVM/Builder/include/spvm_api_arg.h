@@ -25,4 +25,8 @@ int32_t SPVM_API_ARG_get_stack_index(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* ar
 
 SPVM_RUNTIME_METHOD* SPVM_API_ARG_get_current_method(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg);
 
+int32_t SPVM_API_ARG_is_optional(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg);
+
+SPVM_VALUE SPVM_API_ARG_get_default_value(SPVM_RUNTIME* runtime, SPVM_RUNTIME_ARG* arg);
+
 #endif

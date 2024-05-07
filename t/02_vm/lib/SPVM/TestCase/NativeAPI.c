@@ -270,6 +270,8 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_arg_ids(SPVM_ENV* env, SPVM_
   if ((void*)&env->api->arg->get_type_flag != &env_array[4]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->arg->get_stack_index != &env_array[5]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->api->arg->get_current_method != &env_array[6]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->arg->is_optional != &env_array[7]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->api->arg->get_default_value != &env_array[8]) { stack[0].ival = 0; return 0; }
   
   stack[0].ival = 1;
   

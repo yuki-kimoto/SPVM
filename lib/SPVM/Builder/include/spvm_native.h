@@ -342,6 +342,8 @@ struct spvm_api_arg {
   int32_t (*get_type_flag)(void* runtime, void* arg);
   int32_t (*get_stack_index)(void* runtime, void* arg);
   void* (*get_current_method)(void* runtime, void* arg);
+  int32_t (*is_optional)(void* runtime, void* arg);
+  SPVM_VALUE (*get_default_value)(void* runtime, void* arg);
 };
 
 struct spvm_api_basic_type {

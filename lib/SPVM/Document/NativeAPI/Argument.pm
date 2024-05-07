@@ -64,6 +64,18 @@ C<void* (*get_current_method)(L<void* runtime|SPVM::Document::NativeAPI::Runtime
 
 Returns the L<method|SPVM::Document::NativeAPI::Method> that owns the argment I<arg>.
 
+=head2 is_optional
+
+C<int32_t (*is_optional)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+
+If the argument I<arg> is an optional argument, returns 1. Otherwise, returns 0.
+
+=head2 get_default_value
+
+C<SPVM_VALUE (*get_default_value)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
+
+Returns the default value of the optional argument I<arg>.
+
 =head1 Native API IDs
 
   0 get_name
@@ -73,8 +85,10 @@ Returns the L<method|SPVM::Document::NativeAPI::Method> that owns the argment I<
   4 get_type_flag
   5 get_stack_index
   6 get_current_method
+  7 is_optional
+  8 get_default_value
 
-=head1 See Aloso
+=head1 See Also
 
 =over 2
 
