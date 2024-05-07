@@ -3,6 +3,22 @@
     * Add the following argument native APIs.
       int32_t (*is_optional)(void* runtime, void* arg);
       SPVM_VALUE (*get_default_value)(void* runtime, void* arg);
+    * Add the following methods to the Native::Arg class.
+      is_optional
+
+      get_default_value_byte
+
+      get_default_value_short
+
+      get_default_value_int
+
+      get_default_value_long
+
+      get_default_value_float
+
+      get_default_value_double
+
+      get_default_value_object
     
   [Internal Changes]
     * Use information of SPVM_RUNTIME_ARG to set default values of optional argument in native method calls.
