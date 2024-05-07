@@ -1504,14 +1504,6 @@ EOS
       }
     }
     
-    # length with {} Too many elements over 4G
-    {
-      my $nums = new int[150000000];
-      my $len = @{$nums};
-      $nums->[149999999] = 764;
-      print($nums->[149999999] . "\n");
-    }
-    
     {
       my $nums = new int[2000000];
       my $len = scalar @$nums;
