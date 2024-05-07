@@ -7,6 +7,7 @@ class TestCase::Module::Native::Argument {
   use TestCase::Operator::MethodCall;
   use Native;
   use Stringable;
+  use TestCase::NativeAPI;
   
   static method get_index : int () {
     
@@ -102,13 +103,57 @@ class TestCase::Module::Native::Argument {
     
     return 1;
   }
-  
+
+=pod
+class TestCase::NativeAPI {
+  native static method default_all_types_native : int (
+    $value_byte : byte = -128,
+    $value_short : short = -32768,
+    $value_int : int = -2147483648,
+    $value_long : long = -9223372036854775808L,
+    $value_float : float = 1.5f,
+    $value_double : double = -2147483648.5,
+    $value_object : object = undef,
+  );
+}
+=cut
+
   static method get_default_value_byte : int () {
+    
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("TestCase::NativeAPI");
+    
+    my $method = $basic_type->get_method_by_name("default_all_types_native");
+    
+    my $arg = $method->get_arg_by_index(0);
+    
+    my $arg_default_value_byte = $arg->get_default_value_byte;
+    
+    unless ($arg_default_value_byte == -128) {
+      warn $arg_default_value_byte;
+      return 0;
+    }
     
     return 1;
   }
   
   static method get_default_value_short : int () {
+    
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("TestCase::NativeAPI");
+    
+    my $method = $basic_type->get_method_by_name("default_all_types_native");
+    
+    my $arg = $method->get_arg_by_index(1);
+    
+    my $arg_default_value_short = $arg->get_default_value_short;
+    
+    unless ($arg_default_value_short == -32768) {
+      warn $arg_default_value_short;
+      return 0;
+    }
     
     return 1;
   }
@@ -117,15 +162,15 @@ class TestCase::Module::Native::Argument {
     
     my $runtime = Native->get_current_runtime;
     
-    my $basic_type = $runtime->get_basic_type_by_name("Point");
+    my $basic_type = $runtime->get_basic_type_by_name("TestCase::NativeAPI");
     
-    my $method = $basic_type->get_method_by_name("new");
+    my $method = $basic_type->get_method_by_name("default_all_types_native");
     
-    my $arg = $method->get_arg_by_index(0);
+    my $arg = $method->get_arg_by_index(2);
     
     my $arg_default_value_int = $arg->get_default_value_int;
     
-    unless ($arg_default_value_int == 0) {
+    unless ($arg_default_value_int == -2147483648) {
       warn $arg_default_value_int;
       return 0;
     }
@@ -135,20 +180,80 @@ class TestCase::Module::Native::Argument {
   
   static method get_default_value_long : int () {
     
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("TestCase::NativeAPI");
+    
+    my $method = $basic_type->get_method_by_name("default_all_types_native");
+    
+    my $arg = $method->get_arg_by_index(3);
+    
+    my $arg_default_value_long = $arg->get_default_value_long;
+    
+    unless ($arg_default_value_long == -9223372036854775808L) {
+      warn $arg_default_value_long;
+      return 0;
+    }
+    
     return 1;
   }
   
   static method get_default_value_float : int () {
+    
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("TestCase::NativeAPI");
+    
+    my $method = $basic_type->get_method_by_name("default_all_types_native");
+    
+    my $arg = $method->get_arg_by_index(4);
+    
+    my $arg_default_value_float = $arg->get_default_value_float;
+    
+    unless ($arg_default_value_float == 1.5f) {
+      warn $arg_default_value_float;
+      return 0;
+    }
     
     return 1;
   }
   
   static method get_default_value_double : int () {
     
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("TestCase::NativeAPI");
+    
+    my $method = $basic_type->get_method_by_name("default_all_types_native");
+    
+    my $arg = $method->get_arg_by_index(5);
+    
+    my $arg_default_value_double = $arg->get_default_value_double;
+    
+    unless ($arg_default_value_double == -2147483648.5) {
+      warn $arg_default_value_double;
+      return 0;
+    }
+    
     return 1;
   }
   
   static method get_default_value_object : int () {
+    
+    my $runtime = Native->get_current_runtime;
+    
+    my $basic_type = $runtime->get_basic_type_by_name("TestCase::NativeAPI");
+    
+    my $method = $basic_type->get_method_by_name("default_all_types_native");
+    
+    my $arg = $method->get_arg_by_index(6);
+    
+    my $arg_default_value_object = $arg->get_default_value_object;
+    
+    unless ($arg_default_value_object == undef) {
+      warn $arg_default_value_object;
+      return 0;
+    }
     
     return 1;
   }
