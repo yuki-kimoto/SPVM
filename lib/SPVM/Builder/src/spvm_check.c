@@ -502,6 +502,207 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
                 return;
               }
             }
+            
+            switch (arg_type->basic_type->id) {
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                switch (op_arg_default->uv.constant->type->basic_type->id) {
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                    arg_var_decl->arg_default_value.bval = (int8_t)op_arg_default->uv.constant->value.bval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                    arg_var_decl->arg_default_value.bval = (int8_t)op_arg_default->uv.constant->value.sval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                    arg_var_decl->arg_default_value.bval = (int8_t)op_arg_default->uv.constant->value.ival;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                    arg_var_decl->arg_default_value.bval = (int8_t)op_arg_default->uv.constant->value.lval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                    arg_var_decl->arg_default_value.bval = (int8_t)op_arg_default->uv.constant->value.fval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                    arg_var_decl->arg_default_value.bval = (int8_t)op_arg_default->uv.constant->value.dval;
+                    break;
+                  }
+                  default: {
+                    assert(0);
+                  }
+                }
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                switch (op_arg_default->uv.constant->type->basic_type->id) {
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                    arg_var_decl->arg_default_value.sval = (int16_t)op_arg_default->uv.constant->value.bval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                    arg_var_decl->arg_default_value.sval = (int16_t)op_arg_default->uv.constant->value.sval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                    arg_var_decl->arg_default_value.sval = (int16_t)op_arg_default->uv.constant->value.ival;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                    arg_var_decl->arg_default_value.sval = (int16_t)op_arg_default->uv.constant->value.lval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                    arg_var_decl->arg_default_value.sval = (int16_t)op_arg_default->uv.constant->value.fval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                    arg_var_decl->arg_default_value.sval = (int16_t)op_arg_default->uv.constant->value.dval;
+                    break;
+                  }
+                  default: {
+                    assert(0);
+                  }
+                }
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                switch (op_arg_default->uv.constant->type->basic_type->id) {
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                    arg_var_decl->arg_default_value.ival = (int32_t)op_arg_default->uv.constant->value.bval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                    arg_var_decl->arg_default_value.ival = (int32_t)op_arg_default->uv.constant->value.sval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                    arg_var_decl->arg_default_value.ival = (int32_t)op_arg_default->uv.constant->value.ival;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                    arg_var_decl->arg_default_value.ival = (int32_t)op_arg_default->uv.constant->value.lval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                    arg_var_decl->arg_default_value.ival = (int32_t)op_arg_default->uv.constant->value.fval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                    arg_var_decl->arg_default_value.ival = (int32_t)op_arg_default->uv.constant->value.dval;
+                    break;
+                  }
+                  default: {
+                    assert(0);
+                  }
+                }
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                switch (op_arg_default->uv.constant->type->basic_type->id) {
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                    arg_var_decl->arg_default_value.lval = (int64_t)op_arg_default->uv.constant->value.bval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                    arg_var_decl->arg_default_value.lval = (int64_t)op_arg_default->uv.constant->value.sval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                    arg_var_decl->arg_default_value.lval = (int64_t)op_arg_default->uv.constant->value.ival;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                    arg_var_decl->arg_default_value.lval = (int64_t)op_arg_default->uv.constant->value.lval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                    arg_var_decl->arg_default_value.lval = (int64_t)op_arg_default->uv.constant->value.fval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                    arg_var_decl->arg_default_value.lval = (int64_t)op_arg_default->uv.constant->value.dval;
+                    break;
+                  }
+                  default: {
+                    assert(0);
+                  }
+                }
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                switch (op_arg_default->uv.constant->type->basic_type->id) {
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                    arg_var_decl->arg_default_value.fval = (float)op_arg_default->uv.constant->value.bval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                    arg_var_decl->arg_default_value.fval = (float)op_arg_default->uv.constant->value.sval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                    arg_var_decl->arg_default_value.fval = (float)op_arg_default->uv.constant->value.ival;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                    arg_var_decl->arg_default_value.fval = (float)op_arg_default->uv.constant->value.lval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                    arg_var_decl->arg_default_value.fval = (float)op_arg_default->uv.constant->value.fval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                    arg_var_decl->arg_default_value.fval = (float)op_arg_default->uv.constant->value.dval;
+                    break;
+                  }
+                  default: {
+                    assert(0);
+                  }
+                }
+                
+                break;
+              }
+              case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                switch (op_arg_default->uv.constant->type->basic_type->id) {
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
+                    arg_var_decl->arg_default_value.dval = (double)op_arg_default->uv.constant->value.bval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
+                    arg_var_decl->arg_default_value.dval = (double)op_arg_default->uv.constant->value.sval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
+                    arg_var_decl->arg_default_value.dval = (double)op_arg_default->uv.constant->value.ival;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
+                    arg_var_decl->arg_default_value.dval = (double)op_arg_default->uv.constant->value.lval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
+                    arg_var_decl->arg_default_value.dval = (double)op_arg_default->uv.constant->value.fval;
+                    break;
+                  }
+                  case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
+                    arg_var_decl->arg_default_value.dval = (double)op_arg_default->uv.constant->value.dval;
+                    break;
+                  }
+                  default: {
+                    assert(0);
+                  }
+                }
+                
+                break;
+              }
+            }
           }
           else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
             if (op_arg_default->id != SPVM_OP_C_ID_UNDEF) {
