@@ -902,6 +902,9 @@ SPVM_RUNTIME* SPVM_COMPILER_build_runtime(SPVM_COMPILER* compiler) {
             runtime_arg->type_flag = arg_var_decl->type->flag;
             runtime_arg->stack_index = arg_var_decl->stack_index;
             runtime_arg->current_method = runtime_method;
+            if (arg_var_decl->op_arg_default) {
+              runtime_arg->is_optional = 1;
+            }
           }
         }
         
