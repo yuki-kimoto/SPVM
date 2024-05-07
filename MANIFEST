@@ -757,6 +757,7 @@ t/02_vm/lib/SPVM/TestCase/InitStatement.spvm
 t/02_vm/lib/SPVM/TestCase/InlineExpansion.spvm
 t/02_vm/lib/SPVM/TestCase/Interface.spvm
 t/02_vm/lib/SPVM/TestCase/Interface/NoRequiredMethod.spvm
+t/02_vm/lib/SPVM/TestCase/Interface/OptionalArgument.spvm
 t/02_vm/lib/SPVM/TestCase/Interface/Point.spvm
 t/02_vm/lib/SPVM/TestCase/Interface/Type.spvm
 t/02_vm/lib/SPVM/TestCase/InterfaceNoRequiredMethodTest.spvm
