@@ -1,6 +1,15 @@
 0.990005 2023-05-07
   [Internal Changes]
     * Use information of SPVM_RUNTIME_ARG to set default values of optional argument in native method calls.
+    * Remove the following operation codes.
+      SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_BYTE
+      SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_SHORT
+      SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_INT
+      SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_LONG
+      SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_FLOAT
+      SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_DOUBLE
+      SPVM_OPCODE_C_ID_GET_STACK_OPTIONAL_OBJECT
+
 0.990004 2023-05-07
   [Bug Fix with Incompatible Changes]
     * Change arguments requirement in Interface Method Requirement. This fix deglation of the SPVM::Regex module.
