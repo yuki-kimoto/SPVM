@@ -15,6 +15,7 @@ struct spvm_runtime_arg {
   int32_t type_dimension;
   int32_t type_flag;
   int32_t stack_index;
+  int8_t is_optional;
 };
 
 #endif
