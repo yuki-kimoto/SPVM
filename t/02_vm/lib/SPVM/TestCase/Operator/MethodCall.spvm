@@ -16,7 +16,8 @@ class TestCase::Operator::MethodCall {
   use Fn;
   use Array;
   use Point;
-
+  use TestCase::Interface::OptionalArgument;
+  
   # Use keyword name as method name
   static method int : int () {
     
@@ -1182,6 +1183,31 @@ class TestCase::Operator::MethodCall {
           return 0;
         }
         unless ($values->[2]->(int) == 7) {
+          return 0;
+        }
+      }
+    }
+    
+    # Interface optional argument
+    {
+      my $anon = (TestCase::Interface::OptionalArgument)method : int ($value : int = 2) {
+        return $value;
+      };
+      
+      {
+        my $ret = $anon->();
+        
+        unless ($ret == 2) {
+          warn $ret;
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $anon->(3);
+        
+        unless ($ret == 3) {
+          warn $ret;
           return 0;
         }
       }
