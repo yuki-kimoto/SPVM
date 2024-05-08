@@ -32,13 +32,16 @@ sub boot_env {
   }
 }
 
-sub print_error_messages {
+sub get_formatted_error_messages {
   my ($self, $fh) = @_;
-
+  
+  my $formatted_error_messages = [];
   my $error_messages = $self->get_error_messages;
   for my $error_message (@$error_messages) {
-    printf $fh "[CompileError]$error_message\n";
+    push @$formatted_error_messages, "[CompileError]$error_message\n";
   }
+  
+  return $formatted_error_messages;
 }
 
 sub new {
@@ -72,8 +75,7 @@ sub compile_with_exit {
   
   my $success = $self->compile($class_name);
   unless ($success) {
-    $self->print_error_messages(*STDERR);
-    exit(255);
+    Carp::confess(join("\n", @{$self->get_formatted_error_messages}));
   }
 }
 

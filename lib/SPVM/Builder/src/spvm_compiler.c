@@ -454,14 +454,6 @@ const char* SPVM_COMPILER_get_error_message(SPVM_COMPILER* compiler, int32_t ind
   return error_message;
 }
 
-void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
-  
-  for (int32_t i = 0; i < compiler->error_messages->length; i++) {
-    const char* error_message = (const char*)SPVM_LIST_get(compiler->error_messages, i);
-    fprintf(fh, "[CompileError]%s\n", error_message);
-  }
-}
-
 void SPVM_COMPILER_use(SPVM_COMPILER* compiler, const char* basic_type_name, const char* file, int32_t line) {
   SPVM_OP* op_name_basic_type = SPVM_OP_new_op_name(compiler, basic_type_name, file, line);
   SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_basic_type);

@@ -160,8 +160,6 @@ SPVM_RUNTIME* SPVM_COMPILER_new_object(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
 
-void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh);
-
 const char* SPVM_COMPILER_get_start_file(SPVM_COMPILER* compiler);
 
 void SPVM_COMPILER_set_start_file(SPVM_COMPILER* compiler, const char* start_file);

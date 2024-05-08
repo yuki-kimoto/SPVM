@@ -90,8 +90,7 @@ sub build_dynamic_lib_dist {
   $compiler->set_start_line(__LINE__ + 1);
   my $success = $compiler->compile($class_name);
   unless ($success) {
-    $compiler->print_error_messages(*STDERR);
-    exit(255);
+    Carp::confess(join("\n", @{$compiler->get_formatted_error_messages}));
   }
   my $runtime = $compiler->get_runtime;
   
