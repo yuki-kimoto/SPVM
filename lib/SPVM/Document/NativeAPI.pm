@@ -2105,7 +2105,7 @@ Windows:
 
 L<strerror_s|https://learn.microsoft.com/ja-jp/cpp/c-runtime-library/reference/strerror-s-strerror-s-wcserror-s-wcserror-s?view=msvc-170>
 
-Linux/UNIX:
+Linux and UNIX:
 
 L<strerror_r - XSI-compliant|https://linux.die.net/man/3/strerror_r>
 

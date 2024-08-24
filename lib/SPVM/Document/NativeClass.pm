@@ -590,7 +590,7 @@ A L<runtime stack|/"Runtime Stack"> has one native mortal stack.
 
 A native class and native source files are compiled to object files and are linked and a shared library is generated.
 
-The extension of a shared library is C<.so> in Linux/UNIX, C<.dylib> in Mac, C<.dll> in Windows.
+The extension of a shared library is C<.so> in Linux and UNIX, C<.dylib> in Mac, C<.dll> in Windows.
 
 The L<SPVM_BUILD_DIR|SPVM::Document::EnvironmentVariables/"SPVM_BUILD_DIR"> environment variable must be set to a build directoy path.
 
