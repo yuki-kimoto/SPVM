@@ -14,7 +14,7 @@ SPVM::Error::NotSupported - Not Supported Error
 
 The Error::NotSupported class represents errors the system dose not support this feature.
 
-=head1 Inheritance
+=head1 Super Class
 
 L<Error|SPVM::Error>
 

@@ -51,7 +51,7 @@ SPVM::StringList - Dynamic string array
 
 C<StringList> is a dynamic C<string> array.
 
-=head1 Inheritance
+=head1 Super Class
 
 L<List|SPVM::List>.
 

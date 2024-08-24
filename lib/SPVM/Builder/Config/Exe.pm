@@ -111,7 +111,7 @@ The SPVM::Builder::Config::Exe class has methods to manipulate the config for th
   
   my $config_exe = SPVM::Builder::Config::Exe->new_gnu99;
 
-=head1 Inheritance
+=head1 Super Class
 
 =over 2
 

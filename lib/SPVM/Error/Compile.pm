@@ -14,7 +14,7 @@ SPVM::Error::Compile - Compilation Errors
 
 C<Error::Compile> is the error class for compilation errors.
 
-=head1 Inheritance
+=head1 Super Class
 
 L<Error|SPVM::Error>
 

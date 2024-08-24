@@ -14,7 +14,7 @@ SPVM::Error::System - System Error
 
 The Error::System class represents system errors.
 
-=head1 Inheritance
+=head1 Super Class
 
 L<Error|SPVM::Error>
 
