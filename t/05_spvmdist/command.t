@@ -69,6 +69,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Fields"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Class Methods"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Instance Methods"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 See Also"));
   
   my $spvm_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.spvm";
   ok(-f $spvm_class_file);
