@@ -464,7 +464,7 @@ EOS
 
 
 
-=head1 Inheritance
+=head1 Super Class
 
 
 

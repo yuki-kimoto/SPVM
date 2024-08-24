@@ -1,6 +1,8 @@
 0.991 2023-08-24
   [Document Changes]
     * "=head1 Inheritance" is changed to "=head1 Super Class".
+  [Changes]
+    * "=head1 Inheritance" outputted by spvmdist command is changed to "=head1 Super Class".
 0.990006 2023-05-09
   [Feature Improvement]
     * Users know caller when a class loading from a Perl script failed.

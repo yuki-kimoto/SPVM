@@ -63,7 +63,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Usage"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Details"));
-  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Inheritance"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Super Class"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Interfaces"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Enumerations"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "=head1 Fields"));
