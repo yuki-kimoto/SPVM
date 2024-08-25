@@ -314,7 +314,7 @@ sub generate_perl_class_file {
   my $description;
   my $main_doc;
   if ($interface) {
-    $description = "The $class_name interface in L<SPVM> has interface methods to do someting.";
+    $description = "$class_name interface in L<SPVM> has interface methods to do someting.";
     $main_doc  = <<"EOS";
 =head1 Usage
 
@@ -331,7 +331,7 @@ sub generate_perl_class_file {
 EOS
   }
   elsif ($resource) {
-    $description = "The $class_name resource in L<SPVM> is a L<resouce|SPVM::Document::Resource> to do someting.";
+    $description = "$class_name in L<SPVM> is a L<resource|SPVM::Document::Resource> for something.";
     
     my $native = $self->native;
     my $new_method;
@@ -454,7 +454,7 @@ MyClass.$native_module_ext:
 EOS
   }
   else {
-    $description = "The $class_name class in L<SPVM> has methods to do someting.";
+    $description = "$class_name class in L<SPVM> has methods to do someting.";
     $main_doc  = <<"EOS";
 =head1 Usage
 
@@ -1225,7 +1225,7 @@ SPVM::Dist - Generating SPVM Distrubution
 
 =head2 Description
 
-The SPVM::Dist class has methods to generate an SPVM Distrubution.
+SPVM::Dist class has methods to generate an SPVM Distrubution.
 
 =head2 Usage
 

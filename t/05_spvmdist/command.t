@@ -681,7 +681,7 @@ for my $test_index (0 .. 1) {
   my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(-f $perl_class_file);
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_class_file, "L<resouce|SPVM::Document::Resource>"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "L<resource|SPVM::Document::Resource>"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.config:"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.c:"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "new_gnu99"));
@@ -746,7 +746,7 @@ for my $test_index (0 .. 1) {
   my $perl_class_file = "$tmp_dir/SPVM-Foo/lib/SPVM/Foo.pm";
   ok(-f $perl_class_file);
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "package SPVM::Foo;"));
-  ok(SPVM::Builder::Util::file_contains($perl_class_file, "L<resouce|SPVM::Document::Resource>"));
+  ok(SPVM::Builder::Util::file_contains($perl_class_file, "L<resource|SPVM::Document::Resource>"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.config:"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "MyClass.cpp:"));
   ok(SPVM::Builder::Util::file_contains($perl_class_file, "new_cpp"));

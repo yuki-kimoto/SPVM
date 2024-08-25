@@ -4,6 +4,7 @@
   [Changes]
     * "=head1 Inheritance" outputted by spvmdist command is changed to "=head1 Super Class".
     * Add "=head1 See Also" section to the output from spvmdist command.
+    * Improve "Description" outputted from spmvdist command.
   [Exception Message Improvement]
     * Improve exception messages outputted from spvmdist command.
     
