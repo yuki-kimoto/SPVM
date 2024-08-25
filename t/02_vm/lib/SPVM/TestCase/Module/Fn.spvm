@@ -3142,6 +3142,7 @@ class TestCase::Module::Fn {
   }
   
   static method split : int () {
+    
     {
       my $string = "foo,bar,baz";
       my $splited_strings = Fn->split(",", $string);
@@ -3332,7 +3333,15 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
+    {
+      my $string = "";
+      my $splited_strings = Fn->split(",", $string);
+      unless (Array->equals_string($splited_strings, new string[0])) {
+        return 0;
+      }
+    }
+    
     # Exceptions
     {
       {

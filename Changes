@@ -8,6 +8,8 @@
     * Add commented meta-spec "release_status" option to Makefile.PL outputted from spvmdist command.
   [Exception Message Improvement]
     * Improve exception messages outputted from spvmdist command.
+  [Test Improvement]
+    * Add a test for Fn#split method when a input is an empty string.
     
 0.990006 2023-05-09
   [Feature Improvement]
