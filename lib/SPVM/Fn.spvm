@@ -733,6 +733,7 @@ class Fn {
   }
   
   precompile static method split : string[] ($separator : string, $string : string, $limit : int = 0) {
+    
     unless ($separator) {
       die "The separator \$separator must be defined.";
     }
@@ -775,7 +776,7 @@ class Fn {
       my $part = &substr($string, $offset, $string_length - $offset);
       $parts_list->push($part);
     }
-
+    
     if ($limit == 0) {
       while ($parts_list->length > 0) {
         if ($parts_list->get($parts_list->length - 1) eq "") {
