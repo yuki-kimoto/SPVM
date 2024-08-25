@@ -92,6 +92,7 @@ my $perl5lib = "$ENV{PERL5LIB}$path_sep$blib_arch$path_sep$blib_lib";
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|mit|));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-name]'));
   ok(SPVM::Builder::Util::file_contains($makefile_pl_file, '[--user-email]'));
+  ok(SPVM::Builder::Util::file_contains($makefile_pl_file, q|# release_status => 'stable',|));
   
   # VERSION_FROM must be included in Makefile.PL to resolve CPAN module dependencies.
   # VERSION is not sufficient.

@@ -850,7 +850,10 @@ WriteMakefile(
   test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
   clean => {FILES => ['.spvm_build', 't/.spvm_build']},
   META_MERGE => {
-    'meta-spec' => { version => 2 },
+    'meta-spec' => {
+      version => 2,
+      # release_status => 'stable', # stable, testing, or unstable
+    },
     resources => {
       repository => {
         type => 'git',
