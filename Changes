@@ -4,6 +4,9 @@
   [Changes]
     * "=head1 Inheritance" outputted by spvmdist command is changed to "=head1 Super Class".
     * Add "=head1 See Also" section to the output from spvmdist command.
+  [Exception Message Improvement]
+    * Improve exception messages outputted from spvmdist command.
+    
 0.990006 2023-05-09
   [Feature Improvement]
     * Users know caller when a class loading from a Perl script failed.

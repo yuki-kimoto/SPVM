@@ -1121,11 +1121,11 @@ sub generate_dist {
   my $class_name = $self->class_name;
   
   unless (length $class_name) {
-    confess("The class name must be specified");
+    confess("A class name must be specified");
   }
   
   if ($class_name =~ /-/) {
-    confess("The class name cannnot contain \"-\"");
+    confess("The class name \"$class_name\" cannnot contain \"-\"");
   }
   
   my $native = $self->native;
@@ -1133,7 +1133,7 @@ sub generate_dist {
   my $resource = $self->resource;
   
   if ($interface && $resource) {
-    die "The --interface option and the --resource option cannot be specified at the same time"
+    die "--interface option and --resource option cannot be specified at the same time"
   }
   
   my $class_name_rel_file = $class_name;
