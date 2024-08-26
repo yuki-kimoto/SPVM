@@ -36,7 +36,7 @@ Normally, numbers are created by L<numeric literals|SPVM::Document::Language::To
   # double - 64bit floating point
   my $number = 1.0;
 
-A character created by the L<character literal|SPVM::Document::Language::Tokenization/"Character Literal"> is a number of byte type.
+A character created by L<character literal|SPVM::Document::Language::Tokenization/"Character Literal"> is a number of byte type.
   
   # A number of byte type created by a character literal
   my $char = 'a';
@@ -57,7 +57,7 @@ Negative integers are represented by L<two's complement|https://en.wikipedia.org
 
 =head2 String
 
-The value of the L<string type|/"string Type"> is called string.
+The value of L<string type|/"string Type"> is called string.
 
 A string consists of characters of the C<byte> type.
 
@@ -65,7 +65,7 @@ A string has its length.
 
 A string is an L<object|/"Object">.
 
-Normally, a string is created by a L<string literal|SPVM::Document::Language::Tokenization/"String Literal"> or the L<new_string_len operator|SPVM::Document::Language::Operators/"new_string_len Operator">.
+Normally, a string is created by a L<string literal|SPVM::Document::Language::Tokenization/"String Literal"> or L<new_string_len operator|SPVM::Document::Language::Operators/"new_string_len Operator">.
   
   # A string created by a string literal
   my $string = "Hello";
@@ -101,7 +101,7 @@ See the following sections about operations for strings.
 
 =head3 Sting Native Level Representation
 
-At the L<native level|SPVM::Document::NativeClass>, the character just after the last character of the string is set to C<\0>, so the characters in the string can be used as a C language string.
+At L<native level|SPVM::Document::NativeClass>, the character just after the last character of the string is set to C<\0>, so the characters in the string can be used as a C language string.
 
   # The characters in the string can be used as a C language string
   void* obj_string = stack[0].oval;
@@ -122,7 +122,7 @@ The elements of an array are arranged by index and the index starts from 0.
 
 An array is an L<object|/"Object">.
 
-Normally, an array is created by the L<new Operator|SPVM::Document::Language::Operators/"Creating an Array"> and an L<array initialization|SPVM::Document::Language::Operators/"Array Initialization">.
+Normally, an array is created by L<new Operator|SPVM::Document::Language::Operators/"Creating an Array"> and an L<array initialization|SPVM::Document::Language::Operators/"Array Initialization">.
   
   # An array created by the new operator
   my $numbers = new int[3];
@@ -137,7 +137,7 @@ Normally, an array is created by the L<new Operator|SPVM::Document::Language::Op
   # An array created by an array initialization
   my $numbers = [1, 2, 3];
 
-All elements of an array can be got by the L<for statement|SPVM::Document::Language::Statements/"for Statement">.
+All elements of an array can be got by L<for statement|SPVM::Document::Language::Statements/"for Statement">.
 
   # for statement
   for (my $i = 0; $i < @$numbers; $i++) {
@@ -173,9 +173,9 @@ A L<string|/"String"> is an object.
 
 An L<array|/"Array"> is an object.
 
-An objcet of the L<class type|/"Class Types"> has its fields. A field is a L<number|/"Number"> or an L<object|/"Object">.
+An objcet of L<class type|/"Class Types"> has its fields. A field is a L<number|/"Number"> or an L<object|/"Object">.
 
-Normally, an object is created by the L<new|SPVM::Document::Language::Operators/"new"> operator.
+Normally, an object is created by L<new|SPVM::Document::Language::Operators/"new"> operator.
 
   # An object created by the new operator
   my $point = new Point;
@@ -212,11 +212,11 @@ At L<native level|SPVM::Document::NativeClass>, an object is a memory address.
 
 =head2 Undefined Value
 
-The value of the L<undef type|/"undef Type"> is called undefined value.
+The value of L<undef type|/"undef Type"> is called undefined value.
 
 An undefined value means the value is undefined.
 
-An undefined value is created by the L<undef|SPVM::Document::Language::Operators/"undef Operator"> operator.
+An undefined value is created by L<undef|SPVM::Document::Language::Operators/"undef Operator"> operator.
 
   undef
 
@@ -387,7 +387,7 @@ The C<string> type is the type for L<strings|/"String">.
 
 The C<string> type is an L<object type|/"Object Types">.
 
-The C<string> type can be qualified with the L<mutable type qualifier|/"mutable Type Qualifier">.
+The C<string> type can be qualified with L<mutable type qualifier|/"mutable Type Qualifier">.
 
   mutable string
 
@@ -589,7 +589,7 @@ Examples:
 
 =head3 String Array Type
 
-The string array type is the L<array type|/"Array Types"> the L<string type|/"string Type">.
+The string array type is L<array type|/"Array Types"> L<string type|/"string Type">.
 
   string[]
 
@@ -635,7 +635,7 @@ Examples:
 
 =head3 Any Object Array Type
 
-The any object array type C<object[]> is the L<array type|/"Array Types"> to which any L<object array type|/"Object Array Types"> can be assigned.
+The any object array type C<object[]> is L<array type|/"Array Types"> to which any L<object array type|/"Object Array Types"> can be assigned.
 
   object[]
 
@@ -789,7 +789,7 @@ The List of Type Initial Values:
 
 =head2 Type Width
 
-The type width is the length of the L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> of the type.
+The type width is the length of L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> of the type.
 
 If the type is a L<multi-numeric type|/"Multi-Numeric Types">, the type width is the length of the fields, owhterwise it is 1.
 
@@ -1021,7 +1021,7 @@ I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Assignment Requirement to Any Object
 
@@ -1145,7 +1145,7 @@ I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Assignment Requirement to Any Object Array
 
@@ -1193,7 +1193,7 @@ I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head1 Cast Requirement
 
@@ -1435,7 +1435,7 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
 
 I<InterfaceY> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Cast Requirement to Any Object
 
@@ -1549,7 +1549,7 @@ I<InterfaceX> is a an L<interface type|"Interface Types">.
 
 I<InterfaceY> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head2 Cast Requirement to Any Object Array
 
@@ -1601,7 +1601,7 @@ I<SuperClassX> is a super class of I<ClassX>.
 
 I<InterfaceX> is a an L<interface type|"Interface Types">.
 
-I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied the L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
+I<InterfaceSatisfiedX> is a L<class type|"Class Types"> or an L<interface type|"Interface Types"> that satisfied L<interface requirement|/"Interface Requirement"> of I<InterfaceX>.
 
 =head1 Interface Requirement
 
@@ -1620,7 +1620,7 @@ The following check is performed on every instance method of I<OBJECT_TYPE_FROM>
 If an instance method of I<INTERFACE_TYPE_TO> has the C<required> method attribute, I<OBJECT_TYPE_FROM> or one of its super classes must have a method with the same name.
 
 If I<OBJECT_TYPE_FROM> or one of its super classes has an instance method(this is named I<METHOD_FROM>) with the same name as an instance method of I<INTERFACE_TYPE_TO>,
-I<METHOD_FROM> must be an instance method and satisfy the L<interface method requirement|/"Interface Method Requirement">.
+I<METHOD_FROM> must be an instance method and satisfy L<interface method requirement|/"Interface Method Requirement">.
 
 =head2 Interface Method Requirement
 
@@ -1636,9 +1636,9 @@ I<METHOD_FROM> must be an instance method.
 
 The length of the arguments of the method of the I<INTERFACE_METHOD_TO> type must be greater than or equal to the length of the required arguments the method of the I<INSTANT_METHOD_TYPE_FROM> type.
 
-The every argument other than at 0 index of the method of the I<INSTANT_METHOD_TYPE_FROM> must satisfy the L<assignment requirement|/"Assignment Requirement"> to the argument as the same index of the method of the I<INTERFACE_METHOD_TO> without a data conversion and with interface exactly matched.
+The every argument other than at 0 index of the method of the I<INSTANT_METHOD_TYPE_FROM> must satisfy L<assignment requirement|/"Assignment Requirement"> to the argument as the same index of the method of the I<INTERFACE_METHOD_TO> without a data conversion and with interface exactly matched.
 
-The return type of the method of the I<INSTANT_METHOD_TYPE_FROM> must must satisfy the L<assignment requirement|/"Assignment Requirement"> to the return type of the method of the I<INTERFACE_METHOD_TO> without a data conversion and with interface exactly matched.
+The return type of the method of the I<INSTANT_METHOD_TYPE_FROM> must must satisfy L<assignment requirement|/"Assignment Requirement"> to the return type of the method of the I<INTERFACE_METHOD_TO> without a data conversion and with interface exactly matched.
 
 =head1 See Also
 
