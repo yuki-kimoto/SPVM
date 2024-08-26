@@ -10,11 +10,11 @@ SPVM::Native::Stack - Call Native::Stack
 
 =head1 Description
 
-C<SPVM::Native::Stack> is the C<Native::Stack> class in the L<SPVM> language. 
+C<SPVM::Native::Stack> is C<Native::Stack> class in L<SPVM> language. 
 
 The instance is a call stack. It has information of the call stack.
 
-An instance of the C<Native::Stack> class is build by L<Native::Env#new_stack|SPVM::Native::Env/"new_stack">.
+An instance of C<Native::Stack> class is build by L<Native::Env#new_stack|SPVM::Native::Env/"new_stack">.
 
 =head1 Usage
 
@@ -26,7 +26,7 @@ An instance of the C<Native::Stack> class is build by L<Native::Env#new_stack|SP
 
 The C<Native::Stack> class is a L<pointer class|SPVM::Document::Language/"Pointer Class">.
 
-Its insntace has a pointer to an object of the L<SPVM_VALUE|SPVM::Document::NativeAPI/"Call Native::Stack"> type.
+Its insntace has a pointer to an object of L<SPVM_VALUE|SPVM::Document::NativeAPI/"Call Native::Stack"> type.
 
 =head1 Fields
 
@@ -34,7 +34,7 @@ Its insntace has a pointer to an object of the L<SPVM_VALUE|SPVM::Document::Nati
 
   has env : ro Native::Env;
 
-An executable environemnt. The field type is the L<Native::Env|SPVM::Native::Env> class.
+An executable environemnt. The field type is L<Native::Env|SPVM::Native::Env> class.
 
 =head1 Instance Methods
 

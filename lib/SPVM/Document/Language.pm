@@ -6,7 +6,7 @@ SPVM::Document::Language - SPVM Language Specification
 
 =head1 Description
 
-This document describes the L<SPVM> language specification.
+This document describes L<SPVM> language specification.
 
 =head1 Documents
 

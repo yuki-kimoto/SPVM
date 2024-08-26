@@ -24,7 +24,7 @@ Examples:
 
 C<SPVM_ENV_API* api;>
 
-Returns the C<SPVM_ENV_API> object. This object have the following fields for other native APIs.
+Returns C<SPVM_ENV_API> object. This object have the following fields for other native APIs.
 
 =over 2
 
@@ -80,7 +80,7 @@ This native API should not be used unless special purposes are intended.
   
 C<int32_t (*call_init_methods)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-Calls the C<INIT> blocks of all classes.
+Calls C<INIT> blocks of all classes.
 
 If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
@@ -100,7 +100,7 @@ This native API should not be used unless special purposes are intended.
 
 C<int32_t (*set_command_info_argv)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* obj_argv);>
 
-Sets the command line arguments I<obj_argv> to the L<CommandInfo#ARGV|SPVM::CommandInfo/"ARGV"> class variable.
+Sets the command line arguments I<obj_argv> to L<CommandInfo#ARGV|SPVM::CommandInfo/"ARGV"> class variable.
 
 If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
@@ -110,7 +110,7 @@ This native API should not be used unless special purposes are intended.
 
 C<int32_t (*set_command_info_base_time)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, int64_t base_time);>
 
-Sets the base time I<base_time> to the L<CommandInfo#BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable.
+Sets the base time I<base_time> to L<CommandInfo#BASE_TIME|SPVM::CommandInfo/"BASE_TIME"> class variable.
 
 If an exception is thrown, returns a non-zero value. Otherwise, returns 0.
 
@@ -1713,7 +1713,7 @@ Examples:
 
 C<int32_t (*get_bool_object_value)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* bool_object);>
 
-Returns the value stored in the L<Bool|SPVM::Bool> object I<bool_object>.
+Returns the value stored in L<Bool|SPVM::Bool> object I<bool_object>.
 
 I<bool_object> must not be C<NULL>.
 
@@ -1855,7 +1855,7 @@ C<int32_t (*die)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environmen
 
 Creates a string from a C<sprintf> formatted message I<message> given its parameters corresponding to its format specifiers, a function name, a file name, and a line number for an exception call stack.
 
-And sets the created string to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">, and return the basic type ID of the L<Error|SPVM::Error> class. 
+And sets the created string to the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable">, and return the basic type ID of L<Error|SPVM::Error> class. 
 
 Examples:
 
@@ -2284,7 +2284,7 @@ Calls L</"new_array_proto_element_no_mortal"> native API and push its return val
 
 C<int32_t (*get_byte_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* byte_object);>
 
-Returns the value of the C<value> field of the L<Byte|SPVM::Byte> object I<byte_object>.
+Returns the value of the C<value> field of L<Byte|SPVM::Byte> object I<byte_object>.
 
 I<byte_object> must be a L<Byte|SPVM::Byte> object.
 
@@ -2292,7 +2292,7 @@ I<byte_object> must be a L<Byte|SPVM::Byte> object.
 
 C<int32_t (*get_short_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* short_object);>
 
-Returns the value of the C<value> field of the L<Short|SPVM::Short> object I<short_object>.
+Returns the value of the C<value> field of L<Short|SPVM::Short> object I<short_object>.
 
 I<short_object> must be a L<Short|SPVM::Short> object.
 
@@ -2300,7 +2300,7 @@ I<short_object> must be a L<Short|SPVM::Short> object.
 
 C<int32_t (*get_int_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* int_object);>
 
-Returns the value of the C<value> field of the L<Int|SPVM::Int> object I<int_object>.
+Returns the value of the C<value> field of L<Int|SPVM::Int> object I<int_object>.
 
 I<int_object> must be an L<Int|SPVM::Int> object.
 
@@ -2308,7 +2308,7 @@ I<int_object> must be an L<Int|SPVM::Int> object.
 
 C<int64_t (*get_long_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* long_object);>
 
-Returns the value of the C<value> field of the L<Long|SPVM::Long> object I<long_object>.
+Returns the value of the C<value> field of L<Long|SPVM::Long> object I<long_object>.
 
 I<long_object> must be a L<Long|SPVM::Long> object.
 
@@ -2316,7 +2316,7 @@ I<long_object> must be a L<Long|SPVM::Long> object.
 
 C<float (*get_float_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* float_object);>
 
-Returns the value of the C<value> field of the L<Float|SPVM::Float> object I<float_object>.
+Returns the value of the C<value> field of L<Float|SPVM::Float> object I<float_object>.
 
 I<float_object> must be a L<Float|SPVM::Float> object.
 
@@ -2324,7 +2324,7 @@ I<float_object> must be a L<Float|SPVM::Float> object.
 
 C<double (*get_double_object_value)(SPVM_ENV* env, SPVM_VALUE* stack, void* double_object);>
 
-Returns the value of the C<value> field of the L<Double|SPVM::Double> object I<double_object>.
+Returns the value of the C<value> field of L<Double|SPVM::Double> object I<double_object>.
 
 I<double_object> must be a L<Double|SPVM::Double> object.
 
@@ -2741,7 +2741,7 @@ Prints the formatted message I<format> to the stream I<stream> with the current 
 
 I<format> must be the C<char*> type.
 
-I<stream> must be the C<FILE> type.
+I<stream> must be C<FILE> type.
 
 Examples:
 

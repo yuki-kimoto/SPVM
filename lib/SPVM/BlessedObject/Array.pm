@@ -56,7 +56,7 @@ SPVM::BlessedObject::Array - SPVM Array
 
 =head2 DESCRIPTION
 
-The object of the C<SPVM::BlessedObject::Array> class holds an SPVM array.
+The object of C<SPVM::BlessedObject::Array> class holds an SPVM array.
 
 =head1 Usage
 

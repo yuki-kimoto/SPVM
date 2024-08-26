@@ -205,7 +205,7 @@ C<static method copy_object : object[] ($array : object[], $cloner : L<Cloner|SP
 
 Create a new object array with $length, and clone the elements of the object array from $offset to the position proceeded by $length to the created array.
 
-Each element is cloned by the L<Cloner|SPVM::Cloner>.
+Each element is cloned by L<Cloner|SPVM::Cloner>.
 
 If the cloner is not defined, the address of each element is copied.
 
@@ -1027,7 +1027,7 @@ The array $array must be defined. Otherwise, an exception is thrown.
 
 C<static method to_array_byte : byte[] ($object_array : L<Byte|SPVM::Byte>[]);>
 
-Creates a new byte array with the same length as the L<Byte|SPVM::Byte> array $object_array, copies the elements in $array to it, and returns it.
+Creates a new byte array with the same length as L<Byte|SPVM::Byte> array $object_array, copies the elements in $array to it, and returns it.
 
 Exceptions:
 
@@ -1037,7 +1037,7 @@ The array $array must be defined. Otherwise, an exception is thrown.
 
 C<static method to_array_short : short[] ($object_array : L<Short|SPVM::Short>[]);>
 
-Creates a new short array with the same length as the L<Short|SPVM::Short>> array $object_array, copies the elements in $array to it, and returns it.
+Creates a new short array with the same length as L<Short|SPVM::Short>> array $object_array, copies the elements in $array to it, and returns it.
 
 Exceptions:
 
@@ -1047,7 +1047,7 @@ The array $object_array must be defined. Otherwise, an exception is thrown.
 
 C<static method to_array_int : int[] ($object_array : L<Int|SPVM::Int>[]>);>
 
-Creates a new int array with the same length as the L<Int|SPVM::Int> array $object_array, copies the elements in $array to it, and returns it.
+Creates a new int array with the same length as L<Int|SPVM::Int> array $object_array, copies the elements in $array to it, and returns it.
 
 Exceptions:
 
@@ -1057,7 +1057,7 @@ The array $object_array must be defined. Otherwise, an exception is thrown.
 
 C<static method to_array_long : long[] ($object_array : L<Long|SPVM::Long>[]);>
 
-Creates a new long array with the same length as the L<Long|SPVM::Long> array $object_array, copies the elements in $array to it, and returns it.
+Creates a new long array with the same length as L<Long|SPVM::Long> array $object_array, copies the elements in $array to it, and returns it.
 
 Exceptions:
 
@@ -1067,7 +1067,7 @@ The array $object_array must be defined. Otherwise, an exception is thrown.
 
 C<static method to_array_float : float[] ($object_array : L<Float|SPVM::Float>[]);>
 
-Creates a new float array with the same length as the L<Float|SPVM::Float> array $object_array, copies the elements in $array to it, and returns it.
+Creates a new float array with the same length as L<Float|SPVM::Float> array $object_array, copies the elements in $array to it, and returns it.
 
 Exceptions:
 
@@ -1077,7 +1077,7 @@ The array $object_array must be defined. Otherwise, an exception is thrown.
 
 C<static method to_array_double : double[] ($object_array : L<Double|SPVM::Double>[]);>
 
-Creates a new double[ array with the same length as the L<Double|SPVM::Double> array $object_array, copies the elements in $array to it, and returns it.
+Creates a new double[ array with the same length as L<Double|SPVM::Double> array $object_array, copies the elements in $array to it, and returns it.
 
 Exceptions:
 

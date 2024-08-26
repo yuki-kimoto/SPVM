@@ -80,7 +80,7 @@ Creates a new C<Point> object that clones myself.
 
 C<method to_string : string ();>
 
-Stringifies the C<Point> object as the following format.
+Stringifies C<Point> object as the following format.
 
   (1,2)
 

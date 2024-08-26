@@ -35,7 +35,7 @@ SPVM::BlessedObject::String - SPVM string
 
 =head1 Description
 
-The object of the C<SPVM::BlessedObject::String> class holds an SPVM string.
+The object of C<SPVM::BlessedObject::String> class holds an SPVM string.
 
 =head1 Usage
 

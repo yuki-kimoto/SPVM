@@ -38,7 +38,7 @@ When the new thread finished, the new runtime stack must be released.
 
 Currently, user data cannot be got and set in a runtime stack.
 
-If thread-specific user data is needed, the thread ID is got by the L<Thread#get_id|SPVM::Thread#get_id> method and this thread ID can be a key of a L<hash|SPVM::Hash> for thread-specific user data. In this case, the L<Hash|SPVM::Hash> class is not thread safe, a lock using a L<mutex|SPVM::Sync::Mutex> is needed.
+If thread-specific user data is needed, the thread ID is got by L<Thread#get_id|SPVM::Thread#get_id> method and this thread ID can be a key of a L<hash|SPVM::Hash> for thread-specific user data. In this case, L<Hash|SPVM::Hash> class is not thread safe, a lock using a L<mutex|SPVM::Sync::Mutex> is needed.
 
 =head2 Atomic Operations
 

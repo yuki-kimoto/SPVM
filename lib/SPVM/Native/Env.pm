@@ -24,7 +24,7 @@ The Native::Env class in L<SPVM> represents an L<runtime environment|SPVM::Docum
 
 This class is a pointer class.
 
-Its insntace has the pointer to an object of the L<SPVM_ENV|SPVM::Document::NativeClass/"Runtime Environment"> type.
+Its insntace has the pointer to an object of L<SPVM_ENV|SPVM::Document::NativeClass/"Runtime Environment"> type.
 
 =head1 Fields
 
@@ -46,7 +46,7 @@ C<method new_stack : L<Native::Stack|SPVM::Native::Stack> ();>
 
 Builds a call stack and returns it.
 
-The return type is the L<Native::Stack|SPVM::Native::Stack> class.
+The return type is L<Native::Stack|SPVM::Native::Stack> class.
 
 =head1 See Also
 

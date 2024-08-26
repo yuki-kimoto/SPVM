@@ -44,7 +44,7 @@ Locks the mutex I<mutex>.
 
 Calls the L<pthread_rwlock_wrlock|https://linux.die.net/man/3/pthread_rwlock_wrlock> function in Linux and UNIX.
 
-Calls the L<AcquireSRWLockExclusive|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-acquiresrwlockexclusive> function in Windows.
+Calls L<AcquireSRWLockExclusive|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-acquiresrwlockexclusive> function in Windows.
 
 =head2 unlock
 
@@ -54,7 +54,7 @@ Unlocks the mutex I<mutex>.
 
 Calls the L<pthread_rwlock_unlock|https://linux.die.net/man/3/pthread_rwlock_unlock> function in Linux and UNIX.
 
-Calls the L<ReleaseSRWLockExclusive|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-releasesrwlockexclusive> function in Windows.
+Calls L<ReleaseSRWLockExclusive|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-releasesrwlockexclusive> function in Windows.
 
 =head2 reader_lock
 
@@ -64,7 +64,7 @@ Locks the mutex I<mutex> for reading.
 
 Calls the L<pthread_rwlock_rdlock|https://linux.die.net/man/3/pthread_rwlock_rdlock> function in Linux and UNIX.
 
-Calls the L<AcquireSRWLockShared|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-acquiresrwlockshared> function in Windows.
+Calls L<AcquireSRWLockShared|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-acquiresrwlockshared> function in Windows.
 
 =head2 reader_unlock
 
@@ -74,7 +74,7 @@ Unlocks the mutex I<mutex> for reading.
 
 Calls the L<pthread_rwlock_unlock|https://linux.die.net/man/3/pthread_rwlock_unlock> function in Linux and UNIX.
 
-Calls the L<ReleaseSRWLockShared|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-releasesrwlockshared> function in Windows.
+Calls L<ReleaseSRWLockShared|https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-releasesrwlockshared> function in Windows.
 
 =head1 Native API IDs
 

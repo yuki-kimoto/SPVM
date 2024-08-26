@@ -38,7 +38,7 @@ If a memory error occurs, an exception is thrown.
 
 C<method get_return_basic_type : L<Native::BasicType|SPVM::Native::BasicType> ();>
 
-Returns the L<Native::BasicType|SPVM::Native::BasicType> object of the return value.
+Returns L<Native::BasicType|SPVM::Native::BasicType> object of the return value.
 
 If a memory error occurs, an exception is thrown.
 

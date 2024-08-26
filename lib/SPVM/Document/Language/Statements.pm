@@ -507,7 +507,7 @@ The following is an example of stack traces of an exception message.
 
 If I<OPERAND_MESSAGE> is not given or C<undef>, I<OPERAND_MESSAGE> is set to C<"Error">.
 
-I<ERROR_CLASS> is a class name, normally of the L<Error|SPVM::Error> class, or its child class. If the exception thrown by the C<die> statement is catched, the L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to the basic type ID of I<ERROR_CLASS>.
+I<ERROR_CLASS> is a class name, normally of L<Error|SPVM::Error> class, or its child class. If the exception thrown by the C<die> statement is catched, the L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to the basic type ID of I<ERROR_CLASS>.
 
 The L<integer promotional conversion|SPVM::Document::Language::Operators/"Integer Promotional Conversion"> is performed on I<OPERAND_ERROR_ID>.
 

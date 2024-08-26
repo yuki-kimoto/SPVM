@@ -125,7 +125,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be the L<Byte|SPVM::Byte> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Byte|SPVM::Byte> class. Otherwise an exception is thrown.
 
 =head2 get_short
 
@@ -135,7 +135,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be the L<Short|SPVM::Short> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Short|SPVM::Short> class. Otherwise an exception is thrown.
 
 =head2 get_int
 
@@ -145,7 +145,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be the L<Int|SPVM::Int> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Int|SPVM::Int> class. Otherwise an exception is thrown.
 
 =head2 get_long
 
@@ -155,7 +155,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be the L<Long|SPVM::Long> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Long|SPVM::Long> class. Otherwise an exception is thrown.
 
 =head2 get_float
 
@@ -165,7 +165,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be the L<Float|SPVM::Float> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Float|SPVM::Float> class. Otherwise an exception is thrown.
 
 =head2 get_double
 
@@ -175,7 +175,7 @@ Gets the value specifed by the key $key using the L<"get"> method, and casts it 
 
 Exceptions:
 
-The type of the value for the key must be the L<Double|SPVM::Double> class. Otherwise an exception is thrown.
+The type of the value for the key must be L<Double|SPVM::Double> class. Otherwise an exception is thrown.
 
 =head2 get_string
 

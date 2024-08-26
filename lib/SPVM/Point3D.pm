@@ -71,7 +71,7 @@ Creates a new C<Point3D> object that clones myself.
 
 C<method to_string : string ();>
 
-Stringifies the C<Point3D> object as the following format.
+Stringifies C<Point3D> object as the following format.
 
   (1,2,3)
 

@@ -10,9 +10,9 @@ SPVM::Native::Compiler - Native::Compiler
 
 =head1 Description
 
-C<SPVM::Native::Compiler> is the C<Native::Compiler> class in the L<SPVM> language. It compiles SPVM source codes and builds the runtime.
+C<SPVM::Native::Compiler> is C<Native::Compiler> class in L<SPVM> language. It compiles SPVM source codes and builds the runtime.
 
-The instance of the L<Native::Runtime|SPVM::Native::Runtime> class is build by L</"get_runtime"> method in this class.
+The instance of L<Native::Runtime|SPVM::Native::Runtime> class is build by L</"get_runtime"> method in this class.
 
 =head1 Usage
 
@@ -82,7 +82,7 @@ This method can be called multiple times.
 
 Exceptions:
 
-If compilation errors occurred, an exception is thrown set eval_errro_id to the basic type ID of the L<Error::Compile|SPVM::Error::Compile> class.
+If compilation errors occurred, an exception is thrown set eval_errro_id to the basic type ID of L<Error::Compile|SPVM::Error::Compile> class.
 
 =head2 get_error_messages
 
@@ -114,7 +114,7 @@ Compiles a anon class, and return the generated anon class name.
 This method can be called multiple times. 
 Exceptions:
 
-If compilation errors occurred, an exception is thrown set eval_errro_id to the basic type ID of the L<Error::Compile|SPVM::Error::Compile> class.
+If compilation errors occurred, an exception is thrown set eval_errro_id to the basic type ID of L<Error::Compile|SPVM::Error::Compile> class.
 
 Examples:
   
@@ -170,7 +170,7 @@ Examples:
 
 =head2 Native::Runtime
 
-The instance of the L<Native::Runtime|SPVM::Native::Runtime> class is build by L</"get_runtime"> method in this class.
+The instance of L<Native::Runtime|SPVM::Native::Runtime> class is build by L</"get_runtime"> method in this class.
 
 =head1 Copyright & License
 

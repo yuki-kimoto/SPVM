@@ -42,7 +42,7 @@ SPVM::BlessedObject::Class - SPVM Class
 
 =head1 Description
 
-The object of the C<SPVM::BlessedObject::Class> class holds an instance of an SPVM class.
+The object of C<SPVM::BlessedObject::Class> class holds an instance of an SPVM class.
 
 =head1 Usage
 

@@ -1585,7 +1585,7 @@ Field Default Values:
 
 =item * L</"cc">
 
-The C<$Config{cc}> of the L<Config> module.
+The C<$Config{cc}> of L<Config> module.
 
 =item * L</"ccflags">
 
@@ -1663,7 +1663,7 @@ Examples:
 
 =item * L</"ld">
 
-The C<$Config{ld}> of the L<Config> module.
+The C<$Config{ld}> of L<Config> module.
 
 =item * L</"ldflags">
 
@@ -1905,7 +1905,7 @@ Examples:
 
   $config->add_static_lib_abs(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static"> field and the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field  field in the C<SPVM::Builder::LibInfo> class set to a true value.
+Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static"> field and the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field  field in C<SPVM::Builder::LibInfo> class set to a true value.
 
 If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
@@ -2012,7 +2012,7 @@ Returns the config files loaded by L</"load_config"> method.
 
   my $clone = $self->clone;
 
-Clones the L<SPVM::Builder::Config> object, and returns it.
+Clones L<SPVM::Builder::Config> object, and returns it.
 
 =head1 Config Mode
 

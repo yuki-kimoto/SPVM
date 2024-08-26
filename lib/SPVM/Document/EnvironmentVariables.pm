@@ -18,7 +18,7 @@ C source codes for precompilation, dynamic link libraries and object files are s
 
 These files are output when attempting to build a module containing methods with the C<native> attribute or the C<precompile> attribute.
 
-If these files are output and the directory given by the C<SPVM_BUILD_DIR> environment variable does not exist, an exception is thrown.
+If these files are output and the directory given by C<SPVM_BUILD_DIR> environment variable does not exist, an exception is thrown.
 Examples:
 
   # bash
@@ -29,11 +29,11 @@ Examples:
 
 =head2 SPVM_CC_DEBUG
 
-If the C<SPVM_CC_DEBUG> environement variable is a true value of Perl, debug messages and messages from the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are printed to stderr.
+If C<SPVM_CC_DEBUG> environement variable is a true value of Perl, debug messages and messages from L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are printed to stderr.
 
 =head2 SPVM_CC_QUIET
 
-If the C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.
+If C<SPVM_CC_QUIET> environement variable is a true value of Perl, messages L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are not printed to stderr.
 
 If it is defined and a false value of Perl, the messages are printed.
 
@@ -41,7 +41,7 @@ This setting has a higher priority than L<SPVM::Builder::Config#quiet|SPVM::Buil
 
 =head2 SPVM_CC_FORCE
 
-If the C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilation and link by the L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are forced.
+If C<SPVM_CC_FORCE> environement variable is a true value of Perl, the compilation and link by L<SPVM native class|SPVM::Document::NativeClass> compiler and linker are forced.
 
 This setting has a higher priority than L<SPVM::Builder::Config#force|SPVM::Builder::Config/"force"> field.
 

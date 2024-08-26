@@ -22,7 +22,7 @@ A class name can be given to the die statement. This is the same as the above co
 
   die Error::System "This value is invalid.";
 
-If a basic type ID and a class name are not given, it is set to the basic type ID of the L<Error|SPVM::Error> class.
+If a basic type ID and a class name are not given, it is set to the basic type ID of L<Error|SPVM::Error> class.
 
 =head2 Catching Exception 
 

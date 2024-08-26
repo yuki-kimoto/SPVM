@@ -181,11 +181,11 @@ Field Default Values:
 
 =item * L</"config_spvm_core">
 
-The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of the C<SPVM::Builder::Util::API> class.
+The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of C<SPVM::Builder::Util::API> class.
 
 =item * L</"config_bootstrap">
 
-The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of the C<SPVM::Builder::Util::API> class.
+The return value of the L<create_default_config|SPVM::Builder::Util::API/"create_default_config"> function of C<SPVM::Builder::Util::API> class.
 
 =item * Other Fields
 

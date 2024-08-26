@@ -1540,7 +1540,7 @@ The return type of a C<INIT> method is the void type.
 
 If a C<INIT> method is not defined in a class, a C<INIT> method without statements is defined.
 
-If the current class has a parent class, the C<INIT> method of the parent class is called at the beginning of the INIT method of the current class.
+If the current class has a parent class, C<INIT> method of the parent class is called at the beginning of the INIT method of the current class.
 
 And C<INIT> methods of classes loaded by L<use statements|/"use Statement"> are called in loaded order.
 

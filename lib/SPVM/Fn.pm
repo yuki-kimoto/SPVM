@@ -338,7 +338,7 @@ $offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
 The value of $offset must be less than the length of $string. Otherwise an exception is thrown.
 
-If an invalid UTF-8 is gotten, an exception is thrown set C<eval_error_id> to the basic type ID of the L<Error::Unicode::InvalidUTF8|SPVM::Error::Unicode::InvalidUTF8> class.
+If an invalid UTF-8 is gotten, an exception is thrown set C<eval_error_id> to the basic type ID of L<Error::Unicode::InvalidUTF8|SPVM::Error::Unicode::InvalidUTF8> class.
 
 =head2 hex
 

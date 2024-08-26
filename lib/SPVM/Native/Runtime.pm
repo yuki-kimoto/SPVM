@@ -10,13 +10,13 @@ SPVM::Native::Runtime - Native::Runtime
 
 =head1 Description
 
-C<SPVM::Native::Runtime> is the C<Native::Runtime> class in the L<SPVM> language. 
+C<SPVM::Native::Runtime> is C<Native::Runtime> class in L<SPVM> language. 
 
 The instance has the runtime information such as operation codes, classes, methods, fields, class variables, constant strings.
 
 This class provides only the minimal methods to get the information of classes and methods.
 
-An instance of the C<Native::Runtime> class is build by L<Native::Compiler#get_runtime|SPVM::Native::Compiler/"get_runtime">.
+An instance of C<Native::Runtime> class is build by L<Native::Compiler#get_runtime|SPVM::Native::Compiler/"get_runtime">.
 
 =head1 Usage
 

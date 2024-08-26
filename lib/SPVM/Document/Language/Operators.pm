@@ -692,7 +692,7 @@ Returns 0.
 
 B<BOOL:>
 
-Return the C<value> field in the L<Bool|SPVM::Bool> object.
+Return the C<value> field in L<Bool|SPVM::Bool> object.
 
 B<long:>
 
@@ -708,7 +708,7 @@ Performs the following C language operation, and returns it.
 
 B<an object type:>
 
-If the compile type of the operand is not the L<Bool|SPVM::Bool> class, performs the following C language operation, and returns it.
+If the compile type of the operand is not L<Bool|SPVM::Bool> class, performs the following C language operation, and returns it.
 
   !!OPERAND
 
@@ -1139,7 +1139,7 @@ The C<print> operator prints a string to standard output.
 
   print OPERAND
 
-This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
+This operator outputs the string I<OPERAND> to L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams">.
 
 If I<OPERAND> is not defined, this operator outputs nothing.
 
@@ -1155,7 +1155,7 @@ The C<say> operator prints a string to standard output with a newline.
 
   say OPERAND
 
-This operator outputs the string I<OPERAND> to the L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams"> with a newline C<\n>.
+This operator outputs the string I<OPERAND> to L<SPVM's standard output|SPVM::Document::Language::System/"Standard Streams"> with a newline C<\n>.
 
 If I<OPERAND> is not defined, this operator outputs a newline C<\n>.
 
@@ -1174,7 +1174,7 @@ The C<warn> operator prints a string to standard error with a stack trace.
 
 If I<OPERAND> is omitted, I<OPERAND> is set to the string C<"Warning">.
 
-This operator outputs I<OPERAND> to the L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+This operator outputs I<OPERAND> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
 If I<OPERAND> is not defined, this operator outputs the string C<"undef">.
 
@@ -1579,7 +1579,7 @@ This operator creates the reference to the value owned by the variable I<VARIALB
 
 I<VARIALBE> is must be a local variable of a numeric type or a multi-numeric type.
 
-The return type is the L<Reference Types|SPVM::Document::Language::Types/"Reference Types"> of I<VARIALBE>.
+The return type is L<Reference Types|SPVM::Document::Language::Types/"Reference Types"> of I<VARIALBE>.
 
 Compilation Errors:
 
