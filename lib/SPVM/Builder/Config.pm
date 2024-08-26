@@ -1518,7 +1518,7 @@ This field is automatically set and users nomally do not change it.
 
 Gets and sets the C<config_exe> field.
 
-If the L<spvmcc> command generates an excutable file, this field is set to a L<SPVM::Builder::Config::Exe> object.
+If L<spvmcc> command generates an excutable file, this field is set to a L<SPVM::Builder::Config::Exe> object.
 
 This field is automatically set and users nomally do not change it.
 
