@@ -2365,7 +2365,7 @@ SPVM_OP* SPVM_OP_build_var_decl(SPVM_COMPILER* compiler, SPVM_OP* op_var_decl, S
   op_var->uv.var->var_decl = var_decl;
   
   if (strstr(op_var->uv.var->name, "::")) {
-    SPVM_COMPILER_error(compiler, "The local variable \"%s\" cannnot contain \"::\".\n  at %s line %d", op_var->uv.var->name, op_var->file, op_var->line);
+    SPVM_COMPILER_error(compiler, "The local variable name \"%s\" cannnot contain \"::\".\n  at %s line %d", op_var->uv.var->name, op_var->file, op_var->line);
   }
   
   return op_var;
