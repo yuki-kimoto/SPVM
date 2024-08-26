@@ -1149,6 +1149,10 @@ use Test::More;
     compile_not_ok($source, q|SUPER::clear method is not found|);
   }
   {
+    my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $stringable = (Stringable)Point3D->new; $stringable->NOT_FOUND::clear; } }';
+    compile_not_ok($source, q|The class included in the method call NOT_FOUND::clear is not found.|);
+  }
+  {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
     compile_not_ok($source, q|not_defined method is not found in Int class or its super classes|);
   }

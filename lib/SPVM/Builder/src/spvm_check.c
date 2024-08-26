@@ -1205,7 +1205,6 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
       else {
         SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, basic_type_name_length);
         if (!found_basic_type) {
-          basic_type = found_method->current_basic_type;
           SPVM_COMPILER_error(compiler, "The class included in the method call %s is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
           return;
         }
