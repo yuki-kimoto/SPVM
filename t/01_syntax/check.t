@@ -1107,7 +1107,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { MyClass->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method in the "MyClass" class is not found|);
+    compile_not_ok($source, q|MyClass#not_defined method is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
@@ -1123,7 +1123,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method in the "Point" class is not found|);
+    compile_not_ok($source, q|Point#not_defined method is not found|);
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point->Point::not_found; } }';
