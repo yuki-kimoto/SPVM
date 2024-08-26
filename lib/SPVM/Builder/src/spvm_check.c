@@ -2986,7 +2986,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               }
               
               if (found) {
-                SPVM_COMPILER_error(compiler, "Redeclaration of the variable \"%s\".\n  at %s line %d", var_decl->var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                SPVM_COMPILER_error(compiler, "Redeclaration of %s variable.\n  at %s line %d", var_decl->var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                 return;
               }
               else {
@@ -2997,7 +2997,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               
               // Type cannnot be detected
               if (!op_cur->is_dist && var_decl->type == NULL) {
-                SPVM_COMPILER_error(compiler, "The type of the variable \"%s\" is not resolved.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                SPVM_COMPILER_error(compiler, "The type of %s variable is not resolved.\n  at %s line %d", op_cur->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                 return;
               }
             }

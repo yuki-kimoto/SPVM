@@ -841,11 +841,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $var = 0; my $var = 0; } }';
-    compile_not_ok($source, q|Redeclaration of the variable "$var"|);
+    compile_not_ok($source, q|Redeclaration of $var variable|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var; } }';
-    compile_not_ok($source, q|The type of the variable "$var" is not resolved.|);
+    compile_not_ok($source, q|The type of $var variable is not resolved.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { $var; } }';
@@ -861,7 +861,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 0; 1 && (my $var = 0); } }';
-    compile_not_ok($source, q|Redeclaration of the variable "$var"|);
+    compile_not_ok($source, q|Redeclaration of $var variable.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 || (my $var = 0); } }';
@@ -869,7 +869,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 0; 1 || (my $var = 0); } }';
-    compile_not_ok($source, q|Redeclaration of the variable "$var"|);
+    compile_not_ok($source, q|Redeclaration of $var variable.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { !(my $var = 0); } }';
@@ -877,7 +877,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 0; !(my $var = 0); } }';
-    compile_not_ok($source, q|Redeclaration of the variable "$var"|);
+    compile_not_ok($source, q|Redeclaration of $var variable.|);
   }
 }
 
