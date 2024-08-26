@@ -12,7 +12,7 @@ This document describes system setting in the SPVM language.
 
 SPVM opens own standard input, standard output, and standard error for a runtime just after a runtime is build.
 
-Their open modes are set to the L<binary mode|https://learn.microsoft.com/en-us/cpp/c-runtime-library/text-and-binary-mode-file-i-o?view=msvc-170> in Windows.
+Their open modes are set to L<binary mode|https://learn.microsoft.com/en-us/cpp/c-runtime-library/text-and-binary-mode-file-i-o?view=msvc-170> in Windows.
 
 The L<print operator|SPVM::Document::Language::Operators/"print Operator"> outputs to this SPVM's standard output.
 
@@ -54,7 +54,7 @@ Coroutine threads such as L<goroutines|SPVM::Go> don't have to worry about thing
 
 Updating the count of allocated memory blocks is an atomic operation and thread safe. It is protected by a mutex. 
 
-The count of all allocated memory blocks in a runtime is managed and is got by the L<get_memory_blocks_count|SPVM::Document::NativeAPI/"get_memory_blocks_count"> native API.
+The count of all allocated memory blocks in a runtime is managed and is got by L<get_memory_blocks_count|SPVM::Document::NativeAPI/"get_memory_blocks_count"> native API.
 
 =head3 Updating Runtime Cache
 
