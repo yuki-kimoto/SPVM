@@ -2276,7 +2276,7 @@ SPVM_OP* SPVM_OP_build_can(SPVM_COMPILER* compiler, SPVM_OP* op_can, SPVM_OP* op
     }
     
     if (!is_empty_string) {
-      SPVM_COMPILER_error(compiler, "If the right operand of the can operator is a constant value, it must be an empty string \"\".\n  at %s line %d", op_name->file, op_name->line);
+      SPVM_COMPILER_error(compiler, "If the right operand of can operator is a constant value, it must be an empty string \"\".\n  at %s line %d", op_name->file, op_name->line);
     }
     
     op_name = SPVM_OP_new_op_name(compiler, "", op_name->file, op_name->line);

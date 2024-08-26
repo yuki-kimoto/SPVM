@@ -88,7 +88,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $num = 0; dump $num; } }';
-    compile_not_ok($source, qr'The type of the operand of the dump operator must be an object type');
+    compile_not_ok($source, qr'The type of the operand of dump operator must be an object type');
   }
 }
 
@@ -264,11 +264,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 gt "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of the gt operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of gt operator must be string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" gt 1; } }';
-    compile_not_ok($source, 'The right operand of the gt operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of gt operator must be string type or the byte[] type');
   }
 }
 
@@ -276,11 +276,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 ge "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of the ge operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of ge operator must be string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" ge 1; } }';
-    compile_not_ok($source, 'The right operand of the ge operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of ge operator must be string type or the byte[] type');
   }
 }
 
@@ -288,11 +288,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 lt "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of the lt operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of lt operator must be string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" lt 1; } }';
-    compile_not_ok($source, 'The right operand of the lt operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of lt operator must be string type or the byte[] type');
   }
 }
 
@@ -300,11 +300,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 le "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of the le operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of le operator must be string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" le 1; } }';
-    compile_not_ok($source, 'The right operand of the le operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of le operator must be string type or the byte[] type');
   }
 }
 
@@ -312,11 +312,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 cmp "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of the cmp operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of cmp operator must be string type or the byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" cmp 1; } }';
-    compile_not_ok($source, 'The right operand of the cmp operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of cmp operator must be string type or the byte[] type');
   }
 }
 
@@ -344,15 +344,15 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { new int[1L]; } }';
-    compile_not_ok($source, q|The array length specified by the new operator must be an integer type within int|);
+    compile_not_ok($source, q|The array length specified by new operator must be an integer type within int|);
   }
   {
     my $source = 'class MyClass { static method main : void () { new int; } }';
-    compile_not_ok($source, q|The type of the operand of the new operator cannnot be a numeric type|);
+    compile_not_ok($source, q|The type of the operand of new operator cannnot be a numeric type|);
   }
   {
     my $source = 'class MyClass { use Stringable; static method main : void () {  new Stringable; } }';
-    compile_not_ok($source, q|The type of the operand of the new operator cannnot be an interface type|);
+    compile_not_ok($source, q|The type of the operand of new operator cannnot be an interface type|);
   }
   {
     my $source = [
@@ -383,7 +383,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 isa Int; } }';
-    compile_not_ok($source, 'The type of the operand of the isa operator must be an object type');
+    compile_not_ok($source, 'The type of the operand of isa operator must be an object type');
   }
 }
 
@@ -473,7 +473,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { length new int[3]; } }';
-    compile_not_ok($source, 'The type of the operand of the length operator must be string type');
+    compile_not_ok($source, 'The type of the operand of length operator must be string type');
   }
 }
 
@@ -481,19 +481,19 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $var = "foo"; $var++; } }';
-    compile_not_ok($source, 'The type of the operand of the increment operator must be a numeric type');
+    compile_not_ok($source, 'The type of the operand of increment operator must be a numeric type');
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = "foo"; ++$var; } }';
-    compile_not_ok($source, 'The type of the operand of the increment operator must be a numeric type');
+    compile_not_ok($source, 'The type of the operand of increment operator must be a numeric type');
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = "foo"; $var--; } }';
-    compile_not_ok($source, 'The type of the operand of the decrement operator must be a numeric type');
+    compile_not_ok($source, 'The type of the operand of decrement operator must be a numeric type');
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = "foo"; --$var; } }';
-    compile_not_ok($source, 'The type of the operand of the decrement operator must be a numeric type');
+    compile_not_ok($source, 'The type of the operand of decrement operator must be a numeric type');
   }
   
 }
@@ -506,7 +506,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : byte = "string"; } }';
-    compile_not_ok($source, q|string type cannot be assigned to byte type in the assignment operator.|);
+    compile_not_ok($source, q|string type cannot be assigned to byte type in assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = "string"; $var->[0] = \'a\'; } }';
@@ -561,12 +561,12 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { copy 1; } }';
-    compile_not_ok($source, q|The type of the operand of the copy operator must be string type, a numeric type, or a multi-numeric type.|);
+    compile_not_ok($source, q|The type of the operand of copy operator must be string type, a numeric type, or a multi-numeric type.|);
   }
   
   {
     my $source = 'class MyClass { use Point;static method main : void () { copy Point->new; } }';
-    compile_not_ok($source, q|The type of the operand of the copy operator must be string type, a numeric type, or a multi-numeric type.|);
+    compile_not_ok($source, q|The type of the operand of copy operator must be string type, a numeric type, or a multi-numeric type.|);
   }
 }
 
@@ -772,7 +772,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { die Int->new(1); } }';
-    compile_not_ok($source, q|Int type cannot be assigned to string type in the assignment operator.|);
+    compile_not_ok($source, q|Int type cannot be assigned to string type in assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { die byte; } }';
@@ -789,11 +789,11 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { my $num = 1; my $num_ref = \$num; warn $num_ref; } }';
-    compile_not_ok($source, q|The type of the operand of the warn operator must be an object type.|);
+    compile_not_ok($source, q|The type of the operand of warn operator must be an object type.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { warn undef; } }';
-    compile_not_ok($source, q|The type of the operand of the warn operator must be an object type.|);
+    compile_not_ok($source, q|The type of the operand of warn operator must be an object type.|);
   }
 }
 
@@ -801,7 +801,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { print Int->new(1); } }';
-    compile_not_ok($source, q|The type of the operand of the print operator must be string type|);
+    compile_not_ok($source, q|The type of the operand of print operator must be string type|);
   }
 }
 
@@ -825,7 +825,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $var = "foo"; \$var; } }';
-    compile_not_ok($source, q|The type of the operand of the refernece operator must be a numeric type or a multi-numeric type|);
+    compile_not_ok($source, q|The type of the operand of refernece operator must be a numeric type or a multi-numeric type|);
   }
 }
 
@@ -951,15 +951,15 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';
-    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by the weaken operator must be an object type|);
+    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by weaken operator must be an object type|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; unweaken $object->{x}; } }';
-    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by the unweaken operator must be an object type|);
+    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by unweaken operator must be an object type|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; isweak $object->{x}; } }';
-    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by the isweak operator must be an object type|);
+    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by isweak operator must be an object type|);
   }
   {
     my $source = [
@@ -1035,15 +1035,15 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 0; $var can x; } }';
-    compile_not_ok($source, q|he invocant of the can operator must be a class type or an interface type|);
+    compile_not_ok($source, q|he invocant of can operator must be a class type or an interface type|);
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point can not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method in the "Point" class checked by the can operator must be defined|);
+    compile_not_ok($source, q|The "not_defined" method in the "Point" class checked by can operator must be defined|);
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $anon = method : void () {}; $anon can "a"; } }';
-    compile_not_ok($source, qr|If the right operand of the can operator is a constant value, it must be an empty string ""|);
+    compile_not_ok($source, qr|If the right operand of can operator is a constant value, it must be an empty string ""|);
   }
 }
 
@@ -1059,11 +1059,11 @@ use Test::More;
 {
   {
     my $source = q|class MyClass { static method main : void () { my $ret = &main(); } }|;
-    compile_not_ok($source, q|The void type cannnot be assigned in the assignment operator|);
+    compile_not_ok($source, q|The void type cannnot be assigned in assignment operator|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $string : mutable string = "abc"; } }';
-    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the assignment operator.|);
+    compile_not_ok($source, q|string type cannot be assigned to mutable string type in assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : mutable string () { return "abc"; } }';
@@ -1079,7 +1079,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
-    compile_not_ok($source, q|string type cannot be assigned to int type in the assignment operator.|);
+    compile_not_ok($source, q|string type cannot be assigned to int type in assignment operator.|);
   }
 }
 
@@ -1432,7 +1432,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass : interface_t { static method foo : void () { new MyClass; } }';
-    compile_not_ok($source, q|The type of the operand of the new operator cannnot be an interface type.|);
+    compile_not_ok($source, q|The type of the operand of new operator cannnot be an interface type.|);
   }
 }
 
