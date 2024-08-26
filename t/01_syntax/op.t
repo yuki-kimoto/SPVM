@@ -284,11 +284,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method DESTROY : void () { } }';
-    compile_not_ok($source, qr/The DESTROY destructor method must be an instance method/);
+    compile_not_ok($source, qr/DESTROY method must be an instance method/);
   }
   {
     my $source = 'class MyClass { method DESTROY : void ($var : int) { } }';
-    compile_not_ok($source, qr/The DESTROY destructor method cannnot have arguments/);
+    compile_not_ok($source, qr/DESTROY method cannnot have arguments/);
   }
 }
 

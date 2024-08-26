@@ -1504,12 +1504,12 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     
     // DESTROY is instance method
     if (method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The DESTROY destructor method must be an instance method.\n  at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "DESTROY method must be an instance method.\n  at %s line %d", op_method->file, op_method->line);
     }
 
     // DESTROY doesn't have arguments without invocant
     if (method->args_length != 1) {
-      SPVM_COMPILER_error(compiler, "The DESTROY destructor method cannnot have arguments.\n  at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "DESTROY method cannnot have arguments.\n  at %s line %d", op_method->file, op_method->line);
     }
   }
   
