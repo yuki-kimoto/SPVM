@@ -21,6 +21,7 @@
     * Fix a bug mention by "Segfault:compile_type_name" https://github.com/yuki-kimoto/SPVM/issues/554.
   [Complilation Message Improvement]
     * Use field notation "MyClass#foo field" in compilation error messages.
+    * Use class variable notation "MyClass#$Foo class variable" in compilation error messages.
     
 0.990006 2023-05-09
   [Feature Improvement]
