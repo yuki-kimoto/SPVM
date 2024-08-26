@@ -1878,7 +1878,7 @@ Examples:
 
   $config->add_lib_abs(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field in the C<SPVM::Builder::LibInfo> class set to a true value.
+Adds @libs to the end of the L</"libs"> field with L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field set to a true value.
 
 If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
@@ -1892,7 +1892,7 @@ For system libraries, there is no problem because the linker knows the search di
 
   $config->add_static_lib(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static">  field in the C<SPVM::Builder::LibInfo> class set to a true value.
+Adds @libs to the end of the L</"libs"> field with L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field set to a true value.
 
 If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 

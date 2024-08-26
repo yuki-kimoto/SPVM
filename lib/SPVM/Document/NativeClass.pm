@@ -56,7 +56,7 @@ The name of the native class file is the same as the SPVM class name, but the ex
 
 =head2 Native Class File Extension
 
-The file extension of a native class is defined by the L<ext|SPVM::Builder::Config/"ext"> field in the C<Builder::Config> class in a config file.
+The file extension of a native class is defined by L<Builder::Config#ext|SPVM::Builder::Config/"ext"> field in a config file.
 
 Examples:
 
