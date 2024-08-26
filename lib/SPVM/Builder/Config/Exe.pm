@@ -144,7 +144,7 @@ This affects all compilations of native classes and precompilation classes.
   my $config_exe_spvm_core = $config_exe->config_spvm_core;
   $config_exe->config_spvm_core($config_exe_spvm_core);
 
-Gets and sets the C<config_spvm_core> field, a L<SPVM::Builder::Config> object for SPVM core source files.
+Gets and sets the C<config_spvm_core> field, an L<SPVM::Builder::Config> object for SPVM core source files.
 
 This field is automatically set and users nomally do not change it.
 
@@ -153,7 +153,7 @@ This field is automatically set and users nomally do not change it.
   my $config_exe_bootstrap = $config_exe->config_bootstrap;
   $config_exe->config_bootstrap($config_exe_bootstrap);
 
-Gets and sets the C<config_bootstrap> field, a L<SPVM::Builder::Config> object for the bootstrap source file for the executable file.
+Gets and sets the C<config_bootstrap> field, an L<SPVM::Builder::Config> object for the bootstrap source file for the executable file.
 
 This field is automatically set and users nomally do not change it.
 

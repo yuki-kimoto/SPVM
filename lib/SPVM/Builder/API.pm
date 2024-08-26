@@ -84,7 +84,7 @@ A build directory.
 
 Generates a dynamic library for a L<native class|SPVM::Document::NativeClass> given by the class name $class_name, and copies it into the C<blib/lib> directory.
 
-A native class must have at least one method with the L<native attribute|SPVM::Document::Language::Class/"Method Attributes">.
+A native class must have at least one method with L<native attribute|SPVM::Document::Language::Class/"Method Attributes">.
 
 Options:
 
@@ -105,7 +105,7 @@ If this option is a true value, the compilation and link are forced.
 
 Generates a dynamic library for a precompilation class $class_name that has C<native> methods, and copies it into the C<blib/lib> directory.
 
-A precompilation class must have at least one method with the L<precompile attribute|SPVM::Document::Language::Class/"Method Attributes">.
+A precompilation class must have at least one method with L<precompile attribute|SPVM::Document::Language::Class/"Method Attributes">.
 
 Options:
 

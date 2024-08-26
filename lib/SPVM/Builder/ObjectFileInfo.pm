@@ -73,7 +73,7 @@ Gets and sets the C<file> field, an object file name.
   my $compile_info = $object_file_info->compile_info;
   $object_file_info->compile_info($compile_info);
 
-Gets and sets the C<compile_info> field, a L<SPVM::Builder::CompileInfo> object.
+Gets and sets the C<compile_info> field, an L<SPVM::Builder::CompileInfo> object.
 
 =head1 Class Methods
 

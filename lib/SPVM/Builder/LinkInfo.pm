@@ -149,7 +149,7 @@ The SPVM::Builder::LinkInfo class has methods to manipulate linker information.
   my $config = $link_info->config;
   $link_info->config($config);
 
-Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
+Gets and sets the C<config> field, an L<SPVM::Builder::Config> object.
 
 =head2 output_file
 
@@ -219,7 +219,7 @@ Return Value Examples:
 
   my $link_command_string = $link_info->to_command;
 
-Joins all elements of the return value of the L<create_command|/"create_command"> method with a space, and returns it.
+Joins all elements of the return value of L</"create_command"> method with a space, and returns it.
 
 Return Value Examples:
 

@@ -34,7 +34,7 @@ The SPVM::Builder::Util::API module has the public utility functions to build SP
 
 Creates a string of C<make> commands for generating a dynamic library for a L<native class|SPVM::Document::NativeClass> given the class name $class_name, and returns it.
 
-A native class must have at least one method with the L<native attribute|SPVM::Document::Language::Class/"Method Attributes">.
+A native class must have at least one method with L<native attribute|SPVM::Document::Language::Class/"Method Attributes">.
 
 Examples:
 
@@ -55,7 +55,7 @@ Examples:
 
 Creates a string of C<make> commands for generating a dynamic library for a precompilation class given the class name $class_name, and returns it.
 
-A precompilation class must have at least one method with the L<precompile attribute|SPVM::Document::Language::Class/"Method Attributes">.
+A precompilation class must have at least one method with L<precompile attribute|SPVM::Document::Language::Class/"Method Attributes">.
 
 Examples:
 
@@ -74,7 +74,7 @@ Examples:
 
   my $config = SPVM::Builder::Util::API::create_default_config();
 
-Creates a default config, and returns it. It is a L<SPVM::Builder::Config> object.
+Creates a default config, and returns it. It is an L<SPVM::Builder::Config> object.
 
 Currently the default config is created by the following operation.
 

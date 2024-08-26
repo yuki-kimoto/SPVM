@@ -124,7 +124,7 @@ Gets and sets the C<argv> field, an array reference of command line arguments C<
   my $config = $resource->config;
   $resource->config($config);
 
-Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
+Gets and sets the C<config> field, an L<SPVM::Builder::Config> object.
 
 =head1 Class Methods
 

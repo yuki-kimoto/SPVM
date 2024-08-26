@@ -269,7 +269,7 @@ Return Value Examples:
 
   my $compile_command_string = $compile_info->to_command;
 
-Joins all elements of the return value of the the L<create_command|/"create_command"> method with a space, and returns it.
+Joins all elements of the return value of the the L</"create_command"> method with a space, and returns it.
 
 Return Value Examples:
 

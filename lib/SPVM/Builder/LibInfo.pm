@@ -143,7 +143,7 @@ The SPVM::Builder::LibInfo class has methods to manipulate library information f
   my $config = $lib_info->config;
   $lib_info->config($config);
 
-Gets and sets the C<config> field, a L<SPVM::Builder::Config> object.
+Gets and sets the C<config> field, an L<SPVM::Builder::Config> object.
 
 =head2 name
 

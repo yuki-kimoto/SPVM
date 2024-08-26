@@ -219,7 +219,7 @@ The SPVM::Builder::Config::Info class has methods to manipulate config informati
 
   my $config_info = SPVM::Builder::Config::Info->new(%options);
 
-Creates a L<SPVM::Builder::Config::Info> object given the class name $class_name and returns it.
+Creates an L<SPVM::Builder::Config::Info> object given the class name $class_name and returns it.
 
 The class specified by $class_name and classes loaded by the class are compiled and the runtime is generated.
 
@@ -293,7 +293,7 @@ Exceptions thrown by L</"get_config_file"> method could be thrown.
 
   my $config = $config_info->get_config($class_name);
 
-Returns the L<config|SPVM::Builder::Config> for the class given by the class name $class_name.
+Returns a L<config|SPVM::Builder::Config> object for the class given by the class name $class_name.
 
 Exceptions:
 
