@@ -1051,7 +1051,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { (Int)"foo"; } }';
-    compile_not_ok($source, q|The type cast from "string" to "Int" is not allowed|);
+    compile_not_ok($source, q|The type cast from string to Int is not allowed|);
   }
 }
 
