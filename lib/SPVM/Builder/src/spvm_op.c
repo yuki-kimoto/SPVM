@@ -2989,7 +2989,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   op_dist->is_dist = 1;
   
   if (!SPVM_OP_is_mutable(compiler, op_dist)) {
-    SPVM_COMPILER_error(compiler, "The left operand of an assign operator must be mutable.\n  at %s line %d", op_dist->file, op_dist->line);
+    SPVM_COMPILER_error(compiler, "The left operand of assign operator must be mutable.\n  at %s line %d", op_dist->file, op_dist->line);
   }
   
   return op_assign;

@@ -600,7 +600,7 @@ use Test::More;
       }
       {
         my $source = 'class MyClass { static method main : void () { my $Foo::name : int; } }';
-        compile_not_ok($source, qr/The local variable "\$Foo::name" cannnot contain "::"/);
+        compile_not_ok($source, qr/The local variable name "\$Foo::name" cannnot contain "::"/);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $foo__bar : int; } }';
