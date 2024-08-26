@@ -3083,7 +3083,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
 
             if (!SPVM_CHECK_can_access(compiler, method->current_basic_type, call_method->method->current_basic_type, call_method->method->access_control_type, 0)) {
               if (!SPVM_OP_is_allowed(compiler, method->current_basic_type, call_method->method->current_basic_type, 0)) {
-                SPVM_COMPILER_error(compiler, "The %s \"%s\" method in the \"%s\" class cannnot be called from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->name, call_method->method->current_basic_type->name,  method->current_basic_type->name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The %s %s#%s method cannnot be called from the current class \"%s\".\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, call_method->method->access_control_type), call_method->method->current_basic_type->name, call_method->method->name, method->current_basic_type->name, op_cur->file, op_cur->line);
                 return;
               }
             }
@@ -3101,7 +3101,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                     args_length_for_user--;
                   }
                   
-                  SPVM_COMPILER_error(compiler, "Too many arguments are passed to the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, op_cur->uv.call_method->method->current_basic_type->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Too many arguments are passed to %s#%s method.\n  at %s line %d", op_cur->uv.call_method->method->current_basic_type->name, method_name, op_cur->file, op_cur->line);
                   
                   return;
                 }
@@ -3116,7 +3116,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 if (!call_method->method->is_class_method) {
                   call_method_args_length_for_user--;
                 }
-                sprintf(place, "the %dth argument of the \"%s\" method in the \"%s\" class", call_method_args_length_for_user, method_name, op_cur->uv.call_method->method->current_basic_type->name);
+                sprintf(place, "the %dth argument of %s#%s method", call_method_args_length_for_user, op_cur->uv.call_method->method->current_basic_type->name, method_name);
                 
                 // Invocant is not checked.
                 op_operand = SPVM_CHECK_check_assign(compiler, arg_var_decl_type, op_operand, place, op_cur->file, op_cur->line);
@@ -3133,7 +3133,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 required_args_length_for_user--;
               }
               
-              SPVM_COMPILER_error(compiler, "Too few arguments are passed to the \"%s\" method in the \"%s\" class.\n  at %s line %d", method_name, op_cur->uv.call_method->method->current_basic_type->name, op_cur->file, op_cur->line);
+              SPVM_COMPILER_error(compiler, "Too few arguments are passed to %s#%s method.\n  at %s line %d", op_cur->uv.call_method->method->current_basic_type->name, method_name, op_cur->file, op_cur->line);
               
               return;
             }

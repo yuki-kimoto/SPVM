@@ -888,19 +888,19 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { MyClass2->foo();  } }',
       'class MyClass2 { static private method foo : void () {} }'
     ];
-    compile_not_ok($source, q|The private "foo" method in the "MyClass2" class cannnot be called from the current class "MyClass"|);
+    compile_not_ok($source, q|The private MyClass2#foo method cannnot be called from the current class "MyClass"|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
-    compile_not_ok($source, q|Too few arguments are passed to the "foo" method in the "MyClass" class|);
+    compile_not_ok($source, q|Too few arguments are passed to MyClass#foo method|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(); } method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
-    compile_not_ok($source, q|Too few arguments are passed to the "foo" method in the "MyClass" class|);
+    compile_not_ok($source, q|Too few arguments are passed to MyClass#foo method|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo(1, 2, 3); } method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
-    compile_not_ok($source, q|Too many arguments are passed to the "foo" method in the "MyClass" class|);
+    compile_not_ok($source, q|Too many arguments are passed to MyClass#foo method|);
   }
 }
 
@@ -1071,11 +1071,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the 1th argument of the "foo" method in the "MyClass" class.|);
+    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the 1th argument of MyClass#foo method.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the 1th argument of the "foo" method in the "MyClass" class.|);
+    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the 1th argument of MyClass#foo method.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
