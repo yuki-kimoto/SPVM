@@ -308,7 +308,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       
       char* found_pos_ptr = strstr(basic_type_name + basic_type_name_length - tail_name_length, tail_name);
       if (!found_pos_ptr) {
-        SPVM_COMPILER_error(compiler, "The type name for the %s multi-numeric with the field length of %d must end with \"%s\".\n  at %s line %d", first_field_type->basic_type->name, basic_type->unmerged_fields->length, tail_name, basic_type->op_class->file, basic_type->op_class->line);
+        SPVM_COMPILER_error(compiler, "The name of the multi-numeric type %s must end with with %s.\n  at %s line %d", basic_type->name, tail_name, basic_type->op_class->file, basic_type->op_class->line);
         return;
       }
     }

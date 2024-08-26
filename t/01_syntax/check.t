@@ -1182,7 +1182,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass : mulnum_t { has x : int; has y : int; }';
-    compile_not_ok($source, q|The type name for the int multi-numeric with the field length of 2 must end with "_2i"|);
+    compile_not_ok($source, q|The name of the multi-numeric type MyClass must end with with _2i.|);
   }
   {
     my $source = 'class MyClass { use Complex_2d; our $FOO : Complex_2d; }';
