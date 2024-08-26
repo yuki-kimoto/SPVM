@@ -28,13 +28,13 @@ This class is automatically loaded.
 
 The Bool object is different behavior in bool context.
 
-If the L</"value"> field is 1, it is evaluated as true.
+If L</"value"> field is 1, it is evaluated as true.
 
   if (Bool->TRUE) {
     # Run
   }
 
-If the L</"value"> field is 0, it is evaluated as false.
+If L</"value"> field is 0, it is evaluated as false.
 
   if (Bool->FALSE) {
     # Not run

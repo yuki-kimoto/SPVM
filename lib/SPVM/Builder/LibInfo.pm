@@ -219,7 +219,7 @@ Return Value Examples:
 
   my $lib_name = $lib_info->to_string;
 
-Returns the L</"name"> field.
+Returns L</"name"> field.
 
 =head1 Operators
 

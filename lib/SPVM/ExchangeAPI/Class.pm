@@ -117,7 +117,7 @@ A L<SPVM::ExchangeAPI> object
 
   $class->foo(@args);
 
-Calls L<SPVM::ExchangeAPI#call_method|SPVM::ExchangeAPI/"call_method"> using the L</"__name"> field and the method name given in C<AUTOLOAD> method.
+Calls L<SPVM::ExchangeAPI#call_method|SPVM::ExchangeAPI/"call_method"> using L</"__name"> field and the method name given in C<AUTOLOAD> method.
 
 =head1 Copyright & License
 

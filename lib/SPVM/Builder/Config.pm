@@ -1255,7 +1255,7 @@ Examples:
   my $source_files = $config->source_files;
   $config->source_files($source_files);
 
-Gets and sets the C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from the L</"native_src_dir"> field.
+Gets and sets the C<source_files> field, an array reference containing relative paths of L<native source file|SPVM::Document::NativeClass/"Native Source Files"> file from L</"native_src_dir"> field.
 
 =head2 after_create_compile_info_cbs
 
@@ -1739,39 +1739,39 @@ Exampels:
   
   my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
-Calls L</"new"> method and sets the L</"ext"> field to C<c>, and returns the return value of L</"new"> method.
+Calls L</"new"> method and sets L</"ext"> field to C<c>, and returns the return value of L</"new"> method.
 
 =head2 new_gnu99
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-Calls L</"new_c"> method and sets the L</"std"> field to C<gnu99>, and returns the return value of L</"new_c"> method.
+Calls L</"new_c"> method and sets L</"std"> field to C<gnu99>, and returns the return value of L</"new_c"> method.
 
 =head2 new_gnu11
   
   my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
 
-Calls L</"new_c"> method and sets the L</"std"> field to C<gnu11>, and returns the return value of L</"new_c"> method.
+Calls L</"new_c"> method and sets L</"std"> field to C<gnu11>, and returns the return value of L</"new_c"> method.
 
 =head2 new_c99
   
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
-Calls L</"new_c"> method and sets the L</"std"> field to C<c99>, and returns the return value of L</"new_c"> method.
+Calls L</"new_c"> method and sets L</"std"> field to C<c99>, and returns the return value of L</"new_c"> method.
 
 =head2 new_c11
   
   my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
 
-Calls L</"new_c"> method and sets the L</"std"> field to C<c11>, and returns the return value of L</"new_c"> method.
+Calls L</"new_c"> method and sets L</"std"> field to C<c11>, and returns the return value of L</"new_c"> method.
 
 =head2 new_cpp
   
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-Calls L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to a C<C++> compiler and sets the L</"ld"> field to a C<C++> linker, and returns the return value of L</"new"> method.
+Calls L</"new"> method and sets L</"ext"> field to C<cpp> and sets L</"cc"> field to a C<C++> compiler and sets L</"ld"> field to a C<C++> linker, and returns the return value of L</"new"> method.
 
-If C<$Config{gccversion}> contains C<clang>, the L</"cc"> field and the L</"ld"> field are set to C<clang++>. Otherwise, the L</"cc"> field and the L</"ld"> field are set to C<g++>.
+If C<$Config{gccversion}> contains C<clang>, L</"cc"> field and L</"ld"> field are set to C<clang++>. Otherwise, L</"cc"> field and L</"ld"> field are set to C<g++>.
 
 =head2 new_cpp11
   

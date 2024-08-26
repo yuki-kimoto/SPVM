@@ -103,7 +103,7 @@ undef
 
   my $object_file_info = $object_file_info->to_string;
 
-Returns the L</"file"> field.
+Returns L</"file"> field.
 
 =head1 Operators
 

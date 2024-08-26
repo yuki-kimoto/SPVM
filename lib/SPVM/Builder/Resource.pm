@@ -162,7 +162,7 @@ undef
 
   my $string = $resource->to_string;
 
-Returns the L</"class_name"> field.
+Returns L</"class_name"> field.
 
 =head1 Operators
 

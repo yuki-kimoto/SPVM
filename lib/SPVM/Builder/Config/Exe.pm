@@ -197,7 +197,7 @@ The return value of the L<create_default_config|SPVM::Builder::Util::API/"create
 
   $config_exe->add_global_after_create_compile_info_cb(@global_after_create_compile_info_cbs);
 
-Adds @global_after_create_compile_info_cbs to the end of the L</"global_after_create_compile_info_cbs"> field.
+Adds @global_after_create_compile_info_cbs to the end of L</"global_after_create_compile_info_cbs"> field.
 
 Examples:
 
@@ -213,7 +213,7 @@ Examples:
 
   $config_exe->add_global_before_compile_cb(@global_before_compile_cbs);
 
-Adds @global_before_compile_cbs to the end of the L</"global_before_compile_cbs"> field.
+Adds @global_before_compile_cbs to the end of L</"global_before_compile_cbs"> field.
 
 Examples:
 

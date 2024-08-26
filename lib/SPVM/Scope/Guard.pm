@@ -49,7 +49,7 @@ C<static method new : L<Scope::Guard|SPVM::Scope::Guard> ($callback : L<Callback
 
 Creates a new C<Scope::Guard> object and returns it.
 
-$callback is set to the L</"callback"> field.
+$callback is set to L</"callback"> field.
 
 Exceptions:
 

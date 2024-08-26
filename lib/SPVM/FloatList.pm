@@ -57,7 +57,7 @@ The FloatList class in L<SPVM> has methods to manipulate dynamic float arrays.
 
 The L</"array"> stored in a FloatList object always starts at index 0.
 
-The elements in the range that is greater than or equal to the L</"length"> field and less than the L</"capacity"> field are filled with 0.
+The elements in the range that is greater than or equal to L</"length"> field and less than L</"capacity"> field are filled with 0.
 
 =head1 Fields
 
