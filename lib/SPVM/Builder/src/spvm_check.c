@@ -1177,14 +1177,14 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
     
     SPVM_TYPE* type = SPVM_CHECK_get_type(compiler, op_invocant);
     if (!(SPVM_TYPE_is_class_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_interface_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-      SPVM_COMPILER_error(compiler, "The invocant of the \"%s\" method must be a class type or an interface type.\n  at %s line %d", method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "The invocant of %s method must be a class type or an interface type.\n  at %s line %d", method_name, op_call_method->file, op_call_method->line);
       return;
     }
     
     const char* basic_type_name = type->basic_type->name;
     
     SPVM_BASIC_TYPE* basic_type = SPVM_HASH_get(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
-
+    
     // Static instance method call
     char* last_colon_pos = strrchr(method_name, ':');
     if (last_colon_pos) {
@@ -1206,7 +1206,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
         SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_get(compiler->basic_type_symtable, abs_method_name, basic_type_name_length);
         if (!found_basic_type) {
           basic_type = found_method->current_basic_type;
-          SPVM_COMPILER_error(compiler, "The class specified in the \"%s\" method call is not found..\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
+          SPVM_COMPILER_error(compiler, "The class included in the method call %s is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
           return;
         }
         if (found_basic_type) {

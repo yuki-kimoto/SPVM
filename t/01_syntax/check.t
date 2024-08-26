@@ -1115,7 +1115,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 1; $var->new; } }';
-    compile_not_ok($source, q|The invocant of the "new" method must be a class type or an interface type|);
+    compile_not_ok($source, q|The invocant of new method must be a class type or an interface type|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $point = Point->new; } }';
