@@ -2,6 +2,9 @@
   [New Features]
     * Add StringBuffer#clone method.
     * Add Fn#is_any_numeric_array method.
+  [Document Fix]
+    * Fix links in docs for Fn class.
+    
   [Document Changes]
     * "=head1 Inheritance" is changed to "=head1 Super Class".
   [Changes]

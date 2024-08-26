@@ -283,7 +283,7 @@ The alias for the following code using L</"index>.
 
 C<static method copy_string : string ($string : string);>
 
-The alias for the following code using the L<copy operator|SPVM::Document::Language/"copy Operator">
+The alias for the following code using L<copy operator|SPVM::Document::Language::Operators/"copy Operator">
 
   my $ret = copy $string;
 
@@ -394,19 +394,19 @@ $offset + $length must be less than or equal to the length of $string.
 
 C<static method is_alnum : int ($code_point : int);>
 
-If the Unicode $code_point is an ASCII alphanumeric C<A-Za-z0-9>, return 1. Otherwise return 0.
+If the Unicode $code_point is an ASCII alphanumeric C<A-Za-z0-9>, returns 1, otherwise returns 0.
 
 =head2 is_alpha
 
 C<static method is_alpha : int ($code_point : int);>
 
-If the Unicode $code_point is an ASCII alphabetic C<A-Za-z>, return 1. Otherwise return 0.
+If the Unicode $code_point is an ASCII alphabetic C<A-Za-z>, returns 1, otherwise returns 0.
 
 =head2 is_array
 
 C<static method is_array : int ($object : object);>
 
-If $object is defined and the type of $object is the L<array type|SPVM::Document::Language/"Array Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is array type, returns 1, otherwise returns 0.
 
 L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
 
@@ -414,13 +414,13 @@ L<SPVM::Document::NativeAPI/"is_array"> is used to check the type.
 
 C<static method is_blank : int ($code_point : int);>
 
-If the Unicode $code_point is an ASCII blank C<0x20(SP, ' ')>, C<0x09(HT, '\t')>, return 1. Otherwise return 0.
+If the Unicode $code_point is an ASCII blank C<0x20(SP, ' ')>, C<0x09(HT, '\t')>, returns 1, otherwise returns 0.
 
 =head2 is_class
 
 C<static method is_class : int ($object : object);>
 
-If $object is defined and the type of $object is the L<class type|SPVM::Document::Language/"Class Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is a class type, returns 1, otherwise returns 0.
 
 L<SPVM::Document::NativeAPI/"is_class"> is used to check the type.
 
@@ -428,37 +428,37 @@ L<SPVM::Document::NativeAPI/"is_class"> is used to check the type.
 
 C<static method is_cntrl : int ($code_point : int);>
 
-If the Unicode $code_point is an ASCII control character C<0x00-0x1F>, C<0x7F>, return 1. Otherwise return 0.
+If the Unicode $code_point is an ASCII control character C<0x00-0x1F>, C<0x7F>, returns 1, otherwise returns 0.
 
 =head2 is_digit
 
 C<static method is_digit : int ($code_point : int);>
 
-If the Unicode $code_point is an ASCII decimal digit 0-9, return 1. Otherwise return 0.
+If the Unicode $code_point is an ASCII decimal digit 0-9, returns 1, otherwise returns 0.
 
 =head2 is_graph
 
 C<static method is_graph : int ($code_point : int);>
 
-If $character is an ASCII graphical character C<0x21-0x7E>, return 1. Otherwise return 0.
+If $character is an ASCII graphical character C<0x21-0x7E>, returns 1, otherwise returns 0.
 
 =head2 is_hex_digit
 
 C<static method is_hex_digit : int ($code_point : int);>
 
-If $character is a hexadecimal digit C<0-9a-fA-F>, return 1. Otherwise return 0.
+If $character is a hexadecimal digit C<0-9a-fA-F>, returns 1, otherwise returns 0.
 
 =head2 is_lower
 
 C<static method is_lower : int ($code_point : int);>
 
-If the Unicode $code_point is an ASCII lowercase character C<a-z>, return 1. Otherwise return 0.
+If the Unicode $code_point is an ASCII lowercase character C<a-z>, returns 1, otherwise returns 0.
 
 =head2 is_mulnum_array
 
 C<static method is_mulnum_array : int ($object : object);>
 
-If $object is defined and the type of $object is the L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is a multi-numeric array type, returns 1, otherwise returns 0.
 
 L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
@@ -466,7 +466,7 @@ L<SPVM::Document::NativeAPI/"is_mulnum_array"> is used to check the type.
 
 C<static method is_numeric_array : int ($object : object);>
 
-If $object is defined and the type of $object is the L<numeric array type|SPVM::Document::Language/"Numeric Array Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is a numeric array type, returns 1, otherwise returns 0.
 
 L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
@@ -474,7 +474,7 @@ L<SPVM::Document::NativeAPI/"is_numeric_array"> is used to check the type.
 
 C<static method is_object_array : int ($object : object);>
 
-If $object is defined and the type of $object is an L<object array type|SPVM::Document::Language/"Object Array Type">, return 1. Otherwise return 0.
+If $object is defined and the type of $object is an object array type, returns 1, otherwise returns 0.
 
 L<SPVM::Document::NativeAPI/"is_object_array"> is used to check the type.
 
@@ -482,7 +482,7 @@ L<SPVM::Document::NativeAPI/"is_object_array"> is used to check the type.
 
 C<static method is_perl_space : int ($code_point : int);>
 
-If the Unicode $code_point is an Perl ASCII space character C<0x09(HT, '\t')>, C<0x0A(LF, '\n')>, C<0x0C(FF, '\f')>, C<0x0D(CR, '\r')>, C<0x20(SP, ' ')>,  return 1. Otherwise return 0.
+If the Unicode $code_point is an Perl ASCII space character C<0x09(HT, '\t')>, C<0x0A(LF, '\n')>, C<0x0C(FF, '\f')>, C<0x0D(CR, '\r')>, C<0x20(SP, ' ')>,  returns 1, otherwise returns 0.
 
 Note that prior to Perl v5.18, C<\s> in ASCII mode did not match the vertical tab C<0x0B(VT)>. C<is_perl_space> is the same as this behavior.
 
@@ -492,13 +492,13 @@ Current Perl C<\s> in ASCII mode is the same as L</"is_space">.
 
 C<static method is_perl_word : int ($code_point : int);>
 
-If the Unicode $code_point is an Perl ASCII word character C<a-zA-Z0-9_>, return 1. Otherwise return 0.
+If the Unicode $code_point is an Perl ASCII word character C<a-zA-Z0-9_>, returns 1, otherwise returns 0.
 
 =head2 is_pointer_class
 
 C<static method is_pointer_class : int ($object : object);>
 
-If $object is defined and $object is a L<pointer class|SPVM::Document::Language/"Pointer Class">, return 1. Otherwise return 0.
+If $object is defined and $object is a L<pointer class|SPVM::Document::Language::Class/"Pointer Class">, returns 1, otherwise returns 0.
 
 L<SPVM::Document::NativeAPI/"is_pointer_class"> is used to check the type.
 
@@ -506,31 +506,31 @@ L<SPVM::Document::NativeAPI/"is_pointer_class"> is used to check the type.
 
 C<static method is_print : int ($code_point : int);>
 
-If the Unicode C<$$code_point> is an ASCII printable character C<0x20-0x7E>, return 1. Otherwise return 0.
+If the Unicode C<$$code_point> is an ASCII printable character C<0x20-0x7E>, returns 1, otherwise returns 0.
 
 =head2 is_punct
 
 C<static method is_punct : int ($code_point : int);>
 
-If the Unicode $code_point is an ASCII a punctuation character C<0x21-0x2F>, C<0x3A-0x40>, C<0x5B-0x60>, C<0x7B-0x7E>, return 1. Otherwise return 0.
+If the Unicode $code_point is an ASCII a punctuation character C<0x21-0x2F>, C<0x3A-0x40>, C<0x5B-0x60>, C<0x7B-0x7E>, returns 1, otherwise returns 0.
 
 =head2 is_space
 
 C<static method is_space : int ($code_point : int);>
 
-If the Unicode $code_point is an ASCII a white-space C<0x09(HT, '\t')>, C<0x0A(LF, '\n')>, C<0x0B(VT)>, C<0x0C(FF, '\f')>, C<0x0D(CR, '\r')>, C<0x20(SP, ' ')> return 1. Otherwise return 0.
+If the Unicode $code_point is an ASCII a white-space C<0x09(HT, '\t')>, C<0x0A(LF, '\n')>, C<0x0B(VT)>, C<0x0C(FF, '\f')>, C<0x0D(CR, '\r')>, C<0x20(SP, ' ')> returns 1, otherwise returns 0.
 
 =head2 is_upper
 
 C<static method is_upper : int ($code_point : int);>
 
-If $code_point is an ASCII uppercase character C<A-Z>, return 1. Otherwise return 0.
+If $code_point is an ASCII uppercase character C<A-Z>, returns 1, otherwise returns 0.
 
 =head2 is_xdigit
 
 C<static method is_xdigit : int ($code_point : int);>
 
-If $code_point is an ASCII hexadecimal digit C<0-9A-Fa-f>, return 1. Otherwise return 0.
+If $code_point is an ASCII hexadecimal digit C<0-9A-Fa-f>, returns 1, otherwise returns 0.
 
 =head2 join
 
@@ -1094,25 +1094,25 @@ Converts the address of $object to a value of the int type, and returns it.
 
 C<static method get_spvm_version_string : string ();>
 
-Returns the the L<version string|SPVM::Document::Language/"Version String"> of the SPVM language.
+Returns the the L<version string|SPVM::Document::Language::Class/"Version String"> of the SPVM language.
 
 =head2 get_spvm_version_string
 
 C<static method get_spvm_version_string : string ();>
 
-Returns the the L<version string|SPVM::Document::Language/"Version String"> of the SPVM language.
+Returns the the L<version string|SPVM::Document::Language::Class/"Version String"> of the SPVM language.
 
 =head2 get_spvm_version_number
 
 C<static method get_spvm_version_number : double ();>
 
-Returns the L<version number|SPVM::Document::Language/"Version Number"> of the SPVM language.
+Returns the L<version number|SPVM::Document::Language::Class/"Version Number"> of the SPVM language.
 
 =head2 get_version_number
 
 C<static method get_version_number : double ($basic_type_name : string);>
 
-Returns the L<version number|SPVM::Document::Language/"Version Number"> of a class.
+Returns the L<version number|SPVM::Document::Language::Class/"Version Number"> of a class.
 
 Exceptions:
 
@@ -1268,9 +1268,21 @@ The type dimension $type_dimension must be grether than or equal to 0 and less t
 
 C<static method is_any_numeric_array : int ($object : object);>
 
-If the object $object is defined and the type of $object is a L<numeric array type|SPVM::Document::Language/"Numeric Array Type"> or a L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">, returns 1, otherwise returns 0.
+If the object $object is defined and the type of $object is a numeric array type or a multi-numeric array type, returns 1, otherwise returns 0.
 
-Any numeric arrays means arrays of L<numeric array type|SPVM::Document::Language/"Numeric Array Type"> and L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">.
+An any numeric array means an array of a numeric array type or a multi-numeric array type.
+
+=head1 See Also
+
+=over 2
+
+=item * L<Types|SPVM::Document::Language::Types>
+
+=item * L<Class Definition|SPVM::Document::Language::Class>
+
+=item * L<Operators|SPVM::Document::Language::Operators>
+
+=back
 
 =head1 Copyright & License
 
