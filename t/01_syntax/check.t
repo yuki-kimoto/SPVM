@@ -947,7 +947,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->{foo}; } }';
-    compile_not_ok($source, q|The "foo" field is not found in the "MyClass" class and its super classes|);
+    compile_not_ok($source, q|foo field is not found in MyClass class or its super classes|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';

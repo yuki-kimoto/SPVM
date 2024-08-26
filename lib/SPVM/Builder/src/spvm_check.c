@@ -1048,7 +1048,7 @@ void SPVM_CHECK_check_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_ac
     op_field_access->uv.field_access->field = found_field;
   }
   else {
-    SPVM_COMPILER_error(compiler, "The \"%s\" field is not found in the \"%s\" class and its super classes.\n  at %s line %d", field_name, basic_type->name, op_field_access->file, op_field_access->line);
+    SPVM_COMPILER_error(compiler, "%s field is not found in %s class or its super classes.\n  at %s line %d", field_name, basic_type->name, op_field_access->file, op_field_access->line);
     return;
   }
 }
