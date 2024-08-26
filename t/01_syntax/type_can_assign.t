@@ -90,7 +90,7 @@ use Test::More;
       }
       {
         my $source = 'class MyClass { static method main : void () { my $dist : byte = -129; } }';
-        compile_not_ok($source, q|The "int" type cannot be assigned to the "byte" type in the assignment operator.|);
+        compile_not_ok($source, q|int type cannot be assigned to byte type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $dist : short = -32768; } }';
@@ -98,7 +98,7 @@ use Test::More;
       }
       {
         my $source = 'class MyClass { static method main : void () { my $dist : short = -32769; } }';
-        compile_not_ok($source, q|The "int" type cannot be assigned to the "short" type in the assignment operator.|);
+        compile_not_ok($source, q|int type cannot be assigned to short type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $dist : int = -2147483648L; } }';
@@ -106,27 +106,27 @@ use Test::More;
       }
       {
         my $source = 'class MyClass { static method main : void () { my $dist : int = -2147483649L; } }';
-        compile_not_ok($source, q|The "long" type cannot be assigned to the "int" type in the assignment operator.|);
+        compile_not_ok($source, q|long type cannot be assigned to int type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : short; my $dist : byte = $source; } }';
-        compile_not_ok($source, q|The "short" type cannot be assigned to the "byte" type in the assignment operator.|);
+        compile_not_ok($source, q|short type cannot be assigned to byte type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : int; my $dist : short = $source; } }';
-        compile_not_ok($source, q|The "int" type cannot be assigned to the "short" type in the assignment operator.|);
+        compile_not_ok($source, q|int type cannot be assigned to short type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : long; my $dist : int = $source; } }';
-        compile_not_ok($source, q|The "long" type cannot be assigned to the "int" type in the assignment operator.|);
+        compile_not_ok($source, q|long type cannot be assigned to int type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : float; my $dist : long = $source; } }';
-        compile_not_ok($source, q|The "float" type cannot be assigned to the "long" type in the assignment operator.|);
+        compile_not_ok($source, q|float type cannot be assigned to long type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : double; my $dist : float = $source; } }';
-        compile_not_ok($source, q|The "double" type cannot be assigned to the "float" type in the assignment operator.|);
+        compile_not_ok($source, q|double type cannot be assigned to float type in assignment operator.|);
       }
     }
   }
@@ -193,42 +193,42 @@ use Test::More;
     {
       {
         my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist : short = $source; } }';
-        compile_not_ok($source, q|The "Byte" type cannot be assigned to the "short" type in the assignment operator.|);
+        compile_not_ok($source, q|Byte type cannot be assigned to short type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : Short; my $dist : int = $source; } }';
-        compile_not_ok($source, q|The "Short" type cannot be assigned to the "int" type in the assignment operator.|);
+        compile_not_ok($source, q|Short type cannot be assigned to int type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : Int; my $dist : long = $source; } }';
-        compile_not_ok($source, q|The "Int" type cannot be assigned to the "long" type in the assignment operator.|);
+        compile_not_ok($source, q|Int type cannot be assigned to long type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : Long; my $dist : float = $source; } }';
-        compile_not_ok($source, q|The "Long" type cannot be assigned to the "float" type in the assignment operator.|);
+        compile_not_ok($source, q|Long type cannot be assigned to float type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : Float; my $dist : double = $source; } }';
-        compile_not_ok($source, q|The "Float" type cannot be assigned to the "double" type in the assignment operator.|);
+        compile_not_ok($source, q|Float type cannot be assigned to double type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : Double; my $dist : byte = $source; } }';
-        compile_not_ok($source, q|The "Double" type cannot be assigned to the "byte" type in the assignment operator.|);
+        compile_not_ok($source, q|Double type cannot be assigned to byte type in assignment operator.|);
       }
     }
     # The source type is other types
     {
       {
         my $source = 'class MyClass { static method main : void () { my $source : int[]; my $dist : int = $source; } }';
-        compile_not_ok($source, q|The "int[]" type cannot be assigned to the "int" type in the assignment operator.|);
+        compile_not_ok($source, q|int[] type cannot be assigned to int type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { static method main : void () { my $source : int*; my $dist : int = $source; } }';
-        compile_not_ok($source, q|The "int*" type cannot be assigned to the "int" type in the assignment operator.|);
+        compile_not_ok($source, q|int* type cannot be assigned to int type in assignment operator.|);
       }
       {
         my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : int = $source; } }';
-        compile_not_ok($source, q|The "Complex_2d" type cannot be assigned to the "int" type in the assignment operator.|);
+        compile_not_ok($source, q|Complex_2d type cannot be assigned to int type in assignment operator.|);
       }
     }
   }
@@ -244,14 +244,14 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : Complex_2d; my $dist : Complex_2f = $source; } }';
-      compile_not_ok($source, q|The "Complex_2d" type cannot be assigned to the "Complex_2f" type in the assignment operator.|);
+      compile_not_ok($source, q|Complex_2d type cannot be assigned to Complex_2f type in assignment operator.|);
     }
   }
   # The source type is not multi-numeric type
   {
     {
       my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : double = $source; } }';
-      compile_not_ok($source, q|The "Complex_2d" type cannot be assigned to the "double" type in the assignment operator.|);
+      compile_not_ok($source, q|Complex_2d type cannot be assigned to double type in assignment operator.|);
     }
   }
 }
@@ -270,14 +270,14 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : int*; my $dist : long* = $source; } }';
-      compile_not_ok($source, q|The "int*" type cannot be assigned to the "long*" type in the assignment operator.|);
+      compile_not_ok($source, q|int* type cannot be assigned to long* type in assignment operator.|);
     }
   }
   # The source type is not the reference type
   {
     {
       my $source = 'class MyClass { static method main : void () { my $source : int*; my $dist : int = $source; } }';
-      compile_not_ok($source, q|The "int*" type cannot be assigned to the "int" type in the assignment operator.|);
+      compile_not_ok($source, q|int* type cannot be assigned to int type in assignment operator.|);
     }
   }
 }
@@ -296,7 +296,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { static method main : void () { my $source : string; my $dist : mutable string = $source; } }';
-      compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the assignment operator.|);
+      compile_not_ok($source, q|string type cannot be assigned to mutable string type in assignment operator.|);
     }
   }
   
@@ -340,11 +340,11 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { static method main : void () { my $source : Byte; my $dist : string = $source; } }';
-      compile_not_ok($source, q|The "Byte" type cannot be assigned to the "string" type in the assignment operator.|);
+      compile_not_ok($source, q|Byte type cannot be assigned to string type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist : string = $source; } }';
-      compile_not_ok($source, q|The "byte[]" type cannot be assigned to the "string" type in the assignment operator.|);
+      compile_not_ok($source, q|byte[] type cannot be assigned to string type in assignment operator.|);
     }
   }
 }
@@ -383,27 +383,27 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { static method main : void () { my $source : byte; my $dist : Short = $source; } }';
-      compile_not_ok($source, q|The "byte" type cannot be assigned to the "Short" type in the assignment operator.|);
+      compile_not_ok($source, q|byte type cannot be assigned to Short type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { static method main : void () { my $source : short; my $dist : Int = $source; } }';
-      compile_not_ok($source, q|The "short" type cannot be assigned to the "Int" type in the assignment operator.|);
+      compile_not_ok($source, q|short type cannot be assigned to Int type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { static method main : void () { my $source : int; my $dist : Long = $source; } }';
-      compile_not_ok($source, q|The "int" type cannot be assigned to the "Long" type in the assignment operator.|);
+      compile_not_ok($source, q|int type cannot be assigned to Long type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { static method main : void () { my $source : long; my $dist : Float = $source; } }';
-      compile_not_ok($source, q|The "long" type cannot be assigned to the "Float" type in the assignment operator.|);
+      compile_not_ok($source, q|long type cannot be assigned to Float type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { static method main : void () { my $source : float; my $dist : Double = $source; } }';
-      compile_not_ok($source, q|The "float" type cannot be assigned to the "Double" type in the assignment operator.|);
+      compile_not_ok($source, q|float type cannot be assigned to Double type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { static method main : void () { my $source : double; my $dist : Byte = $source; } }';
-      compile_not_ok($source, q|The "double" type cannot be assigned to the "Byte" type in the assignment operator.|);
+      compile_not_ok($source, q|double type cannot be assigned to Byte type in assignment operator.|);
     }
   }
 
@@ -466,15 +466,15 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { static method main : void () { my $source : int*; my $dist : Int = $source; } }';
-      compile_not_ok($source, q|The "int*" type cannot be assigned to the "Int" type in the assignment operator.|);
+      compile_not_ok($source, q|int* type cannot be assigned to Int type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : Int = $source; } }';
-      compile_not_ok($source, q|The "Complex_2d" type cannot be assigned to the "Int" type in the assignment operator.|);
+      compile_not_ok($source, q|Complex_2d type cannot be assigned to Int type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { use Point; static method main : void () { my $source : Point; my $dist : Int = $source; } }';
-      compile_not_ok($source, q|The "Point" type cannot be assigned to the "Int" type in the assignment operator.|);
+      compile_not_ok($source, q|Point type cannot be assigned to Int type in assignment operator.|);
     }
   }
 }
@@ -499,7 +499,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point; my $dist : Point3D = $source; } }';
-      compile_not_ok($source, q|The "Point" type cannot be assigned to the "Point3D" type in the assignment operator.|);
+      compile_not_ok($source, q|Point type cannot be assigned to Point3D type in assignment operator.|);
     }
   }
   # The source type is undef type
@@ -513,11 +513,11 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Point; static method main : void () { my $source : MyClass; my $dist : Point = $source; } }';
-      compile_not_ok($source, q|The "MyClass" type cannot be assigned to the "Point" type in the assignment operator.|);
+      compile_not_ok($source, q|MyClass type cannot be assigned to Point type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { use Point; static method main : void () { my $source : MyClass; my $dist : int = $source; } }';
-      compile_not_ok($source, q|The "MyClass" type cannot be assigned to the "int" type in the assignment operator.|);
+      compile_not_ok($source, q|MyClass type cannot be assigned to int type in assignment operator.|);
     }
   }
 }
@@ -589,11 +589,11 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Point; static method main : void () { my $source : int*; my $dist : object = $source; } }';
-      compile_not_ok($source, , q|The "int*" type cannot be assigned to the "object" type in the assignment operator.|);
+      compile_not_ok($source, , q|int* type cannot be assigned to object type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { use Complex_2d; static method main : void () { my $source : Complex_2d; my $dist : object = $source; } }';
-      compile_not_ok($source, , q|The "Complex_2d" type cannot be assigned to the "object" type in the assignment operator.|);
+      compile_not_ok($source, , q|Complex_2d type cannot be assigned to object type in assignment operator.|);
     }
   }
 }
@@ -635,7 +635,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { static method main : void () { my $source : byte[]; my $dist : short[] = $source; } }';
-      compile_not_ok($source, , q|The "byte[]" type cannot be assigned to the "short[]" type in the assignment operator.|);
+      compile_not_ok($source, , q|byte[] type cannot be assigned to short[] type in assignment operator.|);
     }
   }
 }
@@ -660,7 +660,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Complex_2d; use Complex_2f; static method main : void () { my $source : Complex_2d[]; my $dist : Complex_2f[] = $source; } }';
-      compile_not_ok($source, , q|The "Complex_2d[]" type cannot be assigned to the "Complex_2f[]" type in the assignment operator.|);
+      compile_not_ok($source, , q|Complex_2d[] type cannot be assigned to Complex_2f[] type in assignment operator.|);
     }
   }
 }
@@ -685,7 +685,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : byte[]; my $dist : string[] = $source; } }';
-      compile_not_ok($source, , q|The "byte[]" type cannot be assigned to the "string[]" type in the assignment operator.|);
+      compile_not_ok($source, , q|byte[] type cannot be assigned to string[] type in assignment operator.|);
     }
   }
 }
@@ -704,7 +704,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point3D[] = $source; } }';
-      compile_not_ok($source, , q|The "Point[]" type cannot be assigned to the "Point3D[]" type in the assignment operator.|);
+      compile_not_ok($source, , q|Point[] type cannot be assigned to Point3D[] type in assignment operator.|);
     }
   }
   # Source type is undef type
@@ -718,7 +718,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Point; use Point3D;  static method main : void () { my $source : Point[]; my $dist : Int[] = $source; } }';
-      compile_not_ok($source, , q|The "Point[]" type cannot be assigned to the "Int[]" type in the assignment operator.|);
+      compile_not_ok($source, , q|Point[] type cannot be assigned to Int[] type in assignment operator.|);
     }
   }
 }
@@ -796,11 +796,11 @@ use Test::More;
   {
     {
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : object; my $dist : object[] = $source; } }';
-      compile_not_ok($source, , q|The "object" type cannot be assigned to the "object[]" type in the assignment operator.|);
+      compile_not_ok($source, , q|object type cannot be assigned to object[] type in assignment operator.|);
     }
     {
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int[]; my $dist : object[] = $source; } }';
-      compile_not_ok($source, , q|The "int[]" type cannot be assigned to the "object[]" type in the assignment operator.|);
+      compile_not_ok($source, , q|int[] type cannot be assigned to object[] type in assignment operator.|);
     }
   }
 }
@@ -823,7 +823,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[]; my $dist : Point[][] = $source; } }';
-      compile_not_ok($source, , q|The "Point[]" type cannot be assigned to the "Point[][]" type in the assignment operator.|);
+      compile_not_ok($source, , q|Point[] type cannot be assigned to Point[][] type in assignment operator.|);
     }
     {
       my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist : Stringable[][] = $source; } }';
@@ -842,7 +842,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Stringable; use Point; use Point3D; static method main : void () { my $source : Point[][]; my $dist : Point3D[][] = $source; } }';
-      compile_not_ok($source, , q|The "Point[][]" type cannot be assigned to the "Point3D[][]" type in the assignment operator.|);
+      compile_not_ok($source, , q|Point[][] type cannot be assigned to Point3D[][] type in assignment operator.|);
     }
   }
   # Source type is undef type
@@ -856,7 +856,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass {use Complex_2f; static method main : void () { my $source : int; my $dist : int[][] = $source; } }';
-      compile_not_ok($source, , q|The "int" type cannot be assigned to the "int[][]" type in the assignment operator.|);
+      compile_not_ok($source, , q|int type cannot be assigned to int[][] type in assignment operator.|);
     }
   }
 }
@@ -871,7 +871,7 @@ use Test::More;
       'class MySockaddr : public;',
       'class MyIn_addr : public;',
     ];
-    compile_not_ok($source, q|The "MySockaddrIn" type cannot be assigned to the "MyIn_addr" type in the 1th argument of the "main" method in the "MyClass" class.|);
+    compile_not_ok($source, q|MySockaddrIn type cannot be assigned to MyIn_addr type in the 1th argument of MyClass#main method.|);
   }
   
 }

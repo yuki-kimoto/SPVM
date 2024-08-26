@@ -45,7 +45,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : int () { my $num = 0; 1 && $num = 3; } }';
-    compile_not_ok($source, qr|The left operand of assign operator must be mutable|);
+    compile_not_ok($source, qr|The left operand of assignment operator must be mutable|);
   }
 }
 

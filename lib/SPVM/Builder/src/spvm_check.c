@@ -3448,7 +3448,7 @@ void SPVM_CHECK_check_ast_assign_unassigned_op_to_var(SPVM_COMPILER* compiler, S
       while (1) {
         // [START]Postorder traversal position
         
-        // Convert an operator to a assign operator
+        // Convert an operator to a assignment operator
         {
           int32_t convert_to_assign = 0;
           
