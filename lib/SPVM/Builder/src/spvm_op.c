@@ -534,7 +534,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
         
         if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "The interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "An interface cannnot have class variables.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(type->basic_type->class_vars, op_decl->uv.class_var);
         
@@ -656,7 +656,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_FIELD* field = op_decl->uv.field;
         
         if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_INTERFACE) {
-          SPVM_COMPILER_error(compiler, "The interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "An interface cannnot have fields.\n  at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(type->basic_type->unmerged_fields, field);
         
@@ -925,7 +925,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     }
     
     if (must_have_block && !method->op_block) {
-      SPVM_COMPILER_error(compiler, "The non-native method must have the block.\n  at %s line %d", op_name_method->file, op_name_method->line);
+      SPVM_COMPILER_error(compiler, "A non-native method must have a block.\n  at %s line %d", op_name_method->file, op_name_method->line);
     }
     
     // Method check

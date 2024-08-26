@@ -115,17 +115,17 @@ use Test::More;
   
   {
     my $source = 'class MyClass : interface_t { our $FOO : int; }';
-    compile_not_ok($source, qr/The interface cannnot have class variables/);
+    compile_not_ok($source, qr/An interface cannnot have class variables/);
   }
   
   {
     my $source = 'class MyClass : interface_t { has foo : int; }';
-    compile_not_ok($source, qr/The interface cannnot have fields/);
+    compile_not_ok($source, qr/An interface cannnot have fields/);
   }
   
   {
     my $source = 'class MyClass : interface_t { static method foo : void (); }';
-    compile_not_ok($source, q|The non-native method must have the block.|);
+    compile_not_ok($source, q|A non-native method must have a block.|);
   }
   
   {
@@ -172,7 +172,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method foo : void (); }';
-    compile_not_ok($source, qr/The non-native method must have the block/);
+    compile_not_ok($source, qr/A non-native method must have a block/);
   }
   {
     my $source = 'class MyClass { static method foo : void () { static method : int () { } } }';
