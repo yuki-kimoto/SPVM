@@ -3344,7 +3344,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             );
             
             if (!found_method) {
-              SPVM_COMPILER_error(compiler, "The \"%s\" method in the \"%s\" class checked by can operator must be defined.\n  at %s line %d", method_name, var_basic_type_name, op_name_method->file, op_name_method->line);
+              SPVM_COMPILER_error(compiler, "%s#%s method, the operand of can operator, must be defined.\n  at %s line %d", var_basic_type_name, method_name, op_name_method->file, op_name_method->line);
               return;
             }
             

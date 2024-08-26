@@ -1039,7 +1039,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point can not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method in the "Point" class checked by can operator must be defined|);
+    compile_not_ok($source, q|Point#not_defined method, the operand of can operator, must be defined|);
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $anon = method : void () {}; $anon can "a"; } }';
@@ -1531,7 +1531,7 @@ EOS
     my $source = [
       'class MyClass { use Point; static method main : int () { 1 && my $x = 3; } }',
     ];
-    compile_not_ok($source, q|The left operand of an assign operator must be mutable|);
+    compile_not_ok($source, q|The left operand of assign operator must be mutable|);
   }
   
   {
