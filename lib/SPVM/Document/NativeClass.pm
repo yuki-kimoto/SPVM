@@ -199,7 +199,7 @@ Consider the following method definition.
 
   method foo ($args0 : int, $args1 : Point, $arg2 : Complex_2d);
 
-Do the following using the C<ival> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of $args0 which type is the int type.
+Do the following using the C<ival> field of the L<SPVM_VALUE|/"SPVM_VALUE Type"> type to get the value of $args0 which type is int type.
 
   int32_t args0 = stack[0].ival;
 
@@ -392,7 +392,7 @@ Get the characters of a string.
 
   const char* chars = env->get_chars(env, stack, obj_string);
 
-Get the elements of an array of the int type.
+Get the elements of an array of int type.
 
   int32_t* values = env->get_elems_int(env, stack, obj_array);
 

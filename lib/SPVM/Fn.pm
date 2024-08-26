@@ -1088,7 +1088,7 @@ Examples:
 
 C<static method object_to_int : int ($object : object);>
 
-Converts the address of $object to a value of the int type, and returns it.
+Converts the address of $object to a value of int type, and returns it.
 
 =head2 get_spvm_version_string
 

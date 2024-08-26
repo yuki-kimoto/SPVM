@@ -214,7 +214,7 @@ The version string is the string that represents the L<version|/"Version Stateme
 
 A version string must be written by the following rules.
 
-The type of a version string is the string type.
+The type of a version string is string type.
 
 It consists of C<0-9>, C<.>. 
 
@@ -847,13 +847,13 @@ I<ITEM> is one of
 
 I<NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
 
-I<VALUE> is an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> within the int type. I<VALUE> is converted the value of the int type.
+I<VALUE> is an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> within int type. I<VALUE> is converted the value of int type.
 
 If I<VALUE> of I<ITEM1> is omitted, it is set to 0.
 
 If I<VALUE> of I<ITEMn> is ommited, it is set to the value of the previous item plus 1.
 
-The return type of the method is the int type.
+The return type of the method is int type.
 
 Every enumeration item is converted to a L<method definition|/"Method Definition"> that defines a class method that returns the value of the enumeration item.
 
@@ -875,7 +875,7 @@ Compilation Errors:
 
 I<NAME> must be a L<method name|SPVM::Document::Language::Tokenization/"Method Name">. Otherwise, a compilation error occurs.
 
-I<VALUE> must be an L<integer literal|/"Integer Literal"> within the int type. Otherwise, a compilation error occurs.
+I<VALUE> must be an L<integer literal|/"Integer Literal"> within int type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1086,7 +1086,7 @@ A class variable getter method is a method to perform the operation of L<getting
 
 This method is a class method that has no arguments.
 
-If the type of the class variable is the byte type or the short type, the return type is the int type. Otherwise, it is the same type as the class variable.
+If the type of the class variable is byte type or short type, the return type is int type. Otherwise, it is the same type as the class variable.
 
 The method name is the same as the class variable name, but C<$> is removed. For example, if the class variable name is C<$FOO>, the method name is C<FOO>.
 
@@ -1107,7 +1107,7 @@ A class variable setter method is a method to perform the operation of L<setting
 
 This method is a class method that has an argument.
 
-If the type of the class variable is the byte type or the short type, the argument type is the int type. Otherwise, it is the same type as the class variable.
+If the type of the class variable is byte type or short type, the argument type is int type. Otherwise, it is the same type as the class variable.
 
 The return type is the void type.
 
@@ -1262,7 +1262,7 @@ A field getter method is a method to perform the operation of L<getting a field|
 
 This method is an instance method that has no arguments.
 
-If the type of the field is the byte type or the short type, the return type is the int type. Otherwise, it is the same type as the field.
+If the type of the field is byte type or short type, the return type is int type. Otherwise, it is the same type as the field.
 
 The method name is the same as the field name. For example, if the field name is C<foo>, the method name is C<foo>.
 
@@ -1289,7 +1289,7 @@ A field setter method is a method to perform the operation of L<setting a field|
 
 This method is an instance method that has an argument.
 
-If the type of the field is the byte type or the short type, the argument type is the int type. Otherwise, it is the same type as the field.
+If the type of the field is byte type or short type, the argument type is int type. Otherwise, it is the same type as the field.
 
 The return type is the void type.
 

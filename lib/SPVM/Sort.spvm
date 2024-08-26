@@ -699,7 +699,7 @@ class Sort {
       }
       
       unless ($options->[$i] isa string) {
-        die "The key of \$options must be the string type.";
+        die "The key of \$options must be string type.";
       }
       my $name = (string)$options->[$i];
       my $value = $options->[$i + 1];

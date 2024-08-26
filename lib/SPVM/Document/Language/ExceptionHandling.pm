@@ -61,7 +61,7 @@ C<$@> is the exception variable. This is used to save a message for an exception
 
   $@
 
-The type is the string type.
+The type is string type.
 
 Using the assignment operator, the value of the exception variable can be set.
 

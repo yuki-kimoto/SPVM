@@ -375,7 +375,7 @@ class TestCase::Module::Hash {
       
       eval { $hash->get_string("foo"); }
       
-      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be the string type.")) {
+      unless (Fn->contains($@, "The type of the value for the key \"foo\" must be string type.")) {
         return 0;
       }
     }

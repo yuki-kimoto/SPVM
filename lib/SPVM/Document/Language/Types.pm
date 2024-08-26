@@ -36,9 +36,9 @@ Normally, numbers are created by L<numeric literals|SPVM::Document::Language::To
   # double - 64bit floating point
   my $number = 1.0;
 
-A character created by the L<character literal|SPVM::Document::Language::Tokenization/"Character Literal"> is a number of the byte type.
+A character created by the L<character literal|SPVM::Document::Language::Tokenization/"Character Literal"> is a number of byte type.
   
-  # A number of the byte type created by a character literal
+  # A number of byte type created by a character literal
   my $char = 'a';
 
 See the following section operations for numbers.
@@ -693,11 +693,11 @@ The I<QUALIFIER> qualified the type I<TYPE>.
 
 =head3 mutable Type Qualifier
 
-The C<mutable> type qualifier qualifies the string type.
+The C<mutable> type qualifier qualifies string type.
 
   mutable string;
 
-The string of the string type with the C<mutable> type qualifier is able to be L<set a character|SPVM::Document::Language::Operators/"Setting a Character">.
+The string of string type with the C<mutable> type qualifier is able to be L<set a character|SPVM::Document::Language::Operators/"Setting a Character">.
 
   my $string = (mutable string)copy "abc";
   $string->[0] = 'd';

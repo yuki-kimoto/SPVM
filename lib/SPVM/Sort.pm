@@ -414,7 +414,7 @@ The length of $options must be an even number. Otherwise an exception is thrown.
 
 The key of $options must be defined. Otherwise an exception is thrown.
 
-The key of $options must be the string type. Otherwise an exception is thrown.
+The key of $options must be string type. Otherwise an exception is thrown.
 
 Examples:
 

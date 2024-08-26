@@ -12,6 +12,7 @@
     * Add "=head1 See Also" section to the output from spvmdist command.
     * Improve "Description" outputted from spmvdist command.
     * Add commented meta-spec "release_status" option to Makefile.PL outputted from spvmdist command.
+    * "the foo type" in docs, exception messages, compilation messages are changed to "foo type".
   [Exception Message Improvement]
     * Improve exception messages outputted from spvmdist command.
   [Test Improvement]

@@ -166,7 +166,7 @@ This operator performs the same operation as the following C language operation,
 
   (uint32_t)LEFT_OPERAND / (uint32_t)RIGHT_OPERAND
 
-The return type is the int type.
+The return type is int type.
 
 Exceptions:
 
@@ -174,9 +174,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the int type. Otherwise, a compilation error occurs.
+The type of I<LEFT_OPERAND> must be int type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the int type. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be int type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -193,7 +193,7 @@ This operator performs the same operation as the following C language operation,
 
   (uint64_t)LEFT_OPERAND / (uint64_t)RIGHT_OPERAND
 
-The return type is the long type.
+The return type is long type.
 
 Exceptions:
 
@@ -201,9 +201,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the long type. Otherwise, a compilation error occurs.
+The type of I<LEFT_OPERAND> must be long type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the long type. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be long type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -250,7 +250,7 @@ This operator performs the same operation as the following C language operation,
 
   (uint32_t)LEFT_OPERAND % (uint32_t)RIGHT_OPERAND
 
-The return type is the int type.
+The return type is int type.
 
 Exceptions:
 
@@ -258,9 +258,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the int type. Otherwise, a compilation error occurs.
+The type of I<LEFT_OPERAND> must be int type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the int type. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be int type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -277,7 +277,7 @@ This operator performs the same operation as the following C language operation,
 
   (uint64_t)LEFT_OPERAND % (uint64_t)RIGHT_OPERAND
 
-The return type is is the long type.
+The return type is is long type.
 
 Exceptions:
 
@@ -285,9 +285,9 @@ If I<RIGHT_OPERAND> is 0, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the long type. Otherwise, a compilation error occurs.
+The type of I<LEFT_OPERAND> must be long type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the long type. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be long type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -583,11 +583,11 @@ This operator performs the L<numeric widening conversion|/"Numeric Widening Conv
 
 And it performs the L<numeric widening conversion|/"Numeric Widening Conversion"> on the right operand I<RIGHT_OPERAND>.
 
-And if the type of I<LEFT_OPERAND> is the int type, it performs the same operation as the following C language operation
+And if the type of I<LEFT_OPERAND> is int type, it performs the same operation as the following C language operation
 
   (uint32_t)LEFT_OPERAND >> RIGHT_OPERAND
 
-If the type of I<LEFT_OPERAND> is the long type, it performs the same operation as the following C language operation.
+If the type of I<LEFT_OPERAND> is long type, it performs the same operation as the following C language operation.
 
   (uint64_t)LEFT_OPERAND >> RIGHT_OPERAND
 
@@ -620,7 +620,7 @@ If the evaluated value is 0, it returns 0. Otherwise, performs the L<condition e
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
-The return type is the int type.
+The return type is int type.
 
 Examples:
 
@@ -642,7 +642,7 @@ If the evaluated value is not 0, it returns the evaluated value. Otherwise, perf
 
 And it returns the evaluated value of I<RIGHT_OPERAND>.
 
-The return type is the int type.
+The return type is int type.
 
 Examples:
 
@@ -661,7 +661,7 @@ Thg logical NOT operator performs the L<condition evaluation|/"Condition Evaluat
 
 If the evaluated value is 0, returns 1. Otherwise, returns 0.
 
-The return type is the int type.
+The return type is int type.
 
   # Examples of the logical NOT operator
   if (!1) {
@@ -674,7 +674,7 @@ The condition evaluation is the operation performed on the operand at a conditio
 
 The condition evaluation performs the following operations corresponding to the type of the operand.
 
-The return type is the int type.
+The return type is int type.
 
 B<byte:>
 
@@ -782,7 +782,7 @@ The array length operator C<@> gets the length of an array.
 
 This operator returns the length the array I<OPERAND>.
 
-The return type is the int type.
+The return type is int type.
 
 Exceptions:
 
@@ -808,7 +808,7 @@ This operator returns the operand I<OPERAND>. I<OPERAND> must be the L<array len
 
 This operator exists only for readability.
 
-The return type is the int type.
+The return type is int type.
 
 Compilation Errors:
 
@@ -870,7 +870,7 @@ And it performs the same operation as the following C language operation, and re
   (int32_t)(LEFT_OPERAND <= RIGHT_OPERAND);
   (int32_t)(LEFT_OPERAND > RIGHT_OPERAND ? 1 : LEFT_OPERAND < RIGHT_OPERAND ? -1 : 0);
 
-The return type is the int type.
+The return type is int type.
 
 Compilation Errors:
 
@@ -975,13 +975,13 @@ These operators perform the following operations.
 
 =end html
 
-The return type is the int type. 
+The return type is int type. 
 
 Compilation Errors.
 
-The type of I<LEFT_OPERAND> must be the string type or the byte[] type. Otherwise, a compilation error occurs.
+The type of I<LEFT_OPERAND> must be string type or the byte[] type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the string type or the byte[] type. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be string type or the byte[] type. Otherwise, a compilation error occurs.
 
 =head2 Constant Operator
 
@@ -1007,11 +1007,11 @@ If the string I<OPERAND> is defind, this operator returns the length of I<OPERAN
 
 If I<OPERAND> is not defined, returns 0.
 
-The return type is the int type.
+The return type is int type.
 
 Compilation Errors:
 
-The type of I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
+The type of I<OPERAND> must be string type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1039,7 +1039,7 @@ And it concats I<LEFT_OPERAND> and I<RIGHT_OPERAND>, and returns its return valu
 
 The type of I<LEFT_OPERAND> and I<RIGHT_OPERAND> are allowed to be the byte[] type.
 
-The return type is the string type.
+The return type is string type.
 
 Exceptions:
 
@@ -1049,9 +1049,9 @@ I<RIGHT_OPERAND> must be defined. Otherwise, an exception is thrown.
 
 Compilation Errors:
 
-The type of I<LEFT_OPERAND> must be the string type, the byte[] type, or a numeric type. Otherwise, a compilation error occurs.
+The type of I<LEFT_OPERAND> must be string type, the byte[] type, or a numeric type. Otherwise, a compilation error occurs.
 
-The type of I<RIGHT_OPERAND> must be the string type, the byte[] type, or a numeric type. Otherwise, a compilation error occurs.
+The type of I<RIGHT_OPERAND> must be string type, the byte[] type, or a numeric type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1069,7 +1069,7 @@ This operator performs the L<integer promotional conversion|/"Integer Promotiona
 
 And creates a new string with the length, fills all characters in the string with C<\0>, and returns it.
 
-The return type is the string type.
+The return type is string type.
 
 Exceptions:
 
@@ -1098,7 +1098,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
+I<OPERAND> must be string type. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -1121,11 +1121,11 @@ The C<is_read_only> operator checks if a string is read-only.
 
 If the string I<OPERAND> is defined and read-only, the C<is_read_only> operator returns 1. Otherwise, returns 0.
 
-The return type is the int type.
+The return type is int type.
 
 Compilation Errors:
 
-I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
+I<OPERAND> must be string type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1147,7 +1147,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
+I<OPERAND> must be string type. Otherwise, a compilation error occurs.
 
 =head2 say Operator
 
@@ -1163,7 +1163,7 @@ The return type is the void type.
 
 Compilation Errors:
 
-I<OPERAND> must be the string type. Otherwise, a compilation error occurs.
+I<OPERAND> must be string type. Otherwise, a compilation error occurs.
 
 =head2 warn Operator
 
@@ -1178,9 +1178,9 @@ This operator outputs I<OPERAND> to the L<SPVM's standard error|SPVM::Document::
 
 If I<OPERAND> is not defined, this operator outputs the string C<"undef">.
 
-If the type of I<OPERAND> is the string type and I<OPERAND> is defined, this operator outputs I<OPERAND>.
+If the type of I<OPERAND> is string type and I<OPERAND> is defined, this operator outputs I<OPERAND>.
 
-If the type of I<OPERAND> is an object type except for the string type and I<OPERAND> is defined, this operator outputs the type name and the address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
+If the type of I<OPERAND> is an object type except for string type and I<OPERAND> is defined, this operator outputs the type name and the address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
 
 If the end character of the I<OPERAND> is not C<\n>, this operator outputs a newline, two tabs and a stack trace information following the output above.
 
@@ -1211,7 +1211,7 @@ The C<__FILE__> operator gets the path of the file where the current class is de
 
 This operator creates a string with the path of the file where the current class is defined, and returns it.
 
-The return type is the string type.
+The return type is string type.
 
 The return value can be changed by the L<file directive|SPVM::Document::Language::Tokenization/"File Directive">.
 
@@ -1233,7 +1233,7 @@ The C<__LINE__> operator gets the current line number.
 
 This operator returns the current line number.
 
-The return type is the int type.
+The return type is int type.
 
 Examples:
 
@@ -1252,7 +1252,7 @@ The C<__PACKAGE__> operator gets the name of the L<outmost class|SPVM::Document:
 
 This operator creates a string with the name of the L<outmost class|SPVM::Document::Language::Class/"Outmost Class">, and returns it.
 
-The return type is the string type.
+The return type is string type.
 
 Examples:
 
@@ -1517,7 +1517,7 @@ The return type is the type of I<OPERAND>.
 
 Compilation Errors:
 
-The type of the operand must be the string type, a numeric array type, or a multi-numeric array type. Otherwise, a compilation error occurs.
+The type of the operand must be string type, a numeric array type, or a multi-numeric array type. Otherwise, a compilation error occurs.
 
 Examples:
   
@@ -1561,7 +1561,7 @@ The following is an example of the return value the C<dump> operator.
     }
   }
 
-The return type is the string type.
+The return type is string type.
 
 The string representation might be changed to make it more readable. So don't use the C<dump> operator for the purpose of the data serialization.
 
@@ -1678,7 +1678,7 @@ A special assignment operator is expanded to the following code.
 
   LEFT_OPERAND = (TYPE_OF_LEFT_OPERAND)(LEFT_OPERAND OPERATOR RIGHTH_OPERAND)
 
-See the following code using a special assignment operator C<+=>. C<$x> is the int type.
+See the following code using a special assignment operator C<+=>. C<$x> is int type.
   
   $x += 2;
 
@@ -1987,13 +1987,13 @@ The operation of getting a character gets a character of a string.
 
 I<STRING-E<gt>[INDEX]> is an L<character access|/"Character Access">.
 
-The type of I<STRING> is the string type.
+The type of I<STRING> is string type.
 
 This operator performs the L<integer promotional conversion|/"Integer Promotional Conversion"> on I<INDEX>.
 
 And returns the character of I<STRING> at I<INDEX>.
 
-The return type is the byte type.
+The return type is byte type.
 
 Exceptions:
 
@@ -2022,7 +2022,7 @@ This operator performs the L<integer promotional conversion|/"Integer Promotiona
 
 And sets the character of I<STRING> at I<INDEX> to I<OPERAND> using the L<assignment operator|/"Assignment Operator">, and returns the character after setting.
 
-The return type is the byte type.
+The return type is byte type.
 
 Exceptions:
 
@@ -2049,13 +2049,13 @@ The character access has the following syntax.
 
   STRING->[INDEX]
 
-The type of the string I<STRING> is the string type.
+The type of the string I<STRING> is string type.
 
 The type of the index I<INDEX> is an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int.
 
 Compilation Errors:
 
-I<STRING> must be the string type. Otherwise, a compilation error occurs.
+I<STRING> must be string type. Otherwise, a compilation error occurs.
 
 I<INDEX> must be an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int. Otherwise, a compilation error occurs.
 
@@ -2254,7 +2254,7 @@ The operation of getting the exception variable gets the string stored in the L<
 
 This operator returns the string stored in the exception variable.
 
-The return type is the string type.
+The return type is string type.
 
 Examples:
   
@@ -2269,7 +2269,7 @@ The operation of setting the exception variable sets the L<exception variable|SP
 
 This operator sets the exception variable to I<OPERAND> using the L<assignment operator|/"Assignment Operator">.
 
-The return type is the string type.
+The return type is string type.
 
 Compilation Errors:
 
@@ -2356,7 +2356,7 @@ B<float to double:>
 
 =head3 Integer Promotional Conversion
 
-The integer promotional conversion is the data conversion from an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int to the int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
+The integer promotional conversion is the data conversion from an L<integer type|SPVM::Document::Language::Types/"Integer Types"> within int to int type using the L<numeric widening conversion|/"Numeric Widening Conversion">.
 
 =head3 Numeric Narrowing Conversion
 
@@ -2438,9 +2438,9 @@ If the type of the left operand is smaller than the right operand, the L<numeric
 
 If the type of the right operand is smaller than the left operand, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the type of the left operand is performed on the right operand.
 
-If the converted type of the left operand is the smaller than the int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to the int type is performed on the left operand.
+If the converted type of the left operand is the smaller than int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the left operand to int type is performed on the left operand.
 
-If the converted type of the right operand is the smaller than the int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to the int type is performed on the right operand.
+If the converted type of the right operand is the smaller than int type, the L<numeric widening conversion|/"Numeric Widening Conversion"> from the type of the right operand to int type is performed on the right operand.
 
 =head3 Numeric-to-String Conversion
 
@@ -2587,7 +2587,7 @@ Exampels:
 
 =head3 String-to-byte[] Conversion
 
-The string-to-byte[] conversion is the data conversion from the string type to the byte[] type.
+The string-to-byte[] conversion is the data conversion from string type to the byte[] type.
 
 This conversion creates a new array which type is the C<byte[]> type, copies all characters in the string to the elements of the new array, and returns the new array.
 
@@ -2601,7 +2601,7 @@ Examples:
 
 =head3 byte[]-to-string Conversion
 
-The byte[]-to-string conversion is the data conversion from the byte[] type to the string type.
+The byte[]-to-string conversion is the data conversion from the byte[] type to string type.
 
 This conversion creates a new string, copies all elements in the array which type is the byte[] type to the characters of the new string, and returns the new string.
 
@@ -2854,7 +2854,7 @@ If I<TYPE> is an object type except for the L<any object type|SPVM::Document::La
 
 If the runtime assignment requirement is satisfied, this operator returns 1. Otherwise, returns 0.
 
-The return type is the int type.
+The return type is int type.
 
 Compilation Errors:
 
@@ -3021,7 +3021,7 @@ The C<type_name> operator gets the type name of the object.
 
 If the object I<OPERAND> is defined, creates a string with the type name of I<OPERAND> and returns it. Otherwise, returns an undefined value.
 
-The return type is the string type.
+The return type is string type.
 
 Compilation Errors.
 
@@ -3045,7 +3045,7 @@ The C<compile_type_name> operator gets the compilation type of the operand I<OPE
 
 This operator creates a new string with the compilation type name of I<OPERAND> and returns it.
 
-The return type is the string type.
+The return type is string type.
 
 Examples:
   
@@ -3065,7 +3065,7 @@ The C<basic_type_id> operator gets the basic type ID of a type.
 
 This operator returns the basic type ID of the type I<TYPE>.
 
-The return type is the int type.
+The return type is int type.
 
 Examples:
 
@@ -3221,7 +3221,7 @@ I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
 If the field specified by I<FIELD_NAME> of the object I<INVOCANT> is weaken, this operator returns 1. Otherwise, returns 0.
 
-The return type is the int type.
+The return type is int type.
 
 Compilation Errors:
 

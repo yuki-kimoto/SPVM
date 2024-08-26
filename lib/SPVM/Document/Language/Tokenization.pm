@@ -580,7 +580,7 @@ A interger literal represents a constant number of an L<integer type|SPVM::Docum
 
 =head3 Integer Literal Decimal Notation
 
-The interger literal decimal notation represents a number of the int type or the long type using decimal numbers C<0-9>.
+The interger literal decimal notation represents a number of int type or long type using decimal numbers C<0-9>.
   
 It can begin with a minus C<->.
 
@@ -590,13 +590,13 @@ C<_> can be placed at the any positions after the first C<0-9> as a separator. C
 
 It can end with the suffix C<L> or C<l>.
 
-If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
+If the suffix C<L> or C<l> exists, the return type is long type. Otherwise the return type is int type.
 
 Compilation Errors:
 
-If the return type is the int type and the value is greater than the max value of the int type or less than the minimal value of the int type, a compilation error occurs.
+If the return type is int type and the value is greater than the max value of int type or less than the minimal value of int type, a compilation error occurs.
 
-If the return type is the long type and the value is greater than the max value of the long type or less than the minimal value of the long type, a compilation error occurs.
+If the return type is long type and the value is greater than the max value of long type or less than the minimal value of long type, a compilation error occurs.
 
 Examples:
 
@@ -609,7 +609,7 @@ Examples:
 
 =head3 Integer Literal Hexadecimal Notation
 
-The interger literal hexadecimal notation represents a number of the int type or the long type using hexadecimal numbers C<0-9a-zA-Z>.
+The interger literal hexadecimal notation represents a number of int type or long type using hexadecimal numbers C<0-9a-zA-Z>.
 
 It can begin with a minus C<->.
 
@@ -621,17 +621,17 @@ C<_> can be placed at the any positions after C<0x> or C<0X> as a separator. C<_
 
 It can end with the suffix C<L> or C<l>.
 
-If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
+If the suffix C<L> or C<l> exists, the return type is long type. Otherwise the return type is int type.
 
-If the return type is the int type, the hexadecimal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<0xFFFFFFFF> is  -1.
+If the return type is int type, the hexadecimal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<0xFFFFFFFF> is  -1.
 
-If the return type is the long type, the hexadecimal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<0xFFFFFFFFFFFFFFFFL> is C<-1L>.
+If the return type is long type, the hexadecimal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<0xFFFFFFFFFFFFFFFFL> is C<-1L>.
 
 Compilation Errors:
 
-If the return type is the int type and the hexadecimal numbers part is greater than hexadecimal C<FFFFFFFF>, a compilation error occurs.
+If the return type is int type and the hexadecimal numbers part is greater than hexadecimal C<FFFFFFFF>, a compilation error occurs.
 
-If the return type is the long type and the hexadecimal numbers part is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error occurs.
+If the return type is long type and the hexadecimal numbers part is greater than hexadecimal C<FFFFFFFFFFFFFFFF>, a compilation error occurs.
 
 Examples:
 
@@ -645,7 +645,7 @@ Examples:
 
 =head3 Integer Literal Octal Notation
 
-The interger literal octal notation represents a number of the int type or the long type using octal numbers C<0-7>.
+The interger literal octal notation represents a number of int type or long type using octal numbers C<0-7>.
 
 It can begin with a minus C<->.
 
@@ -657,19 +657,19 @@ C<_> can be placed at the any positions after C<0> as a separator. C<_> has no m
 
 It can end with the suffix C<L> or C<l>.
 
-If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
+If the suffix C<L> or C<l> exists, the return type is long type. Otherwise the return type is int type.
 
-If the return type is the int type, the octal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<037777777777> is  -1.
+If the return type is int type, the octal numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<037777777777> is  -1.
 
-If the return type is the long type, the octal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<01777777777777777777777L> is C<-1L>.
+If the return type is long type, the octal numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<01777777777777777777777L> is C<-1L>.
 
-If the return type is the long type, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
+If the return type is long type, the value that is except for C<-> is interpreted as unsigned 64 bit integer C<uint64_t> type in the C language, and the following conversion is performed.
 
 Compilation Errors:
 
-If the return type is the int type and the octal numbers part is greater than octal 37777777777, a compilation error occurs.
+If the return type is int type and the octal numbers part is greater than octal 37777777777, a compilation error occurs.
 
-If the return type is the long type and the octal numbers part is greater than octal 1777777777777777777777, a compilation error occurs.
+If the return type is long type and the octal numbers part is greater than octal 1777777777777777777777, a compilation error occurs.
 
 Examples:
 
@@ -680,7 +680,7 @@ Examples:
 
 =head3 Integer Literal Binary Notation
 
-The interger literal binary notation represents a number of the int type or the long type using binary numbers C<0> and C<1>.
+The interger literal binary notation represents a number of int type or long type using binary numbers C<0> and C<1>.
 
 It can begin with a minus C<->.
 
@@ -692,17 +692,17 @@ C<_> can be placed at the any positions after C<0b> or C<0B> as a separator. C<_
 
 It can end with the suffix C<L> or C<l>.
 
-If the suffix C<L> or C<l> exists, the return type is the long type. Otherwise the return type is the int type.
+If the suffix C<L> or C<l> exists, the return type is long type. Otherwise the return type is int type.
 
-If the return type is the int type, the binary numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<0b11111111111111111111111111111111> is  -1.
+If the return type is int type, the binary numbers part is interpreted as an unsigned 32 bit integer, and is converted to a signed 32-bit integer without changing the bits. For example, C<0b11111111111111111111111111111111> is  -1.
 
-If the return type is the long type, the binary numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is C<-1L>.
+If the return type is long type, the binary numbers part is interpreted as unsigned 64 bit integer, and is converted to a signed 64-bit integer without changing the bits. For example, C<0b1111111111111111111111111111111111111111111111111111111111111111L> is C<-1L>.
 
 Compilation Errors:
 
-If the return type is the int type and the value that is except for C<-> is greater than binary C<11111111111111111111111111111111>, a compilation error occurs.
+If the return type is int type and the value that is except for C<-> is greater than binary C<11111111111111111111111111111111>, a compilation error occurs.
 
-If the return type is the long type and the value that is except for C<-> is greater than binary C<1111111111111111111111111111111111111111111111111111111111111111>, a compilation error occurs.
+If the return type is long type and the value that is except for C<-> is greater than binary C<1111111111111111111111111111111111111111111111111111111111111111>, a compilation error occurs.
 
 Examples:
 
@@ -717,7 +717,7 @@ The floating point litral represetns a floating point number.
 
 =head3 Floating Point Literal Decimal Notation
 
-The floating point litral decimal notation represents a number of the float type and the double type using decimal numbers C<0-9>.
+The floating point litral decimal notation represents a number of float type and double type using decimal numbers C<0-9>.
 
 It can begin with a minus C<->.
 
@@ -749,13 +749,13 @@ A floating point litral decimal notation can end with a suffix C<f>, C<F>, C<d>,
 
 If a suffix does not exists, a floating point litral decimal notation must have a floating point part or an exponent part.
 
-If the suffix C<f> or C<F> exists, the return type is the float type. Otherwise the return type is the double type.
+If the suffix C<f> or C<F> exists, the return type is float type. Otherwise the return type is double type.
 
 Compilation Errors:
 
-If the return type is the float type, the floating point litral decimal notation without the suffix must be able to be parsed by the C<strtof> function in the C language. Otherwise, a compilation error occurs.
+If the return type is float type, the floating point litral decimal notation without the suffix must be able to be parsed by the C<strtof> function in the C language. Otherwise, a compilation error occurs.
 
-If the return type is the double type, the floating point litral decimal notation without the suffix must be able to be parsed by the C<strtod> function in the C language. Otherwise, a compilation error occurs.
+If the return type is double type, the floating point litral decimal notation without the suffix must be able to be parsed by the C<strtod> function in the C language. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -774,7 +774,7 @@ Examples:
 
 =head3 Floating Point Literal Hexadecimal Notation
 
-The floating point litral hexadecimal notation represents a number of the float type and the double type using hexadecimal numbers C<0-9a-zA-Z>.
+The floating point litral hexadecimal notation represents a number of float type and double type using hexadecimal numbers C<0-9a-zA-Z>.
 
 It can begin with a minus C<->.
 
@@ -810,9 +810,9 @@ If a suffix does not exists, a floating point litral hexadecimal notation must h
 
 Compilation Errors:
 
-If the return type is the float type, the floating point litral hexadecimal notation without the suffix must be able to be parsed by the C<strtof> function in the C language. Otherwise, a compilation error occurs.
+If the return type is float type, the floating point litral hexadecimal notation without the suffix must be able to be parsed by the C<strtof> function in the C language. Otherwise, a compilation error occurs.
 
-If the return type is the double type, thefloating point litral hexadecimal notation without the suffix must be able to be parsed by the C<strtod> function in the C language. Otherwise, a compilation error occurs.
+If the return type is double type, thefloating point litral hexadecimal notation without the suffix must be able to be parsed by the C<strtod> function in the C language. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -862,7 +862,7 @@ It is followed by a printable ASCII character C<0x20-0x7e> or an L<character lit
 
 It ends with C<'>.
 
-The return type is the byte type.
+The return type is byte type.
 
 Compilation Errors:
 
@@ -967,7 +967,7 @@ The List of Character Literal Escape Characters:
 
 =end html
 
-The type of every character literal escape character is the byte type.
+The type of every character literal escape character is byte type.
 
 Examples:
 
@@ -1010,7 +1010,7 @@ If it begins with C<\o{>, it is followed by one to three C<0-7>, and ends with C
 
 The octal numbers after C<\> or C<\o{> is called octal numbers part.
 
-Octal numbers part is interpreted as an unsined 8-bit integer, and is converted to a number of the byte type without changing the bits.
+Octal numbers part is interpreted as an unsined 8-bit integer, and is converted to a number of byte type without changing the bits.
 
 Compilation Errors:
 
@@ -1045,7 +1045,7 @@ It is followed by one or two C<0-9a-fA-F>. This is called hexadecimal numbers pa
 
 If it contains C<{>, it must be followed by C<}>.
 
-Hexadecimal numbers part is interpreted as an unsined 8-bit integer, and is converted to a number of the byte type without changing the bits.
+Hexadecimal numbers part is interpreted as an unsined 8-bit integer, and is converted to a number of byte type without changing the bits.
 
 Compilation Errors:
 
@@ -1224,9 +1224,9 @@ The List of String Literal Escape Characters:
 
 =end html
 
-The type of every string literal escape character ohter than the Unicode escape character and the raw escape character is the byte type.
+The type of every string literal escape character ohter than the Unicode escape character and the raw escape character is byte type.
 
-The type of each number contained in the Unicode escape character and the raw escape character is the byte type.
+The type of each number contained in the Unicode escape character and the raw escape character is byte type.
 
 =head3 Unicode Escape Character
 
@@ -1234,7 +1234,7 @@ The Unicode escape character represents an UTF-8 character.
 
 An UTF-8 character is represented by an Unicode code point with hexadecimal numbers C<0-9a-fA-F>.
 
-This is one to four numbers of the byte type.
+This is one to four numbers of byte type.
 
 The Unicode escape character is a part of a L<string literal|/"String Literal">.
 
@@ -1427,7 +1427,7 @@ The List of Single-Quoted String Literal Escape Characters:
 
 =end html
 
-The type of every single-quoted string literal escape character is the byte type.
+The type of every single-quoted string literal escape character is byte type.
 
 =head2 Here Document
 

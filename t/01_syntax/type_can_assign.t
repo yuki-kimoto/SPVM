@@ -284,7 +284,7 @@ use Test::More;
 
 # The dist type is string type
 {
-  # The source type is the string type
+  # The source type is string type
   {
     {
       my $source = 'class MyClass { static method main : void () { my $source : string; my $dist : string = $source; } }';

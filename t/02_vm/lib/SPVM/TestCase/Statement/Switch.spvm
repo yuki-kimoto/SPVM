@@ -341,7 +341,7 @@ class TestCase::Statement::Switch {
       }
     }
     
-    # The type of the operand of the case statement is the byte type
+    # The type of the operand of the case statement is byte type
     {
       my $char = (int)'[';
       

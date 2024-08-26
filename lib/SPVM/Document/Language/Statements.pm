@@ -182,7 +182,7 @@ The L<integer promotional conversion|SPVM::Document::Language::Operators/"Intege
 
 The operand of the case statement I<CASEn> must be a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, an L<integer literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and an L<inline-expaned class method call to get an enumeration value|SPVM::Document::Language::Class/"Inline Expansion of Method Call to Get an Enuemration Value">.
 
-If I<CASEn> is a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the value is converted to the int type at compile-time.
+If I<CASEn> is a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the value is converted to int type at compile-time.
 
 The C<case> statements and the C<default> statement are optional.
 
@@ -495,7 +495,7 @@ The C<die> statement throws an L<exception|SPVM::Document::Language::ExceptionHa
   # The die statement with the basic type ID of an error class
   die OPERAND_ERROR_ID, OPERAND_MESSAGE
 
-I<OPERAND_MESSAGE> is a string of the string type for an error message. If the exception thrown by the C<die> statement is catched, the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@> is set to I<OPERAND_MESSAGE> with stack traces added.
+I<OPERAND_MESSAGE> is a string of string type for an error message. If the exception thrown by the C<die> statement is catched, the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@> is set to I<OPERAND_MESSAGE> with stack traces added.
 
 If the exception is not catched, the program prints it to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">, and finishes the program with an error ID.
 
@@ -517,7 +517,7 @@ See also L<Exception Handling|SPVM::Document::Language::ExceptionHandling> for e
 
 Comlication Errors:
 
-I<OPERAND_MESSAGE> must be the string type or the undef type. Otherwise, a compilation error occurs.
+I<OPERAND_MESSAGE> must be string type or the undef type. Otherwise, a compilation error occurs.
 
 I<ERROR_CLASS> must be a class type. Otherwise, a compilation error occurs.
 

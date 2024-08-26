@@ -121,7 +121,7 @@ $key must be defined. Otherwise an exception is thrown.
 
 C<method get_byte : int ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to the byte type, and casts it to the int type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to byte type, and casts it to int type, and returns it.
 
 Exceptions:
 
@@ -131,7 +131,7 @@ The type of the value for the key must be the L<Byte|SPVM::Byte> class. Otherwis
 
 C<method get_short : int ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to the short type, and casts it to the int type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to short type, and casts it to int type, and returns it.
 
 Exceptions:
 
@@ -141,7 +141,7 @@ The type of the value for the key must be the L<Short|SPVM::Short> class. Otherw
 
 C<method get_int : int ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to the int type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to int type, and returns it.
 
 Exceptions:
 
@@ -151,7 +151,7 @@ The type of the value for the key must be the L<Int|SPVM::Int> class. Otherwise 
 
 C<method get_long : long ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to the long type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to long type, and returns it.
 
 Exceptions:
 
@@ -161,7 +161,7 @@ The type of the value for the key must be the L<Long|SPVM::Long> class. Otherwis
 
 C<method get_float : float ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to the float type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to float type, and returns it.
 
 Exceptions:
 
@@ -171,7 +171,7 @@ The type of the value for the key must be the L<Float|SPVM::Float> class. Otherw
 
 C<method get_double : double ($key : string);>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to the double type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to double type, and returns it.
 
 Exceptions:
 
@@ -181,11 +181,11 @@ The type of the value for the key must be the L<Double|SPVM::Double> class. Othe
 
 C<method get_string : string ($key : string)>
 
-Gets the value specifed by the key $key using the L<"get"> method, and casts it to the string type, and returns it.
+Gets the value specifed by the key $key using the L<"get"> method, and casts it to string type, and returns it.
 
 Exceptions:
 
-The type of the value for the key must be the string type. Otherwise an exception is thrown.
+The type of the value for the key must be string type. Otherwise an exception is thrown.
 
 =head2 set
   

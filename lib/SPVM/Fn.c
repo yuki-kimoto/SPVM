@@ -356,7 +356,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
-    return env->die(env, stack, "The type of the dest $dest must be the string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the dest $dest must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
@@ -364,7 +364,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!(env->is_string(env, stack, obj_source) || env->is_numeric_array(env, stack, obj_source) || env->is_mulnum_array(env, stack, obj_source))) {
-    return env->die(env, stack, "The type of the source $source must be the string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the source $source must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
   }
   
   if (env->is_read_only(env, stack, obj_dest)) {
@@ -415,7 +415,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
-    return env->die(env, stack, "The type of the dest $dest must be the string type, a numeric array type, or a multi numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the dest $dest must be string type, a numeric array type, or a multi numeric array type.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!obj_source) {
@@ -423,7 +423,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
 
   if (!(env->is_string(env, stack, obj_source) || env->is_numeric_array(env, stack, obj_source) || env->is_mulnum_array(env, stack, obj_source))) {
-    return env->die(env, stack, "The type of the source $source must be the string type, a numeric array type, or a multi numeric array type.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The type of the source $source must be string type, a numeric array type, or a multi numeric array type.", __func__, FILE_NAME, __LINE__);
   }
 
   if (env->is_read_only(env, stack, obj_dest)) {

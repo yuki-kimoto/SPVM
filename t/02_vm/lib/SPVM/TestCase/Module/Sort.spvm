@@ -1450,7 +1450,7 @@ class TestCase::Module::Sort {
       
       {
         eval { Sort->sort_options_asc([(object)true,  1]); };
-        unless (Fn->contains($@, "The key of \$options must be the string type")) {
+        unless (Fn->contains($@, "The key of \$options must be string type")) {
           return 0;
         }
       }
