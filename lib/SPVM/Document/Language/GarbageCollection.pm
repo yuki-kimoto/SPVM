@@ -14,7 +14,7 @@ Garbage collection in SPVM is a reference counted GC.
 
 The object is destroyed when its reference count reaches 0.
 
-The reference count of an object assigned by the L<assignment operator|SPVM::Document::Language::Operators/"Assignment Operator"> is incremented by 1.
+The reference count of an object assigned by L<assignment operator|SPVM::Document::Language::Operators/"Assignment Operator"> is incremented by 1.
   
   # The reference count is incremented by 1
   my $object = Point->new;
@@ -60,7 +60,7 @@ A scope is the part surrounded by a L<scope block|SPVM::Document::Language::Clas
 
 The operation of entering scope is executed at the start of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
 
-This operation memorizes the top position of the L<mortal stack|/"Mortal Stack"> of a method.
+This operation memorizes the top position of L<mortal stack|/"Mortal Stack"> of a method.
 
 =head3 Pushing a Local Variable on the Mortal Stack
 
@@ -70,7 +70,7 @@ The operation of a local variable on the mortal stack pushes a local variable on
 
 The operation of leaving scope is executed at the end of a L<scope block|SPVM::Document::Language::Class/"Scope Block">.
 
-This operation assigns objects from the top position memorized by L<entering scope|/"Entering Scope"> to the current top position of the L<mortal stack|/"Mortal Stack"> to C<undef>.
+This operation assigns objects from the top position memorized by L<entering scope|/"Entering Scope"> to the current top position of L<mortal stack|/"Mortal Stack"> to C<undef>.
 
 =head3 Mortal Stack
 
