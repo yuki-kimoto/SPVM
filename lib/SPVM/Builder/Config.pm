@@ -1777,19 +1777,19 @@ If C<$Config{gccversion}> contains C<clang>, the L</"cc"> field and the L</"ld">
   
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
-Calls L</"new_cpp"> method and sets the L</"std"> field to C<c++11>, and returns the return value of L</"new_cpp"> method.
+Calls L</"new_cpp"> method and sets L</"std"> field to C<c++11>, and returns the return value of L</"new_cpp"> method.
 
 =head2 new_cpp14
   
   my $config = SPVM::Builder::Config->new_cpp14(file => __FILE__);
 
-Calls L</"new_cpp"> method and sets the L</"std"> field to C<c++14>, and returns the return value of L</"new_cpp"> method.
+Calls L</"new_cpp"> method and sets L</"std"> field to C<c++14>, and returns the return value of L</"new_cpp"> method.
 
 =head2 new_cpp17
   
   my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
 
-Calls L</"new_cpp"> method and sets the L</"std"> field to C<c++17>, and returns the return value of L</"new_cpp"> method.
+Calls L</"new_cpp"> method and sets L</"std"> field to C<c++17>, and returns the return value of L</"new_cpp"> method.
 
 =head1 Instance Methods
 
@@ -1797,25 +1797,25 @@ Calls L</"new_cpp"> method and sets the L</"std"> field to C<c++17>, and returns
 
   $config->add_ccflag(@ccflags);
 
-Adds @ccflags to the end of the L</"ccflags"> field.
+Adds @ccflags to the end of L</"ccflags"> field.
 
 =head2 add_ldflag
 
   $config->add_ldflag(@ldflags);
 
-Adds @ldflags to the end of the L</"ldflags"> field.
+Adds @ldflags to the end of L</"ldflags"> field.
 
 =head2 add_include_dir
 
   $config->add_include_dir(@include_dirs);
 
-Adds @include_dirs to the end of the L</"include_dirs"> field.
+Adds @include_dirs to the end of L</"include_dirs"> field.
 
 =head2 add_source_file
 
   $config->add_source_file(@source_files);
 
-Adds @source_files to the end of the L</"source_files"> field.
+Adds @source_files to the end of L</"source_files"> field.
 
 Examples:
 
@@ -1825,7 +1825,7 @@ Examples:
 
   $config->add_after_create_compile_info_cb(@after_create_compile_info_cbs);
 
-Adds @after_create_compile_info_cbs to the end of the L</"after_create_compile_info_cbs"> field.
+Adds @after_create_compile_info_cbs to the end of L</"after_create_compile_info_cbs"> field.
 
 Examples:
 
@@ -1841,7 +1841,7 @@ Examples:
 
   $config->add_before_compile_cb(@before_compile_cbs);
 
-Adds @before_compile_cbs to the end of the L</"before_compile_cbs"> field.
+Adds @before_compile_cbs to the end of L</"before_compile_cbs"> field.
 
 Examples:
 
@@ -1857,13 +1857,13 @@ Examples:
 
   $config->add_lib_dir(@lib_dirs);
 
-Adds @lib_dirs to the end of the L</"lib_dirs"> field.
+Adds @lib_dirs to the end of L</"lib_dirs"> field.
 
 =head2 add_lib
 
   $config->add_lib(@libs);
 
-Adds @libs to the end of the L</"libs"> field.
+Adds @libs to the end of L</"libs"> field.
 
 Examples:
 
@@ -1878,7 +1878,7 @@ Examples:
 
   $config->add_lib_abs(@libs);
 
-Adds @libs to the end of the L</"libs"> field with L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field set to a true value.
+Adds @libs to the end of L</"libs"> field with L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field set to a true value.
 
 If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
@@ -1892,7 +1892,7 @@ For system libraries, there is no problem because the linker knows the search di
 
   $config->add_static_lib(@libs);
 
-Adds @libs to the end of the L</"libs"> field with L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field set to a true value.
+Adds @libs to the end of L</"libs"> field with L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field set to a true value.
 
 If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
@@ -1905,7 +1905,7 @@ Examples:
 
   $config->add_static_lib_abs(@libs);
 
-Adds @libs to the end of the L</"libs"> field with the L<is_static|SPVM::Builder::LibInfo/"is_static"> field and the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field  field in C<SPVM::Builder::LibInfo> class set to a true value.
+Adds @libs to the end of L</"libs"> field with L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field and L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field set to a true value.
 
 If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
@@ -1913,7 +1913,7 @@ If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder
 
   $config->add_before_link_cb(@before_link_cbs);
 
-Adds @before_link_cbs to the end of the L</"before_link_cbs"> field.
+Adds @before_link_cbs to the end of L</"before_link_cbs"> field.
 
 Examples:
 
@@ -2000,7 +2000,7 @@ Examples:
 
   my $config = $config->load_mode_config($config_file, $mode, $argv);
 
-Creates the L<mode config file|/"Config Mode"> path from the config file path $config_file, and calls L</"load_config"> method given the mode config file path and config arguments, and returns its return value.
+Creates a L<mode config file|/"Config Mode"> path from the config file path $config_file, and calls L</"load_config"> method given the mode config file path and config arguments, and returns its return value.
 
   my $config = SPVM::Builder::Config::Exe->load_mode_config(__FILE__, "production");
 
@@ -2016,7 +2016,7 @@ Clones L<SPVM::Builder::Config> object, and returns it.
 
 =head1 Config Mode
 
-A config can have its mode if the config is one for an executable file generated by the L<spvmcc> command and for a L<resource|SPVM::Document::Resource>.
+A config can have its mode if the config is one for an executable file generated by L<spvmcc> command and for a L<resource|SPVM::Document::Resource>.
 
 The mode is written in the format C<.MODE_NAME> just before the C<.config> extension of a config file.
 
@@ -2030,7 +2030,7 @@ Examples:
   # devel mode
   MyClass.devel.config
 
-Use the L</"mode"> field to get the config mode.
+Use L</"mode"> field to get the config mode.
 
   my $modle = $config->mode;
 
@@ -2070,15 +2070,15 @@ The following is the rule of library path resolution.
 
 Library names are converted to L<SPVM::Builder::LibInfo> objects.
 
-If the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field in C<SPVM::Builder::LibInfo> is a false value, the linker L</"ld"> resolves libaray paths.
+If L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a false value, the linker L</"ld"> resolves libaray paths.
 
-If the L<is_abs|SPVM::Builder::LibInfo/"is_abs"> field in C<SPVM::Builder::LibInfo> is a true value, libaray paths are resolved by the following rules.
+If L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field is a true value, libaray paths are resolved by the following rules.
 
-A library is searched in the library search directories contained in the L</"lib_dir"> field from the beginning.
+A library is searched in the library search directories contained in L</"lib_dir"> field from the beginning.
 
-If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field in C<SPVM::Builder::LibInfo> is a false value, the search is performed in the order of a dynamic library, a static library.
+If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field is a false value, the search is performed in the order of a dynamic library, a static library.
 
-If the L<is_static|SPVM::Builder::LibInfo/"is_static"> field in C<SPVM::Builder::LibInfo> is a true value, the search is performed only in static libraries.
+If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field is a true value, the search is performed only in static libraries.
 
 If a library is found, the C<-l> option of the linker L</"ld"> is created using the found absolute path.
 
