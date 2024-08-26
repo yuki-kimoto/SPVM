@@ -1111,7 +1111,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class and its super classes|);
+    compile_not_ok($source, q|not_defined method is not found in Int class or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 1; $var->new; } }';
@@ -1131,14 +1131,14 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
-    compile_not_ok($source, q|The "new" method in the "Int" class is found, but this is not an instance method|);
+    compile_not_ok($source, q|Int#new method is found, but this method must be an instance method|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->foo; } }',
       'class MyClass2 extends MyClass : public { static method foo : void () {} }',
     ];
-    compile_not_ok($source, q|The "foo" method in the "MyClass2" class is found, but this is not an instance method|);
+    compile_not_ok($source, q|MyClass2#foo method is found, but this method must be an instance method|);
   }
   {
     my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $point3d = Point3D->new; $point3d->Stringable::to_string; } }';
@@ -1150,11 +1150,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class and its super classes|);
+    compile_not_ok($source, q|not_defined method is not found in Int class or its super classes|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';
-    compile_not_ok($source, q|The "not_defined" method is not found in the "Int" class and its super classes|);
+    compile_not_ok($source, q|not_defined method is not found in Int class or its super classes|);
   }
   {
     my $source = [
@@ -1162,7 +1162,7 @@ use Test::More;
       'class MySockaddrIn extends MySockaddr : public;',
       'class MySockaddr : public;',
     ];
-    compile_not_ok($source, q|The "port" method is not found in the "MySockaddrIn" class and its super classes|);
+    compile_not_ok($source, q|port method is not found in MySockaddrIn class or its super classes|);
   }
 }
 
