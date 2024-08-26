@@ -136,7 +136,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { use Complex_2d; static method main : void () { my $var : Complex_2d; !$var; } }';
-    compile_not_ok($source, qr'The type of the operand of bool type conversion must be a numeric type or an object type or a reference type or the undef type');
+    compile_not_ok($source, qr'The type of the operand of bool type conversion must be a numeric type or an object type or a reference type or undef type');
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = 0; my $var_ref = \$var; !$var_ref; } }';
@@ -148,7 +148,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { undef == 1; } }';
-    compile_not_ok($source, q|If the type of the left operand of == operator is the undef type, the type of the right operand must be an object type or the undef type.|);
+    compile_not_ok($source, q|If the type of the left operand of == operator is the undef type, the type of the right operand must be an object type or undef type.|);
   }
   
   {
@@ -176,7 +176,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { undef != 1; } }';
-    compile_not_ok($source, q|If the type of the left operand of != operator is the undef type, the type of the right operand must be an object type or the undef type.|);
+    compile_not_ok($source, q|If the type of the left operand of != operator is the undef type, the type of the right operand must be an object type or undef type.|);
   }
   
   {
@@ -264,11 +264,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 gt "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of gt operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of gt operator must be string type or byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" gt 1; } }';
-    compile_not_ok($source, 'The right operand of gt operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of gt operator must be string type or byte[] type');
   }
 }
 
@@ -276,11 +276,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 ge "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of ge operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of ge operator must be string type or byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" ge 1; } }';
-    compile_not_ok($source, 'The right operand of ge operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of ge operator must be string type or byte[] type');
   }
 }
 
@@ -288,11 +288,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 lt "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of lt operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of lt operator must be string type or byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" lt 1; } }';
-    compile_not_ok($source, 'The right operand of lt operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of lt operator must be string type or byte[] type');
   }
 }
 
@@ -300,11 +300,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 le "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of le operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of le operator must be string type or byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" le 1; } }';
-    compile_not_ok($source, 'The right operand of le operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of le operator must be string type or byte[] type');
   }
 }
 
@@ -312,11 +312,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 cmp "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of cmp operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of cmp operator must be string type or byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" cmp 1; } }';
-    compile_not_ok($source, 'The right operand of cmp operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of cmp operator must be string type or byte[] type');
   }
 }
 
@@ -324,11 +324,11 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { Int->new(1) . "foo"; } }';
-    compile_not_ok($source, 'The type of the left operand of . operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The type of the left operand of . operator must be string type or byte[] type');
   }
   {
     my $source = 'class MyClass { static method main : void () { "foo" . Int->new(1); } }';
-    compile_not_ok($source, 'The right operand of . operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of . operator must be string type or byte[] type');
   }
 }
 
@@ -1520,7 +1520,7 @@ use Test::More;
     my $source = [
       'class MyClass { use Point; static method main : int () { my $point = Point->new; warn "AAA " . type_name $point . " " . $point can splitpath; } }',
     ];
-    compile_not_ok($source, 'The right operand of . operator must be string type or the byte[] type');
+    compile_not_ok($source, 'The right operand of . operator must be string type or byte[] type');
   }
   
   {
