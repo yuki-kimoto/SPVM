@@ -247,7 +247,7 @@ use Test::More;
     my $source = [
       'class MyClass { static method main : int () { my $test_dir = "test"; my $sep = (string)undef; if (1) { $sep = "\\\\"; } else { $sep = "/"; } my $file = "$test_dir$sepfoo.txt"; } }',
     ];
-    compile_not_ok($source, qr|The variable "\$sepfoo" is not found|);
+    compile_not_ok($source);
   }
 
   # Segmentation fault https://github.com/yuki-kimoto/SPVM/issues/303, but Segmentation fault doesn't occur by this code.

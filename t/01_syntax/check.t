@@ -336,7 +336,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { [has foo : int = $foo] method : void () { }; } }';
-    compile_not_ok($source, 'The variable "$foo" is not found');
+    compile_not_ok($source, '$foo variable is not found');
   }
 }
 
@@ -849,11 +849,11 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { $var; } }';
-    compile_not_ok($source, q|The variable "$var" is not found|);
+    compile_not_ok($source, q|$var variable is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { $MyClass::FOO; } }';
-    compile_not_ok($source, q|The variable "$MyClass::FOO" is not found|);
+    compile_not_ok($source, q|$MyClass::FOO variable is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 && (my $var = 0); } }';
