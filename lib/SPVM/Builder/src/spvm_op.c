@@ -814,7 +814,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   // Field declarations
   for (int32_t i = 0; i < type->basic_type->unmerged_fields->length; i++) {
     SPVM_FIELD* field = SPVM_LIST_get(type->basic_type->unmerged_fields, i);
-
+    
     // The default of the access controll of the field is private.
     if (field->access_control_type == SPVM_ATTRIBUTE_C_ID_UNKNOWN) {
       // If anon method, field is public
@@ -830,14 +830,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         field->access_control_type = SPVM_ATTRIBUTE_C_ID_PRIVATE;
       }
     }
-
+    
     field->index = i;
     const char* field_name = field->op_name->uv.name;
-
+    
     SPVM_FIELD* found_field = SPVM_HASH_get(type->basic_type->unmerged_field_symtable, field_name, strlen(field_name));
     
     if (found_field) {
-      SPVM_COMPILER_error(compiler, "Redeclaration of the \"%s\" field in the \"%s\" class.\n  at %s line %d", field_name, basic_type_name, field->op_field->file, field->op_field->line);
+      SPVM_COMPILER_error(compiler, "Redeclaration of %s#%s field.\n  at %s line %d", basic_type_name, field_name, field->op_field->file, field->op_field->line);
     }
     else {
       SPVM_HASH_set(type->basic_type->unmerged_field_symtable, field_name, strlen(field_name), field);
@@ -846,12 +846,12 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       field->current_basic_type = type->basic_type;
     }
   }
-
+  
   // Class variable declarations
   for (int32_t i = 0; i < type->basic_type->class_vars->length; i++) {
     SPVM_CLASS_VAR* class_var = SPVM_LIST_get(type->basic_type->class_vars, i);
     const char* class_var_name = class_var->name;
-
+    
     SPVM_CLASS_VAR* found_class_var = SPVM_HASH_get(type->basic_type->class_var_symtable, class_var_name, strlen(class_var_name));
     
     if (found_class_var) {

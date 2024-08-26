@@ -1019,7 +1019,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { has foo : int; has foo : int; }';
-    compile_not_ok($source, qr/Redeclaration of the "foo" field in the "MyClass" class/);
+    compile_not_ok($source, qr/Redeclaration of MyClass#foo field/);
   }
 }
 
