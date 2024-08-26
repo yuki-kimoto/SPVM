@@ -476,7 +476,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
           arg_var_decl->is_optional_arg = 1;
           if (SPVM_TYPE_is_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
             if (op_arg_default->id != SPVM_OP_C_ID_CONSTANT) {
-              SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be a constant value.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+              SPVM_COMPILER_error(compiler, "The default value of the optional argument %s must be a constant value.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
               return;
             }
             else {
@@ -498,7 +498,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
                   SPVM_COMPILER_error(compiler, error_reason);
                 }
                 
-                SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be able to be assigned to the argument.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+                SPVM_COMPILER_error(compiler, "The default value of the optional argument %s must be able to be assigned to the argument.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
                 return;
               }
             }
