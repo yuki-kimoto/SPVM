@@ -357,7 +357,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
 
           SPVM_FIELD* found_field_in_super_class = SPVM_CHECK_search_unmerged_field(compiler, basic_type->parent, field->name);
           if (found_field_in_super_class) {
-            SPVM_COMPILER_error(compiler, "The \"%s\" field cannot be defined. This field is already defined in the super class of the \"%s\" class.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
+            SPVM_COMPILER_error(compiler, "%s field cannot be defined in %s class. This field is already defined in its super class.\n  at %s line %d", field->name, basic_type->name, field->op_field->file, field->op_field->line);
             compile_error = 1;
             break;
           }
@@ -384,7 +384,7 @@ void SPVM_CHECK_check_fields(SPVM_COMPILER* compiler) {
       }
       
       if (!(merged_fields->length <= 65535)) {
-        SPVM_COMPILER_error(compiler, "The length of the merged fields in the \"%s\" class must be lower than 65535.\n  at %s line %d", basic_type->op_class->file, basic_type->op_class->line);
+        SPVM_COMPILER_error(compiler, "The length of fields in %s class must be lower than 65535.\n  at %s line %d", basic_type->op_class->file, basic_type->op_class->line);
         return;
       }
       
