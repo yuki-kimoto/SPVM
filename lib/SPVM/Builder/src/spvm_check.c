@@ -4223,7 +4223,7 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
       SPVM_COMPILER_error(compiler, error_reason);
     }
     
-    SPVM_COMPILER_error(compiler, "The \"%s\" type cannot be assigned to the \"%s\" type in %s.\n  at %s line %d", src_type_name, dist_type_name, place, file, line);
+    SPVM_COMPILER_error(compiler, "%s type cannot be assigned to %s type in %s.\n  at %s line %d", src_type_name, dist_type_name, place, file, line);
     return NULL;
   }
   

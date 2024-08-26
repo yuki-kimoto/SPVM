@@ -506,7 +506,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : byte = "string"; } }';
-    compile_not_ok($source, q|The "string" type cannot be assigned to the "byte" type in the assignment operator.|);
+    compile_not_ok($source, q|string type cannot be assigned to byte type in the assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = "string"; $var->[0] = \'a\'; } }';
@@ -772,7 +772,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { die Int->new(1); } }';
-    compile_not_ok($source, q|The "Int" type cannot be assigned to the "string" type in the assignment operator.|);
+    compile_not_ok($source, q|Int type cannot be assigned to string type in the assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { die byte; } }';
@@ -1063,23 +1063,23 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $string : mutable string = "abc"; } }';
-    compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the assignment operator.|);
+    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the assignment operator.|);
   }
   {
     my $source = 'class MyClass { static method main : mutable string () { return "abc"; } }';
-    compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the return statement.|);
+    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the return statement.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo("abc"); } static method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the 1th argument of the "foo" method in the "MyClass" class.|);
+    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the 1th argument of the "foo" method in the "MyClass" class.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $object = new MyClass; $object->foo("abc"); } method foo : int ($string : mutable string) { }}';
-    compile_not_ok($source, q|The "string" type cannot be assigned to the "mutable string" type in the 1th argument of the "foo" method in the "MyClass" class.|);
+    compile_not_ok($source, q|string type cannot be assigned to mutable string type in the 1th argument of the "foo" method in the "MyClass" class.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : int = "foo"; } }';
-    compile_not_ok($source, q|The "string" type cannot be assigned to the "int" type in the assignment operator.|);
+    compile_not_ok($source, q|string type cannot be assigned to int type in the assignment operator.|);
   }
 }
 
@@ -1531,7 +1531,7 @@ EOS
     my $source = [
       'class MyClass { use Point; static method main : int () { 1 && my $x = 3; } }',
     ];
-    compile_not_ok($source, q|The left operand of the assign operator must be mutable|);
+    compile_not_ok($source, q|The left operand of an assign operator must be mutable|);
   }
   
   {
