@@ -706,7 +706,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
           }
           else if (SPVM_TYPE_is_object_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
             if (op_arg_default->id != SPVM_OP_C_ID_UNDEF) {
-              SPVM_COMPILER_error(compiler, "The default value of the optional argument \"%s\" must be undef.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
+              SPVM_COMPILER_error(compiler, "The default value of the optional argument %s must be undef.\n  at %s line %d", arg_var_decl->var->name, method->op_method->file, method->op_method->line);
               return;
             }
           }

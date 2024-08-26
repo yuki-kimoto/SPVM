@@ -1242,6 +1242,14 @@ use Test::More;
     my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : int = -2147483649L) { } }';
     compile_not_ok($source, q|The default value of the optional argument $arg1 must be able to be assigned to the argument.|);
   }
+  {
+    my $source = 'class MyClass {  static method main : void ($arg1 : Int = undef) { } }';
+    compile_ok($source);
+  }
+  {
+    my $source = 'class MyClass {  static method main : void ($arg1 : Int = Int->new(1)) { } }';
+    compile_not_ok($source, q|The default value of the optional argument $arg1 must be undef.|);
+  }
 }
 
 # Return type
