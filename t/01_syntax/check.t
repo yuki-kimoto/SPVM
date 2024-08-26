@@ -502,7 +502,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $var = undef; } }';
-    compile_not_ok($source, q|The type of "$var" cannnot be detected|);
+    compile_not_ok($source, q|The type of $var local variable cannnot be detected.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : byte = "string"; } }';

@@ -2369,7 +2369,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               }
               assert(var_decl->type);
               if (SPVM_TYPE_is_undef_type(compiler, var_decl->type->basic_type->id, var_decl->type->dimension, var_decl->type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of \"%s\" cannnot be detected.\n  at %s line %d", op_dist->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
+                SPVM_COMPILER_error(compiler, "The type of %s local variable cannnot be detected.\n  at %s line %d", op_dist->uv.var->name, var_decl->op_var_decl->file, var_decl->op_var_decl->line);
                 return;
               }
               op_dist->uv.var->is_initialized = 1;
