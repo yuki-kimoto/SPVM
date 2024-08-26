@@ -502,7 +502,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { my $var = undef; } }';
-    compile_not_ok($source, q|The type of $var local variable cannnot be detected.|);
+    compile_not_ok($source, q|The type of $var local variable cannnot be undef type.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var : byte = "string"; } }';
@@ -845,7 +845,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var; } }';
-    compile_not_ok($source, q|The type of $var variable is not resolved.|);
+    compile_not_ok($source, q|The type of $var variable is not detected.|);
   }
   {
     my $source = 'class MyClass { static method main : void () { $var; } }';
