@@ -276,7 +276,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { native method foo : void () { } }';
-    compile_not_ok($source, qr/The native method cannnot have the block/);
+    compile_not_ok($source, qr/A native method cannnot have its block/);
   }
   {
     my $source = 'class MyClass { method DESTROY : int () { } }';

@@ -965,12 +965,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       }
     }
     
-    if (method->is_native) {
-      if (method->op_block) {
-        SPVM_COMPILER_error(compiler, "The native method cannnot have the block.\n  at %s line %d", method->op_method->file, method->op_method->line);
-      }
-    }
-    
     SPVM_METHOD* found_method = SPVM_HASH_get(type->basic_type->method_symtable, method_name, strlen(method_name));
     
     if (found_method) {
@@ -1443,7 +1437,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
   
   // Native method cannnot have block
   if ((method->is_native) && op_block) {
-    SPVM_COMPILER_error(compiler, "The native method cannnot have the block.\n  at %s line %d", op_block->file, op_block->line);
+    SPVM_COMPILER_error(compiler, "A native method cannnot have its block.\n  at %s line %d", op_block->file, op_block->line);
   }
   
   // method args
