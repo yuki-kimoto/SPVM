@@ -287,7 +287,7 @@ Returns the content of the config for the class given by the class name $class_n
 
 Exceptions:
 
-Exceptions thrown by the L</"get_config_file"> method could be thrown.
+Exceptions thrown by L</"get_config_file"> method could be thrown.
 
 =head2 get_config
 
@@ -297,7 +297,7 @@ Returns the L<config|SPVM::Builder::Config> for the class given by the class nam
 
 Exceptions:
 
-Exceptions thrown by the L</"get_config_file"> method could be thrown.
+Exceptions thrown by L</"get_config_file"> method could be thrown.
 
 =head1 Copyright & License
 

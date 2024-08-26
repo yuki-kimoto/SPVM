@@ -235,7 +235,7 @@ Always true.
 
   my $lib_name = "$lib_info";
 
-Alias for the L</"to_string"> method.
+Alias for L</"to_string"> method.
 
 =head1 Copyright & License
 

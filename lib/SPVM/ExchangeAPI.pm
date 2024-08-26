@@ -381,13 +381,13 @@ Options:
 
 An execution environment.
 
-C<env> must be a L<SPVM::Bulder::Env> or L<SPVM::BlessedObject::Class> object of the L<Native::Env|SPVM::Native::Env> class.
+C<env> must be a L<SPVM::Bulder::Env> or L<SPVM::BlessedObject::Class> object of L<Native::Env|SPVM::Native::Env> class.
   
 =item C<stack>
 
 An call stack.
 
-C<stack> must be a L<SPVM::Bulder::Stack> or L<SPVM::BlessedObject::Class> object of the L<Native::Stack|SPVM::Native::Stack> class.
+C<stack> must be a L<SPVM::Bulder::Stack> or L<SPVM::BlessedObject::Class> object of L<Native::Stack|SPVM::Native::Stack> class.
 
 =back
 
@@ -437,7 +437,7 @@ Examples:
   
   my $spvm_array = $api->new_byte_array_unsigned($array);
 
-The same as the L</"new_byte_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint8_t> in the C language.
+The same as L</"new_byte_array"> method, but each element is converted by L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint8_t> in the C language.
 
   (int8_t)(uint8_t)SvUV(perl_scalar);
 
@@ -505,7 +505,7 @@ Examples:
   
   my $spvm_array = $api->new_short_array_unsigned($array);
 
-The same as the L</"new_short_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint16_t> in the C language.
+The same as L</"new_short_array"> method, but each element is converted by L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint16_t> in the C language.
 
   (int16_t)(uint16_t)SvUV(perl_scalar);
 
@@ -569,7 +569,7 @@ Examples:
   
   my $spvm_array = $api->new_int_array_unsigned($array);
 
-The same as the L</"new_int_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint32_t> in the C language.
+The same as L</"new_int_array"> method, but each element is converted by L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint32_t> in the C language.
 
   (int32_t)(uint32_t)SvUV(perl_scalar);
 
@@ -629,7 +629,7 @@ Examples:
   
   my $spvm_array = $api->new_long_array_unsigned($array);
 
-The same as the L</"new_long_array"> method, but each element is converted by the L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint64_t> in the C language.
+The same as L</"new_long_array"> method, but each element is converted by L<SvUV|https://perldoc.perl.org/perlapi#SvUV> perlapi and a type cast to C<uint64_t> in the C language.
 
   (int64_t)(uint64_t)SvUV(perl_scalar);
 
@@ -779,7 +779,7 @@ Examples:
   
   my $spvm_array = $api->new_string_array($array);
 
-Converts the Perl array reference $array to an SPVM string array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by the L</"new_string"> method.
+Converts the Perl array reference $array to an SPVM string array, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object. Each element is converted by L</"new_string"> method.
 
 If $array is undef, returns undef.
 
@@ -871,7 +871,7 @@ Examples:
     [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
   );
 
-The alias for the following code using the L</"new_object_array"> method.
+The alias for the following code using L</"new_object_array"> method.
 
   my $spvm_array = $api->new_object_array('object[]', $array);
 
@@ -896,7 +896,7 @@ Examples:
 
 Converts the Perl hash reference $options to a value of the SPVM C<object[]> type, and returns the object that converts it to a L<SPVM::BlessedObject::Array> object.
 
-Each key of $options is converted to a L<SPVM::BlessedObject::String> object using the L</"new_string"> method.
+Each key of $options is converted to a L<SPVM::BlessedObject::String> object using L</"new_string"> method.
 
 Exceptions:
 
@@ -1080,11 +1080,11 @@ If the exception is not set, undef is returned.
 
 Sets a message given by $message to the exception of the current thread variables.
 
-$message is converted to the SPVM string using the L</"new_string"> method.
+$message is converted to the SPVM string using L</"new_string"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_string"> method are thrown.
+Exceptions thrown by L</"new_string"> method are thrown.
 
 Examples:
 
@@ -1127,7 +1127,7 @@ Examples:
 
   my $dump = $api->dump($object);
 
-Converts the SPVM object $object to a dumped string using the L<dump|SPVM::Document::Language/"dump Operator"> operator, and returns it.
+Converts the SPVM object $object to a dumped string using L<dump|SPVM::Document::Language/"dump Operator"> operator, and returns it.
 
 Exceptions:
 
@@ -1169,7 +1169,7 @@ If too few arguments are passed to the M method in the C class, an exception is 
 
 If too many arguments are passed to the M method in the C class, an exception is thrown.
 
-If the L<argument conversion|/"Argument Conversion"> fails, an exception is thrown.
+If L<argument conversion|/"Argument Conversion"> fails, an exception is thrown.
 
 If the calling method throws an exception, the exception is thrown.
 
@@ -1187,7 +1187,7 @@ Examples:
 
 Easy Ways:
 
-Calling class methods can be made easier using the L<SPVM class loading|SPVM/"Loading Class"> feature.
+Calling class methods can be made easier using L<SPVM class loading|SPVM/"Loading Class"> feature.
 
   use SPVM 'Int';
   my $int_object = Int->new(4);
@@ -1198,11 +1198,11 @@ Instance method calls can be made easier using L<SPVM::BlessedObject::Class>.
 
 =head1 Argument Conversion
 
-Each argument passed to the L</"call_method"> method are converted to an SPVM value according to the SPVM type before it passed to an SPVM method.
+Each argument passed to L</"call_method"> method are converted to an SPVM value according to the SPVM type before it passed to an SPVM method.
 
 =head2 byte Type Argument
 
-A Perl scalar is converted to a value of the SPVM C<byte> type by the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int8_t> in the C language.
+A Perl scalar is converted to a value of the SPVM C<byte> type by L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int8_t> in the C language.
 
   (int8_t)SvIV(perl_scalar)
 
@@ -1212,7 +1212,7 @@ The argument must be a non-reference scalar. Otherwise an exception is thrown.
 
 =head2 short Type Argument
 
-A Perl scalar is converted to a value of the SPVM C<short> type by the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int16_t> in the C language.
+A Perl scalar is converted to a value of the SPVM C<short> type by L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int16_t> in the C language.
   
   (int16_t)SvIV(perl_scalar)
 
@@ -1222,7 +1222,7 @@ The argument must be a non-reference scalar. Otherwise an exception is thrown.
 
 =head2 int Type Argument
 
-A Perl scalar is converted to a value of the SPVM C<int> type by the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int32_t> in the C language.
+A Perl scalar is converted to a value of the SPVM C<int> type by L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int32_t> in the C language.
 
   (int32_t)SvIV(perl_scalar)
 
@@ -1236,7 +1236,7 @@ Examples:
 
 =head2 long Type Argument
 
-A Perl scalar is converted to a value of the SPVM C<long> type by the L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int64_t> in the C language.
+A Perl scalar is converted to a value of the SPVM C<long> type by L<SvIV|https://perldoc.perl.org/perlapi#SvIV> perlapi and a type cast to C<int64_t> in the C language.
 
   (int64_t)SvIV(perl_scalar)
 
@@ -1250,7 +1250,7 @@ Examples:
 
 =head2 float Type Argument
 
-A Perl scalar is converted to a value of the SPVM C<float> type by the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<float> in the C language.
+A Perl scalar is converted to a value of the SPVM C<float> type by L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<float> in the C language.
 
   (float)SvNV(perl_scalar)
 
@@ -1264,7 +1264,7 @@ Examples:
 
 =head2 double Type Argument
 
-A Perl scalar is converted to a value of the SPVM C<double> type by the L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<double> in the C language.
+A Perl scalar is converted to a value of the SPVM C<double> type by L<SvNV|https://perldoc.perl.org/perlapi#SvNV> perlapi and a type cast to C<double> in the C language.
 
   (double)SvNV(perl_scalar)
 
@@ -1278,11 +1278,11 @@ Examples:
 
 =head2 string Type Argument
 
-A Perl scalar is converted to a value of the SPVM C<string> type by the L</"new_string"> method.
+A Perl scalar is converted to a value of the SPVM C<string> type by L</"new_string"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_string"> method are thrown.
+Exceptions thrown by L</"new_string"> method are thrown.
 
 Examples:
   
@@ -1652,11 +1652,11 @@ Examples:
 
 =head3 byte[] Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<byte[]> type by the L</"new_byte_array"> method.
+A Perl array reference(or undef) is converted to a value of the C<byte[]> type by L</"new_byte_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_byte_array"> method are thrown.
+Exceptions thrown by L</"new_byte_array"> method are thrown.
 
 Examples:
 
@@ -1665,11 +1665,11 @@ Examples:
 
 =head3 short[] Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<short[]> type by the L</"new_short_array"> method.
+A Perl array reference(or undef) is converted to a value of the C<short[]> type by L</"new_short_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_short_array"> method are thrown.
+Exceptions thrown by L</"new_short_array"> method are thrown.
 
 Examples:
 
@@ -1678,11 +1678,11 @@ Examples:
 
 =head3 int[] Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<int[]> type by the L</"new_int_array"> method.
+A Perl array reference(or undef) is converted to a value of the C<int[]> type by L</"new_int_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_int_array"> method are thrown.
+Exceptions thrown by L</"new_int_array"> method are thrown.
 
 Examples:
 
@@ -1691,11 +1691,11 @@ Examples:
 
 =head3 long[] Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<long[]> type by the L</"new_long_array"> method.
+A Perl array reference(or undef) is converted to a value of the C<long[]> type by L</"new_long_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_long_array"> method are thrown.
+Exceptions thrown by L</"new_long_array"> method are thrown.
 
 Examples:
 
@@ -1704,11 +1704,11 @@ Examples:
 
 =head3 float[] Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<float[]> type by the L</"new_float_array"> method.
+A Perl array reference(or undef) is converted to a value of the C<float[]> type by L</"new_float_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_float_array"> method are thrown.
+Exceptions thrown by L</"new_float_array"> method are thrown.
 
 Examples:
 
@@ -1717,11 +1717,11 @@ Examples:
 
 =head3 double[] Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<double[]> type by the L</"new_double_array"> method.
+A Perl array reference(or undef) is converted to a value of the C<double[]> type by L</"new_double_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_double_array"> method are thrown.
+Exceptions thrown by L</"new_double_array"> method are thrown.
 
 Examples:
 
@@ -1730,11 +1730,11 @@ Examples:
 
 =head3 string[] Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<string[]> type by the L</"new_string_array"> method.
+A Perl array reference(or undef) is converted to a value of the C<string[]> type by L</"new_string_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_string_array"> method are thrown.
+Exceptions thrown by L</"new_string_array"> method are thrown.
 
 Examples:
 
@@ -1743,35 +1743,35 @@ Examples:
 
 =head3 Any Object Array Type Argument
 
-A Perl array reference(or undef) is converted to a value of the C<object[]> type by the L</"new_object_array"> method.
+A Perl array reference(or undef) is converted to a value of the C<object[]> type by L</"new_object_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_object_array"> method are thrown.
+Exceptions thrown by L</"new_object_array"> method are thrown.
 
 =head3 Class Array Type Argument
 
-A Perl array reference(or undef) is converted to a value of the class type by the L</"new_object_array"> method.
+A Perl array reference(or undef) is converted to a value of the class type by L</"new_object_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_object_array"> method are thrown.
+Exceptions thrown by L</"new_object_array"> method are thrown.
 
 =head3 Interface Array Type Argument
 
-A Perl array reference(or undef) is converted to a value of the interface type by the L</"new_object_array"> method.
+A Perl array reference(or undef) is converted to a value of the interface type by L</"new_object_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_object_array"> method are thrown.
+Exceptions thrown by L</"new_object_array"> method are thrown.
 
 =head3 Multi-Numeric Array Type Argument
 
-A Perl array reference(or undef) is converted to a value of the multi-numeric array type by the L</"new_mulnum_array"> method.
+A Perl array reference(or undef) is converted to a value of the multi-numeric array type by L</"new_mulnum_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_mulnum_array"> method are thrown.
+Exceptions thrown by L</"new_mulnum_array"> method are thrown.
 
 Examples:
 
@@ -1780,11 +1780,11 @@ Examples:
 
 =head3 Multi-Dimensional Array Type Argument
 
-A Perl array reference(or undef) is converted to a value of the multi-dimensional array type by the L</"new_muldim_array"> method.
+A Perl array reference(or undef) is converted to a value of the multi-dimensional array type by L</"new_muldim_array"> method.
 
 Exceptions:
 
-Exceptions thrown by the L</"new_muldim_array"> method are thrown.
+Exceptions thrown by L</"new_muldim_array"> method are thrown.
 
 =head1 Return Value Conversion
 
@@ -1796,27 +1796,27 @@ The SPVM void return value is converted to Perl undef.
 
 =head2 byte Type Return Value
 
-A value of the SPVM byte type is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+A value of the SPVM byte type is converted to a Perl scalar using L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 short Type Return Value
 
-A value of the SPVM short type is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+A value of the SPVM short type is converted to a Perl scalar using L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 int Type Return Value
 
-A value of the SPVM float type is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+A value of the SPVM float type is converted to a Perl scalar using L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 long Type Return Value
 
-A value of the SPVM float type is converted to a Perl scalar using the L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
+A value of the SPVM float type is converted to a Perl scalar using L<newSViv|https://perldoc.perl.org/perlapi#newSViv> perlapi.
 
 =head2 float Type Return Value
 
-A value of the SPVM float type is converted to a Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
+A value of the SPVM float type is converted to a Perl scalar using L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
 
 =head2 double Type Return Value
 
-A value of the SPVM double type is converted to a Perl scalar using the L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
+A value of the SPVM double type is converted to a Perl scalar using L<newSVnv|https://perldoc.perl.org/perlapi#newSVnv> perlapi.
 
 =head2 string Type Return Value
 

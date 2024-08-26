@@ -59,7 +59,7 @@ If $stack is not given, $stack is set to the current runtime environment.
 
 C<static method new_class_method : L<Native::MethodCall|SPVM::Native::MethodCall> ($basic_type_name : string, $method_name : string);>
 
-Calls the L</"new_class_method_with_env_stack"> method given $env to undef and $stack to undef, and returns its return value.
+Calls L</"new_class_method_with_env_stack"> method given $env to undef and $stack to undef, and returns its return value.
 
 Creates a class method call given the basic type name $basic_type_name and the method name $method_name and returns it.
 
@@ -67,13 +67,13 @@ Creates a class method call given the basic type name $basic_type_name and the m
 
 C<static method new_instance_method_static : L<Native::MethodCall|SPVM::Native::MethodCall> ($basic_type_name : string, $method_name : string);>
 
-Calls the L</"new_instance_method_static_with_env_stack"> method given $env to undef and $stack to undef, and returns its return value.
+Calls L</"new_instance_method_static_with_env_stack"> method given $env to undef and $stack to undef, and returns its return value.
 
 =head2 new_instance_method
 
 C<static method new_instance_method : L<Native::MethodCall|SPVM::Native::MethodCall> ($instance : object, $method_name : string);>
 
-Calls the L</"new_instance_method_with_env_stack"> method given $env to undef and $stack to undef, and returns its return value.
+Calls L</"new_instance_method_with_env_stack"> method given $env to undef and $stack to undef, and returns its return value.
 
 =head2 call_class_method
 

@@ -1452,7 +1452,7 @@ This field is automatically set and users nomally do not change it.
 
 Gets and sets the C<file> field, the file path of this config.
 
-This field is set by the L</"new"> method and users nomally do not change it.
+This field is set by L</"new"> method and users nomally do not change it.
 
 =head2 file_optional
 
@@ -1461,7 +1461,7 @@ This field is set by the L</"new"> method and users nomally do not change it.
 
 Gets and sets the C<file_optional> field.
 
-If this field is a true value, even if the L<file|/"file"> field is not given to the L</"new"> method, the exception is not thrown.
+If this field is a true value, even if the L<file|/"file"> field is not given to L</"new"> method, the exception is not thrown.
 
 =head2 output_type
 
@@ -1485,7 +1485,7 @@ This field is automatically set and users nomally do not change it.
 
 Gets and sets the C<no_compile_resource> field.
 
-If this value is a true value, no L<native source files|SPVM::Document::NativeClass/"Native Source Files"> of resources loaded by the L</"use_resource"> method are compiled.
+If this value is a true value, no L<native source files|SPVM::Document::NativeClass/"Native Source Files"> of resources loaded by L</"use_resource"> method are compiled.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1494,7 +1494,7 @@ This field is automatically set and users nomally do not change it.
   my $resource_loader_config = $config->resource_loader_config;
   $config->resource_loader_config($resource_loader_config);
 
-Gets and sets the C<resource_loader_config> field, the config file of the class that loaded a resource by the L</"use_resource"> method.
+Gets and sets the C<resource_loader_config> field, the config file of the class that loaded a resource by L</"use_resource"> method.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1739,37 +1739,37 @@ Exampels:
   
   my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
-Calls the L</"new"> method and sets the L</"ext"> field to C<c>, and returns the return value of the L</"new"> method.
+Calls L</"new"> method and sets the L</"ext"> field to C<c>, and returns the return value of L</"new"> method.
 
 =head2 new_gnu99
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu99>, and returns the return value of the L</"new_c"> method.
+Calls L</"new_c"> method and sets the L</"std"> field to C<gnu99>, and returns the return value of L</"new_c"> method.
 
 =head2 new_gnu11
   
   my $config = SPVM::Builder::Config->new_gnu11(file => __FILE__);
 
-Calls the L</"new_c"> method and sets the L</"std"> field to C<gnu11>, and returns the return value of the L</"new_c"> method.
+Calls L</"new_c"> method and sets the L</"std"> field to C<gnu11>, and returns the return value of L</"new_c"> method.
 
 =head2 new_c99
   
   my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
-Calls the L</"new_c"> method and sets the L</"std"> field to C<c99>, and returns the return value of the L</"new_c"> method.
+Calls L</"new_c"> method and sets the L</"std"> field to C<c99>, and returns the return value of L</"new_c"> method.
 
 =head2 new_c11
   
   my $config = SPVM::Builder::Config->new_c11(file => __FILE__);
 
-Calls the L</"new_c"> method and sets the L</"std"> field to C<c11>, and returns the return value of the L</"new_c"> method.
+Calls L</"new_c"> method and sets the L</"std"> field to C<c11>, and returns the return value of L</"new_c"> method.
 
 =head2 new_cpp
   
   my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
-Calls the L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to a C<C++> compiler and sets the L</"ld"> field to a C<C++> linker, and returns the return value of the L</"new"> method.
+Calls L</"new"> method and sets the L</"ext"> field to C<cpp> and sets the L</"cc"> field to a C<C++> compiler and sets the L</"ld"> field to a C<C++> linker, and returns the return value of L</"new"> method.
 
 If C<$Config{gccversion}> contains C<clang>, the L</"cc"> field and the L</"ld"> field are set to C<clang++>. Otherwise, the L</"cc"> field and the L</"ld"> field are set to C<g++>.
 
@@ -1777,19 +1777,19 @@ If C<$Config{gccversion}> contains C<clang>, the L</"cc"> field and the L</"ld">
   
   my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
-Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++11>, and returns the return value of the L</"new_cpp"> method.
+Calls L</"new_cpp"> method and sets the L</"std"> field to C<c++11>, and returns the return value of L</"new_cpp"> method.
 
 =head2 new_cpp14
   
   my $config = SPVM::Builder::Config->new_cpp14(file => __FILE__);
 
-Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++14>, and returns the return value of the L</"new_cpp"> method.
+Calls L</"new_cpp"> method and sets the L</"std"> field to C<c++14>, and returns the return value of L</"new_cpp"> method.
 
 =head2 new_cpp17
   
   my $config = SPVM::Builder::Config->new_cpp17(file => __FILE__);
 
-Calls the L</"new_cpp"> method and sets the L</"std"> field to C<c++17>, and returns the return value of the L</"new_cpp"> method.
+Calls L</"new_cpp"> method and sets the L</"std"> field to C<c++17>, and returns the return value of L</"new_cpp"> method.
 
 =head1 Instance Methods
 
@@ -1882,7 +1882,7 @@ Adds @libs to the end of the L</"libs"> field with L<SPVM::Builder::LibInfo#is_a
 
 If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
 
-If the library is located in your user directory, it is good to use the L</"add_lib_abs"> method instead of the L</"add_lib"> method.
+If the library is located in your user directory, it is good to use L</"add_lib_abs"> method instead of L</"add_lib"> method.
 
 This is because if the generated dynamic link library has a relative path, that path cannot be resolved when it is loaded.
 
@@ -1956,13 +1956,13 @@ Examples:
 
   my $resource = $config->get_resource($resource_name);
 
-Gets a resource loaded by the L</"use_resource"> method given a resource name, and returns it. The return value is a L<SPVM::Builder::Resource> object.
+Gets a resource loaded by L</"use_resource"> method given a resource name, and returns it. The return value is a L<SPVM::Builder::Resource> object.
 
 =head2 get_resource_names
 
   my $resource_names = $config->get_resource_names;
 
-Returns resource names loaded by the L</"use_resource"> method.
+Returns resource names loaded by L</"use_resource"> method.
 
 =head2 load_config
 
@@ -1982,7 +1982,7 @@ Examples:
 
   my $config = $config->load_base_config($config_file, $argv);
 
-Creates the base config file path from the config file path $config_file, and calls the L</"load_config"> method given the base config file path and config arguments, and returns its return value.
+Creates the base config file path from the config file path $config_file, and calls L</"load_config"> method given the base config file path and config arguments, and returns its return value.
 
 A base config file is the config file that removes its mode.
 
@@ -2000,13 +2000,13 @@ Examples:
 
   my $config = $config->load_mode_config($config_file, $mode, $argv);
 
-Creates the L<mode config file|/"Config Mode"> path from the config file path $config_file, and calls the L</"load_config"> method given the mode config file path and config arguments, and returns its return value.
+Creates the L<mode config file|/"Config Mode"> path from the config file path $config_file, and calls L</"load_config"> method given the mode config file path and config arguments, and returns its return value.
 
   my $config = SPVM::Builder::Config::Exe->load_mode_config(__FILE__, "production");
 
 =head2 get_loaded_config_files
 
-Returns the config files loaded by the L</"load_config"> method.
+Returns the config files loaded by L</"load_config"> method.
 
 =head2 clone
 

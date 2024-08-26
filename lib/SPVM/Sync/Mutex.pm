@@ -58,7 +58,7 @@ Locks this mutex for reading by calling the L<reader_lock|SPVM::Document::Native
 
 C<method reader_unlock : void ();>
 
-UnLocks this mutex locked by the L</"reader_lock"> method by calling the L<reader_unlock|SPVM::Document::NativeAPI::Mutex/"reader_unlock"> mutex native API.
+UnLocks this mutex locked by L</"reader_lock"> method by calling the L<reader_unlock|SPVM::Document::NativeAPI::Mutex/"reader_unlock"> mutex native API.
 
 =head1 Copyright & License
 

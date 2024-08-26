@@ -12,7 +12,7 @@ SPVM::Native::Compiler - Native::Compiler
 
 C<SPVM::Native::Compiler> is the C<Native::Compiler> class in the L<SPVM> language. It compiles SPVM source codes and builds the runtime.
 
-The instance of the L<Native::Runtime|SPVM::Native::Runtime> class is build by the L</"get_runtime"> method in this class.
+The instance of the L<Native::Runtime|SPVM::Native::Runtime> class is build by L</"get_runtime"> method in this class.
 
 =head1 Usage
 
@@ -64,13 +64,13 @@ Adds a class directory to search for classes.
 
 C<method set_start_file : void ($start_file : string);>
 
-Sets the name of the file to start the compiling by the L</"compile"> method.
+Sets the name of the file to start the compiling by L</"compile"> method.
 
 =head2 set_start_line
 
 C<method set_start_line : void ($start_line : int);>
 
-Sets the line to start compiling by the L</"compile"> method.
+Sets the line to start compiling by L</"compile"> method.
 
 =head2 compile
 
@@ -88,7 +88,7 @@ If compilation errors occurred, an exception is thrown set eval_errro_id to the 
 
 C<method get_error_messages : string[] ();>
 
-Returns compilation error messages in this compiling by the L</"compile"> method.
+Returns compilation error messages in this compiling by L</"compile"> method.
 
 =head2 get_runtime
 
@@ -170,7 +170,7 @@ Examples:
 
 =head2 Native::Runtime
 
-The instance of the L<Native::Runtime|SPVM::Native::Runtime> class is build by the L</"get_runtime"> method in this class.
+The instance of the L<Native::Runtime|SPVM::Native::Runtime> class is build by L</"get_runtime"> method in this class.
 
 =head1 Copyright & License
 

@@ -178,7 +178,7 @@ Always true.
 
   my $class_name = "$resource";
 
-The alias for the L</"to_string"> method.
+The alias for L</"to_string"> method.
 
 =head1 Copyright & License
 

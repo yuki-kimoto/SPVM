@@ -119,7 +119,7 @@ Always true.
 
   my $object_file_info_name = "$object_file_info";
 
-Alias for the L</"to_string"> method.
+Alias for L</"to_string"> method.
 
 =head1 Copyright & License
 
