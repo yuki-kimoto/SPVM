@@ -1499,7 +1499,7 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
     
     // DESTROY return type must be void
     if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_VOID)) {
-      SPVM_COMPILER_error(compiler, "The return type of the DESTROY destructor method must be the void type.\n  at %s line %d", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "The return type of DESTROY method must be the void type.\n  at %s line %d", op_method->file, op_method->line);
     }
     
     // DESTROY is instance method

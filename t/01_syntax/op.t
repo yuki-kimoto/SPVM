@@ -280,7 +280,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { method DESTROY : int () { } }';
-    compile_not_ok($source, qr/The return type of the DESTROY destructor method must be the void type/);
+    compile_not_ok($source, qr/The return type of DESTROY method must be the void type/);
   }
   {
     my $source = 'class MyClass { static method DESTROY : void () { } }';
