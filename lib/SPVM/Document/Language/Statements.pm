@@ -10,7 +10,7 @@ This document describes statements in the SPVM language.
 
 A statement is a basic instruction that tells the program what to do.
 
-Statements can be written direct under the L<scope block|SPVM::Document::Language::Class/"Scope Block">.
+Statements can be written direct under L<scope block|SPVM::Document::Language::Class/"Scope Block">.
 
   # Scope block
   {
@@ -115,7 +115,7 @@ Examples:
 
 =head3 else Statement
 
-The C<else> statement is a conditional statement used in the L<if statement|/"if Statement">.
+The C<else> statement is a conditional statement used in L<if statement|/"if Statement">.
 
   if (CONDITION) {
     
@@ -126,7 +126,7 @@ The C<else> statement is a conditional statement used in the L<if statement|/"if
 
 =head3 elsif Statement
 
-The C<elsif> statement is a conditional statement used in the L<if statement|/"if Statement">.
+The C<elsif> statement is a conditional statement used in L<if statement|/"if Statement">.
 
   if (CONDITION1) {
   
@@ -277,7 +277,7 @@ Examples:
 
 =head4 case Statement
 
-The C<case> statement specifies a case in the L<switch statement|/"switch Statement">.
+The C<case> statement specifies a case in L<switch statement|/"switch Statement">.
 
   # The case statement
   switch (CONDITION) {
@@ -288,7 +288,7 @@ The C<case> statement specifies a case in the L<switch statement|/"switch Statem
 
 =head4 default Statement
 
-The C<default> statement specifies a default case in the L<switch statement|/"switch Statement">.
+The C<default> statement specifies a default case in L<switch statement|/"switch Statement">.
 
   # The default statement
   switch (CONDITION) {
@@ -299,7 +299,7 @@ The C<default> statement specifies a default case in the L<switch statement|/"sw
 
 =head4 break Statement
 
-The C<break> statement makes the program jump to the end of the L<switch|/"switch Statement"> block.
+The C<break> statement makes the program jump to the end of L<switch|/"switch Statement"> block.
 
   # The break statement
   break;
@@ -478,7 +478,7 @@ If the return type of the current method is the void type, I<OPERAND> must not e
 
 If the return type of the current method is the non-void type, I<OPERAND> must exist. Otherwise, a compilation error occurs.
 
-The type of I<OPERAND> must satisfy the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to the return type of the current method. Otherwise, a compilation error occurs.
+The type of I<OPERAND> must satisfy L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to the return type of the current method. Otherwise, a compilation error occurs.
 
 =head2 die Statement
 
@@ -495,7 +495,7 @@ The C<die> statement throws an L<exception|SPVM::Document::Language::ExceptionHa
   # The die statement with the basic type ID of an error class
   die OPERAND_ERROR_ID, OPERAND_MESSAGE
 
-I<OPERAND_MESSAGE> is a string of string type for an error message. If the exception thrown by the C<die> statement is catched, the L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@> is set to I<OPERAND_MESSAGE> with stack traces added.
+I<OPERAND_MESSAGE> is a string of string type for an error message. If the exception thrown by the C<die> statement is catched, L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@> is set to I<OPERAND_MESSAGE> with stack traces added.
 
 If the exception is not catched, the program prints it to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">, and finishes the program with an error ID.
 
@@ -507,11 +507,11 @@ The following is an example of stack traces of an exception message.
 
 If I<OPERAND_MESSAGE> is not given or C<undef>, I<OPERAND_MESSAGE> is set to C<"Error">.
 
-I<ERROR_CLASS> is a class name, normally of L<Error|SPVM::Error> class, or its child class. If the exception thrown by the C<die> statement is catched, the L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to the basic type ID of I<ERROR_CLASS>.
+I<ERROR_CLASS> is a class name, normally of L<Error|SPVM::Error> class, or its child class. If the exception thrown by the C<die> statement is catched, L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to the basic type ID of I<ERROR_CLASS>.
 
 The L<integer promotional conversion|SPVM::Document::Language::Operators/"Integer Promotional Conversion"> is performed on I<OPERAND_ERROR_ID>.
 
-I<OPERAND_ERROR_ID> is an integer value within int type. If it is given and the exception thrown by the C<die> statement is catched, the L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to I<OPERAND_ERROR_ID>.
+I<OPERAND_ERROR_ID> is an integer value within int type. If it is given and the exception thrown by the C<die> statement is catched, L<eval_error_id|SPVM::Document::Language::Operators/"eval_error_id Operator"> is set to I<OPERAND_ERROR_ID>.
 
 See also L<Exception Handling|SPVM::Document::Language::ExceptionHandling> for exception handling using the C<die> statement.
 
