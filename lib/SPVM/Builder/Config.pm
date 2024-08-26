@@ -1266,9 +1266,9 @@ Gets and sets the C<after_create_compile_info_cbs> field, an array reference con
 
 These callbacks are executed even if no object file was generated.
 
-The 1th argument of the callback is a L<SPVM::Builder::Config> object.
+The 1th argument of the callback is an L<SPVM::Builder::Config> object.
 
-The 2th argument of the callback is a L<SPVM::Builder::CompileInfo> object.
+The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
 
 =head2 before_compile_cbs
 
@@ -1279,9 +1279,9 @@ Gets and sets the C<before_compile_cbs> field, an array reference containing cal
 
 These callbacks are executed only if an object file is actually generated.
 
-The 1th argument of the callback is a L<SPVM::Builder::Config> object.
+The 1th argument of the callback is an L<SPVM::Builder::Config> object.
 
-The 2th argument of the callback is a L<SPVM::Builder::CompileInfo> object.
+The 2th argument of the callback is an L<SPVM::Builder::CompileInfo> object.
 
 =head2 ld
 
@@ -1393,9 +1393,9 @@ Gets and sets the C<after_create_link_info_cbs> field, an array reference contai
 
 These callbacks are executed even if no dynamic link library file was generated.
 
-The 1th argument of the callback is a L<SPVM::Builder::Config> object.
+The 1th argument of the callback is an L<SPVM::Builder::Config> object.
 
-The 2th argument of the callback is a L<SPVM::Builder::LinkInfo> object.
+The 2th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
 
 =head2 before_link_cbs
 
@@ -1406,9 +1406,9 @@ Gets and sets the C<before_link_cbs> field, an array reference containing callba
 
 These callbacks are executed only if a dynamic link library is actually generated.
 
-The 1th argument of the callback is a L<SPVM::Builder::Config> object.
+The 1th argument of the callback is an L<SPVM::Builder::Config> object.
 
-The 2th argument of the callback is a L<SPVM::Builder::LinkInfo> object.
+The 2th argument of the callback is an L<SPVM::Builder::LinkInfo> object.
 
 =head2 force
 
@@ -1518,7 +1518,7 @@ This field is automatically set and users nomally do not change it.
 
 Gets and sets the C<config_exe> field.
 
-If L<spvmcc> command generates an excutable file, this field is set to a L<SPVM::Builder::Config::Exe> object.
+If L<spvmcc> command generates an excutable file, this field is set to an L<SPVM::Builder::Config::Exe> object.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1880,7 +1880,7 @@ Examples:
 
 Adds @libs to the end of L</"libs"> field with L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field set to a true value.
 
-If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
+If a value in @libs is not an L<SPVM::Builder::LibInfo> object, an L<SPVM::Builder::LibInfo> object is created from the library name.
 
 If the library is located in your user directory, it is good to use L</"add_lib_abs"> method instead of L</"add_lib"> method.
 
@@ -1894,7 +1894,7 @@ For system libraries, there is no problem because the linker knows the search di
 
 Adds @libs to the end of L</"libs"> field with L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field set to a true value.
 
-If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
+If a value in @libs is not an L<SPVM::Builder::LibInfo> object, an L<SPVM::Builder::LibInfo> object is created from the library name.
 
 Examples:
 
@@ -1907,7 +1907,7 @@ Examples:
 
 Adds @libs to the end of L</"libs"> field with L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field and L<SPVM::Builder::LibInfo#is_abs|SPVM::Builder::LibInfo/"is_abs"> field set to a true value.
 
-If a value in @libs is not a L<SPVM::Builder::LibInfo> object, a L<SPVM::Builder::LibInfo> object is created from the library name.
+If a value in @libs is not an L<SPVM::Builder::LibInfo> object, an L<SPVM::Builder::LibInfo> object is created from the library name.
 
 =head2 add_before_link_cb
 
@@ -1931,7 +1931,7 @@ Examples:
   my $resource = $config->use_resource($resource_name);
   my $resource = $config->use_resource($resource_name, %options);
 
-Loads a L<resource|SPVM::Document::Resource> given a resource name and options, and returns it. The return value is a L<SPVM::Builder::Resource> object.
+Loads a L<resource|SPVM::Document::Resource> given a resource name and options, and returns it. The return value is an L<SPVM::Builder::Resource> object.
 
 Options:
 
@@ -1956,7 +1956,7 @@ Examples:
 
   my $resource = $config->get_resource($resource_name);
 
-Gets a resource loaded by L</"use_resource"> method given a resource name, and returns it. The return value is a L<SPVM::Builder::Resource> object.
+Gets a resource loaded by L</"use_resource"> method given a resource name, and returns it. The return value is an L<SPVM::Builder::Resource> object.
 
 =head2 get_resource_names
 
@@ -1968,7 +1968,7 @@ Returns resource names loaded by L</"use_resource"> method.
 
   my $config = $config->load_config($config_file, $argv);
 
-Loads a config file given a config file path and an array refernce containing L<config arguments|/"Config Arguments">, and returns a L<SPVM::Builder::Config> object.
+Loads a config file given a config file path and an array refernce containing L<config arguments|/"Config Arguments">, and returns an L<SPVM::Builder::Config> object.
 
 The values referenced by $argv is set to the @ARGV of the config file.
 
@@ -2034,7 +2034,7 @@ Use L</"mode"> field to get the config mode.
 
   my $modle = $config->mode;
 
-L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> has C<mode> option for giving a config mode.
+L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> method has C<mode> option for giving a config mode.
 
   $config->use_resource('Resource::MyResource', mode => 'production');
 
@@ -2052,7 +2052,7 @@ Key-value pairs are recommended as the values of C<@ARGV> because they are norma
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> has C<argv> option for giving config arguments.
+L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> method has C<argv> option for giving config arguments.
 
   $config->use_resource('Resource::MyResource', argv => [option_name => "option_value"]);
 
