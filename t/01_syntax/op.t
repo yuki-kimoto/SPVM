@@ -45,7 +45,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { \1; } }';
-    compile_not_ok($source, qr'The operand of the reference operator must be a variable');
+    compile_not_ok($source, qr'The operand of reference operator must be a variable');
   }
 }
 
