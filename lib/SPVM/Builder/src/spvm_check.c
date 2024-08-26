@@ -2159,7 +2159,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               SPVM_BASIC_TYPE* current_basic_type = method->current_basic_type;
               if (!SPVM_CHECK_can_access(compiler, current_basic_type, new_basic_type, new_basic_type->access_control_type, 0)) {
                 if (!SPVM_OP_is_allowed(compiler, current_basic_type, new_basic_type, 0)) {
-                  SPVM_COMPILER_error(compiler, "The object of the %s \"%s\" class cannnot be created from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, current_basic_type->name, op_new->file, op_new->line);
+                  SPVM_COMPILER_error(compiler, "The object of the %s %s class cannnot be created from the current class %s.\n  at %s line %d", SPVM_ATTRIBUTE_get_name(compiler, new_basic_type->access_control_type), new_basic_type->name, current_basic_type->name, op_new->file, op_new->line);
                   return;
                 }
               }

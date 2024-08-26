@@ -363,7 +363,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () {  new Int; } }';
-    compile_not_ok($source, q|The object of the private "Int" class cannnot be created from the current class MyClass|);
+    compile_not_ok($source, q|The object of the private Int class cannnot be created from the current class MyClass.|);
   }
 }
 
@@ -1083,7 +1083,7 @@ use Test::More;
   }
 }
 
-# Resove types
+# Resolve types
 {
   {
     my $source = 'class MyClass { static method main : void () { new NotFound; } }';
@@ -1103,7 +1103,7 @@ use Test::More;
   }
 }
 
-# Resove method call
+# Resolve method call
 {
   {
     my $source = 'class MyClass { static method main : void () { MyClass->not_defined; } }';
