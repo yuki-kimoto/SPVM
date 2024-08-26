@@ -1007,13 +1007,13 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   // mulnum_t
   if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
     if (type->basic_type->methods->length > 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
+      SPVM_COMPILER_error(compiler, "A multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
     }
     if (type->basic_type->class_vars->length > 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
+      SPVM_COMPILER_error(compiler, "A multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
     }
     if (type->basic_type->unmerged_fields->length == 0) {
-      SPVM_COMPILER_error(compiler, "The multi-numeric type must have at least one field.\n  at %s line %d", op_class->file, op_class->line);
+      SPVM_COMPILER_error(compiler, "A multi-numeric type must have at least one field.\n  at %s line %d", op_class->file, op_class->line);
     }
     else if (type->basic_type->unmerged_fields->length > 255) {
       SPVM_COMPILER_error(compiler, "The length of the fields defined in the multi-numeric type must be less than or equal to 255.\n  at %s line %d", op_class->file, op_class->line);

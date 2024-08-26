@@ -188,15 +188,15 @@ use Test::More;
   }
   {
     my $source = 'class MyClass : mulnum_t { method foo : void () { } }';
-    compile_not_ok($source, qr/The multi-numeric type cannnot have methods/);
+    compile_not_ok($source, qr/A multi-numeric type cannnot have methods/);
   }
   {
     my $source = 'class MyClass : mulnum_t { our $FOO : int; }';
-    compile_not_ok($source, qr/The multi-numeric type cannnot have class variables/);
+    compile_not_ok($source, qr/A multi-numeric type cannnot have class variables/);
   }
   {
     my $source = 'class MyClass : mulnum_t { }';
-    compile_not_ok($source, qr/The multi-numeric type must have at least one field/);
+    compile_not_ok($source, qr/A multi-numeric type must have at least one field/);
   }
   {
     my $source = 'class MyClass : mulnum_t { }';
