@@ -254,7 +254,7 @@ If the option $sort is a negative value, the keys are sorted by decendant order.
 C<method get_or_default_byte : int ($key : string, $default : int;>
 
 If the value specified by the key $key exists, this method calls L</"get_byte"> method
-, and returns the return value of the L</"get_byte"> method.
+, and returns the return value of L</"get_byte"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -263,7 +263,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method get_or_default_short : int ($key : string, $default : int;>
 
 If the value specified by the key $key exists, this method calls L</"get_short"> method
-, and returns the return value of the L</"get_short"> method.
+, and returns the return value of L</"get_short"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -272,7 +272,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method get_or_default_int : int ($key : string, $default : int;>
 
 If the value specified by the key $key exists, this method calls L</"get_int"> method
-, and returns the return value of the L</"get_int"> method.
+, and returns the return value of L</"get_int"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -281,7 +281,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method get_or_default_long : long ($key : string, $default : long;>
 
 If the value specified by the key $key exists, this method calls L</"get_long"> method
-, and returns the return value of the L</"get_long"> method.
+, and returns the return value of L</"get_long"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -290,7 +290,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method get_or_default_float : float ($key : string, $default : float;>
 
 If the value specified by the key $key exists, this method calls L</"get_float"> method
-, and returns the return value of the L</"get_float"> method.
+, and returns the return value of L</"get_float"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -299,7 +299,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method get_or_default_double : double ($key : string, $default : double;>
 
 If the value specified by the key $key exists, this method calls L</"get_double"> method
-, and returns the return value of the L</"get_double"> method.
+, and returns the return value of L</"get_double"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -308,7 +308,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method get_or_default_string : string ($key : string, $default : string;>
 
 If the value specified by the key $key exists, this method calls L</"get_string"> method
-, and returns the return value of the L</"get_string"> method.
+, and returns the return value of L</"get_string"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -317,7 +317,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method get_or_default : object ($key : string, $default : object;>
 
 If the value specified by the key $key exists, this method calls L</"get"> method
-, and returns the return value of the L</"get"> method.
+, and returns the return value of L</"get"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -326,7 +326,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method delete_or_default_byte : int ($key : string, $default : int;>
 
 If the value specified by the key $key exists, this method calls L</"get_byte"> method
-and L</"delete"> method, and returns the return value of the L</"get_byte"> method.
+and L</"delete"> method, and returns the return value of L</"get_byte"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -335,7 +335,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method delete_or_default_short : int ($key : string, $default : int;>
 
 If the value specified by the key $key exists, this method calls L</"get_short"> method
-and L</"delete"> method, and returns the return value of the L</"get_short"> method.
+and L</"delete"> method, and returns the return value of L</"get_short"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -344,7 +344,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method delete_or_default_int : int ($key : string, $default : int;>
 
 If the value specified by the key $key exists, this method calls L</"get_int"> method
-and L</"delete"> method, and returns the return value of the L</"get_int"> method.
+and L</"delete"> method, and returns the return value of L</"get_int"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -353,7 +353,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method delete_or_default_long : long ($key : string, $default : long;>
 
 If the value specified by the key $key exists, this method calls L</"get_long"> method
-and L</"delete"> method, and returns the return value of the L</"get_long"> method.
+and L</"delete"> method, and returns the return value of L</"get_long"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -362,7 +362,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method delete_or_default_float : float ($key : string, $default : float;>
 
 If the value specified by the key $key exists, this method calls L</"get_float"> method
-and L</"delete"> method, and returns the return value of the L</"get_float"> method.
+and L</"delete"> method, and returns the return value of L</"get_float"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -371,7 +371,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method delete_or_default_double : double ($key : string, $default : double;>
 
 If the value specified by the key $key exists, this method calls L</"get_double"> method
-and L</"delete"> method, and returns the return value of the L</"get_double"> method.
+and L</"delete"> method, and returns the return value of L</"get_double"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -380,7 +380,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method delete_or_default_string : string ($key : string, $default : string;>
 
 If the value specified by the key $key exists, this method calls L</"get_string"> method
-and L</"delete"> method, and returns the return value of the L</"get_string"> method.
+and L</"delete"> method, and returns the return value of L</"get_string"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
@@ -389,7 +389,7 @@ If the value specified by the key $key does not exists, returns the default valu
 C<method delete_or_default : object ($key : string, $default : object;>
 
 If the value specified by the key $key exists, this method calls L</"get"> method
-and L</"delete"> method, and returns the return value of the L</"get"> method.
+and L</"delete"> method, and returns the return value of L</"get"> method.
 
 If the value specified by the key $key does not exists, returns the default value $default.
 
