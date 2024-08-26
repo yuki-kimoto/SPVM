@@ -951,29 +951,29 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; weaken $object->{x}; } }';
-    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by weaken operator must be an object type|);
+    compile_not_ok($source, q|MyClass#x field operated by weaken operator must be an object type|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; unweaken $object->{x}; } }';
-    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by unweaken operator must be an object type|);
+    compile_not_ok($source, q|MyClass#x field operated by unweaken operator must be an object type|);
   }
   {
     my $source = 'class MyClass { has x : int; static method main : void () { my $object = new MyClass; isweak $object->{x}; } }';
-    compile_not_ok($source, q|The "x" field in the "MyClass" class operated by isweak operator must be an object type|);
+    compile_not_ok($source, q|MyClass#x field operated by isweak operator must be an object type|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : private int; }'
     ];
-    compile_not_ok($source, q|The private "x" field in the "MyClass2" class cannnot be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private MyClass2#x field cannnot be accessed from the current class "MyClass"|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : protected int; }'
     ];
-    compile_not_ok($source, q|The protected "x" field in the "MyClass2" class cannnot be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The protected MyClass2#x field cannnot be accessed from the current class "MyClass"|);
   }
   {
     my $source = [
@@ -1312,7 +1312,7 @@ use Test::More;
       'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
       'class MyClassParent { has foo : int; }',
     ];
-    compile_not_ok($source, q|The private "foo" field in the "MyClassParent" class cannnot be accessed from the current class "MyClass".|);
+    compile_not_ok($source, q|The private MyClassParent#foo field cannnot be accessed from the current class "MyClass".|);
   }
   
   {
