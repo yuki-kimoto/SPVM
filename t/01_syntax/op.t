@@ -184,7 +184,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
-    compile_not_ok($source, qr/Redeclaration of the "foo" method in the "MyClass" class/);
+    compile_not_ok($source, qr/Redeclaration of MyClass#foo method/);
   }
   {
     my $source = 'class MyClass : mulnum_t { method foo : void () { } }';

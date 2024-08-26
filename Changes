@@ -22,6 +22,7 @@
   [Complilation Message Improvement]
     * Use field notation "MyClass#foo field" in compilation error messages.
     * Use class variable notation "MyClass#$Foo class variable" in compilation error messages.
+    * Use method notation "MyClass#foo method" in compilation error messages.
     
 0.990006 2023-05-09
   [Feature Improvement]

@@ -919,7 +919,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { our $FOO : int; our $FOO : int;}';
-    compile_not_ok($source, qr/Redeclaration of MyClass#\$FOO/);
+    compile_not_ok($source, qr/Redeclaration of MyClass#\$FOO class variable/);
   }
 }
 
