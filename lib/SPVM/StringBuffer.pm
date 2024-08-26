@@ -33,6 +33,14 @@ The L</"string"> stored in a StringBuffer object always starts at index 0.
 
 The charactors in the range that is greater than or equal to the L</"length"> field and less than the L</"capacity"> field are filled with "\0".
 
+=head1 Interfaces
+
+=over 2
+
+L<Cloneable|SPVM::Cloneable>
+
+=back
+
 =head1 Fields
 
 =head2 capacity
@@ -152,6 +160,12 @@ If the length $length is greater than the L</"length"> field, the characters of 
 C<method set : void ($string : string);>
 
 Sets the string $string.
+
+=head2 clone
+
+C<method clone ();>
+
+Clones this string buffer and returns it.
 
 =head1 Copyright & License
 

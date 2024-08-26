@@ -499,4 +499,25 @@ class TestCase::Module::StringBuffer {
     
     return 1;
   }
+  
+  static method clone : int () {
+    
+    {
+      my $buffer = StringBuffer->new("abc");
+      
+      my $ret = $buffer->clone;
+      
+      unless ($ret is_type StringBuffer) {
+        return 0;
+      }
+      
+      unless ($ret->to_string eq "abc") {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
 }

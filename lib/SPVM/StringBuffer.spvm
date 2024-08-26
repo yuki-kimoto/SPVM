@@ -5,6 +5,8 @@ class StringBuffer {
   use Fn;
   use Array;
   
+  interface Cloneable;
+  
   # Enumerations
   private enum {
     DEFAULT_CAPACITY = 4,
@@ -12,7 +14,9 @@ class StringBuffer {
   
   # Fields
   has capacity : ro int;
+  
   has length : ro int;
+  
   has string : mutable string;
   
   # Class methods
@@ -193,5 +197,14 @@ class StringBuffer {
     $self->set_length(0);
     
     $self->push($string);
+  }
+  
+  method clone : StringBuffer () {
+    
+    my $string = $self->to_string;
+    
+    my $clone = &new($string);
+    
+    return $clone;
   }
 }

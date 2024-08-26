@@ -1191,7 +1191,7 @@ sub generate_dist {
     # Generate Makefile.PL file
     $self->generate_makefile_pl_file;
     
-    # Generate t/basic.t file
+    # Generate basic test file
     $self->generate_basic_test_file;
 
     # Generate basic test SPVM class file
