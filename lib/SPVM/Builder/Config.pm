@@ -1141,7 +1141,7 @@ Examples:
 
 Gets and sets the C<include_dirs> field, an array reference containing header file search directories.
 
-The values of this field are converted to the C<-I> options when the arguments of the compiler L</"cc"> are created.
+The values of this field are converted to C<-I> options when the arguments of the compiler L</"cc"> are created.
 
   # -I /path1 -I /path2
   $config->include_dirs(['/path1', '/path2']);
@@ -1153,7 +1153,7 @@ The values of this field are converted to the C<-I> options when the arguments o
 
 Gets and sets the C<spvm_core_include_dir> field, an SPVM core header file search directory.
 
-The value of this field is converted to the C<-I> option when the arguments of the compiler L</"cc"> are created.
+The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1164,7 +1164,7 @@ This field is automatically set and users nomally do not change it.
 
 Gets and sets the C<native_include_dir> field, a L<native header file|SPVM::Document::NativeClass/"Native Header Files"> search directory.
 
-The value of this field is converted to the C<-I> option when the arguments of the compiler L</"cc"> are created.
+The value of this field is converted to C<-I> option when the arguments of the compiler L</"cc"> are created.
 
 This field is automatically set and users nomally do not change it.
 
@@ -1218,7 +1218,7 @@ This field is automatically set and users nomally do not change it.
 
 Gets and sets the C<std> field, a language standard.
 
-This field is converted to the C<-std> option when the arguments of the compiler L</"cc"> are created.
+This field is converted to C<-std> option when the arguments of the compiler L</"cc"> are created.
 
 Examples:
   
@@ -1302,7 +1302,7 @@ Examples:
 
 Gets and sets the C<lib_dirs> field, an array reference containing library search directories.
 
-The values of this field are converted to the C<-L> options when the arguments of the linker L</"ld"> are created.
+The values of this field are converted to C<-L> options when the arguments of the linker L</"ld"> are created.
 
   # -L /path1 -L /path2
   $config->lib_dirs(['/path1', '/path2']);
@@ -1371,7 +1371,7 @@ Mac does not support these options. If you want to search a static library, crea
   $config->add_lib_dir('/path_for_static_lib');
   $config->add_lib('z');
 
-MinGW on Windows supports these options, but instead of linking statically, it links dynamically with absolute paths. This is usually not the intended behavior. If you want to do static linking on Windows, you need to use the C<--static> option.
+MinGW on Windows supports these options, but instead of linking statically, it links dynamically with absolute paths. This is usually not the intended behavior. If you want to do static linking on Windows, you need to use C<--static> option.
 
 =head2 ld_optimize
 
@@ -2034,11 +2034,11 @@ Use L</"mode"> field to get the config mode.
 
   my $modle = $config->mode;
 
-L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> has the C<mode> option for giving a config mode.
+L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> has C<mode> option for giving a config mode.
 
   $config->use_resource('Resource::MyResource', mode => 'production');
 
-The L<spvmcc> command has the C<--mode> option for giving a config mode.
+The L<spvmcc> command has C<--mode> option for giving a config mode.
 
   spvmcc -o myexe --mode production MyExe
 
@@ -2052,15 +2052,15 @@ Key-value pairs are recommended as the values of C<@ARGV> because they are norma
   
   my $config = SPVM::Builder::Config->new_gnu99(file => __FILE__);
 
-L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> has the C<argv> option for giving config arguments.
+L<SPVM::Builder::Config#use_resource|SPVM::Builder::Config/"use_resource"> has C<argv> option for giving config arguments.
 
   $config->use_resource('Resource::MyResource', argv => [option_name => "option_value"]);
 
-The L<spvmcc> command has the C<--config-argv> option(released in the near future) for giving config arguments.
+The L<spvmcc> command has C<--config-argv> option(released in the near future) for giving config arguments.
 
   spvmcc -o myexe --config-argv option_name --config-argv option_value MyExe
 
-The L<spvmcc> command also has the C<--config-argv-option> option(released in the near future) to write config arguments easily.
+The L<spvmcc> command also has C<--config-argv-option> option(released in the near future) to write config arguments easily.
 
   spvmcc -o myexe --config-argv-option option_name=option_value MyExe
 
@@ -2080,7 +2080,7 @@ If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field 
 
 If L<SPVM::Builder::LibInfo#is_static|SPVM::Builder::LibInfo/"is_static"> field is a true value, the search is performed only in static libraries.
 
-If a library is found, the C<-l> option of the linker L</"ld"> is created using the found absolute path.
+If a library is found, C<-l> option of the linker L</"ld"> is created using the found absolute path.
 
 =head1 Examples
 

@@ -301,7 +301,7 @@ Class search directories are directories in which classes are searched for.
 
 These are set outside the program.
 
-Directories set by the C<-I> option of L<spvm> command and L<spvmcc> command are added to class search directories.
+Directories set by C<-I> option of L<spvm> command and L<spvmcc> command are added to class search directories.
 
 And directories with C</SPVM> added to the end of each value of Perl's L<@INC|https://perldoc.perl.org/perlvar#@INC> are added to the end of the class search directories.
 
