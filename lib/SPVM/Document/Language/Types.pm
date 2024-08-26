@@ -511,9 +511,9 @@ The List of Basic Types:
 
 =item * L<Interface types|/"Interface Types">
 
-=item * The L<any object type|/"Any Object Type">
+=item * L<any object type|/"Any Object Type">
 
-=item * The L<string type|/"string Type">
+=item * L<string type|/"string Type">
 
 =back
 
