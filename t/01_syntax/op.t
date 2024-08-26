@@ -176,7 +176,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method foo : void () { static method : int () { } } }';
-    compile_not_ok($source, qr/The anon method must be an instance method/);
+    compile_not_ok($source, qr/An anon method must be an instance method/);
   }
   {
     my $source = 'class MyClass { required method foo : void () { } }';

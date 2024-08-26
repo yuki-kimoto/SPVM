@@ -956,7 +956,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     
     // If Method is anon, method must be method
     if (strlen(method_name) == 0 && method->is_class_method) {
-      SPVM_COMPILER_error(compiler, "The anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
+      SPVM_COMPILER_error(compiler, "An anon method must be an instance method.\n  at %s line %d", method->op_method->file, method->op_method->line);
     }
     
     if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
