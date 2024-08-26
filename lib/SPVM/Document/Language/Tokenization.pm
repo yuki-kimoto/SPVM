@@ -10,7 +10,7 @@ This document describes the tokenization in the SPVM language.
 
 =head1 Tokenization
 
-This section describes the L<lexical analysis|https://en.wikipedia.org/wiki/Lexical_analysis> in the SPVM Language.
+This section describes L<lexical analysis|https://en.wikipedia.org/wiki/Lexical_analysis> in the SPVM Language.
 
 This is called tokenization.
 
@@ -854,7 +854,7 @@ Examples:
 
 =head2 Character Literal
 
-A character literal represents a number of the L<byte type|SPVM::Document::Language::Types/"byte Type"> that normally represents an ASCII character.
+A character literal represents a number of L<byte type|SPVM::Document::Language::Types/"byte Type"> that normally represents an ASCII character.
 
 It begins with C<'>.
 
@@ -1073,7 +1073,7 @@ It is followed by zero or more UTF-8 characters, L<string literal escape charact
 
 It ends with C<">.
 
-The return type is the L<string type|SPVM::Document::Language::Types/"string Type">.
+The return type is L<string type|SPVM::Document::Language::Types/"string Type">.
 
 Compilation Errors:
 
@@ -1378,7 +1378,7 @@ It is followed by zero or more UTF-8 characters, or L<single-quoted string liter
 
 It ends with C<'>.
 
-The return type is the L<string type|SPVM::Document::Language::Types/"string Type">.
+The return type is L<string type|SPVM::Document::Language::Types/"string Type">.
 
 Compilation Errors:
 
