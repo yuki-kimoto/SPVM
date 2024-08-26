@@ -190,7 +190,7 @@ The C<version> statement declares the version of a class.
 
   version VERSION_STRING;
 
-This statement declares the version of a class given the L<version string|/"Version String"> I<VERSION_STRING>.
+This statement declares the version of a class given L<version string|/"Version String"> I<VERSION_STRING>.
 
 Compilation Errors:
 
@@ -210,7 +210,7 @@ Examples:
 
 =head3 Version String
 
-The version string is the string that represents the L<version|/"Version Statement"> of a class.
+The version string is the string that represents L<version|/"Version Statement"> of a class.
 
 A version string must be written by the following rules.
 
@@ -265,13 +265,13 @@ This statement searches for the type I<BASIC_TYPE> in L<class search directories
 
 I<BASIC_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">.
 
-See the L<require statement|SPVM::Document::Language::Statements/"require Statement"> about how to load a type without causing a compile error when loading fails,
+See L<require statement|SPVM::Document::Language::Statements/"require Statement"> about how to load a type without causing a compile error when loading fails,
 
 The follwoing C<use> statement with C<as>
 
   use BASIC_TYPE as CLASS_NAME;
 
-is expanded to the following code using the L<alias|/"alias Statement"> statement.
+is expanded to the following code using L<alias|/"alias Statement"> statement.
 
   use BASIC_TYPE;
   alias BASIC_TYPE as CLASS_NAME
@@ -301,7 +301,7 @@ Class search directories are directories in which classes are searched for.
 
 These are set outside the program.
 
-Directories set by the C<-I> option of the L<spvm> command and the L<spvmcc> command are added to class search directories.
+Directories set by the C<-I> option of L<spvm> command and L<spvmcc> command are added to class search directories.
 
 And directories with C</SPVM> added to the end of each value of Perl's L<@INC|https://perldoc.perl.org/perlvar#@INC> are added to the end of the class search directories.
 
@@ -370,13 +370,13 @@ The C<allow> statemenet allows a type private accesses to the current class.
 
   allow BASIC_TYPE;
 
-By default, objects of private classes cannot be created by the the L<new operator|/"new Operator"> from other classes.
+By default, objects of private classes cannot be created by L<new operator|/"new Operator"> from other classes.
 
 And private methods, private fields, and private class variables cannot be accessed from other classes.
 
 This statement allows the type I<BASIC_TYPE> private accesses to the current class.
 
-I<BASIC_TYPE> is loaded by the L<use statement|/"use Statement">.
+I<BASIC_TYPE> is loaded by L<use statement|/"use Statement">.
 
 Examples:
 
@@ -397,7 +397,7 @@ The class I<CLASS_NAME> that inherits the parent class I<PARENT_CLASS_NAME> is d
 
 The field definitions of the parent class I<PARENT_CLASS_NAME> are added to the end of the field definitions of the class I<CLASS_NAME> to the end of its fields.
 
-The L<interface statements|/"interface Statement"> of the parent class I<PARENT_CLASS_NAME> are added to the end of the L<interface statements|/"interface Statement"> of the class I<CLASS_NAME>.
+The L<interface statements|/"interface Statement"> of the parent class I<PARENT_CLASS_NAME> are added to the end of L<interface statements|/"interface Statement"> of the class I<CLASS_NAME>.
 
 The instance of the class I<CLASS_NAME> can calls instance methods of the parent class I<PARENT_CLASS_NAME> and its super classes.
 
@@ -411,7 +411,7 @@ The all super classes must be different from its own class. Otherwise, a compila
 
 The field that name is the same as the field of the super class cannnot be defined. Otherwise, a compilation error occurs.
 
-The class I<CLASS_NAME> interpreted by an interface must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>. Otherwise, a compilation error occurs.
+The class I<CLASS_NAME> interpreted by an interface must satisfy L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent class I<PARENT_CLASS_NAME>. Otherwise, a compilation error occurs.
 
 Examples:
 
@@ -500,17 +500,17 @@ Examples:
 
 =head3 interface Statement
 
-The C<interface> statement checks if the current class satisfies the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to an interface.
+The C<interface> statement checks if the current class satisfies L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to an interface.
 
   interface BASIC_TYPE;
 
-I<BASIC_TYPE> is loaded by the L<use statement|/"use Statement">.
+I<BASIC_TYPE> is loaded by L<use statement|/"use Statement">.
 
 Compilation Errors:
 
 The interface type I<BASIC_TYPE> must be an L<interface type|SPVM::Document::Language::Types/"Interface Types">, ohterwise a compilation error occurs.
 
-The current class must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the interface type I<BASIC_TYPE>, ohterwise a compilation error occurs.
+The current class must satisfy L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the interface type I<BASIC_TYPE>, ohterwise a compilation error occurs.
 
 Examples:
   
@@ -540,7 +540,7 @@ An anon class is defined by the following syntax.
   
   }
 
-An anon class cannot be defined in a L<class file|Class File>. It is able to be defined in a source code compiled by the L<compile_anon_class|SPVM::Document::NativeAPI::Compiler/"compile_anon_class"> compiler native API.
+An anon class cannot be defined in a L<class file|Class File>. It is able to be defined in a source code compiled by L<compile_anon_class|SPVM::Document::NativeAPI::Compiler/"compile_anon_class"> compiler native API.
 
 An anon class has its L<class name|SPVM::Document::Language::Tokenization/"Class Name">, such as C<eval::anon_class::0>, C<eval::anon_class::1>, C<eval::anon_class::2>.
 
@@ -571,7 +571,7 @@ I<METHOD_DEFINITION> is a L<method definition|/"Method Definition">.
 
 The anon method class definition defines a class to which this method belongs.
 
-The name of this class is a string that joins the L<outmost class|/"Outmost Class">, a string C<"anon_method">, the line number and the position of columns where an anon method class definition is written with C<::>.
+The name of this class is a string that joins L<outmost class|/"Outmost Class">, a string C<"anon_method">, the line number and the position of columns where an anon method class definition is written with C<::>.
 
   MyClass::anon_method::3::23
 
@@ -601,7 +601,7 @@ Examples:
 
 =head4 Anon Method Class Field Definition
 
-An anon method class field definition defines fields of an L<anon class|/"Anon Class">, which is a part of the L<anon method class definition|Anon Method Class Definition>.
+An anon method class field definition defines fields of an L<anon class|/"Anon Class">, which is a part of L<anon method class definition|Anon Method Class Definition>.
   
   [ANON_METHOD_CLASS_FIELD_DEFINITION_ITEM1, ANON_METHOD_CLASS_FIELD_DEFINITION_ITEM, ANON_METHOD_CLASS_FIELD_DEFINITION_ITEMn]
 
@@ -662,7 +662,7 @@ Examples:
 
 =head2 Outmost Class
 
-An outmost class is the outmost defined class. This is the same as the class defined by the L<class definition|/"Class Definition">.
+An outmost class is the outmost defined class. This is the same as the class defined by L<class definition|/"Class Definition">.
 
   class OutmostClass {
     
@@ -688,7 +688,7 @@ Examples:
 
 =head2 Multi-Numeric Type Definition
 
-A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is defined by the L<class definition|/"Class Definition"> with the C<mulnum_t> L<class attribute|/"Class Attributes">.
+A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is defined by L<class definition|/"Class Definition"> with the C<mulnum_t> L<class attribute|/"Class Attributes">.
 
   class CLASS_NAME : mulnum_t {
     
@@ -704,9 +704,9 @@ The length of fields must be less than or equal to 255. Otherwise, a compilation
 
 I<CLASS_NAME> must ends with a L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> corresponding to the type of fields. Otherwise, a compilation error occurs.
 
-I<FIELD_LENGTH> of the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must be the same as the length of fields. Otherwise, a compilation error occurs.
+I<FIELD_LENGTH> of L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must be the same as the length of fields. Otherwise, a compilation error occurs.
 
-I<TYPE_SUFFIX> of the L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must correspond to the type of fields.
+I<TYPE_SUFFIX> of L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must correspond to the type of fields.
 
 Examples:
   
@@ -1358,7 +1358,7 @@ I<ARG_ITEM> is one of
 
 I<ARG_NAME> is a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">.
 
-The local variable specified I<ARG_NAME> is declared at the beginning of the L<method implementation|/"Method Implementation">.
+The local variable specified I<ARG_NAME> is declared at the beginning of L<method implementation|/"Method Implementation">.
 
 I<ARG_TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
@@ -1560,7 +1560,7 @@ And C<INIT> methods of classes loaded by L<use statements|/"use Statement"> are 
 
 The execution order of C<INIT> methods is not guaranteed except that C<INIT> methods are called explictly and except for the above explanation.
 
-The C<INIT> methods in the L<default loaded class|/"Default Loaded Classes"> are called before C<INIT> methods of other classes, 
+The C<INIT> methods in L<default loaded class|/"Default Loaded Classes"> are called before C<INIT> methods of other classes, 
 
 Examples:
   
@@ -1640,11 +1640,11 @@ An instance method in a parent class can be overridden by an instance method wit
     }
   }
 
-The overridding method in the child class must satisfy the L<interface method requirement|SPVM::Document::Language::Types/"Interface Method Requirement"> to the parent method interpretted as an interface method.
+The overridding method in the child class must satisfy L<interface method requirement|SPVM::Document::Language::Types/"Interface Method Requirement"> to the parent method interpretted as an interface method.
 
 Compilation Errors:
 
-The overridding method in the child class must satisfy the L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent method. Otherwise, a compilation error occurs.
+The overridding method in the child class must satisfy L<interface requirement|SPVM::Document::Language::Types/"Interface Requirement"> to the parent method. Otherwise, a compilation error occurs.
 
 =head2 Native Method
 
@@ -1732,7 +1732,7 @@ Compilation Errors:
 
 I<LOCAL_VAR_NAME> must be a L<local variable name|SPVM::Document::Language::Tokenization/"Local Variable Name">. Otherwise a compilation error occurs.
 
-I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, the L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">. Otherwise a compilation error occurs.
+I<TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">. Otherwise a compilation error occurs.
 
 If I<TYPE> is not resolved, a compilation error occurs.
 
@@ -1791,7 +1791,7 @@ If C<::> is not contained in a variable name, a local variable declaration as th
 
 If found, a variable name resloves to a L<local variable access|SPVM::Document::Language::Operators/"Local Variable Access">.
 
-If not found, a class variable definition as the same name as I<VAR_NAME> in the L<outmost class|/"Outmost Class"> is searched.
+If not found, a class variable definition as the same name as I<VAR_NAME> in L<outmost class|/"Outmost Class"> is searched.
 
 If found, a variable name resloves to a L<class variable access|SPVM::Document::Language::Operators/"Class Variable Access">.
 
@@ -1803,7 +1803,7 @@ The class specified by I<CLASS_TYPE> must be loaded. Otherwise, a compilation er
 
 The class variable relative name specified by I<VAR_NAME> must be defined in the class specified by I<VAR_NAME>. Otherwise, a compilation error occurs.
 
-If it resolves to a class variable, the L<outmost class|/"Outmost Class"> must has the access control to I<VAR_NAME> in the I<CLASS_TYPE>. Otherwise, a compilation error occurs.
+If it resolves to a class variable, L<outmost class|/"Outmost Class"> must has the access control to I<VAR_NAME> in the I<CLASS_TYPE>. Otherwise, a compilation error occurs.
 
 =head2 Field Access Resolution
 
@@ -1852,7 +1852,7 @@ A class method call calls a class method.
 
 I<CLASS_TYPE> is a L<class type|SPVM::Document::Language::Types/"Class Types"> or a class alias name created by an L<alias statement|/"alias Statement">.
 
-C<&> is converted to the L<outmost class|/"Outmost Class">. This becomes C<I<CLASS_TYPE-E<gt>>>.
+C<&> is converted to L<outmost class|/"Outmost Class">. This becomes C<I<CLASS_TYPE-E<gt>>>.
 
 I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name">.
 
@@ -1965,7 +1965,7 @@ Compilation Errors:
 
 I<CLASS_TYPE> must be a L<class type|SPVM::Document::Language::Types/"Class Types">, an L<interface type|SPVM::Document::Language::Types/"Interface Types">, or C<SUPER>. Ohterwise a compilation error occurs.
 
-The type of I<INVOCANT> must satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to I<CLASS_TYPE>. Ohterwise a compilation error occurs.
+The type of I<INVOCANT> must satisfies L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> to I<CLASS_TYPE>. Ohterwise a compilation error occurs.
 
 If C<SUPER> is specified and the found method is a class method, a compilation error occurs.
 
@@ -2187,7 +2187,7 @@ The type comment is a syntax to write a comment for a type.
 
 I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
-I<TYPE> is a type used in the L<field definition|/"Field Definition">, the L<class variable definition|/"Class Variable Definition">, the L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of the L<method definition|/"Method Definition">.
+I<TYPE> is a type used in L<field definition|/"Field Definition">, L<class variable definition|/"Class Variable Definition">, L<local variable declaration|/"Local Variable Declaration">, and the return value and the types of arguments of L<method definition|/"Method Definition">.
 
 I<TYPE_COMMENT> is a L<type|SPVM::Document::Language::Types/"Types">.
 
