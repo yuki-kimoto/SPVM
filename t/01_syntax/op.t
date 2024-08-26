@@ -328,7 +328,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 += 1; }; }';
-    compile_not_ok($source, qr/The left operand of the special assign operator must be mutable/);
+    compile_not_ok($source, qr/The left operand of a special assign operator must be mutable/);
   }
   {
     my $source = 'class MyClass { static method main : void () { 1 = 1; }; }';

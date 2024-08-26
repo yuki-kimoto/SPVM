@@ -2539,7 +2539,7 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
     }
     case SPVM_OP_C_ID_SPECIAL_ASSIGN: {
       if (!SPVM_OP_is_mutable(compiler, op_dist)) {
-        SPVM_COMPILER_error(compiler, "The left operand of the special assign operator must be mutable.\n  at %s line %d", op_dist->file, op_dist->line);
+        SPVM_COMPILER_error(compiler, "The left operand of a special assign operator must be mutable.\n  at %s line %d", op_dist->file, op_dist->line);
         return op_special_assign;
       }
       
