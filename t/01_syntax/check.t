@@ -363,7 +363,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () {  new Int; } }';
-    compile_not_ok($source, q|The object of the private "Int" class cannnot be created from the current class "MyClass"|);
+    compile_not_ok($source, q|The object of the private "Int" class cannnot be created from the current class MyClass|);
   }
 }
 
@@ -888,7 +888,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { MyClass2->foo();  } }',
       'class MyClass2 { static private method foo : void () {} }'
     ];
-    compile_not_ok($source, q|The private MyClass2#foo method cannnot be called from the current class "MyClass"|);
+    compile_not_ok($source, q|The private MyClass2#foo method cannnot be called from the current class MyClass|);
   }
   {
     my $source = 'class MyClass { static method main : void () { &foo(); } static method foo : void ($arg0 : int, $arg1 : int = 0) { } }';
@@ -911,7 +911,7 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { $MyClass2::FOO;  } }',
       'class MyClass2 { our $FOO : private int; }'
     ];
-    compile_not_ok($source, q|The private "$FOO" class variable in the "MyClass2" class cannnot be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private "$FOO" class variable in the "MyClass2" class cannnot be accessed from the current class MyClass|);
   }
 }
 
@@ -966,14 +966,14 @@ use Test::More;
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : private int; }'
     ];
-    compile_not_ok($source, q|The private MyClass2#x field cannnot be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The private MyClass2#x field cannnot be accessed from the current class MyClass|);
   }
   {
     my $source = [
       'class MyClass { use MyClass2; static method main : void () { my $object = new MyClass2; $object->{x};  } }',
       'class MyClass2 : public { has x : protected int; }'
     ];
-    compile_not_ok($source, q|The protected MyClass2#x field cannnot be accessed from the current class "MyClass"|);
+    compile_not_ok($source, q|The protected MyClass2#x field cannnot be accessed from the current class MyClass|);
   }
   {
     my $source = [
@@ -1312,7 +1312,7 @@ use Test::More;
       'class MyClass extends MyClassParent : public { method main : void () { my $my_class = new MyClass; $my_class->{foo}; } }',
       'class MyClassParent { has foo : int; }',
     ];
-    compile_not_ok($source, q|The private MyClassParent#foo field cannnot be accessed from the current class "MyClass".|);
+    compile_not_ok($source, q|The private MyClassParent#foo field cannnot be accessed from the current class MyClass.|);
   }
   
   {
@@ -1454,7 +1454,7 @@ use Test::More;
       'class MyClass2 extends MyClass3;',
       'class MyClass3 extends MyClass;',
     ];
-    compile_not_ok($source, q|Recursive inheritance. Found the current class "MyClass" in a super class|);
+    compile_not_ok($source, q|Recursive inheritance. Found the current class MyClass in a super class|);
   }
   {
     my $source = [
