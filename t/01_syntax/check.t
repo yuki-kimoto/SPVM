@@ -1127,7 +1127,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->new; $point->Point::not_found; } }';
-    compile_not_ok($source, q|The "Point::not_found" method is not found|);
+    compile_not_ok($source, q|Point::not_found method is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->new; } }';
@@ -1146,7 +1146,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { use Stringable; use Point3D; static method main : void () { my $stringable = (Stringable)Point3D->new; $stringable->SUPER::clear; } }';
-    compile_not_ok($source, q|The "SUPER::clear" method is not found|);
+    compile_not_ok($source, q|SUPER::clear method is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void () { my $var = Int->new(1); $var->not_defined; } }';

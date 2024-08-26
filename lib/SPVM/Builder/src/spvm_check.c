@@ -1227,7 +1227,7 @@ void SPVM_CHECK_check_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_meth
         call_method->method = found_method;
       }
       else {
-        SPVM_COMPILER_error(compiler, "The \"%s\" method is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "%s method is not found.\n  at %s line %d", abs_method_name, op_call_method->file, op_call_method->line);
         return;
       }
     }
