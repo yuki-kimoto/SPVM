@@ -66,6 +66,14 @@ class TestCase::Operator::CompileTypeName {
       }
     }
     
+    {
+      my $obj = new byte[1];
+      my $compile_type_name = compile_type_name $obj;
+      unless ($compile_type_name eq "byte[]") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 }

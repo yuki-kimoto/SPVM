@@ -12,6 +12,9 @@
     * Improve exception messages outputted from spvmdist command.
   [Test Improvement]
     * Add a test for Fn#split method when a input is an empty string.
+  [Bug Fix]
+    * Fix a bug mention by "Segfault:compile_type_name" https://github.com/yuki-kimoto/SPVM/issues/554.
+    
 0.990006 2023-05-09
   [Feature Improvement]
     * Users know caller when a class loading from a Perl script failed.
