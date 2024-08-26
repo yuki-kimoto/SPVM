@@ -1087,7 +1087,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { new NotFound; } }';
-    compile_not_ok($source, q|The "NotFound" class is not found|);
+    compile_not_ok($source, q|NotFound class is not found|);
   }
   {
     my $source = 'class MyClass { static method main : void ($arg : Int*) {} }';
@@ -1119,7 +1119,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { static method main : void () { my $point = Point->new; } }';
-    compile_not_ok($source, q|The "Point" class is not found|);
+    compile_not_ok($source, q|Point class is not found.|);
   }
   {
     my $source = 'class MyClass { use Point; static method main : void () { my $point = Point->not_defined; } }';

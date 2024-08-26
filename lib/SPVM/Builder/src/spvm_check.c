@@ -923,7 +923,7 @@ void SPVM_CHECK_check_op_type(SPVM_COMPILER* compiler, SPVM_OP* op_type) {
     const char* if_require_not_found_basic_type_name = SPVM_HASH_get(compiler->if_require_not_found_basic_type_name_symtable, type->unresolved_basic_type_name, strlen(type->unresolved_basic_type_name));
     
     if (!if_require_not_found_basic_type_name) {
-      SPVM_COMPILER_error(compiler, "The \"%s\" class is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
+      SPVM_COMPILER_error(compiler, "%s class is not found.\n  at %s line %d", type->unresolved_basic_type_name, op_type->file, op_type->line);
       return;
     }
   }
