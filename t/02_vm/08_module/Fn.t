@@ -187,6 +187,7 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->get_compile_type_name);
     
+    ok(SPVM::TestCase::Module::Fn->is_any_numeric_array);
   }
   
   # Extra

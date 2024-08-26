@@ -1371,4 +1371,15 @@ class Fn {
   
   native static method get_compile_type_name : string ($basic_type_name : string, $type_dimension : int, $type_flag : int);
   
+  static method is_any_numeric_array : int ($object : object) {
+    
+    my $is_numeric_array = &is_numeric_array($object);
+    
+    my $is_mulnum_array = &is_mulnum_array($object);
+    
+    my $is_any_numeric_array = $is_numeric_array || $is_mulnum_array;
+    
+    return $is_any_numeric_array;
+  }
+  
 }

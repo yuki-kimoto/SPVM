@@ -1659,18 +1659,18 @@ class TestCase::Module::Fn {
   }
 
   static method is_mulnum_array : int () {
-
+    
     # Numeric Array
     {
       if (Fn->is_mulnum_array(new byte[3])) {
         return 0;
       }
-
+      
       if (Fn->is_mulnum_array(new double[3])) {
         return 0;
       }
     }
-
+    
     # Multi Numeric Array
     {
       unless (Fn->is_mulnum_array(new Complex_2d[3])) {
@@ -1695,7 +1695,7 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     # undef
     {
       if (Fn->is_mulnum_array(undef)) {
@@ -1705,7 +1705,7 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-
+  
   static method is_numeric_array : int () {
 
     # Numeric Array
@@ -4975,6 +4975,54 @@ class TestCase::Module::Fn {
     }
     
     $@ = undef;
+    
+    return 1;
+  }
+  
+  static method is_any_numeric_array : int () {
+    
+    # Numeric Array
+    {
+      unless (Fn->is_any_numeric_array(new byte[3])) {
+        return 0;
+      }
+      
+      unless (Fn->is_any_numeric_array(new double[3])) {
+        return 0;
+      }
+    }
+    
+    # Multi Numeric Array
+    {
+      unless (Fn->is_any_numeric_array(new Complex_2d[3])) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_any_numeric_array($string)) {
+        return 0;
+      }
+    }
+    
+    # Object
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      if (Fn->is_any_numeric_array($minimal)) {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      if (Fn->is_any_numeric_array(undef)) {
+        return 0;
+      }
+    }
     
     return 1;
   }

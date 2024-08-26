@@ -1264,6 +1264,14 @@ The basic type name $basic_type_name must be defined.
 
 The type dimension $type_dimension must be grether than or equal to 0 and less than or equal to 255.
 
+=head2 is_any_numeric_array
+
+C<static method is_any_numeric_array : int ($object : object);>
+
+If the object $object is defined and the type of $object is a L<numeric array type|SPVM::Document::Language/"Numeric Array Type"> or a L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">, returns 1, otherwise returns 0.
+
+Any numeric arrays means arrays of L<numeric array type|SPVM::Document::Language/"Numeric Array Type"> and L<multi-numeric array type|SPVM::Document::Language/"Multi-Numeric Array Type">.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
