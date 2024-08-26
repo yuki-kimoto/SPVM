@@ -961,7 +961,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     
     if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
       if (method->is_required) {
-        SPVM_COMPILER_error(compiler, "The method defined in the class cannnot have the method attribute \"required\".\n  at %s line %d", method->op_method->file, method->op_method->line);
+        SPVM_COMPILER_error(compiler, "%s#%s method cannnot have the method attribute \"required\".\n  at %s line %d", basic_type_name, method->name, method->op_method->file, method->op_method->line);
       }
     }
     
@@ -1003,7 +1003,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         memcpy(method_abs_name + strlen(basic_type_name), "->", 2);
         memcpy(method_abs_name + strlen(basic_type_name) + 2, method_name, strlen(method_name));
         method->abs_name = method_abs_name;
-
+        
         // Add the method to the method symtable of the class
         SPVM_HASH_set(type->basic_type->method_symtable, method->name, strlen(method->name), method);
       }

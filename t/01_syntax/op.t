@@ -180,7 +180,7 @@ use Test::More;
   }
   {
     my $source = 'class MyClass { required method foo : void () { } }';
-    compile_not_ok($source, qr/The method defined in the class cannnot have the method attribute "required"/);
+    compile_not_ok($source, qr/MyClass#foo method cannnot have the method attribute "required"/);
   }
   {
     my $source = 'class MyClass { method foo : void () { } method foo : void () { } }';
