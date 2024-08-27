@@ -368,7 +368,7 @@ use Test::More;
     }
     {
       my $source = 'class MyClass { use Fn;use Stringable; use Point; use Point3D; static method main : void () { my $source : Stringable; my $dist = (Fn)$source; } }';
-      compile_not_ok($source, q|The "Fn" class must define the "to_string" method because its interface method is defined as a required method in the "Stringable" interface.|);
+      compile_not_ok($source, q|Fn class must define to_string method because its interface method is defined as a required method in Stringable interface.|);
     }
   }
 
@@ -438,7 +438,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Fn; use Stringable; static method main : void () { my $source : Fn; my $dist = (Stringable)$source; } }';
-      compile_not_ok($source, q|The "Fn" class must define the "to_string" method because its interface method is defined as a required method in the "Stringable" interface.|);
+      compile_not_ok($source, q|Fn class must define to_string method because its interface method is defined as a required method in Stringable interface.|);
     }
     {
       my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Stringable[]; my $dist = (Stringable)$source; } }';
@@ -769,7 +769,7 @@ use Test::More;
   {
     {
       my $source = 'class MyClass { use Stringable; static method main : void () { my $source : Int[]; my $dist = (Stringable[])$source; } }';
-      compile_not_ok($source, q|The "Int" class must define the "to_string" method because its interface method is defined as a required method in the "Stringable" interface.|);
+      compile_not_ok($source, q|Int class must define to_string method because its interface method is defined as a required method in Stringable interface.|);
     }
   }
 }

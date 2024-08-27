@@ -1294,7 +1294,7 @@ use Test::More;
       'class MyClass extends MyClass2 { static method new : void ($arg1 : int) {} }',
       'class MyClass2 { method new : void () {} }'
     ];
-    compile_not_ok($source, q|The "new" method in the "MyClass" class must be an instance method because its interface method is defined in the "MyClass2" class.|);
+    compile_not_ok($source, q|MyClass#new method must be an instance method because its interface method is defined in MyClass2 class.|);
   }
   {
     my $source = [
@@ -1316,7 +1316,7 @@ use Test::More;
       'class MyClass2 extends MyClass { use Point; use Point3D; method main : void ($point : Point) {} }',
       'class MyClass { use Point; use Point3D; method main : void ($point : Point3D) {} }',
     ];
-    compile_not_ok($source, q|The 1th argument of the "main" method in the "MyClass2" class which argument type is "Point" must be able to be assigned to the 1th argument of the "main" method in the "MyClass" class which argument type is "Point3D".|);
+    compile_not_ok($source, q|The 1th argument(Point type) of MyClass2#main method must be able to be assigned to the 1th argument(Point3D type) of MyClass#main method.|);
   }
   
   {
@@ -1352,18 +1352,18 @@ use Test::More;
   }
   {
     my $source = 'class MyClass  { interface Stringable; method to_string : string ($arg : int) {} }';
-    compile_not_ok($source, q|The length of the arguments of the "to_string" method in the "Stringable" interface must be greater than or equal to the length of the required arguments of the "to_string" method in the "MyClass" class.|);
+    compile_not_ok($source, q|The length of the arguments of Stringable#to_string method must be greater than or equal to the length of the required arguments of MyClass#to_string method.|);
   }
   {
     my $source = 'class MyClass  { interface Stringable; static method to_string : string ($self : Stringable) {} }';
-    compile_not_ok($source, q|The "to_string" method in the "MyClass" class must be an instance method because its interface method is defined in the "Stringable" interface.|);
+    compile_not_ok($source, q|MyClass#to_string method must be an instance method because its interface method is defined in Stringable interface.|);
   }
   {
     my $source = [
       'class MyClass { interface MyInterface; method foo : void ($arg1 : int, $arg2 : long) {} }',
       'class MyInterface : interface_t { required method foo : void ($arg1 : int, $arg2 : int); }',
     ];
-    compile_not_ok($source, q|The 2th argument of the "foo" method in the "MyClass" class which argument type is "long" must be able to be assigned to the 2th argument of the "foo" method in the "MyInterface" interface which argument type is "int".|);
+    compile_not_ok($source, q|The 2th argument(long type) of MyClass#foo method must be able to be assigned to the 2th argument(int type) of MyInterface#foo method.|);
   }
   {
     my $source = [
@@ -1377,7 +1377,7 @@ use Test::More;
       'class MyClass { interface MyInterface; method foo : object () {} }',
       'class MyInterface : interface_t { required method foo : MyClass  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class which return type is "object" must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface which return type is "MyClass".|);
+    compile_not_ok($source, q|The return type(object type) of MyClass#foo method must be able to be assigned to the return type(MyClass type) of MyInterface#foo method.|);
   }
   {
     my $source = [
@@ -1391,7 +1391,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : Point () {} }',
       'class MyInterface : interface_t { required method foo : Point3D  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class which return type is "Point" must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface which return type is "Point3D".|);
+    compile_not_ok($source, q|The return type(Point type) of MyClass#foo method must be able to be assigned to the return type(Point3D type) of MyInterface#foo method.|);
   }
 
   {
@@ -1399,7 +1399,7 @@ use Test::More;
       'class MyClass { use Point; use Point3D; interface MyInterface; method foo : int () {} }',
       'class MyInterface : interface_t { required method foo : long  (); }',
     ];
-    compile_not_ok($source, q|The return type of the "foo" method in the "MyClass" class which return type is "int" must be able to be assigned to the return type of the "foo" method in the "MyInterface" interface which return type is "long".|);
+    compile_not_ok($source, q|The return type(int type) of MyClass#foo method must be able to be assigned to the return type(long type) of MyInterface#foo method.|);
   }
   {
     {
@@ -1418,7 +1418,7 @@ use Test::More;
         'class MyClass::Parent { interface MyClass::Interface; method has_interfaces : int () { return 1; } }',
         'class MyClass::Interface : interface_t { required method has_interfaces : int (); method foo : long ($num : int); }',
       ];
-      compile_not_ok($source, qr|The length of the arguments of the "foo" method in the "MyClass::Interface" interface must be greater than or equal to the length of the required arguments of the "foo" method in the "MyClass" class.|);
+      compile_not_ok($source, qr|The length of the arguments of MyClass::Interface#foo method must be greater than or equal to the length of the required arguments of MyClass#foo method.|);
     }
   }
   {
@@ -1488,7 +1488,7 @@ use Test::More;
       'class MyClass extends MyClass2 { method x : int ($args : int) {} }',
       'class MyClass2 { method x : int () {} }',
     ];
-    compile_not_ok($source, qr|The length of the arguments of the "x" method in the "MyClass2" class must be greater than or equal to the length of the required arguments of the "x" method in the "MyClass" class.|);
+    compile_not_ok($source, qr|The length of the arguments of MyClass2#x method must be greater than or equal to the length of the required arguments of MyClass#x method.|);
   }
   {
     my $source = [
@@ -1496,7 +1496,7 @@ use Test::More;
       'class MyClass2 extends MyClass3 { }',
       'class MyClass3 { method x : int () {} }',
     ];
-    compile_not_ok($source, qr|The length of the arguments of the "x" method in the "MyClass3" class must be greater than or equal to the length of the required arguments of the "x" method in the "MyClass" class.|);
+    compile_not_ok($source, qr|The length of the arguments of MyClass3#x method must be greater than or equal to the length of the required arguments of MyClass#x method.|);
   }
   {
     my $source = [

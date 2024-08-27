@@ -1844,14 +1844,14 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
   
   if (src_method->is_class_method) {
     if (error_reason) {
-      snprintf(error_reason, 255, "The \"%s\" method in the \"%s\" %s must be an instance method because its interface method is defined in the \"%s\" %s.\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+      snprintf(error_reason, 255, "%s#%s method must be an instance method because its interface method is defined in %s %s.\n  at %s line %d", src_basic_type->name, src_method->name, dist_basic_type->name, dist_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     }
     return 0;
   }
   
   if (dist_method->is_class_method) {
     if (error_reason) {
-      snprintf(error_reason, 255, "The \"%s\" method in the \"%s\" %s must be an instance method in the \"%s\" %s.\n  at %s line %d", dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_basic_type->name, dist_basic_type_category_name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
+      snprintf(error_reason, 255, "%s#%s method must be an instance method.\n  at %s line %d", dist_basic_type->name, dist_method->name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
     }
     return 0;
   }
@@ -1859,7 +1859,7 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
   if (!(dist_method->args_length >= src_method->required_args_length)) {
     
     if (error_reason) {
-      snprintf(error_reason, 255, "The length of the arguments of the \"%s\" method in the \"%s\" %s must be greater than or equal to the length of the required arguments of the \"%s\" method in the \"%s\" %s.\n  at %s line %d", dist_method->name, dist_basic_type->name, dist_basic_type_category_name, src_method->name, src_basic_type->name, src_basic_type_category_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+      snprintf(error_reason, 255, "The length of the arguments of %s#%s method must be greater than or equal to the length of the required arguments of %s#%s method.\n  at %s line %d", dist_basic_type->name, dist_method->name, src_basic_type->name, src_method->name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     }
     return 0;
   }
@@ -1887,7 +1887,7 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
       const char* dist_method_var_decl_type_name = SPVM_TYPE_new_type_name(compiler, dist_method_var_decl_type->basic_type->id, dist_method_var_decl_type->dimension, dist_method_var_decl_type->flag);
       
       if (error_reason) {
-        snprintf(error_reason, 255, "The %dth argument of the \"%s\" method in the \"%s\" %s which argument type is \"%s\" must be able to be assigned to the %dth argument of the \"%s\" method in the \"%s\" %s which argument type is \"%s\".\n  at %s line %d", arg_index, src_method->name, src_basic_type->name, src_basic_type_category_name, src_method_var_decl_type_name, arg_index, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_method_var_decl_type_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+        snprintf(error_reason, 255, "The %dth argument(%s type) of %s#%s method must be able to be assigned to the %dth argument(%s type) of %s#%s method.\n  at %s line %d", arg_index, src_method_var_decl_type_name, src_basic_type->name, src_method->name, arg_index, dist_method_var_decl_type_name, dist_basic_type->name, dist_method->name, src_basic_type->op_class->file, src_basic_type->op_class->line);
       }
       
       return 0;
@@ -1909,7 +1909,7 @@ int32_t SPVM_TYPE_satisfy_interface_method_requirement(SPVM_COMPILER* compiler, 
     const char* dist_method_return_type_name = SPVM_TYPE_new_type_name(compiler, dist_method_return_type->basic_type->id, dist_method_return_type->dimension, dist_method_return_type->flag);
     
     if (error_reason) {
-      snprintf(error_reason, 255, "The return type of the \"%s\" method in the \"%s\" %s which return type is \"%s\" must be able to be assigned to the return type of the \"%s\" method in the \"%s\" %s which return type is \"%s\".\n  at %s line %d", src_method->name, src_basic_type->name, src_basic_type_category_name, src_method_return_type_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_method_return_type_name, src_basic_type->op_class->file, src_basic_type->op_class->line);
+      snprintf(error_reason, 255, "The return type(%s type) of %s#%s method must be able to be assigned to the return type(%s type) of %s#%s method.\n  at %s line %d", src_method_return_type_name, src_basic_type->name, src_method->name, dist_method_return_type_name, dist_basic_type->name, dist_method->name, src_basic_type->op_class->file, src_basic_type->op_class->line);
     }
     
     return 0;
