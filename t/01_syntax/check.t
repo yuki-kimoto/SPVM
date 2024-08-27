@@ -1533,6 +1533,8 @@ class MyClass {
       
     }
   }
+  
+  
 }
 EOS
     
@@ -1551,6 +1553,16 @@ EOS
       'class MyClass { use Point; static method main : int () { 1 && (my $x = 3); } }',
     ];
     compile_ok($source);
+  }
+  
+  {
+    my $class_name_x = 'X' x 200;
+    my $class_name_y = 'Y' x 200;
+    my $source = [
+      qq|class $class_name_x { use $class_name_y; static method main : int () { my \$foo : $class_name_y = new $class_name_x; } }|,
+      qq|class $class_name_y { }|,
+    ];
+    compile_not_ok($source, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX type cannot be assigned to YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY type in assignment operator.');
   }
   
 }

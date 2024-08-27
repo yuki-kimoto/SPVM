@@ -484,7 +484,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
               int32_t need_data_conversion = 0;
               int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, arg_type, op_arg_default);
               int32_t interface_match = 0;
-              char error_reason[256] = {0};
+              char error_reason[1024] = {0};
               int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
                 compiler,
                 arg_type->basic_type->id, arg_type->dimension, arg_type->flag,
@@ -790,7 +790,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
         break;
       }
       
-      char error_reason[256] = {0};
+      char error_reason[1024] = {0};
       int32_t has_interface = SPVM_BASIC_TYPE_has_interface_common(compiler, basic_type->id, parent_basic_type->id, error_reason);
       
       if (!has_interface) {
@@ -805,7 +805,7 @@ void SPVM_CHECK_check_methods(SPVM_COMPILER* compiler) {
     for (int32_t interface_basic_type_index = 0; interface_basic_type_index < basic_type->interface_basic_types->length; interface_basic_type_index++) {
       SPVM_BASIC_TYPE* interface_basic_type = SPVM_LIST_get(basic_type->interface_basic_types, interface_basic_type_index);
       
-      char error_reason[256] = {0};
+      char error_reason[1024] = {0};
       int32_t has_interface = SPVM_BASIC_TYPE_has_interface(compiler, basic_type->id, interface_basic_type->id, error_reason);
       
       if (!has_interface) {
@@ -2202,7 +2202,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
               int32_t need_data_conversion = 0;
               int32_t allow_narrowing_conversion = 0;
               
-              char error_reason[256] = {0};
+              char error_reason[1024] = {0};
               int32_t satisfy_assignment_requirement_without_data_conversion = SPVM_TYPE_satisfy_assignment_requirement_without_data_conversion(
                 compiler,
                 type->basic_type->id, type->dimension, type->flag,
@@ -3362,7 +3362,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             SPVM_TYPE* cast_type = SPVM_CHECK_get_type(compiler, op_cast);
             assert(cast_type);
             
-            char error_reason[256] = {0};
+            char error_reason[1024] = {0};
             int32_t castability = SPVM_TYPE_satisfy_cast_requirement(
               compiler,
               cast_type->basic_type->id, cast_type->dimension, cast_type->flag,
@@ -4208,7 +4208,7 @@ SPVM_OP* SPVM_CHECK_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_type, 
   int32_t need_data_conversion = 0;
   int32_t allow_narrowing_conversion = SPVM_CHECK_check_allow_narrowing_conversion(compiler, dist_type, op_src);
   int32_t interface_match = 0;
-  char error_reason[255] = {0};
+  char error_reason[1024] = {0};
   int32_t satisfy_assignment_requirement = SPVM_TYPE_satisfy_assignment_requirement(
     compiler,
     dist_type_basic_type_id, dist_type_dimension, dist_type_flag,
