@@ -13,8 +13,9 @@
     * Improve "Description" outputted from spmvdist command.
     * Add commented meta-spec "release_status" option to Makefile.PL outputted from spvmdist command.
     * "the foo type" in docs, exception messages, compilation messages are changed to "foo type".
-  [Exception Message Improvement]
+  [Exception Message Changes]
     * Improve exception messages outputted from spvmdist command.
+    * The heading of a compilation error message is changed from [Compile Error] to [Compilation Error]
   [Test Improvement]
     * Add a test for Fn#split method when a input is an empty string.
   [Bug Fix]
