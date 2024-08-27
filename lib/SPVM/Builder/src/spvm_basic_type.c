@@ -292,7 +292,7 @@ int32_t SPVM_BASIC_TYPE_has_interface_common(SPVM_COMPILER* compiler, int32_t sr
       
       if (dist_method->is_required && !src_method) {
         if (error_reason) {
-          snprintf(error_reason, 255, "The \"%s\" %s must define the \"%s\" method because its interface method is defined as a required method in the \"%s\" %s.\n  at %s line %d", src_basic_type->name, src_basic_type_category_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
+          snprintf(error_reason, 255, "%s %s must define %s method because its interface method is defined as a required method in %s %s.\n  at %s line %d", src_basic_type->name, src_basic_type_category_name, dist_method->name, dist_basic_type->name, dist_basic_type_category_name, dist_basic_type->op_class->file, dist_basic_type->op_class->line);
         }
         return 0;
       }
