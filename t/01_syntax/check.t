@@ -383,7 +383,7 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 isa Int; } }';
-    compile_not_ok($source, 'The type of the operand of isa operator must be an object type');
+    compile_not_ok($source, 'The type of the left operand of isa operator must be an object type.');
   }
 }
 
