@@ -97,6 +97,14 @@ class TestCase::Operator::IsType {
       }
       
       {
+        my $value = new Point[0];
+        
+        if ($value is_type object[]) {
+          return 0;
+        }
+      }
+      
+      {
         my $value = new Stringable[0];
         
         if ($value is_type object[]) {

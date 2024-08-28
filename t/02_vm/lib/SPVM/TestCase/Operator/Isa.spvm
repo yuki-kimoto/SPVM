@@ -63,53 +63,34 @@ class TestCase::Operator::Isa {
       }
     }
     
-    # Any object
-    {
-      {
-        my $value : object;
-        
-        unless ($value isa object) {
-          return 0;
-        }
-      }
-      
-      {
-        my $value : Point;
-        
-        unless ($value isa object) {
-          return 0;
-        }
-      }
-      
-      {
-        my $value : Stringable;
-        
-        unless ($value isa object) {
-          return 0;
-        }
-      }
-      
-      {
-        my $value : int;
-        
-        if ($value isa object) {
-          return 0;
-        }
-      }
-    }
-    
     # Any object array
     {
       {
+        my $value = new object[0];
+        
+        unless ($value isa object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = (object)new object[0];
+        
+        unless ($value isa object[]) {
+          return 0;
+        }
+      }
+      
+      {
         my $value : object[];
         
-        unless ($value isa object[]) {
+        if ($value isa object[]) {
           return 0;
         }
       }
       
       {
-        my $value : Point[];
+        my $value = new Point[0];
         
         unless ($value isa object[]) {
           return 0;
@@ -117,7 +98,7 @@ class TestCase::Operator::Isa {
       }
       
       {
-        my $value : Point;
+        my $value = Point->new;
         
         if ($value isa object[]) {
           return 0;
@@ -125,7 +106,7 @@ class TestCase::Operator::Isa {
       }
       
       {
-        my $value : Stringable[];
+        my $value = new Stringable[0];
         
         unless ($value isa object[]) {
           return 0;
@@ -133,25 +114,13 @@ class TestCase::Operator::Isa {
       }
       
       {
-        my $value : int[];
+        my $value = new int[0];
         
         if ($value isa object[]) {
           return 0;
         }
       }
       
-      # Extra
-      {
-        {
-          my $value = [(object)"1", "2", "3", "4", "5", "6"];
-          
-          my $ok = $value isa object[];
-          
-          unless ($ok) {
-            return 0;
-          }
-        }
-      }
     }
     
     # An object type
@@ -219,11 +188,8 @@ class TestCase::Operator::Isa {
   }
   
   static method isa_any_object_type : int () {
-    my $num : object;
     
-    unless ($num isa object) {
-      return 0;
-    }
+    # Removed
     
     return 1;
   }

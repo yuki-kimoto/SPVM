@@ -2846,19 +2846,21 @@ The C<isa> operator checks whether an operand can be assigned to a type.
 
   OPERAND isa TYPE
 
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, L<any object type|SPVM::Document::Language::Types/"Any Object Type">, or L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data convertion.
+If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, this operator checks L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data convertion.
 
 If the assignment requirement is satisfied, this operator returns 1. Otherwise, returns 0.
 
-If I<TYPE> is an object type except for L<any object type|SPVM::Document::Language::Types/"Any Object Type">, or L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion.
+If I<TYPE> is an object type, this operator checks L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> at runtime.
 
-If the runtime assignment requirement is satisfied, this operator returns 1. Otherwise, returns 0.
+If the assignment requirement at runtime is satisfied, this operator returns 1. Otherwise, returns 0.
 
 The return type is int type.
 
 Compilation Errors:
 
-If the runtime assignment requirement is checked, I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
+The right type I<TYPE> of isa operator must not be any object type. Otherwise, a compilation error occurs.
+
+The type of the left operand I<OPERAND> of isa operator must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
   

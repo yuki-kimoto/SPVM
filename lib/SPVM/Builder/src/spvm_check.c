@@ -2195,9 +2195,7 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
             
             if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)
               || SPVM_TYPE_is_mulnum_type(compiler, type->basic_type->id, type->dimension, type->flag)
-              || SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)
-              || SPVM_TYPE_is_any_object_array_type(compiler, type->basic_type->id, type->dimension, type->flag)
-              || SPVM_TYPE_is_any_object_type(compiler, type->basic_type->id, type->dimension, type->flag))
+              || SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))
             {
               int32_t need_data_conversion = 0;
               int32_t allow_narrowing_conversion = 0;
@@ -2226,9 +2224,13 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 op_cur = op_constant_false;
               }
             }
+            else if (SPVM_TYPE_is_any_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+              SPVM_COMPILER_error(compiler, "The right type of isa operator must not be any object type.\n  at %s line %d", op_cur->file, op_cur->line);
+              return;
+            }
             else if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
               if (!SPVM_TYPE_is_object_type(compiler, operand_type->basic_type->id, operand_type->dimension, operand_type->flag)) {
-                SPVM_COMPILER_error(compiler, "The type of the operand of isa operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The type of the left operand of isa operator must be an object type.\n  at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
             }

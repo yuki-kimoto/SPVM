@@ -418,6 +418,11 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { 1 isa_error byte; } }';
     compile_not_ok($source, 'The type given to the isa_error operator must be a class type.');
   }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { Int->new(1) isa object; } }';
+    compile_not_ok($source, 'The right type of isa operator must not be any object type.');
+  }
 }
 
 # is_type
