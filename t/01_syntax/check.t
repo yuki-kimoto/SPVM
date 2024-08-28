@@ -1057,11 +1057,31 @@ use Test::More;
   }
 }
 
-# Type Case
+# Type Cast/Type Conversion
 {
   {
     my $source = 'class MyClass { static method main : void () { (Int)"foo"; } }';
     compile_not_ok($source, q|The type cast from string to Int is not allowed|);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $num : float = 1.0; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $num : float = 1.0; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $num : float = 1.1111111111111111111111111111111111111111111111; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $num : float = 0.3; } }';
+    compile_ok($source);
   }
 }
 
@@ -1240,7 +1260,7 @@ use Test::More;
   
   {
     my $source = 'class MyClass { use Complex_2d; static method main : void ($arg1 : float = 0.0) { } }';
-    compile_not_ok($source, q|The default value of the optional argument $arg1 must be able to be assigned to the argument.|);
+    compile_ok($source);
   }
   
   {

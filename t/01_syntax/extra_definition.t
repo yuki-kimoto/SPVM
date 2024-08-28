@@ -157,9 +157,10 @@ use Test::More;
         my $source = 'class MyClass { static method foo : void ($args0 : int = Int->new(1)) { } }';
         compile_not_ok($source);
       }
+      
       {
         my $source = 'class MyClass { static method foo : void ($args0 : float = 0.3) { } }';
-        compile_not_ok($source);
+        compile_ok($source);
       }
       {
         my $source = 'class MyClass { static method foo : void ($args0 : object = "abc") { } }';

@@ -869,12 +869,20 @@ To Smaller:
   <tr><td>No</td><td>int</td><td>double</td><td>No</td></tr>
   <tr><td>No</td><td>long</td><td>float</td><td>No</td></tr>
   <tr><td>No</td><td>long</td><td>double</td><td>No</td></tr>
-  <tr><td>No</td><td>float</td><td>double</td><td>No</td></tr>
+  <tr><td>Conditional Yes</td><td>float</td><td>double</td><td><a href="https://metacpan.org/pod/SPVM::Document::Language::Operators#Numeric-Narrowing-Conversion">Numeric Narrowing Conversion</a></td></td></tr>
 </table>
 
 =end html
 
-"Conditional Yes" means if the value of I<TYPE_FROM> is represented by an L<interger literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and between the max and minimal value of the type of I<TYPE_TO>.
+"Conditional Yes" means the followings.
+
+For Integral Types:
+
+If the value of I<TYPE_FROM> is represented by an L<interger literal|SPVM::Document::Language::Tokenization/"Integer Literals"> and between the max and minimal value of the type of I<TYPE_TO>, Yes, otherwize No.
+
+For Floating Point types:
+
+If the value of I<TYPE_FROM> is represented by a L<floating point literal|SPVM::Document::Language::Tokenization/"Floating Point Literals">, Yes, otherwize No.
 
 =head3 Assignment Requirement from NumericObject to Numeric
 

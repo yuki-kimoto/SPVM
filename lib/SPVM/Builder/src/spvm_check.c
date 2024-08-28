@@ -4178,6 +4178,22 @@ int32_t SPVM_CHECK_check_allow_narrowing_conversion(SPVM_COMPILER* compiler, SPV
                 assert(0);
               }
             }
+            else if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
+              double src_constant_value;
+              if (src_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE) {
+                src_constant_value = src_constant->value.dval;
+              }
+              else {
+                assert(0);
+              }
+              
+              if (dist_type_basic_type_id == SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT) {
+                allow_narrowing_conversion = 1;
+              }
+              else {
+                allow_narrowing_conversion = 0;
+              }
+            }
             else {
               allow_narrowing_conversion = 0;
             }
