@@ -138,6 +138,19 @@ class TestCase::Operator::IsType {
           return 0;
         }
       }
+      
+      # Extra
+      {
+        {
+          my $value = [(object)"1", "2", "3", "4", "5", "6"];
+          
+          my $ok = $value is_type object[];
+          
+          unless ($ok) {
+            return 0;
+          }
+        }
+      }
     }
     
     # An object type
