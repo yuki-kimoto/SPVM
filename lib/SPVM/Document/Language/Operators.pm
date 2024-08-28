@@ -2884,15 +2884,15 @@ Examples:
 
 =head2 is_type Operator
 
-The C<is_type> operator checks whether the type of an operand is equal to a type.
+The C<is_type> operator checks if the type of an operand is equal to a type.
 
   OPERAND is_type TYPE
 
-If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, L<any object type|SPVM::Document::Language::Types/"Any Object Type">, or L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the compilation type of I<OPERAND> is equal to I<TYPE>.
+If the type I<TYPE> is a numeric type, a multi-numeric type, or a reference type, this operator checks if the compilation type of I<OPERAND> is equal to I<TYPE>.
 
-If it is true, this operator returns 1. Otherwise, returns 0.
+If the check is true, this operator returns 1. Otherwise, returns 0.
 
-If the type is an object type except for L<any object type|SPVM::Document::Language::Types/"Any Object Type">, or L<any object array type|SPVM::Document::Language::Types/"Any Object Array Type">, this operator checks the runtime type of I<OPERAND> is equal to I<TYPE>.
+If I<TYPE> is an object type, this operator checks if the runtime type of I<OPERAND> is equal to I<TYPE> at runtime.
 
 If it is true, this operator returns 1. Otherwise, returns 0.
 
@@ -2900,7 +2900,9 @@ The return type is int type.
 
 Compilation Errors:
 
-If the runtime check is performed, I<OPERAND> must be an object type. Otherwise, a compilation error occurs.
+The right type I<TYPE> of is_type operator must not be any object type. Otherwise, a compilation error occurs.
+
+The type of the left operand I<OPERAND> of is_type operator must be an object type. Otherwise, a compilation error occurs.
 
 Examples:
 

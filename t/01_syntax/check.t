@@ -424,7 +424,12 @@ use Test::More;
 {
   {
     my $source = 'class MyClass { static method main : void () { 1 is_type Int; } }';
-    compile_not_ok($source, 'The type of the operand of is_type operator must be an object type');
+    compile_not_ok($source, 'The type of the left operand of is_type operator must be an object type.');
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { Int->new(1) is_type object; } }';
+    compile_not_ok($source, 'The right type of is_type operator must not be any object type.');
   }
 }
 

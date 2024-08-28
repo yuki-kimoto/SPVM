@@ -62,47 +62,12 @@ class TestCase::Operator::IsType {
       }
     }
     
-    # Any object
-    {
-      {
-        my $value : object;
-        
-        unless ($value is_type object) {
-          return 0;
-        }
-      }
-      
-      {
-        my $value : Point;
-        
-        if ($value is_type object) {
-          return 0;
-        }
-      }
-      
-      {
-        my $value : Stringable;
-        
-        if ($value is_type object) {
-          return 0;
-        }
-      }
-      
-      {
-        my $value : int;
-        
-        if ($value is_type object) {
-          return 0;
-        }
-      }
-    }
-    
     # Any object array
     {
       {
         my $value : object[];
         
-        unless ($value is_type object[]) {
+        if ($value is_type object[]) {
           return 0;
         }
       }
@@ -139,16 +104,19 @@ class TestCase::Operator::IsType {
         }
       }
       
-      # Extra
       {
-        {
-          my $value = [(object)"1", "2", "3", "4", "5", "6"];
-          
-          my $ok = $value is_type object[];
-          
-          unless ($ok) {
-            return 0;
-          }
+        my $value = new object[0];
+        
+        unless ($value is_type object[]) {
+          return 0;
+        }
+      }
+      
+      {
+        my $value = (object)new object[0];
+        
+        unless ($value is_type object[]) {
+          return 0;
         }
       }
     }

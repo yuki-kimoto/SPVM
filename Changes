@@ -26,7 +26,15 @@
     * Use field notation "MyClass#foo field" in compilation error messages.
     * Use class variable notation "MyClass#$Foo class variable" in compilation error messages.
     * Use method notation "MyClass#foo method" in compilation error messages.
-    
+  [Bug Fix with Incompatible Changes]
+    * There are some imcompatible changes in is_type operator to fix the following bug.
+      
+      https://github.com/yuki-kimoto/SPVM/issues/545
+      
+      For this, is_type operator must check runtime type instead of compile-time type if TYPE is an object type including object[].
+      
+      And if TYPE is any object type(object), an compilation error occurs.
+      
 0.990006 2023-05-09
   [Feature Improvement]
     * Users know caller when a class loading from a Perl script failed.
