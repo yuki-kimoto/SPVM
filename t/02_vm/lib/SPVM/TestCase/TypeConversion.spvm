@@ -233,304 +233,304 @@ class TestCase::TypeConversion {
   static method convert_byte_to_float : int () {
     my $value = (float)(byte)127;
     
-    if ($value == 127.0f) {
-      return 1;
+    unless ($value == 127.0f) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_short_to_float : int () {
     my $value = (float)(short)32767;
     
-    if ($value == 32767.0f) {
-      return 1;
+    unless ($value == 32767.0f) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_int_to_float : int () {
     my $value = (float)32767;
     
-    if ($value == 32767.0f) {
-      return 1;
+    unless ($value == 32767.0f) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_long_to_float : int () {
     my $value = (float)32767L;
     
-    if ($value == 32767.0f) {
-      return 1;
+    unless ($value == 32767.0f) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_byte_to_double : int () {
     my $value = (double)(byte)127;
     
-    if ($value == 127.0) {
-      return 1;
+    unless ($value == 127.0) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_short_to_double : int () {
     my $value = (double)(short)32767;
     
-    if ($value == 32767.0) {
-      return 1;
+    unless ($value == 32767.0) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_int_to_double : int () {
     my $value = (double)2147483647;
-    if ($value == 2147483647.0) {
-      return 1;
+    unless ($value == 2147483647.0) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_long_to_double : int () {
     my $value = (double)2147483647L;
     
-    if ($value == 2147483647.0) {
-      return 1;
+    unless ($value == 2147483647.0) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_float_to_double : int () {
     my $value = (double)32767.0f;
     
-    if ($value == 32767.0) {
-      return 1;
+    unless ($value == 32767.0) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   
   # Convert type - widning convertion
   static method convert_byte_to_short_plus : int () {
     my $value = (short)(byte)0x7F;
     
-    if ((int)$value == (int)(short)0x007F) {
-      return 1;
+    unless ((int)$value == (int)(short)0x007F) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_byte_to_short_minus : int () {
     my $value = (short)(byte)0xFF;
     
-    if ((int)$value == (int)(short)0xFFFF) {
-      return 1;
+    unless ((int)$value == (int)(short)0xFFFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_byte_to_int_plus : int () {
     my $value = (int)(byte)0x7F;
     
-    if ($value == 0x0000007F) {
-      return 1;
+    unless ($value == 0x0000007F) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_byte_to_int_minus : int () {
     my $value = (int)(byte)0xFF;
     
-    if ($value == 0xFFFFFFFF) {
-      return 1;
+    unless ($value == 0xFFFFFFFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_byte_to_long_plus : int () {
     my $value = (long)(byte)0x7F;
     
-    if ($value == 0x000000000000007FL) {
-      return 1;
+    unless ($value == 0x000000000000007FL) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_byte_to_long_minus : int () {
     my $value = (long)(byte)0xFF;
     
-    if ($value == 0xFFFFFFFFFFFFFFFFL) {
-      return 1;
+    unless ($value == 0xFFFFFFFFFFFFFFFFL) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_short_to_int_plus : int () {
     my $value = (int)(short)0x7FFF;
     
-    if ($value == 0x0000007FFF) {
-      return 1;
+    unless ($value == 0x0000007FFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_short_to_int_minus : int () {
     my $value = (int)(short)0xFFFF;
     
-    if ($value == 0xFFFFFFFF) {
-      return 1;
+    unless ($value == 0xFFFFFFFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_short_to_long_plus : int () {
     my $value = (long)(short)0x7FFF;
     
-    if ($value == 0x000000000000007FFFL) {
-      return 1;
+    unless ($value == 0x000000000000007FFFL) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_short_to_long_minus : int () {
     my $value = (long)(short)0xFFFF;
     
-    if ($value == 0xFFFFFFFFFFFFFFFFL) {
-      return 1;
+    unless ($value == 0xFFFFFFFFFFFFFFFFL) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_int_to_long_plus : int () {
     my $value = (long)0x7FFFFFFF;
     
-    if ($value == 0x000000007FFFFFFFL) {
-      return 1;
+    unless ($value == 0x000000007FFFFFFFL) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_int_to_long_minus : int () {
     my $value = (long)0xFFFFFFFF;
     
-    if ($value == 0xFFFFFFFFFFFFFFFFL) {
-      return 1;
+    unless ($value == 0xFFFFFFFFFFFFFFFFL) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   
   # Convert type - convert to same type
   static method convert_long_to_long : int () {
     my $value = (long)0xFFFFFFFFFFFFFFFFL;
     
-    if ($value == 0xFFFFFFFFFFFFFFFFL) {
-      return 1;
+    unless ($value == 0xFFFFFFFFFFFFFFFFL) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_int_to_int : int () {
     my $value = (int)0xFFFFFFFF;
     
-    if ($value == 0xFFFFFFFF) {
-      return 1;
+    unless ($value == 0xFFFFFFFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_short_to_short : int () {
     my $value = (short)(short)0xFFFF;
     
-    if ((int)$value == (int)(short)0xFFFF) {
-      return 1;
+    unless ((int)$value == (int)(short)0xFFFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_byte_to_byte : int () {
     my $value = (byte)(byte)0xFF;
     
-    if ($value == (byte)0xFF) {
-      return 1;
+    unless ($value == (byte)0xFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_float_to_float : int () {
     my $value = (float)0.5f;
     
-    if ($value == 0.5f) {
-      return 1;
+    unless ($value == 0.5f) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_double_to_double : int () {
     my $value = (double)0.5;
     
-    if ($value == 0.5) {
-      return 1;
+    unless ($value == 0.5) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   
   # Convert type - integral narrowing convertion
   static method convert_long_to_int : int () {
     my $value = (int)0xFFFFFFFFFFFFFFFFL;
     
-    if ($value == 0xFFFFFFFF) {
-      return 1;
+    unless ($value == 0xFFFFFFFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_long_to_short : int () {
     my $value = (short)0xFFFFFFFFFFFFFFFFL;
     
-    if ((int)$value == (int)(short)0xFFFF) {
-      return 1;
+    unless ((int)$value == (int)(short)0xFFFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_long_to_byte : int () {
     my $value = (byte)0xFFFFFFFFFFFFFFFFL;
     
-    if ((int)$value == (int)(byte)0xFF) {
-      return 1;
+    unless ((int)$value == (int)(byte)0xFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_int_to_short : int () {
     my $value = (short)0xFFFFFFFF;
     
-    if ((int)$value == (int)(short)0xFFFF) {
-      return 1;
+    unless ((int)$value == (int)(short)0xFFFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_int_to_byte : int () {
     my $value = (byte)0xFFFFFFFF;
     
-    if ((int)$value == (int)(byte)0xFF) {
-      return 1;
+    unless ((int)$value == (int)(byte)0xFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   static method convert_short_to_byte : int () {
     my $value = (byte)(short)0xFFFF;
     
-    if ((int)$value == (int)(byte)0xFF) {
-      return 1;
+    unless ((int)$value == (int)(byte)0xFF) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
   
   static method convert_byte_to_string : int () {
@@ -793,12 +793,15 @@ class TestCase::TypeConversion {
     my $byte : byte = (byte)Fn->INT8_MIN;
     my $byte_obj = (Byte)$byte;
     
-    if ($byte_obj isa Byte) {
-      if ($byte_obj->value == Fn->INT8_MIN) {
-        return 1;
-      }
+    unless ($byte_obj isa Byte) {
+      return 0;
     }
-    return 0;
+    
+    unless ($byte_obj->value == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
 
@@ -806,256 +809,287 @@ class TestCase::TypeConversion {
     my $short : short = (short)Fn->INT16_MIN;
     my $short_obj = (Short)$short;
     
-    if ($short_obj isa Short) {
-      if ($short_obj->value == Fn->INT16_MIN) {
-        return 1;
-      }
+    unless ($short_obj isa Short) {
+      return 0;
     }
-    return 0;
+    
+    unless ($short_obj->value == Fn->INT16_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_int_to_int_object : int () {
     my $int : int = Fn->INT32_MIN;
     my $int_obj = (Int)$int;
     
-    if ($int_obj isa Int) {
-      if ($int_obj->value == Fn->INT32_MIN) {
-        return 1;
-      }
+    unless ($int_obj isa Int) {
+      return 0;
     }
-    return 0;
+    
+    unless ($int_obj->value == Fn->INT32_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_long_to_long_object : int () {
     my $long : long = Fn->INT64_MIN;
     my $long_obj = (Long)$long;
     
-    if ($long_obj isa Long) {
-      if ($long_obj->value == Fn->INT64_MIN) {
-        return 1;
-      }
+    unless ($long_obj isa Long) {
+      return 0;
     }
-    return 0;
+    
+    unless ($long_obj->value == Fn->INT64_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_float_to_float_object : int () {
     my $float : float = Fn->FLT_MIN;
     my $float_obj = (Float)$float;
     
-    if ($float_obj isa Float) {
-      if ($float_obj->value == Fn->FLT_MIN) {
-        return 1;
-      }
+    unless ($float_obj isa Float) {
+      return 0;
     }
-    return 0;
+    
+    unless ($float_obj->value == Fn->FLT_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_double_to_double_object : int () {
     my $double : double = Fn->DBL_MIN;
     my $double_obj = (Double)$double;
     
-    if ($double_obj isa Double) {
-      if ($double_obj->value == Fn->DBL_MIN) {
-        return 1;
-      }
+    unless ($double_obj isa Double) {
+      return 0;
     }
-    return 0;
+    
+    unless ($double_obj->value == Fn->DBL_MIN) {
+      return 0;
+    }
+    return 1;
   }
 
   static method convert_byte_to_any_object : int () {
     my $byte : byte = (byte)Fn->INT8_MIN;
     my $byte_obj = (object)$byte;
     
-    if ($byte_obj isa Byte) {
-      my $byte_obj2 = (Byte)$byte_obj;
-      if ($byte_obj2->value == Fn->INT8_MIN) {
-        return 1;
-      }
+    unless ($byte_obj isa Byte) {
+      return 0;
     }
-    return 0;
+    
+    my $byte_obj2 = (Byte)$byte_obj;
+    unless ($byte_obj2->value == Fn->INT8_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_short_to_any_object : int () {
     my $short : short = (short)Fn->INT16_MIN;
     my $short_obj = (object)$short;
     
-    if ($short_obj isa Short) {
-      my $short_obj2 = (Short)$short_obj;
-      if ($short_obj2->value == Fn->INT16_MIN) {
-        return 1;
-      }
+    unless ($short_obj isa Short) {
+      return 0;
     }
-    return 0;
+    
+    my $short_obj2 = (Short)$short_obj;
+    unless ($short_obj2->value == Fn->INT16_MIN) {
+      return 0;
+    }
+    return 1;
   }
 
   static method convert_int_to_any_object : int () {
     my $int : int = Fn->INT32_MIN;
     my $int_obj = (object)$int;
     
-    if ($int_obj isa Int) {
-      my $int_obj2 = (Int)$int_obj;
-      if ($int_obj2->value == Fn->INT32_MIN) {
-        return 1;
-      }
+    unless ($int_obj isa Int) {
+      return 0;
     }
-    return 0;
+    
+    my $int_obj2 = (Int)$int_obj;
+    unless ($int_obj2->value == Fn->INT32_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_long_to_any_object : int () {
     my $long : long = Fn->INT64_MIN;
     my $long_obj = (object)$long;
     
-    if ($long_obj isa Long) {
-      my $long_obj2 = (Long)$long_obj;
-      if ($long_obj2->value == Fn->INT64_MIN) {
-        return 1;
-      }
+    unless ($long_obj isa Long) {
+      return 0;
     }
-    return 0;
+    
+    my $long_obj2 = (Long)$long_obj;
+    unless ($long_obj2->value == Fn->INT64_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_float_to_any_object : int () {
     my $float : float = Fn->FLT_MIN;
     my $float_obj = (object)$float;
     
-    if ($float_obj isa Float) {
-      my $float_obj2 = (Float)$float_obj;
-      if ($float_obj2->value == Fn->FLT_MIN) {
-        return 1;
-      }
+    unless ($float_obj isa Float) {
+      return 0;
     }
-    return 0;
+    
+    my $float_obj2 = (Float)$float_obj;
+    unless ($float_obj2->value == Fn->FLT_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_double_to_any_object : int () {
     my $double : double = Fn->DBL_MIN;
     my $double_obj = (object)$double;
     
-    if ($double_obj isa Double) {
-      my $double_obj2 = (Double)$double_obj;
-      if ($double_obj2->value == Fn->DBL_MIN) {
-        return 1;
-      }
+    unless ($double_obj isa Double) {
+      return 0;
     }
-    return 0;
+    
+    my $double_obj2 = (Double)$double_obj;
+    unless ($double_obj2->value == Fn->DBL_MIN) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   static method convert_byte_object_to_byte : int () {
     my $byte_obj = Byte->new(Fn->INT8_MIN);
     my $byte = (byte)$byte_obj;
     
-    if ($byte == Fn->INT8_MIN) {
-      return 1;
+    unless ($byte == Fn->INT8_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_short_object_to_short : int () {
     my $short_obj = Short->new(Fn->INT16_MIN);
     my $short = (short)$short_obj;
     
-    if ($short == Fn->INT16_MIN) {
-      return 1;
+    unless ($short == Fn->INT16_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_int_object_to_int : int () {
     my $int_obj = Int->new(Fn->INT32_MIN);
     my $int = (int)$int_obj;
     
-    if ($int == Fn->INT32_MIN) {
-      return 1;
+    unless ($int == Fn->INT32_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_long_object_to_long : int () {
     my $long_obj = Long->new(Fn->INT64_MIN);
     my $long = (long)$long_obj;
     
-    if ($long == Fn->INT64_MIN) {
-      return 1;
+    unless ($long == Fn->INT64_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_float_object_to_float : int () {
     my $float_obj = Float->new(Fn->FLT_MIN);
     my $float = (float)$float_obj;
     
-    if ($float == Fn->FLT_MIN) {
-      return 1;
+    unless ($float == Fn->FLT_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
   static method convert_double_object_to_double : int () {
     my $double_obj = Double->new(Fn->DBL_MIN);
     my $double = (double)$double_obj;
     
-    if ($double == Fn->DBL_MIN) {
-      return 1;
+    unless ($double == Fn->DBL_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_any_object_to_byte : int () {
     my $byte_obj = (object)Byte->new(Fn->INT8_MIN);
     my $byte = (byte)$byte_obj;
     
-    if ($byte == Fn->INT8_MIN) {
-      return 1;
+    unless ($byte == Fn->INT8_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_any_object_to_short : int () {
     my $short_obj = (object)Short->new(Fn->INT16_MIN);
     my $short = (short)$short_obj;
     
-    if ($short == Fn->INT16_MIN) {
-      return 1;
+    unless ($short == Fn->INT16_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_any_object_to_int : int () {
     my $int_obj = (object)Int->new(Fn->INT32_MIN);
     my $int = (int)$int_obj;
     
-    if ($int == Fn->INT32_MIN) {
-      return 1;
+    unless ($int == Fn->INT32_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_any_object_to_long : int () {
     my $long_obj = (object)Long->new(Fn->INT64_MIN);
     my $long = (long)$long_obj;
     
-    if ($long == Fn->INT64_MIN) {
-      return 1;
+    unless ($long == Fn->INT64_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_any_object_to_float : int () {
     my $float_obj = (object)Float->new(Fn->FLT_MIN);
     my $float = (float)$float_obj;
     
-    if ($float == Fn->FLT_MIN) {
-      return 1;
+    unless ($float == Fn->FLT_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
   static method convert_any_object_to_double : int () {
     my $double_obj = (object)Double->new(Fn->DBL_MIN);
     my $double = (double)$double_obj;
     
-    if ($double == Fn->DBL_MIN) {
-      return 1;
+    unless ($double == Fn->DBL_MIN) {
+      return 0;
     }
-    return 0;
+    return 1;
   }
 
   static method convert_postfix : int () {
