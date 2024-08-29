@@ -950,7 +950,6 @@ t/02_vm/lib/SPVM/TestCase/Statement/While.spvm
 t/02_vm/lib/SPVM/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.spvm
 t/02_vm/lib/SPVM/TestCase/ThreadSafe.spvm
 t/02_vm/lib/SPVM/TestCase/TypeComment.spvm
-t/02_vm/lib/SPVM/TestCase/TypeConversion.spvm
 t/02_vm/lib/SPVM/TestCase/UseResource.spvm
 t/02_vm/lib/SPVM/TestCase/UseResource/Basic.c
 t/02_vm/lib/SPVM/TestCase/UseResource/Basic.config
