@@ -36,35 +36,35 @@ class TestCase::TypeConversion {
     
     return 1;
   }
-
+  
   static method convert_to_any_object : int () {
     my $object = (object)new TestCase::Minimal[3];
     
     return 1;
   }
-
+  
   static method convert_to_undef_to_any_object : int () {
     my $minimal : TestCase::Minimal;
     my $object = (object)$minimal;
     
-    if ($object == undef) {
-      return 1;
+    unless ($object == undef) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-
+  
   static method convert_to_undef_to_object : int () {
     my $minimal : TestCase::Minimal;
     my $object = (TestCase::Minimal)$minimal;
     
-    if ($object == undef) {
-      return 1;
+    unless ($object == undef) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-
+  
   static method convert_to_callback : int () {
     my $comparator = method : int ($object1 : object, $object2 : object) {
       return 5;
@@ -74,112 +74,120 @@ class TestCase::TypeConversion {
     
     my $comparator2 = (Comparator)$object;
     
-    if ($comparator2->(undef, undef) == 5) {
-      return 1;
+    unless ($comparator2->(undef, undef) == 5) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-
+  
   static method convert_to_undef_to_callback : int () {
     my $comparator : Comparator;
     
     my $comparator2 = (Comparator)$comparator;
     
-    if ($comparator2 == undef) {
-      return 1;
+    unless ($comparator2 == undef) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-
+  
   static method convert_to_object_array : int () {
     my $ominimals : object = new TestCase::Minimal[3];
     my $minimals = (TestCase::Minimal[])$ominimals;
     
     return 1;
   }
-
+  
   static method convert_to_callback_array : int () {
     my $ocallbacks : object = new TestCase::Operator::AnonMethod::AnonMethod[3];
     my $callbacks = (TestCase::Operator::AnonMethod::AnonMethod[])$ocallbacks;
     
     return 1;
   }
-
+  
   # Convert type - floating point narrowing convertion
   static method convert_float_to_byte : int () {
     my $value = (byte)127.1f;
     
-    if ($value == 127) {
-      return 1;
+    unless ($value == 127) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
+  
   static method convert_float_to_short : int () {
     my $value = (short)32767.1f;
     
-    if ($value == 32767) {
-      return 1;
+    unless ($value == 32767) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
+  
   static method convert_float_to_int : int () {
     my $value = (int)132767.1f;
     
-    if ($value == 132767) {
-      return 1;
+    unless ($value == 132767) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
+  
   static method convert_float_to_long : int () {
     my $value = (long)132767.1f;
     
-    if ($value == 132767L) {
-      return 1;
+    unless ($value == 132767L) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
+  
   static method convert_double_to_byte : int () {
     my $value = (byte)127.1;
     
-    if ($value == 127) {
-      return 1;
+    unless ($value == 127) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
+  
   static method convert_double_to_short : int () {
     my $value = (short)32767.1;
     
-    if ((int)$value == (int)(short)32767) {
-      return 1;
+    unless ((int)$value == (int)(short)32767) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
+  
   static method convert_double_to_int : int () {
     my $value = (int)2147483646.1;
     
-    if ($value == 2147483646) {
-      return 1;
+    unless ($value == 2147483646) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
+  
   static method convert_double_to_long : int () {
     my $value = (long)2147483646.1;
     
-    if ($value == 2147483646L) {
-      return 1;
+    unless ($value == 2147483646L) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
+  
   static method convert_double_to_float : int () {
     
     {
