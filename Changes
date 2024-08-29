@@ -3,6 +3,7 @@
     * Add StringBuffer#clone method.
     * Add Fn#is_any_numeric_array method.
     * Add Fn#array_length method.
+    * Add Fn#get_elem_size method.
     
   [Document Fix]
     * Fix links in docs for Fn class.

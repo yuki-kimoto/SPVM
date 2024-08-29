@@ -1384,4 +1384,6 @@ class Fn {
   
   native static method array_length : int ($array : object);
   
+  native static method get_elem_size : int ($array : object);
+  
 }

@@ -1284,6 +1284,18 @@ The array $array must be defined. Otherwise, an exception is thrown.
 
 The type of the array $array must be an array type. Otherwise, an exception is thrown.
 
+=head2 get_elem_size
+
+C<static method get_elem_size : int ($array : object);>
+
+Returns the element byte size of the array $array.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The type of the array $array must be an array type. Otherwise, an exception is thrown.
+
 =head1 See Also
 
 =over 2
