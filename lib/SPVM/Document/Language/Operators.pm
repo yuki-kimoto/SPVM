@@ -659,7 +659,7 @@ The logical NOT operator C<!> performes a logical NOT operation.
 
 Thg logical NOT operator performs L<condition evaluation|/"Condition Evaluation"> on the operand I<OPERAND>.
 
-If the evaluated value is 0, returns 1. Otherwise, returns 0.
+If the evaluated value is 0, returns 1, otherwise returns 0.
 
 The return type is int type.
 
@@ -920,7 +920,7 @@ These operators perform the following operations.
       <i>eq</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
+      If <i>LEFT_OPERAND</i> is equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -928,7 +928,7 @@ These operators perform the following operations.
       <i>ne</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
+      If <i>LEFT_OPERAND</i> is not equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -936,7 +936,7 @@ These operators perform the following operations.
       <i>gt</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
+      If <i>LEFT_OPERAND</i> is greater than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -944,7 +944,7 @@ These operators perform the following operations.
       <i>ge</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is greater than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
+      If <i>LEFT_OPERAND</i> is greater than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -952,7 +952,7 @@ These operators perform the following operations.
       <i>lt</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
+      If <i>LEFT_OPERAND</i> is less than <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -960,7 +960,7 @@ These operators perform the following operations.
       <i>le</i>
     </td>
     <td>
-      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1. Otherwise, returns 0.
+      If <i>LEFT_OPERAND</i> is less than or equal to <i>RIGHT_OPERAND</i> in the dictionary order, returns 1, otherwise returns 0.
     </td>
   </tr>
   <tr>
@@ -1119,7 +1119,7 @@ The C<is_read_only> operator checks if a string is read-only.
 
   is_read_only OPERAND
 
-If the string I<OPERAND> is defined and read-only, the C<is_read_only> operator returns 1. Otherwise, returns 0.
+If the string I<OPERAND> is defined and read-only, the C<is_read_only> operator returns 1, otherwise returns 0.
 
 The return type is int type.
 
@@ -2848,11 +2848,11 @@ The C<isa> operator checks whether an operand can be assigned to a type.
 
 If the type I<TYPE> is a numeric type, a multi-numeric type, a reference type, this operator checks L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data convertion.
 
-If the assignment requirement is satisfied, this operator returns 1. Otherwise, returns 0.
+If the assignment requirement is satisfied, this operator returns 1, otherwise returns 0.
 
 If I<TYPE> is an object type, this operator checks L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> at runtime.
 
-If the assignment requirement at runtime is satisfied, this operator returns 1. Otherwise, returns 0.
+If the assignment requirement at runtime is satisfied, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
 
@@ -2892,11 +2892,11 @@ The C<is_type> operator checks if the type of an operand is equal to a type.
 
 If the type I<TYPE> is a numeric type, a multi-numeric type, or a reference type, this operator checks if the compilation type of I<OPERAND> is equal to I<TYPE>.
 
-If the check is true, this operator returns 1. Otherwise, returns 0.
+If the check is true, this operator returns 1, otherwise returns 0.
 
 If I<TYPE> is an object type, this operator checks if the runtime type of I<OPERAND> is equal to I<TYPE> at runtime.
 
-If it is true, this operator returns 1. Otherwise, returns 0.
+If it is true, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
 
@@ -2930,7 +2930,7 @@ The C<is_compile_type> operator checks whether the compilation type of an operan
 
   OPERAND is_compile_type TYPE
 
-If the compilation type of I<OPERAND> is equal to the type I<TYPE>, returns 1. Otherwise, returns 0.
+If the compilation type of I<OPERAND> is equal to the type I<TYPE>, returns 1, otherwise returns 0.
 
 The return type is int type.
 
@@ -2967,7 +2967,7 @@ This operator performs L<integer promotional conversion|/"Integer Promotional Co
 
 And this operator checks whether the type specified by the basic type ID I<OPERAND> satisfies L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type I<TYPE>.
 
-If it is satisfied, this operator returns 1. Otherwise, returns 0.
+If it is satisfied, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
 
@@ -2997,7 +2997,7 @@ This operator performs L<integer promotional conversion|/"Integer Promotional Co
 
 And this operator checks whether the type specified by the basic type ID I<OPERAND> is equal to the type I<TYPE>.
 
-If it is, this operator returns 1. Otherwise, returns 0.
+If it is, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
 
@@ -3085,7 +3085,7 @@ The C<can> operator checks if a method can be called.
 
   OPERAND can METHOD_NAME
 
-If I<OPERAND> is able to call the method given by I<METHOD_NAME>, returns 1. Otherwise, returns 0.
+If I<OPERAND> is able to call the method given by I<METHOD_NAME>, returns 1, otherwise returns 0.
 
 I<METHOD_NAME> is a L<method name|SPVM::Document::Language::Tokenization/"Method Name"> or an empty string C<"">.
 
@@ -3223,7 +3223,7 @@ The C<isweak> operator checks if L<weak reference|SPVM::Document::Language::Garb
 
 I<INVOCANT-E<gt>{FIELD_NAME}> is a L<field access|/"Field Access">.
 
-If the field specified by I<FIELD_NAME> of the object I<INVOCANT> is weaken, this operator returns 1. Otherwise, returns 0.
+If the field specified by I<FIELD_NAME> of the object I<INVOCANT> is weaken, this operator returns 1, otherwise returns 0.
 
 The return type is int type.
 

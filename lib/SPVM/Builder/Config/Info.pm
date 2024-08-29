@@ -251,7 +251,7 @@ Returns the all class and interface names except for anon classes and classes ge
 
   my $has_config_file = $config_info->has_config_file($class_name);
   
-If the class given by the class name has a config file, returns 1. Otherwise, returns 0.
+If the class given by the class name has a config file, returns 1, otherwise returns 0.
 
 Exceptions:
 
@@ -261,7 +261,7 @@ The class name $class_name must be defined. Otherwise, an exception is thrown.
 
   my $is_resource_loader = $config_info->is_resource_loader($class_name);
   
-If the class given by the class name $class_name is a class that load resources, returns 1. Otherwise, returns 0.
+If the class given by the class name $class_name is a class that load resources, returns 1, otherwise returns 0.
 
 Exceptions:
 

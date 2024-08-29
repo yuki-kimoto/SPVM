@@ -54,7 +54,7 @@ Returns the type flag of this argument.
 
 C<method is_optional : int ();>
 
-If this argument is an optional argument, returns 1. Otherwise, returns 0.
+If this argument is an optional argument, returns 1, otherwise returns 0.
 
 =head2 get_default_value_byte
 

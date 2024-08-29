@@ -308,7 +308,7 @@ Examples:
 
 C<static method equals_string_range : int ($string1 : string, $string1_offset : int, $string2 : string, $string2_offset : int, $length : int);>
 
-Compares $string1 + $string1_offset with $string2 + $string2_offset by $length. If they are euqal, returns 1. Otherwise, returns 0.
+Compares $string1 + $string1_offset with $string2 + $string2_offset by $length. If they are euqal, returns 1, otherwise returns 0.
 
 If $length is 0, returns 1.
 

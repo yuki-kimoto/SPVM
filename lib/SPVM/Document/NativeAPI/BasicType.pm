@@ -64,13 +64,13 @@ Returns the class relative file of the basic type I<basic_type>.
 
 C<int32_t (*is_pointer)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If the basic type I<basic_type> is a pointer class, returns 1. Otherwise, returns 0.
+If the basic type I<basic_type> is a pointer class, returns 1, otherwise returns 0.
 
 =head2 is_anon
 
 C<int32_t (*is_anon)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If the basic type I<basic_type> is an anon class, returns 1. Otherwise, returns 0.
+If the basic type I<basic_type> is an anon class, returns 1, otherwise returns 0.
 
 =head2 get_class_var_by_index
 
@@ -156,13 +156,13 @@ Returns the length of the anon basic types owned by the basic type I<basic_type>
 
 C<int32_t (*has_interface)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* interface_basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If the basic type I<basic_type> has an interface I<interface_basic_type>, returns 1. Otherwise, returns 0.
+If the basic type I<basic_type> has an interface I<interface_basic_type>, returns 1, otherwise returns 0.
 
 =head2 is_super_class
 
 C<int32_t (*is_super_class)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* dist_basic_type|SPVM::Document::NativeAPI::BasicType>, L<void* src_basic_type|SPVM::Document::NativeAPI::BasicType>);>
 
-If I<dist_basic_type> is a super class of I<src_basic_type>, returns 1. Otherwise, returns 0.
+If I<dist_basic_type> is a super class of I<src_basic_type>, returns 1, otherwise returns 0.
 
 =head2 get_file
 

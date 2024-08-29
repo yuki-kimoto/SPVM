@@ -1767,7 +1767,7 @@ If I<string> is C<NULL>, no operation is performed.
 
 C<void (*make_read_only)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string)>
 
-If the string  I<string> is not C<NULL> and it is read-only, returns 1. Otherwise, returns 0.
+If the string  I<string> is not C<NULL> and it is read-only, returns 1, otherwise returns 0.
 
 =head2 print
 
@@ -1899,49 +1899,49 @@ Calls L</"new_stack_trace_no_mortal"> native API and push its return value to th
 
 C<int32_t (*is_string)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is string type, returns 1. Otherwise, returns 0.
+If the object I<object> is not C<NULL> and its type is string type, returns 1, otherwise returns 0.
 
 =head2 is_class
 
 C<int32_t (*is_class)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is a class type, returns 1. Otherwise, returns 0.
+If the object I<object> is not C<NULL> and its type is a class type, returns 1, otherwise returns 0.
 
 =head2 is_pointer_class
 
 C<int32_t (*is_pointer_class)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and the class of I<object> has the C<pointer> attribute, returns 1. Otherwise, returns 0.
+If the object I<object> is not C<NULL> and the class of I<object> has the C<pointer> attribute, returns 1, otherwise returns 0.
 
 =head2 is_array
 
 C<int32_t (*is_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is an array type, returns 1. Otherwise, returns 0.
+If the object I<object> is not C<NULL> and its type is an array type, returns 1, otherwise returns 0.
 
 =head2 is_object_array
 
 C<int32_t (*is_object_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is an object array type, returns 1. Otherwise, returns 0.
+If the object I<object> is not C<NULL> and its type is an object array type, returns 1, otherwise returns 0.
 
 =head2 is_numeric_array
 
 C<int32_t (*is_numeric_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is a numeric array type, returns 1. Otherwise, returns 0.
+If the object I<object> is not C<NULL> and its type is a numeric array type, returns 1, otherwise returns 0.
 
 =head2 is_mulnum_array
 
 C<int32_t (*is_mulnum_array)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is not C<NULL> and its type is a multi-numeric array type, returns 1. Otherwise, returns 0.
+If the object I<object> is not C<NULL> and its type is a multi-numeric array type, returns 1, otherwise returns 0.
 
 =head2 isa
 
 C<int32_t (*isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, void* basic_type, int32_t type_dimension);>
 
-If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type C<basic_type> and the type dimension C<type_dimension>, returns 1. Otherwise, returns 0.
+If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type C<basic_type> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 isa_by_name
 
@@ -1949,13 +1949,13 @@ C<int32_t (*isa_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime En
 
 If the basic type given by the basic type name I<basic_type_name> is not found, returns 0.
 
-If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type name C<basic_type_name> and the type dimension C<type_dimension>, returns 1. Otherwise, returns 0.
+If the object I<object> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the type given by the basic type name C<basic_type_name> and the type dimension C<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 is_type
 
 C<int32_t (*is_type)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object, L<void* basic_type|SPVM::Document::NativeAPI::BasicType>, int32_t type_dimension);>
 
-If the type of the object I<object> is equal to the type given by the basic type I<basic_type> and the type dimension I<type_dimension>, returns 1. Otherwise, returns 0.
+If the type of the object I<object> is equal to the type given by the basic type I<basic_type> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
 
 I<object> must not be C<NULL>.
 
@@ -1965,13 +1965,13 @@ C<int32_t (*is_type_by_name)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtim
 
 If the basic type given by the basic type name I<basic_type_name> is not found, returns 0.
 
-If the object I<object> is not C<NULL> and its type of the object I<object> is equal to the basic type given by the basic type name I<basic_type_name> and the type dimension I<type_dimension>, returns 1. Otherwise, returns 0.
+If the object I<object> is not C<NULL> and its type of the object I<object> is equal to the basic type given by the basic type name I<basic_type_name> and the type dimension I<type_dimension>, returns 1, otherwise returns 0.
 
 =head2 elem_isa
 
 C<int32_t (*elem_isa)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* array, void* element);>
 
-If the element I<element> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the element type of the array I<array>, returns 1. Otherwise, returns 0.
+If the element I<element> satisfies the L<assignment requirement|SPVM::Document::Language::Types/"Assignment Requirement"> without data conversion to the element type of the array I<array>, returns 1, otherwise returns 0.
 
 =head2 get_elem_size
 
@@ -2053,7 +2053,7 @@ See the doc of L<weak reference|SPVM::Document::Language::GarbageCollection/"Wea
 
 C<int32_t (*isweak()SPVM_ENV* env, void** ref);>
 
-If the reference C<ref> is weakened, returns 1. Otherwise, returns 0.
+If the reference C<ref> is weakened, returns 1, otherwise returns 0.
 
 I<ref> must not be C<NULL>.
 
@@ -2119,7 +2119,7 @@ Calls the L</"strerror"> function given 0 to I<length>, and returns its return v
 
 C<int32_t (*is_binary_compatible_object)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-If the object I<object> is binary compatible with the runtime environment I<runtime> and the runtime stack I<stack>, returns 1. Otherwise, returns 0.
+If the object I<object> is binary compatible with the runtime environment I<runtime> and the runtime stack I<stack>, returns 1, otherwise returns 0.
 
 =head2 reserved195
 
@@ -2173,7 +2173,7 @@ If an excetpion is thrown, the value referenced by C<error_id> is set to a non-z
 
 C<int32_t (*is_binary_compatible_stack)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">);>
 
-If the runtime stack I<stack> is binary compatible with the runtime environment I<runtime>, returns 1. Otherwise, returns 0.
+If the runtime stack I<stack> is binary compatible with the runtime environment I<runtime>, returns 1, otherwise returns 0.
 
 =head2 assign_object
 

@@ -68,7 +68,7 @@ Returns the L<method|SPVM::Document::NativeAPI::Method> that owns the argment I<
 
 C<int32_t (*is_optional)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>, L<void* arg|SPVM::Document::NativeAPI::Argument>);>
 
-If the argument I<arg> is an optional argument, returns 1. Otherwise, returns 0.
+If the argument I<arg> is an optional argument, returns 1, otherwise returns 0.
 
 =head2 get_default_value
 
