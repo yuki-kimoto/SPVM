@@ -18,7 +18,7 @@ The runtime native APIs of L<SPVM> are the APIs for SPVM runtimes.
 
 C<int32_t (*get_object_data_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns the offset of data area in the native data structure C<SPVM_OBJECT>.
+Returns the offset of data area in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
 Elements in an array or fields or a pointer in a pointer class is stored into the data area.
 
@@ -26,13 +26,13 @@ Elements in an array or fields or a pointer in a pointer class is stored into th
 
 C<int32_t (*get_object_ref_count_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns the offset of the C<ref_count> field in the native data structure C<SPVM_OBJECT>.
+Returns the offset of the C<ref_count> field in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
 =head2 get_object_length_offset
 
 C<int32_t (*get_object_length_offset)(L<void* runtime|SPVM::Document::NativeAPI::Runtime>);>
 
-Returns the offset of the C<length> field in the native data structure C<SPVM_OBJECT>.
+Returns the offset of the C<length> field in L<SPVM_OBJECT|SPVM::Document::NativeAPI/"SPVM_OBJECT"> struct.
 
 =head2 get_basic_type_by_id
 

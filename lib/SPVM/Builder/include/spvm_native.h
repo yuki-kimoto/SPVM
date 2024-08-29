@@ -224,7 +224,7 @@ struct spvm_env {
   void* (*new_mulnum_array_by_name)(SPVM_ENV* env, SPVM_VALUE* stack, const char* basic_type_name, int32_t length, int32_t* error_id, const char* func_name, const char* file, int32_t line);
   void* (*new_array_proto_no_mortal)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
   void* (*new_array_proto)(SPVM_ENV* env, SPVM_VALUE* stack, void* array, int32_t length);
-  int32_t (*length)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
+  int32_t (*length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   int8_t* (*get_elems_byte)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   int16_t* (*get_elems_short)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);
   int32_t* (*get_elems_int)(SPVM_ENV* env, SPVM_VALUE* stack, void* array);

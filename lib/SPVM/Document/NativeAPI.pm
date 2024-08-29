@@ -1593,13 +1593,21 @@ Calls L</"new_array_proto_no_mortal"> native API and push its return value to th
 
 =head2 length
 
-C<int32_t (*length)(SPVM_ENV*, void* array);>
+C<int32_t (*length)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* object);>
 
-Returns the length of the array I<array>.
+Returns the value of C<length> member variable in L</"SPVM_OBJECT"> struct given the object I<object>.
+
+I<object> must be defined.
+
+If I<object> is an array, C<length> is its array length.
+
+If I<object> is a string, C<length> is its string length.
+
+Otherwise C<length> is 0.
 
 Examples:
 
-  int32_t length = env->length(env, stack, array);
+  int32_t length = env->length(env, stack, object);
 
 =head2 get_elems_byte
 
@@ -2761,6 +2769,23 @@ The return type is the C<void*> type.
 C<#define SPVM_NATIVE_SET_POINTER(object, pointer)>
 
 Sets the pointer I<pointer> of the object I<object>.
+
+=head1 Data Structures
+
+=head2 SPVM_OBJECT
+
+C<SPVM_OBJECT> is an internal data structure for an SPVM object.
+
+  typedef struct spvm_object SPVM_OBJECT
+  struct spvm_object {
+    void* pointer;
+    SPVM_WEAKEN_BACKREF* weaken_backref_head;
+    SPVM_RUNTIME_BASIC_TYPE* basic_type;
+    int32_t ref_count;
+    uint8_t type_dimension;
+    uint8_t flag;
+    int32_t length;
+  };
 
 =head1 See Also
 

@@ -4,7 +4,15 @@
     * Add Fn#is_any_numeric_array method.
   [Document Fix]
     * Fix links in docs for Fn class.
-    
+    * Fix the definition of length native API.
+      [Before]
+      int32_t (*length)(SPVM_ENV*, void* array);
+      
+      [After]
+      int32_t (*length)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
+      
+      And improve the docs.
+      
   [Document Changes]
     * "=head1 Inheritance" is changed to "=head1 Super Class".
   [Changes]
