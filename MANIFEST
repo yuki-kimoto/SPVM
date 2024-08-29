@@ -627,11 +627,10 @@ t/02_vm/05_op/__PACKAGE__.t
 t/02_vm/05_op/addition.t
 t/02_vm/05_op/anon_method.t
 t/02_vm/05_op/array_access.t
-t/02_vm/05_op/array_data.t
-t/02_vm/05_op/array_data_big_size.t
-t/02_vm/05_op/array_data_middle_size.t
+t/02_vm/05_op/array_big_size.t
 t/02_vm/05_op/array_initialization.t
 t/02_vm/05_op/array_length.t
+t/02_vm/05_op/array_middle_size.t
 t/02_vm/05_op/assign.t
 t/02_vm/05_op/basic_type_id.t
 t/02_vm/05_op/bit_operator.t
@@ -657,6 +656,7 @@ t/02_vm/05_op/modulo.t
 t/02_vm/05_op/mulnum_array.t
 t/02_vm/05_op/multiplication.t
 t/02_vm/05_op/new.t
+t/02_vm/05_op/new_array.t
 t/02_vm/05_op/new_string_len.t
 t/02_vm/05_op/print.t
 t/02_vm/05_op/reference.t
@@ -862,8 +862,10 @@ t/02_vm/lib/SPVM/TestCase/Operator/AnonMethod.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/AnonMethod/AnonMethod.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/AnonMethod/ImplementAnonMethod1.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/AnonMethod/ImplementAnonMethod2.spvm
-t/02_vm/lib/SPVM/TestCase/Operator/Array.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/ArrayAccess.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/ArrayBigSize.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/ArrayInit.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/ArrayLength.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/ArrayMiddleSize.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Assign.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/BasicTypeId.spvm
@@ -890,6 +892,7 @@ t/02_vm/lib/SPVM/TestCase/Operator/MethodChild.pm
 t/02_vm/lib/SPVM/TestCase/Operator/Modulo.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Move.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Multiply.spvm
+t/02_vm/lib/SPVM/TestCase/Operator/New/Array.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/NumericOperator.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/Object.spvm
 t/02_vm/lib/SPVM/TestCase/Operator/PACKAGE.spvm

@@ -1,0 +1,49 @@
+class TestCase::Operator::ArrayAccess {
+  use TestCase::Minimal;
+  use Fn;
+  use Array;
+  use Point;
+  
+  static method array_store_undef : int () {
+    my $minimals = new TestCase::Minimal[3];
+    $minimals->[0] = TestCase::Minimal->new;
+    $minimals->[0] = undef;
+    
+    if ($minimals->[0] == undef) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  static method array_set_and_get_array_element_first : int () {
+    
+    my $nums = new int[3];
+    $nums->[0] = 345;
+    
+    return $nums->[0];
+  }
+  
+  static method array_set_and_get_array_element_last : int () {
+    
+    my $nums = new int[3];
+    $nums->[2] = 298;
+    
+    return $nums->[2];
+  }
+  
+  static method array_culcurate_sum_by_for : int () {
+    
+    my $nums = new int[3];
+    $nums->[0] = 1;
+    $nums->[1] = 2;
+    $nums->[2] = 3;
+    
+    my $total = 0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+    
+    return $total;
+  }
+  
+}

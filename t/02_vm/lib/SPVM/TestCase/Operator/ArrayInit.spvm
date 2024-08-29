@@ -1,0 +1,254 @@
+class TestCase::Operator::ArrayInit {
+  use TestCase::Minimal;
+  use Fn;
+  use Array;
+  use Point;
+  
+  # Array init {}
+  static method array_init_key_values_empty : int () {
+    my $objects = {};
+    unless (@$objects == 0) {
+      return 0;
+    }
+
+    unless ($objects isa object[]) {
+      return 0;
+    }
+    
+    # Only "{}"
+    {};
+    
+    return 1;
+  }
+
+  # Array init {} with string
+  static method array_init_key_values : int () {
+    {
+      my $objects = {foo => 1, bar => 2};
+      unless (@$objects == 4) {
+        return 0;
+      }
+
+      unless ($objects isa object[]) {
+        return 0;
+      }
+      
+      my $key1 = (string)$objects->[0];
+      my $value1 = (Int)$objects->[1];
+      my $key2 = (string)$objects->[2];
+      my $value2 = (Int)$objects->[3];
+      
+      unless ($key1 eq "foo") {
+        return 0;
+      }
+      
+      unless ($value1->value == 1) {
+        return 0;
+      }
+      
+      unless ($key2 eq "bar") {
+        return 0;
+      }
+      
+      unless ($value2->value == 2) {
+        return 0;
+      }
+    }
+    {
+      my $objects = {foo => 1, bar => 2};
+      unless (@$objects == 4) {
+        return 0;
+      }
+
+      unless ($objects isa object[]) {
+        return 0;
+      }
+      
+      my $key1 = (string)$objects->[0];
+      my $value1 = (Int)$objects->[1];
+      my $key2 = (string)$objects->[2];
+      my $value2 = (Int)$objects->[3];
+      
+      unless ($key1 eq "foo") {
+        return 0;
+      }
+      
+      unless ($value1->value == 1) {
+        return 0;
+      }
+      
+      unless ($key2 eq "bar") {
+        return 0;
+      }
+      
+      unless ($value2->value == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $objects = {foo => Int->new(5)};
+      
+      my $num = (int)$objects->[1];
+      
+      unless ($num == 5) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  # Array store undef
+  static method array_init_empty : int () {
+    my $objects = [];
+    unless (@$objects == 0) {
+      return 0;
+    }
+
+    unless ($objects isa object[]) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method array_init_fatcamma : int () {
+    my $pair = [(object)"x" => 1, "y" => 2];
+    
+    unless ((string)$pair->[0] eq "x") {
+      return 0;
+    }
+    
+    unless ((int)$pair->[1] == 1) {
+      return 0;
+    }
+
+    unless ((string)$pair->[2] eq "y") {
+      return 0;
+    }
+    
+    unless ((int)$pair->[3] == 2) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method array_init_byte : int () {
+    my $nums = [(byte)1, (byte)2, (byte)Fn->INT8_MAX()];
+    
+    if ($nums->[0] == 1) {
+      if ($nums->[1] == 2) {
+        if ($nums->[2] == Fn->INT8_MAX()) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  static method array_init_short : int () {
+    my $nums = [(short)1, (short)2, (short)3];
+    
+    if ((int)$nums->[0] == (int)(short)1) {
+      if ((int)$nums->[1] == (int)(short)2) {
+        if ((int)$nums->[2] == (int)(short)3) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  static method array_init_int  : int () {
+    my $nums = [1, 2, 3];
+    my $nums2 : int[];
+    $nums2 = [4, 5, 6];
+    
+    my $num3 = [
+      [1, 2, 3],
+      [4, 5, 6]
+    ];
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    unless ($nums->[1] == 2) {
+      return 0;
+    }
+    unless ($nums->[2] == 3) {
+      return 0;
+    }
+    unless ($nums2->[0] == 4) {
+      return 0;
+    }
+    unless ($nums2->[1] == 5) {
+      return 0;
+    }
+    unless ($nums2->[2] == 6) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  static method array_init_long : int () {
+    my $nums = [1L, 2L, 3L];
+    
+    unless ($nums->[0] == 1L) {
+      return 0;
+    }
+    
+    unless ($nums->[1] == 2L) {
+      return 0;
+    }
+    
+    unless ($nums->[2] == 3L) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  static method array_init_float : int () {
+    my $nums = [1f, 2f, 3f];
+    
+    unless ($nums->[0] == 1f) {
+      return 0;
+    }
+    unless ($nums->[1] == 2f) {
+      return 0;
+    }
+    unless ($nums->[2] == 3f) {
+      return 0;
+    }
+    return 1;
+  }
+  
+  static method array_init_double : int () {
+    my $nums = [1d, 2d, 3d];
+    
+    unless ($nums->[0] == 1d) {
+      return 0;
+    }
+    unless ($nums->[1] == 2d) {
+      return 0;
+    }
+    unless ($nums->[2] == 3d) {
+      return 0;
+    }
+    return 1;
+  }
+  
+  static method array_init_object : int () {
+    my $objects = [(object)TestCase::Minimal->new, TestCase::Minimal->new];
+    
+    if ($objects isa object[]) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+    
+    return 0;
+  }
+  
+}

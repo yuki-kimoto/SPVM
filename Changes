@@ -19,6 +19,7 @@
     * The heading of a compilation error message is changed from [Compile Error] to [Compilation Error]
   [Test Improvement]
     * Add a test for Fn#split method when a input is an empty string.
+    * Cleanup tests for array operations.
   [Bug Fix]
     * Fix a bug mention by "Segfault:compile_type_name" https://github.com/yuki-kimoto/SPVM/issues/554.
     * Fix a bug that wrong static method call cause an segmentation fault.

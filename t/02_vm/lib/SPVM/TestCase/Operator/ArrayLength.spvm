@@ -1,0 +1,67 @@
+class TestCase::Operator::ArrayLength {
+  # Array length - @ mark
+  static method array_length_atmark : int () {
+    
+    my $nums = new int[3];
+    my $len = @$nums;
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  # Array length - @ mark with brace
+  static method array_length_atmark_brace : int () {
+    
+    my $nums = new int[3];
+    my $len = @{$nums};
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  # Array length - scalar @ mark
+  static method array_length_scalar_atmark : int () {
+    
+    my $nums = new int[3];
+    my $len = scalar @$nums;
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  # Array length - @ mark with brace
+  static method array_length_scalar_atmark_brace : int () {
+    
+    my $nums = new int[3];
+    my $len = scalar @{$nums};
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  static method array_length_undef : int () {
+    
+    my $nums : int[] = undef;
+    
+    eval {
+      @$nums;
+    };
+    
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+}
