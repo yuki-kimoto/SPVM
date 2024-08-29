@@ -2186,10 +2186,7 @@ void SPVM_API_warn(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* string, const 
         size_t ret = fwrite(chars, 1, string_length, spvm_stderr);
       }
       
-      // Add line and file information if last character is not '\n'
-      if (string_length == 0 || chars[string_length - 1] != '\n') {
-        fprintf(spvm_stderr, "\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
-      }
+      fprintf(spvm_stderr, "\n  %s->%s at %s line %d\n", basic_type_name, method_name, file, line);
     }
     else {
       void* obj_type_name = env->get_type_name(env, stack, string);

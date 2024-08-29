@@ -1182,7 +1182,7 @@ If the type of I<OPERAND> is string type and I<OPERAND> is defined, this operato
 
 If the type of I<OPERAND> is an object type except for string type and I<OPERAND> is defined, this operator outputs the type name and the address of I<OPERAND>, such as C<"Point(0x55d8a44ed090)">.
 
-If the end character of the I<OPERAND> is not C<\n>, this operator outputs a newline, two tabs and a stack trace information following the output above.
+This operator outputs a newline, two tabs and a stack trace information following the output above.
 
 A stack trace information consists of the current method name, file name, and line number.
 

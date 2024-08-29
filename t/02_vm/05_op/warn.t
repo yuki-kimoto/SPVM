@@ -82,7 +82,8 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      is($output, "\x0A");
+      like($output, qr/\x0A/);
+      like($output, qr|^  TestCase::Operator::Warn->test_warn_newline at .*TestCase/Operator/Warn.spvm line \d+|m);
     }
     
     # test_warn_long_lines
@@ -91,7 +92,8 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
+      like($output, qr|AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A|);
+      like($output, qr|^  TestCase::Operator::Warn->test_warn_long_lines at .*TestCase/Operator/Warn.spvm line \d+|m);
     }
 
     # test_warn_empty
