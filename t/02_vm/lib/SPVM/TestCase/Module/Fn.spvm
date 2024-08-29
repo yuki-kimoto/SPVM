@@ -913,8 +913,6 @@ class TestCase::Module::Fn {
       }
     }
     
-    warn;
-    
     {
       my $string = "あaい";
       my $code_points = [0x3042, 'a', 0x3044];
@@ -3422,8 +3420,6 @@ class TestCase::Module::Fn {
       my $string = "abcde";
       my $replaced = Fn->substr($string, 1, 2, "XYZ");
       
-      warn $replaced;
-      
       unless ($replaced eq "aXYZde") {
         return 0;
       }
@@ -5226,6 +5222,87 @@ class TestCase::Module::Fn {
         my $array = Point->new;
         
         eval { Fn->get_elem_size($array); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  static method get_elem_type_name : int () {
+    
+    {
+      my $array = new int[3];
+      
+      my $ret = Fn->get_elem_type_name($array);
+      
+      unless ($ret eq "int") {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = (object)new int[3];
+      
+      my $ret = Fn->get_elem_type_name($array);
+      
+      unless ($ret eq "int") {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new object[3];
+      
+      my $ret = Fn->get_elem_type_name($array);
+      
+      unless ($ret eq "object") {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new Point[3];
+      
+      my $ret = Fn->get_elem_type_name($array);
+      
+      unless ($ret eq "Point") {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new Complex_2d[3];
+      
+      my $ret = Fn->get_elem_type_name($array);
+      
+      unless ($ret eq "Complex_2d") {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $array = new int[3];
+        
+        eval { Fn->get_elem_type_name(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = Point->new;
+        
+        eval { Fn->get_elem_type_name($array); }
         
         unless ($@) {
           return 0;

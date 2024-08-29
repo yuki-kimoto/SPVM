@@ -1296,6 +1296,25 @@ The array $array must be defined. Otherwise, an exception is thrown.
 
 The type of the array $array must be an array type. Otherwise, an exception is thrown.
 
+=head2 get_elem_type_name
+
+C<static method get_elem_type_name : string ($array : object);>
+
+Returns the element type name of the array $array.
+
+Implementation:
+  
+  my $type_name = type_name $array;
+  my $ret = Fn->substr($type_name, 0, length $type_name - 2);
+
+Note that this is not the real element type name of each element. It is merely the type name of the array, but without the trailing C<[]>.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The type of the array $array must be an array type. Otherwise, an exception is thrown.
+
 =head1 See Also
 
 =over 2

@@ -1386,4 +1386,21 @@ class Fn {
   
   native static method get_elem_size : int ($array : object);
   
+  static method get_elem_type_name : string ($array : object) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless (Fn->is_array($array)) {
+      die "The type of the array \$array must be an array type.";
+    }
+    
+    my $type_name = type_name $array;
+    
+    my $elem_type_name = Fn->substr($type_name, 0, length $type_name - 2);
+    
+    return $elem_type_name;
+  }
+  
 }
