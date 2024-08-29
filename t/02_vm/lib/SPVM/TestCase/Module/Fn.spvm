@@ -5027,4 +5027,85 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method array_length : int () {
+    
+    {
+      my $array = new int[3];
+      
+      my $ret = Fn->array_length($array);
+      
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = (object)new int[3];
+      
+      my $ret = Fn->array_length($array);
+      
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new object[3];
+      
+      my $ret = Fn->array_length($array);
+      
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new Point[3];
+      
+      my $ret = Fn->array_length($array);
+      
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new Complex_2d[3];
+      
+      my $ret = Fn->array_length($array);
+      
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $array = new int[3];
+        
+        eval { Fn->array_length(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = Point->new;
+        
+        eval { Fn->array_length($array); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
 }

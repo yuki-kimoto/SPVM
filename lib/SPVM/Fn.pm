@@ -1260,9 +1260,9 @@ Examples:
 
 Exceptions:
 
-The basic type name $basic_type_name must be defined.
+The basic type name $basic_type_name must be defined. Otherwise, an exception is thrown.
 
-The type dimension $type_dimension must be grether than or equal to 0 and less than or equal to 255.
+The type dimension $type_dimension must be grether than or equal to 0 and less than or equal to 255. Otherwise, an exception is thrown.
 
 =head2 is_any_numeric_array
 
@@ -1271,6 +1271,18 @@ C<static method is_any_numeric_array : int ($object : object);>
 If the object $object is defined and the type of $object is a numeric array type or a multi-numeric array type, returns 1, otherwise returns 0.
 
 An any numeric array means an array of a numeric array type or a multi-numeric array type.
+
+=head2 array_length
+
+C<static method array_length : int ($array : object);>
+
+Returns the array length of the array $array.
+
+Exceptions:
+
+The array $array must be defined. Otherwise, an exception is thrown.
+
+The type of the array $array must be an array type. Otherwise, an exception is thrown.
 
 =head1 See Also
 

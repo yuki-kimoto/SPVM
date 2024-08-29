@@ -1382,4 +1382,6 @@ class Fn {
     return $is_any_numeric_array;
   }
   
+  native static method array_length : int ($array : object);
+  
 }

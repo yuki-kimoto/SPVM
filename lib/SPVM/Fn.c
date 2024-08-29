@@ -745,3 +745,24 @@ int32_t SPVM__Fn__get_compile_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__array_length(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_array = stack[0].oval;
+  
+  if (!obj_array) {
+    return env->die(env, stack, "The array $array must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t is_array = env->is_array(env, stack, obj_array);
+  
+  if (!is_array) {
+    return env->die(env, stack, "The type of the array $array must be an array type.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t length = env->length(env, stack, obj_array);
+  
+  stack[0].ival = length;
+  
+  return 0;
+}
