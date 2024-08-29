@@ -181,13 +181,44 @@ class TestCase::TypeConversion {
     return 0;
   }
   static method convert_double_to_float : int () {
-    my $value = (float)0.5;
     
-    if ($value == 0.5f) {
-      return 1;
+    {
+      my $value = (float)0.5;
+      
+      unless ($value == 0.5f) {
+        return 0;
+      }
     }
     
-    return 0;
+    {
+      my $value : float = 0.5;
+      
+      unless ($value == 0.5f) {
+        return 0;
+      }
+    }
+    
+    {
+      my $value : float = 0.3;
+      
+      unless ($value == 0.3f) {
+        return 0;
+      }
+    }
+    
+    {
+      my $values = [(float)0.5, 0.3];
+      
+      unless ($values->[0] == 0.5f) {
+        return 0;
+      }
+      
+      unless ($values->[1] == 0.3f) {
+        return 0;
+      }
+    }
+    
+    return 1;
   }
   
   # Convert type - floating point widning convertion

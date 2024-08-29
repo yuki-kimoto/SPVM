@@ -23,6 +23,9 @@
     * Fix a bug mention by "Segfault:compile_type_name" https://github.com/yuki-kimoto/SPVM/issues/554.
     * Fix a bug that wrong static method call cause an segmentation fault.
     * Fix a bug that the compile error message of 256 or more characters is cut off.
+    * Fix a bug that constant narrowing conversion causes a compilation error in the distribute type is a numeric array type.
+      
+      https://github.com/yuki-kimoto/SPVM/issues/560
   [Complilation Message Improvement]
     * Use field notation "MyClass#foo field" in compilation error messages.
     * Use class variable notation "MyClass#$Foo class variable" in compilation error messages.

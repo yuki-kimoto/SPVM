@@ -1065,6 +1065,11 @@ use Test::More;
   }
   
   {
+    my $source = 'class MyClass { static method main : void () { my $nums = new byte[1]; $nums->[0] = 1; } }';
+    compile_ok($source);
+  }
+  
+  {
     my $source = 'class MyClass { static method main : void () { my $num : float = 1.0; } }';
     compile_ok($source);
   }
@@ -1081,6 +1086,16 @@ use Test::More;
   
   {
     my $source = 'class MyClass { static method main : void () { my $num : float = 0.3; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $nums = new float[2]; $nums->[0] = 1.2; } }';
+    compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { static method main : void () { my $nums = [(float)1.2, 0.3]; } }';
     compile_ok($source);
   }
 }
