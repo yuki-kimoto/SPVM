@@ -5,7 +5,7 @@
     * Add Fn#array_length method.
     * Add Fn#get_elem_size method.
     * Add Fn#get_elem_type_name method.
-    
+    * Add Fn#print_stderr method.
   [Document Fix]
     * Fix links in docs for Fn class.
     * Fix the definition of length native API.

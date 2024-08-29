@@ -1,17 +1,17 @@
-class TestCase::Operator::Warn {
+class TestCase::Operator::Warn { use Fn;
   
   static method test_warn : int () {
     warn "Hello";
     
     return 1;
   }
-
+  
   static method test_warn_newline : int () {
     warn "\n";
     
     return 1;
   }
-
+  
   static method test_warn_long_lines : int () {
     warn "AAAAAAAAAAAAA\nBBBBBBBBBBBBBBBBBBB\nCCCCCCCCCCCCCCCCCCCCCCCCCCC\nDDDDDDDDDDDDDDDDDDDDDDDDD\nEEEEEEEEEEEEEEEEEEEEEE\nFFFFFFFFFFFFFF\n";
     
@@ -28,7 +28,7 @@ class TestCase::Operator::Warn {
     
     return 1;
   }
-
+  
   static method test_warn_no_operand : int () {
     warn;
     
@@ -37,6 +37,20 @@ class TestCase::Operator::Warn {
   
   static method test_warn_object_type : int () {
     warn Int->new(1);
+    
+    return 1;
+  }
+  
+  static method test_Fn_print_stderr : int () {
+    
+    Fn->print_stderr("Hello");
+    
+    return 1;
+  }
+  
+  static method test_Fn_print_stderr_undef : int () {
+    
+    Fn->print_stderr(undef);
     
     return 1;
   }

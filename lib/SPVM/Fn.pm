@@ -1315,6 +1315,14 @@ The array $array must be defined. Otherwise, an exception is thrown.
 
 The type of the array $array must be an array type. Otherwise, an exception is thrown.
 
+=head2 print_stderr
+
+C<static method print_stderr : void ($string : string);>
+
+Prints the string $string to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+
+If $string is undef, this method produces no output.
+
 =head1 See Also
 
 =over 2

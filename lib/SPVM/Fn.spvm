@@ -1403,4 +1403,6 @@ class Fn {
     return $elem_type_name;
   }
   
+  native static method print_stderr : void ($string : string);
+  
 }

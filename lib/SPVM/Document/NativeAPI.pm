@@ -1787,7 +1787,9 @@ Prints the string I<string> to L<SPVM's standard output|SPVM::Document::Language
 
 C<void (*print_stderr)(L<SPVM_ENV* env|SPVM::Document::NativeClass/"Runtime Environment">, L<SPVM_VALUE* stack|SPVM::Document::NativeClass/"Runtime Stack">, void* string);>
 
-Prints the string I<string> to SPVM's L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+Prints the string I<string> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+
+If I<string> is NULL, this method produces no output.
 
 =head2 dump_no_mortal
 
