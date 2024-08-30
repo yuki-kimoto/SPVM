@@ -39,7 +39,7 @@ enum {
 };
 
 static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
-  "The memory allocation for the call stack failed.",
+  "Memory allocation for creating a method call stack failed.",
   "The value cannnot be cast to the non-assignable type.",
   "The read-only string cannnot be cast to the mutable string type.",
   "Integral type values cannnot be divided by 0.",

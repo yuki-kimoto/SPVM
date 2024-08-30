@@ -30,6 +30,7 @@
   [Exception Message Changes]
     * Improve exception messages outputted from spvmdist command.
     * The heading of a compilation error message is changed from [Compile Error] to [Compilation Error]
+    * Improve exception messages in operators.
   [Test Improvement]
     * Add a test for Fn#split method when a input is an empty string.
     * Clean up tests for array operations.
@@ -60,7 +61,7 @@
       The reason of this change is that debugging data with trailing \n does not show a stack trace.
       
       We will add Fn#print_stderr and Fn#say_stderr to achieve the original behavior, no stack trace, of warn operator.
-      
+    
 0.990006 2023-05-09
   [Feature Improvement]
     * Users know caller when a class loading from a Perl script failed.
