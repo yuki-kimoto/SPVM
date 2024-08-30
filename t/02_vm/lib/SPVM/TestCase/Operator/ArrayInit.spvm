@@ -10,7 +10,7 @@ class TestCase::Operator::ArrayInit {
     unless (@$objects == 0) {
       return 0;
     }
-
+    
     unless ($objects isa object[]) {
       return 0;
     }
@@ -20,7 +20,7 @@ class TestCase::Operator::ArrayInit {
     
     return 1;
   }
-
+  
   # Array init {} with string
   static method array_init_key_values : int () {
     {
@@ -54,12 +54,13 @@ class TestCase::Operator::ArrayInit {
         return 0;
       }
     }
+    
     {
       my $objects = {foo => 1, bar => 2};
       unless (@$objects == 4) {
         return 0;
       }
-
+      
       unless ($objects isa object[]) {
         return 0;
       }
@@ -85,7 +86,7 @@ class TestCase::Operator::ArrayInit {
         return 0;
       }
     }
-
+    
     {
       my $objects = {foo => Int->new(5)};
       
@@ -95,7 +96,7 @@ class TestCase::Operator::ArrayInit {
         return 0;
       }
     }
-
+    
     return 1;
   }
   
