@@ -239,13 +239,16 @@ class TestCase::Operator::ArrayInit {
   }
   
   static method array_init_object : int () {
-    my $objects = [(object)TestCase::Minimal->new, TestCase::Minimal->new];
     
-    if ($objects isa object[]) {
-      return 1;
-    }
-    else {
-      return 0;
+    {
+      my $objects = [(object)TestCase::Minimal->new, TestCase::Minimal->new];
+      
+      if ($objects isa object[]) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
     }
     
     return 0;
