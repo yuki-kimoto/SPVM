@@ -54,4 +54,19 @@ class TestCase::Operator::Warn { use Fn;
     
     return 1;
   }
+  
+  static method test_Fn_say_stderr : int () {
+    
+    Fn->say_stderr("Hello");
+    
+    return 1;
+  }
+  
+  static method test_Fn_say_stderr_undef : int () {
+    
+    Fn->say_stderr(undef);
+    
+    return 1;
+  }
+  
 }

@@ -796,3 +796,14 @@ int32_t SPVM__Fn__print_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__say_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_string = stack[0].oval;
+  
+  env->print_stderr(env, stack, obj_string);
+  
+  fputc('\n', env->spvm_stderr(env, stack));
+  
+  return 0;
+}

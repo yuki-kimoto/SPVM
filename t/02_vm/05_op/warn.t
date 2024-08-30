@@ -149,6 +149,25 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
       my $output = slurp_binmode($output_file);
       is($output, '');
     }
+    
+    # test_Fn_say_stderr
+    {
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_Fn_say_stderr';
+      write_script_file($script_file, $func_call);
+      system("$^X -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, "Hello\x{0A}");
+    }
+    
+    # test_Fn_say_stderr_undef
+    {
+      my $func_call = 'SPVM::TestCase::Operator::Warn->test_Fn_say_stderr_undef';
+      write_script_file($script_file, $func_call);
+      system("$^X -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, "\x{0A}");
+    }
+    
   }
 }
 

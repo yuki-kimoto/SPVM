@@ -1405,4 +1405,5 @@ class Fn {
   
   native static method print_stderr : void ($string : string);
   
+  native static method say_stderr : void ($string : string);
 }

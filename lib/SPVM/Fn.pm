@@ -1323,6 +1323,14 @@ Prints the string $string to L<SPVM's standard error|SPVM::Document::Language::S
 
 If $string is undef, this method produces no output.
 
+=head2 say_stderr
+
+C<static method say_stderr : void ($string : string);>
+
+Prints the string $string with a new line C<\n> to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+
+If $string is undef, this method prints C<\n>.
+
 =head1 See Also
 
 =over 2
