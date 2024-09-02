@@ -70,7 +70,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The length of the string must be greater than or equal to 0.",
   "The array must be defined.",
   "The index of the element access must be greater than or equal to 0 and less than the length of the array.",
-  "The element cannnot be assigned to the non-assignable type.",
+  "An array element setting failed. The element cannot be assigned because it does not satisfy type assignability.",
   "An array element setting failed. The invocant must be defined.",
   "An unboxing conversion failed. The operand must defined.",
   "An unboxing conversion failed. The destination type must be a numeric object type corresponding to the source type of the operand.",
