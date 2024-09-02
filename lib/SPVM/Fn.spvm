@@ -1409,5 +1409,5 @@ class Fn {
   native static method say_stderr : void ($string : string);
   
   native static method memcmp : int ($data1 : object, $data1_offset : int, $data2 : object, $data2_offset : int, $length : int);
-
+  
 }

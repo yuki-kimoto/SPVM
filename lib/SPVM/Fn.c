@@ -352,7 +352,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
   
   if (!obj_dest) {
-    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
@@ -368,7 +368,7 @@ int32_t SPVM__Fn__memcpy(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die(env, stack, "The dest $dest cannnot be be a read-only string.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination $dest cannnot be be a read-only string.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
@@ -411,7 +411,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (!obj_dest) {
-    return env->die(env, stack, "The dest $dest must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination $dest must be defined.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(env->is_string(env, stack, obj_dest) || env->is_numeric_array(env, stack, obj_dest) || env->is_mulnum_array(env, stack, obj_dest))) {
@@ -427,7 +427,7 @@ int32_t SPVM__Fn__memmove(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
 
   if (env->is_read_only(env, stack, obj_dest)) {
-    return env->die(env, stack, "The dest $dest must not be a read-only string.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The destination $dest must not be a read-only string.", __func__, FILE_NAME, __LINE__);
   }
   
   if (!(length >= 0)) {
