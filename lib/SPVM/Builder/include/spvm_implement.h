@@ -69,7 +69,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The string creating failed.",
   "The length of the string must be greater than or equal to 0.",
   "The array must be defined.",
-  "The index of the element access must be greater than or equal to 0 and less than the length of the array.",
+  "An array element access failed. The index must be a non-negative integer.",
   "An array element setting failed. The element cannot be assigned because it does not satisfy type assignability.",
   "An array element setting failed. The invocant must be defined.",
   "An unboxing conversion failed. The operand must defined.",
