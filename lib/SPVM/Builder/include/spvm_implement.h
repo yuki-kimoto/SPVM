@@ -79,7 +79,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "\n  at %s%s%s line %d\n",
   "Warning\n  at %s%s%s line %d\n",
   "The %s basic type is not found.",
-  "The %s field is not found.",
+  "%s#%s field is not found.",
   "%s#%s class variable is not found.",
   "%s#%s method is not found.",
   "An instance method call failed. The invocant of the method call for %s#%s method must be defined.",
@@ -115,7 +115,7 @@ static inline void* SPVM_IMPLEMENT_GET_FIELD_STATIC_BY_NAME(SPVM_ENV* env, SPVM_
   void* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
   if (!field) {
-    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], field_name);
+    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], basic_type_name, field_name);
     void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
@@ -129,7 +129,7 @@ static inline int32_t SPVM_IMPLEMENT_GET_FIELD_OFFSET_BY_NAME(SPVM_ENV* env, SPV
   void* field = env->get_field_static(env, stack, basic_type_name, field_name);
   
   if (!field) {
-    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], field_name);
+    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND], basic_type_name, field_name);
     void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
