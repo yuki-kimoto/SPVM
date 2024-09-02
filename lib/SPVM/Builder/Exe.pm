@@ -209,8 +209,12 @@ sub new {
     }
   }
   
+  unless ($config->isa('SPVM::Builder::Config::Exe')) {
+    confess("The class of a config object for creating an executable file must be SPVM::Builder::Config::Exe or its child class.");
+  }
+  
   unless ($config->output_type eq 'exe') {
-    confess("output_type field in the config file \"$config_file\" to create an executable file must be \"exe\".");
+    confess("output_type field in the config file \"$config_file\" for creating an executable file must be \"exe\".");
   }
   
   $config->class_name($class_name);
