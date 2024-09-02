@@ -80,7 +80,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "Warning\n  at %s%s%s line %d\n",
   "The %s basic type is not found.",
   "The %s field is not found.",
-  "The %s class variable in the %s class is not found.",
+  "%s#%s class variable is not found.",
   "%s#%s method is not found.",
   "An instance method call failed. The invocant of the method call for %s#%s method must be defined.",
   "An instance method call failed. The implementation of %s#%s method is not found.",
@@ -146,7 +146,7 @@ static inline void* SPVM_IMPLEMENT_GET_CLASS_VAR_BY_NAME(SPVM_ENV* env, SPVM_VAL
   void* class_var = env->get_class_var(env, stack, basic_type_name, class_var_name);
   
   if (!class_var) {
-    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND], class_var_name);
+    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND], basic_type_name, class_var_name);
     void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
