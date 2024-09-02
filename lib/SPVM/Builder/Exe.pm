@@ -210,7 +210,7 @@ sub new {
   }
   
   unless ($config->output_type eq 'exe') {
-    confess("Config file \"$config_file\" is not the config to create the executable file");
+    confess("output_type field in the config file \"$config_file\" to create an executable file must be \"exe\".");
   }
   
   $config->class_name($class_name);
