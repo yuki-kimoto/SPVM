@@ -82,7 +82,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The %s field is not found.",
   "The %s class variable in the %s class is not found.",
   "The %s class is not found.",
-  "The %s method in the %s class is not found.",
+  "%s#%s method is not found.",
   "An instance method call failed. The invocant of the method call for %s#%s method must be defined.",
   "An instance method call failed. The implementation of %s#%s method is not found.",
 };
@@ -161,7 +161,7 @@ static inline void* SPVM_IMPLEMENT_GET_METHOD_BY_NAME(SPVM_ENV* env, SPVM_VALUE*
   void* method = env->get_method(env, stack, basic_type_name, method_name);
   
   if (!method) {
-    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], method_name);
+    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND], basic_type_name, method_name);
     void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
