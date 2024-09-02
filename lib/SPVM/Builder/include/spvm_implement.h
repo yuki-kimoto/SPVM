@@ -78,7 +78,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The operand of the copy operator must be a string type, a numeric type, or a multi numeric type.",
   "\n  at %s%s%s line %d\n",
   "Warning\n  at %s%s%s line %d\n",
-  "The %s basic type is not found.",
+  "%s basic type is not found.",
   "%s#%s field is not found.",
   "%s#%s class variable is not found.",
   "%s#%s method is not found.",
