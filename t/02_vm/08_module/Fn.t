@@ -198,6 +198,9 @@ my $seed = time();
     # Tests for Fn#print_stderr is at t/05_op/warn.t
     
     # Tests for Fn#say_stderr is at t/05_op/warn.t
+    
+    ok(SPVM::TestCase::Module::Fn->memcmp);
+    
   }
   
   # Extra

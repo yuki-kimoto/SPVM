@@ -807,3 +807,57 @@ int32_t SPVM__Fn__say_stderr(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return 0;
 }
+
+int32_t SPVM__Fn__memcmp(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* obj_data1 = stack[0].oval;
+  int32_t data1_offset = stack[1].ival;
+  void* obj_data2 = stack[2].oval;
+  int32_t data2_offset = stack[3].ival;
+  int32_t length = stack[4].ival;
+  
+  if (!obj_data1) {
+    return env->die(env, stack, "The data1 $data1 must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  if (!(env->is_string(env, stack, obj_data1) || env->is_numeric_array(env, stack, obj_data1) || env->is_mulnum_array(env, stack, obj_data1))) {
+    return env->die(env, stack, "The type of the data1 $data1 must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  if (!obj_data2) {
+    return env->die(env, stack, "The data2 $data2 must be defined.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  if (!(env->is_string(env, stack, obj_data2) || env->is_numeric_array(env, stack, obj_data2) || env->is_mulnum_array(env, stack, obj_data2))) {
+    return env->die(env, stack, "The type of the data2 $data2 must be string type, a numeric array type, or a multi-numeric array type.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  if (!(length >= 0)) {
+    return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  char* data1 = (char*)env->get_chars(env, stack, obj_data1);
+  int32_t data1_length = env->length(env, stack, obj_data1);
+  int32_t data1_elem_size = env->get_elem_size(env, stack, obj_data1);
+  int32_t data1_byte_length = data1_elem_size * data1_length;
+  
+  if (!(data1_offset + length <= data1_byte_length)) {
+    return env->die(env, stack, "The offset $data1_offset + the length $length must be less than or equal to the length of the data1 $obj_data1.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  const char* data2 = env->get_chars(env, stack, obj_data2);
+  int32_t data2_length = env->length(env, stack, obj_data2);
+  int32_t data2_elem_size = env->get_elem_size(env, stack, obj_data2);
+  int32_t data2_byte_length = data2_elem_size * data2_length;
+  
+  if (!(data2_offset + length <= data2_byte_length)) {
+    return env->die(env, stack, "The offset $data2_offset + the length $length must be less than or equal to the length of the data2 $data2.", __func__, FILE_NAME, __LINE__);
+  }
+  
+  int32_t cmp = memcmp((char*)(data1 + data1_offset), (char*)(data2 + data2_offset), length);
+  
+  stack[0].ival = cmp;
+  
+  return 0;
+}
+

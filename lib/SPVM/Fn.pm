@@ -1331,6 +1331,32 @@ Prints the string $string with a new line C<\n> to L<SPVM's standard error|SPVM:
 
 If $string is undef, this method prints C<\n>.
 
+=head2 memcmp
+
+C<static method memcmp : void ($data1 : object, $data1_offset : int, $data2 : object, $data2_offset : int, $length : int);>
+
+Compares the data $data1 from index $dest_offset with the data $data2 from index $data2_offset to the length $length using C<memcmp> C function, and returns the result.
+
+Unit of $data1_offset, $data2_offset, and $length is bytes.
+
+Exceptions:
+
+$data1 must be defined. Otherwise an exception is thrown.
+
+The type of $data1 must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwise an exception is thrown.
+
+$data2 must be defined. Otherwise an exception is thrown.
+
+The type of $data2 must be the C<string> type, the numeric array type, or the multi-numeric array type. Otherwise an exception is thrown.
+
+$data1 must not be a read-only string. Otherwise an exception is thrown.
+
+$length must be greater than or equal to 0. Otherwise an exception is thrown.
+
+$data1_offset + $length must be less than or equal to the length of $data1. Otherwise an exception is thrown.
+
+$data2_offset + $length must be less than or equal to the length of $data2. Otherwise an exception is thrown.
+
 =head1 See Also
 
 =over 2
