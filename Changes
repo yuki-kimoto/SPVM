@@ -31,6 +31,7 @@
     * Improve exception messages outputted from spvmdist command.
     * The heading of a compilation error message is changed from [Compile Error] to [Compilation Error]
     * Improve exception messages in operators.
+    * Improve exception messages in the instance method call.
   [Test Improvement]
     * Add a test for Fn#split method when a input is an empty string.
     * Clean up tests for array operations.
