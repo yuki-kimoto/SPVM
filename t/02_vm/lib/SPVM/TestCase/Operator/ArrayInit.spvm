@@ -96,18 +96,14 @@ class TestCase::Operator::ArrayInit {
         return 0;
       }
     }
-
-=pod TODO
-
+    
     # Extra
     {
       my $args = [{data => undef, dim => undef}];
       
       
     }
-
-=cut
-
+    
     return 1;
   }
   
