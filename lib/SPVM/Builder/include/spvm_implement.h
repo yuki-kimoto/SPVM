@@ -27,6 +27,7 @@ enum {
   SPVM_IMPLEMENT_C_STRING_NEW_ARRAY_FAILED,
   SPVM_IMPLEMENT_C_STRING_ARRRAY_LENGTH_SMALL,
   SPVM_IMPLEMENT_C_STRING_NEW_STRING_FAILED,
+  SPVM_IMPLEMENT_C_STRING_NEW_STRING_LEN_FAILED,
   SPVM_IMPLEMENT_C_STRING_NEW_STRING_LEN_LENGTH_SMALL,
   SPVM_IMPLEMENT_C_STRING_ARRAY_UNDEFINED,
   SPVM_IMPLEMENT_C_STRING_ELEMENT_ACCESS_INDEX_OUT_OF_RANGE,
@@ -66,7 +67,8 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The object creating failed.",
   "The array creating failed.",
   "The length of the array must be greater than or equal to 0.",
-  "The string creating failed.",
+  "An string creation failed. The memory allocation failed.",
+  "The new_string_len operator failed. The memory allocation failed.",
   "The new_string_len operator failed. The length of the string must be a non-negative integer.",
   "An array access failed. The array must be defined.",
   "An array access failed. The index must be a non-negative integer.",
@@ -837,7 +839,7 @@ static inline void SPVM_IMPLEMENT_NEW_STRING_LEN(SPVM_ENV* env, SPVM_VALUE* stac
   if (length >= 0) {
     void* string = env->new_string_no_mortal(env, stack, NULL, length);
     if (string == NULL) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_NEW_STRING_FAILED]);
+      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_NEW_STRING_LEN_FAILED]);
       env->set_exception(env, stack, exception);
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
     }
