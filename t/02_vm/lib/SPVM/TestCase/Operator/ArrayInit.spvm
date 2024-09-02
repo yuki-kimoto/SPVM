@@ -97,13 +97,6 @@ class TestCase::Operator::ArrayInit {
       }
     }
     
-    # Extra
-    {
-      my $args = [{data => undef, dim => undef}];
-      
-      
-    }
-    
     return 1;
   }
   

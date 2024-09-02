@@ -2136,6 +2136,11 @@ void SPVM_CHECK_check_ast_syntax(SPVM_COMPILER* compiler, SPVM_BASIC_TYPE* basic
                 SPVM_COMPILER_error(compiler, "The array length specified by new operator must be an integer type within int.\n  at %s line %d", op_new->file, op_new->line);
                 return;
               }
+              else if (type->basic_type->id == SPVM_NATIVE_C_BASIC_TYPE_ID_ANY_OBJECT && type->dimension > 1) {
+                SPVM_COMPILER_error(compiler, "The creation of a multi dimensional array of any object is not allowed.\n  at %s line %d", op_new->file, op_new->line);
+                return;
+              }
+              
               SPVM_CHECK_perform_integer_promotional_conversion(compiler, op_length);
             }
             // Numeric type

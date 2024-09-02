@@ -1146,6 +1146,10 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { my $var : object[][];} }';
     compile_not_ok($source, q|The multi dimensional array of any object is not allowed|);
   }
+  {
+    my $source = 'class MyClass { static method main : void () { [(object[])undef]; } }';
+    compile_not_ok($source, q|The creation of a multi dimensional array of any object is not allowed.|);
+  }
 }
 
 # Resolve method call
