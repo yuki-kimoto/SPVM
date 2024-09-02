@@ -18,7 +18,7 @@
 
 enum {
   SPVM_IMPLEMENT_C_STRING_CALL_STACK_ALLOCATION_FAILED,
-  SPVM_IMPLEMENT_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE,
+  SPVM_IMPLEMENT_C_STRING_ASSIGN_NON_ASSIGNABLE_TYPE,
   SPVM_IMPLEMENT_C_STRING_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE,
   SPVM_IMPLEMENT_C_STRING_DIVIDE_ZERO,
   SPVM_IMPLEMENT_C_STRING_STRING_CONCAT_LEFT_UNDEFINED,
@@ -59,7 +59,7 @@ enum {
 
 static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "Memory allocation for creating a method call stack failed.",
-  "The value cannnot be cast to the non-assignable type.",
+  "An assignment failed. The right operand does not satisfy type assignability.",
   "A read-only string cannnot be cast to mutable string type.",
   "A value of an integer type cannnot be divided by 0.",
   "The left operand of . operator must be defined.",
@@ -380,7 +380,7 @@ static inline void SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(SPVM_ENV* env, SPV
     env->assign_object(env, stack, out, in);
   }
   else {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE]);
+    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_ASSIGN_NON_ASSIGNABLE_TYPE]);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
