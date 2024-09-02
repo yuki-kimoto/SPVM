@@ -83,8 +83,8 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The %s class variable in the %s class is not found.",
   "The %s class is not found.",
   "The %s method in the %s class is not found.",
-  "The invocant must be defined.",
-  "The implementation of the \"%s\" method in the \"%s\" interface is not found.",
+  "An instance method call failed. The invocant of the method call for %s#%s method must be defined.",
+  "An instance method call failed. The implementation of %s#%s method is not found.",
 };
 
 enum {
@@ -2681,7 +2681,8 @@ static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE
   
   void* method = NULL;
   if (!object) {
-    void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_INVOCANT_UNDEF]);
+    snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_INVOCANT_UNDEF], interface_name, method_name);
+    void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
     env->set_exception(env, stack, exception);
     *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
   }
@@ -2689,7 +2690,7 @@ static inline void SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(SPVM_ENV* env, SPVM_VALUE
     method = env->get_instance_method(env, stack, object, method_name);
     
     if (!method) {
-      snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], method_name, interface_name);
+      snprintf(tmp_buffer, tmp_buffer_length, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND], interface_name, method_name);
       void* exception = env->new_string_nolen_no_mortal(env, stack, tmp_buffer);
       env->set_exception(env, stack, exception);
       *error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
