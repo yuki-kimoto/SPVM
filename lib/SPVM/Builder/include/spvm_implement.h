@@ -38,13 +38,13 @@ enum {
   SPVM_IMPLEMENT_C_STRING_COPY_OPERAND_INVALID,
   SPVM_IMPLEMENT_C_STRING_WARN_AT,
   SPVM_IMPLEMENT_C_STRING_WARN_UNDEF,
-  SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_BASIC_TYPE_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_FIELD_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_VAR_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_CLASS_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_INVOCANT_UNDEF,
+  SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_IMPLEMENT_NOT_FOUND,
 };
 
 
@@ -78,13 +78,13 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The operand of the copy operator must be a string type, a numeric type, or a multi numeric type.",
   "\n  at %s%s%s line %d\n",
   "Warning\n  at %s%s%s line %d\n",
-  "The implementation of the \"%s\" method in the \"%s\" interface is not found.",
   "The %s basic type is not found.",
   "The %s field is not found.",
   "The %s class variable in the %s class is not found.",
   "The %s class is not found.",
   "The %s method in the %s class is not found.",
   "The invocant must be defined.",
+  "The implementation of the \"%s\" method in the \"%s\" interface is not found.",
 };
 
 enum {
