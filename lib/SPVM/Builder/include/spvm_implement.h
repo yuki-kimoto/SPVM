@@ -70,7 +70,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The element cannnot be assigned to the non-assignable type.",
   "The invocant of the field access must be defined.",
   "The unboxing conversion cannnot be performed on the undefined value.",
-  "The source of the unboxing conversion must be the corresponding numeric object type.",
+  "An unboxing conversion failed. The destination type must be a numeric object type corresponding to the source type.",
   "The weaken operator failed. The memory allocation for the weaken back reference failed.",
   "%s basic type is not found.",
   "%s#%s field is not found.",
