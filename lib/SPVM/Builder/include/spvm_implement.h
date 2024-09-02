@@ -7,6 +7,15 @@
 #include <inttypes.h>
 #include <stdlib.h>
 
+
+
+
+
+
+
+
+
+
 enum {
   SPVM_IMPLEMENT_C_STRING_CALL_STACK_ALLOCATION_FAILED,
   SPVM_IMPLEMENT_C_STRING_VALUE_ASSIGN_NON_ASSIGNABLE_TYPE,
@@ -37,6 +46,15 @@ enum {
   SPVM_IMPLEMENT_C_STRING_ERROR_METHOD_NOT_FOUND,
   SPVM_IMPLEMENT_C_STRING_CALL_INSTANCE_METHOD_INVOCANT_UNDEF,
 };
+
+
+
+
+
+
+
+
+
 
 static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "Memory allocation for creating a method call stack failed.",
