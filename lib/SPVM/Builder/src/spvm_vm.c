@@ -126,12 +126,12 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     
     call_stack = SPVM_API_new_memory_block(env, stack, total_vars_size + 1);
     if (call_stack == NULL) {
-      void* exception = env->new_string_nolen_no_mortal(env, stack, SPVM_IMPLEMENT_STRING_LITERALS[SPVM_IMPLEMENT_C_STRING_CALL_STACK_ALLOCATION_FAILED]);
+      void* exception = env->new_string_nolen_no_mortal(env, stack, "A creation of a method call stack failed. The memory allocation failed.");
       env->set_exception(env, stack, exception);
       error_id = SPVM_NATIVE_C_BASIC_TYPE_ID_ERROR_CLASS;
       return error_id;
     }
-
+    
     int32_t call_stack_offset = 0;
     
     // Double variables

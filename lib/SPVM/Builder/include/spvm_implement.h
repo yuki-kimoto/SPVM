@@ -17,7 +17,6 @@
 
 
 enum {
-  SPVM_IMPLEMENT_C_STRING_CALL_STACK_ALLOCATION_FAILED,
   SPVM_IMPLEMENT_C_STRING_ASSIGN_NON_ASSIGNABLE_TYPE,
   SPVM_IMPLEMENT_C_STRING_ASSIGN_READ_ONLY_STRING_TO_MUTABLE_TYPE,
   SPVM_IMPLEMENT_C_STRING_DIVIDE_ZERO,
@@ -58,7 +57,6 @@ enum {
 
 
 static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
-  "Memory allocation for creating a method call stack failed.",
   "An assignment failed. The right operand does not satisfy type assignability.",
   "A read-only string cannnot be cast to mutable string type.",
   "A value of an integer type cannnot be divided by 0.",
@@ -72,7 +70,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The new_string_len operator failed. The length of the string must be a non-negative integer.",
   "An array access failed. The array must be defined.",
   "An array access failed. The index must be a non-negative integer.",
-  "An array setting failed. The element cannot be assigned because it does not satisfy type assignability.",
+  "An array setting failed. The element does not satisfy type assignability.",
   "An array setting failed. The invocant must be defined.",
   "An unboxing conversion failed. The operand must defined.",
   "An unboxing conversion failed. The destination type must be a numeric object type corresponding to the source type of the operand.",
