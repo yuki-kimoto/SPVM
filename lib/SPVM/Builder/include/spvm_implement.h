@@ -478,102 +478,15 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* s
   void* object1 = in1;
   void* object2 = in2;
   
-  int32_t flag = 0;
+  int32_t cmp = 0;
   if (object1 == NULL && object2 == NULL) {
-   switch (comparison_op_id) {
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
-        flag = 0;
-        break;
-      }
-    }
+    cmp = 0;
   }
   else if (object1 != NULL && object2 == NULL) {
-    switch (comparison_op_id) {
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
-        flag = 1;
-        break;
-      }
-    }
+    cmp = 1;
   }
   else if (object1 == NULL && object2 != NULL) {
-    switch (comparison_op_id) {
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
-        flag = 0;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
-        flag = 1;
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
-        flag = -1;
-        break;
-      }
-    }
+    cmp = -1;
   }
   else {
     int32_t length1 = *(int32_t*)((intptr_t)object1 + object_length_offset);
@@ -584,44 +497,46 @@ static inline void SPVM_IMPLEMENT_STRING_COMPARISON(SPVM_ENV* env, SPVM_VALUE* s
     
     int32_t short_string_length = length1 < length2 ? length1 : length2;
     int32_t retval = memcmp(bytes1, bytes2, short_string_length);
-    int32_t cmp;
     if (retval) {
       cmp = retval < 0 ? -1 : 1;
-    } else if (length1 == length2) {
+    }
+    else if (length1 == length2) {
       cmp = 0;
-    } else {
+    }
+    else {
       cmp = length1 < length2 ? -1 : 1;
     }
-    
-    switch (comparison_op_id) {
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
-        flag = (cmp == 0);
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
-        flag = (cmp != 0);
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
-        flag = (cmp == 1);
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
-        flag = (cmp >= 0);
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
-        flag = (cmp == -1);
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
-        flag = (cmp <= 0);
-        break;
-      }
-      case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
-        flag = cmp;
-        break;
-      }
+  }
+  
+  int32_t flag;
+  switch (comparison_op_id) {
+    case SPVM_IMPLEMENT_C_STRING_COMPARISON_EQ: {
+      flag = cmp == 0;
+      break;
+    }
+    case SPVM_IMPLEMENT_C_STRING_COMPARISON_NE: {
+      flag = cmp != 0;
+      break;
+    }
+    case SPVM_IMPLEMENT_C_STRING_COMPARISON_GT: {
+      flag = cmp > 0;
+      break;
+    }
+    case SPVM_IMPLEMENT_C_STRING_COMPARISON_GE: {
+      flag = cmp >= 0;
+      break;
+    }
+    case SPVM_IMPLEMENT_C_STRING_COMPARISON_LT: {
+      flag = cmp < 0;
+      break;
+    }
+    case SPVM_IMPLEMENT_C_STRING_COMPARISON_LE: {
+      flag = cmp <= 0;
+      break;
+    }
+    case SPVM_IMPLEMENT_C_STRING_COMPARISON_CMP: {
+      flag = cmp;
+      break;
     }
   }
   
