@@ -224,7 +224,6 @@ void SPVM_PRECOMPILE_build_method_source(SPVM_PRECOMPILE* precompile, SPVM_STRIN
   }
   
   // Convert string
-  SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t basic_type_id;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t object_basic_type_id = 0;\n");
   SPVM_STRING_BUFFER_add(string_buffer, "  int32_t src_basic_type_id;\n");
