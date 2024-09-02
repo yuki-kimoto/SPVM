@@ -178,7 +178,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);
   
   // Temporary buffer for string-to-numeric convertion and exception messages
-  char tmp_buffer[1024];
+  char tmp_buffer[512];
   
   int32_t native_scope_id = env->enter_scope(env, stack);
   
