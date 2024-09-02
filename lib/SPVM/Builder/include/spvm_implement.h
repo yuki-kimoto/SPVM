@@ -53,6 +53,9 @@ enum {
 
 
 
+
+
+
 static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "Memory allocation for creating a method call stack failed.",
   "The value cannnot be cast to the non-assignable type.",
@@ -68,7 +71,7 @@ static const char* SPVM_IMPLEMENT_STRING_LITERALS[] = {
   "The array must be defined.",
   "The index of the element access must be greater than or equal to 0 and less than the length of the array.",
   "The element cannnot be assigned to the non-assignable type.",
-  "The invocant of the field access must be defined.",
+  "An array element setting failed. The invocant must be defined.",
   "An unboxing conversion failed. The operand must defined.",
   "An unboxing conversion failed. The destination type must be a numeric object type corresponding to the source type of the operand.",
   "The weaken operator failed. The memory allocation for the weaken back reference failed.",
