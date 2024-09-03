@@ -106,6 +106,22 @@ class TestCase::Operator::AnonMethod {
       }
     }
     
+    {
+      my $default1 = 7;
+      my $default2 = 10;
+      my $object = [$var1 : int = $default1, $var2 : int = $default2] method : int () {
+        
+        my $total = $var1 + $var2;
+        
+        return $total;
+      };
+      
+      my $total = $object->();
+      unless ($total == 17) {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 

@@ -1524,7 +1524,8 @@ SPVM_OP* SPVM_OP_build_method_definition(SPVM_COMPILER* compiler, SPVM_OP* op_me
           
         if (field->is_decl_var_in_anon_method) {
           
-          const char* var_name = field->op_anon_method_field_default->uv.var->name;
+          char* var_name = SPVM_ALLOCATOR_alloc_memory_block_permanent(compiler->current_each_compile_allocator, strlen(field->name) + 1);
+          sprintf(var_name, "$%s", field->name);
           
           // my $foo = $self->{foo};
           
@@ -1671,6 +1672,14 @@ SPVM_OP* SPVM_OP_build_anon_method_field_definition(SPVM_COMPILER* compiler, SPV
     assert(op_default->id == SPVM_OP_C_ID_VAR);
     
     op_name_field = SPVM_OP_new_op_name(compiler, op_default->uv.var->name + 1, op_default->file, op_default->line);
+    
+    is_decl_var_in_anon_method = 1;
+  }
+  else if (op_name_field->id == SPVM_OP_C_ID_VAR) {
+    
+    assert(op_default->id == SPVM_OP_C_ID_VAR);
+    
+    op_name_field = SPVM_OP_new_op_name(compiler, op_name_field->uv.var->name + 1, op_name_field->file, op_name_field->line);
     
     is_decl_var_in_anon_method = 1;
   }

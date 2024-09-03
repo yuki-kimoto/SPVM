@@ -578,6 +578,12 @@ has_for_anon
       
       $$ = SPVM_OP_build_anon_method_field_definition(compiler, op_field, NULL, $3, $4, $1);
     }
+  | var ':' opt_attributes qualified_type opt_type_comment ASSIGN operator
+    {
+      SPVM_OP* op_field = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_FIELD, $1->file, $1->line);
+      
+      $$ = SPVM_OP_build_anon_method_field_definition(compiler, op_field, $1, $3, $4, $7);
+    }
     
 opt_attributes
   : /* Empty */

@@ -4,6 +4,22 @@
     * Add Comparable interface.
     * Add StringBuffer#cmp method.
     * StringBuffer class has Comparable interface.
+    * Add new syntax for anon method field definition. You can use the varialbe name that is different from the varialbe name of a default value.
+    
+      VAR : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE = OPERAND
+      
+      # Example
+      {
+        my $default1 = 7;
+        my $default2 = 10;
+        my $object = [$var1 : int = $default1, $var2 : int = $default2] method : int () {
+          
+          my $total = $var1 + $var2;
+          
+          return $total;
+        };
+      }
+
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       

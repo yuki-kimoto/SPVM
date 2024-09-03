@@ -610,10 +610,12 @@ I<ANON_METHOD_CLASS_FIELD_DEFINITION_ITEM> are one of
   has FIELD_NAME : TYPE
   has FIELD_NAME : TYPE = OPERAND
   VAR : TYPE
+  VAR : TYPE = OPERAND
   
   has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE
   has FIELD_NAME : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE = OPERAND
   VAR : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE
+  VAR : ATTRIBUTE1 ATTRIBUTE2 ATTRIBUTEn TYPE = OPERAND
 
 I<FIELD_NAME> is a L<field name|SPVM::Document::Language::Tokenization/"Field Name">.
 
@@ -621,7 +623,9 @@ I<TYPE> is a L<type|SPVM::Document::Language::Types/"Types">.
 
 I<OPERAND> is an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
-C<VAR : TYPE> is expaneded to C<has FIELD_NAME : TYPE = OPERAND>. I<FIELD_NAME> is the same as the name of I<VAR>, but C<$> is removed. I<OPERAND> is I<VAR>.
+C<VAR : TYPE = OPERAND> is expaneded to C<has FIELD_NAME : TYPE = OPERAND>. I<FIELD_NAME> is the same as the name of I<VAR>, but C<$> is removed. I<VAR> is declared at the top of this anon method and set to the value of its corresponding field.
+
+C<VAR : TYPE> is the same as above, but expaneded to C<has FIELD_NAME : TYPE = VAR>.
 
 I<ATTRIBUTE> is a L<field attribute|/"Field Attributes">.
 
@@ -656,6 +660,19 @@ Examples:
       my $comparator = (Comparator)[$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
         say "$foo";
         say "$bar";
+      };
+    }
+  }
+
+  # Change variable names
+  class Foo::Bar {
+    method my_method : void () {
+      my $foo = 1;
+      my $bar = 5L;
+      
+      my $comparator = (Comparator)[$foo_x : int = $foo, $bar_x : long = $bar] method : int ($x1 : object, $x2 : object) {
+        say "$foo_x";
+        say "$bar_x";
       };
     }
   }
