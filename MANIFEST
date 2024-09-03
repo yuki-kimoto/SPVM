@@ -218,6 +218,8 @@ lib/SPVM/Cloneable.spvm
 lib/SPVM/Cloner.pm
 lib/SPVM/Cloner.spvm
 lib/SPVM/CommandInfo.pm
+lib/SPVM/Comparable.pm
+lib/SPVM/Comparable.spvm
 lib/SPVM/Comparator.pm
 lib/SPVM/Comparator.spvm
 lib/SPVM/Comparator/Double.pm
