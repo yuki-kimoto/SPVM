@@ -24,7 +24,7 @@ Statements can be written direct under L<scope block|SPVM::Document::Language::C
 
 =head3 if Statement
 
-The C<if> statement is a conditional statement with the following syntax.
+C<if> statement is a conditional statement with the following syntax.
 
   if (CONDITION1) {
     
@@ -39,7 +39,7 @@ The C<if> statement is a conditional statement with the following syntax.
     
   }
 
-The C<elsif> statement and the C<else> statement are optional.
+C<elsif> statement and the C<else> statement are optional.
 
 At first, all C<elsif> statements are expanded to the following code using C<if> - C<else> statements.
 
@@ -60,7 +60,7 @@ At first, all C<elsif> statements are expanded to the following code using C<if>
     }
   }
 
-The C<if> statement is converted to simple C<if> - C<else> statements, so see a simple C<if> - C<else> statement.
+C<if> statement is converted to simple C<if> - C<else> statements, so see a simple C<if> - C<else> statement.
 
   if (CONDITION) {
     
@@ -115,7 +115,7 @@ Examples:
 
 =head3 else Statement
 
-The C<else> statement is a conditional statement used in L<if statement|/"if Statement">.
+C<else> statement is a conditional statement used in L<if statement|/"if Statement">.
 
   if (CONDITION) {
     
@@ -126,7 +126,7 @@ The C<else> statement is a conditional statement used in L<if statement|/"if Sta
 
 =head3 elsif Statement
 
-The C<elsif> statement is a conditional statement used in L<if statement|/"if Statement">.
+C<elsif> statement is a conditional statement used in L<if statement|/"if Statement">.
 
   if (CONDITION1) {
   
@@ -137,13 +137,13 @@ The C<elsif> statement is a conditional statement used in L<if statement|/"if St
 
 =head3 unless Statement
 
-The C<unless> statement is a conditional statement with the following syntax.
+C<unless> statement is a conditional statement with the following syntax.
 
   unless (CONDITION) {
     
   }
 
-The C<unless> statement is expanded to the following code.
+C<unless> statement is expanded to the following code.
 
   if (!CONDITION) {
     
@@ -160,9 +160,9 @@ Examples:
 
 =head3 switch Statement
 
-The C<switch> statement is a conditional statement with the following syntax.
+C<switch> statement is a conditional statement with the following syntax.
   
-  # The switch statement
+  # switch statement
   switch (CONDITION) {
     case CASE1: {
       # ...
@@ -184,7 +184,7 @@ The operand of the case statement I<CASEn> must be a L<character literal|SPVM::D
 
 If I<CASEn> is a L<character literal|SPVM::Document::Language::Tokenization/"Character Literal">, the value is converted to int type at compile-time.
 
-The C<case> statements and the C<default> statement are optional.
+C<case> statements and the C<default> statement are optional.
 
 If I<CONDITION> matches I<CASEn>, the program jumps to the beginning of the case block of I<CASEn>.
 
@@ -277,9 +277,9 @@ Examples:
 
 =head4 case Statement
 
-The C<case> statement specifies a case in L<switch statement|/"switch Statement">.
+C<case> statement specifies a case in L<switch statement|/"switch Statement">.
 
-  # The case statement
+  # case statement
   switch (CONDITION) {
     case CASEn: {
       # ...
@@ -288,9 +288,9 @@ The C<case> statement specifies a case in L<switch statement|/"switch Statement"
 
 =head4 default Statement
 
-The C<default> statement specifies a default case in L<switch statement|/"switch Statement">.
+C<default> statement specifies a default case in L<switch statement|/"switch Statement">.
 
-  # The default statement
+  # default statement
   switch (CONDITION) {
     default: {
       # ...
@@ -299,9 +299,9 @@ The C<default> statement specifies a default case in L<switch statement|/"switch
 
 =head4 break Statement
 
-The C<break> statement makes the program jump to the end of L<switch|/"switch Statement"> block.
+C<break> statement makes the program jump to the end of L<switch|/"switch Statement"> block.
 
-  # The break statement
+  # break statement
   break;
 
 Examples:
@@ -311,7 +311,7 @@ Examples:
   switch ($code) {
     case 3: {
       if ($flag) {
-        # The break statement makes the program jump to the end of the switch block
+        # break statement makes the program jump to the end of the switch block
         break;
       }
       say "3";
@@ -320,15 +320,15 @@ Examples:
       say "Other";
     }
   }
-  # The end of the switch block
+  # end of the switch block
 
 =head2 Loop Statements
 
 =head3 while Statement
 
-The C<while> statement is a loop statement with the following syntax.
+C<while> statement is a loop statement with the following syntax.
 
-  # The while statement
+  # while statement
   while (CONDITION) {
   
   }
@@ -341,7 +341,7 @@ When the program reaches the end of the C<while> block, it jumps to the beginnin
 
 Examples:
 
-  # The while statement
+  # while statement
   my $i = 0;
   while ($i < 5) {
     
@@ -350,7 +350,7 @@ Examples:
     $i++;
   }
 
-The C<while> statement is enclosed by an invisible simple block.
+C<while> statement is enclosed by an invisible simple block.
   
   {
     while (CONDITION) {
@@ -360,22 +360,22 @@ The C<while> statement is enclosed by an invisible simple block.
 
 =head3 next Statement
 
-The C<next> statement makes the program jump to the beginning of the current L<while statement|/"while Statement">.
+C<next> statement makes the program jump to the beginning of the current L<while statement|/"while Statement">.
 
-  # The next statement
+  # next statement
   next;
 
 Examples:
 
   my $i = 0;
   
-  # The beginning of the while statement
+  # beginning of the while statement
   while ($i < 5) {
   
     if ($i == 3) {
       $i++;
       
-      # The next statement makes the program jump to the beginning of the current while statement.
+      # next statement makes the program jump to the beginning of the current while statement.
       next;
     }
     
@@ -385,24 +385,24 @@ Examples:
 
 =head3 last Statement
 
-The C<last> statement makes the program jump to the end of the current L<while statement|/"while Statement">.
+C<last> statement makes the program jump to the end of the current L<while statement|/"while Statement">.
 
-  # The last statement
+  # last statement
   last;
 
 Examples:
 
   while (1) {
-    # The last statement makes the program jump to the end fo the current while statement.
+    # last statement makes the program jump to the end fo the current while statement.
     last;
   }
-  # The end fo the while statement
+  # end fo the while statement
 
 =head3 for Statement
 
-The C<for> statement is a loop statement with the following syntax.
+C<for> statement is a loop statement with the following syntax.
 
-  # The for statement
+  # for statement
   for (INIT; CONDITION; INCREMENT) {
   
   }
@@ -421,7 +421,7 @@ A C<for> statement is expanded to the following code using a L<while statement|/
 
 Exampels:
 
-  # The for statement
+  # for statement
   for (my $i = 0; $i < 5; $i++) {
     say "$i";
   }
@@ -430,7 +430,7 @@ Exampels:
 
 The for-each statement is a loop statement with the following syntax.
   
-  # The for-each statemenet
+  # for-each statemenet
   for my VAR (@ARRAY) {
     
   }
@@ -448,7 +448,7 @@ A for-each statement is expanded to the following code using a L<for statement|/
 
 Example:
 
-  # The for-each statemenet
+  # for-each statemenet
   my $array = [1, 2, 3];
   for my $element (@$array) {
     say "$elemenet";
@@ -482,17 +482,17 @@ The type of I<OPERAND> must satisfy L<assignment requirement|SPVM::Document::Lan
 
 =head2 die Statement
 
-The C<die> statement throws an L<exception|SPVM::Document::Language::ExceptionHandling/"Throwing Exception">.
+C<die> statement throws an L<exception|SPVM::Document::Language::ExceptionHandling/"Throwing Exception">.
   
-  # The die statement
+  # die statement
   die
   die OPERAND_MESSAGE
   
-  # The die statement with an error class
+  # die statement with an error class
   die ERROR_CLASS
   die ERROR_CLASS OPERAND_MESSAGE
   
-  # The die statement with the basic type ID of an error class
+  # die statement with the basic type ID of an error class
   die OPERAND_ERROR_ID, OPERAND_MESSAGE
 
 I<OPERAND_MESSAGE> is a string of string type for an error message. If the exception thrown by the C<die> statement is catched, L<exception variable|SPVM::Document::Language::ExceptionHandling/"Exception Variable"> C<$@> is set to I<OPERAND_MESSAGE> with stack traces added.
@@ -525,7 +525,7 @@ I<OPERAND_ERROR_ID> must be an integer type within int. Otherwise, a compilation
 
 Examples:
   
-  # The die statement with exception handling
+  # die statement with exception handling
   eval {
     die "Error";
   }
@@ -534,10 +534,10 @@ Examples:
     # ...
   }
   
-  # The die statement with an error class
+  # die statement with an error class
   die Error::System "System Error";
   
-  # The die statement with the basic type ID of an error class
+  # die statement with the basic type ID of an error class
   my $error_id = Fn->get_basic_type_id("Error::System");
   die $error_id, "System Error";
 
@@ -545,7 +545,7 @@ Examples:
 
 The operator statement operates an L<operator|SPVM::Document::Language::Operators/"Operators">.
 
-  # The operator statemenet
+  # operator statemenet
   OPERATOR;
 
 Examples:
@@ -560,12 +560,12 @@ Examples:
 
 The empty statement operates nothing.
 
-  # The empty statemenet
+  # empty statemenet
   ;
 
 =head2 require Statement
 
-The C<require> statement loads a class only if it is found.
+C<require> statement loads a class only if it is found.
 
   if (require BASIC_TYPE) {
     
