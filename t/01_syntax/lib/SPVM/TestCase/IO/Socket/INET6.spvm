@@ -1,0 +1,10 @@
+class TestCase::IO::Socket::INET66 {
+  
+  static method test : int () {
+    
+    my $port = 0;
+    
+    [$port : int] method : void () {};
+  }
+  
+}
