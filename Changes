@@ -2,6 +2,8 @@
   [New Features]
     * Add Fn#memcmp method.
     * Add Comparable interface.
+    * Add StringBuffer#cmp method.
+    * StringBuffer class has Comparable interface.
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       

@@ -39,6 +39,8 @@ The charactors in the range that is greater than or equal to L</"length"> field 
 
 L<Cloneable|SPVM::Cloneable>
 
+L<Comparable|SPVM::Comparable>
+
 =back
 
 =head1 Fields
@@ -166,6 +168,14 @@ Sets the string $string.
 C<method clone ();>
 
 Clones this string buffer and returns it.
+
+=head2 cmp
+
+C<method cmp : int ($a : L<StringBuffer|SPVM::StringBuffer>, $b : L<StringBuffer|SPVM::StringBuffer>);>
+
+Compares two L<StringBuffer|SPVM::StringBuffer> and returns its result.
+
+The result is equal to the return value of C<cmp> operator given C<$a-E<gt>to_string> or undef(if $a is undef) and C<$b-E<gt>to_string> or undef(if $b is undef).
 
 =head1 Copyright & License
 

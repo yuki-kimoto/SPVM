@@ -520,4 +520,73 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method cmp : int () {
+    
+    {
+      my $buffer = StringBuffer->new;
+      
+      unless ($buffer isa Comparable) {
+        return 0;
+      }
+      
+      {
+        my $ret = $buffer->cmp(StringBuffer->new("abd"), StringBuffer->new("abc"));
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->cmp(StringBuffer->new("abcd"), StringBuffer->new("abc"));
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->cmp(StringBuffer->new("abb"), StringBuffer->new("abc"));
+        unless ($ret == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->cmp(StringBuffer->new("abc"), StringBuffer->new("abcd"));
+        unless ($ret == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->cmp(StringBuffer->new("abc"), StringBuffer->new("abc"));
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->cmp(undef, undef);
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->cmp(undef, StringBuffer->new(""));
+        unless ($ret == -1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->cmp(StringBuffer->new(""), undef);
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

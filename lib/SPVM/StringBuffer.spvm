@@ -6,6 +6,7 @@ class StringBuffer {
   use Array;
   
   interface Cloneable;
+  interface Comparable;
   
   # Enumerations
   private enum {
@@ -207,4 +208,60 @@ class StringBuffer {
     
     return $clone;
   }
+  
+  method cmp : int ($a : StringBuffer, $b : StringBuffer) {
+    
+    my $cmp = 0;
+    
+    if ($a == undef && $b == undef) {
+      $cmp = 0;
+    }
+    elsif ($a != undef && $b == undef) {
+      $cmp = 1;
+    }
+    elsif ($a == undef && $b != undef) {
+      $cmp = -1;
+    }
+    else {
+      my $a_length = $a->length;
+      my $b_length = $b->length;
+      
+      my $a_string = $a->{string};
+      my $b_string = $b->{string};
+      
+      my $short_length = -1;
+      
+      if ($a_length < $b_length) {
+        $short_length = $a_length;
+      }
+      else {
+        $short_length = $b_length;
+      }
+      
+      my $memcmp_ret = Fn->memcmp($a_string, 0, $b_string, 0, $short_length);
+      
+      if ($memcmp_ret) {
+        if ($memcmp_ret < 0) {
+          $cmp = -1;
+        }
+        else {
+          $cmp = 1;
+        }
+      }
+      elsif ($a_length == $b_length) {
+        $cmp = 0;
+      }
+      else {
+        if ($a_length < $b_length) {
+          $cmp = -1;
+        }
+        else {
+          $cmp = 1;
+        }
+      }
+    }
+    
+    return $cmp;
+  }
+  
 }

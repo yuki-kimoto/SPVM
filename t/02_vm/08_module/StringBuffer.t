@@ -38,10 +38,12 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   
   ok(SPVM::TestCase::Module::StringBuffer->set);
   
+  ok(SPVM::TestCase::Module::StringBuffer->clone);
+  
+  ok(SPVM::TestCase::Module::StringBuffer->cmp);
+  
   # Extra
   ok(SPVM::TestCase::Module::StringBuffer->extra);
-  
-  ok(SPVM::TestCase::Module::StringBuffer->clone);
 }
 
 # All object is freed

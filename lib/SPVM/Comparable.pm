@@ -20,7 +20,7 @@ Comparable interface in L<SPVM> has interface methods to compare two objects.
 
 C<required method cmp : int ($a : object, $b : object);>
 
-An interface method to compare tow objects.
+An interface method to compare two objects.
 
 If $a is greater than $b, returns a positive value.
 
