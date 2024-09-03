@@ -1,0 +1,9 @@
+# Copyright (c) 2024 Yuki Kimoto
+# MIT License
+
+class Comparable : interface_t {
+  
+  # Interface Methods
+  required method cmp : int ($a : object, $b : object);
+  
+}

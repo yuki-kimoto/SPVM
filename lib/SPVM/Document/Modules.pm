@@ -34,6 +34,8 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<CommandInfo|SPVM::CommandInfo>
 
+=item * L<Comparable|SPVM::Comparable>
+
 =item * L<Comparator|SPVM::Comparator>
 
 =item * L<Comparator::Double|SPVM::Comparator::Double>

@@ -1,7 +1,7 @@
 0.990008 2023-09-02
   [New Features]
     * Add Fn#memcmp method.
-    
+    * Add Comparable interface.
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       
