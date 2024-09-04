@@ -1,4 +1,4 @@
-class CompileError::Class::INET66 {
+class CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonFieldXXXXXXX {
   
   static method test : int () {
     

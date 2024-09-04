@@ -24,7 +24,7 @@ use MyTest qw(compile_not_ok_file compile_not_ok);
 
 use Test::More;
 
-use SPVM 'CompileError::Class::INET6';
+use SPVM 'CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonField';
 
 ok(1);
 
