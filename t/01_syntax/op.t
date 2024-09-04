@@ -290,6 +290,7 @@ use Test::More;
     my $source = 'class MyClass { method DESTROY : void ($var : int) { } }';
     compile_not_ok($source, qr/DESTROY method cannnot have arguments/);
   }
+  
 }
 
 # Enumeration
@@ -401,6 +402,11 @@ use Test::More;
   {
     my $source = 'class MyClass { static method main : void () { &INIT(); } }';
     compile_ok($source);
+  }
+  
+  {
+    my $source = 'class MyClass { interface }';
+    compile_not_ok($source, qr|Unexpected token|);
   }
 }
 

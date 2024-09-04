@@ -29,6 +29,10 @@
     
       https://github.com/yuki-kimoto/SPVM/issues/522
     
+    * Fix a bug that the count of memory blocks is wrong.
+      
+      https://github.com/yuki-kimoto/SPVM/issues/521
+      
   [Exception Message Changes]
     * Improve exception messeges in Array class.
     * Improve exception messeges in Fn class.
