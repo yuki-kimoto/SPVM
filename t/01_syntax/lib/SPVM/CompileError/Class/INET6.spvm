@@ -1,4 +1,4 @@
-class TestCase::IO::Socket::INET66 {
+class CompileError::Class::INET66 {
   
   static method test : int () {
     
