@@ -2337,7 +2337,7 @@ SPVM_OP* SPVM_OP_build_type_cast(SPVM_COMPILER* compiler, SPVM_OP* op_type_cast,
   return op_type_cast;
 }
 
-SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_interface_statement(SPVM_COMPILER* compiler, SPVM_OP* op_interface, SPVM_OP* op_type) {
   
   SPVM_INTERFACE* interface = SPVM_INTERFACE_new(compiler);
   op_interface->uv.interface = interface;

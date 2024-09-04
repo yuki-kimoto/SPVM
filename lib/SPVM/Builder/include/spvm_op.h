@@ -412,7 +412,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
 
 SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_basic_type);
 
-SPVM_OP* SPVM_OP_build_implement(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_basic_type);
+SPVM_OP* SPVM_OP_build_interface_statement(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_name_basic_type);
 
 SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_OP* op_invocant, SPVM_OP* op_name_method, SPVM_OP* op_list_operands);
 

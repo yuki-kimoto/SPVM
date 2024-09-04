@@ -386,7 +386,7 @@ allow
 interface
   : INTERFACE basic_type ';'
     {
-      $$ = SPVM_OP_build_implement(compiler, $1, $2);
+      $$ = SPVM_OP_build_interface_statement(compiler, $1, $2);
     }
 
 enumeration
