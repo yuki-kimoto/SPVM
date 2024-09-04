@@ -1477,7 +1477,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           const char* string_literal_begin_ch_ptr = compiler->ch_ptr;
           
-          char* string_literal_tmp;
+          char* string_literal_tmp = NULL;
           int32_t memory_blocks_count_tmp = compiler->current_each_compile_allocator->memory_blocks_count_tmp;
           int32_t string_literal_length = 0;
           if (*(compiler->ch_ptr) == '\'') {
