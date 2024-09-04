@@ -20,13 +20,4 @@ BEGIN {
 use lib "$test_dir_vm/lib";
 use lib "$test_dir/lib";
 
-use MyTest qw(compile_not_ok_file compile_not_ok);
-
-use Test::More;
-
 use SPVM 'CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonField';
-
-ok(1);
-
-done_testing;
-

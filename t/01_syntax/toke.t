@@ -718,6 +718,17 @@ use Test::More;
     my $source = 'class Tmp { static method main : void () { _-123; } }';
     compile_not_ok($source, qr/\n  at .+ line /);
   }
+  
+  {
+    # https://github.com/yuki-kimoto/SPVM/issues/522
+    
+    my $test_file = "$FindBin::Bin/issues/522.pl";
+    
+    eval { do $test_file or die $@ };
+    
+    like ($@, qr|\Q[Compilation Error]The class name "CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonFieldXXXXXXX" must be "CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonField".|);
+  }
+  
 }
 
 

@@ -24,7 +24,11 @@
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       
       https://github.com/yuki-kimoto/SPVM/issues/541
-      
+    
+    * Fix a bug that a case of compilation error causes segmentation fault.
+    
+      https://github.com/yuki-kimoto/SPVM/issues/522
+    
   [Exception Message Changes]
     * Improve exception messeges in Array class.
     * Improve exception messeges in Fn class.
