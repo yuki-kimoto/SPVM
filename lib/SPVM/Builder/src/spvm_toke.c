@@ -2840,6 +2840,10 @@ int32_t SPVM_TOKE_load_class_file(SPVM_COMPILER* compiler) {
     }
   }
   
+  if (!(compiler->error_messages->length == 0)) {
+    return 0;
+  }
+  
   return 1;
 }
 

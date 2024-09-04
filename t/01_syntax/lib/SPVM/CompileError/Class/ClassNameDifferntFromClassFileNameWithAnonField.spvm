@@ -4,7 +4,7 @@ class CompileError::Class::ClassNameDifferntFromClassFileNameWithAnonFieldXXXXXX
     
     my $port = 0;
     
-    [$port : int] method : void () {};
+    [has port : int = $port] method : void () {};
   }
   
 }
