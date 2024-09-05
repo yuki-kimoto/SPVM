@@ -5541,8 +5541,6 @@ class TestCase::Module::Fn {
           
           my $ret = Fn->memcmp($data1, 1 * 4, $data2, 2 * 4, 3 * 4);
           
-          warn $ret;
-          
           unless ($ret < 0) {
             return 0;
           }
@@ -5602,9 +5600,162 @@ class TestCase::Module::Fn {
     }
     
     $@ = undef;
-
     
     return 1;
   }
-
+  
+  static method reverse_inplace : int () {
+    
+    # Numeric array
+    {
+      {
+        my $array = [1, 3, 2];
+        
+        Fn->reverse_inplace($array);
+        
+        unless (Array->equals_int($array, [2, 3, 1])) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $array = [1, 3, 2, 4];
+        
+        Fn->reverse_inplace($array);
+        
+        unless (Array->equals_int($array, [4, 2, 3, 1])) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    # Multi-numeric array
+    {
+      {
+        my $array = new Complex_2d[3];
+        
+        $array->[0]{re} = 1;
+        $array->[0]{im} = 11;
+        $array->[1]{re} = 3;
+        $array->[1]{im} = 33;
+        $array->[2]{re} = 2;
+        $array->[2]{im} = 22;
+        
+        Fn->reverse_inplace($array);
+        
+        unless ($array->[0]{re} == 2) {
+          return 0;
+        }
+        
+        unless ($array->[0]{im} == 22) {
+          return 0;
+        }
+        unless ($array->[1]{re} == 3) {
+          return 0;
+        }
+        unless ($array->[1]{im} == 33) {
+          return 0;
+        }
+        unless ($array->[2]{re} == 1) {
+          return 0;
+        }
+        unless ($array->[2]{im} == 11) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    # String
+    {
+      {
+        my $string = (mutable string)copy "abc";
+        
+        Fn->reverse_inplace($string);
+        
+        unless ($string eq "cba") {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $string = (mutable string)copy "abcd";
+        
+        Fn->reverse_inplace($string);
+        
+        unless ($string eq "dcba") {
+          return 0;
+        }
+        
+      }
+      
+    }
+    
+    # Object array
+    {
+      {
+        my $array = [(string)1, 3, 2];
+        
+        Fn->reverse_inplace($array);
+        
+        unless (Array->equals_string($array, [(string)2, 3, 1])) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $array = [(string)1, 3, 2, 4];
+        
+        Fn->reverse_inplace($array);
+        
+        unless (Array->equals_string($array, [(string)4, 2, 3, 1])) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $array = [(string)1, 3, 2];
+        
+        eval { Fn->reverse_inplace(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $array = Int->new(1);
+        
+        eval { Fn->reverse_inplace($array); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = "abc";
+        
+        eval { Fn->reverse_inplace($array); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

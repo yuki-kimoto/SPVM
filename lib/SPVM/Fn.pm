@@ -1357,6 +1357,20 @@ $data1_offset + $length must be less than or equal to the length of $data1. Othe
 
 $data2_offset + $length must be less than or equal to the length of $data2. Otherwise an exception is thrown.
 
+=head2 reverse_inplace
+
+C<static method reverse_inplace : void ($array_or_string : object);>
+
+Reverses the elements in the array $array_or_string or the characters in the string $array_or_string in-place.
+
+Exceptions:
+
+$array_or_string must be defined. Otherwise an exception is thrown.
+
+The type of $array_or_string must be an array type or string type. Otherwise an exception is thrown.
+
+The string $array_or_string must not be read-only. Otherwise an exception is thrown.
+
 =head1 See Also
 
 =over 2

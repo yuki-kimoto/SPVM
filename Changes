@@ -19,6 +19,7 @@
           return $total;
         };
       }
+    * Add Fn#reverse_inplace method.
 
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.

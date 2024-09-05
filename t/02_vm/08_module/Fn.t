@@ -201,6 +201,7 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->memcmp);
     
+    ok(SPVM::TestCase::Module::Fn->reverse_inplace);
   }
   
   # Extra

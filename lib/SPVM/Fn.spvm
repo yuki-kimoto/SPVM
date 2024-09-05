@@ -1410,4 +1410,66 @@ class Fn {
   
   native static method memcmp : int ($data1 : object, $data1_offset : int, $data2 : object, $data2_offset : int, $length : int);
   
+  static method reverse_inplace : void ($array_or_string : object) {
+    
+    unless ($array_or_string) {
+      die "\$array_or_string must be defined.";
+    }
+    
+    unless (&is_array($array_or_string ) || $array_or_string  is_type string) {
+      die "The type of \$array_or_string must be an array type or string type.";
+    }
+    
+    if ($array_or_string is_type string) {
+      
+      my $string = (mutable string)$array_or_string;
+      
+      if (is_read_only $string) {
+        die "The string \$array_or_string must not be read-only.";
+      }
+      
+      my $length = length $string;
+      
+      for (my $i = 0; $i < $length / 2; $i++) {
+        my $temp = $string->[$i];
+        $string->[$i] = $string->[$length - $i - 1];
+        $string->[$length - $i - 1] = $temp;
+      }
+    }
+    elsif (&is_object_array($array_or_string)) {
+      
+      my $object_array = (object[])$array_or_string;
+      
+      my $length = @$object_array;
+      
+      for (my $i = 0; $i < $length / 2; $i++) {
+        my $temp = $object_array->[$i];
+        $object_array->[$i] = $object_array->[$length - $i - 1];
+        $object_array->[$length - $i - 1] = $temp;
+      }
+    }
+    elsif (&is_any_numeric_array($array_or_string) || $array_or_string is_type string) {
+      
+      my $array = $array_or_string;
+      
+      my $length = &array_length($array);
+      
+      my $elem_size = &get_elem_size($array);
+      
+      my $temp = new byte[$elem_size];
+      
+      for (my $i = 0; $i < $length / 2; $i++) {
+        
+        &memcpy($temp, 0, $array, $elem_size * $i, $elem_size);
+        
+        &memcpy($array, $elem_size * $i, $array, $elem_size * ($length - $i - 1), $elem_size);
+        
+        &memcpy($array, $elem_size * ($length - $i - 1), $temp, 0, $elem_size);
+      }
+    }
+    else {
+      die "[Unpexpected Error]Invalid array type.";
+    }
+  }
+  
 }
