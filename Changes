@@ -20,7 +20,12 @@
         };
       }
     * Add Fn#reverse_inplace method.
-
+    
+    [Exception Message Improvement]
+      * Exception messages in Native::MethodCall#call method are improved.
+      
+      https://github.com/yuki-kimoto/SPVM/issues/528
+      
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       

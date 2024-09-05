@@ -777,6 +777,35 @@ class TestCase::Module::Native::MethodCall {
       }
     }
     
+    # Exceptions
+    {
+      {
+        my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_byte");
+        
+        {
+          eval { $class_method_call->call([(object)(byte)Fn->BYTE_MIN]); }
+          
+          unless (Fn->contains($@, "TestCase::Module::Native::MethodCall#add_byte method")) {
+            return 0;
+          }
+        }
+      }
+      
+      {
+        my $class_method_call = Native::MethodCall->new_class_method("TestCase::Module::Native::MethodCall", "add_byte");
+        
+        {
+          eval { $class_method_call->call([(object)(byte)Fn->BYTE_MIN, 1, 2]); }
+          
+          unless (Fn->contains($@, "TestCase::Module::Native::MethodCall#add_byte method")) {
+            return 0;
+          }
+        }
+      }
+    }
+    
+    $@ = undef;
+    
     return 1;
   }
   
