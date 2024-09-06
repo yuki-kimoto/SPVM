@@ -1375,7 +1375,7 @@ class Array {
       }
     }
     else {
-      die "The type of the \$array must be a numeric array type, a multi-numeric array type, or string type";
+      die "The type of the \$array must be a numeric array type, a multi-numeric array type, or string array type";
     }
     
     return $equals;
