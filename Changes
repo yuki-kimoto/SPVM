@@ -20,6 +20,7 @@
         };
       }
     * Add Fn#reverse_inplace method.
+    * Add Array#equals method.
     
     [Exception Message Improvement]
       * Exception messages in Native::MethodCall#call method are improved.
