@@ -1472,4 +1472,19 @@ class Fn {
     }
   }
   
+  static method is_string_array : int ($object : object) {
+    
+    my $is_string_array = 0;
+    
+    if ($object) {
+      my $type_name = type_name $object;
+      
+      if ($type_name eq "string[]") {
+        $is_string_array = 1;
+      }
+    }
+    
+    return $is_string_array;
+  }
+  
 }

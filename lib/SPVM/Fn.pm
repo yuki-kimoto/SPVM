@@ -1371,6 +1371,12 @@ The type of $array_or_string must be an array type or string type. Otherwise an 
 
 The string $array_or_string must not be read-only. Otherwise an exception is thrown.
 
+=head2 is_string_array
+
+C<static method is_string_array : int ($object : object)>
+
+If $object is defined and the type of $object is string array type C<string[]>, returns 1, otherwise returns 0.
+
 =head1 See Also
 
 =over 2

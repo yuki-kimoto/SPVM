@@ -202,6 +202,8 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->memcmp);
     
     ok(SPVM::TestCase::Module::Fn->reverse_inplace);
+    
+    ok(SPVM::TestCase::Module::Fn->is_string_array);
   }
   
   # Extra

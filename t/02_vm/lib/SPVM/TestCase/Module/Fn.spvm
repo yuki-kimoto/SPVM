@@ -1430,16 +1430,16 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-
+    
     return 1;
   }
-
+  
   static method is_blank : int () {
-
+    
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-
+      
       if ($char >= ' ' ||  $char <= '\t') {
         my $ret = Fn->is_blank($char);
         unless ($ret == 1) {
@@ -5758,4 +5758,71 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  
+  static method is_string_array : int () {
+    
+    # Array
+    {
+      my $array = new byte[3];
+      
+      if (Fn->is_string_array($array)) {
+        return 0;
+      }
+    }
+    
+    # string
+    {
+      my $string = "abc";
+      
+      if (Fn->is_string_array($string)) {
+        return 0;
+      }
+    }
+    
+    # string[]
+    {
+      my $string = ["abc"];
+      
+      unless (Fn->is_string_array($string)) {
+        return 0;
+      }
+    }
+    
+    # string[]. Cast to object[]
+    {
+      my $string = (object[])["abc"];
+      
+      unless (Fn->is_string_array($string)) {
+        return 0;
+      }
+    }
+    
+    # object[]
+    {
+      my $string = [(object)"abc"];
+      
+      if (Fn->is_string_array($string)) {
+        return 0;
+      }
+    }
+    
+    # Object
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      if (Fn->is_string_array($minimal)) {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      if (Fn->is_string_array(undef)) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
