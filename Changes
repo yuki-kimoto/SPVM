@@ -31,6 +31,7 @@
     
     [Internal Changes]
       * Rename SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY to SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING.
+      * SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY checks if the type is string type.
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       
