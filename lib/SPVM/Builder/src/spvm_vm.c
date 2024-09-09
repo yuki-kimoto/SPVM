@@ -404,7 +404,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         SPVM_IMPLEMENT_MOVE_OBJECT_WITH_TYPE_CHECK(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], dist_basic_type, dist_type_dimension, &error_id);
         break;
       }
-      case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY: {
+      case SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY_STRING: {
         SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING(env, stack, &object_vars[opcode->operand0], object_vars[opcode->operand1], &error_id);
         break;
       }
