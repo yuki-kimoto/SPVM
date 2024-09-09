@@ -38,6 +38,14 @@ use Test::More;
     my $source = 'class MyClass { static method main : void () { [undef]; } }';
     compile_not_ok($source, qr'The first element in the array initialization must be defined');
   }
+  
+  {
+    my $source = [
+      'class MyClass { static method main : int () { my $options = new object[0]; [(object)$options]; }  }',
+    ];
+    compile_ok($source);
+  }
+  
 }
 
 # next
@@ -1612,6 +1620,13 @@ EOS
       qq|class $class_name_y { }|,
     ];
     compile_not_ok($source, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX type cannot be assigned to YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY type in assignment operator.');
+  }
+  
+  {
+    my $source = [
+      'class MyClass { static method main : int () { my $options = new object[0]; [(object)$options]; }  }',
+    ];
+    compile_ok($source);
   }
   
 }
