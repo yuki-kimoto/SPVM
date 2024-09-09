@@ -2175,6 +2175,30 @@ class TestCase::Operator::TypeCast {
       }
     }
     
+    {
+      my $string = (object)"abc";
+      
+      eval { (mutable string)$string; }
+      
+      unless (Fn->contains($@, "A read-only string cannnot be cast to mutable string type.")) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $string = (object)"abc";
+      
+      my $string2 = (string)$string;
+    }
+    
+    {
+      my $string = (object)copy "abc";
+      
+      my $string2 = (mutable string)$string;
+    }
+    
+    $@ = undef;
     
     return 1;
   }

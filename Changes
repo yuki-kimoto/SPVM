@@ -33,6 +33,7 @@
     * Rename SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY to SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING.
     * Rename SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY to SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY_STRING.
     * SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY checks if the type is string type.
+  
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       
@@ -45,7 +46,17 @@
     * Fix a bug that the count of memory blocks is wrong.
       
       https://github.com/yuki-kimoto/SPVM/issues/521
+    
+    * Fix th bug that (mutable string)$object cast does not throw an exception when $object is read-only.
       
+      https://github.com/yuki-kimoto/SPVM/issues/565
+  
+  [Incompatible Changes]
+  
+    * The fix https://github.com/yuki-kimoto/SPVM/issues/565 cause an incompatible changes.
+    
+      An exception is thrown if your code contains (mutable string)$object and $object is a read-only string.
+    
   [Exception Message Changes]
     * Improve exception messeges in Array class.
     * Improve exception messeges in Fn class.
