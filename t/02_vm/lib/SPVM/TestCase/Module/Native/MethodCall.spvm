@@ -1081,4 +1081,39 @@ class TestCase::Module::Native::MethodCall {
     
     return 1;
   }
+  
+  static method new_proto : int () {
+    
+    {
+      my $point = Point->new(1, 2);
+      
+      my $ret = (Point)Native::MethodCall->new_proto($point, [(object)2, 3]);
+      
+      unless ($ret is_type Point) {
+        return 0;
+      }
+      
+      unless ($ret->x == 2) {
+        return 0;
+      }
+      
+      unless ($ret->y == 3) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+      eval { Native::MethodCall->new_proto(undef, [(object)2, 3]); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
 }

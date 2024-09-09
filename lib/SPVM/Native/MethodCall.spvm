@@ -65,4 +65,16 @@ class Native::MethodCall {
   
   native method set_exception : void ($exception : string);
   
+  static method new_proto : object ($proto : object, $args : object[] = undef, $error_id_ref : int[] = undef) {
+    
+    unless ($proto) {
+      die "The prototype object \$proto must be defined.";
+    }
+    
+    my $class_name = type_name $proto;
+    
+    my $object = Native::MethodCall->call_class_method($class_name, "new", $args, $error_id_ref);
+    
+    return $object;
+  }
 }
