@@ -24,14 +24,14 @@
     * Add Fn#is_string_array method.
     * Add Native::MethodCall#new_proto method.
     
-    [Exception Message Improvement]
-      * Exception messages in Native::MethodCall#call method are improved.
-      
-      https://github.com/yuki-kimoto/SPVM/issues/528
+  [Exception Message Improvement]
+    * Exception messages in Native::MethodCall#call method are improved.
     
-    [Internal Changes]
-      * Rename SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY to SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING.
-      * SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY checks if the type is string type.
+    https://github.com/yuki-kimoto/SPVM/issues/528
+  
+  [Internal Changes]
+    * Rename SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY to SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING.
+    * SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY checks if the type is string type.
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       
