@@ -1618,11 +1618,13 @@ An L<exception|SPVM::Document::Language::ExceptionHandling/"Exception Handling">
 
 The warning message is printed to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
 
-See L<Garbage Collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection"> about garbage collection.
+If the reference count of an object is 0, the destructor method in the class of the object is called.
 
-A call to a destructor creates a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> for the destructor.
+In this time, the return value and an exception variable in the current L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> is saved before the call to the destructor method, and restore it after the call.
 
 So, the exception variable in the current runtime stack cannot be changed in a destructor.
+
+See L<Garbage Collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection"> about garbage collection.
 
 Compilation Errors:
 
