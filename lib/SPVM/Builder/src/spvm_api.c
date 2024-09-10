@@ -4149,13 +4149,9 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             if (error_id) {
               void* exception = SPVM_API_get_exception(env, stack);
               
-              const char* exception_chars = NULL;
-              if (exception) {
-                exception_chars = SPVM_API_get_chars(env, stack, exception);
-              }
-              else {
-                exception_chars = "Error.";
-              }
+              assert(exception);
+              
+              const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
               
               fprintf(runtime->spvm_stderr, "[An exception thrown in DESTROY method is converted to a warning]\n%s\n", exception_chars);
             }
