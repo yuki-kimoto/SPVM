@@ -4,7 +4,8 @@
       
       * Use a new runtime stack for DESTROY method instead of using the current runtime stack.
     
-  
+  [Internal Changes]
+    * Improve runtime save/restore logic in destructor.
 0.990008 2023-09-10
   [New Features]
     * Add Fn#memcmp method.

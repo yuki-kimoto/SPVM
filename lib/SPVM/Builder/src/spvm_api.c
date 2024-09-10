@@ -4134,10 +4134,10 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           // Call destructor
           if (released_object_basic_type->destructor_method) {
             
-            SPVM_VALUE save_stack0 = stack[0];
-            SPVM_OBJECT* save_exception = SPVM_API_get_exception(env, stack);
-            SPVM_OBJECT* save_exception_referent = NULL;
-            SPVM_API_assign_object(env, stack, &save_exception_referent, save_exception);
+            // Save return value and exception variable
+            SPVM_VALUE save_stack_ret = stack[0];
+            void* save_stack_exception_var = stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval;
+            stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = NULL;
             
             SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, released_object_basic_type, released_object_basic_type->destructor_method->index);
             
@@ -4156,10 +4156,11 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
               fprintf(runtime->spvm_stderr, "[An exception thrown in DESTROY method is converted to a warning message]\n%s\n", exception_chars);
             }
             
-            // Restore stack and exception
-            stack[0] = save_stack0;
-            SPVM_API_set_exception(env, stack, save_exception);
-            SPVM_API_assign_object(env, stack, &save_exception_referent, NULL);
+            SPVM_API_set_exception(env, stack, NULL);
+            
+            // Restore return value and exception variable
+            stack[0] = save_stack_ret;
+            stack[SPVM_API_C_STACK_INDEX_EXCEPTION].oval = save_stack_exception_var;
           }
           
           // Free released_object fields
