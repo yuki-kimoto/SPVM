@@ -1126,7 +1126,7 @@ This method is a class method that has an argument.
 
 If the type of the class variable is byte type or short type, the argument type is int type. Otherwise, it is the same type as the class variable.
 
-The return type is the void type.
+The return type is void type.
 
 The method name is the same as the class variable name, but C<$> is removed and C<SET_> is added to the beginning of it. For example, if the class variable name is C<$FOO>, the method name is C<SET_FOO>.
 
@@ -1308,7 +1308,7 @@ This method is an instance method that has an argument.
 
 If the type of the field is byte type or short type, the argument type is int type. Otherwise, it is the same type as the field.
 
-The return type is the void type.
+The return type is void type.
 
 The method name is the same as the field name, but C<set_> is added to the beginning of it. For example, if the field name is C<foo>, the method name is C<set_foo>.
 
@@ -1397,7 +1397,7 @@ The count of I<ARGS> must be less than or equal to 255. Otherwise, a compilation
 
 I<ARG_TYPE> must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types">, an L<object type|SPVM::Document::Language::Types/"Object Types">, or a L<reference type|SPVM::Document::Language::Types/"Reference Types">. Otherwise, a compilation error occurs.
 
-I<RETURN_TYPE> must be the void type, a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">. Otherwise, a compilation error occurs.
+I<RETURN_TYPE> must be void type, a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">, a L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> or an L<object type|SPVM::Document::Language::Types/"Object Types">. Otherwise, a compilation error occurs.
 
 Methods other than interface methods and native methods must have a method block. Otherwise, a compilation error occurs.
 
@@ -1553,7 +1553,7 @@ A C<INIT> block defines a C<INIT> method to be executed just after the program s
 
 A C<INIT> method has no arguments.
 
-The return type of a C<INIT> method is the void type.
+The return type of a C<INIT> method is void type.
 
 If a C<INIT> method is not defined in a class, a C<INIT> method without statements is defined.
 
@@ -1612,11 +1612,17 @@ The name of a destructor is C<DESTROY>.
 
 A destructor has no arguments.
 
-The retrun type is the void type.
+The retrun type is void type.
 
-If an L<exception|SPVM::Document::Language::ExceptionHandling/"Exception Handling"> is thrown in a destructor, the exception is not thrown. Instead, a warning message is output to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+An L<exception|SPVM::Document::Language::ExceptionHandling/"Exception Handling"> thrown in a destructor is converted to a warning message.
 
-See also L<Garbage Collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection">.
+The warning message is printed to L<SPVM's standard error|SPVM::Document::Language::System/"Standard Streams">.
+
+See L<Garbage Collection|SPVM::Document::Language::GarbageCollection/"Garbage Collection"> about garbage collection.
+
+A call to a destructor creates a new L<runtime stack|SPVM::Document::NativeClass/"Runtime Stack"> for the destructor.
+
+So, the exception variable in the current runtime stack cannot be changed in a destructor.
 
 Compilation Errors:
 
@@ -1626,9 +1632,9 @@ The name of a destructor must be C<DESTROY>. Otherwise, a compilation error occu
 
 If a destructor has arguments, a compilation error occurs.
 
-The retrun type must be the void type. Otherwise, a compilation error occurs.
+The retrun type must be void type. Otherwise, a compilation error occurs.
 
-If two or more destructor are defined, a compilation error occurs.
+If two or more destructors are defined, a compilation error occurs.
 
 Examples:
   
@@ -1701,7 +1707,7 @@ A bootstrap method is a method where a program start.
 
 The method name is C<main>.
 
-The return type is the void type.
+The return type is void type.
 
 It has no arguments.
 
