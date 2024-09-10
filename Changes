@@ -1,4 +1,11 @@
-0.990008 2023-09-02
+0.990009 2023-09-11
+  [Revert]
+    * Revert the following change in 0.990008 for performance degradation.
+      
+      * Use a new runtime stack for DESTROY method instead of using the current runtime stack.
+    
+  
+0.990008 2023-09-10
   [New Features]
     * Add Fn#memcmp method.
     * Add Comparable interface.
@@ -33,7 +40,7 @@
     * Rename SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY to SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY_STRING.
     * Rename SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY to SPVM_OPCODE_C_ID_MOVE_OBJECT_CHECK_READ_ONLY_STRING.
     * SPVM_IMPLEMENT_MOVE_OBJECT_CHECK_READ_ONLY checks if the type is string type.
-  
+    * Use a new runtime stack for DESTROY method instead of using the current runtime stack.
   [Bug Fix]
     * Fix a bug that the creation of multi dimensional array of any object by new operator is allowed.
       
