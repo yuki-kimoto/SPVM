@@ -6,6 +6,10 @@
     
   [Internal Changes]
     * Improve runtime save/restore logic in destructor.
+    * Add the following enum values in spvm_api.h
+      SPVM_API_C_STACK_INDEX_TMP_BUFFER = 256,
+      SPVM_API_C_TMP_BUFFER_SIZE = 512,
+
 0.990008 2023-09-10
   [New Features]
     * Add Fn#memcmp method.
