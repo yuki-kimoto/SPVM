@@ -4134,26 +4134,32 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
           // Call destructor
           if (released_object_basic_type->destructor_method) {
             
-            SPVM_VALUE* destructor_stack = env->new_stack(env);
+            SPVM_VALUE save_stack0 = stack[0];
+            SPVM_OBJECT* save_exception = SPVM_API_get_exception(env, stack);
+            SPVM_OBJECT* save_exception_referent = NULL;
+            SPVM_API_assign_object(env, stack, &save_exception_referent, save_exception);
             
             SPVM_RUNTIME_METHOD* destructor_method = SPVM_API_BASIC_TYPE_get_method_by_index(env->runtime, released_object_basic_type, released_object_basic_type->destructor_method->index);
             
-            destructor_stack[0].oval = released_object;
+            stack[0].oval = released_object;
             int32_t args_width = 1;
-            int32_t error_id = SPVM_API_call_method(env, destructor_stack, destructor_method, args_width);
+            int32_t error_id = SPVM_API_call_method(env, stack, destructor_method, args_width);
             
             // An exception thrown in a destructor is converted to a warning
             if (error_id) {
-              void* exception = SPVM_API_get_exception(env, destructor_stack);
+              void* exception = SPVM_API_get_exception(env, stack);
               
               assert(exception);
               
-              const char* exception_chars = SPVM_API_get_chars(env, destructor_stack, exception);
+              const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
               
-              fprintf(runtime->spvm_stderr, "[An exception thrown in DESTROY method is converted to a warning message]\n%s\n", exception_chars);
+              fprintf(runtime->spvm_stderr, "[An exception thrown in DESTROY method is converted to a warning]\n%s\n", exception_chars);
             }
             
-            env->free_stack(env, destructor_stack);
+            // Restore stack and exception
+            stack[0] = save_stack0;
+            SPVM_API_set_exception(env, stack, save_exception);
+            SPVM_API_assign_object(env, stack, &save_exception_referent, NULL);
           }
           
           // Free released_object fields
