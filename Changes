@@ -61,7 +61,7 @@
     * Improve exception messeges in Array class.
     * Improve exception messeges in Fn class.
     * Improve exception messages in spvmcc command.
-  
+    * Improve an exception message "[An exception thrown in DESTROY method is coverted to a warning]".
   [Changes]
     * Fix a potensial bug that an exception message is not set in a destructor.
     
