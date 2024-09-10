@@ -1,5 +1,3 @@
-assign
-assign_object
 benchmark/benchmark-synopsys.pl
 benchmark/lib/SPVM/MyMath.spvm
 benchmark/lib/SPVM/MyMathNative.c
