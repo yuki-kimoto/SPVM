@@ -4145,10 +4145,18 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             int32_t args_width = 1;
             int32_t error_id = SPVM_API_call_method(env, stack, destructor_method, args_width);
             
-            // Exception in destructor is changed to warning
+            // An exception thrown in a destructor is changed to a warning
             if (error_id) {
               void* exception = SPVM_API_get_exception(env, stack);
-              const char* exception_chars = SPVM_API_get_chars(env, stack, exception);
+              
+              const char* exception_chars = NULL;
+              if (exception) {
+                exception_chars = SPVM_API_get_chars(env, stack, exception);
+              }
+              else {
+                exception_chars = "Error.";
+              }
+              
               fprintf(runtime->spvm_stderr, "[The following exception is coverted to a warning because it is thrown in the DESTROY method]\n%s\n", exception_chars);
             }
             

@@ -61,6 +61,10 @@
     * Improve exception messeges in Array class.
     * Improve exception messeges in Fn class.
     * Improve exception messages in spvmcc command.
+  
+  [Changes]
+    * Fix a potensial bug that an exception message is not set in a destructor.
+    
 0.990007 2023-09-02
   [New Features]
     * Add StringBuffer#clone method.
