@@ -1581,7 +1581,7 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   
   va_list args;
   
-  char* message_with_line = (char*)SPVM_API_new_memory_block(env, stack, 512);
+  char* message_with_line = (char*)&stack[SPVM_API_C_STACK_INDEX_TMP_BUFFER];
   int32_t message_length = strlen(message);
   if (message_length > 255) {
     message_length = 255;
@@ -1589,18 +1589,18 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   memcpy(message_with_line, message, message_length);
   const char* place = "\n    %s at %s line %d";
   memcpy(message_with_line + message_length, place, strlen(place));
+  message_with_line[message_length + strlen(place)] = '\0';
   
-  void* exception = SPVM_API_new_string_no_mortal(env, stack, NULL, 512);
+  assert(message_length + strlen(place) <= SPVM_API_C_TMP_BUFFER_SIZE);
+  
+  void* exception = SPVM_API_new_string_no_mortal(env, stack, NULL, SPVM_API_C_TMP_BUFFER_SIZE);
   char* exception_chars = (char*)SPVM_API_get_chars(env, stack, exception);
   
   va_start(args, message);
-  vsnprintf(exception_chars, 512, message_with_line, args);
+  vsnprintf(exception_chars, SPVM_API_C_TMP_BUFFER_SIZE, message_with_line, args);
   va_end(args);
   
   SPVM_API_shorten(env, stack, exception, strlen(exception_chars));
-  
-  SPVM_API_free_memory_block(env, stack, message_with_line);
-  message_with_line = NULL;
   
   SPVM_API_set_exception(env, stack, exception);
   
