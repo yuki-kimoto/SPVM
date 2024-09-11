@@ -1613,7 +1613,8 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Arguments and return values : 0-255
-  // Stack local varialbe : 256-511
+  // Temporary buffer and stack local varialbe : 256-511
+  //   Temporary buffer 256(to byte size 512)
   //   Exception message 511
   //   Mortal stack 510
   //   Motal stack top 509
