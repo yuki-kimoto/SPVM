@@ -177,9 +177,6 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
   int32_t object_ref_count_offset = env->api->runtime->get_object_ref_count_offset(env->runtime);
   int32_t object_length_offset = env->api->runtime->get_object_length_offset(env->runtime);
   
-  // Temporary buffer for string-to-numeric convertion and exception messages
-  char tmp_buffer[256];
-  
   int32_t native_scope_id = env->enter_scope(env, stack);
   
   // Execute operation codes
@@ -2017,27 +2014,27 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_BYTE_TO_STRING: {
-        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(env, stack, &object_vars[opcode->operand0], byte_vars[opcode->operand1], tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_TYPE_CONVERSION_BYTE_TO_STRING(env, stack, &object_vars[opcode->operand0], byte_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_SHORT_TO_STRING: {
-        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(env, stack, &object_vars[opcode->operand0], short_vars[opcode->operand1], tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_TYPE_CONVERSION_SHORT_TO_STRING(env, stack, &object_vars[opcode->operand0], short_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_INT_TO_STRING: {
-        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(env, stack, &object_vars[opcode->operand0], int_vars[opcode->operand1], tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_TYPE_CONVERSION_INT_TO_STRING(env, stack, &object_vars[opcode->operand0], int_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_LONG_TO_STRING: {
-        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(env, stack, &object_vars[opcode->operand0], long_vars[opcode->operand1], tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_TYPE_CONVERSION_LONG_TO_STRING(env, stack, &object_vars[opcode->operand0], long_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_FLOAT_TO_STRING: {
-        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(env, stack, &object_vars[opcode->operand0], float_vars[opcode->operand1], tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_TYPE_CONVERSION_FLOAT_TO_STRING(env, stack, &object_vars[opcode->operand0], float_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_DOUBLE_TO_STRING: {
-        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(env, stack, &object_vars[opcode->operand0], double_vars[opcode->operand1], tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_TYPE_CONVERSION_DOUBLE_TO_STRING(env, stack, &object_vars[opcode->operand0], double_vars[opcode->operand1]);
         break;
       }
       case SPVM_OPCODE_C_ID_TYPE_CONVERSION_STRING_TO_BYTE: {
@@ -2389,7 +2386,7 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
         
         const char* basic_type_name = method->current_basic_type->name;
         
-        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, basic_type_name, method_name, args_width, &error_id, tmp_buffer, sizeof(tmp_buffer));
+        SPVM_IMPLEMENT_CALL_INSTANCE_METHOD(env, stack, basic_type_name, method_name, args_width, &error_id);
         break;
       }
     }
