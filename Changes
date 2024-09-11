@@ -9,6 +9,7 @@
     * Add the following enum values in spvm_api.h
       SPVM_API_C_STACK_INDEX_TMP_BUFFER = 256,
       SPVM_API_C_TMP_BUFFER_SIZE = 512,
+      SPVM_API_C_STACK_LENGTH = 512,
    * Use snprintf instead of sprintf in all places in SPVM_API_dump_recursive function in spvm_api.c.
    * Use the temporary buffer of the runtime stack in SPVM_API_dump_recursive function in spvm_api.c.
    * Use the temporary buffer of the runtime stack in SPVM_API_new_stack_trace_no_mortal function in spvm_api.c.

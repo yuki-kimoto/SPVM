@@ -1620,7 +1620,7 @@ SPVM_VALUE* SPVM_API_new_stack(SPVM_ENV* env) {
   //   Motal stack top 509
   //   Motal stack capacity 508
   
-  SPVM_VALUE* stack = env->new_memory_block(env, NULL, sizeof(SPVM_VALUE) * 512);
+  SPVM_VALUE* stack = env->new_memory_block(env, NULL, sizeof(SPVM_VALUE) * SPVM_API_C_STACK_LENGTH);
   
   int32_t native_mortal_stack_capacity = 1;
   void* native_mortal_stack = SPVM_API_new_memory_block(env, stack, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
