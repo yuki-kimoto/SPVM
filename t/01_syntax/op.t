@@ -187,8 +187,12 @@ use Test::More;
     compile_not_ok($source, qr/Redeclaration of MyClass#foo method/);
   }
   {
-    my $source = 'class MyClass : mulnum_t { method foo : void () { } }';
-    compile_not_ok($source, qr/A multi-numeric type cannnot have methods/);
+    my $source = 'class MyClass_2d : mulnum_t { has re : double; has im : double; method foo : void () { } }';
+    compile_not_ok($source, qr/A multi-numeric type cannnot have instance methods/);
+  }
+  {
+    my $source = 'class MyClass_2d : mulnum_t { has re : double; has im : double; static method foo : void () { } }';
+    compile_ok($source);
   }
   {
     my $source = 'class MyClass : mulnum_t { our $FOO : int; }';

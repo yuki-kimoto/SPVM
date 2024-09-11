@@ -709,21 +709,28 @@ A L<multi-numeric type|SPVM::Document::Language::Types/"Multi-Numeric Types"> is
 
   class CLASS_NAME : mulnum_t {
     
+    has FIELD_NAME1 : NUMERIC_TYPE;
+    has FIELD_NAME2 : NUMERIC_TYPE;
+    has FIELD_NAMEn : NUMERIC_TYPE;
   }
+
+A multi-numeric field must have at least one fields. The type of a field must be a numeric type. The types of all fields must be same.
+
+The length of fields must be less than or equal to 255.
+
+I<CLASS_NAME> must ends with a L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> corresponding to the type of fields. 
+
+I<FIELD_LENGTH> of L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must be the same as the length of fields.
+
+I<TYPE_SUFFIX> of L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must correspond to the type of fields.
+
+A multi-numeric type cannnot have instance methods.
+
+A multi-numeric type cannnot have class variables.
 
 Compilation Errors:
 
-The type of all fields must be a L<numeric type|SPVM::Document::Language::Types/"Numeric Types">. Otherwise, a compilation error occurs.
-
-The types of all fields must be a same type. Otherwise, a compilation error occurs.
-
-The length of fields must be less than or equal to 255. Otherwise, a compilation error occurs.
-
-I<CLASS_NAME> must ends with a L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> corresponding to the type of fields. Otherwise, a compilation error occurs.
-
-I<FIELD_LENGTH> of L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must be the same as the length of fields. Otherwise, a compilation error occurs.
-
-I<TYPE_SUFFIX> of L<multi-numeric type suffix|/"Multi-Numeric Type Suffix"> must correspond to the type of fields.
+If the difinition of multi-numeric type is invalid, a compilation error occurs.
 
 Examples:
   

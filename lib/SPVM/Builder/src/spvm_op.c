@@ -1006,9 +1006,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   
   // mulnum_t
   if (type->basic_type->category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_MULNUM) {
-    if (type->basic_type->methods->length > 0) {
-      SPVM_COMPILER_error(compiler, "A multi-numeric type cannnot have methods.\n  at %s line %d", op_class->file, op_class->line);
+    for (int32_t i = 0; i < type->basic_type->methods->length; i++) {
+      SPVM_METHOD* method = SPVM_LIST_get(type->basic_type->methods, i);
+      
+      if (!method->is_class_method) {
+        SPVM_COMPILER_error(compiler, "A multi-numeric type cannnot have instance methods.\n  at %s line %d", method->op_method->file, method->op_method->line);
+      }
     }
+    
     if (type->basic_type->class_vars->length > 0) {
       SPVM_COMPILER_error(compiler, "A multi-numeric type cannnot have class variables.\n  at %s line %d", op_class->file, op_class->line);
     }
