@@ -1589,19 +1589,18 @@ int32_t SPVM_API_die(SPVM_ENV* env, SPVM_VALUE* stack, const char* message, ...)
   memcpy(message_with_line, message, message_length);
   const char* place = "\n    %s at %s line %d";
   memcpy(message_with_line + message_length, place, strlen(place));
-
-  char* buffer = (char*)SPVM_API_new_memory_block(env, stack, 512);
+  
+  void* exception = SPVM_API_new_string_no_mortal(env, stack, NULL, 512);
+  char* exception_chars = (char*)SPVM_API_get_chars(env, stack, exception);
+  
   va_start(args, message);
-  vsnprintf(buffer, 511, message_with_line, args);
+  vsnprintf(exception_chars, 512, message_with_line, args);
   va_end(args);
   
-  void* exception = SPVM_API_new_string_no_mortal(env, stack, buffer, strlen(buffer));
+  SPVM_API_shorten(env, stack, exception, strlen(exception_chars));
   
   SPVM_API_free_memory_block(env, stack, message_with_line);
   message_with_line = NULL;
-  
-  SPVM_API_free_memory_block(env, stack, buffer);
-  buffer = NULL;
   
   SPVM_API_set_exception(env, stack, exception);
   

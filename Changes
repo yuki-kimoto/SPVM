@@ -13,6 +13,8 @@
    * Use snprintf instead of sprintf in all places in SPVM_API_dump_recursive function in spvm_api.c.
    * Use the temporary buffer of the runtime stack in SPVM_API_dump_recursive function in spvm_api.c.
    * Use the temporary buffer of the runtime stack in SPVM_API_new_stack_trace_no_mortal function in spvm_api.c.
+   * Reduce a SPVM_API_new_memory_block call in SPVM_API_die function in spvm_api.c.
+   
 0.990008 2023-09-10
   [New Features]
     * Add Fn#memcmp method.
