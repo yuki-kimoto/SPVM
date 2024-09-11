@@ -2729,6 +2729,12 @@ Examples:
   // "0.989062"
   const char* spvm_version_string = SPVM_NATIVE_VERSION_STRING;
 
+=head2 SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE
+
+C<SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE>
+
+The byte size of the temporary buffer in a runtime stack. This value is 512.
+
 =head1 Macro Functions
 
 =head2 spvm_warn
