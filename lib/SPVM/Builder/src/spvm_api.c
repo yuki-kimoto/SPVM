@@ -2290,7 +2290,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  char* tmp_numeric_string = (char*)&stack[SPVM_API_C_STACK_INDEX_TMP_BUFFER];
+  char* tmp_buffer = (char*)&stack[SPVM_API_C_STACK_INDEX_TMP_BUFFER];
   
   SPVM_OBJECT* dump;
   if (object == NULL) {
@@ -2319,9 +2319,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         if (utf8_char_len > 0) {
             
           if (utf8_char_len == 1 && !isprint(*(chars + offset))) {
-            snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "\\x{%02X}", *(chars + offset) & 0xFF);
+            snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "\\x{%02X}", *(chars + offset) & 0xFF);
             
-            SPVM_STRING_BUFFER_add_len(string_buffer, tmp_numeric_string, strlen(tmp_numeric_string));
+            SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, strlen(tmp_buffer));
           }
           else {
             SPVM_STRING_BUFFER_add_len(string_buffer, (char*)(chars + offset), utf8_char_len);
@@ -2331,9 +2331,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
         }
         else {
           
-          snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "\\x{%02X}", *(chars + offset) & 0xFF);
+          snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "\\x{%02X}", *(chars + offset) & 0xFF);
           
-          SPVM_STRING_BUFFER_add_len(string_buffer, tmp_numeric_string, strlen(tmp_numeric_string));
+          SPVM_STRING_BUFFER_add_len(string_buffer, tmp_buffer, strlen(tmp_buffer));
           
           offset += 1;
         }
@@ -2378,38 +2378,38 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             switch (field_basic_type_id) {
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 int8_t* element = &((int8_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index * fields_length];
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element[field_index]);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element[field_index]);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                 int16_t* element = &((int16_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index * fields_length];
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element[field_index]);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element[field_index]);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                 int32_t* element = &((int32_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index * fields_length];
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element[field_index]);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element[field_index]);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                 int64_t* element = &((int64_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index * fields_length];
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%lld", (long long int)element[field_index]);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%lld", (long long int)element[field_index]);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                 float* element = &((float*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index * fields_length];
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%g", element[field_index]);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%g", element[field_index]);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                 double* element = &((double*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index * fields_length];
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%g", element[field_index]);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%g", element[field_index]);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
             }
@@ -2428,38 +2428,38 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
           switch (object_basic_type->id) {
             case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
               int8_t element = ((int8_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index];
-              snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element);
-              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+              snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element);
+              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
               int16_t element = ((int16_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index];
-              snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element);
-              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+              snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element);
+              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
               int32_t element = ((int32_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index];
-              snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element);
-              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+              snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", element);
+              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
               int64_t element = ((int64_t*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index];
-              snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%lld", (long long int)element);
-              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+              snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%lld", (long long int)element);
+              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
               float element = ((float*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index];
-              snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%g", element);
-              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+              snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%g", element);
+              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
               double element = ((double*)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[array_index];
-              snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%g", element);
-              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+              snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%g", element);
+              SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
           }
@@ -2495,27 +2495,27 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       }
       
       // If the object is weaken, this get the real address
-      snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "(%p)", SPVM_API_get_object_no_weaken_address(env, stack, object));
-      SPVM_STRING_BUFFER_add(string_buffer, tmp_numeric_string);
+      snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "(%p)", SPVM_API_get_object_no_weaken_address(env, stack, object));
+      SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
     }
     else {
       // If the object is weaken, this get the real address
-      snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%p", SPVM_API_get_object_no_weaken_address(env, stack, object));
-      int32_t exists = (int32_t)(intptr_t)SPVM_HASH_get(address_symtable, tmp_numeric_string, strlen(tmp_numeric_string));
+      snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%p", SPVM_API_get_object_no_weaken_address(env, stack, object));
+      int32_t exists = (int32_t)(intptr_t)SPVM_HASH_get(address_symtable, tmp_buffer, strlen(tmp_buffer));
       if (exists) {
         // If the object is weaken, this get the real address
-        snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "REUSE_OBJECT(%p)", SPVM_API_get_object_no_weaken_address(env, stack, object));
-        SPVM_STRING_BUFFER_add(string_buffer, tmp_numeric_string);
+        snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "REUSE_OBJECT(%p)", SPVM_API_get_object_no_weaken_address(env, stack, object));
+        SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
       else {
         SPVM_RUNTIME_BASIC_TYPE* object_basic_type = SPVM_API_get_object_basic_type(env, stack, object);
         const char* basic_type_name = object_basic_type->name;
         
-        SPVM_HASH_set(address_symtable, tmp_numeric_string, strlen(tmp_numeric_string), (void*)(intptr_t)1);
+        SPVM_HASH_set(address_symtable, tmp_buffer, strlen(tmp_buffer), (void*)(intptr_t)1);
         
         SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-        snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, " (%p) ", object);
-        SPVM_STRING_BUFFER_add(string_buffer, tmp_numeric_string);
+        snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, " (%p) ", object);
+        SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
         
         SPVM_STRING_BUFFER_add(string_buffer, "{\n");
         
@@ -2539,38 +2539,38 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
             switch (field_basic_type_id) {
               case SPVM_NATIVE_C_BASIC_TYPE_ID_BYTE: {
                 int8_t field_value = *(int8_t*)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field_offset);
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", field_value);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", field_value);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_SHORT: {
                 int16_t field_value = *(int16_t*)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field_offset);
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", field_value);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", field_value);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_INT: {
                 int32_t field_value = *(int32_t*)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field_offset);
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%d", field_value);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%d", field_value);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_LONG: {
                 int64_t field_value = *(int64_t*)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field_offset);
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%lld", (long long int)field_value);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%lld", (long long int)field_value);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_FLOAT: {
                 float field_value = *(float*)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field_offset);
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%g", field_value);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%g", field_value);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_NATIVE_C_BASIC_TYPE_ID_DOUBLE: {
                 double field_value = *(double*)((intptr_t)object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field_offset);
-                snprintf(tmp_numeric_string, SPVM_API_C_TMP_BUFFER_SIZE, "%g", field_value);
-                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_numeric_string);
+                snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%g", field_value);
+                SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               default : {
