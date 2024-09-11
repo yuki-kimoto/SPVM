@@ -557,7 +557,7 @@ enum {
 
 enum {
   SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE = 512,
-}
+};
 
 // These functions are linked only by SPVM itself,
 // so native classes cannot use these functions.
