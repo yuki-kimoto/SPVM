@@ -484,6 +484,7 @@ struct spvm_api_internal {
   void (*inc_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, SPVM_VALUE* stack, void* object);
   void (*leave_scope_local)(SPVM_ENV* env, SPVM_VALUE* stack, void** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top);
+  char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);
 };
 
 struct spvm_api_mutex {

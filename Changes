@@ -1,7 +1,7 @@
 0.990009 2023-09-11
   [New Features]
     * Add SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE to spvm_native.h
-    
+    * Add get_stack_tmp_buffer internal native API.
   [Revert]
     * Revert the following change in 0.990008 for performance degradation.
       

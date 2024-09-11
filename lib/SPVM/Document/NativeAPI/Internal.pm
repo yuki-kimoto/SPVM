@@ -40,12 +40,21 @@ Performs a leaveing scope operation for local variables given object variables I
 
 The value referenced by I<mortal_stack_top_ptr> is updated.
 
+=head2 get_stack_tmp_buffer
+
+C<char* (*get_stack_tmp_buffer)(SPVM_ENV* env, SPVM_VALUE* stack);>
+
+Returns the temporary buffer in the runtime stack I<stack>.
+
+The byte size of the temporary buffer is L<SPVM::Document::NativeAPI/"SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE">.
+
 =head1 Native API IDs
 
   0 get_ref_count
   1 inc_ref_count
   2 dec_ref_count
   3 leave_scope_local
+  4 get_stack_tmp_buffer
 
 =head1 See Also
 
