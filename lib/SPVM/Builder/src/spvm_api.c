@@ -4421,3 +4421,10 @@ double SPVM_API_get_double_object_value(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_O
   return value;
 }
 
+char* SPVM_API_get_stack_tmp_buffer(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  char* tmp_buffer = (char*)&stack[SPVM_API_C_STACK_INDEX_TMP_BUFFER];
+  
+  return tmp_buffer;
+}
+

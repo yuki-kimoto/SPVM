@@ -372,4 +372,6 @@ SPVM_OBJECT* SPVM_API_new_array_proto_element(SPVM_ENV* env, SPVM_VALUE* stack, 
 
 int32_t SPVM_API_is_binary_compatible_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
+char* SPVM_API_get_stack_tmp_buffer(SPVM_ENV* env, SPVM_VALUE* stack);
+
 #endif
