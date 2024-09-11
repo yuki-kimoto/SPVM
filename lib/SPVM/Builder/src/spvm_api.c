@@ -2289,7 +2289,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  char* tmp_buffer = (char*)&stack[SPVM_API_C_STACK_INDEX_TMP_BUFFER];
+  char* tmp_buffer = env->api->internal->get_stack_tmp_buffer(env, stack);
   
   SPVM_OBJECT* dump;
   if (object == NULL) {
