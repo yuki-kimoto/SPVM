@@ -2100,11 +2100,11 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack
   total_length += strlen(class_file);
   
   const char* line_part = " line ";
-  char line_str[20];
   
-  sprintf(line_str, "%" PRId32, line);
   total_length += strlen(line_part);
-  total_length += strlen(line_str);
+  char* tmp_buffer = (char*)&stack[SPVM_API_C_STACK_INDEX_TMP_BUFFER];
+  snprintf(tmp_buffer, SPVM_API_C_TMP_BUFFER_SIZE, "%" PRId32, line);
+  total_length += strlen(tmp_buffer);
   
   // Create exception message
   void* new_exception = SPVM_API_new_string_no_mortal(env, stack, NULL, total_length);
