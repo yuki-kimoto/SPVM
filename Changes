@@ -19,6 +19,7 @@
    * Reduce SPVM_API_new_memory_block calls in SPVM_API_die function in spvm_api.c.
    * Add SPVM_API_get_stack_tmp_buffer function to spvm_api.c.
    * Add SPVM_API_INTERNAL_get_stack_tmp_buffer to spvm_api_internal.c.
+   * Use the temporary buffer in a runtime stack is used in any place in spvm_implement.h.
 0.990008 2023-09-10
   [New Features]
     * Add Fn#memcmp method.
