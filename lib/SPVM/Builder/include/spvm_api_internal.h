@@ -23,4 +23,6 @@ void SPVM_API_INTERNAL_lock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT
 
 void SPVM_API_INTERNAL_unlock_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object);
 
+char* SPVM_API_INTERNAL_get_stack_tmp_buffer(SPVM_ENV* env, SPVM_VALUE* stack);
+
 #endif

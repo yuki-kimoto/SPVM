@@ -47,3 +47,8 @@ void SPVM_API_INTERNAL_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_
   SPVM_API_leave_scope_local(env, stack, object_vars, mortal_stack, mortal_stack_top_ptr, original_mortal_stack_top);
 }
 
+char* SPVM_API_INTERNAL_get_stack_tmp_buffer(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return SPVM_API_get_stack_tmp_buffer(env, stack);
+}
+

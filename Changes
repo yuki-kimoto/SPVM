@@ -18,6 +18,7 @@
    * Use the temporary buffer of the runtime stack in SPVM_API_new_stack_trace_no_mortal function in spvm_api.c.
    * Reduce SPVM_API_new_memory_block calls in SPVM_API_die function in spvm_api.c.
    * Add SPVM_API_get_stack_tmp_buffer function to spvm_api.c.
+   * Add SPVM_API_INTERNAL_get_stack_tmp_buffer to spvm_api_internal.c.
 0.990008 2023-09-10
   [New Features]
     * Add Fn#memcmp method.
