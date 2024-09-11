@@ -2,6 +2,12 @@
 # MIT License
 
 class Complex_2f : mulnum_t {
+  
+  # Fields
   has re : float;
+  
   has im : float;
+  
+  # Class Methods
+  
 }
