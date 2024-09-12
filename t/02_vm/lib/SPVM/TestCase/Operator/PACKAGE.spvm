@@ -3,7 +3,30 @@ class TestCase::Operator::PACKAGE {
     
     warn;
     
-    my $outmost_class_name = __PACKAGE__;
+    my $anon_result_ref = new string[1];
+    
+    warn;
+    
+    my $cb = [$anon_result_ref : string[]] method : void () {
+      
+      warn;
+      
+      my $outmost_class_name = __PACKAGE__;
+      
+      warn;
+      
+      $anon_result_ref->[0] = $outmost_class_name;
+    };
+    
+    warn;
+    
+    $cb->();
+    
+    warn;
+    
+    unless ($anon_result_ref->[0] eq "TestCase::Operator::PACKAGE") {
+      return 0;
+    }
     
     warn;
     
