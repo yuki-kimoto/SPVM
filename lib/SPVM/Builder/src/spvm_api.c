@@ -4032,6 +4032,8 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
     }
   }
   
+  spvm_warn("");
+  
 }
 
 void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
@@ -4048,10 +4050,20 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
     if (!(*ref == NULL)) {
       SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
       
+      spvm_warn("");
+      
       SPVM_API_unweaken_thread_unsafe(env, stack, ref);
+      
+      spvm_warn("");
+      
     }
     
+    spvm_warn("");
+    
     SPVM_MUTEX_unlock(runtime_mutex);
+    
+    spvm_warn("");
+    
   }
   
 }
@@ -4089,16 +4101,33 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
     
     assert(!((intptr_t)object & 1));
     
+    spvm_warn("");
+    
     SPVM_API_unweaken_thread_unsafe(env, stack, ref);
     
+    spvm_warn("");
+    
     if (object) {
+      
+      spvm_warn("");
+      
       SPVM_API_inc_ref_count(env, stack, object);
     }
     
+    spvm_warn("");
+    
     *ref = object;
     
+    spvm_warn("");
+    
     SPVM_MUTEX_unlock(runtime_mutex);
+    
+    spvm_warn("");
+    
   }
+  
+  
+  spvm_warn("");
   
   if (released_object) {
     int32_t do_dec_ref_count_only = 0;
