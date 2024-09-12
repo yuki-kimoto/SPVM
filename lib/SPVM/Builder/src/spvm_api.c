@@ -3913,7 +3913,12 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
   
   }
   
+  spvm_warn("");
+  
   *current_mortal_stack_top_ptr = original_mortal_stack_top;
+  
+  spvm_warn("");
+  
 }
 
 void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** object_vars, int32_t* mortal_stack, int32_t* mortal_stack_top_ptr, int32_t original_mortal_stack_top) {
