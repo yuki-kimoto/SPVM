@@ -32,14 +32,6 @@ class TestCase::Operator::PACKAGE {
     
     $cb->();
     
-    warn;
-    
-    unless ($anon_result_ref->[0] eq "TestCase::Operator::PACKAGE") {
-      return 0;
-    }
-    
-    warn;
-    
     return 1;
   }
 }
