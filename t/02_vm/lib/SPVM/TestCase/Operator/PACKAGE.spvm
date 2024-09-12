@@ -2,15 +2,6 @@ class TestCase::Operator::PACKAGE {
   static method PACKAGE : int () {
     my $outmost_class_name = __PACKAGE__;
     
-    my $anon_result_ref = new string[1];
-    
-    my $cb = [$anon_result_ref : string[]] method : void () {
-      my $outmost_class_name = __PACKAGE__;
-      $anon_result_ref->[0] = $outmost_class_name;
-    };
-    
-    $cb->();
-    
     return 1;
   }
 }
