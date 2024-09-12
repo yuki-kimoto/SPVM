@@ -1,0 +1,299 @@
+class TestCase::Module::Complex_2f {
+  
+  use Complex_2f;
+  use Array;
+  
+  static method new : int () {
+    
+    {
+      my $z = Complex_2f->new;
+      
+      unless ($z->{re} == 0) {
+        return 0;
+      }
+      
+      unless ($z->{im} == 0) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $z = Complex_2f->new(1.5);
+      
+      unless ($z->{re} == 1.5) {
+        return 0;
+      }
+      
+      unless ($z->{im} == 0) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $z = Complex_2f->new(1.5, 0.5);
+      
+      unless ($z->{re} == 1.5) {
+        return 0;
+      }
+      
+      unless ($z->{im} == 0.5) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $z = Complex_2f->new(1.5, Fn->FLT_MAX);
+      
+      unless ($z->{re} == 1.5) {
+        return 0;
+      }
+      
+      unless ($z->{im} == Fn->FLT_MAX) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method new_array_from_pairs : int () {
+    
+    {
+      my $z = Complex_2f->new_array_from_pairs([(float)1,2, 3,4]);
+      
+      unless (Array->equals($z, [Complex_2f->new(1, 2), Complex_2f->new(3, 4)])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2f->new_array_from_pairs([(float)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2f->new_array_from_pairs(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      
+      {
+        eval { Complex_2f->new_array_from_pairs([(float)1,2, 3]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method new_array_from_re_array : int () {
+    
+    {
+      my $z = Complex_2f->new_array_from_re_array([(float)1, 2]);
+      
+      unless (Array->equals($z, [Complex_2f->new(1, 0), Complex_2f->new(2, 0)])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2f->new_array_from_re_array([(float)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2f->new_array_from_re_array(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method new_array_from_im_array : int () {
+    
+    {
+      my $z = Complex_2f->new_array_from_im_array([(float)1, 2]);
+      
+      unless (Array->equals($z, [Complex_2f->new(0, 1), Complex_2f->new(0, 2)])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2f->new_array_from_im_array([(float)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2f->new_array_from_im_array(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method to_re_array : int () {
+    
+    {
+      my $z = Complex_2f->to_re_array([Complex_2f->new(1, 2), Complex_2f->new(3, 4)]);
+      
+      unless (Array->equals($z, [(float)1, 3])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2f->to_re_array([(float)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2f->to_re_array(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method to_im_array : int () {
+    
+    {
+      my $z = Complex_2f->to_im_array([Complex_2f->new(1, 2), Complex_2f->new(3, 4)]);
+      
+      unless (Array->equals($z, [(float)2, 4])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2f->to_im_array([(float)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2f->to_im_array(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method to_string : int () {
+    
+    {
+      my $ret = Complex_2f->to_string(Complex_2f->new(1, 2));
+      
+      unless ($ret eq "1+2i") {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $ret = Complex_2f->to_string(Complex_2f->new(-1, 2));
+      
+      unless ($ret eq "-1+2i") {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $ret = Complex_2f->to_string(Complex_2f->new(1, -2));
+      
+      unless ($ret eq "1-2i") {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+}

@@ -9,5 +9,129 @@ class Complex_2f : mulnum_t {
   has im : float;
   
   # Class Methods
+  static method new : Complex_2f ($re : float = 0, $im : float = 0) {
+    
+    my $z : Complex_2f;
+    
+    $z->{re} = $re;
+    
+    $z->{im} = $im;
+    
+    return $z;
+  }
   
+  static method new_array_from_pairs : Complex_2f[] ($pairs : float[]) {
+    
+    unless ($pairs) {
+      die "The pairs \$pairs must be defined.";
+    }
+    
+    my $pairs_length = @$pairs;
+    
+    unless ($pairs_length % 2 == 0) {
+      die "The length of the pairs \$data must be an even number.";
+    }
+    
+    my $length = $pairs_length / 2;
+    
+    my $array = new Complex_2f[$length];
+    
+    Fn->memcpy($array, 0, $pairs, 0, 4 * 2 * $length);
+    
+    return $array;
+  }
+  
+  static method to_pairs : float[] ($array : Complex_2f[]) {
+    
+    my $length = @$array;
+    
+    my $pairs_length = $length * 2;
+    
+    my $pairs = new float[$pairs_length];
+    
+    Fn->memcpy($pairs, 0, $array, 0, 4 * 2 * $length);
+    
+    return $pairs;
+  }
+  
+  static method new_array_from_re_array : Complex_2f[] ($re_array : float[]) {
+    
+    unless ($re_array) {
+      die "The real part array \$re_array must be defined.";
+    }
+    
+    my $length = @$re_array;
+    
+    my $array = new Complex_2f[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $array->[$i]{re} = $re_array->[$i];
+    }
+    
+    return $array;
+  }
+  
+  static method new_array_from_im_array : Complex_2f[] ($im_array : float[]) {
+    
+    unless ($im_array) {
+      die "The imaginary part array \$im_array must be defined.";
+    }
+    
+    my $length = @$im_array;
+    
+    my $array = new Complex_2f[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $array->[$i]{im} = $im_array->[$i];
+    }
+    
+    return $array;
+  }
+  
+  static method to_re_array : float[] ($array : Complex_2f[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $length = @$array;
+    
+    my $re_array = new float[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $re_array->[$i] = $array->[$i]{re};
+    }
+    
+    return $re_array;
+  }
+  
+  static method to_im_array : float[] ($array : Complex_2f[]) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    my $length = @$array;
+    
+    my $im_array = new float[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $im_array->[$i] = $array->[$i]{im};
+    }
+    
+    return $im_array;
+  }
+  
+  static method to_string : string ($z : Complex_2f) {
+    
+    my $string = (string)undef;
+    if ($z->{im} < 0) {
+      $string = "$z->{re}$z->{im}i";
+    }
+    else {
+      $string = "$z->{re}+$z->{im}i";
+    }
+    
+    return $string;
+  }
 }
