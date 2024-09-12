@@ -1,4 +1,0 @@
-class MyExeCompileError::MainInstantMethod {
-  method main : int () {
-  }
-}

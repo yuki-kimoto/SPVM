@@ -1,5 +1,0 @@
-class CompileError::TypeCantBeDetectedUndef {
-  static method main : int () {
-    my $value = undef;
-  }
-}

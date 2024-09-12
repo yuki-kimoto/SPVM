@@ -1,5 +1,0 @@
-class CompileError::Modulo::RemuiLeftIsNotInt {
-  static method main : int () {
-    1L mod_uint 3;
-  }
-}

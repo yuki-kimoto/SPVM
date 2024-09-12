@@ -1,5 +1,0 @@
-class CompileError::TypeComment::NotExistType {
-  use List;
-  
-  has values : List of NotExists::XXXX;
-}
