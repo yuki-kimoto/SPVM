@@ -13,8 +13,6 @@ class TestCase::Operator::PACKAGE {
       $anon_result_ref->[0] = $outmost_class_name;
     };
     
-    $cb->();
-    
     return 1;
   }
 }
