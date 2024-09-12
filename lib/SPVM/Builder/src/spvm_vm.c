@@ -2411,7 +2411,9 @@ int32_t SPVM_VM_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHO
     call_stack = NULL;
     
     env->leave_scope(env, stack, native_scope_id);
-    
+        
+        spvm_warn("");
+        
     return error_id;
   }
 }
