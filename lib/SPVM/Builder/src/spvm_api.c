@@ -3731,9 +3731,13 @@ int32_t SPVM_API_call_method_native(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
         }
       }
     }
-    
+  
+  spvm_warn("");
+  
     SPVM_API_leave_scope(env, stack, native_mortal_stack_top);
-    
+  
+  spvm_warn("");
+  
     // Decrement ref count of return value
     if (!error_id) {
       if (method_return_type_is_object) {
