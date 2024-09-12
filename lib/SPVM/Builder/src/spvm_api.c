@@ -3821,11 +3821,16 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           }
         }
         
+        spvm_warn("");
+        
         // Call native method
         if (method->is_native) {
           error_id = SPVM_API_call_method_native(env, stack, method, args_width);
         }
         else if (method->is_precompile) {
+        
+        spvm_warn("");
+        
           void* method_precompile_address = method->precompile_address;
           if (method_precompile_address) {
             int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = method_precompile_address;
@@ -3837,27 +3842,60 @@ int32_t SPVM_API_call_method_common(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTI
           else {
             error_id = SPVM_API_die(env, stack, "The execution address of the \"%s\" precompilation method in the \"%s\" class must not be NULL. Loading the dynamic link library maybe failed.", method->name, method->current_basic_type->name, __func__, FILE_NAME, __LINE__);
           }
+        
+        spvm_warn("");
+        
         }
         else {
+        
+        spvm_warn("");
+        
           error_id = SPVM_API_call_method_vm(env, stack, method, args_width);
+        
+        spvm_warn("");
+        
         }
         
+        
+        spvm_warn("");
+        
         if (!error_id) {
+        
+        spvm_warn("");
+        
           void* method_return_basic_type = method->return_basic_type;
           int32_t method_return_type_dimension = method->return_type_dimension;
           int32_t method_return_type_flag = method->return_type_flag;
           int32_t method_return_type_is_object = SPVM_API_TYPE_is_object_type(runtime, method_return_basic_type, method_return_type_dimension, method_return_type_flag);
-          
+        
+        spvm_warn("");
+        
           if (mortal && method_return_type_is_object) {
             SPVM_API_push_mortal(env, stack, stack[0].oval);
           }
+        
+        spvm_warn("");
+        
         }
+        
+        spvm_warn("");
+        
       }
+        
+        spvm_warn("");
+        
     }
+        
+        spvm_warn("");
+        
   }
-  
+        
+        spvm_warn("");
+        
   stack[SPVM_API_C_STACK_INDEX_CALL_DEPTH].ival--;
-  
+        
+        spvm_warn("");
+        
   return error_id;
 }
 
