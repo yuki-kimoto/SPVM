@@ -1,6 +1,5 @@
 class TestCase::Operator::PACKAGE {
   static method PACKAGE : int () {
-    my $outmost_class_name = __PACKAGE__;
     
     my $anon_result_ref = 1;
     
