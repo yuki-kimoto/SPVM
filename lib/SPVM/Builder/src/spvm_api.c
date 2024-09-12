@@ -1671,7 +1671,12 @@ void SPVM_API_free_stack(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
   
   int32_t mortal = 0;
+  
+  spvm_warn("");
+  
   int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
+  
+  spvm_warn("");
   
   return error_id;
 }
@@ -1679,7 +1684,12 @@ int32_t SPVM_API_call_method_no_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RU
 int32_t SPVM_API_call_method(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_METHOD* method, int32_t args_width) {
   
   int32_t mortal = 1;
+  
+  spvm_warn("");
+  
   int32_t error_id = SPVM_API_call_method_common(env, stack, method, args_width, mortal);
+  
+  spvm_warn("%s#%s", method->current_basic_type->name, method->name);
   
   return error_id;
 }
