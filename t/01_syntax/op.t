@@ -412,6 +412,12 @@ use Test::More;
     my $source = 'class MyClass { interface }';
     compile_not_ok($source, qr|Unexpected token|);
   }
+  
+  {
+    # https://github.com/yuki-kimoto/SPVM/issues/570
+    my $source = 'class TestCase::Operator::PACKAGE { static method PACKAGE : int () { $anon_result_ref = 0; return 1; }; }';
+    compile_not_ok($source);
+  }
 }
 
 done_testing;
