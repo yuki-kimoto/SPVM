@@ -49,4 +49,22 @@ jobs:
       - run: make && make test
       - run: make && make test
       - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
+      - run: make && make test
       - run: make disttest
