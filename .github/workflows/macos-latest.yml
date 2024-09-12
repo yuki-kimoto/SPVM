@@ -33,3 +33,19 @@ jobs:
         run: cat MYMETA.json
       - run: perl Makefile.PL
       - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
+      - run: make disttest
