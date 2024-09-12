@@ -6,8 +6,6 @@ class TestCase::Operator::PACKAGE {
     my $cb = [$anon_result_ref : int] method : void () {
     };
     
-    $cb->();
-    
     return 1;
   }
 }
