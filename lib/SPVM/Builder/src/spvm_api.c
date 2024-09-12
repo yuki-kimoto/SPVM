@@ -4299,8 +4299,17 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   spvm_warn("");
   
       }
+  
+  spvm_warn("");
+  
     }
+  
+  spvm_warn("");
+  
   }
+  
+  spvm_warn("");
+  
 }
 
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
