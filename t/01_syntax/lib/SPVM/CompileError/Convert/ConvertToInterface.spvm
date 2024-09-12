@@ -1,9 +1,0 @@
-class CompileError::Convert::ConvertToAnonMethod {
-  use TestCase::Minimal;
-  use TestCase::Operator::AnonMethod::AnonMethod;
-  use TestCase::Operator::AnonMethod::ImplementAnonMethod1;
-
-  static method main : int () {
-    (TestCase::Operator::AnonMethod::AnonMethod)new TestCase::Operator::AnonMethod::ImplementAnonMethod1;
-  }
-}

@@ -1,5 +1,0 @@
-class CompileError::Modulo::RemulLeftIsNotLong {
-  static method main : int () {
-    1 mod_ulong 3L;
-  }
-}
