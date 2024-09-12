@@ -3999,8 +3999,12 @@ void SPVM_API_unweaken_thread_unsafe(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJE
   SPVM_OBJECT* object = SPVM_API_get_object_no_weaken_address(env, stack, *ref);
   
   int32_t isweak = SPVM_API_isweak_only_check_flag(env, stack, ref);
+    
+  spvm_warn("isweak:%d, ref:%p, *ref:%p", isweak, ref, *ref);
   
   if (isweak) {
+    
+    spvm_warn("isweak:%d, ref:%p, *ref:%p", isweak, ref, *ref);
     
     assert(object->weaken_backref_head);
     
