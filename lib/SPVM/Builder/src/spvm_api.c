@@ -4131,25 +4131,47 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
   
   if (released_object) {
     int32_t do_dec_ref_count_only = 0;
-    
+  
+  spvm_warn("");
+  
     {
       SPVM_MUTEX_lock(runtime_mutex);
-      
+  
+  spvm_warn("");
+  
       int32_t released_object_ref_count = SPVM_API_get_ref_count(env, stack, released_object);
-      
+  
+  spvm_warn("");
+  
       assert(released_object_ref_count > 0);
-      
+  
+  spvm_warn("");
+  
       if (released_object_ref_count > 1) {
+  
+  spvm_warn("");
+  
         SPVM_API_dec_ref_count(env, stack, released_object);
         do_dec_ref_count_only = 1;
       }
       
+  
+  spvm_warn("");
+  
       SPVM_MUTEX_unlock(runtime_mutex);
     }
-    
+  
+  spvm_warn("");
+  
     if (!do_dec_ref_count_only) {
+  
+  spvm_warn("");
+  
       // Free released_object array
       if (SPVM_API_is_object_array(env, stack, released_object)) {
+  
+  spvm_warn("");
+  
         int32_t length = SPVM_API_length(env, stack, released_object);
         for (int32_t index = 0; index < length; index++) {
           SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)released_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
@@ -4158,14 +4180,23 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
       }
       // Free released_object
       else {
+  
+  spvm_warn("");
+  
         SPVM_RUNTIME_BASIC_TYPE* released_object_basic_type = SPVM_API_get_object_basic_type(env, stack, released_object);
         int32_t released_object_basic_type_category = released_object_basic_type->category;
         if (released_object_basic_type_category == SPVM_NATIVE_C_BASIC_TYPE_CATEGORY_CLASS) {
+  
+  spvm_warn("");
+  
           // Class
           SPVM_RUNTIME* runtime = env->runtime;
           
           // Call destructor
           if (released_object_basic_type->destructor_method) {
+  
+  spvm_warn("");
+  
             
             // Save return value and exception variable
             SPVM_VALUE save_stack_ret = stack[0];
@@ -4180,6 +4211,9 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             
             // An exception thrown in a destructor is converted to a warning message
             if (error_id) {
+  
+  spvm_warn("");
+  
               void* exception = SPVM_API_get_exception(env, stack);
               
               assert(exception);
@@ -4215,27 +4249,55 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
       
       }
       
+  
+  spvm_warn("");
+  
       {
         SPVM_MUTEX_lock(runtime_mutex);
+  
+  spvm_warn("");
+  
         
         SPVM_API_dec_ref_count(env, stack, released_object);
-        
+  
+  spvm_warn("");
+  
         int32_t released_object_ref_count = SPVM_API_get_ref_count(env, stack, released_object);
-        
+  
+  spvm_warn("");
+  
         if (released_object_ref_count == 0) {
-          
+  
+  spvm_warn("");
+  
           // Free weak back refenreces
           if (released_object->weaken_backref_head != NULL) {
+  
+  spvm_warn("");
+  
             SPVM_API_free_weaken_backrefs(env, stack, released_object->weaken_backref_head);
             released_object->weaken_backref_head = NULL;
           }
-          
+  
+  spvm_warn("");
+  
           // Free released_object
+  
+  spvm_warn("");
+  
           SPVM_API_free_memory_block(env, stack, released_object);
+  
+  spvm_warn("");
+  
           released_object = NULL;
         }
-        
+  
+  spvm_warn("");
+  
         SPVM_MUTEX_unlock(runtime_mutex);
+  
+  spvm_warn("");
+  
       }
     }
   }
