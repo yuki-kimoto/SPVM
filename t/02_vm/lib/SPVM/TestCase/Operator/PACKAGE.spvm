@@ -1,18 +1,6 @@
 class TestCase::Operator::PACKAGE {
   static method PACKAGE : int () {
     
-    warn;
-    
-    my $outmost_class_name = __PACKAGE__;
-    
-    warn;
-    
-    unless ($outmost_class_name eq "TestCase::Operator::PACKAGE") {
-      return 0;
-    }
-    
-    warn;
-    
     my $anon_result_ref = new string[1];
     
     warn;
@@ -31,6 +19,8 @@ class TestCase::Operator::PACKAGE {
     warn;
     
     $cb->();
+    
+    warn;
     
     return 1;
   }
