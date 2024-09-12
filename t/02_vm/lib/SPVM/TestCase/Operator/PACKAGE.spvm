@@ -8,7 +8,7 @@ class TestCase::Operator::PACKAGE {
     
     my $anon_result_ref = 1;
     
-    my $cb = [$anon_result_ref : int] method : void () {
+    my $cb = method : void () {
     };
     
     $cb->();
