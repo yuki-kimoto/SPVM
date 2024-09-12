@@ -3933,6 +3933,8 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
   }
   *mortal_stack_top_ptr = original_mortal_stack_top;
   
+  spvm_warn("");
+  
 }
 
 SPVM_OBJECT* SPVM_API_get_object_no_weaken_address(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object) {
