@@ -443,7 +443,13 @@ void SPVM_API_destroy_class_vars(SPVM_ENV* env, SPVM_VALUE* stack){
       int32_t class_var_type_is_object = SPVM_API_TYPE_is_object_type(runtime, class_var_basic_type, class_var_type_dimension, class_var_type_flag);
       if (class_var_type_is_object) {
         SPVM_OBJECT** ref = (SPVM_OBJECT**)&class_var->data;
+  
+  spvm_warn("");
+  
         SPVM_API_assign_object(env, stack, ref, NULL);
+  
+  spvm_warn("");
+  
       }
     }
   }
@@ -803,7 +809,13 @@ void SPVM_API_set_class_var_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIM
   assert(class_var);
   
   SPVM_OBJECT** ref = (SPVM_OBJECT**)&class_var->data.oval;
+  
+  spvm_warn("");
+  
   SPVM_API_assign_object(env, stack, ref, value);
+  
+  spvm_warn("");
+  
 }
 
 void SPVM_API_set_class_var_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_RUNTIME_CLASS_VAR* class_var, SPVM_OBJECT* value) {
@@ -1180,7 +1192,13 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ob
   
   SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
   
+  
+  spvm_warn("");
+  
   SPVM_API_assign_object(env, stack, ref, value);
+  
+  spvm_warn("");
+  
 }
 
 void SPVM_API_set_field_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* object, SPVM_RUNTIME_FIELD* field, SPVM_OBJECT* value) {
@@ -2631,7 +2649,11 @@ int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* ex
   
   SPVM_OBJECT** current_exception_ptr = (SPVM_OBJECT**)&stack[SPVM_API_C_STACK_INDEX_EXCEPTION];
   
+  spvm_warn("");
+  
   SPVM_API_assign_object(env, stack, current_exception_ptr, exception);
+  
+  spvm_warn("");
   
   return 0;
 }
@@ -3150,7 +3172,12 @@ void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* arr
   
   SPVM_OBJECT** ref = &((SPVM_OBJECT**)((intptr_t)array + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index];
   
+  spvm_warn("");
+  
   SPVM_API_assign_object(env, stack, ref, object);
+  
+  spvm_warn("");
+  
 }
 
 SPVM_OBJECT* SPVM_API_get_elem_string(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* array, int32_t index) {
@@ -3854,9 +3881,13 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT* obje
       *current_mortal_stack_ptr = NULL;
       *current_mortal_stack_ptr = new_mortal_stack;
     }
-    
+  
+  spvm_warn("");
+  
     SPVM_API_assign_object(env, stack, &(*current_mortal_stack_ptr)[*current_mortal_stack_top_ptr], object);
-    
+  
+  spvm_warn("");
+  
     *current_mortal_stack_top_ptr = *current_mortal_stack_top_ptr + 1;
   }
   
@@ -3873,9 +3904,13 @@ void SPVM_API_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack, int32_t original_mor
   for (mortal_stack_index = original_mortal_stack_top; mortal_stack_index < *current_mortal_stack_top_ptr; mortal_stack_index++) {
     
     SPVM_OBJECT** ref = &(*current_mortal_stack_ptr)[mortal_stack_index];
-    
+  
+  spvm_warn("");
+  
     SPVM_API_assign_object(env, stack, ref, NULL);
-    
+  
+  spvm_warn("");
+  
   }
   
   *current_mortal_stack_top_ptr = original_mortal_stack_top;
@@ -3887,7 +3922,13 @@ void SPVM_API_leave_scope_local(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** 
     int32_t var_index = mortal_stack[mortal_stack_index];
     SPVM_OBJECT** ref = (SPVM_OBJECT**)&object_vars[var_index];
     if (*ref != NULL) {
+  
+  spvm_warn("");
+  
       SPVM_API_assign_object(env, stack, ref, NULL);
+  
+  spvm_warn("");
+  
     }
   }
   *mortal_stack_top_ptr = original_mortal_stack_top;
@@ -3982,7 +4023,13 @@ int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref) {
   }
   
   if (destroied_referent) {
+  
+  spvm_warn("");
+  
     SPVM_API_assign_object(env, stack, &destroied_referent, NULL);
+  
+  spvm_warn("");
+  
   }
   
   return 0;
@@ -4175,7 +4222,13 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
         int32_t length = SPVM_API_length(env, stack, released_object);
         for (int32_t index = 0; index < length; index++) {
           SPVM_OBJECT** ref = &(((SPVM_OBJECT**)((intptr_t)released_object + SPVM_API_RUNTIME_get_object_data_offset(env->runtime)))[index]);
+  
+  spvm_warn("");
+  
           SPVM_API_assign_object(env, stack, ref, NULL);
+  
+  spvm_warn("");
+  
         }
       }
       // Free released_object
@@ -4242,7 +4295,13 @@ void SPVM_API_assign_object(SPVM_ENV* env, SPVM_VALUE* stack, SPVM_OBJECT** ref,
             
             if (field_type_is_released_object) {
               SPVM_OBJECT** ref = (SPVM_OBJECT**)((intptr_t)released_object + (size_t)SPVM_API_RUNTIME_get_object_data_offset(env->runtime) + field->offset);
+  
+  spvm_warn("");
+  
               SPVM_API_assign_object(env, stack, ref, NULL);
+  
+  spvm_warn("");
+  
             }
           }
         }
