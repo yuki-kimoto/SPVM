@@ -10,7 +10,6 @@ class TestCase::Operator::PACKAGE {
     
     my $cb = [$anon_result_ref : string[]] method : void () {
       my $outmost_class_name = __PACKAGE__;
-      $anon_result_ref->[0] = $outmost_class_name;
     };
     
     return 1;
