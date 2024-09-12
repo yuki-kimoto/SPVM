@@ -1,0 +1,299 @@
+class TestCase::Module::Complex_2d {
+  
+  use Complex_2d;
+  use Array;
+  
+  static method new : int () {
+    
+    {
+      my $z = Complex_2d->new;
+      
+      unless ($z->{re} == 0) {
+        return 0;
+      }
+      
+      unless ($z->{im} == 0) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $z = Complex_2d->new(1.5);
+      
+      unless ($z->{re} == 1.5) {
+        return 0;
+      }
+      
+      unless ($z->{im} == 0) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $z = Complex_2d->new(1.5, 0.5);
+      
+      unless ($z->{re} == 1.5) {
+        return 0;
+      }
+      
+      unless ($z->{im} == 0.5) {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $z = Complex_2d->new(1.5, Fn->DBL_MAX);
+      
+      unless ($z->{re} == 1.5) {
+        return 0;
+      }
+      
+      unless ($z->{im} == Fn->DBL_MAX) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method new_array_from_pairs : int () {
+    
+    {
+      my $z = Complex_2d->new_array_from_pairs([(double)1,2, 3,4]);
+      
+      unless (Array->equals($z, [Complex_2d->new(1, 2), Complex_2d->new(3, 4)])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2d->new_array_from_pairs([(double)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2d->new_array_from_pairs(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      
+      {
+        eval { Complex_2d->new_array_from_pairs([(double)1,2, 3]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method new_array_from_re_array : int () {
+    
+    {
+      my $z = Complex_2d->new_array_from_re_array([(double)1, 2]);
+      
+      unless (Array->equals($z, [Complex_2d->new(1, 0), Complex_2d->new(2, 0)])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2d->new_array_from_re_array([(double)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2d->new_array_from_re_array(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method new_array_from_im_array : int () {
+    
+    {
+      my $z = Complex_2d->new_array_from_im_array([(double)1, 2]);
+      
+      unless (Array->equals($z, [Complex_2d->new(0, 1), Complex_2d->new(0, 2)])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2d->new_array_from_im_array([(double)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2d->new_array_from_im_array(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method to_re_array : int () {
+    
+    {
+      my $z = Complex_2d->to_re_array([Complex_2d->new(1, 2), Complex_2d->new(3, 4)]);
+      
+      unless (Array->equals($z, [(double)1, 3])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2d->to_re_array([(double)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2d->to_re_array(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method to_im_array : int () {
+    
+    {
+      my $z = Complex_2d->to_im_array([Complex_2d->new(1, 2), Complex_2d->new(3, 4)]);
+      
+      unless (Array->equals($z, [(double)2, 4])) {
+        return 0;
+      }
+      
+    }
+    
+    # Exceptions
+    {
+
+=pod Exception Templates
+      
+      {
+        eval { Complex_2d->to_im_array([(double)1,2, 3,4]); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+=cut
+      
+      {
+        eval { Complex_2d->to_im_array(undef); }
+      
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+  static method to_string : int () {
+    
+    {
+      my $ret = Complex_2d->to_string(Complex_2d->new(1, 2));
+      
+      unless ($ret eq "1+2i") {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $ret = Complex_2d->to_string(Complex_2d->new(-1, 2));
+      
+      unless ($ret eq "-1+2i") {
+        return 0;
+      }
+      
+    }
+    
+    {
+      my $ret = Complex_2d->to_string(Complex_2d->new(1, -2));
+      
+      unless ($ret eq "1-2i") {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+  
+}

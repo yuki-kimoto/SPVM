@@ -1,7 +1,25 @@
-0.990009 2023-09-11
+0.990009 2023-09-112
   [New Features]
     * Add SPVM_NATIVE_C_STACK_TMP_BUFFER_SIZE to spvm_native.h
     * Add get_stack_tmp_buffer internal native API.
+    * Add the following methods to Complex_2d multi-numeric type.
+    
+      new
+
+      new_array_from_pairs
+
+      new_array_from_re_array
+
+      new_array_from_im_array
+
+      to_re_array
+
+      to_im_array
+
+      to_pairs
+
+      to_string
+
   [Revert]
     * Revert the following change in 0.990008 for performance degradation.
       
