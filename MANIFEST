@@ -690,6 +690,7 @@ t/02_vm/08_module/Bool.t
 t/02_vm/08_module/Byte.t
 t/02_vm/08_module/ByteList.t
 t/02_vm/08_module/CommandInfo.t
+t/02_vm/08_module/Complex_2d.t
 t/02_vm/08_module/default_loaded_modules.t
 t/02_vm/08_module/Double.t
 t/02_vm/08_module/DoubleList.t
@@ -794,6 +795,7 @@ t/02_vm/lib/SPVM/TestCase/Module/Bool.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Byte.spvm
 t/02_vm/lib/SPVM/TestCase/Module/ByteList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/CommandInfo.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Complex_2d.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Double.spvm
 t/02_vm/lib/SPVM/TestCase/Module/DoubleList.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Error.spvm
