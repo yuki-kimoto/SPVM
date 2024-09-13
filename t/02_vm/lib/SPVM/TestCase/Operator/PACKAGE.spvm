@@ -1,10 +1,7 @@
 class TestCase::Operator::PACKAGE {
   static method main : int () {
     
-    my $anon_result_ref1 = 1;
-    
-    my $cb = [$anon_result_ref1 : int] method : void () {
-    };
+    my $anon_result_ref = 1;
     
     return 1;
   }
