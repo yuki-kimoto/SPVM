@@ -3,11 +3,12 @@ class TestCase::Operator::PACKAGE {
     
     warn;
     
-    my $anon_result_ref = new string[1];
+    # https://github.com/yuki-kimoto/SPVM/issues/567
+    my $foo = new string[1];
     
     warn;
     
-    my $cb = [$anon_result_ref : string[]] method : void () {
+    my $cb = [$foo : string[]] method : void () {
       
       warn;
       
@@ -15,7 +16,7 @@ class TestCase::Operator::PACKAGE {
       
       warn;
       
-      $anon_result_ref->[0] = $outmost_class_name;
+      $foo->[0] = $outmost_class_name;
     };
     
     warn;
@@ -24,7 +25,7 @@ class TestCase::Operator::PACKAGE {
     
     warn;
     
-    unless ($anon_result_ref->[0] eq "TestCase::Operator::PACKAGE") {
+    unless ($foo->[0] eq "TestCase::Operator::PACKAGE") {
       return 0;
     }
     
