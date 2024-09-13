@@ -59,7 +59,14 @@
   
   [Changes]
     * Allow multi-numeric type to have class methods.
-    
+  
+  [Test Fix]
+    * Change a variable name in a test for the following issue.
+      
+      https://github.com/yuki-kimoto/SPVM/issues/567
+      
+      Some Mac clang compilier may cause this problem, but I don't know the reason for now.
+      
 0.990008 2023-09-10
   [New Features]
     * Add Fn#memcmp method.
