@@ -1,9 +1,9 @@
 class TestCase::Operator::PACKAGE {
   static method main : int () {
     
-    my $foo = 1;
+    my $anon_result = 1;
     
-    my $cb = [$foo : int] method : void () {
+    my $cb = [$anon_result : int] method : void () {
     };
     
     return 1;
