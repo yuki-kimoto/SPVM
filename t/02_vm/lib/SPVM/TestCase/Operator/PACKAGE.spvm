@@ -1,5 +1,5 @@
 class TestCase::Operator::PACKAGE {
-  static method PACKAGE : int () {
+  static method main : int () {
     
     my $anon_result_ref = 1;
     

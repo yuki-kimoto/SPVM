@@ -13,7 +13,7 @@ my $api = SPVM::api;
 # Start objects count
 my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
-ok(SPVM::TestCase::Operator::PACKAGE->PACKAGE);
+ok(SPVM::TestCase::Operator::PACKAGE->main);
 
 # All object is freed
 my $end_memory_blocks_count = $api->get_memory_blocks_count();
