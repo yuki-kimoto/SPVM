@@ -1487,4 +1487,24 @@ class Fn {
     return $is_string_array;
   }
   
+  static method length : int ($array_or_string : object) {
+    
+    unless ($array_or_string) {
+      die "\$array_or_string must be defined.";
+    }
+    
+    my $length = -1;
+    if (&is_array($array_or_string)) {
+      $length = &array_length($array_or_string);
+    }
+    elsif ($array_or_string is_type string) {
+      $length = length (string)$array_or_string;
+    }
+    else {
+      die "The type of \$array_or_string must be an array type or string type.";
+    }
+    
+    return $length;
+  }
+  
 }

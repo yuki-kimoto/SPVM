@@ -1377,6 +1377,20 @@ C<static method is_string_array : int ($object : object)>
 
 If $object is defined and the type of $object is string array type C<string[]>, returns 1, otherwise returns 0.
 
+=head2 length
+
+C<static method length : int ($array_or_string : object);>
+
+Returns the array length of $array_or_string if the type of $array_or_sring is an array type.
+
+Returns the string length of $array_or_string if the type of $array_or_sring is string type.
+
+Exceptions:
+
+$array_or_string must be defined. Otherwise an exception is thrown.
+
+The type of $array_or_string must be an array type or string type. Otherwise an exception is thrown.
+
 =head1 See Also
 
 =over 2
