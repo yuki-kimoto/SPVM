@@ -1,6 +1,7 @@
 0.990010 2023-09-18
   [New Features]
     * Add Fn#length method.
+    * Add Fn#get_elem_or_char_size method.
     
 0.990009 2023-09-11
   [New Features]

@@ -5916,4 +5916,145 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method get_elem_or_char_size : int () {
+    
+    {
+      my $array = new byte[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new short[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == 2) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new int[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new long[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == 8) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new float[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new double[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == 8) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = (object)new int[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == 4) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new object[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == Fn->sizeof_native_pointer) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new Point[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == Fn->sizeof_native_pointer) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = new Complex_2d[3];
+      
+      my $ret = Fn->get_elem_or_char_size($array);
+      
+      unless ($ret == 16) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string = "abc";
+      
+      my $ret = Fn->get_elem_or_char_size($string);
+      
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $array = new int[3];
+        
+        eval { Fn->get_elem_or_char_size(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = Point->new;
+        
+        eval { Fn->get_elem_or_char_size($array); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
 }

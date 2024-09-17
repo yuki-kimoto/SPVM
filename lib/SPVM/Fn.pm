@@ -1391,6 +1391,20 @@ $array_or_string must be defined. Otherwise an exception is thrown.
 
 The type of $array_or_string must be an array type or string type. Otherwise an exception is thrown.
 
+=head2 get_elem_or_char_size
+
+C<static method get_elem_or_char_size : int ($array_or_string : object);>
+
+Returns the element byte size of the array $array if the type of $array_or_sring is an array type.
+
+Returns 1, the byte size of C<byte> type if the type of $array_or_sring is string type.
+
+Exceptions:
+
+The array $array_or_string must be defined. Otherwise, an exception is thrown.
+
+The type of the array $array_or_string must be an array type. Otherwise, an exception is thrown.
+
 =head1 See Also
 
 =over 2

@@ -1507,4 +1507,24 @@ class Fn {
     return $length;
   }
   
+  static method get_elem_or_char_size : int ($array_or_string : object) {
+    
+    unless ($array_or_string) {
+      die "\$array_or_string must be defined.";
+    }
+    
+    my $size = -1;
+    if (&is_array($array_or_string)) {
+      $size = &get_elem_size($array_or_string);
+    }
+    elsif ($array_or_string is_type string) {
+      $size = 1;
+    }
+    else {
+      die "The type of \$array_or_string must be an array type or string type.";
+    }
+    
+    return $size;
+  }
+  
 }
