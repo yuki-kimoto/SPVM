@@ -619,15 +619,19 @@ int32_t SPVM__Array__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Array__new_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Array__new_proto_any(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* array = stack[0].oval;
   int32_t length = stack[1].ival;
   
   if (!array) {
-    return env->die(env, stack, "The prototype array $prototype must be defined.", __func__, FILE_NAME, __LINE__);
+    return env->die(env, stack, "The prototype array $proto_array must be defined.", __func__, FILE_NAME, __LINE__);
   }
-
+  
+  if (!env->is_array(env, stack, array)) {
+    return env->die(env, stack, "The type of the prototype array $proto_array must be an array type.", __func__, FILE_NAME, __LINE__);
+  }
+  
   if (!(length >= 0)) {
     return env->die(env, stack, "The length $length must be greater than or equal to 0.", __func__, FILE_NAME, __LINE__);
   }
