@@ -90,6 +90,7 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->to_array_double);
   ok(SPVM::TestCase::Module::Array->new_array_proto_element);
   ok(SPVM::TestCase::Module::Array->equals);
+  ok(SPVM::TestCase::Module::Array->copy_any_numeric);
 }
 
 # All object is freed

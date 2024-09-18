@@ -1380,4 +1380,37 @@ class Array {
     
     return $equals;
   }
+  
+  static method copy_any_numeric : object ($array : object, $offset : int = 0, $length : int = -1) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless (Fn->is_any_numeric_array($array)) {
+      die "The type of the array \$array must be a numeric array type or a multi-numeric type.";
+    }
+    
+    unless ($offset >= 0) {
+      die "The offset \$offset must be greater than or equal to 0.";
+    }
+    
+    my $array_length = Fn->array_length($array);
+    if ($length < 0) {
+      $length = $array_length - $offset;
+    }
+    
+    unless ($offset + $length <= $array_length) {
+      die "The offset \$offset + the length \$length must be less than or equal to the length of the array \$array.";
+    }
+    
+    my $elem_size = Fn->get_elem_size($array);
+    
+    $new_array = Array->new_proto($array, $length);
+    
+    Fn->memcpy($new_array, 0, $array, $offset, $elem_size * $length);
+    
+    return $new_array;
+  }
+  
 }
