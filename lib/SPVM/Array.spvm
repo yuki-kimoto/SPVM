@@ -1369,7 +1369,7 @@ class Array {
     }
     elsif (Fn->is_object_array($array1)) {
       if ($shallow) {
-        $equals = &equals_object_address((string[])$array1, (string[])$array2);
+        $equals = &equals_object_address((object[])$array1, (object[])$array2);
       }
       else {
         $equals = &equals_object((string[])$array1, (string[])$array2, EqualityChecker->default_equality_checker);
