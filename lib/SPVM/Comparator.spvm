@@ -2,5 +2,32 @@
 # MIT License
 
 class Comparator : interface_t {
+  
+  use Comparable;
+  
   required method : int ($x1 : object, $x2 : object);
+  
+  # Class Methods
+  static method default_comparator : Comparator () {
+    
+    my $default_comparator = method : int ($object1 : Comparable, $object2 : Comparable) {
+      
+      my $cmp = 0;
+      if ($object1 && $object2) {
+        
+        $cmp = $object1->cmp($object1, $object2);
+      }
+      elsif ($object1) {
+        $cmp = 1;
+      }
+      elsif ($object2 ) {
+        $cmp = -1;
+      }
+      
+      return $cmp;
+    };
+    
+    return $default_comparator;
+  }
+  
 }

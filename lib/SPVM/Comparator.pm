@@ -42,6 +42,43 @@ This method must receive two objects and return the following value.
 
 If the first argument is greater than the second argument, returns 1. If the first argument is lower than the second argument, returns -1. If the first argument is equal to the second argument, returns 0.
 
+=head1 Class Methods
+
+=head2 default_comparator
+
+C<static method default_comparator : L<Comparator|SPVM::Comparator> ();>
+
+Returns a default comparator.
+
+The implementation of the default comparator is
+
+  method : int ($object1 : Comparable, $object2 : Comparable) {
+      
+      my $cmp = 0;
+      if ($object1 && $object2) {
+        $cmp = $object1->cmp($object1, $object2);
+      }
+      elsif ($object1) {
+        $cmp = 1;
+      }
+      elsif ($object2 ) {
+        $cmp = -1;
+      }
+      
+      return $cmp;
+    }
+    
+    return $default_comparator;
+  }
+
+If $object1 and $object2 are defined, the comparison is perfermed by L<Comparable#cmp|SPVM::Comparable/"cmp"> method in the class of $object1.
+
+If only $object1 is defined, returns 1.
+
+If only $object2 is defined, returns -1.
+
+If both $object1 and $object2 are not defined, returns 0.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

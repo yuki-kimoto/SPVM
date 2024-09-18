@@ -1,0 +1,47 @@
+class TestCase::Module::Comparator {
+  use Fn;
+  use Comparator;
+  use StringBuffer;
+  
+  static method default_comparator : int () {
+    
+    {
+      my $buffer1 = StringBuffer->new("a");
+      
+      my $buffer2 = StringBuffer->new("b");
+      
+      my $buffer3 = StringBuffer->new("b");
+      
+      my $buffer4 = StringBuffer->new("c");
+      
+      my $default_comparator = Comparator->default_comparator;
+      
+      unless ($default_comparator->($buffer1, $buffer2) == -1) {
+        return 0;
+      }
+      
+      unless ($default_comparator->($buffer2, $buffer3) == 0) {
+        return 0;
+      }
+      
+      unless ($default_comparator->($buffer3, $buffer4) == -1) {
+        return 0;
+      }
+      
+      unless ($default_comparator->($buffer1, undef) == 1) {
+        return 0;
+      }
+      
+      unless ($default_comparator->(undef, $buffer2) == -1) {
+        return 0;
+      }
+      
+      unless ($default_comparator->(undef, undef) == 0) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+}

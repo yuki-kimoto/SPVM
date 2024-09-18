@@ -6,6 +6,7 @@
     * Add Array#copy_any_numeric method.
     * Add Fn#copy method.
     * Add Cloner#default_cloner method.
+    * Add Comparator#default_comparator method.
     
 0.990009 2023-09-11
   [New Features]

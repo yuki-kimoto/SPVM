@@ -26,6 +26,12 @@ SPVM::Cloner - Interface Type for the Callback to Clone a Object
 
 L<Cloner|SPVM::Cloner> is the interface type for the callback to clone an object.
 
+=head1 Interface Methodss
+
+C<required method : object ($object : object);>
+
+The implementation must receive an object and return the cloned object.
+
 =head1 Class Methods
 
 C<static method default_cloner : L<Cloner|SPVM::Cloner> ();>
@@ -46,12 +52,6 @@ The implementation of the default cloner is
   };
 
 If the object $object is undef, returns undef, ohterwise calls L<Cloneable#clone|SPVM::Cloneable/"clone"> method and its return value.
-
-=head1 Interface Methodss
-
-C<required method : object ($object : object);>
-
-The implementation must receive an object and return the cloned object.
 
 =head1 Copyright & License
 

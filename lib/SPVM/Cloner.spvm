@@ -5,8 +5,10 @@ class Cloner : interface_t {
   
   use Cloneable;
   
+  # Interface Methods
   required method : object ($object : object);
   
+  # Class Methods
   static method default_cloner : Cloner () {
     
     my $default_cloner = method : object ($object : Cloneable) {
