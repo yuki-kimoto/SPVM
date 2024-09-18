@@ -5992,6 +5992,48 @@ class TestCase::Module::Array {
       
     }
     
+    # String array - shallow
+    {
+      {
+        my $string1 = "a";
+        
+        my $string2 = "a";
+        
+        my $string3 = "a";
+        
+        my $array1 = [$string1, $string2, undef];
+        
+        my $array2 = [$string1, $string2, undef];
+        
+        my $shallow = 1;
+        my $ret = Array->equals($array1, $array2, $shallow);
+        
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $string1 = "a";
+        
+        my $string2 = "a";
+        
+        my $string3 = "a";
+        
+        my $array1 = [$string1, $string2];
+        
+        my $array2 = [$string1, $string3];
+        
+        my $shallow = 1;
+        my $ret = Array->equals($array1, $array2, $shallow);
+        
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+    }
+    
     # Multi-numeric array
     {
       {
