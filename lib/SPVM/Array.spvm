@@ -1372,7 +1372,7 @@ class Array {
         $equals = &equals_object_address((object[])$array1, (object[])$array2);
       }
       else {
-        $equals = &equals_object((string[])$array1, (string[])$array2, EqualityChecker->default_equality_checker);
+        $equals = &equals_object((object[])$array1, (object[])$array2, EqualityChecker->default_equality_checker);
       }
     }
     elsif (Fn->is_any_numeric_array($array1)) {
