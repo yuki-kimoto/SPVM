@@ -71,7 +71,7 @@ The implementation of the default comparator is
     return $default_comparator;
   }
 
-If $object1 and $object2 are defined, the comparison is perfermed by L<Comparable#cmp|SPVM::Comparable/"cmp"> method in the class of $object1.
+If $object1 and $object2 are defined, the comparison is perfermed by L<Comparable#cmp|SPVM::Comparable/"cmp"> method in the class of $object1, and returns its return value.
 
 If only $object1 is defined, returns 1.
 

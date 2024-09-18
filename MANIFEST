@@ -699,6 +699,7 @@ t/02_vm/08_module/Complex_2f.t
 t/02_vm/08_module/default_loaded_modules.t
 t/02_vm/08_module/Double.t
 t/02_vm/08_module/DoubleList.t
+t/02_vm/08_module/EqualityChecker.t
 t/02_vm/08_module/Error.t
 t/02_vm/08_module/Error_System.t
 t/02_vm/08_module/Float.t
@@ -806,6 +807,7 @@ t/02_vm/lib/SPVM/TestCase/Module/Complex_2d.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Complex_2f.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Double.spvm
 t/02_vm/lib/SPVM/TestCase/Module/DoubleList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/EqualityChecker.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Error.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Float.spvm
 t/02_vm/lib/SPVM/TestCase/Module/FloatList.spvm

@@ -1,0 +1,41 @@
+class TestCase::Module::EqualityChecker {
+  use Fn;
+  use EqualityChecker;
+  use StringBuffer;
+  
+  static method default_equality_checker : int () {
+    
+    {
+      my $buffer1 = StringBuffer->new("a");
+      
+      my $buffer2 = StringBuffer->new("b");
+      
+      my $buffer3 = StringBuffer->new("b");
+      
+      my $default_equality_checker = EqualityChecker->default_equality_checker;
+      
+      unless ($default_equality_checker->($buffer1, $buffer2) == 0) {
+        return 0;
+      }
+      
+      unless ($default_equality_checker->($buffer2, $buffer3) == 1) {
+        return 0;
+      }
+      
+      unless ($default_equality_checker->($buffer1, undef) == 0) {
+        return 0;
+      }
+      
+      unless ($default_equality_checker->(undef, $buffer2) == 0) {
+        return 0;
+      }
+      
+      unless ($default_equality_checker->(undef, undef) == 1) {
+        return 0;
+      }
+      
+    }
+    
+    return 1;
+  }
+}

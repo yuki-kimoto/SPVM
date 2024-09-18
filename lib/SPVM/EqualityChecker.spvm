@@ -2,5 +2,33 @@
 # MIT License
 
 class EqualityChecker : interface_t {
+  
+  # Interface Methods
   required method : int ($object1 : object, $object2 : object);
+  
+  # Class Methods
+  static method default_equality_checker : EqualityChecker () {
+    
+    my $default_equality_checker = method : int ($object1 : EqualityCheckable, $object2 : EqualityCheckable) {
+      
+      my $eq = 0;
+      if ($object1 && $object2) {
+        $eq = $object1->eq($object1, $object2);
+      }
+      elsif ($object1) {
+        $eq = 0;
+      }
+      elsif ($object2) {
+        $eq = 0;
+      }
+      else {
+        $eq = 1;
+      }
+      
+      return $eq;
+    };
+    
+    return $default_equality_checker;
+  }
+  
 }
