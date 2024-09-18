@@ -22,6 +22,7 @@ ok(SPVM::TestCase::MulnumArray->mulnum_array_max_fields_float);
 ok(SPVM::TestCase::MulnumArray->mulnum_array_max_fields_double);
 
 # All object is freed
+$api->set_exception(undef);
 my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 

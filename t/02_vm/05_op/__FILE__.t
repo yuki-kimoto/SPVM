@@ -17,6 +17,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
 ok(SPVM::TestCase::Operator::FILE->file_operator);
 
 # All object is freed
+$api->set_exception(undef);
 my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
