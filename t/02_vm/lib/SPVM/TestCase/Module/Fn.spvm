@@ -6059,8 +6059,6 @@ class TestCase::Module::Fn {
   
   static method copy : int () {
     
-    warn;
-    
     {
       my $array = [1, 2, 3];
       my $array_out = Fn->copy($array);
@@ -6069,8 +6067,6 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-    
-    warn;
     
     # copy numeric array
     {
@@ -6085,8 +6081,6 @@ class TestCase::Module::Fn {
         return 0;
       }
     }
-    
-    warn;
     
     # copy numeric array
     {
@@ -6119,7 +6113,8 @@ class TestCase::Module::Fn {
     # copy object array
     {
       my $array = [Point->new, Point->new, Point->new];
-      my $array_out = (Point[])Fn->copy($array);
+      my $shallow = 1;
+      my $array_out = (Point[])Fn->copy($array, $shallow);
       
       unless (Array->equals_object_address($array_out, $array)) {
         return 0;
@@ -6130,18 +6125,50 @@ class TestCase::Module::Fn {
       }
     }
     
-    # copy string
+    # copy object array
     {
-      my $string = "abc";
-      my $string_out = (string)Fn->copy($string);
+      my $array = [Point->new, Point->new, Point->new];
+      my $shallow = 1;
+      my $array_out = (Point[])Fn->copy($array, $shallow);
       
-      # Equals the value
-      unless ($string_out eq "abc") {
+      unless (Array->equals_object_address($array_out, $array)) {
         return 0;
       }
       
-      # Not equals address
-      if ($string == $string_out) {
+      if ($array == $array_out) {
+        return 0;
+      }
+    }
+    
+    # copy string array
+    {
+      my $array = ["a", "b", "c"];
+      my $array_out = (string[])Fn->copy($array);
+      
+      unless (Array->equals_string($array_out, $array)) {
+        return 0;
+      }
+      
+      if (Array->equals_string_address($array_out, $array)) {
+        return 0;
+      }
+      
+      if ($array == $array_out) {
+        return 0;
+      }
+    }
+    
+    # copy string array - shallow
+    {
+      my $array = ["a", "b", "c"];
+      my $shallow = 1;
+      my $array_out = (string[])Fn->copy($array, $shallow);
+      
+      unless (Array->equals_string_address($array_out, $array)) {
+        return 0;
+      }
+      
+      if ($array == $array_out) {
         return 0;
       }
     }

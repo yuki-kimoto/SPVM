@@ -1407,7 +1407,7 @@ The type of the array $array_or_string must be an array type. Otherwise, an exce
 
 =head2 copy
 
-C<static method copy : object ($array_or_string : object);>
+C<static method copy : object ($array_or_string : object, $shallow : int = 0);>
 
 Copies $array_or_string and returns it.
 
@@ -1415,7 +1415,13 @@ Implementation:
 
 If $array_or_string is undef, returns undef.
 
-If the type of $array_or_string is an object array type, the copy is performed by L<Array#copy_object_address|SPVM::Array/"copy_object_address"> method.
+If the type of $array_or_string is an string array type and $shallow is a false value, the copy is performed by L<Array#copy_string|SPVM::Array/"copy_string"> method.
+
+If the type of $array_or_string is an string array type and $shallow is a true value, the copy is performed by L<Array#copy_string_address|SPVM::Array/"copy_string_address"> method.
+
+If the type of $array_or_string is an object array type and $shallow is a false value, the copy is performed by L<Array#copy_object|SPVM::Array/"copy_object"> method and L<Cloneable#clone|SPVM::Cloneable/"clone"> method.
+
+If the type of $array_or_string is an object array type and $shallow is a true value, the copy is performed by L<Array#copy_object_address|SPVM::Array/"copy_object_address"> method.
 
 If the type of $array_or_string is a numeric array type or a multi-numeric array type, the copy is performed by L<Array#copy_any_numeric|SPVM::Array/"copy_any_numeric"> method.
 
