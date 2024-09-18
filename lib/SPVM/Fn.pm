@@ -1419,7 +1419,7 @@ If the type of $array_or_string is an string array type and $shallow is a false 
 
 If the type of $array_or_string is an string array type and $shallow is a true value, the copy is performed by L<Array#copy_string_address|SPVM::Array/"copy_string_address"> method.
 
-If the type of $array_or_string is an object array type and $shallow is a false value, the copy is performed by L<Array#copy_object|SPVM::Array/"copy_object"> method and L<Cloneable#clone|SPVM::Cloneable/"clone"> method.
+If the type of $array_or_string is an object array type and $shallow is a false value, the copy is performed by L<Array#copy_object|SPVM::Array/"copy_object"> method given L<Cloner#default_cloner|SPVM::Cloner/"default_cloner"> method.
 
 If the type of $array_or_string is an object array type and $shallow is a true value, the copy is performed by L<Array#copy_object_address|SPVM::Array/"copy_object_address"> method.
 

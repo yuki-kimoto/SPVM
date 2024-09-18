@@ -6112,11 +6112,34 @@ class TestCase::Module::Fn {
     
     # copy object array
     {
-      my $array = [Point->new, Point->new, Point->new];
-      my $shallow = 1;
-      my $array_out = (Point[])Fn->copy($array, $shallow);
+      my $array = [Point->new(1, 2), Point->new(3, 4), undef];
+      my $array_out = (Point[])Fn->copy($array);
       
-      unless (Array->equals_object_address($array_out, $array)) {
+      unless ($array_out->[0]->x == $array->[0]->x) {
+        return 0;
+      }
+      
+      unless ($array_out->[0]->y == $array->[0]->y) {
+        return 0;
+      }
+      
+      if ($array_out->[0] == $array->[0]) {
+        return 0;
+      }
+      
+      unless ($array_out->[1]->x == $array->[1]->x) {
+        return 0;
+      }
+      
+      unless ($array_out->[1]->y == $array->[1]->y) {
+        return 0;
+      }
+      
+      if ($array_out->[1] == $array->[1]) {
+        return 0;
+      }
+      
+      unless ($array_out->[2] == undef) {
         return 0;
       }
       
