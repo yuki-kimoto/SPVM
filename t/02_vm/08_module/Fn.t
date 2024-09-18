@@ -209,6 +209,8 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->get_elem_or_char_size);
     
+    ok(SPVM::TestCase::Module::Fn->copy);
+    
   }
   
   # Extra

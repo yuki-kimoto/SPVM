@@ -1527,4 +1527,27 @@ class Fn {
     return $size;
   }
   
+  static method copy : object ($array_or_string : object) {
+    
+    unless ($array_or_string) {
+      return undef;
+    }
+    
+    my $copy = (object)undef;
+    if (&is_object_array($array_or_string)) {
+      $copy = Array->copy_object_address((object[])$array_or_string);
+    }
+    elsif (&is_any_numeric_array($array_or_string)) {
+      $copy = Array->copy_any_numeric($array_or_string);
+    }
+    elsif ($array_or_string is_type string) {
+      $copy = copy (string)$array_or_string;
+    }
+    else {
+      die "The type of \$array_or_string must be an array type or string type.";
+    }
+    
+    return $copy;
+  }
+  
 }

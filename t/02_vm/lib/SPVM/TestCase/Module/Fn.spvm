@@ -6057,4 +6057,122 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method copy : int () {
+    
+    warn;
+    
+    {
+      my $array = [1, 2, 3];
+      my $array_out = Fn->copy($array);
+      
+      unless ($array_out is_compile_type object) {
+        return 0;
+      }
+    }
+    
+    warn;
+    
+    # copy numeric array
+    {
+      my $array = [1, 2, 3];
+      my $array_out = (int[])Fn->copy($array);
+      
+      unless (Array->equals($array_out, $array)) {
+        return 0;
+      }
+      
+      if ($array == $array_out) {
+        return 0;
+      }
+    }
+    
+    warn;
+    
+    # copy numeric array
+    {
+      my $array = [1, 2, 3];
+      my $array_out = (int[])Fn->copy($array);
+      
+      unless (Array->equals($array_out, $array)) {
+        return 0;
+      }
+      
+      if ($array == $array_out) {
+        return 0;
+      }
+    }
+    
+    # copy multi numeric array
+    {
+      my $array = Complex_2d->new_array_from_pairs([(double)1,2,  3,4]);
+      my $array_out = (Complex_2d[])Fn->copy($array);
+      
+      unless (Array->equals($array_out, $array)) {
+        return 0;
+      }
+      
+      if ($array == $array_out) {
+        return 0;
+      }
+    }
+    
+    # copy object array
+    {
+      my $array = [Point->new, Point->new, Point->new];
+      my $array_out = (Point[])Fn->copy($array);
+      
+      unless (Array->equals_object_address($array_out, $array)) {
+        return 0;
+      }
+      
+      if ($array == $array_out) {
+        return 0;
+      }
+    }
+    
+    # copy string
+    {
+      my $string = "abc";
+      my $string_out = (string)Fn->copy($string);
+      
+      # Equals the value
+      unless ($string_out eq "abc") {
+        return 0;
+      }
+      
+      # Not equals address
+      if ($string == $string_out) {
+        return 0;
+      }
+    }
+    
+    # copy string
+    {
+      my $string = "abc";
+      my $string_out = (string)Fn->copy($string);
+      
+      # Equals the value
+      unless ($string_out eq "abc") {
+        return 0;
+      }
+      
+      # Not equals address
+      if ($string == $string_out) {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      my $string_out = Fn->copy(undef);
+      
+      # Equals the value
+      unless ($string_out == undef) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
