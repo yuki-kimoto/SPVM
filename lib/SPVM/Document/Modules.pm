@@ -60,6 +60,8 @@ This document lists standard modules in the SPVM language. Standard modules are 
 
 =item * L<EqualityChecker::Address|SPVM::EqualityChecker::Address>
 
+=item * L<Equatable|SPVM::Equatable>
+
 =item * L<Error|SPVM::Error>
 
 =item * L<Error::Compile|SPVM::Error::Compile>

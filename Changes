@@ -7,6 +7,7 @@
     * Add Fn#copy method.
     * Add Cloner#default_cloner method.
     * Add Comparator#default_comparator method.
+    * Add Equatable interface.
     
 0.990009 2023-09-11
   [New Features]
