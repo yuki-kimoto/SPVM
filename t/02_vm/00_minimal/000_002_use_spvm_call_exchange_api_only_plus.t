@@ -5,9 +5,9 @@ use Test::More;
 
 use SPVM;
 
-SPVM::api->get_memory_blocks_count();
-
 my $api = SPVM::api();
+
+$api->get_memory_blocks_count();
 
 my $obj_int = $api->call_method("Int", "new", 1);
 

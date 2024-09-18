@@ -9,7 +9,8 @@ use Test::More;
 use SPVM 'TestCase::Operator::ArrayMiddleSize';
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $api = SPVM::api();
+my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 my $free_result = `free`;
 my $at_least_memory_size;
@@ -31,7 +32,7 @@ SKIP: {
 };
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

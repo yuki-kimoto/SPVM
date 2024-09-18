@@ -14,7 +14,8 @@ use SPVM 'TestCase::NativeAPILinkInfo';
 my $build_dir = $ENV{SPVM_BUILD_DIR};
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $api = SPVM::api();
+my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 {
   my $link_info = $main::NATIVE_API_LINK_INFO;
@@ -35,10 +36,10 @@ my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
 }
 
 # Clear exception
-SPVM::api->set_exception(undef);
+$api->set_exception(undef);
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

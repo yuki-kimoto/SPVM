@@ -16,7 +16,8 @@ else {
 }
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $api = SPVM::api();
+my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # large size array
 my $array_big_index_long_cant_alloc_memory;
@@ -31,10 +32,10 @@ ok(SPVM::TestCase::Operator::New::Array->array_big_index_double);
 ok(SPVM::TestCase::Operator::New::Array->array_max_index_byte);
 
 # Clear exception
-SPVM::api->set_exception(undef);
+$api->set_exception(undef);
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

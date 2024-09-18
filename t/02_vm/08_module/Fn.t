@@ -15,7 +15,8 @@ use SPVM 'Fn';
 use POSIX();
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $api = SPVM::api();
+my $start_memory_blocks_count = $api->get_memory_blocks_count();
 
 # Note: Positive infinity(unix like system : inf, Windows : 1.#INF)
 my $POSITIVE_INFINITY = 9**9**9;
@@ -260,7 +261,7 @@ my $seed = time();
 }
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::api->get_memory_blocks_count();
+my $end_memory_blocks_count = $api->get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 
 done_testing;

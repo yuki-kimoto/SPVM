@@ -8,9 +8,10 @@ use Test::More;
 
 use SPVM 'TestCase::Module::Native::BasicType';
 
-my $api = SPVM::api;
+
 
 # Start objects count
+my $api = SPVM::api();
 my $start_memory_blocks_count = $api->get_memory_blocks_count;
 
 {
