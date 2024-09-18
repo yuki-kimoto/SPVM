@@ -1107,7 +1107,7 @@ C<static method equals : int ($array1 : object, $array2 : object, $shallow : int
 
 Checks if the array $array1 and the array $array2 are equal.
 
-The type of $array1 and $array2 must be a numeric array type, a multi-numeric array type, or string array type.
+The type of $array1 and $array2 must be a numeric array type, a multi-numeric array type, string array type, or an object array type.
 
 Implementation:
 
@@ -1119,9 +1119,15 @@ If $array1 is not defined, $array2 is defined, returns 0.
 
 If the type of $array1 is not equal to the type of $array2, returns 0.
 
-If the type of $array1 is a numeric type or a muti-numeric type and every element of $array1 are equal to the corresponding index of element of $array2, returns 1, otherwise returns 0.
+If the type of $array1 is a numeric array type or a muti-numeric type and every element of $array1 are equal to the corresponding index of element of $array2, returns 1, otherwise returns 0.
 
-If the type of $array1 is string type, returns the return value of L</"equals_string"> method.
+If the type of $array1 is string array type and $shallow is a false value, returns the return value of L</"equals_string"> method.
+
+If the type of $array1 is string array type and $shallow is a true value, returns the return value of L</"equals_string_address"> method.
+
+If the type of $array1 is an object array type and $shallow is a false value, returns the return value of L</"equals_object"> method given L<EqualityChecker#default_equality_checker|SPVM::EqualityChecker#/"default_equality_checker">.
+
+If the type of $array1 is an object array type and $shallow is a true value, returns the return value of L</"equals_object_address"> method.
 
 Exceptions:
 
@@ -1129,7 +1135,7 @@ The type of the array $array1 must be an array type. Otherwise, an exception is 
 
 The type of the array $array2 must be an array type. Otherwise, an exception is thrown.
 
-The type of the $array must be a numeric array type, a multi-numeric array type, or string array type. Otherwise, an exception is thrown.
+The type of the $array must be a numeric array type, a multi-numeric array type, string array type, or an object array type. Otherwise, an exception is thrown.
 
 =head2 copy_any_numeric
 
