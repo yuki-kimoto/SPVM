@@ -5,6 +5,7 @@
     * Add Array#new_proto_any method.
     * Add Array#copy_any_numeric method.
     * Add Fn#copy method.
+    * Add Cloner#default_cloner method.
     
 0.990009 2023-09-11
   [New Features]

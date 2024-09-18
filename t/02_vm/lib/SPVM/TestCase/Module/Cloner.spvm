@@ -1,0 +1,42 @@
+class TestCase::Module::Cloner {
+  use Fn;
+  use Cloner;
+  use Point;
+  
+  static method default_cloner : int () {
+    
+    {
+      my $point = Point->new(1, 2);
+      
+      my $default_cloner = Cloner->default_cloner;
+      
+      my $point_clone = (Point)$default_cloner->($point);
+      
+      unless ($point_clone->x == $point->x) {
+        return 0;
+      }
+      
+      unless ($point_clone->y == $point->y) {
+        return 0;
+      }
+      
+      if ($point_clone == $point) {
+        return 0;
+      }
+    }
+    
+    {
+      my $point = (Point)undef;
+      
+      my $default_cloner = Cloner->default_cloner;
+      
+      my $point_clone = (Point)$default_cloner->($point);
+      
+      unless ($point_clone == undef) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

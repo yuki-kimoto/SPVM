@@ -689,6 +689,7 @@ t/02_vm/08_module/Array.t
 t/02_vm/08_module/Bool.t
 t/02_vm/08_module/Byte.t
 t/02_vm/08_module/ByteList.t
+t/02_vm/08_module/Cloner.t
 t/02_vm/08_module/CommandInfo.t
 t/02_vm/08_module/Complex_2d.t
 t/02_vm/08_module/Complex_2f.t
@@ -795,6 +796,7 @@ t/02_vm/lib/SPVM/TestCase/Module/Array.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Bool.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Byte.spvm
 t/02_vm/lib/SPVM/TestCase/Module/ByteList.spvm
+t/02_vm/lib/SPVM/TestCase/Module/Cloner.spvm
 t/02_vm/lib/SPVM/TestCase/Module/CommandInfo.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Complex_2d.spvm
 t/02_vm/lib/SPVM/TestCase/Module/Complex_2f.spvm
