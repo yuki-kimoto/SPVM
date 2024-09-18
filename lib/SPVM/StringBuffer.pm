@@ -37,9 +37,11 @@ The charactors in the range that is greater than or equal to L</"length"> field 
 
 =over 2
 
-L<Cloneable|SPVM::Cloneable>
+=item * L<Cloneable|SPVM::Cloneable>
 
-L<Comparable|SPVM::Comparable>
+=item * L<Comparable|SPVM::Comparable>
+
+=item * L<EqualityCheckable|SPVM::EqualityCheckable>
 
 =back
 
@@ -176,6 +178,22 @@ C<method cmp : int ($a : L<StringBuffer|SPVM::StringBuffer>, $b : L<StringBuffer
 Compares two L<StringBuffer|SPVM::StringBuffer> and returns its result.
 
 The result is equal to the return value of C<cmp> operator given C<$a-E<gt>to_string> or undef(if $a is undef) and C<$b-E<gt>to_string> or undef(if $b is undef).
+
+=head2 eq
+
+C<method eq : int ($a : L<StringBuffer|SPVM::StringBuffer>, $b : L<StringBuffer|SPVM::StringBuffer>);>
+
+Checks if $a is equal to $b, and returns its result.
+
+Implementation:
+
+If $a and $b is defined, calls L</"cmp"> method. If the return value is 0, returns 1, otherwise 0.
+
+If only $a is not defined, returns 0.
+
+If only $b is not defined, returns 0.
+
+If both $a and $b is not defined, returns 1.
 
 =head1 Copyright & License
 

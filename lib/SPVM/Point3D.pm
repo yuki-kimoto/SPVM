@@ -75,6 +75,22 @@ Stringifies C<Point3D> object as the following format.
 
   (1,2,3)
 
+=head2 eq
+
+C<method eq : int ($a : Point, $b : Point);>
+
+If $a is equal to $b, returns 1, otherwise returns 0.
+
+Implementation:
+
+If $a and $b is defined and L</"x"> and L</"y"> fields in $a are equals to L</"x"> and L</"y"> fields in $b, returns 1.
+
+If only $a is not defined, returns 0.
+
+If only $b is not defined, returns 0.
+
+If both $a and $b is not defined, returns 1.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto

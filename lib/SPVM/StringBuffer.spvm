@@ -7,6 +7,7 @@ class StringBuffer {
   
   interface Cloneable;
   interface Comparable;
+  interface EqualityCheckable;
   
   # Enumerations
   private enum {
@@ -264,4 +265,23 @@ class StringBuffer {
     return $cmp;
   }
   
+  method eq : int ($a : StringBuffer, $b : StringBuffer) {
+    
+    my $eq = 0;
+    
+    if ($a && $b) {
+      $eq = $a->cmp($a, $b) == 0;
+    }
+    elsif ($a) {
+      $eq = 0;
+    }
+    elsif ($b) {
+      $eq = 0;
+    }
+    else {
+      $eq = 1;
+    }
+    
+    return $eq;
+  }
 }

@@ -23,6 +23,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Point3D->clear);
   ok(SPVM::TestCase::Module::Point3D->to_string);
   ok(SPVM::TestCase::Module::Point3D->extra);
+  ok(SPVM::TestCase::Module::Point3D->eq);
 }
 
 # All object is freed

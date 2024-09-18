@@ -8,6 +8,14 @@
     * Add Cloner#default_cloner method.
     * Add Comparator#default_comparator method.
     * Add EqualityCheckable interface.
+    * Add eq method to Point class.
+    * Add eq method to Point3D class.
+    * Add eq method to StringBuffer class.
+  [Changes]
+    * x and y field in Point class becomes protected.
+    * Point class has EqualityCheckable interface.
+    * Point3D class has EqualityCheckable interface.
+    * StringBuffer class has EqualityCheckable interface.
     
 0.990009 2023-09-11
   [New Features]

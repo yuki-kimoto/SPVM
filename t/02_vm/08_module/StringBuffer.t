@@ -43,6 +43,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   
   ok(SPVM::TestCase::Module::StringBuffer->cmp);
   
+  ok(SPVM::TestCase::Module::StringBuffer->eq);
   # Extra
   ok(SPVM::TestCase::Module::StringBuffer->extra);
 }

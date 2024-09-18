@@ -224,4 +224,53 @@ class TestCase::Module::Point {
     
     return 1;
   }
+  
+  static method eq : int () {
+    
+    {
+      my $point = Point->new;
+      
+      unless ($point isa EqualityCheckable) {
+        return 0;
+      }
+      
+      {
+        my $ret = $point->eq(Point->new(1, 2), Point->new(1, 3));
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $point->eq(Point->new(1, 2), Point->new(1, 2));
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $point->eq(undef, undef);
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $point->eq(undef, Point->new);
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $point->eq(Point->new, undef);
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

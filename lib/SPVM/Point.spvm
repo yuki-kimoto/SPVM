@@ -5,10 +5,11 @@ class Point {
   # Interfaces
   interface Stringable;
   interface Cloneable;
+  interface EqualityCheckable;
   
   # Fields
-  has x : ro int;
-  has y : ro int;
+  has x : protected ro int;
+  has y : protected ro int;
   
   # Class methods
   static method new : Point ($x : int = 0, $y : int = 0) {
@@ -44,4 +45,26 @@ class Point {
     
     return $string;
   }
+  
+  method eq : int ($a : Point, $b : Point) {
+    
+    my $eq = 0;
+    if ($a && $b) {
+      if ($a->{x} == $b->{x} && $a->{y} == $b->{y}) {
+        $eq = 1;
+      }
+    }
+    elsif ($a) {
+      $eq = 0;
+    }
+    elsif ($b) {
+      $eq = 0;
+    }
+    else {
+      $eq = 1;
+    }
+    
+    return $eq;
+  }
+  
 }

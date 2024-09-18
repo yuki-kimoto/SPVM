@@ -32,19 +32,21 @@ C<Point> class has the following interfaces.
 
 =item * L<Cloneable|SPVM::Cloneable>
 
+=item * L<EqualityCheckable|SPVM::EqualityCheckable>
+
 =back
 
 =head1 Fields
 
 =head2 x
 
-  has x : ro int;
+  has x : protected ro int;
 
 C<x>.
 
 =head2 y
 
-  has y : ro int;
+  has y : protected ro int;
 
 C<y>.
 
@@ -83,6 +85,20 @@ C<method to_string : string ();>
 Stringifies C<Point> object as the following format.
 
   (1,2)
+
+C<method eq : int ($a : Point, $b : Point);>
+
+If $a is equal to $b, returns 1, otherwise returns 0.
+
+Implementation:
+
+If $a and $b is defined and L</"x">, L</"y">, and L</"z"> fields in $a are equals to L</"x">, L</"y">, and L</"z"> fields in $b, returns 1.
+
+If only $a is not defined, returns 0.
+
+If only $b is not defined, returns 0.
+
+If both $a and $b is not defined, returns 1.
 
 =head1 Copyright & License
 

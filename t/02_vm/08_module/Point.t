@@ -28,6 +28,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Point->new);
   ok(SPVM::TestCase::Module::Point->clear);
   ok(SPVM::TestCase::Module::Point->to_string);
+  ok(SPVM::TestCase::Module::Point->eq);
   
   # Extra
   ok(SPVM::TestCase::Module::Point->extra);

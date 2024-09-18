@@ -589,4 +589,52 @@ class TestCase::Module::StringBuffer {
     return 1;
   }
   
+  static method eq : int () {
+    
+    {
+      my $buffer = StringBuffer->new;
+      
+      unless ($buffer isa EqualityCheckable) {
+        return 0;
+      }
+      
+      {
+        my $ret = $buffer->eq(StringBuffer->new("abd"), StringBuffer->new("abc"));
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->eq(StringBuffer->new("abc"), StringBuffer->new("abc"));
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->eq(undef, undef);
+        unless ($ret == 1) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->eq(undef, StringBuffer->new(""));
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $ret = $buffer->eq(StringBuffer->new(""), undef);
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }
