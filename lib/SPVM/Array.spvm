@@ -1036,7 +1036,11 @@ class Array {
     return $merged_array;
   }
   
-  native static method new_proto : object[] ($proto_array : object[], $length : int);
+  static method new_proto : object[] ($proto_array : object[], $length : int) {
+    return (object[])&new_proto_any($proto_array, $length);
+  }
+  
+  native static method new_proto_any : object ($proto_array : object, $length : int);
   
   static method shuffle_object : void ($array : object[], $seed_ref : int*) {
     
@@ -1406,9 +1410,9 @@ class Array {
     
     my $elem_size = Fn->get_elem_size($array);
     
-    $new_array = Array->new_proto($array, $length);
+    my $new_array = Array->new_proto_any($array, $length);
     
-    Fn->memcpy($new_array, 0, $array, $offset, $elem_size * $length);
+    Fn->memcpy($new_array, 0, $array, $elem_size * $offset, $elem_size * $length);
     
     return $new_array;
   }

@@ -933,6 +933,12 @@ $prototype array must be defined. Otherwise an exception is thrown.
 
 $length must be greater than or equal to 0. Otherwise an exception is thrown.
 
+=head2 new_proto_any
+
+C<static method new_proto_any : object ($proto_array : object, $length : int);>
+
+Same as L</"new_proto"> method, but can give $proto_array of the type of a numeric array or a multi-numeric array and the return type is different.
+
 =head2 shuffle_object
 
 C<static method shuffle_object : void ($array : object[], $seed_ref : int*);>
