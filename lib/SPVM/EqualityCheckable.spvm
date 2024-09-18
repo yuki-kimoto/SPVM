@@ -1,7 +1,7 @@
 # Copyright (c) 2024 Yuki Kimoto
 # MIT License
 
-class Equatable : interface_t {
+class EqualityCheckable : interface_t {
   
   # Interface Methods
   required method eq : int ($a : object, $b : object);

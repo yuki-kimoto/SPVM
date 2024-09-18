@@ -267,12 +267,12 @@ lib/SPVM/Document/Resource.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
+lib/SPVM/EqualityCheckable.pm
+lib/SPVM/EqualityCheckable.spvm
 lib/SPVM/EqualityChecker.pm
 lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/Address.pm
 lib/SPVM/EqualityChecker/Address.spvm
-lib/SPVM/Equatable.pm
-lib/SPVM/Equatable.spvm
 lib/SPVM/Error.pm
 lib/SPVM/Error/Compile.pm
 lib/SPVM/Error/NotSupported.pm

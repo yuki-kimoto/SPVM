@@ -1,4 +1,4 @@
-package SPVM::Equatable;
+package SPVM::EqualityCheckable;
 
 
 
@@ -6,15 +6,15 @@ package SPVM::Equatable;
 
 =head1 Name
 
-SPVM::Equatable - Equatable Interface
+SPVM::EqualityCheckable - EqualityCheckable Interface
 
 =head1 Description
 
-Equatable interface in L<SPVM> has interface methods to check equality of two objects.
+EqualityCheckable interface in L<SPVM> has interface methods to check equality of two objects.
 
 =head1 Usage
 
-  interface Equatable;
+  interface EqualityCheckable;
 
 =head1 Interface Methods
 
