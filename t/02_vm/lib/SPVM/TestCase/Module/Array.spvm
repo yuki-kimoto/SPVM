@@ -5943,9 +5943,9 @@ class TestCase::Module::Array {
     # String array
     {
       {
-        my $array1 = [(string)1, 3, 2];
+        my $array1 = [(string)1, 3, 2, undef];
         
-        my $array2 = [(string)1, 3, 2];
+        my $array2 = [(string)1, 3, 2, undef];
         
         my $ret = Array->equals($array1, $array2);
         
@@ -5958,6 +5958,30 @@ class TestCase::Module::Array {
         my $array1 = [(string)1, 3, 2];
         
         my $array2 = [(string)1, 3, 3];
+        
+        my $ret = Array->equals($array1, $array2);
+        
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(string)1, 3, undef];
+        
+        my $array2 = [(string)1, 3, 3];
+        
+        my $ret = Array->equals($array1, $array2);
+        
+        unless ($ret == 0) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array1 = [(string)1, 3, 3];
+        
+        my $array2 = [(string)1, 3, undef];
         
         my $ret = Array->equals($array1, $array2);
         

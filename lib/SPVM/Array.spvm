@@ -1332,7 +1332,7 @@ class Array {
   
   native static method new_array_proto_element : object[] ($proto_element : object, $length : int);
   
-  static method equals : int ($array1 : object, $array2 : object) {
+  static method equals : int ($array1 : object, $array2 : object, $shallow : int = 0) {
     
     if ($array1 == undef && $array2 == undef) {
       return 1;
@@ -1359,9 +1359,21 @@ class Array {
     my $elem_type_name = Fn->get_elem_type_name($array1);
     
     my $equals = 0;
-    if ($elem_type_name eq "string") {
-      
-      $equals = &equals_string((string[])$array1, (string[])$array2);
+    if (Fn->is_string_array($array1)) {
+      if ($shallow) {
+        $equals = &equals_string_address((string[])$array1, (string[])$array2);
+      }
+      else {
+        $equals = &equals_string((string[])$array1, (string[])$array2);
+      }
+    }
+    elsif (Fn->is_object_array($array1)) {
+      if ($shallow) {
+        $equals = &equals_object_address((string[])$array1, (string[])$array2);
+      }
+      else {
+        $equals = &equals_object((string[])$array1, (string[])$array2, EqualityChecker->default_equality_checker);
+      }
     }
     elsif (Fn->is_any_numeric_array($array1)) {
       
@@ -1379,7 +1391,7 @@ class Array {
       }
     }
     else {
-      die "The type of the \$array must be a numeric array type, a multi-numeric array type, or string array type";
+      die "The type of the \$array must be a numeric array type, a multi-numeric array type, string array type, or an object array type";
     }
     
     return $equals;

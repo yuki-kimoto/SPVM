@@ -1103,7 +1103,7 @@ The length $length must be greater than or equal to 0. Otherwise an exception is
 
 =head2 equals
 
-C<static method equals : int ($array1 : object, $array2 : object);>
+C<static method equals : int ($array1 : object, $array2 : object, $shallow : int = 0);>
 
 Checks if the array $array1 and the array $array2 are equal.
 
