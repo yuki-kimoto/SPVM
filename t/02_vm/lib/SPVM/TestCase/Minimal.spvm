@@ -3,14 +3,18 @@ class TestCase::Minimal : public {
   
   interface Stringable;
   interface Cloneable;
-
+  
   has x : rw public int;
   has y : rw public int;
-
+  
+  method : int () {
+    return 3;
+  }
+  
   method get_x : int () {
     return $self->{x};
   }
-
+  
   static method new : TestCase::Minimal () {
     return new TestCase::Minimal;
   }
@@ -29,7 +33,7 @@ class TestCase::Minimal : public {
     
     return $str;
   }
-
+  
   method clone : object () {
     my $new_minimal = TestCase::Minimal->new;
     

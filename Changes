@@ -18,6 +18,10 @@
     * Point class has EqualityCheckable interface.
     * Point3D class has EqualityCheckable interface.
     * StringBuffer class has EqualityCheckable interface.
+  [Bug Fix]
+    * Fix a bug that static method call is not used in anon method.
+    
+      https://github.com/yuki-kimoto/SPVM/issues/582
     
 0.990009 2023-09-11
   [New Features]

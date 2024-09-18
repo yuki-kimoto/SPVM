@@ -1864,19 +1864,15 @@ class TestCase::Operator::MethodCall {
         }
         
         {
-          my $simple = TestCase::SimpleChild->new;
+          my $minimal = TestCase::Minimal->new;
           
-          my $result = $simple->(TestCase::Simple)->arg_object_option;
+          # Call anon method
+          my $ret = $minimal->TestCase::Minimal::();
           
-          unless ($result is_compile_type object) {
-            return 0;
-          }
-          
-          unless ($result == undef) {
+          unless ($ret == 3) {
             return 0;
           }
         }
-        
       }
     }
     

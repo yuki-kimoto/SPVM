@@ -632,7 +632,7 @@ use Test::More;
       compile_not_ok_file('CompileError::LocalVar::LocalVarNameColon2Twice');
     }
   }
-
+  
   # Symbol name
   {
     # A symbol name cannnot conatain "__"
@@ -640,13 +640,13 @@ use Test::More;
       my $source = 'class MyClass { use Int as Foo__Bar; static method main : void () { } }';
       compile_not_ok($source, qr/\QThe symbol name "Foo__Bar" cannnot constain "__"/);
     }
-
+    
     # A symbol name cannnot end with "::"
     {
       my $source = 'class MyClass { use Int as Foo::; static method main : void () { } }';
-      compile_not_ok($source, qr/\QThe symbol name "Foo::" cannnot end with "::"/);
+      compile_not_ok($source, qr/\QThe alias name "Foo::" cannnot end with "::"/);
     }
-
+    
     # A symbol name cannnot contains "::::".
     {
       my $source = 'class MyClass { use Int as Foo::::Bar; static method main : void () { } }';

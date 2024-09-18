@@ -1079,6 +1079,12 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   if (op_name_alias) {
     const char* alias_name = op_name_alias->uv.name;
     use->alias_name = alias_name;
+    
+    // A alias name cannnot end with "::"
+    int32_t alias_name_length = strlen(alias_name);
+    if (alias_name_length >= 2 && alias_name[alias_name_length - 2] == ':' && alias_name[alias_name_length - 1] == ':' ) {
+      SPVM_COMPILER_error(compiler, "The alias name \"%s\" cannnot end with \"::\".\n  at %s line %d", alias_name, op_name_alias->file, op_name_alias->line);
+    }
   }
   
   SPVM_LIST_push(compiler->op_use_stack, op_use);

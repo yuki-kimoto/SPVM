@@ -2489,11 +2489,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot constain \"__\".\n  at %s line %d", symbol_name, compiler->current_file, compiler->current_line);
               }
               
-              // A symbol name cannnot end with "::"
-              if (symbol_name_length >= 2 && symbol_name[symbol_name_length - 2] == ':' && symbol_name[symbol_name_length - 1] == ':' ) {
-                SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot end with \"::\".\n  at %s line %d", symbol_name, compiler->current_file, compiler->current_line);
-              }
-              
               // A symbol name cannnot contains "::::".
               if (strstr(symbol_name, "::::")) {
                 SPVM_COMPILER_error(compiler, "The symbol name \"%s\" cannnot contains \"::::\".\n  at %s line %d", symbol_name, compiler->current_file, compiler->current_line);
