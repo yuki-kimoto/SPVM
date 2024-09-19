@@ -13,6 +13,8 @@
     * Add eq method to StringBuffer class.
     * Add EqualityChecker#default_equality_checker method.
     * Add $shallow argument to Array#equals method.
+    * Add Array#shuffle method.
+    * Add Array#shuffle_any_numeric method.
   [Changes]
     * x and y field in Point class becomes protected.
     * Point class has EqualityCheckable interface.

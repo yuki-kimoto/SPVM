@@ -1429,4 +1429,49 @@ class Array {
     return $new_array;
   }
   
+  static method shuffle_any_numeric : void ($array : object, $seed_ref : int*) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless (Fn->is_any_numeric_array($array)) {
+      die "The type of the array \$array must be a numeric type or a multi-numeric type.";
+    }
+    
+    my $array_length = Fn->array_length($array);
+    
+    my $elem_size = Fn->get_elem_size($array);
+    
+    my $temp = new byte[$elem_size];
+    
+    for (my $i = $array_length - 1; $i > 0; $i--) {
+      
+      my $j = Fn->crand($seed_ref) % ($i + 1);
+      
+      Fn->memcpy($temp, 0, $array, $elem_size * $i, $elem_size);
+      
+      Fn->memcpy($array, $elem_size * $i, $array, $elem_size * $j, $elem_size);
+      
+      Fn->memcpy($array, $elem_size * $j, $temp, 0, $elem_size);
+    }
+  }
+  
+  static method shuffle : void ($array : object, $seed_ref : int*) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    if (Fn->is_object_array($array)) {
+      &shuffle_object((object[])$array, $seed_ref);
+    }
+    elsif (Fn->is_any_numeric_array($array)) {
+      &shuffle_any_numeric($array, $seed_ref);
+    }
+    else {
+      die "The type of the array \$array must be an object array type, a numeric array type or a multi-numeric array type.";
+    }
+  }
+  
 }

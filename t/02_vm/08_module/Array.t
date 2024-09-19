@@ -94,6 +94,8 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->new_array_proto_element);
   ok(SPVM::TestCase::Module::Array->equals);
   ok(SPVM::TestCase::Module::Array->copy_any_numeric);
+  ok(SPVM::TestCase::Module::Array->shuffle_any_numeric);
+  ok(SPVM::TestCase::Module::Array->shuffle);
 }
 
 $api->set_exception(undef);

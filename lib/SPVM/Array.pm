@@ -943,7 +943,7 @@ Same as L</"new_proto"> method, but can give $proto_array of the type of a numer
 
 C<static method shuffle_object : void ($array : object[], $seed_ref : int*);>
 
-Shuffles the array $array with the reference to a seed $seed_ref.
+Shuffles the array $array in-place given the reference to a seed $seed_ref.
 
 Exceptions:
 
@@ -1154,6 +1154,34 @@ The type of the array $array must be a numeric array type or a multi-numeric typ
 $offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
 $offset + $length must be less than or equal to the length of $array. Otherwise an exception is thrown.
+
+=head2 shuffle_any_numeric
+
+static method shuffle_any_numeric : void ($array : object, $seed_ref : int*)
+
+Shuffles the array $array in-place given the reference to a seed $seed_ref.
+
+The type of $array must be a numeric type or a multi-numeric type.
+
+Exceptions:
+
+$array must be defined. Otherwise an exception is thrown.
+
+The type of the array $array must be a numeric type or a multi-numeric type. Otherwise an exception is thrown.
+
+=head2 shuffle
+
+static method shuffle : void ($array : object, $seed_ref : int*)
+
+Shuffles the array $array in-place given the reference to a seed $seed_ref.
+
+The type of $array must be an ojbect tyep, a numeric type or a multi-numeric type.
+
+Exceptions:
+
+$array must be defined. Otherwise an exception is thrown.
+
+The type of $array must be an ojbect tyep, a numeric type or a multi-numeric type.
 
 =head1 Copyright & License
 
