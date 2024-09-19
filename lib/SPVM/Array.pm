@@ -1157,7 +1157,7 @@ $offset + $length must be less than or equal to the length of $array. Otherwise 
 
 =head2 shuffle_any_numeric
 
-static method shuffle_any_numeric : void ($array : object, $seed_ref : int*)
+C<static method shuffle_any_numeric : void ($array : object, $seed_ref : int*);>
 
 Shuffles the array $array in-place given the reference to a seed $seed_ref.
 
@@ -1171,17 +1171,17 @@ The type of the array $array must be a numeric type or a multi-numeric type. Oth
 
 =head2 shuffle
 
-static method shuffle : void ($array : object, $seed_ref : int*)
+C<static method shuffle : void ($array : object, $seed_ref : int*);>
 
 Shuffles the array $array in-place given the reference to a seed $seed_ref.
 
-The type of $array must be an ojbect tyep, a numeric type or a multi-numeric type.
+The type of $array must be an object type, a numeric type or a multi-numeric type.
 
 Exceptions:
 
 $array must be defined. Otherwise an exception is thrown.
 
-The type of $array must be an ojbect tyep, a numeric type or a multi-numeric type.
+The type of $array must be an object type, a numeric type or a multi-numeric type.
 
 =head1 Copyright & License
 
