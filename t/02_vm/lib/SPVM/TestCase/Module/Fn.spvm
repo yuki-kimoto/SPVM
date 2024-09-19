@@ -6225,4 +6225,152 @@ class TestCase::Module::Fn {
     return 1;
   }
   
+  static method reverse : int () {
+    
+    # Numeric array
+    {
+      {
+        my $array = [1, 3, 2];
+        
+        my $ret = (int[])Fn->reverse($array);
+        
+        unless (Array->equals_int($ret, [2, 3, 1])) {
+          return 0;
+        }
+        
+        if ($ret == $array) {
+          return 0;
+        }
+      }
+      
+      {
+        my $array = [1, 3, 2, 4];
+        
+        my $ret = (int[])Fn->reverse($array);
+        
+        unless (Array->equals_int($ret, [4, 2, 3, 1])) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    # Multi-numeric array
+    {
+      {
+        my $array = new Complex_2d[3];
+        
+        $array->[0]{re} = 1;
+        $array->[0]{im} = 11;
+        $array->[1]{re} = 3;
+        $array->[1]{im} = 33;
+        $array->[2]{re} = 2;
+        $array->[2]{im} = 22;
+        
+        my $ret = (Complex_2d[])Fn->reverse($array);
+        
+        unless ($ret->[0]{re} == 2) {
+          return 0;
+        }
+        
+        unless ($ret->[0]{im} == 22) {
+          return 0;
+        }
+        unless ($ret->[1]{re} == 3) {
+          return 0;
+        }
+        unless ($ret->[1]{im} == 33) {
+          return 0;
+        }
+        unless ($ret->[2]{re} == 1) {
+          return 0;
+        }
+        unless ($ret->[2]{im} == 11) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    # String
+    {
+      {
+        my $string = "abc";
+        
+        my $ret = (string)Fn->reverse($string);
+        
+        unless ($ret eq "cba") {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $string = "abcd";
+        
+        my $ret = (string)Fn->reverse($string);
+        
+        unless ($ret eq "dcba") {
+          return 0;
+        }
+        
+      }
+      
+    }
+    
+    # Object array
+    {
+      {
+        my $array = [(string)1, 3, 2];
+        
+        my $ret = (string[])Fn->reverse($array);
+        
+        unless (Array->equals_string($ret, [(string)2, 3, 1])) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $array = [(string)1, 3, 2, 4];
+        
+        my $ret = (string[])Fn->reverse($array);
+        
+        unless (Array->equals_string($ret, [(string)4, 2, 3, 1])) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $array = [(string)1, 3, 2];
+        
+        eval { Fn->reverse(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $array = Int->new(1);
+        
+        eval { Fn->reverse($array); }
+        
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
 }

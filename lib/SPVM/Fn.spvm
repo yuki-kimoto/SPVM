@@ -1564,4 +1564,13 @@ class Fn {
     return $copy;
   }
   
+  static method reverse : object ($array_or_string : object) {
+    
+    my $ret = Fn->copy($array_or_string);
+    
+    &reverse_inplace($ret);
+    
+    return $ret;
+  }
+  
 }

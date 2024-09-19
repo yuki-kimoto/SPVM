@@ -1431,6 +1431,18 @@ Exceptions:
 
 The type of $array_or_string must be an array type or string type.
 
+=head2 reverse
+
+C<static method reverse : object ($array_or_string : object);>
+
+Reterns a new array that reverses the elements in the array $array_or_string or the characters in the string $array_or_string.
+
+This method calls L</"copy"> method and L</"reverse_inplace"> method to create a new array and reverses elements.
+
+Exceptions:
+
+Exceptions thrown by L</"copy"> method and L</"reverse_inplace"> method could be thrown.
+
 =head1 See Also
 
 =over 2
