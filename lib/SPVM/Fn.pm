@@ -1443,6 +1443,24 @@ Exceptions:
 
 Exceptions thrown by L</"copy"> method and L</"reverse_inplace"> method could be thrown.
 
+=head2 slice
+
+C<static method slice : object ($array : object, $offset : int, $length :int);>
+
+Slices the array $array from the offset $offset to the length $length, and returns it.
+
+The type of $array must be an object array type, a numeric array type, or a multi-numeric array type.
+
+This method calls L<Array#memcpy_object|SPVM::Array/"memcpy_object"> method or L</"memcpy"> method to slice $array.
+
+Exceptions:
+
+The array $array must be defined. Otherwise an exception is thrown.
+
+The type of the array $array must be an object array type, a numeric array type or a multi-numeric array type. Otherwise an exception is thrown.
+
+Exceptions thrown by L<Array#memcpy_object|SPVM::Array/"memcpy_object"> method or L</"memcpy"> method could be thrown.
+
 =head1 See Also
 
 =over 2

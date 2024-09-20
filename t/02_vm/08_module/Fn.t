@@ -214,6 +214,8 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->reverse);
     
+    ok(SPVM::TestCase::Module::Fn->slice);
+    
   }
   
   # Extra

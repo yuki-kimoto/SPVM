@@ -1573,4 +1573,30 @@ class Fn {
     return $ret;
   }
   
+  static method slice : object ($array : object, $offset : int, $length :int) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless (Fn->is_any_numeric_array($array) || Fn->is_object_array($array)) {
+      die "The type of the array \$array must be an object array type, a numeric array type or a multi-numeric array type.";
+    }
+    
+    my $sliced_array = Array->new_proto_any($array, $length);
+    
+    if (&is_object_array($array)) {
+      Array->memcpy_object_address((object[])$sliced_array, 0, (object[])$array, $offset, $length);
+    }
+    elsif (&is_any_numeric_array($array)) {
+      my $elem_size = Fn->get_elem_size($array);
+      
+      Fn->memcpy($sliced_array, 0, $array, $elem_size * $offset, $elem_size * $length);
+    }
+    else {
+      die "[Unexpected Error]Invalid type";
+    }
+    
+    return $sliced_array;
+  }
 }

@@ -3,7 +3,7 @@
     * Add Array#shuffle method.
     * Add Array#shuffle_any_numeric method.
     * Add Fn#reverse method.
-
+    * Add Fn#slice method.
 0.990010 2023-09-18
   [New Features]
     * Add Fn#length method.
