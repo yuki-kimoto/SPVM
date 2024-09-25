@@ -1600,6 +1600,6 @@ class Fn {
     return $sliced_array;
   }
   
-  native static method is_little_endian : int ();
+  native static method system_is_little_endian : int ();
   
 }

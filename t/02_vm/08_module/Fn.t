@@ -216,14 +216,14 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->slice);
     
-    # is_little_endian
+    # system_is_little_endian
     {
-      my $is_little_endian_expected;
+      my $system_is_little_endian_expected;
       if ($Config{byteorder} =~ /^1234/) {
-        $is_little_endian_expected = 1;
+        $system_is_little_endian_expected = 1;
       }
       
-      is(SPVM::Fn->is_little_endian, $is_little_endian_expected);
+      is(SPVM::Fn->system_is_little_endian, $system_is_little_endian_expected);
     }
     
   }

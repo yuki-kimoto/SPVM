@@ -861,9 +861,9 @@ int32_t SPVM__Fn__memcmp(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Fn__is_little_endian(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__system_is_little_endian(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  int32_t is_little_endian = 0;
+  int32_t system_is_little_endian = 0;
   
   // Copied from https://dev.to/ajipelumi/c-function-to-check-endianness-5d25
   {
@@ -873,11 +873,11 @@ int32_t SPVM__Fn__is_little_endian(SPVM_ENV* env, SPVM_VALUE* stack) {
     c = (char *) &i; /* points to the first byte of the integer i */
     if (*c == 1) /* 1st byte looks like 0x01 */
     {
-      is_little_endian = 1;
+      system_is_little_endian = 1;
     }
   }
   
-  stack[0].ival = is_little_endian;
+  stack[0].ival = system_is_little_endian;
   
   return 0;
 }
