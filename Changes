@@ -1,5 +1,8 @@
 0.990012 2023-09-25
   [New Features]
+    * Add Fn#sort method.
+    * Add Fn#sort_asc method.
+    * Add Fn#sort_desc method.
     * Add Fn#sprintf method.
     * Add Fn#system_is_little_endian method.
 0.990011 2023-09-20

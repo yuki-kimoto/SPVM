@@ -1606,4 +1606,81 @@ class Fn {
     return Format->sprintf($format, $args);
   }
   
+  static method sort_asc : object ($array : object) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless (Fn->is_numeric_array($array)) {
+      die "The type of the array \$array must be a numeric array type.";
+    }
+    
+    my $sorted_array = Fn->copy($array);
+    
+    if ($array is_type byte[]) {
+      Sort->sort_byte_asc((byte[])$sorted_array);
+    }
+    elsif ($array is_type short[]) {
+      Sort->sort_short_asc((short[])$sorted_array);
+    }
+    elsif ($array is_type int[]) {
+      Sort->sort_int_asc((int[])$sorted_array);
+    }
+    elsif ($array is_type long[]) {
+      Sort->sort_long_asc((long[])$sorted_array);
+    }
+    elsif ($array is_type float[]) {
+      Sort->sort_float_asc((float[])$sorted_array);
+    }
+    elsif ($array is_type double[]) {
+      Sort->sort_double_asc((double[])$sorted_array);
+    }
+    
+    return $sorted_array;
+  }
+  
+  static method sort_desc : object ($array : object) {
+    
+    unless ($array) {
+      die "The array \$array must be defined.";
+    }
+    
+    unless (Fn->is_numeric_array($array)) {
+      die "The type of the array \$array must be a numeric array type.";
+    }
+    
+    my $sorted_array = Fn->copy($array);
+    
+    if ($array is_type byte[]) {
+      Sort->sort_byte_desc((byte[])$sorted_array);
+    }
+    elsif ($array is_type short[]) {
+      Sort->sort_short_desc((short[])$sorted_array);
+    }
+    elsif ($array is_type int[]) {
+      Sort->sort_int_desc((int[])$sorted_array);
+    }
+    elsif ($array is_type long[]) {
+      Sort->sort_long_desc((long[])$sorted_array);
+    }
+    elsif ($array is_type float[]) {
+      Sort->sort_float_desc((float[])$sorted_array);
+    }
+    elsif ($array is_type double[]) {
+      Sort->sort_double_desc((double[])$sorted_array);
+    }
+    
+    return $sorted_array;
+  }
+  
+  static method sort : object[] ($array : object[], $comparator : Comparator) {
+    
+    my $sorted_array = Array->copy_object_address($array);
+    
+    Sort->sort_object($array, $comparator);
+    
+    return $sorted_array;
+  }
+  
 }

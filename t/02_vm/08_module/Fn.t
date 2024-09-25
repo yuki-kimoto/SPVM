@@ -228,6 +228,12 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->sprintf);
     
+    ok(SPVM::TestCase::Module::Fn->sort_asc);
+    
+    ok(SPVM::TestCase::Module::Fn->sort_desc);
+    
+    ok(SPVM::TestCase::Module::Fn->sort);
+    
   }
   
   # Extra

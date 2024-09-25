@@ -6435,4 +6435,261 @@ class TestCase::Module::Fn {
     
     return 1;
   }
+  
+  static method sort_asc : int () {
+    
+    {
+      my $array = [(byte)2, 3, 1];
+      
+      my $ret = (byte[])Fn->sort_asc($array);
+      
+      unless (Array->equals($ret, [(byte)1, 2, 3])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(short)2, 3, 1];
+      
+      my $ret = (short[])Fn->sort_asc($array);
+      
+      unless (Array->equals($ret, [(short)1, 2, 3])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(int)2, 3, 1];
+      
+      my $ret = (int[])Fn->sort_asc($array);
+      
+      unless (Array->equals($ret, [(int)1, 2, 3])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(long)2, 3, 1];
+      
+      my $ret = (long[])Fn->sort_asc($array);
+      
+      unless (Array->equals($ret, [(long)1, 2, 3])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(float)2, 3, 1];
+      
+      my $ret = (float[])Fn->sort_asc($array);
+      
+      unless (Array->equals($ret, [(float)1, 2, 3])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(double)2, 3, 1];
+      
+      my $ret = (double[])Fn->sort_asc($array);
+      
+      unless (Array->equals($ret, [(double)1, 2, 3])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $array = [(byte)2, 3, 1];
+        
+        eval { my $ret = (byte[])Fn->sort_asc(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $array = [(object)2, 3, 1];
+        
+        eval { my $ret = (byte[])Fn->sort_asc($array); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort_desc : int () {
+    
+    {
+      my $array = [(byte)2, 3, 1];
+      
+      my $ret = (byte[])Fn->sort_desc($array);
+      
+      unless (Array->equals($ret, [(byte)3, 2, 1])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(short)2, 3, 1];
+      
+      my $ret = (short[])Fn->sort_desc($array);
+      
+      unless (Array->equals($ret, [(short)3, 2, 1])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(int)2, 3, 1];
+      
+      my $ret = (int[])Fn->sort_desc($array);
+      
+      unless (Array->equals($ret, [(int)3, 2, 1])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(long)2, 3, 1];
+      
+      my $ret = (long[])Fn->sort_desc($array);
+      
+      unless (Array->equals($ret, [(long)3, 2, 1])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(float)2, 3, 1];
+      
+      my $ret = (float[])Fn->sort_desc($array);
+      
+      unless (Array->equals($ret, [(float)3, 2, 1])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    {
+      my $array = [(double)2, 3, 1];
+      
+      my $ret = (double[])Fn->sort_desc($array);
+      
+      unless (Array->equals($ret, [(double)3, 2, 1])) {
+        return 0;
+      }
+      
+      if ($array == $ret) {
+        return 0;
+      }
+    }
+    
+    # Exceptions
+    {
+      {
+        my $array = [(byte)2, 3, 1];
+        
+        eval { my $ret = (byte[])Fn->sort_desc(undef); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $array = [(object)2, 3, 1];
+        
+        eval { my $ret = (byte[])Fn->sort_desc($array); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method sort : int () {
+    
+    {
+      my $array = [&new_minimal(2, 0), &new_minimal(3, 0), &new_minimal(1, 0)];
+      
+      Fn->sort($array, method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x <=> $b->(TestCase::Minimal)->x;
+      });
+      
+      my $is_equals = Array->equals_object($array, [&new_minimal(1, 0), &new_minimal(2, 0), &new_minimal(3, 0)], method : int ($a : object, $b : object) {
+        return $a->(TestCase::Minimal)->x == $b->(TestCase::Minimal)->x;
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  private static method new_minimal : TestCase::Minimal ($x : int, $y : int) {
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x($x);
+    $minimal->set_y($y);
+    
+    return $minimal;
+  }
 }
