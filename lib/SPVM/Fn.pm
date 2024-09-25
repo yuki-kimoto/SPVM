@@ -1461,6 +1461,12 @@ The type of the array $array must be an object array type, a numeric array type 
 
 Exceptions thrown by L<Array#memcpy_object|SPVM::Array/"memcpy_object"> method or L</"memcpy"> method could be thrown.
 
+=head2 is_little_endian 
+
+C<static method is_little_endian ();>
+
+If the system is little-endian, returns 1, otherwise returns 0.
+
 =head1 See Also
 
 =over 2

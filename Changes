@@ -1,3 +1,7 @@
+0.990012 2023-09-25
+  [New Features]
+    * Add Fn#is_little_endian method.
+    
 0.990011 2023-09-20
   [New Features]
     * Add Array#shuffle method.
