@@ -6425,5 +6425,14 @@ class TestCase::Module::Fn {
     
     return 1;
   }
-
+  
+  static method sprintf : int () {
+    {
+      unless (Fn->sprintf("%d", [(object)123]) eq "123") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 }

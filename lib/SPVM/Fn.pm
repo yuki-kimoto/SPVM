@@ -1467,6 +1467,16 @@ C<static method system_is_little_endian ();>
 
 If the system is little-endian, returns 1, otherwise returns 0.
 
+=head2 sprintf
+
+C<static method sprintf : string ($format : string, $args : object[]);>
+
+Calls L<Format#sprintf|SPVM::Format/"sprintf"> method and returns its return value.
+
+Exceptions:
+
+Exceptions thrown by thrown L<Format#sprintf|SPVM::Format/"sprintf"> method could be thrown.
+
 =head1 See Also
 
 =over 2

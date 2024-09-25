@@ -226,6 +226,8 @@ my $seed = time();
       is(SPVM::Fn->system_is_little_endian, $system_is_little_endian_expected);
     }
     
+    ok(SPVM::TestCase::Module::Fn->sprintf);
+    
   }
   
   # Extra
