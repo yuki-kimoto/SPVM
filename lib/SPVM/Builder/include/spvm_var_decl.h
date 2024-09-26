@@ -21,7 +21,7 @@ struct spvm_var_decl {
   int8_t is_optional_arg;
 };
 
-SPVM_VAR_DECL* SPVM_VAR_DECL_new();
+SPVM_VAR_DECL* SPVM_VAR_DECL_new(SPVM_COMPILER* compiler);
 
 SPVM_VAR_DECL* SPVM_VAR_DECL_new_arg(SPVM_COMPILER* compiler);
 
