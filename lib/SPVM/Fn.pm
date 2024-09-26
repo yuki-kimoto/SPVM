@@ -1521,6 +1521,138 @@ Exceptions:
 
 Exceptions thrown by thrown L<Sort#sort_object|SPVM::Sort/"sort_object"> method could be thrown.
 
+=head2 unpack_byte
+
+C<static method unpack_byte : byte ($binary : string);>
+
+The first one byte of the binary data $binary is interpreted as a value of C<byte> type, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 1. Otherwise an exception is thrown.
+
+=head2 unpack_short
+
+C<static method unpack_short : short ($binary : string);>
+
+The first 1 bytes of the binary data $binary are interpreted as a value of C<short> type, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 2. Otherwise an exception is thrown.
+
+=head2 unpack_short_big_endian
+
+C<static method unpack_short_big_endian : short ($binary : string);>
+
+The first 2 bytes of the binary data $binary are interpreted as a value of C<short> type of big endian, and it is converted to system endian, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 2. Otherwise an exception is thrown.
+
+=head2 unpack_int
+
+C<static method unpack_int : int ($binary : string);>
+
+The first 4 bytes of the binary data $binary are interpreted as a value of C<int> type, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 4. Otherwise an exception is thrown.
+
+=head2 unpack_int_big_endian
+
+C<static method unpack_int_big_endian : int ($binary : string);>
+
+The first 4 bytes of the binary data $binary are interpreted as a value of C<int> type of big endian, and it is converted to system endian, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 4. Otherwise an exception is thrown.
+
+=head2 unpack_long
+
+C<static method unpack_long : long ($binary : string);>
+
+The first 8 bytes of the binary data $binary are interpreted as a value of C<long> type, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 8. Otherwise an exception is thrown.
+
+=head2 unpack_long_big_endian
+
+C<static method unpack_long_big_endian : long ($binary : string);>
+
+The first 8 bytes of the binary data $binary are interpreted as a value of C<long> type of big endian, and it is converted to system endian, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 8. Otherwise an exception is thrown.
+
+=head2 unpack_float
+
+C<static method unpack_float : float ($binary : string);>
+
+The first 4 bytes of the binary data $binary are interpreted as a value of C<float> type, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 4. Otherwise an exception is thrown.
+
+=head2 unpack_float_big_endian
+
+C<static method unpack_float_big_endian : float ($binary : string);>
+
+The first 4 bytes of the binary data $binary are interpreted as a value of C<float> type of big endian, and it is converted to system endian, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 4. Otherwise an exception is thrown.
+
+=head2 unpack_double
+
+C<static method unpack_double : double ($binary : string);>
+
+The first 8 bytes of the binary data $binary are interpreted as a value of C<double> type, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 8. Otherwise an exception is thrown.
+
+=head2 unpack_double_big_endian
+
+C<static method unpack_double_big_endian : double ($binary : string);>
+
+The first 8 bytes of the binary data $binary are interpreted as a value of C<double> type, and it is converted to system endian, and returns it.
+
+Exceptions:
+
+The binary data $binary must be defined. Otherwise an exception is thrown.
+
+The length of the binary data $binary must be greater than 8. Otherwise an exception is thrown.
+
 =head1 See Also
 
 =over 2

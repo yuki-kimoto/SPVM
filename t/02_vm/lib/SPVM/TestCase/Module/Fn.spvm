@@ -6692,4 +6692,427 @@ class TestCase::Module::Fn {
     
     return $minimal;
   }
+  
+  static method unpack_byte : int () {
+    
+    {
+      my $size = 1;
+      
+      my $values = [(byte)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_byte($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      unless ($buffer_ret eq $buffer) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_short : short () {
+    
+    {
+      my $size = 2;
+      
+      my $values = [(short)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_short($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      unless ($buffer_ret eq $buffer) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_short_big_endian : short () {
+  
+    {
+      my $size = 2;
+      
+      my $values = [(short)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_short_big_endian($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[1] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[0] == $buffer->[1]) {
+          return 0;
+        }
+        
+      }
+      else {
+        unless ($buffer_ret eq $buffer) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_int : int () {
+    {
+      my $size = 4;
+      
+      my $values = [(int)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_int($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      unless ($buffer_ret eq $buffer) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_int_big_endian : int () {
+  
+    {
+      my $size = 4;
+      
+      my $values = [(int)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_int_big_endian($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[3] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[0] == $buffer->[3]) {
+          return 0;
+        }
+        
+      }
+      else {
+        unless ($buffer_ret eq $buffer) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_long : int () {
+    {
+      my $size = 8;
+      
+      my $values = [(long)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_long($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      unless ($buffer_ret eq $buffer) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_long_big_endian : int () {
+    
+    {
+      my $size = 8;
+      
+      my $values = [(long)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_long_big_endian($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[7] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[6] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[5] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4] == $buffer->[3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[3] == $buffer->[4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[0] == $buffer->[7]) {
+          return 0;
+        }
+        
+      }
+      else {
+        unless ($buffer_ret eq $buffer) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_float : int () {
+    {
+      my $size = 4;
+      
+      my $values = [(float)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_float($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      unless ($buffer_ret eq $buffer) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_float_big_endian : int () {
+  
+    {
+      my $size = 4;
+      
+      my $values = [(float)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_float_big_endian($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[3] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[0] == $buffer->[3]) {
+          return 0;
+        }
+        
+      }
+      else {
+        unless ($buffer_ret eq $buffer) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method unpack_double : int () {
+    {
+      my $size = 8;
+      
+      my $values = [(double)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_double($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      unless ($buffer_ret eq $buffer) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method unpack_double_big_endian : int () {
+  
+    {
+      my $size = 8;
+      
+      my $values = [(double)-128];
+      
+      my $buffer = new_string_len $size;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $ret = Fn->unpack_double_big_endian($buffer);
+      
+      my $ret_values = [$ret];
+      
+      my $buffer_ret = new_string_len $size;
+      
+      Fn->memcpy($buffer_ret, 0, $ret_values, 0, $size);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[7] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[6] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[5] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4] == $buffer->[3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[3] == $buffer->[4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[0] == $buffer->[7]) {
+          return 0;
+        }
+        
+      }
+      else {
+        unless ($buffer_ret eq $buffer) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

@@ -234,6 +234,17 @@ my $seed = time();
     
     ok(SPVM::TestCase::Module::Fn->sort);
     
+    ok(SPVM::TestCase::Module::Fn->unpack_byte);
+    ok(SPVM::TestCase::Module::Fn->unpack_short);
+    ok(SPVM::TestCase::Module::Fn->unpack_short_big_endian);
+    ok(SPVM::TestCase::Module::Fn->unpack_int);
+    ok(SPVM::TestCase::Module::Fn->unpack_int_big_endian);
+    ok(SPVM::TestCase::Module::Fn->unpack_long);
+    ok(SPVM::TestCase::Module::Fn->unpack_long_big_endian);
+    ok(SPVM::TestCase::Module::Fn->unpack_float);
+    ok(SPVM::TestCase::Module::Fn->unpack_float_big_endian);
+    ok(SPVM::TestCase::Module::Fn->unpack_double);
+    ok(SPVM::TestCase::Module::Fn->unpack_double_big_endian);
   }
   
   # Extra
