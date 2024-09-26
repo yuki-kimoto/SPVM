@@ -6849,6 +6849,62 @@ class TestCase::Module::Array {
       }
     }
     
+    {
+      my $values = [(float)1, 2];
+      
+      my $buffer = new byte[4 * 2];
+      
+      Fn->memcpy($buffer, 0, $values, 0, 4 * 2);
+      
+      my $values_copy = copy $values;
+      
+      Array->system_endian_to_big_endian($values);
+      
+      my $buffer_ret = new byte[4 * 2];
+      
+      Fn->memcpy($buffer_ret, 0, $values, 0, 4 * 2);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[3] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[0] == $buffer->[3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4 + 3] == $buffer->[4 + 0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4 + 2] == $buffer->[4 + 1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4 + 1] == $buffer->[4 + 2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4 + 0] == $buffer->[4 + 3]) {
+          return 0;
+        }
+      }
+      else {
+        unless (Array->equals($values, $values_copy)) {
+          return 0;
+        }
+      }
+    }
+    
     return 1;
   }
   

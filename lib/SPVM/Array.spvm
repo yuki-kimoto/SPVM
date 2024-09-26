@@ -1492,7 +1492,7 @@ class Array {
       return;
     }
     
-    my $buffer = new byte[8];
+    my $buffer = new byte[$elem_size];
     
     for (my $i = 0; $i < $array_length; $i++) {
       Fn->memcpy($buffer, 0, $array, $elem_size * $i, $elem_size);
