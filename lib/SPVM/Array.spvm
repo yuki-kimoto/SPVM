@@ -1503,4 +1503,18 @@ class Array {
     }
   }
   
+  static method big_endian_to_system_endian : void ($array : object) {
+    
+    if (Fn->system_is_little_endian) {
+      &change_endian($array);
+    }
+  }
+  
+  static method system_endian_to_big_endian : void ($array : object) {
+    
+    if (Fn->system_is_little_endian) {
+      &change_endian($array);
+    }
+  }
+  
 }

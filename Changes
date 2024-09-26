@@ -1,5 +1,8 @@
 0.990012 2023-09-25
   [New Features]
+    * Add Array#big_endian_to_system_endian method.
+    * Add Array#system_endian_to_big_endian method.
+    * Add Array#change_endian method.
     * Add Array#change_endian method.
     * Add Fn#sort method.
     * Add Fn#sort_asc method.

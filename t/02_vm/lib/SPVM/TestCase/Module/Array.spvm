@@ -6666,4 +6666,190 @@ class TestCase::Module::Array {
     return 1;
   }
   
+  static method big_endian_to_system_endian : int () {
+    
+    {
+      my $values = [(double)1, 2];
+      
+      my $buffer = new byte[8 * 2];
+      
+      Fn->memcpy($buffer, 0, $values, 0, 8 * 2);
+      
+      my $values_copy = copy $values;
+      
+      Array->big_endian_to_system_endian($values);
+      
+      my $buffer_ret = new byte[8 * 2];
+      
+      Fn->memcpy($buffer_ret, 0, $values, 0, 8 * 2);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[7] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[6] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[5] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4] == $buffer->[3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[3] == $buffer->[4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[0] == $buffer->[7]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 7] == $buffer->[8 + 0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 6] == $buffer->[8 + 1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 5] == $buffer->[8 + 2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 4] == $buffer->[8 + 3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 3] == $buffer->[8 + 4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 2] == $buffer->[8 + 5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 1] == $buffer->[8 + 6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 0] == $buffer->[8 + 7]) {
+          return 0;
+        }
+      }
+      else {
+        unless (Array->equals($values, $values_copy)) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  static method system_endian_to_big_endian : int () {
+    
+    {
+      my $values = [(double)1, 2];
+      
+      my $buffer = new byte[8 * 2];
+      
+      Fn->memcpy($buffer, 0, $values, 0, 8 * 2);
+      
+      my $values_copy = copy $values;
+      
+      Array->system_endian_to_big_endian($values);
+      
+      my $buffer_ret = new byte[8 * 2];
+      
+      Fn->memcpy($buffer_ret, 0, $values, 0, 8 * 2);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[7] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[6] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[5] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4] == $buffer->[3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[3] == $buffer->[4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[0] == $buffer->[7]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 7] == $buffer->[8 + 0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 6] == $buffer->[8 + 1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 5] == $buffer->[8 + 2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 4] == $buffer->[8 + 3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 3] == $buffer->[8 + 4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 2] == $buffer->[8 + 5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 1] == $buffer->[8 + 6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 0] == $buffer->[8 + 7]) {
+          return 0;
+        }
+      }
+      else {
+        unless (Array->equals($values, $values_copy)) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
 }

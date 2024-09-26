@@ -1197,6 +1197,30 @@ The array $array must be defined. Otherwise an exception is thrown.
 
 The type of the array $array must be a numeric array type. Otherwise an exception is thrown.
 
+=head2 big_endian_to_system_endian
+
+C<static method big_endian_to_system_endian : void ($array : object);>
+
+Changes endian from big-endian to system endian of each element of the array $array in-place.
+
+This method calls L</"change_endian"> method to change endian.
+
+Exceptions:
+
+Exceptions thrown by L</"change_endian"> method could be thrown.
+
+=head2 system_endian_to_big_endian
+
+C<static method system_endian_to_big_endian : void ($array : object);>
+
+Changes endian from system endian to big-endian) of each element of the array $array in-place.
+
+This method calls L</"change_endian"> method to change endian.
+
+Exceptions:
+
+Exceptions thrown by L</"change_endian"> method could be thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
