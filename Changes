@@ -1,5 +1,6 @@
 0.990012 2023-09-25
   [New Features]
+    * Add Array#change_endian method.
     * Add Fn#sort method.
     * Add Fn#sort_asc method.
     * Add Fn#sort_desc method.

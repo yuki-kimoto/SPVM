@@ -96,6 +96,7 @@ my $start_memory_blocks_count = $api->get_memory_blocks_count();
   ok(SPVM::TestCase::Module::Array->copy_any_numeric);
   ok(SPVM::TestCase::Module::Array->shuffle_any_numeric);
   ok(SPVM::TestCase::Module::Array->shuffle);
+  ok(SPVM::TestCase::Module::Array->change_endian);
 }
 
 $api->set_exception(undef);

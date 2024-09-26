@@ -1183,6 +1183,20 @@ $array must be defined. Otherwise an exception is thrown.
 
 The type of $array must be an object type, a numeric type or a multi-numeric type.
 
+=head2 change_endian
+
+C<static method change_endian : void ($array : object);>
+
+Changes endian (big-endian to little-endian or little-endian to big-endian) of each element of the array $array in-place.
+
+The array $array must be a numeric array type.
+
+Exceptions:
+
+The array $array must be defined. Otherwise an exception is thrown.
+
+The type of the array $array must be a numeric array type. Otherwise an exception is thrown.
+
 =head1 Copyright & License
 
 Copyright (c) 2023 Yuki Kimoto
