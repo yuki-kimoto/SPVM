@@ -512,7 +512,7 @@ struct spvm_opcode {
   uint32_t operand2;
 };
 
-SPVM_OPCODE* SPVM_OPCODE_new();
+SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler);
 const char* const* SPVM_OPCODE_C_ID_NAMES(void);
 
 const char* SPVM_OPCODE_get_opcode_name(int32_t opcode_id);
