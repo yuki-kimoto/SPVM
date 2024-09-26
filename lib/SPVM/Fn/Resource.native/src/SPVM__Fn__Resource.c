@@ -4,4 +4,5 @@
 // For test only
 int SPVM__Fn__Resource(void) {
   
+  return 0;
 }
