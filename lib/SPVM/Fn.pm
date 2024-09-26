@@ -1529,11 +1529,11 @@ The byte order of the first $size bytes of the binary data $binary are reversed 
 
 Exceptions:
 
-The binary data \$binary must be defined. Otherwise an exception is thrown.
+The binary data $binary must be defined. Otherwise an exception is thrown.
 
-The byte size \$size must be greater than 0. Otherwise an exception is thrown.
+The byte size $size must be greater than 0. Otherwise an exception is thrown.
 
-The byte size \$size must be less than or equal to $size. Otherwise an exception is thrown.
+The byte size $size must be less than or equal to the length of the binary data \$binary.
 
 =head2 big_endian_to_system_endian
 

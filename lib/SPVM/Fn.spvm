@@ -1696,7 +1696,7 @@ class Fn {
     my $binary_length = length $binary;
     
     unless ($size <= $binary_length) {
-      die "The byte size \$size must be less than or equal to $size.";
+      die "The byte size \$size must be less than or equal to the length of the binary data \$binary.";
     }
     
     if ($size == 1) {
