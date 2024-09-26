@@ -3,21 +3,6 @@
     * Add Fn#system_endian_to_big_endian method.
     * Add Fn#big_endian_to_system_endian method.
     * Add Fn#change_endian method.
-    * Add Fn#unpack_byte method.
-    * Add Fn#unpack_short method.
-    * Add Fn#unpack_short_big_endian method.
-    * Add Fn#unpack_int method.
-    * Add Fn#unpack_int_big_endian method.
-    * Add Fn#unpack_long method.
-    * Add Fn#unpack_long_big_endian method.
-    * Add Fn#unpack_float method.
-    * Add Fn#unpack_float_big_endian method.
-    * Add Fn#unpack_double method.
-    * Add Fn#unpack_double_big_endian method.
-    * Add Array#big_endian_to_system_endian method.
-    * Add Array#system_endian_to_big_endian method.
-    * Add Array#change_endian method.
-    * Add Array#change_endian method.
     * Add Fn#sort method.
     * Add Fn#sort_asc method.
     * Add Fn#sort_desc method.
