@@ -28,7 +28,7 @@
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_string.h"
 
-SPVM_PRECOMPILE* SPVM_PRECOMPILE_new() {
+SPVM_PRECOMPILE* SPVM_PRECOMPILE_new(void) {
   SPVM_PRECOMPILE* precompile = SPVM_ALLOCATOR_alloc_memory_block_unmanaged(sizeof(SPVM_PRECOMPILE));
   
   return precompile;

@@ -65,7 +65,7 @@ struct spvm_precompile {
   SPVM_RUNTIME* runtime;
 };
 
-SPVM_PRECOMPILE* SPVM_PRECOMPILE_new();
+SPVM_PRECOMPILE* SPVM_PRECOMPILE_new(void);
 
 void SPVM_PRECOMPILE_free(SPVM_PRECOMPILE* precompile);
 
