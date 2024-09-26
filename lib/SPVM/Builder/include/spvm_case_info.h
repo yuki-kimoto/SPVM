@@ -12,6 +12,6 @@ struct spvm_case_info {
   int32_t goto_opcode_index;
 };
 
-SPVM_CASE_INFO* SPVM_CASE_INFO_new();
+SPVM_CASE_INFO* SPVM_CASE_INFO_new(SPVM_COMPILER* compiler);
 
 #endif
