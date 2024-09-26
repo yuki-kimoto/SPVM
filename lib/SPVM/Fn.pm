@@ -1645,7 +1645,7 @@ The length of the binary data $binary must be greater than 8. Otherwise an excep
 
 C<static method unpack_double_big_endian : double ($binary : string);>
 
-The first 8 bytes of the binary data $binary are interpreted as a value of C<double> type, and it is converted to system endian, and returns it.
+The first 8 bytes of the binary data $binary are interpreted as a value of C<double> type of big endian, and it is converted to system endian, and returns it.
 
 Exceptions:
 
