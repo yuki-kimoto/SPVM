@@ -1,4 +1,4 @@
-0.990012 2023-09-25
+0.990012 2023-09-26
   [New Features]
     * Add Array#big_endian_to_system_endian method.
     * Add Array#system_endian_to_big_endian method.
