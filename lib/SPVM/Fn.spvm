@@ -1918,4 +1918,49 @@ class Fn {
     return $value_ref;
   }
   
+  static method change_endian : void ($binary : mutable string, $size : int) {
+    
+    unless ($binary) {
+      die "The binary data \$binary must be defined.";
+    }
+    
+    unless ($size > 0) {
+      die "The byte size \$size must be greater than 0.";
+    }
+    
+    my $binary_length = length $binary;
+    
+    unless ($size <= $binary_length) {
+      die "The byte size \$size must be less than or equal to $size.";
+    }
+    
+    if ($size == 1) {
+      return;
+    }
+    
+    my $buffer = new_string_len $size;
+    
+    Fn->memcpy($buffer, 0, $binary, 0, $size);
+    
+    Fn->reverse_inplace($buffer);
+    
+    Fn->memcpy($binary, 0, $buffer, 0, $size);
+  }
+  
+  static method big_endian_to_system_endian : void ($binary : mutable string, $size : int) {
+    
+    if (Fn->system_is_little_endian) {
+      &change_endian($binary, $size);
+    }
+    
+  }
+  
+  static method system_endian_to_big_endian : void ($binary : mutable string, $size : int) {
+    
+    if (Fn->system_is_little_endian) {
+      &change_endian($binary, $size);
+    }
+    
+  }
+  
 }

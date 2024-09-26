@@ -1653,6 +1653,44 @@ The binary data $binary must be defined. Otherwise an exception is thrown.
 
 The length of the binary data $binary must be greater than 8. Otherwise an exception is thrown.
 
+=head2 change_endian
+
+C<static method change_endian : void ($binary : mutable string, $size : int);>
+
+The byte order of the first $size bytes of the binary data $binary are reversed in-plcae.
+
+Exceptions:
+
+The binary data \$binary must be defined. Otherwise an exception is thrown.
+
+The byte size \$size must be greater than 0. Otherwise an exception is thrown.
+
+The byte size \$size must be less than or equal to $size. Otherwise an exception is thrown.
+
+=head2 big_endian_to_system_endian
+
+C<static method big_endian_to_system_endian : void ($binary : mutable string, $size : int);>
+
+The byte order of the first $size bytes of the binary data $binary are changed from big endian to system endian.
+
+This method calls L</"change_endian"> method to change endian.
+
+Exceptions:
+
+Exceptions thrown by L</"change_endian"> method could be thrown.
+
+=head2 system_endian_to_big_endian
+
+C<static method system_endian_to_big_endian : void ($binary : mutable string, $size : int);>
+
+The byte order of the first $size bytes of the binary data $binary are changed from system endian to big endian.
+
+This method calls L</"change_endian"> method to change endian.
+
+Exceptions:
+
+Exceptions thrown by L</"change_endian"> method could be thrown.
+
 =head1 See Also
 
 =over 2

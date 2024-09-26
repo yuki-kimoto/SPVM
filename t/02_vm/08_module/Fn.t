@@ -245,6 +245,9 @@ my $seed = time();
     ok(SPVM::TestCase::Module::Fn->unpack_float_big_endian);
     ok(SPVM::TestCase::Module::Fn->unpack_double);
     ok(SPVM::TestCase::Module::Fn->unpack_double_big_endian);
+    ok(SPVM::TestCase::Module::Fn->change_endian);
+    ok(SPVM::TestCase::Module::Fn->big_endian_to_system_endian);
+    ok(SPVM::TestCase::Module::Fn->system_endian_to_big_endian);
   }
   
   # Extra

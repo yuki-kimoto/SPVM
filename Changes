@@ -1,5 +1,8 @@
 0.990012 2023-09-26
   [New Features]
+    * Add Fn#system_endian_to_big_endian method.
+    * Add Fn#big_endian_to_system_endian method.
+    * Add Fn#change_endian method.
     * Add Fn#unpack_byte method.
     * Add Fn#unpack_short method.
     * Add Fn#unpack_short_big_endian method.
