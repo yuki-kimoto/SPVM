@@ -14,12 +14,28 @@ class Packer {
     return $self;
   }
   
-  static method pack : string () {
+  static method pack : string ($template : string, $objects : object[]) {
+    
+    unless ($template) {
+      die "The template \$template must be defined.";
+    }
+    
+    unless ($objects) {
+      die "The objects \$objects must be defined.";
+    }
     
     return undef;
   }
   
-  static method unpack : object[] () {
+  static method unpack : object[] ($template : string, $binary : string) {
+    
+    unless ($template) {
+      die "The template \$template must be defined.";
+    }
+    
+    unless ($binary) {
+      die "The binary data \$binary must be defined.";
+    }
     
     return undef;
   }

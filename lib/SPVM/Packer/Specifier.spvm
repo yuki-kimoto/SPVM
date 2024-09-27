@@ -5,6 +5,7 @@ class Packer::Specifier {
   allow Packer;
   
   private enum {
+    TYPE_NONE,
     TYPE_BYTE,
     TYPE_SHORT,
     TYPE_INT,
@@ -29,7 +30,7 @@ class Packer::Specifier {
   # Fields
   has type : int;
   
-  has legnth : int;
+  has length : int;
   
   has endian : int;
 }
