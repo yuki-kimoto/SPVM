@@ -6808,6 +6808,88 @@ class TestCase::Module::Fn {
       }
     }
     
+    {
+      my $size = 8;
+      
+      my $values = [(double)1, 2];
+      
+      my $buffer = (mutable string)new_string_len 256;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $buffer_ret = (mutable string)new_string_len 256;
+      
+      Fn->memcpy($buffer_ret, 0, $values, 0, $size);
+      
+      my $offset = 8;
+      Fn->change_endian($buffer_ret, $size, $offset);
+      
+      unless ($buffer_ret->[0] == $buffer->[0]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[1] == $buffer->[1]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[2] == $buffer->[2]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[3] == $buffer->[3]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[4] == $buffer->[4]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[5] == $buffer->[5]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[6] == $buffer->[6]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[7] == $buffer->[7]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[8 + 7] == $buffer->[8 + 0]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[8 + 6] == $buffer->[8 + 1]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[8 + 5] == $buffer->[8 + 2]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[8 + 4] == $buffer->[8 + 3]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[8 + 3] == $buffer->[8 + 4]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[8 + 2] == $buffer->[8 + 5]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[8 + 1] == $buffer->[8 + 6]) {
+        return 0;
+      }
+      
+      unless ($buffer_ret->[8 + 0] == $buffer->[8 + 7]) {
+        return 0;
+      }
+      
+    }
+    
     # Exceptions
     {
       {
@@ -6835,6 +6917,30 @@ class TestCase::Module::Fn {
         my $size = 257;
         
         eval { Fn->change_endian($binary, $size); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $binary = (mutable string)new_string_len 256;
+        my $size = 256;
+        my $offset = -1;
+        eval { Fn->change_endian($binary, $size, $offset); }
+        
+        unless ($@) {
+          return 0;
+        }
+        
+      }
+      
+      {
+        my $binary = (mutable string)new_string_len 256;
+        my $size = 256;
+        my $offset = 1;
+        eval { Fn->change_endian($binary, $size, $offset); }
         
         unless ($@) {
           return 0;
@@ -6937,6 +7043,94 @@ class TestCase::Module::Fn {
       }
     }
     
+    {
+      my $size = 8;
+      
+      my $values = [(double)1, 2];
+      
+      my $buffer = (mutable string)new_string_len 256;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $buffer_ret = (mutable string)new_string_len 256;
+      
+      Fn->memcpy($buffer_ret, 0, $values, 0, $size);
+      
+      my $offset = 8;
+      Fn->big_endian_to_system_endian($buffer_ret, $size, $offset);
+      
+      if (Fn->system_is_little_endian) {
+        unless ($buffer_ret->[0] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[3] == $buffer->[3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4] == $buffer->[4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[5] == $buffer->[5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[6] == $buffer->[6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[7] == $buffer->[7]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 7] == $buffer->[8 + 0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 6] == $buffer->[8 + 1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 5] == $buffer->[8 + 2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 4] == $buffer->[8 + 3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 3] == $buffer->[8 + 4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 2] == $buffer->[8 + 5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 1] == $buffer->[8 + 6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 0] == $buffer->[8 + 7]) {
+          return 0;
+        }
+        
+      }
+      else {
+        unless ($buffer_ret eq $buffer) {
+          return 0;
+        }
+      }
+    }
     return 1;
   }
   
@@ -7022,6 +7216,96 @@ class TestCase::Module::Fn {
         unless ($buffer_ret->[8 + 0] == $buffer->[8 + 7]) {
           return 0;
         }
+      }
+      else {
+        unless ($buffer_ret eq $buffer) {
+          return 0;
+        }
+      }
+    }
+    
+    {
+      my $size = 8;
+      
+      my $values = [(double)1, 2];
+      
+      my $buffer = (mutable string)new_string_len 256;
+      
+      Fn->memcpy($buffer, 0, $values, 0, $size);
+      
+      my $buffer_ret = (mutable string)new_string_len 256;
+      
+      Fn->memcpy($buffer_ret, 0, $values, 0, $size);
+      
+      my $offset = 8;
+      Fn->system_endian_to_big_endian($buffer_ret, $size, $offset);
+      
+      if (Fn->system_is_little_endian) {
+        
+        unless ($buffer_ret->[0] == $buffer->[0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[1] == $buffer->[1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[2] == $buffer->[2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[3] == $buffer->[3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[4] == $buffer->[4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[5] == $buffer->[5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[6] == $buffer->[6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[7] == $buffer->[7]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 7] == $buffer->[8 + 0]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 6] == $buffer->[8 + 1]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 5] == $buffer->[8 + 2]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 4] == $buffer->[8 + 3]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 3] == $buffer->[8 + 4]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 2] == $buffer->[8 + 5]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 1] == $buffer->[8 + 6]) {
+          return 0;
+        }
+        
+        unless ($buffer_ret->[8 + 0] == $buffer->[8 + 7]) {
+          return 0;
+        }
+      
       }
       else {
         unless ($buffer_ret eq $buffer) {

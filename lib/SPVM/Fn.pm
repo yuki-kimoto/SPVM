@@ -1523,9 +1523,9 @@ Exceptions thrown by thrown L<Sort#sort_object|SPVM::Sort/"sort_object"> method 
 
 =head2 change_endian
 
-C<static method change_endian : void ($binary : mutable string, $size : int);>
+C<static method change_endian : void ($binary : mutable string, $size : int, $offset : int = 0);>
 
-The byte order of the first $size bytes of the binary data $binary are reversed in-plcae.
+The byte order of the first $size bytes of the binary data $binary at the offset $offset are reversed in-plcae.
 
 Exceptions:
 
@@ -1533,13 +1533,15 @@ The binary data $binary must be defined. Otherwise an exception is thrown.
 
 The byte size $size must be greater than 0. Otherwise an exception is thrown.
 
-The byte size $size must be less than or equal to the length of the binary data \$binary.
+The offset $offset must be greater than or equal to 0. Otherwise an exception is thrown.
+
+The byte size $size must be less than or equal to the offset \$offset plus the length of the binary data \$binary.
 
 =head2 big_endian_to_system_endian
 
-C<static method big_endian_to_system_endian : void ($binary : mutable string, $size : int);>
+C<static method big_endian_to_system_endian : void ($binary : mutable string, $size : int, $offset : int = 0);>
 
-The byte order of the first $size bytes of the binary data $binary are changed from big endian to system endian.
+The byte order of the first $size bytes of the binary data $binary at the offset $offset are changed from big endian to system endian.
 
 This method calls L</"change_endian"> method to change endian.
 
@@ -1549,9 +1551,9 @@ Exceptions thrown by L</"change_endian"> method could be thrown.
 
 =head2 system_endian_to_big_endian
 
-C<static method system_endian_to_big_endian : void ($binary : mutable string, $size : int);>
+C<static method system_endian_to_big_endian : void ($binary : mutable string, $size : int, $offset : int = 0);>
 
-The byte order of the first $size bytes of the binary data $binary are changed from system endian to big endian.
+The byte order of the first $size bytes of the binary data $binary at the offset $offset are changed from system endian to big endian.
 
 This method calls L</"change_endian"> method to change endian.
 
