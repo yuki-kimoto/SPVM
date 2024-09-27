@@ -388,6 +388,10 @@ lib/SPVM/Native/Stack.c
 lib/SPVM/Native/Stack.config
 lib/SPVM/Native/Stack.pm
 lib/SPVM/Native/Stack.spvm
+lib/SPVM/Packer.pm
+lib/SPVM/Packer.spvm
+lib/SPVM/Packer/Specifier.pm
+lib/SPVM/Packer/Specifier.spvm
 lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
 lib/SPVM/Point3D.pm

@@ -1,0 +1,27 @@
+# Copyright (c) 2024 Yuki Kimoto
+# MIT License
+
+class Packer {
+  
+  # Fields
+  has _specifiers : Packer::Specifier[];
+  
+  # Class Methods
+  static method new : Packer () {
+    
+    my $self = new Packer;
+    
+    return $self;
+  }
+  
+  static method pack : string () {
+    
+    return undef;
+  }
+  
+  static method unpack : object[] () {
+    
+    return undef;
+  }
+  
+}

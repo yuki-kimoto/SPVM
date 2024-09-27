@@ -1,0 +1,35 @@
+# Copyright (c) 2024 Yuki Kimoto
+# MIT License
+
+class Packer::Specifier {
+  allow Packer;
+  
+  private enum {
+    TYPE_BYTE,
+    TYPE_SHORT,
+    TYPE_INT,
+    TYPE_LONG,
+    TYPE_FLOAT,
+    TYPE_DOUBLE,
+    TYPE_BYTE_ARRAY,
+    TYPE_SHORT_ARRAY,
+    TYPE_INT_ARRAY,
+    TYPE_LONG_ARRAY,
+    TYPE_FLOAT_ARRAY,
+    TYPE_DOUBLE_ARRAY,
+    TYPE_STRING,
+  }
+  
+  private enum {
+    ENDIAN_NONE,
+    ENDIAN_LITTLE_ENDIAN,
+    ENDIAN_BIG_ENDIAN,
+  }
+  
+  # Fields
+  has type : int;
+  
+  has legnth : int;
+  
+  has endian : int;
+}
