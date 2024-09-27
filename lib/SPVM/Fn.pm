@@ -1535,7 +1535,7 @@ The byte size $size must be greater than 0. Otherwise an exception is thrown.
 
 The offset $offset must be greater than or equal to 0. Otherwise an exception is thrown.
 
-The byte size $size must be less than or equal to the offset \$offset plus the length of the binary data \$binary.
+The byte size $size must be less than or equal to the offset $offset plus the length of the binary data $binary.
 
 =head2 big_endian_to_system_endian
 

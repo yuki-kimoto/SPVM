@@ -1,3 +1,9 @@
+0.990013 2023-09-28
+  [New Features]
+    * Add optional $offset argument to Fn#change_endian method.
+    * Add optional $offset argument to Fn#big_endian_to_system_endian method.
+    * Add optional $offset argument to Fn#system_endian_to_big_endian method.
+    
 0.990012 2023-09-26
   [New Features]
     * Add Fn#system_endian_to_big_endian method.
