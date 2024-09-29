@@ -3,13 +3,17 @@
 
 class Packer {
   
+  use Packer::Specifier;
+  
   # Fields
-  has _specifiers : Packer::Specifier[];
+  has _specifiers_list : List of Packer::Specifier;
   
   # Class Methods
   static method new : Packer () {
     
     my $self = new Packer;
+    
+    $self->{_specifiers_list} = List->new(new Packer::Specifier[0]);
     
     return $self;
   }
@@ -24,6 +28,8 @@ class Packer {
       die "The objects \$objects must be defined.";
     }
     
+    $self->_parse_template($template);
+    
     return undef;
   }
   
@@ -37,7 +43,116 @@ class Packer {
       die "The binary data \$binary must be defined.";
     }
     
+    $self->_parse_template($template);
+    
     return undef;
+  }
+  
+  method _parse_template : void ($template : string) {
+    
+    my $template_length = length $template;
+    
+    my $template_index = 0;
+    
+    while (1) {
+      
+      unless ($template_index < $template_length) {
+        last;
+      }
+      
+      my $ch = $template->[$template_index];
+      
+      # Parse a specifier
+      my $specifier_type = TYPE_NONE;
+      switch ($ch) {
+        
+        # String
+        case 'a' : {
+          $specifier_type = Packer::Specifier->TYPE_STRING;
+        }
+        
+        # Signed 8-bit integer(or unsinged)
+        case 'c' : {
+          $specifier_type = Packer::Specifier->TYPE_BYTE;
+        }
+        # Signed 16-bit integer(or unsinged)
+        case 's' : {
+          $specifier_type = Packer::Specifier->TYPE_SHORT;
+        }
+        # Signed 32-bit integer(or unsinged)
+        case 'l' : {
+          $specifier_type = Packer::Specifier->TYPE_INT;
+        }
+        # Signed 32-bit integer(or unsinged)
+        case 'q' : {
+          $specifier_type = Packer::Specifier->TYPE_LONG;
+        }
+        # 16-bit floating point
+        case 'f' : {
+          $specifier_type = Packer::Specifier->TYPE_FLOAT;
+        }
+        # 32-bit floating point
+        case 'd' : {
+          $specifier_type = Packer::Specifier->TYPE_DOUBLE;
+        }
+        default : {
+          die "Invalid specifier " . Fn->chr($ch) . "in the template \"$template\".";
+        }
+      }
+      
+      $template_index++;
+      
+      # Prase endian
+      my $endian = Packer::Specifier->ENDIAN_NONE;
+      if ($template_index < $template_length) {
+        $ch = $template->[$template_index];
+        
+        if ($ch == '>') {
+          $endian = ENDIAN_BIG_ENDIAN;
+          $template_index++;
+        }
+        else ($ch == '<') {
+          $endian = ENDIAN_LITTLE_ENDIAN;
+          $template_index++;
+        }
+      }
+      
+      # Parse length
+      my $length_string = "";
+      while (1) {
+        unless ($template_index < $template_length) {
+          last;
+        }
+        $ch = $template->[$template_index];
+        
+        if (Fn->is_digit($ch)) {
+          $length_string .= Fn->chr($ch);
+          $template_index++;
+        }
+        else {
+          last;
+        }
+      }
+      
+      my $length = 0;
+      if (length $lenght_string) {
+        my $length_tmp = Fn->to_int($length_string);
+        
+        unless ($length_tmp > 0) {
+          die "The data length $length in the template in the template \"$template\" must be a positive value.";
+        }
+        
+        $length = $length_tmp;
+      }
+      
+      my $specifier = Packer::Specifier->new;
+      $specifier->{type} = $specifier_type;
+      $specifier->{endian} = $endian;
+      $specifier->{length} = $length;
+      
+      $self->{_specifiers_list}->push($specifier);
+    }
+    
   }
   
 }

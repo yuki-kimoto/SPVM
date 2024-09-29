@@ -12,12 +12,6 @@ class Packer::Specifier {
     TYPE_LONG,
     TYPE_FLOAT,
     TYPE_DOUBLE,
-    TYPE_BYTE_ARRAY,
-    TYPE_SHORT_ARRAY,
-    TYPE_INT_ARRAY,
-    TYPE_LONG_ARRAY,
-    TYPE_FLOAT_ARRAY,
-    TYPE_DOUBLE_ARRAY,
     TYPE_STRING,
   }
   
