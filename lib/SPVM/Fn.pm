@@ -1561,6 +1561,30 @@ Exceptions:
 
 Exceptions thrown by L</"change_endian"> method could be thrown.
 
+=head2 little_endian_to_system_endian
+
+C<static method little_endian_to_system_endian : void ($binary : mutable string, $size : int, $offset : int = 0);>
+
+The byte order of the first $size bytes of the binary data $binary at the offset $offset are changed from little endian to system endian.
+
+This method calls L</"change_endian"> method to change endian.
+
+Exceptions:
+
+Exceptions thrown by L</"change_endian"> method could be thrown.
+
+=head2 system_endian_to_little_endian
+
+C<static method system_endian_to_little_endian : void ($binary : mutable string, $size : int, $offset : int = 0);>
+
+The byte order of the first $size bytes of the binary data $binary at the offset $offset are changed from system endian to little endian.
+
+This method calls L</"change_endian"> method to change endian.
+
+Exceptions:
+
+Exceptions thrown by L</"change_endian"> method could be thrown.
+
 =head1 See Also
 
 =over 2

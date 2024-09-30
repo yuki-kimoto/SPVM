@@ -1732,4 +1732,20 @@ class Fn {
     
   }
   
+  static method little_endian_to_system_endian : void ($binary : mutable string, $size : int, $offset : int = 0) {
+    
+    unless (Fn->system_is_little_endian) {
+      &change_endian($binary, $size, $offset);
+    }
+    
+  }
+  
+  static method system_endian_to_little_endian : void ($binary : mutable string, $size : int, $offset : int = 0) {
+    
+    unless (Fn->system_is_little_endian) {
+      &change_endian($binary, $size, $offset);
+    }
+    
+  }
+  
 }
