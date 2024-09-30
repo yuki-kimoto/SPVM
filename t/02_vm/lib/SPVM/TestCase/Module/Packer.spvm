@@ -46,6 +46,62 @@ class TestCase::Module::Packer {
       
     }
     
+    # a2
+    {
+      my $objects = [(object)"abc"];
+      
+      my $template = "a2";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 2) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type string) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(string) eq "ab") {
+        return 0;
+      }
+      
+    }
+    
+    # a4
+    {
+      my $objects = [(object)"abc"];
+      
+      my $template = "a4";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 4) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type string) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(string) eq "abc\0") {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   
