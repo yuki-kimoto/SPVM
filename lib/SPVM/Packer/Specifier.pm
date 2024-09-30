@@ -6,56 +6,13 @@ package SPVM::Packer::Specifier;
 
 =head1 Name
 
-SPVM::Packer::Specifier - Short Description
+SPVM::Packer::Specifier - A Specifier for a pack/unpack Template.
 
 =head1 Description
 
-Packer::Specifier class in L<SPVM> has methods to do someting.
+Packer::Specifier class in L<SPVM> represents has a specifier for a pack/unpack template.
 
-=head1 Usage
-
-  use Packer::Specifier;
-
-=head1 Details
-
-
-
-=head1 Super Class
-
-
-
-=head1 Interfaces
-
-
-
-=head1 Enumerations
-
-
-
-=head1 Fields
-
-
-
-=head1 Class Methods
-
-
-
-=head1 Instance Methods
-
-
-
-=head1 See Also
-
-
-
-
-=head1 Repository
-
-
-
-=head1 Author
-
-Yuki Kimoto C<kimoto.yuki@gmail.com>
+This class is a private class for L<Packer|SPVM::Packer> class.
 
 =head1 Copyright & License
 

@@ -24,6 +24,8 @@ class Packer::Specifier {
   # Fields
   has type : int;
   
+  has is_numeric_object : int;
+  
   has length : int;
   
   has endian : int;

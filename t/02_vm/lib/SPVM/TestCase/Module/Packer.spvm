@@ -1,0 +1,10 @@
+class TestCase::Module::Packer {
+  use Packer;
+  
+  static method new : int () { return 1; }
+  
+  static method pack : int () { return 1; }
+  
+  static method unpack : int () { return 1; }
+  
+}

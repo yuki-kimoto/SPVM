@@ -20,7 +20,7 @@ class Packer {
     return $self;
   }
   
-  static method pack : string ($template : string, $objects : object[]) {
+  method pack : string ($template : string, $objects : object[]) {
     
     unless ($template) {
       die "The template \$template must be defined.";
@@ -43,7 +43,7 @@ class Packer {
     }
     
     my $binary_buffer = StringBuffer->new;
-    for (my $i = 0; $i < $specifiers_length: $ix++) {
+    for (my $i = 0; $i < $specifiers_length; $i++) {
       
       my $specifier = (Packer::Specifier)$specifiers_list->get($i);
       
@@ -57,11 +57,10 @@ class Packer {
       
       my $size = 0;
       
-      $values = (object)undef;
+      my $values = (object)undef;
       
       switch ($specifier_type) {
         
-        my $binary_part = (mutable string)undef;
         case Packer::Specifier->TYPE_STRING : {
           if ($length > 0) {
             unless ($object is_type string) {
@@ -94,7 +93,7 @@ class Packer {
             
             $values = (byte[])$object;
             
-            unless (length $values == $length) {
+            unless (Fn->array_length($values) == $length) {
               die "The length of the objects \$objects must be equal to the length of the specifier $length.";
             }
           }
@@ -122,7 +121,7 @@ class Packer {
             
             $values = (short[])$object;
             
-            unless (length $values == $length) {
+            unless (Fn->array_length($values) == $length) {
               die "The length of the objects \$objects must be equal to the length of the specifier $length.";
             }
           }
@@ -150,7 +149,7 @@ class Packer {
             
             $values = (int[])$object;
             
-            unless (length $values == $length) {
+            unless (Fn->array_length($values) == $length) {
               die "The length of the objects \$objects must be equal to the length of the specifier $length.";
             }
           }
@@ -178,7 +177,7 @@ class Packer {
             
             $values = (long[])$object;
             
-            unless (length $values == $length) {
+            unless (Fn->array_length($values) == $length) {
               die "The length of the objects \$objects must be equal to the length of the specifier $length.";
             }
           }
@@ -206,7 +205,7 @@ class Packer {
             
             $values = (float[])$object;
             
-            unless (length $values == $length) {
+            unless (Fn->array_length($values) == $length) {
               die "The length of the objects \$objects must be equal to the length of the specifier $length.";
             }
           }
@@ -234,7 +233,7 @@ class Packer {
             
             $values = (double[])$object;
             
-            unless (length $values == $length) {
+            unless (Fn->array_length($values) == $length) {
               die "The length of the objects \$objects must be equal to the length of the specifier $length.";
             }
           }
@@ -249,18 +248,20 @@ class Packer {
         }
       }
       
-      $binary_part = (mutable string)new_string_length $length;
+      my $binary_part_length = $size * $length;
       
-      Fn->memcpy($binary_part, 0, $values, 0, $size * $length);
+      my $binary_part = (mutable string)new_string_len $binary_part_length;
       
-      if ($endian == ENDIAN_BIG_ENDIAN || $endian == ENDIAN_LITTLE_ENDIAN) {
+      Fn->memcpy($binary_part, 0, $values, 0, $binary_part_length);
+      
+      if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN || $endian == Packer::Specifier->ENDIAN_LITTLE_ENDIAN) {
         for (my $i = 0; $i < $length; $i++) {
           my $binary_part_offset = $size * $i;
-          if ($endian == ENDIAN_BIG_ENDIAN) {
-            Fn->system_endian_to_big_endian($binary, $binary_part, $size, $binary_part_offset);
+          if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN) {
+            Fn->system_endian_to_big_endian($binary_part, $size);
           }
-          elsif ($endian == ENDIAN_LITTLE_ENDIAN) {
-            Fn->system_endian_to_little_endian($binary, $binary_part, $size, $binary_part_offset);
+          elsif ($endian == Packer::Specifier->ENDIAN_LITTLE_ENDIAN) {
+            Fn->system_endian_to_little_endian($binary_part, $size);
           }
         }
       }
@@ -275,7 +276,7 @@ class Packer {
     return $binary;
   }
   
-  static method unpack : object[] ($template : string, $binary : string) {
+  method unpack : object[] ($template : string, $binary : string) {
     
     unless ($template) {
       die "The template \$template must be defined.";
@@ -294,7 +295,10 @@ class Packer {
     my $specifiers_length = $specifiers_list->length;
     
     my $binary_offset = 0;
-    for (my $i = 0; $i < $specifiers_length: $ix++) {
+    
+    my $objects_list = List->new(new object[0]);
+    
+    for (my $i = 0; $i < $specifiers_length; $i++) {
       
       my $specifier = (Packer::Specifier)$specifiers_list->get($i);
       
@@ -302,23 +306,13 @@ class Packer {
       
       my $endian = $specifier->{endian};
       
-      my $specifier_length = $specifier->{length};
+      my $length = $specifier->{length};
       
-      my $length = 0;
-      my $is_numeric_object = 0;
-      if ($specifier_length == 0) {
-        $length = 1;
-        $is_numeric_object = 1;
-      }
-      else {
-        $length = $specifier_length;
-      }
+      my $is_numeric_object = $specifier->{is_numeric_object};
       
       my $size = 0;
       
       my $objects_list = List->new(new object[0]);
-      
-      my $binary_part = (string)undef;
       
       switch ($specifier_type) {
         case Packer::Specifier->TYPE_STRING : {
@@ -347,29 +341,29 @@ class Packer {
         }
       }
       
-      unless ($offset + $size * $length <= $binary_length) {
-        die "The current offset $offset plus (the size $size * the length $length of the specifier) must be less than the length of the binary \$binary.";
+      unless ($binary_offset + $size * $length <= $binary_length) {
+        die "The current offset $binary_offset plus (the size $size * the length $length of the specifier) must be less than the length of the binary \$binary.";
       }
       
       my $binary_part_size = $size * $length;
       
-      $binary_part = (mutable string)new_string_len $binary_part_size;
+      my $binary_part = (mutable string)new_string_len $binary_part_size;
       
-      Fn->memcpy($binary_part, 0, $binary, $offset, $binary_part_size);
+      Fn->memcpy($binary_part, 0, $binary, $binary_offset, $binary_part_size);
       
-      if ($endian == ENDIAN_BIG_ENDIAN || $endian == ENDIAN_LITTLE_ENDIAN) {
+      if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN || $endian == Packer::Specifier->ENDIAN_LITTLE_ENDIAN) {
         for (my $i = 0; $i < $length; $i++) {
           my $binary_part_offset = $size * $i;
-          if ($endian == ENDIAN_BIG_ENDIAN) {
-            Fn->big_endian_to_system_endian($binary, $binary_part, $size, $binary_part_offset);
+          if ($endian == Packer::Specifier->ENDIAN_BIG_ENDIAN) {
+            Fn->big_endian_to_system_endian($binary_part, $size);
           }
-          elsif ($endian == ENDIAN_LITTLE_ENDIAN) {
-            Fn->little_endian_to_system_endian($binary, $binary_part, $size, $binary_part_offset);
+          elsif ($endian == Packer::Specifier->ENDIAN_LITTLE_ENDIAN) {
+            Fn->little_endian_to_system_endian($binary_part, $size);
           }
         }
       }
       
-      my $object = (object[])undef;
+      my $object = (object)undef;
       switch ($specifier_type) {
         
         case Packer::Specifier->TYPE_STRING : {
@@ -380,55 +374,55 @@ class Packer {
         case Packer::Specifier->TYPE_BYTE : {
           $object = new byte[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
           
           if ($is_numeric_object) {
-            $object = Byte->new($object->[0]);
+            $object = Byte->new($object->(byte[])->[0]);
           }
         }
         case Packer::Specifier->TYPE_SHORT : {
           $object = new short[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
           
           if ($is_numeric_object) {
-            $object = Short->new($object->[0]);
+            $object = Short->new($object->(short[])->[0]);
           }
         }
         case Packer::Specifier->TYPE_INT : {
           $object = new int[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
           
           if ($is_numeric_object) {
-            $object = Int->new($object->[0]);
+            $object = Int->new($object->(int[])->[0]);
           }
         }
         case Packer::Specifier->TYPE_LONG : {
           $object = new long[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
           
           if ($is_numeric_object) {
-            $object = Long->new($object->[0]);
+            $object = Long->new($object->(long[])->[0]);
           }
         }
         case Packer::Specifier->TYPE_FLOAT : {
           $object = new float[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
           
           if ($is_numeric_object) {
-            $object = Float->new($object->[0]);
+            $object = Float->new($object->(float[])->[0]);
           }
         }
         case Packer::Specifier->TYPE_DOUBLE : {
           $object = new double[$length];
           
-          Fn->memcpy($object, 0, $binary_part, $offset, $binary_part_size);
+          Fn->memcpy($object, 0, $binary_part, $binary_offset, $binary_part_size);
           
           if ($is_numeric_object) {
-            $object = Double->new($object->[0]);
+            $object = Double->new($object->(double[])->[0]);
           }
         }
         default : {
@@ -438,7 +432,7 @@ class Packer {
       
       $objects_list->push($object);
       
-      $offset = $binary_part_size;
+      $binary_offset = $binary_part_size;
     }
     
     my $objects = $objects_list->to_array;
@@ -461,7 +455,7 @@ class Packer {
       my $ch = $template->[$template_index];
       
       # Parse a specifier
-      my $specifier_type = TYPE_NONE;
+      my $specifier_type = Packer::Specifier->TYPE_NONE;
       switch ($ch) {
         
         # String
@@ -506,18 +500,17 @@ class Packer {
         $ch = $template->[$template_index];
         
         if ($ch == '>') {
-          $endian = ENDIAN_BIG_ENDIAN;
+          $endian = Packer::Specifier->ENDIAN_BIG_ENDIAN;
           $template_index++;
         }
-        else ($ch == '<') {
-          $endian = ENDIAN_LITTLE_ENDIAN;
+        elsif ($ch == '<') {
+          $endian = Packer::Specifier->ENDIAN_LITTLE_ENDIAN;
           $template_index++;
         }
       }
       
       # Parse length
       my $length_string = "";
-      my $glob = 0;
       while (1) {
         unless ($template_index < $template_length) {
           last;
@@ -534,27 +527,28 @@ class Packer {
       }
       
       my $length = 0;
-      if ($glob) {
-        $legnth = -1;
-      }
-      elsif (length $lenght_string) {
-        my $length_tmp = Fn->to_int($length_string);
+      my $is_numeric_object = 0;
+      if (length $length_string) {
+        $length = Fn->to_int($length_string);
         
-        unless ($length_tmp > 0) {
+        unless ($length > 0) {
           die "The data length $length in the template in the template \"$template\" must be a positive value.";
         }
-        
-        $length = $length_tmp;
+      }
+      else {
+        $length = 1;
+        $is_numeric_object = 1;
       }
       
       if ($specifier_type == Packer::Specifier->TYPE_STRING) {
-        if ($length == 0) {
-          die "The data length $length for \"a" in the template in the template \"$template\" must be specified.";
+        if ($is_numeric_object) {
+          die "The data length $length for \"a\" in the template in the template \"$template\" must be specified.";
         }
       }
       
-      my $specifier = Packer::Specifier->new;
+      my $specifier = new Packer::Specifier;
       $specifier->{type} = $specifier_type;
+      $specifier->{is_numeric_object} = $is_numeric_object;
       $specifier->{endian} = $endian;
       $specifier->{length} = $length;
       
