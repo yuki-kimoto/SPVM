@@ -18,6 +18,119 @@ class TestCase::Module::Packer {
     
     my $packer = Packer->new;
     
+    # c
+    {
+      my $objects = [(object)(byte)Fn->BYTE_MIN];
+      
+      my $template = "c";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 1) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Byte) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(byte) == Fn->BYTE_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # c1
+    {
+      my $objects = [(object)[(byte)Fn->BYTE_MIN]];
+      
+      my $template = "c1";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 1) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type byte[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(byte[])->[0] == Fn->BYTE_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # s
+    {
+      my $objects = [(object)(short)Fn->SHORT_MIN];
+      
+      my $template = "s";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 2) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Short) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(short) == Fn->SHORT_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # s1
+    {
+      my $objects = [(object)[(short)Fn->SHORT_MIN]];
+      
+      my $template = "s1";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 2) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type short[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(short[])->[0] == Fn->SHORT_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # l
     {
       my $objects = [(object)Fn->INT_MIN];
       
@@ -45,9 +158,93 @@ class TestCase::Module::Packer {
       
     }
     
+    # l1
+    {
+      my $objects = [(object)[Fn->INT_MIN]];
+      
+      my $template = "l1";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 4) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type int[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(int[])->[0] == Fn->INT_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # q
+    {
+      my $objects = [(object)Fn->LONG_MIN];
+      
+      my $template = "q";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 8) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type Long) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(long) == Fn->LONG_MIN) {
+        return 0;
+      }
+      
+    }
+    
+    # q1
+    {
+      my $objects = [(object)[Fn->LONG_MIN]];
+      
+      my $template = "q1";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 8) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type long[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(long[])->[0] == Fn->LONG_MIN) {
+        return 0;
+      }
+      
+    }
+    
     return 1;
   }
   
-  static method unpack : int () { return 1; }
+  static method unpack : int () { return &pack(); }
   
 }
