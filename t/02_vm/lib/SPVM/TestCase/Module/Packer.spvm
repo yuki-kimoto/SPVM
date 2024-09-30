@@ -656,4 +656,53 @@ class TestCase::Module::Packer {
     
     return 1;
   }
+  
+  static method pack_exceptions : int () {
+
+=pod
+
+    {
+      my $packer = Packer->new;
+      
+      my $template = "";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+
+=cut
+
+    {
+      my $packer = Packer->new;
+      
+      my $template = "l";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack(undef, $objects); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    {
+      my $packer = Packer->new;
+      
+      my $template = "";
+      my $objects = [(object)1];
+      
+      eval { $packer->pack($template, undef); }
+      
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
 }
