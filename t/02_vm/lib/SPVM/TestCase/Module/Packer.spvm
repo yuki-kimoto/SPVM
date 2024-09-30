@@ -467,6 +467,70 @@ class TestCase::Module::Packer {
       
     }
     
+    # l2 - too many objects
+    {
+      my $objects = [(object)[Fn->INT_MIN, 1, 2]];
+      
+      my $template = "l2";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 4 * 2) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type int[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(int[])->[0] == Fn->INT_MIN) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(int[])->[1] == 1) {
+        return 0;
+      }
+      
+    }
+    
+    # l2 - too few objects
+    {
+      my $objects = [(object)[Fn->INT_MIN]];
+      
+      my $template = "l2";
+      
+      my $binary = $packer->pack($template, $objects);
+      
+      unless (length $binary == 4 * 2) {
+        return 0;
+      }
+      
+      my $objects_again = $packer->unpack($template, $binary);
+      
+      unless (@$objects_again == 1) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0] is_type int[]) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(int[])->[0] == Fn->INT_MIN) {
+        return 0;
+      }
+      
+      unless ($objects_again->[0]->(int[])->[1] == 0) {
+        return 0;
+      }
+      
+    }
+    
     # q1
     {
       my $objects = [(object)[Fn->LONG_MIN]];
